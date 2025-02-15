@@ -45,9 +45,8 @@
                         </ng-container>
                         <ng-template #defaultTemplate>
                             <ng [ngSwitch]="row?.type||GridColumnType.default" fxShow.gt-sm>
-                                <ng *ngSwitchCase="GridColumnType.customText">
-                                    <span class="text-overflow"> {{ element[row.key] ? [row.text1] : [row.text2]
-                                        || '--'}}</span>
+                                <ng *ngSwitchCase="GridColumnType.customText" [matTooltip]="element[row.key] ? element[row.key] : '--'">
+                                    <span class="text-overflow"> {{ element[row.key] ? [row.text1] : [row.text2] || '--'}}</span>
                                 </ng>
                                 <ng *ngSwitchCase="GridColumnType.status" fxHide fxShow.gt-sm>
                                     <mat-icon *ngIf="getStatus(element[row.key])" class="active-icon green-600 s-16" style="color: azure;">check_circle</mat-icon>
@@ -59,7 +58,7 @@
                                     </div>
                                 </ng>
                                 <ng *ngSwitchCase="GridColumnType.date">
-                                    <span class="text-overflow">{{ element[row.key] ? (element[row.key] | date:
+                                    <span class="text-overflow" [matTooltip]="element[row.key] ? (element[row.key] | date: dateType.MEDIUM_DATE) : '-'">{{ element[row.key] ? (element[row.key] | date:
                                         dateType.MEDIUM_DATE) : '-'}}</span>
                                 </ng>
                                 <ng *ngSwitchCase="GridColumnType.time">
@@ -80,7 +79,7 @@
                                     </a>
                                 </ng>
                                 <ng *ngSwitchDefault>
-                                    <span class="text-overflow">{{ element[row.key] || '--'}}</span>
+                                    <span class="text-overflow" [matTooltip]="element[row.key] || '--'">{{ element[row.key] || '--'}}</span>
                                 </ng>
                                 <ng *ngSwitchCase="GridColumnType.action">
                                     <div class="action-list">

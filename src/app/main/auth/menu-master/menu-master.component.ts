@@ -21,15 +21,15 @@ export class MenuMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "MenuMaster/MenuMasterList",
         columnsList: [
-            { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "UpId", key: "upId", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "MenuName", key: "linkName", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Icon", key: "icon", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Action", key: "linkAction", sort: true, align: 'left', emptySign: 'NA'},
-              { heading: "Sort Order", key: "sortOrder", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "IsBlock", key: "isDisplay", sort: true, align: 'left', emptySign: 'NA'},
-              { heading: "Permission Code", key: "permissionCode", sort: true, align: 'left', emptySign: 'NA'},
-              { heading: "Table Names", key: "tableNames", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UpId", key: "upId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "MenuName", key: "linkName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "Icon", key: "icon", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Action", key: "linkAction", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+            { heading: "Sort Order", key: "sortOrder", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsBlock", key: "isDisplay", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Permission Code", key: "permissionCode", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "Table Names", key: "tableNames", sort: true, align: 'left', emptySign: 'NA', width: 250 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
