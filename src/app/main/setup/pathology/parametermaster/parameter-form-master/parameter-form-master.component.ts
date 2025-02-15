@@ -195,8 +195,10 @@ export class ParameterFormMasterComponent implements OnInit {
                 "parameterShortName": this.parameterForm.get('parameterShortName').value,
                 "parameterName": this.parameterForm.get('parameterName').value,
                 "printParameterName": this.parameterForm.get('printParameterName').value,
-                "unitId": this.parameterForm.get('unitId').value,
+                "unitId": this.parameterForm.get('unitId').value || 1,
                 "isNumeric": is_numeric, //0,
+                "MethodName": this.parameterForm.get('MethodName').value,
+                "Formula": this.parameterForm.get('Formula').value,
                 "isPrintDisSummary": true,
                 "mParameterDescriptiveMasters": data2,
                 "mPathParaRangeMasters": mPathParaRangeMasters, //numeric_info
@@ -228,6 +230,8 @@ export class ParameterFormMasterComponent implements OnInit {
                 "printParameterName": this.parameterForm.get('printParameterName').value,
                 "unitId": this.parameterForm.get('unitId').value,
                 "isNumeric": is_numeric, //0,
+                "MethodName": this.parameterForm.get('MethodName').value,
+                "Formula": this.parameterForm.get('Formula').value,
                 "isPrintDisSummary": true,
                 "mParameterDescriptiveMasters": data2,
                 "mPathParaRangeMasters": mPathParaRangeMasters, //numeric_info

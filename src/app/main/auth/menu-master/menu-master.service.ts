@@ -22,6 +22,7 @@ export class MenuMasterService {
     return this._formBuilder.group({
                 id:[""],
                 bedName:[""],
+                Menuid:[""],
                 upId: ["",
                     [
                         // Validators.required,
@@ -78,6 +79,9 @@ export class MenuMasterService {
 
     getValidationMessages() {
         return {
+            Menuid:[
+                {name: "required", Message: "Menu No is required"}
+            ],
             bedName: [
                 { name: "required", Message: "Bed Name is required" },
                 { name: "maxlength", Message: "Bed name should not be greater than 50 char." },

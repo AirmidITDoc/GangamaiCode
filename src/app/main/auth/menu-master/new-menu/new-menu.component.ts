@@ -16,7 +16,7 @@ export class NewMenuComponent implements OnInit {
 
     menuForm: FormGroup;
     saveflag: boolean = false;
-    isActive:boolean=true;
+    isActive: boolean = true;
 
     constructor(
         public _MenuMasterService: MenuMasterService,
@@ -28,17 +28,33 @@ export class NewMenuComponent implements OnInit {
     // autocompleteModeroomId: string = "Room"; 
 
     // roomId = 0;
+    vIsBlock: any;
 
     ngOnInit(): void {
+        debugger
         this.menuForm = this._MenuMasterService.createMenuForm();
-        var m_data = {
-            id: this.data?.id,
-            upId: this.data?.upId,
-            //   roomId: this.data?.roomId || this.roomId,
-            isAvailible: JSON.stringify(this.data?.isAvailible),
-            // isDeleted: JSON.stringify(this.data?.isActive),
-        };
-        this.menuForm.patchValue(m_data);
+        console.log("EditData:", this.data)
+        // if (this.data?.isDisplay == true) {
+        //     this.vIsBlock = 1
+        // } else {
+        //     this.vIsBlock = 0
+        // }
+
+        if ((this.data?.id ?? 0) > 0) {
+            var m_data = {
+                id: this.data?.id,
+                Menuid: this.data?.id,
+                upId: this.data?.upId,
+                linkName: this.data?.linkName,
+                icon: this.data?.icon,
+                linkAction: this.data?.linkAction,
+                sortOrder: this.data?.sortOrder,
+                // IsBlock: this.data?.isDisplay ? 1 : 0,
+            };
+            this.vIsBlock=this.data.isDisplay ? 1 : 0
+            this.isActive = this.data.isActive
+            this.menuForm.patchValue(m_data);
+        }
     }
 
     onSubmit() {
@@ -112,15 +128,8 @@ export class NewMenuComponent implements OnInit {
     }
 
     onClear(val: boolean) {
-        this.menuForm.reset({isActive: true});
+        this.menuForm.reset({ isActive: true });
         this.dialogRef.close(val);
-    }
-    getValidationroomeMessages() {
-        return {
-            roomId: [
-                { name: "required", Message: "Room Name is required" }
-            ]
-        };
     }
 
 }

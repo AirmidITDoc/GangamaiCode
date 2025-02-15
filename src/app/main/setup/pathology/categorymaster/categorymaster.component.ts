@@ -67,7 +67,7 @@ export class CategorymasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewCategoryComponent,
             {
                 maxWidth: "45vw",
-                height: '35%',
+                maxHeight: '35%',
                 width: '70%',
                 data: row
             });

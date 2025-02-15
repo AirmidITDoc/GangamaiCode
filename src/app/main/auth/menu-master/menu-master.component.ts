@@ -19,18 +19,18 @@ import { fuseAnimations } from '@fuse/animations';
 export class MenuMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
-        apiUrl: "Administration/MenuMasterList",
+        apiUrl: "MenuMaster/MenuMasterList",
         columnsList: [
-            { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "UpId", key: "upId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "MenuName", key: "linkName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-            { heading: "Icon", key: "icon", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Action", key: "linkAction", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            //   { heading: "Sort Order", key: "sortOrder", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            //   { heading: "IsActive", key: "isActive", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "IsBlock", key: "isDisplay", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            //   { heading: "Permission Code", key: "permissionCode", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            //   { heading: "Table Names", key: "tableNames", sort: true, align: 'left', emptySign: 'NA', width:100 },
+            { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "UpId", key: "upId", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "MenuName", key: "linkName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Icon", key: "icon", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Action", key: "linkAction", sort: true, align: 'left', emptySign: 'NA'},
+              { heading: "Sort Order", key: "sortOrder", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "IsBlock", key: "isDisplay", sort: true, align: 'left', emptySign: 'NA'},
+              { heading: "Permission Code", key: "permissionCode", sort: true, align: 'left', emptySign: 'NA'},
+              { heading: "Table Names", key: "tableNames", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
                     {
@@ -50,9 +50,9 @@ export class MenuMasterComponent implements OnInit {
         sortField: "UpId",
         sortOrder: 0,
         filters: [
-            { fieldName: "Id", fieldValue: "217", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+            // { fieldName: "Id", fieldValue: "217", opType: OperatorComparer.Equals },
+            // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            // { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
         ],
         row: 10
     }
@@ -69,8 +69,8 @@ export class MenuMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewMenuComponent,
             {
                 maxWidth: "55vw",
-                height: '60%',
-                width: '70%',
+                maxHeight: '65vh',
+                width: '100%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {

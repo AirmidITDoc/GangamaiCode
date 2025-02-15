@@ -146,11 +146,11 @@ export class ParametermasterComponent implements OnInit {
             var param = {
                 "first": 0,
                 "rows": 10,
-                "sortField": "ParameterId",
+                "sortField": "ParaId",
                 "sortOrder": 0,
                 "filters": [
                     {
-                        "fieldName": "ParameterId",
+                        "fieldName": "ParaId",
                         "fieldValue": String(row.parameterId),
                         "opType": "Equals"
                     },
@@ -220,7 +220,7 @@ export class ParametermasterComponent implements OnInit {
             // this._ParameterService.populateForm(param);
             const dialogRef = this._matDialog.open(ParameterFormMasterComponent, {
                 maxWidth: "100vw",
-                height: '95%',
+                maxHeight: '95%',
                 width: '70%',
                 data:row
             });
@@ -254,7 +254,7 @@ export class ParametermasterComponent implements OnInit {
             maxWidth: "50vw",
             maxHeight: "55vh",
             width: "100%",
-            height: "100%",
+            // height: "100%",
             data: {
                 registerObj: row,
             }

@@ -1,4 +1,5 @@
 <div class="modal-wrapper grid-container">
+
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
@@ -21,7 +22,7 @@
                 <input type="hidden" name="unitId" formControlName="unitId">
                 
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                        <airmid-textbox 
+                        <airmid-textbox fxFlex
                             label="Unit Name" 
                             formControlName="unitName" 
                             [value]="data?.unitName"
@@ -30,24 +31,25 @@
                             [maxLength]="50">
                         </airmid-textbox>
                 </div>
+            </form>
+        </div>
 
-                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
- 
-                    <div>
-                        <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="unitForm" [(ngModel)]="isActive" ></app-airmid-slider>
-                    </div>
-         
-                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+    </div>
+
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <form [formGroup]="unitForm">
+
+                <div class="modal-footer-container">
+                    <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="unitForm" [(ngModel)]="isActive"></app-airmid-slider>
+                    <div class="modal-footer-buttons">
                         <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                         <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                             <span>Save</span>
                         </button>
                     </div>
-         
                 </div>
-
             </form>
         </div>
-
     </div>
 </div>

@@ -26,11 +26,11 @@ export class RoleTemplateMasterComponent implements OnInit {
      @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     
     gridConfig: gridModel = {
-        apiUrl: "RoleMaster/List",
+        apiUrl: "Administration/RoleMasterList",
         columnsList: [
             { heading: "Code", key: "roleId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Role Name", key: "roleName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            // { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
@@ -57,8 +57,9 @@ export class RoleTemplateMasterComponent implements OnInit {
         sortField: "RoleId",
         sortOrder: 0,
         filters: [
-            { fieldName: "roleName", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            { fieldName: "RoleName", fieldValue: "Hello", opType: OperatorComparer.Contains },
+            { fieldName: "Start", fieldValue: "", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
         ],
         row: 10
     }
@@ -75,7 +76,7 @@ export class RoleTemplateMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewRoletemplateComponent,
             {
                 maxWidth: "45vw",
-                height: '35%',
+                maxHeight: '30%',
                 width: '70%',
                 data: row
             });

@@ -190,7 +190,7 @@ export class ParametermasterService {
         debugger
         // if(this.is_numeric) {
             return this._httpClient.PostData(
-                "Pathology/PathParaFillList",param
+                "MPathParaRangeWithAgeMaster/MPathParaRangeWithAgeMasterList",param
                 // { parameterId: param }
             ); 
         // }

@@ -22,10 +22,10 @@
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox 
                             label="MenuNumber" 
-                            formControlName="bedName" 
+                            formControlName="Menuid" 
                             [value]="" 
                             [formGroup]="menuForm"
-                            [validations]="_MenuMasterService.getValidationMessages().bedName" 
+                            [validations]="_MenuMasterService.getValidationMessages().Menuid" 
                             [maxLength]="50">
                         </airmid-textbox>
                     </div>
@@ -94,8 +94,8 @@
 
                     <mat-form-field appearance="outline"  fxFlex>
                         <mat-select placeholder="Please Select IsBlock" 
-                            formControlName="IsBlock" required>
-                            <!-- <mat-label>Is Block</mat-label> -->
+                            formControlName="IsBlock" [(ngModel)]="vIsBlock" required>
+                            <mat-label>Is Block</mat-label>
                             <mat-option value="0">0</mat-option>
                             <mat-option value="1">1</mat-option>
                         </mat-select>
@@ -105,71 +105,24 @@
                 </div>
             </form>
         </div>
+        
+    </div>
 
-        <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
- 
-            <div>
-                <app-airmid-slider label="IsActive/Deactive"   
-                formControlName="isActive"
-                 [formGroup]="menuForm" [(ngModel)]="isActive" >
-                </app-airmid-slider>
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <form [formGroup]="menuForm">
 
-            </div>
- 
-            <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
-                <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                <button class="btn btn-primary " color="accent" (click)="onSubmit()" >
-                    <span>Save</span>
-                </button>
-            </div>
- 
-        </div>
-
-        <!-- <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center">
-            <form [formGroup]="menuForm" fxLayout="row" fxLayoutAlign="end center">
-            <div>
-                <mat-radio-group name="isActive" formControlName="isActive">
-                    <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
-                    </mat-radio-button>
-                </mat-radio-group>
-            </div>
-
-            <div class="button-row">
-                <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                <button class="btn btn-primary " color="accent" (click)="onSubmit()" [disabled]="saveflag">
-                    <span>Save</span>
-                </button>
-            </div>
+                <div class="modal-footer-container">
+                    <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="menuForm" [(ngModel)]="isActive"></app-airmid-slider>
+                    <div class="modal-footer-buttons">
+                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                            <span>Save</span>
+                        </button>
+                    </div>
+                </div>
             </form>
-        
-        </div> -->
-        
-        <!-- <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between"> -->
- 
-            <!-- <div>
-                <mat-radio-group name="isActive" formControlName="isActive">
-                    <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
-                    </mat-radio-button>
-                </mat-radio-group>
-            </div> -->
- 
-            <!-- <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
-                
-                <mat-radio-group name="isActive" formControlName="isActive">
-                    <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
-                    </mat-radio-button> -->
-                    <!-- <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
-                    </mat-radio-button> -->
-                <!-- </mat-radio-group>
-
-                <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                <button class="btn btn-primary " color="accent" (click)="onSubmit()" [disabled]="saveflag">
-                    <span>Save</span>
-                </button>
-            
-            </div>
- 
-        </div> -->
+        </div>
     </div>
 </div>
 <!-- 

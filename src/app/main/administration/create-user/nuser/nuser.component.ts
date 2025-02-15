@@ -24,6 +24,7 @@ export class NUserComponent implements OnInit{
     registerObj = new UserDetail({});
     vUserId: any = 0;
     isLoading: string;
+    vdoctorID:any;
 
     autocompleteModeUnitName: string = "Hospital"; 
     autocompleteModeRoleName: String = "Role";
@@ -70,6 +71,13 @@ export class NUserComponent implements OnInit{
         {
             console.log("data:", this.data)
             this.isActive=this.data.isActive
+            this.vdoctorID=this.data.doctorID
+            if(this.data.isDoctorType==true){
+              this.docflag=true
+            }
+            else{
+              this.docflag=false
+            }
             this.myuserform.patchValue(this.data);
         }
     }
@@ -304,36 +312,6 @@ export class NUserComponent implements OnInit{
         this.webrolename=obj.value
     }
 
-    getValidationMessages() {
-        return {
-            roomId:[],
-            unitId:[],
-            mobileNo:[
-                { name: "pattern", Message: "Only numbers allowed" },
-                { name: "required", Message: "Mobile No is required" },
-                { name: "minLength", Message: "10 digit required." },
-                { name: "maxLength", Message: "More than 10 digits not allowed." }
-            ],
-            firstName:[
-                { name: "required", Message: "First Name is required" },
-                { name: "maxLength", Message: "Enter only upto 50 chars" },
-                { name: "pattern", Message: "only char allowed." }
-            ],
-            lastName:[
-                { name: "required", Message: "First Name is required" },
-                { name: "maxLength", Message: "Enter only upto 50 chars" },
-                { name: "pattern", Message: "only char allowed." }
-            ],
-            userName:[],
-            password:[],
-            mailId:[],
-            roleId:[],
-            storeId:[],
-            webRoleId:[],
-            DoctorID:[],
-        };
-    }
-
     docflag: boolean = false;
     chkdoctor(event) {
         // debugger
@@ -357,6 +335,36 @@ export class NUserComponent implements OnInit{
     {
         this.dialogRef.close(val);
     }
+
+    getValidationMessages() {
+      return {
+          roomId:[],
+          unitId:[],
+          mobileNo:[
+              { name: "pattern", Message: "Only numbers allowed" },
+              { name: "required", Message: "Mobile No is required" },
+              { name: "minLength", Message: "10 digit required." },
+              { name: "maxLength", Message: "More than 10 digits not allowed." }
+          ],
+          firstName:[
+              { name: "required", Message: "First Name is required" },
+              { name: "maxLength", Message: "Enter only upto 50 chars" },
+              { name: "pattern", Message: "only char allowed." }
+          ],
+          lastName:[
+              { name: "required", Message: "First Name is required" },
+              { name: "maxLength", Message: "Enter only upto 50 chars" },
+              { name: "pattern", Message: "only char allowed." }
+          ],
+          userName:[],
+          password:[],
+          mailId:[],
+          roleId:[],
+          storeId:[],
+          webRoleId:[],
+          DoctorID:[],
+      };
+  }
 }
 
 export class UserDetail {

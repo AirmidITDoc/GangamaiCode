@@ -395,12 +395,12 @@ debugger
             let mPathTemplateDetails = this.Templatetdatasource.data.map((row: any) => ({
                 "PtemplateId": 0,
                 "TestId": 0,
-                "TemplateId": 12,
+                "TemplateId": 12,  //teplate id is not comming becasue we not using dropdown so
             }));
             let mPathTestDetailMasters = this.DSTestList.data.map((row: any) => ({
                 "TestDetId": 0,
                 "TestId": 0,
-                "SubTestId": 12,
+                "SubTestId": row.subTestID || 12,
                 "ParameterId": row.ParameterID
             }));
             var mdata1 = {
@@ -683,7 +683,7 @@ debugger
         }
 
         if (this.chargeslist.length > 0) {
-            let isDuplicate = this.chargeslist.some(ele => ele.parameterId === row.parameterId);
+            let isDuplicate = this.chargeslist.some(ele => ele.parameterID === row.parameterID);
 
             if (isDuplicate) {
                 this.toastr.warning('Selected Parameter already added in the list', 'Warning!', {
@@ -733,6 +733,7 @@ debugger
             this.ChargeList.push({
                 ParameterID: row.parameterID,
                 ParameterName: row.parameterName,
+                SubTestID: row.subTestID
             });
 
             this.DSTestList.data = [...this.ChargeList];
