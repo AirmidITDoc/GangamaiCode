@@ -205,6 +205,13 @@ export class AirmidDropDownComponent implements OnInit {
         this.changeDetectorRefs.detectChanges();
         // this.selectDdlObject.emit(value);
     }
+    clearSelection(event: Event): void {
+        event.stopPropagation();
+        const control = this.formGroup.controls[this.formControlName];
+        if (control) {
+            control.reset();
+        }
+    }
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes.value?.firstChange && changes.value?.currentValue) {
             this.SetSelection(changes.value.currentValue);

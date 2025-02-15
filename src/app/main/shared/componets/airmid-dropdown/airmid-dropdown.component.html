@@ -30,7 +30,7 @@
     </mat-select>
 
     <!-- Pending... -->
-    <button mat-icon-button aria-label="Clear" class="dropdown-close-icon" *ngIf="false">
+    <button type="button" mat-icon-button aria-label="Clear" class="dropdown-close-icon" (click)="clearSelection($event)" *ngIf="+value">
         <mat-icon>close</mat-icon>
     </button>
     <mat-error>
