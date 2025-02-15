@@ -1,0 +1,16 @@
+.mat-typography {
+    .airmid-dropdown {
+        .dropdown-close-icon {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 25px;
+            width: 25px;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}

@@ -61,6 +61,7 @@ export class AirmidTextboxComponent implements
     @Input() appearance: string = "outline";
     @Input() readonly: boolean = false;
     @Input() width: number = 100;
+    @Input() isMovable = true;
 
 
     @Input()
@@ -189,8 +190,32 @@ export class AirmidTextboxComponent implements
         const input = event.target as HTMLInputElement;
         this.valueChange.emit(input.value);
     }
-    onKeyUp(event: Event): void {
+    onKeyUp(event: KeyboardEvent): void {
         this.keyup.emit(event);
+        event.stopPropagation();
+
+        // Move focus on 'Enter' if the field is valid  
+        if (this.isMovable && event.key === 'Enter') {
+            const control = this.formGroup.get(this.formControlName);
+            if (control && control.valid) {
+                this.focusNextInput(this.formControlName);
+
+            }
+        }
+    }
+    focusNextInput(formControlName: string): void {
+        const modalElement = document.querySelector("mat-dialog-container");
+        const parentElement = modalElement ? modalElement : document.body;
+
+        const inputFields = Array.from(parentElement.querySelectorAll("mat-form-field input"));
+        const currentIndex = inputFields.findIndex(i => i.getAttribute('name') === formControlName);
+
+        // Find current field and focus the next one 
+        if (currentIndex !== -1 && currentIndex < inputFields.length - 1) {
+
+            // Focus to the next input element
+            (inputFields[currentIndex + 1] as HTMLInputElement).focus();
+        }
     }
     onChange(event: Event): void {
         const input = event.target as HTMLInputElement;
