@@ -12,8 +12,10 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { AdvanceDetailObj, Bed, Discharge, IPSearchListComponent } from '../ip-search-list.component';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
-import { AdmissionPersonlModel } from '../../Admission/admission/admission.component';
+import { AdmissionPersonlModel, RegInsert } from '../../Admission/admission/admission.component';
 import { ToastrService } from 'ngx-toastr';
+import { DatePipe } from '@angular/common';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 
 @Component({
   selector: 'app-bed-transfer',
@@ -41,10 +43,15 @@ export class BedTransferComponent implements OnInit {
    autocompleteroom: string = "Room";
    autocompleteclass: string = "Class";
    autocompletebed: string = "Bed";
+    registerObj1 = new AdmissionPersonlModel({});
+     registerObj = new RegInsert({});
+     @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
+     
 
   constructor(public _IpSearchListService: IPSearchListService,
     private accountService: AuthenticationService,
     public _matDialog: MatDialog,
+     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,
@@ -53,32 +60,49 @@ export class BedTransferComponent implements OnInit {
   ) {  }
 
   ngOnInit(): void {
-    debugger
+    
     this.Bedtransfer = this.bedsaveForm();
     if(this.data){
-    console.log("Data:",this.data);
-    
+    this.registerObj1=this.data
+    console.log("Data:",this.registerObj1);
+    debugger
   this.AdmissionId=this.data.admissionId;
   this.vWardId=this.data.wardId;
   this.vBedId=this.data.bedId;
   this.vClassId=this.data.classId;
     }
    
-    // this.Bedtransfer.patchValue(this.data);
+    if ((this.data?.regId ?? 0) > 0) {
+     setTimeout(() => {
+        this._IpSearchListService.getRegistraionById(this.data.regId).subscribe((response) => {
+          this.registerObj= response;
+          });
+
+        this._IpSearchListService.getAdmissionById(this.data.admissionId).subscribe((response) => {
+          this.registerObj1 = response;
+          if(this.registerObj1){
+            this.registerObj1.phoneNo=this.registerObj1.phoneNo.trim()
+            this.registerObj1.mobileNo=this.registerObj1.mobileNo.trim()
+        this.registerObj1.admissionTime=  this.datePipe.transform(this.registerObj1.admissionTime, 'hh:mm:ss a')
+          this.registerObj1.dischargeTime=  this.datePipe.transform(this.registerObj1.dischargeTime, 'hh:mm:ss a')
+        }
+          console.log(this.registerObj1)
+        });
+    }, 500);
+    }
+    // this.Bedtransfer = this.bedsaveForm();
   }
   
-  getDateTime(dateTimeObj) { 
-    this.dateTimeObj = dateTimeObj;
-  }
+  
   bedsaveForm(): FormGroup {
     return this._formBuilder.group({
-         transferId: 0,
-    admissionId: 0,
+    transferId: 0,
+    admissionId: this.registerObj1.admissionId,
     fromDate:[(new Date()).toISOString()],
     fromTime: [(new Date()).toISOString()],
-    fromWardId: 0,
-    fromBedId: 0,
-    fromClassId: 0,
+    fromWardId:this.registerObj1.wardId,
+    fromBedId: this.registerObj1.bedId,
+    fromClassId:this.registerObj1.classId,
     toDate: [(new Date()).toISOString()],
     toTime: [(new Date()).toISOString()],
     toWardId: 0,
@@ -93,10 +117,8 @@ export class BedTransferComponent implements OnInit {
   
  
   onBedtransfer() {
-  
-    var m_data = {
-      
-        "bedTransfer":this.Bedtransfer.value,
+  var m_data = {
+      "bedTransfer":this.Bedtransfer.value,
         "bedTofreed":{bedId: this.data.bedId},
         "admssion": {
           "admissionId": this.AdmissionId,
@@ -106,11 +128,11 @@ export class BedTransferComponent implements OnInit {
         }
       }
       
-    
     console.log(m_data);
    
     this._IpSearchListService.BedtransferUpdate(m_data).subscribe((response) => {
       this.toastr.success(response.message);
+      this._matDialog.closeAll()
       this.onClear(true);
     }, (error) => {
       this.toastr.error(error.message);
@@ -118,13 +140,21 @@ export class BedTransferComponent implements OnInit {
 
   } 
 
+  selectChangeward(obj: any) {
+    debugger
+    console.log(obj)
+    // this._IpSearchListService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
+    //     this.ddlBed.options = data;
+    //     this.ddlBed.bindGridAutoComplete();
+    // });
+}
+
   onClear(val: boolean) {
-    // this.personalform.reset();
-     // this.dialogRef.close(val);
+    this.Bedtransfer.reset();
+    
    }
   onClose() {
-    // this._IpSearchListService.mySaveForm.reset();
-    this.dialogRef.close();
+ this.dialogRef.close();
   }
   
   getValidationMessages() {
@@ -140,7 +170,9 @@ export class BedTransferComponent implements OnInit {
     ]
     };
   }
-  
+  getDateTime(dateTimeObj) { 
+    this.dateTimeObj = dateTimeObj;
+  }
 
 }
 

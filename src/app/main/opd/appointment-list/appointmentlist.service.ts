@@ -261,6 +261,20 @@ export class AppointmentlistService {
     }
  // Get billing Service List 
  public getBillingServiceList(employee) {
-   return this._httpClient1.PostData("BillingService/BillingList", employee)
+   return this._httpClient1.PostData("VisitDetail/GetServiceListwithTraiff", employee)
 }
+
+public InsertOPBillingCredit(employee) {
+    return this._httpClient1.PostData("Billing/OPCreditBillingInsert",employee)
+}
+
+
+public InsertOPBillingpayment(employee) {
+    return this._httpClient1.PostData("Payment/PaymentInsert", employee)
+}
+
+  public InsertOPBilling(employee) {
+        return this._httpClient1.PostData("OPBill/OPBillingInsert", employee)
+    }
+
 }

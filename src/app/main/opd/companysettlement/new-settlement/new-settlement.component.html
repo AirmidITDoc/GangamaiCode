@@ -157,7 +157,7 @@
                                                 
                                                 <airmid-dropdown label="Bank Name" formControlName="bankName1"
                                                 [formGroup]="patientDetailsFormGrp"
-                                                [validations]="getValidationMessages().bankName1" #ddldoctor
+                                                [validations]="getValidationMessages().bankName1" (selectionChange)="selectChangebank($event)"
                                                 [mode]="autocompleteModebank">
                                             </airmid-dropdown>
                                                 <mat-form-field appearance="outline" fxFlex>

@@ -27,6 +27,7 @@ RegId1="39";
 BillNo:any;
 vpaidamt: any = 0;
 vbalanceamt: any = 0;
+@ViewChild('grid1') grid1: AirmidTableComponent;
 
     constructor(public _CompanysettlementService: CompanysettlementService, 
          private commonService: PrintserviceService,
@@ -61,7 +62,7 @@ vbalanceamt: any = 0;
                         }
                     }
                     ]
-            } //Action 1-view, 2-Edit,3-delete
+            } 
         ],
         sortField: "BillNo",
         sortOrder: 0,
@@ -78,8 +79,6 @@ vbalanceamt: any = 0;
         this.myFormGroup= this.createSearchForm1();
     }
 
-    
-  
     onSave(contact: any = null) {
 
         console.log(contact)
@@ -110,34 +109,23 @@ vbalanceamt: any = 0;
                 console.log(result)
                 if (result.IsSubmitFlag == true) {
                     let PaymentObj = result.submitDataPay.ipPaymentInsert
-                    // this.PaymentObj1= result.submitDataPay.ipPaymentInsert
-                  
-                    // console.log(this.PaymentObj1)
-
+                    console.log(PaymentObj)
                     this.vpaidamt = result.PaidAmt;
                   this.vbalanceamt = result.BalAmt
                   PaymentObj['BillNo']=contact.billNo;
                   let updateBillobj = {};
                   updateBillobj['BillNo'] = contact.billNo;
-                  updateBillobj['balanceAmt'] = result.submitDataPay.ipPaymentInsert.BalanceAmt;  //result.BalAmt;
-                let p= result.submitDataPay.ipPaymentInsert
+                  updateBillobj['balanceAmt'] = result.submitDataPay.ipPaymentInsert.BalanceAmt; 
+              
                  let data={
-                  p,
-                    "bill": {
+                    opCreditPayment:PaymentObj,//result.submitDataPay.ipPaymentInsert,
+                    "billUpdate": {
                         "billNo":  contact.billNo,
-                        "balanceAmt": result.submitDataPay.ipPaymentInsert.BalanceAmt
+                        "balanceAmt":result.submitDataPay.ipPaymentInsert.BalanceAmt
                     },
                  }
-
-               
-                //   let Data = {
-                    // PaymentObj,
-                    // this.PaymentObj1.push(updateBillobj),
-                    // "bill": updateBillobj,
-                  
-                //   };
-                  console.log(data)
-                  this._CompanysettlementService.InsertOPBillingsettlement(data).subscribe(response => {
+                 console.log(data)
+                this._CompanysettlementService.InsertOPBillingsettlement(data).subscribe(response => {
                     this.toastr.success(response.message);
                    this.viewgetOPPayemntPdf(response);
                   }, (error) => {
@@ -188,10 +176,52 @@ vbalanceamt: any = 0;
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
         ]
-        // this.gridConfig.filters[0].fieldValue = obj.value
+        
         this.grid.bindGridData();
 }
 
 
 
 }
+
+
+   //   let Data = {
+                    
+                //         "opCreditPayment": {
+                //           "paymentId": 0,
+                //           "billNo":237808,
+                //           "paymentDate": "2024-08-10",
+                //           "paymentTime": "10:00:00 AM",
+                //           "cashPayAmount": 10,
+                //           "chequePayAmount": 210,
+                //           "chequeNo": "string",
+                //           "bankName": "string",
+                //           "chequeDate": "2024-08-10",
+                //           "cardPayAmount": 0,
+                //           "cardNo": "string",
+                //           "cardBankName": "string",
+                //           "cardDate":"2024-08-10",
+                //           "advanceUsedAmount": 0,
+                //           "advanceId": 0,
+                //           "refundId": 0,
+                //           "transactionType": 0,
+                //           "remark": "string",
+                //           "addBy": 0,
+                //           "isCancelled": true,
+                //           "isCancelledBy": 0,
+                //           "isCancelledDate":"2024-08-10",
+                //           "opdipdType": 0,
+                //           "neftpayAmount": 0,
+                //           "neftno": "string",
+                //           "neftbankMaster": "string",
+                //           "neftdate":"2024-08-10",
+                //           "payTmamount": 0,
+                //           "payTmtranNo": "string",
+                //           "payTmdate": "2024-08-10"
+                //         },
+                //         "billUpdate": {
+                //           "billNo": 237808,
+                //           "balanceAmt":28660
+                //         }
+                //       }
+                //   console.log(Data)

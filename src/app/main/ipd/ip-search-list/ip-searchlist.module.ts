@@ -59,8 +59,7 @@ import { DiscountAfterFinalBillComponent } from './discount-after-final-bill/dis
 import { OPIPFeedbackComponent } from '../Feedback/opip-feedback/opip-feedback.component';
 import { CompanyBillComponent } from './company-bill/company-bill.component';
 import { MatTimepickerModule } from 'mat-timepicker';
-
-
+import { InitiateDischargeComponent } from './discharge/initiate-discharge/initiate-discharge.component';
 
 const routes: Routes = [
     {
@@ -88,7 +87,9 @@ const routes: Routes = [
         PrebillDetailsComponent,
         DiscountAfterFinalBillComponent,
         // OPIPFeedbackComponent,
-        CompanyBillComponent
+        CompanyBillComponent,
+        InitiateDischargeComponent,
+       
     ],
     imports: [
         RouterModule.forChild(routes),

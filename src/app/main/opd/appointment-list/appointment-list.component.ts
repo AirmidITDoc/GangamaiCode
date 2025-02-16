@@ -278,13 +278,17 @@ export class AppointmentListComponent implements OnInit {
     }
 
     OnBillPayment(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
        const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
             maxWidth: "90vw",
             height: "98vh",
             width: "80%",
-            data: {
-                patientDetail: row
-            }
+            data:row
+            //  {
+            //     patientDetail: row
+            // }
         });
     }
 

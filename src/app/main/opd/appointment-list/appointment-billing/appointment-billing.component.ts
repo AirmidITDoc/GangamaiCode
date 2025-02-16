@@ -5,523 +5,958 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { ChargesList } from '../../OPBilling/new-opbilling/new-opbilling.component';
+import { ChargesList, PaymentInsert } from '../../OPBilling/new-opbilling/new-opbilling.component';
 import { ToastrService } from 'ngx-toastr';
 import { RegInsert } from '../../registration/registration.component';
 import { AppointmentlistService } from '../appointmentlist.service';
 import Swal from 'sweetalert2';
+import { DatePipe } from '@angular/common';
+import { debug } from 'console';
+import { OpPaymentNewComponent } from '../../op-search-list/op-payment-new/op-payment-new.component';
 
 @Component({
-    selector: 'app-appointment-billing',
-    templateUrl: './appointment-billing.component.html',
-    styleUrls: ['./appointment-billing.component.scss'],
-    animations: fuseAnimations
+  selector: 'app-appointment-billing',
+  templateUrl: './appointment-billing.component.html',
+  styleUrls: ['./appointment-billing.component.scss'],
+  animations: fuseAnimations
 })
 export class AppointmentBillingComponent implements OnInit, OnDestroy {
-    public subscription: Array<Subscription> = [];
-    // For testing purpose
-//   /  public serviceNames: string[] = ['Blood Test', 'X-Ray', 'MRI Scan', 'CT Scan', 'Ultrasound', 'ECG', 'Physical Therapy', 'General Checkup', 'Dental Cleaning'];
+  public subscription: Array<Subscription> = [];
 
-   //new
-   ServiceList: any = [];
-   CreditedtoDoctor: any;
- IsPathology: any;
- IsRadiology: any;
- isLoading: String = '';
- vIsPackage: any;
- vPrice = '0';
- vQty: any;
- vChargeTotalAmount: any = 0;
- vDoctor: any;
- SrvcName1: any = ""
- vCahrgeNetAmount: any;
- serviceId: any;
- VchargeDiscPer: any;
- vchargeDisAmount: any;
- DoctornewId: any;
- ChargesDoctorname: any;
- vClassName: any;
- filteredOptionsService: any;
- vFinalConcessionAmt:any;
- FinalNetAmt:any;
- vFinalconcessionDiscPer:any;
- vFinalTotalAmt:any;
- patientDetail = new RegInsert({});
- patientDetail1 = new RegInsert({});
-RegId=0
-Consessionres: boolean = false;
-autocompleteModeCashcounter: string = "CashCounter";
-autocompleteModedeptdoc: string = "ConDoctor";
-autocompleteModeService: string = "Service";
-autocompleteModeConcession: string = "Concession";
-public dataSource = new MatTableDataSource<any>();
-    // public filteredOptionsService: Array<any> = [];
+  //new
+  ServiceList: any = [];
+  CreditedtoDoctor: any;
+  IsPathology: any;
+  IsRadiology: any;
+  isLoading: String = '';
+  vIsPackage: any;
+  vPrice = '0';
+  vQty: any;
+  vChargeTotalAmount: any = 0;
+  vDoctor: any;
+  SrvcName1: any = ""
+  vCahrgeNetAmount: any;
+  serviceId: any;
+  VchargeDiscPer: any;
+  vchargeDisAmount: any;
+  DoctornewId: any;
+  ChargesDoctorname: any;
+  vClassName: any;
+  filteredOptionsService: any;
+  vFinalConcessionAmt: any;
+  FinalNetAmt: any;
+  vFinalconcessionDiscPer: any;
+  vFinalTotalAmt: any;
+  patientDetail = new RegInsert({});
+  patientDetail1 = new RegInsert({});
+  RegId = 0
 
-    public searchForm!: FormGroup;
-    public chargeForm!: FormGroup;
-    public totalChargeForm!: FormGroup;
+  vOPIPId: any = 0;
+  vOPDNo: any;
+  vTariffId: any = 0;
+  vClassId: any = 0;
+  currentDate = new Date();
+  PatientName: any;
+  totalAmtOfNetAmt: any;
+  vFinalnetPaybleAmt: any = 0;
 
-    public isServiceSelected = false;
-    public isDiscountApplied = false;
-    public isDoctor = false;
-    public isUpdating = false;
+  Consessionres: boolean = false;
+  autocompleteModeCashcounter: string = "CashCounter";
+  autocompleteModedeptdoc: string = "ConDoctor";
+  autocompleteModeService: string = "Service";
+  autocompleteModeConcession: string = "Concession";
 
-    public displayedChargeColumns: string[] = ['ServiceName', 'Price', 'Qty', 'TotalAmount', 'DiscountPer', 'DiscountAmount', 'NetAmount', 'DoctorName', 'ClassName', 'ChargesAddedName', 'Action'];
-    public displayedPackageColumns: string[] = ['PackageName', 'ServiceName', 'Price', 'Qty', 'TotalAmount', 'DiscountPer', 'DiscountAmount', 'NetAmount', 'DoctorName', 'ClassName', 'ChargesAddedName', 'Action'];
-    public displayedPrescriptionColumns = ['ServiceName', 'Qty', 'Price', 'TotalAmt'];
-    //   public dataSource = new MatTableDataSource<ChargesList>();
-    public dsChargeList = new MatTableDataSource<ChargesList>();
-    public dsPackageList = new MatTableDataSource<ChargesList>();
-    public dsServiceList = new MatTableDataSource<ChargesList>();
-    public chargeList: ChargesList[] = [];
-    public packageList: ChargesList[] = [];
-    public serviceList: ChargesList[] = [];
-
-    // public filteredServices: string[] = [];
-    // public filteredServices$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(this.serviceNames);
+  public dataSource = new MatTableDataSource<any>();
 
 
+  public searchForm!: FormGroup;
+  public chargeForm!: FormGroup;
+  public totalChargeForm!: FormGroup;
 
+  public isServiceSelected = false;
+  public isDiscountApplied = false;
+  public isDoctor = false;
+  public isUpdating = false;
 
-    // Total amounts
-    constructor(private _matDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any, 
-    public _AppointmentlistService: AppointmentlistService,private dialogRef: MatDialogRef<AppointmentBillingComponent>, private formBuilder: FormBuilder, private toastrService: ToastrService) { }
+  public displayedChargeColumns: string[] = ['ServiceName', 'Price', 'Qty', 'TotalAmount', 'DiscountPer', 'DiscountAmount', 'NetAmount', 'DoctorName', 'ClassName', 'ChargesAddedName', 'Action'];
+  public displayedPackageColumns: string[] = ['PackageName', 'ServiceName', 'Price', 'Qty', 'TotalAmount', 'DiscountPer', 'DiscountAmount', 'NetAmount', 'DoctorName', 'ClassName', 'ChargesAddedName', 'Action'];
+  public displayedPrescriptionColumns = ['ServiceName', 'Qty', 'Price', 'TotalAmt'];
+  //   public dataSource = new MatTableDataSource<ChargesList>();
+  public dsChargeList = new MatTableDataSource<ChargesList>();
+  public dsPackageList = new MatTableDataSource<ChargesList>();
+  public dsServiceList = new MatTableDataSource<ChargesList>();
+  public chargeList: ChargesList[] = [];
+  public packageList: ChargesList[] = [];
+  public serviceList: ChargesList[] = [];
 
-    ngOnInit() {
-        this.searchForm = this.createSearchForm();
-        this.chargeForm = this.createChargeForm();
-        this.totalChargeForm = this.createTotalChargeForm();
+  dateTimeObj: any;
+  // Total amounts
+  constructor(private _matDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any, public datePipe: DatePipe,
+    public _AppointmentlistService: AppointmentlistService, private dialogRef: MatDialogRef<AppointmentBillingComponent>, private formBuilder: FormBuilder, private toastrService: ToastrService) { }
 
-        this.dsChargeList = new MatTableDataSource(this.chargeList);
-        this.dsPackageList = new MatTableDataSource(this.packageList);
-        this.dsServiceList = new MatTableDataSource(this.serviceList);
+  ngOnInit() {
 
-        this.setupFormListener();
-        if (this.data) {
-            this.patientDetail = this.data;
-            console.log("DATA : ", this.patientDetail);
-        }
-    }
-    private setupFormListener(): void {
-        this.handleChange('serviceName', () => this.filterServiceName());
-        this.handleChange('price', () => this.calculateTotalCharge());
-        this.handleChange('qty', () => this.calculateTotalCharge());
-        this.handleChange('discountPer', () => this.updateDiscountAmount());
-        this.handleChange('discountAmount', () => this.updateDiscountPercentage());
-        this.handleChange('totalDiscountPer', () => this.updateTotalDiscountAmt(), this.totalChargeForm);
-    }
-  
-    calculateTotalCharge(row: any = null): void {
-        let qty = this.chargeForm.get("qty").value;
-        let price = this.chargeForm.get("price").value;
-        let total = qty * price;
-        if (qty <= 0) return;
-        this.chargeForm.patchValue({
-            totalAmount: total,
-            netAmount: total  // Set net amount initially
-        }, { emitEvent: false }); // Prevent infinite loop
-
-        this.updateDiscountAmount();
-        this.updateDiscountPercentage();
-
+    if (this.data) {
+      debugger
+      this.patientDetail = this.data;
+      this.PatientName = this.patientDetail.PatientName
+      console.log("DATA : ", this.patientDetail);
     }
 
-    filterServiceName(): void {
-        const serviceNameValue = this.chargeForm.get('serviceName')?.value || '';
-        const filterValue = serviceNameValue.toLowerCase();
+    this.searchForm = this.createSearchForm();
+    this.chargeForm = this.createChargeForm();
+    this.totalChargeForm = this.createTotalChargeForm();
 
-        // const filteredList = this.serviceNames.filter(service =>
-        //     service.toLowerCase().includes(filterValue)
-        //   );
-      
-        //   this.filteredServices$.next(filteredList);
-        //   console.log("Service Change", { filteredServices: filteredList, filterValue });
+    this.dsChargeList = new MatTableDataSource(this.chargeList);
+    this.dsPackageList = new MatTableDataSource(this.packageList);
+    this.dsServiceList = new MatTableDataSource(this.serviceList);
+
+    this.setupFormListener();
+
+  }
+  private setupFormListener(): void {
+    this.handleChange('serviceName', () => this.filterServiceName());
+    this.handleChange('price', () => this.calculateTotalCharge());
+    this.handleChange('qty', () => this.calculateTotalCharge());
+    this.handleChange('discountPer', () => this.updateDiscountAmount());
+    this.handleChange('discountAmount', () => this.updateDiscountPercentage());
+    this.handleChange('totalDiscountPer', () => this.updateTotalDiscountAmt(), this.totalChargeForm);
+  }
+
+  calculateTotalCharge(row: any = null): void {
+    let qty = this.chargeForm.get("qty").value;
+    let price = this.chargeForm.get("price").value;
+    let total = qty * price;
+    if (qty <= 0) return;
+    this.chargeForm.patchValue({
+      totalAmount: total,
+      netAmount: total  // Set net amount initially
+    }, { emitEvent: false }); // Prevent infinite loop
+
+    this.updateDiscountAmount();
+    this.updateDiscountPercentage();
+
+  }
+
+  filterServiceName(): void {
+    const serviceNameValue = this.chargeForm.get('serviceName')?.value || '';
+    const filterValue = serviceNameValue.toLowerCase();
+  }
+
+  // Trigger when discount percentage change
+  updateDiscountAmount(row: any = null): void {
+    if (this.isUpdating) return; // Stop recursion
+    this.isUpdating = true;
+
+    const perControl = this.chargeForm.get("discountPer");
+    if (!perControl.valid) {
+      this.chargeForm.get("discountAmount").setValue(0);
+      this.chargeForm.get("discountPer").setValue(0);
+      this.isUpdating = false;
+      this.toastrService.error("Enter discount % between 0-100");
+      return;
+    }
+    let percentage = perControl.value;
+    let totalAmount = this.chargeForm.get("totalAmount").value;
+
+    // let discountAmount = this.getFixedDecimal(totalAmount * percentage / 100);
+    // let netAmount = this.getFixedDecimal(totalAmount - discountAmount);
+    let discountAmount = parseFloat((totalAmount * percentage / 100).toFixed(2));
+    let netAmount = parseFloat((totalAmount - discountAmount).toFixed(2));
+
+    this.chargeForm.patchValue({
+      discountAmount: discountAmount,
+      netAmount: netAmount
+    }, { emitEvent: false }); // Prevent infinite loop
+
+    this.isUpdating = false; // Reset flag
+  }
+
+  // Trigger when discount amount change
+  updateDiscountPercentage(): void {
+    if (this.isUpdating) return;
+    this.isUpdating = true;
+
+    let discountAmount = this.chargeForm.get("discountAmount").value;
+    let totalAmount = this.chargeForm.get("totalAmount").value;
+
+    if (discountAmount > totalAmount) {
+      this.chargeForm.get("discountAmount").setValue(0);
+      this.chargeForm.get("discountPer").setValue(0);
+      this.isUpdating = false;
+      this.toastrService.error("Discount must be between 0 and the total amount.");
+      return;
     }
 
-    // Trigger when discount percentage change
-    updateDiscountAmount(row: any = null): void {
-        if (this.isUpdating) return; // Stop recursion
-        this.isUpdating = true;
+    // let percent = this.getFixedDecimal(totalAmount ? (discountAmount / totalAmount) * 100 : 0);
+    // let netAmount = this.getFixedDecimal(totalAmount - discountAmount);
 
-        const perControl = this.chargeForm.get("discountPer");
-        if (!perControl.valid) {
-            this.chargeForm.get("discountAmount").setValue(0);
-            this.chargeForm.get("discountPer").setValue(0);
-            this.isUpdating = false;
-            this.toastrService.error("Enter discount % between 0-100");
-            return;
-        }
-        let percentage = perControl.value;
-        let totalAmount = this.chargeForm.get("totalAmount").value;
+    let percent = Number(totalAmount ? ((discountAmount / totalAmount) * 100).toFixed(2) : "0.00");
+    let netAmount = Number((totalAmount - discountAmount).toFixed(2));
+    this.chargeForm.patchValue({
+      discountPer: percent,
+      netAmount: netAmount
+    }, { emitEvent: false }); // Prevent infinite loop
 
-        // let discountAmount = this.getFixedDecimal(totalAmount * percentage / 100);
-        // let netAmount = this.getFixedDecimal(totalAmount - discountAmount);
-        let discountAmount = parseFloat((totalAmount * percentage / 100).toFixed(2));
-        let netAmount = parseFloat((totalAmount - discountAmount).toFixed(2));
+    this.isUpdating = false; // Reset flag
+  }
+  handleChange(key: string, callback: () => void, form: FormGroup = this.chargeForm) {
+    this.subscription.push(form.get(key).valueChanges.subscribe(value => {
+      callback();
+    }));
+  }
+  getFixedDecimal(value: number) {
+    return Number(value.toFixed(2));
+  }
 
-        this.chargeForm.patchValue({
-            discountAmount: discountAmount,
-            netAmount: netAmount
-        }, { emitEvent: false }); // Prevent infinite loop
+  // Form creation Pending section
+  createSearchForm() {
+    return this.formBuilder.group({
+      regId: [''],
+      CashCounterID: [1]
+    });
+  }
 
-        this.isUpdating = false; // Reset flag
-    }
+  createChargeFormArray() {
+    return this.formBuilder.group({
+      rows: this.formBuilder.array([this.createChargeForm()])
+    });
+  }
+  // Create a FormGroup for each row in the FormArray
+  createChargeForm() {
+    return this.formBuilder.group({
+      serviceName: ['', Validators.required],
+      price: [0, [Validators.required]],
+      qty: [0, [Validators.required, Validators.min(1)]],
+      totalAmount: [0,],
+      discountPer: [0, [Validators.min(0), Validators.max(100)]],
+      discountAmount: [0, [Validators.required]],
+      netAmount: [0, [Validators.min(0)]],
+      DoctorID: [0]
+    });
+  }
+  createTotalChargeForm() {
+    // This all total amounts are calclated based on total data...
+    return this.formBuilder.group({
+      totalAmount: [0],
+      totalDiscountPer: [0, [Validators.min(0), Validators.max(100)]],
+      totalDiscountAmount: [0, [Validators.required]],
+      totalNetAmount: [0, [Validators.min(0)]],
+      paymentType: ['CashPay'],
+      concessionId: [1]
 
-    // Trigger when discount amount change
-    updateDiscountPercentage(): void {
-        if (this.isUpdating) return;
-        this.isUpdating = true;
+    });
+  }
 
-        let discountAmount = this.chargeForm.get("discountAmount").value;
-        let totalAmount = this.chargeForm.get("totalAmount").value;
+  onAddCharges(): void {
+    if (this.chargeForm.valid) {
+      const formValue = this.chargeForm.value;
+      // Calculate total amount, discount amount, and net amount
+      const totalAmount = formValue.price * formValue.qty;
+      const discountAmount = (totalAmount * formValue.discountPer) / 100;
+      const netAmount = totalAmount - discountAmount;
 
-        if (discountAmount > totalAmount) {
-            this.chargeForm.get("discountAmount").setValue(0);
-            this.chargeForm.get("discountPer").setValue(0);
-            this.isUpdating = false;
-            this.toastrService.error("Discount must be between 0 and the total amount.");
-            return;
-        }
-
-        // let percent = this.getFixedDecimal(totalAmount ? (discountAmount / totalAmount) * 100 : 0);
-        // let netAmount = this.getFixedDecimal(totalAmount - discountAmount);
-
-        let percent = Number(totalAmount ? ((discountAmount / totalAmount) * 100).toFixed(2) : "0.00");
-        let netAmount = Number((totalAmount - discountAmount).toFixed(2));
-        this.chargeForm.patchValue({
-            discountPer: percent,
-            netAmount: netAmount
-        }, { emitEvent: false }); // Prevent infinite loop
-
-        this.isUpdating = false; // Reset flag
-    }
-    handleChange(key: string, callback: () => void, form: FormGroup = this.chargeForm) {
-        this.subscription.push(form.get(key).valueChanges.subscribe(value => {
-            callback();
-        }));
-    }
-    getFixedDecimal(value: number) {
-        return Number(value.toFixed(2));
-    }
-
-    // Form creation Pending section
-    createSearchForm() {
-        return this.formBuilder.group({
-            regId: [''],
-            cashCounterId: ['']
-        });
-    }
-
-    createChargeFormArray() {
-        return this.formBuilder.group({
-            rows: this.formBuilder.array([this.createChargeForm()])
-        });
-    }
-    // Create a FormGroup for each row in the FormArray
-    createChargeForm() {
-        return this.formBuilder.group({
-            serviceName: ['', Validators.required],
-            price: [0, [Validators.required]],
-            qty: [0, [Validators.required, Validators.min(1)]],
-            totalAmount: [0,],
-            discountPer: [0, [Validators.min(0), Validators.max(100)]],
-            discountAmount: [0, [Validators.required]],
-            netAmount: [0, [Validators.min(0)]]
-        });
-    }
-    createTotalChargeForm() {
-        // This all total amounts are calclated based on total data...
-        return this.formBuilder.group({
-            totalAmount: [0],
-            totalDiscountPer: [0, [Validators.min(0), Validators.max(100)]],
-            totalDiscountAmount: [0, [Validators.required]],
-            totalNetAmount: [0, [Validators.min(0)]],
-            paymentType: ['CashPay']
-        });
-    }
-
-    onAddCharges(): void {
-        if (this.chargeForm.valid) {
-            const formValue = this.chargeForm.value;
-            // Calculate total amount, discount amount, and net amount
-            const totalAmount = formValue.price * formValue.qty;
-            const discountAmount = (totalAmount * formValue.discountPer) / 100;
-            const netAmount = totalAmount - discountAmount;
-
-            // Create a new row of data
-            const newRow = {
-                ServiceName: formValue.serviceName.serviceName,
-                Price: formValue.price,
-                Qty: formValue.qty,
-                TotalAmt: totalAmount,
-                DiscPer: formValue.discountPer || 0,
-                DiscAmt: discountAmount || 0,
-                NetAmount: netAmount,
-                DoctorName: formValue.doctorName || '-',
-                ClassName: formValue.className || '-',
-                ChargesAddedName: formValue.chargesAddedName || '-'
-            };
-            if (!this.isDiscountApplied && discountAmount > 0) {
-                this.isDiscountApplied = true;
-            }
-            const newCharge = new ChargesList(newRow);
-            newCharge.DiscAmt = newCharge.DiscAmt || 0;
-            newCharge.DiscPer = newCharge.DiscPer || 0;
-            this.chargeList.push(newCharge);
-            this.dsChargeList.data = this.chargeList;
-            this.calculateTotalAmount();
-
-            // Reset form with initial values
-            this.resetForm();
-        }
-    }
-    deleteCharge(index: number) {
-        this.chargeList.splice(index, 1);
-        this.dsChargeList.data = this.chargeList;
-        this.calculateTotalAmount();
-        if (!this.chargeList.length) {
-            this.isDiscountApplied = false;
-        }
-    }
-
-    getAmount(key: string): number {
-        const control = this.totalChargeForm.get(key);
-        return control ? control.value : 0;
-    }
-
-    // Calculation of total amount.
-    calculateTotalAmount(): void {
-        let totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
-        let totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
-        let totalNet = totalSum - totalDiscount;
-
-        this.totalChargeForm.patchValue({
-            totalAmount: totalSum,
-            totalDiscountAmount: totalDiscount,
-            totalNetAmount: totalNet
-        }, { emitEvent: false });
-    }
-    onPriceOrQtyChange(row: ChargesList = null): void {
-        if (!row) return;
-        const totalAmount = (+row.Price || 0) * (+row.Qty || 0);
-
-        // If discount percentage exists, recalculate discount amount
-        if (row.DiscPer) {
-            row.DiscAmt = parseFloat(((totalAmount * row.DiscPer) / 100).toFixed(2));
-        }
-        row.TotalAmt = totalAmount;
-        row.NetAmount = totalAmount - row.DiscAmt;
-
-        this.calculateTotalAmount();
-    }
-    onDiscountPerChange(row: ChargesList): void {
-        if (!row) return;
-        let discountPer = +row.DiscPer || 0;
-        const totalAmount = (+row.Price || 0) * (+row.Qty || 0);
-
-        if (discountPer < 0 || discountPer > 100) {
-            discountPer = 0; // Reset if out of range
-            row.DiscPer = 0;
-            this.toastrService.error("Enter discount % between 0-100");
-        }
-        row.DiscAmt = parseFloat(((totalAmount * discountPer) / 100).toFixed(2));
-        row.TotalAmt = totalAmount;
-        row.NetAmount = totalAmount - row.DiscAmt;
-
-        this.calculateTotalAmount();
-    }
-    onDiscountAmtChange(row: ChargesList): void {
-        if (!row) return;
-        let discountAmt = +row.DiscAmt || 0;
-        const totalAmount = (+row.Price || 0) * (+row.Qty || 0);
-
-        if (discountAmt < 0 || discountAmt > totalAmount) {
-            row.DiscAmt = 0;
-            discountAmt = 0;
-            this.toastrService.error("Discount must be between 0 and the total amount.");
-        }
-        row.DiscPer = totalAmount ? parseFloat(((discountAmt / totalAmount) * 100).toFixed(2)) : 0;
-        row.TotalAmt = totalAmount;
-        row.NetAmount = totalAmount - discountAmt;
-
-        this.calculateTotalAmount();
-    }
-    updateTotalDiscountAmt(): void {
-        const discountControl = this.totalChargeForm.get("totalDiscountPer");
-        if (discountControl.valid && !this.isDiscountApplied) {
-            const totalAmount = +this.totalChargeForm.get("totalAmount").value;
-            const discountPer = +discountControl.value;
-            const discountAmount = (totalAmount * discountPer) / 100;
-            const netAmount = totalAmount - discountAmount;
-            this.totalChargeForm.patchValue({
-                totalDiscountAmount: discountAmount,
-                totalNetAmount: netAmount
-            }, { emitEvent: false });
-        }
-    }
-    resetForm(): void {
-        this.chargeForm.reset({
-            serviceName: 'Default service name for testing',
-            price: 0,
-            qty: 0,
-            totalAmount: 0,
-            discountPer: 0,
-            discountAmount: 0,
-            netAmount: 0
-        });
-    }
-    onSubmit(): void {
-        if (this.totalChargeForm.valid && this.chargeList.length > 0) {
-            console.log("FORM: ", { chargeList: this.chargeList, paymentDetail: this.totalChargeForm.value });
-            // Pending task
-        }
-    }
-    ngOnDestroy(): void {
-        if (this.subscription.length > 0) {
-            this.subscription.forEach(s => s.unsubscribe());
-        }
-    }
-
-      //service list 
-      getServiceListCombobox() {
-        debugger
-        let sname = this.chargeForm.get('serviceName').value + '%' || '%'
-        var m_data = {
-    
-          "first": 0,
-          "rows": 100,
-          "sortField": "ServiceId",
-          "sortOrder": 0,
-          "filters": [
-            { "fieldName": "ServiceName", "fieldValue": sname, "opType": "StartsWith" },
-            { "fieldName": "TariffId", "fieldValue": "0", "opType": "Equals" },
-            { "fieldName": "GroupId", "fieldValue": "0", "opType": "Equals" },
-            { "fieldName": "Start", "fieldValue": "0", "opType": "Equals" },
-            { "fieldName": "Length", "fieldValue": "30", "opType": "Equals" }
-          ],
-          "exportType": "JSON"
-        }
-    
-        console.log(m_data)
-    
-        this._AppointmentlistService.getBillingServiceList(m_data).subscribe(data => {
-          this.filteredOptionsService = data.data;
-          this.ServiceList = data.data;
-    
-        //   if (this.filteredOptionsService.length == 0) {
-        //     this.noOptionFound = true;
-        //   } else {
-        //     this.noOptionFound = false;
-        //   }
-        });
-    
-    
+      // Create a new row of data
+      const newRow = {
+        ServiceName: formValue.serviceName,
+        Price: formValue.price,
+        Qty: formValue.qty,
+        TotalAmt: totalAmount,
+        DiscPer: formValue.discountPer || 0,
+        DiscAmt: discountAmount || 0,
+        NetAmount: netAmount,
+        DoctorName: formValue.doctorName || '-',
+        ClassName: formValue.className || '-',
+        ChargesAddedName: formValue.chargesAddedName || '-'
+      };
+      if (!this.isDiscountApplied && discountAmount > 0) {
+        this.isDiscountApplied = true;
       }
-      
-      getSelectedserviceObj(obj) {
-        if (this.dataSource.data.length > 0) {
-          this.dataSource.data.forEach((element) => {
-            if (obj.serviceId == element.serviceId) {
-                Swal.fire('Selected Item already added in the list ');
-    
-            //   this.onClearServiceAddList();
+      const newCharge = new ChargesList(newRow);
+      newCharge.DiscAmt = newCharge.DiscAmt || 0;
+      newCharge.DiscPer = newCharge.DiscPer || 0;
+      this.chargeList.push(newCharge);
+      this.dsChargeList.data = this.chargeList;
+      this.calculateTotalAmount();
+
+      // Reset form with initial values
+      this.resetForm();
+    }
+  }
+  deleteCharge(index: number) {
+    this.chargeList.splice(index, 1);
+    this.dsChargeList.data = this.chargeList;
+    this.calculateTotalAmount();
+    if (!this.chargeList.length) {
+      this.isDiscountApplied = false;
+    }
+  }
+
+  getAmount(key: string): number {
+    const control = this.totalChargeForm.get(key);
+    return control ? control.value : 0;
+  }
+
+  // Calculation of total amount.
+  calculateTotalAmount(): void {
+    let totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
+    let totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
+    let totalNet = totalSum - totalDiscount;
+
+    this.totalChargeForm.patchValue({
+      totalAmount: totalSum,
+      totalDiscountAmount: totalDiscount,
+      totalNetAmount: totalNet
+    }, { emitEvent: false });
+  }
+  onPriceOrQtyChange(row: ChargesList = null): void {
+    if (!row) return;
+    const totalAmount = (+row.Price || 0) * (+row.Qty || 0);
+
+    // If discount percentage exists, recalculate discount amount
+    if (row.DiscPer) {
+      row.DiscAmt = parseFloat(((totalAmount * row.DiscPer) / 100).toFixed(2));
+    }
+    row.TotalAmt = totalAmount;
+    row.NetAmount = totalAmount - row.DiscAmt;
+
+    this.calculateTotalAmount();
+  }
+  onDiscountPerChange(row: ChargesList): void {
+    if (!row) return;
+    let discountPer = +row.DiscPer || 0;
+    const totalAmount = (+row.Price || 0) * (+row.Qty || 0);
+
+    if (discountPer < 0 || discountPer > 100) {
+      discountPer = 0; // Reset if out of range
+      row.DiscPer = 0;
+      this.toastrService.error("Enter discount % between 0-100");
+    }
+    row.DiscAmt = parseFloat(((totalAmount * discountPer) / 100).toFixed(2));
+    row.TotalAmt = totalAmount;
+    row.NetAmount = totalAmount - row.DiscAmt;
+
+    this.calculateTotalAmount();
+  }
+  onDiscountAmtChange(row: ChargesList): void {
+    if (!row) return;
+    let discountAmt = +row.DiscAmt || 0;
+    const totalAmount = (+row.Price || 0) * (+row.Qty || 0);
+
+    if (discountAmt < 0 || discountAmt > totalAmount) {
+      row.DiscAmt = 0;
+      discountAmt = 0;
+      this.toastrService.error("Discount must be between 0 and the total amount.");
+    }
+    row.DiscPer = totalAmount ? parseFloat(((discountAmt / totalAmount) * 100).toFixed(2)) : 0;
+    row.TotalAmt = totalAmount;
+    row.NetAmount = totalAmount - discountAmt;
+
+    this.calculateTotalAmount();
+  }
+  updateTotalDiscountAmt(): void {
+    const discountControl = this.totalChargeForm.get("totalDiscountPer");
+    if (discountControl.valid && !this.isDiscountApplied) {
+      const totalAmount = +this.totalChargeForm.get("totalAmount").value;
+      const discountPer = +discountControl.value;
+      const discountAmount = (totalAmount * discountPer) / 100;
+      const netAmount = totalAmount - discountAmount;
+      this.totalChargeForm.patchValue({
+        totalDiscountAmount: discountAmount,
+        totalNetAmount: netAmount
+      }, { emitEvent: false });
+    }
+  }
+  resetForm(): void {
+    this.chargeForm.reset({
+      serviceName: 'Default service name for testing',
+      price: 0,
+      qty: 0,
+      totalAmount: 0,
+      discountPer: 0,
+      discountAmount: 0,
+      netAmount: 0
+    });
+  }
+
+
+  onSubmit(): void {
+    if (this.totalChargeForm.valid && this.chargeList.length > 0) {
+      console.log("FORM: ", { chargeList: this.chargeList, paymentDetail: this.totalChargeForm.value });
+      // Pending task
+    }
+  }
+
+
+  ngOnDestroy(): void {
+    if (this.subscription.length > 0) {
+      this.subscription.forEach(s => s.unsubscribe());
+    }
+  }
+
+  //service list 
+  getServiceListCombobox() {
+    let sname = this.chargeForm.get('serviceName').value + '%' || '%'
+    var m_data = {
+
+      "first": 0,
+      "rows": 100,
+      "sortField": "ServiceId",
+      "sortOrder": 0,
+      "filters": [{ "fieldName": "ServiceName", "fieldValue": sname, "opType": "StartsWith" },
+      { "fieldName": "TariffId", "fieldValue": "1", "opType": "Equals" }, { "fieldName": "ClassId", "fieldValue": "3", "opType": "Equals" },
+      { "fieldName": "Start", "fieldValue": "0", "opType": "Equals" },
+      { "fieldName": "Length", "fieldValue": "30", "opType": "Equals" }
+      ],
+      "exportType": "JSON"
+    }
+
+    console.log(m_data)
+
+    this._AppointmentlistService.getBillingServiceList(m_data).subscribe(data => {
+      this.filteredOptionsService = data.data;
+      this.ServiceList = data.data;
+
+      //   if (this.filteredOptionsService.length == 0) {
+      //     this.noOptionFound = true;
+      //   } else {
+      //     this.noOptionFound = false;
+      //   }
+    });
+
+
+  }
+
+  getSelectedserviceObj(obj) {
+    if (this.dataSource.data.length > 0) {
+      this.dataSource.data.forEach((element) => {
+        if (obj.serviceId == element.serviceId) {
+          Swal.fire('Selected Item already added in the list ');
+
+          //   this.onClearServiceAddList();
+        }
+
+      });
+    } else {
+      console.log(obj)
+
+      this.SrvcName1 = obj.serviceName;
+      this.vPrice = obj.price;
+      this.vQty = 1;
+      this.vChargeTotalAmount = obj.price;
+      this.vCahrgeNetAmount = obj.price;
+      this.serviceId = obj.serviceId;
+      this.IsPathology = obj.isPathology;
+      this.IsRadiology = obj.isRadiology;
+      this.vIsPackage = obj.IsPackage;
+      this.CreditedtoDoctor = obj.creditedtoDoctor;
+      if (this.CreditedtoDoctor == true) {
+        this.isDoctor = true;
+        this.chargeForm.get('DoctorID').reset();
+        this.chargeForm.get('DoctorID').setValidators([Validators.required]);
+        this.chargeForm.get('DoctorID').enable();
+
+      } else {
+        this.isDoctor = false;
+        this.chargeForm.get('DoctorID').reset();
+        this.chargeForm.get('DoctorID').clearValidators();
+        this.chargeForm.get('DoctorID').updateValueAndValidity();
+        this.chargeForm.get('DoctorID').disable();
+      }
+    }
+
+
+  }
+
+  getOptionText(option) {
+
+    return option && option.serviceName ? option.serviceName : '';
+  }
+
+  //reglist
+  getSelectedObj(obj) {
+    if ((obj.value ?? 0) > 0) {
+      console.log(this.data)
+      setTimeout(() => {
+        this._AppointmentlistService.getRegistraionById(obj.value).subscribe((response) => {
+          this.patientDetail = response;
+          this.vOPIPId=response.OpdIpdId
+          this.PatientName = this.patientDetail.firstName + " " + this.patientDetail.middleName + " " + this.patientDetail.lastName
+          console.log(this.patientDetail)
+        });
+
+      }, 500);
+
+      // setTimeout(() => {
+      //     this._AppointmentlistService.getVisitById(obj.value).subscribe((response) => {
+      //         this.patientDetail1 = response;
+      //         console.log(this.patientDetail1)
+      //     });
+
+      // }, 500);
+    }
+
+  }
+  getValidationMessages() {
+    return {
+      serviceName: [
+        { name: "required", Message: "Service Name is required" },
+      ],
+      cashCounterId: [
+        { name: "required", Message: "First Name is required" },
+
+        { name: "pattern", Message: "only Number allowed." }
+      ],
+      price: [
+        { name: "pattern", Message: "only Number allowed." }
+      ],
+      qty: [
+        { name: "required", Message: "Qty required!", },
+        { name: "pattern", Message: "only Number allowed.", },
+        { name: "min", Message: "Enter valid qty.", }
+      ],
+      totalAmount: [
+        {
+          name: "pattern", Message: "only Number allowed."
+        }
+      ],
+      totalNetAmount: [
+        {
+          name: "pattern", Message: "only Number allowed."
+        }
+      ],
+      doctoreId: [
+        { name: "pattern", Message: "only Char allowed." }
+      ],
+      discountPer: [
+        { name: "pattern", Message: "only Number allowed." }
+      ],
+      discountAmount: [{ name: "pattern", Message: "only Number allowed." }],
+      netAmount: [{ name: "pattern", Message: "only Number allowed." }],
+      concessionId: [{}],
+      DoctorId: [{}]
+    }
+  }
+  onScroll() {
+    // this.nextPage$.next();
+  }
+
+  onsave() {
+
+    // if ((!this.dataSource.data.length)) {
+    //   this.toastrService.warning('Please add service in table', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    Swal.fire({
+      title: 'Do you want to Generate the Bill',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Generate!"
+
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.onSaveOPBill2();
+      }
+    })
+  }
+
+ 
+  saveCreditbill() {
+
+    let disamt = this.totalChargeForm.get('FinalconcessionAmt').value;
+
+    let ConcessionId = 0;
+    let ConcessionReason = '';
+
+    this.dataSource.data = this.chargeList
+    let Billdetsarr = [];
+    this.dataSource.data.forEach((element) => {
+      let BillDetailsInsertObj = {};
+      BillDetailsInsertObj['BillNo'] = 0;
+      BillDetailsInsertObj['ChargesId'] = element.ServiceId;
+      Billdetsarr.push(BillDetailsInsertObj);
+    });
+
+    let InsertAdddetArr = [];
+    this.dataSource.data.forEach((element) => {
+
+      let InsertAddChargesObj = {};
+      InsertAddChargesObj['ChargesId'] = element.ServiceId,
+        InsertAddChargesObj['ChargesDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
+        InsertAddChargesObj['OpdIpdType'] = 0,
+        InsertAddChargesObj['OpdIpdId'] = this.vOPIPId,
+        InsertAddChargesObj['ServiceId'] = element.ServiceId,
+        InsertAddChargesObj['Price'] = element.Price,
+        InsertAddChargesObj['Qty'] = element.Qty,
+        InsertAddChargesObj['TotalAmt'] = element.TotalAmt,
+        InsertAddChargesObj['ConcessionPercentage'] = element.DiscPer || 0,
+        InsertAddChargesObj['ConcessionAmount'] = element.DiscAmt || 0,
+        InsertAddChargesObj['NetAmount'] = element.NetAmount,
+        InsertAddChargesObj['DoctorId'] = element.DoctorId,
+        InsertAddChargesObj['DocPercentage'] = 0,
+        InsertAddChargesObj['DocAmt'] = 0,
+        InsertAddChargesObj['HospitalAmt'] = element.NetAmount,
+        InsertAddChargesObj['IsGenerated'] = false,
+        InsertAddChargesObj['AddedBy'] = 1,
+        InsertAddChargesObj['IsCancelled'] = false,
+        InsertAddChargesObj['IsCancelledBy'] = 0,
+        InsertAddChargesObj['IsCancelledDate'] = "01/01/1900",
+        InsertAddChargesObj['isPathology'] = Boolean(JSON.parse(String(element.IsPathology))),
+        InsertAddChargesObj['isRadiology'] = Boolean(JSON.parse(String(element.IsRadiology))),
+        InsertAddChargesObj['IsPackage'] = false,
+        InsertAddChargesObj['PackageMainChargeID'] = 0,
+        InsertAddChargesObj['IsSelfOrCompanyService'] = false,
+        InsertAddChargesObj['PackageId'] = 0,
+        InsertAddChargesObj['BillNo'] = 0,
+        InsertAddChargesObj['ChargesTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+        InsertAddChargesObj['ClassId'] = this.vClassId,
+
+        InsertAdddetArr.push(InsertAddChargesObj);
+    })
+    let Paymentobj = {};
+    Paymentobj['PaymentId'] = 0;
+    Paymentobj['BillNo'] = 0;
+    Paymentobj['PaymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-dd-MM') || '01/01/1900',
+      Paymentobj['PaymentTime'] = this.dateTimeObj.time || '01/01/1900',
+      Paymentobj['CashPayAmount'] = 0,
+      Paymentobj['ChequePayAmount'] = 0;
+    Paymentobj['ChequeNo'] = "0";
+    Paymentobj['BankName'] = "";
+    Paymentobj['ChequeDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-dd-MM') || '01/01/1900',
+      Paymentobj['CardPayAmount'] = 0;
+    Paymentobj['CardNo'] = "0";
+    Paymentobj['CardBankName'] = "";
+    Paymentobj['CardDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-dd-MM') || '01/01/1900',
+      Paymentobj['AdvanceUsedAmount'] = 0;
+    Paymentobj['AdvanceId'] = 0;
+    Paymentobj['RefundId'] = 0;
+    Paymentobj['TransactionType'] = 0;
+    Paymentobj['Remark'] = "Cashpayment";
+    Paymentobj['AddBy'] = 1,
+      Paymentobj['IsCancelled'] = false;
+    Paymentobj['IsCancelledBy'] = 0;
+    Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-dd-MM') || '01/01/1900',
+      // Paymentobj['CashCounterId'] = 0;
+      Paymentobj['NEFTPayAmount'] = 0;
+    Paymentobj['NEFTNo'] = "0";
+    Paymentobj['NEFTBankMaster'] = "";
+    Paymentobj['NEFTDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-dd-MM') || '01/01/1900',
+      Paymentobj['PayTMAmount'] = 0;
+    Paymentobj['PayTMTranNo'] = "0";
+    Paymentobj['PayTMDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-dd-MM') || '01/01/1900',
+      Paymentobj['tdsAmount'] = 0;
+
+    let submitData = {
+      BillNo: 0,
+      OPDIPDID: this.vOPIPId,
+      TotalAmt: this.totalChargeForm.get('FinalTotalAmt').value || 0,
+      ConcessionAmt: parseFloat(this.totalChargeForm.get('FinalconcessionAmt').value) || 0,
+      NetPayableAmt: this.totalChargeForm.get('FinalNetAmt').value || 0,
+      PaidAmt: 0,
+      BalanceAmt: this.totalChargeForm.get('FinalNetAmt').value,
+      BillDate: this.datePipe.transform(this.dateTimeObj.date, 'yyyy-dd-MM') || '01/01/1900',
+      OPDIPDType: 0,
+      AddedBy: 110,
+      TotalAdvanceAmount: 0,
+      BillTime: this.dateTimeObj.time,
+      ConcessionReasonId: ConcessionId,
+      IsSettled: true,
+      IsPrinted: true,
+      IsFree: true,
+      CompanyId: 0,
+      TariffId: this.vTariffId || 0,
+      UnitId: 1,
+      InterimOrFinal: 0,
+      CompanyRefNo: 0,
+      ConcessionAuthorizationName: 0,
+      SpeTaxPer: 10,
+      SpeTaxAmt: 10,
+      CompDiscAmt: Math.round(this.totalChargeForm.get('FinalconcessionAmt').value) || 0,
+      DiscComments: ConcessionReason,
+      CashCounterId: this.searchForm.get('CashCounterID').value.CashCounterId || 0,
+      "AddCharges": InsertAdddetArr,
+      "BillDetails": Billdetsarr,
+      "Payments": Paymentobj,
+    };
+    console.log(submitData);
+    this._AppointmentlistService.InsertOPBillingCredit(submitData).subscribe(response => {
+      this.toastrService.success(response.message);
+      this._matDialog.closeAll();
+    }, (error) => {
+      this.toastrService.error(error.message);
+    });
+  }
+
+  CompanyId: any;
+  netPaybleAmt1: any;
+  flagSubmit: boolean;
+  RegNo: any;
+  Doctorname: any;
+  CompanyName: any;
+  DepartmentName: any;
+  AgeYear: any;
+  balanceamt: number;
+  vMobileNo: any;
+  paidamt: any
+  Paymentdataobj: PaymentInsert[] = [];
+  ConcessionId=0;
+  ConcessionReason:any;
+  onSaveOPBill2() {
+   
+      let Billdetsarr = [];
+
+      this.dsChargeList.data.forEach((element) => {
+        let BillDetailsInsertObj = {};
+        BillDetailsInsertObj['BillNo'] = 0;
+        BillDetailsInsertObj['ChargesId'] = element.ServiceId;
+        Billdetsarr.push(BillDetailsInsertObj);
+        console.log(Billdetsarr)
+      });
+
+      let InsertAdddetArr = [];
+      this.dsChargeList.data.forEach((element) => {
+console.log(element)
+        let InsertAddChargesObj = {};
+        InsertAddChargesObj['chargesId'] = 0,// element.ServiceId,
+          InsertAddChargesObj['ChargesDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
+          InsertAddChargesObj['opdIpdType'] = 0,
+          InsertAddChargesObj['opdIpdId'] = this.vOPIPId,
+          InsertAddChargesObj['serviceId'] = element.ServiceId,
+          InsertAddChargesObj['price'] = element.Price,
+          InsertAddChargesObj['qty'] = element.Qty,
+          InsertAddChargesObj['totalAmt'] = element.TotalAmt,
+          InsertAddChargesObj['concessionPercentage'] = element.DiscPer || 0,
+          InsertAddChargesObj['concessionAmount'] = element.DiscAmt || 0,
+          InsertAddChargesObj['netAmount'] = element.NetAmount,
+          InsertAddChargesObj['doctorId'] = element.DoctorId || 0,
+          InsertAddChargesObj['docPercentage'] = 0,
+          InsertAddChargesObj['docAmt'] = 0,
+          InsertAddChargesObj['hospitalAmt'] = element.NetAmount,
+          InsertAddChargesObj['isGenerated'] = false,
+          InsertAddChargesObj['addedBy'] = 1,// this.accountService.currentUserValue.user.id,
+          InsertAddChargesObj['isCancelled'] = false,
+          InsertAddChargesObj['isCancelledBy'] = 0,
+          InsertAddChargesObj['isCancelledDate'] = "01/01/1900",
+          InsertAddChargesObj['isPathology'] = true,// Boolean(JSON.parse(String(element.IsPathology))),
+          InsertAddChargesObj['isRadiology'] = false,// Boolean(JSON.parse(String(element.IsRadiology))),
+          InsertAddChargesObj['isPackage'] = false,//element.IsPackage,
+          InsertAddChargesObj['packageMainChargeID'] = 0,
+          InsertAddChargesObj['isSelfOrCompanyService'] = false,
+          InsertAddChargesObj['packageId'] = 0,
+          InsertAddChargesObj['BillNo'] = 0,
+          InsertAddChargesObj['chargesTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+          InsertAddChargesObj['classId'] = this.vClassId,
+          InsertAdddetArr.push(InsertAddChargesObj);
+      });
+
+      let opCalDiscAmountBill = {}
+      opCalDiscAmountBill['billNo'] = 0
+
+      let PatientHeaderObj = {};
+
+      PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-dd-MM') || '01/01/1900',
+      PatientHeaderObj['PatientName'] = this.PatientName;
+      PatientHeaderObj['RegNo'] = this.RegNo;
+      PatientHeaderObj['DoctorName'] = this.Doctorname;
+      PatientHeaderObj['CompanyName'] = this.CompanyName;
+      PatientHeaderObj['DepartmentName'] = this.DepartmentName;
+      PatientHeaderObj['OPD_IPD_Id'] = this.vOPDNo;
+      PatientHeaderObj['Age'] = this.AgeYear;
+      PatientHeaderObj['NetPayAmount'] = this.totalChargeForm.get('totalNetAmount').value;
+
+      if (this.totalChargeForm.get('paymentType').value == 'PayOption') {
+        const dialogRef = this._matDialog.open(OpPaymentNewComponent,
+          {
+            maxWidth: "90vw",
+            height: '850px',
+            width: '80%',
+            data: {
+              vPatientHeaderObj: PatientHeaderObj,
+              FromName: "OP-Bill",
+              advanceObj: PatientHeaderObj,
             }
-    
           });
-        } else {
-          console.log(obj)
-    
-          this.SrvcName1 = obj.serviceName;
-          this.vPrice = obj.price;
-          this.vQty = 1;
-          this.vChargeTotalAmount = obj.price;
-          this.vCahrgeNetAmount = obj.price;
-          this.serviceId = obj.serviceId;
-          this.IsPathology = obj.isPathology;
-          this.IsRadiology = obj.isRadiology;
-          this.vIsPackage = obj.IsPackage;
-          this.CreditedtoDoctor = obj.creditedtoDoctor;
-        //   if (this.CreditedtoDoctor == true) {
-        //     this.isDoctor = true;
-        //     this.registeredForm.get('DoctorID').reset();
-        //     this.registeredForm.get('DoctorID').setValidators([Validators.required]);
-        //     this.registeredForm.get('DoctorID').enable();
-    
-        //   } else {
-        //     this.isDoctor = false;
-        //     this.registeredForm.get('DoctorID').reset();
-        //     this.registeredForm.get('DoctorID').clearValidators();
-        //     this.registeredForm.get('DoctorID').updateValueAndValidity();
-        //     this.registeredForm.get('DoctorID').disable();
-        //   }
-        }
-    
-    
+
+        dialogRef.afterClosed().subscribe(result => {
+          this.flagSubmit = result.IsSubmitFlag
+
+          if (this.flagSubmit) {
+            this.paidamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
+            this.balanceamt = result.submitDataPay.ipPaymentInsert.BalanceAmt;
+            this.Paymentdataobj = result.submitDataPay.ipPaymentInsert;
+
+          }
+
+          else  this.balanceamt = result.BalAmt;
+          
+          // InsertBillUpdateBillNoObj['PaidAmt'] = result.submitDataPay.ipPaymentInsert.PaidAmt;
+          if (this.vFinalconcessionDiscPer > 0) {
+            this.FinalNetAmt = this.totalAmtOfNetAmt - this.totalChargeForm.get('FinalconcessionAmt').value;
+          } else {
+            this.FinalNetAmt = this.vFinalnetPaybleAmt;
+          }
+          let vmMobileNo = this.vMobileNo;
+          console.log(vmMobileNo);
+
+          if (this.flagSubmit == true) {
+            console.log("Procced with Payment Option");
+            let submitData = {
+              BillNo: 0,
+              opdipdid: 76,// this.vOPIPId,
+              TotalAmt: this.totalChargeForm.get('FinalTotalAmt').value || 0,
+              ConcessionAmt: parseFloat(this.totalChargeForm.get('FinalconcessionAmt').value) || 0,
+              NetPayableAmt: this.totalChargeForm.get('FinalNetAmt').value || 0,
+              PaidAmt: this.paidamt,
+              BalanceAmt: this.balanceamt,// this.totalChargeForm.get('FinalNetAmt').value,
+              BillDate: this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
+              opdipdType: 0,
+              AddedBy: 1,
+              TotalAdvanceAmount: 0,
+              BillTime: this.dateTimeObj.time,
+              ConcessionReasonId: this.ConcessionId,
+              IsSettled: true,
+              IsPrinted: true,
+              IsFree: true,
+              CompanyId: 0,
+              TariffId: this.vTariffId || 0,
+              UnitId: 1,
+              InterimOrFinal: 0,
+              CompanyRefNo: 0,
+              ConcessionAuthorizationName: 0,
+              SpeTaxPer: 10,
+              SpeTaxAmt: 10,
+              CompDiscAmt: Math.round(this.totalChargeForm.get('FinalconcessionAmt').value) || 0,
+              DiscComments: this.ConcessionReason,
+              CashCounterId: this.searchForm.get('CashCounterID').value.value || 0,
+
+
+              "addCharges": InsertAdddetArr,
+              "billDetails": Billdetsarr,
+              "Payments": result.submitDataPay.ipPaymentInsert,
+            }
+            console.log(submitData);
+            this._AppointmentlistService.InsertOPBilling(submitData).subscribe(response => {
+            this.toastrService.success(response.message);
+                this._matDialog.closeAll();
+              }, (error) => {
+                this.toastrService.error(error.message);
+              });
+          
+          }
+          debugger
+          let Paymentobj = {};
+          Paymentobj = result.submitDataPay.ipPaymentInsert
+          Paymentobj['BillNo'] = 0;
+          Paymentobj['PaymentDate'] = this.datePipe.transform(result.submitDataPay.ipPaymentInsert.PaymentDate, 'yyyy-dd-MM') || '01/01/1900',
+            Paymentobj['PaymentTime'] = this.datePipe.transform(result.submitDataPay.ipPaymentInsert.PaymentDate, 'yyyy-dd-MM') || '01/01/1900',
+            Paymentobj['ChequeDate'] = this.datePipe.transform(result.submitDataPay.ipPaymentInsert.ChequeDate, 'yyyy-dd-MM') || '01/01/1900',
+            Paymentobj['CardPayAmount'] = 0;
+          Paymentobj['CardDate'] = this.datePipe.transform(result.submitDataPay.ipPaymentInsert.CardDate, 'yyyy-dd-MM') || '01/01/1900',
+            Paymentobj['IsCancelledDate'] = this.datePipe.transform(result.submitDataPay.ipPaymentInsert.IsCancelledDate, 'yyyy-dd-MM') || '01/01/1900',
+            Paymentobj['NEFTDate'] = this.datePipe.transform(result.submitDataPay.ipPaymentInsert.NEFTDate, 'yyyy-dd-MM') || '01/01/1900',
+            Paymentobj['PayTMDate'] = this.datePipe.transform(result.submitDataPay.ipPaymentInsert.PayTMDate, 'yyyy-dd-MM') || '01/01/1900',
+            console.log(Paymentobj)
+          this._AppointmentlistService.InsertOPBillingpayment(Paymentobj).subscribe(response => {
+            //  this.viewgetBillReportPdf(response);
+            //  this.getWhatsappshareSales(response, vmMobileNo)
+
+          });
+        });
+
+      }
+      else if (this.totalChargeForm.get('paymentType').value == 'CreditPay') {
+        this.saveCreditbill();
+      }
+      else {
+
+      
+        let Paymentobj = {};
+        Paymentobj['BillNo'] = 0;
+        Paymentobj['PaymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-dd-MM') || '01/01/1900',
+          Paymentobj['PaymentTime'] = this.dateTimeObj.time || '01/01/1900',
+          Paymentobj['CashPayAmount'] = parseFloat(this.totalChargeForm.get('totalNetAmount').value) || 0;
+        Paymentobj['ChequePayAmount'] = 0;
+        Paymentobj['ChequeNo'] = "0";
+        Paymentobj['BankName'] = "";
+        Paymentobj['ChequeDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-dd-MM') || '01/01/1900',
+          Paymentobj['CardPayAmount'] = 0;
+        Paymentobj['CardNo'] = "0";
+        Paymentobj['CardBankName'] = "";
+        Paymentobj['CardDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-dd-MM') || '01/01/1900',
+          Paymentobj['AdvanceUsedAmount'] = 0;
+        Paymentobj['AdvanceId'] = 0;
+        Paymentobj['RefundId'] = 0;
+        Paymentobj['TransactionType'] = 0;
+        Paymentobj['Remark'] = "Cashpayment";
+        Paymentobj['AddBy'] = 1,//this.accountService.currentUserValue.user.id,
+          Paymentobj['IsCancelled'] = false;
+        Paymentobj['IsCancelledBy'] = 0;
+        Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-dd-MM') || '01/01/1900',
+          // Paymentobj['CashCounterId'] = 0;
+          Paymentobj['NEFTPayAmount'] = 0;
+        Paymentobj['NEFTNo'] = "0";
+        Paymentobj['NEFTBankMaster'] = "";
+        Paymentobj['NEFTDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-dd-MM') || '01/01/1900',
+          Paymentobj['PayTMAmount'] = 0;
+        Paymentobj['PayTMTranNo'] = "0";
+        Paymentobj['PayTMDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-dd-MM') || '01/01/1900',
+          Paymentobj['tdsAmount'] = 0;
+
+        let submitData = {
+          BillNo: 0,
+          OPDIPDID: this.vOPIPId,
+          TotalAmt: this.totalChargeForm.get('totalAmount').value || 0,
+          ConcessionAmt: parseFloat(this.totalChargeForm.get('totalDiscountAmount').value) || 0,
+          NetPayableAmt: this.totalChargeForm.get('totalNetAmount').value || 0,
+          PaidAmt: 0,
+          BalanceAmt: 0,//this.totalChargeForm.get('FinalNetAmt').value,
+          BillDate: this.datePipe.transform(this.dateTimeObj.date, 'yyyy-dd-MM') || '01/01/1900',
+          OPDIPDType: 0,
+          AddedBy: 110,
+          TotalAdvanceAmount: 0,
+          BillTime: this.dateTimeObj.time,
+          ConcessionReasonId: this.ConcessionId,
+          IsSettled: true,
+          IsPrinted: true,
+          IsFree: true,
+          CompanyId: 0,
+          TariffId: this.vTariffId || 0,
+          UnitId: 1,
+          InterimOrFinal: 0,
+          CompanyRefNo: 0,
+          ConcessionAuthorizationName: 0,
+          SpeTaxPer: 10,
+          SpeTaxAmt: 10,
+          CompDiscAmt: Math.round(this.totalChargeForm.get('totalDiscountAmount').value) || 0,
+          DiscComments: this.ConcessionReason,
+          CashCounterId: this.searchForm.get('CashCounterID').value.CashCounterId || 0,
+
+          "AddCharges": InsertAdddetArr,
+          "BillDetails": Billdetsarr,
+          "Payments": Paymentobj,
+
+        };
+        console.log(submitData);
+        this._AppointmentlistService.InsertOPBilling(submitData).subscribe(response => {
+          this.toastrService.success(response.message);
+          this._matDialog.closeAll();
+        }, (error) => {
+          this.toastrService.error(error.message);
+        });
       }
     
-    getOptionText(option) {
-    
-        return option && option.serviceName ? option.serviceName : '';
-      }
 
-      //reglist
-      getSelectedObj(obj) {
-       if ((obj.value ?? 0) > 0) {
-            console.log(this.data)
-            setTimeout(() => {
-                this._AppointmentlistService.getRegistraionById(obj.value).subscribe((response) => {
-                    this.patientDetail = response;
-                    console.log(this.patientDetail)
-                });
+  }
 
-            }, 500);
 
-            // setTimeout(() => {
-            //     this._AppointmentlistService.getVisitById(obj.value).subscribe((response) => {
-            //         this.patientDetail1 = response;
-            //         console.log(this.patientDetail1)
-            //     });
+  onClose() { }
 
-            // }, 500);
-        }
-
-    }
-    getValidationMessages() {
-        return {
-            serviceName: [
-                { name: "required", Message: "Service Name is required" },
-            ],
-            cashCounterId: [
-                { name: "required", Message: "First Name is required" },
-
-                { name: "pattern", Message: "only Number allowed." }
-            ],
-            price: [
-                { name: "pattern", Message: "only Number allowed." }
-            ],
-            qty: [
-                { name: "required", Message: "Qty required!", },
-                { name: "pattern", Message: "only Number allowed.", },
-                { name: "min", Message: "Enter valid qty.", }
-            ],
-            totalAmount: [
-                {
-                    name: "pattern", Message: "only Number allowed."
-                }
-            ],
-            doctoreId: [
-                { name: "pattern", Message: "only Char allowed." }
-            ],
-            discountPer: [
-                { name: "pattern", Message: "only Number allowed." }
-            ],
-            discountAmount: [{ name: "pattern", Message: "only Number allowed." }],
-            netAmount: [{ name: "pattern", Message: "only Number allowed." }],
-            concessionId: [{}]
-        }
-    }
-    onScroll(){
-        // this.nextPage$.next();
-    }
-    
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
+  }
 }

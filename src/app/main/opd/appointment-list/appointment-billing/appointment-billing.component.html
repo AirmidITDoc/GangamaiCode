@@ -7,7 +7,7 @@
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
-                    <app-common-date [screenFrom]="'OP-billing'"></app-common-date>
+                    <app-common-date [screenFrom]="'OP-billing'" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                     <div class="close-icon">
                         <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                             matTooltip="Close">
@@ -30,7 +30,7 @@
 
                                 <airmid-autocomplete lbl="RgId" [formGroup]="searchForm" formControlName="regId"
                                     placeholderText="Enter Patient Name" fxFlex
-                                    ApiUrl="OutPatient/auto-complete?Keyword="
+                                    ApiUrl="VisitDetail/search-patient?Keyword="
                                     (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
 
                                 <airmid-dropdown label="CashCounterID" formControlName="CashCounterID" fxFlex
@@ -38,25 +38,7 @@
                                     [mode]="autocompleteModeCashcounter">
                                 </airmid-dropdown>
 
-                                <!-- <mat-form-field class="example-full-width" fxFlex>
-                                    <mat-label>Patient Name (enter 2 char)/ MR No/ Mobile No </mat-label>
-                                    <input type="text" placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No " matInput [matAutocomplete]="auto">
-                                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                                        <mat-option *ngFor="let option of [] " [value]="option">
-                                            {{option}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-                                
-                                <mat-form-field class="example-full-width" fxFlex>
-                                    <mat-label>Cash Counter </mat-label>
-                                    <input type="text" placeholder="Cash Counter" matInput [matAutocomplete]="auto">
-                                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                                        <mat-option *ngFor="let option of [] " [value]="option">
-                                            {{option}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field> -->
+                             
                             </div>
                         </form>
                     </div>
@@ -85,8 +67,8 @@
                                                     <span class="patient-col-key">Patient Name
                                                     </span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{patientDetail?.firstName}}
-                                                        {{patientDetail?.middleName}} {{patientDetail?.lastName}}</span>
+                                                    <span class="patient-col-value">{{PatientName}}
+                                                        </span>
                                                 </div>
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Doctor Name</span>
@@ -145,7 +127,7 @@
                                 <div fxLayout="row" fxLayoutGap="5px">
 
                                     <!-- Autocomplete Dropdown binding is pending... -->
-                                    <div>
+                                    <!-- <div>
                                         <mat-form-field appearance="outline" #myInput style="width: 400px;">
                                             <input type="text" name="serviceName" formControlName="serviceName"
                                                 #Servicename placeholder="Service Name" matInput
@@ -181,24 +163,18 @@
                                                             <img width="10px" height="6px"
                                                                 src="assets/images/logos/pathology.png">
                                                         </mat-icon>
-                                                        <!-- <mat-icon *ngIf="option.IsPackage == true"
-                                                        matTooltip="IsPackage">
-                                                        <img width="10px" height="6px"
-                                                            src="assets/images/logos/package.png">
-                                                    </mat-icon> -->
+                                                       
                                                     </span>
                                                 </mat-option>
                                             </mat-autocomplete>
-                                            <!-- <mat-error *ngIf="chargeForm.get('SrvcName').hasError('required')">
-                                                Required field cannot be left blank
-                                            </mat-error> -->
+                                           
                                         </mat-form-field>
-                                    </div>
+                                    </div> -->
 
-                                    <!-- <div fxFlex>
+                                    <div fxFlex>
                                         <airmid-textbox label="Service name" formControlName="serviceName" [formGroup]="chargeForm" [validations]="getValidationMessages().serviceName">
                                         </airmid-textbox>
-                                    </div> -->
+                                    </div>
                                     <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
                                         <airmid-textbox label="Price" formControlName="price" [formGroup]="chargeForm"
                                             [validations]="getValidationMessages().price" [type]="'number'"
@@ -216,6 +192,13 @@
                                             [type]="'number'" [readonly]="true">
                                         </airmid-textbox>
 
+                                    </div>
+                                    <div *ngIf="isDoctor">
+                                        <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
+                                            [formGroup]="chargeForm"
+                                            [validations]="getValidationMessages().DoctorId"
+                                            [mode]="autocompleteModedeptdoc">
+                                        </airmid-dropdown>
                                     </div>
                                     <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
                                         <airmid-textbox label="Discount per" formControlName="discountPer"
@@ -665,10 +648,18 @@
                                             [readonly]="isDiscountApplied">
                                         </airmid-textbox>
                                     </div>
+                                    <div *ngIf="Consessionres">
+                                        <airmid-dropdown label="Concession Reason"
+                                            formControlName="concessionId" [formGroup]="totalChargeForm"
+                                            [validations]="getValidationMessages().concessionId"
+                                            [mode]="autocompleteModeConcession"
+                                            (selectionChange)="selectChangeConcession($event)">
+                                        </airmid-dropdown>
+                                    </div>
                                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                                         <airmid-textbox label="Total Net Amount" formControlName="totalNetAmount"
                                             [formGroup]="totalChargeForm"
-                                            [validations]="getValidationMessages().totalAmount" [type]="'number'"
+                                            [validations]="getValidationMessages().totalNetAmount" [type]="'number'"
                                             [readonly]="true">
                                         </airmid-textbox>
                                     </div>
@@ -695,7 +686,7 @@
                 <button type="button" class="btn btn-danger-outline" [mat-dialog-close]="true" aria-label="Close dialog"
                     matTooltip="Close">Close</button>
                 <button type="button" class="btn btn-primary" [disabled]="!totalChargeForm.valid || !chargeList.length"
-                    (click)="onSubmit()">Save</button>
+                    (click)="onsave()">Save</button>
             </div>
         </div>
     </div>

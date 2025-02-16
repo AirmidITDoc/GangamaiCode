@@ -1,10 +1,26 @@
-<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex fxLayoutGap="5px">
-  <div class="header-container accent" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
-    fxLayoutAlign="space-between">
-    <span style="font-size: 22px; font-weight: 500; color: #fff;">SubCompany TPA</span>
-    <span class="material-icons" style="cursor: pointer; margin-left: 24px; color: #fff;" (click)="onClose()">
-      close
-    </span>
+<div class="modal-wrapper grid-container">
+
+  <!-- Modal header -->
+  <div class="modal-header accent">
+      <div class="modal-header-content">
+          <div class="modal-header-title">
+              <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Sub Company TPA</span>
+          </div>
+          <div class="modal-header-right">
+              <div class="comman-date-container">
+                  <div class="comman-date">
+                      <app-common-date [screenFrom]="screenFromString"
+                          (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                  </div>
+                  <div class="close-icon">
+                      <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                          matTooltip="Close">
+                          <mat-icon>close</mat-icon>
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </div>
   </div>
   <div style="padding:3px;">
 
@@ -23,15 +39,15 @@
                   style="align-items: baseline;">
 
                   <span class="label">Admission No :</span>
-                  <span class="data_input">{{_AdmissionService.mySaveForm.get("AdmissionID").value}}</span>
+                  <span class="data_input">{{selectedAdvanceObj.admissionId}}
+                    <!-- {{selectedAdvanceObj.ipdno}} -->
+                  </span>
 
                   <span class="label"> Patient Name : </span>
-                  <span class="data_input">{{_AdmissionService.mySaveForm.get("PatientName").value}}</span>
+                  <span class="data_input">{{selectedAdvanceObj.patientName}}</span>
 
                   <span class="label">Admission ON : </span>
-                  <span class="data_input">{{_AdmissionService.mySaveForm.get("AdmissionDate").value}}
-
-                  </span>
+                  <span class="data_input">{{selectedAdvanceObj.admissionTime}}</span>
                   <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
                   </app-common-date>
                 </div>
@@ -48,127 +64,71 @@
     <mat-card class="example-card" name="m1">
       <div fxFlexFill fxLayout="column">
         <form [formGroup]="SubcompanyFormGroup" style="border: blue;">
-          <!-- <h3 style="font-weight:bold ;">Medico Legal Case Information</h3> -->
+          <input type="hidden" name="subCompanyId" formControlName="subCompanyId" [(ngModel)]="subCompanyId">
           <div fxLayoutGap="5px">
 
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+            <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
-              <mat-form-field appearance="outline" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="33%">
-                <mat-label>City</mat-label>
-                <input matAutocompletePosition="below" type="text" placeholder="Select City" matInput #city
-                  (keydown)="onEntercity($event)" formControlName="CityId" [matAutocomplete]="autoCitysub" required>
-                <span matSuffix style="display: flex;">
-                  <mat-icon class="mat-icon-close"
-                    (click)="SubcompanyFormGroup.get('CityId').setValue(''); isCitySelected = false;">close</mat-icon>
-                  <mat-icon class="mat-icon-close"
-                    (click)="SubcompanyFormGroup.get('CityId').setValue(''); isCitySelected = false;">search</mat-icon>
-                </span>
-                <mat-autocomplete #autoCitysub="matAutocomplete" [displayWith]="getOptionTextCity">
-                  <mat-option *ngFor="let option of filteredOptionsCity | async" [value]="option"
-                    (onSelectionChange)="onChangeCityList(option)">
-                    {{option.CityName}}
-                  </mat-option>
-                </mat-autocomplete>
-              </mat-form-field>
+              <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
+                <airmid-dropdown label="City Name" formControlName="city" [formGroup]="SubcompanyFormGroup"
+                  [mode]="autocompleteModecity" (selectionChange)="onChangeCity($event)">
+                </airmid-dropdown>
+              </div>
+              <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <airmid-dropdown label="Company Name" formControlName="companyName" [formGroup]="SubcompanyFormGroup"
+                  [mode]="autocompleteModecompany" (selectionChange)="onChangeCompany($event)">
+                </airmid-dropdown>
+              </div>
 
-              <mat-form-field appearance="outline" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="33%">
-                <mat-label>Company Name </mat-label>
-                <input matAutocompletePosition="below" type="text" placeholder="Select Company" matInput
-                  formControlName="CompanyId" [matAutocomplete]="autoCompanysub" required #company
-                  (keydown)="onEntercompany($event)">
-                <span matSuffix style="display: flex;">
-                  <mat-icon class="mat-icon-close"
-                    (click)="SubcompanyFormGroup.get('CompanyId').setValue(''); isCompanyselected = false;">close</mat-icon>
-                  <mat-icon class="mat-icon-close"
-                    (click)="SubcompanyFormGroup.get('CompanyId').setValue(''); isCompanyselected = false;">search</mat-icon>
-                </span>
-                <mat-autocomplete #autoCompanysub="matAutocomplete" [displayWith]="getOptionTextCompany">
-                  <mat-option *ngFor="let option of filteredOptionsCompany | async" [value]="option">
-                    {{option.CompanyName}}
-                  </mat-option>
-                </mat-autocomplete>
-              </mat-form-field>
+              <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <airmid-dropdown label="Company Type" formControlName="compTypeId" [formGroup]="SubcompanyFormGroup"
+                  [mode]="autocompleteModecompanytype">
+                </airmid-dropdown>
+              </div>
+
+              <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <div fxLayout="row" class="gap-8">
+
+                  <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" label="PhoneNo"
+                    formControlName="phoneNo" [validations]="getValidationMessages().phoneNo"
+                    [formGroup]="SubcompanyFormGroup" [maxLength]="10">
+                  </airmid-textbox>
+                  <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" label="MobileNo"
+                    formControlName="mobileNo" [formGroup]="SubcompanyFormGroup"
+                    [validations]="getValidationMessages().mobileNo" [maxLength]="10">
+                  </airmid-textbox>
+                </div>
+
+              </div>
 
             </div>
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
-          </div>
-          <div fxLayoutGap="5px">
-            <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-              <mat-label>Phone Number</mat-label>
-              <input name="PhoneNo" formControlName="PhoneNo" placeholder="Phone Number" matInput type="number" #phone
-                (keydown)="onEnterphone($event)" value="9876658688"
-                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);">
-              <!-- <mat-error class="error"
-                  *ngIf="SubcompanyFormGroup.get('PhoneNo').invalid && SubcompanyFormGroup.get('PhoneNo').touched">Phone
-                  number is required 
-              </mat-error>-->
-            </mat-form-field>
-
-              <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                <mat-label>Mobile Number</mat-label>
-                <input name="MobileNo" formControlName="MobileNo" placeholder="Phone Number" matInput type="number" #phone
-                  (keydown)="onEnterphone($event)" required value="9876658688"
-                  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);">
-                <mat-error class="error"
-                  *ngIf="SubcompanyFormGroup.get('MobileNo').invalid && SubcompanyFormGroup.get('MobileNo').touched">Phone
-                  number is required
-                </mat-error>
-              </mat-form-field>
-
-              <mat-form-field appearance="outline" fxFlex>
-                <mat-label>Fax Number</mat-label>
-                <input name="FaxNo" formControlName="FaxNo" placeholder="Fax Number" matInput max="9999999999"
-                  min="1000000000" maxlength="10" type="number" value="9876658688" #fax (keydown)="onEnterfax($event)">
-                <!-- <mat-error class="error"
-                  *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
-                  digits Mobile number is
-                  required</mat-error> -->
-              </mat-form-field>
-          </div>
-
-
-          <div fxLayoutGap="5px">
-
-
-            <mat-form-field appearance="outline" class="mr-sm-12" style="width:40%;">
-              <textarea name="Address" matInput rows="2" cols="4" placeholder="Enter Address" formControlName="Address">
+              <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                <textarea name="Address" matInput rows="1" cols="4" placeholder="Enter Address"
+                  formControlName="address">
               </textarea>
-            </mat-form-field>
+              </mat-form-field>
 
-          
+              <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-            <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-              <mat-label>Pin Number</mat-label>
-              <input name="PinNo" formControlName="PinNo" placeholder="Pin Number"
-                  matInput 
-                  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 6);"
-                  required="required" type="number" value="987665">
-              <!-- <mat-error class="error"
-                  *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
-                  digits Mobile number is
-                  required</mat-error> -->
-          </mat-form-field>
-          </div>
+                <airmid-textbox label="PinNo" formControlName="pinNo" [formGroup]="SubcompanyFormGroup"
+                  [validations]="getValidationMessages().pinNo" [maxLength]="7">
+                </airmid-textbox>
+              </div>
 
-
-          <mat-checkbox aria-label="Remember Me" formControlName="IsActive" style="margin-right: 20px;">
-            IsActive
-          </mat-checkbox>
-
-          <div class="footer-navigation-container" style=" float: right;">
-
-            <div class="next-div">
-
-              <button class="next-btn" (click)="onSubmit()" style="border-radius: 16px;"
-                [disabled]="SubcompanyFormGroup.invalid">
-                <span style="display: flex;justify-content: center;">
-                  <mat-spinner *ngIf="isLoading=='submit'" [color]="white" [diameter]="20"></mat-spinner>
-                  <span style="margin-right: 10px;">Save</span>
-                </span>
-              </button>
-              <!-- <button class="footer-btn" (click)="getPrint(5)" style="border-radius: 16px;">Print</button> -->
-              <button class="footer-btn" (click)="onClose()" style="border-radius: 16px;">Cancel</button>
+              <!-- <mat-checkbox aria-label="Remember Me" formControlName="IsActive" style="margin-right: 20px;">
+              IsActive
+            </mat-checkbox> -->
+            </div>
+            <div class="modal-footer" fxLayout="row" fxLayoutAlign="end center" style="margin-top: 10px">
+              <div class="footer-navigation-container">
+                <div class="modal-footer-buttons" fxLayoutGap="10px">
+                  <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                  <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                </div>
+              </div>
             </div>
           </div>
         </form>

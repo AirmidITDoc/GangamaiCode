@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Optional, Output, Self, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, NgControl } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-airmid-dateofbirth',
@@ -42,6 +43,9 @@ export class AirmidDateofbirthComponent implements OnInit {
             this.ageYear = Number(e.target.value);
         }
         this.formGroup.controls[this.formControlName].setValue(d);
+
+        if(this.ageYear > 110)
+            Swal.fire("Please Enter Valid BirthDate..")
     }
     onChangeDateofBirth(DateOfBirth: Date) {
         if (DateOfBirth) {
@@ -53,6 +57,8 @@ export class AirmidDateofbirthComponent implements OnInit {
             this.ageDay = Math.abs(todayDate.getDate() - dob.getDate());
             this.value = DateOfBirth;
             this.formGroup.get('DateOfBirth').setValue(DateOfBirth);
+                if(this.ageYear > 110)
+                Swal.fire("Please Enter Valid BirthDate..")
         }
     }
     ngOnInit(): void {

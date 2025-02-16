@@ -1,24 +1,27 @@
-<div class="simple page-layout inner-scroll inner-sidebar left-sidebar">
-    <mat-toolbar style="width: 100%;height: 40px;justify-content: space-between;">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">account_box
-            </mat-icon>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-                Bed Transfer
-            </span>
+<div class="modal-wrapper grid-container">
+
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Bed Transfer</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div fxLayout="row" fxLayoutALign="end start">
-            <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
-            </app-common-date>
-            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-                <mat-icon>close</mat-icon>
-            </button>
-        </div>
-    </mat-toolbar>
+    </div>
 
     <div class="content">
         <div class="center p-12 pb-56" style="border-radius: 4px;">
@@ -66,8 +69,7 @@
                                             <div class="patient-col">
                                                 <span class="patient-col-key">DOA | Time</span>
                                                 <span>:</span>
-                                                <span
-                                                    class="patient-col-value">{{data.doa}}</span>
+                                                <span class="patient-col-value">{{data.doa}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">IPD No</span>
@@ -102,8 +104,7 @@
                                                 <span class="patient-col-key">Patient Type
                                                 </span>
                                                 <span>:</span>
-                                                <span
-                                                    class="patient-col-value">{{data.patientType}}</span>
+                                                <span class="patient-col-value">{{data.patientType}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Tarrif Name
@@ -125,10 +126,10 @@
                     </mat-card>
 
                     <form [formGroup]="Bedtransfer" fxLayout="column">
-                        <input type="hidden" name="admissionId" formControlName="admissionId" [(ngModel)]="data.admissionId">
-                        <input type="hidden" name="fromWardId" formControlName="fromWardId" [(ngModel)]="data.WardId">
-                        <input type="hidden" name="fromBedId" formControlName="fromBedId" [(ngModel)]="data.bedId">
-                        <input type="hidden" name="fromClassId" formControlName="fromClassId" [(ngModel)]="data.classId">
+                        <input type="hidden" name="admissionId" formControlName="admissionId" [(ngModel)]="AdmissionId">
+                        <input type="hidden" name="fromWardId" formControlName="fromWardId" [(ngModel)]="vWardId">
+                        <input type="hidden" name="fromBedId" formControlName="fromBedId" [(ngModel)]="vBedId">
+                        <input type="hidden" name="fromClassId" formControlName="fromClassId" [(ngModel)]="vClassId">
 
 
                         <mat-card style="padding: 8px;">
@@ -140,31 +141,27 @@
                                 </div>
                                 <hr>
                                 <div fxLayout="row" fxLayoutGap="8px">
-                                    <!-- <airmid-dropdown label="Ward Name" formControlName="toWardId" [formGroup]="Bedtransfer"
-                                        [validations]="getValidationMessages().RoomId" [mode]="autocompleteroom" [value]="vWardId">
-                                    </airmid-dropdown> -->
 
-                                    <airmid-dropdown label="Ward Name" formControlName="toWardId"
-                                    [formGroup]="Bedtransfer" [value]="data?.wardId"
-                                    [validations]="getValidationMessages().toWardId" 
-                                     [mode]="autocompleteroom">
-                                </airmid-dropdown>
-
-
-                                    <airmid-dropdown label="Bed name" formControlName="toBedId" [formGroup]="Bedtransfer"
-                                        [validations]="getValidationMessages().BedId" 
-                                        [value]="vBedId" [mode]="autocompletebed">
+                                    <airmid-dropdown label="Ward Name" formControlName="toWardId"  [value]="vWardId"
+                                        [formGroup]="Bedtransfer" [validations]="getValidationMessages().toWardId"
+                                        [mode]="autocompleteroom">
                                     </airmid-dropdown>
 
-                                    <airmid-dropdown label="Class Name" formControlName="toClassId"
+
+                                    <airmid-dropdown label="Bed Name" formControlName="toBedId" [value]="vBedId" [formGroup]="Bedtransfer"
+                                        [validations]="getValidationMessages().BedId" [mode]="autocompletebed">
+                                    </airmid-dropdown>
+
+
+                                    <airmid-dropdown label="Class Name" formControlName="toClassId" [value]="vClassId"
                                         [formGroup]="Bedtransfer" [validations]="getValidationMessages().ClassId"
-                                        [value]="data?.className" [mode]="autocompleteclass">
+                                        [mode]="autocompleteclass">
                                     </airmid-dropdown>
 
                                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="50%">
                                         <textarea name="Remark" matInput rows="1" cols="5" placeholder="Enter Remark"
                                             formControlName="remark">
-                                                                        </textarea>
+                                    </textarea>
                                     </mat-form-field>
 
                                 </div>
@@ -178,16 +175,10 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </form>
-
-                    
-
-                    <!-- <div fxLayoutAlign="end">
-                        <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px"
-                            style="margin: 0px 20px 0px 50px; ">
-                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                            <button class="btn btn-primary" (click)="onBedtransfer()">Transfer</button>
-                        </div>
-                    </div> -->
                 </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -253,6 +253,7 @@ export class AdmissionComponent implements OnInit {
    this.menuActions.push("Bed Transfer");
    this.menuActions.push("Discharge");
    this.menuActions.push("MLC Update");
+   this.menuActions.push("Sub TPA Company");
    this.menuActions.push("Discharge SummarY");
    this.menuActions.push("Refund Of Bill");
    this.menuActions.push("Refund Of Advance");
@@ -391,9 +392,9 @@ export class AdmissionComponent implements OnInit {
           let that = this;
           const dialogRef = this._matDialog.open(DischargeComponent,
               {
-                  maxWidth: "70vw",
-                  height: "390px",
-                  width: "50%",
+                maxWidth: "85vw",
+                height: '450px',
+                width: '100%',
                   data: element
               });
           dialogRef.afterClosed().subscribe(result => {
@@ -409,9 +410,9 @@ export class AdmissionComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(MLCInformationComponent,
             {
-                maxWidth: "70vw",
-                height: "400px",
-                width: "50%",
+              maxWidth: "85vw",
+              height: '450px',
+              width: '100%',
                 data: element
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -438,9 +439,27 @@ export class AdmissionComponent implements OnInit {
           }
       });
   }
+  else if (m == "Sub TPA Company") {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button
+
+    let that = this;
+    const dialogRef = this._matDialog.open(SubCompanyTPAInfoComponent,
+        {
+          maxWidth: "85vw",
+          height: '450px',
+          width: '100%',
+            data: element
+        });
+    dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+            that.grid.bindGridData();
+        }
+    });
+}
     }
 
-
+   
 
   item1: any;
   item2: any;

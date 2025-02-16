@@ -247,10 +247,9 @@ export class AdmissionService {
     }
     
     public subcompanyTPAInsert(Param: any) {
-        debugger
-            if (Param.mlcid) {
-            return this._httpClient1.PutData("MlcInformation/" + Param.mlcid, Param);
-        } else return this._httpClient1.PostData("MlcInformation", Param);
+        if (Param.subCompanyId) {
+            return this._httpClient1.PutData("SubTpaCompany/" + Param.subCompanyId, Param);
+        } else return this._httpClient1.PostData("SubTpaCompany", Param);
     }
 
     public getDoctorsByDepartment(deptId) {

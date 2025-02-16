@@ -92,6 +92,13 @@ export class NewSettlementComponent {
   GetBalanceAmt() { 
     this.balanceAmt = Number(this.netPayAmt || 0) - (Number(this.paidAmt || 0) + Number(this.amount1 || 0));
   }
+BankId=0
+BankNam:any;
+  selectChangebank(event){
+console.log(event)
+this.BankId=event.value
+this.BankNam=event.text
+  }
   onAddPayment() {
     this.submitted = true;
 debugger
@@ -99,12 +106,13 @@ debugger
       return;
     }
     let tmp = this.Payments.data;
+   
     tmp.push({
       Id: this.getNewId(),
       PaymentType: this.selectedPaymnet1, Amount: this.amount1,
       RefNo: this.patientDetailsFormGrp.get("referenceNo1")?.value ?? "",
-      BankId: this.patientDetailsFormGrp.get("bankName1").value?.BankId ?? 0,
-      BankName: this.patientDetailsFormGrp.get("bankName1").value?.BankName ?? "",
+      BankId:this.BankId,// this.patientDetailsFormGrp.get("bankName1").value?.BankId ?? 0,
+      BankName:this.BankNam,// this.patientDetailsFormGrp.get("bankName1").value?.BankName ?? "",
       RegDate: this.patientDetailsFormGrp.get("regDate1")?.value ?? ""
     });
     this.Payments.data = tmp;

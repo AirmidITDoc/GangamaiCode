@@ -66,8 +66,8 @@ export class CompanysettlementService {
         this.createForm();
     }
 
-    public InsertOPBillingsettlement(Param: any) {
-      return this._httpClient.PutData("OPSettlement/InsertEDMX" , Param);
+    public InsertOPBillingsettlement(Param) {
+      return this._httpClient.PutData("OPSettlement/SettlementInsert", Param);
       
     }
 

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { AdvanceDetailObj, Discharge, IPSearchListComponent } from '../ip-search-list.component';
 import { MatPaginator } from '@angular/material/paginator';
@@ -17,6 +17,8 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
 import { T } from '@angular/cdk/keycodes';
 import { ConfigService } from 'app/core/services/config.service';
+import { AdmissionPersonlModel, RegInsert } from '../../Admission/admission/admission.component';
+import { InitiateDischargeComponent } from './initiate-discharge/initiate-discharge.component';
 
 @Component({
   selector: 'app-discharge',
@@ -36,7 +38,7 @@ export class DischargeComponent implements OnInit {
   selectedAdvanceObj: AdvanceDetailObj;
   DischargeId: any;
   Today: Date = new Date();
-  registerObj: any;
+  
 
   RtrvDischargeList:any=[];
   vComments:any;
@@ -48,6 +50,17 @@ export class DischargeComponent implements OnInit {
   vDescType:any=0;
   vAdmissionID:any=20;
   vBedId=101;
+
+  isTimeChanged: boolean = false;
+  dateTimeString: any;
+  timeflag=0
+  public now: Date = new Date();
+  minDate: Date;
+  ChkConfigInitiate:boolean=false;
+
+   registerObj1 = new AdmissionPersonlModel({});
+       registerObj = new RegInsert({});
+  
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -69,12 +82,16 @@ export class DischargeComponent implements OnInit {
     public _ConfigService : ConfigService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { 
-  
-    if (this.data) {
+    setInterval(() => {
+      this.now = new Date();
+      this.dateTimeString = this.now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      if (!this.isTimeChanged) {
+        this.DischargeForm.get('dischargeTime').setValue(this.now);
+        if (this.DischargeForm.get('dischargeTime'))
+          this.DischargeForm.get('dischargeTime').setValue(this.now);
+      }
+    }, 1);
     
-     
- 
-        }
   }
 
   ngOnInit(): void {
@@ -83,17 +100,46 @@ export class DischargeComponent implements OnInit {
       this.vAdmissionId = this.data.admissionId;
    this.vBedId=this.data.bedId
     } 
+
+    if ((this.data?.regId ?? 0) > 0) {
+     
+      setTimeout(() => {
+        this._IpSearchListService.getRegistraionById(this.data.regId).subscribe((response) => {
+          this.registerObj= response;
+          console.log(this.registerObj)
+
+        });
+
+        this._IpSearchListService.getAdmissionById(this.data.admissionId).subscribe((response) => {
+          this.registerObj1 = response;
+          if(this.registerObj1){
+            this.registerObj1.phoneNo=this.registerObj1.phoneNo.trim()
+            this.registerObj1.mobileNo=this.registerObj1.mobileNo.trim()
+          this.registerObj1.admissionTime=  this.datePipe.transform(this.registerObj1.admissionTime, 'hh:mm:ss a')
+          this.registerObj1.dischargeTime=  this.datePipe.transform(this.registerObj1.dischargeTime, 'hh:mm:ss a')
+     
+          }
+          console.log(this.registerObj1)
+
+        });
+
+
+      }, 500);
+    }
+
+    // if(this._ConfigService.configParams.IsDischargeInitiateflow == 1){
+    //   this.ChkConfigInitiate = false
+    // }else{
+    //   this.ChkConfigInitiate = true
+    // }
+
+    this.getchkConfigInitiate();
   }
 
 
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-  }
  
  
-
-
-  onDischarge() {
+ onDischarge() {
     this.isLoading = 'submit';
 
     const formattedDate = this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd");
@@ -110,12 +156,10 @@ export class DischargeComponent implements OnInit {
           "dischargeTime":formattedTime || '01/01/1900',//this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900', 
         },
         "bedModel": {
-          "bedId": this.vBedId,
+          "bedId":  this.vBedId,
         }
       }
-
-      
-      console.log(m_data);
+console.log(m_data);
       this._IpSearchListService.DichargeInsert(m_data).subscribe((response) => {
         this.toastr.success(response.message);
         this.onClear(true);
@@ -124,56 +168,12 @@ export class DischargeComponent implements OnInit {
       });
   
     }
-    else {
-      let ModeOfDischargeUpdate = 0
-      if(this._IpSearchListService.mySaveForm.get('ModeId').value)
-        ModeOfDischargeUpdate = this._IpSearchListService.mySaveForm.get('ModeId').value.ModeOfDischargeId;
-       
-      var m_data1 = {
-        "updateIPDDischarg": {
-          "DischargeId": this.DischargeId,
-          "DischargeDate":formattedDate || '01/01/1900', // this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') 
-          "DischargeTime":formattedTime || '01/01/1900', //  this.datePipe.transform(this.currentDate, 'hh:mm:ss')  
-          "DischargeTypeId":this.vDescType,
-          "DischargedDocId":this.vDoctorId,
-          "DischargedRMOID": 0, // this._IpSearchListService.mySaveForm.get("DischargedRMOID").value,
-          "Modeofdischarge": this.vMode,
-          "updatedBy": this.accountService.currentUserValue.userId,
-        },
-        "updateAdmission": {
-          "admissionID": this.selectedAdvanceObj.AdmissionID || 0,
-          "isDischarged": 1,
-          "dischargeDate":formattedDate || '01/01/1900' ,// this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')  
-          "dischargeTime":formattedTime || '01/01/1900', // this.datePipe.transform(this.currentDate, 'hh:mm:ss')  
-        }
-      }
-      console.log(m_data1);
-      this._IpSearchListService.DichargeUpdate(m_data).subscribe((response) => {
-        this.toastr.success(response.message);
-        this.onClear(true);
-      }, (error) => {
-        this.toastr.error(error.message);
-      });
-    }
-    this._IpSearchListService.mySaveForm.reset();
+  
+    this.DischargeForm.reset();
   }
-  onClose() {
-    this._IpSearchListService.mySaveForm.reset();
-    this.dialogRef.close();
-  }
-  DischargedateTimeObj: any;
-  getDischargeDateTime(DischargedateTimeObj) {
-    this.DischargedateTimeObj = DischargedateTimeObj;
-  }
+ 
 
-  onClear(val: boolean) {
-    // this.personalform.reset();
-     // this.dialogRef.close(val);
-   }
-
-  // new Api
-
-  getValidationMessages() {
+   getValidationMessages() {
     return {
       dischargeTypeId: [
             { name: "required", Message: "dischargeType Name is required" }
@@ -186,10 +186,93 @@ export class DischargeComponent implements OnInit {
     ]
     };
 }
+@Output() dateTimeEventEmitter = new EventEmitter<{}>();
+  isDatePckrDisabled: boolean = false;
+phdatetime: any;
+  onChangeDate(value) {
+    if (value) {
+      const dateOfReg = new Date(value);
+      let splitDate = dateOfReg.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      let splitTime = this.DischargeForm.get('dischargeDate').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+     this.eventEmitForParent(splitDate[0], splitTime[1]);
+    }
+  }
+ 
+  onChangeTime(event) {
+    this.timeflag=1
+    if (event) {
 
+      let selectedDate = new Date(this.DischargeForm.get('phAppTime').value);
+      let splitDate = selectedDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      let splitTime = this.DischargeForm.get('dischargeTime').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      this.isTimeChanged = true;
+      this.phdatetime=splitTime[1]
+      console.log(this.phdatetime)
+      this.eventEmitForParent(splitDate[0], splitTime[1]);
+        }
+  }
 
+  eventEmitForParent(actualDate, actualTime) {
+    let localaDateValues = actualDate.split('/');
+    let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
+    this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
+  }
+  dateTimeControl = new FormControl('');
+  selectedTime: string | null = null;
+  onClose() {
+    this.DischargeForm.reset();
+    this.dialogRef.close();
+  }
+  DischargedateTimeObj: any;
+  getDischargeDateTime(DischargedateTimeObj) {
+    this.DischargedateTimeObj = DischargedateTimeObj;
+  }
+
+  onClear(val: boolean) {
+    // this.personalform.reset();
+    
+   }
+  getchkConfigInitiate() {
+    // let Query = "SELECT Isnull(Count(IsApproved),0)as DeptCount,(SELECT Isnull(Count(b.IsApproved),0)as TotalCnt FROM dbo.initiateDischarge B Where b.AdmId=A.AdmId and b.IsApproved = 1)as Approved_Cnt " +
+    //   " FROM dbo.initiateDischarge A Where AdmId=" + this.selectedAdvanceObj.AdmissionID + " Group by AdmId"
+    // console.log(Query)
+    // this._IpSearchListService.getchkConfigInitiate(Query).subscribe((data) => {
+    //   console.log(data)
+    //   if(data){
+    //     this.vApproved_Cnt = data[0]?.Approved_Cnt
+    //     this.vDeptCount = data[0]?.DeptCount
+    //     console.log(this.vApproved_Cnt)
+    //     console.log(this.vDeptCount)
+    //   } 
+    // })
 }
 
+
+DischargeInitiate() {
+  // if(this.selectedAdvanceObj.IsInitinatedDischarge == '1'){
+  //   this.toastr.warning('selected patient already Initiated ', 'Warning !', {
+  //     toastClass: 'tostr-tost custom-toast-warning',
+  //   });
+  //   return;
+  // }
+  const dialogRef = this._matDialog.open(InitiateDischargeComponent,
+    {
+      maxWidth: "50vw",
+      height: '72%',
+      width: '100%',
+      data: {
+        Obj: this.data
+      }
+    });
+  dialogRef.afterClosed().subscribe(result => {
+    console.log(result)
+  });
+}
+
+getDateTime(dateTimeObj) {
+  this.dateTimeObj = dateTimeObj;
+}
+}
 
 
 

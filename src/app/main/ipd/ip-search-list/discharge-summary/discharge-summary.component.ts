@@ -17,6 +17,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
 import { MatTableDataSource } from '@angular/material/table';
 import { element } from 'protractor';
+import { AdmissionPersonlModel, RegInsert } from '../../Admission/admission/admission.component';
 
 @Component({
   selector: 'app-discharge-summary',
@@ -97,6 +98,16 @@ export class DischargeSummaryComponent implements OnInit {
   vPA: any;
   vCVS: any;
   vCNS: any;
+    registerObj1 = new AdmissionPersonlModel({});
+    @ViewChild('itemid') itemid: ElementRef;
+  
+    bp: any = 1000;
+    lngAdmId: any = [];
+
+    autocompleteModeDose: string = "Dose";
+    autocompleteModeRefDoctor: string = "RefDoctor";
+    autocompleteModeDoctor: string = "ConDoctor";
+    
   dsItemList = new MatTableDataSource<MedicineItemList>();
 
   constructor(public _IpSearchListService: IPSearchListService,
@@ -134,13 +145,39 @@ export class DischargeSummaryComponent implements OnInit {
 
     }
 
+    if ((this.data?.regId ?? 0) > 0) {
+     
+      setTimeout(() => {
+        this._IpSearchListService.getRegistraionById(this.data.regId).subscribe((response) => {
+          this.registerObj= response;
+          console.log(this.registerObj)
+
+        });
+
+        this._IpSearchListService.getAdmissionById(this.data.admissionId).subscribe((response) => {
+          this.registerObj1 = response;
+          if(this.registerObj1){
+            this.registerObj1.phoneNo=this.registerObj1.phoneNo.trim()
+            this.registerObj1.mobileNo=this.registerObj1.mobileNo.trim()
+
+
+          this.registerObj1.admissionTime=  this.datePipe.transform(this.registerObj1.admissionTime, 'hh:mm:ss a')
+          this.registerObj1.dischargeTime=  this.datePipe.transform(this.registerObj1.dischargeTime, 'hh:mm:ss a')
+     
+          }
+          console.log(this.registerObj1)
+
+        });
+
+
+      }, 500);
+    }
+
     this.DischargesumForm = this.showDischargeSummaryForm();
     this.MedicineItemForm = this.MedicineItemform();
     this.getAdmissionInfo();
-    //this.getDischargeSummaryData();
     this.getdischargeIdbyadmission();
-    // this.getDoseList();
-
+    
     if (this.vIsNormalDeath == 'True') {
       this.IsDeath = 1;
     } else {
@@ -200,27 +237,32 @@ export class DischargeSummaryComponent implements OnInit {
   isNormalOrDeath: 0
     });
   }
-  keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
-    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
-    }
-  }
+  
 
 
   getSearchItemList() {
-    var m_data = {
-      "ItemName": `${this.MedicineItemForm.get('ItemId').value}%`,
-      "StoreId": this.accountService.currentUserValue.user.storeId
-    }
-    //console.log(m_data); 
+    let sname = this.MedicineItemForm.get('ItemId').value + '%' || '%'
+        var m_data = {
+    
+          "first": 0,
+          "rows": 100,
+          "sortField": "ServiceId",
+          "sortOrder": 0,
+          "filters": [
+            { "fieldName": "ServiceName", "fieldValue": sname, "opType": "StartsWith" },
+            { "fieldName": "TariffId", "fieldValue": "0", "opType": "Equals" },
+            { "fieldName": "GroupId", "fieldValue": "0", "opType": "Equals" },
+            { "fieldName": "Start", "fieldValue": "0", "opType": "Equals" },
+            { "fieldName": "Length", "fieldValue": "30", "opType": "Equals" }
+          ],
+          "exportType": "JSON"
+        }
+    
+        console.log(m_data)
     this._IpSearchListService.getItemlist(m_data).subscribe(data => {
-      this.filteredOptionsItem = data;
-      // console.log(this.data);
-      this.filteredOptionsItem = data;
+      this.filteredOptionsItem = data.data;
+      console.log(this.data);
+      
       if (this.filteredOptionsItem.length == 0) {
         this.noOptionFound = true;
       } else {
@@ -257,8 +299,7 @@ export class DischargeSummaryComponent implements OnInit {
           Instruction: this.vInstruction || ''
         });
       this.dsItemList.data = this.Chargelist
-      //console.log(this.dsItemList.data); 
-    } else {
+      } else {
       this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -283,56 +324,14 @@ export class DischargeSummaryComponent implements OnInit {
       toastClass: 'tostr-tost custom-toast-success',
     });
   }
-  @ViewChild('itemid') itemid: ElementRef;
-  @ViewChild('dosename') dosename: ElementRef;
-  @ViewChild('Day') Day: ElementRef;
-  @ViewChild('Instruction') Instruction: ElementRef;
-  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
-  add: boolean = false;
-  onEnterItem(event): void {
-    if (event.which === 13) {
-      this.dosename.nativeElement.focus();
-    }
-  }
-  public onEnterDose(event): void {
-    if (event.which === 13) {
-      this.Day.nativeElement.focus();
-    }
-  }
-  public onEnterqty(event): void {
-    if (event.which === 13) {
-      this.Instruction.nativeElement.focus();
-    }
-  }
-  public onEnterremark(event): void {
-    if (event.which === 13) {
-      this.addbutton.focus;
-      this.add = true;
-    }
-  }
-  bp: any = 1000;
-  lngAdmId: any = [];
-  // ============================================================================
+ 
+  
   getAdmissionInfo() {
-    // let Query = "select Isnull(AdmissionId,0) as AdmId from DischargeSummary where AdmissionId=" + this.vAdmissionId + ""
-    // console.log(Query)
-    // this._IpSearchListService.getchargesList(Query).subscribe(data => { 
-    //   this.lngAdmId = data;
-    //   console.log(this.lngAdmId)
-    //   if (this.lngAdmId.length > 0) {
-    //     this.getDischargeSummaryData();
-    //   }
-    //   else {
-    //     console.log('no-data found');
-    //   }
-    // },
-    //   (error) => {
-    //     this.isLoading = 'list-loaded';
-    //   });
+ ;
   }
 
   getPrescriptionList(el) {
-    // debugger
+    
     var m_data2 = {
       "AdmissionId": el.AdmissionID
     }
@@ -372,13 +371,12 @@ export class DischargeSummaryComponent implements OnInit {
         this.vDoctorAssistantName = this.RetrDischargeSumryList[0].DoctorAssistantName
         this.vClaimNumber = this.RetrDischargeSumryList[0].ClaimNumber
         this.vPreOthNumber = this.RetrDischargeSumryList[0].PreOthNumber
-        this.DocName1 = this.RetrDischargeSumryList[0].DischargeDoctor1
-        this.DocName2 = this.RetrDischargeSumryList[0].DischargeDoctor2
-        this.DocName3 = this.RetrDischargeSumryList[0].DischargeDoctor3
+        // this.DocName1 = this.RetrDischargeSumryList[0].DischargeDoctor1
+        // this.DocName2 = this.RetrDischargeSumryList[0].DischargeDoctor2
+        // this.DocName3 = this.RetrDischargeSumryList[0].DischargeDoctor3
         this.IsNormalDeath = this.RetrDischargeSumryList[0].IsNormalOrDeath 
       }
-      this.getRetevDropdownvalue();
-      debugger
+   
       if (this.IsNormalDeath == 1) {
         this.vIsNormalDeath = true;
         this.DischargesumForm.get("IsNormalOrDeath").setValue('True');
@@ -397,27 +395,8 @@ export class DischargeSummaryComponent implements OnInit {
       this.vDischargeId = this.registerObj.DischargeId
     });
   }
-  DocName1: any;
-  DocName2: any;
-  DocName3: any;
-
-  getRetevDropdownvalue() {
-    debugger
-
-    const ddValue1 = this.Doctor1List.filter(item => item.DoctorID == this.DocName1);
-    console.log(ddValue1)
-    this.DischargesumForm.get("DischargeDoctor1").setValue(ddValue1[0]);
-
-    const ddValue2 = this.Doctor2List.filter(item => item.DoctorID == this.DocName2);
-    console.log(ddValue2)
-    this.DischargesumForm.get("DischargeDoctor2").setValue(ddValue2[0]);
-
-    const ddValue3 = this.Doctor3List.filter(item => item.DoctorID == this.DocName3);
-    console.log(ddValue3)
-    this.DischargesumForm.get("DischargeDoctor3").setValue(ddValue3[0]);
-
-
-  }
+ 
+ 
   onClose() {
     this.DischargesumForm.reset();
     this._matDialog.closeAll();
@@ -610,20 +589,6 @@ export class DischargeSummaryComponent implements OnInit {
 
   viewgetDischargesummaryTempPdf(AdmId) {
 
-    // this._IpSearchListService.getIpDischargesummaryTempReceipt(
-    //   AdmId
-    // ).subscribe(res => {
-    //   const dialogRef = this._matDialog.open(PdfviewerComponent,
-    //     {
-    //       maxWidth: "85vw",
-    //       height: '750px',
-    //       width: '100%',
-    //       data: {
-    //         base64: res["base64"] as string,
-    //         title: "Discharge Summary Viewer"
-    //       }
-    //     });
-    // });
   }
   getItemMaster() { 
     // const dialogRef = this._matDialog.open(AddItemComponent,

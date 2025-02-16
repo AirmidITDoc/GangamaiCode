@@ -287,10 +287,10 @@ constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
     dischargeId: 0,
     admissionId: 0,
     dischargeDate: "2029-09-07",
-    dischargeTime: "11:00:00 AM",
+    dischargeTime: "",
     dischargeTypeId: 0,
     dischargedDocId: 0,
-    dischargedRmoid: 0,
+    dischargedRmoid: 10,
     });
   }
   refundAdvanceForm(): FormGroup {

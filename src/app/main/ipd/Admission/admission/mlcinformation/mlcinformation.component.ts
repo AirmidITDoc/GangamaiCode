@@ -114,15 +114,10 @@ phdatetime: any;
   }, 500);
   }
 
- 
-
-
   onSubmit() {
 
     this.MlcInfoFormGroup.get('reportingDate').setValue(this.datePipe.transform(this.MlcInfoFormGroup.get('reportingDate').value, 'yyyy-MM-dd'))
-         console.log(this.MlcInfoFormGroup.value);
-
-      this._AdmissionService.MlcInsert(this.MlcInfoFormGroup.value).subscribe((response) => {
+   this._AdmissionService.MlcInsert(this.MlcInfoFormGroup.value).subscribe((response) => {
         this.toastr.success(response.message);
         this.getMLCdetailview(response.admissionId)
         this._matDialog.closeAll();
