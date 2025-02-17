@@ -1,5 +1,5 @@
 <div class="page-layout modal-wrapper grid-container">
-    
+
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
@@ -21,12 +21,12 @@
         </div>
     </div>
 
-   
-    <div class="modal-body content" fusePerfectScrollbar> 
-        <div class="center"> 
+
+    <div class="modal-body content" fusePerfectScrollbar>
+        <div class="center">
             <div class="content-card">
-                <div fxLayout="column" class="gap-8 pb-3 border-bottom"> 
-                    <div fxlayout="row"> 
+                <div fxLayout="column" class="gap-8 pb-3 border-bottom">
+                    <div fxlayout="row">
                         <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                             <div class="patient-info-container">
                                 <div class="patient-info-box">
@@ -181,10 +181,10 @@
                                     </mat-card>
                                 </div>
                             </div>
-                        </div> 
+                        </div>
                     </div>
 
-                    <div fxFlex.gt-sm="100%" fxFlex> 
+                    <div fxFlex.gt-sm="100%" fxFlex>
 
                         <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" class="h-250">
 
@@ -330,7 +330,7 @@
                 <mat-card>
                     <div fxlayout="row" style="margin-top: 10px;">
 
-                        <div class="dialog-content-wrapper"> 
+                        <div class="dialog-content-wrapper">
 
                             <form [formGroup]="AdvFormGroup" class="mat-error-fix">
                                 <div class="bill-amts" fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
@@ -355,9 +355,9 @@
                                                 *ngIf="AdvFormGroup.get('comment').invalid && AdvFormGroup.get('comment').touched">
                                                 Advance Amount is required</mat-error>
                                         </mat-form-field>
-                                       
 
-                                         <mat-form-field appearance="outline" style="width: 220px;">
+
+                                        <!-- <mat-form-field appearance="outline" style="width: 220px;">
                                         <mat-label>Cash Counter</mat-label>
                                         <input matAutocompletePosition="below" type="text" placeholder="Select Cash Counter"
                                              matInput formControlName="CashCounterID"
@@ -375,7 +375,11 @@
                                                 {{option.CashCounterName}}
                                             </mat-option>
                                         </mat-autocomplete>
-                                      </mat-form-field>
+                                      </mat-form-field> -->
+
+                                        <airmid-dropdown label="Cash Counter" formControlName="CashCounterID"
+                                            [formGroup]="AdvFormGroup" [mode]="autocompleteModeCashCounter">
+                                        </airmid-dropdown>
                                     </div>
                                 </div>
                             </form>
@@ -387,14 +391,13 @@
                                         <button class="btn btn-primary" (click)="onSave()"
                                             [disabled]="AdvFormGroup.invalid">Save</button>
                                     </div>
-                                </div> 
-                            </div> 
-                        </div> 
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </mat-card>
-            </div> 
-        </div> 
-    </div> 
+            </div>
+        </div>
+    </div>
 
 </div>
- 

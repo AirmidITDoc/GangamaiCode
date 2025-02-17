@@ -38,7 +38,7 @@ export class MenuMasterService {
                 isDisplay: true,
                 permissionCode:[""],
                 tableNames:[""],
-                IsBlock:[""],
+                IsBlock:["true"],
 
                 /**
                  * {

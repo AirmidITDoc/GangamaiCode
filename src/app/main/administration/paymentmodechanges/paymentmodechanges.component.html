@@ -44,7 +44,32 @@
 
             <ng-container filters>
 
-                <mat-form-field appearance="outline" style="margin-left: 2%;">
+                <airmid-datepicker [formGroup]="_PaymentmodechangesService.UseFormGroup" [isRangePicker]="true"
+                formStartControlName="startdate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[2].fieldValue"
+                [(toValue)]="gridConfig.filters[3].fieldValue">
+            </airmid-datepicker>
+
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>First Name</mat-label>
+                    <input matInput placeholder="Search First Name" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                    <button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="gridConfig.filters[0].fieldValue='%'">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Last Name</mat-label>
+                    <input matInput placeholder="Search Last Name" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                    <button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="gridConfig.filters[1].fieldValue='%'">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <!-- <mat-form-field appearance="outline" style="margin-left: 2%;">
                     <mat-label>Enter a date range</mat-label>
                     <mat-date-range-input [rangePicker]="picker">
                         <input matStartDate formControlName="startdate" placeholder="Start date">
@@ -52,41 +77,47 @@
                     </mat-date-range-input>
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field> -->
+
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Registration No</mat-label>
+                    <input matInput placeholder="Search Registration No" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[4].fieldValue" />
+                    <button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="gridConfig.filters[4].fieldValue='0'">
+                        <mat-icon>close</mat-icon>
+                    </button>
                 </mat-form-field>
 
-                <!-- <airmid-datepicker [formGroup]="_PaymentmodechangesService.UseFormGroup" [isRangePicker]="true"
-                                formStartControlName="startdate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
-                                [(toValue)]="gridConfig.filters[0].fieldValue">
-                            </airmid-datepicker> -->
-
-                <mat-form-field appearance="outline">
-                    <mat-label>RegNo</mat-label>
-                    <input name="RegNo" formControlName="RegNo" matInput (keyup)="getsearchList()">
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>First Name</mat-label>
-                    <input name="FirstName" formControlName="FirstName" matInput (keyup)="getsearchList()">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>PBill No</mat-label>
+                    <input matInput placeholder="Search Registration No" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[5].fieldValue" />
+                    <button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="gridConfig.filters[5].fieldValue='0'">
+                        <mat-icon>close</mat-icon>
+                    </button>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Last Name</mat-label>
-                    <input name="LastName" formControlName="LastName" matInput (keyup)="getsearchList()">
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>Sales No</mat-label>
-                    <input name="SalesNo" formControlName="SalesNo" matInput (keyup)="getsearchList()">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Receipt No</mat-label>
+                    <input matInput placeholder="Search Registration No" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[6].fieldValue" />
+                    <button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="gridConfig.filters[6].fieldValue='0'">
+                        <mat-icon>close</mat-icon>
+                    </button>
                 </mat-form-field>
 
                 <form [formGroup]="_PaymentmodechangesService.UseFormGroup" fxLayout="row" > 
                 <mat-radio-group formControlName="Radio" name="Radio">
                     <mat-label>Type : </mat-label>
 
-                        <mat-radio-button value="0" (click)="getOPReceiptList()">
+                        <mat-radio-button value="0">
                             OP Receipt</mat-radio-button>
-                        <mat-radio-button value="1" (click)="getIPReceiptList()">
+                        <mat-radio-button value="1">
                             IP Receipt</mat-radio-button>
-                        <mat-radio-button value="2" (click)="getIPAdvanceList()">
+                        <mat-radio-button value="2">
                             IP Advance</mat-radio-button>
                 </mat-radio-group>
                 </form>

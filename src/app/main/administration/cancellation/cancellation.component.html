@@ -62,7 +62,7 @@
                                     </button>
                                 </mat-form-field>
     
-                                <!-- <mat-form-field appearance="outline" fxFlex>
+                                <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>PBill No</mat-label>
                                     <input matInput placeholder="Search PBill No" autocomplete="off"
                                         [(ngModel)]="gridConfig.filters[5].fieldValue" />
@@ -70,7 +70,7 @@
                                         (click)="gridConfig.filters[5].fieldValue='%'">
                                         <mat-icon>close</mat-icon>
                                     </button>
-                                </mat-form-field> -->
+                                </mat-form-field>
 
                                 <form [formGroup]="_CancellationService.UserFormGroup" >
                                     <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row">
@@ -94,7 +94,7 @@
             </mat-tab>
 
              <!-- 2nd -->
-         <mat-tab label="Advance List">
+         <mat-tab label="IP Advance Cancellation">
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
@@ -147,7 +147,6 @@
                     </airmid-table>
                 </div>
             </div>
-
         </mat-tab>
 
             <!-- 3nd -->

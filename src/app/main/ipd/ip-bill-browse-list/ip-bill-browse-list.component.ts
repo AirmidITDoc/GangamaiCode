@@ -36,6 +36,7 @@ import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/conf
 import { MatDialogRef } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from 'ngx-toastr';
+import { IPAdvanceComponent } from '../ip-search-list/ip-advance/ip-advance.component';
 
 @Component({
     selector: 'app-ip-bill-browse-list',
@@ -134,12 +135,12 @@ export class IPBillBrowseListComponent implements OnInit {
             { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BalanceAmt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "CashPay", key: "cashPay", sort: true, align: "center" },
             { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "CardPay", key: "cardPay", sort: true, align: "center" },
             { heading: "Advanceused", key: "advused", sort: true, align: "center" },
-            { heading: "PaidAmount", key: "paidamt", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "PaidAmount", key: "paidamt", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Paid Amt", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "NEFT Pay", key: "nEFTPayAmount", sort: true, align: "center", emptySign: 'NA' },
             { heading: "PayTMPay", key: "payTmPay", sort: true, align: "center", emptySign: 'NA' },
@@ -178,7 +179,7 @@ export class IPBillBrowseListComponent implements OnInit {
             { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', type: 8 },
             { heading: "UHID", key: "uhidNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "RefundAmt", key: "refundId", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "RefundAmt", key: "refundId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "CashPay", key: "cashPay", sort: true, align: "center" },
             { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
@@ -386,6 +387,26 @@ export class IPBillBrowseListComponent implements OnInit {
             });
 
         }, 100);
+    }
+
+    IPAdvanceComponent() {
+
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        const dialogRef = this._matDialog.open(IPAdvanceComponent,
+            {
+                maxWidth: "100%",
+                maxHeight: '95%',
+                width: '80%',
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+            console.log('The dialog was closed - Action', result);
+        });
     }
 
 }

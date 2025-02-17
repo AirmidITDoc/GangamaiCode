@@ -57,7 +57,7 @@ export class RoleTemplateMasterComponent implements OnInit {
         sortField: "RoleId",
         sortOrder: 0,
         filters: [
-            { fieldName: "RoleName", fieldValue: "Hello", opType: OperatorComparer.Contains },
+            { fieldName: "RoleName", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Start", fieldValue: "", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
         ],

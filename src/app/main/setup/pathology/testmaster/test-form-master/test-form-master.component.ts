@@ -340,7 +340,7 @@ debugger
             let mPathTestDetailMasters = this.DSTestList.data.map((row: any) => ({
                 "TestDetId": 0,
                 "TestId": 0,
-                "SubTestId": 12,
+                "SubTestId": 0,
                 "ParameterId": row.ParameterID
             }));
             // var data1=[];
@@ -370,7 +370,7 @@ debugger
                 "TestName": this.testForm.get("TestName").value,
                 "PrintTestName": this.testForm.get("PrintTestName").value,
                 "CategoryId": this.testForm.get("CategoryId").value || 12,
-                "IsSubTest": this.Subtest, //this.testForm.get('IsSubTest').value,
+                "IsSubTest": this.Subtest !== undefined ? this.Subtest : false,//this.testForm.get('IsSubTest').value,
                 "TechniqueName": this.testForm.get("TechniqueName").value,
                 "MachineName": this.testForm.get("MachineName").value,
                 "SuggestionNote": this.testForm.get("SuggestionNote").value,
@@ -529,7 +529,7 @@ debugger
     }
 
     onAdd(event) {
-        debugger
+        // debugger
         console.log(event)
 
         if (this.testForm.get("IsSubTest").value) {
@@ -603,7 +603,7 @@ debugger
 
     list = [];
     onAddTemplate() {
-        debugger
+        // debugger
         this.list.push(
             {
                 TemplateId: this.templatedetailsForm.get("TemplateId").value.TemplateId,
@@ -615,7 +615,7 @@ debugger
     }
 
     addParameter(row) {
-        debugger;
+        // debugger;
 
         if (!row || !row.parameterId) {
             console.error("Invalid row data!");
@@ -648,7 +648,7 @@ debugger
 
 
     addparameterdata(row) {
-        debugger
+        // debugger
         console.log("Adding Parameter:", row);
 
         this.ChargeList = this.DSTestList.data || [];
@@ -671,7 +671,7 @@ debugger
     }
 
     addSubTest(row) {
-        debugger
+        // debugger
 
         if (!row || !row.parameterID) {
             console.error("Invalid row data!");
@@ -723,7 +723,7 @@ debugger
     }
 
     addsubtestdata(row) {
-        debugger
+        // debugger
         console.log("Adding Parameter:", row);
 
         this.ChargeList = this.DSTestList.data || [];

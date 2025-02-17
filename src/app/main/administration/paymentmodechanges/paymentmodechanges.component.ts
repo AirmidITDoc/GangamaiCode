@@ -24,23 +24,27 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class PaymentmodechangesComponent implements OnInit {
   
+  gridConfig: any;
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig: gridModel = {
-        apiUrl: "MReportConfig/List",
+  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
+    gridConfigOP: gridModel = {
+        apiUrl: "Payment/PaymentPharmacyList",
         columnsList: [
-            { heading: "PayDate", key: "paydate", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "ReceiptNo", key: "receiptno", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PayDate", key: "PaymentDate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UHIDNo ", key: "uhidno", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UHIDNo ", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BillAmt", key: "billAmt", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "PaidAmount", key: "paidamount", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "CashAmount", key: "cashamount", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "ChequeAmount", key: "chequeamount", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "CardAmount", key: "cardamount", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "NEFTPay", key: "neftpay", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "PayATM", key: "payatm", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "CashAmount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "ChequeAmount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "CardAmount", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "NEFTPay", key: "neftpayAmount", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PayATM", key: "payTmamount", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -58,32 +62,107 @@ export class PaymentmodechangesComponent implements OnInit {
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "ReportName",
+        sortField: "RegNo",
         sortOrder: 0,
         filters: [
-            { fieldName: "reportName", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+          { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+          { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+          { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+          { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+          { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
         ],
-        row: 25
+        row: 10
     }
 
-    onSave(row: any = null) {
-        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-        buttonElement.blur(); // Remove focus from the button
+    // IP Receipt
 
-        let that = this;
-        // const dialogRef = this._matDialog.open( NewcreateUserComponent, 
-        //     {
-        //         maxHeight: '95vh',
-        //         width: '90%',
-        //         data: row
-        //     });
-        // dialogRef.afterClosed().subscribe(result => {
-        //     if (result) {
-        //         that.grid.bindGridData();
-        //     }
-        // });
-    }
+    gridConfigIP: gridModel = {
+      apiUrl: "MReportConfig/List",
+      columnsList: [
+          { heading: "PayDate", key: "paydate", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "ReceiptNo", key: "receiptno", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "UHIDNo ", key: "uhidno", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "BillAmt", key: "billAmt", sort: true, align: 'left', emptySign: 'NA'},
+          { heading: "PaidAmount", key: "paidamount", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "CashAmount", key: "cashamount", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "ChequeAmount", key: "chequeamount", sort: true, align: 'left', emptySign: 'NA'},
+          { heading: "CardAmount", key: "cardamount", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "NEFTPay", key: "neftpay", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "PayATM", key: "payatm", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+          {
+              heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                  {
+                      action: gridActions.edit, callback: (data: any) => {
+                          this.onSave(data);
+                      }
+                  }, {
+                      action: gridActions.delete, callback: (data: any) => {
+                          this._PaymentmodechangesService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
+                              this.toastr.success(response.message);
+                              this.grid.bindGridData();
+                          });
+                      }
+                  }]
+          } //Action 1-view, 2-Edit,3-delete
+      ],
+      sortField: "ReportName",
+      sortOrder: 0,
+      filters: [
+          { fieldName: "reportName", fieldValue: "", opType: OperatorComparer.Contains },
+          { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+      ],
+      row: 25
+  }
+
+  // IP Advance
+
+  gridConfigIPAdv: gridModel = {
+    apiUrl: "MReportConfig/List",
+    columnsList: [
+        { heading: "PayDate", key: "paydate", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "ReceiptNo", key: "receiptno", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "UHIDNo ", key: "uhidno", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "BillAmt", key: "billAmt", sort: true, align: 'left', emptySign: 'NA'},
+        { heading: "PaidAmount", key: "paidamount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "CashAmount", key: "cashamount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "ChequeAmount", key: "chequeamount", sort: true, align: 'left', emptySign: 'NA'},
+        { heading: "CardAmount", key: "cardamount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "NEFTPay", key: "neftpay", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PayATM", key: "payatm", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._PaymentmodechangesService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
+                            this.toastr.success(response.message);
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ],
+    sortField: "ReportName",
+    sortOrder: 0,
+    filters: [
+        { fieldName: "reportName", fieldValue: "", opType: OperatorComparer.Contains },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ],
+    row: 25
+}
  
   sIsLoading: string = '';
   isLoading = true;
@@ -102,7 +181,20 @@ export class PaymentmodechangesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getsearchList(); 
+
+    this.gridConfig = this.gridConfigOP;
+
+    this._PaymentmodechangesService.UseFormGroup.get('Radio')?.valueChanges.subscribe((value) => {
+      if (value === '0') {
+        this.gridConfig = this.gridConfigOP;
+      } else if (value === '1') {
+        this.gridConfig = this.gridConfigIP;
+      } else if (value === '2') {
+        this.gridConfig = this.gridConfigIPAdv;
+      }
+    });
   }
+
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
@@ -111,6 +203,23 @@ export class PaymentmodechangesComponent implements OnInit {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
+  onSave(row: any = null) {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button
+
+    let that = this;
+    // const dialogRef = this._matDialog.open( NewcreateUserComponent, 
+    //     {
+    //         maxHeight: '95vh',
+    //         width: '90%',
+    //         data: row
+    //     });
+    // dialogRef.afterClosed().subscribe(result => {
+    //     if (result) {
+    //         that.grid.bindGridData();
+    //     }
+    // });
+}
   getsearchList(){
     if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '0'){
       this.getOPReceiptList();

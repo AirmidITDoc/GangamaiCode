@@ -60,16 +60,16 @@ export class BedTransferComponent implements OnInit {
   ) {  }
 
   ngOnInit(): void {
-    
+    debugger
     this.Bedtransfer = this.bedsaveForm();
     if(this.data){
     this.registerObj1=this.data
     console.log("Data:",this.registerObj1);
     debugger
   this.AdmissionId=this.data.admissionId;
-  this.vWardId=this.data.wardId;
-  this.vBedId=this.data.bedId;
-  this.vClassId=this.data.classId;
+  this.Bedtransfer.get("toWardId").setValue(this.registerObj1.wardId)
+  this.Bedtransfer.get("toBedId").setValue(this.registerObj1.bedId)
+  this.Bedtransfer.get("toClassId").setValue(this.registerObj1.classId)
     }
    
     if ((this.data?.regId ?? 0) > 0) {
@@ -162,7 +162,7 @@ export class BedTransferComponent implements OnInit {
       toWardId: [
             { name: "required", Message: "Room Name is required" }
         ],
-        BedId: [
+        toBedId: [
           { name: "required", Message: "Bed Name is required" }
       ],
       ClassId: [

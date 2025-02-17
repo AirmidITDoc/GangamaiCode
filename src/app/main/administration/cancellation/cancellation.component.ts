@@ -89,12 +89,13 @@ export class CancellationComponent implements OnInit {
   ipdGridConfig: gridModel = {
     apiUrl: "Billing/IPBillList",
     columnsList: [
-      { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "UHIDNo", key: "uHIDNo", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },      
+      { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "BillAmount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "DiscountAmt", key: "discountAmt", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "BillAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "DiscountAmt", key: "compDiscAmt", sort: true, align: 'left', emptySign: 'NA' },
       {
         heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
           {
@@ -119,7 +120,7 @@ export class CancellationComponent implements OnInit {
       { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
       { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-      // { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.StartsWith },
+      { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.StartsWith }, //13
       { fieldName: "IsIntrimOrFinal", fieldValue: "2", opType: OperatorComparer.Equals },
       { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
       { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
@@ -130,14 +131,14 @@ export class CancellationComponent implements OnInit {
   // 2nd table
 
   gridConfig1: gridModel = {
-    apiUrl: "MReportConfig/List",
+    apiUrl: "Administration/IPAdvanceList",
     columnsList: [
-      { heading: "Date", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "UHID", key: "uHIDNo", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Advance Amt ", key: "advanceAmt", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Balance Amt ", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "Advance Amt ", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "Balance Amt ", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' },
       {
         heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -155,13 +156,17 @@ export class CancellationComponent implements OnInit {
           }]
       } //Action 1-view, 2-Edit,3-delete
     ],
-    sortField: "ReportName",
+    sortField: "RegID",
     sortOrder: 0,
     filters: [
-      { fieldName: "Date", fieldValue: "", opType: OperatorComparer.Contains },
-      { fieldName: "RegistrationNo", fieldValue: "", opType: OperatorComparer.Contains },
-      { fieldName: "FirstName", fieldValue: "", opType: OperatorComparer.Equals },
-      { fieldName: "LastName", fieldValue: "", opType: OperatorComparer.Equals },
+      { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+      { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+      { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+      { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+      { fieldName: "Reg_No", fieldValue: "106", opType: OperatorComparer.Equals },
+      { fieldName: "PBillNo", fieldValue: "1", opType: OperatorComparer.Equals },
+      { fieldName: "Start", fieldValue: "", opType: OperatorComparer.Equals },
+      { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
     ],
     row: 25
   }
@@ -170,12 +175,14 @@ export class CancellationComponent implements OnInit {
   gridConfig2: gridModel = {
     apiUrl: "Billing/IPRefundBillList",
     columnsList: [
-      { heading: "RefundDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "UHIDNo", key: "uHIDNo", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "RefundTime", key: "refundTime", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "PaymentTime", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
       {
         heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
           {
@@ -208,16 +215,18 @@ export class CancellationComponent implements OnInit {
 
   // 4th table
   gridConfig3: gridModel = {
-    apiUrl: "MReportConfig/List",
+    apiUrl: "Administration/IPRefundAdvanceReceiptList",
     columnsList: [
-      { heading: "RefundDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "UHIDNo", key: "uHIDNo", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "RefundTime", key: "refundTime", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "AdvanceAmount", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "AdvanceUsedAmt", key: "advanceUsedAmt", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "AdvanceUsedAmt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "BalanceAmount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "PaymentTime", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA' },
       {
         heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
           {
@@ -241,7 +250,7 @@ export class CancellationComponent implements OnInit {
       { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
       { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Contains },
+      { fieldName: "Reg_No", fieldValue: "170", opType: OperatorComparer.Equals },
       { fieldName: "Start", fieldValue: "", opType: OperatorComparer.Equals },
       { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
     ],

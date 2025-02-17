@@ -46,7 +46,7 @@ export class IPAdvanceComponent implements OnInit {
   reportPrintObjList: any[] = [];
   reportPrintsummaryObjList: any[] = [];
   Filepath:any;
-
+  autocompleteModeCashCounter: string="CashCounter";
 
   displayedColumns = [
     'Date',

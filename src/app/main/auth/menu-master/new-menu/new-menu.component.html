@@ -92,12 +92,13 @@
                         </airmid-textbox>
                     </div>
 
-                    <mat-form-field appearance="outline"  fxFlex>
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>IsBlock</mat-label>
                         <mat-select placeholder="Please Select IsBlock" 
-                            formControlName="IsBlock" [(ngModel)]="vIsBlock" required>
+                            formControlName="IsBlock" required>
                             <mat-label>Is Block</mat-label>
-                            <mat-option value="0">0</mat-option>
-                            <mat-option value="1">1</mat-option>
+                            <mat-option value="false">0</mat-option>
+                            <mat-option value="true">1</mat-option>
                         </mat-select>
                         <mat-error>Please Select IsBlock</mat-error>
                     </mat-form-field>

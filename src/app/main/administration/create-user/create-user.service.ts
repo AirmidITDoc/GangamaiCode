@@ -41,8 +41,7 @@ export class CreateUserService {
             roleId: [""],
             storeId: 0,
             isDoctorType: "",
-            doctorId: 0,
-            isPoverify: "",
+            isPoverify: false,
             isGrnverify: "",
             isCollection: "",
             isBedStatus: "",
@@ -92,7 +91,7 @@ export class CreateUserService {
             BedStatus: '',
             // IsActive: 'true',
             IsDicslimit:'',
-            DoctorID:'',
+            DoctorID:0,
             isActive:[true,[Validators.required]],
         });
     }

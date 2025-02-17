@@ -97,6 +97,7 @@ export class ServiceMasterFormComponent implements OnInit {
         this.serviceForm = this._serviceMasterService.createServicemasterForm();
        
         this.serviceForm = this._serviceMasterService.createServicemasterForm();
+        this.getClassList(this.registerObj.serviceId)
 
         this.serviceForm.get('EffectiveDate').setValue(new Date());
 
@@ -106,8 +107,7 @@ export class ServiceMasterFormComponent implements OnInit {
             this.vServiceName = this.registerObj.serviceName;
             this.vServiceShortDesc = this.registerObj.serviceShortDesc;
         }
-        this.getClassList(this.registerObj.serviceId)
-
+      
         var mdata = {
             ServiceId: this.data?.serviceId,
             groupId: this.data?.groupId,

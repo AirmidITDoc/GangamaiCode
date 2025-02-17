@@ -141,17 +141,15 @@
                             <mat-checkbox formControlName="isDoctorType" (change)="chkdoctor($event)" 
                              style="padding: 10px;">IsDoctor
                             </mat-checkbox>&nbsp;
-                            <!-- [(ngModel)]="data.isDoctorType" -->
 
-                            <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
+                            <airmid-dropdown label="Doctor Name" formControlName="DoctorID" fxFlex="35%"
                             [formGroup]="myuserform" [validations]="getValidationMessages().DoctorID"
                             [mode]="autocompleteModedoctor" *ngIf="docflag">
                             <!-- [value]="vdoctorID"  -->
                         </airmid-dropdown>
-                            
                         </div>
 
-                        <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="30%" >
+                        <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="40%" >
                             <mat-checkbox formControlName="IsDicslimit" (change)="chkDiscLimit($event)" 
                                     style="padding: 10px;">IsDiscountLimit
                             </mat-checkbox>&nbsp;
@@ -160,7 +158,6 @@
                                 <mat-label>Discount %</mat-label>
                                 <input matAutocompletePosition="below" type="text" matInput  
                                     formControlName="DiscLimitPer"> 
-                                    <!-- (keyup)="chkdisclimit()" -->
                             </mat-form-field>
                         </div>
                     </div>
@@ -170,22 +167,16 @@
                             <!-- [checked] -->
                             <div fxLayout="row wrap" fxLayoutAlign="space-between center"
                                 class="w-100-p gap-8">
-                                <mat-checkbox formControlName="isGrnverify">
+                                <mat-checkbox formControlName="isGrnverify" [(ngModel)]="visGRNVerify">
                                     GRN Verify</mat-checkbox>
-                                    <!-- [(ngModel)]="data.isGrnverify" -->
-                                <mat-checkbox formControlName="isPoverify">
+                                <mat-checkbox  formControlName="isPoverify" [(ngModel)]="visPOVerify">
                                     PO Verify</mat-checkbox>
-                                    <!-- [(ngModel)]="data.isPoverify" -->
-                                <mat-checkbox formControlName="Ipoverify">
-                                    Incharge PO Verify</mat-checkbox>
-                                    <!-- [(ngModel)]="data.isPOInchargeVerify" -->
-                               
-                                <mat-checkbox formControlName="Indentverify">
+                                <mat-checkbox  formControlName="Ipoverify" [(ngModel)]="visGRNVerify">
+                                    Incharge PO Verify</mat-checkbox>                               
+                                <mat-checkbox  formControlName="Indentverify" [(ngModel)]="visIndentVerify">
                                     Indent Verify</mat-checkbox>
-                                    <!-- [(ngModel)]="data.isIndentVerify" -->
-                                <mat-checkbox formControlName="IIverify">
+                                <mat-checkbox  formControlName="IIverify" [(ngModel)]="visInchIndVfy">
                                     Incharge Indent Verify</mat-checkbox>
-                                    <!-- [(ngModel)]="data.isInchIndVfy" -->
                             </div>
                         </div>
                     </div>
@@ -195,16 +186,13 @@
                             <!-- [checked] -->
                             <div fxLayout="row wrap" fxLayoutAlign="space-between center"
                                 class="w-100-p gap-8" fxFlex="50%">
-                                <mat-checkbox formControlName="PharExpOpt" >
-                                    <!-- [(ngModel)]="data.PharExpOpt" -->
+                                <mat-checkbox  formControlName="PharExpOpt" [(ngModel)]="vpharExtOpt">
                                     PharmacyExternalopt
                                 </mat-checkbox>
-                                <mat-checkbox formControlName="PharIPOpt">
-                                    <!--  [(ngModel)]="data.PharIPOpt" -->
+                                <mat-checkbox  formControlName="PharIPOpt" [(ngModel)]="vpharIPOpt">
                                     PharmacyIPDopt
                                 </mat-checkbox>
-                                <mat-checkbox formControlName="PharOPOpt">
-                                    <!--  [(ngModel)]="data.PharOPOpt" -->
+                                <mat-checkbox  formControlName="PharOPOpt" [(ngModel)]="vpharOPOpt">
                                     PharmacyOPDopt
                                 </mat-checkbox>  
                             </div>
@@ -220,29 +208,29 @@
                             <!-- <div fxLayout="row wrap" fxLayoutGap="12px 0px grid"> -->
                                 <div class="icon-info-col " fxLayout="row wrap" style="row-gap: 4px;">
                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
-                                        <mat-checkbox formControlName="CollectionInformation">
+                                        <mat-checkbox  formControlName="CollectionInformation" [(ngModel)]="visCollection">
                                             Daily Dashboard</mat-checkbox>
                                     </div>
                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
-                                        <mat-checkbox formControlName="PatientInformation" >
+                                        <mat-checkbox  formControlName="PatientInformation" [(ngModel)]="visPatientInfo">
                                             PatientInformation</mat-checkbox>
                                     </div>
                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
-                                        <mat-checkbox formControlName="BedStatus">
+                                        <mat-checkbox  formControlName="BedStatus" [(ngModel)]="visBedStatus">
                                             Bed Occupaincy Dashboard</mat-checkbox>
                                     </div>
                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%"> 
-                                        <mat-checkbox formControlName="IsPharmacyBalClearnace">
+                                        <mat-checkbox  formControlName="IsPharmacyBalClearnace">
                                             Is Pharmacy Bal Clearnace
                                         </mat-checkbox>
                                     </div>
                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
-                                        <mat-checkbox formControlName="CurrentStock">
+                                        <mat-checkbox formControlName="CurrentStock" [(ngModel)]="visCurrentStk">
                                             Pharmacy Dashboard
                                         </mat-checkbox>
                                     </div>
                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
-                                        <mat-checkbox formControlName="IsAddChargeDelete">
+                                        <mat-checkbox formControlName="IsAddChargeDelete" [(ngModel)]="vaddChargeIsDelete">
                                             IsAddChargeDelete
                                         </mat-checkbox>
                                     </div>

@@ -34,11 +34,14 @@ export class NewMenuComponent implements OnInit {
         debugger
         this.menuForm = this._MenuMasterService.createMenuForm();
         console.log("EditData:", this.data)
-        // if (this.data?.isDisplay == true) {
-        //     this.vIsBlock = 1
-        // } else {
-        //     this.vIsBlock = 0
-        // }
+        if (this.data?.isDisplay == true) {
+            this.menuForm.get('IsBlock').setValue("true");
+            // this.vIsBlock = 1
+        } else {            
+            this.menuForm.get('IsBlock').setValue("false");
+            // this.vIsBlock = 0
+        }
+        
 
         if ((this.data?.id ?? 0) > 0) {
             var m_data = {
@@ -51,7 +54,8 @@ export class NewMenuComponent implements OnInit {
                 sortOrder: this.data?.sortOrder,
                 // IsBlock: this.data?.isDisplay ? 1 : 0,
             };
-            this.vIsBlock=this.data.isDisplay ? 1 : 0
+            // this.vIsBlock=this.data.isDisplay ? 1 : 0
+            // this.menuForm.get("IsBlock").setValue(this.data.isDisplay)
             this.isActive = this.data.isActive
             this.menuForm.patchValue(m_data);
         }
