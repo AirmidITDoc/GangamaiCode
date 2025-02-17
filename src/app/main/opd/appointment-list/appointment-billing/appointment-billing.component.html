@@ -7,7 +7,8 @@
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
-                    <app-common-date [screenFrom]="'OP-billing'" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    <app-common-date [screenFrom]="'OP-billing'"
+                        (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                     <div class="close-icon">
                         <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                             matTooltip="Close">
@@ -31,14 +32,15 @@
                                 <airmid-autocomplete lbl="RgId" [formGroup]="searchForm" formControlName="regId"
                                     placeholderText="Enter Patient Name" fxFlex
                                     ApiUrl="VisitDetail/search-patient?Keyword="
-                                    (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
+                                    (selectionChange)="getSelectedObj($event)" TextField="formattedText"
+                                    ValueField="regId"></airmid-autocomplete>
 
                                 <airmid-dropdown label="CashCounterID" formControlName="CashCounterID" fxFlex
                                     [formGroup]="searchForm" [validations]="getValidationMessages().cashCounterId"
                                     [mode]="autocompleteModeCashcounter">
                                 </airmid-dropdown>
 
-                             
+
                             </div>
                         </form>
                     </div>
@@ -68,7 +70,7 @@
                                                     </span>
                                                     <span>:</span>
                                                     <span class="patient-col-value">{{PatientName}}
-                                                        </span>
+                                                    </span>
                                                 </div>
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Doctor Name</span>
@@ -172,7 +174,9 @@
                                     </div> -->
 
                                     <div fxFlex>
-                                        <airmid-textbox label="Service name" formControlName="serviceName" [formGroup]="chargeForm" [validations]="getValidationMessages().serviceName">
+                                        <airmid-textbox label="Service name" formControlName="serviceName"
+                                            [formGroup]="chargeForm"
+                                            [validations]="getValidationMessages().serviceName">
                                         </airmid-textbox>
                                     </div>
                                     <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
@@ -195,8 +199,7 @@
                                     </div>
                                     <div *ngIf="isDoctor">
                                         <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
-                                            [formGroup]="chargeForm"
-                                            [validations]="getValidationMessages().DoctorId"
+                                            [formGroup]="chargeForm" [validations]="getValidationMessages().DoctorId"
                                             [mode]="autocompleteModedeptdoc">
                                         </airmid-dropdown>
                                     </div>
@@ -649,8 +652,8 @@
                                         </airmid-textbox>
                                     </div>
                                     <div *ngIf="Consessionres">
-                                        <airmid-dropdown label="Concession Reason"
-                                            formControlName="concessionId" [formGroup]="totalChargeForm"
+                                        <airmid-dropdown label="Concession Reason" formControlName="concessionId"
+                                            [formGroup]="totalChargeForm"
                                             [validations]="getValidationMessages().concessionId"
                                             [mode]="autocompleteModeConcession"
                                             (selectionChange)="selectChangeConcession($event)">
