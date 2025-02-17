@@ -318,7 +318,9 @@ export class AdmissionService {
   public getDoctorMaster2Combo() {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
   }
-
+  public geReftDoctorMaster2() {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ReferDoctorMasterForCombo", {})
+  }
   //Ward Combobox List
   public getWardCombo(loader = true){ 
     if (loader) {

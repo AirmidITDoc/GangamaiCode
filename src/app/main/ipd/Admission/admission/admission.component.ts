@@ -1220,14 +1220,13 @@ export class AdmissionComponent implements OnInit {
 
 
   getRefDoctorList() {
-    this._AdmissionService.getDoctorMaster2Combo().subscribe(data => {
+    this._AdmissionService.geReftDoctorMaster2().subscribe(data => {
       this.RefDoctorList = data;
       this.optionsRefDoc = this.RefDoctorList.slice();
       this.filteredOptionsRefrenceDoc = this.hospitalFormGroup.get('refDoctorId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterRefdoc(value) : this.RefDoctorList.slice()),
-      );
-
+      ); 
     });
   }
 

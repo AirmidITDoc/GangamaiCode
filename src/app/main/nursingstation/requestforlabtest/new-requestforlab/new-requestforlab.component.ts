@@ -384,6 +384,7 @@ export class NewRequestforlabComponent implements OnInit {
       ipPathOrRadiRequestLabRequestInsert['price'] = element.Price;
       ipPathOrRadiRequestLabRequestInsert['isStatus'] = false;
       ipPathOrRadiRequestLabRequestInsert['IsOnFileTest'] = false;
+      ipPathOrRadiRequestLabRequestInsert['doctorId'] = element.DoctorId;
       ipPathOrRadiRequestLabRequestInsertArray.push(ipPathOrRadiRequestLabRequestInsert);
     });
 
@@ -420,10 +421,13 @@ export class LabRequest {
   ServiceName: any;
   Price: number;
   ServiceId: any;
+  DoctorId:any;
+  
   constructor(LabRequest) {
     this.ServiceName = LabRequest.ServiceName || '';
     this.Price = LabRequest.Price || 0;
     this.ServiceId = LabRequest.ServiceId || 0;
+    this.DoctorId = LabRequest.DoctorId || 0;
   }
 }
 

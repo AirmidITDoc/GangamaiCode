@@ -136,44 +136,7 @@ export class NewDoctorComponent implements OnInit {
             this._doctorService.myform.get('isActive').setValue(1);
             this._doctorService.myform.get('IsConsultant').setValue(1);
         }
-        this.getDepartmentList();
-
-        this.filteredOptionsPrefix = this._doctorService.myform.get('PrefixID').valueChanges.pipe(
-            startWith(''),
-            map(value => this._filterPrex(value)),
-
-        );
-
-        this.filteredDoctortype = this._doctorService.myform.get('DoctorTypeId').valueChanges.pipe(
-            startWith(''),
-            map(value => this._filterDcotype(value)),
-
-        );
-
-        this.filteredOptionsDep = this._doctorService.myform.get('Departmentid').valueChanges.pipe(
-            startWith(''),
-            map(value => this._filterDep(value)),
-
-        );
-
-        this.filteredOptionsPrefix = this._doctorService.myform.get('PrefixID').valueChanges.pipe(
-            startWith(''),
-            map(value => this._filterPrex(value)),
-
-        );
-
-        this.filteredDoctortype = this._doctorService.myform.get('DoctorTypeId').valueChanges.pipe(
-            startWith(''),
-            map(value => this._filterDcotype(value)),
-
-        );
-
-
-        this.filteredOptionsCity = this._doctorService.myform.get('CityId').valueChanges.pipe(
-            startWith(''),
-            map(value => this._filtercity(value)),
-
-        );
+        this.getDepartmentList(); 
 
     }
 
@@ -424,36 +387,32 @@ export class NewDoctorComponent implements OnInit {
     //         const ddValue = this.GendercmbList.find(c => c.GenderId == this.data.registerObj.GenderId);
     //         this._doctorService.myform.get('GenderId').setValue(ddValue);
     //     })
-    // }
+    // } 
 
-
-
-    getDoctortypeNameCombobox() {
-
+    getDoctortypeNameCombobox() { 
         this._doctorService.getDoctortypeMasterCombo().subscribe(data => {
-            this.DoctortypecmbList = data;
+            this.DoctortypecmbList = data; 
+            this.filteredDoctortype = this._doctorService.myform.get('DoctorTypeId').valueChanges.pipe(
+                startWith(''),
+                map(value => this._filterDcotype(value)), 
+            );
             if (this.data) {
                 const ddValue = this.DoctortypecmbList.filter(c => c.Id == this.registerObj.DoctorTypeId);
                 this._doctorService.myform.get('DoctorTypeId').setValue(ddValue[0]);
                 this._doctorService.myform.updateValueAndValidity();
                 return;
             }
-        });
-
-    }
-
-
+        }); 
+    } 
     private _filterDcotype(value: any): string[] {
         if (value) {
             const filterValue = value && value.DoctorType ? value.DoctorType.toLowerCase() : value.toLowerCase();
             return this.DoctortypecmbList.filter(option => option.DoctorType.toLowerCase().includes(filterValue));
         }
-    }
-
+    } 
     getOptionTextPrefix(option) {
         return option && option.PrefixName ? option.PrefixName : '';
-    }
-
+    } 
     getOptionTextdoctype(option) {
         return option && option.DoctorType ? option.DoctorType : '';
 
@@ -475,17 +434,29 @@ export class NewDoctorComponent implements OnInit {
     getDepartmentList() {
         let that = this;
         this._doctorService.getDepartmentCombobox().subscribe(data => {
-            // data.forEach((obj, i) => obj.selected = false)
             this.DepartmentcmbList = data;
-            if (that.data)
-                this.getDocDeptList();
-            this.optionsDep = this.DepartmentcmbList.slice();
             this.filteredOptionsDep = this._doctorService.myform.get('Departmentid').valueChanges.pipe(
-                startWith(''),
+                startWith(''), 
                 map(value => value ? this._filterDep(value) : this.DepartmentcmbList.slice()),
-            );
-
+            );  
+            if (that.data){
+                this.getDocDeptList();
+            }   
+            // this.optionsDep = this.DepartmentcmbList.slice();
+            // this.filteredOptionsDep = this._doctorService.myform.get('Departmentid').valueChanges.pipe(
+            //     startWith(''),
+            //     map(value => value ? this._filterDep(value) : this.DepartmentcmbList.slice()),
+            // ); 
         });
+    }
+    private _filterDep(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.DepartmentName ? value.DepartmentName.toLowerCase() : value.toLowerCase();
+            return this.DepartmentcmbList.filter(option => option.DepartmentName.toLowerCase().includes(filterValue));
+        } 
+    }
+    getOptionTextDep(option) {
+        return option && option.DepartmentName ? option.DepartmentName : '';
     }
     selectedItems = [];
     toggleSelection(item: any) {
@@ -503,16 +474,7 @@ export class NewDoctorComponent implements OnInit {
     }
 
 
-    private _filterDep(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
-            return this.optionsDep.filter(option => option.departmentName.toLowerCase().includes(filterValue));
-        }
-
-    }
-    getOptionTextDep(option) {
-        return option && option.departmentName ? option.departmentName : '';
-    }
+ 
 
     onSave() {
       
@@ -557,12 +519,12 @@ export class NewDoctorComponent implements OnInit {
             return;
         }
        
-        if ((this.vDoctypeId == '' || this.vDoctypeId == null || this.vDoctypeId == undefined)) {
-            this.toastr.warning('Please select valid Doctor Type', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
+        // if ((this.vDoctypeId == '' || this.vDoctypeId == null || this.vDoctypeId == undefined)) {
+        //     this.toastr.warning('Please select valid Doctor Type', 'Warning !', {
+        //         toastClass: 'tostr-tost custom-toast-warning',
+        //     });
+        //     return;
+        // }
         // Department validation chipset 
         if (this.selectedItems.length == 0){
             this.toastr.warning('Please select valid Department', 'Warning !', {

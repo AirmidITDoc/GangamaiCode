@@ -57,16 +57,31 @@ export class StoreFormMasterComponent implements OnInit {
     filteredOptionsphsalesCashCounter: Observable<string[]>;
     CashCounterList1: any = [];
     filteredOptionsphsalesrecCashCounter: Observable<string[]>;
+    filteredOptionsphAdvRecesCashCounter: Observable<string[]>;
     CashCounterList2: any = [];
     filteredOptionsphsalesreturnCashCounter: Observable<string[]>;
+    filteredOptionsphAdvCashCounter: Observable<string[]>;
+    filteredOptionsphAdvRefundCashCounter: Observable<string[]>;
+    filteredOptionsphAdvRefRecesCashCounter: Observable<string[]>;
     CashCounterList3: any = [];
 
     isCashCounter1Selected: boolean = false;
     isCashCounter2Selected: boolean = false;
     isCashCounter3Selected: boolean = false;
+    isCashCounterAdvSelected: boolean = false;
+    isCashCounterAdvReceSelected: boolean = false;
+    isCashCounterAdvRefundSelected: boolean = false;
+    isCashCounterAdvRefundReceSelected: boolean = false;
     vCashcount1: any;
     vCashcount2: any;
     vCashcount3: any;
+    vAdvCashcount:any;
+    vPrintStoreName:any;
+    vPrintStoreAddress:any;
+    vPrintTermsCondition:any;
+    vCashcountAdvReceipt:any;
+    vCashcountAdvRefund:any;
+    
 
     constructor(
         public _StoreService: StoreMasterService,
@@ -226,7 +241,7 @@ export class StoreFormMasterComponent implements OnInit {
         }
         // if (this._StoreService.myform.valid) {
         if (!this._StoreService.myform.get("StoreId").value) {
-            this.Savebtn = true;
+            // this.Savebtn = true;
             var m_data = {
                 insertStoreMaster: {
                     storeShortName: this._StoreService.myform.get("StoreShortName").value.trim(),
@@ -260,7 +275,7 @@ export class StoreFormMasterComponent implements OnInit {
                     this.toastr.success('Record Saved Successfully.', 'Saved !', {
                         toastClass: 'tostr-tost custom-toast-success',
                     });
-                    this.Savebtn = false;
+                    // this.Savebtn = false;
                     this.onClose();
                 } else {
                     this.toastr.error('Store-Form Master Master Data not saved !, Please check API error..', 'Error !', {
@@ -269,7 +284,7 @@ export class StoreFormMasterComponent implements OnInit {
                 }
             });
         } else {
-            this.Savebtn = true;
+            // this.Savebtn = true;
             var m_dataUpdate = {
                 updateStoreMaster: {
                     storeId: this._StoreService.myform.get("StoreId").value,
@@ -299,7 +314,7 @@ export class StoreFormMasterComponent implements OnInit {
                     this.toastr.success('Record updated Successfully.', 'updated !', {
                         toastClass: 'tostr-tost custom-toast-success',
                     });
-                    this.Savebtn = false;
+                    // this.Savebtn = false;
                     this.onClose();
                 } else {
                     this.toastr.error('Store-Form Master Master Data not updated !, Please check API error..', 'Error !', {
@@ -416,7 +431,88 @@ export class StoreFormMasterComponent implements OnInit {
             return '';
         return option.CashCounterName;
     }
+    getCashCounterAdvComboList() {
+        this._StoreService.getCashcounterList().subscribe(data => {
+            this.CashCounterList3 = data
+            this.filteredOptionsphAdvCashCounter = this._StoreService.myform.get('PahsalesreturnCashCounterID').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterCashCounterAdv(value) : this.CashCounterList3.slice()),
+            ); 
+        });
+    } 
+    private _filterCashCounterAdv(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.CashCounterName ? value.CashCounterName.toLowerCase() : value.toLowerCase();
+            return this.CashCounterList3.filter(option => option.CashCounterName.toLowerCase().includes(filterValue));
+        }
+    }
+    getOptionTextCashCounterAdv(option) {
+        if (!option)
+            return '';
+        return option.CashCounterName;
+    }
 
+    getCashCounterAdvReceComboList() {
+        this._StoreService.getCashcounterList().subscribe(data => {
+            this.CashCounterList3 = data
+            this.filteredOptionsphAdvRecesCashCounter = this._StoreService.myform.get('PahsalesreturnCashCounterID').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterCashCounterAdvRece(value) : this.CashCounterList3.slice()),
+            ); 
+        });
+    } 
+    private _filterCashCounterAdvRece(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.CashCounterName ? value.CashCounterName.toLowerCase() : value.toLowerCase();
+            return this.CashCounterList3.filter(option => option.CashCounterName.toLowerCase().includes(filterValue));
+        }
+    }
+    getOptionTextCashCounterAdvRece(option) {
+        if (!option)
+            return '';
+        return option.CashCounterName;
+    }
+
+    getCashCounterAdvRefundComboList() {
+        this._StoreService.getCashcounterList().subscribe(data => {
+            this.CashCounterList3 = data
+            this.filteredOptionsphAdvRefundCashCounter = this._StoreService.myform.get('PahsalesreturnCashCounterID').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterCashCounterAdvRefund(value) : this.CashCounterList3.slice()),
+            ); 
+        });
+    } 
+    private _filterCashCounterAdvRefund(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.CashCounterName ? value.CashCounterName.toLowerCase() : value.toLowerCase();
+            return this.CashCounterList3.filter(option => option.CashCounterName.toLowerCase().includes(filterValue));
+        }
+    }
+    getOptionTextCashCounterAdvRefund(option) {
+        if (!option)
+            return '';
+        return option.CashCounterName;
+    }
+    getCashCounterAdvRefundReceComboList() {
+        this._StoreService.getCashcounterList().subscribe(data => {
+            this.CashCounterList3 = data
+            this.filteredOptionsphAdvRefRecesCashCounter = this._StoreService.myform.get('PahsalesreturnCashCounterID').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterCashCounterAdvRefundRece(value) : this.CashCounterList3.slice()),
+            ); 
+        });
+    } 
+    private _filterCashCounterAdvRefundRece(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.CashCounterName ? value.CashCounterName.toLowerCase() : value.toLowerCase();
+            return this.CashCounterList3.filter(option => option.CashCounterName.toLowerCase().includes(filterValue));
+        }
+    }
+    getOptionTextCashCounterAdvRefundRece(option) {
+        if (!option)
+            return '';
+        return option.CashCounterName;
+    }
 
 
 
