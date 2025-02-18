@@ -20,14 +20,16 @@
                 <input type="hidden" name="id" formControlName="id">
                 
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <div fxFlex>
                         <airmid-textbox 
-                            label="Terms Of Payment Type Name"
+                            label="TermsOfPaymentTypeName"
                             formControlName="termsOfPayment"
                             [value]="data?.termsOfPayment"
                             [formGroup]="termsofpaymentForm"
                             [validations]="getValidationMessages().termsOfPayment"
                             [maxLength]="50">
-                        </airmid-textbox> 
+                        </airmid-textbox>
+                    </div> 
                 </div>
                 
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">

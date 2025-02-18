@@ -111,6 +111,9 @@ export class IPRefundofBillComponent implements OnInit {
   isCashCounterSelected:boolean=false;
   filteredOptionsCashCounter:Observable<string[]>;
 
+
+  autocompleteModeCashcounter: string = "CashCounter";
+
   displayedColumns1 = [
     'ServiceName',
     'Qty',
@@ -206,6 +209,66 @@ refundForm(): FormGroup {
     Remark: [''],   
   });
 } 
+getValidationMessages() {
+  return {
+    serviceName: [
+      { name: "required", Message: "Service Name is required" },
+    ],
+    cashCounterId: [
+      { name: "required", Message: "First Name is required" },
+
+      { name: "pattern", Message: "only Number allowed." }
+    ],
+    price: [
+      { name: "pattern", Message: "only Number allowed." }
+    ],
+    qty: [
+      { name: "required", Message: "Qty required!", },
+      { name: "pattern", Message: "only Number allowed.", },
+      { name: "min", Message: "Enter valid qty.", }
+    ],
+    totalAmount: [
+      {
+        name: "pattern", Message: "only Number allowed."
+      }
+    ],
+    totalNetAmount: [
+      {
+        name: "pattern", Message: "only Number allowed."
+      }
+    ],
+    doctoreId: [
+      { name: "pattern", Message: "only Char allowed." }
+    ],
+    discountPer: [
+      { name: "pattern", Message: "only Number allowed." }
+    ],
+    discountAmount: [{ name: "pattern", Message: "only Number allowed." }],
+    netAmount: [{ name: "pattern", Message: "only Number allowed." }],
+    concessionId: [{}],
+    DoctorId: [{}]
+  }
+}
+
+  //new code 
+  getSelectedObj(obj) {
+    console.log(obj) 
+       this.RegId = obj.value; 
+       if ((this.RegId ?? 0) > 0) {
+          // console.log(this.data)
+           setTimeout(() => {
+               this._IpSearchListService.getRegistraionById(this.RegId).subscribe((response) => {
+                   this.registerObj = response;
+                   this.PatientName = this.registerObj.firstName + " " + this.registerObj.middleName + " " + this.registerObj.lastName
+
+                   console.log(this.registerObj)
+               });
+
+           }, 500);
+       }
+
+   }
+
   filterStates(name: string) {
     let tempArr = [];
 

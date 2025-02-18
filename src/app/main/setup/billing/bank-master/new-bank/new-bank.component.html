@@ -21,8 +21,7 @@
                 <input type="hidden" name="bankId" formControlName="bankId">
                 
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                    
-                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxFlex>
                         <airmid-textbox 
                             label="Bank Name" 
                             formControlName="bankName" 
@@ -31,7 +30,6 @@
                             [validations]="getValidationMessages().bankName">
                         </airmid-textbox>
                     </div>
-                                   
                 </div>
 
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
