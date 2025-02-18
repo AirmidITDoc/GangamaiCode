@@ -237,8 +237,7 @@
                                             <ng-container matColumnDef="RegDate">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header> RegDate
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.RegDate ?
-                                                    (element.RegDate | date:'shortDate') : '-'}}
+                                                <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.RegDate | date:'dd/MM/YYYY'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -249,11 +248,11 @@
                                                     element.MahRegNo : '-'}}
                                                 </mat-cell>
                                             </ng-container>
+                                            
                                             <ng-container matColumnDef="MahRegDate">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header> MahRegDate
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.MahRegDate ?
-                                                    (element.MahRegDate | date:'shortDate') : '-'}}
+                                                <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.MahRegDate | date:'dd/MM/YYYY'}}
                                                 </mat-cell>
                                             </ng-container>
 

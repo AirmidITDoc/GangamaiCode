@@ -47,7 +47,8 @@ export class StoreMasterService {
             PahAdvCashCounterID:[''],
             PahAdvReceiCashCounterID:[''],
             PahAdvRefundCashCounterID:[''],
-            PahAdvRefundReceiCashCounterID:['']
+            PahAdvRefundReceiCashCounterID:[''],
+            MobileNo:['']
         });
     }
 
