@@ -26,6 +26,7 @@ export class BillingClassMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
+            classRate: [0],
             isActive:[true,[Validators.required]]
         });
     }

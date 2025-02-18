@@ -19,14 +19,16 @@
             <form [formGroup]="modeofpayForm">
                 <input type="hidden" name="id" formControlName="id">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                    <airmid-textbox 
-                        label="Mode Of Payment"
-                        formControlName="modeOfPayment"
-                        [value]="data?.modeOfPayment"
-                        [formGroup]="modeofpayForm"
-                        [validations]="getValidationMessages().modeOfPayment"
-                        [maxLength]="50">
-                    </airmid-textbox> 
+                    <div fxFlex>
+                        <airmid-textbox 
+                            label="Mode Of Payment"
+                            formControlName="modeOfPayment"
+                            [value]="data?.modeOfPayment"
+                            [formGroup]="modeofpayForm"
+                            [validations]="getValidationMessages().modeOfPayment"
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div> 
                 </div>
                 
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">

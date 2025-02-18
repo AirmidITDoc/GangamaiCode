@@ -24,7 +24,7 @@ export class CashCounterMasterComponent implements OnInit {
         apiUrl: "CashCounter/List",
         columnsList: [
             { heading: "Code", key: "cashCounterId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
             { heading: "Prefix Name", key: "prefix", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },

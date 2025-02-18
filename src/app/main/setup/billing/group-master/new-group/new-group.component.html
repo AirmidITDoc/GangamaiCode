@@ -20,14 +20,16 @@
             <form [formGroup]="groupForm">
                 <input type="hidden" name="groupId" formControlName="groupId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                    <airmid-textbox 
-                        label="GroupName" 
-                        formControlName="groupName" 
-                        [value]="data?.groupName"
-                        [formGroup]="groupForm"
-                        [validations]="getValidationMessages().groupName"
-                        [maxLength]="50">
-                    </airmid-textbox>
+                    <div fxFlex>
+                        <airmid-textbox 
+                            label="GroupName" 
+                            formControlName="groupName" 
+                            [value]="data?.groupName"
+                            [formGroup]="groupForm"
+                            [validations]="getValidationMessages().groupName"
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
                 </div>
 
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
