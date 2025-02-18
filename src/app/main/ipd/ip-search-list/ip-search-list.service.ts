@@ -53,8 +53,8 @@ constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
       IsDischarge:[0],
       WardId: '0',
       RoomName: '',
-      start: [],
-      end: [],
+      fromDate: [],
+      enddate: [],
       DischargeId:[''],
       
     });
@@ -1137,6 +1137,12 @@ public getRegistrations(keyword) {
 
 public getItemlist(Param){//m_Rtrv_IPDrugName,Retrieve_ItemName_BalanceQty
   return this._httpClient1.PostData("ItemMaster/ItemMasterList",Param)
+}
+
+
+//new
+public InsertIPLabReqCharges(employee) {
+  return this._httpClient.post("InPatient/LabRequestCharges",employee)
 }
 }
 

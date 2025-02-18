@@ -113,21 +113,7 @@ export class OpdSearchListComponent implements OnInit {
       });
     } 
   } 
-  // getSelectedObj(obj) {
-  //   console.log(obj)
-  //   this.registerObj = obj; 
-  //   this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
-  //   this.RegId = obj.RegID;  
-  //   this.RegId = obj.RegId;  
-  //   this.vAdmissionID = obj.AdmissionID;
-  //   this.RegNo = obj.RegNo;
-  //   this.AgeYear = obj.AgeYear; 
-  //   this.AgeDay = obj.AgeDay;
-  //   this.AgeMonth = obj.AgeMonth;
-  //   this.GenderName = obj.GenderName;
-  //   this.MobileNo = obj.MobileNo;  
-  //   this.getCreditBillDetails(); 
-  // }
+ 
 
   getSelectedObj(obj) {
     console.log(obj)

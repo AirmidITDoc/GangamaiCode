@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CompanysettlementService } from './companysettlement.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -23,11 +23,11 @@ import { DatePipe } from '@angular/common';
 export class CompanysettlementComponent implements OnInit {
     searchFormGroup: FormGroup
     myFormGroup: FormGroup
-RegId1="39";
+RegId1="0";
 BillNo:any;
 vpaidamt: any = 0;
 vbalanceamt: any = 0;
-@ViewChild('grid1') grid1: AirmidTableComponent;
+// @ViewChild('grid1') grid1: AirmidTableComponent;
 
     constructor(public _CompanysettlementService: CompanysettlementService, 
          private commonService: PrintserviceService,
@@ -35,13 +35,17 @@ vbalanceamt: any = 0;
                 public datePipe: DatePipe,
                 public toastr: ToastrService, public formBuilder: UntypedFormBuilder,) 
                 { }
-        
+                
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+    ngAfterViewInit() {
+       this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsTemplate1;
+    }
     gridConfig: gridModel = {
         apiUrl: "OPBill/OPBillListSettlementList",
         columnsList: [
+            {heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA',width:60},
             { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BillAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
@@ -78,8 +82,7 @@ vbalanceamt: any = 0;
         this.searchFormGroup = this.createSearchForm();
         this.myFormGroup= this.createSearchForm1();
     }
-
-    onSave(contact: any = null) {
+        onSave(contact: any = null) {
 
         console.log(contact)
         debugger
@@ -138,6 +141,7 @@ vbalanceamt: any = 0;
 
 
     viewgetOPPayemntPdf(data){
+        debugger
         this.commonService.Onprint("PaymentId",data.paymentId,"OPPaymentReceipt");
     }
     
@@ -160,68 +164,58 @@ vbalanceamt: any = 0;
     getSelectedObj(obj) {
         debugger
         console.log(obj)
-        this.RegId1 = obj.value;
-        this.PatientName=obj.text;
+        this.RegId1 = obj.regId;
+        // this.PatientName=obj.text;
        setTimeout(() => {
             this._CompanysettlementService.getRegistraionById(this.RegId1).subscribe((response) => {
             this.registerObj = response;
             console.log(response)
-
+                this.GetDetails(response)
             });
 
         }, 500);
         
+}
+
+GetDetails(data) {
+    debugger
+    this.gridConfig = {
+        apiUrl: "OPBill/OPBillListSettlementList",
+        columnsList: [
+            {heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA',width:60},
+            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "BillAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "ConsessionAmt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "NetAmount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "BalanceAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
+            // {
+            //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+            //         {
+            //             action: gridActions.edit, callback: (data: any) => {
+            //                 this.onSave(data);
+            //             }
+            //         }, 
+            //         {
+            //             action: gridActions.print, callback: (data: any) => {
+            //                 this.viewgetOPPayemntPdf(data);
+            //             }
+            //         }
+            //         ]
+            // } 
+        ],
+        sortField: "BillNo",
+        sortOrder: 0,
         filters: [
             { fieldName: "RegId", fieldValue: String(this.RegId1), opType: OperatorComparer.Contains },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
-        ]
-        
-        this.grid.bindGridData();
+        ],
+        row: 25
+    }
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData();
 }
-
-
-
 }
-
-
-   //   let Data = {
-                    
-                //         "opCreditPayment": {
-                //           "paymentId": 0,
-                //           "billNo":237808,
-                //           "paymentDate": "2024-08-10",
-                //           "paymentTime": "10:00:00 AM",
-                //           "cashPayAmount": 10,
-                //           "chequePayAmount": 210,
-                //           "chequeNo": "string",
-                //           "bankName": "string",
-                //           "chequeDate": "2024-08-10",
-                //           "cardPayAmount": 0,
-                //           "cardNo": "string",
-                //           "cardBankName": "string",
-                //           "cardDate":"2024-08-10",
-                //           "advanceUsedAmount": 0,
-                //           "advanceId": 0,
-                //           "refundId": 0,
-                //           "transactionType": 0,
-                //           "remark": "string",
-                //           "addBy": 0,
-                //           "isCancelled": true,
-                //           "isCancelledBy": 0,
-                //           "isCancelledDate":"2024-08-10",
-                //           "opdipdType": 0,
-                //           "neftpayAmount": 0,
-                //           "neftno": "string",
-                //           "neftbankMaster": "string",
-                //           "neftdate":"2024-08-10",
-                //           "payTmamount": 0,
-                //           "payTmtranNo": "string",
-                //           "payTmdate": "2024-08-10"
-                //         },
-                //         "billUpdate": {
-                //           "billNo": 237808,
-                //           "balanceAmt":28660
-                //         }
-                //       }
-                //   console.log(Data)

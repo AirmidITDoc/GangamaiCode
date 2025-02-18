@@ -15,7 +15,7 @@ import { DischargeComponent } from './discharge/discharge.component';
 import { BedTransferComponent } from './bed-transfer/bed-transfer.component';
 import { fuseAnimations } from '@fuse/animations';
 import { ReplaySubject, Subject } from 'rxjs';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 // import { IPRefundofAdvanceComponent } from './ip-refundof-advance/ip-refundof-advance.component';
 import { IPRefundofBillComponent } from './ip-refundof-bill/ip-refundof-bill.component';
 import {  AdmissionPersonlModel } from '../Admission/admission/admission.component';
@@ -32,6 +32,7 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { STATUS } from 'angular-in-memory-web-api';
+import { MLCInformationComponent } from '../Admission/admission/mlcinformation/mlcinformation.component';
 
 
 @Component({
@@ -42,35 +43,38 @@ import { STATUS } from 'angular-in-memory-web-api';
     animations: fuseAnimations
 })
 export class IPSearchListComponent implements OnInit {
-
+    myFilterform:FormGroup;
     autocompleteModedeptdoc: string = "ConDoctor";
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('iconPatientCategory') iconPatientCategory!: TemplateRef<any>;
+    @ViewChild('iconBillCancle') iconBillCancle!: TemplateRef<any>;
+    @ViewChild('iconMlc') iconMlc!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+  
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.iconPatientCategory;
+        this.gridConfig.columnsList.find(col => col.key === 'isBillGenerated')!.template = this.iconBillCancle;
+        this.gridConfig.columnsList.find(col => col.key === 'isMLC')!.template = this.iconMlc;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     }
 
     gridConfig: gridModel = {
         apiUrl: "Admission/AdmissionList",
         columnsList: [
-            {
-                 heading: "", key: "patientType", sort: true, align: 'left',type: gridColumnTypes.template,
-                 template: this.iconPatientCategory
-             },
-            { heading: "Bill", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.status, },
-            { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.status, },
+            {heading: "", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, width: 50 },
+            { heading: "Bill", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50  },
+            { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70  },
             { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA',type: 8 },
+            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+            { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA',type: 8 , width: 100 },
             { heading: "IPDNo", key: "ipdno", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Doctorname", key: "doctorname", sort: true, align: 'left', emptySign: 'NA',type: 10 },
-            { heading: "RefDocName", key: "refDocName", sort: true, align: 'left', emptySign: 'NA',type: 10 },            
+            { heading: "Doctorname", key: "doctorname", sort: true, align: 'left', emptySign: 'NA',type: 10, width: 250  },
+            { heading: "RefDocName", key: "refDocName", sort: true, align: 'left', emptySign: 'NA',type: 10, width: 250  },            
             { heading: "Adv.Amount", key: "adv.amount", sort: true, align: 'left', emptySign: 'NA',type: 10 },
-            { heading: "PatientType", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.status, },
-            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', type: 10 },
+            // { heading: "PatientType", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.status, },
+            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', type: 10, width: 250  },
             {
                 heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -111,10 +115,10 @@ export class IPSearchListComponent implements OnInit {
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "11/01/2024", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "M_Name", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
@@ -137,22 +141,25 @@ export class IPSearchListComponent implements OnInit {
             { heading: "RefDocName", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 10 },
             { heading: "PatientType", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.status, },
             { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 10 },
-
             {
-                heading: "Action", key: "action", align: "right", width: 150, type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._IpSearchListService.deactivateTheStatus(data.AdmissionId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
+                heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
+                template: this.actionButtonTemplate  // Assign ng-template to the column
+            }
+            // {
+            //     heading: "Action", key: "action", align: "right", width: 150, type: gridColumnTypes.action, actions: [
+            //         {
+            //             action: gridActions.edit, callback: (data: any) => {
+            //                 this.onSave(data);
+            //             }
+            //         }, {
+            //             action: gridActions.delete, callback: (data: any) => {
+            //                 this._IpSearchListService.deactivateTheStatus(data.AdmissionId).subscribe((response: any) => {
+            //                     this.toastr.success(response.message);
+            //                     this.grid.bindGridData();
+            //                 });
+            //             }
+            //         }]
+            // } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "AdmissionId",
         sortOrder: 0,
@@ -172,53 +179,7 @@ export class IPSearchListComponent implements OnInit {
         ],
         row: 25
     }
-    isLoadingStr: string = '';
-    isLoading: String = '';
-
-
-    hasSelectedContacts: boolean;
-    MouseEvent = true;
-    AdvanceId: number;
-    AdmittedPatientList: any;
-    msg: any;
-    click: boolean = false;
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    @Input() dataArray: any;
-
-    doctorNameCmbList: any = [];
-    wardNameCmbList: any = [];
-
-    isChecked: boolean = false;
-
-    public doctorFilterCtrl: FormControl = new FormControl();
-    public filtereddoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    public wardFilterCtrl: FormControl = new FormControl();
-    public filteredward: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    private _onDestroy = new Subject<void>();
-
-    dataSource = new MatTableDataSource<AdmissionPersonlModel>();
-    @Output() showClicked = new EventEmitter();
-    sIsLoading: string = '';
-
-    displayedColumns = [
-        'button',
-        'IsBillGenerated',
-        'IsMLC',
-        'RegNo',
-        'PatientName',
-        'DOA',
-        'IPDNo',
-        'Doctorname',
-        'RefDocName',
-        'PatientType',
-        'CompanyName',
-        'buttons1',
-        'buttons'
-    ];
-
+       
     menuActions: Array<string> = [];
 
     constructor(
@@ -231,15 +192,14 @@ export class IPSearchListComponent implements OnInit {
         private advanceDataStored: AdvanceDataStored) { }
 
     ngOnInit(): void {
-        //this.onClear();
-        // this.getAdmittedPatientList();
+        this.myFilterform=this._IpSearchListService.filterForm();
         if (this._ActRoute.url == '/ipd/ipadvance') {
             this.menuActions.push('Advance');
             this.menuActions.push('Bed Transfer');
         }
         else if (this._ActRoute.url == '/ipd/discharge') {
             this.menuActions.push('Discharge');
-            this.menuActions.push('Discharge Summary');
+            this.menuActions.push('Discharge Summary Template');
             this.menuActions.push('Patient Feedback');
         }
         else if (this._ActRoute.url == '/ipd/dischargesummary') {
@@ -276,110 +236,111 @@ export class IPSearchListComponent implements OnInit {
         }
 
     }
-    get f() { return this._IpSearchListService.myFilterform.controls; }
+   
 
-
-    ngOnChanges(changes: SimpleChanges) {
-
-        this.click = !this.click;
-        setTimeout(() => {
-            {
-                this.dataSource.data = changes.dataArray.currentValue as AdmissionPersonlModel[];
-                this.dataSource.sort = this.sort;
-                this.dataSource.paginator = this.paginator;
-                this.click = false;
-            }
-        }, 500);
-        this.MouseEvent = true;
-    }
-    onSave(data) { }
-
-    toggleSidebar(name): void {
-        this._fuseSidebarService.getSidebar(name).toggleOpen();
-    }
-
-    resultsLength = 0;
-    getAdmittedPatientList() {
-
-        if (this._IpSearchListService.myFilterform.get("IsDischarge").value == "0" || this._IpSearchListService.myFilterform.get("IsDischarge").value == false) {
-            this.isLoadingStr = 'loading';
-            var D_data = {
-                "F_Name": this._IpSearchListService.myFilterform.get("FirstName").value + '%' || "%",
-                "L_Name": this._IpSearchListService.myFilterform.get("LastName").value + '%' || "%",
-                "Reg_No": this._IpSearchListService.myFilterform.get("RegNo").value || 0,
-                "Doctor_Id": this._IpSearchListService.myFilterform.get("DoctorId").value || 0,
-                "From_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
-                "To_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-                "Admtd_Dschrgd_All": this._IpSearchListService.myFilterform.get('IsDischarge').value || 0,
-                "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
-                "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || 0,
-                Start: (this.paginator?.pageIndex ?? 0),
-                Length: (this.paginator?.pageSize ?? 35),
-            }
-
-            setTimeout(() => {
-                this.isLoadingStr = 'loading';
-                this._IpSearchListService.getAdmittedPatientList_1(D_data).subscribe(data => {
-                    this.dataSource.data = data["Table1"] ?? [] as AdmissionPersonlModel[];
-                    // console.log(this.dataSource.data)
-                    this.dataSource.sort = this.sort;
-                    this.resultsLength = data["Table"][0]["total_row"];
-                    this.sIsLoading = '';
-                },
-                    error => {
-                        this.sIsLoading = '';
-                    });
-            }, 1000);
-        }
-        else {
-            this.isLoadingStr = 'loading';
-            var Params = {
-                "F_Name": this._IpSearchListService.myFilterform.get("FirstName").value + '%' || "%",
-                "L_Name": this._IpSearchListService.myFilterform.get("LastName").value + '%' || "%",
-                "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
-                "Reg_No": this._IpSearchListService.myFilterform.get("RegNo").value || 0,
-                "Doctor_Id": this._IpSearchListService.myFilterform.get("DoctorId").value || 0,
-                "From_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
-                "To_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-                "Admtd_Dschrgd_All": this._IpSearchListService.myFilterform.get('IsDischarge').value,
-                "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || 0,
-                Start: (this.paginator?.pageIndex ?? 0),
-                Length: (this.paginator?.pageSize ?? 35),
-            }
-            setTimeout(() => {
-                this.isLoadingStr = 'loading';
-                this._IpSearchListService.getDischargedPatientList_1(Params).subscribe(data => {
-                    // this.dataSource.data = data as Admission[];
-                    this.dataSource.data = data["Table1"] ?? [] as AdmissionPersonlModel[];
-                    console.log(this.dataSource.data)
-                    this.dataSource.sort = this.sort;
-                    this.resultsLength = data["Table"][0]["total_row"];
-                    // this.dataSource.paginator = this.paginator;
-                    this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
-                    this.sIsLoading = '';
-                    // this.click = false;
-                },
-                    error => {
-                        this.sIsLoading = '';
-                    });
-            }, 1000);
-
-        }
-    }
-
-    OngetRecord(element, m) {
+       OngetRecord(element, m) {
         debugger
             console.log('Third action clicked for:', element);
-            if (m == "Advance") {
+            if (m == "Discharge") {
+                const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+                buttonElement.blur(); // Remove focus from the button
+      
+                let that = this;
+                const dialogRef = this._matDialog.open(DischargeComponent,
+                    {
+                      maxWidth: "85vw",
+                      height: '450px',
+                      width: '100%',
+                        data: element
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    if (result) {
+                        that.grid.bindGridData();
+                    }
+                });
+            }
+            else if (m == "Discharge Summary Template") {
                 const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
                 buttonElement.blur(); // Remove focus from the button
     
                 let that = this;
-                const dialogRef = this._matDialog.open(IPAdvanceComponent,
+                const dialogRef = this._matDialog.open(DischargeSummaryComponent,
                     {
                         maxWidth: "100%",
-                        height: '95%',
-                        width: '80%',
+                        height: '90%',
+                        width: '90%',
+                        data: element
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    if (result) {
+                        that.grid.bindGridData();
+                    }
+                });
+            }
+            else if (m == "Patient Feedback") {
+                const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+                buttonElement.blur(); // Remove focus from the button
+    
+                let that = this;
+                const dialogRef = this._matDialog.open(DischargeSummaryComponent,
+                    {
+                        maxWidth: "100%",
+                        height: '90%',
+                        width: '90%',
+                        data: element
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    if (result) {
+                        that.grid.bindGridData();
+                    }
+                });
+            }
+            else if (m == "Refund of Bill") {
+                const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+                buttonElement.blur(); // Remove focus from the button
+    
+                let that = this;
+                const dialogRef = this._matDialog.open(IPRefundofBillComponent,
+                    {
+                        maxWidth: "100%",
+                        height: '90%',
+                        width: '90%',
+                        data: element
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    if (result) {
+                        that.grid.bindGridData();
+                    }
+                });
+            }
+            else if (m == "Refund of Advance") {
+                const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+                buttonElement.blur(); // Remove focus from the button
+    
+                let that = this;
+                const dialogRef = this._matDialog.open(IPRefundofAdvanceComponent,
+                    {
+                        maxWidth: "100%",
+                        height: '90%',
+                        width: '90%',
+                        data: element
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    if (result) {
+                        that.grid.bindGridData();
+                    }
+                });
+            }
+            else if (m == "Bill") {
+                const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+                buttonElement.blur(); // Remove focus from the button
+    
+                let that = this;
+                const dialogRef = this._matDialog.open(IPBillingComponent,
+                    {
+                        maxWidth: "100%",
+                        height: '90%',
+                        width: '90%',
                         data: element
                     });
                 dialogRef.afterClosed().subscribe(result => {
@@ -396,8 +357,26 @@ export class IPSearchListComponent implements OnInit {
                 const dialogRef = this._matDialog.open(BedTransferComponent,
                     {
                         maxWidth: "100%",
-                        height: '70%',
-                        width: '80%',
+                        height: '90%',
+                        width: '90%',
+                        data: element
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    if (result) {
+                        that.grid.bindGridData();
+                    }
+                });
+            }
+            else if (m == "Bed Transfer") {
+                const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+                buttonElement.blur(); // Remove focus from the button
+    
+                let that = this;
+                const dialogRef = this._matDialog.open(BedTransferComponent,
+                    {
+                        maxWidth: "100%",
+                        height: '90%',
+                        width: '90%',
                         data: element
                     });
                 dialogRef.afterClosed().subscribe(result => {
@@ -431,459 +410,24 @@ export class IPSearchListComponent implements OnInit {
     }
 
 
-    getRecord(contact, m): void {
-        if (m == "Advance") {
-            console.log(contact);
-
-            this.advanceDataStored.storage = new AdvanceDetailObj(contact);
-            this._IpSearchListService.populateForm(contact);
-            //
-            let Advflag: boolean = false;
-            if (contact.IsBillGenerated) {
-                Advflag = true;
-            }
-            if (contact.IsDischarged) {
-                Advflag = true;
-            }
-
-            if (!Advflag) {
-                const dialogRef = this._matDialog.open(IPAdvanceComponent,
-                    {
-                        maxWidth: "100%",
-                        height: '95%',
-                        width: '80%',
-                    });
-                dialogRef.afterClosed().subscribe(result => {
-                    console.log('The dialog was closed - Insert Action', result);
-                });
-            } else {
-                Swal.fire("Bil Generatd !")
-            }
-        }
-        else if (m == "Discharge Summary") {
-            console.log(contact);
-            this.advanceDataStored.storage = new AdvanceDetailObj(contact);
-            this._IpSearchListService.populateForm1(contact);
-            const dialogRef = this._matDialog.open(DischargeSummaryComponent,
-                {
-
-                    maxWidth: "95vw",
-                    height: '90vh',
-                    width: '100%',
-
-                });
-
-            dialogRef.afterClosed().subscribe(result => {
-                console.log('The dialog was closed - Insert Action', result);
-            });
-        }
-        else if (m == "Payment") {
-
-            var m_data = {
-                RegNo: contact.RegNo,
-                RegId: contact.RegID,
-                AdmissionID: contact.AdmissionID,
-                OPD_IPD_ID: contact.OPD_IPD_Id,
-                PatientName: contact.PatientName,
-                Doctorname: contact.Doctorname,
-                AdmDateTime: contact.AdmDateTime,
-                AgeYear: contact.AgeYear,
-                ClassId: contact.ClassId,
-                TariffName: contact.TariffName,
-                TariffId: contact.TariffId,
-                DoctorId: contact.DoctorId,
-                DOA: contact.DOA,
-                DOT: contact.DOT,
-                DoctorName: contact.DoctorName,
-                RoomName: contact.RoomName,
-                BedNo: contact.BedName,
-                IPDNo: contact.IPDNo,
-                DocNameID: contact.DocNameID,
-                opD_IPD_Typec: contact.opD_IPD_Type
-
-            }
-
-            this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
-            this._IpSearchListService.populateForm1(m_data);
-            const dialogRef = this._matDialog.open(IPSettlementComponent,
-                {
-
-                    maxWidth: "95vw",
-                    height: '110vh',
-                    width: '100%',
-                    data: m_data
-
-                });
-
-            dialogRef.afterClosed().subscribe(result => {
-                console.log('The dialog was closed - Insert Action', result);
-            });
-        }
-        else if (m == "Refund of Bill") {
-
-            console.log(" This is for IP Refund of Bill pop : " + m);
-
-            this.advanceDataStored.storage = new AdvanceDetailObj(contact);
-
-            // if (!contact.IsBillGenerated || contact.IsDischarged ==1) {
-            const dialogRef = this._matDialog.open(IPRefundofBillComponent,
-                {
-                    maxWidth: "75vw",
-                    height: '95%',
-                    width: '100%',
-                });
-            dialogRef.afterClosed().subscribe(result => {
-                console.log('The dialog was closed - Insert Action', result);
-                //  this.getRadiologytemplateMasterList();
-            });
-            // }else{Swal.fire("Bill Generated")}
-        }
-        else if (m == "Refund of Advance") {
-
-
-            this.advanceDataStored.storage = new AdvanceDetailObj(contact);
-            this._IpSearchListService.populateForm2(contact);
-            // if (!contact.IsBillGenerated) {
-            const dialogRef = this._matDialog.open(IPRefundofAdvanceComponent,
-                {
-                    maxWidth: "75vw",
-                    maxHeight: "95%", width: '100%', height: "100%"
-                });
-            dialogRef.afterClosed().subscribe(result => {
-                // this.getAdmittedPatientList();
-            });
-            // }else Swal.fire("Bill already Generated")
-        }
-        else if (m == "Update Company Information") {
-            let m_data = {
-                RegNo: contact.RegNo,
-                RegId: contact.RegID,
-                AdmissionID: contact.AdmissionID,
-                OPD_IPD_ID: contact.OPD_IPD_Id,
-                PatientName: contact.PatientName,
-                Doctorname: contact.Doctorname,
-                AdmDateTime: contact.AdmDateTime,
-                AgeYear: contact.AgeYear,
-                ClassId: contact.ClassId,
-                TariffName: contact.TariffName,
-                TariffId: contact.TariffId,
-                DoctorId: contact.DoctorId,
-                DOA: contact.DOA,
-                DOT: contact.DOT,
-                DoctorName: contact.DoctorName,
-                RoomName: contact.RoomName,
-                BedNo: contact.BedName,
-                IPDNo: contact.IPDNo,
-                DocNameID: contact.DocNameID,
-                opD_IPD_Typec: contact.opD_IPD_Type,
-                CompanyName: contact.CompanyName
-            }
-
-            this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
-            this._IpSearchListService.populateForm2(m_data);
-            // if (!contact.IsBillGenerated) {
-            const dialogRef = this._matDialog.open(CompanyInformationComponent,
-                {
-                    maxWidth: "75vw",
-                    maxHeight: "99%", width: '100%', height: "100%"
-                });
-            dialogRef.afterClosed().subscribe(result => {
-                // this.getAdmittedPatientList();
-            });
-            // }else Swal.fire("Bill already Generated")
-        }
-        else if (m == "Bill") {
-            console.log(" This is for  Bill pop : " + m);
-
-            this.advanceDataStored.storage = new AdvanceDetailObj(contact);
-
-            if (!contact.IsBillGenerated) {
-
-                const dialogRef = this._matDialog.open(IPBillingComponent,
-                    {
-                        maxWidth: "90%",
-                        width: '98%',
-                        height: '95%',
-                    });
-                dialogRef.afterClosed().subscribe(result => {
-                    console.log('The dialog was closed - Insert Action', result);
-                    //   this.getAdmittedPatientList();
-                });
-            } else { Swal.fire("Final Bill Already Generated") }
-        }
-        else if (m == "Discharge") {
-            console.log(contact);
-            if (!contact.IsDischarged) {
-
-
-                this.advanceDataStored.storage = new AdvanceDetailObj(contact);
-                this._IpSearchListService.populateForm(contact);
-                const dialogRef = this._matDialog.open(DischargeComponent,
-                    {
-                        maxWidth: "85vw",
-                        height: '400px',
-                        width: '100%',
-                        data: {
-                            Obj: contact
-                        }
-                    });
-                dialogRef.afterClosed().subscribe(result => {
-                    console.log('The dialog was closed - Insert Action', result);
-                    //   this.getAdmittedPatientList();
-                });
-            } else {
-                console.log(contact)
-                Swal.fire({
-                    title: 'Patient Already Discharged Do you Want to Edit',
-                    // showDenyButton: true,
-                    showCancelButton: true,
-                    confirmButtonText: 'OK',
-
-                }).then((result) => {
-
-                    if (result.isConfirmed) {
-
-                        this.advanceDataStored.storage = new AdvanceDetailObj(contact);
-                        this._IpSearchListService.populateForm(contact);
-                        const dialogRef = this._matDialog.open(DischargeComponent,
-                            {
-                                maxWidth: "85vw",
-                                height: '400px',
-                            });
-                        dialogRef.afterClosed().subscribe(result => {
-                            console.log('The dialog was closed - Insert Action', result);
-
-                        });
-                    }
-                    else {
-
-                    }
-                });
-
-            }
-        }
-        else if (m == "Patient Feedback") {
-            console.log(contact);
-            if (!contact.IsDischarged) {
-
-
-                this.advanceDataStored.storage = new AdvanceDetailObj(contact);
-                this._IpSearchListService.populateForm(contact);
-                const dialogRef = this._matDialog.open(OPIPFeedbackComponent,
-                    {
-                        maxWidth: "95vw",
-                        maxHeight: "115vh", width: '100%', height: "100%",
-                        data: {
-                            Obj: contact
-                        }
-                    });
-                dialogRef.afterClosed().subscribe(result => {
-                    console.log('The dialog was closed - Insert Action', result);
-                    //   this.getAdmittedPatientList();
-                });
-            } else {
-                console.log(contact)
-                Swal.fire({
-                    title: 'Patient feedBack Edit',
-                    // showDenyButton: true,
-                    showCancelButton: true,
-                    confirmButtonText: 'OK',
-
-                }).then((result) => {
-
-                    if (result.isConfirmed) {
-
-                        this.advanceDataStored.storage = new AdvanceDetailObj(contact);
-                        this._IpSearchListService.populateForm(contact);
-                        const dialogRef = this._matDialog.open(OPIPFeedbackComponent,
-                            {
-                                maxWidth: "95vw",
-                                maxHeight: "115vh", width: '100%', height: "100%",
-                                data: {
-                                    Obj: contact
-                                }
-                            });
-                        dialogRef.afterClosed().subscribe(result => {
-                            console.log('The dialog was closed - Insert Action', result);
-
-                        });
-                    }
-
-                });
-
-            }
-        }
-        else if (m == "Bed Transfer") {
-            console.log(" This is for BedTransfer pop : " + m);
-
-            this.advanceDataStored.storage = new AdmissionPersonlModel(contact);
-            this._IpSearchListService.populateForm(contact);
-            console.log(contact)
-            const dialogRef = this._matDialog.open(BedTransferComponent,
-                {
-                    maxWidth: "85vw",
-                    maxHeight: "56vh", width: '100%', height: "100%"
-                });
-            dialogRef.afterClosed().subscribe(result => {
-                console.log('The dialog was closed - Insert Action', result);
-                //  this.getAdmittedPatientList();
-            });
-        } else if (m == "Medical CasePaper") {
-            console.log(" This is for Case Paper pop : " + m);
-            this.advanceDataStored.storage = new AdvanceDetailObj(contact);
-            this._IpSearchListService.populateForm(contact);
-
-            // const dialogRef = this._matDialog.open(NewCasepaperComponent,
-            //   {
-            //     maxWidth: "95vw",
-            //     maxHeight: "55vh", width: '100%', height: "100%"
-            //   });
-            // dialogRef.afterClosed().subscribe(result => {
-            //   console.log('The dialog was closed - Insert Action', result);
-            //   this.getAdmittedPatientList();
-            // });
-        }
-
-
+   
+    onChangeStatus(event){
+        console.log(event)
+        if(event.value)
+        this.gridConfig.filters[6].fieldValue ="1"
+    else
+      this.gridConfig.filters[6].fieldValue ="0"
     }
 
-
     onClear() {
-        // this._IpSearchListService.myFilterform.reset(
-        //   {
-        //     start: [],
-        //     end: []
-        //   }
-        // );
+      
         this._IpSearchListService.myFilterform.reset();
         this._IpSearchListService.myFilterform.get("IsDischarge").setValue(0);
         this._IpSearchListService.myFilterform.get("FirstName").setValue('');
         this._IpSearchListService.myFilterform.get("MiddleName").setValue('');
         this._IpSearchListService.myFilterform.get("LastName").setValue('');
-        // this.getAdmittedPatientList();
-    }
-
-
-    private filterDoctor() {
-
-        if (!this.doctorNameCmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.doctorFilterCtrl.value;
-        if (!search) {
-            this.filtereddoctor.next(this.doctorNameCmbList.slice());
-            return;
-        }
-        else {
-            search = search.toLowerCase();
-        }
-
-        this.filtereddoctor.next(
-            this.doctorNameCmbList.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-        );
-    }
-
-
-    private filterWard() {
-
-        if (!this.wardNameCmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.wardFilterCtrl.value;
-        if (!search) {
-            this.filteredward.next(this.wardNameCmbList.slice());
-            return;
-        }
-        else {
-            search = search.toLowerCase();
-        }
-        // filter
-        this.filteredward.next(
-            this.wardNameCmbList.filter(bank => bank.RoomName.toLowerCase().indexOf(search) > -1)
-        );
-    }
-
-
-    getWardNameCombo() {
-        this._IpSearchListService.getWardNameCombo().subscribe(data => {
-            this.wardNameCmbList = data;
-            this.filteredward.next(this.wardNameCmbList.slice());
-        });
-    }
-
-    getAdmittedDoctorCombo() {
-        // this._IpSearchListService.getAdmittedDoctorCombo().subscribe(data => {
-        //   this.doctorNameCmbList = data;
-        //   this.filtereddoctor.next(this.doctorNameCmbList.slice());
-        // });
-    }
-
-    IsDischarge: any;
-    gridename = this.gridConfig;
-    List = "Admission"
-    onChangeStatus(event) {
         
-        // this.IsDischarge = SiderOption.checked;
-        if (event.value == 0)
-            this.gridename = this.gridConfig
-        else {
-            this.gridename = this.gridConfig1
-            this.List = "Discharged List"
-        }
-        // if (SiderOption.checked == true) {
-        //   this._IpSearchListService.myFilterform.get('IsDischarge').setValue(1);
-        //   this._IpSearchListService.myFilterform.get('start').setValue((new Date()).toISOString());
-        //   this._IpSearchListService.myFilterform.get('end').setValue((new Date()).toISOString());
-        // }
-        // else {
-        //   this._IpSearchListService.myFilterform.get('IsDischarge').setValue(0);
-        //   this._IpSearchListService.myFilterform.get('start').setValue(''),
-        //     this._IpSearchListService.myFilterform.get('end').setValue('')
-        // }
     }
-
-
-
-    printDischargeslip(contact) {
-        console.log(contact)
-        this._IpSearchListService.getIpDischargeReceipt(
-            contact.AdmissionID
-        ).subscribe(res => {
-            const dialogRef = this._matDialog.open(PdfviewerComponent,
-                {
-                    maxWidth: "85vw",
-                    height: '750px',
-                    width: '100%',
-                    data: {
-                        base64: res["base64"] as string,
-                        title: "CHECK OUT SLIP Viewer"
-                    }
-                });
-        });
-    }
-
-
-    printDischargesummary(contact) {
-
-        this._IpSearchListService.getIpDischargesummaryReceipt(
-            contact.AdmissionID
-        ).subscribe(res => {
-            const dialogRef = this._matDialog.open(PdfviewerComponent,
-                {
-                    maxWidth: "85vw",
-                    height: '750px',
-                    width: '100%',
-                    data: {
-                        base64: res["base64"] as string,
-                        title: "Discharge SummaryViewer"
-                    }
-                });
-        });
-    }
-
-
 
     getValidationdeptDocMessages() {
         return {
@@ -892,39 +436,26 @@ export class IPSearchListComponent implements OnInit {
             ]
         };
     }
-    selectChangedeptdoc(obj: any) {
-        console.log(obj);
-        // this.doctorID = obj
-    }
-
-    // onAdvanceSave(data) {
-    //     const dialogRef = this._matDialog.open(IPAdvanceComponent,
-    //         {
-    //             maxWidth: "100%",
-    //             height: '95%',
-    //             width: '80%',
-    //         });
-    //     dialogRef.afterClosed().subscribe(result => {
-    //         console.log('The dialog was closed - Insert Action', result);
-    //     });
-    // }
-
-    // onBedTransferSave(data) {
-    //     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    //     buttonElement.blur(); // Remove focus from the button
-
-    //     const dialogRef = this._matDialog.open(BedTransferComponent,
-    //         {
-    //             maxWidth: "100%",
-    //             height: '70%',
-    //             width: '80%',
-    //             data:data
-    //         });
-    //     dialogRef.afterClosed().subscribe(result => {
-    //         console.log('The dialog was closed - Insert Action', result);
-    //     });
-    // }
-}
+ 
+NewMLc(contact) {
+    
+        const dialogRef = this._matDialog.open(MLCInformationComponent,
+          {
+            maxWidth: '85vw',
+            height: '400px', width: '100%',
+            data: contact
+          });
+    
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed - Insert Action', result);
+        });
+      }
+    
+    getfeedback(event){}
+    printDischargesummaryWithoutletterhead(event){}
+    printDischargesummary(event){}
+    printDischargeslip(event){}
+   }
 
 
 

@@ -36,7 +36,7 @@
                                     ValueField="regId"></airmid-autocomplete>
 
                                 <airmid-dropdown label="CashCounterID" formControlName="CashCounterID" fxFlex
-                                    [formGroup]="searchForm" [validations]="getValidationMessages().cashCounterId"
+                                    [formGroup]="searchForm" [validations]="getValidationMessages().CashCounterID"
                                     [mode]="autocompleteModeCashcounter">
                                 </airmid-dropdown>
 
@@ -129,8 +129,8 @@
                                 <div fxLayout="row" fxLayoutGap="5px">
 
                                     <!-- Autocomplete Dropdown binding is pending... -->
-                                    <!-- <div>
-                                        <mat-form-field appearance="outline" #myInput style="width: 400px;">
+                                    <div>
+                                        <!-- <mat-form-field appearance="outline" #myInput style="width: 400px;">
                                             <input type="text" name="serviceName" formControlName="serviceName"
                                                 #Servicename placeholder="Service Name" matInput
                                                 [matAutocomplete]="auto" (input)="getServiceListCombobox()" required
@@ -170,14 +170,20 @@
                                                 </mat-option>
                                             </mat-autocomplete>
                                            
-                                        </mat-form-field>
-                                    </div> -->
+                                        </mat-form-field> -->
+                                    </div>
 
                                     <div fxFlex>
-                                        <airmid-textbox label="Service name" formControlName="serviceName"
+                                     <airmid-autocomplete lbl="RgId" [formGroup]="chargeForm" formControlName="serviceName"
+                                        placeholderText="Enter Service Name" fxFlex
+                                        ApiUrl="VisitDetail/GetServiceListwithTraiff?TariffId=1&ClassId=2&ServiceName="
+                                        (selectionChange)="getSelectedserviceObj($event)" TextField="serviceName"
+                                        ValueField="serviceId"></airmid-autocomplete>
+    
+                                        <!-- <airmid-textbox label="Service name" formControlName="serviceName"
                                             [formGroup]="chargeForm"
                                             [validations]="getValidationMessages().serviceName">
-                                        </airmid-textbox>
+                                        </airmid-textbox> -->
                                     </div>
                                     <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
                                         <airmid-textbox label="Price" formControlName="price" [formGroup]="chargeForm"
@@ -200,7 +206,7 @@
                                     <div *ngIf="isDoctor">
                                         <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
                                             [formGroup]="chargeForm" [validations]="getValidationMessages().DoctorId"
-                                            [mode]="autocompleteModedeptdoc">
+                                            [mode]="autocompleteModedeptdoc" (selectionChange)="getdocdetail($event)">
                                         </airmid-dropdown>
                                     </div>
                                     <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">

@@ -21,6 +21,8 @@ export class OpPaymentNewComponent implements OnInit {
   patientDetailsFormGrp: FormGroup;
   selectedPaymnet1: string = '';
   paymentArr1: any[] = this.opService.getPaymentArr();
+  autocompleteModebank: string = "Bank";
+
   BindPaymentTypes() {
     let full = this.opService.getPaymentArr();
     let final = [];
@@ -569,6 +571,23 @@ export class OpPaymentNewComponent implements OnInit {
       event.preventDefault();
       return false;
     }
+  }
+
+
+  BankId=0
+BankNam:any;
+  selectChangebank(event){
+console.log(event)
+this.BankId=event.value
+this.BankNam=event.text
+  }
+
+  getValidationMessages(){
+    return {
+      bankName1: [
+        { name: "required", Message: "bankName is required" }
+      ]     
+    };
   }
 
 }

@@ -139,3 +139,96 @@ export class BrowseIPAdvanceComponent implements OnInit {
             // });
         }
 }
+
+
+export class IpdAdvanceBrowseModel {
+    RegNo: Number;
+    PatientName: string;
+    Date: Date;
+    AdvanceNo: string;
+    TransactionID: number;
+    AdvanceAmount: number;
+    UsedAmount: number;
+    BalanceAmount: number;
+    AddedBy: number;
+    CashPayAmount: number;
+    ChequePayAmount: number;
+    CardPayAmount: number;
+    TransactionType: number;
+    UserName: string;
+    RefundAmount:number;
+    PrevAdvAmt:number;
+    AdvanceId:number;
+    IPDNo:any;
+    AdvanceDetailID:number;
+    HospitalName:any;
+    HospAddress:any;
+    Phone:any;
+    EmailId:any;
+    reason:any;
+  
+    Address: any;
+    PatientType: any;
+    TariffName:any;
+    AdmissionDate:any;
+    PayDate:Date;
+    PaidAmount: number;
+    NEFTPayAmount:number;
+    PayTMAmount: number;
+    CardNo: any;
+    CardBankName:any;
+    ChequeNo:any;
+    PaymentDate: any;
+    AdvanceUsedAmount: number;
+      Remark:any;
+      
+    /**
+  * Constructor
+  *
+  * @param IpdAdvanceBrowseModel
+  */
+    constructor(IpdAdvanceBrowseModel) {
+        {
+            this.RegNo = IpdAdvanceBrowseModel.RegNo || '';
+            this.PatientName = IpdAdvanceBrowseModel.PatientName || '';
+            this.Date = IpdAdvanceBrowseModel.Date || '';
+            this.AdvanceNo = IpdAdvanceBrowseModel.AdvanceNo || '';
+            this.AdvanceAmount = IpdAdvanceBrowseModel.AdvanceAmount || '';
+            this.UsedAmount = IpdAdvanceBrowseModel.UsedAmount || '';
+            this.BalanceAmount = IpdAdvanceBrowseModel.BalanceAmount || '';
+            this.AddedBy = IpdAdvanceBrowseModel.AddedBy || '';
+            this.CashPayAmount = IpdAdvanceBrowseModel.CashPayAmount || '';
+            this.ChequePayAmount = IpdAdvanceBrowseModel.ChequePayAmount || '';
+            this.CardPayAmount = IpdAdvanceBrowseModel.CardPayAmount || '';
+            this.UserName = IpdAdvanceBrowseModel.UserName || '';
+            this.RefundAmount = IpdAdvanceBrowseModel.RefundAmount || '';
+            this.PrevAdvAmt=IpdAdvanceBrowseModel.PrevAdvAmt || '';
+            this.AdvanceId = IpdAdvanceBrowseModel.AdvanceId || 0;
+            this.AdvanceDetailID = IpdAdvanceBrowseModel.AdvanceDetailID || 0;
+            this.IPDNo = IpdAdvanceBrowseModel.IPDNo || 0;
+  
+            this.HospitalName=IpdAdvanceBrowseModel.HospitalName || '';
+            this.HospAddress = IpdAdvanceBrowseModel.HospAddress || '';
+            this.Phone = IpdAdvanceBrowseModel.Phone || 0;
+            this.EmailId = IpdAdvanceBrowseModel.EmailId || 0;
+            this.reason = IpdAdvanceBrowseModel.reason || 0;
+  
+            this.Address=IpdAdvanceBrowseModel.Address || '';
+            this.PatientType = IpdAdvanceBrowseModel.PatientType || '';
+            this.TariffName = IpdAdvanceBrowseModel.TariffName || 0;
+            this.PayDate = IpdAdvanceBrowseModel.PayDate || 0;
+            this.PaidAmount = IpdAdvanceBrowseModel.PaidAmount || 0;
+            
+            this.NEFTPayAmount=IpdAdvanceBrowseModel.NEFTPayAmount || '';
+            this.PayTMAmount = IpdAdvanceBrowseModel.PayTMAmount || '';
+            this.CardNo = IpdAdvanceBrowseModel.CardNo || 0;
+            this.CardBankName = IpdAdvanceBrowseModel.CardBankName || 0;
+            this.ChequeNo = IpdAdvanceBrowseModel.ChequeNo || 0;
+            this.PaymentDate = IpdAdvanceBrowseModel.PaymentDate || '';
+            this.AdvanceUsedAmount = IpdAdvanceBrowseModel.AdvanceUsedAmount || 0;
+            this.AdvanceUsedAmount = IpdAdvanceBrowseModel.AdvanceUsedAmount || 0;
+            this.Remark = IpdAdvanceBrowseModel.Remark || 0;
+        }
+    }
+  
+  }

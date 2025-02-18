@@ -155,7 +155,7 @@
                                                     </div>
                                                 </mat-form-field>
 
-                                                <mat-form-field appearance="outline" fxFlex
+                                                <!-- <mat-form-field appearance="outline" fxFlex
                                                     *ngIf="selectedPaymnet1 !='upi'">
                                                     <mat-label>Bank Name</mat-label>
                                                     <input matAutocompletePosition="below" type="text"
@@ -178,7 +178,14 @@
                                                     <div *ngIf="submitted && f.bankName1.errors" class="invalid-feedback">
                                                         <div *ngIf="f.bankName1.errors.required">Bank is required</div>
                                                     </div>
-                                                </mat-form-field>
+                                                </mat-form-field> -->
+
+
+                                                <airmid-dropdown label="Bank Name" formControlName="bankName1"
+                                                [formGroup]="patientDetailsFormGrp"
+                                                [validations]="getValidationMessages().bankName1" (selectionChange)="selectChangebank($event)"
+                                                [mode]="autocompleteModebank">
+                                            </airmid-dropdown>
 
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Registration Date</mat-label>

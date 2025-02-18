@@ -136,9 +136,9 @@ export class AdmissionComponent implements OnInit {
   gridConfig: gridModel = {
     apiUrl: "Admission/AdmissionList",
     columnsList: [
-      { heading: "-", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50},
+      { heading: "PatientType", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100},
       // { heading: "-", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 110 },
-      { heading: "-", key: "isMLC", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.template, width: 80},
+      { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.template, width: 80},
       { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
       { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
       { heading: "Date", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
@@ -217,8 +217,8 @@ export class AdmissionComponent implements OnInit {
     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
     { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-    { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+    { fieldName: "From_Dt", fieldValue: "01/01/1900", opType: OperatorComparer.Equals },
+    { fieldName: "To_Dt", fieldValue:"01/01/1900", opType: OperatorComparer.Equals },
     { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Equals },
     { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
@@ -248,6 +248,7 @@ export class AdmissionComponent implements OnInit {
 
     this.searchFormGroup = this.createSearchForm();
     this.myFilterform = this._AdmissionService.filterForm();
+   
    // menu Button List
    this.menuActions.push("Bill");
    this.menuActions.push("Bed Transfer");
@@ -564,8 +565,6 @@ export class AdmissionComponent implements OnInit {
 
   NewMLc(contact) {
 
-debugger
-    // this._AdmissionService.populateForm(contact);
     const dialogRef = this._matDialog.open(MLCInformationComponent,
       {
         maxWidth: '85vw',

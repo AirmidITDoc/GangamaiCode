@@ -68,8 +68,6 @@ export class AppointmentListComponent implements OnInit {
         public toastr: ToastrService, public datePipe: DatePipe,
     ) {}
     
-
-   
     ngOnInit(): void {
         this.myformSearch = this._AppointmentlistService.filterForm();
 
@@ -282,9 +280,9 @@ export class AppointmentListComponent implements OnInit {
         buttonElement.blur(); // Remove focus from the button
 
        const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
-            maxWidth: "90vw",
+            maxWidth: "99vw",
             height: "98vh",
-            width: "80%",
+            width: "100%",
             data:row
             //  {
             //     patientDetail: row
@@ -621,3 +619,59 @@ export class Regdetail {
         }
     }
 }
+
+
+export class ChargesList{
+    ChargesId: number;
+    ServiceId: number;
+    serviceId: number;
+    ServiceName : String;
+    Price:any;
+    Qty: any;
+    TotalAmt: number;
+    DiscPer: number;
+    DiscAmt: number;
+    NetAmount: number;
+    DoctorId:number;
+    ChargeDoctorName: String;
+    ChargesDate: Date;
+    IsPathology:boolean;
+    IsRadiology:boolean;
+    ClassId:number;
+    ClassName: string;
+    ChargesAddedName: string;
+    PackageId:any;
+    PackageServiceId:any;
+    IsPackage:any;
+    PacakgeServiceName:any;
+    BillwiseTotalAmt: any;
+    DoctorName:any;
+    OpdIpdId:any;
+    
+    constructor(ChargesList){
+            this.ChargesId = ChargesList.ChargesId || '';
+            this.ServiceId = ChargesList.ServiceId || '';
+            this.serviceId = ChargesList.serviceId || '';
+            this.ServiceName = ChargesList.ServiceName || '';
+            this.Price = ChargesList.Price || '';
+            this.Qty = ChargesList.Qty || '';
+            this.TotalAmt = ChargesList.TotalAmt || '';
+            this.DiscPer = ChargesList.DiscPer || '';
+            this.DiscAmt = ChargesList.DiscAmt || '';
+            this.NetAmount = ChargesList.NetAmount || '';
+            this.DoctorId=ChargesList.DoctorId || 0;
+            this.DoctorName = ChargesList.DoctorName || '';
+            this.ChargeDoctorName = ChargesList.ChargeDoctorName || '';
+            this.ChargesDate = ChargesList.ChargesDate || '';
+            this.IsPathology = ChargesList.IsPathology || '';
+            this.IsRadiology = ChargesList.IsRadiology || '';
+            this.ClassId=ChargesList.ClassId || 0;
+            this.ClassName = ChargesList.ClassName || '';
+            this.ChargesAddedName = ChargesList.ChargesAddedName || '';
+            this.PackageId=ChargesList.PackageId || 0;
+            this.PackageServiceId=ChargesList.PackageServiceId || 0;
+            this.IsPackage=ChargesList.IsPackage || 0; 
+            this.PacakgeServiceName = ChargesList.PacakgeServiceName || '';
+            this.OpdIpdId = ChargesList.OpdIpdId || '';
+    }
+  } 

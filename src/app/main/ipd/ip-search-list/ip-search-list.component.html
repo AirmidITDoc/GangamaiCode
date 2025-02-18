@@ -1,299 +1,220 @@
-
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
     dynamicTableHeight>
-   
-    <!-- <mat-tab-group> -->
-        <!-- <mat-tab label="IP Search List"> -->
-            <ng-template mat-tab-label>
-                IP Search List
-            </ng-template>
-            <div class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar
-                dynamicTableHeight>
-
-                <div class="top-header">
-                    <div class="top-header-info">
-                        <button mat-icon-button class="sidebar-toggle" fxHide.gt-sm (click)="toggleSidebar('app-main')">
-                            <mat-icon>menu</mat-icon>
-                        </button>
-                        <mat-icon class="logo-icon"
-                            [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box </mat-icon>
-                        <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                            <span>IP Search List </span>
-                        </div>
-                    </div>
-                </div>
-                <!-- / HEADER -->
-                <!-- SELECTED BAR -->
-                <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main>
-                <!-- <form [formGroup]="_IpSearchListService.myFilterform" fusePerfectScrollbar>
-                <div class="slide-toggle mb-2">
-                    <mat-label>{{List}} List</mat-label>
-                    <mat-slide-toggle name="IsDischarge" (change)="onChangeIsactive($event)"
-                        formControlName="IsDischarge" [(ngModel)]="isChecked">
-                        IsDischarge
-                    </mat-slide-toggle>
-                </div>
-                </form> -->
-                <!-- / SELECTED BAR -->
-                <!-- CONTENT -->
-                <div class="content">
-                    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-
-                        <ng-template #iconPatientCategory let-element>
-                            <div fxLayout="row" fxLayoutAlign="center center">
-                
-                                <mat-icon *ngIf="element.patientType =='Self'"
-                                matTooltip="Patient Category Self">account_box
-                            </mat-icon>
-
-                            <mat-icon *ngIf="element.patientType !== 'Self'"
-                                matTooltip="Patient Category Company">business
-                            </mat-icon>
-
-                            </div>
-                        </ng-template>
-
-                        <ng-template #actionButtonTemplate let-element>
-                            <div fxLayout="row" fxLayoutAlign="center center">
-                
-                                <!-- Button 1: Edit Patient Registration  -->
-                                <!-- <button mat-icon-button matTooltip="Edit" (click)="onSave(element)">
-                                    <mat-icon>edit</mat-icon>
-                                </button> -->
-                                
-                                <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
-                                    (click)="$event.stopPropagation();">
-                                    <mat-icon class="secondary-text">more_vert</mat-icon>
-                                </button>
-                                <mat-menu #moreMenu="matMenu">
-                                    <ng-container *ngFor="let m of menuActions, let n of menuActions">
-                                        <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
-                                            <span>{{m}}</span>
-                                        </button>
-                                    </ng-container>
-                                </mat-menu>
-                            </div>
-                        </ng-template>
-
-                        <airmid-table [gridConfig]="gridConfig" class="content">
-                            <ng-container filters>
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>First Name</mat-label>
-                                    <input matInput placeholder="Search First Name" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[0].fieldValue='%'">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Last Name</mat-label>
-                                    <input matInput placeholder="Search Last Name" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[1].fieldValue='%'">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Reg No</mat-label>
-                                    <input matInput placeholder="Search Reg No" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[2].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[2].fieldValue='0'">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-
-
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Doctor</mat-label>
-                                    <input matInput placeholder="Search M_Name" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[3].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[3].fieldValue='0'">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-                                
-                                <!-- <airmid-dropdown label="DoctorID" 
-                                 [(ngModel)]="gridConfig.filters[3].fieldValue"
-                                [validations]="getValidationdeptDocMessages().DoctorID"
-                                [mode]="autocompleteModedeptdoc"
-                                (selectDdlObject)="selectChangedeptdoc($event)">
-                            </airmid-dropdown> -->
-
-
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>From Date</mat-label>
-                                    <input matInput placeholder="Search From Date" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[4].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[4].fieldValue=''">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-                
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>To Date</mat-label>
-                                    <input matInput placeholder="Search To Date" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[5].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[5].fieldValue=''">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-                
-                                <!-- <mat-form-field appearance="outline">
-                                    <mat-label>Enter a date range</mat-label>
-                                    <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="start"  [(ngModel)]="gridConfig.filters[0].fieldValue" 
-                                            placeholder="Start date">
-                                        <input matEndDate formControlName="end" placeholder="End date"
-                                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                    </mat-date-range-input>
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-date-range-picker #picker></mat-date-range-picker>
-                                </mat-form-field> -->
-                                
-                
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>M_Name</mat-label>
-                                    <input matInput placeholder="Search M_Name" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[7].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[7].fieldValue='%'">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-                
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>IPDNo</mat-label>
-                                    <input matInput placeholder="Search IPDNo" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[8].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[8].fieldValue='0'">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-                                <mat-radio-group value="" [(ngModel)]="gridConfig.filters[6].fieldValue" fxLayoutAlign="center center"
-                                (change)="onChangeStatus($event)">
-                                    <mat-radio-button mat-fab value="1">Discharged</mat-radio-button>
-                                    <mat-radio-button mat-fab value="0">NonDischarged</mat-radio-button>
-                                </mat-radio-group>
-                              
-                            </ng-container>
-                        </airmid-table>
-                    </div>
-                </div>
-                <!-- / USER -->
-
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    IP Search List
+                </span>
             </div>
+        </div>
+    </div>
 
+    <div class="content">
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-        <!-- </mat-tab> -->
+            <ng-template #iconPatientCategory let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
 
+                    <mat-icon *ngIf="element.patientType =='Self'" matTooltip="Patient Category Self">account_box
+                    </mat-icon>
 
+                    <mat-icon *ngIf="element.patientType !== 'Self'" matTooltip="Patient Category Company">business
+                    </mat-icon>
 
-        <!-- <mat-tab label="IP Discharged List">
-            <ng-template mat-tab-label>
-                IP Discharged List
+                </div>
             </ng-template>
-            <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight
-                fusePerfectScrollbar>
 
-                <div class="top-header">
-                    <div class="top-header-info">
-                        <button mat-icon-button class="sidebar-toggle" fxHide.gt-sm (click)="toggleSidebar('app-main')">
-                            <mat-icon>menu</mat-icon>
-                        </button>
-                        <mat-icon class="logo-icon"
-                            [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            <ng-template #iconBillCancle let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isBillGenerated=='1'; else noMLC " matTooltip="Bill Generated"
+                        class="pill green-600 s-16">
+                    </mat-icon>
+                    <ng-template #noMLC>
+                        <span>--</span>
+                    </ng-template>
+
+                </div>
+            </ng-template>
+
+            <ng-template #iconMlc let-element>
+                <div>
+
+                    <button mat-icon-button *ngIf="element.isMLC==1; " matTooltip="IsMLC" (click)="NewMLc(element)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button *ngIf="element.isMLC==1;" matTooltip="Print MLC paper"
+                        (click)="getMLCdetailview(element.amissionId)">
+                        <mat-icon>print</mat-icon>
+                    </button>
+                    <!-- <ng-template #noMLC>
+                                    <span>--</span>
+                                </ng-template> -->
+                </div>
+            </ng-template>
+
+            <!-- <ng-template #actionButtonTemplate let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+
+                    <button mat-icon-button (click)="printDischargeslip(element)" *ngIf="element.isDischarged"
+                        matTooltip="Discharge Slip Print">
+                        <mat-icon>
+                            <img width="20px" height="6px" src="assets/images/logos/dischargesummary.jpeg"
+                                style="background:-moz-linear-gradient(00,9,22);">
                         </mat-icon>
-                        <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                            <span>IP DischargedList </span>
-                        </div>
-                    </div>
+                    </button>
+
+
+                    <button mat-icon-button (click)="printDischargesummary(element)" *ngIf="element.isDischarged"
+                        matTooltip="Discharge Summary Print">
+                        <mat-icon>
+                            <img width="20px" height="6px" src="assets/images/logos/discharge.jpeg"
+                                style="background-color: transparent;">
+                        </mat-icon>
+
+                    </button>
+
+                    <button mat-icon-button (click)="printDischargesummaryWithoutletterhead(element)"
+                        *ngIf="element.isDischarged" matTooltip="Discharge Summary Without LetterHead Print">
+                        <mat-icon>
+                            <img width="14px" height="4px" src="assets/images/logos/withoutLetterHead.png"
+                                style="background-color: transparent;">
+                        </mat-icon>
+                    </button>
+
+
+                    <button mat-icon-button (click)="getfeedback(element)" matTooltip="NewFeedback">
+                        <mat-icon style="color: black;">feedback</mat-icon>
+                    </button>
+
+                    <button mat-icon-button *ngIf="element.IsInitinatedDischarge=='1'" matTooltip="Discharge Initiated">
+                        <mat-icon>
+                            <img width="20px" height="6px" src="assets/images/logos/discharge_initiated.png"
+                                style="background:-moz-linear-gradient(00,9,22);">
+                        </mat-icon>
+                    </button>
+
+                    
+                    <mat-menu #moreMenu="matMenu">
+                        <ng-container *ngFor="let m of menuActions, let n of menuActions">
+                            <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
+                                <span>{{m}}</span>
+                            </button>
+                        </ng-container>
+                    </mat-menu>
                 </div>
-             
-                <div class="content">
-                    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                        <airmid-table [gridConfig]="gridConfig1" class="content">
-                            <ng-container filters>
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>First Name</mat-label>
-                                    <input matInput placeholder="Search First Name" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[0].fieldValue=''">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Last Name</mat-label>
-                                    <input matInput placeholder="Search Last Name" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[1].fieldValue=''">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-                
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>From Date</mat-label>
-                                    <input matInput placeholder="Search From Date" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[2].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[2].fieldValue=''">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-                
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>To Date</mat-label>
-                                    <input matInput placeholder="Search To Date" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[3].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[3].fieldValue=''">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-                                
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>M_Name</mat-label>
-                                    <input matInput placeholder="Search M_Name" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[5].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[5].fieldValue=''">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-                
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>IPNo</mat-label>
-                                    <input matInput placeholder="Search IPNo" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[6].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[6].fieldValue=''">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-                                <mat-radio-group value="" [(ngModel)]="gridConfig.filters[4].fieldValue" fxLayoutAlign="center center">
-                                    <mat-radio-button mat-fab value="1">Admtd_Dschrgd_All</mat-radio-button>
-                                    <mat-radio-button mat-fab value="0">Not Admtd_Dschrgd_All</mat-radio-button>
-                                </mat-radio-group>
-                              
-                            </ng-container>
-                        </airmid-table>
-                    </div>
+            </ng-template> -->
+
+            <ng-template #actionButtonTemplate let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+
+                    <button mat-icon-button (click)="printDischargesummaryWithoutletterhead(element)"
+                        *ngIf="element.isDischarged" matTooltip="Discharge Summary Without LetterHead Print">
+                        <mat-icon>
+                            <img width="14px" height="4px" src="assets/images/logos/withoutLetterHead.png"
+                                style="background-color: transparent;">
+                        </mat-icon>
+                    </button>
+
+                    <button mat-icon-button (click)="getfeedback(element)" matTooltip="NewFeedback">
+                        <mat-icon style="color: black;">feedback</mat-icon>
+                    </button>
+
+
+                    <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                        (click)="$event.stopPropagation();">
+                        <mat-icon class="secondary-text">more_vert</mat-icon>
+                    </button>
+                    <mat-menu #moreMenu="matMenu">
+                        <ng-container *ngFor="let m of menuActions, let n of menuActions">
+                            <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
+                                <span>{{m}}</span>
+                            </button>
+                        </ng-container>
+                    </mat-menu>
                 </div>
-            </div>
-        </mat-tab> -->
+            </ng-template>
 
-  
+            <airmid-table [gridConfig]="gridConfig" class="content">
+                <ng-container filters>
 
-    <!-- </mat-tab-group> -->
+                    <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
+                        formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue"
+                        [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
 
+
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Reg No</mat-label>
+                        <input matInput placeholder="Search Reg No" autocomplete="off"
+                            [(ngModel)]="gridConfig.filters[2].fieldValue" />
+                        <button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="gridConfig.filters[2].fieldValue='0'">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>First Name</mat-label>
+                        <input matInput placeholder="Search First Name" autocomplete="off"
+                            [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                        <button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="gridConfig.filters[0].fieldValue='%'">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>M_Name</mat-label>
+                        <input matInput placeholder="Search M_Name" autocomplete="off"
+                            [(ngModel)]="gridConfig.filters[7].fieldValue" />
+                        <button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="gridConfig.filters[7].fieldValue='%'">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Last Name</mat-label>
+                        <input matInput placeholder="Search Last Name" autocomplete="off"
+                            [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                        <button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="gridConfig.filters[1].fieldValue='%'">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Doctor</mat-label>
+                        <input matInput placeholder="Search Doctor" autocomplete="off"
+                            [(ngModel)]="gridConfig.filters[3].fieldValue" />
+                        <button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="gridConfig.filters[3].fieldValue='0'">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>IPDNo</mat-label>
+                        <input matInput placeholder="Search IPDNo" autocomplete="off"
+                            [(ngModel)]="gridConfig.filters[8].fieldValue" />
+                        <button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="gridConfig.filters[8].fieldValue='0'">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <mat-radio-group value="" [(ngModel)]="gridConfig.filters[6].fieldValue"
+                        fxLayoutAlign="center center" (change)="onChangeStatus($event)">
+                        <mat-radio-button mat-fab value="1">Discharged</mat-radio-button>
+                        <mat-radio-button mat-fab value="0">NonDischarged</mat-radio-button>
+                    </mat-radio-group>
+
+
+                    <!-- <app-airmid-slider label="Discharged"   formControlName="IsDischarge" [formGroup]="myFilterform" ></app-airmid-slider> -->
+
+                </ng-container>
+            </airmid-table>
+        </div>
+    </div>
+    <!-- / USER -->
 
 </div>
