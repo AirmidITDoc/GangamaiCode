@@ -9,7 +9,7 @@
                 <mat-icon>account_box</mat-icon>
             </button>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-               New Template 
+                New Template
             </span>
         </div>
         <div fxLayout="row" fxLayoutALign="end start">
@@ -42,30 +42,28 @@
                                             </mat-error>
                                         </mat-form-field>
 
-                                        <div  fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                             <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <mat-label>Template Details</mat-label>
-                                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                                    style="height:300px;" [(ngModel)]="vTemplateDesc" required
-                                                    formControlName="templateDesc">
+                                                <angular-editor [config]="editorConfig" style="height:300px;"
+                                                    [(ngModel)]="vTemplateDesc" required formControlName="templateDesc">
                                                 </angular-editor>
                                             </div>
                                         </div>
                                     </div>
-                                </div>                                
+                                </div>
                             </form>
 
-                                <div fxLayout="row" fxLayoutAlign="end">
+                            <div fxLayout="row" fxLayoutAlign="end">
 
-                                    <mat-radio-button value='true' [checked]="true" name="IsDeleted"
-                                        style="align-items: center;"
-                                        formControlName="IsDeleted">IsActive</mat-radio-button>
-                                    <div class="modal-footer-buttons" fxLayoutGap="6px" style="padding: 8px;">
-                                        <button class="btn btn-danger-outline" (click)="onClear()">Close</button>
-                                        <button class="btn btn-primary" (click)="onSubmit()"
+                                <mat-radio-button value='true' [checked]="true" name="IsDeleted"
+                                    style="align-items: center;" formControlName="IsDeleted">IsActive</mat-radio-button>
+                                <div class="modal-footer-buttons" fxLayoutGap="6px" style="padding: 8px;">
+                                    <button class="btn btn-danger-outline" (click)="onClear()">Close</button>
+                                    <button class="btn btn-primary" (click)="onSubmit()"
                                         [disabled]="templateForm.invalid">Save</button>
-                                    </div>
                                 </div>
+                            </div>
                         </div>
                     </div>
 
