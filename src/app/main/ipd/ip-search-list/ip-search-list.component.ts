@@ -924,6 +924,29 @@ export class IPSearchListComponent implements OnInit {
     //         console.log('The dialog was closed - Insert Action', result);
     //     });
     // }
+
+    OnRefOfBill(){
+        const dialogRef = this._matDialog.open(IPRefundofBillComponent,
+              {
+                width: '75%',
+                height: "90%"
+              });
+            dialogRef.afterClosed().subscribe(result => {
+              console.log('The dialog was closed - Insert Action', result);
+              
+            });
+    }
+    OnRefOfAdv(){
+        const dialogRef = this._matDialog.open(IPRefundofAdvanceComponent,
+              {
+                width: '75%',
+                height: "90%"
+              });
+            dialogRef.afterClosed().subscribe(result => {
+              console.log('The dialog was closed - Insert Action', result);
+              
+            });
+    }
 }
 
 
