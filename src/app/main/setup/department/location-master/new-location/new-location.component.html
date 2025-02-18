@@ -19,14 +19,16 @@
             <form [formGroup]="locationForm">
                 <input type="hidden" name="locationId" formControlName="locationId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                    <airmid-textbox 
-                        label="Location Name" 
-                        formControlName="locationName" 
-                        [value]="data?.locationName"
-                        [formGroup]="locationForm"
-                        [validations]="getValidationMessages().locationName" 
-                        [maxLength]="50">
-                    </airmid-textbox>
+                    <div fxFlex>
+                        <airmid-textbox 
+                            label="Location Name" 
+                            formControlName="locationName" 
+                            [value]="data?.locationName"
+                            [formGroup]="locationForm"
+                            [validations]="getValidationMessages().locationName" 
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
                 </div>
 
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">

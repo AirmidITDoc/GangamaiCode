@@ -145,15 +145,11 @@ export class IPRefundofAdvanceComponent implements OnInit {
   PatientType:any;
   DOA:any;
   IPDNo:any;
+  autocompleteModeCashcounter: string = "CashCounter";
 
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
-    this.RefundOfAdvanceFormGroup = this.formBuilder.group({
-      advanceAmt: ['', [Validators.pattern('^[0-9]{2,8}$')]],
-      UsedAmount: [''],
-      TotalRefundAmount: [''],
-      RefundAmount: [0, Validators.required],
-      BalanceAmount: [''],// ['',Validators.required],
+    this.RefundOfAdvanceFormGroup = this.formBuilder.group({ 
       BalanceAdvance: [0, Validators.required],
       AdvanceDetailID: [''],
       NewRefundAmount: ['0'],
@@ -196,6 +192,65 @@ export class IPRefundofAdvanceComponent implements OnInit {
       CashCounterID:['']
     });
   } 
+  getValidationMessages() {
+    return {
+      serviceName: [
+        { name: "required", Message: "Service Name is required" },
+      ],
+      cashCounterId: [
+        { name: "required", Message: "First Name is required" },
+  
+        { name: "pattern", Message: "only Number allowed." }
+      ],
+      price: [
+        { name: "pattern", Message: "only Number allowed." }
+      ],
+      qty: [
+        { name: "required", Message: "Qty required!", },
+        { name: "pattern", Message: "only Number allowed.", },
+        { name: "min", Message: "Enter valid qty.", }
+      ],
+      totalAmount: [
+        {
+          name: "pattern", Message: "only Number allowed."
+        }
+      ],
+      totalNetAmount: [
+        {
+          name: "pattern", Message: "only Number allowed."
+        }
+      ],
+      doctoreId: [
+        { name: "pattern", Message: "only Char allowed." }
+      ],
+      discountPer: [
+        { name: "pattern", Message: "only Number allowed." }
+      ],
+      discountAmount: [{ name: "pattern", Message: "only Number allowed." }],
+      netAmount: [{ name: "pattern", Message: "only Number allowed." }],
+      concessionId: [{}],
+      DoctorId: [{}]
+    }
+  }
+    //new code 
+    getSelectedObj(obj) {
+      console.log(obj)
+      this.PatientName = obj.PatientName;
+         this.RegId = obj.value; 
+         if ((this.RegId ?? 0) > 0) {
+            // console.log(this.data)
+             setTimeout(() => {
+                 this._IpSearchListService.getRegistraionById(this.RegId).subscribe((response) => {
+                     this.registerObj = response;
+                     this.PatientName = this.registerObj.firstName + " " + this.registerObj.middleName + " " + this.registerObj.lastName
+
+                     console.log(this.registerObj)
+                 });
+  
+             }, 500);
+         }
+  
+     }
 
   getRefundtotSum1(element) {
     let netAmt1;

@@ -20,39 +20,46 @@ export class MenuMasterService {
 
     createMenuForm(): FormGroup {
     return this._formBuilder.group({
-                id:[""],
-                bedName:[""],
-                Menuid:[""],
-                upId: ["",
+                id:[0],
+                upId: [0,
                     [
                         // Validators.required,
-                        Validators.pattern('^[0-9]*$')
+                        // Validators.pattern('^[0-9]*$')
                         // ("^[A-Za-z]*[a-zA-Z]*$")
                     ]
                 ],
-                linkName: [""],
-                icon: [""],
-                linkAction: [""],
-                sortOrder: [""],
+                linkName: ['', [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+                ]],
+                icon: ['', [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+                ]],
+                linkAction: ['', [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+                ]],
+                sortOrder: ["",
+                    [
+                        Validators.required,
+                        Validators.pattern('^[0-9]*$')
+                    ]
+                ],
                 isActive:[true,[Validators.required]],
-                isDisplay: true,
-                permissionCode:[""],
-                tableNames:[""],
-                IsBlock:["true"],
-
-                /**
-                 * {
-  "id": 0,
-  "upId": 0,
-  "linkName": "string",
-  "icon": "string",
-  "linkAction": "string",
-  "sortOrder": 0,
-  "isDisplay": true,
-  "permissionCode": "string",
-  "tableNames": "string"
-}
-                 */
+                isDisplay: [true,[Validators.required]],
+                permissionCode:["",
+                    [
+                        Validators.required,
+                        // Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+                    ]
+                ],
+                tableNames:["",
+                    [
+                        Validators.required,
+                        // Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+                    ]
+                ]
             });
     }
 
@@ -68,38 +75,34 @@ export class MenuMasterService {
     }
 
       public menuMasterSave(Param: any) {
-       return this._httpClient.PostData("MenuMaster/Insert", Param);
-    }
-
-    public menuMasterUpdate(Param: any) {
         if (Param.id) {
             return this._httpClient.PutData("MenuMaster/Edit/" + Param.id, Param);
-        }
+        }else
+       return this._httpClient.PostData("MenuMaster/Insertsp", Param);
     }
 
     getValidationMessages() {
         return {
-            Menuid:[
-                {name: "required", Message: "Menu No is required"}
-            ],
-            bedName: [
-                { name: "required", Message: "Bed Name is required" },
-                { name: "maxlength", Message: "Bed name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
+            sortOrder: [
+                { name: "required", Message: "Please enter display sr no " }
             ],
             upId:[
-                { name: "required", Message: "UP Id is required" },
+                // { name: "required", Message: "Please enter UPID No" },
             ],
             linkName:[
-                { name: "required", Message: "Menu Name is required" },
-                { name: "maxlength", Message: "Menu Name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
+                { name: "required", Message: "Link Name is required" }
             ],
             icon:[
                 { name: "required", Message: "Icon is required" },
             ],
             linkAction:[
-                { name: "required", Message: "Action is required" },
+                { name: "required", Message: "LinkAction is required" },
+            ],
+            permissionCode:[
+                { name: "required", Message: "Permission Code is required" },
+            ],
+            tableNames:[
+                { name: "required", Message: "Table Name is required" },
             ]
         };
     }

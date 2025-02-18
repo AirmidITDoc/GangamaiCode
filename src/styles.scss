@@ -420,3 +420,24 @@ legend {
     letter-spacing: 1.3px;
     color: white;
 }
+:root {
+    --ae-gap: 5px;
+    --ae-text-area-border: 1px solid #ddd;
+    --ae-text-area-border-radius: 0;
+    --ae-focus-outline-color: #afaeae auto 1px;
+    --ae-toolbar-padding: 1px;
+    --ae-toolbar-bg-color: #b3dca0;
+    --ae-toolbar-border-radius: 1px solid #ddd;
+    --ae-button-bg-color: #dadad7;
+    --ae-button-border: 3px solid #3fb74e;
+    --ae-button-radius: 5px;
+    --ae-button-hover-bg-color: #3fb74e;
+    --ae-button-active-bg-color: red;
+    --ae-button-active-hover-bg-color: blue;
+    --ae-button-disabled-bg-color: gray;
+    --ae-picker-label-color: rgb(78, 84, 155);
+    --ae-picker-icon-bg-color: rgb(34, 41, 122);
+    --ae-picker-option-bg-color: rgba(221, 221, 84, 0.76);
+    --ae-picker-option-active-bg-color: rgba(237, 237, 62, 0.9);
+    --ae-picker-option-focused-bg-color: rgb(255, 255, 0);  
+  }

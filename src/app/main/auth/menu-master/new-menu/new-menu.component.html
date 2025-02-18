@@ -20,22 +20,22 @@
                 <input type="hidden" name="id" formControlName="id">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox 
-                            label="MenuNumber" 
-                            formControlName="Menuid" 
-                            [value]="" 
-                            [formGroup]="menuForm"
-                            [validations]="_MenuMasterService.getValidationMessages().Menuid" 
-                            [maxLength]="50">
-                        </airmid-textbox>
+                        <airmid-dropdown 
+                                label="UPID" 
+                                formControlName="upId"
+                                [formGroup]="menuForm"
+                                [validations]="_MenuMasterService.getValidationMessages().upId" 
+                                [mode]="autocompleteModeUPID">
+                            </airmid-dropdown>
                     </div>
+
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox 
-                            label="UPID" 
-                            formControlName="upId" 
+                            label="PermissionCode" 
+                            formControlName="permissionCode" 
                             [value]="" 
                             [formGroup]="menuForm"
-                            [validations]="_MenuMasterService.getValidationMessages().upId" 
+                            [validations]="_MenuMasterService.getValidationMessages().permissionCode" 
                             [maxLength]="50">
                         </airmid-textbox>
                     </div>
@@ -83,25 +83,25 @@
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox 
-                            label="Display No" 
+                            label="SortOrder" 
                             formControlName="sortOrder" 
                             [value]="" 
                             [formGroup]="menuForm"
-                            [validations]="_MenuMasterService.getValidationMessages().bedName" 
+                            [validations]="_MenuMasterService.getValidationMessages().sortOrder" 
                             [maxLength]="50">
                         </airmid-textbox>
                     </div>
 
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>IsBlock</mat-label>
-                        <mat-select placeholder="Please Select IsBlock" 
-                            formControlName="IsBlock" required>
-                            <mat-label>Is Block</mat-label>
-                            <mat-option value="false">0</mat-option>
-                            <mat-option value="true">1</mat-option>
-                        </mat-select>
-                        <mat-error>Please Select IsBlock</mat-error>
-                    </mat-form-field>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox 
+                            label="TableName" 
+                            formControlName="tableNames" 
+                            [value]="" 
+                            [formGroup]="menuForm"
+                            [validations]="_MenuMasterService.getValidationMessages().tableNames" 
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
                 
                 </div>
             </form>
@@ -114,7 +114,12 @@
             <form [formGroup]="menuForm">
 
                 <div class="modal-footer-container">
-                    <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="menuForm" [(ngModel)]="isActive"></app-airmid-slider>
+                    <app-airmid-slider label="IsDisplay/IsDisable" formControlName="isDisplay" [formGroup]="menuForm" [(ngModel)]="isDisplay">
+
+                    </app-airmid-slider>
+                    <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="menuForm" [(ngModel)]="isActive">
+
+                    </app-airmid-slider>
                     <div class="modal-footer-buttons">
                         <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                         <button class="btn btn-primary " color="accent" (click)="onSubmit()">

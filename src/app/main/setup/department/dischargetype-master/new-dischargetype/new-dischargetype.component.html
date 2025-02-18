@@ -19,6 +19,7 @@
             <form [formGroup]="dischargetypeForm">
                 <input type="hidden" name="dischargeTypeId" formControlName="dischargeTypeId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <div fxFlex>
                         <airmid-textbox 
                             label="DischargeTypeName "
                             formControlName="dischargeTypeName"
@@ -26,7 +27,8 @@
                             [formGroup]="dischargetypeForm"
                             [validations]="getValidationMessages().dischargeTypeName"
                             [maxLength]="50">
-                        </airmid-textbox> 
+                        </airmid-textbox>
+                    </div> 
                 </div>
               
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">

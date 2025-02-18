@@ -77,13 +77,15 @@ export class ParameterFormMasterComponent implements OnInit {
     paraId: any;
     defaultValue: any;
     vParameterId: any;
-    parameterValue:any;
+    parameterValue: any;
 
     ChargeList: any = [];
     dsTemparoryList = new MatTableDataSource<PathDescriptiveMaster>();
     dataSource = new MatTableDataSource<PathDescriptiveMaster>();
     dsParameterAgeList = new MatTableDataSource<PathParaRangeAgeMaster>();
     autocompleteModeGender: String = "Gender";
+    tableData: any;
+    rowData: any;
 
     constructor(
         public _ParameterService: ParametermasterService,
@@ -105,23 +107,32 @@ export class ParameterFormMasterComponent implements OnInit {
             this.registerObj = this.data;
             this.vParameterId = this.registerObj.parameterId;
         }
-        console.log(this.data)
+
+        this.tableData = this.data.tableData;
+        this.rowData = this.data.rowData;
+
+        console.log("Received Row Data:", this.rowData);
+        console.log("Received Table Data:", this.tableData);
+
         if (this.parameterForm.get("parameterId").value) {
 
             this.dsParameterAgeList.data = this._ParameterService.numericList;
             this.selectedItems = this._ParameterService.descriptiveList;
         }
 
+        this.dsParameterAgeList.data = this.tableData;  // Assign received data
+        this.dsParameterAgeList.data = [...this.dsParameterAgeList.data];
+
         var mdata = {
-            parameterId: this.data?.parameterId,
-            parameterShortName: this.data?.parameterShortName,
-            parameterName: this.data?.parameterName,
-            printParameterName: this.data?.printParameterName,
-            MethodName: this.data?.MethodName,
-            Formula: this.data?.Formula,
-            unitId: this.data?.unitId,
-            isNumeric: this.data?.isNumeric,
-            isActive: JSON.stringify(this.data?.isActive),
+            parameterId: this.rowData?.parameterId,
+            parameterShortName: this.rowData?.parameterShortName,
+            parameterName: this.rowData?.parameterName,
+            printParameterName: this.rowData?.printParameterName,
+            MethodName: this.rowData?.methodName,
+            Formula: this.rowData?.formula,
+            unitId: this.rowData?.unitId,
+            isNumeric: this.rowData?.isNumericParameter,
+            isActive: JSON.stringify(this.rowData?.isActive),
         };
         this.parameterForm.patchValue(mdata);
     }
@@ -134,9 +145,9 @@ export class ParameterFormMasterComponent implements OnInit {
             var BoldValue = ""
 
         if (this._ParameterService.is_numeric)
-            var is_numeric = "0"
-        else
             var is_numeric = "1"
+        else
+            var is_numeric = "0"
 
         var numeric_info = [];
         var mPathParaRangeMasters = [];
@@ -160,9 +171,9 @@ export class ParameterFormMasterComponent implements OnInit {
             mPathParaRangeMasters = this.dsParameterAgeList.data.map((row: any) => ({
                 "pathparaRangeId": 0,
                 "paraId": 0,
-                "sexId": row.GenderName, //this.numericForm.get("sexId").value || 1,
-                "minValue": row.MinValue, //this.numericForm.get("minValue").value,
-                "maxvalue": row.MaxValue, //this.numericForm.get("maxvalue").value
+                "sexId": row.sexId, //this.numericForm.get("sexId").value || 1,
+                "minValue": row.minValue, //this.numericForm.get("minValue").value,
+                "maxvalue": row.maxValue, //this.numericForm.get("maxvalue").value
             }));
             // var info: any = {
             //     paraId: 0 || +this._ParameterService.myform.get("parameterId").value,
@@ -393,13 +404,13 @@ export class ParameterFormMasterComponent implements OnInit {
         let isNewRowUnique = true;
         debugger
         const newRow: any = {
-            GenderName: this.numericForm.get('sexId').value || "",
-            MinAge: this.numericForm.get('minAge').value,
-            MaxAge: this.numericForm.get('maxAge').value,
-            MinValue: this.numericForm.get('minValue').value,
-            MaxValue: this.numericForm.get('maxvalue').value,
+            sexId: this.numericForm.get('sexId').value || "",
+            minAge: this.numericForm.get('minAge').value,
+            maxAge: this.numericForm.get('maxAge').value,
+            minValue: this.numericForm.get('minValue').value,
+            maxValue: this.numericForm.get('maxvalue').value,
             IsDeleted: 1,
-            AgeType: this.numericForm.get('ageType').value,
+            ageType: this.numericForm.get('ageType').value,
         };
         console.log("sata:-",)
         for (const row of this.dsParameterAgeList.data) {

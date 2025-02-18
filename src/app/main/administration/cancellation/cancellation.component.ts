@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CancellationService } from './cancellation.service';
 import { fuseAnimations } from '@fuse/animations';
 import { MatTableDataSource } from '@angular/material/table';
@@ -48,69 +48,93 @@ export class CancellationComponent implements OnInit {
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
+  constructor(
+    public _CancellationService: CancellationService,
+    private _fuseSidebarService: FuseSidebarService,
+    public datePipe: DatePipe,
+    public _matDialog: MatDialog,
+    public toastr: ToastrService,
+    private _loggedService: AuthenticationService,
+    public _IpBillBrowseListService: IPBrowseBillService,
+    // public _BrowseOPDBillsService: BrowseOPBillService,
+  ) { }
+
+  ngOnInit(): void {
+    debugger
+    // this.getSearchList();
+    this.gridConfig = this.opdGridConfig;
+
+    this._CancellationService.UserFormGroup.get('OP_IP_Type')?.valueChanges.subscribe((value) => {
+      this.gridConfig = value === '0' ? this.opdGridConfig : this.ipdGridConfig;
+    });
+
+    console.log("GridConfig:",this.gridConfig)
+  }
+  
+  ngAfterViewInit() {
+          // Assign the template to the column dynamically
+          // this.gridConfig.columnsList.find(col => col.key === 'OPD_IPD_Type')!.template = this.actionsTemplate;  
+          this.gridConfig.columnsList.find(col => col.key === 'opD_IPD_Type')!.template = this.actionsTemplate; 
+          this.opdGridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate; 
+          this.ipdGridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIP; 
+          this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIPAdvance; 
+          this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIPRefundBill; 
+          this.gridConfig3.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIPRefundAdv; 
+      }
+      @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+      @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+      @ViewChild('actionButtonTemplateIP') actionButtonTemplateIP!: TemplateRef<any>;
+      @ViewChild('actionButtonTemplateIPAdvance') actionButtonTemplateIPAdvance!: TemplateRef<any>;
+      @ViewChild('actionButtonTemplateIPRefundBill') actionButtonTemplateIPRefundBill!: TemplateRef<any>;
+      @ViewChild('actionButtonTemplateIPRefundAdv') actionButtonTemplateIPRefundAdv!: TemplateRef<any>;
+
   // 1st table
   opdGridConfig: gridModel = {
-    apiUrl: "MReportConfig/List",
+    apiUrl: "Administration/BrowseOPDBillPagiList",
     columnsList: [
-      { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "-", key: "opD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+      { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width:200 },
+      { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:150  },
       { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "UHIDNo", key: "uHIDNo", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "BillAmount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "DiscountAmt", key: "discountAmt", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "BillAmount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' }, //not there in payload
+      { heading: "DiscountAmt", key: "discountAmt", sort: true, align: 'left', emptySign: 'NA' },//not there in payload
       {
-        heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-          {
-            action: gridActions.edit, callback: (data: any) => {
-              this.onSave(data);
-            }
-          }, {
-            action: gridActions.delete, callback: (data: any) => {
-              this._CancellationService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
-                this.toastr.success(response.message);
-                this.grid.bindGridData();
-              });
-            }
-          }]
-      } //Action 1-view, 2-Edit,3-delete
+        heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+        template: this.actionButtonTemplate  // Assign ng-template to the column
+    }
     ],
-    sortField: "ReportName",
+    sortField: "BillNo",
     sortOrder: 0,
     filters: [
-      { fieldName: "Date", fieldValue: "", opType: OperatorComparer.Contains },
-      { fieldName: "RegistrationNo", fieldValue: "", opType: OperatorComparer.Contains },
-      { fieldName: "FirstName", fieldValue: "", opType: OperatorComparer.Equals },
-      { fieldName: "LastName", fieldValue: "", opType: OperatorComparer.Equals },
-      { fieldName: "PBillNo", fieldValue: "", opType: OperatorComparer.Equals }
+      { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+      { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+      { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals }, //year from 2021 to 2025
+      { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.StartsWith },
+      { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
     ],
-    row: 25
+    row: 10
   }
 
   ipdGridConfig: gridModel = {
     apiUrl: "Billing/IPBillList",
     columnsList: [
-      { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },      
-      { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "-", key: "OPD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+      { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width:200 },      
+      { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:150 },
       { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "BillAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "DiscountAmt", key: "compDiscAmt", sort: true, align: 'left', emptySign: 'NA' },
       {
-        heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-          {
-            action: gridActions.edit, callback: (data: any) => {
-              this.onSave(data);
-            }
-          }, {
-            action: gridActions.delete, callback: (data: any) => {
-              this._CancellationService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
-                this.toastr.success(response.message);
-                this.grid.bindGridData();
-              });
-            }
-          }]
-      } //Action 1-view, 2-Edit,3-delete
+        heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+        template: this.actionButtonTemplateIP  // Assign ng-template to the column
+    } //Action 1-view, 2-Edit,3-delete
     ],
     sortField: "BillNo",
     sortOrder: 0,
@@ -133,7 +157,7 @@ export class CancellationComponent implements OnInit {
   gridConfig1: gridModel = {
     apiUrl: "Administration/IPAdvanceList",
     columnsList: [
-      { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width:200 },
       { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
@@ -141,20 +165,9 @@ export class CancellationComponent implements OnInit {
       { heading: "Balance Amt ", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' },
       {
-        heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-          {
-            action: gridActions.edit, callback: (data: any) => {
-              this.onSave(data);
-            }
-          }, {
-            action: gridActions.delete, callback: (data: any) => {
-              this._CancellationService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
-                this.toastr.success(response.message);
-                this.grid.bindGridData();
-              });
-            }
-          }]
-      } //Action 1-view, 2-Edit,3-delete
+        heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+        template: this.actionButtonTemplateIPAdvance  // Assign ng-template to the column
+    } //Action 1-view, 2-Edit,3-delete
     ],
     sortField: "RegID",
     sortOrder: 0,
@@ -163,8 +176,8 @@ export class CancellationComponent implements OnInit {
       { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
       { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-      { fieldName: "Reg_No", fieldValue: "106", opType: OperatorComparer.Equals },
-      { fieldName: "PBillNo", fieldValue: "1", opType: OperatorComparer.Equals },
+      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.StartsWith },
       { fieldName: "Start", fieldValue: "", opType: OperatorComparer.Equals },
       { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
     ],
@@ -175,29 +188,18 @@ export class CancellationComponent implements OnInit {
   gridConfig2: gridModel = {
     apiUrl: "Billing/IPRefundBillList",
     columnsList: [
-      { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "RefundTime", key: "refundTime", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width:200 },
+      { heading: "RefundTime", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width:200 },
       { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "PaymentTime", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width:200},
+      { heading: "PaymentTime", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width:200},
       { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
       {
-        heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-          {
-            action: gridActions.edit, callback: (data: any) => {
-              this.onSave(data);
-            }
-          }, {
-            action: gridActions.delete, callback: (data: any) => {
-              this._CancellationService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
-                this.toastr.success(response.message);
-                this.grid.bindGridData();
-              });
-            }
-          }]
-      } //Action 1-view, 2-Edit,3-delete
+        heading: "Action", key: "action", align: "right", width: 150,sticky: true, type: gridColumnTypes.template,
+        template: this.actionButtonTemplateIPRefundBill  // Assign ng-template to the column
+    } //Action 1-view, 2-Edit,3-delete
     ],
     sortField: "RegNo",
     sortOrder: 0,
@@ -206,7 +208,7 @@ export class CancellationComponent implements OnInit {
       { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
       { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Contains },
+      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
       { fieldName: "Start", fieldValue: "", opType: OperatorComparer.Equals },
       { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
     ],
@@ -217,31 +219,20 @@ export class CancellationComponent implements OnInit {
   gridConfig3: gridModel = {
     apiUrl: "Administration/IPRefundAdvanceReceiptList",
     columnsList: [
-      { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "RefundTime", key: "refundTime", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width:200 },
+      { heading: "RefundTime", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width:200 },
       { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "AdvanceAmount", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "AdvanceUsedAmt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "BalanceAmount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "PaymentTime", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width:200 },
+      { heading: "PaymentTime", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width:200 },
       {
-        heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-          {
-            action: gridActions.edit, callback: (data: any) => {
-              this.onSave(data);
-            }
-          }, {
-            action: gridActions.delete, callback: (data: any) => {
-              this._CancellationService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
-                this.toastr.success(response.message);
-                this.grid.bindGridData();
-              });
-            }
-          }]
-      } //Action 1-view, 2-Edit,3-delete
+        heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+        template: this.actionButtonTemplateIPRefundAdv  // Assign ng-template to the column
+    }  //Action 1-view, 2-Edit,3-delete
     ],
     sortField: "RefundId",
     sortOrder: 0,
@@ -250,31 +241,11 @@ export class CancellationComponent implements OnInit {
       { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
       { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-      { fieldName: "Reg_No", fieldValue: "170", opType: OperatorComparer.Equals },
+      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
       { fieldName: "Start", fieldValue: "", opType: OperatorComparer.Equals },
       { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
     ],
     row: 10
-  }
-
-  constructor(
-    public _CancellationService: CancellationService,
-    private _fuseSidebarService: FuseSidebarService,
-    public datePipe: DatePipe,
-    public _matDialog: MatDialog,
-    public toastr: ToastrService,
-    private _loggedService: AuthenticationService,
-    public _IpBillBrowseListService: IPBrowseBillService,
-    // public _BrowseOPDBillsService: BrowseOPBillService,
-  ) { }
-
-  ngOnInit(): void {
-    // this.getSearchList();
-    this.gridConfig = this.opdGridConfig;
-
-    this._CancellationService.UserFormGroup.get('OP_IP_Type')?.valueChanges.subscribe((value) => {
-      this.gridConfig = value === '0' ? this.opdGridConfig : this.ipdGridConfig;
-    });
   }
 
   onSave(row: any = null) {
@@ -294,6 +265,31 @@ export class CancellationComponent implements OnInit {
     //     }
     // });
   }
+
+  OnUpdate(row){
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button
+
+    let that = this;
+    const dialogRef = this._matDialog.open( BillDateUpdateComponent, 
+        {
+          // maxWidth:'50vh',
+          //   maxHeight: '50vh',
+          //   width: '90%',
+            maxHeight: "35vh",
+            maxWidth: '90vh',
+            width: '100%',
+            data: row
+        });
+    dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+            that.grid.bindGridData();
+        }
+    });
+  }
+OnCancel(row){
+
+}
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();

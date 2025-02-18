@@ -424,16 +424,29 @@ export class NUserComponent implements OnInit{
               { name: "pattern", Message: "only char allowed." }
           ],
           lastName:[
-              { name: "required", Message: "First Name is required" },
+              { name: "required", Message: "Last Name is required" },
               { name: "maxLength", Message: "Enter only upto 50 chars" },
               { name: "pattern", Message: "only char allowed." }
           ],
-          userName:[],
-          password:[],
-          mailId:[],
-          roleId:[],
-          storeId:[],
-          webRoleId:[],
+          userName:[
+            { name: "required", Message: "User Name is required" },
+            { name: "maxLength", Message: "Enter only upto 50 chars" },
+          ],
+          password:[
+            { name: "required", Message: "Password is required" },
+          ],
+          mailId:[
+             { name: "required", Message: "Mail is required" },
+          ],
+          roleId:[
+             { name: "required", Message: "Role is required" },
+          ],
+          storeId:[
+             { name: "required", Message: "Store is required" },
+          ],
+          webRoleId:[
+             { name: "required", Message: "WebRole is required" },
+          ],
           DoctorID:[],
       };
   }
