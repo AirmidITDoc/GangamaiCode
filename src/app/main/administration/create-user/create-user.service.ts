@@ -36,10 +36,21 @@ export class CreateUserService {
               ]],
             password:[
               "",
-              Validators.pattern("^\\d{0,12}(\\.\\d*)?$")
+              [
+                Validators.required,
+                Validators.pattern("^\\d{0,12}(\\.\\d*)?$")
+              ]
           ],
-            roleId: [""],
-            storeId: 0,
+            roleId: ["",
+              [
+                Validators.required
+               ]  
+            ],
+            storeId: ["",
+              [
+                Validators.required
+               ]  
+            ],
             isDoctorType: "",
             isPoverify: false,
             isGrnverify: "",
@@ -51,7 +62,10 @@ export class CreateUserService {
             isDateIntervalDays: 0,
             mailId: [
               "",
-              Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"),
+              [
+                Validators.required,
+                Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"),
+               ]             
           ],
             mailDomain: ["1"],
             loginStatus: "",
@@ -60,7 +74,11 @@ export class CreateUserService {
             isPoinchargeVerify: "",
             isRefDocEditOpt: true,
             isInchIndVfy: "",
-            webRoleId: 0,
+            webRoleId: ["",
+              [
+                Validators.required
+               ]  
+            ],
             userToken: [""],
             PharExpOpt:0,
             PharIPOpt:0,

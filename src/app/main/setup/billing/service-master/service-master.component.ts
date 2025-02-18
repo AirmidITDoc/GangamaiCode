@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
 import { fuseAnimations } from "@fuse/animations";
 import { ServiceMasterService } from "./service-master.service";
 import { ServiceMasterFormComponent } from "./service-master-form/service-master-form.component";
@@ -24,6 +24,11 @@ export class ServiceMasterComponent implements OnInit {
     groupId = "0";
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+     ngAfterViewInit() {
+              // Assign the template to the column dynamically
+              this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate; 
+          }
+          @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
     gridConfig: gridModel = {
         apiUrl: "BillingService/BillingList",
@@ -43,6 +48,10 @@ export class ServiceMasterComponent implements OnInit {
             { heading: "IsEmergency", key: "isEmergency", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "EmgAmt", key: "emgAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+            // {
+                //     heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+                //     template: this.actionButtonTemplate  // Assign ng-template to the column
+                // } 
             {
                 heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
                     {
@@ -84,6 +93,18 @@ export class ServiceMasterComponent implements OnInit {
     onSearch() {
 
     }
+    // deleteService(serviceId: number) {
+    //     debugger
+    //     this._serviceMasterService.deactivateTheStatus(serviceId).subscribe(
+    //         (response: any) => {
+    //             this.toastr.success(response.message);
+    //             this.grid.bindGridData();
+    //         },
+    //         (error: any) => {
+    //             this.toastr.error("Failed to delete service.");
+    //         }
+    //     );
+    // }
 
     onSearchClear() {
         this._serviceMasterService.myformSearch.reset({
@@ -190,7 +211,7 @@ export class ServiceMaster {
      */
     constructor(ServiceMaster) {
         {
-            this.serviceId = ServiceMaster.serviceId || "11730";
+            this.serviceId = ServiceMaster.serviceId || "0";
             this.groupId = ServiceMaster.groupId || 0;
             this.serviceShortDesc = ServiceMaster.serviceShortDesc || "";
             this.serviceName = ServiceMaster.serviceName || "";

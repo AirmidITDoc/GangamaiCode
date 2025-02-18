@@ -126,31 +126,17 @@ export class ParametermasterComponent implements OnInit {
     onEdit(row) {
         debugger
         console.log(row)
-        // var m_data = {
-        //     ParameterID: row.parameterId,
-        //     ParameterShortName: row.parameterShortName.trim(),
-        //     ParameterName: row.parameterName.trim(),
-        //     PrintParameterName: row.printParameterName.trim(),
-        //     UnitId: row.unitId,
-        //     IsNumeric: row.IsNumericParameter,
-        //     IsDeleted: JSON.stringify(row.Isdeleted),
-        //     UpdatedBy: row.UpdatedBy,
-        //     IsPrintDisSummary: JSON.stringify(row.isPrintDisSummary),
-        //     MethodName: row.methodName,
-        //     ParaMultipleRange: row.ParaMultipleRange,
-        //     Formula: row.formula,
-        // };
 
         // wroung api used
-        // if(row.IsNumericParameter==0){
+        if(row.isNumericParameter==1){
             var param = {
                 "first": 0,
                 "rows": 10,
-                "sortField": "ParaId",
+                "sortField": "PathparaRangeId",
                 "sortOrder": 0,
                 "filters": [
                     {
-                        "fieldName": "ParaId",
+                        "fieldName": "ParameterId",
                         "fieldValue": String(row.parameterId),
                         "opType": "Equals"
                     },
@@ -167,34 +153,33 @@ export class ParametermasterComponent implements OnInit {
                 ],
                 "exportType": "JSON"
             }
-        // }
-        // else{
-            // var param = {
-            //     "first": 0,
-            //     "rows": 10,
-            //     "sortField": "ParameterId",
-            //     "sortOrder": 0,
-            //     "filters": [
-            //         {
-            //             "fieldName": "ParameterId",
-            //             "fieldValue": String(row.parameterId),
-            //             "opType": "Equals"
-            //         },
-            //         {
-            //             "fieldName": "Start",
-            //             "fieldValue": "0",
-            //             "opType": "Equals"
-            //         },
-            //         {
-            //             "fieldName": "Length",
-            //             "fieldValue": "10",
-            //             "opType": "Equals"
-            //         }
-            //     ],
-            //     "exportType": "JSON"
-            // }
-        // }
-        
+        }
+        else{
+            var param = {
+                "first": 0,
+                "rows": 10,
+                "sortField": "ParameterId",
+                "sortOrder": 0,
+                "filters": [
+                    {
+                        "fieldName": "ParameterId",
+                        "fieldValue": String(row.parameterId),
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "Start",
+                        "fieldValue": "0",
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "Length",
+                        "fieldValue": "10",
+                        "opType": "Equals"
+                    }
+                ],
+                "exportType": "JSON"
+            }
+        }
         
         console.log(param)
 
@@ -220,9 +205,10 @@ export class ParametermasterComponent implements OnInit {
             // this._ParameterService.populateForm(param);
             const dialogRef = this._matDialog.open(ParameterFormMasterComponent, {
                 maxWidth: "100vw",
-                maxHeight: '95%',
+                height: '95%',
                 width: '70%',
-                data:row
+                // data:row,
+                data: { rowData: row, tableData: data.data }
             });
 
             dialogRef.afterClosed().subscribe((result) => {

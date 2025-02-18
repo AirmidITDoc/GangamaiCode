@@ -30,6 +30,10 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { SharedModule } from "app/main/shared/shared.module";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialogModule } from "@angular/material/dialog";
+import { MatTabsModule } from "@angular/material/tabs";
+import { MatExpansionModule } from "@angular/material/expansion";
+import { MatListModule } from "@angular/material/list";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 const routes: Routes = [
     {
@@ -70,6 +74,10 @@ const routes: Routes = [
         MatCardModule,
         MatDialogModule,
         CommonModule,
+        MatTabsModule,
+        MatExpansionModule,
+        MatListModule,
+        MatTooltipModule,
     ],
     providers: [ServiceMasterService, DatePipe]
 })

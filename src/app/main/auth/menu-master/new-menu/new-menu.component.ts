@@ -17,6 +17,8 @@ export class NewMenuComponent implements OnInit {
     menuForm: FormGroup;
     saveflag: boolean = false;
     isActive: boolean = true;
+    isDisplay: boolean=true;
+    autocompleteModeUPID:string="UPID";
 
     constructor(
         public _MenuMasterService: MenuMasterService,
@@ -25,24 +27,10 @@ export class NewMenuComponent implements OnInit {
         public toastr: ToastrService
     ) { }
 
-    // autocompleteModeroomId: string = "Room"; 
-
-    // roomId = 0;
-    vIsBlock: any;
-
     ngOnInit(): void {
         debugger
         this.menuForm = this._MenuMasterService.createMenuForm();
         console.log("EditData:", this.data)
-        if (this.data?.isDisplay == true) {
-            this.menuForm.get('IsBlock').setValue("true");
-            // this.vIsBlock = 1
-        } else {            
-            this.menuForm.get('IsBlock').setValue("false");
-            // this.vIsBlock = 0
-        }
-        
-
         if ((this.data?.id ?? 0) > 0) {
             var m_data = {
                 id: this.data?.id,
@@ -52,11 +40,11 @@ export class NewMenuComponent implements OnInit {
                 icon: this.data?.icon,
                 linkAction: this.data?.linkAction,
                 sortOrder: this.data?.sortOrder,
-                // IsBlock: this.data?.isDisplay ? 1 : 0,
+                permissionCode: this.data?.permissionCode,
+                tableNames: this.data?.tableNames,
             };
-            // this.vIsBlock=this.data.isDisplay ? 1 : 0
-            // this.menuForm.get("IsBlock").setValue(this.data.isDisplay)
             this.isActive = this.data.isActive
+            this.isDisplay=this.data.isDisplay
             this.menuForm.patchValue(m_data);
         }
     }
@@ -65,70 +53,23 @@ export class NewMenuComponent implements OnInit {
         debugger
         this.saveflag = true;
 
-        if (this.menuForm.invalid) {
+        if (!this.menuForm.invalid) {
+
+            console.log("MenuMaster json:", this.menuForm.value);
+      
+            this._MenuMasterService.menuMasterSave(this.menuForm.value).subscribe((response) => {
+              this.toastr.success(response.message);
+              this.onClear(true);
+            }, (error) => {
+              this.toastr.error(error.message);
+            });
+          }
+          else {
             this.toastr.warning('please check from is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            })
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
             return;
-        } else {
-            if (!this.menuForm.get("id").value) {
-
-                var m_data =
-                {
-                    "id": 0,
-                    "upId": parseInt(this.menuForm.get("upId").value),
-                    "linkName": this.menuForm.get("linkName").value || 0,
-                    "icon": this.menuForm.get("icon").value || 0,
-                    "linkAction": this.menuForm.get("linkAction").value || 0,
-                    "sortOrder": this.menuForm.get("sortOrder").value || 0,
-                    // "isActive": true,
-                    "isDisplay": this.menuForm.get("IsBlock").value || 0,
-                    "permissionCode": 1,
-                    "tableNames": 1
-                }
-
-                console.log("MenuMaster Insert:", m_data)
-
-                this._MenuMasterService.menuMasterSave(m_data).subscribe((response) => {
-                    this.toastr.success(response.message);
-                    this.onClear(true);
-                }, (error) => {
-                    this.toastr.error(error.message);
-                });
-            } else {
-                // update
-                var m_data1 =
-                {
-                    "id": this.menuForm.get("id").value,
-                    "upId": parseInt(this.menuForm.get("upId").value),
-                    "linkName": this.menuForm.get("linkName").value || 0,
-                    "icon": this.menuForm.get("icon").value || 0,
-                    "linkAction": this.menuForm.get("linkAction").value || 0,
-                    "sortOrder": this.menuForm.get("sortOrder").value || 0,
-                    // "isActive": true,
-                    "isDisplay": this.menuForm.get("IsBlock").value || 0,
-                    "permissionCode": 1,
-                    "tableNames": 1
-                }
-
-                console.log("MenuMaster Update:", m_data1)
-
-                this._MenuMasterService.menuMasterUpdate(m_data1).subscribe((response) => {
-                    this.toastr.success(response.message);
-                    this.onClear(true);
-                }, (error) => {
-                    this.toastr.error(error.message);
-                });
-            }
-            //   if (this.bedForm.valid) {
-            //       this._BedMasterService.bedMasterSave(this.bedForm.value).subscribe((response) => {
-            //           this.toastr.success(response.message);
-            //           this.onClear(true);
-            //       }, (error) => {
-            //           this.toastr.error(error.message);
-            //       });
-            //   }
-        }
+          }
     }
 
     onClear(val: boolean) {

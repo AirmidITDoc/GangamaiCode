@@ -16,6 +16,18 @@
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <!-- <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <button mat-icon-button matTooltip="Edit" (click)="onSave(element)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Delete" (click)="deleteService(element.serviceId)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </ng-template> -->
+        
         <app-airmid-table1 [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <mat-form-field appearance="outline" fxFlex>

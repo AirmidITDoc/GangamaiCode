@@ -180,7 +180,7 @@ export class PaymentmodechangesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getsearchList(); 
+    // this.getsearchList(); 
 
     this.gridConfig = this.gridConfigOP;
 
@@ -220,86 +220,86 @@ export class PaymentmodechangesComponent implements OnInit {
     //     }
     // });
 }
-  getsearchList(){
-    if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '0'){
-      this.getOPReceiptList();
-    }else if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '1'){
-      this.getIPReceiptList();
-    }else{
-      this.getIPAdvanceList();
-    }
-  }
- getOPReceiptList(){
-  this.sIsLoading = 'loading-data';
-  var vdata={
-    'F_Name':this._PaymentmodechangesService.UseFormGroup.get('FirstName').value || '%',
-    'L_Name':this._PaymentmodechangesService.UseFormGroup.get('LastName').value   || '%', 
-    'From_Dt': this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-    'To_Dt':this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-    'Reg_No':this._PaymentmodechangesService.UseFormGroup.get('RegNo').value || 0,
-    'PBillNo':this._PaymentmodechangesService.UseFormGroup.get('BillNo').value  || 0,
-    'ReceiptNo':this._PaymentmodechangesService.UseFormGroup.get('ReceiptNo').value || 0
-  }
-  console.log(vdata);
-  this._PaymentmodechangesService.getOpReceiptList(vdata).subscribe(data =>{
-    this.dsPaymentChanges.data= data as PaymentChange [];
-    this.dsPaymentChanges.sort = this.sort;
-    this.dsPaymentChanges.paginator = this.paginator;
-    this.sIsLoading = '';
-    console.log(this.dsPaymentChanges.data);
-  } ,
-  error => {
-    this.sIsLoading = '';
-  });
- }
+  // getsearchList(){
+  //   if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '0'){
+  //     this.getOPReceiptList();
+  //   }else if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '1'){
+  //     this.getIPReceiptList();
+  //   }else{
+  //     this.getIPAdvanceList();
+  //   }
+  // }
+//  getOPReceiptList(){
+//   this.sIsLoading = 'loading-data';
+//   var vdata={
+//     'F_Name':this._PaymentmodechangesService.UseFormGroup.get('FirstName').value || '%',
+//     'L_Name':this._PaymentmodechangesService.UseFormGroup.get('LastName').value   || '%', 
+//     'From_Dt': this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+//     'To_Dt':this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+//     'Reg_No':this._PaymentmodechangesService.UseFormGroup.get('RegNo').value || 0,
+//     'PBillNo':this._PaymentmodechangesService.UseFormGroup.get('BillNo').value  || 0,
+//     'ReceiptNo':this._PaymentmodechangesService.UseFormGroup.get('ReceiptNo').value || 0
+//   }
+//   console.log(vdata);
+//   this._PaymentmodechangesService.getOpReceiptList(vdata).subscribe(data =>{
+//     this.dsPaymentChanges.data= data as PaymentChange [];
+//     this.dsPaymentChanges.sort = this.sort;
+//     this.dsPaymentChanges.paginator = this.paginator;
+//     this.sIsLoading = '';
+//     console.log(this.dsPaymentChanges.data);
+//   } ,
+//   error => {
+//     this.sIsLoading = '';
+//   });
+//  }
 
- getIPReceiptList(){
-  this.sIsLoading = 'loading-data';
-  var vdata={
-    'F_Name':this._PaymentmodechangesService.UseFormGroup.get('FirstName').value || '%',
-    'L_Name':this._PaymentmodechangesService.UseFormGroup.get('LastName').value   || '%', 
-    'From_Dt': this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-    'To_Dt':this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-    'Reg_No':this._PaymentmodechangesService.UseFormGroup.get('RegNo').value || 0,
-    'PBillNo':this._PaymentmodechangesService.UseFormGroup.get('BillNo').value  || '%',
-    'ReceiptNo':this._PaymentmodechangesService.UseFormGroup.get('ReceiptNo').value || '%'
-  }
-  console.log(vdata);
-  this._PaymentmodechangesService.getIpReceiptList(vdata).subscribe(data =>{
-    this.dsPaymentChanges.data= data as PaymentChange [];
-    this.dsPaymentChanges.sort = this.sort;
-    this.dsPaymentChanges.paginator = this.paginator;
-    this.sIsLoading = '';
-    console.log(this.dsPaymentChanges.data);
-  } ,
-  error => {
-    this.sIsLoading = '';
-  });
- }
+//  getIPReceiptList(){
+//   this.sIsLoading = 'loading-data';
+//   var vdata={
+//     'F_Name':this._PaymentmodechangesService.UseFormGroup.get('FirstName').value || '%',
+//     'L_Name':this._PaymentmodechangesService.UseFormGroup.get('LastName').value   || '%', 
+//     'From_Dt': this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+//     'To_Dt':this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+//     'Reg_No':this._PaymentmodechangesService.UseFormGroup.get('RegNo').value || 0,
+//     'PBillNo':this._PaymentmodechangesService.UseFormGroup.get('BillNo').value  || '%',
+//     'ReceiptNo':this._PaymentmodechangesService.UseFormGroup.get('ReceiptNo').value || '%'
+//   }
+//   console.log(vdata);
+//   this._PaymentmodechangesService.getIpReceiptList(vdata).subscribe(data =>{
+//     this.dsPaymentChanges.data= data as PaymentChange [];
+//     this.dsPaymentChanges.sort = this.sort;
+//     this.dsPaymentChanges.paginator = this.paginator;
+//     this.sIsLoading = '';
+//     console.log(this.dsPaymentChanges.data);
+//   } ,
+//   error => {
+//     this.sIsLoading = '';
+//   });
+//  }
 
- getIPAdvanceList(){
-  this.sIsLoading = 'loading-data';
-  var vdata={
-    'F_Name':this._PaymentmodechangesService.UseFormGroup.get('FirstName').value || '%',
-    'L_Name':this._PaymentmodechangesService.UseFormGroup.get('LastName').value   || '%', 
-    'From_Dt': this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-    'To_Dt':this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-    'Reg_No':this._PaymentmodechangesService.UseFormGroup.get('RegNo').value || 0,
-    'PBillNo':this._PaymentmodechangesService.UseFormGroup.get('BillNo').value  || 0,
-    'ReceiptNo':this._PaymentmodechangesService.UseFormGroup.get('ReceiptNo').value || 0
-  }
-  console.log(vdata);
-  this._PaymentmodechangesService.getIpAdvanceList(vdata).subscribe(data =>{
-    this.dsPaymentChanges.data= data as PaymentChange [];
-    this.dsPaymentChanges.sort = this.sort;
-    this.dsPaymentChanges.paginator = this.paginator;
-    this.sIsLoading = '';
-    console.log(this.dsPaymentChanges.data);
-  } ,
-  error => {
-    this.sIsLoading = '';
-  });
- }
+//  getIPAdvanceList(){
+//   this.sIsLoading = 'loading-data';
+//   var vdata={
+//     'F_Name':this._PaymentmodechangesService.UseFormGroup.get('FirstName').value || '%',
+//     'L_Name':this._PaymentmodechangesService.UseFormGroup.get('LastName').value   || '%', 
+//     'From_Dt': this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+//     'To_Dt':this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+//     'Reg_No':this._PaymentmodechangesService.UseFormGroup.get('RegNo').value || 0,
+//     'PBillNo':this._PaymentmodechangesService.UseFormGroup.get('BillNo').value  || 0,
+//     'ReceiptNo':this._PaymentmodechangesService.UseFormGroup.get('ReceiptNo').value || 0
+//   }
+//   console.log(vdata);
+//   this._PaymentmodechangesService.getIpAdvanceList(vdata).subscribe(data =>{
+//     this.dsPaymentChanges.data= data as PaymentChange [];
+//     this.dsPaymentChanges.sort = this.sort;
+//     this.dsPaymentChanges.paginator = this.paginator;
+//     this.sIsLoading = '';
+//     console.log(this.dsPaymentChanges.data);
+//   } ,
+//   error => {
+//     this.sIsLoading = '';
+//   });
+//  }
  onEdit(m) {
   console.log(m)
   let xx = {
@@ -344,12 +344,12 @@ export class PaymentmodechangesComponent implements OnInit {
     });
   dialogRef.afterClosed().subscribe(result => {
     console.log('The dialog was closed - Insert Action', result);
-    if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '0')
-      this.getOPReceiptList();
-    else if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '1')
-      this.getIPReceiptList();
-    else 
-      this.getIPAdvanceList(); 
+    // if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '0')
+      // this.getOPReceiptList();
+    // else if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '1')
+      // this.getIPReceiptList();
+    // else 
+      // this.getIPAdvanceList(); 
   });  
 }
 PaymentDate(contact){ 
@@ -363,12 +363,12 @@ PaymentDate(contact){
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result); 
-     if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '0')
-      this.getOPReceiptList();
-    else if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '1')
-      this.getIPReceiptList();
-    else 
-      this.getIPAdvanceList();
+    //  if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '0')
+    //   this.getOPReceiptList();
+    // else if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '1')
+    //   this.getIPReceiptList();
+    // else 
+    //   this.getIPAdvanceList();
     });   
 }
          

@@ -43,37 +43,38 @@ export class ServiceMasterFormComponent implements OnInit {
     autocompleteModedoctor: string = "ConDoctor";
     grid: any;
 
-    gridConfig: gridModel = {
-        apiUrl: "ClassMaster/List",
-        columnsList: [
-            { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA', width: 160 },
-            { heading: "Billing Class Name", key: "class Name", sort: true, align: 'left', emptySign: 'NA', width: 700 },
+    // gridConfig: gridModel = {
+    //     apiUrl: "ClassMaster/List",
+    //     columnsList: [
+    //         { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA', width: 160 },
+    //         { heading: "Billing Class Name", key: "class Name", sort: true, align: 'left', emptySign: 'NA', width: 700 },
 
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 160 },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 160, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._serviceMasterService.deactivateTheStatus(data.classId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "classId",
-        sortOrder: 0,
-        filters: [
-            { fieldName: "className", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
-    }
+    //         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 160 },
+    //         {
+    //             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 160, actions: [
+    //                 {
+    //                     action: gridActions.edit, callback: (data: any) => {
+    //                         this.onSave(data);
+    //                     }
+    //                 }, {
+    //                     action: gridActions.delete, callback: (data: any) => {
+    //                         this._serviceMasterService.deactivateTheStatus(data.classId).subscribe((response: any) => {
+    //                             this.toastr.success(response.message);
+    //                             this.grid.bindGridData();
+    //                         });
+    //                     }
+    //                 }]
+    //         } //Action 1-view, 2-Edit,3-delete
+    //     ],
+    //     sortField: "classId",
+    //     sortOrder: 0,
+    //     filters: [
+    //         { fieldName: "className", fieldValue: "", opType: OperatorComparer.Contains },
+    //         { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            
+    //     ],
+    //     row: 25
+    // }
     private _matDialog: any;
 
     constructor(public _serviceMasterService: ServiceMasterService,
@@ -89,7 +90,7 @@ export class ServiceMasterFormComponent implements OnInit {
         'classId',
         'className',
         'ClassRate',
-        'action'
+        // 'action'
     ];
 
     ngOnInit(): void {
@@ -105,7 +106,8 @@ export class ServiceMasterFormComponent implements OnInit {
             console.log(this.data)
             this.registerObj = this.data;
             this.vServiceName = this.registerObj.serviceName;
-            this.vServiceShortDesc = this.registerObj.serviceShortDesc;
+            this.vServiceShortDesc = this.registerObj.serviceShortDesc;            
+            this.getClassList(this.registerObj.serviceId)
         }
       
         var mdata = {
@@ -125,6 +127,7 @@ export class ServiceMasterFormComponent implements OnInit {
             IsEmergency: this.data?.isEmergency,
             EmgAmt: this.data?.emgAmt,
         };
+        
         this.serviceForm.patchValue(mdata);
     }
 

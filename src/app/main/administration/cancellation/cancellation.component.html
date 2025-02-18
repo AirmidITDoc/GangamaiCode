@@ -1,100 +1,151 @@
-
 <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
-        dynamicTableHeight>
+    dynamicTableHeight>
 
-        <mat-toolbar class="top-header accent">
-            <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
-                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Bill Cancellation
-                </span>
-            </div>
-        </mat-toolbar>
-    
-        <mat-tab-group>
-            <!-- 1st -->
-            <mat-tab label="Bill Cancellation">
-                <div fusePerfectScrollbar
-                    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                    dynamicTableHeight>
-                    <mat-toolbar class="top-header accent">
-                        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
-                            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                Bill Cancellation
-                            </span>
+    <mat-toolbar class="top-header accent">
+        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                Bill Cancellation
+            </span>
+        </div>
+    </mat-toolbar>
+
+    <mat-tab-group>
+        <!-- 1st -->
+        <mat-tab label="Bill Cancellation">
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+                <mat-toolbar class="top-header accent">
+                    <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+                        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                            Bill Cancellation
+                        </span>
+                    </div>
+                </mat-toolbar>
+
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <div class="info-badge-top p-12 border-bottom" style="margin-left: 18%;" fxLayout="row"
+                        fxLayoutAlign="space-between" flex>
+                        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                            <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                                <span class="green-600-fg"> OPD</span>
+                            </div>
+                            <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                                <span class="orange-600-fg">IPD</span>
+                            </div>
+
                         </div>
-                    </mat-toolbar>
-                    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                        <airmid-table [gridConfig]="gridConfig" class="content">
-                            <ng-container filters>
-    
-                                <airmid-datepicker [formGroup]="_CancellationService.UserFormGroup" [isRangePicker]="true"
-                                formStartControlName="startdate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[2].fieldValue"
+                    </div>
+                    <ng-template #actionsTemplate let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="element.opD_IPD_Type=='0'" matTooltip="OPD"
+                                class="pill orange-600 s-16">circle</mat-icon>
+                            <mat-icon *ngIf="element.opD_IPD_Type=='1'" matTooltip="IPD"
+                                class="pill green-600 s-16">circle
+                            </mat-icon>
+                        </div>
+                    </ng-template>
+
+                    <ng-template #actionButtonTemplate let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+
+                            <button class="btn btn-primary" (click)="OnUpdate(element)" matTooltip="Bill Date Update">
+                                Date Update
+                            </button>&nbsp;
+                            <button class="btn btn-danger" (click)="OnCancel(element)" matTooltip="Cancle Bill"
+                                style="color: white;"> Bill Cancel
+                            </button>
+                            <!-- *ngIf="contact.IsCancelled =='0'" -->
+                        </div>
+                    </ng-template>
+
+                    <ng-template #actionButtonTemplateIP let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+
+                            <button class="btn btn-primary" (click)="OnUpdate(element)" matTooltip="Bill Date Update">
+                                Date Update
+                            </button>&nbsp;
+                            <button class="btn btn-danger" (click)="OnCancel(element)" matTooltip="Cancle Bill"
+                                style="color: white;"> Bill Cancel
+                            </button>
+                            <!-- *ngIf="contact.IsCancelled =='0'" -->
+                        </div>
+                    </ng-template>
+
+                    <airmid-table [gridConfig]="gridConfig" class="content">
+                        <ng-container filters>
+
+                            <airmid-datepicker [formGroup]="_CancellationService.UserFormGroup" [isRangePicker]="true"
+                                formStartControlName="startdate" formEndControlName="enddate"
+                                [(fromValue)]="gridConfig.filters[2].fieldValue"
                                 [(toValue)]="gridConfig.filters[3].fieldValue">
                             </airmid-datepicker>
-                                
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Registration No</mat-label>
-                                    <input matInput placeholder="Search Registration No" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[4].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[4].fieldValue='0'">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-                                
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>First Name</mat-label>
-                                    <input matInput placeholder="Search First Name" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[0].fieldValue='%'">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-    
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Last Name</mat-label>
-                                    <input matInput placeholder="Search Last Name" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[1].fieldValue='%'">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-    
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>PBill No</mat-label>
-                                    <input matInput placeholder="Search PBill No" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[5].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[5].fieldValue='%'">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
 
-                                <form [formGroup]="_CancellationService.UserFormGroup" >
-                                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row">
-                                        <mat-radio-group formControlName="OP_IP_Type" name="OP_IP_Type">
-                                            <mat-label>Type : </mat-label>
-                                            <div>
-                                                <mat-radio-button value="0" style="margin-bottom:10px;">
-                                                    OPD
-                                                </mat-radio-button>
-                                                <mat-radio-button value="1">
-                                                    IPD
-                                                </mat-radio-button>
-                                            </div>
-                                        </mat-radio-group>
-                                    </div>
-                                </form>
-                            </ng-container>
-                        </airmid-table>
-                    </div>
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Registration No</mat-label>
+                                <input matInput placeholder="Search Registration No" autocomplete="off"
+                                    [(ngModel)]="gridConfig.filters[4].fieldValue" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig.filters[4].fieldValue='0'">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>First Name</mat-label>
+                                <input matInput placeholder="Search First Name" autocomplete="off"
+                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig.filters[0].fieldValue='%'">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Last Name</mat-label>
+                                <input matInput placeholder="Search Last Name" autocomplete="off"
+                                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig.filters[1].fieldValue='%'">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>PBill No</mat-label>
+                                <input matInput placeholder="Search PBill No" autocomplete="off"
+                                    [(ngModel)]="gridConfig.filters[5].fieldValue" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig.filters[5].fieldValue='%'">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+                            <form [formGroup]="_CancellationService.UserFormGroup">
+                                <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row">
+                                    <mat-radio-group formControlName="OP_IP_Type" name="OP_IP_Type">
+                                        <mat-label>Type : </mat-label>
+                                        <div>
+                                            <mat-radio-button value="0" style="margin-bottom:10px;">
+                                                OPD
+                                            </mat-radio-button>
+                                            <mat-radio-button value="1">
+                                                IPD
+                                            </mat-radio-button>
+                                        </div>
+                                    </mat-radio-group>
+                                </div>
+                            </form>
+                        </ng-container>
+                    </airmid-table>
                 </div>
-            </mat-tab>
+            </div>
+        </mat-tab>
 
-             <!-- 2nd -->
-         <mat-tab label="IP Advance Cancellation">
+        <!-- 2nd -->
+        <mat-tab label="IP Advance Cancellation">
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
@@ -106,30 +157,53 @@
                     </div>
                 </mat-toolbar>
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <ng-template #actionButtonTemplateIPAdvance let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+
+                            <button class="btn btn-primary" (click)="OnUpdate(element)" matTooltip="Bill Date Update">
+                                Date Update
+                            </button>&nbsp;
+                            <button class="btn btn-danger" (click)="OnCancel(element)" matTooltip="Cancle Bill"
+                                style="color: white;"> Bill Cancel
+                            </button>
+                            <!-- *ngIf="contact.IsCancelled =='0'" -->
+                        </div>
+                    </ng-template>
                     <airmid-table [gridConfig]="gridConfig1" class="content">
                         <ng-container filters>
 
                             <airmid-datepicker [formGroup]="_CancellationService.UserFormGroup" [isRangePicker]="true"
-                            formStartControlName="startdate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
-                            [(toValue)]="gridConfig.filters[0].fieldValue">
-                        </airmid-datepicker>
-                            
+                                formStartControlName="startdate" formEndControlName="enddate"
+                                [(fromValue)]="gridConfig1.filters[2].fieldValue"
+                                [(toValue)]="gridConfig1.filters[3].fieldValue">
+                            </airmid-datepicker>
+
                             <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Registration No</mat-label>
-                                <input matInput placeholder="Search Registration No" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                                <mat-label>PBillNo No</mat-label>
+                                <input matInput placeholder="Search PBill No" autocomplete="off"
+                                    [(ngModel)]="gridConfig1.filters[5].fieldValue" />
                                 <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[1].fieldValue=''">
+                                    (click)="gridConfig1.filters[5].fieldValue='0'">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
-                            
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Registration No</mat-label>
+                                <input matInput placeholder="Search Registration No" autocomplete="off"
+                                    [(ngModel)]="gridConfig1.filters[4].fieldValue" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig1.filters[4].fieldValue='0'">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>First Name</mat-label>
                                 <input matInput placeholder="Search First Name" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[2].fieldValue" />
+                                    [(ngModel)]="gridConfig1.filters[0].fieldValue" />
                                 <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[2].fieldValue=''">
+                                    (click)="gridConfig1.filters[0].fieldValue='%'">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
@@ -137,9 +211,9 @@
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Last Name</mat-label>
                                 <input matInput placeholder="Search Last Name" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[3].fieldValue" />
+                                    [(ngModel)]="gridConfig1.filters[1].fieldValue" />
                                 <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[3].fieldValue=''">
+                                    (click)="gridConfig1.filters[1].fieldValue='%'">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
@@ -149,130 +223,140 @@
             </div>
         </mat-tab>
 
-            <!-- 3nd -->
-                <mat-tab label="Refund Of Bill">
-                    <div fusePerfectScrollbar
-                        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                        dynamicTableHeight>
-                        <mat-toolbar class="top-header accent">
-                            <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
-                                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                    Refund Of Bill
-                                </span>
-                            </div>
-                        </mat-toolbar>
-                        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                            <airmid-table [gridConfig]="gridConfig2" class="content">
-                                <ng-container filters>
-        
-                                    <airmid-datepicker [formGroup]="_CancellationService.UserFormGroup" [isRangePicker]="true"
-                                formStartControlName="startdate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[2].fieldValue"
-                                [(toValue)]="gridConfig.filters[3].fieldValue">
+        <!-- 3nd -->
+        <mat-tab label="Refund Of Bill">
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+                <mat-toolbar class="top-header accent">
+                    <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+                        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                            Refund Of Bill
+                        </span>
+                    </div>
+                </mat-toolbar>
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <ng-template #actionButtonTemplateIPRefundBill let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+
+                            <button class="btn btn-primary" (click)="OnUpdate(element)" matTooltip="Bill Date Update">
+                                Date Update
+                            </button>
+                            <!-- *ngIf="contact.IsCancelled =='0'" -->
+                        </div>
+                    </ng-template>
+                    <airmid-table [gridConfig]="gridConfig2" class="content">
+                        <ng-container filters>
+
+                            <airmid-datepicker [formGroup]="_CancellationService.UserFormGroup" [isRangePicker]="true"
+                                formStartControlName="startdate" formEndControlName="enddate"
+                                [(fromValue)]="gridConfig2.filters[2].fieldValue"
+                                [(toValue)]="gridConfig2.filters[3].fieldValue">
                             </airmid-datepicker>
-                                    
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Registration No</mat-label>
-                                        <input matInput placeholder="Search Registration No" autocomplete="off"
-                                            [(ngModel)]="gridConfig.filters[4].fieldValue" />
-                                        <button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="gridConfig.filters[4].fieldValue=''">
-                                            <mat-icon>close</mat-icon>
-                                        </button>
-                                    </mat-form-field>
-                                    
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>First Name</mat-label>
-                                        <input matInput placeholder="Search First Name" autocomplete="off"
-                                            [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                        <button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="gridConfig.filters[0].fieldValue='%'">
-                                            <mat-icon>close</mat-icon>
-                                        </button>
-                                    </mat-form-field>
-        
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Last Name</mat-label>
-                                        <input matInput placeholder="Search Last Name" autocomplete="off"
-                                            [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                                        <button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="gridConfig.filters[1].fieldValue='%'">
-                                            <mat-icon>close</mat-icon>
-                                        </button>
-                                    </mat-form-field>
-                                </ng-container>
-                            </airmid-table>
-                        </div>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Registration No</mat-label>
+                                <input matInput placeholder="Search Registration No" autocomplete="off"
+                                    [(ngModel)]="gridConfig2.filters[4].fieldValue" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig2.filters[4].fieldValue=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>First Name</mat-label>
+                                <input matInput placeholder="Search First Name" autocomplete="off"
+                                    [(ngModel)]="gridConfig2.filters[0].fieldValue" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig2.filters[0].fieldValue='%'">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Last Name</mat-label>
+                                <input matInput placeholder="Search Last Name" autocomplete="off"
+                                    [(ngModel)]="gridConfig2.filters[1].fieldValue" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig2.filters[1].fieldValue='%'">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+                        </ng-container>
+                    </airmid-table>
+                </div>
+            </div>
+
+        </mat-tab>
+
+        <!-- 4rd -->
+        <mat-tab label="Refund Of Advance">
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+                <mat-toolbar class="top-header accent">
+                    <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+                        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                            Refund Of Advance
+                        </span>
                     </div>
-    
-                </mat-tab>
+                </mat-toolbar>
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <ng-template #actionButtonTemplateIPRefundAdv let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
 
-
-                <!-- 4rd -->
-                <mat-tab label="Refund Of Advance">
-                    <div fusePerfectScrollbar
-                        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                        dynamicTableHeight>
-                        <mat-toolbar class="top-header accent">
-                            <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
-                                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                    Refund Of Advance
-                                </span>
-                            </div>
-                        </mat-toolbar>
-                        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                            <airmid-table [gridConfig]="gridConfig3" class="content">
-                                <ng-container filters>
-        
-                                    <airmid-datepicker [formGroup]="_CancellationService.UserFormGroup" [isRangePicker]="true"
-                                    formStartControlName="startdate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[2].fieldValue"
-                                    [(toValue)]="gridConfig.filters[3].fieldValue">
-                                </airmid-datepicker>
-                                    
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Registration No</mat-label>
-                                        <input matInput placeholder="Search Registration No" autocomplete="off"
-                                            [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                                        <button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="gridConfig.filters[1].fieldValue=''">
-                                            <mat-icon>close</mat-icon>
-                                        </button>
-                                    </mat-form-field>
-                                    
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>First Name</mat-label>
-                                        <input matInput placeholder="Search First Name" autocomplete="off"
-                                            [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                        <button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="gridConfig.filters[0].fieldValue='%'">
-                                            <mat-icon>close</mat-icon>
-                                        </button>
-                                    </mat-form-field>
-        
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Last Name</mat-label>
-                                        <input matInput placeholder="Search Last Name" autocomplete="off"
-                                            [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                                        <button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="gridConfig.filters[1].fieldValue='%'">
-                                            <mat-icon>close</mat-icon>
-                                        </button>
-                                    </mat-form-field>
-
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>RegNo</mat-label>
-                                        <input matInput placeholder="Search First Name" autocomplete="off"
-                                            [(ngModel)]="gridConfig.filters[4].fieldValue" />
-                                        <button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="gridConfig.filters[4].fieldValue=''">
-                                            <mat-icon>close</mat-icon>
-                                        </button>
-                                    </mat-form-field>
-                                </ng-container>
-                            </airmid-table>
+                            <button class="btn btn-primary" (click)="OnUpdate(element)" matTooltip="Bill Date Update">
+                                Date Update
+                            </button>
+                            <!-- *ngIf="contact.IsCancelled =='0'" -->
                         </div>
-                    </div>
-    
-                </mat-tab>
+                    </ng-template>
+                    <airmid-table [gridConfig]="gridConfig3" class="content">
+                        <ng-container filters>
 
-        </mat-tab-group>
+                            <airmid-datepicker [formGroup]="_CancellationService.UserFormGroup" [isRangePicker]="true"
+                                formStartControlName="startdate" formEndControlName="enddate"
+                                [(fromValue)]="gridConfig3.filters[2].fieldValue"
+                                [(toValue)]="gridConfig3.filters[3].fieldValue">
+                            </airmid-datepicker>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Registration No</mat-label>
+                                <input matInput placeholder="Search Registration No" autocomplete="off"
+                                    [(ngModel)]="gridConfig3.filters[4].fieldValue" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig3.filters[4].fieldValue='0'">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>First Name</mat-label>
+                                <input matInput placeholder="Search First Name" autocomplete="off"
+                                    [(ngModel)]="gridConfig3.filters[0].fieldValue" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig3.filters[0].fieldValue='%'">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Last Name</mat-label>
+                                <input matInput placeholder="Search Last Name" autocomplete="off"
+                                    [(ngModel)]="gridConfig3.filters[1].fieldValue" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig3.filters[1].fieldValue='%'">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+                        </ng-container>
+                    </airmid-table>
+                </div>
+            </div>
+
+        </mat-tab>
+
+    </mat-tab-group>
 </div>
