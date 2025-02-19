@@ -23,7 +23,7 @@
                     <div fxLayout="row wrap" fxLayoutGap="12px grid">   
                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
-                                label="Drug Name" 
+                                label="DrugName" 
                                 formControlName="drugName" 
                                 [value]="data?.drugName"
                                 [formGroup]="drugForm"
@@ -33,7 +33,7 @@
                         </div>
                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-dropdown 
-                                label="Generic Name" 
+                                label="GenericName" 
                                 formControlName="genericId"
                                 [value]="data?.genericId"
                                 [formGroup]="drugForm"
@@ -44,7 +44,7 @@
                         
                         <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-dropdown 
-                                label="Class Name" 
+                                label="ClassName" 
                                 formControlName="classId"
                                 [value]="data?.classId"
                                 [formGroup]="drugForm"

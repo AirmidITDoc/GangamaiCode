@@ -188,7 +188,7 @@ export class RefundbillComponent implements OnInit {
   
   
     ngOnInit(): void {
-      // this.RefundOfBillFormGroup = this.refundForm();
+      this.RefundOfBillFormGroup = this.refundForm();
       this.searchFormGroup = this.createSearchForm();
   
       // this.refundBillForm();
@@ -337,10 +337,10 @@ export class RefundbillComponent implements OnInit {
         // this.isLoadingStr = 'loading';
         this._RefundbillService.getRefundofBillServiceList(m_data).subscribe(Visit => {
           this.dataSource2.data = Visit.data as InsertRefundDetail[];
-          // this.dataSource2.sort = this.sort;
-          // this.dataSource2.paginator = this.paginator;
+          this.dataSource2.sort = this.sort;
+          this.dataSource2.paginator = this.paginator;
           console.log(Visit);
-          // this.isLoadingStr = this.dataSource2.data.length == 0 ? 'no-data' : '';
+          this.isLoadingStr = this.dataSource2.data.length == 0 ? 'no-data' : '';
         });
         this.dataSource2.data["BalanceAmount"] = 0;
     }

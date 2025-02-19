@@ -335,7 +335,8 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RefundAmt
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                <mat-form-field appearance="legacy">
+                                                <mat-form-field appearance="fill">
+                                                <!-- <mat-form-field appearance="legacy"> -->
                                                     <input matInput [(ngModel)]="element.refundAmount" type="text" OnlyNumber 
                                                     (keyup)="gettablecalculation(element,element.refundAmount)" 
                                                     (keypress)="keyPressCharater($event)" >
