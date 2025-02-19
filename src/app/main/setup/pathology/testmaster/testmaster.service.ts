@@ -283,7 +283,7 @@ export class TestmasterService {
         // if (Param.TestId) {
         //     return this._httpClient.PutData("PathTestMaster/Insert" + Param.TestId, Param);
         // } else
-         return this._httpClient.PostData("PathTestMaster/Insert", Param);
+         return this._httpClient.PostData("PathTestMaster/InsertEDMX", Param);
     }
 
     public unitMasterUpdate(Param: any) {

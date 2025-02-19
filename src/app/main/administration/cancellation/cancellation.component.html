@@ -28,12 +28,22 @@
                         fxLayoutAlign="space-between" flex>
                         <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
                             <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                                <mat-icon class="pill green-600 s-16">circle</mat-icon>
-                                <span class="green-600-fg"> OPD</span>
+                                <mat-icon class="pill orange s-16">circle</mat-icon>
+                                <span class="orange-fg"> OPD</span>
                             </div>
                             <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
-                                <span class="orange-600-fg">IPD</span>
+                                <mat-icon class="pill green s-16">circle</mat-icon>
+                                <span class="green-fg">IPD</span>
+                            </div>
+
+                            <div style="color: blue" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                                <span class="blue-600-fg">Cancelled</span>
+                            </div>
+
+                            <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                                <span class="red-600-fg">NotCancelled</span>
                             </div>
 
                         </div>
@@ -42,8 +52,15 @@
                         <div fxLayout="row" fxLayoutAlign="center center">
                             <mat-icon *ngIf="element.opD_IPD_Type=='0'" matTooltip="OPD"
                                 class="pill orange-600 s-16">circle</mat-icon>
-                            <mat-icon *ngIf="element.opD_IPD_Type=='1'" matTooltip="IPD"
-                                class="pill green-600 s-16">circle
+                        </div>
+                    </ng-template>
+
+                    <ng-template #ColorCodeCancel let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="element.isCancelled=='0'" matTooltip="Cancelled"
+                                class="pill blue-600 s-16">circle</mat-icon>
+                            <mat-icon *ngIf="element.isCancelled=='1'" matTooltip="NotCancelled"
+                                class="pill red-600 s-16">circle
                             </mat-icon>
                         </div>
                     </ng-template>
@@ -51,13 +68,29 @@
                     <ng-template #actionButtonTemplate let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
 
-                            <button class="btn btn-primary" (click)="OnUpdate(element)" matTooltip="Bill Date Update">
+                            <button class="btn btn-primary" *ngIf="element.isCancelled =='0'" (click)="OnUpdate(element)" matTooltip="Bill Date Update">
                                 Date Update
                             </button>&nbsp;
-                            <button class="btn btn-danger" (click)="OnCancel(element)" matTooltip="Cancle Bill"
+                            <button class="btn btn-danger" *ngIf="element.isCancelled =='0'" (click)="BillCancelOP(element)" matTooltip="Cancle Bill"
                                 style="color: white;"> Bill Cancel
                             </button>
-                            <!-- *ngIf="contact.IsCancelled =='0'" -->
+                        </div>
+                    </ng-template>
+
+                    <ng-template #actionsTemplateIP let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="element.opD_IPD_Type=='1'" matTooltip="OPD"
+                                class="pill green-600 s-16">circle</mat-icon>
+                        </div>
+                    </ng-template>
+
+                    <ng-template #ColorCodeCancelIP let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="element.isCancelled=='0'" matTooltip="Cancelled"
+                                class="pill blue-600 s-16">circle</mat-icon>
+                            <mat-icon *ngIf="element.isCancelled=='1'" matTooltip="NotCancelled"
+                                class="pill red-600 s-16">circle
+                            </mat-icon>
                         </div>
                     </ng-template>
 
@@ -67,10 +100,9 @@
                             <button class="btn btn-primary" (click)="OnUpdate(element)" matTooltip="Bill Date Update">
                                 Date Update
                             </button>&nbsp;
-                            <button class="btn btn-danger" (click)="OnCancel(element)" matTooltip="Cancle Bill"
+                            <button class="btn btn-danger" (click)="BillCancelIP(element)" matTooltip="Cancle Bill"
                                 style="color: white;"> Bill Cancel
                             </button>
-                            <!-- *ngIf="contact.IsCancelled =='0'" -->
                         </div>
                     </ng-template>
 
@@ -163,7 +195,7 @@
                             <button class="btn btn-primary" (click)="OnUpdate(element)" matTooltip="Bill Date Update">
                                 Date Update
                             </button>&nbsp;
-                            <button class="btn btn-danger" (click)="OnCancel(element)" matTooltip="Cancle Bill"
+                            <button class="btn btn-danger" (click)="BillCancel(element)" matTooltip="Cancle Bill"
                                 style="color: white;"> Bill Cancel
                             </button>
                             <!-- *ngIf="contact.IsCancelled =='0'" -->

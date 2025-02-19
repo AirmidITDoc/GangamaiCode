@@ -30,7 +30,7 @@ export class AddformulaComponent implements OnInit {
   registerObj: any;
   ParameterId: any;
   paranamenew: any;
-  parameterName: any;
+  vParameter: any;
   autocompleteParameter: string = "Parameter";
 
   results: Result[] = [
@@ -55,13 +55,13 @@ export class AddformulaComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
   ) {
-    if (this.data) {
-      console.log(this.data)
-      this.registerObj = this.data.registerObj;
-      this.ParameterId = this.registerObj.parameterId
-      this.parameterName = this.registerObj.parameterName
-      this.finalformula = this.registerObj.formula
-    }
+    // if (this.data) {
+    //   console.log(this.data)
+    //   this.registerObj = this.data.registerObj;
+    //   this.ParameterId = this.registerObj.parameterId
+    //   this.parameterName = this.registerObj.parameterName
+    //   this.finalformula = this.registerObj.formula
+    // }
   }
 
   ngOnInit(): void {
@@ -70,24 +70,15 @@ export class AddformulaComponent implements OnInit {
       console.log(this.data)
       this.registerObj = this.data.registerObj;
       this.ParameterId = this.registerObj.parameterId
-      this.parameterName = this.registerObj.parameterName
+      this.vParameter = this.registerObj.parameterName
       this.finalformula = this.registerObj.formula
     }
   }
 
   parameterData=""
   selectChangeParameter(obj: any) {
-    debugger
     console.log("Parameter:",obj);
     this.parameterData=obj.text;
-  }
-
-  getValidationMessages() {
-    return {
-      ParameterId:[
-        { name: "required", Message: "Parameter Name is required" }
-      ]
-    };
   }
 
   onChangeparaList(option) {
@@ -107,7 +98,7 @@ export class AddformulaComponent implements OnInit {
   }
   
   addoprator1() {
-    debugger
+    // debugger
     // this.paraname=this._ParameterService.formulaform.get("ParameterId").value.parameterName
     this.paraname=this.parameterData
     this.paranamenew = "{{" + this.paraname + "}}"
@@ -115,23 +106,48 @@ export class AddformulaComponent implements OnInit {
 
   }
   onSubmit() {
+debugger
+    if (!this._ParameterService.formulaform.invalid) {
 
-    let Query = "Update M_PathParameterMaster set Formula=" + "'" + this.finalformula + "'" + "where ParameterID=" + this.ParameterId;
-    console.log(Query);
+      console.log("formula json:", this._ParameterService.formulaform.value);
 
-    this._ParameterService.deactivateTheStatus(Query)
-      .subscribe((data) => {
-        Swal.fire('Changed!', 'Parameter Formula has been Changed.', 'success');
-
+      this._ParameterService.formulaSave(this._ParameterService.formulaform.value).subscribe((response) => {
+        this.toastr.success(response.message);
+        this.onClear();
       }, (error) => {
-
-        Swal.fire('Error!', 'Failed to Formula  Parameter status.', 'error');
+        this.toastr.error(error.message);
       });
+    }
+    else {
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
 
-    this.dialogRef.close();
+    // let Query = "Update M_PathParameterMaster set Formula=" + "'" + this.finalformula + "'" + "where ParameterID=" + this.ParameterId;
+    // console.log(Query);
+
+    // this._ParameterService.deactivateTheStatus(Query)
+    //   .subscribe((data) => {
+    //     Swal.fire('Changed!', 'Parameter Formula has been Changed.', 'success');
+
+    //   }, (error) => {
+
+    //     Swal.fire('Error!', 'Failed to Formula  Parameter status.', 'error');
+    //   });
+
+    // this.dialogRef.close();
   }
   onClose() {
     this.dialogRef.close();
     this._ParameterService.formulaform.reset();
+  }
+  getValidationMessages() {
+    return {
+      ParameterId:[
+        { name: "required", Message: "Parameter Name is required" }
+      ]
+    };
   }
 }

@@ -1,6 +1,6 @@
 
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { LoaderService } from "app/core/components/loader/loader.service";
 import { ApiCaller } from "app/core/services/apiCaller";
 
@@ -14,7 +14,7 @@ export class ParametermasterService {
     formulaform: FormGroup;
     numericform: FormGroup;
 
-    is_numeric : Boolean = true;
+    is_numeric : Boolean = false;
     descriptiveList = [];
     numericList = [];
 
@@ -105,16 +105,36 @@ export class ParametermasterService {
         });
     }
 
-    createformulaForm():FormGroup{
+    // createformulaForm():FormGroup{
+    //     return this._formBuilder.group({
+    //         // ParameterNameSearch: [""],
+    //         formulaId:[],
+    //         ParameterId:[null],
+    //         parameterName:[""],
+    //         // OPrator:[""],      
+    //         Formula: [""],
+    //         isActive:["true"],
+    //         createdBy:[1],
+    //         // Formulapara:[""],    
+    //     });
+    // }
+
+    createformulaForm(): FormGroup {
         return this._formBuilder.group({
-            ParameterNameSearch: [""],
+            formulaId: [0],  // Ensuring null values don't become strings
+            ParameterId: [null, Validators.required], // Change to null instead of []
+            parameterName: [""],
             Formula: [""],
-            ParameterId:[""],
-            Formulapara:[""],
-            OPrator:[""],
-            parameterName:[""],
-          
+            isActive: [true],
+            createdBy: [1],
         });
+    }
+    
+
+    public formulaSave(Param: any) {
+        if (Param.formulaId) {
+            return this._httpClient.PutData("MPathTestFormula/" + Param.bankId, Param);
+        } else return this._httpClient.PostData("MPathTestFormula", Param);
     }
 
     public getStateList(CityId,loader = true) {
@@ -196,7 +216,7 @@ export class ParametermasterService {
         }
         else{
         return this._httpClient.PostData(
-            "ParameterMaster/MParameterDescriptiveMasterList",param
+            "ParameterDescriptiveMaster/MParameterDescriptiveMasterList",param
             // { parameterId: param }
         ); 
     }

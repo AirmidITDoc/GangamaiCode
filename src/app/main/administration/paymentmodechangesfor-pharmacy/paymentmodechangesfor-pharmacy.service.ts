@@ -28,7 +28,7 @@ export class PaymentmodechangesforpharmacyService {
         FirstName:'',
         LastName:'',
         SalesNo:'',
-        Radio:['1'],
+        Radio:['0'],
         StoreId:''
 
       })

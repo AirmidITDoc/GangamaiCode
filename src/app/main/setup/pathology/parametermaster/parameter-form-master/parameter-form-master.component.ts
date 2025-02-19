@@ -72,7 +72,7 @@ export class ParameterFormMasterComponent implements OnInit {
 
     selectedToAdd: any;
     groupsArray: any = [];
-    selectedItems: any = [];
+    selectedItems: any[] = [];
     isTxtUnique = true;
     paraId: any;
     defaultValue: any;
@@ -123,6 +123,9 @@ export class ParameterFormMasterComponent implements OnInit {
         this.dsParameterAgeList.data = this.tableData;  // Assign received data
         this.dsParameterAgeList.data = [...this.dsParameterAgeList.data];
 
+        this.selectedItems = [...this.tableData];
+        this.selectedItems = [...this.selectedItems];
+
         var mdata = {
             parameterId: this.rowData?.parameterId,
             parameterShortName: this.rowData?.parameterShortName,
@@ -160,7 +163,7 @@ export class ParameterFormMasterComponent implements OnInit {
                 var data = {
                     descriptiveId: 0,
                     parameterId: 0, //this.descForm.get("paraId").value, 
-                    parameterValues: val.ParameterName,
+                    parameterValues: val.parameterValues,
                     isDefaultValue: val.DefaultValue ? true : false,
                     defaultValue: val.DefaultValue
                 };
@@ -270,6 +273,97 @@ export class ParameterFormMasterComponent implements OnInit {
         }
 
     }
+
+    toggle(val: any) {
+        if (val == 1) {
+            this._ParameterService.is_numeric = true;
+            this.dsParameterAgeList.data = []
+        } else {
+            this._ParameterService.is_numeric = false;
+            this.selectedItems = []
+        }
+    }
+
+    onAdd(event) {
+
+        let isNewRowUnique = true;
+        debugger
+        const newRow: any = {
+            sexId: this.numericForm.get('sexId').value || "",
+            minAge: this.numericForm.get('minAge').value,
+            maxAge: this.numericForm.get('maxAge').value,
+            minValue: this.numericForm.get('minValue').value,
+            maxValue: this.numericForm.get('maxvalue').value,
+            IsDeleted: 1,
+            ageType: this.numericForm.get('ageType').value,
+        };
+        console.log("sata:-",)
+        for (const row of this.dsParameterAgeList.data) {
+            if (JSON.stringify(row) === JSON.stringify(newRow)) {
+                isNewRowUnique = false;
+                break;
+            }
+        }
+
+        if (isNewRowUnique) {
+            this.dsParameterAgeList.data.push(newRow);
+            this.dsParameterAgeList.data = [...this.dsParameterAgeList.data];
+            console.log(this.dsParameterAgeList.data);
+        }
+        else {
+            this.toastr.success('You are adding a duplicate row', ' !', {
+                toastClass: 'tostr-tost custom-toast-success',
+            });
+
+        }
+        this.numericForm.get("sexId").reset();
+        this.numericForm.get("minAge").reset();
+        this.numericForm.get("maxAge").reset();
+        this.numericForm.get("minValue").reset();
+        this.numericForm.get("maxvalue").reset();
+        this.numericForm.get("ageType").reset();
+    }
+
+    // onAddDescrow() {
+    //     console.log("event is :" + event)
+
+    //     // this.ChargeList = this.dsTemparoryList.data;
+
+    //     this.ChargeList.push(
+    //         {
+    //             parameterValues: this.descForm.get("paraId").value,
+    //             DefaultValue: this.descForm.get("defaultValue").value,
+    //         });
+    //     // this.dsTemparoryList.data = this.ChargeList;
+    //     this.selectedItems = this.ChargeList;
+    //     console.log(this.selectedItems)
+    //     this.descForm.get("paraId").reset();
+    //     this.descForm.get("defaultValue").reset();
+    // }
+
+    onAddDescrow() {
+        console.log("event is :", event);
+    
+        if (!this.ChargeList) {
+            this.ChargeList = []; // Ensure it's initialized
+        }
+    
+        const newItem = {
+            parameterValues: this.descForm.get("paraId").value,
+            DefaultValue: this.descForm.get("defaultValue").value,
+        };
+    
+        this.ChargeList.push(newItem); 
+    
+        this.selectedItems = [...this.selectedItems, newItem];
+    
+        console.log("Updated selectedItems:", this.selectedItems);
+    
+        // Reset form fields
+        this.descForm.get("paraId").reset();
+        this.descForm.get("defaultValue").reset();
+    }
+    
 
     getValidationMessages() {
         return {
@@ -386,58 +480,7 @@ export class ParameterFormMasterComponent implements OnInit {
     selectChangeGender(obj: any) {
         console.log(obj);
         // this.refdocId = obj.value
-    }
-
-
-    toggle(val: any) {
-        if (val == 1) {
-            this._ParameterService.is_numeric = true;
-            this.dsParameterAgeList.data = []
-        } else {
-            this._ParameterService.is_numeric = false;
-            this.selectedItems = []
-        }
-    }
-
-    onAdd(event) {
-
-        let isNewRowUnique = true;
-        debugger
-        const newRow: any = {
-            sexId: this.numericForm.get('sexId').value || "",
-            minAge: this.numericForm.get('minAge').value,
-            maxAge: this.numericForm.get('maxAge').value,
-            minValue: this.numericForm.get('minValue').value,
-            maxValue: this.numericForm.get('maxvalue').value,
-            IsDeleted: 1,
-            ageType: this.numericForm.get('ageType').value,
-        };
-        console.log("sata:-",)
-        for (const row of this.dsParameterAgeList.data) {
-            if (JSON.stringify(row) === JSON.stringify(newRow)) {
-                isNewRowUnique = false;
-                break;
-            }
-        }
-
-        if (isNewRowUnique) {
-            this.dsParameterAgeList.data.push(newRow);
-            this.dsParameterAgeList.data = [...this.dsParameterAgeList.data];
-            console.log(this.dsParameterAgeList.data);
-        }
-        else {
-            this.toastr.success('You are adding a duplicate row', ' !', {
-                toastClass: 'tostr-tost custom-toast-success',
-            });
-
-        }
-        this.numericForm.get("sexId").reset();
-        this.numericForm.get("minAge").reset();
-        this.numericForm.get("maxAge").reset();
-        this.numericForm.get("minValue").reset();
-        this.numericForm.get("maxvalue").reset();
-        this.numericForm.get("ageType").reset();
-    }
+    }    
 
     @ViewChild('minage') minage: ElementRef;
     @ViewChild('maxage') maxage: ElementRef;
@@ -512,8 +555,6 @@ export class ParameterFormMasterComponent implements OnInit {
         this.currentval = this.currentval + "  " + val;
     }
 
-
-
     AddData(txt) {
         debugger
         // console.log(this.descForm.get("paraId").value)
@@ -539,23 +580,6 @@ export class ParameterFormMasterComponent implements OnInit {
         }
     }
 
-
-    onAddDescrow() {
-        console.log("event is :" + event)
-
-        // this.ChargeList = this.dsTemparoryList.data;
-
-        this.ChargeList.push(
-            {
-                ParameterName: this.descForm.get("paraId").value,
-                DefaultValue: this.descForm.get("defaultValue").value,
-            });
-        // this.dsTemparoryList.data = this.ChargeList;
-        this.selectedItems = this.ChargeList;
-        console.log(this.selectedItems)
-        this.descForm.get("paraId").reset();
-        this.descForm.get("defaultValue").reset();
-    }
 }
 
 export class PathParaRangeAgeMaster {

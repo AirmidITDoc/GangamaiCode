@@ -38,8 +38,13 @@ export class CancellationService {
   public getOPDBillsList(param) {
     return this._httpClient.PostData("Generic/GetDataSetByProc?procName=m_Rtrv_BrowseOPDBill_Pagi", param) 
   }
-  public SaveCancelBill(param) {
-    return this._httpClient.PostData("Administration/Billcancellation", param) 
+  public OpCancelBill(param) {
+    debugger
+    return this._httpClient.PutData("BillCancellation/OPCancelBill", param) 
+  }
+  public IpCancelBill(param) {
+    debugger
+    return this._httpClient.PutData("BillCancellation/IPCancelBill", param) 
   }
   public getDateTimeChange(m_data) {
     return this._httpClient.PostData("Generic/ExecByQueryStatement?query=" + m_data,{});

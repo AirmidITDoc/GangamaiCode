@@ -45,12 +45,12 @@ export class ParametermasterComponent implements OnInit {
 
             { heading: "PrintParameterName", key: "printParameterName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
 
-            { heading: "Unit Name", key: "unitId", width: 200, sort: true, align: 'left', emptySign: 'NA' },
-
-            { 
-                heading: "IsNumeric", key: "isNumericParameter", width: 100, sort: true, align: 'left', type: gridColumnTypes.template,
-                template: this.actionsNumeric 
-            },
+            { heading: "Unit Name", key: "unitId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsNumeric", key: "isNumericParameter", sort: true, align: 'left', emptySign: 'NA' },
+            // { 
+            //     heading: "IsNumeric", key: "isNumericParameter", width: 100, sort: true, align: 'left', type: gridColumnTypes.template,
+            //     template: this.actionsNumeric 
+            // },
 
             { heading: "IsPrintDisSummary", key: "isPrintDisSummary", width: 100, sort: true, align: 'left', emptySign: 'NA' },
             
@@ -234,8 +234,7 @@ export class ParametermasterComponent implements OnInit {
         });
     }
     onaddformula(row) {
-        debugger
-
+    
         const dialogRef = this._matDialog.open(AddformulaComponent, {
             maxWidth: "50vw",
             maxHeight: "55vh",

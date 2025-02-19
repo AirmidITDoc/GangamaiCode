@@ -27,43 +27,85 @@
             class="backgroundBlur">
             <div class="spinner-border text-danger"></div>
         </div> -->
+
+        <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <button class="btn btn-primary" (click)="OnUpdate(element)" matTooltip="Bill Date Update">
+                    Date Update
+                </button>&nbsp;
+                <button class="btn btn-danger" (click)="onEdit(element)" matTooltip="Cancle Bill"
+                    style="color: white;"> Edit
+                </button>
+            </div>
+        </ng-template>
+
+        <ng-template #actionButtonTemplateSale let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <button class="btn btn-primary" (click)="OnUpdate(element)" matTooltip="Bill Date Update">
+                    Date Update
+                </button>&nbsp;
+                <button class="btn btn-danger" (click)="onEdit(element)" matTooltip="Cancle Bill"
+                    style="color: white;"> Edit
+                </button>
+            </div>
+        </ng-template>
+
         <airmid-table [gridConfig]="gridConfig"  class="content">
             <ng-container filters>    
-                <mat-form-field appearance="outline" style="margin-left: 2%;">
-                    <mat-label>Enter a date range</mat-label>
-                    <mat-date-range-input [rangePicker]="picker">
-                        <input matStartDate formControlName="startdate" placeholder="Start date">
-                        <input matEndDate formControlName="enddate" placeholder="End date" (dateChange)="getSearchList()">
-                    </mat-date-range-input>
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-date-range-picker #picker></mat-date-range-picker>
-                </mat-form-field>
 
-                <mat-form-field appearance="outline">
-                    <mat-label>RegNo</mat-label>
-                    <input name="RegNo" formControlName="RegNo" matInput (keyup)="getSearchList()">
-                </mat-form-field>
+                <airmid-datepicker [formGroup]="_PaymentmodechangeforpharmacyService.userFormGroup" [isRangePicker]="true"
+                formStartControlName="startdate" formEndControlName="enddate"
+                [(fromValue)]="gridConfig.filters[2].fieldValue"
+                [(toValue)]="gridConfig.filters[3].fieldValue">
+            </airmid-datepicker>
+
+            <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Reg No</mat-label>
+                <input matInput placeholder="Search Reg No" autocomplete="off"
+                    [(ngModel)]="gridConfig.filters[4].fieldValue" />
+                <button matSuffix mat-icon-button aria-label="Clear"
+                    (click)="gridConfig.filters[4].fieldValue='0'">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
                 
-                <mat-form-field appearance="outline">
-                    <mat-label>First Name</mat-label>
-                    <input name="FirstName" formControlName="FirstName" matInput (keyup)="getSearchList()">
-                </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex>
+                <mat-label>First Name</mat-label>
+                <input matInput placeholder="Search First Name" autocomplete="off"
+                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                <button matSuffix mat-icon-button aria-label="Clear"
+                    (click)="gridConfig.filters[0].fieldValue='%'">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Last Name</mat-label>
-                    <input name="LastName" formControlName="LastName" matInput (keyup)="getSearchList()">
-                </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Last Name</mat-label>
+                <input matInput placeholder="Search Last Name" autocomplete="off"
+                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                <button matSuffix mat-icon-button aria-label="Clear"
+                    (click)="gridConfig.filters[1].fieldValue='%'">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Sales No</mat-label>
-                    <input name="SalesNo" formControlName="SalesNo" matInput (keyup)="getSearchList()">
-                </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Sales No</mat-label>
+                <input matInput placeholder="Search Sales No" autocomplete="off"
+                    [(ngModel)]="gridConfig.filters[5].fieldValue" />
+                <button matSuffix mat-icon-button aria-label="Clear"
+                    (click)="gridConfig.filters[5].fieldValue='0'">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
 
                 <form [formGroup]="_PaymentmodechangeforpharmacyService.userFormGroup" fxLayout="row" > 
                 <mat-radio-group formControlName="Radio" name="Radio" >
                     <mat-label>Type :</mat-label>&nbsp;
-                    <mat-radio-button value="1" (click)="getSalesList()">Sales</mat-radio-button>
-                    <mat-radio-button value="2" (click)="getIPPharAdvanceList()">IP Phar Advance</mat-radio-button>
+                    <mat-radio-button value="0" (click)="getSalesList()">Sales</mat-radio-button>
+                    <mat-radio-button value="1" (click)="getIPPharAdvanceList()">IP Phar Advance</mat-radio-button>
                 </mat-radio-group>
                 </form>
             </ng-container> 

@@ -27,8 +27,8 @@
                             <div fxLayout="column" class="gap-8">
                                 <mat-form-field appearance="outline" fxFlex="65%">
                                     <mat-label>Parameter Name</mat-label>
-                                    <input name="Parameter" placeholder="Parameter" formControlName="parameterName"
-                                        matInput [(ngModel)]="parameterName">
+                                    <input name="parameterName" placeholder="Parameter" formControlName="parameterName"
+                                        matInput [(ngModel)]="vParameter">
                                 </mat-form-field>
                             </div>
                             <div fxLayout="column" class="gap-8">
@@ -95,7 +95,7 @@
 
                             </div>
                             <!-- [disabled]="_ParameterService.formulaform.invalid" -->
-                            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" style="margin-left: 500px;">
+                            <div class="new-appointment-actions gap-8" fxLayout="row" fxLayoutAlign="end center">
 
                                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                                 <button class="btn btn-primary " color="accent" (click)="onSubmit()">

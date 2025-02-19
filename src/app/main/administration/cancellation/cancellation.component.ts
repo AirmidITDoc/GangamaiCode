@@ -1,7 +1,7 @@
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CancellationService } from './cancellation.service';
 import { fuseAnimations } from '@fuse/animations';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -65,25 +65,36 @@ export class CancellationComponent implements OnInit {
     this.gridConfig = this.opdGridConfig;
 
     this._CancellationService.UserFormGroup.get('OP_IP_Type')?.valueChanges.subscribe((value) => {
+      console.log("OP_IP_Type changed to:", value);
       this.gridConfig = value === '0' ? this.opdGridConfig : this.ipdGridConfig;
     });
-
+    
     console.log("GridConfig:",this.gridConfig)
   }
   
   ngAfterViewInit() {
           // Assign the template to the column dynamically
           // this.gridConfig.columnsList.find(col => col.key === 'OPD_IPD_Type')!.template = this.actionsTemplate;  
-          this.gridConfig.columnsList.find(col => col.key === 'opD_IPD_Type')!.template = this.actionsTemplate; 
+          this.opdGridConfig.columnsList.find(col => col.key === 'opD_IPD_Type')!.template = this.actionsTemplate;  
+          this.opdGridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.ColorCodeCancel;  
           this.opdGridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate; 
+
+          this.ipdGridConfig.columnsList.find(col => col.key === 'opD_IPD_Type')!.template = this.actionsTemplateIP;  
+          this.ipdGridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.ColorCodeCancelIP; 
           this.ipdGridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIP; 
+
           this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIPAdvance; 
           this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIPRefundBill; 
           this.gridConfig3.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIPRefundAdv; 
       }
       @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+      @ViewChild('ColorCodeCancel') ColorCodeCancel!: TemplateRef<any>;
       @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+
+      @ViewChild('ColorCodeCancelIP') ColorCodeCancelIP!: TemplateRef<any>;
+      @ViewChild('actionsTemplateIP') actionsTemplateIP!: TemplateRef<any>;
       @ViewChild('actionButtonTemplateIP') actionButtonTemplateIP!: TemplateRef<any>;
+      
       @ViewChild('actionButtonTemplateIPAdvance') actionButtonTemplateIPAdvance!: TemplateRef<any>;
       @ViewChild('actionButtonTemplateIPRefundBill') actionButtonTemplateIPRefundBill!: TemplateRef<any>;
       @ViewChild('actionButtonTemplateIPRefundAdv') actionButtonTemplateIPRefundAdv!: TemplateRef<any>;
@@ -93,6 +104,7 @@ export class CancellationComponent implements OnInit {
     apiUrl: "Administration/BrowseOPDBillPagiList",
     columnsList: [
       { heading: "-", key: "opD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+      { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
       { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width:200 },
       { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:150  },
       { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -123,14 +135,15 @@ export class CancellationComponent implements OnInit {
   ipdGridConfig: gridModel = {
     apiUrl: "Billing/IPBillList",
     columnsList: [
-      { heading: "-", key: "OPD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+      { heading: "-", key: "opD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+      { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
       { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width:200 },      
       { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:150 },
       { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "BillAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "DiscountAmt", key: "compDiscAmt", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "BillAmount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "DiscountAmt", key: "discountAmt", sort: true, align: 'left', emptySign: 'NA' },
       {
         heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
         template: this.actionButtonTemplateIP  // Assign ng-template to the column
@@ -287,9 +300,6 @@ export class CancellationComponent implements OnInit {
         }
     });
   }
-OnCancel(row){
-
-}
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -360,7 +370,8 @@ OnCancel(row){
   // }
 
   isLoading123: boolean = false;
-  BillCancel(contact) {
+  BillCancelOP(contact) {
+    console.log("Data:",contact)
     Swal.fire({
       title: 'Do you want to cancel the Final Bill ',
       text: "You won't be able to revert this!",
@@ -370,17 +381,62 @@ OnCancel(row){
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Cancel it!"
     }).then((result) => {
+      debugger
+      if (result.isConfirmed) {
+        this.isLoading123 = true;
+          let SubmitDate = {
+            "billNo":contact.billNo || 0
+          }
+        console.log("Json:",SubmitDate)
+        this._CancellationService.OpCancelBill(SubmitDate).subscribe(response => {
+          if (response) {
+            this.toastr.success('Bill Cancel Successfully', 'success !', {
+              toastClass: 'tostr-tost custom-toast-success',
+            });
+          } else {
+            this.toastr.error('API Error!', 'Error !', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+          }
+          // if (response) {
+          //   Swal.fire('Congratulations !', 'Bill Cancel Successfully !', 'success').then((result) => {
+          //     if (result.isConfirmed) {
+          //       // this.getSearchList();
+          //       this.isLoading123 = false;
+          //     }
+          //   });
+          // } else {
+          //   Swal.fire('Error !', 'Discharge  not saved', 'error');
+          //   this.isLoading123 = false;
+          // }
+          this.isLoading123 = false;
+        });
+      } else {
+        // this.getSearchList();
+      }
+    })
+  }
+
+  BillCancelIP(contact) {
+    console.log("Data:",contact)
+    Swal.fire({
+      title: 'Do you want to cancel the Final Bill ',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!"
+    }).then((result) => {
+      debugger
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         this.isLoading123 = true;
-        let billCancellationParamObj = {};
-        billCancellationParamObj['oP_IP_type'] = contact.OPD_IPD_Type;
-        billCancellationParamObj['billNo'] = contact.BillNo || 0;
-
-        let SubmitDate = {
-          "billCancellationParam": billCancellationParamObj
-        }
-        this._CancellationService.SaveCancelBill(SubmitDate).subscribe(response => {
+          let SubmitDate = {
+            "billNo":contact.billNo || 0
+          }
+        console.log("Json:",SubmitDate)
+        this._CancellationService.IpCancelBill(SubmitDate).subscribe(response => {
           if (response) {
             Swal.fire('Congratulations !', 'Bill Cancel Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {

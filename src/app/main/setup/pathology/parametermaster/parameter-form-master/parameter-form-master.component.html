@@ -235,12 +235,8 @@
                                                             </div>
                                                             <div class="list-container h-160" style="overflow: auto;">
                                                                 <mat-list-item placeholder="" #txt *ngFor="let item of selectedItems; let i = index" [ngValue]="parameterValue">
-                                                                    <!-- <div matListItemTitle>{{item}}</div>
-                                                                    <button mat-icon-button color="warn" (click)="removeItem(i)">
-                                                                        <mat-icon >delete</mat-icon>
-                                                                    </button> -->
                                                                     <div class="list-item-content" fxLayout="row" fxLayoutAlign="space-between center">
-                                                                        <div class="list-item-title">{{ item.ParameterName }}
+                                                                        <div class="list-item-title">{{ item.parameterValues }}
                                                                         </div>
                                                                         <button mat-icon-button color="warn" (click)="removeItem(i)">
                                                                             <mat-icon>delete</mat-icon>
