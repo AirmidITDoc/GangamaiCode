@@ -99,6 +99,7 @@ export class StoreFormMasterComponent implements OnInit {
             console.log(this.registerObj);
             this.vStoreId = this.registerObj.StoreId;
             this.vshortName = this.registerObj.StoreShortName;
+            this.vStoreName = this.registerObj.StoreName;
             this.vMobileNo = this.registerObj.HospitalMobileNo;
             this.vPrintStoreAddress = this.registerObj.StoreAddress;
             this.vPrintTermsCondition = this.registerObj.TermsAndCondition; 
