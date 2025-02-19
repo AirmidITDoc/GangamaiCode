@@ -192,16 +192,6 @@ export class AirmidTextboxComponent implements
     }
     onKeyUp(event: KeyboardEvent): void {
         this.keyup.emit(event);
-        event.stopPropagation();
-
-        // Move focus on 'Enter' if the field is valid  
-        if (this.isMovable && event.key === 'Enter') {
-            const control = this.formGroup.get(this.formControlName);
-            if (control && control.valid) {
-                this.focusNextInput(this.formControlName);
-
-            }
-        }
     }
     focusNextInput(formControlName: string): void {
         const modalElement = document.querySelector("mat-dialog-container");
