@@ -99,7 +99,10 @@ export class StoreFormMasterComponent implements OnInit {
             console.log(this.registerObj);
             this.vStoreId = this.registerObj.StoreId;
             this.vshortName = this.registerObj.StoreShortName;
-            this.vStoreName = this.registerObj.StoreName;
+            this.vMobileNo = this.registerObj.HospitalMobileNo;
+            this.vPrintStoreAddress = this.registerObj.StoreAddress;
+            this.vPrintTermsCondition = this.registerObj.TermsAndCondition; 
+            this.vPrintStoreName = this.registerObj.PrintStoreName;
             this.vIndentPrefix = this.registerObj.IndentPrefix;
             this.vIndentNo = this.registerObj.IndentNo.trim();
             this.vGrnreturnNoPrefix = this.registerObj.GrnreturnNoPrefix;
@@ -138,6 +141,11 @@ export class StoreFormMasterComponent implements OnInit {
                 startWith(''),
                 map(value => value ? this._filterCashCounter1(value) : this.CashCounterList1.slice()),
             ); 
+            if(this.data){
+                const dvalue = this.CashCounterList1.filter(item=> item.CashCounterId == this.registerObj.PharSalCountID)
+                console.log(dvalue)
+                this._StoreService.myform.get('PahsalesCashCounterID').setValue(dvalue[0])
+            } 
         });
     } 
     private _filterCashCounter1(value: any): string[] {
@@ -158,6 +166,11 @@ export class StoreFormMasterComponent implements OnInit {
                 startWith(''),
                 map(value => value ? this._filterCashCounter2(value) : this.CashCounterList2.slice()),
             ); 
+            if(this.data){
+                const dvalue = this.CashCounterList2.filter(item=> item.CashCounterId == this.registerObj.PharSalRecCountID)
+                console.log(dvalue)
+                this._StoreService.myform.get('PahsalesrecCashCounterID').setValue(dvalue[0])
+            } 
         });
     } 
     private _filterCashCounter2(value: any): string[] {
@@ -178,6 +191,11 @@ export class StoreFormMasterComponent implements OnInit {
                 startWith(''),
                 map(value => value ? this._filterCashCounter3(value) : this.CashCounterList3.slice()),
             ); 
+            if(this.data){
+                const dvalue = this.CashCounterList3.filter(item=> item.CashCounterId == this.registerObj.PharSalReturnCountID)
+                console.log(dvalue)
+                this._StoreService.myform.get('PahsalesreturnCashCounterID').setValue(dvalue[0])
+            } 
         });
     } 
     private _filterCashCounter3(value: any): string[] {
@@ -195,10 +213,15 @@ export class StoreFormMasterComponent implements OnInit {
     getCashCounterAdvComboList() {
         this._StoreService.getCashcounterList().subscribe(data => {
             this.CashCounterAdv = data
-            this.filteredOptionsphAdvCashCounter = this._StoreService.myform.get('PahsalesreturnCashCounterID').valueChanges.pipe(
+            this.filteredOptionsphAdvCashCounter = this._StoreService.myform.get('PahAdvCashCounterID').valueChanges.pipe(
                 startWith(''),
                 map(value => value ? this._filterCashCounterAdv(value) : this.CashCounterAdv.slice()),
-            ); 
+            );
+            if(this.data){
+                const dvalue = this.CashCounterAdv.filter(item=> item.CashCounterId == this.registerObj.PharAdvId)
+                console.log(dvalue)
+                this._StoreService.myform.get('PahAdvCashCounterID').setValue(dvalue[0])
+            } 
         });
     } 
     private _filterCashCounterAdv(value: any): string[] {
@@ -216,10 +239,16 @@ export class StoreFormMasterComponent implements OnInit {
     getCashCounterAdvReceComboList() {
         this._StoreService.getCashcounterList().subscribe(data => {
             this.CashCounterAdvRece = data
-            this.filteredOptionsphAdvRecesCashCounter = this._StoreService.myform.get('PahsalesreturnCashCounterID').valueChanges.pipe(
+            this.filteredOptionsphAdvRecesCashCounter = this._StoreService.myform.get('PahAdvReceiCashCounterID').valueChanges.pipe(
                 startWith(''),
                 map(value => value ? this._filterCashCounterAdvRece(value) : this.CashCounterAdvRece.slice()),
             ); 
+
+            if(this.data){
+                const dvalue = this.CashCounterAdvRece.filter(item=> item.CashCounterId == this.registerObj.PharAdvReptId)
+                console.log(dvalue)
+                this._StoreService.myform.get('PahAdvReceiCashCounterID').setValue(dvalue[0])
+            } 
         });
     } 
     private _filterCashCounterAdvRece(value: any): string[] {
@@ -237,10 +266,16 @@ export class StoreFormMasterComponent implements OnInit {
     getCashCounterAdvRefundComboList() {
         this._StoreService.getCashcounterList().subscribe(data => {
             this.CashCounterAdvRef = data
-            this.filteredOptionsphAdvRefundCashCounter = this._StoreService.myform.get('PahsalesreturnCashCounterID').valueChanges.pipe(
+            this.filteredOptionsphAdvRefundCashCounter = this._StoreService.myform.get('PahAdvRefundCashCounterID').valueChanges.pipe(
                 startWith(''),
                 map(value => value ? this._filterCashCounterAdvRefund(value) : this.CashCounterAdvRef.slice()),
-            ); 
+            );
+            
+            if(this.data){
+                const dvalue = this.CashCounterAdvRef.filter(item=> item.CashCounterId == this.registerObj.PharAdvRefId)
+                console.log(dvalue)
+                this._StoreService.myform.get('PahAdvRefundCashCounterID').setValue(dvalue[0])
+            } 
         });
     } 
     private _filterCashCounterAdvRefund(value: any): string[] {
@@ -258,10 +293,16 @@ export class StoreFormMasterComponent implements OnInit {
     getCashCounterAdvRefundReceComboList() {
         this._StoreService.getCashcounterList().subscribe(data => {
             this.CashCounterAdvRefRece = data
-            this.filteredOptionsphAdvRefRecesCashCounter = this._StoreService.myform.get('PahsalesreturnCashCounterID').valueChanges.pipe(
+            this.filteredOptionsphAdvRefRecesCashCounter = this._StoreService.myform.get('PahAdvRefundReceiCashCounterID').valueChanges.pipe(
                 startWith(''),
                 map(value => value ? this._filterCashCounterAdvRefundRece(value) : this.CashCounterAdvRefRece.slice()),
             ); 
+
+            if(this.data){
+                const dvalue = this.CashCounterAdvRefRece.filter(item=> item.CashCounterId == this.registerObj.PharAdvRefReptId)
+                console.log(dvalue)
+                this._StoreService.myform.get('PahAdvRefundReceiCashCounterID').setValue(dvalue[0])
+            } 
         });
     } 
     private _filterCashCounterAdvRefundRece(value: any): string[] {
@@ -448,8 +489,8 @@ export class StoreFormMasterComponent implements OnInit {
             return;
         }
 
-        if(this._StoreService.myform.get('vCashcountAdvRefund').value){
-            if(!this.CashCounterAdvRef.filter(item=> item.CashCounterId == this._StoreService.myform.get('vCashcountAdvRefund').value.CashCounterId)){
+        if(this._StoreService.myform.get('PahAdvRefundCashCounterID').value){
+            if(!this.CashCounterAdvRef.filter(item=> item.CashCounterId == this._StoreService.myform.get('PahAdvRefundCashCounterID').value.CashCounterId)){
                 this.toastr.warning('Please select valid Phar Advance Refund Cash Counter', 'Warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',
                 });
@@ -472,6 +513,11 @@ export class StoreFormMasterComponent implements OnInit {
                 return;
             } 
         }
+
+        let header = '';
+        if(this._StoreService.myform.get("Header").value)
+            header = this._StoreService.myform.get("Header").value
+
         // if (this._StoreService.myform.valid) {
         if (!this._StoreService.myform.get("StoreId").value) {
            
@@ -496,7 +542,7 @@ export class StoreFormMasterComponent implements OnInit {
                     PharSalReturnCountID: this._StoreService.myform.get("PahsalesreturnCashCounterID").value.CashCounterId || 0,
                     DL_NO: 0,//this._StoreService.myform.get("ReturnFromDeptNo").value,
                     GSTIN: 0,// this._StoreService.myform.get("ReturnFromDeptNo").value,
-                    Header: this._StoreService.myform.get("Header").value,
+                    Header: this._StoreService.myform.get("Header").value || '',
                     isDeleted: Boolean(JSON.parse(this._StoreService.myform.get("IsDeleted").value)),
                     addedBy: 1,
                     pharAdvId: this._StoreService.myform.get("PahAdvCashCounterID").value.CashCounterId || 0,
@@ -560,7 +606,7 @@ export class StoreFormMasterComponent implements OnInit {
                     whatsAppTemplateId: '',
                     smsTemplateId: 0, 
                     isDeleted: Boolean(JSON.parse(this._StoreService.myform.get("IsDeleted").value)),
-                    Header: this._StoreService.myform.get("Header").value,
+                    Header: this._StoreService.myform.get("Header").value || '',
                     termsAndCondition: this._StoreService.myform.get("PrintTermsCondition").value || '',
                     updatedBy: 1
                 },

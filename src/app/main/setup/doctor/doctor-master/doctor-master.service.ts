@@ -148,11 +148,17 @@ export class DoctorMasterService {
         );
     }
 
-    public doctortMasterInsert(param) {
+    public doctortMasterInsert(param, loader = true) {
+        if(loader){
+            this._loaderService.show()
+        }
         return this._httpClient.post("DoctorMaster/DoctorSave", param);
     }
 
-    public doctortMasterUpdate(param) {
+    public doctortMasterUpdate(param, loader = true) {
+        if(loader){
+            this._loaderService.show()
+        }
         return this._httpClient.post("DoctorMaster/DoctorUpdate", param);
     }
 

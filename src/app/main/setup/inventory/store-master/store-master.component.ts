@@ -246,6 +246,19 @@ export class StoreMaster {
     Header:any;
     IsDeletedSearch: number;
 
+    PharAdvId:any;
+    PharAdvReptId:any;
+    PharAdvRefId:any;
+	PharAdvRefReptId:any;
+    PrintStoreName:any;
+    StoreAddress:any;
+    HospitalMobileNo:any;
+    HospitalEmailId:any;
+    TermsAndCondition:any; 
+    PharSalCountID:any;
+    PharSalRecCountID:any;
+    PharSalReturnCountID:any; 
+
     /**
      * Constructor
      *
@@ -273,7 +286,17 @@ export class StoreMaster {
             this.AddedBy = StoreMaster.AddedBy || "";
             this.UpdatedBy = StoreMaster.UpdatedBy || "";
            this.Header=StoreMaster.Header || '';
-            this.IsDeletedSearch = StoreMaster.IsDeletedSearch || "";
+            this.PharAdvId = StoreMaster.PharAdvId || 0;
+            this.PharAdvReptId = StoreMaster.PharAdvReptId || 0;
+            this.PharAdvRefId = StoreMaster.PharAdvRefId || 0;
+            this.PharAdvRefReptId = StoreMaster.PharAdvRefReptId || 0;
+            this.PrintStoreName = StoreMaster.PrintStoreName || "";
+            this.StoreAddress = StoreMaster.StoreAddress || "";
+            this.HospitalMobileNo = StoreMaster.HospitalMobileNo || "";
+            this.TermsAndCondition = StoreMaster.TermsAndCondition || "";
+            this.PharSalCountID = StoreMaster.PharSalCountID || 0;
+            this.PharSalRecCountID = StoreMaster.PharSalRecCountID || 0;
+            this.PharSalReturnCountID = StoreMaster.PharSalReturnCountID || 0;
         }
-    }
-}
+    }   
+} 

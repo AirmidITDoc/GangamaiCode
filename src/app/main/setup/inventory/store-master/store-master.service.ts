@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { LoaderService } from "app/core/components/loader/loader.service";
 
 @Injectable({
     providedIn: "root",
@@ -11,7 +12,8 @@ export class StoreMasterService {
 
     constructor(
         private _httpClient: HttpClient,
-        private _formBuilder: FormBuilder
+        private _formBuilder: FormBuilder,
+        private _loaderService:LoaderService
     ) {
         this.myformSearch = this.createSearchForm();
         this.myform = this.createStoremasterForm();
@@ -77,11 +79,17 @@ export class StoreMasterService {
         );
     }
 
-    public insertStoreMaster(param) {
+    public insertStoreMaster(param, loader = true) {
+        if(loader){
+            this._loaderService.show()
+        }
         return this._httpClient.post("Inventory/StoreMasterSave", param);
     }
 
-    public updateStoreMaster(param) {
+    public updateStoreMaster(param, loader = true) {
+        if(loader){
+            this._loaderService.show()
+        }
         return this._httpClient.post("Inventory/StoreMasterUpdate", param);
     }
 
