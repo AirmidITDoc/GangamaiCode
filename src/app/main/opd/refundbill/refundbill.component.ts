@@ -387,30 +387,28 @@ export class RefundbillComponent implements OnInit {
   
     gettablecalculation(element, RefundAmt) {
       debugger 
-      console.log("AMT",element, RefundAmt);
-      if(RefundAmt > 0 && RefundAmt <= element.BalAmt){
-        element.BalanceAmount= ((element.BalAmt) - (RefundAmt));   
+      console.log("sjhkjsgh:",element)
+      if(RefundAmt > 0 && RefundAmt <= element.balAmt){
+        element.balanceAmount= ((element.balAmt) - (RefundAmt));   
         element.PrevRefAmount = RefundAmt;
       } 
-      else if (RefundAmt > element.BalAmt) {
+      else if (RefundAmt > element.balAmt) {
         this.toastr.warning('Enter Refund Amount Less than Balance Amount ', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         element.RefundAmt = '';  
-        element.BalanceAmount =element.BalAmt;
+        element.balanceAmount =element.balAmt;
       }
       else if(RefundAmt == 0 || RefundAmt == '' || RefundAmt == null || RefundAmt == undefined){
         element.RefundAmt = '';  
-        element.BalanceAmount =element.BalAmt;
+        element.balanceAmount =element.balAmt;
       }
       else if(this.RefundAmount < this.NetBillAmount){
         this.toastr.warning('Bill Amount Already Refund .', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         element.RefundAmt = '';  
-        element.BalanceAmount =element.BalAmt;
-        debugger
-        this.BalanceAmount = element.RefundAmt
+        element.balanceAmount =element.balAmt;
       } 
     }
     RefundAmt: any; 
@@ -459,9 +457,10 @@ export class RefundbillComponent implements OnInit {
       return netAmt1; 
     } 
   getServicetotSum(element) {
+    
     this.TotalRefundAmount = element.reduce((sum, { RefundAmt }) => sum += +(RefundAmt || 0), 0).toFixed(2);
     let netAmt;
-    netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0).toFixed(2);
+    netAmt = element.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0).toFixed(2);
     this.totalAmtOfNetAmt = netAmt;
     this.netPaybleAmt = netAmt;
     return netAmt; 
@@ -616,7 +615,6 @@ export class RefundbillComponent implements OnInit {
       }
     }
   
-  
     SpinLoading: boolean = false;
     viewgetOPRefundofbillPdf(RefundId) {
       setTimeout(() => {
@@ -678,9 +676,7 @@ export class RefundbillComponent implements OnInit {
         }
       });
     }
-  
-  
-  
+      
     onClose() {
   
       this._matDialog.closeAll();
@@ -757,25 +753,25 @@ export class RefundbillComponent implements OnInit {
     //
     refund:any=0;
     onEdit(row) {
+      debugger
       this.getservicedtailList(row);
-  
       
       this.TotalRefundAmount = 0
       this.RefundBalAmount = 0
       console.log(row);
       debugger
       var datePipe = new DatePipe("en-US");
-      this.BillNo = row.BillNo;
+      this.BillNo = row.billNo;
       this.BillDate = datePipe.transform(row.BillDate, 'dd/MM/yyyy hh:mm a');
-      this.NetBillAmount = row.NetPayableAmt;
-      this.RefundAmount = row.RefundAmount;
-      // this.RefundBalAmount = (parseInt(this.NetBillAmount.toString()) - parseInt(this.RefundAmount.toString()));
+      this.NetBillAmount = row.netPayableAmt;
+      this.RefundAmount = row.refundAmount;
+      this.RefundBalAmount = (parseInt(this.NetBillAmount.toString()) - parseInt(this.RefundAmount.toString()));
       this.vFinalrefundbamt = this.RefundBalAmount
-      this.vOPIPId = row.VisitId; 
+      this.vOPIPId = row.visitId; 
       //Testing
-      if (row.RefundAmount < row.NetPayableAmt) {
+      if (row.refundAmount < row.netPayableAmt) {
         var m_data1 = {
-          "BillNo": row.BillNo
+          "BillNo": row.billNo
         }
         this.isLoadingStr = 'loading';
         
@@ -785,8 +781,7 @@ export class RefundbillComponent implements OnInit {
         Swal.fire("Already Refund")
         this.refund = 1;
       }
-     
-  
+      
     }
   
   
