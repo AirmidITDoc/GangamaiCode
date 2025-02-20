@@ -409,7 +409,7 @@
 
                                     <mat-form-field appearance="outline">
                                         <mat-label>Refund Bal Amount</mat-label>
-                                        <input matInput [(ngModel)]="RefundBalAmount" formControlName="RefundBalAmount" name="RefundBalAmount" readonly>
+                                        <input matInput [(ngModel)]="RefundBalAmount" formControlName="RefundBalAmount" name="RefundBalAmount" [value]="BalanceAmount" readonly>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>

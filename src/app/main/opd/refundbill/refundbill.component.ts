@@ -387,6 +387,7 @@ export class RefundbillComponent implements OnInit {
   
     gettablecalculation(element, RefundAmt) {
       debugger 
+      console.log("AMT",element, RefundAmt);
       if(RefundAmt > 0 && RefundAmt <= element.BalAmt){
         element.BalanceAmount= ((element.BalAmt) - (RefundAmt));   
         element.PrevRefAmount = RefundAmt;
@@ -408,6 +409,8 @@ export class RefundbillComponent implements OnInit {
         });
         element.RefundAmt = '';  
         element.BalanceAmount =element.BalAmt;
+        debugger
+        this.BalanceAmount = element.RefundAmt
       } 
     }
     RefundAmt: any; 
