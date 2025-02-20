@@ -25,167 +25,153 @@
     <div class="modal-body content" fusePerfectScrollbar>
         <div class="center">
             <div class="content-card">
-                <div fxLayout="column" class="gap-8 pb-3 border-bottom">
+                <div fxLayout="column" fxLayoutGap="8px">
                     <div fxlayout="row">
-                        <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
-                            <div class="patient-info-container">
-                                <div class="patient-info-box">
-                                    <mat-card fxFlex.gt-sm="74%" fxFlex style="padding: 6px;">
-                                        <div class="patient-info-sales my-8">
-                                            <div class="patient-info-title border-bottom pb-2">
-                                                <span class="h1">Patient Information</span>
+                        <div fxFlex.gt-sm="100%" fxFlex fxLayoutGap="4px"> 
+                            <mat-card fxFlex.gt-sm="74%" fxFlex style="padding: 6px;">
+                                <div class="patient-info-container">
+                                    <div class="patient-info-box">
+                                        <div class="patient-info-title border-bottom pb-2">
+                                            <span class="h1">Patient Information</span>
+                                        </div>
+                                        <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row" fxLayoutAlign="space-between">
+                            
+                                            <div fxLayout="column" fxLayoutGap="6px">
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">UHID No
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{registerObj?.regNo}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Patient Name
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{registerObj?.patientName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Doctor Name</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{registerObj?.doctorname}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Department</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{registerObj?.departmentName}}</span>
+                                                </div>
                                             </div>
-                                            <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
-                                                fxLayoutAlign="space-between center" class="patient-info">
-                                                <div class="patient-sub">
-                                                    <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                                        fxLayoutAlign="space-between">
-                                                        <div fxLayout="column" fxLayoutGap="10px">
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">UHID No
-                                                                </span>
-                                                                <span>:</span>
-                                                                <span
-                                                                    class="patient-col-value">{{registerObj?.regNo}}</span>
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Patient Name
-                                                                </span>
-                                                                <span>:</span>
-                                                                <span
-                                                                    class="patient-col-value">{{registerObj?.patientName}}</span>
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Doctor Name</span>
-                                                                <span>:</span>
-                                                                <span
-                                                                    class="patient-col-value">{{registerObj?.doctorname}}</span>
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Department</span>
-                                                                <span>:</span>
-                                                                <span
-                                                                    class="patient-col-value">{{registerObj?.departmentName}}</span>
-                                                            </div>
-                                                        </div>
-                                                        <div fxLayout="column" fxLayoutGap="10px">
-
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">DOA | Time</span>
-                                                                <span>:</span>
-                                                                <span
-                                                                    class="patient-col-value">{{registerObj?.admissionDate}}</span>
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">IPD No</span>
-                                                                <span>:</span>
-                                                                <span
-                                                                    class="patient-col-value">{{registerObj?.ipdno}}</span>
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Age | Sex
-                                                                </span>
-                                                                <span>:</span>
-                                                                <span
-                                                                    class="patient-col-value">{{registerObj?.AgeYear}}Y|{{registerObj?.AgeMonth}}M|{{registerObj?.AgeDay}}
-                                                                    D | {{registerObj?.GenderName}}</span>
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Ref-Doctor Name
-                                                                </span>
-                                                                <span>:</span>
-                                                                <!-- <span
-                                                                    class="patient-col-value">{{registerObj?.RefDocName}}</span> -->
-                                                            </div>
-
-                                                        </div>
-                                                        <div fxLayout="column" fxLayoutGap="10px">
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Ward | Bed Name
-                                                                </span>
-                                                                <span>:</span>
-                                                                <!-- <span
-                                                                    class="patient-col-value">{{registerObj?.RoomName}}
-                                                                    | {{registerObj?.BedName}}</span> -->
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Patient Type
-                                                                </span>
-                                                                <span>:</span>
-                                                                <!-- <span
-                                                                    class="patient-col-value">{{registerObj?.PatientType}}</span> -->
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Tarrif Name
-                                                                </span>
-                                                                <span>:</span>
-                                                                <!-- <span
-                                                                    class="patient-col-value">{{registerObj?.TariffName}}</span> -->
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Company Name</span>
-                                                                <span>:</span>
-                                                                <!-- <span class="patient-col-value"
-                                                                    style="color: orange;">{{registerObj?.CompanyName}}</span> -->
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                            <div fxLayout="column" fxLayoutGap="6px">
+                            
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">DOA | Time</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{registerObj?.admissionDate}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">IPD No</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{registerObj?.ipdno}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Age | Sex
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{registerObj?.AgeYear}}Y|{{registerObj?.AgeMonth}}M|{{registerObj?.AgeDay}}
+                                                        D | {{registerObj?.GenderName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Ref-Doctor Name
+                                                    </span>
+                                                    <span>:</span>
+                                                    <!-- <span
+                                                                                                                        class="patient-col-value">{{registerObj?.RefDocName}}</span> -->
+                                                </div>
+                            
+                                            </div>
+                                            <div fxLayout="column" fxLayoutGap="6px">
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Ward | Bed Name
+                                                    </span>
+                                                    <span>:</span>
+                                                    <!-- <span
+                                                                                                                        class="patient-col-value">{{registerObj?.RoomName}}
+                                                                                                                        | {{registerObj?.BedName}}</span> -->
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Patient Type
+                                                    </span>
+                                                    <span>:</span>
+                                                    <!-- <span
+                                                                                                                        class="patient-col-value">{{registerObj?.PatientType}}</span> -->
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Tarrif Name
+                                                    </span>
+                                                    <span>:</span>
+                                                    <!-- <span
+                                                                                                                        class="patient-col-value">{{registerObj?.TariffName}}</span> -->
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Company Name</span>
+                                                    <span>:</span>
+                                                    <!-- <span class="patient-col-value"
+                                                                                                                        style="color: orange;">{{registerObj?.CompanyName}}</span> -->
                                                 </div>
                                             </div>
                                         </div>
-                                    </mat-card>
-                                    <mat-card fxFlex.gt-sm="26%" fxFlex style="padding: 6px;">
-                                        <div class="bill-summary px-12">
-                                            <div class="bill-summary-title py-8 border-bottom">
-                                                <span class="h3 font-weight-600">Advance Summary </span>
-                                            </div>
-                                            <div class="bil-summary-list px-4 mt-8">
-                                                <ul class="gap-4 list-basic" fxLayout="column">
-                                                    <li>
-                                                        <div class="list-item">
-                                                            <span class="list-item-key">Advance Amount :</span>
-                                                            <span class="list-item-value">
-                                                                {{getAdvancetotal(dataSource.data)|
-                                                                currency:'INR'}}</span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="list-item">
-                                                            <span class="list-item-key">Advance Used Amount :</span>
-                                                            <span class="list-item-value">
-                                                                {{getAdvanceusedtotal(dataSource.data)|
-                                                                currency:'INR'}}
-                                                            </span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="list-item">
-                                                            <span class="list-item-key">Balance Amount :</span>
-                                                            <span class="list-item-value">
-                                                                {{getAdvBalance(dataSource.data)|
-                                                                currency:'INR'}}</span>
-                                                        </div>
-                                                    </li>
-
-                                                    <li>
-                                                        <div class="list-item">
-                                                            <span class="list-item-key">Refund Amount :</span>
-                                                            <span class="list-item-value">
-                                                                {{getAdvancerefund(dataSource.data)|
-                                                                currency:'INR'}}</span>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </mat-card>
+                                    </div>
                                 </div>
-                            </div>
+                            </mat-card>
+                            <mat-card fxFlex.gt-sm="26%" fxFlex style="padding: 6px;">
+                                <div class="bill-summary px-12">
+                                    <div class="bill-summary-title py-8 border-bottom">
+                                        <span class="h3 font-weight-600">Advance Summary </span>
+                                    </div>
+                                    <div class="bil-summary-list px-4 mt-8">
+                                        <ul class="gap-4 list-basic" fxLayout="column">
+                                            <li>
+                                                <div class="list-item">
+                                                    <span class="list-item-key">Advance Amount :</span>
+                                                    <span class="list-item-value">
+                                                        {{getAdvancetotal(dataSource.data)|
+                                                        currency:'INR'}}</span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="list-item">
+                                                    <span class="list-item-key">Advance Used Amount :</span>
+                                                    <span class="list-item-value">
+                                                        {{getAdvanceusedtotal(dataSource.data)|
+                                                        currency:'INR'}}
+                                                    </span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="list-item">
+                                                    <span class="list-item-key">Balance Amount :</span>
+                                                    <span class="list-item-value">
+                                                        {{getAdvBalance(dataSource.data)|
+                                                        currency:'INR'}}</span>
+                                                </div>
+                                            </li>
+                            
+                                            <li>
+                                                <div class="list-item">
+                                                    <span class="list-item-key">Refund Amount :</span>
+                                                    <span class="list-item-value">
+                                                        {{getAdvancerefund(dataSource.data)|
+                                                        currency:'INR'}}</span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </mat-card>
                         </div>
                     </div>
 
-                    <div fxFlex.gt-sm="100%" fxFlex>
-
+                    <div fxFlex.gt-sm="100%" fxFlex> 
                         <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" class="h-250">
 
                             <ng-container matColumnDef="Date">
@@ -320,14 +306,13 @@
                                 [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
                             <mat-footer-row *matFooterRowDef="['noData']"
                                 [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
-                        </mat-table>
-
+                        </mat-table> 
                         <mat-paginator [pageSizeOptions]="[ 10, 25, 100]" [pageSize]="10" showFirstLastButtons>
                         </mat-paginator>
                     </div>
                 </div>
 
-                <mat-card>
+                <mat-card style="padding: 6px;">
                     <div fxlayout="row" style="margin-top: 10px;">
 
                         <div class="dialog-content-wrapper">
@@ -377,7 +362,7 @@
                                         </mat-autocomplete>
                                       </mat-form-field> -->
 
-                                        <airmid-dropdown label="Cash Counter" formControlName="CashCounterID"
+                                        <airmid-dropdown label="Cash Counter" formControlName="CashCounterID" class="w-300"
                                             [formGroup]="AdvFormGroup" [mode]="autocompleteModeCashCounter">
                                         </airmid-dropdown>
                                     </div>
