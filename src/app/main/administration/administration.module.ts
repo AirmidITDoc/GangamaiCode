@@ -11,7 +11,7 @@ import { CdkTreeModule } from '@angular/cdk/tree';
 import { CdkTableModule } from '@angular/cdk/table';
 import { MatTreeModule } from '@angular/material/tree';
 import { SharedModule } from '../shared/shared.module';
-import { ReportConfigurationComponent } from './report-configuration/report-configuration.component'; 
+import { ReportConfigurationComponent } from './report-configuration/report-configuration.component';
 
 
 const appRoutes: Routes = [
@@ -67,12 +67,17 @@ const appRoutes: Routes = [
     path: "smsconfigrationtool",
     loadChildren: () => import("./smsconfuguration/smsconfuguration.module").then((m) => m.SMSConfugurationModule),
 },
+{
+    path: "Template Description",
+    loadChildren: () => import("./template-description/templatedescription.module").then((m) => m.TemplatedescriptionModule),
+},
+
  
 ];
 
 @NgModule({
   declarations: [ 
-    ReportConfigurationComponent
+    ReportConfigurationComponent,
   ],
   imports: [
     RouterModule.forChild(appRoutes),
