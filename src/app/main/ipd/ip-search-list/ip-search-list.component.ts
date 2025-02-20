@@ -115,18 +115,17 @@ export class IPSearchListComponent implements OnInit {
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: "01/01/1900", opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: "01/01/1900", opType: OperatorComparer.Equals },
             { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "M_Name", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
             // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
         row: 25
-    }
-
+    } 
 
     gridConfig1: gridModel = {
         apiUrl: "DischargeSP/DischargeList",
@@ -334,20 +333,23 @@ export class IPSearchListComponent implements OnInit {
             else if (m == "Bill") {
                 const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
                 buttonElement.blur(); // Remove focus from the button
-    
-                let that = this;
-                const dialogRef = this._matDialog.open(IPBillingComponent,
+   
+                let that = this;  
+                this.advanceDataStored.storage = new AdvanceDetailObj(element);  
+                  const dialogRef = this._matDialog.open(IPBillingComponent,
                     {
-                        maxWidth: "100%",
-                        height: '90%',
-                        width: '90%',
-                        data: element
+                      maxWidth: "100%",
+                      width: '95%',
+                      height: '95%',
+                      data:{
+                        Obj:element
+                      }
                     });
-                dialogRef.afterClosed().subscribe(result => {
+                  dialogRef.afterClosed().subscribe(result => {
                     if (result) {
                         that.grid.bindGridData();
                     }
-                });
+                  }); 
             }
             else if (m == "Bed Transfer") {
                 const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -367,23 +369,39 @@ export class IPSearchListComponent implements OnInit {
                     }
                 });
             }
-            else if (m == "Bed Transfer") {
-                const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-                buttonElement.blur(); // Remove focus from the button
-    
-                let that = this;
-                const dialogRef = this._matDialog.open(BedTransferComponent,
+            else if (m == "Advance") { 
+                console.log(element); 
+                this.advanceDataStored.storage = new AdvanceDetailObj(element);
+               // this._IpSearchListService.populateForm(element); 
+                let Advflag: boolean = false;
+                if (element.IsBillGenerated) {
+                  Advflag = true;
+                }
+                if (element.IsDischarged) {
+                  Advflag = true;
+                }
+          
+                if (!Advflag) {
+                  const dialogRef = this._matDialog.open(IPAdvanceComponent,
                     {
-                        maxWidth: "100%",
-                        height: '90%',
-                        width: '90%',
-                        data: element
+                      maxWidth: "100%",
+                      height: '95%',
+                      width: '80%',
                     });
-                dialogRef.afterClosed().subscribe(result => {
-                    if (result) {
-                        that.grid.bindGridData();
-                    }
-                });
+                  dialogRef.afterClosed().subscribe(result => {
+                    console.log('The dialog was closed - Insert Action', result);
+                  });
+                } else {
+                  //Swal.fire("Bil Generatd !")
+                  Swal.fire({
+                    title: 'Selected Patient Bill Is Already Generated', 
+                    icon: "warning",
+                    showCancelButton: false,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ok!" 
+                })
+                }
             }
         }
 

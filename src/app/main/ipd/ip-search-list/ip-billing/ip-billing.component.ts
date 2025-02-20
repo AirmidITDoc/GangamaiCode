@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
@@ -7,7 +7,7 @@ import { ILookup } from 'app/main/opd/op-search-list/op-billing/op-billing.compo
 import { IPSearchListService } from '../ip-search-list.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ActivatedRoute } from '@angular/router';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AdvanceDataStored } from '../../advance';
 import { DatePipe } from '@angular/common';
 import { debounceTime, map, startWith, takeUntil } from 'rxjs/operators';
@@ -214,7 +214,8 @@ export class IPBillingComponent implements OnInit {
 
   ConcessionShow: boolean = false; 
   isLoading: String = '';
-  selectedAdvanceObj: AdvanceDetailObj;
+  // selectedAdvanceObj: AdvanceDetailObj;
+  selectedAdvanceObj: any;
   isFilteredDateDisabled: boolean = false;
   Admincharge: boolean = true;
   doctorNameCmbList: any = [];
@@ -236,7 +237,7 @@ export class IPBillingComponent implements OnInit {
   filteredOptionsCashCounter: Observable<string[]>;
   filteredOptionsDoctors:any;
   optionsSearchDoc: any[] = [];
-
+ 
   private _onDestroy = new Subject<void>();
   isDoctor: boolean = false;
   Consession: boolean = true;
@@ -244,6 +245,15 @@ export class IPBillingComponent implements OnInit {
   Amount: boolean = true;
 
   filteredOptionsselclass: Observable<string[]>;
+
+
+  autocompleteModeCashcounter: string = "CashCounter";
+  autocompleteModeDoctor: string = "ConDoctor";
+  autocompleteModeService: string = "Service";
+  autocompleteModeConcession: string = "Concession";
+  autocompleteModeClass: string = "Class";
+
+  registerObj1:any;
 
   constructor(
     private _Activatedroute: ActivatedRoute,
@@ -257,23 +267,33 @@ export class IPBillingComponent implements OnInit {
     private accountService: AuthenticationService,
     public _WhatsAppEmailService:WhatsAppEmailService,
     public toastr: ToastrService,
-    public _ConfigService : ConfigService,
+    public _ConfigService : ConfigService, 
+        @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: UntypedFormBuilder) {
     this.showTable = false; 
   }
  
   ngOnInit(): void { 
+    debugger
     this.AdmissionId = this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
     this.createserviceForm();
     this.createBillForm();
 
-    if (this.advanceDataStored.storage) {
-      this.selectedAdvanceObj = this.advanceDataStored.storage;
+    // if (this.advanceDataStored.storage) {
+    //   this.selectedAdvanceObj = this.advanceDataStored.storage;
+    //   console.log(this.selectedAdvanceObj)
+    //   this.vClassId = this.selectedAdvanceObj.ClassId
+    //   this.ClassName = this.selectedAdvanceObj.ClassName 
+    //   this.vMobileNo=this.selectedAdvanceObj.MobileNo;
+    //   this.AdmissionId = this.selectedAdvanceObj.AdmissionID; 
+    // }
+    if(this.data){
+      this.selectedAdvanceObj = this.data.Obj;
       console.log(this.selectedAdvanceObj)
-      this.vClassId = this.selectedAdvanceObj.ClassId
-      this.ClassName = this.selectedAdvanceObj.ClassName 
-      this.vMobileNo=this.selectedAdvanceObj.MobileNo;
-      this.AdmissionId = this.selectedAdvanceObj.AdmissionID; 
+      // this.vClassId = this.selectedAdvanceObj.classId
+      // this.ClassName = this.selectedAdvanceObj.className 
+      // this.vMobileNo=this.selectedAdvanceObj.mobileNo;
+      // this.AdmissionId = this.selectedAdvanceObj.admissionId; 
     }
 
     this.myControl = new FormControl();
@@ -343,7 +363,7 @@ export class IPBillingComponent implements OnInit {
       TotalAmt: [0],
       Percentage: [''],
       concessionAmt: [''],
-      ConcessionId: 0,
+      ConcessionId: [''],
       Remark: [''],
       GenerateBill: [1],
       CreditBill:[''],
@@ -360,6 +380,54 @@ export class IPBillingComponent implements OnInit {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
+
+  getValidationMessages() {
+    return {
+      ChargeClass: [
+        { name: "required", Message: "Class Name is required" },
+      ],
+      SrvcName: [
+        { name: "required", Message: "Service Name is required" },
+      ],
+      cashCounterId: [
+        { name: "required", Message: "First Name is required" },
+  
+        { name: "pattern", Message: "only Number allowed." }
+      ],
+      price: [
+        { name: "pattern", Message: "only Number allowed." }
+      ],
+      qty: [
+        { name: "required", Message: "Qty required!", },
+        { name: "pattern", Message: "only Number allowed.", },
+        { name: "min", Message: "Enter valid qty.", }
+      ],
+      totalAmount: [
+        {
+          name: "pattern", Message: "only Number allowed."
+        }
+      ],
+      totalNetAmount: [
+        {
+          name: "pattern", Message: "only Number allowed."
+        }
+      ],
+      doctoreId: [
+        { name: "pattern", Message: "only Char allowed." }
+      ],
+      discountPer: [
+        { name: "pattern", Message: "only Number allowed." }
+      ],
+      discountAmount: [{ name: "pattern", Message: "only Number allowed." }],
+      netAmount: [{ name: "pattern", Message: "only Number allowed." }],
+      concessionId: [{}],
+      DoctorID: [{}]
+    }
+  }
+  selectChangedeptdoc(event) { }
+
+  selectChangeConcession(event) { }
+  selectChangedService(event){}
   //Service date 
   OnDateChange(){
     // 
