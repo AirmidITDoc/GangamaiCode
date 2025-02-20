@@ -223,7 +223,7 @@
                                         </airmid-textbox>
                                     </div>
                                     <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
-                                        <airmid-textbox label="Net amount" formControlName="netAmount"
+                                        <airmid-textbox label="Net amount" formControlName="netAmount" 
                                             [formGroup]="chargeForm" [validations]="getValidationMessages().netAmount"
                                             [type]="'number'" [readonly]="true">
                                         </airmid-textbox>
@@ -694,7 +694,7 @@
             <div class="modal-footer-buttons">
                 <button type="button" class="btn btn-danger-outline" [mat-dialog-close]="true" aria-label="Close dialog"
                     matTooltip="Close">Close</button>
-                <button type="button" class="btn btn-primary" [disabled]="!totalChargeForm.valid || !chargeList.length"
+                <button type="button" class="btn btn-primary" [disabled]="!totalChargeForm.valid || !chargeList.length || savebtn"
                     (click)="onsave()">Save</button>
             </div>
         </div>

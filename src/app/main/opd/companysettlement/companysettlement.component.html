@@ -82,6 +82,22 @@
     
         </ng-template>
 
+        <!-- *ngIf="element.balanceAmt !=0 " -->
+        <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+              
+
+                <button mat-icon-button matTooltip="Settlement" (click)="openPaymentpopup(element)">
+                    <mat-icon matTooltip="Settlement" *ngIf="element.balanceAmt !=0">receipt</mat-icon>
+                    <mat-icon matTooltip="Paid" *ngIf="element.balanceAmt ==0" [disabled]="true">payment</mat-icon>
+                </button>
+
+                <button mat-icon-button   matTooltip="Print">
+                    <mat-icon>print</mat-icon>
+                </button>
+             
+            </div>
+        </ng-template>
 
         <!-- #grid1 :ShowFilter="false" -->
         <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">

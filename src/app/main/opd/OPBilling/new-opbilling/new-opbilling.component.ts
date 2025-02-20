@@ -1947,7 +1947,7 @@ export class OPDoctorShareGroupAdmCharge {
 export class PaymentInsert {
   PaymentId: number;
   BillNo: number;
-  ReceiptNo: String;
+  // ReceiptNo: String;
   PaymentDate: any;
   PaymentTime: any;
   CashPayAmount: number;
@@ -1968,9 +1968,9 @@ export class PaymentInsert {
   IsCancelled: Boolean;
   IsCancelledBy: number;
   IsCancelledDate: any;
-  CashCounterId: number;
-  IsSelfORCompany: number;
-  CompanyId: number;
+  // CashCounterId: number;
+  // IsSelfORCompany: number;
+  // CompanyId: number;
   NEFTPayAmount: any;
   NEFTNo: String;
   NEFTBankMaster: String;
@@ -1978,7 +1978,7 @@ export class PaymentInsert {
   PayTMAmount: number;
   PayTMTranNo: String;
   PayTMDate: any;
-
+  Tdsamount:any;
   /**
   * Constructor
   *
@@ -1988,7 +1988,7 @@ export class PaymentInsert {
     {
       this.PaymentId = PaymentInsertObj.PaymentId || 0;
       this.BillNo = PaymentInsertObj.BillNo || 0;
-      this.ReceiptNo = PaymentInsertObj.ReceiptNo || 0;
+      // this.ReceiptNo = PaymentInsertObj.ReceiptNo || 0;
       this.PaymentDate = PaymentInsertObj.PaymentDate || '';
       this.PaymentTime = PaymentInsertObj.PaymentTime || '';
       this.CashPayAmount = PaymentInsertObj.CashPayAmount || 0;
@@ -2003,16 +2003,16 @@ export class PaymentInsert {
       this.AdvanceUsedAmount = PaymentInsertObj.AdvanceUsedAmount || 0;
       this.AdvanceId = PaymentInsertObj.AdvanceId || 0;
       this.RefundId = PaymentInsertObj.RefundId || 0;
-      this.TransactionType = PaymentInsertObj.TransactionType || 0;
+      // this.TransactionType = PaymentInsertObj.TransactionType || 0;
       this.Remark = PaymentInsertObj.Remark || '';
       this.AddBy = PaymentInsertObj.AddBy || 0;
       this.IsCancelled = PaymentInsertObj.IsCancelled || false;
       this.IsCancelledBy = PaymentInsertObj.IsCancelledBy || 0;
       this.IsCancelledDate = PaymentInsertObj.IsCancelledDate || '';
       this.IsCancelledDate = PaymentInsertObj.IsCancelledDate || '';
-      this.CashCounterId = PaymentInsertObj.CashCounterId || 0;
-      this.IsSelfORCompany = PaymentInsertObj.IsSelfORCompany || 0;
-      this.CompanyId = PaymentInsertObj.CompanyId || 0;
+      // this.CashCounterId = PaymentInsertObj.CashCounterId || 0;
+      // this.IsSelfORCompany = PaymentInsertObj.IsSelfORCompany || 0;
+      // this.CompanyId = PaymentInsertObj.CompanyId || 0;
       this.NEFTPayAmount = PaymentInsertObj.NEFTPayAmount || 0;
       this.NEFTNo = PaymentInsertObj.NEFTNo || '';
       this.NEFTBankMaster = PaymentInsertObj.NEFTBankMaster || '';
@@ -2020,6 +2020,7 @@ export class PaymentInsert {
       this.PayTMAmount = PaymentInsertObj.PayTMAmount || 0;
       this.PayTMTranNo = PaymentInsertObj.PayTMTranNo || '';
       this.PayTMDate = PaymentInsertObj.PayTMDate || '';
+      this.Tdsamount= PaymentInsertObj.Tdsamount || '';
     }
 
   }

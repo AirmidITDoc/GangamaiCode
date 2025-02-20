@@ -38,8 +38,14 @@ vbalanceamt: any = 0;
                 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+    @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+
     ngAfterViewInit() {
        this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsTemplate1;
+       this.gridConfig.columnsList.find(col => col.key === 'balanceAmt')!.template = this.actionsTemplate2;
+       this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+
     }
     gridConfig: gridModel = {
         apiUrl: "OPBill/OPBillListSettlementList",
@@ -54,19 +60,23 @@ vbalanceamt: any = 0;
             { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BalanceAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, 
-                    {
-                        action: gridActions.print, callback: (data: any) => {
-                            this.viewgetOPPayemntPdf(data);
-                        }
-                    }
-                    ]
-            } 
+                heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+                template: this.actionButtonTemplate  // Assign ng-template to the column
+            }
+            // {
+            //     heading: "Action", key: "action", align: "right", width:100,type: gridColumnTypes.action, actions: [
+            //         {
+            //             action: gridActions.edit, callback: (data: any) => {
+            //                 this.onSave(data);
+            //             }
+            //         }, 
+            //         {
+            //             action: gridActions.print, callback: (data: any) => {
+            //                 this.viewgetOPPayemntPdf(data);
+            //             }
+            //         }
+            //         ]
+            // } 
         ],
         sortField: "BillNo",
         sortOrder: 0,
@@ -82,7 +92,7 @@ vbalanceamt: any = 0;
         this.searchFormGroup = this.createSearchForm();
         this.myFormGroup= this.createSearchForm1();
     }
-        onSave(contact: any = null) {
+    openPaymentpopup(contact) {
 
         console.log(contact)
         debugger
@@ -137,6 +147,9 @@ vbalanceamt: any = 0;
                
                 }
               });
+
+              this.searchFormGroup.get('RegId').setValue('')
+             
     }
 
 
@@ -191,6 +204,10 @@ GetDetails(data) {
             { heading: "NetAmount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BalanceAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
+            {
+                heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+                template: this.actionButtonTemplate  // Assign ng-template to the column
+            }
             // {
             //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
             //         {

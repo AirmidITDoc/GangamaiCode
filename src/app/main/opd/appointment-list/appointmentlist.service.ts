@@ -269,7 +269,7 @@ public getBillingServiceList(employee) {
  }
 
 public InsertOPBillingCredit(employee) {
-    return this._httpClient1.PostData("Billing/OPCreditBillingInsert",employee)
+    return this._httpClient1.PostData("OPBill/OPCreditBillingInsert",employee)
 }
 
 
