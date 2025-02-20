@@ -132,8 +132,8 @@ export class ParametermasterService {
     
 
     public formulaSave(Param: any) {
-        if (Param.formulaId) {
-            return this._httpClient.PutData("MPathTestFormula/" + Param.bankId, Param);
+        if (Param.ParameterId) {
+            return this._httpClient.PutData("MPathTestFormula/" + Param.ParameterId, Param);
         } else return this._httpClient.PostData("MPathTestFormula", Param);
     }
 

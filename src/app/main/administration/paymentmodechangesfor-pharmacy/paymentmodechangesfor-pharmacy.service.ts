@@ -74,9 +74,9 @@ export class PaymentmodechangesforpharmacyService {
       return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_BrowsePharmacyPayReceipt",Param)
     }
 
-    public getBankMasterCombo() {
-      return this._httpClient.PostData("Generic/GetByProc?procName=RetrieveBankMasterForCombo", {})
-    }
+    // public getBankMasterCombo() {
+    //   return this._httpClient.PostData("Generic/GetByProc?procName=RetrieveBankMasterForCombo", {})
+    // }
     
     public PaymentmodeUpdate(employee) {//Administration/UpdateLoginUser
       return this._httpClient.PostData("Pharmacy/UpdatePharmPaymentMode", employee);

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { PaymentmodechangesService } from './paymentmodechanges.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -30,37 +30,62 @@ export class PaymentmodechangesComponent implements OnInit {
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
+  ngAfterViewInit() {
+          this.gridConfigOP.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateOP;  
+          this.gridConfigOP.columnsList.find(col => col.key === 'label')!.template = this.ColorCodeOP; 
+
+          this.gridConfigIP.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIP;  
+          this.gridConfigIP.columnsList.find(col => col.key === 'label')!.template = this.ColorCodeIP; 
+          
+          this.gridConfigIPAdv.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIPAdv;  
+          this.gridConfigIPAdv.columnsList.find(col => col.key === 'label')!.template = this.ColorCodeIPAdv; 
+      }
+      @ViewChild('actionButtonTemplateIP') actionButtonTemplateOP!: TemplateRef<any>;
+      @ViewChild('ColorCodeIp') ColorCodeOP!: TemplateRef<any>;
+
+      @ViewChild('actionButtonTemplateOP') actionButtonTemplateIP!: TemplateRef<any>;
+      @ViewChild('ColorCodeOP') ColorCodeIP!: TemplateRef<any>;
+
+      
+      @ViewChild('actionButtonTemplateIPAdv') actionButtonTemplateIPAdv!: TemplateRef<any>;
+      @ViewChild('ColorCodeIPAdv') ColorCodeIPAdv!: TemplateRef<any>;
+
     gridConfigOP: gridModel = {
-        apiUrl: "Payment/PaymentPharmacyList",
+        apiUrl: "paymentpharmacy/OPDPaymentReceiptList ",
         columnsList: [
-            { heading: "PayDate", key: "PaymentDate", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "-", key: "label", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+            { heading: "PayDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UHIDNo ", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BillAmt", key: "billAmt", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "PaidAmount", key: "paidamount", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "CashAmount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "ChequeAmount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "CardAmount", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "NEFTPay", key: "neftpayAmount", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "PayATM", key: "payTmamount", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "NEFTPay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PayATM", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._PaymentmodechangesService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
+              heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+              template: this.actionButtonTemplateOP  // Assign ng-template to the column
+          }
+            // {
+            //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+            //         {
+            //             action: gridActions.edit, callback: (data: any) => {
+            //                 this.onSave(data);
+            //             }
+            //         }, {
+            //             action: gridActions.delete, callback: (data: any) => {
+            //                 this._PaymentmodechangesService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
+            //                     this.toastr.success(response.message);
+            //                     this.grid.bindGridData();
+            //                 });
+            //             }
+            //         }]
+            // } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "RegNo",
         sortOrder: 0,
@@ -81,8 +106,9 @@ export class PaymentmodechangesComponent implements OnInit {
     // IP Receipt
 
     gridConfigIP: gridModel = {
-      apiUrl: "MReportConfig/List",
+      apiUrl: "paymentpharmacy/IPDPaymentReceiptList",
       columnsList: [
+        { heading: "-", key: "label", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
           { heading: "PayDate", key: "paydate", sort: true, align: 'left', emptySign: 'NA' },
           { heading: "ReceiptNo", key: "receiptno", sort: true, align: 'left', emptySign: 'NA' },
           { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -97,26 +123,37 @@ export class PaymentmodechangesComponent implements OnInit {
           { heading: "PayATM", key: "payatm", sort: true, align: 'left', emptySign: 'NA' },
           { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
           {
-              heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                  {
-                      action: gridActions.edit, callback: (data: any) => {
-                          this.onSave(data);
-                      }
-                  }, {
-                      action: gridActions.delete, callback: (data: any) => {
-                          this._PaymentmodechangesService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
-                              this.toastr.success(response.message);
-                              this.grid.bindGridData();
-                          });
-                      }
-                  }]
-          } //Action 1-view, 2-Edit,3-delete
+            heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplateIP  // Assign ng-template to the column
+        }
+          // {
+          //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+          //         {
+          //             action: gridActions.edit, callback: (data: any) => {
+          //                 this.onSave(data);
+          //             }
+          //         }, {
+          //             action: gridActions.delete, callback: (data: any) => {
+          //                 this._PaymentmodechangesService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
+          //                     this.toastr.success(response.message);
+          //                     this.grid.bindGridData();
+          //                 });
+          //             }
+          //         }]
+          // } //Action 1-view, 2-Edit,3-delete
       ],
-      sortField: "ReportName",
+      sortField: "PaymentId",
       sortOrder: 0,
       filters: [
-          { fieldName: "reportName", fieldValue: "", opType: OperatorComparer.Contains },
-          { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+        { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
       ],
       row: 25
   }
@@ -124,8 +161,9 @@ export class PaymentmodechangesComponent implements OnInit {
   // IP Advance
 
   gridConfigIPAdv: gridModel = {
-    apiUrl: "MReportConfig/List",
+    apiUrl: "paymentpharmacy/IPAdvPaymentReceiptList",
     columnsList: [
+      { heading: "-", key: "label", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "PayDate", key: "paydate", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "ReceiptNo", key: "receiptno", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -155,11 +193,18 @@ export class PaymentmodechangesComponent implements OnInit {
                 }]
         } //Action 1-view, 2-Edit,3-delete
     ],
-    sortField: "ReportName",
+    sortField: "PaymentId",
     sortOrder: 0,
     filters: [
-        { fieldName: "reportName", fieldValue: "", opType: OperatorComparer.Contains },
-        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+      { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+      { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+      { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+      { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
     ],
     row: 25
 }
@@ -220,124 +265,15 @@ export class PaymentmodechangesComponent implements OnInit {
     //     }
     // });
 }
-  // getsearchList(){
-  //   if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '0'){
-  //     this.getOPReceiptList();
-  //   }else if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '1'){
-  //     this.getIPReceiptList();
-  //   }else{
-  //     this.getIPAdvanceList();
-  //   }
-  // }
-//  getOPReceiptList(){
-//   this.sIsLoading = 'loading-data';
-//   var vdata={
-//     'F_Name':this._PaymentmodechangesService.UseFormGroup.get('FirstName').value || '%',
-//     'L_Name':this._PaymentmodechangesService.UseFormGroup.get('LastName').value   || '%', 
-//     'From_Dt': this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-//     'To_Dt':this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-//     'Reg_No':this._PaymentmodechangesService.UseFormGroup.get('RegNo').value || 0,
-//     'PBillNo':this._PaymentmodechangesService.UseFormGroup.get('BillNo').value  || 0,
-//     'ReceiptNo':this._PaymentmodechangesService.UseFormGroup.get('ReceiptNo').value || 0
-//   }
-//   console.log(vdata);
-//   this._PaymentmodechangesService.getOpReceiptList(vdata).subscribe(data =>{
-//     this.dsPaymentChanges.data= data as PaymentChange [];
-//     this.dsPaymentChanges.sort = this.sort;
-//     this.dsPaymentChanges.paginator = this.paginator;
-//     this.sIsLoading = '';
-//     console.log(this.dsPaymentChanges.data);
-//   } ,
-//   error => {
-//     this.sIsLoading = '';
-//   });
-//  }
 
-//  getIPReceiptList(){
-//   this.sIsLoading = 'loading-data';
-//   var vdata={
-//     'F_Name':this._PaymentmodechangesService.UseFormGroup.get('FirstName').value || '%',
-//     'L_Name':this._PaymentmodechangesService.UseFormGroup.get('LastName').value   || '%', 
-//     'From_Dt': this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-//     'To_Dt':this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-//     'Reg_No':this._PaymentmodechangesService.UseFormGroup.get('RegNo').value || 0,
-//     'PBillNo':this._PaymentmodechangesService.UseFormGroup.get('BillNo').value  || '%',
-//     'ReceiptNo':this._PaymentmodechangesService.UseFormGroup.get('ReceiptNo').value || '%'
-//   }
-//   console.log(vdata);
-//   this._PaymentmodechangesService.getIpReceiptList(vdata).subscribe(data =>{
-//     this.dsPaymentChanges.data= data as PaymentChange [];
-//     this.dsPaymentChanges.sort = this.sort;
-//     this.dsPaymentChanges.paginator = this.paginator;
-//     this.sIsLoading = '';
-//     console.log(this.dsPaymentChanges.data);
-//   } ,
-//   error => {
-//     this.sIsLoading = '';
-//   });
-//  }
-
-//  getIPAdvanceList(){
-//   this.sIsLoading = 'loading-data';
-//   var vdata={
-//     'F_Name':this._PaymentmodechangesService.UseFormGroup.get('FirstName').value || '%',
-//     'L_Name':this._PaymentmodechangesService.UseFormGroup.get('LastName').value   || '%', 
-//     'From_Dt': this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-//     'To_Dt':this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-//     'Reg_No':this._PaymentmodechangesService.UseFormGroup.get('RegNo').value || 0,
-//     'PBillNo':this._PaymentmodechangesService.UseFormGroup.get('BillNo').value  || 0,
-//     'ReceiptNo':this._PaymentmodechangesService.UseFormGroup.get('ReceiptNo').value || 0
-//   }
-//   console.log(vdata);
-//   this._PaymentmodechangesService.getIpAdvanceList(vdata).subscribe(data =>{
-//     this.dsPaymentChanges.data= data as PaymentChange [];
-//     this.dsPaymentChanges.sort = this.sort;
-//     this.dsPaymentChanges.paginator = this.paginator;
-//     this.sIsLoading = '';
-//     console.log(this.dsPaymentChanges.data);
-//   } ,
-//   error => {
-//     this.sIsLoading = '';
-//   });
-//  }
- onEdit(m) {
-  console.log(m)
-  let xx = {
-    UserId: m.UserId,
-    FirstName: m.FirstName,
-    LastName: m.LastName,
-    UserLoginName: m.UserLoginName,
-    IsActive: m.IsActive,
-    AddedBy: m.AddedBy,
-    RoleName: m.RoleName,
-    RoleId: m.RoleId,
-    UserName: m.UserName,
-    StoreId: m.StoreId,
-    StoreName: m.StoreName,
-    IsDoctorType: m.IsDoctorType,
-    DoctorID: m.DoctorID,
-    DoctorName: m.DoctorName,
-    IsPOVerify: m.IsPOVerify,
-    IsGRNVerify: m.IsGRNVerify,
-    IsCollection: m.IsCollection,
-    IsBedStatus: m.IsBedStatus,
-    IsCurrentStk: m.IsCurrentStk,
-    IsPatientInfo: m.IsPatientInfo,
-    IsDateInterval: m.IsDateInterval,
-    IsDateIntervalDays: m.IsDateIntervalDays,
-    MailId: m.MailId,
-    MailDomain: m.MailDomain,
-    AddChargeIsDelete: m.AddChargeIsDelete,
-    IsIndentVerify: m.IsIndentVerify,
-    IsInchIndVfy: m.IsInchIndVfy,
-  };
-  // this.advanceDataStored.storage = new PaymentPharmayList(xx);
+ onEdit(row) {
+  console.log(row)
   const dialogRef = this._matDialog.open(EditPaymentmodeComponent,
     { 
       height: "85%",
       width: '75%',
       data: {
-        registerObj: m,
+        registerObj: row,
         FromName: "IP-PaymentModeChange"
       },
       
@@ -353,10 +289,13 @@ export class PaymentmodechangesComponent implements OnInit {
   });  
 }
 PaymentDate(contact){ 
+  console.log(contact)
     const dialogRef = this._matDialog.open(DateUpdateComponent,
       { 
-        height: "35%",
-        width: '35%',
+        maxHeight: "35vh",
+        maxWidth: '90vh',
+        // height: "35%",
+        width: '100%',
         data: { 
           obj:contact.PaymentId 
         }, 

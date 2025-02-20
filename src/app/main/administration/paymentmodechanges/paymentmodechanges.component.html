@@ -22,22 +22,81 @@
     </mat-toolbar>
 
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <!-- <div class="info-badge-top pb-2 border-bottom"> 
-            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8"> 
-                <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill green-600 s-16">circle</mat-icon>
-                    <span>: Sales</span>
-                </div>
-                <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
-                    <span>: IP Pharmacy Advance</span>
-                </div>  
+
+        <div class="info-badge-top p-12 border-bottom" style="margin-left: 18%;" fxLayout="row"
+        fxLayoutAlign="space-between" flex>
+        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+            <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill orange s-16">circle</mat-icon>
+                <span>: OP Receipt</span>
             </div>
-        </div> 
-        <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-            class="backgroundBlur">
-            <div class="spinner-border text-danger"></div>
-        </div> -->
+            <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill green s-16">circle</mat-icon>
+                <span>: IP Receipt</span>
+            </div>
+
+            <div style="color: blue" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                <span>: IP Advance</span>
+            </div>
+
+        </div>
+    </div>
+
+        <ng-template #ColorCodeOP let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon *ngIf="element.label=='0'" matTooltip="OP Reciept"
+                    class="pill orange-600 s-16">circle</mat-icon>
+            </div>
+        </ng-template>
+
+        <ng-template #actionButtonTemplateOP let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <button class="btn btn-primary" (click)="PaymentDate(element)" matTooltip="Bill Date Update">
+                    Date Update
+                </button>&nbsp;
+                <button class="btn btn-danger" (click)="onEdit(element)" matTooltip="Cancle Bill"
+                    style="color: white;"> Edit
+                </button>
+            </div>
+        </ng-template>
+
+        <ng-template #ColorCodeIP let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon *ngIf="element.label=='1'" matTooltip="IP Reciept"
+                    class="pill orange-600 s-16">circle</mat-icon>
+            </div>
+        </ng-template>
+
+        <ng-template #actionButtonTemplateIP let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <button class="btn btn-primary" (click)="PaymentDate(element)" matTooltip="Bill Date Update">
+                    Date Update
+                </button>&nbsp;
+                <button class="btn btn-danger" (click)="onEdit(element)" matTooltip="Cancle Bill"
+                    style="color: white;"> Edit
+                </button>
+            </div>
+        </ng-template>
+
+        <ng-template #ColorCodeIPAdv let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon *ngIf="element.label=='1'" matTooltip="IP Reciept"
+                    class="pill orange-600 s-16">circle</mat-icon>
+            </div>
+        </ng-template>
+
+        <ng-template #actionButtonTemplateIPAdv let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <button class="btn btn-primary" (click)="PaymentDate(element)" matTooltip="Bill Date Update">
+                    Date Update
+                </button>&nbsp;
+                <button class="btn btn-danger" (click)="onEdit(element)" matTooltip="Cancle Bill"
+                    style="color: white;"> Edit
+                </button>
+            </div>
+        </ng-template>
 
         <airmid-table [gridConfig]="gridConfig"  class="content">
         <!-- <form [formGroup]="_PaymentmodechangesService.UseFormGroup" fxLayout="row" > -->
@@ -68,16 +127,6 @@
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
-
-                <!-- <mat-form-field appearance="outline" style="margin-left: 2%;">
-                    <mat-label>Enter a date range</mat-label>
-                    <mat-date-range-input [rangePicker]="picker">
-                        <input matStartDate formControlName="startdate" placeholder="Start date">
-                        <input matEndDate formControlName="enddate" placeholder="End date" (dateChange)="getsearchList()">
-                    </mat-date-range-input>
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-date-range-picker #picker></mat-date-range-picker>
-                </mat-form-field> -->
 
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Registration No</mat-label>

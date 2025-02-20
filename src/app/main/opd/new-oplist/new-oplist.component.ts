@@ -57,8 +57,8 @@ export class NewOPListComponent implements OnInit {
     @ViewChild('actionsTemplate4') actionsTemplate4!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
-    // @ViewChild('actionButtonTemplate2') actionButtonTemplate2!: TemplateRef<any>;
-
+    @ViewChild('actionButtonTemplate2') actionButtonTemplate2!: TemplateRef<any>;
+    
     ngAfterViewInit() {
         // Assign the template to the column dynamically
         this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsTemplate1;
@@ -66,7 +66,9 @@ export class NewOPListComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'refundAmount')!.template = this.actionsTemplate3;
         this.gridConfig.columnsList.find(col => col.key === 'balanceAmt')!.template = this.actionsTemplate4;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
+
+        this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
+        this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate2;
 
     }
 
@@ -106,7 +108,7 @@ export class NewOPListComponent implements OnInit {
             { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             {
-                heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+                heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplate
             }  // Assign ng-template to the column
             // {
@@ -153,7 +155,7 @@ export class NewOPListComponent implements OnInit {
             { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "CompanyName", key: "companyName", sort: true, align: "center", width: 200 },
             { heading: "UserName", key: "userName", sort: true, align: "center", width: 200 },
-            { heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+            { heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplate1},  // Assign ng-template to the column
             // {
             //     heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
@@ -213,20 +215,23 @@ export class NewOPListComponent implements OnInit {
             { heading: "CardPay", key: "cardPay", sort: true, align: "center" },
             { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
+            { heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+                template: this.actionButtonTemplate2
+            },
+            // {
+            //     heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
 
-                    {
-                        action: gridActions.print, callback: (data: any) => {
-                            this.viewgetOPRefundBillReportPdf(data);
-                        }
-                    },
-                    {
-                        action: gridActions.view, callback: (data: any) => {
-                            this.getWhatsappshareRefundBill(data);
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
+            //         {
+            //             action: gridActions.print, callback: (data: any) => {
+            //                 this.viewgetOPRefundBillReportPdf(data);
+            //             }
+            //         },
+            //         {
+            //             action: gridActions.view, callback: (data: any) => {
+            //                 this.getWhatsappshareRefundBill(data);
+            //             }
+            //         }]
+            // } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "RefundId",
         sortOrder: 0,
@@ -283,6 +288,12 @@ export class NewOPListComponent implements OnInit {
         this.commonService.Onprint("PaymentId", data.paymentId, "OPPaymentReceipt");
     }
     getWhatsappsharePaymentReceipt(Id, Mobile) { }
+
+    viewgetOPPaymentReportPdf(data){
+        debugger
+        console.log(data)
+        this.commonService.Onprint("RefundId", data.paymentId, "OPRefundReceipt");
+    }
 
     viewgetOPRefundBillReportPdf(data) {
 

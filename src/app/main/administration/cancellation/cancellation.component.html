@@ -97,10 +97,10 @@
                     <ng-template #actionButtonTemplateIP let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
 
-                            <button class="btn btn-primary" (click)="OnUpdate(element)" matTooltip="Bill Date Update">
+                            <button class="btn btn-primary" *ngIf="element.isCancelled =='0'" (click)="OnUpdate(element)" matTooltip="Bill Date Update">
                                 Date Update
                             </button>&nbsp;
-                            <button class="btn btn-danger" (click)="BillCancelIP(element)" matTooltip="Cancle Bill"
+                            <button class="btn btn-danger" *ngIf="element.isCancelled =='0'" (click)="BillCancelIP(element)" matTooltip="Cancle Bill"
                                 style="color: white;"> Bill Cancel
                             </button>
                         </div>
