@@ -47,7 +47,7 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         SchdulerComponent,
-        ManageschedulerComponent
+        ManageschedulerComponent,
     ],
     imports: [
         RouterModule.forChild(routes),
