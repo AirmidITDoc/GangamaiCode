@@ -310,64 +310,7 @@ export class CancellationComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-  // getSearchList() {
-  //   if (this._CancellationService.UserFormGroup.get('OP_IP_Type').value == '1') {
-  //     this.getIpdBillList();
-  //   } else {
-  //     this.getOPDBillsList();
-  //   }
-  // }
   resultsLength = 0;
-  // getOPDBillsList() {
-  //   this.sIsLoading = 'loading-data';
-  //   var D_data = {
-  //     "F_Name": this._CancellationService.UserFormGroup.get('FirstName').value || '%',
-  //     "L_Name": this._CancellationService.UserFormGroup.get('LastName').value || '%',
-  //     "From_Dt": this.datePipe.transform(this._CancellationService.UserFormGroup.get('startdate').value, "MM-dd-yyyy") || '01/01/1900',
-  //     "To_Dt ": this.datePipe.transform(this._CancellationService.UserFormGroup.get('enddate').value, "MM-dd-yyyy") || '01/01/1900',
-  //     "Reg_No": this._CancellationService.UserFormGroup.get('RegNo').value || 0,
-  //     "PBillNo": this._CancellationService.UserFormGroup.get('PBillNo').value + '%' || "%",
-  //     "Start": (this.paginator?.pageIndex ?? 0),
-  //     "Length": (this.paginator?.pageSize ?? 35)
-  //   }
-  //   this._CancellationService.getOPDBillsList(D_data).subscribe(Visit => {
-  //     this.dsCancellation.data = Visit as CancellationList[];
-  //     console.log(this.dsCancellation.data);
-  //     this.dsCancellation.data = Visit["Table1"] ?? [] as CancellationList[];
-  //     console.log(this.dsCancellation.data)
-  //     this.resultsLength = Visit["Table"][0]["total_row"];
-  //     this.sIsLoading = this.dsCancellation.data.length == 0 ? 'no-data' : '';
-  //   },
-  //     error => {
-  //       this.sIsLoading = '';
-  //     });
-  // }
-
-  // getIpdBillList() {
-  //   this.sIsLoading = 'loading-data';
-  //   var D_data = {
-  //     "F_Name": this._CancellationService.UserFormGroup.get('FirstName').value || '%',
-  //     "L_Name": this._CancellationService.UserFormGroup.get('LastName').value || '%',
-  //     "From_Dt": this.datePipe.transform(this._CancellationService.UserFormGroup.get('startdate').value, "MM-dd-yyyy") || '01/01/1900',
-  //     "To_Dt ": this.datePipe.transform(this._CancellationService.UserFormGroup.get('enddate').value, "MM-dd-yyyy") || '01/01/1900',
-  //     "Reg_No": this._CancellationService.UserFormGroup.get('RegNo').value || 0,
-  //     "PBillNo": this._CancellationService.UserFormGroup.get('PBillNo').value + '%' || "%",
-  //     "Start": (this.paginator?.pageIndex ?? 0),
-  //     "Length": (this.paginator?.pageSize ?? 35)
-  //   }
-  //   console.log(D_data);
-  //   this._CancellationService.getIpBillList(D_data).subscribe(Visit => {
-  //     this.dsCancellation.data = Visit as CancellationList[];
-  //     console.log(this.dsCancellation.data)
-  //     this.dsCancellation.data = Visit["Table1"] ?? [] as CancellationList[];
-  //     console.log(this.dsCancellation.data)
-  //     this.resultsLength = Visit["Table"][0]["total_row"];
-  //     this.sIsLoading = this.dsCancellation.data.length == 0 ? 'no-data' : '';
-  //   },
-  //     error => {
-  //       this.sIsLoading = '';
-  //     });
-  // }
 
   isLoading123: boolean = false;
   BillCancelOP(contact) {
@@ -390,7 +333,7 @@ export class CancellationComponent implements OnInit {
         console.log("Json:",SubmitDate)
         this._CancellationService.OpCancelBill(SubmitDate).subscribe(response => {
           if (response) {
-            this.toastr.success('Bill Cancel Successfully', 'success !', {
+            this.toastr.success('OP Bill Cancelled Successfully', 'success !', {
               toastClass: 'tostr-tost custom-toast-success',
             });
           } else {
@@ -398,17 +341,6 @@ export class CancellationComponent implements OnInit {
               toastClass: 'tostr-tost custom-toast-error',
             });
           }
-          // if (response) {
-          //   Swal.fire('Congratulations !', 'Bill Cancel Successfully !', 'success').then((result) => {
-          //     if (result.isConfirmed) {
-          //       // this.getSearchList();
-          //       this.isLoading123 = false;
-          //     }
-          //   });
-          // } else {
-          //   Swal.fire('Error !', 'Discharge  not saved', 'error');
-          //   this.isLoading123 = false;
-          // }
           this.isLoading123 = false;
         });
       } else {
@@ -438,15 +370,13 @@ export class CancellationComponent implements OnInit {
         console.log("Json:",SubmitDate)
         this._CancellationService.IpCancelBill(SubmitDate).subscribe(response => {
           if (response) {
-            Swal.fire('Congratulations !', 'Bill Cancel Successfully !', 'success').then((result) => {
-              if (result.isConfirmed) {
-                // this.getSearchList();
-                this.isLoading123 = false;
-              }
+            this.toastr.success('IP Bill Cancelled Successfully', 'success !', {
+              toastClass: 'tostr-tost custom-toast-success',
             });
           } else {
-            Swal.fire('Error !', 'Discharge  not saved', 'error');
-            this.isLoading123 = false;
+            this.toastr.error('API Error!', 'Error !', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
           }
           this.isLoading123 = false;
         });

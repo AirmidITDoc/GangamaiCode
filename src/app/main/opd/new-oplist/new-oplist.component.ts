@@ -16,6 +16,7 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { OpPaymentComponent } from '../op-search-list/op-payment/op-payment.component';
 import Swal from 'sweetalert2';
 import { UpdateBill } from '../op-search-list/op-advance-payment/op-advance-payment.component';
+import { NewSettlementComponent } from '../companysettlement/new-settlement/new-settlement.component';
 
 
 @Component({
@@ -55,9 +56,9 @@ export class NewOPListComponent implements OnInit {
     @ViewChild('actionsTemplate3') actionsTemplate3!: TemplateRef<any>;
     @ViewChild('actionsTemplate4') actionsTemplate4!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-    // @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
-    // @ViewChild('actionButtonTemplate2') actionButtonTemplate2!: TemplateRef<any>;
-
+    @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
+    @ViewChild('actionButtonTemplate2') actionButtonTemplate2!: TemplateRef<any>;
+    
     ngAfterViewInit() {
         // Assign the template to the column dynamically
         this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsTemplate1;
@@ -65,7 +66,9 @@ export class NewOPListComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'refundAmount')!.template = this.actionsTemplate3;
         this.gridConfig.columnsList.find(col => col.key === 'balanceAmt')!.template = this.actionsTemplate4;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-        // this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
+
+        this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
+        this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate2;
 
     }
 
@@ -74,11 +77,11 @@ export class NewOPListComponent implements OnInit {
 
         apiUrl: "VisitDetail/OPBillList",
         columnsList: [
-            {heading: "Patient", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA',width:60},
+            {heading: "Patient", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA',width:70},
             {heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:30},
             {heading: "", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:30},
             { heading: "", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' ,type: gridColumnTypes.template,width:30},
-            { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+            { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
             { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
@@ -105,7 +108,7 @@ export class NewOPListComponent implements OnInit {
             { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             {
-                heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+                heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplate
             }  // Assign ng-template to the column
             // {
@@ -132,7 +135,7 @@ export class NewOPListComponent implements OnInit {
     gridConfig1: gridModel = {
         apiUrl: "VisitDetail/OPPaymentList",
         columnsList: [
-            { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
+            { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 130 },
             { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -152,22 +155,22 @@ export class NewOPListComponent implements OnInit {
             { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "CompanyName", key: "companyName", sort: true, align: "center", width: 200 },
             { heading: "UserName", key: "userName", sort: true, align: "center", width: 200 },
-            // { heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
-            //     template: this.actionButtonTemplate1}  // Assign ng-template to the column
-            {
-                heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
+            { heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+                template: this.actionButtonTemplate1},  // Assign ng-template to the column
+            // {
+            //     heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
 
-                    {
-                        action: gridActions.print, callback: (data: any) => {
-                            this.viewgetOPPaymentReportPdf(data);
-                        }
-                    },
-                    {
-                        action: gridActions.whatsapp, callback: (data: any) => {
-                            this.getWhatsappsharePaymentReceipt(data, true);
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
+            //         {
+            //             action: gridActions.print, callback: (data: any) => {
+            //                 this.viewgetOPPaymentReportPdf(data);
+            //             }
+            //         },
+            //         {
+            //             action: gridActions.whatsapp, callback: (data: any) => {
+            //                 this.getWhatsappsharePaymentReceipt(data, true);
+            //             }
+            //         }]
+            // } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "RegNo",
         sortOrder: 0,
@@ -212,20 +215,23 @@ export class NewOPListComponent implements OnInit {
             { heading: "CardPay", key: "cardPay", sort: true, align: "center" },
             { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
+            { heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+                template: this.actionButtonTemplate2
+            },
+            // {
+            //     heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
 
-                    {
-                        action: gridActions.print, callback: (data: any) => {
-                            this.viewgetOPRefundBillReportPdf(data);
-                        }
-                    },
-                    {
-                        action: gridActions.view, callback: (data: any) => {
-                            this.getWhatsappshareRefundBill(data);
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
+            //         {
+            //             action: gridActions.print, callback: (data: any) => {
+            //                 this.viewgetOPRefundBillReportPdf(data);
+            //             }
+            //         },
+            //         {
+            //             action: gridActions.view, callback: (data: any) => {
+            //                 this.getWhatsappshareRefundBill(data);
+            //             }
+            //         }]
+            // } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "RefundId",
         sortOrder: 0,
@@ -277,11 +283,17 @@ export class NewOPListComponent implements OnInit {
 
     getWhatsappshareBill(Id) { }
 
-    viewgetOPPaymentReportPdf(data) {
+    viewgetOPPayemntPdf(data) {
 
         this.commonService.Onprint("PaymentId", data.paymentId, "OPPaymentReceipt");
     }
     getWhatsappsharePaymentReceipt(Id, Mobile) { }
+
+    viewgetOPPaymentReportPdf(data){
+        debugger
+        console.log(data)
+        this.commonService.Onprint("RefundId", data.paymentId, "OPRefundReceipt");
+    }
 
     viewgetOPRefundBillReportPdf(data) {
 
@@ -303,63 +315,59 @@ export class NewOPListComponent implements OnInit {
 
     openPaymentpopup(contact) {
         console.log(contact)
+        debugger
         let PatientHeaderObj = {};
-        PatientHeaderObj['Date'] = this.datePipe.transform(contact.BillDate, 'MM/dd/yyyy') || '01/01/1900',
-            PatientHeaderObj['RegNo'] = contact.RegNo;
-        PatientHeaderObj['PatientName'] = contact.PatientName;
-        PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
-        PatientHeaderObj['Age'] = contact.PatientAge;
-        PatientHeaderObj['DepartmentName'] = contact.DepartmentName;
-        PatientHeaderObj['DoctorName'] = contact.DoctorName;
-        PatientHeaderObj['TariffName'] = contact.TariffName;
-        PatientHeaderObj['CompanyName'] = contact.CompanyName;
-        PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
-        this.vMobileNo = contact.MobileNo;
+        // PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
+        // PatientHeaderObj['RegNo'] = contact.regID;
+        // PatientHeaderObj['PatientName'] = contact.PatientName;
+        // PatientHeaderObj['OPD_IPD_Id'] = contact.OPDNo;
+        // PatientHeaderObj['Age'] = contact.ageYear;
+        // PatientHeaderObj['DepartmentName'] = contact.DepartmentName;
+        // PatientHeaderObj['DoctorName'] = contact.DoctorName;
+        // PatientHeaderObj['TariffName'] = contact.TariffName;
+        // PatientHeaderObj['CompanyName'] = contact.CompanyName;
+        // PatientHeaderObj['NetPayAmount'] = contact.netPayableAmt; 
+        // this.vMobileNo = contact.MobileNo;
 
-        const dialogRef = this._matDialog.open(OpPaymentComponent,
+
+        const dialogRef = this._matDialog.open(NewSettlementComponent,
             {
-
                 maxWidth: "80vw",
-                // height: '600px',
-                width: '70%',
+               width: '70%',
                 data: {
                     vPatientHeaderObj: PatientHeaderObj,
                     FromName: "OP-Bill"
-                }
+                  }
             });
-
-        dialogRef.afterClosed().subscribe(result => {
-            console.log(result)
-            if (result.IsSubmitFlag == true) {
-                this.vpaidamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
-                this.vbalanceamt = result.submitDataPay.ipPaymentInsert.BalanceAmt;
-                let updateBillobj = {};
-                updateBillobj['BillNo'] = contact.BillNo;
-                updateBillobj['BillBalAmount'] = result.submitDataPay.ipPaymentInsert.balanceAmountController || result.submitDataPay.ipPaymentInsert.BalanceAmt;//result.BalAmt;
-                const updateBill = new UpdateBill(updateBillobj);
-                let Data = {
-                    "updateBill": updateBill,
-                    "paymentCreditUpdate": result.submitDataPay.ipPaymentInsert
-                };
-                console.log(Data)
-                this._OPListService.InsertOPBillingsettlement(Data).subscribe(response => {
-                    if (response) {
-                        Swal.fire('OP Credit Bill With Payment!', 'Credit Bill Payment Successfully !', 'success').then((result) => {
-                            if (result.isConfirmed) {
-
-                                this.viewgetOPPaymentReportPdf(response)
-                                this._matDialog.closeAll();
-
-                                this.getWhatsappsharePaymentReceipt(response, this.vMobileNo);
-                            }
-                        });
-                    }
-                    else {
-                        Swal.fire('Error !', 'OP Billing Payment not saved', 'error');
-                    }
-                });
-            }
-        });
+            dialogRef.afterClosed().subscribe(result => {
+                console.log(result)
+                if (result.IsSubmitFlag == true) {
+                    let PaymentObj = result.submitDataPay.ipPaymentInsert
+                    console.log(PaymentObj)
+                    this.vpaidamt = result.PaidAmt;
+                  this.vbalanceamt = result.BalAmt
+                  PaymentObj['BillNo']=contact.billNo;
+                  let updateBillobj = {};
+                  updateBillobj['BillNo'] = contact.billNo;
+                  updateBillobj['balanceAmt'] = result.submitDataPay.ipPaymentInsert.BalanceAmt; 
+              
+                 let data={
+                    opCreditPayment:PaymentObj,//result.submitDataPay.ipPaymentInsert,
+                    "billUpdate": {
+                        "billNo":  contact.billNo,
+                        "balanceAmt":result.submitDataPay.ipPaymentInsert.BalanceAmt
+                    },
+                 }
+                 console.log(data)
+                this._OPListService.InsertOPBillingsettlement(data).subscribe(response => {
+                    this.toastr.success(response.message);
+                   this.viewgetOPPayemntPdf(response);
+                  }, (error) => {
+                    this.toastr.error(error.message);
+                  });
+               
+                }
+              });
     }
 
     // getBilllistview(){

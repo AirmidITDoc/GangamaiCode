@@ -13,7 +13,7 @@ export class NewItemcategoryComponent implements OnInit {
 
     categoryForm: FormGroup;
     isActive: boolean = true;
-    autocompleteModeItem: string = "Item";
+    autocompleteModeItem: string = "ItemType";
 
     constructor(
         public _CategorymasterService: ItemCategoryMasterService,

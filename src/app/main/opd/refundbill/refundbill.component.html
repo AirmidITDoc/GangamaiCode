@@ -337,8 +337,8 @@
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                                 <mat-form-field appearance="fill">
                                                 <!-- <mat-form-field appearance="legacy"> -->
-                                                    <input matInput [(ngModel)]="element.refundAmount" type="text" OnlyNumber 
-                                                    (keyup)="gettablecalculation(element,element.refundAmount)" 
+                                                    <input matInput [(ngModel)]="element.RefundAmt" type="text" OnlyNumber 
+                                                    (keyup)="gettablecalculation(element,element.RefundAmt)" 
                                                     (keypress)="keyPressCharater($event)" >
                                                 </mat-form-field>
                                             </mat-cell>
@@ -409,7 +409,7 @@
 
                                     <mat-form-field appearance="outline">
                                         <mat-label>Refund Bal Amount</mat-label>
-                                        <input matInput [(ngModel)]="RefundBalAmount" formControlName="RefundBalAmount" name="RefundBalAmount" readonly>
+                                        <input matInput [(ngModel)]="RefundBalAmount" formControlName="RefundBalAmount" name="RefundBalAmount" [value]="BalanceAmount" readonly>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>

@@ -98,7 +98,7 @@
                                         [formGroup]="myFilterbillform" formControlName="FirstName"
                                         [(ngModel)]="gridConfig.filters[0].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[0].fieldValue=''">
+                                        (click)="gridConfig.filters[0].fieldValue='%'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -110,7 +110,7 @@
                                         [formGroup]="myFilterbillform" formControlName="LastName"
                                         [(ngModel)]="gridConfig.filters[1].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[1].fieldValue=''">
+                                        (click)="gridConfig.filters[1].fieldValue='%'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -123,7 +123,7 @@
                                         [formGroup]="myFilterbillform" formControlName="PBillNo"
                                         [(ngModel)]="gridConfig.filters[5].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[5].fieldValue=''">
+                                        (click)="gridConfig.filters[5].fieldValue='%'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -134,7 +134,7 @@
                                         [formGroup]="myFilterbillform" formControlName="RegNo"
                                         [(ngModel)]="gridConfig.filters[4].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[4].fieldValue=''">
+                                        (click)="gridConfig.filters[4].fieldValue='0'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -145,22 +145,6 @@
             </div>
 
         </mat-tab>
-
-        <!-- <ng-template #actionButtonTemplate1 let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-    
-                <button mat-icon-button matTooltip="Print" (click)="viewgetOPPaymentReportPdf(element)">
-                    <mat-icon>print</mat-icon>
-                </button>
-                  
-                <button mat-icon-button matTooltip="Send message On WhatsApp"
-                    (click)="getWhatsappshareBill(element)">
-                    <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
-                </button>
-    
-              
-            </div>
-        </ng-template> -->
 
         <mat-tab label="OP Browse Payment List">
 
@@ -179,6 +163,21 @@
 
                 </div>
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <ng-template #actionButtonTemplate1 let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                
+                            <button mat-icon-button matTooltip="Print" (click)="viewgetOPPaymentReportPdf(element)">
+                                <mat-icon>print</mat-icon>
+                            </button>
+                              
+                            <button mat-icon-button matTooltip="Send message On WhatsApp"
+                                (click)="getWhatsappshareBill(element)">
+                                <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                            </button>
+                                          
+                        </div>
+                    </ng-template>
+                    
                     <airmid-table [gridConfig]="gridConfig1" class="content">
                         <ng-container filters>
 
@@ -195,7 +194,7 @@
                                         [formGroup]="myFilterpayform" formControlName="FirstName"
                                         [(ngModel)]="gridConfig1.filters[0].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig1.filters[0].fieldValue=''">
+                                        (click)="gridConfig1.filters[0].fieldValue='%'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -207,7 +206,7 @@
                                         [formGroup]="myFilterpayform" formControlName="LastName"
                                         [(ngModel)]="gridConfig1.filters[1].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig1.filters[1].fieldValue=''">
+                                        (click)="gridConfig1.filters[1].fieldValue='%'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -219,7 +218,7 @@
                                         [formGroup]="myFilterpayform" formControlName="RegNo"
                                         [(ngModel)]="gridConfig1.filters[4].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig1.filters[4].fieldValue=''">
+                                        (click)="gridConfig1.filters[4].fieldValue='0'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -231,7 +230,7 @@
                                         [formGroup]="myFilterpayform" formControlName="PBillNo"
                                         [(ngModel)]="gridConfig1.filters[5].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig1.filters[5].fieldValue=''">
+                                        (click)="gridConfig1.filters[5].fieldValue='0'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -243,7 +242,7 @@
                                         [formGroup]="myFilterpayform" formControlName="ReceiptNo"
                                         [(ngModel)]="gridConfig1.filters[6].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig1.filters[6].fieldValue=''">
+                                        (click)="gridConfig1.filters[6].fieldValue='0'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -255,23 +254,6 @@
             </div>
 
         </mat-tab>
-
-        <!-- <ng-template #actionButtonTemplate2 let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-    
-                <button mat-icon-button matTooltip="print" (click)="viewgetOPRefundBillReportPdf(element)">
-                    <mat-icon>print</mat-icon>
-                </button>
-                  
-                <button mat-icon-button matTooltip="Send message On WhatsApp"
-                    (click)="getWhatsappshareBill(element)">
-                    <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
-                </button>
-    
-              
-            </div>
-        </ng-template> -->
-
 
         <mat-tab label="OP Browse Refund List">
 
@@ -290,6 +272,20 @@
 
                 </div>
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <ng-template #actionButtonTemplate2 let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                
+                            <button mat-icon-button matTooltip="Print" (click)="viewgetOPRefundBillReportPdf(element)">
+                                <mat-icon>print</mat-icon>
+                            </button>
+                              
+                            <button mat-icon-button matTooltip="Send message On WhatsApp"
+                                (click)="getWhatsappshareRefundBill(element)">
+                                <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                            </button>
+                                          
+                        </div>
+                    </ng-template>
                     <airmid-table [gridConfig]="gridConfig2" class="content">
                         <ng-container filters>
                             <form [formGroup]="myFilterrefundform">
@@ -305,7 +301,7 @@
                                         [formGroup]="myFilterrefundform" formControlName="FirstName"
                                         [(ngModel)]="gridConfig2.filters[0].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig2.filters[0].fieldValue=''">
+                                        (click)="gridConfig2.filters[0].fieldValue='%'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -317,7 +313,7 @@
                                         [formGroup]="myFilterrefundform" formControlName="LastName"
                                         [(ngModel)]="gridConfig2.filters[1].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig2.filters[1].fieldValue=''">
+                                        (click)="gridConfig2.filters[1].fieldValue='%'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -330,12 +326,10 @@
                                         [formGroup]="myFilterrefundform" formControlName="RegNo"
                                         [(ngModel)]="gridConfig2.filters[4].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig2.filters[4].fieldValue=''">
+                                        (click)="gridConfig2.filters[4].fieldValue='0'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
-
-
 
                             </form>
                         </ng-container>
