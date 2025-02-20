@@ -11,7 +11,6 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import Swal from 'sweetalert2';
 import { IPBrowseBillService } from 'app/main/ipd/ip-bill-browse-list/ip-browse-bill.service';
-
 import { ToastrService } from 'ngx-toastr';
 import { BillDateUpdateComponent } from './bill-date-update/bill-date-update.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
@@ -56,7 +55,6 @@ export class CancellationComponent implements OnInit {
     public toastr: ToastrService,
     private _loggedService: AuthenticationService,
     public _IpBillBrowseListService: IPBrowseBillService,
-    // public _BrowseOPDBillsService: BrowseOPBillService,
   ) { }
 
   ngOnInit(): void {
@@ -103,8 +101,8 @@ export class CancellationComponent implements OnInit {
   opdGridConfig: gridModel = {
     apiUrl: "Administration/BrowseOPDBillPagiList",
     columnsList: [
-      { heading: "-", key: "opD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-      { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+      { heading: "-", key: "opD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 20 },
+      { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 20 },
       { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width:200 },
       { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:150  },
       { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -135,8 +133,8 @@ export class CancellationComponent implements OnInit {
   ipdGridConfig: gridModel = {
     apiUrl: "Billing/IPBillList",
     columnsList: [
-      { heading: "-", key: "opD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-      { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+      { heading: "-", key: "opD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 20 },
+      { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 20 },
       { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width:200 },      
       { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:150 },
       { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
