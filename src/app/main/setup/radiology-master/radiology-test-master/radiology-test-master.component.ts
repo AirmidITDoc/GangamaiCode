@@ -22,7 +22,7 @@ import { values } from 'lodash';
 export class RadiologyTestMasterComponent implements OnInit {
   confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     gridConfig: gridModel = {
-        apiUrl: "RadiologyTest/RadiologyList",
+        apiUrl: "RadiologyTest/RadiologyTestList",
         columnsList: [
             { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "TestName", key: "testName", sort: true, align: 'left', emptySign: 'NA' },
@@ -44,17 +44,10 @@ export class RadiologyTestMasterComponent implements OnInit {
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "RadReportId",
+        sortField: "TestId",
         sortOrder: 0,
         filters: [
-            { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: "2024-01-01", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "2025-11-11", opType: OperatorComparer.Equals },
-            { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "OP_IP_Type", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "CategoryId", fieldValue: "1", opType: OperatorComparer.Equals },
+            { fieldName: "ServiceName", fieldValue: "djfh", opType: OperatorComparer.Contains },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
         ],
