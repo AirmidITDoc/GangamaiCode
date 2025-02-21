@@ -94,6 +94,6 @@ export class CompanyMasterService {
     }
 
     getCompanyById(companyId: any) {
-        return this._httpClient.GetData("Company/" + companyId);
+        return this._httpClient.GetData("CompanyMaster/" + companyId);
     }
 }

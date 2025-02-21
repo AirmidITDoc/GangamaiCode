@@ -21,6 +21,7 @@ export class ReportConfigurationService {
     createForm(): FormGroup {
         return this._formBuilder.group({
             reportId:[0],
+            menuId: [1],
             reportSection:["",
                 [
                     Validators.required, 
@@ -105,7 +106,8 @@ export class ReportConfigurationService {
             ],
             reportPageOrientation:["",[Validators.required]],
             reportPageSize:["",[Validators.required]],
-            isActive:[true,[Validators.required]],
+            // isActive:[true,[Validators.required]],
+            reportFilter: ["ASD"]
         });
     }
 
