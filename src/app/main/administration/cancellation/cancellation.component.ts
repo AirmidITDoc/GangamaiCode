@@ -58,8 +58,7 @@ export class CancellationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    debugger
-    // this.getSearchList();
+
     this.gridConfig = this.opdGridConfig;
 
     this._CancellationService.UserFormGroup.get('OP_IP_Type')?.valueChanges.subscribe((value) => {
