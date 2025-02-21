@@ -696,11 +696,11 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId,loader = true){
   }
     return this._httpClient.get("InventoryTransaction/view-IndentWise?IndentId="+IndentId);
   }
-  public getMaterialConsumptionlistReport(FromDate,ToDate,Id,ToStoreId,loader = true){
+  public getMaterialConsumptionlistReport(FromDate,ToDate,StoreId,loader = true){
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.get("InventoryReports/view-PatientWiseMaterialConsumption?FromDate="+FromDate+"&ToDate="+ToDate+ "&Id="+Id + "&ToStoreId="+ToStoreId);
+    return this._httpClient.get("InventoryReports/view-MaterialConsumption?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
   public getMaterialConsumptionReport(MaterialConsumptionId,loader = true){
     if (loader) {

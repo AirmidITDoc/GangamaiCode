@@ -65,7 +65,10 @@ export class StoreMasterService {
         this.createStoremasterForm();
     }
 
-    public getStoreMasterList(m_data) {
+    public getStoreMasterList(m_data, loader = true) {
+        if(loader){
+            this._loaderService.show()
+        }
         //return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_Inventory_StoreMaster_by_Name", {StoreName:"%"})
         return this._httpClient.post(
             "Generic/GetByProc?procName=Rtrv_StoreMaster_by_Name",

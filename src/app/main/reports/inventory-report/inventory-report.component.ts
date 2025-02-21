@@ -1492,10 +1492,7 @@ viewgetGRNReportdetailPdf() {
      }, 100);
    }
    viewgetMaterialConsumptionPdf() {
-    this.sIsLoading = 'loading-data';
-   let Id=0
-   if (this._OPReportsService.userForm.get('Id').value)
-    Id = this._OPReportsService.userForm.get('Id').value
+    this.sIsLoading = 'loading-data'; 
    
    let StoreId =0
 
@@ -1507,7 +1504,7 @@ viewgetGRNReportdetailPdf() {
      
        this._OPReportsService.getMaterialConsumptionlistReport(
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",Id,StoreId
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",StoreId
        ).subscribe(res => {
          const dialogRef = this._matDialog.open(PdfviewerComponent,
            {

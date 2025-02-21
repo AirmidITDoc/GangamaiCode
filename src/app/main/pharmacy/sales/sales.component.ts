@@ -4020,6 +4020,7 @@ export class Printsal {
   SalesReturnNo: any;
   RoundOff: any;
   TotalGst: any;
+  TermsAndCondition:any;
 
   Consructur(Printsal) {
     this.PatientName = Printsal.PatientName || '';
@@ -4030,7 +4031,7 @@ export class Printsal {
     this.Time = Printsal.Time || "";
     this.OP_IP_Type = Printsal.OP_IP_Type || "";
     this.GenderName = Printsal.GenderName || "";
-
+    this.TermsAndCondition = Printsal.TermsAndCondition || '';
     this.AgeYear = Printsal.AgeYear || '';
     this.BatchNo = Printsal.BatchNo || 0;
     this.BatchExpDate = Printsal.BatchExpDate || "";

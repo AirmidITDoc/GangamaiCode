@@ -124,9 +124,7 @@ export class NewDoctorComponent implements OnInit {
                 this.getcityList();
                 this.getprefixList();
             }
-            this.registerObj = this.data.registerObj;
-            this.registerObj.RegDate = this.data.registerObj.RegDate || new Date();
-            this.registerObj.MahRegDate = this.data.registerObj.MahRegDate || new Date();
+            this.registerObj = this.data.registerObj; 
             console.log(this.registerObj)
             this._doctorService.getSignature(this.registerObj.Signature).subscribe(data => {
                 this.sanitizeImagePreview = data["data"] as string;
@@ -340,22 +338,16 @@ export class NewDoctorComponent implements OnInit {
     }
 
     onSubmit() {  
+        debugger
         let DocTypeId = 0
         if(this._doctorService.myform.get("DoctorTypeId").value)
-            DocTypeId = this._doctorService.myform.get("DoctorTypeId").value.Id  
+            DocTypeId = this._doctorService.myform.get("DoctorTypeId").value.Id   
 
-        let MahaRegDate = '01/01/1999'
-        if(this.registerObj.MahRegDate){
-            MahaRegDate = this.registerObj.MahRegDate
-        }else{
-            MahaRegDate = this.datePipe.transform(this._doctorService.myform.get("MahRegDate").value, "MM-dd-yyyy") || '01/01/1900'
+        if(this._doctorService.myform.get("RegDate").value == undefined){
+            this._doctorService.myform.get("RegDate").setValue(new Date())
         }
-
-        let RegDate = '01/01/1999'
-        if(this.registerObj.RegDate){
-            RegDate = this.registerObj.RegDate
-        }else{
-            RegDate = this.datePipe.transform(this._doctorService.myform.get("RegDate").value, "MM-dd-yyyy") || '01/01/1900'
+        if(this._doctorService.myform.get("MahRegDate").value == undefined){
+            this._doctorService.myform.get("MahRegDate").setValue(new Date())
         }
 
 
@@ -386,11 +378,11 @@ export class NewDoctorComponent implements OnInit {
             passportNo: this._doctorService.myform.get("PassportNo").value || "0",
             esino: this._doctorService.myform.get("ESINO").value || "0",
             regNo: this._doctorService.myform.get("RegNo").value || "0",
-            regDate: RegDate,
+            regDate: this.datePipe.transform(this._doctorService.myform.get("RegDate").value, "MM-dd-yyyy") || '01/01/1900',
             mahRegNo: this._doctorService.myform.get("MahRegNo").value || "0",
             PanCardNo: this._doctorService.myform.get("Pancardno").value || "0",
             AadharCardNo: this._doctorService.myform.get("AadharCardNo").value || "0",
-            mahRegDate: MahaRegDate,
+            mahRegDate: this.datePipe.transform(this._doctorService.myform.get("MahRegDate").value, "MM-dd-yyyy") || '01/01/1900',
             isInHouseDoctor: true,
             isOnCallDoctor: true,
             Addedby: this.accountService.currentUserValue.user.id,

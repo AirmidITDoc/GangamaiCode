@@ -1,4 +1,4 @@
-<div class="simple page-layout inner-scroll inner-sidebar left-sidebar" dynamicTableHeight>
+<div class="simple page-layout inner-scroll inner-sidebar left-sidebar" >
     <mat-toolbar style="width: 100%;justify-content: space-between;height: 50px;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle" style="color: white;">
@@ -74,7 +74,7 @@
                     <div fxFlex.gt-sm="100%" fxFlex>
 
                         <div fxlayout="row" class="pb-8">
-                            <div style="width: 100%;" class="table-wrapper">
+                            <div style="width: 100%;" dynamicTableHeight>
 
                                 <mat-table #table class="table" matSort [dataSource]="DSStoreMasterList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
