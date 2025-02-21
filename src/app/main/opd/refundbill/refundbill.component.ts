@@ -139,6 +139,7 @@ export class RefundbillComponent implements OnInit {
     getSelectedObj(obj) {
         console.log(obj)
         this.RegId = obj.value;
+        this.PatientName=obj.text;
         
         if ((this.RegId ?? 0) > 0) {
     
@@ -467,7 +468,7 @@ export class RefundbillComponent implements OnInit {
     }
    
   onSave() {
-  
+  debugger
     if(this.TotalRefundAmount == ' ' || this.TotalRefundAmount == null || this.TotalRefundAmount == undefined){
       this.toastr.warning('Please check refund amount .', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -504,13 +505,13 @@ export class RefundbillComponent implements OnInit {
             let InsertRefundDetailObj = {};
   
             InsertRefundDetailObj['RefundID'] = 0;
-            InsertRefundDetailObj['ServiceId'] = element.ServiceId || 0;
-            InsertRefundDetailObj['ServiceAmount'] = element.NetAmount || 0;
-            InsertRefundDetailObj['RefundAmount'] =  element.refundAmt || 0;
-            InsertRefundDetailObj['DoctorId'] =  element.DoctorId
+            InsertRefundDetailObj['ServiceId'] = element.serviceId || 0;
+            InsertRefundDetailObj['ServiceAmount'] = element.netAmount || 0;
+            InsertRefundDetailObj['RefundAmount'] =  element.RefundAmt || 0;
+            InsertRefundDetailObj['DoctorId'] =  element.doctorId
             InsertRefundDetailObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value || '';
             InsertRefundDetailObj['AddBy'] =1,// this.accountService.currentUserValue.user.id,
-            InsertRefundDetailObj['ChargesId'] =element.ChargesId
+            InsertRefundDetailObj['ChargesId'] =element.chargesId
             RefundDetailarr.push(InsertRefundDetailObj); 
           })  
   
@@ -518,8 +519,8 @@ export class RefundbillComponent implements OnInit {
           this.dataSource2.data.forEach((element) => {
             debugger
             let AddchargesRefundAmountObj = {};
-            AddchargesRefundAmountObj['ChargesId'] = element.ChargesId || 0;
-            AddchargesRefundAmountObj['RefundAmount'] = parseFloat(element.refundAmt) || 0;// parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
+            AddchargesRefundAmountObj['ChargesId'] = element.chargesId || 0;
+            AddchargesRefundAmountObj['RefundAmount'] = parseFloat(element.RefundAmt) || 0;// parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
             AddchargesRefundAmountarr.push(AddchargesRefundAmountObj);
           });
   
@@ -851,43 +852,43 @@ export class RefundbillComponent implements OnInit {
   
   export class InsertRefundDetail {
     RefundID: any;;
-    ServiceId: number;
+    serviceId: number;
     serviceName: any;
     ServiceAmount: number;
     refundAmount: number;
-    DoctorId: number;
+    doctorId: number;
     Remark: String;
     AddBy: number;
-    ChargesId: number;
+    chargesId: number;
     ChargesDate: Date;
     price: number;
     qty: number;
     TotalAmt: number;
-    NetAmount: number;
+    netAmount: number;
     ChargesDocName: any;
-    refundAmt: any;
+    RefundAmt: any;
     balanceAmount: any;
     refAmount:any;
   
     constructor(InsertRefundDetailObj) {
       {
         this.RefundID = InsertRefundDetailObj.RefundID || 0;
-        this.ServiceId = InsertRefundDetailObj.ServiceId || 0;
+        this.serviceId = InsertRefundDetailObj.serviceId || 0;
         this.serviceName = InsertRefundDetailObj.serviceName || 0;
         this.ServiceAmount = InsertRefundDetailObj.ServiceAmount || 0;
         this.refundAmount = InsertRefundDetailObj.refundAmount || 0;
-        this.DoctorId = InsertRefundDetailObj.DoctorId || 0;
+        this.doctorId = InsertRefundDetailObj.doctorId || 0;
         this.Remark = InsertRefundDetailObj.Remark || '';
         this.AddBy = InsertRefundDetailObj.AddBy || 0;
-        this.ChargesId = InsertRefundDetailObj.ChargesId || 0;
+        this.chargesId = InsertRefundDetailObj.chargesId || 0;
         this.ChargesDate = InsertRefundDetailObj.ChargesDate || '';
         this.price = InsertRefundDetailObj.price || 0;
         this.qty = InsertRefundDetailObj.qty || 0;
         this.TotalAmt = InsertRefundDetailObj.TotalAmt || 0;
-        this.NetAmount = InsertRefundDetailObj.NetAmount || '';
+        this.netAmount = InsertRefundDetailObj.netAmount || '';
         this.ChargesDocName = InsertRefundDetailObj.ChargesDocName || 0;
         // this.Qty = InsertRefundDetailObj.ty || 0;
-        this.refundAmt = InsertRefundDetailObj.refundAmt || 0;
+        this.RefundAmt = InsertRefundDetailObj.RefundAmt || 0;
         this.balanceAmount = InsertRefundDetailObj.balanceAmount || 0;
         this.refAmount = InsertRefundDetailObj.refAmount || 0;
       }
