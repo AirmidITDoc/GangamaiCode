@@ -24,7 +24,7 @@
                     <airmid-textbox 
                         label="CompanyName" 
                         formControlName="companyName" 
-                        [value]="data?.companyName" 
+                        [value]="registerObj?.companyName" 
                         [formGroup]="subTpaForm"
                         [validations]="getValidationMessages().companyName" 
                         [maxLength]="50">
@@ -34,7 +34,6 @@
                     <airmid-dropdown 
                         label="CompanyTypeName" 
                         formControlName="compTypeId" 
-                        [value]="data?.compTypeId" 
                         [formGroup]="subTpaForm"
                         [validations]="getValidationMessages().compTypeId" 
                         [mode]="autocompleteModetypeName">
@@ -48,7 +47,7 @@
                     <airmid-textbox 
                         label="EnterAddress" 
                         formControlName="address" 
-                        [value]="data?.address" 
+                        [value]="registerObj?.address" 
                         [formGroup]="subTpaForm"
                         [validations]="getValidationMessages().address" 
                         [maxlength]="100">
@@ -72,7 +71,7 @@
                     <airmid-textbox 
                         label="PinCode" 
                         formControlName="pinNo" 
-                        [value]="data?.pinNo" 
+                        [value]="registerObj?.pinNo" 
                         [formGroup]="subTpaForm"
                         [validations]="getValidationMessages().pinNo" 
                         [maxLength]="10">
@@ -82,7 +81,6 @@
                     <airmid-textbox 
                         label="PhoneNumber" 
                         formControlName="phoneNo" 
-                        [value]="data?.phoneNo" 
                         [formGroup]="subTpaForm"
                         [validations]="getValidationMessages().phoneNo" 
                         [maxLength]="10">
@@ -92,7 +90,6 @@
                     <airmid-textbox 
                         label="MobileNumber" 
                         formControlName="mobileNo" 
-                        [value]="data?.mobileNo" 
                         [formGroup]="subTpaForm"
                         [validations]="getValidationMessages().mobileNo" 
                         [maxLength]="10">

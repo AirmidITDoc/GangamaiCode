@@ -32,6 +32,7 @@ export class AddformulaComponent implements OnInit {
   paranamenew: any;
   vParameter: any;
   autocompleteParameter: string = "Parameter";
+  VFormulaId:any;
 
   results: Result[] = [
     { value: '1', viewValue: '+' },
@@ -72,6 +73,7 @@ export class AddformulaComponent implements OnInit {
       this.ParameterId = this.registerObj.parameterId
       this.vParameter = this.registerObj.parameterName
       this.finalformula = this.registerObj.formula
+      this.VFormulaId=this.registerObj.formulaId
     }
   }
 
@@ -109,14 +111,53 @@ export class AddformulaComponent implements OnInit {
 debugger
     if (!this._ParameterService.formulaform.invalid) {
 
-      console.log("formula json:", this._ParameterService.formulaform.value);
+      if(!this.VFormulaId){
+        var mdata = {
+            "formulaId": 0,
+            "ParameterId":this.ParameterId,
+            "parameterName": this._ParameterService.formulaform.get("parameterName").value,
+            "Formula":this._ParameterService.formulaform.get("Formula").value,
+            "isActive": JSON.parse(this._ParameterService.formulaform.get("isActive").value),
+            "createdBy":1
+          };
 
-      this._ParameterService.formulaSave(this._ParameterService.formulaform.value).subscribe((response) => {
-        this.toastr.success(response.message);
-        this.onClear();
-      }, (error) => {
-        this.toastr.error(error.message);
-      });
+          console.log('json mdata:', mdata);
+
+        this._ParameterService.formulaSave(mdata).subscribe((response) => {
+            this.toastr.success(response.message);
+            this.onClose();
+        }, (error) => {
+            this.toastr.error(error.message);
+        });
+    }
+    else{
+        var mdata1 = {
+          "formulaId": this.VFormulaId,
+          "ParameterId":this.ParameterId,
+          "parameterName": this._ParameterService.formulaform.get("parameterName").value,
+          "Formula":this._ParameterService.formulaform.get("Formula").value,
+          "isActive": JSON.parse(this._ParameterService.formulaform.get("isActive").value),
+          "createdBy":1
+          };
+
+          console.log('json mdata:', mdata1);
+
+        this._ParameterService.formulaSave(mdata1).subscribe((response) => {
+            this.toastr.success(response.message);
+            this.onClose();
+        }, (error) => {
+            this.toastr.error(error.message);
+        });
+    }
+
+      // console.log("formula json:", this._ParameterService.formulaform.value);
+
+      // this._ParameterService.formulaSave(this._ParameterService.formulaform.value).subscribe((response) => {
+      //   this.toastr.success(response.message);
+      //   this.onClear();
+      // }, (error) => {
+      //   this.toastr.error(error.message);
+      // });
     }
     else {
       this.toastr.warning('please check from is invalid', 'Warning !', {

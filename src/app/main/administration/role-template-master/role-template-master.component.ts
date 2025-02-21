@@ -102,13 +102,6 @@ export class RoleTemplateMasterComponent implements OnInit {
             dialogRef.afterClosed().subscribe(result => {
                 // this. getregistrationList();
             });
-            const DialogRef = this._matDialog.open(
-                RolePermissionComponent,
-                {
-                    disableClose: false,
-                }
-          );
-            
     }
 
 }

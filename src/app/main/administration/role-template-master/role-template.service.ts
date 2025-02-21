@@ -7,9 +7,6 @@ import { ApiCaller } from "app/core/services/apiCaller";
 })
 export class RoleTemplateService {
 
-    getPermissionList(roleId: any) {
-        throw new Error('Method not implemented.');
-    }
 
     myform: FormGroup;
     myformSearch: FormGroup;
@@ -47,6 +44,9 @@ export class RoleTemplateService {
 
     public roleMasterSave(Param: any) {
         return this._httpClient.PostData("RoleMaster", Param);
+    }
+    getPermissionList(roleId: any) {
+        return this._httpClient.GetData("RoleMaster/get-permissions?RoleId="+roleId);
     }
     public roleMasterUpdate(Param: any) {
         debugger

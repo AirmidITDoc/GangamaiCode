@@ -224,16 +224,16 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     //     });
     //   }
 
-    //   addchangePassword() {
-    //     const dialogRef = this._matDialog.open(ChangePasswordComponent,
-    //       {
-    //         maxWidth: "50vw",
-    //         maxHeight: "60vh", 
-    //       });
-    //     dialogRef.afterClosed().subscribe(result => {
+      addchangePassword() {
+        const dialogRef = this._matDialog.open(ChangePasswordComponent,
+          {
+            maxWidth: "50vw",
+            maxHeight: "60vh", 
+          });
+        dialogRef.afterClosed().subscribe(result => {
 
-    //     });
-    //   }
+        });
+      }
 
     Changepassword() {
         const dialogRef = this._matDialog.open(ChangePasswordComponent,

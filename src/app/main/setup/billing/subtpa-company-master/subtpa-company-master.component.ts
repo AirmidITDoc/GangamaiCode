@@ -74,7 +74,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewSubtapComponent,
             {
                 maxWidth: "70vw",
-                height: '55%',
+                height: '60%',
                 width: '70%',
                 data: row
             });
@@ -83,6 +83,56 @@ export class SubtpaCompanyMasterComponent implements OnInit {
                 that.grid.bindGridData();
             }
         });
+    }
+}
+
+export class SubTpaCompanyMaster {
+    
+    compTypeId: number;
+    companyName: string;
+    subCompanyId: any;
+    address: string;
+    city: String;
+    pinNo: String;
+    phoneNo: String;
+    mobileNo: String;
+    faxNo: String;
+    traiffId: any; 
+    isDeleted: boolean;
+    AddedBy: number;
+    UpdatedBy: number;
+    IsCancelled: boolean;
+    IsCancelledBy: number;
+    IsCancelledDate: Date;
+    // companyId: number;
+    // AddedByName: string;
+    /**
+   * Constructor
+   *
+export class CompanyMaster {
+   * @param export class CompanyMaster {
+
+   */
+    constructor(CompanyMaster) {
+        {
+            this.subCompanyId = CompanyMaster.subCompanyId || "";
+            this.compTypeId = CompanyMaster.CompTypeId || "";
+            this.companyName = CompanyMaster.CompanyName || "";
+            this.address = CompanyMaster.Address || "";
+            this.city = CompanyMaster.City || "";
+            this.pinNo = CompanyMaster.PinNo || "";
+            this.phoneNo = CompanyMaster.PhoneNo || "";
+            this.mobileNo = CompanyMaster.MobileNo || "";
+            this.faxNo = CompanyMaster.FaxNo || "";
+            this.traiffId = CompanyMaster.traiffId || "";
+            this.AddedBy = CompanyMaster.AddedBy || "";
+            this.isDeleted = CompanyMaster.IsDeleted || "false";
+            this.UpdatedBy = CompanyMaster.UpdatedBy || "";
+            this.IsCancelled = CompanyMaster.IsCancelled || "false";
+            this.IsCancelledBy = CompanyMaster.IsCancelledBy || "";
+            this.IsCancelledDate = CompanyMaster.IsCancelledDate || "";
+            // this.AddedByName = CompanyMaster.AddedByName || "";
+        }
     }
 }
 

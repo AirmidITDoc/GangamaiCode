@@ -40,7 +40,7 @@ export class ReportConfigurationComponent implements OnInit{
                 { heading: "ReportSPName", key: "reportSPName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
                 { heading: "ReportPageOrientation", key: "reportPageOrientation", sort: true, align: 'left', emptySign: 'NA', width: 200},
                 { heading: "ReportPageSize", key: "reportPageSize", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-                { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 80 },
+                // { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 80 },
                 {
                     heading: "Action", key: "action", width: 100 , align: "right", type: gridColumnTypes.action, actions: [
                         {
@@ -75,9 +75,9 @@ export class ReportConfigurationComponent implements OnInit{
             let that = this;
             const dialogRef = this._matDialog.open( NewReportConfigurationComponent, 
                 {
-                    maxWidth: "95vw",
-                    height: '95%',
-                    width: '90%',
+                    maxWidth: "90vw",
+                    maxHeight: '95%',
+                    width: '80%',
                     data: row
                 });
             dialogRef.afterClosed().subscribe(result => {

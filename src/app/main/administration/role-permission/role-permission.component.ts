@@ -26,7 +26,7 @@ export class FileNode {
 export class ExampleFlatNode {
     expandable: boolean;
     level?: number;
-    children?:FileNode[];
+    children?: FileNode[];
 }
 @Component({
     selector: 'app-role-permission',
@@ -36,7 +36,7 @@ export class ExampleFlatNode {
     animations: fuseAnimations
 })
 export class RolePermissionComponent implements OnInit {
-    roleId:number=0;
+    roleId: number = 0;
     displayedColumns: string[] = ['name', 'count'];
 
     private transformer = (node: FileNode, level: number) => {
@@ -94,9 +94,12 @@ export class RolePermissionComponent implements OnInit {
     hasNestedChild = (_: number, nodeData: FileNode) => nodeData.children;
 
     ngOnInit(): void {
+        debugger
         if (this.data) {
-            this.roleId=this.data.roleId;
-            console.log(this.roleId)
+            this.roleId = this.data.roleId;
+            this._RoleTemplateService.getPermissionList(this.data.roleId).subscribe((Menu) => {
+                this.dataSource.data = Menu as FileNode[];
+            });
         }
     }
     updatePermission(obj, type, $event) {
@@ -111,15 +114,15 @@ export class RolePermissionComponent implements OnInit {
             descendants[i][proptype] = $event.checked;
             if ((descendants[i].children ?? []).length > 0) {
                 for (let j = 0; j < descendants[i].children.length; j++) {
-                    var objNode=this.dataSource.data.find(x=>x["menuId"]==descendants[i].children[j].menuId);
-                    if(objNode)
+                    var objNode = this.dataSource.data.find(x => x["menuId"] == descendants[i].children[j].menuId);
+                    if (objNode)
                         objNode[proptype] = $event.checked;
                     descendants[i].children[j][proptype] = $event.checked;
                 }
             }
         }
-        var objNode=this.dataSource.data.find(x=>x["menuId"]==obj.menuId);
-        if(objNode)
+        var objNode = this.dataSource.data.find(x => x["menuId"] == obj.menuId);
+        if (objNode)
             objNode[proptype] = $event.checked;
     }
 
@@ -127,9 +130,9 @@ export class RolePermissionComponent implements OnInit {
     onClose() {
         this.dialogRef.close();
     }
-      
+
     onSubmit() {
-        var data=this.dataSource.data.map(obj => ({ ...obj, RoleId: this.roleId }));
+        var data = this.dataSource.data.map(obj => ({ ...obj, RoleId: this.roleId }));
         // this._RoleService.savePermission(data).subscribe((Menu) => {
         //     this.toastr.success('Permission updated Successfully.', 'updated !', {
         //         toastClass: 'tostr-tost custom-toast-success',

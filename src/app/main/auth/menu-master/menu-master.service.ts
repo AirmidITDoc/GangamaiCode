@@ -38,7 +38,7 @@ export class MenuMasterService {
                 ]],
                 linkAction: ['', [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+                    // Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
                 ]],
                 sortOrder: ["",
                     [

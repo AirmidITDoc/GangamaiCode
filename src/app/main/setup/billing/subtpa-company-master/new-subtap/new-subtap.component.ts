@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SubtpaCompanyMasterService } from '../subtpa-company-master.service';
 import { fuseAnimations } from '@fuse/animations';
+import { SubTpaCompanyMaster } from '../subtpa-company-master.component';
 
 @Component({
     selector: 'app-new-subtap',
@@ -14,26 +15,51 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewSubtapComponent implements OnInit {
 
-  subTpaForm: FormGroup;
-  isActive:boolean=true;
+    subTpaForm: FormGroup;
+    isActive:boolean=true;
 
-  autocompleteModetypeName:string="CompanyType";
-  autocompleteModecity:string="City";
+    autocompleteModetypeName:string="CompanyType";
+    autocompleteModecity:string="City";
 
-  constructor(
-    public _subTpaServiceMaster: SubtpaCompanyMasterService,
-    public toastr: ToastrService,
-    @Inject(MAT_DIALOG_DATA) public data: any, 
-    public dialogRef: MatDialogRef<NewSubtapComponent>,
-  ) { }
+    registerObj = new SubTpaCompanyMaster({});
 
-  ngOnInit(): void {
-    this.subTpaForm=this._subTpaServiceMaster.createsubtpacompanyForm();
-    if((this.data?.subCompanyId??0) > 0){
-        this.isActive=this.data.isActive
-        this.subTpaForm.patchValue(this.data);
+    constructor(
+        public _subTpaServiceMaster: SubtpaCompanyMasterService,
+        public toastr: ToastrService,
+        @Inject(MAT_DIALOG_DATA) public data: any, 
+        public dialogRef: MatDialogRef<NewSubtapComponent>,
+    ) { }
+
+    ngOnInit(): void {
+        debugger
+        this.subTpaForm=this._subTpaServiceMaster.createsubtpacompanyForm();
+        if((this.data?.subCompanyId??0) > 0){
+            console.log(this.data)
+            this.isActive=this.data.isActive
+            
+            if(this.data.city)
+                this.data.city=this.data.city.trim();
+
+            
+            this.subTpaForm.get("compTypeId").setValue(this.data.compTypeId)
+            this.subTpaForm.get("city").setValue(this.data.city)
+            this.subTpaForm.get("mobileNo").setValue(this.data.mobileNo)
+            this.subTpaForm.get("phoneNo").setValue(this.data.phoneNo)
+
+           
+            // setTimeout(() => {
+            //     this._subTpaServiceMaster.getCompanyById(this.data.subCompanyId).subscribe((response) => {
+            //         this.registerObj = response;
+            //         console.log(this.registerObj)
+                    
+            //         if(response){
+ 
+            //         // //  this.subTpaForm.get("companyId").setValue(this.registerObj.companyId)
+            //         }
+            //        });
+            // }, 500);
+        }
     }
-  }
 
     onSubmit(){
         

@@ -57,6 +57,7 @@ export class NUserComponent implements OnInit{
     ngOnInit(): void {
         debugger
         this.myuserform = this._CreateUserService.createuserForm();
+        this.myuserform.get("roomId").setValue("1")
         if((this.data?.userId??0) > 0)
         {
           this.myuserform.patchValue(this.data);
@@ -76,7 +77,7 @@ export class NUserComponent implements OnInit{
             this.visBedStatus=this.regobj.isBedStatus
             this.visCurrentStk=this.regobj.isCurrentStk
             this.vaddChargeIsDelete=this.regobj.addChargeIsDelete
-            this.myuserform.get("DoctorID").setValue(this.regobj.doctorID)
+            this.myuserform.get("doctorId").setValue(this.regobj.doctorID)
             if(this.regobj.isDoctorType==true)
               this.docflag=true
             else
@@ -150,27 +151,6 @@ export class NUserComponent implements OnInit{
         });
     }
 
-    // onSubmit() {
-    //     if (!this.myuserform.invalid) 
-    //     {
-    //         debugger
-    //         console.log("Create User JSON :-", this.myuserform.value);
-            
-    //         this._CreateUserService.insertuser(this.myuserform.value).subscribe((data) => {
-    //         this.toastr.success(data.message);
-    //             this.onClear(true);
-    //         }, (error) => {
-    //             this.toastr.error(error.message);
-    //         });
-    //     } 
-    //     else {
-    //         this.toastr.warning('please check from is invalid', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //             });
-    //             return;
-    //     }
-    // }
-
     onSubmit() {
         debugger       
         if (!this.myuserform.get("firstName")?.value) {
@@ -225,7 +205,7 @@ export class NUserComponent implements OnInit{
           return;
         }  
         if (this.docflag == true) {
-          if(!this.myuserform.get('DoctorID')?.value){
+          if(!this.myuserform.get('doctorId')?.value){
             this.toastr.warning('Please select Doctor Name', 'Warning !', {
               toastClass: 'tostr-tost custom-toast-warning',
             });
@@ -241,122 +221,33 @@ export class NUserComponent implements OnInit{
             return;
           } 
         }
-                    
-            let PharmExpOpt = 0;
-            let PharmIPOpt = false;
-            let PharmOPOpt = false; 
-              if(this.myuserform.get('PharExpOpt').value){
-                PharmExpOpt = 1
-              }
-              PharmIPOpt = this.myuserform.get('PharIPOpt').value 
-              PharmOPOpt = this.myuserform.get('PharOPOpt').value 
-        
-              let isDiscApply = 0
-              if(this.myuserform.get('IsDicslimit').value == true){
-                isDiscApply =  1
-                } 
                  
-            if (!this.data?.userId) {
-              this.isLoading = 'submit'; 
-              var m_data = {            
-                "userId": 0,
-                "firstName": this.myuserform.get('firstName').value || '',
-                "lastName": this.myuserform.get('lastName').value || '',
-                "userName": this.myuserform.get('userName').value || '',
-                "password": this.myuserform.get('password').value || 0,
-                "roleId": this.myuserform.get('roleId').value || 1,
-                "storeId": parseInt(this.myuserform.get('storeId').value) || 0,
-                "isDoctorType": this.myuserform.get('isDoctorType').value || false,
-                "doctorId": this.myuserform.get('DoctorID').value || 0,
-                "isPoverify": this.myuserform.get('isPoverify').value || false,
-                "isGrnverify": this.myuserform.get('isGrnverify').value || false,
-                "isCollection": this.myuserform.get('CollectionInformation').value || false,
-                "isBedStatus": this.myuserform.get('BedStatus').value  || false,
-                "isCurrentStk": this.myuserform.get('CurrentStock').value || false,
-                "isPatientInfo": this.myuserform.get('PatientInformation').value || false,
-                "isDateInterval": true,
-                "isDateIntervalDays": 0,
-                "mailId": this.myuserform.get('mailId').value || 0,
-                "mailDomain": "1",
-                "loginStatus": true,
-                "addChargeIsDelete": this.myuserform.get('IsAddChargeDelete').value ||false,
-                "isIndentVerify": this.myuserform.get('Indentverify').value || false,
-                "isPoinchargeVerify": this.myuserform.get('Ipoverify').value || false,
-                "isRefDocEditOpt": this.myuserform.get('isRefDocEditOpt').value || false,
-                "isInchIndVfy": this.myuserform.get('IIverify').value || false,
-                "webRoleId": this.myuserform.get('webRoleId').value || false, 
-                "userToken": "",
-                "pharExtOpt": Number(this.myuserform.get('PharExpOpt').value )|| 0,
-                "pharOpopt":Number(this.myuserform.get('PharOPOpt').value) || 0,
-                "pharIpopt": Number(this.myuserform.get('PharIPOpt').value) || 0,
-              }
+            let formData = { ...this.myuserform.value };
+    
+            formData.pharExtOpt = formData.pharExtOpt === true ? 1 : 0;
+            formData.pharOpopt = formData.pharOpopt === true ? 1 : 0;
+            formData.pharIpopt = formData.pharIpopt === true ? 1 : 0;
+            formData.isPoverify = formData.isPoverify ?? false;
+            formData.addChargeIsDelete = formData.addChargeIsDelete ?? false;
+            formData.isCollection = formData.isCollection ?? false;
+            formData.isCurrentStk = formData.isCurrentStk ?? false;
+            formData.isBedStatus = formData.isBedStatus ?? false;
+            formData.isGrnverify = formData.isGrnverify ?? false;
+            formData.isInchIndVfy = formData.isInchIndVfy ?? false;
+            formData.isIndentVerify = formData.isIndentVerify ?? false;
+            formData.isPatientInfo = formData.isPatientInfo ?? false;
+            formData.isPoinchargeVerify = formData.isPoinchargeVerify ?? false;
+            formData.isDoctorType = formData.isDoctorType ?? false;
+            formData.IsDicslimit = formData.IsDicslimit ?? false;
         
-              console.log(m_data);
-        
-              this._CreateUserService.insertuser(m_data).subscribe(response => {
-                console.log(response);
-                if (response) {
-                  this.toastr.success('User Detail Save', 'Save !', {
-                    toastClass: 'tostr-tost custom-toast-success',
-                  });
-                } else {
-                  this.toastr.error('API Error!', 'Error !', {
-                    toastClass: 'tostr-tost custom-toast-error',
-                  });
-                }
-                this._matDialog.closeAll();
-              });
-            }
-            else {
-                var m_data1 = {            
-                    "userId": this.data?.userId,
-                    "firstName": this.myuserform.get('firstName').value || '',
-                    "lastName": this.myuserform.get('lastName').value || '',
-                    "userName": this.myuserform.get('userName').value || '',
-                    "password": this.myuserform.get('password').value || 0,
-                    "roleId": parseInt(this.myuserform.get('roleId').value) || 1,
-                    "storeId": parseInt(this.myuserform.get('storeId').value) || 0,
-                    "isDoctorType": this.myuserform.get('isDoctorType').value || 0,
-                    "doctorId": this.myuserform.get('DoctorID').value || 0,
-                    "isPoverify": this.myuserform.get('isPoverify').value || 0,
-                    "isGrnverify": this.myuserform.get('isGrnverify').value || 0,
-                    "isCollection": this.myuserform.get('CollectionInformation').value || 0,
-                    "isBedStatus": this.myuserform.get('BedStatus').value  || 0,
-                    "isCurrentStk": this.myuserform.get('CurrentStock').value || 0,
-                    "isPatientInfo": this.myuserform.get('PatientInformation').value || 0,
-                    "isDateInterval": true,
-                    "isDateIntervalDays": 0,
-                    "mailId": this.myuserform.get('mailId').value || 0,
-                    "mailDomain": "1",
-                    "loginStatus": true,
-                    "addChargeIsDelete": this.myuserform.get('IsAddChargeDelete').value,
-                    "isIndentVerify": this.myuserform.get('Indentverify').value,
-                    "isPoinchargeVerify": this.myuserform.get('Ipoverify').value,
-                    "isRefDocEditOpt": this.myuserform.get('isRefDocEditOpt').value,
-                    "isInchIndVfy": this.myuserform.get('IIverify').value,
-                    "webRoleId": this.myuserform.get('webRoleId').value || 0, 
-                    "userToken": "",
-                    "pharExtOpt": Number(this.myuserform.get('PharExpOpt').value )|| 0,
-                    "pharOpopt":Number(this.myuserform.get('PharOPOpt').value) || 0,
-                    "pharIpopt": Number(this.myuserform.get('PharIPOpt').value) || 0,
-                  }
-            
-                  console.log(m_data1);
-            
-                  this._CreateUserService.updateuser(m_data1).subscribe(response => {
-                    console.log(response);
-                    if (response) {
-                      this.toastr.success('User Detail Update', 'Update !', {
-                        toastClass: 'tostr-tost custom-toast-success',
-                      });
-                    } else {
-                      this.toastr.error('API Error!', 'Error !', {
-                        toastClass: 'tostr-tost custom-toast-error',
-                      });
-                    }
-                    this._matDialog.closeAll();
-                  });
-            }
+            console.log("MenuMaster json:", formData);
+
+            this._CreateUserService.insertuser(formData).subscribe((response) => {
+              this.toastr.success(response.message);
+              this.onClear(true);
+            }, (error) => {
+              this.toastr.error(error.message);
+            });                
           }
 
     unitname = 0;
@@ -447,7 +338,7 @@ export class NUserComponent implements OnInit{
           webRoleId:[
              { name: "required", Message: "WebRole is required" },
           ],
-          DoctorID:[],
+          doctorId:[],
       };
   }
 }

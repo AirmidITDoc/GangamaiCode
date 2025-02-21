@@ -76,7 +76,7 @@ export class CompanyMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(CompanyMasterListComponent,
             {
                 maxWidth: "60vw",
-                height: '55%',
+                height: '60%',
                 width: '70%',
                 data: row
             });
@@ -101,7 +101,7 @@ export class CompanyMaster {
     phoneNo: String;
     mobileNo: String;
     faxNo: String;
-    tariffId: number;
+    traiffId: any; 
     isDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
@@ -128,7 +128,7 @@ export class CompanyMaster {
             this.phoneNo = CompanyMaster.PhoneNo || "";
             this.mobileNo = CompanyMaster.MobileNo || "";
             this.faxNo = CompanyMaster.FaxNo || "";
-            this.tariffId = CompanyMaster.TariffId || "";
+            this.traiffId = CompanyMaster.traiffId || "";
             this.AddedBy = CompanyMaster.AddedBy || "";
             this.isDeleted = CompanyMaster.IsDeleted || "false";
             this.UpdatedBy = CompanyMaster.UpdatedBy || "";

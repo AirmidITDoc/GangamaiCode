@@ -33,11 +33,26 @@ export class CompanyMasterListComponent implements OnInit {
         debugger
         this.companyForm = this._CompanyMasterService.createCompanymasterForm();
         if ((this.data?.companyId?? 0) > 0) {
+
+            
+            if(this.data.city)
+                this.data.city=this.data.city.trim();
+
+            
+            this.companyForm.get("city").setValue(this.data.city)
+            this.companyForm.get("mobileNo").setValue(this.data.mobileNo)
+          
             setTimeout(() => {
                 this._CompanyMasterService.getCompanyById(this.data.companyId).subscribe((response) => {
                     this.registerObj = response;
                     console.log(this.registerObj)
-                    this.companyForm.get("companyId").setValue(this.registerObj.companyId)
+                    
+                    if(response){
+                        debugger
+ 
+                        this.companyForm.get("traiffId").setValue(this.registerObj.traiffId)
+                        this.companyForm.get("companyId").setValue(this.registerObj.companyId)
+                    }
                    });
             }, 500);
         }

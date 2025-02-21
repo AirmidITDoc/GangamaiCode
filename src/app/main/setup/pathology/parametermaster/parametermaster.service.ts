@@ -132,9 +132,15 @@ export class ParametermasterService {
     
 
     public formulaSave(Param: any) {
+        debugger
+         return this._httpClient.PostData("MPathTestFormula", Param);
+    }
+
+    public formulaUpdate(Param: any) {
+        debugger
         if (Param.ParameterId) {
             return this._httpClient.PutData("MPathTestFormula/" + Param.ParameterId, Param);
-        } else return this._httpClient.PostData("MPathTestFormula", Param);
+        } 
     }
 
     public getStateList(CityId,loader = true) {
