@@ -281,7 +281,7 @@ export class IPSearchListComponent implements OnInit {
                 buttonElement.blur(); // Remove focus from the button
     
                 let that = this;
-                const dialogRef = this._matDialog.open(DischargeSummaryComponent,
+                const dialogRef = this._matDialog.open(OPIPFeedbackComponent,
                     {
                         maxWidth: "100%",
                         height: '90%',

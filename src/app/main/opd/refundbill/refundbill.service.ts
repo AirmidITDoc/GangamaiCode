@@ -92,12 +92,10 @@ export class RefundbillService {
        return this._httpClient.PostData("RefundOfBill/OPBillservicedetailList",employee);
     }
 
-    public InsertOPRefundBilling(Param: any) {
-        if (Param.refundId) {
-            return this._httpClient.PutData("RefundOfBill/IPInsert" + Param.refundId, Param);
-        }
-        //  else return this._httpClient1.PostData("RefundOfBill/IPInsert", Param, showLoader);
-    }
+    public InsertOPRefundBilling(Param) {
+      
+            return this._httpClient.PostData("RefundOfBill/OPInsert" ,Param);
+      }
 
     getOprefundofbillview(RefundId) {
         return this._httpClient.GetData("OutPatient/view-OPRefundofBill?RefundId=" + RefundId)
@@ -115,5 +113,9 @@ export class RefundbillService {
     public getBillingServiceList(employee) {
         // return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesList", employee)
         return this._httpClient.PostData("BillingService/BillingList", employee)
+    }
+
+    public getVisitById(Id) {
+        return this._httpClient.GetData("VisitDetail/" + Id);
     }
 }

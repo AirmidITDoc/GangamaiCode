@@ -114,8 +114,8 @@ export class AdmissionComponent implements OnInit {
   nowdate = new Date();
   firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
 
-  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+  fromDate ="01/01/1900"// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate ="01/01/1900"// this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
 
   autocompleteModedeptdoc: string = "ConDoctor";
   optionsSearchDoc: any[] = [];
@@ -217,8 +217,8 @@ export class AdmissionComponent implements OnInit {
     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
     { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "From_Dt", fieldValue: "01/01/1900", opType: OperatorComparer.Equals },
-    { fieldName: "To_Dt", fieldValue:"01/01/1900", opType: OperatorComparer.Equals },
+    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+    { fieldName: "To_Dt", fieldValue:this.toDate, opType: OperatorComparer.Equals },
     { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Equals },
     { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
@@ -307,10 +307,7 @@ export class AdmissionComponent implements OnInit {
                 maxHeight: '70%',
                 width: '95%',
         data: row
-        // {
-        //   data1: row,
-        //   Submitflag: false
-        // },
+       
       }
     );
 

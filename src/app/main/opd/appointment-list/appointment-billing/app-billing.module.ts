@@ -20,9 +20,6 @@ import { MatRadioModule } from "@angular/material/radio";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { MatDialogModule } from "@angular/material/dialog";
 import { SharedModule } from "app/main/shared/shared.module";
-import { AppointmentListComponent } from "./appointment-list.component";
-import { NewAppointmentComponent } from './new-appointment/new-appointment.component';
-import { AppointmentlistService } from "./appointmentlist.service";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatListModule } from "@angular/material/list";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
@@ -41,21 +38,18 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 //import { WebcamModule } from "ngx-webcam";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
-import { EditConsultantDoctorComponent } from './edit-consultant-doctor/edit-consultant-doctor.component';
-import { EditRefranceDoctorComponent } from './edit-refrance-doctor/edit-refrance-doctor.component';
-import { CrossConsultationComponent } from './cross-consultation/cross-consultation.component';
-import { ImageViewComponent } from './image-view/image-view.component';
-
+import { AppointmentBillingComponent } from "./appointment-billing.component";
+import { AppointmentlistService } from "../appointmentlist.service";
 
 const routes: Routes = [
     {
         path: "**",
-        component: AppointmentListComponent,
+        component: AppointmentBillingComponent,
     },
 ];
 
 @NgModule({
-    declarations: [AppointmentListComponent, NewAppointmentComponent, EditConsultantDoctorComponent, EditRefranceDoctorComponent, CrossConsultationComponent, ImageViewComponent],
+    declarations: [AppointmentBillingComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,
@@ -102,4 +96,4 @@ const routes: Routes = [
     ],
     providers: [AppointmentlistService, DatePipe]
 })
-export class AppointmentlistModule { }
+export class AppBillingModule { }

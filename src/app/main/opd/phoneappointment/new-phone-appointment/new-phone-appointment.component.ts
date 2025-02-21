@@ -28,7 +28,8 @@ export class NewPhoneAppointmentComponent implements OnInit {
   searchFormGroup: FormGroup
   hasSelectedContacts: boolean;
   @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
- 
+  @ViewChild('myButton', { static: true }) myButton: HTMLButtonElement;
+
   RegId = 0;
 
   screenFromString = 'admission-form';
@@ -236,6 +237,14 @@ phdatetime: any;
         this.ddlDoctor.bindGridAutoComplete();
     });
   }
+
+  setbutton(event){
+    console.log(event)
+    // if(event.value==13){
+    if(this.phoneappForm.valid)
+      this.myButton.focus();
+  }
+  // }
 }
 
 export class PhoneschlistMaster {

@@ -3,7 +3,6 @@ import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular
 import { MatTableDataSource } from '@angular/material/table';
 import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
 import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
-import { ILookup } from 'app/main/opd/op-search-list/op-billing/op-billing.component';
 import { IPSearchListService } from '../ip-search-list.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ActivatedRoute } from '@angular/router';
@@ -119,7 +118,7 @@ export class CompanyBillComponent implements OnInit {
     billingServiceList = [];
     showAutocomplete = false;
     noOptionFound: boolean = false;
-    private lookups: ILookup[] = [];
+    // private lookups: ILookup[] = [];
     private nextPage$ = new Subject();
     ConcessionReasonList: any = [];
     CashCounterList: any = [];

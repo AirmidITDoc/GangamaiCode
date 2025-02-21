@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { PaymentInsert } from '../../OPBilling/new-opbilling/new-opbilling.component';
+
 import { ToastrService } from 'ngx-toastr';
 import { RegInsert } from '../../registration/registration.component';
 import { AppointmentlistService } from '../appointmentlist.service';
@@ -13,6 +13,9 @@ import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
 import { debug } from 'console';
 import { OpPaymentNewComponent } from '../../op-search-list/op-payment-new/op-payment-new.component';
+import { debugPort } from 'process';
+import { VisitMaster1 } from '../appointment-list.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-appointment-billing',
@@ -48,10 +51,10 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   vFinalconcessionDiscPer: any;
   vFinalTotalAmt: any;
   patientDetail = new RegInsert({});
-  patientDetail1 = new RegInsert({});
+  patientDetail1 = new VisitMaster1({});
   RegId = 0
 
-  vOPIPId = 230;
+  vOPIPId = 0;
   vOPDNo: any;
   vTariffId: any = 0;
   vClassId: any = 0;
@@ -95,13 +98,15 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   dateTimeObj: any;
   // Total amounts
   constructor(private _matDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any, public datePipe: DatePipe,
-    public _AppointmentlistService: AppointmentlistService, private dialogRef: MatDialogRef<AppointmentBillingComponent>, private formBuilder: FormBuilder, private toastrService: ToastrService) { }
+   private commonService: PrintserviceService,
+    public _AppointmentlistService: AppointmentlistService, private dialogRef: MatDialogRef<AppointmentBillingComponent>,
+     private formBuilder: FormBuilder, private toastrService: ToastrService) { }
 
   ngOnInit() {
 
     if (this.data) {
       debugger
-      this.patientDetail = this.data;
+      this.patientDetail = this.data
       this.PatientName = this.patientDetail.PatientName
       console.log("DATA : ", this.patientDetail);
     }
@@ -448,11 +453,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       this.filteredOptionsService = data.data;
       this.ServiceList = data.data;
       console.log(data)
-      //   if (this.filteredOptionsService.length == 0) {
-      //     this.noOptionFound = true;
-      //   } else {
-      //     this.noOptionFound = false;
-      //   }
+        // if (this.filteredOptionsService.length == 0) {
+        //   this.noOptionFound = true;
+        // } else {
+        //   this.noOptionFound = false;
+        // }
     });
 
 
@@ -508,26 +513,26 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   getSelectedObj(obj) {
     if ((obj.regId ?? 0) > 0) {
       console.log(obj)
+       this.vOPIPId = obj.visitId
+       this.RegNo = obj.visitId
       setTimeout(() => {
         this._AppointmentlistService.getRegistraionById(obj.regId).subscribe((response) => {
           this.patientDetail = response;
-          this.vOPIPId =12,// response.visitId;
-          console.log(response.visitId)
-          this.savebtn=false
+         this.savebtn=false
           this.PatientName = this.patientDetail.firstName + " " + this.patientDetail.middleName + " " + this.patientDetail.lastName
           console.log(this.patientDetail)
         });
 
       }, 500);
 
-      // setTimeout(() => {
-      //   this._AppointmentlistService.getVisitById(this.vOPIPId ).subscribe((response) => {
-      //     this.patientDetail1 = response;
-      //     this.vOPIPId = response.visitId
-      //     console.log(this.patientDetail1)
-      //   });
-
-      // }, 500);
+         setTimeout(() => {
+     
+      this._AppointmentlistService.getVisitById( this.vOPIPId).subscribe(data => {
+        this.patientDetail1  = data ;
+        console.log(data)
+        console.log(this.patientDetail1)
+    });
+    }, 1000);
     }
 
   }
@@ -674,9 +679,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       CompDiscAmt: Math.round(this.totalChargeForm.get('totalDiscountAmount').value) || 0,
       DiscComments: this.ConcessionReason,
       CashCounterId: this.searchForm.get('CashCounterID').value || 0,
-
-
-      "addCharges": InsertAdddetArr,
+    "addCharges": InsertAdddetArr,
       "billDetails": Billdetsarr,
      
     };
@@ -792,9 +795,9 @@ console.log(this.vOPIPId)
         this.flagSubmit = result.IsSubmitFlag
         if (this.flagSubmit == true) {
           this.Paymentdataobj = result.submitDataPay.ipPaymentInsert;
-          this.Paymentdataobj["BillNo"]=0
+       
           console.log( this.Paymentdataobj)
-          // console.log("Procced with Payment Option");
+          
           let submitData = {
             BillNo: 0,
             opdipdid: this.vOPIPId,
@@ -824,6 +827,7 @@ console.log(this.vOPIPId)
             DiscComments: this.ConcessionReason,
             CashCounterId: this.searchForm.get('CashCounterID').value || 0,
 
+
             "addCharges": InsertAdddetArr,
             "billDetails": Billdetsarr,
             "Payments":this.Paymentdataobj// result.submitDataPay.ipPaymentInsert,
@@ -831,13 +835,14 @@ console.log(this.vOPIPId)
           console.log(submitData);
           this._AppointmentlistService.InsertOPBilling(submitData).subscribe(response => {
             this.toastrService.success(response.message);
+            this.viewgetOPBillReportPdf(response)
             this.dialogRef.close();
           }, (error) => {
             this.toastrService.error(error.message);
           });
 
         }
-        else
+        else 
           this.saveCreditbill();
       });
     }
@@ -866,7 +871,6 @@ console.log(this.vOPIPId)
     Paymentobj['IsCancelled'] = false;
     Paymentobj['IsCancelledBy'] = 0;
     Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
-      // Paymentobj['CashCounterId'] = 0;
     Paymentobj['NEFTPayAmount'] = 0;
     Paymentobj['NEFTNo'] = "0";
     Paymentobj['NEFTBankMaster'] = "";
@@ -912,6 +916,7 @@ console.log(this.vOPIPId)
       console.log(submitData);
       this._AppointmentlistService.InsertOPBilling(submitData).subscribe(response => {
         this.toastrService.success(response.message);
+        this.viewgetOPBillReportPdf(response)
         this.dialogRef.close();
       }, (error) => {
         this.toastrService.error(error.message);
@@ -919,6 +924,13 @@ console.log(this.vOPIPId)
 
     }
   }
+
+
+  viewgetOPBillReportPdf(element) {
+    debugger
+    console.log('Third action clicked for:', element);
+    this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
+}
   onClose() { }
 
   getDateTime(dateTimeObj) {
@@ -981,3 +993,86 @@ export class ChargesList {
     this.OpdIpdId = ChargesList.OpdIpdId || '';
   }
 } 
+
+
+
+export class PaymentInsert {
+  PaymentId: number;
+  BillNo: number;
+  ReceiptNo: String;
+  PaymentDate: any;
+  PaymentTime: any;
+  CashPayAmount: number;
+  ChequePayAmount: number;
+  ChequeNo: String;
+  BankName: String;
+  ChequeDate: any;
+  CardPayAmount: number;
+  CardNo: String;
+  CardBankName: String;
+  CardDate: any;
+  AdvanceUsedAmount: number;
+  AdvanceId: number;
+  RefundId: number;
+  TransactionType: number;
+  Remark: String;
+  AddBy: number;
+  IsCancelled: Boolean;
+  IsCancelledBy: number;
+  IsCancelledDate: any;
+  CashCounterId: number;
+  IsSelfORCompany: number;
+  CompanyId: number;
+  NEFTPayAmount: any;
+  NEFTNo: String;
+  NEFTBankMaster: String;
+  NEFTDate: any;
+  PayTMAmount: number;
+  PayTMTranNo: String;
+  PayTMDate: any;
+
+  /**
+  * Constructor
+  *
+  * @param PaymentInsertObj
+  */
+  constructor(PaymentInsertObj) {
+    {
+      this.PaymentId = PaymentInsertObj.PaymentId || 0;
+      this.BillNo = PaymentInsertObj.BillNo || 0;
+      this.ReceiptNo = PaymentInsertObj.ReceiptNo || 0;
+      this.PaymentDate = PaymentInsertObj.PaymentDate || '';
+      this.PaymentTime = PaymentInsertObj.PaymentTime || '';
+      this.CashPayAmount = PaymentInsertObj.CashPayAmount || 0;
+      this.ChequePayAmount = PaymentInsertObj.ChequePayAmount || 0;
+      this.ChequeNo = PaymentInsertObj.ChequeNo || '';
+      this.BankName = PaymentInsertObj.BankName || '';
+      this.ChequeDate = PaymentInsertObj.ChequeDate || '';
+      this.CardPayAmount = PaymentInsertObj.CardPayAmount || 0;
+      this.CardNo = PaymentInsertObj.CardNo || 0;
+      this.CardBankName = PaymentInsertObj.CardBankName || '';
+      this.CardDate = PaymentInsertObj.CardDate || '';
+      this.AdvanceUsedAmount = PaymentInsertObj.AdvanceUsedAmount || 0;
+      this.AdvanceId = PaymentInsertObj.AdvanceId || 0;
+      this.RefundId = PaymentInsertObj.RefundId || 0;
+      this.TransactionType = PaymentInsertObj.TransactionType || 0;
+      this.Remark = PaymentInsertObj.Remark || '';
+      this.AddBy = PaymentInsertObj.AddBy || 0;
+      this.IsCancelled = PaymentInsertObj.IsCancelled || false;
+      this.IsCancelledBy = PaymentInsertObj.IsCancelledBy || 0;
+      this.IsCancelledDate = PaymentInsertObj.IsCancelledDate || '';
+      this.IsCancelledDate = PaymentInsertObj.IsCancelledDate || '';
+      this.CashCounterId = PaymentInsertObj.CashCounterId || 0;
+      this.IsSelfORCompany = PaymentInsertObj.IsSelfORCompany || 0;
+      this.CompanyId = PaymentInsertObj.CompanyId || 0;
+      this.NEFTPayAmount = PaymentInsertObj.NEFTPayAmount || 0;
+      this.NEFTNo = PaymentInsertObj.NEFTNo || '';
+      this.NEFTBankMaster = PaymentInsertObj.NEFTBankMaster || '';
+      this.NEFTDate = PaymentInsertObj.NEFTDate || '';
+      this.PayTMAmount = PaymentInsertObj.PayTMAmount || 0;
+      this.PayTMTranNo = PaymentInsertObj.PayTMTranNo || '';
+      this.PayTMDate = PaymentInsertObj.PayTMDate || '';
+    }
+
+  }
+}

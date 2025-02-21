@@ -6,8 +6,6 @@ import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/conf
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { OPListService } from './oplist.service';
-import { NewOPBillingComponent } from '../OPBilling/new-opbilling/new-opbilling.component';
-import { NewOPRefundofbillComponent } from '../op-search-list/new-oprefundofbill/new-oprefundofbill.component';
 import { fuseAnimations } from '@fuse/animations';
 import { DatePipe } from '@angular/common';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';

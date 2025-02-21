@@ -42,7 +42,6 @@ import { OPCasepaperComponent } from './op-casepaper/op-casepaper.component';
 import { ViewCasepaperComponent } from './op-casepaper/view-casepaper/view-casepaper.component';
 import { OPAdvanceComponent } from './op-advance/op-advance.component';
 import { OPAdvancePaymentComponent } from './op-advance-payment/op-advance-payment.component';
-import { OPRefundofBillComponent } from './op-refundof-bill/op-refundof-bill.component';
 import { SchduleTreeComponent } from '../schdule-tree/schdule-tree.component';
 import { MatTreeModule } from '@angular/material/tree';
 // import { OutstandingPaymentComponent } from './outstanding-payment/outstanding-payment.component';
@@ -51,11 +50,6 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { OpPaymentComponent } from './op-payment/op-payment.component';
 import { OpPaymentNewComponent } from './op-payment-new/op-payment-new.component';
 import { OpPaymentVimalComponent } from './op-payment-vimal/op-payment-vimal.component';
-import { NewOPBillingComponent } from '../OPBilling/new-opbilling/new-opbilling.component';
-
-
-
-
 
 const routes: Routes = [
     {
@@ -72,13 +66,11 @@ const routes: Routes = [
         ViewCasepaperComponent,
         OPAdvanceComponent,
         OPAdvancePaymentComponent,
-        OPRefundofBillComponent,
         SchduleTreeComponent,
         OpPaymentNewComponent,
         OpPaymentComponent,
         OpPaymentVimalComponent,
-        NewOPBillingComponent
-        // OutstandingPaymentComponent
+       
     ],
     imports: [
         RouterModule.forChild(routes),

@@ -12,7 +12,6 @@ import { CrossConsultationComponent } from './cross-consultation/cross-consultat
 import { fuseAnimations } from '@fuse/animations';
 import { DischargeComponent } from 'app/main/ipd/ip-search-list/discharge/discharge.component';
 import { BedTransferComponent } from 'app/main/ipd/ip-search-list/bed-transfer/bed-transfer.component';
-import { NewOPBillingComponent } from '../OPBilling/new-opbilling/new-opbilling.component';
 import { NewRegistrationComponent } from '../registration/new-registration/new-registration.component';
 import { DatePipe } from '@angular/common';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
@@ -29,7 +28,6 @@ import { EditRefranceDoctorComponent } from './edit-refrance-doctor/edit-refranc
 import Swal from 'sweetalert2';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { OPBillingComponent } from '../op-search-list/op-billing/op-billing.component';
 import { AirmidTable1Component } from 'app/main/shared/componets/airmid-table1/airmid-table1.component';
 import { AppointmentBillingComponent } from './appointment-billing/appointment-billing.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
@@ -182,14 +180,14 @@ export class AppointmentListComponent implements OnInit {
     }
 
     showBilling(row: any = null) {
-        // Pending...
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
         const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
             maxWidth: "90vw",
             maxHeight: "90vh",
             width: "80%",
-            data: {
-                patientDetail: row
-            }
+            data:row
         });
     }
 
@@ -406,21 +404,21 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
-    EditOpBill(row) {
-        let that = this;
-        const dialogRef = this._matDialog.open(OPBillingComponent,
-            {
-                maxWidth: "99vw",
-                height: '95%',
-                width: '90%',
-                data: row
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
-        });
-    }
+    // EditOpBill(row) {
+    //     let that = this;
+    //     const dialogRef = this._matDialog.open(OPBillingComponent,
+    //         {
+    //             maxWidth: "99vw",
+    //             height: '95%',
+    //             width: '90%',
+    //             data: row
+    //         });
+    //     dialogRef.afterClosed().subscribe(result => {
+    //         if (result) {
+    //             that.grid.bindGridData();
+    //         }
+    //     });
+    // }
     AppointmentCancle(contact) {
         Swal.fire({
             title: 'Do you want to Cancle Appointment',
@@ -596,7 +594,7 @@ export class Regdetail {
             this.AgeYear = RegInsert.AgeYear || "";
             this.AgeMonth = RegInsert.AgeMonth || "";
             this.AgeDay = RegInsert.AgeDay || "";
-            this.CountryId = RegInsert.CountryId || "";
+            this.CountryId = RegInsert.CountryId || 1;
             this.StateId = RegInsert.StateId || "";
             this.CityId = RegInsert.CityId || "";
             this.MaritalStatusId = RegInsert.MaritalStatusId || "";

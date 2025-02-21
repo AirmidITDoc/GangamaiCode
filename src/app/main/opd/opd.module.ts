@@ -10,11 +10,7 @@ const appRoutes: Routes = [
     path: "phone-appointment",
     loadChildren: () => import("./phoneappointment/phoneappointment.module").then((m) => m.phoneappointmentModule),
   },
-  // {
-  //   path: "view-phone-appointment",
-  //   loadChildren: () => import("./phoneappointment/view-phone-appointment/view-phone-appointment.module").then((m) => m.viewPhoneAppointmentModule),
-  // },
-  {
+ {
     path: "appointment",
     loadChildren: () => import("./appointment-list/appointmentlist.module").then((m) => m.AppointmentlistModule),
   },
@@ -27,7 +23,7 @@ const appRoutes: Routes = [
 
   {
     path: "bill",
-    loadChildren: () => import("./op-search-list/op-billing/op-billing.module").then((m) => m.OpBillingModule),
+    loadChildren: () => import("./appointment-list/appointment-billing/app-billing.module").then((m) => m.AppBillingModule),
   },
    
   {
@@ -38,10 +34,7 @@ const appRoutes: Routes = [
     path: "companysettlement",
     loadChildren: () => import("./companysettlement/companysettlement.module").then((m) => m.CompanysettlementModule),
 },
-// {
-//     path: "browse-opd-payment-receipt",
-//     loadChildren: () => import("./browse-payment-list/browsepayment.module").then((m) => m.browsepaymentModule),
-// },
+
 {
     path: "medicalrecords",
     loadChildren: () => import("./new-casepaper/casepaper.module").then((m) => m.CasepaperModule),
@@ -57,14 +50,9 @@ const appRoutes: Routes = [
 },
 {
   path: "payment",
-  // loadChildren: () =>import("./op-search-list/outstanding-payment/outstanding.module").then((m) => m.OutstandingModule),
-  loadChildren: () =>import("./companysettlement/companysettlement.module").then((m) => m.CompanysettlementModule),
+    loadChildren: () =>import("./companysettlement/companysettlement.module").then((m) => m.CompanysettlementModule),
 },
-// {
-//     path: "brows-opd-refund",
-//     loadChildren: () =>
-//     import("./browse-refund-list/browserefund.module").then((m) => m.browserefundModule),
-// },
+
 
 ];
 

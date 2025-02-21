@@ -46,7 +46,7 @@ export class PhoneAppointListService {
                 Validators.required,
                 Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
             ]],
-            middleName: ['%'],
+            middleName: [''],
             lastName: ['', [
                 Validators.required,
                 Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),

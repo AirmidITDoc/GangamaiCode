@@ -97,7 +97,8 @@
                         </div>
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-dropdown label="Doctor Name" formControlName="doctorId" [value]="data?.doctorId"
-                                [formGroup]="phoneappForm" [validations]="getValidationMessages().doctorId" #ddlDoctor>
+                                [formGroup]="phoneappForm" [validations]="getValidationMessages().doctorId" #ddlDoctor
+                                (selectionChange)="setbutton($event)" >
                             </airmid-dropdown>
                         </div>
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="false">
@@ -136,7 +137,7 @@
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="OnSubmit()">Save</button>
+                <button type="button" id="myButton" class="btn btn-primary" (click)="OnSubmit()">Save</button>
             </div>
         </div>
     </div>
