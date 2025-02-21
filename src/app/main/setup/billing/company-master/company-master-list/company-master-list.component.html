@@ -56,7 +56,6 @@
                     <airmid-dropdown 
                         label="City" 
                         formControlName="city" 
-                        [value]="registerObj?.city" 
                         [formGroup]="companyForm"
                         [validations]="getValidationMessages().city" 
                         [mode]="autocompleteModecity">
@@ -89,7 +88,7 @@
                     <airmid-textbox 
                         label="MobileNumber" 
                         formControlName="mobileNo" 
-                        [value]="registerObj?.mobileNo" 
+                        [value]="" 
                         [formGroup]="companyForm"
                         [validations]="getValidationMessages().mobileNo" 
                         [maxLength]="10">
@@ -99,12 +98,12 @@
                     <airmid-dropdown 
                         label="TariffId" 
                         formControlName="traiffId" 
-                        [value]="registerObj?.tariffId" 
                         [formGroup]="companyForm"
                         [validations]="getValidationMessages().traiffId" 
-                        [mode]="autocompleteModetariff">
+                        [mode]="autocompleteModetariff"> 
                     </airmid-dropdown> 
                 </div>
+                
             </div>
 
             <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">

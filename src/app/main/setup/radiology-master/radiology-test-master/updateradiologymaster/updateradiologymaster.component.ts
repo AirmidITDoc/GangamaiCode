@@ -22,11 +22,9 @@ export class UpdateradiologymasterComponent implements OnInit {
     
     isActive:boolean=true;
 
-    autocompleteModeService:string="Service";
+    autocompleteModeService:string="Service"; 
     
     autocompleteModeCategory:string="ItemCategory";
-
-    autocompleteModeTemplate:string="TemplateName";
 
     vTestName: any;
     vPrintName: any;
@@ -72,17 +70,21 @@ export class UpdateradiologymasterComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
     ) { }
 
+    
     ngOnInit(): void {
+        debugger
         this.testForm=this._radiologytestService.createRadiologytestForm();
         this.AddParameterFrom = this._radiologytestService.createAddparaFrom();
         if((this.data?.testId??0) > 0) 
         {  
-            this.registerObj=this.data.Obj;
+            // this.registerObj=this.data.Obj;
             this.isActive=this.data.isActive
             // this.Remark = this.registerObj.Remarks;
+            
+            this.testForm.patchValue(this.data);
             console.log(this.data)
-            this.gettemplateMasterServicewise(this.registerObj);   
-            console.log(this.registerObj)    
+            // this.gettemplateMasterServicewise(this.registerObj);   
+            // console.log(this.registerObj)    
         }
     }
     
@@ -157,7 +159,7 @@ export class UpdateradiologymasterComponent implements OnInit {
     gettemplateMasterServicewise(el){
         
         var vdata={
-        "Id" : el.ServiceId
+            "Id" : el.serviceId
         }
 
         // this._radiologytestService.gettemplateMasterComboList(vdata).subscribe(data =>{

@@ -85,4 +85,8 @@ export class SubtpaCompanyMasterService {
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("SubTpaCompany?Id=" + m_data.toString());
     }
+
+    getCompanyById(subCompanyId: any) {
+        return this._httpClient.GetData("SubTpaCompany/" + subCompanyId);
+    }
 }
