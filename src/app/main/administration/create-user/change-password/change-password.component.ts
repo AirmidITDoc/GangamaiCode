@@ -44,7 +44,7 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    debugger
+
     console.log("UserDetail:", this.accountService.currentUserValue)
     this.changePasswordFormGroup = this.createchangePasswordForm();
     // this.fname = this.accountService.currentUserValue.user.firstName;
@@ -54,7 +54,6 @@ export class ChangePasswordComponent implements OnInit {
     this.Uname = this.accountService.currentUserValue.userName;
 
     const nameParts = this.Uname.split(' '); // Split by space
-
     this.fname = nameParts[0] || '';
     this.lname = nameParts.slice(1).join(' ') || '';
 
@@ -89,7 +88,7 @@ export class ChangePasswordComponent implements OnInit {
     });
   }
 
-  changepassword() {
+  onSubmit() {
     // let pass = this.changePasswordFormGroup.get('password').value;
     // let id = this.accountService.currentUserValue.user.id;
 
