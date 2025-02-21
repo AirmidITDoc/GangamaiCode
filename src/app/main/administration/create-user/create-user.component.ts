@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateUserService } from './create-user.service';
@@ -8,6 +8,7 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { NewcreateUserComponent } from './newcreate-user/newcreate-user.component';
 import { NUserComponent } from './nuser/nuser.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-create-user',
@@ -24,6 +25,12 @@ export class CreateUserComponent implements OnInit {
             { }
 
         @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+         
+            ngAfterViewInit() {
+                this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+            }
+            @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+
         gridConfig: gridModel = {
             apiUrl: "LoginManager/LoginList",
             columnsList: [
@@ -35,20 +42,24 @@ export class CreateUserComponent implements OnInit {
                 { heading: "Days", key: "days", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 60 },
                 {
-                    heading: "Action", key: "action" , width: 100, align: "right", type: gridColumnTypes.action, actions: [
-                        {
-                            action: gridActions.edit, callback: (data: any) => {
-                                this.onSave(data);
-                            }
-                        }, {
-                            action: gridActions.delete, callback: (data: any) => {
-                                this._CreateUserService.deactivateTheStatus(data.userId).subscribe((response: any) => {
-                                    this.toastr.success(response.message);
-                                    this.grid.bindGridData();
-                                });
-                            }
-                        }]
-                } //Action 1-view, 2-Edit,3-delete
+                    heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+                    template: this.actionButtonTemplate  // Assign ng-template to the column
+                }
+                // {
+                //     heading: "Action", key: "action" , width: 100, align: "right", type: gridColumnTypes.action, actions: [
+                //         {
+                //             action: gridActions.edit, callback: (data: any) => {
+                //                 this.onSave(data);
+                //             }
+                //         }, {
+                //             action: gridActions.delete, callback: (data: any) => {
+                //                 this._CreateUserService.deactivateTheStatus(data.userId).subscribe((response: any) => {
+                //                     this.toastr.success(response.message);
+                //                     this.grid.bindGridData();
+                //                 });
+                //             }
+                //         }]
+                // } //Action 1-view, 2-Edit,3-delete
             ],
             sortField: "UserId",
             sortOrder: 0,
@@ -57,7 +68,7 @@ export class CreateUserComponent implements OnInit {
                 { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
                 { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
             ],
-            row: 25
+            row: 10
         }
     
         ngOnInit(): void { }
@@ -79,6 +90,55 @@ export class CreateUserComponent implements OnInit {
                 }
             });
         }
+
+        Password:string;
+
+  PasswordView(contact) {
+    debugger
+    const today = new Date();
+    const Currentyear = today.getFullYear()
+    this.Password = ( contact.userLoginName + "@" + Currentyear)
+    Swal.fire({
+        title: 'Your Password is ' + contact.password,
+        text: "Do you want to reset Your Password",
+        icon: "success",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Reset Password" 
+    }).then((flag) => {
+      if (flag.isConfirmed) {
+        let submitData = {
+            "userId": contact.userId,
+            "userName": contact.userLoginName,
+            "password": this.Password
+          }
+  
+        console.log(submitData);
+  
+        this._CreateUserService.PasswordUpdate(submitData).subscribe(
+          (response) => {
+            if (response) {
+              this.toastr.success('Password Updated Successfully.', 'Success!', {
+                toastClass: 'tostr-tost custom-toast-success',
+              });
+            } else {
+              this.toastr.error('Password not Updated! Please check API error..', 'Error!', {
+                toastClass: 'tostr-tost custom-toast-error',
+              });
+            }
+          },
+          (error) => {
+            
+            this.toastr.error('An error occurred while Updating the Password.', 'Error!', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+          }
+        );
+      } else {
+      }
+    });
+  }
 }
 //   isLoading: boolean;
 //   UserIdList: any = [];

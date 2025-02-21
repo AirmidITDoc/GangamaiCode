@@ -58,7 +58,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
   ngOnInit(): void {
-    this.gridConfig = this.gridConfigSales;
+    this.gridConfig = this.gridConfigIpPhy;
 
     this._PaymentmodechangeforpharmacyService.userFormGroup.get('Radio')?.valueChanges.subscribe((value) => {
       console.log("Radio changed to:", value);
@@ -104,18 +104,18 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
   gridConfigIpPhy: gridModel = {
     apiUrl: "Administration/BrowseIPAdvPayPharReceiptList1",
     columnsList: [
-      { heading: "PayDate", key: "paydate", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-      { heading: "ReceiptNo", key: "receiptno", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-      { heading: "SalesNo", key: "salesno", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-      { heading: "PatientName", key: "patientname", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-      { heading: "PaidAmount", key: "paidamount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-      { heading: "CashAmount", key: "cashamount", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-      { heading: "ChequeAmount", key: "chequeamount", sort: true, align: 'left', emptySign: 'NA', width: 60 },
-      { heading: "CardAmount", key: "cardamount", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-      { heading: "NEFTPay", key: "neftpay", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-      { heading: "PayATM", key: "payatm", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+      { heading: "PayDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+      { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA'},
+      { heading: "SalesNo", key: "salesNo", sort: true, align: 'left', emptySign: 'NA'},
+      { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+      { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA'},
+      { heading: "CashAmount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA'},
+      { heading: "ChequeAmount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA'},
+      { heading: "CardAmount", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA'},
+      { heading: "NEFTPay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA'},
+      { heading: "PayATM", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA'},
       {
-        heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+        heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
         template: this.actionButtonTemplate  // Assign ng-template to the column
     }
       // {
