@@ -27,8 +27,7 @@ export class CityMasterComponent implements OnInit {
             { heading: "City Name", key: "cityName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "State Name", key: "stateId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+            { heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
@@ -62,8 +61,8 @@ export class CityMasterComponent implements OnInit {
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-      
-      
+
+
         let that = this;
         const dialogRef = this._matDialog.open(NewCityComponent,
             {

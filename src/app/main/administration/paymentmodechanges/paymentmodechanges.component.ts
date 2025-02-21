@@ -109,19 +109,19 @@ export class PaymentmodechangesComponent implements OnInit {
       apiUrl: "paymentpharmacy/IPDPaymentReceiptList",
       columnsList: [
         { heading: "-", key: "label", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-          { heading: "PayDate", key: "paydate", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "ReceiptNo", key: "receiptno", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "PayDate", key: "payDate", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA' },
           { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "UHIDNo ", key: "uhidno", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "UHIDNo ", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
           { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
           { heading: "BillAmt", key: "billAmt", sort: true, align: 'left', emptySign: 'NA'},
           { heading: "PaidAmount", key: "paidamount", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "CashAmount", key: "cashamount", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "ChequeAmount", key: "chequeamount", sort: true, align: 'left', emptySign: 'NA'},
-          { heading: "CardAmount", key: "cardamount", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "NEFTPay", key: "neftpay", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "PayATM", key: "payatm", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "CashAmount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "ChequeAmount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA'},
+          { heading: "CardAmount", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "NEFTPay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "PayATM", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
           {
             heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplateIP  // Assign ng-template to the column
@@ -149,8 +149,8 @@ export class PaymentmodechangesComponent implements OnInit {
         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "Reg_No", fieldValue: "52", opType: OperatorComparer.Equals },
+        { fieldName: "PBillNo", fieldValue: "1", opType: OperatorComparer.Equals },
         { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
@@ -164,34 +164,23 @@ export class PaymentmodechangesComponent implements OnInit {
     apiUrl: "paymentpharmacy/IPAdvPaymentReceiptList",
     columnsList: [
       { heading: "-", key: "label", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-        { heading: "PayDate", key: "paydate", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "ReceiptNo", key: "receiptno", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "UHIDNo ", key: "uhidno", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PayDate", key: "payDate", sort: true, align: 'left', emptySign: 'NA',width:150 },
+        { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "BillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "UHIDNo ", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "BillAmt", key: "billAmt", sort: true, align: 'left', emptySign: 'NA'},
-        { heading: "PaidAmount", key: "paidamount", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "CashAmount", key: "cashamount", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "ChequeAmount", key: "chequeamount", sort: true, align: 'left', emptySign: 'NA'},
-        { heading: "CardAmount", key: "cardamount", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "NEFTPay", key: "neftpay", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "PayATM", key: "payatm", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "CashAmount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "ChequeAmount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA'},
+        { heading: "CardAmount", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "NEFTPay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PayATM", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
         {
-            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                {
-                    action: gridActions.edit, callback: (data: any) => {
-                        this.onSave(data);
-                    }
-                }, {
-                    action: gridActions.delete, callback: (data: any) => {
-                        this._PaymentmodechangesService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
-                            this.toastr.success(response.message);
-                            this.grid.bindGridData();
-                        });
-                    }
-                }]
-        } //Action 1-view, 2-Edit,3-delete
+          heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+          template: this.actionButtonTemplateIPAdv  // Assign ng-template to the column
+      } //Action 1-view, 2-Edit,3-delete
     ],
     sortField: "PaymentId",
     sortOrder: 0,

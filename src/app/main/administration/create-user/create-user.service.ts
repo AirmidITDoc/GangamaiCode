@@ -29,6 +29,13 @@ export class CreateUserService {
               Validators.required,
               Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
           ]],
+          roomId:[""],
+          mobileNo:[ "", [
+            Validators.required,
+            Validators.minLength(10),
+            Validators.maxLength(10),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+        ]],
             userName: ['', 
               [
                   Validators.required, 
@@ -41,6 +48,13 @@ export class CreateUserService {
                 Validators.pattern("^\\d{0,12}(\\.\\d*)?$")
               ]
           ],
+          mailId: [
+            "",
+            [
+              Validators.required,
+              Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"),
+             ]             
+        ],
             roleId: ["",
               [
                 Validators.required
@@ -51,66 +65,56 @@ export class CreateUserService {
                 Validators.required
                ]  
             ],
-            isDoctorType: "",
-            isPoverify: false,
-            isGrnverify: "",
-            isCollection: "",
-            isBedStatus: "",
-            isCurrentStk: "",
-            isPatientInfo: "",
-            isDateInterval: "",
-            isDateIntervalDays: 0,
-            mailId: [
-              "",
-              [
-                Validators.required,
-                Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"),
-               ]             
-          ],
-            mailDomain: ["1"],
-            loginStatus: "",
-            addChargeIsDelete: "",
-            isIndentVerify: "",
-            isPoinchargeVerify: "",
-            isRefDocEditOpt: true,
-            isInchIndVfy: "",
             webRoleId: ["",
               [
                 Validators.required
                ]  
             ],
-            userToken: [""],
-            PharExpOpt:0,
-            PharIPOpt:0,
-            PharOPOpt:0,
-
-            roomId:[""],
-            mobileNo:[ "", [
-              Validators.required,
-              Validators.minLength(10),
-              Validators.maxLength(10),
-              Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-          ]],
-            browseDay:[""],
-            DiscLimitPer:[""],
-            IsDoctor:[""],
-
-            Poverify: "",
-            Ipoverify: "",
-            // Grnverify: '',
-            Indentverify: "",
-            IIverify: "",
-            CollectionInformation: "",
-            CurrentStock: '',
-            PatientInformation: '',
-            ViewBrowseBill: '0',
-            IsAddChargeDelete: '',
-            IsPharmacyBalClearnace: '',
-            BedStatus: '',
-            // IsActive: 'true',
+            isDoctorType: false,
+            doctorId:0,
             IsDicslimit:'',
-            DoctorID:0,
-            isActive:[true,[Validators.required]],
+            DiscLimitPer:[""],
+            isGrnverify: "",
+            isPoverify: false,
+            isPoinchargeVerify: "",
+            isIndentVerify: "",
+            isInchIndVfy: "",
+            pharExtOpt:0,
+            pharOpopt:0,
+            pharIpopt:0,
+            isCollection: "",
+            isCurrentStk: '',
+            isPatientInfo: '',
+            isBedStatus: '',
+            addChargeIsDelete: '',
+            IsPharmacyBalClearnace: '',
+            browseDay:[""],
+            mailDomain: ["1"],
+            isRefDocEditOpt: true,
+            isDateInterval: true,
+            isDateIntervalDays: 0,
+            loginStatus: true,
+            userToken: [""],
+
+            // isCollection: "",
+            // isBedStatus: "",
+            // isCurrentStk: "",
+            // isPatientInfo: "",
+            
+            // addChargeIsDelete: "",
+            // isIndentVerify: "",
+            // isPoinchargeVerify: "",
+            // isInchIndVfy: "",
+           
+
+           
+            // IsDoctor:[""],
+
+            // Poverify: "",
+            // Grnverify: '',
+            // ViewBrowseBill: '0',
+            // IsActive: 'true',
+            // isActive:[true,[Validators.required]],
         });
     }
 
@@ -205,14 +209,22 @@ export class CreateUserService {
     }
 
     public insertuser(Param: any) {
+      debugger
+      if (Param.userId) {
+        return this._httpClient.PutData("LoginManager/Edit/" + Param.userId, Param);
+    }else
         return this._httpClient.PostData("LoginManager/Insert", Param);
     }
 
-    public updateuser(Param: any) {
-      if (Param.userId) {
-          return this._httpClient.PutData("LoginManager/Edit/" + Param.userId, Param);
-      }
-  }
+    PasswordUpdate(Param: any){
+      return this._httpClient.PostData("LoginManager/updatepassword", Param);
+    }
+
+  //   public updateuser(Param: any) {
+  //     if (Param.userId) {
+  //         return this._httpClient.PutData("LoginManager/Edit/" + Param.userId, Param);
+  //     }
+  // }
 
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("LoginManager/LoginCanceled?Id=" + m_data.toString());
