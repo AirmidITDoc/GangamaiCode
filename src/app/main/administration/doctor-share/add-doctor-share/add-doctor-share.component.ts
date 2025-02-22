@@ -11,6 +11,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { fuseAnimations } from '@fuse/animations';
 import { AnyNaptrRecord } from 'dns';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 
 @Component({
   selector: 'app-add-doctor-share',
@@ -20,6 +22,54 @@ import { AnyNaptrRecord } from 'dns';
   animations: fuseAnimations,
 })
 export class AddDoctorShareComponent implements OnInit {
+
+    autocompleteModeItem: string = "ConDoctor";
+    autocompletedepartment: string = "Department";
+    autocompleteModeService: string = "Service";
+    autocompleteClass: string = "Class";
+
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+        gridConfig: gridModel = {
+            apiUrl: "CurrencyMaster/List",
+            columnsList: [
+                { heading: "-", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "DoctorName", key: "middleName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "ServiceName", key: "lastName", sort: true, align: 'left', emptySign: 'NA'},
+                { heading: "Share%", key: "address", sort: true, align: 'left', emptySign: 'NA'},
+                { heading: "ShareAmt", key: "City", sort: true, align: 'left', emptySign: 'NA'},
+                { heading: "DocShareType", key: "Age", sort: true, align: 'left', emptySign: 'NA'},
+                { heading: "ClassName", key: "PhoneNo", sort: true, align: 'left', emptySign: 'NA'},
+                { heading: "O", key: "oPBILL", sort: true, align: 'left', emptySign: 'NA'},
+            ],
+            sortField: "firstName",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "firstName", fieldValue: "", opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals },
+                { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+                // { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
+                // { fieldName: "To_Dt", fieldValue:this.toDate, opType: OperatorComparer.Equals },
+            ],
+            row: 25
+        }
+
+
+        itemId = 0;
+        selectChangeItem(obj: any){
+            console.log(obj);
+            this.itemId=obj
+        }
+
+        getValidationMessages() {
+            return {
+                registrationNo:[],
+                ipNo:[],
+                opNo:[],
+                patientType:[],
+
+            };
+        }
+
     displayedColumns:string[] = [ 
         'button',
         'DoctorName',
@@ -53,6 +103,7 @@ export class AddDoctorShareComponent implements OnInit {
       dataSource = new MatTableDataSource<BillListForDocShrList>();
       @ViewChild(MatSort) sort:MatSort;
       @ViewChild(MatPaginator) paginator:MatPaginator;
+data: any;
       
       constructor(
         public _DoctorShareService: DoctorShareService,

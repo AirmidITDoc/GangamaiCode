@@ -18,14 +18,14 @@ export class DoctortypeMasterService {
 
     createDoctortypeForm(): FormGroup {
         return this._formBuilder.group({
-            id: [""],
+            id: [0],
             doctorType: ["",
                 [
-                    Validators.required, 
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z0-9]+$")
                 ]
             ],
-            isDeleted: ['1'],
+            isActive: [true,[Validators.required]]
         });
     }
     createSearchForm(): FormGroup {
@@ -39,18 +39,6 @@ export class DoctortypeMasterService {
         this.createDoctortypeForm();
     }
 
-  
-  
-    getValidationMessages() {
-        return {
-            doctorType: [
-                { name: "required", Message: "DoctorType Name is required" },
-                { name: "maxlength", Message: "DoctorType name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
-
     public doctortypeMasterSave(Param: any) {
         if (Param.id) {
             return this._httpClient.PutData("DoctorTypeMaster/" + Param.id, Param);
@@ -60,4 +48,5 @@ export class DoctortypeMasterService {
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("DoctorTypeMaster?Id=" + m_data.toString());
     }
+
 }

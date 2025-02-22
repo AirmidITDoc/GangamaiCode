@@ -107,7 +107,13 @@ export class ReportConfigurationService {
             reportPageOrientation:["",[Validators.required]],
             reportPageSize:["",[Validators.required]],
             // isActive:[true,[Validators.required]],
-            reportFilter: ["ASD"]
+            reportFilter: ["",
+                [
+                    Validators.required, 
+                    Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z .,@$&]+$") //.html
+                ]
+            ],
         });
     }
 

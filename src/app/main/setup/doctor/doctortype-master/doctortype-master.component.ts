@@ -27,11 +27,11 @@ export class DoctortypeMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "DoctorTypeMaster/List",
         columnsList: [
-            { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Doctor Type Name", key: "doctorType", sort: true, align: 'left', emptySign: 'NA', width: 580 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width: 200 },
+            { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "DoctorType", key: "doctorType", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 200, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

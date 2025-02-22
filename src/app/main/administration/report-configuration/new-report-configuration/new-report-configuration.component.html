@@ -90,7 +90,7 @@
                         </div>
                     </div>
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
-                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="ReportHeader" 
                                 formControlName="reportHeader" 
@@ -100,15 +100,25 @@
                                 [maxLength]="100">
                             </airmid-textbox>
                         </div>
-                    </div>
-                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
-                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="ReportColumn" 
                                 formControlName="reportColumn" 
                                 [value]="data?.reportColumn" 
                                 [formGroup]="myform" 
                                 [validations]="getValidationMessages().reportColumn" 
+                                [maxLength]="100">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox 
+                                label="ReportFilter" 
+                                formControlName="reportFilter" 
+                                [value]="data?.reportFilter" 
+                                [formGroup]="myform" 
+                                [validations]="getValidationMessages().reportFilter" 
                                 [maxLength]="100">
                             </airmid-textbox>
                         </div>
@@ -185,15 +195,21 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="space-between center">
+                    <!-- <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="space-between center"> -->
                         <!-- <div class="modal-footer-actins">
                             <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="myform" [(ngModel)]="isActive"></app-airmid-slider>
                         </div> -->
-                        <div class="modal-footer-buttons">
+                        <!-- <div class="modal-footer-buttons">
                             <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                             <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                                 <span>Save</span>
                             </button>
+                        </div>
+                    </div> -->
+                    <div fxLayoutAlign="end">
+                        <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px" style="margin: 20px 20px 0px 50px; ">
+                            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                            <button class="btn btn-primary"   (click)="onSubmit()">Save</button>
                         </div>
                     </div>
                 </div>

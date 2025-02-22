@@ -16,6 +16,9 @@ import { AddDoctorShareComponent } from './add-doctor-share/add-doctor-share.com
 import { MatDrawer } from '@angular/material/sidenav';
 import { ProcessDoctorShareComponent } from './process-doctor-share/process-doctor-share.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 
 @Component({
   selector: 'app-doctor-share',
@@ -25,21 +28,123 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
   animations: fuseAnimations,
 })
 export class DoctorShareComponent implements OnInit {
+    
+    autocompleteModeItem: string = "ConDoctor";
+    autocompletedepartment: string = "Department";
+
+    fromDate =this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd") 
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd") 
+
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    gridConfig: gridModel = {
+        apiUrl: "CurrencyMaster/List",
+        columnsList: [
+            { heading: "-", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PBillNo", key: "middleName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PatientName", key: "lastName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "BillAmt", key: "address", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "DiscountAmt", key: "City", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "NetAmt", key: "Age", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "DoctorName", key: "PhoneNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "PatientType", key: "oPBILL", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "CompanyName", key: "oPReceipt", sort: true, align: 'left', emptySign: 'NA'}
+        ],
+        sortField: "firstName",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "firstName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue:this.toDate, opType: OperatorComparer.Equals },
+        ],
+        row: 25
+    }
+
+    gridConfig1: gridModel = {
+        apiUrl: "CurrencyMaster/List",
+        columnsList: [
+            { heading: "-", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PBillNo", key: "middleName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PatientName", key: "lastName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "BillAmt", key: "address", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "DiscountAmt", key: "City", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "NetAmt", key: "Age", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "DoctorName", key: "PhoneNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "PatientType", key: "oPBILL", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "CompanyName", key: "oPReceipt", sort: true, align: 'left', emptySign: 'NA'}
+        ],
+        sortField: "firstName",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "firstName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue:this.toDate, opType: OperatorComparer.Equals },
+        ],
+        row: 25
+    }
+    data: any;
+
+    onSave(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+        
+        // let that = this;
+        // const dialogRef = this._matDialog.open(NewconfigComponent,
+        //     {
+        //         maxWidth: "95vw",
+        //         height: '95%',
+        //         width: '95%',
+        //         data: row
+        //     });
+        // dialogRef.afterClosed().subscribe(result => {
+        //     if (result) {
+        //         that.grid.bindGridData();
+        //     }
+        // });
+    }
+
+    itemId = 0;
+    selectChangeItem(obj: any){
+        console.log(obj);
+        this.itemId=obj
+    }
+
+    getValidationMessages() {
+        return {
+            registrationNo:[],
+            ipNo:[],
+            opNo:[],
+            patientType:[],
+
+        };
+    }
+
+
+
+
+
+
+
+
+
 
     
-    displayedColumns:string[] = [ 
-        'button',
-        'PBillNo',
-        'PatientName',
-        'TotalAmt',
-        'ConAmt',
-        'NetAmt', 
-        'AdmittedDoctorName',
-        'PatientType', 
-        'CompanyName',
-        //'groupName',
-        // 'Action'
-      ];
+    // displayedColumns:string[] = [ 
+    //     'button',
+    //     'PBillNo',
+    //     'PatientName',
+    //     'TotalAmt',
+    //     'ConAmt',
+    //     'NetAmt', 
+    //     'AdmittedDoctorName',
+    //     'PatientType', 
+    //     'CompanyName',
+    //     //'groupName',
+    //     // 'Action'
+    //   ];
 
       
 
@@ -211,8 +316,9 @@ export class DoctorShareComponent implements OnInit {
       NewDocShare(){
         const dialogRef = this._matDialog.open(AddDoctorShareComponent,
           { 
-            height: "90%",
-            width: '75%',
+                maxWidth: "95vw",
+                height: '95%',
+                width: '95%',
           });
         dialogRef.afterClosed().subscribe(result => {
           console.log('The dialog was closed - Insert Action', result);
@@ -221,8 +327,9 @@ export class DoctorShareComponent implements OnInit {
       processDocShare(){
         const dialogRef = this._matDialog.open(ProcessDoctorShareComponent,
           { 
-            height: "35%",
-            width: '35%',
+                maxWidth: "45vw",
+                height: '45%',
+                width: '45%',
           });
         dialogRef.afterClosed().subscribe(result => {
           console.log('The dialog was closed - Insert Action', result);

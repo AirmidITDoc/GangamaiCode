@@ -1,17 +1,18 @@
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
 
-<div class="simple page-layout inner-scroll inner-sidebar left-sidebar" dynamicTableHeight>
-    <mat-toolbar style="width: 100%;height: 40px;justify-content: space-between;">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">account_box
-            </mat-icon>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-                Doctor Share
-            </span>
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Doctor Share 
+                </span>
+            </div>
         </div>
+
         <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
             <button mat-raised-button   (click)="viewDocShareReport()"  fxLayoutAlign="center center" class="py-8">
                 <mat-icon>print</mat-icon><span>Doctor Share Report</span>
@@ -26,384 +27,114 @@
                 <mat-icon>add</mat-icon> <span> Doctor Share</span>
             </button>
         </div>
-    </mat-toolbar>
+
+    </div>
 
     <div class="content"> 
-        <div class="center  pb-56" style="border-radius: 4px;padding: 12px 12px 6px 12px;">
+        <div class="center  pb-56" style="border-radius: 4px;padding: 6px 6px 6px 6px;">
             <div class="content-card">
-                <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">  
+                <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
                     <mat-card style="padding: 5px;">
                         <form [formGroup]="_DoctorShareService.UserFormGroup">
-                            <div fxLayout="row" fxLayoutGap="6px">
+                                <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     
-                                <div fxLayout="row" style="padding: 15px;">
+                                
+                                <div fxFlex="19%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxLayout="row" style="padding: 10px;">
                                     <mat-radio-group formControlName="OP_IP_Type" name="Radio" (change)="getBillListForDoctorList()">
                                         <mat-radio-button value="2">ALL</mat-radio-button>&nbsp;
                                         <mat-radio-button value="0">OP</mat-radio-button>&nbsp;
                                         <mat-radio-button value="1">IP</mat-radio-button>&nbsp;
                                     </mat-radio-group>
                                 </div>
+                                </div>
 
-                                <mat-form-field appearance="outline" fxFlex="18%">
-                                    <mat-label>Enter a date range</mat-label>
-                                    <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="startdate" placeholder="Start date">
-                                        <input matEndDate formControlName="enddate" placeholder="End date" (dateChange)="getBillListForDoctorList()">
-                                    </mat-date-range-input>
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-date-range-picker #picker></mat-date-range-picker>
-                                </mat-form-field>
+                                <div fxFlex="18%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-datepicker [formGroup]="_DoctorShareService.UserFormGroup" [isRangePicker]="true" formStartControlName="fromDate"
+                                            formEndControlName="enddate" [(fromValue)]="gridConfig.filters[3].fieldValue"
+                                            [(toValue)]="gridConfig.filters[4].fieldValue">
+                                    </airmid-datepicker>
+                                </div>
 
-                                <mat-form-field appearance="outline" fxFlex="36%">
-                                    <mat-label>Select Doctor Name</mat-label>
-                                    <input type="text" name="DoctorID" formControlName="DoctorID" placeholder="Doctor Name " matInput
-                                        [matAutocomplete]="autoDoc">
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="_DoctorShareService.UserFormGroup.get('DoctorID').setValue(''); isDoctorIDSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="_DoctorShareService.UserFormGroup.get('DoctorID').setValue(''); isDoctorIDSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoDoc="matAutocomplete" [displayWith]="getOptionTextDoctorName">
-                                        <mat-option *ngFor="let option of DoctorListfilteredOptions | async" [value]="option">
-                                            {{option.Doctorname}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
+                                <div fxFlex="18%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown 
+                                        label="Select Doctor Name" 
+                                        formControlName="patientType"
+                                        [value]="data?.patientType"
+                                        [formGroup]="_DoctorShareService.UserFormGroup"
+                                        [validations]="getValidationMessages().patientType"
+                                        (selectDdlObject)="selectChangeItem($event)"
+                                        [mode]="autocompleteModeItem">
+                                    </airmid-dropdown>
+                                </div>
 
-                                <mat-form-field appearance="outline" fxFlex="36%">
-                                    <mat-label>Select Group Name</mat-label>
-                                    <input type="text" name="GroupId" formControlName="GroupId" placeholder="Group Name " matInput
-                                        [matAutocomplete]="autoDoc">
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="_DoctorShareService.UserFormGroup.get('GroupId').setValue(''); isgroupIdSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="_DoctorShareService.UserFormGroup.get('GroupId').setValue(''); isgroupIdSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoDoc="matAutocomplete" [displayWith]="getOptionTextgroupName">
-                                        <mat-option *ngFor="let option of filteredOptionsGroup | async" [value]="option">
-                                            {{option.GroupName}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
+                                <div fxFlex="18%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown 
+                                        label="Select Group Name" 
+                                        formControlName="patientType"
+                                        [value]="data?.patientType"
+                                        [formGroup]="_DoctorShareService.UserFormGroup"
+                                        [validations]="getValidationMessages().patientType"
+                                        (selectDdlObject)="selectChangeItem($event)"
+                                        [mode]="autocompletedepartment">
+                                    </airmid-dropdown>
+                                </div>
 
-
-                                <mat-form-field appearance="outline" fxFlex="20%">
-                                    <mat-label>PBill No</mat-label>
-                                    <input name="PbillNo" formControlName="PbillNo" matInput (keyup)="getBillListForDoctorList()"
-                                    (keypress)="keyPressAlphanumeric($event)">
-                                </mat-form-field> 
-
-                              
-                    
-                                <!-- <mat-form-field class=searchRegId appearance="outline" fxFlex="30%">
-                                    <input type="text" name="RegId" formControlName="RegId" placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No "
-                                        matInput [matAutocomplete]="autoReg" (input)="getSearchList()" maxlength="10">
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="_DoctorShareService.UserFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="_DoctorShareService.UserFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoReg="matAutocomplete" [displayWith]="getOptionText1"
-                                        (optionSelected)='getSelectedObj1($event.option.value)'>
-                                        <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
-                                            {{option.RegNo}} |{{option.FirstName}} {{option.MiddleName}}
-                                            {{option.LastName}} |
-                                            {{option.MobileNo}} | {{option.DoctorName}} | {{option.OPDNo}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field> -->
-  
+                                <div fxFlex="18%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox 
+                                        label="PbillNo"
+                                        formControlName="PbillNo"
+                                        [value]="data?.PbillNo"
+                                        [formGroup]="_DoctorShareService.UserFormGroup"
+                                        [validations]="getValidationMessages().opNo"
+                                        matInput (keyup)="getBillListForDoctorList()"
+                                        (keypress)="keyPressAlphanumeric($event)"
+                                        [maxLength]="50">
+                                    </airmid-textbox> 
+                                </div>
                                 
-                                <div style="padding: 10px;"> 
+                                 <div style="padding: 10px;"> 
                                     <button mat-raised-button class="searchButton" matTooltip="search" (click)="getBillListForDoctorList()">
                                         <mat-icon class="searchiconbutton">search</mat-icon>
                                     </button>
                                 </div>
+
                             </div>
                         </form>
                     </mat-card>
+
                     <mat-card style="padding: 5px;">
                         <mat-tab-group>
+
+                            <!-- 1st table -->
                             <mat-tab label="List">
-                                <div fxFlex.gt-sm="100%" fxFlex>
-                                    <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                        class="backgroundBlur">
-                                        <div class="spinner-border text-danger"></div>
-                                    </div>
-                    
-                                    <mat-table class="table1" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
-                                        style="overflow: auto;">
+                                <div fusePerfectScrollbar
+                                    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                                    dynamicTableHeight>
+                                    <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
+                                        <ng-container filters>
 
-                                        <ng-container matColumnDef="button">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-80"> 
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">  
-
-                                                <mat-icon *ngIf="contact.PatientType =='Self'" matTooltip="Patient Category Self">account_box
-                                                </mat-icon>
-                                                
-                                                <mat-icon *ngIf="contact.PatientType !='Self'" matTooltip="Patient Category Company">business
-                                                </mat-icon>
-                                                
-                                                <mat-icon *ngIf="contact.opd_ipd_type=='0'" class="pill orange-600 s-16" matTooltip="OP">circle</mat-icon>
-                                                <mat-icon *ngIf="contact.opd_ipd_type=='1'" class="pill green s-16" matTooltip="IP">circle</mat-icon>
-                                            </mat-cell>
                                         </ng-container>
-                    
-                                        <ng-container matColumnDef="PBillNo">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-110">
-                                                PBill No
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
-                                                {{contact.PBillNo}}
-                                            </mat-cell>
-                                        </ng-container>
-                    
-                                        <ng-container matColumnDef="PatientName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
-                                                Patient Name</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
-                                                {{contact.PatientName}}
-                                            </mat-cell>
-                                        </ng-container>
-                    
-                                        <ng-container matColumnDef="TotalAmt">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
-                                                Bill Amt </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
-                                                {{contact.TotalAmt | currency:"INR":"symbol"}}
-                                            </mat-cell>
-                                        </ng-container>
-                    
-                                        <ng-container matColumnDef="NetAmt">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
-                                                Net Amt </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
-                                                {{contact.NetPayableAmt | currency:"INR":"symbol"}}
-                                            </mat-cell>
-                                        </ng-container>
-                    
-                                        <ng-container matColumnDef="ConAmt">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
-                                                Discount Amt </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
-                                                {{contact.ConcessionAmt | currency:"INR":"symbol"}}
-                                            </mat-cell>
-                                        </ng-container>
-                    
-                                        <ng-container matColumnDef="AdmittedDoctorName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
-                                                Doctor Name</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
-                                                {{contact.AdmittedDoctorName}}
-                                            </mat-cell>
-                                        </ng-container>
-                    
-                                        <ng-container matColumnDef="PatientType">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
-                                                Patient Type</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
-                                                {{contact.PatientType}}
-                                            </mat-cell>
-                                        </ng-container>
-                    
-                                        <ng-container matColumnDef="CompanyName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
-                                                Company Name</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
-                                                {{contact.CompanyName || '-'}}
-                                            </mat-cell>
-                                        </ng-container> 
-                                        <!-- <ng-container matColumnDef="GroupName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
-                                                Company Name</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
-                                                {{contact.GroupName || '-'}}
-                                            </mat-cell>
-                                        </ng-container>  -->
-                                        <!-- <ng-container matColumnDef="Action">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
-                                             Action</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
-                                                <button mat-icon-button
-                                                (click)="viewDocShareSummaryReport()"   matTooltip="Doctor Summary Report">
-                                                <mat-icon style="color: black;">print</mat-icon>
-                                            </button>
-                                            <button mat-icon-button
-                                            (click)="viewDocShareReport()"   matTooltip="Doctor Share Report">
-                                            <mat-icon style="color: black;">print</mat-icon>
-                                        </button>
-                                            </mat-cell>
-                                        </ng-container>  -->
-                    
-                                        <ng-container matColumnDef="loading">
-                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                            </mat-header-cell>
-                                        </ng-container>
-                    
-                                        <ng-container matColumnDef="noData">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                no data found...
-                                            </mat-footer-cell>
-                                        </ng-container>
-                    
-                                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
-                                        </mat-header-row>
-                                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                            [@animate]="{value:'*',params:{y:'100%'}}"
-                                            [ngClass]="contact.PatientType !== 'Self' ? 'self-row' : ''"  ></mat-row>
-                                        <mat-footer-row *matFooterRowDef="['loading']"
-                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                        </mat-footer-row>
-                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                            [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
-                                        </mat-footer-row>
-                                    </mat-table>
-                                    <mat-paginator #paginator [pageSizeOptions]="[35, 50, 75, 100]" [pageSize]="35">
-                                    </mat-paginator>
+                                    </airmid-table>
                                 </div>
                             </mat-tab>
+
+                            <!-- 2nd table -->
                             <mat-tab label="Additional Amount Pay">
-                                <div fxFlex.gt-sm="100%" fxFlex>
-                                    <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                        class="backgroundBlur">
-                                        <div class="spinner-border text-danger"></div>
-                                    </div>
-                    
-                                    <mat-table class="table1" matSort [dataSource]="dsAdditionalPay" [@animateStagger]="{value:'50'}"
-                                    style="overflow: auto;">
+                                <div fusePerfectScrollbar
+                                    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                                    dynamicTableHeight>
+                                    <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false">
+                                        <ng-container filters>
 
-                                    <ng-container matColumnDef="Action">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
-                                         Action</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
-                                            <button mat-icon-button
-                                            (click)="viewDocShareSummaryReport(contact)"   matTooltip="Doctor Summary Report">
-                                            <mat-icon style="color: black;">print</mat-icon>
-                                        </button>
-                                        <button mat-icon-button
-                                        (click)="viewDocShareReport(contact)"   matTooltip="Doctor Share Report">
-                                        <mat-icon style="color: black;">print</mat-icon>
-                                    </button>
-                                        </mat-cell>
-                                    </ng-container> 
-                
-                                    <ng-container matColumnDef="button">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-80"> 
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">  
-
-                                            <mat-icon *ngIf="contact.PatientType =='Self'" matTooltip="Patient Category Self">account_box
-                                            </mat-icon>
-                                            
-                                            <mat-icon *ngIf="contact.PatientType !='Self'" matTooltip="Patient Category Company">business
-                                            </mat-icon>
-                                            
-                                            <mat-icon *ngIf="contact.opd_ipd_type=='0'" class="pill orange-600 s-16" matTooltip="OP">circle</mat-icon>
-                                            <mat-icon *ngIf="contact.opd_ipd_type=='1'" class="pill green s-16" matTooltip="IP">circle</mat-icon>
-                                        </mat-cell>
-                                    </ng-container>
-                
-
-                                    <ng-container matColumnDef="PBillNo">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-110">
-                                            PBill No
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
-                                            {{contact.PBillNo}}
-                                        </mat-cell>
-                                    </ng-container>
-                
-                                    <ng-container matColumnDef="PatientName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
-                                            Patient Name</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
-                                            {{contact.PatientName}}
-                                        </mat-cell>
-                                    </ng-container>
-                
-                                    <ng-container matColumnDef="TotalAmt">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Bill Amt </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.TotalAmt | currency:"INR":"symbol"}}
-                                        </mat-cell>
-                                    </ng-container>
-                
-                                    <ng-container matColumnDef="NetAmt">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Net Amt </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.NetPayableAmt | currency:"INR":"symbol"}}
-                                        </mat-cell>
-                                    </ng-container>
-                
-                                    <ng-container matColumnDef="ConAmt">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Discount Amt </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.ConcessionAmt | currency:"INR":"symbol"}}
-                                        </mat-cell>
-                                    </ng-container>
-                
-                                    <ng-container matColumnDef="AdmittedDoctorName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
-                                            Doctor Name</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
-                                            {{contact.AdmittedDoctorName}}
-                                        </mat-cell>
-                                    </ng-container>
-                
-                                    <ng-container matColumnDef="PatientType">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
-                                            Patient Type</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
-                                            {{contact.PatientType}}
-                                        </mat-cell>
-                                    </ng-container>
-                
-                                    <ng-container matColumnDef="CompanyName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
-                                            Company Name</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
-                                            {{contact.CompanyName}}
-                                        </mat-cell>
-                                    </ng-container> 
-                
-                                    <ng-container matColumnDef="loading">
-                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                        </mat-header-cell>
-                                    </ng-container>
-                
-                                    <ng-container matColumnDef="noData">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                            no data found...
-                                        </mat-footer-cell>
-                                    </ng-container>
-                
-                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
-                                    </mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                    <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                    </mat-footer-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(dsAdditionalPay!=null && dsAdditionalPay.data.length==0)}">
-                                    </mat-footer-row>
-                                </mat-table>
-                                <mat-paginator #paginator [pageSizeOptions]="[35, 50, 75, 100]" [pageSize]="35">
-                                </mat-paginator>
+                                        </ng-container>
+                                    </airmid-table>
                                 </div>
                             </mat-tab>
                         </mat-tab-group>
-                    </mat-card>  
+                    </mat-card>
                 </div>
             </div>
         </div>
     </div>
- 
 </div>

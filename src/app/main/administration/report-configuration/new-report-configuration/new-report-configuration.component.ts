@@ -123,6 +123,11 @@ export class NewReportConfigurationComponent implements OnInit{
             reportPageSize:[
                 { name: "required", Message: "Report Page Size is required" },
             ],
+            reportFilter:[
+                { name: "required", Message: "Report Filter is required" },
+                { name: "maxlength", Message: "Report Filter should not be greater than 30 char." },
+                { name: "pattern", Message: "Only Characters Allowed." }
+            ],
         };
     }
 

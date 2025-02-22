@@ -28,19 +28,19 @@ export class ReportConfigurationComponent implements OnInit{
                 { heading: "Code", key: "reportId", sort: true, align: 'left', emptySign: 'NA', width: 80 },
                 { heading: "ReportSection", key: "reportSection", sort: true, align: 'left', emptySign: 'NA', width: 120 },
                 { heading: "ReportName", key: "reportName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                { heading: "Rarentid", key: "parentid", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+                { heading: "Parentid", key: "parentid", sort: true, align: 'left', emptySign: 'NA', width: 80 },
                 { heading: "ReportMode", key: "reportMode", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "ReportTitle", key: "reportTitle", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "ReportHeader", key: "reportHeader", sort: true, align: 'left', emptySign: 'NA', width: 200 },
                 { heading: "ReportColumn", key: "reportColumn", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+                { heading: "ReportFilter", key: "reportFilter", sort: true, align: "left", emptySign: 'NA', width: 150 },
                 { heading: "ReportHeaderFile", key: "reportHeaderFile", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "ReportBodyFile", key: "reportBodyFile", sort: true, align: 'left', emptySign: 'NA', width: 180 },
                 { heading: "ReportFolderName", key: "reportFolderName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "ReportFileName", key: "reportFileName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                { heading: "ReportSPName", key: "reportSPName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+                { heading: "ReportSPName", key: "reportSpname", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "ReportPageOrientation", key: "reportPageOrientation", sort: true, align: 'left', emptySign: 'NA', width: 200},
                 { heading: "ReportPageSize", key: "reportPageSize", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-                // { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 80 },
                 {
                     heading: "Action", key: "action", width: 100 , align: "right", type: gridColumnTypes.action, actions: [
                         {
@@ -77,7 +77,7 @@ export class ReportConfigurationComponent implements OnInit{
                 {
                     maxWidth: "90vw",
                     maxHeight: '95%',
-                    width: '80%',
+                    width: '90%',
                     data: row
                 });
             dialogRef.afterClosed().subscribe(result => {
