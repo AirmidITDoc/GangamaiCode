@@ -898,7 +898,7 @@ return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
 
   public getchargesList1(data) {
     
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathRadRequestList",data)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathRadRequestList",data)
   }
 
   // Get billing Service List 

@@ -946,19 +946,33 @@ ServiceList:any=[];
  
   AddList(m) {
    // console.log(m)   
-    var m_data = { 
-      "opipid": m.OP_IP_ID,
-      "serviceId":  m.ServiceId,
-      "classId": this.Serviceform.get("ChargeClass").value.ClassId || 0 ,    // this.selectedAdvanceObj.ClassId,
-      "userId": this.accountService.currentUserValue.user.id,
-      "traiffId": 1,  
-      "reqDetId": m.ReqDetId , 
-      "chargesDate": this.datePipe.transform(this.currentDate, "MM-dd-yyyy") || '01/01/1900', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
-    }
-   // console.log(m_data);
+    // var m_data = { 
+    //   "opipid": m.OP_IP_ID,
+    //   "serviceId":  m.ServiceId,
+    //   "classId": this.Serviceform.get("ChargeClass").value.ClassId || 0 ,    // this.selectedAdvanceObj.ClassId,
+    //   "userId": this.accountService.currentUserValue.user.id,
+    //   "traiffId": 1,  
+    //   "reqDetId": m.ReqDetId , 
+    //   "chargesDate": this.datePipe.transform(this.currentDate, "MM-dd-yyyy") || '01/01/1900', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+    //   "doctorId": m.DoctorId || 0
+    // } 
+
+
+    let labRequestCharges = {}
+    labRequestCharges['opipid'] =  m.OP_IP_ID,
+    labRequestCharges['serviceId'] =  m.ServiceId,
+    labRequestCharges['classID'] = this.Serviceform.get("ChargeClass").value.ClassId || 0 ,
+    labRequestCharges['userId'] = this.accountService.currentUserValue.user.id,
+    labRequestCharges['traiffId'] = this.selectedAdvanceObj.TariffId || 0,
+    labRequestCharges['reqDetId'] =  m.ReqDetId , 
+    labRequestCharges['chargesDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy") || '01/01/1900',
+    labRequestCharges['doctorId'] =  m.DoctorId || 0
+
+
     let submitData = { 
-      "labRequestCharges":m_data
+      "labRequestCharges":labRequestCharges
     };  
+    console.log(submitData);
     this._IpSearchListService.InsertIPLabReqCharges(submitData).subscribe(data => {
        
       if (data) { 
