@@ -36,72 +36,127 @@
                     </button>
 
                 </div>
+                <div class="info-badge-top border-bottom" style="margin-left: 18%;" fxLayout="row" fxLayoutAlign="space-between" flex>
+                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                        <button type="button" mat-icon-button>
+                            <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
+                        </button>
+
+                        <button type="button" mat-icon-button>
+                            <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
+                        </button>
+
+                        <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                            <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                            <span class="orange-600-fg">Intrim Bills</span>
+                        </div>
+                        <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                            <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                            <span class="green-600-fg">Final Bills</span>
+                        </div>
+                        <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                            <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                            <span class="red-600-fg">Cancelled Bills</span>
+                        </div>
+            
+                    </div>
+                </div>
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <ng-template #ColorCode let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="element.interimOrFinal=='0'" matTooltip="Final Bill"
+                                class="pill green-600 s-16">circle</mat-icon>
+
+                                <mat-icon *ngIf="element.interimOrFinal=='1'" matTooltip="Intrim Bill"
+                                class="pill orange-600 s-16">circle</mat-icon>
+                        </div>
+                    </ng-template>
+
+                    <ng-template #actionButtonTemplateIP let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <button mat-icon-button (click)="getFinalBillview(element)" matTooltip="Bill Date Update">
+                                <mat-icon>print</mat-icon>
+                            </button>
+
+                            <button mat-icon-button matTooltip="Email">
+                                <mat-icon>email</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Message">
+                                <mat-icon>message</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Send message On WhatsApp">
+                                <img width="500" height="20px" src="assets/images/logos/WhatsApp.png">
+                            </button>
+                            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More">
+                                <mat-icon class="secondary-text">more_vert</mat-icon>
+                            </button>
+                            <!-- <mat-menu #moreMenu="matMenu">
+                                <ng-container *ngFor="let m of menuActions, let n of menuActions">
+                                    <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
+                                        <span>{{m}}</span>
+                                    </button>
+                                </ng-container>
+                            </mat-menu> -->
+                        </div>
+                    </ng-template>
                     <airmid-table [gridConfig]="gridConfig" class="content">
                         <ng-container filters>
 
-                           
-                            <airmid-textbox label="First Name" formControlName="FirstName" [(ngModel)]="gridConfig.filters[0].fieldValue" [validations]="getValidationMessages().FirstName" [formGroup]="myFilterform">
-                            </airmid-textbox>
-                            
-                            <airmid-textbox label="LastName" formControlName="LastName" [(ngModel)]="gridConfig.filters[1].fieldValue" [validations]="getValidationMessages().LastName" [formGroup]="myFilterform">
-                            </airmid-textbox>
-            
+                            <airmid-datepicker [formGroup]="_IPBrowseBillService.myFilterIpbillbrowseform"
+                                [isRangePicker]="true" formStartControlName="startdate" formEndControlName="enddate"
+                                [(fromValue)]="gridConfig.filters[2].fieldValue"
+                                [(toValue)]="gridConfig.filters[3].fieldValue">
+                            </airmid-datepicker>
 
-                            <form [formGroup]="_IPBrowseBillService.myFilterIpbillbrowseform">
-
-                                         
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <input matInput [matDatepicker]="validFromPicker" formControlName="fromDate"
-                                        (dateChange)="onChangeDate($event.value)" [(ngModel)]="gridConfig.filters[2].fieldValue"
-                                        placeholder="mm/dd/yyyy">
-                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
-                                    <mat-datepicker #validFromPicker></mat-datepicker>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline"fxFlex>
-                                    <input matInput [matDatepicker]="validFromPicker1" formControlName="enddate"
-                                        (dateChange)="onChangeDate1($event.value)" [(ngModel)]="gridConfig.filters[3].fieldValue"
-                                        placeholder="mm/dd/yyyy">
-                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker1"></mat-datepicker-toggle>
-                                    <mat-datepicker #validFromPicker1></mat-datepicker>
-                                </mat-form-field>
-                            </form>
-
-                            <!-- <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>From Date</mat-label>
-                                <input matInput placeholder="Search From Date" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[2].fieldValue" />
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>PBillNo</mat-label>
+                                <input matInput placeholder="Search PBill No" autocomplete="off"
+                                    [(ngModel)]="gridConfig.filters[5].fieldValue" />
                                 <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[2].fieldValue=''">
+                                    (click)="gridConfig.filters[5].fieldValue='%'">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>To Date</mat-label>
-                                <input matInput placeholder="Search To Date" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[3].fieldValue" />
+                                <mat-label>Reg No</mat-label>
+                                <input matInput placeholder="Search Reg No" autocomplete="off"
+                                    [(ngModel)]="gridConfig.filters[4].fieldValue" />
                                 <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[3].fieldValue=''">
+                                    (click)="gridConfig.filters[4].fieldValue='0'">
                                     <mat-icon>close</mat-icon>
                                 </button>
-                            </mat-form-field> -->
-
-                         
-                            <airmid-textbox label="RegNo" formControlName="RegNo" [(ngModel)]="gridConfig.filters[4].fieldValue" [validations]="getValidationMessages().RegNo" [formGroup]="myFilterform">
-                            </airmid-textbox>
-                                       
-                            <airmid-textbox label="PBillNo" formControlName="PBillNo" [(ngModel)]="gridConfig.filters[5].fieldValue" [validations]="getValidationMessages().PBillNo" [formGroup]="myFilterform">
-                            </airmid-textbox>
-            
-
-                            <mat-radio-group value="" [(ngModel)]="gridConfig.filters[6].fieldValue"
-                                fxLayoutAlign="center center">
+                            </mat-form-field>
                                 
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>First Name</mat-label>
+                                <input matInput placeholder="Search First Name" autocomplete="off"
+                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig.filters[0].fieldValue='%'">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+                
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Last Name</mat-label>
+                                <input matInput placeholder="Search Last Name" autocomplete="off"
+                                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig.filters[1].fieldValue='%'">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+                            <form [formGroup]="_IPBrowseBillService.myFilterIpbillbrowseform">
+                            <mat-radio-group value="2" [(ngModel)]="gridConfig.filters[6].fieldValue" 
+                                fxLayoutAlign="center center" formControlName="IsInterimOrFinal">
+
+                                <mat-radio-button mat-fab value="2">All</mat-radio-button>
                                 <mat-radio-button mat-fab value="1">IsInterim</mat-radio-button>
                                 <mat-radio-button mat-fab value="0">IsFinal</mat-radio-button>
                             </mat-radio-group>
+                        </form>
                         </ng-container>
                     </airmid-table>
                 </div>
@@ -124,106 +179,106 @@
                     </div>
 
                 </div>
+                <div class="info-badge-top border-bottom" style="margin-left: 18%;" fxLayout="row" fxLayoutAlign="space-between" flex>
+                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                        <button type="button" mat-icon-button>
+                            <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
+                        </button>
+
+                        <button type="button" mat-icon-button>
+                            <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
+                        </button>
+            
+                    </div>
+                </div>
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                     <airmid-table [gridConfig]="gridConfig1" class="content">
                         <ng-container filters>
-                            <!-- <form [formGroup]="myFilterform">
+
+                        <airmid-datepicker [formGroup]="myFilterform"
+                                [isRangePicker]="true" formStartControlName="startdate" formEndControlName="enddate"
+                                [(fromValue)]="gridConfig.filters[2].fieldValue"
+                                [(toValue)]="gridConfig.filters[3].fieldValue">
+                            </airmid-datepicker>
+                            
                             <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>First Name</mat-label>
-                                <input matInput placeholder="Search First Name" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                                <mat-label>Receipt No</mat-label>
+                                <input matInput placeholder="Search Receipt No" autocomplete="off"
+                                    [(ngModel)]="gridConfig2.filters[6].fieldValue" />
                                 <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[0].fieldValue=''">
+                                    (click)="gridConfig2.filters[6].fieldValue='0'">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
+
                             <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Last Name</mat-label>
-                                <input matInput placeholder="Search Last Name" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                                <mat-label>PBillNo</mat-label>
+                                <input matInput placeholder="Search PBill No" autocomplete="off"
+                                    [(ngModel)]="gridConfig2.filters[5].fieldValue" />
                                 <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[1].fieldValue=''">
+                                    (click)="gridConfig2.filters[5].fieldValue='0'">
                                     <mat-icon>close</mat-icon>
                                 </button>
-                            </mat-form-field> -->
-                         
+                            </mat-form-field>
 
-                                <!-- <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
-                                formEndControlName="enddate" [(fromValue)]="gridConfig.filters[2].fieldValue"
-                                [(toValue)]="gridConfig.filters[2].fieldValue"></airmid-datepicker> -->
-                           
-
- <!-- 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>RegNo</mat-label>
                                 <input matInput placeholder="Search RegNo" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[4].fieldValue" />
+                                    [(ngModel)]="gridConfig2.filters[4].fieldValue" />
                                 <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[4].fieldValue=''">
+                                    (click)="gridConfig2.filters[4].fieldValue='0'">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>PBillNo</mat-label>
-                                <input matInput placeholder="Search PBillNo" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[5].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[5].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-                          
+    
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput placeholder="Search First Name" autocomplete="off"
+                                        [(ngModel)]="gridConfig2.filters[0].fieldValue" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="gridConfig2.filters[0].fieldValue='%'">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput placeholder="Search Last Name" autocomplete="off"
+                                        [(ngModel)]="gridConfig2.filters[1].fieldValue" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="gridConfig2.filters[1].fieldValue='%'">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                            <!-- <airmid-textbox label="RegNo" formControlName="RegNo"
+                                [(ngModel)]="gridConfig.filters[4].fieldValue"
+                                [validations]="getValidationMessages().RegNo" [formGroup]="myFilterform">
+                            </airmid-textbox>
+
+                            <airmid-textbox label="First Name" formControlName="FirstName"
+                                [(ngModel)]="gridConfig.filters[0].fieldValue"
+                                [validations]="getValidationMessages().FirstName" [formGroup]="myFilterform">
+                            </airmid-textbox>
+
+                            <airmid-textbox label="LastName" formControlName="LastName"
+                                [(ngModel)]="gridConfig.filters[1].fieldValue"
+                                [validations]="getValidationMessages().LastName" [formGroup]="myFilterform">
+                            </airmid-textbox> -->
+
+
+                            <!-- <airmid-textbox label="PBillNo" formControlName="PBillNo"
+                                [(ngModel)]="gridConfig.filters[5].fieldValue"
+                                [validations]="getValidationMessages().PBillNo" [formGroup]="myFilterform">
+                            </airmid-textbox> -->
 
 
                             <mat-radio-group value="" [(ngModel)]="gridConfig.filters[6].fieldValue"
                                 fxLayoutAlign="center center">
-                                
-                                <mat-radio-button mat-fab value="1">IsIntrimOrFinal</mat-radio-button>
-                                <mat-radio-button mat-fab value="0">IsIntrimOrFinal</mat-radio-button>
+
+                                <mat-radio-button mat-fab value="1">IsInterim</mat-radio-button>
+                                <mat-radio-button mat-fab value="0">IsFinal</mat-radio-button>
                             </mat-radio-group>
-                        </form> -->
-
-                        <airmid-textbox label="First Name" formControlName="FirstName" [(ngModel)]="gridConfig.filters[0].fieldValue" [validations]="getValidationMessages().FirstName" [formGroup]="myFilterform">
-                        </airmid-textbox>
-                        
-                        <airmid-textbox label="LastName" formControlName="LastName" [(ngModel)]="gridConfig.filters[1].fieldValue" [validations]="getValidationMessages().LastName" [formGroup]="myFilterform">
-                        </airmid-textbox>
-        
-
-                        <form [formGroup]="_IPBrowseBillService.filterForm_IpdBrowse">
-
-                                     
-                            <mat-form-field appearance="outline" fxFlex>
-                                <input matInput [matDatepicker]="validFromPicker" formControlName="fromDate"
-                                    (dateChange)="onChangeDate($event.value)" [(ngModel)]="gridConfig.filters[2].fieldValue"
-                                    placeholder="mm/dd/yyyy">
-                                <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
-                                <mat-datepicker #validFromPicker></mat-datepicker>
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline"fxFlex>
-                                <input matInput [matDatepicker]="validFromPicker1" formControlName="enddate"
-                                    (dateChange)="onChangeDate1($event.value)" [(ngModel)]="gridConfig.filters[3].fieldValue"
-                                    placeholder="mm/dd/yyyy">
-                                <mat-datepicker-toggle matSuffix [for]="validFromPicker1"></mat-datepicker-toggle>
-                                <mat-datepicker #validFromPicker1></mat-datepicker>
-                            </mat-form-field>
-                        </form>
-
-                     
-                        <airmid-textbox label="RegNo" formControlName="RegNo" [(ngModel)]="gridConfig.filters[4].fieldValue" [validations]="getValidationMessages().RegNo" [formGroup]="myFilterform">
-                        </airmid-textbox>
-                                   
-                        <airmid-textbox label="PBillNo" formControlName="PBillNo" [(ngModel)]="gridConfig.filters[5].fieldValue" [validations]="getValidationMessages().PBillNo" [formGroup]="myFilterform">
-                        </airmid-textbox>
-        
-
-                        <mat-radio-group value="" [(ngModel)]="gridConfig.filters[6].fieldValue"
-                            fxLayoutAlign="center center">
-                            
-                            <mat-radio-button mat-fab value="1">IsInterim</mat-radio-button>
-                            <mat-radio-button mat-fab value="0">IsFinal</mat-radio-button>
-                        </mat-radio-group>
                         </ng-container>
                     </airmid-table>
                 </div>
@@ -241,35 +296,73 @@
                     <div class="top-header-info">
                         <div class="top-header-title">
                             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                               IP Browse Refund List
+                                IP Browse Refund List
                             </span>
                         </div>
                     </div>
 
                 </div>
+                <div class="info-badge-top border-bottom" style="margin-left: 18%;" fxLayout="row" fxLayoutAlign="space-between" flex>
+                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                        <button type="button" mat-icon-button>
+                            <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
+                        </button>
+
+                        <button type="button" mat-icon-button>
+                            <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
+                        </button>
+            
+                    </div>
+                </div>
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <ng-template #actionButtonTemplateIPRefund let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <button mat-icon-button (click)="getRefundreceiptview(element)" matTooltip="Bill Date Update">
+                                <mat-icon>print</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Send message On WhatsApp">
+                                <img width="500" height="20px" src="assets/images/logos/WhatsApp.png">
+                            </button>
+                        </div>
+                    </ng-template>
                     <airmid-table [gridConfig]="gridConfig2" class="content">
                         <ng-container filters>
+
+                            <airmid-datepicker [formGroup]="_IPBrowseBillService.myFilterIprefundbrowseform"
+                            [isRangePicker]="true" formStartControlName="startdate" formEndControlName="enddate"
+                            [(fromValue)]="gridConfig2.filters[2].fieldValue"
+                            [(toValue)]="gridConfig2.filters[3].fieldValue">
+                        </airmid-datepicker>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>RegNo</mat-label>
+                            <input matInput placeholder="Search RegNo" autocomplete="off"
+                                [(ngModel)]="gridConfig2.filters[4].fieldValue" />
+                            <button matSuffix mat-icon-button aria-label="Clear"
+                                (click)="gridConfig2.filters[4].fieldValue='0'">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>First Name</mat-label>
                                 <input matInput placeholder="Search First Name" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                                    [(ngModel)]="gridConfig2.filters[0].fieldValue" />
                                 <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[0].fieldValue=''">
+                                    (click)="gridConfig2.filters[0].fieldValue='%'">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Last Name</mat-label>
                                 <input matInput placeholder="Search Last Name" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                                    [(ngModel)]="gridConfig2.filters[1].fieldValue" />
                                 <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[1].fieldValue=''">
+                                    (click)="gridConfig2.filters[1].fieldValue='%'">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
-   
+
                             <!-- <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>From Date</mat-label>
                                 <input matInput placeholder="Search From Date" autocomplete="off"
@@ -290,37 +383,29 @@
                                 </button>
                             </mat-form-field> -->
 
-                            <form [formGroup]="_IPBrowseBillService.myFilterIprefundbrowseform">
+                            <!-- <form [formGroup]="_IPBrowseBillService.myFilterIprefundbrowseform">
 
-                                         
+
                                 <mat-form-field appearance="outline" fxFlex>
                                     <input matInput [matDatepicker]="validFromPicker" formControlName="fromDate"
-                                        (dateChange)="onChangeDate($event.value)" [(ngModel)]="gridConfig.filters[2].fieldValue"
-                                        placeholder="mm/dd/yyyy">
+                                        (dateChange)="onChangeDate($event.value)"
+                                        [(ngModel)]="gridConfig.filters[2].fieldValue" placeholder="mm/dd/yyyy">
                                     <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
                                     <mat-datepicker #validFromPicker></mat-datepicker>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline"fxFlex>
+                                <mat-form-field appearance="outline" fxFlex>
                                     <input matInput [matDatepicker]="validFromPicker1" formControlName="enddate"
-                                        (dateChange)="onChangeDate1($event.value)" [(ngModel)]="gridConfig.filters[3].fieldValue"
-                                        placeholder="mm/dd/yyyy">
+                                        (dateChange)="onChangeDate1($event.value)"
+                                        [(ngModel)]="gridConfig.filters[3].fieldValue" placeholder="mm/dd/yyyy">
                                     <mat-datepicker-toggle matSuffix [for]="validFromPicker1"></mat-datepicker-toggle>
                                     <mat-datepicker #validFromPicker1></mat-datepicker>
                                 </mat-form-field>
-                            </form>
+                            </form> -->
 
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>RegNo</mat-label>
-                                <input matInput placeholder="Search RegNo" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[4].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[4].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
+                           
 
-                            <mat-radio-group value="" [(ngModel)]="gridConfig.filters[5].fieldValue"
+                            <mat-radio-group value="" [(ngModel)]="gridConfig2.filters[5].fieldValue"
                                 fxLayoutAlign="center center">
                                 <mat-radio-button value="">All</mat-radio-button>
                                 <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
@@ -332,7 +417,7 @@
             </div>
 
         </mat-tab>
-       
+
     </mat-tab-group>
 
 

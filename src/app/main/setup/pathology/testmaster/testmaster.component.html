@@ -33,14 +33,12 @@
         <ng-template #actionsIsSubTest let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
-                <mat-cell *matCellDef="let element" fxShow.gt-sm>
                     <mat-icon *ngIf="element.isSubTest == true" title="IsSubTest">
-                        <img width="15px" height="8px" src="assets/images/logos/radiology.png">
+                        <img width="30px" height="30px" src="assets/images/logos/radiology.png">
                     </mat-icon>
                     <mat-icon *ngIf="element.isSubTest == false" title="IsTest">
-                        <img width="15px" height="9px" src="assets/images/logos/pathology.png">  
+                        <img width="30px" height="30px" src="assets/images/logos/pathology.png">  
                     </mat-icon>
-                </mat-cell>
 
             </div>
         </ng-template>
@@ -48,13 +46,10 @@
         <ng-template #actionsisTemplateTest let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
-                <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                    <mat-icon *ngIf="element.isTemplateTest==='1'" title="IsTemplateTest">assignment</mat-icon>
-                    <mat-icon *ngIf="element.isTemplateTest==='0'" title="Test">
+                    <mat-icon *ngIf="element.isTemplateTest=='1'" title="IsTemplateTest">assignment</mat-icon>
+                    <mat-icon *ngIf="element.isTemplateTest=='0'" title="Test">
                         <img width="30px" height="30px" src="assets/images/logos/pathology.png">
                     </mat-icon>
-                </mat-cell>
-
             </div>
         </ng-template>
 

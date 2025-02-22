@@ -103,11 +103,13 @@ export class NewRequestforlabComponent implements OnInit {
   groupId = "0";
   getServiceList() {
     debugger
+    let ServiceName = this.myFormGroup.get("ServiceId").value + "%" || '%';
+    if(this.RegNo){
     var param = {
       sortField: "ServiceId",
             sortOrder: 0,
             filters: [
-                { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains },
+                { fieldName: "ServiceName", fieldValue: ServiceName, opType: OperatorComparer.Contains },
                 { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
                 { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals },
                 { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
@@ -122,6 +124,14 @@ export class NewRequestforlabComponent implements OnInit {
         this.dsLabRequest2.paginator = this.paginator;
         console.log(this.dsLabRequest2.data)
     });
+  }else{
+    if (!this.searchFormGroup.get('RegID')?.value && !this.registerObj?.RegId) {
+      this.toastr.warning('Please Select Patient', 'Warning!', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+  }
 }
 
   createMyForm():FormGroup {
@@ -149,28 +159,6 @@ export class NewRequestforlabComponent implements OnInit {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   } 
-  // getSearchList() {
-  //   var m_data = {
-  //     "Keyword": `${this.searchFormGroup.get('RegID').value}%`
-  //   }
-  //   if (this.searchFormGroup.get('RegID').value.length >= 1) {
-  //     this._RequestforlabtestService.getAdmittedPatientList(m_data).subscribe(resData => {
-  //       this.filteredOptions = resData;
-  //       console.log(resData);
-  //       this.PatientListfilteredOptions = resData;
-  //       if (this.filteredOptions.length == 0) {
-  //         this.noOptionFound = true;
-  //       } else {
-  //         this.noOptionFound = false;
-  //       } 
-  //     });
-  //   }
-
-  // }
-  // getOptionText(option) {
-  //   if (!option) return '';
-  //   return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
-  // }
 
   getSelectedObjIP(obj) {
     console.log(obj)
@@ -198,45 +186,45 @@ export class NewRequestforlabComponent implements OnInit {
     console.log(row);
 
     this.registerObj = row;
-    this.getSelectedObj(row);
+    // this.getSelectedObj(row);
   }
   WardName:any;
   RegNo:any; 
   BedNo:any;
-  getSelectedObj(obj) {
-    if(obj.IsDischarged == 1){
-      Swal.fire('Selected Patient is already discharged');
-      this.PatientName = ''  
-      this.vAdmissionID =  ''
-      this.RegNo = ''
-      this.Doctorname =  ''
-      this.Tarrifname = ''
-      this.CompanyName =''
-      this.vOPDNo = ''
-      this.WardName =''
-      this.BedNo = ''
-    }
-    else{
-      this.registerObj = obj; 
-      this.selectedAdvanceObj=obj;
-      this.selectedAdvanceObj.PatientName= obj.FirstName + ' ' + obj.LastName;
-      this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
-      this.RegNo = obj.RegNo;
-      this.vAdmissionID = obj.AdmissionID
-      this.CompanyName = obj.CompanyName;
-      this.Tarrifname = obj.TariffName;
-      this.Doctorname = obj.DoctorName; 
-      this.vOPDNo = obj.AdmissionID;
-      this.WardName = obj.RoomName;
-      this.BedNo = obj.BedName;
-      this.vClassId = obj.ClassId;
-      this.vTariffId = obj.TariffId;
-      console.log(obj);
-      this.getServiceListdata();
-    } 
- this.dsLabRequest2.data = [];
- this.dstable1.data = [];
-  }
+//   getSelectedObj(obj) {
+//     if(obj.IsDischarged == 1){
+//       Swal.fire('Selected Patient is already discharged');
+//       this.PatientName = ''  
+//       this.vAdmissionID =  ''
+//       this.RegNo = ''
+//       this.Doctorname =  ''
+//       this.Tarrifname = ''
+//       this.CompanyName =''
+//       this.vOPDNo = ''
+//       this.WardName =''
+//       this.BedNo = ''
+//     }
+//     else{
+//       this.registerObj = obj; 
+//       this.selectedAdvanceObj=obj;
+//       this.selectedAdvanceObj.PatientName= obj.FirstName + ' ' + obj.LastName;
+//       this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
+//       this.RegNo = obj.RegNo;
+//       this.vAdmissionID = obj.AdmissionID
+//       this.CompanyName = obj.CompanyName;
+//       this.Tarrifname = obj.TariffName;
+//       this.Doctorname = obj.DoctorName; 
+//       this.vOPDNo = obj.AdmissionID;
+//       this.WardName = obj.RoomName;
+//       this.BedNo = obj.BedName;
+//       this.vClassId = obj.ClassId;
+//       this.vTariffId = obj.TariffId;
+//       console.log(obj);
+//       this.getServiceListdata();
+//     } 
+//  this.dsLabRequest2.data = [];
+//  this.dstable1.data = [];
+//   }
 
   getServiceListdata() {
     // 

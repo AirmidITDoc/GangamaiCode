@@ -100,9 +100,9 @@ export class CancellationComponent implements OnInit {
   opdGridConfig: gridModel = {
     apiUrl: "Administration/BrowseOPDBillPagiList",
     columnsList: [
-      { heading: "-", key: "opD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 20 },
-      { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 20 },
-      { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width:200 },
+      { heading: "-", key: "opD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+      { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+      { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width:150 },
       { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:150  },
       { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -132,8 +132,8 @@ export class CancellationComponent implements OnInit {
   ipdGridConfig: gridModel = {
     apiUrl: "Billing/IPBillList",
     columnsList: [
-      { heading: "-", key: "opD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 20 },
-      { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 20 },
+      { heading: "-", key: "opD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+      { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
       { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width:200 },      
       { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:150 },
       { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },

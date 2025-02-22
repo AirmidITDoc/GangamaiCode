@@ -29,21 +29,17 @@ export class RequestforlabtestComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     hasSelectedContacts: boolean;
 
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
     gridConfig: gridModel = {
         apiUrl: "Nursing/LabRequestList",
         columnsList: [
-            // { heading: "Code", key: "requestId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "RequestType", key: "requestType", sort: true, align: 'left', emptySign: 'NA'},
-            // { heading: "ReqTime", key: "reqTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            // { heading: "OP_IP_ID", key: "oP_IP_ID", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            // { heading: "OP_IP_Type", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            // { heading: "BedName", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsOnFileTest", key: "isOnFileTest", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            // { heading: "IsCancelled", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', width: 50 },
 
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -64,12 +60,11 @@ export class RequestforlabtestComponent implements OnInit {
         sortField: "requestId",
         sortOrder: 0,
         filters: [
-            { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
-            { fieldName: "ToDate", fieldValue: "11/01/2024", opType: OperatorComparer.Equals },
+            { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
         row: 25
     }
@@ -114,7 +109,8 @@ export class RequestforlabtestComponent implements OnInit {
     }
 
     constructor(public _RequestforlabtestService: RequestforlabtestService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService,
+        public datePipe: DatePipe,) { }
     ngOnInit(): void {
     }
 
@@ -122,8 +118,9 @@ export class RequestforlabtestComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(NewRequestforlabComponent,
             {
-                maxWidth: "95vw",
-                height: '95%',
+                // maxWidth: "95vw",
+                maxHeight: '95vh',
+                // height:'90%',
                 width: '80%',
                 data: row
             });
