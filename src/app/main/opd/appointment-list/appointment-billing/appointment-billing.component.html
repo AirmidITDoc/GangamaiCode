@@ -230,7 +230,7 @@
                                     </div>
                                     <div fxFlex="5%" fxFlex.xs="5%" fxFlex.sm="5%">
                                         <div class="mt-2">
-                                            <button (click)="onAddCharges()" class="btn btn-primary btn-with-icon py-8"
+                                            <button type="button" (click)="onAddCharges()" class="btn btn-primary btn-with-icon py-8"
                                                 [disabled]="!chargeForm.valid"
                                                 [matTooltip]="!chargeForm.valid?'Enter all data to enable this button!!':''"
                                                 [matTooltipPosition]="'above'" fxFlex>
