@@ -188,37 +188,42 @@ export class TestmasterService {
             param
         );
     }
-    // retrieve sub Test Master list  remain
-    public getSubTestList(param) {
-        return this._httpClient.PostData("Generic/GetByProc?procName=Retrive_PathSubTestFill",
-            param
-        );
+
+    // retrieve list  remain
+    // get Test master list
+    public getTestListfor(param) {
+        return this._httpClient.PostData("Pathology/PathTestForUpdateList",param);
     }
-    
-    // get parameter master list
-    public getParameterMasterList(param) {
-        return this._httpClient.PostData("ParameterMaster/MPathParameterList",param);
+    public getSubTestList(param) { 
+        // return this._httpClient.PostData("Generic/GetByProc?procName=Retrive_PathSubTestFill",
+        //     param
+        // );
+        return this._httpClient.PostData("Pathology/PathTestForUpdateList",param);
     }
+    public getTemplateListfor(param) {
+        return this._httpClient.PostData("Pathology/PathTemplateForUpdateList",param);
+    }
+    // retrieve list remain end       
+
     // retrive parameter master list
 
+    // depends on checkbox
     // get subTest master list of checkbox
     public getIsSubTestList(param) {
         return this._httpClient.PostData("PathTestMaster/TestMasterList",param);
     }
-    
-    // get Test master list
-    public getTestListfor(param) {
-        return this._httpClient.PostData("PathTestMaster/TestMasterList",param);
+     // get parameter master list
+     public getParameterMasterList(param) {
+        return this._httpClient.PostData("ParameterMaster/MPathParameterList",param);
     }
-
+    // depends on checkbox end
+    
     // retrive subtest list
     public getSubTestListfor(param) {
         return this._httpClient.PostData("Pathology/PathSubtestFillList",param);
     }
     
-    public getTemplateListfor(param) {
-        return this._httpClient.PostData("ParameterMaster/MPathParameterList",param);
-    }
+   
 
     public getParameterMasterCombo(emp,loader = true){
         if (loader) {

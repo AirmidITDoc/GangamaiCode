@@ -254,7 +254,8 @@ export class TestFormMasterComponent implements OnInit {
         }
 
         this._TestmasterService.getTestListfor(m_data).subscribe(Visit => {
-            this.DSTestList.data = Visit as TestList[];
+            console.log("VisittestList:",Visit.data)
+            this.DSTestList.data = Visit.data as TestList[];
             console.log(this.DSTestList.data)
             this.dsTemparoryList.data = Visit as TestList[];
         });
@@ -268,12 +269,12 @@ debugger
         {
             "first": 0,
             "rows": 10,
-            "sortField": "ParameterId",
+            "sortField": "TestId",
             "sortOrder": 0,
             "filters": [
                 {
-                    "fieldName": "ParameterId",
-                    "fieldValue": String(obj.ParameterId),
+                    "fieldName": "TestId",
+                    "fieldValue": String(obj.testId),
                     "opType": "Equals"
                 },
                 {
@@ -292,7 +293,7 @@ debugger
 
         this._TestmasterService.getSubTestList(m_data).subscribe(Visit => {
             console.log("VisitSubtestList:",Visit.data)
-            this.DSTestList.data = Visit as TestList[];
+            this.DSTestList.data = Visit.data as TestList[];
             console.log(this.DSTestList.data)
             this.dsTemparoryList.data = Visit as TestList[];
         });
@@ -308,11 +309,33 @@ debugger
     }
 
     fetchTemplate(obj) {
-
-        var m_data = {
-            "TestId": String(obj.testId)
+debugger
+        var m_data =  {
+            "first": 0,
+            "rows": 10,
+            "sortField": "TestId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "TestId",
+                    "fieldValue": String(obj.testId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "Start",
+                    "fieldValue": "0",
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "Length",
+                    "fieldValue": "10",
+                    "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON"
         }
         this._TestmasterService.getTemplateListfor(m_data).subscribe(Visit => {
+            console.log("VisitTemplateList:",Visit.data)
             this.Templatetdatasource.data = Visit as TemplatedetailList[];
         });
 
@@ -340,8 +363,8 @@ debugger
             let mPathTestDetailMasters = this.DSTestList.data.map((row: any) => ({
                 "TestDetId": 0,
                 "TestId": 0,
-                "SubTestId": 0,
-                "ParameterId": row.ParameterID
+                "SubTestId": row.subTestID || 0,
+                "ParameterId": row.parameterId
             }));
             // var data1=[];
             // // this.selectedItems.forEach((element) => {
@@ -400,8 +423,8 @@ debugger
             let mPathTestDetailMasters = this.DSTestList.data.map((row: any) => ({
                 "TestDetId": 0,
                 "TestId": 0,
-                "SubTestId": row.subTestID || 12,
-                "ParameterId": row.ParameterID
+                "SubTestId": row.subTestID || 0,
+                "ParameterId": row.parameterId
             }));
             var mdata1 = {
                 "TestId": this.vTestId,
@@ -485,45 +508,6 @@ debugger
         });
     }
 
-
-    // getSubTestMasterList() {
-
-    //     var m_dat = {
-    //         TestName: this.testForm.get('ParameterNameSearch').value + "%" || '%'
-    //     }
-    //     this._TestmasterService.getNewSubTestList(m_dat).subscribe((Menu) => {
-    //         this.subTestList.data = Menu as TestList[];
-    //         this.paramterList.data = Menu;
-    //     });
-    //     console.log(this.subTestList.data)
-
-    // }
-
-    // getParameterNameCombobox() {
-
-    //     var m_dat = {
-    //         ParameterName: this.testForm.get('ParameterNameSearch').value + "%" || '%'
-    //     }
-    //     this._TestmasterService.getParameterMasterCombo(m_dat).subscribe((data) => {
-    //         this.paramterList.data = data;
-    //         this.Parametercmb = data;
-    //     });
-    //     console.log(this.Parametercmb);
-    // }
-
-    // getServiceNameCombobox() {
-
-    // this._TestmasterService.getServiceMasterCombo().subscribe((data) => {
-    //     this.ServicecmbList = data;
-    //     if (this.data) {
-    //         const toSelectId = this.ServicecmbList.find(c => c.ServiceId == this.registerObj.ServiceID);
-    //         this.testForm.get('ServiceID').setValue(toSelectId);
-
-    //     }
-
-    // });
-    // }
-
     chooseFirstOption(auto: MatAutocomplete): void {
         auto.options.first.select();
     }
@@ -541,33 +525,21 @@ debugger
 
     }
 
-    // onDeleteRow(event) {
-    //     let temp = this.paramterList.data;
-    //     temp.push({
-    //         ParameterName: event.ParameterName || "",
-    //     })
-    //     this.paramterList.data = temp;
-    //     temp = this.DSTestList.data;
-    //     this.DSTestList.data = []
-    //     temp.splice(temp.findIndex(item => item.ParameterName === event.ParameterName), 1);
-    //     this.DSTestList.data = temp;
-    // }
-
     onDeleteRow(event) {
         let temp = [...this.paramterList.data];
         temp.push({
-            ParameterName: event.ParameterName || "",
+            parameterName: event.parameterName || "",
         });
         this.paramterList.data = temp;
 
         temp = [...this.DSTestList.data];
-        let index = temp.findIndex(item => item.ParameterName === event.ParameterName);
+        let index = temp.findIndex(item => item.parameterName === event.parameterName);
         if (index !== -1) {
             temp.splice(index, 1);
         }
         this.DSTestList.data = temp;
 
-        let chargesIndex = this.chargeslist.findIndex(item => item.parameterName === event.ParameterName);
+        let chargesIndex = this.chargeslist.findIndex(item => item.parameterName === event.parameterName);
         if (chargesIndex !== -1) {
             this.chargeslist.splice(chargesIndex, 1);
         }
@@ -603,7 +575,7 @@ debugger
 
     list = [];
     onAddTemplate() {
-        // debugger
+        debugger
         this.list.push(
             {
                 TemplateId: this.templatedetailsForm.get("TemplateId").value.TemplateId,
@@ -656,11 +628,11 @@ debugger
         let exists = this.ChargeList.some(item => item.ParameterID === row.parameterId);
         if (!exists) {
             this.ChargeList.push({
-                ParameterID: row.parameterId,
-                ParameterName: row.parameterName,
-                PrintParameterName: row.printParameterName,
-                MethodName: row.methodName,
-                UnitName: row.unitName
+                parameterId: row.parameterId,
+                parameterName: row.parameterName,
+                printParameterName: row.printParameterName,
+                methodName: row.methodName,
+                unitName: row.unitName
             });
 
             this.DSTestList.data = [...this.ChargeList];
@@ -700,26 +672,6 @@ debugger
         this.DSTestListtemp.data = [...this.chargeslist];
         this.DSTestListtemp.sort = this.sort;
         this.DSTestListtemp.paginator = this.paginator;
-
-
-        // let SelectQuery = "select * from lvwPathSubTestFill where TestId = " + Id
-        // console.log(SelectQuery)
-        // this._TestmasterService.getquerydata(SelectQuery).subscribe(Visit => {
-        //     this.DSsubTestListtemp.data = Visit as TestList[];
-        //     console.log(this.DSsubTestListtemp.data)
-        //     if (this.DSsubTestListtemp.data.length > 0) {
-
-        //         this.addsubtestdata();
-        //     }
-        // });
-
-
-        // let temp = this.paramterList.data;
-        // this.paramterList.data = []
-        // temp.splice(temp.findIndex(item => item.ParameterName === this.DSTestList.data["ParameterName"]), 1);
-        // this.paramterList.data = temp;
-
-        // console.log(this.DSTestList.data)
     }
 
     addsubtestdata(row) {
@@ -731,9 +683,9 @@ debugger
         let exists = this.ChargeList.some(item => item.subTestID === row.subTestID);
         if (!exists) {
             this.ChargeList.push({
-                ParameterID: row.parameterID,
-                ParameterName: row.parameterName,
-                SubTestID: row.subTestID
+                parameterID: row.parameterID,
+                parameterName: row.parameterName,
+                subTestID: row.subTestID
             });
 
             this.DSTestList.data = [...this.ChargeList];
@@ -741,20 +693,6 @@ debugger
 
             console.log("Updated DSTestList:", this.DSTestList.data);
         }
-
-        // this.ChargeList = this.DSTestList.data;
-        // this.DSsubTestListtemp.data.forEach((element) => {
-
-
-        //     this.ChargeList.push(
-        //         {
-        //             ParameterID: element.ParameterID,
-        //             ParameterName: element.ParameterName,
-        //             SubTestID: element.TestId
-        //         });
-        //     this.DSTestList.data = this.ChargeList;
-        //     console.log(this.DSTestList.data)
-        // });
     }
 
     CategoryId = 0;

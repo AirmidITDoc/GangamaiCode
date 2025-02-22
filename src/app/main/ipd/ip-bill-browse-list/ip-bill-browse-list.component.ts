@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -47,12 +47,16 @@ import { IPAdvanceComponent } from '../ip-search-list/ip-advance/ip-advance.comp
 })
 export class IPBillBrowseListComponent implements OnInit {
     myFilterform: FormGroup;
+    myFilterFormIPBrowsePayment:FormGroup;
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     hasSelectedContacts: boolean;
+    
+  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
-    fromDate = "01/01/2021"//this.datePipe.transform(new Date(), "mm/ddyyyy")
-    toDate = "12/10/2024"//this.datePipe.transform(new Date(), "mm/ddyyyy")
+    // fromDate =this.datePipe.transform(new Date(), "mm/ddyyyy") //"01/01/2021"
+    // toDate = this.datePipe.transform(new Date(), "mm/ddyyyy") //"01/01/2024"
     allfilters = [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -65,19 +69,31 @@ export class IPBillBrowseListComponent implements OnInit {
         { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
 
     ]
+     ngAfterViewInit() {
+              this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIP;  
+              this.gridConfig.columnsList.find(col => col.key === 'interimOrFinal')!.template = this.ColorCode; 
+
+              this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIPRefund;  
+
+          }
+          @ViewChild('actionButtonTemplateIP') actionButtonTemplateIP!: TemplateRef<any>;
+          @ViewChild('ColorCode') ColorCode!: TemplateRef<any>;
+          
+          @ViewChild('actionButtonTemplateIPRefund') actionButtonTemplateIPRefund!: TemplateRef<any>;
 
     gridConfig: gridModel = {
         apiUrl: "Billing/IPBillList",
         columnsList: [
-            { heading: "OpdIpdType", key: "opdIpdType", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Code", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "OpdIpdType", key: "opD_IPD_Type", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "-", key: "interimOrFinal", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+            { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:150},
+            { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width:150},
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Age", key: "age", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Mobile", key: "Mobileno", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "DOD", key: "dischargeDate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width:150},
+            { heading: "DOD", key: "dischargeDate", sort: true, align: 'left', emptySign: 'NA', width:150},
             { heading: "IPDNO", key: "opdIpdId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA' },
@@ -99,13 +115,9 @@ export class IPBillBrowseListComponent implements OnInit {
             { heading: "Cashcounter", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.print, callback: (data: any) => {
-                            this.getFinalBillview(data);
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
+                heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+                template: this.actionButtonTemplateIP  // Assign ng-template to the column
+            }
         ],
         sortField: "RegNo",
         sortOrder: 0,
@@ -131,7 +143,7 @@ export class IPBillBrowseListComponent implements OnInit {
         columnsList: [
 
             { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UHID", key: "RegNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BalanceAmt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
@@ -160,8 +172,8 @@ export class IPBillBrowseListComponent implements OnInit {
         filters: [
             { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "From_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "11/11/2024", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "ReceiptNo", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -186,21 +198,17 @@ export class IPBillBrowseListComponent implements OnInit {
             { heading: "CardPay", key: "cardPay", sort: true, align: "center" },
             { heading: "Remark", key: "remark", sort: true, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.print, callback: (data: any) => {
-                            this.getRefundreceiptview(data);
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
+                heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+                template: this.actionButtonTemplateIPRefund  // Assign ng-template to the column
+            }//Action 1-view, 2-Edit,3-delete
         ],
         sortField: "RegNo",
         sortOrder: 0,
         filters: [
             { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "From_Dt", fieldValue: "01/01/2021", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
@@ -211,8 +219,10 @@ export class IPBillBrowseListComponent implements OnInit {
 
     constructor(public _IPBrowseBillService: IPBrowseBillService, public _matDialog: MatDialog,
         public toastr: ToastrService, public datePipe: DatePipe) { }
+
     ngOnInit(): void {
         this.myFilterform = this._IPBrowseBillService.filterForm_IpdBrowse();
+        this.myFilterFormIPBrowsePayment=this._IPBrowseBillService.filterForm_IpdpaymentBrowse()
     }
 
     onSave(row: any = null) {

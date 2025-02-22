@@ -16,7 +16,7 @@
                 </mat-toolbar> -->
 
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <div class="info-badge-top p-12 border-bottom" fxLayout="row"
+                    <div class="info-badge-top p-12 border-bottom" style="margin-left: 18%;" fxLayout="row"
                         fxLayoutAlign="space-between" flex>
                         <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
                             <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
@@ -30,12 +30,12 @@
 
                             <div style="color: blue" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                                 <mat-icon class="pill blue-600 s-16">circle</mat-icon>
-                                <span class="blue-600-fg">Cancelled</span>
+                                <span class="blue-600-fg">NotCancelled</span>
                             </div>
 
                             <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                                 <mat-icon class="pill red-600 s-16">circle</mat-icon>
-                                <span class="red-600-fg">NotCancelled</span>
+                                <span class="red-600-fg">Cancelled</span>
                             </div>
 
                         </div>
@@ -49,9 +49,9 @@
 
                     <ng-template #ColorCodeCancel let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <mat-icon *ngIf="element.isCancelled=='0'" matTooltip="Cancelled"
+                            <mat-icon *ngIf="element.isCancelled=='0'" matTooltip="NotCancelled"
                                 class="pill blue-600 s-16">circle</mat-icon>
-                            <mat-icon *ngIf="element.isCancelled=='1'" matTooltip="NotCancelled"
+                            <mat-icon *ngIf="element.isCancelled=='1'" matTooltip="Cancelled"
                                 class="pill red-600 s-16">circle
                             </mat-icon>
                         </div>

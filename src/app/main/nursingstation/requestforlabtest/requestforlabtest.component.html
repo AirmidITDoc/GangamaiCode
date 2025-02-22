@@ -15,28 +15,21 @@
             </button>
         </div>
     </div>
+    <div class="info-badge-top border-bottom" style="margin-left: 18%;" fxLayout="row" fxLayoutAlign="space-between" flex>
+        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+            <button type="button" mat-icon-button>
+                <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
+            </button>
+
+            <button type="button" mat-icon-button>
+                <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
+            </button>
+
+        </div>
+    </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
-                <!-- <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>From Date</mat-label>
-                    <input matInput placeholder="Search From Date" autocomplete="off"
-                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                    <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="gridConfig.filters[0].fieldValue=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>To Date</mat-label>
-                    <input matInput placeholder="Search To Date" autocomplete="off"
-                        [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                    <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="gridConfig.filters[1].fieldValue=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field> -->
 
                 <airmid-datepicker [formGroup]="_RequestforlabtestService.mySearchForm" [isRangePicker]="true" 
                 formStartControlName="startdate"

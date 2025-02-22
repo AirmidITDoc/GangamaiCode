@@ -27,12 +27,9 @@ export class ParametermasterComponent implements OnInit {
         @ViewChild('actionsNumeric') actionsNumeric!: TemplateRef<any>;
 
         ngAfterViewInit() {
-            // Assign the template to the column dynamically
             this.gridConfig.columnsList.find(col => col.key === 'isNumericParameter')!.template = this.actionsNumeric;
-            // this.gridConfig.columnsList.find(col => col.key === 'mPbillNo')!.template = this.actionsTemplate;
             this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-    
-        }
+            }
 
     gridConfig: gridModel = {
         apiUrl: "ParameterMaster/MPathParameterList",
@@ -46,11 +43,8 @@ export class ParametermasterComponent implements OnInit {
             { heading: "PrintParameterName", key: "printParameterName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
 
             { heading: "Unit Name", key: "unitId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsNumeric", key: "isNumericParameter", sort: true, align: 'left', emptySign: 'NA' },
-            // { 
-            //     heading: "IsNumeric", key: "isNumericParameter", width: 100, sort: true, align: 'left', type: gridColumnTypes.template,
-            //     template: this.actionsNumeric 
-            // },
+
+            { heading: "IsNumeric", key: "isNumericParameter", width: 100, sort: true, align: 'left', type: gridColumnTypes.template},
 
             { heading: "IsPrintDisSummary", key: "isPrintDisSummary", width: 100, sort: true, align: 'left', emptySign: 'NA' },
             
@@ -59,26 +53,7 @@ export class ParametermasterComponent implements OnInit {
             { heading: "Added By", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
             { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
-            // {
-            //     heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
-            //         {
-            //             action: gridActions.edit, callback: (data: any) => {
-            //                 this.onEdit(data) // EDIT Records
-            //             }
-            //         },
-            //         {
-            //             action: gridActions.edit, callback: (data: any) => {
-            //                 this.onaddformula(data) // add formula Records
-            //             }
-            //         }, {
-            //             action: gridActions.delete, callback: (data: any) => {
-            //                 this._ParameterService.deactivateTheStatus(data.parameterId).subscribe((response: any) => {
-            //                     this.toastr.success(response.message);
-            //                     this.grid.bindGridData();
-            //                 });
-            //             }
-            //         }]
-            // }, //Action 1-view, 2-Edit,3-delete
+
             {
                 heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplate  // Assign ng-template to the column

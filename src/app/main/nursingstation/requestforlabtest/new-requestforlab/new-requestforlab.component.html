@@ -157,7 +157,7 @@
                             <div fxLayout="column">
                                 <div class="radio-container gap-8" fxLayout="row wrap" fxLayoutAlign="space-between center">
                                     <mat-radio-group aria-label="Select an option" formControlName="IsPathRad" name="IsPathRad"
-                                        (change)="getServiceListdata()">
+                                        (change)="getServiceList()">
                                         <mat-radio-button value="1">Pathology </mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         <mat-radio-button value="2">Radiology</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         <mat-radio-button value="3">Other Services</mat-radio-button>&nbsp;&nbsp;&nbsp;
@@ -172,7 +172,7 @@
                                 </div>
                                 <div class="input-container gap-8" fxLayout="row">
                                     <mat-form-field appearance="outline" fxFlex>
-                                        <input type="text" name="ServiceName2" formControlName="ServiceId" placeholder="Service Name" (keyup)="getServiceListdata()" matInput>
+                                        <input type="text" name="ServiceName2" formControlName="ServiceId" placeholder="Service Name" (keyup)="getServiceList()" matInput>
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close" (click)="myFormGroup.get('ServiceId').setValue(''); isServiceIdSelected = false;">close</mat-icon>
                                             <mat-icon class="mat-icon-close" (click)="myFormGroup.get('ServiceId').setValue(''); isServiceIdSelected = false;">search</mat-icon>

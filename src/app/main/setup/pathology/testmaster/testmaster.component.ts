@@ -30,9 +30,7 @@ export class TestmasterComponent implements OnInit {
         // Assign the template to the column dynamically
         this.gridConfig.columnsList.find(col => col.key === 'isSubTest')!.template = this.actionsIsSubTest;
         this.gridConfig.columnsList.find(col => col.key === 'isTemplateTest')!.template = this.actionsisTemplateTest;
-        // this.gridConfig.columnsList.find(col => col.key === 'mPbillNo')!.template = this.actionsTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-
     }
 
     constructor(
@@ -52,48 +50,22 @@ export class TestmasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "Pathology/PathologyTestList",
         columnsList: [
+            { heading: "IsTemplateTest", key: "isTemplateTest", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100},
             { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Test Name", key: "testName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Print Test Name", key: "printTestName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Category Name", key: "CategoryId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { 
-                heading: "IsSub Test", key: "isSubTest", sort: true, align: 'left', type: gridColumnTypes.template, width: 100, 
-                template: this.actionsIsSubTest
-            },
+            { heading: "TestName", key: "testName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "PrintTestName", key: "printTestName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "BillingServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Technique Name", key: "techniqueName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Machine Name", key: "machineName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Suggestion Note", key: "suggestionNote", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Foot Note", key: "footNote", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { 
-                heading: "IsTemplateTest", key: "isTemplateTest", sort: true, align: 'left',  type: gridColumnTypes.template, width: 100,
-                template: this.actionsisTemplateTest
-             },
-            { heading: "Billing Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "IsSub Test", key: "isSubTest", sort: true, align: 'left', type: gridColumnTypes.template, width: 100},
             { heading: "Added By", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsActive", key: "isdeleted", type: gridColumnTypes.status, align: "center", width: 100 },
-            // {
-            //     heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
-            //         {
-            //             action: gridActions.edit, callback: (data: any) => {
-            //                 this.onSave(data);
-            //             }
-            //         }, {
-            //             action: gridActions.delete, callback: (data: any) => {
-            //                 this._TestService.deactivateTheStatus(data.testId).subscribe((response: any) => {
-            //                     this.toastr.success(response.message);
-            //                     this.grid.bindGridData();
-            //                 });
-            //             }
-            //         }]
-            // } //Action 1-view, 2-Edit,3-delete
             {
                 heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplate  // Assign ng-template to the column
             }
         ],
-
-
         sortField: "TestId",
         sortOrder: 0,
         filters: [
