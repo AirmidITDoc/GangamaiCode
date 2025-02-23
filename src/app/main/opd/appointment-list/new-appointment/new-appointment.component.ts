@@ -124,7 +124,7 @@ export class NewAppointmentComponent implements OnInit {
     autocompleteModedeptdoc: string = "ConDoctor";
     autocompleteModerefdoc: string = "RefDoctor";
     autocompleteModepurpose: string = "Purpose";
-
+    public imagePreview!:string;
 
     constructor(
         public _AppointmentlistService: AppointmentlistService,
@@ -622,6 +622,32 @@ export class NewAppointmentComponent implements OnInit {
     dateTimeObj: any;
     getDateTime(dateTimeObj) {
         this.dateTimeObj = dateTimeObj;
+    }
+    openCamera(type: string, place: string) {
+        const dialogRef = this.matDialog.open(ImageViewComponent,
+            {
+                width: '750px',
+                height: '550px',
+
+                data: {
+                    docData: type == 'camera' ? 'camera' : '',
+                    type: type == 'camera' ? 'camera' : '',
+                    place: place
+                }
+            }
+        );
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                if (place == "photo") {
+                    this.imagePreview = result.url;
+                }
+                else {
+                    // this.imgArr.push(result.name);
+                    // this.images.push(result);
+                    // this.imgDataSource.data = this.images;
+                }
+            }
+        });
     }
 
 }
