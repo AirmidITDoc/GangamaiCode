@@ -50,7 +50,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   FinalNetAmt: any;
   vFinalconcessionDiscPer: any;
   vFinalTotalAmt: any;
-  patientDetail = new RegInsert({});
+  patientDetail:any = new RegInsert({});
   patientDetail1 = new VisitMaster1({});
   RegId = 0
 
@@ -106,8 +106,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
     if (this.data) {
       debugger
-      this.patientDetail = this.data
-      this.PatientName = this.patientDetail.PatientName
+      this.patientDetail = this.data;
+      this.PatientName = this.patientDetail.patientName
       console.log("DATA : ", this.patientDetail);
     }
 
