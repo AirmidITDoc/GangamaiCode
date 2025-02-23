@@ -134,7 +134,7 @@
                     <input type="hidden" name="AdmissionId" formControlName="AdmissionId" [(ngModel)]="registerObj1.admissionId">
                     <input type="hidden" name="RegId" formControlName="RegId" [(ngModel)]="registerObj.regId">
 
-                    <airmid-dropdown label="PatientType" formControlName="PatientTypeId" [value]="registerObj1?.patientTypeID"
+                    <airmid-dropdown label="PatientType" formControlName="PatientTypeId" [value]="registerObj1?.patientTypeId"
                       [formGroup]="admissionFormGroup" [validations]="getValidationMessages().PatientTypeId"
                       [mode]="autocompleteModepatienttype" (selectionChange)="onChangePatient($event)">
                     </airmid-dropdown>
@@ -151,14 +151,14 @@
                   <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-dropdown label="Department Name" formControlName="DepartmentId"
                       [value]="registerObj1?.departmentId" [formGroup]="admissionFormGroup"
-                      [validations]="getValidationMessages().DepartmentId" [mode]="autocompleteModeDepartment"
+                      [validations]="getValidationMessages().DepartmentId" 
                       (selectionChange)="selectChangedepartment($event)">
                     </airmid-dropdown>
       
                   </div>
       
                   <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-dropdown label="Doctor Name" formControlName="DocNameId" [value]="registerObj1?.docNameId"
+                    <airmid-dropdown label="Doctor Name" formControlName="DocNameId" [value]="registerObj1?.docNameId"  [mode]="autocompleteModeDoctor"
                       [formGroup]="admissionFormGroup" [validations]="getValidationMessages().docNameId" #ddlDoctor>
                     </airmid-dropdown>
                   </div>

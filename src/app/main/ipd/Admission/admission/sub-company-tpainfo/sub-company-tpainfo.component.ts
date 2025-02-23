@@ -48,11 +48,12 @@ export class SubCompanyTPAInfoComponent implements OnInit {
   ngOnInit(): void {
     this.SubcompanyFormGroup = this.createmlcForm();
     this.SubcompanyFormGroup.markAllAsTouched();
-    if (this.data) {
-      this.selectedAdvanceObj = this.data;
-      this.subCompanyId= this.data.subTpaComId
-      console.log(this.selectedAdvanceObj);
-    }
+    console.log(this.data)
+    // if (this.data) {
+    //   this.selectedAdvanceObj = this.data;
+    //   this.subCompanyId= this.data.subTpaComId
+    //   console.log(this.selectedAdvanceObj);
+    // }
 }
  
   
@@ -70,6 +71,7 @@ export class SubCompanyTPAInfoComponent implements OnInit {
       // IsActive:''
     });
   }
+
 
  onSubmit() {
     let data =this.SubcompanyFormGroup.value

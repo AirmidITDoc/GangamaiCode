@@ -105,7 +105,7 @@
                                 <div class="form-body">
                                     <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
 
-                                        <!-- <input type="hidden" name="visitId" formControlName="visitId" [(ngModel)]="regobj.visitId"> -->
+                                        <!-- <input type="hidden" name="regId" formControlName="regId" [(ngModel)]="data.regId"> -->
 
                                         <airmid-dropdown label="Department Name" formControlName="departmentId"
                                             [formGroup]="ConsdrForm" [value]="data?.departmentId"
@@ -114,10 +114,9 @@
                                         </airmid-dropdown>
 
                                         <airmid-dropdown label="Doctor Name" formControlName="consultantDocId"
-                                            [formGroup]="ConsdrForm" [value]="regobj?.doctorId"
-                                            [validations]="getValidationMessages().doctorId" #ddlDoctor
-                                            [mode]="autocompleteModedeptdoc">
-                                        </airmid-dropdown>
+                                        [value]="data?.doctorId" [formGroup]="ConsdrForm"  [mode]="autocompleteModedeptdoc"
+                                        [validations]="getValidationMessages().consultantDocId" #ddldoctor>
+                                    </airmid-dropdown>
                                     </div>
                                 </div>
                             </div>

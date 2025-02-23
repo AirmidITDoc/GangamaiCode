@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppointmentlistService } from '../appointmentlist.service';
 import { ToastrService } from 'ngx-toastr';
@@ -34,27 +34,32 @@ export class EditConsultantDoctorComponent implements OnInit {
   constructor(
     public _AppointmentlistService: AppointmentlistService,
     public dialogRef: MatDialogRef<EditConsultantDoctorComponent>,
+    private _formBuilder: UntypedFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public datePipe: DatePipe,
     public toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
-    this.ConsdrForm = this._AppointmentlistService.createConsultatDrForm();
+    this.ConsdrForm = this.createConsultatDrForm();
 
     if (this.data) {
-     
-      this.regobj=this.data
-      this.ConsdrForm.get("visitId").setValue(this.regobj.visitId)
-      this.ConsdrForm.get("regId").setValue(this.regobj.regId)
-      this.ConsdrForm.get("departmentId").setValue(this.regobj.departmentId)
-      this.ConsdrForm.get("consultantDocId").setValue(this.regobj.doctorId)
-      // this.ddlDoctor.SetSelection(this.data.doctorId)
+     console.log(this.data)
+      // this.ConsdrForm.get("visitId").setValue(this.regobj.visitId)
+      // this.ConsdrForm.get("regId").setValue(this.regobj.regId)
+   
     }
 
   }
 
-  
+  createConsultatDrForm() {
+    return this._formBuilder.group({
+        visitId:  this.data.visitId,
+        regId: this.data.regId,
+        consultantDocId: this.data.doctorId,
+        departmentId: this.data.departmentId,
+    });
+}
 
   onSubmit() {
     if (this.ConsdrForm.valid) {
@@ -76,7 +81,7 @@ export class EditConsultantDoctorComponent implements OnInit {
       departmentId: [
         { name: "required", Message: "Department Name is required" }
       ],
-      doctorId: [
+      consultantDocId: [
         { name: "required", Message: "Doctor Name is required" }
       ]
     };

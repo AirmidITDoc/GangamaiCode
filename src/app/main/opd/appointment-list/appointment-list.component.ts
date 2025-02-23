@@ -33,6 +33,9 @@ import { AppointmentBillingComponent } from './appointment-billing/appointment-b
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { forEach } from 'lodash';
 import { NewCasepaperComponent } from '../new-casepaper/new-casepaper.component';
+import { PatientvitalInformationComponent } from './new-appointment/patientvital-information/patientvital-information.component';
+import { RegInsert } from '../registration/registration.component';
+import { UpdateRegPatientInfoComponent } from './update-reg-patient-info/update-reg-patient-info.component';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -46,6 +49,7 @@ import { NewCasepaperComponent } from '../new-casepaper/new-casepaper.component'
 export class AppointmentListComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     myformSearch: FormGroup;
+    searchFormGroup: FormGroup;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     menuActions: Array<string> = [];
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -60,15 +64,21 @@ export class AppointmentListComponent implements OnInit {
     VFollowupcount = 0;
     VBillcount = 0;
     VCrossConscount = 0;
+    patientDetail = new RegInsert({});
+      patientDetail1 = new VisitMaster1({});
+      RegId = 0
+    
+      vOPIPId = 0;
 
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
         private commonService: PrintserviceService,
+        private formBuilder: FormBuilder,
         public toastr: ToastrService, public datePipe: DatePipe,
     ) {}
     
     ngOnInit(): void {
         this.myformSearch = this._AppointmentlistService.filterForm();
-
+        this.searchFormGroup = this.createSearchForm();
         // menu Button List
         this.menuActions.push("Update Consultant Doctor");
         this.menuActions.push("Update Referred Doctor");
@@ -93,18 +103,26 @@ export class AppointmentListComponent implements OnInit {
     ngAfterViewInit() {
         // Assign the template to the column dynamically
         this.gridConfig.columnsList.find(col => col.key === 'patientOldNew')!.template = this.actionsTemplate;
-        // this.gridConfig.columnsList.find(col => col.key === 'mPbillNo')!.template = this.actionsTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'mPbillNo')!.template = this.actionsTemplate1;
+        this.gridConfig.columnsList.find(col => col.key === 'phoneAppId')!.template = this.actionsTemplate2;
+        this.gridConfig.columnsList.find(col => col.key === 'crossConsulFlag')!.template = this.actionsTemplate3;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
     }
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+    @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+    @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
+    @ViewChild('actionsTemplate3') actionsTemplate3!: TemplateRef<any>;
+
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
     gridConfig: gridModel = {
         apiUrl: "VisitDetail/AppVisitList",
         columnsList: [
-            { heading: "-", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-            // { heading: "-", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 20 },
+            { heading: "Patient", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
+            { heading: "Bill", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+            { heading: "Phone", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+            { heading: "Status", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
             { heading: "UHID", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
             { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -176,6 +194,14 @@ export class AppointmentListComponent implements OnInit {
             // if (result) {
             that.grid.bindGridData();
             // }
+        });
+    }
+    createSearchForm() {
+        return this.formBuilder.group({
+            regRadio: ['registration'],
+            regRadio1: ['registration1'],
+            RegId: [''],
+            PhoneRegId: ['']
         });
     }
 
@@ -309,7 +335,16 @@ export class AppointmentListComponent implements OnInit {
     }
 
     OnVitalInfo(element) {
-        console.log('Third action clicked for:', element);
+        const dialogRef = this._matDialog.open(PatientvitalInformationComponent,
+            {
+                maxWidth: '95%',
+                height: '58%',
+                data: element   
+            });
+
+        dialogRef.afterClosed().subscribe(result => {
+           
+        });
     }
 
     OnPrintPatientIcard(element) {
@@ -443,6 +478,45 @@ export class AppointmentListComponent implements OnInit {
         });
 
     }
+
+    getSelectedObj(obj) {
+        if ((obj.regId ?? 0) > 0) {
+          console.log(obj)
+           this.vOPIPId = obj.visitId
+          
+          setTimeout(() => {
+            this._AppointmentlistService.getRegistraionById(obj.regId).subscribe((response) => {
+              this.patientDetail = response;
+            // this.PatientName = this.patientDetail.firstName + " " + this.patientDetail.middleName + " " + this.patientDetail.lastName
+              console.log(this.patientDetail)
+            });
+    
+          }, 500);
+    
+             setTimeout(() => {
+         
+          this._AppointmentlistService.getVisitById( this.vOPIPId).subscribe(data => {
+            this.patientDetail1  = data ;
+            console.log(data)
+            console.log(this.patientDetail1)
+        });
+        }, 1000);
+        }
+        this.updateRegisteredPatientInfo(obj);
+      }
+
+    updateRegisteredPatientInfo(obj) {
+        const dialogRef = this._matDialog.open(UpdateRegPatientInfoComponent,
+            {
+                maxWidth: "100%",
+                height: '95%',
+                width: '95%',
+                data: obj
+            });
+        dialogRef.afterClosed().subscribe(result => {
+        this.searchFormGroup.get('RegId').setValue('');
+        });
+    }
    
     selectChangedeptdoc(obj: any) {
         this.gridConfig.filters[3].fieldValue = obj.value
@@ -482,6 +556,7 @@ export class VisitMaster1 {
     firstFollowupVisit: any;
     addedBy: any;
     updatedBy: any;
+    doctorID:any;
     /**
      * Constructor
      *
@@ -509,6 +584,7 @@ export class VisitMaster1 {
             this.firstFollowupVisit = VisitMaster1.firstFollowupVisit || "";
             this.addedBy = VisitMaster1.addedBy || 0
             this.updatedBy = VisitMaster1.updatedBy || 0;
+            this.doctorID = VisitMaster1.doctorID || 0;
         }
     }
 }

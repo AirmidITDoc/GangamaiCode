@@ -529,6 +529,14 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId){
 
   public getPatientListView(mode){
     return this._httpClient1.PostData("Report/ViewReport",mode);
- 
-}
   }
+
+
+    public getReportData(param){
+      return this._httpClient1.PostData("MReportConfiguration/List",param);
+    }
+
+    
+
+}
+  

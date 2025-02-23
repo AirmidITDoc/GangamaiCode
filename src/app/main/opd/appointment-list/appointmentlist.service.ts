@@ -45,14 +45,7 @@ export class AppointmentlistService {
     }
 
 
-    createConsultatDrForm() {
-        return this._formBuilder.group({
-            visitId: 0,
-            regId: 0,
-            consultantDocId: '',
-            departmentId: ''
-        });
-    }
+ 
 
     createRefranceDrForm() {
         return this._formBuilder.group({
@@ -281,4 +274,13 @@ public InsertOPBillingpayment(employee) {
         return this._httpClient1.PostData("OPBill/OPBillingInsert", employee)
     }
 
+    public InsertVitalInfo(element){
+       
+        return this._httpClient1.PostData("OutPatient/UpdateVitalInformation",element)
+      }
+
+      public getLastVisitDoctorList(param) {
+      
+        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PreviousDoctorVisitList", param)
+    }
 }

@@ -565,7 +565,7 @@ export class AdmissionComponent implements OnInit {
     const dialogRef = this._matDialog.open(MLCInformationComponent,
       {
         maxWidth: '85vw',
-        height: '600px', width: '100%',
+        height: '450px', width: '100%',
         data: contact
       });
 
@@ -953,6 +953,7 @@ export class AdmissionPersonlModel {
   mobileNo: any;
   admissionTime:any;
   dischargeTime:any;
+  patientTypeId:any;
   /**
 * Constructor
 *
@@ -1051,6 +1052,7 @@ export class AdmissionPersonlModel {
       this.refDocName = AdmissionPersonl.refDocName || '';
       this.RelativePhoneNo = AdmissionPersonl.RelativePhoneNo || '';
       this.DepartmentId = AdmissionPersonl.DepartmentId || 0;
+      this.departmentId = AdmissionPersonl.departmentId || 0;
       this.IsOpToIPconv = AdmissionPersonl.IsOpToIPconv || 0;
       this.RelativeName = AdmissionPersonl.RelativeName || '';
       this.RelativeAddress = AdmissionPersonl.RelativeAddress || ''
@@ -1137,6 +1139,7 @@ export class AdmissionPersonlModel {
       this.mobileNo = AdmissionPersonl.mobileNo || ''
       this.admissionId=AdmissionPersonl.admissionId ||0
       this.dischargeTime  =AdmissionPersonl.dischargeTime ||''
+      this.patientTypeId =AdmissionPersonl.patientTypeId ||''
 
     }
   }

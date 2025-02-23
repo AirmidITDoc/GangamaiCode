@@ -121,6 +121,7 @@ export class ReportGenerationComponent implements OnInit {
             "filters": paramFilter || [],
             "exportType": "JSON"
         }
+        console.log(param)
         this._ReportService.getAllReporConfig(param).subscribe(
             (response) => {
                 this.reportsData = response.data;

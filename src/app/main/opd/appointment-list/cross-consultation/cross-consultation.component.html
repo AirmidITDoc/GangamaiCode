@@ -112,7 +112,7 @@
                                     <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
 
                                         <input type="hidden" name="RegId" formControlName="regId"
-                                            [(ngModel)]="regId">
+                                            [(ngModel)]="data.regId">
 
 
                                         <mat-form-field appearance="outline" fxFlex.sm="50%">
@@ -123,7 +123,7 @@
                                      
 
                                         <airmid-dropdown label="Department Name" formControlName="departmentId"
-                                            [value]="registerObj1?.departmentId" [formGroup]="crossconForm"
+                                            [value]="data?.departmentId" [formGroup]="crossconForm"
                                             [validations]="getValidationMessages().Departmentid"
                                             [mode]="autocompletedepartment"
                                             (selectionChange)="selectChangedepartment($event)">
@@ -132,7 +132,7 @@
 
                                       
                                         <airmid-dropdown label="Doctor Name" formControlName="consultantDocId"
-                                        [value]="registerObj1?.consultantDocId" [formGroup]="crossconForm"
+                                        [value]="data?.doctorId" [formGroup]="crossconForm"  [mode]="autocompleteModedeptdoc"
                                         [validations]="getValidationMessages().consultantDocId" #ddldoctor>
                                     </airmid-dropdown>
 

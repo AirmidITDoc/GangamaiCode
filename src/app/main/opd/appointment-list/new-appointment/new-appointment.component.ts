@@ -19,6 +19,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { ImageViewComponent } from '../image-view/image-view.component';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { PatientvitalInformationComponent } from './patientvital-information/patientvital-information.component';
 
 @Component({
     selector: 'app-new-appointment',
@@ -447,20 +448,20 @@ export class NewAppointmentComponent implements OnInit {
             Lbl: "PatientVitalInfo"
         };
         console.log(xx)
-        //console.log(contact)
+        console.log(contact)
         // this.advanceDataStored.storage = new SearchInforObj(xx);
-        // const dialogRef = this._matDialog.open(PatientVitalInformationComponent,
-        //     {
-        //         maxWidth: '80%',
-        //         height: '58%',
-        //         data: {
-        //             registerObj: xx,
-        //         },
-        //     });
+        const dialogRef = this._matDialog.open(PatientvitalInformationComponent,
+            {
+                maxWidth: '80%',
+                height: '58%',
+                data: {
+                    registerObj: xx,
+                },
+            });
 
-        // dialogRef.afterClosed().subscribe(result => {
-        //     this.getVisitList1();
-        // });
+        dialogRef.afterClosed().subscribe(result => {
+            
+        });
 
     }
 
@@ -483,7 +484,8 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onChangestate(e) {
-        this.ddlCountry.SetSelection(e.stateId);
+        console.log(e)
+        // this.ddlCountry.SetSelection(e.stateId);
     }
 
     onChangecity(e) {

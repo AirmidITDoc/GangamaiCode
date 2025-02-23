@@ -43,20 +43,20 @@ export class CrossConsultationComponent implements OnInit {
 
   ngOnInit(): void {   
     this.crossconForm = this.createCrossConForm();
-    if ((this.data?.visitId ?? 0) > 0) {
-      setTimeout(() => {
-        this._AppointmentlistService.getVisitById(this.data.visitId).subscribe((response) => {
-          this.registerObj1 = response;
-          // this.regId=response.regId;
-          // this.crossconForm.get("consultantDocId").setValue(this.registerObj1.consultantDocId)
-     
-          // this.ddldoctor.SetSelection(this.registerObj1.consultantDocId);
+    console.log(this.data)
+    // if ((this.data?.visitId ?? 0) > 0) {
+    //   setTimeout(() => {
+    //     this._AppointmentlistService.getVisitById(this.data.visitId).subscribe((response) => {
+    //       this.registerObj1 = response;
+    //       this.regId=this.data.regId;
+    //       // this.crossconForm.get("consultantDocId").setValue(this.registerObj1.doctorId)
+    //       // this.ddldoctor.SetSelection(this.registerObj1.doctorId);
     
-          // this.registerObj1.visitTime= this.datePipe.transform(new Date(),'yyyy-MM-ddTHH:mm')
-          console.log(response)
-        });
-      }, 500);
-    }
+    //       // this.registerObj1.visitTime= this.datePipe.transform(new Date(),'yyyy-MM-ddTHH:mm')
+    //       console.log(response)
+    //     });
+    //   }, 500);
+    // }
    
   }
 
@@ -65,23 +65,23 @@ export class CrossConsultationComponent implements OnInit {
     
     return this.formBuilder.group({
       visitId: 0,
-      regId:this.registerObj1.regId,
+      regId:this.data.regId,
       visitDate:"",// this.registerObj1.visitTime,
       visitTime:" ",// this.datePipe.transform(new Date(),'yyyy-MM-ddTHH:mm'),
-      unitId: this.registerObj1.unitId,
-      patientTypeId: this.registerObj1.patientTypeId,
-      consultantDocId: this.registerObj1.consultantDocId,
-      refDocId: this.registerObj1.refDocId,
-      tariffId: this.registerObj1.tariffId,
-      companyId: this.registerObj1.companyId,
+      unitId:1,// this.data.unitId,
+      patientTypeId: this.data.patientTypeId,
+      consultantDocId: this.data.doctorId,
+      refDocId: this.data.refDocId,
+      tariffId: this.data.tariffId,
+      companyId: this.data.companyId,
       addedBy: 1,
       updatedBy: 1,
       isCancelled: true,
       isCancelledBy: 0,
       isCancelledDate: new Date(),
-      classId: this.registerObj1.classId,
-      departmentId: this.registerObj1.departmentId,
-      patientOldNew: this.registerObj1.patientOldNew,
+      classId: this.data.classId,
+      departmentId: this.data.departmentId,
+      patientOldNew: this.data.patientOldNew,
       firstFollowupVisit: 0,
       appPurposeId: 0,//this.registerObj1.VisitDate,
       followupDate: new Date(),
@@ -104,10 +104,7 @@ export class CrossConsultationComponent implements OnInit {
     data.updatedBy=0;
     
   console.log(data);
-debugger
-  // this.crossconForm.get('visitDate').setValue(this.datePipe.transform(this.crossconForm.get('visitTime').value, 'yyyy-MM-dd'))
-
-    this._AppointmentlistService.crossconsultSave(data).subscribe((response) => {
+ this._AppointmentlistService.crossconsultSave(data).subscribe((response) => {
       this.toastr.success(response.message);
       this.onClear(true);
     }, (error) => {

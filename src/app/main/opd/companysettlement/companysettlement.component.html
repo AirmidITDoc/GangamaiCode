@@ -74,22 +74,23 @@
 
         <ng-template #actionsTemplate1 let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.patientType=='1'" matTooltip="Patient Category Self">account_box
+                <mat-icon *ngIf="element.companyId =='0'" matTooltip="Patient Category Self">account_box
                 </mat-icon>
-                <mat-icon *ngIf="!element.patientType!='1'" matTooltip="Patient Category other">business
-                </mat-icon>
-            </div>
     
+                <mat-icon *ngIf="element.companyId !='0'" matTooltip="Patient Category Company">business
+                </mat-icon>
+              
+            </div>
         </ng-template>
+    
 
         <!-- *ngIf="element.balanceAmt !=0 " -->
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
               
-
                 <button mat-icon-button matTooltip="Settlement" (click)="openPaymentpopup(element)">
-                    <mat-icon matTooltip="Settlement" *ngIf="element.balanceAmt !=0">receipt</mat-icon>
-                    <mat-icon matTooltip="Paid" *ngIf="element.balanceAmt ==0" [disabled]="true">payment</mat-icon>
+                    <mat-icon matTooltip="Settlement" *ngIf="element.balanceAmt!=0">receipt</mat-icon>
+                    <mat-icon matTooltip="Paid" *ngIf="element.balanceAmt==0" [disabled]="true">payment</mat-icon>
                 </button>
 
                 <button mat-icon-button   matTooltip="Print">

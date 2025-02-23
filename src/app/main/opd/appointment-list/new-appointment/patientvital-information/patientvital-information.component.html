@@ -1,0 +1,182 @@
+<div class="simple page-layout inner-scroll ,inner-sidebar ,left-sidebar">
+    <mat-toolbar class="accent" style="height: 40px;width: 100%;justify-content: space-between;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <button mat-icon-button class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                style="color: white;">
+                <mat-icon>account_box</mat-icon>
+            </button>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+             Patient Vital Information
+            </span> 
+        </div>
+        <div fxLayout="row" fxLayoutALign="end start">
+            <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
+            </app-common-date> -->
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div> 
+    </mat-toolbar>
+    
+    <div class="content">
+        <div class="center p-12 pb-56" style="border-radius: 4px;">
+            <div class="content-card">
+                <div fxLayout="column" fxFlexFill fxLayoutGap="10px">
+                    <mat-card>
+                        <div class="patient-info-container">
+                            <div class="patient-sub">
+                                <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                    fxLayoutAlign="space-between">
+                                    <div fxLayout="column" fxLayoutGap="10px">
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">UHID No
+                                            </span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{data.regId}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Patient Name
+                                            </span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{data.patientName}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Doctor Name</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{data.doctorname}}</span>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="column" fxLayoutGap="10px">
+
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">OPD No</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{data.opdNo}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Age | Sex
+                                            </span>
+                                            <span>:</span>
+                                            <span
+                                                class="patient-col-value">{{data.ageYear}}Y|{{data.ageMonth}}M|{{data.ageDay}}
+                                                D | {{data.genderName}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Department</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{data.departmentName}}</span>
+                                        </div>
+
+
+                                    </div>
+                                    <div fxLayout="column" fxLayoutGap="10px" style="margin-right: 100px;">
+
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Patient Type | Tarrif
+                                            </span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{data.patientType}} |
+                                                {{data.tariffName}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Company Name</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value"
+                                                style="color: orange;">{{data.companyName}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Ref-Doctor Name
+                                            </span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{data.refDocName}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card>
+                    <mat-card style="padding: 8px;">
+                        <form [formGroup]="MyFormGroup">
+                            <div fxLayout="column" fxLayoutGap="6px">
+                                <div class="prescription-title">
+                                    Vitals Information
+                                </div>
+                                <div style="border: 1px solid rgb(203, 203, 203);width: 100%;"></div>
+                                <div fxLayout="row" fxLayoutGap="4px">
+                                    <mat-form-field appearance="outline" fxFlex="12%">
+                                        <mat-label>Height</mat-label>
+                                        <!-- <span matTextPrefix>cm</span> -->
+                                        <input name="Height" formControlName="Height" placeholder="Height in m" [(ngModel)]="vHeight"
+                                            matInput #EHeight (keydown)="onEnterHeight($event)" type="text" OnlyNumber
+                                            (keyup)="getBMIcalculation()" (keypress)="keyPressCharater($event)">
+                                        <span matSuffix style="font-size: x-large;"> | cm</span>
+                                    </mat-form-field>
+                    
+                                    <mat-form-field appearance="outline" fxFlex="12%">
+                                        <mat-label>Weight</mat-label>
+                                        <input name="Weight" formControlName="Weight" placeholder="Weight in Kg" [(ngModel)]="vWeight"
+                                            matInput #EWeight (keydown)="onEnterWeight($event)" type="text" OnlyNumber
+                                            (keyup)="getBMIcalculation()" (keypress)="keyPressCharater($event)">
+                                        <span matSuffix style="font-size: x-large;"> | kg</span>
+                                    </mat-form-field>
+                    
+                                    <mat-form-field appearance="outline" fxFlex="12%">
+                                        <mat-label>BMI</mat-label>
+                                        <input name="BMI" formControlName="BMI" placeholder="BMI" matInput [(ngModel)]="vBMI" #EBMI
+                                            (keydown)="onEnterBMI($event)" type="text" OnlyNumber readonly>
+                                        <!-- <mat-icon matSuffix>KG</mat-icon> -->
+                                    </mat-form-field>
+                    
+                                    <mat-form-field appearance="outline" fxFlex="12%">
+                                        <mat-label>BSL</mat-label>
+                                        <input name="BSL" formControlName="BSL" placeholder="BSL" matInput [(ngModel)]="vBSL" #EBSL
+                                            (keydown)="onEnterBSL($event)" type="text" OnlyNumber (keypress)="keyPressCharater($event)">
+                                        <!-- <mat-icon matSuffix>KG</mat-icon> -->
+                                    </mat-form-field>
+                    
+                                    <mat-form-field appearance="outline" fxFlex="12%">
+                                        <mat-label>SpO2</mat-label>
+                                        <input name="SpO2" formControlName="SpO2" placeholder="SpO2" [(ngModel)]="vSpO2" matInput #ESpO2
+                                            (keydown)="onEnterSpO2($event)" type="text" OnlyNumber (keypress)="keyPressCharater($event)">
+                                        <!-- <mat-icon matSuffix>KG</mat-icon> -->
+                                    </mat-form-field>
+                    
+                                    <mat-form-field appearance="outline" fxFlex="12%">
+                                        <mat-label>Pulse</mat-label>
+                                        <input name="Pulse" formControlName="Pulse" placeholder="Pulse" [(ngModel)]="vPulse" matInput
+                                            #EPulse (keydown)="onEnterPulse($event)" type="text" OnlyNumber
+                                            (keypress)="keyPressCharater($event)">
+                                        <span matSuffix style="font-size: x-large;"> |bpm</span>
+                                    </mat-form-field>
+                    
+                                    <mat-form-field appearance="outline" fxFlex="13%">
+                                        <mat-label>BP</mat-label>
+                                        <input name="BP" formControlName="BP" placeholder="BP" matInput #EBP [(ngModel)]="vBP"
+                                            (keydown)="onEnterBP($event)" type="text" OnlyNumber (keypress)="keyPressOk($event)">
+                                        <span matSuffix style="font-size: x-large;"> |mmHg</span>
+                                    </mat-form-field>
+                    
+                                    <mat-form-field appearance="outline" fxFlex="12%">
+                                        <mat-label>Temp</mat-label>
+                                        <input name="Temp" formControlName="Temp" placeholder="Temp" [(ngModel)]="vTemp" matInput #ETemp
+                                            (keydown)="onEnterTemp($event)" type="text" OnlyNumber (keypress)="keyPressCharater($event)">
+                                        <span matSuffix style="font-size: x-large;"> | F</span>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </form>
+                    </mat-card>
+
+                    <div fxLayput="row" fxLayoutAlign="end" fxLayoutGap="6px">
+                        <button class="btn btn-danger-outline" (click)="onClose()">Reset</button>
+                        <button class="btn btn-primary"  (click)="onSave()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

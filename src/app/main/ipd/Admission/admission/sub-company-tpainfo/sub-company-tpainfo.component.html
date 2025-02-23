@@ -39,15 +39,15 @@
                   style="align-items: baseline;">
 
                   <span class="label">Admission No :</span>
-                  <span class="data_input">{{selectedAdvanceObj.admissionId}}
+                  <span class="data_input">{{data.admissionId}}
                     <!-- {{selectedAdvanceObj.ipdno}} -->
                   </span>
 
                   <span class="label"> Patient Name : </span>
-                  <span class="data_input">{{selectedAdvanceObj.patientName}}</span>
+                  <span class="data_input">{{data.patientName}}</span>
 
                   <span class="label">Admission ON : </span>
-                  <span class="data_input">{{selectedAdvanceObj.admissionTime}}</span>
+                  <span class="data_input">{{data.admissionTime}}</span>
                   <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
                   </app-common-date>
                 </div>
@@ -72,16 +72,16 @@
               <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                 <airmid-dropdown label="City Name" formControlName="city" [formGroup]="SubcompanyFormGroup"
-                  [mode]="autocompleteModecity" (selectionChange)="onChangeCity($event)">
-                </airmid-dropdown>
+                  [mode]="autocompleteModecity" (selectionChange)="onChangeCity($event)" [value]="data?.cityId">
+                </airmid-dropdown >
               </div>
               <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <airmid-dropdown label="Company Name" formControlName="companyName" [formGroup]="SubcompanyFormGroup"
-                  [mode]="autocompleteModecompany" (selectionChange)="onChangeCompany($event)">
+                  [mode]="autocompleteModecompany" (selectionChange)="onChangeCompany($event)" [value]="data?.companyId">
                 </airmid-dropdown>
               </div>
 
-              <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+              <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> 
                 <airmid-dropdown label="Company Type" formControlName="compTypeId" [formGroup]="SubcompanyFormGroup"
                   [mode]="autocompleteModecompanytype">
                 </airmid-dropdown>
@@ -91,10 +91,10 @@
                 <div fxLayout="row" class="gap-8">
 
                   <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" label="PhoneNo"
-                    formControlName="phoneNo" [validations]="getValidationMessages().phoneNo"
+                    formControlName="phoneNo" [validations]="getValidationMessages().phoneNo" 
                     [formGroup]="SubcompanyFormGroup" [maxLength]="10">
                   </airmid-textbox>
-                  <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" label="MobileNo"
+                  <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" label="MobileNo" 
                     formControlName="mobileNo" [formGroup]="SubcompanyFormGroup"
                     [validations]="getValidationMessages().mobileNo" [maxLength]="10">
                   </airmid-textbox>

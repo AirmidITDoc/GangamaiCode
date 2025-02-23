@@ -108,16 +108,45 @@ ServiceList: any = [];
 
   }
 
+  // bindReportData() {
+
+  //   var data = {
+  //     ReportSection: "COMMON REPORT"
+  //   }
+  //   this._OPReportsService.getDataByQuery(data).subscribe(data => {
+  //     console.log(data)
+  //     this.dataSource.data = data as any[];
+
+  //   });
+  // }
+
+
   bindReportData() {
 
-    var data = {
-      ReportSection: "COMMON REPORT"
-    }
-    this._OPReportsService.getDataByQuery(data).subscribe(data => {
-      this.dataSource.data = data as any[];
+    var data = 
+      {
+        "first": 0,
+        "rows": 10,
+        "sortField": "ReportSection",
+        "sortOrder": 0,
+        "filters": [
+          {
+            "fieldName": "ReportSection",
+            "fieldValue": "COMMON REPORT",
+            "opType": "Contains"
+          }
+        ],
+        "exportType": "JSON"
+      }
+    
+    this._OPReportsService.getReportData(data).subscribe(data => {
+      console.log(data)
+      this.dataSource.data = data.data as any[];
 
     });
   }
+
+
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -1421,6 +1450,8 @@ ServiceList: any = [];
   getOptionTextUser(option) {
     return option && option.UserName ? option.UserName : '';
   }
+
+  getReportData
 
 }
 

@@ -103,21 +103,23 @@ export class EditAdmissionComponent implements OnInit {
       setTimeout(() => {
         this._AdmissionService.getRegistraionById(this.data.regId).subscribe((response) => {
           this.registerObj = response;
-          console.log(this.registerObj)
+          // console.log(this.registerObj)
 
         });
 
         this._AdmissionService.getAdmissionById(this.data.admissionId).subscribe((response) => {
           this.registerObj1 = response;
+          console.log(response)
           if (this.registerObj1) {
             this.registerObj1.phoneNo = this.registerObj1.phoneNo.trim()
             this.registerObj1.mobileNo = this.registerObj1.mobileNo.trim()
 
-            this.registerObj1.admissionTime = this.datePipe.transform(this.registerObj1.admissionTime, 'hh:mm:ss a')
-            this.registerObj1.dischargeTime = this.datePipe.transform(this.registerObj1.dischargeTime, 'hh:mm:ss a')
-            this.admissionFormGroup.get("DocNameId").setValue(this.registerObj1.docNameId)
-            if(this.registerObj1.patientTypeID==2)
+            debugger
+            // this.admissionFormGroup.get("DepartmentId").setValue(this.registerObj1.departmentId)
+            if(this.registerObj1.patientTypeId==2){
               this.isCompanySelected=true
+              this.admissionFormGroup.get("CompanyId").setValue(this.registerObj1.companyId)
+            }
           }
           console.log(this.registerObj1)
 

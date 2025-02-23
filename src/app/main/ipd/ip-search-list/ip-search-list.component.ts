@@ -50,8 +50,8 @@ export class IPSearchListComponent implements OnInit {
     @ViewChild('iconBillCancle') iconBillCancle!: TemplateRef<any>;
     @ViewChild('iconMlc') iconMlc!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+    fromDate =""// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    // toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
   
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.iconPatientCategory;
@@ -115,8 +115,8 @@ export class IPSearchListComponent implements OnInit {
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: "01/01/1900", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "01/01/1900", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: "", opType: OperatorComparer.Equals },
             { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
@@ -127,57 +127,57 @@ export class IPSearchListComponent implements OnInit {
         row: 25
     } 
 
-    gridConfig1: gridModel = {
-        apiUrl: "DischargeSP/DischargeList",
-        columnsList: [
-            { heading: "Code", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA', width: 50, type: gridColumnTypes.status, },
-            { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA', width: 50, type: gridColumnTypes.status, },
-            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-            { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
-            { heading: "IPDNo", key: "ipdno", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Doctorname", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 10 },
-            { heading: "RefDocName", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 10 },
-            { heading: "PatientType", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.status, },
-            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 10 },
-            {
-                heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
-                template: this.actionButtonTemplate  // Assign ng-template to the column
-            }
-            // {
-            //     heading: "Action", key: "action", align: "right", width: 150, type: gridColumnTypes.action, actions: [
-            //         {
-            //             action: gridActions.edit, callback: (data: any) => {
-            //                 this.onSave(data);
-            //             }
-            //         }, {
-            //             action: gridActions.delete, callback: (data: any) => {
-            //                 this._IpSearchListService.deactivateTheStatus(data.AdmissionId).subscribe((response: any) => {
-            //                     this.toastr.success(response.message);
-            //                     this.grid.bindGridData();
-            //                 });
-            //             }
-            //         }]
-            // } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "AdmissionId",
-        sortOrder: 0,
-        filters: [
-            { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: "01/01/2022", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "11/01/2024", opType: OperatorComparer.Equals },
-            { fieldName: "Admtd_Dschrgd_All", fieldValue: "1", opType: OperatorComparer.Equals },
-            { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
-    }
+    // gridConfig1: gridModel = {
+    //     apiUrl: "DischargeSP/DischargeList",
+    //     columnsList: [
+    //         { heading: "Code", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA', width: 50, type: gridColumnTypes.status, },
+    //         { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA', width: 50, type: gridColumnTypes.status, },
+    //         { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+    //         { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    //         { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
+    //         { heading: "IPDNo", key: "ipdno", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    //         { heading: "Doctorname", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 10 },
+    //         { heading: "RefDocName", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 10 },
+    //         { heading: "PatientType", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.status, },
+    //         { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 10 },
+    //         {
+    //             heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
+    //             template: this.actionButtonTemplate  // Assign ng-template to the column
+    //         }
+    //         // {
+    //         //     heading: "Action", key: "action", align: "right", width: 150, type: gridColumnTypes.action, actions: [
+    //         //         {
+    //         //             action: gridActions.edit, callback: (data: any) => {
+    //         //                 this.onSave(data);
+    //         //             }
+    //         //         }, {
+    //         //             action: gridActions.delete, callback: (data: any) => {
+    //         //                 this._IpSearchListService.deactivateTheStatus(data.AdmissionId).subscribe((response: any) => {
+    //         //                     this.toastr.success(response.message);
+    //         //                     this.grid.bindGridData();
+    //         //                 });
+    //         //             }
+    //         //         }]
+    //         // } //Action 1-view, 2-Edit,3-delete
+    //     ],
+    //     sortField: "AdmissionId",
+    //     sortOrder: 0,
+    //     filters: [
+    //         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+    //         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+    //         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+    //         { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+    //         { fieldName: "From_Dt", fieldValue: "01/01/2022", opType: OperatorComparer.Equals },
+    //         { fieldName: "To_Dt", fieldValue: "11/01/2024", opType: OperatorComparer.Equals },
+    //         { fieldName: "Admtd_Dschrgd_All", fieldValue: "1", opType: OperatorComparer.Equals },
+    //         { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+    //         { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
+    //         { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+    //         { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+    //         // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    //     ],
+    //     row: 25
+    // }
        
     menuActions: Array<string> = [];
 
@@ -192,6 +192,12 @@ export class IPSearchListComponent implements OnInit {
 
     ngOnInit(): void {
         this.myFilterform=this._IpSearchListService.filterForm();
+        // this.myFilterform.get("fromDate").reset();
+        // this.myFilterform.get("enddate").reset();
+        this.myFilterform.get("fromDate").setValue("");
+        this.myFilterform.get("enddate").setValue("");
+      
+
         if (this._ActRoute.url == '/ipd/ipadvance') {
             this.menuActions.push('Advance');
             this.menuActions.push('Bed Transfer');
@@ -258,7 +264,7 @@ export class IPSearchListComponent implements OnInit {
                     }
                 });
             }
-            else if (m == "Discharge Summary Template") {
+            else if (m == "Discharge Summary") {
                 const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
                 buttonElement.blur(); // Remove focus from the button
     
@@ -430,11 +436,14 @@ export class IPSearchListComponent implements OnInit {
 
    
     onChangeStatus(event){
+        debugger
         console.log(event)
         if(event.value)
         this.gridConfig.filters[6].fieldValue ="1"
     else
       this.gridConfig.filters[6].fieldValue ="0"
+
+      this.grid.bindGridData();
     }
 
     onClear() {

@@ -42,7 +42,7 @@ vbalanceamt: any = 0;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
     ngAfterViewInit() {
-       this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsTemplate1;
+        this.gridConfig.columnsList.find(col => col.key === 'companyId')!.template = this.actionsTemplate1;
        this.gridConfig.columnsList.find(col => col.key === 'balanceAmt')!.template = this.actionsTemplate2;
        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
@@ -50,7 +50,7 @@ vbalanceamt: any = 0;
     gridConfig: gridModel = {
         apiUrl: "OPBill/OPBillListSettlementList",
         columnsList: [
-            {heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA',width:60},
+            { heading: "--", key: "companyId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:70},
             { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
