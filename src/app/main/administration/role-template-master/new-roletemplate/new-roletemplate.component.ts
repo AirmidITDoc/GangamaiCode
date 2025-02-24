@@ -41,39 +41,13 @@ export class NewRoletemplateComponent implements OnInit {
         if (this.myform.valid) {
 
             console.log("JSON :-",this.myform.value)
-        
-            if(!this.vRoleId){
-                var mdata = {
-                    "roleId": 0,
-                    "roleName": this.myform.get("roleName").value,
-                    "isActive": JSON.parse(this.myform.get("isActive").value),
-                  };
 
-                  console.log('json mdata:', mdata);
-
-                this._RoleTemplateService.roleMasterSave(mdata).subscribe((response) => {
-                    this.toastr.success(response.message);
-                    this.onClear(true);
-                }, (error) => {
-                    this.toastr.error(error.message);
-                });
-            }
-            else{
-                var mdata1 = {
-                    "roleId": this.vRoleId,
-                    "roleName": this.myform.get("roleName").value,
-                    "isActive": JSON.parse(this.myform.get("isActive").value),
-                  };
-
-                  console.log('json mdata:', mdata1);
-
-                this._RoleTemplateService.roleMasterUpdate(mdata1).subscribe((response) => {
-                    this.toastr.success(response.message);
-                    this.onClear(true);
-                }, (error) => {
-                    this.toastr.error(error.message);
-                });
-            }
+            this._RoleTemplateService.roleMasterSave(this.myform.value).subscribe((response) => {
+              this.toastr.success(response.message);
+              this.onClear(true);
+            }, (error) => {
+              this.toastr.error(error.message);
+            });
         }
         else
         {

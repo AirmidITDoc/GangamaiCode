@@ -46,7 +46,7 @@ export class ParametermasterComponent implements OnInit {
 
             { heading: "IsNumeric", key: "isNumericParameter", width: 100, sort: true, align: 'left', type: gridColumnTypes.template},
 
-            { heading: "IsPrintDisSummary", key: "isPrintDisSummary", width: 100, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsPrintDisSummary", key: "isPrintDisSummary", sort: true, align: 'left', emptySign: 'NA', width:150 },
             
             { heading: "Formula", key: "formula", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             
@@ -158,7 +158,7 @@ export class ParametermasterComponent implements OnInit {
         
         console.log(param)
 
-        this._ParameterService.getTableData(param).subscribe((data) => {
+        this._ParameterService.getTableData(param,row.isNumericParameter).subscribe((data) => {
 
             console.log("data:",data.data)
             // if (row.IsNumericParameter == 1) {

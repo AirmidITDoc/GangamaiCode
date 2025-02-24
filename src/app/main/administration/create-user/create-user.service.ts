@@ -29,7 +29,7 @@ export class CreateUserService {
         Validators.required,
         Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
       ]],
-      roomId: [""],
+      unitId: [""],
       mobileNo: ["", [
         Validators.required,
         Validators.minLength(10),
@@ -72,8 +72,8 @@ export class CreateUserService {
       ],
       isDoctorType: false,
       doctorId: 0,
-      IsDicslimit: '',
-      DiscLimitPer: [""],
+      isDiscApply: '',
+      discApplyPer: [0],
       isGrnverify: "",
       isPoverify: false,
       isPoinchargeVerify: "",
@@ -88,11 +88,16 @@ export class CreateUserService {
       isBedStatus: '',
       addChargeIsDelete: '',
       IsPharmacyBalClearnace: '',
-      browseDay: [""],
+      // browseDay: [""],
       mailDomain: ["1"],
       isRefDocEditOpt: true,
       isDateInterval: true,
-      isDateIntervalDays: 0,
+      isDateIntervalDays: [0, [
+        // Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+      ]],
       loginStatus: true,
       userToken: [""],
 
@@ -118,85 +123,6 @@ export class CreateUserService {
     });
   }
 
-  //   createuserForm(): FormGroup {
-  //     return this._formBuilder.group({
-  //         userId: [0],
-  //         firstName: ['', [
-  //           Validators.required,
-  //           Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
-  //       ]],
-  //         lastName: ['', [
-  //           Validators.required,
-  //           Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
-  //       ]],
-  //         userName: ['', 
-  //           [
-  //               Validators.required, 
-  //               Validators.pattern('[a-zA-Z0-9_]*')
-  //           ]],
-  //         password:[
-  //           "",
-  //           Validators.pattern("^\\d{0,12}(\\.\\d*)?$")
-  //       ],
-  //         roleId: [""],
-  //         storeId: 0,
-  //         isDoctorType: true,
-  //         doctorId: 0,
-  //         isPoverify: true,
-  //         isGrnverify: true,
-  //         isCollection: true,
-  //         isBedStatus: true,
-  //         isCurrentStk: true,
-  //         isPatientInfo: true,
-  //         isDateInterval: true,
-  //         isDateIntervalDays: 0,
-  //         mailId: [
-  //           "",
-  //           Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"),
-  //       ],
-  //         mailDomain: ["1"],
-  //         loginStatus: true,
-  //         addChargeIsDelete: true,
-  //         isIndentVerify: true,
-  //         isPoinchargeVerify: true,
-  //         isRefDocEditOpt: true,
-  //         isInchIndVfy: true,
-  //         webRoleId: 0,
-  //         userToken: [""],
-  //         PharExpOpt:true,
-  //         PharIPOpt:true,
-  //         PharOPOpt:true,
-
-  //         roomId:[""],
-  //         mobileNo:[ "", [
-  //           Validators.required,
-  //           Validators.minLength(10),
-  //           Validators.maxLength(10),
-  //           Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-  //       ]],
-  //         browseDay:[""],
-  //         DiscLimitPer:[""],
-  //         IsDoctor:[""],
-
-  //         Poverify: '',
-  //         Ipoverify: '',
-  //         // Grnverify: '',
-  //         Indentverify: '',
-  //         IIverify: '',
-  //         CollectionInformation: '',
-  //         CurrentStock: '',
-  //         PatientInformation: '',
-  //         ViewBrowseBill: '0',
-  //         IsAddChargeDelete: '',
-  //         IsPharmacyBalClearnace: '',
-  //         BedStatus: '',
-  //         // IsActive: 'true',
-  //         IsDicslimit:'',
-  //         DoctorID:'',
-  //         isActive:[true,[Validators.required]],
-  //     });
-  // }
-
   createSearchForm(): FormGroup {
     return this._formBuilder.group({
       DoctorNameSearch: [""],
@@ -218,12 +144,6 @@ export class CreateUserService {
   PasswordUpdate(Param: any) {
     return this._httpClient.PostData("LoginManager/updatepassword", Param);
   }
-
-  //   public updateuser(Param: any) {
-  //     if (Param.userId) {
-  //         return this._httpClient.PutData("LoginManager/Edit/" + Param.userId, Param);
-  //     }
-  // }
 
   public deactivateTheStatus(m_data) {
     return this._httpClient.DeleteData("LoginManager/LoginCanceled?Id=" + m_data.toString());

@@ -81,8 +81,7 @@ export class CreateUserComponent implements OnInit {
             const dialogRef = this._matDialog.open( NUserComponent, 
                 {
                     maxHeight: '95vh',
-                    width: '90%',
-                    data: row
+                    width: '90%'
                 });
             dialogRef.afterClosed().subscribe(result => {
                 if (result) {
@@ -90,6 +89,24 @@ export class CreateUserComponent implements OnInit {
                 }
             });
         }
+
+        onEdit(row: any = null) {
+          const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+          buttonElement.blur(); // Remove focus from the button
+  
+          let that = this;
+          const dialogRef = this._matDialog.open( NUserComponent, 
+              {
+                  maxHeight: '95vh',
+                  width: '90%',
+                  data: row
+              });
+          dialogRef.afterClosed().subscribe(result => {
+              if (result) {
+                  that.grid.bindGridData();
+              }
+          });
+      }
 
         Password:string;
 

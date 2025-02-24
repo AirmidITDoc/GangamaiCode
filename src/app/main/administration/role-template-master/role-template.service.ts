@@ -43,16 +43,12 @@ export class RoleTemplateService {
     }
 
     public roleMasterSave(Param: any) {
-        return this._httpClient.PostData("RoleMaster", Param);
+        if (Param.roleId) {
+            return this._httpClient.PutData("RoleMaster/" + Param.roleId, Param);
+        }else return this._httpClient.PostData("RoleMaster", Param);
     }
     getPermissionList(roleId: any) {
         return this._httpClient.GetData("RoleMaster/get-permissions?RoleId="+roleId);
-    }
-    public roleMasterUpdate(Param: any) {
-        debugger
-        if (Param.roleId) {
-            return this._httpClient.PutData("RoleMaster/" + Param.roleId, Param);
-        }
     }
 
     public deactivateTheStatus(m_data) {

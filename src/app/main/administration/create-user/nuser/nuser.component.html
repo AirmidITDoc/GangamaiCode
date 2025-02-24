@@ -24,8 +24,8 @@
                 <div>
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-dropdown label="UnitName" formControlName="roomId" [formGroup]="myuserform"
-                                [validations]="getValidationMessages().roomId" [mode]="autocompleteModeUnitName"
+                            <airmid-dropdown label="UnitName" formControlName="unitId" [formGroup]="myuserform"
+                                [validations]="getValidationMessages().unitId" [mode]="autocompleteModeUnitName"
                                 (selectionChange)="selectChangeUnitName($event)">
                             </airmid-dropdown>
                         </div>
@@ -61,7 +61,7 @@
 
                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="PassWord" formControlName="password" [formGroup]="myuserform"
-                                [validations]="getValidationMessages().password" [maxLength]="30" type="password">
+                                [validations]="getValidationMessages().password" [maxLength]="30">
                             </airmid-textbox>
 
                         </div>
@@ -112,14 +112,14 @@
                         </div>
 
                         <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="40%">
-                            <mat-checkbox formControlName="IsDicslimit" (change)="chkDiscLimit($event)"
+                            <mat-checkbox formControlName="isDiscApply" (change)="chkDiscLimit($event)"
                                 style="padding: 10px;">IsDiscountLimit
                             </mat-checkbox>&nbsp;
 
                             <mat-form-field appearance="outline" fxFlex *ngIf="DisclimitFlag">
                                 <mat-label>Discount %</mat-label>
                                 <input matAutocompletePosition="below" type="text" matInput
-                                    formControlName="DiscLimitPer">
+                                    formControlName="discApplyPer">
                             </mat-form-field>
                         </div>
                     </div>
@@ -132,7 +132,7 @@
                                     GRN Verify</mat-checkbox>
                                 <mat-checkbox formControlName="isPoverify" [(ngModel)]="visPOVerify">
                                     PO Verify</mat-checkbox>
-                                <mat-checkbox formControlName="isPoinchargeVerify" [(ngModel)]="visGRNVerify">
+                                <mat-checkbox formControlName="isPoinchargeVerify" [(ngModel)]="visPoinchargeVerify">
                                     Incharge PO Verify</mat-checkbox>
                                 <mat-checkbox formControlName="isIndentVerify" [(ngModel)]="visIndentVerify">
                                     Indent Verify</mat-checkbox>
@@ -198,8 +198,8 @@
                                     </div>
                                 </div>
                                 <div class="icon-info-col" fxLayoutGap="50px">
-                                    <airmid-textbox label="BrowseDays" formControlName="browseDay"
-                                        [formGroup]="myuserform" [validations]="getValidationMessages().mobileNo"
+                                    <airmid-textbox label="BrowseDays" formControlName="isDateIntervalDays"
+                                        [formGroup]="myuserform" [validations]="getValidationMessages().isDateIntervalDays"
                                         [maxLength]="30">
                                     </airmid-textbox>
                                 </div>

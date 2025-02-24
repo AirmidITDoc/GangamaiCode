@@ -102,13 +102,14 @@ export class CancellationComponent implements OnInit {
     columnsList: [
       { heading: "-", key: "opD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
       { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-      { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width:150 },
-      { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:150  },
+      // { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width:150 },
+      { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9},
       { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width:250 },
       { heading: "BillAmount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' }, //not there in payload
       { heading: "DiscountAmt", key: "discountAmt", sort: true, align: 'left', emptySign: 'NA' },//not there in payload
+      { heading: "NetAmt", key: "netAmt", sort: true, align: 'left', emptySign: 'NA' },//not there in payload
       {
         heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
         template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -134,13 +135,14 @@ export class CancellationComponent implements OnInit {
     columnsList: [
       { heading: "-", key: "opD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
       { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-      { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width:200 },      
-      { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:150 },
+      // { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width:200 },      
+      { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9 },
       { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:250 },
       { heading: "BillAmount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "DiscountAmt", key: "discountAmt", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "NetAmt", key: "netAmt", sort: true, align: 'left', emptySign: 'NA' },//not there in payload
       {
         heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
         template: this.actionButtonTemplateIP  // Assign ng-template to the column
@@ -167,16 +169,17 @@ export class CancellationComponent implements OnInit {
   gridConfig1: gridModel = {
     apiUrl: "Administration/IPAdvanceList",
     columnsList: [
-      { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width:200 },
+      { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9 },
       { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:200, },
       { heading: "Advance Amt ", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "Balance Amt ", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
       {
         heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
-        template: this.actionButtonTemplateIPAdvance  // Assign ng-template to the column
+        template: this.actionButtonTemplateIPAdvance
     } //Action 1-view, 2-Edit,3-delete
     ],
     sortField: "RegID",
@@ -198,13 +201,11 @@ export class CancellationComponent implements OnInit {
   gridConfig2: gridModel = {
     apiUrl: "Billing/IPRefundBillList",
     columnsList: [
-      { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width:200 },
-      { heading: "RefundTime", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width:200 },
+      { heading: "RefundDate", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9 },
       { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:200 },
       { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width:200},
-      { heading: "PaymentTime", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width:200},
+      { heading: "PaymentDate", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9},
       { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
       {
         heading: "Action", key: "action", align: "right", width: 150,sticky: true, type: gridColumnTypes.template,
@@ -229,16 +230,14 @@ export class CancellationComponent implements OnInit {
   gridConfig3: gridModel = {
     apiUrl: "Administration/IPRefundAdvanceReceiptList",
     columnsList: [
-      { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width:200 },
-      { heading: "RefundTime", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width:200 },
+      { heading: "RefundDate", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9 },
       { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:200},
       { heading: "AdvanceAmount", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "AdvanceUsedAmt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "BalanceAmount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width:200 },
-      { heading: "PaymentTime", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width:200 },
+      { heading: "PaymentDate", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9  },
       {
         heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
         template: this.actionButtonTemplateIPRefundAdv  // Assign ng-template to the column

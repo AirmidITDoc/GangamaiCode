@@ -18,7 +18,7 @@ export class NewMenuComponent implements OnInit {
     saveflag: boolean = false;
     isActive: boolean = true;
     isDisplay: boolean=true;
-    autocompleteModeUPID:string="UPID";
+    autocompleteModeUPID:string="MenuMain";
 
     constructor(
         public _MenuMasterService: MenuMasterService,

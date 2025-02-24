@@ -50,12 +50,12 @@ export class TestmasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "Pathology/PathologyTestList",
         columnsList: [
-            { heading: "IsTemplateTest", key: "isTemplateTest", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100},
+            { heading: "IsTemplateTest", key: "isTemplateTest", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 150},
             { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "TestName", key: "testName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "PrintTestName", key: "printTestName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "BillingServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "TestName", key: "testName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "PrintTestName", key: "printTestName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "BillingServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Technique Name", key: "techniqueName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Machine Name", key: "machineName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "IsSub Test", key: "isSubTest", sort: true, align: 'left', type: gridColumnTypes.template, width: 100},

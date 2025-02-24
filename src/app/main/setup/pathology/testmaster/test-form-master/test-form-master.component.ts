@@ -135,6 +135,7 @@ export class TestFormMasterComponent implements OnInit {
                 this.Statusflag = false;
                 this._TestmasterService.is_templatetest = false;
                 this.testForm.get("Status").setValue(1);
+                this._TestmasterService.is_Test=true
                 this.fetchTestlist(this.registerObj);
 
             } else if (this.registerObj.isTemplateTest) {
@@ -313,7 +314,7 @@ debugger
         var m_data =  {
             "first": 0,
             "rows": 10,
-            "sortField": "TestId",
+            "sortField": "TemplateId",
             "sortOrder": 0,
             "filters": [
                 {
@@ -336,7 +337,9 @@ debugger
         }
         this._TestmasterService.getTemplateListfor(m_data).subscribe(Visit => {
             console.log("VisitTemplateList:",Visit.data)
-            this.Templatetdatasource.data = Visit as TemplatedetailList[];
+            this.Templatetdatasource.data = Visit.data as TemplatedetailList[];
+            console.log(this.Templatetdatasource.data)
+            // this.dsTemparoryList.data = Visit as TestList[];
         });
 
     }
@@ -422,9 +425,9 @@ debugger
             }));
             let mPathTestDetailMasters = this.DSTestList.data.map((row: any) => ({
                 "TestDetId": 0,
-                "TestId": 0,
+                "TestId": row.testId,
                 "SubTestId": row.subTestID || 0,
-                "ParameterId": row.parameterId
+                "ParameterId": row.parameterID || row.parameterId
             }));
             var mdata1 = {
                 "TestId": this.vTestId,
@@ -728,7 +731,7 @@ debugger
     }
 
     onClose(val: boolean) {
-        this.testForm.reset();
+        this.testForm.reset({Status:[1]});
         this.dialogRef.close(val);
     }
 }

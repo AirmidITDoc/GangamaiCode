@@ -26,6 +26,7 @@ export class NUserComponent implements OnInit{
     vdoctorID:any;
     regobj:any;
     visGRNVerify: any;
+    visPoinchargeVerify:any;
     visPOVerify:any;
     visIndentVerify:any;
     visInchIndVfy:any;
@@ -57,7 +58,7 @@ export class NUserComponent implements OnInit{
     ngOnInit(): void {
         debugger
         this.myuserform = this._CreateUserService.createuserForm();
-        this.myuserform.get("roomId").setValue("1")
+        this.myuserform.get("unitId").setValue("1")
         if((this.data?.userId??0) > 0)
         {
           this.myuserform.patchValue(this.data);
@@ -67,11 +68,12 @@ export class NUserComponent implements OnInit{
             this.isActive=this.regobj.isActive
             this.visGRNVerify=this.regobj.isGRNVerify
             this.visPOVerify=this.regobj.isPOVerify
+            this.visPoinchargeVerify=this.regobj.isPoinchargeVerify
             this.visIndentVerify=this.regobj.isIndentVerify
             this.visInchIndVfy=this.regobj.isInchIndVfy
-            this.vpharExtOpt=this.regobj.pharExtOpt
-            this.vpharIPOpt=this.regobj.pharIPOpt
-            this.vpharOPOpt=this.regobj.pharOPOpt
+            this.vpharExtOpt = this.regobj.pharExtOpt == 1 ? true : false;
+            this.vpharIPOpt = this.regobj.pharIPOpt == 1 ? true : false;
+            this.vpharOPOpt = this.regobj.pharOPOpt == 1 ? true : false;
             this.visCollection=this.regobj.isCollection
             this.visPatientInfo=this.regobj.isPatientInfo
             this.visBedStatus=this.regobj.isBedStatus
@@ -82,6 +84,11 @@ export class NUserComponent implements OnInit{
               this.docflag=true
             else
               this.docflag=false
+
+            if(this.regobj.isDiscApply==1)
+              this.DisclimitFlag=true
+            else
+            this.DisclimitFlag=false
             
             // 
         }
@@ -124,8 +131,8 @@ export class NUserComponent implements OnInit{
         DoctorID: '',
         IsDoctor: '',
         userId:'0',
-        roomId:'',
-        browseDay:'',
+        unitId:'',
+        // browseDay:'',
         isActive:true,
         
         // RoleName: '',
@@ -146,8 +153,8 @@ export class NUserComponent implements OnInit{
         PharExpOpt:'',
         PharIPOpt:'',
         PharOPOpt:'',
-        IsDicslimit:'',
-        DiscLimitPer:'',
+        isDiscApply:'',
+        discApplyPer:'',
         });
     }
 
@@ -213,8 +220,8 @@ export class NUserComponent implements OnInit{
           }  
         }
         if(this.DisclimitFlag == true){ 
-          if ((this.myuserform.get('DiscLimitPer').value == '' || this.myuserform.get('DiscLimitPer').value == 0 
-          || this.myuserform.get('DiscLimitPer').value == undefined)) {
+          if ((this.myuserform.get('discApplyPer').value == '' || this.myuserform.get('discApplyPer').value == 0 
+          || this.myuserform.get('discApplyPer').value == undefined)) {
             this.toastr.warning('Please enter a Discount % ', 'Warning !', {
               toastClass: 'tostr-tost custom-toast-warning',
             });
@@ -238,7 +245,7 @@ export class NUserComponent implements OnInit{
             formData.isPatientInfo = formData.isPatientInfo ?? false;
             formData.isPoinchargeVerify = formData.isPoinchargeVerify ?? false;
             formData.isDoctorType = formData.isDoctorType ?? false;
-            formData.IsDicslimit = formData.IsDicslimit ?? false;
+            formData.isDiscApply = formData.isDiscApply === true ? 1 : 0;
         
             console.log("MenuMaster json:", formData);
 
@@ -290,7 +297,7 @@ export class NUserComponent implements OnInit{
         this.DisclimitFlag = true 
         }else{
         this.DisclimitFlag = false
-        this.myuserform.get('DiscLimitPer').setValue('')
+        this.myuserform.get('discApplyPer').setValue('')
         }            
     }
 
@@ -301,7 +308,6 @@ export class NUserComponent implements OnInit{
 
     getValidationMessages() {
       return {
-          roomId:[],
           unitId:[],
           mobileNo:[
               { name: "pattern", Message: "Only numbers allowed" },
@@ -339,6 +345,9 @@ export class NUserComponent implements OnInit{
              { name: "required", Message: "WebRole is required" },
           ],
           doctorId:[],
+          isDateIntervalDays:[
+            
+          ]
       };
   }
 }

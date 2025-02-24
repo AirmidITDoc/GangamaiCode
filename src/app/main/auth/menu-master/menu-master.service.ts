@@ -21,9 +21,9 @@ export class MenuMasterService {
     createMenuForm(): FormGroup {
     return this._formBuilder.group({
                 id:[0],
-                upId: [0,
+                upId: ["",
                     [
-                        // Validators.required,
+                        Validators.required
                         // Validators.pattern('^[0-9]*$')
                         // ("^[A-Za-z]*[a-zA-Z]*$")
                     ]
@@ -75,19 +75,20 @@ export class MenuMasterService {
     }
 
       public menuMasterSave(Param: any) {
-        if (Param.id) {
+        if (Param.id)
             return this._httpClient.PutData("MenuMaster/Edit/" + Param.id, Param);
-        }else
+        else
        return this._httpClient.PostData("MenuMaster/Insertsp", Param);
     }
 
     getValidationMessages() {
         return {
             sortOrder: [
-                { name: "required", Message: "Please enter display sr no " }
+                { name: "pattern", Message: "Only numbers allowed" },
+                { name: "required", Message: "Please enter SortOrder" },
             ],
             upId:[
-                // { name: "required", Message: "Please enter UPID No" },
+                { name: "required", Message: "UPID is required" },
             ],
             linkName:[
                 { name: "required", Message: "Link Name is required" }

@@ -454,7 +454,7 @@ export class ParameterFormMasterComponent implements OnInit {
         this.dialogRef.close(val);
     }
     onClose() {
-        this.parameterForm.reset();
+        this.parameterForm.reset({isNumeric: ["1"]});
         this.numericForm.reset();
         this.dialogRef.close();
     }

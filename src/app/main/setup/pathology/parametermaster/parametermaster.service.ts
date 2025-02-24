@@ -14,7 +14,7 @@ export class ParametermasterService {
     formulaform: FormGroup;
     numericform: FormGroup;
 
-    is_numeric : Boolean = false;
+    is_numeric : Boolean = true;
     descriptiveList = [];
     numericList = [];
 
@@ -212,8 +212,10 @@ export class ParametermasterService {
         return this._httpClient.PostData("Pathology/ParameterUpdate", param);
     }
 
-    public getTableData(param){
+    public getTableData(param,isNumericParameter){
         debugger
+        this.is_numeric = isNumericParameter === 1;
+
         if(this.is_numeric) {
             return this._httpClient.PostData(
                 "MPathParaRangeWithAgeMaster/MPathParaRangeWithAgeMasterList",param
@@ -261,7 +263,8 @@ export class ParametermasterService {
     }
 
     populateForm(param) {
-        ;
+        debugger
+        console.log("sfjhgfskjsfg",param)
         this.myform.patchValue(param);
         this.myform.get("isPrintDisSummary").setValue(param.IsPrintDisSummary == "false" ? false : true);
         this.myform.get("isNumeric").setValue(param.IsNumeric == 1? 1: 2);
