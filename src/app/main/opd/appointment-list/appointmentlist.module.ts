@@ -48,6 +48,7 @@ import { ImageViewComponent } from './image-view/image-view.component';
 import { PatientvitalInformationComponent } from './new-appointment/patientvital-information/patientvital-information.component';
 import { UpdateRegPatientInfoComponent } from './update-reg-patient-info/update-reg-patient-info.component';
 import { PreviousDeptListComponent } from './update-reg-patient-info/previous-dept-list/previous-dept-list.component';
+import { AppointmentBillingComponent } from "./appointment-billing/appointment-billing.component";
 
 
 const routes: Routes = [
@@ -58,7 +59,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [AppointmentListComponent, NewAppointmentComponent, EditConsultantDoctorComponent, EditRefranceDoctorComponent, CrossConsultationComponent, ImageViewComponent, PatientvitalInformationComponent, UpdateRegPatientInfoComponent, PreviousDeptListComponent],
+    declarations: [AppointmentListComponent, NewAppointmentComponent, EditConsultantDoctorComponent, EditRefranceDoctorComponent, CrossConsultationComponent, ImageViewComponent, PatientvitalInformationComponent, UpdateRegPatientInfoComponent, 
+        PreviousDeptListComponent,AppointmentBillingComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,

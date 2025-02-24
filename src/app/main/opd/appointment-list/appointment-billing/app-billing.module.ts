@@ -41,6 +41,7 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { AppointmentBillingComponent } from "./appointment-billing.component";
 import { AppointmentlistService } from "../appointmentlist.service";
 
+
 const routes: Routes = [
     {
         path: "**",
@@ -49,7 +50,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [AppointmentBillingComponent],
+    declarations: [],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,
@@ -94,6 +95,7 @@ const routes: Routes = [
         //NgxPrintModule,
         MatButtonToggleModule
     ],
-    providers: [AppointmentlistService, DatePipe]
+    // providers: [AppBillingService,DatePipe],
+    // entryComponents: [AppointmentBillingComponent],
 })
 export class AppBillingModule { }

@@ -87,16 +87,17 @@ export class PatientvitalInformationComponent {
   
   getBMIcalculation() {
     if (this.vHeight > 0 && this.vWeight > 0) {
+      debugger
       let Height = (this.vHeight / 100)
       this.vBMI = Math.round((this.vWeight) / ((Height) * (Height)));
     }
     else if (this.vHeight <= 0) {
       this.vBMI = 0;
-      //Swal.fire('Please enter Height')
+     
     }
     else if (this.vWeight <= 0) {
       this.vBMI = 0;
-      //Swal.fire('Please enter Weight')
+      
     }
   }
 

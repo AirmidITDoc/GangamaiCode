@@ -123,7 +123,9 @@
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-dropdown label="State" formControlName="StateId" [value]="registerObj?.stateId" [formGroup]="personalFormGroup" [disabled]="true" [validations]="getValidationMessages().stateId" #ddlState
-                                        (selectionChange)="onChangestate($event)" [mode]="autocompleteModestate">
+                                        (selectionChange)="onChangestate($event)"   [mode]="autocompleteModestate"> 
+                                        <!-- ApiUrl="StateMaster/get-state"> -->
+                                       
                                         </airmid-dropdown>
                                     </div>
 

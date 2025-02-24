@@ -323,8 +323,7 @@ patientDetail1 = new VisitMaster1({});
 
   getservicedtailList(row) {
     debugger
-    //   row.billNo=215938
-    // this.vBillBalanceAmt=row.BalanceAmt;
+    
     var m_data = {
       "first": 0,
       "rows": 10,
@@ -351,7 +350,7 @@ patientDetail1 = new VisitMaster1({});
     }
 
     console.log(m_data)
-    // this.isLoadingStr = 'loading';
+   
     this._RefundbillService.getRefundofBillServiceList(m_data).subscribe(Visit => {
       this.dataSource2.data = Visit.data as InsertRefundDetail[];
       this.dataSource2.sort = this.sort;
@@ -488,8 +487,6 @@ patientDetail1 = new VisitMaster1({});
 
 
     if (!this.RefundOfBillFormGroup.invalid && this.vOPIPId !== 0) {
-
-      this.isLoading = 'submit';
 
       if (this.TotalRefundAmount <= this.RefundBalAmount) {
         let InsertRefundObj = {};
@@ -750,8 +747,7 @@ patientDetail1 = new VisitMaster1({});
   refund: any = 0;
   onEdit(row) {
     debugger
-    this.getservicedtailList(row);
-
+    
     this.TotalRefundAmount = 0
     this.RefundBalAmount = 0
     console.log(row);
@@ -769,10 +765,10 @@ patientDetail1 = new VisitMaster1({});
       var m_data1 = {
         "BillNo": row.billNo
       }
-      this.isLoadingStr = 'loading';
+      this.getservicedtailList(row);
 
       this.RefAmt1 = this.RefundBalAmount;
-      // this.getservicedtailList(row);
+     
     } else {
       Swal.fire("Already Refund")
       this.refund = 1;

@@ -162,17 +162,14 @@
                                         </mat-header-row>
                                         <mat-row *matRowDef="let row; columns: displayedColumns;" class="element min-width-600" [@animate]="{value:'*',params:{y:'100%'}}" (click)="onEdit(row)">
                                         </mat-row>
-                                        <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource3!=null}"></mat-footer-row>
-                                        <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource3!=null && dataSource3.data.length==0)}">
-                                        </mat-footer-row> -->
+                                     
                                     </mat-table>
-                                    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5"
-                                        showFirstLastButtons></mat-paginator> -->
+                                   
                                     <div class="net-amt-section mt-8">
                                         <div class="net-amt">
                                             <div class="net-amt-box">
                                                 <span class="net-amt-label">Total Refund : </span>
-                                                <!-- <span class="net-amt-value">{{getRefundtotSum1(dataSource3.data)}} </span> -->
+                                                <span class="net-amt-value">{{getRefundtotSum1(dataSource3.data)}} </span>
                                             </div>
                                         </div>
                                     </div>
