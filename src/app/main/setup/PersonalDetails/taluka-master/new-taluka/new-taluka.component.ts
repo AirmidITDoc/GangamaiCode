@@ -34,6 +34,7 @@ export class NewTalukaComponent implements OnInit {
         console.log(this.data)
         if ((this.data?.talukaId??0) > 0) 
         {
+            this.isActive=this.data.isActive
             this.myForm.patchValue(this.data);
         }   
     }

@@ -19,12 +19,12 @@ export class VillageMasterComponent implements OnInit {
      msg: any;
            @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
            gridConfig: gridModel = {
-               apiUrl: "TalukaMaster/List",
+               apiUrl: "VillageMaster/List",
                columnsList: [
                    { heading: "Code", key: "villageId", sort: true, align: 'left', emptySign: 'NA' },
-                   { heading: "Village Name", key: "villageName", sort: true, align: 'left', emptySign: 'NA' },
-                   { heading: "Taluka Name", key: "talukaId", sort: true, align: 'left', emptySign: 'NA' },
-                   { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+                   { heading: "VillageName", key: "villageName", sort: true, align: 'left', emptySign: 'NA' },
+                   { heading: "TalukaName", key: "talukaName", sort: true, align: 'left', emptySign: 'NA' },
+                   { heading: "UserName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
                    { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
                    {
                        heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -42,7 +42,7 @@ export class VillageMasterComponent implements OnInit {
                            }]
                    } //Action 1-view, 2-Edit,3-delete
                ],
-               sortField: "villageId",
+               sortField: "VillageName",
                sortOrder: 0,
                filters: [
                    { fieldName: "villageName", fieldValue: "", opType: OperatorComparer.Contains },

@@ -33,7 +33,7 @@ export class SupplierMasterComponent implements OnInit {
             { heading: "ContactPerson", key: "contactPerson", sort: true, align: 'left', emptySign: 'NA', width: 140 },
             { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "CityName", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "StateName", key: "stateName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            // { heading: "StateName", key: "stateName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "CreditPeriod", key: "creditPeriod", sort: true, align: 'left', emptySign: 'NA', width: 90 },
             { heading: "Mobile", key: "mobile", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Email", key: "email", sort: true, align: 'left', emptySign: 'NA', width: 150 },

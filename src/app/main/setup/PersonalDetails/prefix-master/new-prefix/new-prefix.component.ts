@@ -15,7 +15,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewPrefixComponent implements OnInit {
     prefixForm: FormGroup;
-    isActive: boolean = false;
+    isActive: boolean = true;
     autocompleteModegender: string = "Gender";
 
     constructor(

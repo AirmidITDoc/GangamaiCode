@@ -21,7 +21,7 @@
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox 
-                            label="Village Name" 
+                            label="VillageName" 
                             formControlName="villageName" 
                             [value]="data?.villageName"
                             [formGroup]="myForm" 
@@ -32,11 +32,11 @@
 
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-dropdown 
-                            label="Taluka Name" 
-                            [value]="data?.talukaId" 
-                            formControlName="talukaId"
+                            label="TalukaName" 
+                            [value]="data?.talukaName" 
+                            formControlName="talukaName"
                             [formGroup]="myForm" 
-                            [validations]="getValidationMessages().talukaId"
+                            [validations]="getValidationMessages().talukaName"
                             [mode]="autocompleteModetaluka">
                         </airmid-dropdown>
                     </div>

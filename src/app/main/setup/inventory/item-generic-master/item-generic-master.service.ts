@@ -26,7 +26,7 @@ export class ItemGenericMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            isDeleted: ["false"],
+            isDeleted: false,
             isActive:[true,[Validators.required]]
         });
     }
@@ -49,6 +49,6 @@ export class ItemGenericMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("ItemGenericName?Id=" + m_data.toString());
+        return this._httpClient.DeleteData("GenericMaster?Id=" + m_data.toString());
     }
 }

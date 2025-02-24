@@ -26,8 +26,10 @@ export class NewReligionMasterComponent implements OnInit {
         this.religionForm = this._ReligionMasterService.CreateReligionForm();
         console.log(this.data)
         if ((this.data?.religionId??0) > 0) 
-         this.religionForm.patchValue(this.data);
-        
+        {   
+            this.isActive=this.data.isActive
+            this.religionForm.patchValue(this.data);
+        }
     }
  
   onSubmit() {

@@ -34,6 +34,7 @@ export class NewVillageComponent implements OnInit {
         console.log(this.data)
         if ((this.data?.villageId??0) > 0) 
         {
+            this.isActive=this.data.isActive
             this.myForm.patchValue(this.data);
         }   
     }
@@ -62,7 +63,7 @@ export class NewVillageComponent implements OnInit {
           
         getValidationMessages() {
             return {
-                talukaId: [
+                talukaName: [
                     { name: "required", Message: "City Name is required" }
                 ],
                 villageName: [

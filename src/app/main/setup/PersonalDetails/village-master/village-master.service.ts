@@ -20,10 +20,11 @@ export class VillageMasterService {
         return this._formBuilder.group({
             villageId: [""],
             villageName: [""],
-            talukaId: [""],
+            talukaName: [""],
             isActive:[true,[Validators.required]]
         });
     }
+  
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             VillageNameSearch: [""],
@@ -37,36 +38,11 @@ export class VillageMasterService {
 
     public stateMasterSave(Param: any) {
         if (Param.villageId) {
-            return this._httpClient.PutData("TalukaMaster/" + Param.villageId, Param);
-        } else return this._httpClient.PostData("TalukaMaster", Param);
+            return this._httpClient.PutData("VillageMaster/" + Param.villageId, Param);
+        } else return this._httpClient.PostData("VillageMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("TalukaMaster?Id=" + m_data.toString());
+        return this._httpClient.DeleteData("VillageMaster?Id=" + m_data.toString());
     }
-
-    // public getVillageMasterList(param) {
-    //     return this._httpClient.post(
-    //         "Generic/GetByProc?procName=Rtrv_VillageNameList_by_Name",param
-    //     );
-    // }
-
-    // public getTalukaMasterCombo() {
-    //     return this._httpClient.post(
-    //         "Generic/GetByProc?procName=Retrieve_TalukaMasterForCombo",
-    //         {}
-    //     );
-    // }
-
-    // public villageMasterInsert(param) {
-    //     return this._httpClient.post("PersonalDetails/VillageSave", param);
-    // }
-
-    // public villageMasterUpdate(param) {
-    //     return this._httpClient.post("PersonalDetails/VillageUpdate", param);
-    // }
-
-    // populateForm(param) {
-    //     this.myForm.patchValue(param);
-    // }
 }

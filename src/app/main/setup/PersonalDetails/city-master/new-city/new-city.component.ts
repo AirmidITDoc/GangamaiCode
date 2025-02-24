@@ -18,7 +18,7 @@ export class NewCityComponent implements OnInit {
     stateId = 0;
     cityId = 0;
     cityName = '';
-    isActive: boolean = false;
+    isActive: boolean = true;
 
     constructor(
         public _CityMasterService: CityMasterService,

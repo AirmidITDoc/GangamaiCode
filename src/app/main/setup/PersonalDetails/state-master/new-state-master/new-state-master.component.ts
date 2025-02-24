@@ -34,11 +34,9 @@ export class NewStateMasterComponent implements OnInit {
       console.log(this.data)
       if ((this.data?.stateId??0) > 0) 
       {
+        this.isActive=this.data.isActive
        this.stateForm.patchValue(this.data);
         }
-       // else
-    //   this.stateForm.reset();
-         
   }
 
   
