@@ -38,12 +38,12 @@ vbalanceamt: any = 0;
                 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
-    // @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
+    @ViewChild('balTemplate') balTemplate!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'companyId')!.template = this.actionsTemplate;
-    //    this.gridConfig.columnsList.find(col => col.key === 'balanceAmt')!.template = this.actionsTemplate2;
+       this.gridConfig.columnsList.find(col => col.key === 'balanceAmt')!.template = this.balTemplate;
        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
     }
@@ -51,17 +51,17 @@ vbalanceamt: any = 0;
         apiUrl: "OPBill/OPBillListSettlementList",
         columnsList: [
             { heading: "-", key: "companyId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
-                template: this.actionsTemplate, width: 50 },
-            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
+                template: this.actionsTemplate, width: 20 },
+            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA',type:6 },
             { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BillAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "ConsessionAmt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "NetAmount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "BalanceAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "BalanceAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' , template: this.balTemplate },
             {
-                heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+                heading: "Action", key: "action", align: "right",sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplate  // Assign ng-template to the column
             }
             // {
@@ -176,7 +176,7 @@ vbalanceamt: any = 0;
     RegId=0;
     PatientName:any;
     getSelectedObj(obj) {
-        debugger
+        
         console.log(obj)
         this.RegId1 = obj.regId;
         // this.PatientName=obj.text;
@@ -192,37 +192,25 @@ vbalanceamt: any = 0;
 }
 
 GetDetails(data) {
-    debugger
+    
     this.gridConfig = {
         apiUrl: "OPBill/OPBillListSettlementList",
         columnsList: [
-            {heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA',width:60},
-            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "-", key: "companyId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
+                template: this.actionsTemplate,width: 20 },
+            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA',type:6 },
             { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BillAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "ConsessionAmt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "NetAmount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "BalanceAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "BalanceAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' , template: this.balTemplate },
             {
-                heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+                heading: "Action", key: "action", align: "right",sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplate  // Assign ng-template to the column
             }
-            // {
-            //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-            //         {
-            //             action: gridActions.edit, callback: (data: any) => {
-            //                 this.onSave(data);
-            //             }
-            //         }, 
-            //         {
-            //             action: gridActions.print, callback: (data: any) => {
-            //                 this.viewgetOPPayemntPdf(data);
-            //             }
-            //         }
-            //         ]
-            // } 
+           
         ],
         sortField: "BillNo",
         sortOrder: 0,

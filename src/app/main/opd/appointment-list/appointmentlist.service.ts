@@ -108,7 +108,7 @@ export class AppointmentlistService {
                 CityId: ['', [Validators.required]],
                 City: [''],
                 StateId:  ['', [Validators.required]],
-                CountryId:  [1, [Validators.required]],
+                CountryId:  [0, [Validators.required]],
                 IsCharity: false,
                 IsSeniorCitizen: false,
                 AddedBy: 1,

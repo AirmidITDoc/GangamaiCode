@@ -36,6 +36,7 @@ import { NewCasepaperComponent } from '../new-casepaper/new-casepaper.component'
 import { PatientvitalInformationComponent } from './new-appointment/patientvital-information/patientvital-information.component';
 import { RegInsert } from '../registration/registration.component';
 import { UpdateRegPatientInfoComponent } from './update-reg-patient-info/update-reg-patient-info.component';
+import { SearchInforObj } from '../op-search-list/opd-search-list/opd-search-list.component';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -72,6 +73,7 @@ export class AppointmentListComponent implements OnInit {
 
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
         private commonService: PrintserviceService,
+        private advanceDataStored: AdvanceDataStored,
         private formBuilder: FormBuilder,
         public toastr: ToastrService, public datePipe: DatePipe,
     ) {}
@@ -120,9 +122,9 @@ export class AppointmentListComponent implements OnInit {
         apiUrl: "VisitDetail/AppVisitList",
         columnsList: [
             { heading: "Patient", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
-            { heading: "Bill", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-            { heading: "Phone", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-            { heading: "Status", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+            { heading: "--", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+            { heading: "--", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+            { heading: "--", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
             { heading: "UHID", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
             { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -299,18 +301,16 @@ export class AppointmentListComponent implements OnInit {
       this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceipt");
     }
 
-    OnBillPayment(row: any = null) {
+    OnBillPayment(row) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-
+        this.advanceDataStored.storage = new SearchInforObj(row);
        const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
             maxWidth: "99vw",
             height: "98vh",
             width: "100%",
             data:row
-            //  {
-            //     patientDetail: row
-            // }
+           
         });
     }
 

@@ -11,6 +11,7 @@ import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class PhoneappointmentComponent implements OnInit {
     autocompleteModedeptdoc: string = "ConDoctor";
 
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+    @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
     @ViewChild('actionsflgBillNo') actionsflgBillNo!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
@@ -38,21 +40,22 @@ export class PhoneappointmentComponent implements OnInit {
     ngAfterViewInit() {
         // Assign the template to the column dynamically
         this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.actionsTemplate;
-        // this.gridConfig.columnsList.find(col => col.key === 'mPbillNo')!.template1 = this.actionsflgBillNo;
+        this.gridConfig.columnsList.find(col => col.key === 'regNo')!.template1 = this.actionsTemplate1;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
     }
     gridConfig: gridModel = {
         apiUrl: "PhoneAppointment2/PhoneAppList",
         columnsList: [
-            { heading: "-", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 150 },
+            { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+            { heading: "-", key: "regNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
             { heading: "SeqNo", key: "seqNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "App Date", key: "phAppDate", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "App Time", key: "phAppTime", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
             { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Department", key: "departmentName", emptySign: 'NA', align: "left" },
-            { heading: "Doctor Name", key: "doctorName", emptySign: 'NA', align: "left" },
+            { heading: "Department", key: "departmentName", emptySign: 'NA', align: "left", width: 200 },
+            { heading: "Doctor Name", key: "doctorName", emptySign: 'NA', align: "left", width: 200 },
             {
                 heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -158,12 +161,25 @@ export class PhoneappointmentComponent implements OnInit {
 
     OnViewReportPdf(data) { }
     Appointmentcancle(data) {
-        let s = {
-            phoneAppId: data.phoneAppId
-        }
-        this._PhoneAppointListService.phoneMasterCancle(s).subscribe((response: any) => {
-            this.toastr.success(response.message);
-            this.grid.bindGridData();
+        Swal.fire({
+            title: 'Do you want to cancel the Phone Appointment?',
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Cancel it!"
+        }).then((flag) => {
+            if (flag.isConfirmed) {
+
+                let s = {
+                    phoneAppId: data.phoneAppId
+                }
+                this._PhoneAppointListService.phoneMasterCancle(s).subscribe((response: any) => {
+                    this.toastr.success(response.message);
+                    this.grid.bindGridData();
+                });
+            }
         });
     }
     whatsappAppoitment(data) { }

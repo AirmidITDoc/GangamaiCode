@@ -485,10 +485,11 @@ export class NewAppointmentComponent implements OnInit {
 
     onChangestate(e) {
         console.log(e)
-        // this.ddlCountry.SetSelection(e.stateId);
+        this.ddlCountry.SetSelection(e.countryId);
     }
 
     onChangecity(e) {
+        console.log()
         this.ddlState.SetSelection(e.cityId);
         this.ddlCountry.SetSelection(e.stateId);
     }

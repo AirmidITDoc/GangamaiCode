@@ -14,18 +14,18 @@
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
         <div class="modal-body-container">
             <mat-card style="padding: 5px;">
-            <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
-                <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;">
+                <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
+                    <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;">
 
-                    <div class="redio-container" style="width: 40%;padding: 10px;">
-                    
-                        <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" fxFlex
-                        placeholderText="Enter Patient Name"  ApiUrl="VisitDetail/search-patient?Keyword="
-                            (selectionChange)="getSelectedObj($event)" TextField="formattedText"
-                            ValueField="regId"></airmid-autocomplete>
+                        <div class="redio-container" style="width: 40%;padding: 10px;">
+
+                            <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" fxFlex
+                                placeholderText="Enter Patient Name" ApiUrl="VisitDetail/search-patient?Keyword="
+                                (selectionChange)="getSelectedObj($event)" TextField="formattedText"
+                                ValueField="regId"></airmid-autocomplete>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
             </mat-card>
 
             <div fxlayout="row" style="padding: 0px 5px 0px 5px">
@@ -71,34 +71,45 @@
             </div>
         </div>
 
-       
+
+        <ng-template #balTemplate let-element>
+
+            <mat-cell *matCellDef="let element" style="background-color: lightcoral;" class="w-130">
+                {{element.balanceAmt | currency:'INR'}}
+            </mat-cell>
+
+        </ng-template>
 
         <ng-template #actionsTemplate let-element>
             <div>
                 <mat-icon *ngIf="element.companyId=='0'" matTooltip="Patient Category Self">account_box
                 </mat-icon>
-    
+
                 <mat-icon *ngIf="element.companyId!='0'" matTooltip="Patient Category Company">business
                 </mat-icon>
             </div>
         </ng-template>
 
-    
+
+
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-    
+                <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement"
+                    *ngIf="element.balanceAmt!='0'">
+                    <mat-icon title="Settlement">receipt</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Paid" *ngIf="element.balanceAmt=='0'">
+                    <mat-icon title="Settlement">payment</mat-icon>
+                </button>
+
+
                 <button mat-icon-button matTooltip="Print Payment Receipt" (click)="OnViewReportPdf(element,true)">
                     <mat-icon> print</mat-icon>
                 </button>
-                <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement" *ngIf="element.balanceAmt!='0'">
-                    <mat-icon title="Edit Menu" *ngIf="element.balanceAmt!=0" class="disabled-icon">receipt</mat-icon>
-                    
-                </button>
-        
             </div>
         </ng-template>
 
-      
+
         <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
             <ng-container filters>
                 <form [formGroup]="myFormGroup">
@@ -113,7 +124,7 @@
                     </mat-form-field>
 
                 </form>
-                
+
             </ng-container>
         </airmid-table>
     </div>

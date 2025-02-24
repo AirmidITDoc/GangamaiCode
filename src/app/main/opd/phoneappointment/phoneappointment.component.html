@@ -16,34 +16,58 @@
         </div>
     </div>
 
+    <ng-template #actionsTemplate1 let-element>
+        <div>
+            <mat-icon style="border-radius:100% ;" *ngIf="element.regNo==0" matTooltip="New Patient"
+                class="blue-600 s-16">circle
+            </mat-icon>
+
+            <mat-icon style="border-radius:100% ;" *ngIf="element.regNo!= 0" matTooltip="Old Patient"
+                class="grey-600 s-16">circle
+            </mat-icon>
+        </div>
+    </ng-template>
+
+    <ng-template #actionsTemplate let-element>
+        <div class="pill-icon">
+            <mat-icon style="border-radius:100% ;" *ngIf="!element.isCancelled=='0'" matTooltip="Appointment Cancelled"
+                class="red-600 s-16">circle
+            </mat-icon>
+
+            <mat-icon style="border-radius:100% ;" *ngIf="!element.isCancelled=='1'" matTooltip="Appointment Approved"
+                class="green-600 s-16">circle
+            </mat-icon>
+        </div>
+    </ng-template>
+
+
     <ng-template #actionButtonTemplate let-element>
         <div fxLayout="row" fxLayoutAlign="center center">
 
-           
             <!-- Button 3: Print Patient Case paper  -->
             <button mat-icon-button matTooltip="Print Appointment" (click)="OnViewReportPdf(element,true)">
                 <mat-icon> print</mat-icon>
             </button>
 
-               <!-- Button 8: Patient i card Print  -->
-               <button mat-icon-button matTooltip="Send message On WhatsApp"
-               (click)="whatsappAppoitment(element)">
-               <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
-           </button>
+            <!-- Button 8: Patient i card Print  -->
+            <button mat-icon-button matTooltip="Send message On WhatsApp" (click)="whatsappAppoitment(element)">
+                <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+            </button>
 
 
-            <button mat-icon-button (click)="onEdit(contact)" matTooltip="Appointment Cancle" *ngIf="contact.isCancelled=='0'">
-                <mat-icon title="Edit Menu" *ngIf="contact.isCancelled==1"
-                    [disabled]="contact.disabled" class="disabled-icon">
+            <button mat-icon-button (click)="Appointmentcancle(element)" matTooltip="Appointment Cancle"
+                *ngIf="element.isCancelled=='0'">
+                <mat-icon title="Edit Menu" *ngIf="element.isCancelled==1" [disabled]="element.disabled"
+                    class="disabled-icon">
                     cancel</mat-icon>
-                <mat-icon title="Edit Menu" *ngIf="contact.isCancelled==0" (click)="CanclePhoneApp(contact)">
+                <mat-icon title="Edit Menu" *ngIf="element.isCancelled==0" (click)="CanclePhoneApp(element)">
                     cancel</mat-icon>
             </button>
 
-            <button mat-icon-button matTooltip="creditCard" *ngIf="contact.isCancelled=='0'">
+            <button mat-icon-button matTooltip="creditCard" *ngIf="element.isCancelled=='0'">
                 <mat-icon>credit_card</mat-icon>
             </button>
-      
+
         </div>
     </ng-template>
 
@@ -51,39 +75,39 @@
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="myFilterform">
-                    
-                        <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
+
+                    <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
                         formEndControlName="enddate" [(fromValue)]="gridConfig.filters[3].fieldValue"
                         [(toValue)]="gridConfig.filters[4].fieldValue"></airmid-datepicker>
-    
-                        <mat-form-field appearance="outline">
-                            <mat-label>First Name</mat-label>
-                            <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform"
-                                formControlName="FirstName" [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                            <button matSuffix mat-icon-button aria-label="Clear"
-                                (click)="gridConfig.filters[0].fieldValue=''">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                        </mat-form-field>
-    
-    
-                        <mat-form-field appearance="outline">
-                            <mat-label>Last Name</mat-label>
-                            <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
-                                formControlName="LastName" [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                            <button matSuffix mat-icon-button aria-label="Clear"
-                                (click)="gridConfig.filters[1].fieldValue=''">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                        </mat-form-field>
-    
-                        <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [formGroup]="myFilterform"
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>First Name</mat-label>
+                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform"
+                            formControlName="FirstName" [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                        <button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="gridConfig.filters[0].fieldValue=''">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
+                            formControlName="LastName" [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                        <button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="gridConfig.filters[1].fieldValue=''">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [formGroup]="myFilterform"
                         [(ngModel)]="gridConfig.filters[2].fieldValue"
                         [validations]="getValidationdoctorMessages().DoctorId" [mode]="autocompleteModedeptdoc"
                         (selectionChange)="selectChangedeptdoc($event)">
                     </airmid-dropdown>
-                       
-                    </form>
+
+                </form>
             </ng-container>
         </airmid-table>
     </div>

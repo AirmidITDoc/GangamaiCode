@@ -86,7 +86,7 @@ public getReportView(Param) {
 }
 
 public InsertOPBillingsettlement(Param: any) {
-  return this._httpClient.PutData("OPBill/OPSettlementCreditPayment" , Param);
-  
+  return this._httpClient.PostData("OPSettlement/SettlementInsert", Param);
+      
 }
 }

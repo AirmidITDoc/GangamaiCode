@@ -56,7 +56,7 @@ export class NewOPListComponent implements OnInit {
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate2') actionButtonTemplate2!: TemplateRef<any>;
-    
+
     ngAfterViewInit() {
         // Assign the template to the column dynamically
         this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsTemplate1;
@@ -75,10 +75,10 @@ export class NewOPListComponent implements OnInit {
 
         apiUrl: "VisitDetail/OPBillList",
         columnsList: [
-            {heading: "Patient", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA',width:70},
-            {heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:30},
-            {heading: "", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:30},
-            { heading: "", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' ,type: gridColumnTypes.template,width:30},
+            { heading: "Patient", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 70 },
+            { heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+            { heading: "", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+            { heading: "", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
             { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
             { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -153,8 +153,10 @@ export class NewOPListComponent implements OnInit {
             { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "CompanyName", key: "companyName", sort: true, align: "center", width: 200 },
             { heading: "UserName", key: "userName", sort: true, align: "center", width: 200 },
-            { heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
-                template: this.actionButtonTemplate1},  // Assign ng-template to the column
+            {
+                heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+                template: this.actionButtonTemplate1
+            },  // Assign ng-template to the column
             // {
             //     heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
 
@@ -191,7 +193,7 @@ export class NewOPListComponent implements OnInit {
     gridConfig2: gridModel = {
         apiUrl: "VisitDetail/OPRefundList",
         columnsList: [
-            { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
             { heading: "RefundNo", key: "refundNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
@@ -202,18 +204,17 @@ export class NewOPListComponent implements OnInit {
             { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "RefDoctorName", key: "refdoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "PatientType", key: "patientType", sort: true, align: "center" },
             { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "CompanyName", key: "companyName", sort: true, align: "center", width: 200 },
-            // { heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
-            //     template: this.actionButtonTemplate2} 
-            { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "CardPay", key: "cardPay", sort: true, align: "center" },
-            { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center" },
-            { heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+            // { heading: "ChequePay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "CardPay", key: "cardPayAmount", sort: true, align: "center" },
+            // { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center" },
+            {
+                heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplate2
             },
             // {
@@ -287,11 +288,11 @@ export class NewOPListComponent implements OnInit {
     }
     getWhatsappsharePaymentReceipt(Id, Mobile) { }
 
-    viewgetOPPaymentReportPdf(data){
-        debugger
-        console.log(data)
-        this.commonService.Onprint("RefundId", data.paymentId, "OPRefundReceipt");
-    }
+    // viewgetOPPaymentReportPdf(data){
+    //     debugger
+    //     console.log(data)
+    //     this.commonService.Onprint("RefundId", data.paymentId, "OPRefundReceipt");
+    // }
 
     viewgetOPRefundBillReportPdf(data) {
 
@@ -304,9 +305,9 @@ export class NewOPListComponent implements OnInit {
         console.log(element)
         // element.billNo = 2
         console.log('Third action clicked for:', element);
-        if (m == "Print Final Bill") 
+        if (m == "Print Final Bill")
             this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
-                else if (m == "Print Final Bill with Package Details") 
+        else if (m == "Print Final Bill with Package Details")
             this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
     }
 
@@ -315,57 +316,57 @@ export class NewOPListComponent implements OnInit {
         console.log(contact)
         debugger
         let PatientHeaderObj = {};
-        // PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
-        // PatientHeaderObj['RegNo'] = contact.regID;
-        // PatientHeaderObj['PatientName'] = contact.PatientName;
-        // PatientHeaderObj['OPD_IPD_Id'] = contact.OPDNo;
-        // PatientHeaderObj['Age'] = contact.ageYear;
-        // PatientHeaderObj['DepartmentName'] = contact.DepartmentName;
-        // PatientHeaderObj['DoctorName'] = contact.DoctorName;
-        // PatientHeaderObj['TariffName'] = contact.TariffName;
-        // PatientHeaderObj['CompanyName'] = contact.CompanyName;
-        // PatientHeaderObj['NetPayAmount'] = contact.netPayableAmt; 
-        // this.vMobileNo = contact.MobileNo;
+        PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
+            PatientHeaderObj['RegNo'] = contact.regID;
+        PatientHeaderObj['PatientName'] = contact.PatientName;
+        PatientHeaderObj['OPD_IPD_Id'] = contact.OPDNo;
+        PatientHeaderObj['Age'] = contact.ageYear;
+        PatientHeaderObj['DepartmentName'] = contact.DepartmentName;
+        PatientHeaderObj['DoctorName'] = contact.DoctorName;
+        PatientHeaderObj['TariffName'] = contact.TariffName;
+        PatientHeaderObj['CompanyName'] = contact.CompanyName;
+        PatientHeaderObj['NetPayAmount'] = contact.netPayableAmt;
+        this.vMobileNo = contact.MobileNo;
 
 
         const dialogRef = this._matDialog.open(NewSettlementComponent,
             {
                 maxWidth: "80vw",
-               width: '70%',
+                width: '70%',
                 data: {
                     vPatientHeaderObj: PatientHeaderObj,
                     FromName: "OP-Bill"
-                  }
+                }
             });
-            dialogRef.afterClosed().subscribe(result => {
-                console.log(result)
-                if (result.IsSubmitFlag == true) {
-                    let PaymentObj = result.submitDataPay.ipPaymentInsert
-                    console.log(PaymentObj)
-                    this.vpaidamt = result.PaidAmt;
-                  this.vbalanceamt = result.BalAmt
-                  PaymentObj['BillNo']=contact.billNo;
-                  let updateBillobj = {};
-                  updateBillobj['BillNo'] = contact.billNo;
-                  updateBillobj['balanceAmt'] = result.submitDataPay.ipPaymentInsert.BalanceAmt; 
-              
-                 let data={
-                    opCreditPayment:PaymentObj,//result.submitDataPay.ipPaymentInsert,
+        dialogRef.afterClosed().subscribe(result => {
+            console.log(result)
+            if (result.IsSubmitFlag == true) {
+                let PaymentObj = result.submitDataPay.ipPaymentInsert
+                console.log(PaymentObj)
+                this.vpaidamt = result.PaidAmt;
+                this.vbalanceamt = result.BalAmt
+                PaymentObj['BillNo'] = contact.billNo;
+                let updateBillobj = {};
+                updateBillobj['BillNo'] = contact.billNo;
+                updateBillobj['balanceAmt'] = result.submitDataPay.ipPaymentInsert.BalanceAmt;
+
+                let data = {
+                    opCreditPayment: PaymentObj,//result.submitDataPay.ipPaymentInsert,
                     "billUpdate": {
-                        "billNo":  contact.billNo,
-                        "balanceAmt":result.submitDataPay.ipPaymentInsert.BalanceAmt
+                        "billNo": contact.billNo,
+                        "balanceAmt": result.submitDataPay.ipPaymentInsert.BalanceAmt
                     },
-                 }
-                 console.log(data)
+                }
+                console.log(data)
                 this._OPListService.InsertOPBillingsettlement(data).subscribe(response => {
                     this.toastr.success(response.message);
-                   this.viewgetOPPayemntPdf(response);
-                  }, (error) => {
+                    this.viewgetOPPayemntPdf(response);
+                }, (error) => {
                     this.toastr.error(error.message);
-                  });
-               
-                }
-              });
+                });
+
+            }
+        });
     }
 
     // getBilllistview(){
