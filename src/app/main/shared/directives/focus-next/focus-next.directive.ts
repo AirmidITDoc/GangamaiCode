@@ -6,6 +6,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class FocusNextDirective implements AfterViewInit {
   private formElements: Array<HTMLElement> = [];
+
   @Input() name: string; // FormControlName
   @Input() formGroup: FormGroup;
   constructor(private el: ElementRef) {
@@ -15,7 +16,7 @@ export class FocusNextDirective implements AfterViewInit {
     const modalElement = document.querySelector("mat-dialog-container");
     const parentElement = modalElement ? modalElement : document.body;
 
-    this.formElements = Array.from(parentElement.querySelectorAll("input, mat-select"));
+    this.formElements = Array.from(parentElement.querySelectorAll("input, mat-select, button"));
   }
   @HostListener("keydown.enter", ['$event'])
   handleEnter(event: KeyboardEvent): void {
@@ -28,24 +29,57 @@ export class FocusNextDirective implements AfterViewInit {
     this.focusNext();
   }
 
-  @HostListener("dateChange", ['$event'])
-  handleDateChange(): void {
-    this.focusNext();
-  }
+  // focusNext(): void {
+  //   if (!this.formElements.length) return;
 
+  //   const control = this.formGroup?.get(this.name);
+  //   if (control && !control.valid) return;
+
+  //   let currentIndex = this.formElements.indexOf(this.el.nativeElement);
+  //   let nextElement: HTMLElement | null = null;
+  //   // Loop to find the next non-readonly, focusable element
+
+  //   while (currentIndex < this.formElements.length - 1) {
+  //     currentIndex++;
+  //     const potentialElement = this.formElements[currentIndex];
+
+  //     // Skip elements that are readonly or disabled
+  //     if (potentialElement  && !potentialElement.hasAttribute('readonly') && !potentialElement.hasAttribute('disabled')) {
+  //       nextElement = potentialElement;
+  //       break;
+  //     }
+
+  //     // If no valid element is found, nextElement remains null
+  //     nextElement = null;
+
+  //   }
+  //   if (nextElement) {
+  //     setTimeout(() => {
+  //       if (nextElement.tagName.toLowerCase() === 'input' || nextElement.tagName.toLowerCase() === 'button') {
+  //         nextElement.focus();
+  //       } else if (nextElement.tagName.toLowerCase() === 'mat-select') {
+  //         nextElement.click();
+  //       }
+  //     }, 100);
+  //   }
+  // }
   focusNext(): void {
     if (!this.formElements.length) return;
 
     const control = this.formGroup?.get(this.name);
-    if (control && !control.valid) return;
+    if (control?.invalid) return;
 
-    const currentIndex = this.formElements.indexOf(this.el.nativeElement);
-    if (currentIndex !== -1 && currentIndex < this.formElements.length - 1) {
-      const nextElement = this.formElements[currentIndex + 1];
+    // Findin the next element.
+    let nextElement = this.formElements
+      .slice(this.formElements.indexOf(this.el.nativeElement) + 1)
+      .find(el => el && !el.hasAttribute('readonly') && !el.hasAttribute('disabled'));
+
+    if (nextElement) {
       setTimeout(() => {
-        if (nextElement.tagName.toLowerCase() === 'input') {
+        const tagName = nextElement.tagName.toLowerCase();
+        if (['input', 'textarea', 'button'].includes(tagName)) {
           nextElement.focus();
-        } else if (nextElement.tagName.toLowerCase() === 'mat-select') {
+        } else if (tagName === 'mat-select') {
           nextElement.click();
         }
       }, 100);

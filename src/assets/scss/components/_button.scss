@@ -172,6 +172,10 @@
         &:hover {
             box-shadow: 0px 0px 6px $gray-300;
         }
+        &:focus {
+            box-shadow: 0px 0px 6px $gray-400;
+        }
+        
     }
 }
 // When more buttons in 1 row
