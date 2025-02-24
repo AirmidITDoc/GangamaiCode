@@ -37,20 +37,21 @@ vbalanceamt: any = 0;
                 { }
                 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
-    @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
+    @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+    // @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
     ngAfterViewInit() {
-        this.gridConfig.columnsList.find(col => col.key === 'companyId')!.template = this.actionsTemplate1;
-       this.gridConfig.columnsList.find(col => col.key === 'balanceAmt')!.template = this.actionsTemplate2;
+        this.gridConfig.columnsList.find(col => col.key === 'companyId')!.template = this.actionsTemplate;
+    //    this.gridConfig.columnsList.find(col => col.key === 'balanceAmt')!.template = this.actionsTemplate2;
        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
     }
     gridConfig: gridModel = {
         apiUrl: "OPBill/OPBillListSettlementList",
         columnsList: [
-            { heading: "--", key: "companyId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:70},
+            { heading: "-", key: "companyId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
+                template: this.actionsTemplate, width: 50 },
             { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -60,7 +61,7 @@ vbalanceamt: any = 0;
             { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BalanceAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
             {
-                heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+                heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplate  // Assign ng-template to the column
             }
             // {
