@@ -18,10 +18,9 @@
                 <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;">
 
                     <div class="redio-container" style="width: 40%;padding: 10px;">
-                        <!-- <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="regID" placeholderText="Enter regID" ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
-                     -->
+                    
                         <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" fxFlex
-                            placeholderText="Enter Patient Name"  ApiUrl="VisitDetail/search-patient?Keyword="
+                        placeholderText="Enter Patient Name"  ApiUrl="VisitDetail/search-patient?Keyword="
                             (selectionChange)="getSelectedObj($event)" TextField="formattedText"
                             ValueField="regId"></airmid-autocomplete>
                     </div>
@@ -72,35 +71,34 @@
             </div>
         </div>
 
-        <ng-template #actionsTemplate1 let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.companyId =='0'" matTooltip="Patient Category Self">account_box
+       
+
+        <ng-template #actionsTemplate let-element>
+            <div>
+                <mat-icon *ngIf="element.companyId=='0'" matTooltip="Patient Category Self">account_box
                 </mat-icon>
     
-                <mat-icon *ngIf="element.companyId !='0'" matTooltip="Patient Category Company">business
+                <mat-icon *ngIf="element.companyId!='0'" matTooltip="Patient Category Company">business
                 </mat-icon>
-              
             </div>
         </ng-template>
-    
 
-        <!-- *ngIf="element.balanceAmt !=0 " -->
+    
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-              
-                <button mat-icon-button matTooltip="Settlement" (click)="openPaymentpopup(element)">
-                    <mat-icon matTooltip="Settlement" *ngIf="element.balanceAmt!=0">receipt</mat-icon>
-                    <mat-icon matTooltip="Paid" *ngIf="element.balanceAmt==0" [disabled]="true">payment</mat-icon>
+    
+                <button mat-icon-button matTooltip="Print Payment Receipt" (click)="OnViewReportPdf(element,true)">
+                    <mat-icon> print</mat-icon>
                 </button>
-
-                <button mat-icon-button   matTooltip="Print">
-                    <mat-icon>print</mat-icon>
+                <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement" *ngIf="element.balanceAmt!='0'">
+                    <mat-icon title="Edit Menu" *ngIf="element.balanceAmt!=0" class="disabled-icon">receipt</mat-icon>
+                    
                 </button>
-             
+        
             </div>
         </ng-template>
 
-        <!-- #grid1 :ShowFilter="false" -->
+      
         <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
             <ng-container filters>
                 <form [formGroup]="myFormGroup">
@@ -113,10 +111,6 @@
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
-
-                    <!-- <airmid-autocomplete lbl="RgId" [formGroup]="myFormGroup" formControlName="RegId" placeholderText="Enter regID"
-                 ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"
-                 [(ngModel)]="gridConfig.filters[0].fieldValue"></airmid-autocomplete> -->
 
                 </form>
                 
