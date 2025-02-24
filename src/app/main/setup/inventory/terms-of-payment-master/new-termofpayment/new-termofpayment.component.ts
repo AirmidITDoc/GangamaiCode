@@ -28,7 +28,10 @@ export class NewTermofpaymentComponent implements OnInit {
       this.termsofpaymentForm = this._TermsOfPaymentMasterService.createtermsofpaymentForm();
       debugger
       if((this.data?.id??0) > 0)
+        {
+            this.isActive = this.data.isActive;
             this.termsofpaymentForm.patchValue(this.data);
+        }
       
     }
     

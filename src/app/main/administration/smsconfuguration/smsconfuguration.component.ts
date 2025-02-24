@@ -27,14 +27,14 @@ export class SMSConfugurationComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "TalukaMaster/List",
         columnsList: [
-            { heading: "OutGoingCode", key: "OutGoingCode", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Date", key: "Date", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "MobileNo", key: "MobileNo", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "SMSString", key: "SMSString", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "IsSent", key: "IsSent", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+            { heading: "OutGoingCode", key: "OutGoingCode", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Date", key: "Date", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "MobileNo", key: "MobileNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "SMSString", key: "SMSString", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsSent", key: "IsSent", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

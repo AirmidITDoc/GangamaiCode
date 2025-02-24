@@ -32,7 +32,8 @@ export class NewAreaComponent implements OnInit {
       this.areaForm = this._AreaMasterService.createAreaForm();
       if((this.data?.areaId??0) > 0) 
         {
-          this.areaForm.patchValue(this.data);
+            this.isActive=this.data.isActive
+            this.areaForm.patchValue(this.data);
         }
     }
 
