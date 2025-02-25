@@ -12,7 +12,7 @@
 
 <mat-card>
     <form [formGroup]="serviceForm" style="padding-left: 10px; padding-right: 10px;">
-        <input type="hidden" name="ServiceId" formControlName="ServiceId" style="top:155px;">
+        <input type="hidden" name="ServiceId" formControlName="ServiceId" [ngModel]="ServiceId">
 
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="b-service-master gap-6" style="padding-top: 10px;">
 
@@ -148,18 +148,17 @@
                             </ng-container>
 
 
-                             <ng-container matColumnDef="ClassRate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ClassRate
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                    <!-- <mat-form-field appearance="legacy"> -->
-                                        <mat-form-field appearance="outline">
-                                        <input matInput [(ngModel)]="element.classRate" OnlyNumber
-                                            (keyup)="gettableclassrate(element,$event.value)"
-                                            (keypress)="keyPressCharater($event)">
-                                    </mat-form-field>
-                                </mat-cell>
-                            </ng-container> 
+                            <ng-container matColumnDef="classRate">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RefundAmt
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                <mat-form-field appearance="fill">
+                                                    <input matInput [(ngModel)]="element.classRate"  OnlyNumber 
+                                                    (keyup)="gettableclassrate(element,$event.value)"
+                                                    (keypress)="keyPressCharater($event)" >
+                                                </mat-form-field>
+                                            </mat-cell>
+                                        </ng-container>
 
                             <!-- <ng-container matColumnDef="action" stickyEnd>
                             <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">

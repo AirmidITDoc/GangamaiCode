@@ -52,6 +52,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { MatAutocomplete } from "@angular/material/autocomplete";
+import { ComptoservComponent } from './comptoserv/comptoserv.component';
 
 const routes: Routes = [
     {
@@ -61,7 +62,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [CompanyMasterComponent, CompanyMasterListComponent, CompanywiseComponent],
+    declarations: [CompanyMasterComponent, CompanyMasterListComponent, CompanywiseComponent, ComptoservComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,

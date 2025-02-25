@@ -40,24 +40,17 @@ export class NewSubtapComponent implements OnInit {
             if(this.data.city)
                 this.data.city=this.data.city.trim();
 
-            
             this.subTpaForm.get("compTypeId").setValue(this.data.compTypeId)
             this.subTpaForm.get("city").setValue(this.data.city)
             this.subTpaForm.get("mobileNo").setValue(this.data.mobileNo)
             this.subTpaForm.get("phoneNo").setValue(this.data.phoneNo)
-
            
-            // setTimeout(() => {
-            //     this._subTpaServiceMaster.getCompanyById(this.data.subCompanyId).subscribe((response) => {
-            //         this.registerObj = response;
-            //         console.log(this.registerObj)
-                    
-            //         if(response){
- 
-            //         // //  this.subTpaForm.get("companyId").setValue(this.registerObj.companyId)
-            //         }
-            //        });
-            // }, 500);
+            setTimeout(() => {
+                this._subTpaServiceMaster.getCompanyById(this.data.subCompanyId).subscribe((response) => {
+                    this.registerObj = response;
+                    console.log(this.registerObj)
+                   });
+            }, 500);
         }
     }
 

@@ -19,7 +19,7 @@ export class ServiceMasterService {
 
     createServicemasterForm(): FormGroup {
         return this._formBuilder.group({
-            ServiceId: [""],
+            ServiceId: 0,
             groupId: [""],
             GroupName: [""],
             ServiceShortDesc: ["", 
@@ -117,7 +117,13 @@ export class ServiceMasterService {
     
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("bank?Id=" + m_data.toString());
+        debugger
+        return this._httpClient.DeleteData("BillingService/ServiceCanceled?Id=" + m_data.toString());
+    }
+
+    public ServiceMasterCancle(Param: any) {
+        debugger
+      return this._httpClient.PostData("BillingService/ServiceCanceled", Param);
     }
 
     public serviceMasterInsert(Param: any) {
@@ -135,7 +141,6 @@ export class ServiceMasterService {
     }
 
   
-
     populateForm(param) {
         ;
         this.myform.patchValue(param);
