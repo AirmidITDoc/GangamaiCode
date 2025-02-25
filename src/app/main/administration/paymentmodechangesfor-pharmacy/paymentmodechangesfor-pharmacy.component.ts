@@ -56,6 +56,8 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionButtonTemplateSale') actionButtonTemplateSale!: TemplateRef<any>;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  @ViewChild('ColorCodeIp') ColorCodeIp!: TemplateRef<any>;
+  @ViewChild('ColorCodeSale') ColorCodeSale!: TemplateRef<any>;
 
   ngOnInit(): void {
     this.gridConfig = this.gridConfigIpPhy;
@@ -70,14 +72,17 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
 
   ngAfterViewInit() {
     // Assign the template to the column dynamically
-    this.gridConfigSales.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateSale;
-    this.gridConfigIpPhy.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    this.gridConfigSales.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateSale; 
+    this.gridConfigSales.columnsList.find(col => col.key === 'oP_IP_Type')!.template = this.ColorCodeSale; 
+    this.gridConfigIpPhy.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;  
+    this.gridConfigIpPhy.columnsList.find(col => col.key === 'oP_IP_Type')!.template = this.ColorCodeIp; 
 }
 
   gridConfigSales: gridModel = {
-    apiUrl: "MReportConfig/List",
+    apiUrl: "paymentpharmacy/BrowsePharmacyPayReceiptList",
     columnsList: [
-      { heading: "PayDate", key: "paydate", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+      { heading: "-", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+      { heading: "PayDate", key: "paydate", sort: true, align: 'left', emptySign: 'NA', width: 80,type:9 },
       { heading: "ReceiptNo", key: "receiptno", sort: true, align: 'left', emptySign: 'NA', width: 100 },
       { heading: "SalesNo", key: "salesno", sort: true, align: 'left', emptySign: 'NA', width: 100 },
       { heading: "PatientName", key: "patientname", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -92,11 +97,17 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
         template: this.actionButtonTemplateSale  // Assign ng-template to the column
     }
     ],
-    sortField: "ReportName",
+    sortField: "PaymentId",
     sortOrder: 0,
     filters: [
-      { fieldName: "reportName", fieldValue: "", opType: OperatorComparer.Contains },
-      { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+      { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+      { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals }, //year from 2021 to 2025
+      { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "SalesNo", fieldValue: "0", opType: OperatorComparer.StartsWith },
+      { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
     ],
     row: 25
   }
@@ -104,7 +115,8 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
   gridConfigIpPhy: gridModel = {
     apiUrl: "Administration/BrowseIPAdvPayPharReceiptList1",
     columnsList: [
-      { heading: "PayDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+      { heading: "-", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+      { heading: "PayDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type:6 },
       { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA'},
       { heading: "SalesNo", key: "salesNo", sort: true, align: 'left', emptySign: 'NA'},
       { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -118,22 +130,6 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
         heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
         template: this.actionButtonTemplate  // Assign ng-template to the column
     }
-      // {
-      //   heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
-      //     {
-      //       action: gridActions.edit, callback: (data: any) => {
-      //         this.onSave(data);
-      //       }
-      //     }, {
-      //       action: gridActions.delete, callback: (data: any) => {
-      //         this._PaymentmodechangeforpharmacyService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
-      //           this.toastr.success(response.message);
-      //           this.grid.bindGridData();
-      //         });
-      //       }
-      //     }]
-      // } 
-      // //Action 1-view, 2-Edit,3-delete
     ],
     sortField: "PaymentId",
     sortOrder: 0,
@@ -308,11 +304,18 @@ export class PaymentPharmayList {
   TarrifName: any;
   NetAmount: any;
   paymentId:any;
-
+  billNo:any;
   CashAmt: any;
   ChequeAmt: any;
   CardAmt: any;
   NeftPay: any;
+  receiptNo:any;
+  advanceUsedAmount:any;
+advanceId:any;
+refundId:any;
+transactionType:any;
+remark:any
+addBy:any
   // PaidAmount:any;
 
   constructor(PaymentPharmayList) {
@@ -333,7 +336,15 @@ export class PaymentPharmayList {
       this.NEFTNo = PaymentPharmayList.NEFTNo || 0;
       this.NEFTBankName = PaymentPharmayList.NEFTBankName || '';
       this.paymentId=PaymentPharmayList.paymentId || 0;
+      this.billNo=PaymentPharmayList.billNo || 0;
+      this.receiptNo=PaymentPharmayList.receiptNo || 0;
 
+      this.advanceUsedAmount=PaymentPharmayList.advanceUsedAmount || 0;
+      this.advanceId=PaymentPharmayList.advanceId || 0;
+      this.refundId=PaymentPharmayList.refundId || 0;
+      this.transactionType=PaymentPharmayList.transactionType || 0;
+      this.remark=PaymentPharmayList.remark || 0;
+      this.addBy=PaymentPharmayList.addBy || 0;
       // this.PaymentId = PaymentPharmayList.PaymentId || 0;
       this.payTMAmount = PaymentPharmayList.payTMAmount || 0;
       this.PayTMTranNo = PaymentPharmayList.PayTMTranNo || 0;

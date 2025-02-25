@@ -45,6 +45,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatTreeModule } from '@angular/material/tree';
 import { PrescriptionTemplateComponent } from './prescription-template/prescription-template.component';
 import { PrePresciptionListComponent } from './pre-presciption-list/pre-presciption-list.component';
+import { AddItemComponent } from './add-item/add-item.component';
 
 
 
@@ -58,7 +59,8 @@ const routes: Routes = [
     declarations: [
         NewCasepaperComponent,
         PrescriptionTemplateComponent,
-        PrePresciptionListComponent
+        PrePresciptionListComponent,
+        AddItemComponent
     ],
     imports: [
         RouterModule.forChild(routes),

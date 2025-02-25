@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
 import { CreateUserService } from '../create-user.service';
@@ -44,6 +44,8 @@ export class NUserComponent implements OnInit{
     autocompleteModeStoreName: String = "Store";
     autocompleteModeWebRoleName: String = "WebRole";
     autocompleteModedoctor: string = "ConDoctor";
+    @ViewChild('passwordTextbox', { static: false }) passwordTextbox: ElementRef;
+
 
     constructor(
         public _CreateUserService: CreateUserService,
@@ -52,8 +54,19 @@ export class NUserComponent implements OnInit{
         private _formBuilder: FormBuilder,
         private _loggedService: AuthenticationService,
         @Inject(MAT_DIALOG_DATA) public data: any,
-        public dialogRef: MatDialogRef<NUserComponent>
+        public dialogRef: MatDialogRef<NUserComponent>,
+        private renderer: Renderer2
     ) { }
+
+    ngAfterViewInit() {
+      setTimeout(() => {
+          // Find the password input inside airmid-textbox
+          const passwordInput = document.querySelector('airmid-textbox[formControlName="password"] input');
+          if (passwordInput) {
+              passwordInput.setAttribute('type', 'password'); // Hide password input
+          }
+      }, 100); // Ensure it's executed after rendering
+  }
     
     ngOnInit(): void {
         debugger

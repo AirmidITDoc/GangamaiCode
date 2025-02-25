@@ -35,16 +35,16 @@ export class PaymentmodechangesComponent implements OnInit {
           this.gridConfigOP.columnsList.find(col => col.key === 'label')!.template = this.ColorCodeOP; 
 
           this.gridConfigIP.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIP;  
-          this.gridConfigIP.columnsList.find(col => col.key === 'label')!.template = this.ColorCodeIP; 
+          this.gridConfigIP.columnsList.find(col => col.key === 'label')!.template = this.ColorCodeIp; 
           
           this.gridConfigIPAdv.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIPAdv;  
           this.gridConfigIPAdv.columnsList.find(col => col.key === 'label')!.template = this.ColorCodeIPAdv; 
       }
       @ViewChild('actionButtonTemplateIP') actionButtonTemplateOP!: TemplateRef<any>;
-      @ViewChild('ColorCodeIp') ColorCodeOP!: TemplateRef<any>;
+      @ViewChild('ColorCodeIp') ColorCodeIp!: TemplateRef<any>;
 
       @ViewChild('actionButtonTemplateOP') actionButtonTemplateIP!: TemplateRef<any>;
-      @ViewChild('ColorCodeOP') ColorCodeIP!: TemplateRef<any>;
+      @ViewChild('ColorCodeOP') ColorCodeOP!: TemplateRef<any>;
 
       
       @ViewChild('actionButtonTemplateIPAdv') actionButtonTemplateIPAdv!: TemplateRef<any>;

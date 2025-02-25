@@ -30,7 +30,7 @@ export class RoleTemplateMasterComponent implements OnInit {
         columnsList: [
             { heading: "Code", key: "roleId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Role Name", key: "roleName", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {

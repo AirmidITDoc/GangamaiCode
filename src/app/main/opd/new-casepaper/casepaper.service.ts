@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
+import { ApiCaller } from 'app/core/services/apiCaller';
 import { Observable, of } from 'rxjs';
 
 @Injectable({
@@ -10,6 +11,7 @@ import { Observable, of } from 'rxjs';
 export class CasepaperService {
 
   constructor(public _httpClient: HttpClient,
+    public _httpClient1: ApiCaller,
     private _loaderService: LoaderService,
     private _formBuilder: UntypedFormBuilder) { }
 
@@ -147,4 +149,12 @@ public getServiceList(param,loader = true){
   } 
     return this._httpClient.post("Generic/GetByProc?procName=m_RtrvTemplate_PrescriptionList",param)
   } 
+
+  // raksha
+  public getRegistraionById(Id) {
+    return this._httpClient1.GetData("OutPatient/" + Id);
+}
+public getVisitById(Id) {
+  return this._httpClient1.GetData("VisitDetail/" + Id);
+}
 }

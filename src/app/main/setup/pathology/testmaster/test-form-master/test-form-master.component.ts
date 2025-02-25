@@ -101,7 +101,7 @@ export class TestFormMasterComponent implements OnInit {
     @ViewChild('auto1') auto1: MatAutocomplete;
     @ViewChild('auto2') auto2: MatAutocomplete;
     Statusflag: any = false;
-    isActive: any;
+    isActive: boolean = true;
     vFootNote:any;
     vSuggestionNote:any;
     vTestName:any;
@@ -129,6 +129,7 @@ export class TestFormMasterComponent implements OnInit {
             this.vFootNote=this.registerObj.footNote
             this.vSuggestionNote=this.registerObj.suggestionNote
             this.TemplateId = this.registerObj.TemplateId;
+            this.isActive=this.registerObj.isdeleted;
 
             if (!this.registerObj.isTemplateTest && !this.registerObj.isSubTest) {
                 this._TestmasterService.is_subtest = false;
@@ -369,27 +370,6 @@ debugger
                 "SubTestId": row.subTestID || 0,
                 "ParameterId": row.parameterId
             }));
-            // var data1=[];
-            // // this.selectedItems.forEach((element) => {
-            //     let MPathTemplateDetailsObj = {};
-            //     MPathTemplateDetailsObj["PtemplateId"]=0,
-            //     MPathTemplateDetailsObj['TestId'] = 11, //this.departmentId;
-            //     MPathTemplateDetailsObj['TemplateId'] = 12 //this.myForm.get("DoctorId").value ? "0" : this.myForm.get("DoctorId").value || "0";
-            //     data1.push(MPathTemplateDetailsObj);
-            // // });
-
-            // console.log("Insert data1:",data1);
-
-            // var data2=[];
-            // // this.selectedItems.forEach((element) => {
-            //     let MPathTestDetailMastersObj = {};
-            //     MPathTestDetailMastersObj["TestDetId"]=0,
-            //     MPathTestDetailMastersObj['TestId'] = 16, //this.departmentId;
-            //     MPathTestDetailMastersObj['SubTestId'] = 17,
-            //     MPathTestDetailMastersObj['ParameterId']=19 //this.myForm.get("DoctorId").value ? "0" : this.myForm.get("DoctorId").value || "0";
-            //     data2.push(MPathTestDetailMastersObj);
-            // // });
-            // console.log("Insert data2:",data2);
 
             var mdata = {
                 "TestId": 0,
@@ -401,7 +381,7 @@ debugger
                 "MachineName": this.testForm.get("MachineName").value,
                 "SuggestionNote": this.testForm.get("SuggestionNote").value,
                 "FootNote": this.testForm.get("FootNote").value,
-                "IsDeleted": true,
+                "IsDeleted": Boolean(JSON.parse(this.testForm.get("isActive").value)), //true
                 "ServiceId": this.testForm.get("ServiceId").value || 15,
                 "IsTemplateTest": this._TestmasterService.is_templatetest,//this.testForm.get('IsTemplateTest').value,
                 "TestTime": formattedTime,
@@ -439,7 +419,7 @@ debugger
                 "MachineName": this.testForm.get("MachineName").value,
                 "SuggestionNote": this.testForm.get("SuggestionNote").value,
                 "FootNote": this.testForm.get("FootNote").value,
-                "IsDeleted": true,
+                "IsDeleted": Boolean(JSON.parse(this.testForm.get("isActive").value)),
                 "ServiceId": this.testForm.get("ServiceId").value || 15,
                 "IsTemplateTest": this._TestmasterService.is_templatetest, //this.testForm.get('IsTemplateTest').value,
                 "TestTime": formattedTime,
@@ -548,27 +528,12 @@ debugger
         }
     }
 
-    // onDeleteTemplateRow(event) {
-    //     let temp = this.TemplateList.data;
-    //     temp.push({
-    //         TemplateName: event.TemplateName || "",
-    //     })
-    //     this.paramterList.data = temp;
-    //     temp = this.Templatetdatasource.data;
-    //     this.Templatetdatasource.data = []
-    //     temp.splice(temp.findIndex(item => item.TemplateName === event.TemplateName), 1);
-    //     this.Templatetdatasource.data = temp;
-    //     this.toastr.success('Record Deleted Successfully.', 'Saved !', {
-    //         toastClass: 'tostr-tost custom-toast-success',
-    //     });
-    // }
-
     onDeleteTemplateRow(event) {
         if (!this.Templatetdatasource) {
             this.Templatetdatasource = new MatTableDataSource<TemplatedetailList>([]);
         }
 
-        this.Templatetdatasource.data = this.Templatetdatasource.data.filter(item => item.TemplateName !== event.TemplateName);
+        this.Templatetdatasource.data = this.Templatetdatasource.data.filter(item => item.templateName !== event.templateName);
 
         this.toastr.success('Record Deleted Successfully.', 'Deleted!', {
             toastClass: 'tostr-tost custom-toast-success',
@@ -577,17 +542,42 @@ debugger
 
 
     list = [];
+    // onAddTemplate() {
+    //     debugger
+    //     this.list.push(
+    //         {
+    //             templateId: this.templatedetailsForm.get("TemplateId").value.TemplateId,
+    //             templateName: this.templatedetailsForm.get("TemplateName").value,
+    //         });
+    //     this.Templatetdatasource.data = this.list
+    //     this.templatedetailsForm.get('TemplateName').reset();
+    // }
+
     onAddTemplate() {
-        debugger
-        this.list.push(
-            {
-                TemplateId: this.templatedetailsForm.get("TemplateId").value.TemplateId,
-                // TemplateName: this.templatedetailsForm.get("TemplateName").value.TemplateName,
-                TemplateName: this.templatedetailsForm.get("TemplateName").value,
-            });
-        this.Templatetdatasource.data = this.list
-        this.templatedetailsForm.get('TemplateName').reset();
+        console.log("event is :", event);
+    
+        if (!this.list) {
+            this.list = [];
+        }
+    
+        const newItem = {
+            templateId: this.templatedetailsForm.get("TemplateId").value, // Ensure correct property name
+            templateName: this.templatedetailsForm.get("TemplateName").value, // Ensure correct property name
+        };
+    
+        this.list.push(newItem);
+    
+        this.Templatetdatasource.data = [...this.Templatetdatasource.data, newItem];
+    
+        console.log("Updated list:", this.list);
+        console.log("Updated Templatetdatasource:", this.Templatetdatasource.data);
+    
+        // Reset form fields
+        this.templatedetailsForm.get("TemplateId").reset();
+        this.templatedetailsForm.get("TemplateName").reset();
     }
+    
+    
 
     addParameter(row) {
         // debugger;

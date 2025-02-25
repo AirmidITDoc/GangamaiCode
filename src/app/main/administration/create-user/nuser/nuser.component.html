@@ -61,7 +61,7 @@
 
                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="PassWord" formControlName="password" [formGroup]="myuserform"
-                                [validations]="getValidationMessages().password" [maxLength]="30">
+                                [validations]="getValidationMessages().password" [maxLength]="30" #passwordTextbox>
                             </airmid-textbox>
 
                         </div>
@@ -199,8 +199,8 @@
                                 </div>
                                 <div class="icon-info-col" fxLayoutGap="50px">
                                     <airmid-textbox label="BrowseDays" formControlName="isDateIntervalDays"
-                                        [formGroup]="myuserform" [validations]="getValidationMessages().isDateIntervalDays"
-                                        [maxLength]="30">
+                                        [formGroup]="myuserform"
+                                        [validations]="getValidationMessages().isDateIntervalDays" [maxLength]="30">
                                     </airmid-textbox>
                                 </div>
                             </div>

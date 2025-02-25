@@ -168,12 +168,12 @@ export class TestList {
 
 
 export class TemplatedetailList {
-    TemplateId: number;
-    TemplateName: any;
+    templateId: number;
+    templateName: any;
     constructor(TemplateList) {
         {
-            this.TemplateId = TemplateList.TemplateId || 0;
-            this.TemplateName = TemplateList.TemplateName || "";
+            this.templateId = TemplateList.templateId || 0;
+            this.templateName = TemplateList.templateName || "";
 
         }
     }

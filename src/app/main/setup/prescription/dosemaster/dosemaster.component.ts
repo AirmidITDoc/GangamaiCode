@@ -51,7 +51,8 @@ export class DosemasterComponent implements OnInit {
         row: 25
     }
 
-    constructor(public _DoseService: DosemasterService, public _matDialog: MatDialog,
+    constructor(public _DoseService: DosemasterService, 
+        public _matDialog: MatDialog,
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
