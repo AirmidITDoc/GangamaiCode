@@ -192,7 +192,7 @@
                                             [value]="vPrice">
                                         </airmid-textbox>
                                     </div>
-                                    <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="10%">
+                                    <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
                                         <airmid-textbox label="Qty" formControlName="qty" [formGroup]="chargeForm"
                                             [validations]="getValidationMessages().qty" [type]="'number'">
                                         </airmid-textbox>
@@ -204,7 +204,7 @@
                                         </airmid-textbox>
 
                                     </div>
-                                    <div *ngIf="isDoctor">
+                                    <div fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%" *ngIf="isDoctor">
                                         <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
                                             [formGroup]="chargeForm" [validations]="getValidationMessages().DoctorId"
                                             [mode]="autocompleteModedeptdoc" (selectionChange)="getdocdetail($event)">
@@ -637,28 +637,28 @@
                         <mat-card-content class="py-4">
                             <form [formGroup]="totalChargeForm">
                                 <div fxLayout="row" fxLayoutGap="6px">
-                                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                    <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
                                         <airmid-textbox label="Total Amount" formControlName="totalAmount"
                                             [formGroup]="totalChargeForm"
                                             [validations]="getValidationMessages().totalAmount" [type]="'number'"
                                             [readonly]="true">
                                         </airmid-textbox>
                                     </div>
-                                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="!isDiscountApplied">
+                                    <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="!isDiscountApplied">
                                         <airmid-textbox label="Discount %" formControlName="totalDiscountPer"
                                             [formGroup]="totalChargeForm"
                                             [validations]="getValidationMessages().discountPer" [type]="'number'"
                                             [readonly]="isDiscountApplied">
                                         </airmid-textbox>
                                     </div>
-                                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                    <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
                                         <airmid-textbox label="Discount Amount" formControlName="totalDiscountAmount"
                                             [formGroup]="totalChargeForm"
                                             [validations]="getValidationMessages().discountAmount" [type]="'number'"
                                             [readonly]="isDiscountApplied">
                                         </airmid-textbox>
                                     </div>
-                                    <div *ngIf="Consessionres">
+                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="Consessionres">
                                         <airmid-dropdown label="Concession Reason" formControlName="concessionId"
                                             [formGroup]="totalChargeForm"
                                             [validations]="getValidationMessages().concessionId"
@@ -666,7 +666,7 @@
                                             (selectionChange)="selectChangeConcession($event)">
                                         </airmid-dropdown>
                                     </div>
-                                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                    <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
                                         <airmid-textbox label="Total Net Amount" formControlName="totalNetAmount"
                                             [formGroup]="totalChargeForm"
                                             [validations]="getValidationMessages().totalNetAmount" [type]="'number'"

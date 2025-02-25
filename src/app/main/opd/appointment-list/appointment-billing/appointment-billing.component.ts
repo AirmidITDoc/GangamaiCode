@@ -844,7 +844,7 @@ debugger
             this.toastrService.success(response.message);
             console.log(response)
             this.viewgetOPBillReportPdf(response)
-            this.dialogRef.close();
+            // this.dialogRef.close();
           }, (error) => {
             this.toastrService.error(error.message);
           });
@@ -925,7 +925,7 @@ debugger
       this._AppointmentlistService.InsertOPBilling(submitData).subscribe(response => {
         this.toastrService.success(response.message);
         this.viewgetOPBillReportPdf(response)
-        this.dialogRef.close();
+        // this.dialogRef.close();
       }, (error) => {
         this.toastrService.error(error.message);
       });
