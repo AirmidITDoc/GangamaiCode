@@ -107,6 +107,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     if (this.data) {
       this.patientDetail = this.data;
       this.PatientName = this.patientDetail.patientName
+      this.vOPIPId= this.patientDetail.visitId
+      this.savebtn=false
       console.log("DATA : ", this.patientDetail);
     }
 
@@ -779,8 +781,8 @@ console.log(this.vOPIPId)
     PatientHeaderObj['DepartmentName'] = this.DepartmentName;
     PatientHeaderObj['OPD_IPD_Id'] = this.vOPDNo;
     PatientHeaderObj['Age'] = this.AgeYear;
-    PatientHeaderObj['NetPayAmount'] = this.totalChargeForm.get('totalNetAmount').value;
-
+    PatientHeaderObj['NetPayAmount'] =Math.round(this.totalChargeForm.get('totalNetAmount').value);
+debugger
     debugger
     if (this.totalChargeForm.get('paymentType').value == 'PayOption') {
       const dialogRef = this._matDialog.open(OpPaymentNewComponent,
@@ -840,6 +842,7 @@ console.log(this.vOPIPId)
           console.log(submitData);
           this._AppointmentlistService.InsertOPBilling(submitData).subscribe(response => {
             this.toastrService.success(response.message);
+            console.log(response)
             this.viewgetOPBillReportPdf(response)
             this.dialogRef.close();
           }, (error) => {
@@ -858,7 +861,7 @@ console.log(this.vOPIPId)
     Paymentobj['BillNo'] = 0;
     Paymentobj['PaymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
     Paymentobj['PaymentTime'] = this.dateTimeObj.time || '01/01/1900',
-    Paymentobj['CashPayAmount'] = parseFloat(this.totalChargeForm.get('totalNetAmount').value) || 0;
+    Paymentobj['CashPayAmount'] = Math.round(this.totalChargeForm.get('totalNetAmount').value) || 0;
     Paymentobj['ChequePayAmount'] = 0;
     Paymentobj['ChequeNo'] = "0";
     Paymentobj['BankName'] = "";
