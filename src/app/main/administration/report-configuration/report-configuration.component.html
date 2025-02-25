@@ -6,20 +6,38 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Report Configuration
+                    Report Cofigurationn List
                 </span>
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">+ New Report Configuration
+            <button mat-raised-button (click)="onSave()">+ New Report
             </button>
+
         </div>
+       
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <airmid-table [gridConfig]="gridConfig"  #grid :ShowFilter="false">
+        <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
-                
+                <form [formGroup]="myform">
+                    
+                    <mat-form-field appearance="outline">
+                        <mat-label>Report Name</mat-label>
+                        <input matInput placeholder="Search Report Name" autocomplete="off" [formGroup]="myform"
+                            formControlName="reportName" [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                        <button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="gridConfig.filters[0].fieldValue=''">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+
+
+                </form>
             </ng-container>
         </airmid-table>
     </div>
+
+
 </div>

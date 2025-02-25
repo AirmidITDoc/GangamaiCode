@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { ToastrService } from 'ngx-toastr';
@@ -15,6 +15,9 @@ import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import { AdmissionPersonlModel } from '../Admission/admission/admission.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridColumnTypes } from 'app/core/models/tableActions';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-company-list',
@@ -24,36 +27,10 @@ import { AdmissionPersonlModel } from '../Admission/admission/admission.componen
   animations: fuseAnimations,
 })
 export class CompanyListComponent implements OnInit {
-  displayedColumns = [
-    'button',
-    'IsBillGenerated',
-    'IsMLC',
-    'RegNo',
-    'PatientName',
-    'DOA',
-    'IPDNo',
-    'Doctorname',
-    'RefDocName',
-    'PatientType',
-    'CompanyName',
-    'buttons1',
-    'buttons'
-  ];
+  myFilterform:FormGroup;
+  fromDate ="01/01/1900"// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate ="01/01/1900"// this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
 
-  isLoadingStr: string = '';
-  isLoading: String = '';
-  sIsLoading: string = '';
-  click: boolean = false;
-  isChecked: boolean = false;
-  hasSelectedContacts: boolean;
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @Input() dataArray: any;
-  
-  dataSource = new MatTableDataSource<AdmissionPersonlModel>();
-  dataSource1 = new MatTableDataSource<AdvanceDetailObj>();
-  
   menuActions: Array<string> = [];
   constructor(
     public _CompanyListService: CompanyListService,
@@ -65,110 +42,130 @@ export class CompanyListComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored
   ) { }
 
+  autocompleteModedeptdoc: string = "ConDoctor";
+    optionsSearchDoc: any[] = [];
+  
+  
+    @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+    @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  
+    ngAfterViewInit() {
+      // Assign the template to the column dynamically
+      this.gridConfig.columnsList.find(col => col.key === 'patientTypeID')!.template = this.actionsTemplate;
+      this.gridConfig.columnsList.find(col => col.key === 'isMLC')!.template = this.actionsTemplate1;
+      this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+  
+    }
+  
+    gridConfig: gridModel = {
+      apiUrl: "Admission/AdmissionList",
+      columnsList: [
+        { heading: "PatientType", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100},
+        // { heading: "-", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 110 },
+        { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.template, width: 80},
+        { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
+        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Date", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
+        { heading: "DoctorName", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "RefDocName", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "IPDNo", key: "ipdno", sort: true, align: 'left', emptySign: 'NA'},
+        { heading: "PatientType", key: "PatientType", sort: true, align: 'left', emptySign: 'NA'},
+        { heading: "WardName", key: "WardId", sort: true, align: 'left', emptySign: 'NA', type: 14 },
+        { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "ClassName", key: "className", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "RelativeName", key: "relativeName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 14 },
+        {
+          heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+          template: this.actionButtonTemplate  // Assign ng-template to the column
+        }
+  
+        //   { heading: "RelatvieMobileNo", key: "relatvieMobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100, type:14 },
+        // {
+        //     heading: "Action", key: "action", align: "right", width: 400 ,sticky:true, type: gridColumnTypes.action, actions: [
+        //         {
+        //             action: gridActions.edit, callback: (data: any) => {
+        //                 this.EditRegistration(data);
+        //             }
+        //         },
+  
+        //         {
+        //             action: gridActions.edit, callback: (data: any) => {
+        //                 this.onbedTransfer(data);
+        //             }
+        //         },
+        //         {
+        //           action: gridActions.edit, callback: (data: any) => {
+        //               this.ondischarge(data);
+        //           }
+        //       },
+        //       {
+        //         action: gridActions.edit, callback: (data: any) => {
+        //             this.ondischargesummarydata(data);
+        //         }
+        //     },
+        //         {
+        //             action: gridActions.print, callback: (data: any) => {
+        //                 this.getAdmittedPatientCasepaperview(data);
+        //             }
+        //         },
+        //         {
+        //             action: gridActions.print , callback: (data: any) => {
+        //                 this.getAdmittedPatientCasepaperTempview(data);
+        //             }
+        //         },
+        //         {
+        //             action: gridActions.edit, callback: (data: any) => {
+        //                 this.getEditAdmission(data);
+        //             }
+        //         },
+        //         {
+        //           action: gridActions.edit, callback: (data: any) => {
+        //               this.NewMLc(data);
+        //           }
+        //       },
+        //         {
+        //             action: gridActions.delete, callback: (data: any) => {
+  
+        //                 // this.AppointmentCancle(data);
+  
+        //             }
+        //         }
+        //       ]
+        // } //Action 1-view, 2-Edit,3-delete
+      ],
+  
+      sortField: "AdmissionId",
+      sortOrder: 0,
+      filters: [{ fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+      { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+      { fieldName: "To_Dt", fieldValue:this.toDate, opType: OperatorComparer.Equals },
+      { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Equals },
+      { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+      ],
+      row: 25
+  
+    }
+  
+
   ngOnInit(): void {
-    this.getAdmittedPatientList();
+    this.myFilterform = this._CompanyListService.filterForm();
     if (this._ActRoute.url == '/ipd/companylist') {
       this.menuActions.push('Company Bill'); 
     }
   }
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
-  get f() { return this._CompanyListService.myFilterform.controls; }
-  resultsLength = 0;
-  getAdmittedPatientList() {
 
-    if (this._CompanyListService.myFilterform.get("IsDischarge").value == "0" || this._CompanyListService.myFilterform.get("IsDischarge").value == false) {
-      this.isLoadingStr = 'loading';
-      var D_data = {
-        "F_Name": this._CompanyListService.myFilterform.get("FirstName").value + '%' || "%",
-        "L_Name": this._CompanyListService.myFilterform.get("LastName").value + '%' || "%",
-        "Reg_No": this._CompanyListService.myFilterform.get("RegNo").value || 0,
-        "Doctor_Id": this._CompanyListService.myFilterform.get("DoctorId").value || 0,
-        "From_Dt": this.datePipe.transform(this._CompanyListService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
-        "To_Dt": this.datePipe.transform(this._CompanyListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-        "Admtd_Dschrgd_All": this._CompanyListService.myFilterform.get('IsDischarge').value || 0,
-        "M_Name": this._CompanyListService.myFilterform.get("MiddleName").value + '%' || "%",
-        "IPNo": this._CompanyListService.myFilterform.get("IPDNo").value || 0,
-        Start: (this.paginator?.pageIndex ?? 0),
-        Length: (this.paginator?.pageSize ?? 35),
-      }
-
-      setTimeout(() => {
-        this.isLoadingStr = 'loading';
-        this._CompanyListService.getAdmittedPatientList_1(D_data).subscribe(data => {
-          this.dataSource.data = data["Table1"] ?? [] as AdmissionPersonlModel[];
-           //console.log(this.dataSource.data)
-          this.dataSource.sort = this.sort;
-          this.resultsLength = data["Table"][0]["total_row"];
-          this.sIsLoading = '';
-        },
-          error => {
-            this.sIsLoading = '';
-          });
-      }, 1000);
-    } else {
-      this.isLoadingStr = 'loading';
-      var Params = {
-        "F_Name": this._CompanyListService.myFilterform.get("FirstName").value + '%' || "%",
-        "L_Name": this._CompanyListService.myFilterform.get("LastName").value + '%' || "%",
-        "M_Name": this._CompanyListService.myFilterform.get("MiddleName").value + '%' || "%",
-        "Reg_No": this._CompanyListService.myFilterform.get("RegNo").value || 0,
-        "Doctor_Id": this._CompanyListService.myFilterform.get("DoctorId").value || 0,
-        "From_Dt": this.datePipe.transform(this._CompanyListService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
-        "To_Dt": this.datePipe.transform(this._CompanyListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-        "Admtd_Dschrgd_All": this._CompanyListService.myFilterform.get('IsDischarge').value,
-        "IPNo": this._CompanyListService.myFilterform.get("IPDNo").value || 0,
-        Start: (this.paginator?.pageIndex ?? 0),
-        Length: (this.paginator?.pageSize ?? 35),
-      }
-      setTimeout(() => {
-        this.isLoadingStr = 'loading';
-        this._CompanyListService.getDischargedPatientList_1(Params).subscribe(data => {
-          // this.dataSource.data = data as Admission[];
-          this.dataSource.data = data["Table1"] ?? [] as AdmissionPersonlModel[];
-          console.log(this.dataSource.data)
-          this.dataSource.sort = this.sort;
-          this.resultsLength = data["Table"][0]["total_row"];
-          // this.dataSource.paginator = this.paginator;
-          this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
-          this.sIsLoading = '';
-          // this.click = false;
-        },
-          error => {
-            this.sIsLoading = '';
-          });
-      }, 1000);
-
-    } 
-  }
   getRecord(contact, m): void { 
     if(contact.CompanyId){
       if (m == "Company Bill") {
-        // let m_data = {
-        //   RegNo: contact.RegNo,
-        //   RegId: contact.RegID,
-        //   AdmissionID: contact.AdmissionID,
-        //   OPD_IPD_ID: contact.OPD_IPD_Id,
-        //   PatientName: contact.PatientName,
-        //   Doctorname: contact.Doctorname,
-        //   AdmDateTime: contact.AdmDateTime,
-        //   AgeYear: contact.AgeYear,
-        //   ClassId: contact.ClassId,
-        //   TariffName: contact.TariffName,
-        //   TariffId: contact.TariffId,
-        //   DoctorId: contact.DoctorId,
-        //   DOA: contact.DOA,
-        //   DOT: contact.DOT,
-        //   DoctorName: contact.DoctorName,
-        //   RoomName: contact.RoomName,
-        //   BedNo: contact.BedName,
-        //   IPDNo: contact.IPDNo,
-        //   DocNameID: contact.DocNameID,
-        //   opD_IPD_Typec: contact.opD_IPD_Type,
-        //   CompanyName: contact.CompanyName
-        // }
-  
+        
         this.advanceDataStored.storage = new AdvanceDetailObj(contact); 
         if (!contact.IsBillGenerated) {
         const dialogRef = this._matDialog.open(CompanyBillComponent,
@@ -178,7 +175,7 @@ export class CompanyListComponent implements OnInit {
             height: '95%',
           });
         dialogRef.afterClosed().subscribe(result => {
-          this.getAdmittedPatientList();
+         
         });
         }else Swal.fire("Bill already Generated")
       }
@@ -203,8 +200,7 @@ export class CompanyListComponent implements OnInit {
     this._CompanyListService.myFilterform.get("FirstName").setValue('');
     this._CompanyListService.myFilterform.get("MiddleName").setValue('');
     this._CompanyListService.myFilterform.get("LastName").setValue('');
-    this.getAdmittedPatientList();
-  }
+      }
   IsDischarge: any;
   onChangeIsactive(SiderOption) {
     this.IsDischarge = SiderOption.checked;
@@ -220,39 +216,11 @@ export class CompanyListComponent implements OnInit {
     }
   }
   printDischargeslip(contact) {
-    console.log(contact)
-    this._CompanyListService.getIpDischargeReceipt(
-      contact.AdmissionID
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "CHECK OUT SLIP Viewer"
-          }
-        });
-    });
+  
   }
 
 
   printDischargesummary(contact) {
 
-    this._CompanyListService.getIpDischargesummaryReceipt(
-      contact.AdmissionID
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Discharge SummaryViewer"
-          }
-        });
-    });
   }
 }

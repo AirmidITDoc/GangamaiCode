@@ -16,6 +16,9 @@ import { OpPaymentNewComponent } from '../../op-search-list/op-payment-new/op-pa
 import { debugPort } from 'process';
 import { VisitMaster1 } from '../appointment-list.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { SearchInforObj } from '../../op-search-list/opd-search-list/opd-search-list.component';
+import { AppointmentBillService } from './appointment-bill.service';
 
 @Component({
   selector: 'app-appointment-billing',
@@ -94,18 +97,25 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   public chargeList: ChargesList[] = [];
   public packageList: ChargesList[] = [];
   public serviceList: ChargesList[] = [];
-
+  selectedAdvanceObj: SearchInforObj;
   dateTimeObj: any;
-  // Total amounts
-  constructor(private _matDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any, public datePipe: DatePipe,
+ 
+  constructor(private _matDialog: MatDialog,
+    //  @Inject(MAT_DIALOG_DATA) public data: any, 
+     public datePipe: DatePipe,
+     private advanceDataStored: AdvanceDataStored,
    private commonService: PrintserviceService,
-    public _AppointmentlistService: AppointmentlistService, private dialogRef: MatDialogRef<AppointmentBillingComponent>,
+    public _AppointmentlistService: AppointmentBillService, 
+    // private dialogRef: MatDialogRef<AppointmentBillingComponent>,
      private formBuilder: FormBuilder, private toastrService: ToastrService) { }
 
   ngOnInit() {
+    console.log("DATA : ",this.advanceDataStored.storage);
+    // if (this.data) {
 
-    if (this.data) {
-      this.patientDetail = this.data;
+      if (this.advanceDataStored.storage) {
+        this.selectedAdvanceObj = this.advanceDataStored.storage;
+      this.patientDetail = this.selectedAdvanceObj;
       this.PatientName = this.patientDetail.patientName
       this.vOPIPId= this.patientDetail.visitId
       this.savebtn=false
@@ -522,6 +532,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       console.log(obj)
        this.vOPIPId = obj.visitId
        this.RegNo = obj.visitId
+       
       setTimeout(() => {
         this._AppointmentlistService.getRegistraionById(obj.regId).subscribe((response) => {
           this.patientDetail = response;
@@ -533,7 +544,6 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       }, 500);
 
          setTimeout(() => {
-     
       this._AppointmentlistService.getVisitById( this.vOPIPId).subscribe(data => {
         this.patientDetail1  = data ;
         console.log(data)
@@ -693,7 +703,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     console.log(submitData);
     this._AppointmentlistService.InsertOPBillingCredit(submitData).subscribe(response => {
       this.toastrService.success(response.message);
-      this.dialogRef.close();
+      // this.dialogRef.close();
     }, (error) => {
       this.toastrService.error(error.message);
     });
@@ -782,8 +792,7 @@ console.log(this.vOPIPId)
     PatientHeaderObj['OPD_IPD_Id'] = this.vOPDNo;
     PatientHeaderObj['Age'] = this.AgeYear;
     PatientHeaderObj['NetPayAmount'] =Math.round(this.totalChargeForm.get('totalNetAmount').value);
-debugger
-    debugger
+
     if (this.totalChargeForm.get('paymentType').value == 'PayOption') {
       const dialogRef = this._matDialog.open(OpPaymentNewComponent,
         {
@@ -798,7 +807,7 @@ debugger
         });
 
       dialogRef.afterClosed().subscribe(result => {
-        debugger
+        
         this.flagSubmit = result.IsSubmitFlag
         if (this.flagSubmit == true) {
           this.Paymentdataobj = result.submitDataPay.ipPaymentInsert;
@@ -844,7 +853,7 @@ debugger
             this.toastrService.success(response.message);
             console.log(response)
             this.viewgetOPBillReportPdf(response)
-            this.dialogRef.close();
+            // this.dialogRef.close();
           }, (error) => {
             this.toastrService.error(error.message);
           });
@@ -925,7 +934,7 @@ debugger
       this._AppointmentlistService.InsertOPBilling(submitData).subscribe(response => {
         this.toastrService.success(response.message);
         this.viewgetOPBillReportPdf(response)
-        this.dialogRef.close();
+        // this.dialogRef.close();
       }, (error) => {
         this.toastrService.error(error.message);
       });

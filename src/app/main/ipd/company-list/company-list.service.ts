@@ -17,23 +17,23 @@ export class CompanyListService {
       this.myFilterform=this.filterForm(); 
      }
 
-  filterForm(): FormGroup {
-    return this._formBuilder.group({
-      RegNo: '',
-      IPDNo: '',
-      FirstName:['', [ Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
-      MiddleName:['', [ Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
-      LastName:['', [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
-      MobileNo: ['', [Validators.pattern("^[0-9]*$"),Validators.minLength(10),Validators.maxLength(10),]],   
-      DoctorId: '0',
-      DoctorName: '',
-      IsDischarge:[0],
-      WardId: '0',
-      RoomName: '',
-      start: [],
-      end: [],
-      DischargeId:[''], 
-    });
+     filterForm(): FormGroup {
+      return this._formBuilder.group({
+          RegNo: '',
+          IPDNo: '',
+          FirstName: '',
+          MiddleName: '',
+          LastName: '',
+          MobileNo: '',
+          searchDoctorId: 0,
+          WardId: '0',
+          RoomName: '',
+          PatientType: '',
+          patientstatus: '',
+          fromDate:[''],// [(new Date()).toISOString()],
+          enddate: [''][(new Date()).toISOString()],
+
+      });
   }
   public getAdmittedPatientList_1(Param) {
     return this._httpClient.post("Generic/GetDataSetByProc?procName=m_rtrv_Admtd_Ptnt_Dtls", Param);

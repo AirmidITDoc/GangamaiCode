@@ -49,14 +49,17 @@
 
             <mat-icon *ngIf="element.patientTypeID != '1'" matTooltip="Patient Category Company">business
             </mat-icon>
-            <!-- 
-
-            <mat-icon title="OPTOIPConvert" *ngIf="element.IsOpToIPconv==1" [disabled]="element.disabled"
-                class="disabled-icon">
-                redo</mat-icon> -->
+            
         </div>
     </ng-template>
 
+    <ng-template #actionsTemplate2 let-element>
+        <div fxLayout="row" fxLayoutAlign="center center">
+          <mat-icon title="OPTOIPConvert" *ngIf="element.isOpToIpconv==1" [disabled]="element.disabled"
+                class="disabled-icon">
+                redo</mat-icon>
+        </div>
+    </ng-template>
 
     
     <ng-template #actionsTemplate1 let-element>
@@ -95,16 +98,7 @@
                 <mat-icon> account_circle</mat-icon>
             </button>
 
-            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More" (click)="$event.stopPropagation();">
-                <mat-icon class="secondary-text">more_vert</mat-icon>
-            </button>
-            <mat-menu #moreMenu="matMenu">
-                <ng-container *ngFor="let m of menuActions, let n of menuActions">
-                    <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
-                        <span>{{m}}</span>
-                    </button>
-                </ng-container>
-            </mat-menu>
+         
         </div>
     </ng-template>
 
@@ -165,7 +159,7 @@
                         </mat-form-field>
 
 
-                        <airmid-dropdown label="Doctor Name" formControlName="searchDoctorId" [formGroup]="myFilterform" [(ngModel)]="gridConfig.filters[3].fieldValue" [validations]="getValidationdoctorMessages().searchDoctorId" [mode]="autocompleteModedeptdoc" (selectionChange)="selectChangedeptdoc($event)">
+                        <airmid-dropdown label="Doctor Name" formControlName="searchDoctorId" [formGroup]="myFilterform" [(ngModel)]="gridConfig.filters[3].fieldValue" [validations]="getValidationdoctorMessages().searchDoctorId" [mode]="autocompleteModedeptdoc" >
                         </airmid-dropdown>
 
 

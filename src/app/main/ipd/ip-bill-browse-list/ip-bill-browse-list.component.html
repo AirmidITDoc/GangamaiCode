@@ -36,15 +36,9 @@
                     </button>
 
                 </div>
-                <div class="info-badge-top border-bottom" style="margin-left: 18%;" fxLayout="row" fxLayoutAlign="space-between" flex>
+                <div class="info-badge-top border-bottom" style="margin-left: 18%;" fxLayout="row"
+                    fxLayoutAlign="space-between" flex>
                     <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
-                        <button type="button" mat-icon-button>
-                            <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
-                        </button>
-
-                        <button type="button" mat-icon-button>
-                            <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
-                        </button>
 
                         <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                             <mat-icon class="pill orange-600 s-16">circle</mat-icon>
@@ -58,19 +52,45 @@
                             <mat-icon class="pill red-600 s-16">circle</mat-icon>
                             <span class="red-600-fg">Cancelled Bills</span>
                         </div>
-            
+
                     </div>
                 </div>
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <ng-template #ColorCode let-element>
+                <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <ng-template #patientTypetemp let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="element.PatientTypeId=='1'" matTooltip="Patient Category Self">account_box
+                            </mat-icon>
+
+                            <mat-icon *ngIf="element.PatientTypeId !='1'" matTooltip="Patient Category Company">business
+                            </mat-icon>
+                        </div>
+                    </ng-template>
+                    <ng-template #Billstatus let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
                             <mat-icon *ngIf="element.interimOrFinal=='0'" matTooltip="Final Bill"
                                 class="pill green-600 s-16">circle</mat-icon>
 
-                                <mat-icon *ngIf="element.interimOrFinal=='1'" matTooltip="Intrim Bill"
+                            <mat-icon *ngIf="element.interimOrFinal=='1'" matTooltip="Intrim Bill"
                                 class="pill orange-600 s-16">circle</mat-icon>
                         </div>
                     </ng-template>
+                    <ng-template #balancestatus let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <button mat-icon-button class="material-icons" *ngIf="element.balanceAmt !=0 "
+                                (click)="Billpayment(element)" matTooltip="Settlement">
+                                <mat-icon> payment </mat-icon>
+                            </button>
+                        </div>
+                    </ng-template>
+
+                    <ng-template #isCancelledstatus let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon title="Cancelled Bill" *ngIf="element.isCancelled=='1'" class="pill red s-16"
+                            matTooltip="Cancelled Bill">circle</mat-icon> 
+                         
+                        </div>
+                    </ng-template>
+
 
                     <ng-template #actionButtonTemplateIP let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
@@ -87,16 +107,17 @@
                             <button mat-icon-button matTooltip="Send message On WhatsApp">
                                 <img width="500" height="20px" src="assets/images/logos/WhatsApp.png">
                             </button>
-                            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More">
-                                <mat-icon class="secondary-text">more_vert</mat-icon>
-                            </button>
-                            <!-- <mat-menu #moreMenu="matMenu">
-                                <ng-container *ngFor="let m of menuActions, let n of menuActions">
-                                    <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
-                                        <span>{{m}}</span>
-                                    </button>
-                                </ng-container>
-                            </mat-menu> -->
+                            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                            (click)="$event.stopPropagation();">
+                            <mat-icon class="secondary-text">more_vert</mat-icon>
+                        </button>
+                        <mat-menu #moreMenu="matMenu">
+                            <ng-container *ngFor="let m of menuActions, let n of menuActions">
+                                <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
+                                    <span>{{m}}</span>
+                                </button>
+                            </ng-container>
+                        </mat-menu>
                         </div>
                     </ng-template>
                     <airmid-table [gridConfig]="gridConfig" class="content">
@@ -127,7 +148,7 @@
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
-                                
+
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>First Name</mat-label>
                                 <input matInput placeholder="Search First Name" autocomplete="off"
@@ -137,7 +158,7 @@
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
-                
+
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Last Name</mat-label>
                                 <input matInput placeholder="Search Last Name" autocomplete="off"
@@ -149,20 +170,35 @@
                             </mat-form-field>
 
                             <form [formGroup]="_IPBrowseBillService.myFilterIpbillbrowseform">
-                            <mat-radio-group value="2" [(ngModel)]="gridConfig.filters[6].fieldValue" 
-                                fxLayoutAlign="center center" formControlName="IsInterimOrFinal">
+                                <mat-radio-group value="2" [(ngModel)]="gridConfig.filters[6].fieldValue"
+                                    fxLayoutAlign="center center" formControlName="IsInterimOrFinal">
 
-                                <mat-radio-button mat-fab value="2">All</mat-radio-button>
-                                <mat-radio-button mat-fab value="1">IsInterim</mat-radio-button>
-                                <mat-radio-button mat-fab value="0">IsFinal</mat-radio-button>
-                            </mat-radio-group>
-                        </form>
+                                    <mat-radio-button mat-fab value="2">All</mat-radio-button>
+                                    <mat-radio-button mat-fab value="1">IsInterim</mat-radio-button>
+                                    <mat-radio-button mat-fab value="0">IsFinal</mat-radio-button>
+                                </mat-radio-group>
+                            </form>
                         </ng-container>
                     </airmid-table>
                 </div>
             </div>
 
         </mat-tab>
+
+
+        <ng-template #actionButtonTemplatepayment let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <button mat-icon-button (click)="getPaymentreceiptview(element)" matTooltip="Bill Date Update">
+                    <mat-icon>print</mat-icon>
+                </button>
+
+               <button mat-icon-button matTooltip="Send message On WhatsApp">
+                    <img width="500" height="20px" src="assets/images/logos/WhatsApp.png">
+                </button>
+               
+            </div>
+        </ng-template>
+
         <mat-tab label="IP Browse Payment List">
 
             <div fusePerfectScrollbar
@@ -179,7 +215,8 @@
                     </div>
 
                 </div>
-                <div class="info-badge-top border-bottom" style="margin-left: 18%;" fxLayout="row" fxLayoutAlign="space-between" flex>
+                <div class="info-badge-top border-bottom" style="margin-left: 18%;" fxLayout="row"
+                    fxLayoutAlign="space-between" flex>
                     <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
                         <button type="button" mat-icon-button>
                             <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
@@ -188,19 +225,19 @@
                         <button type="button" mat-icon-button>
                             <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
                         </button>
-            
+
                     </div>
                 </div>
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                     <airmid-table [gridConfig]="gridConfig1" class="content">
                         <ng-container filters>
 
-                        <airmid-datepicker [formGroup]="myFilterform"
-                                [isRangePicker]="true" formStartControlName="startdate" formEndControlName="enddate"
+                            <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true"
+                                formStartControlName="startdate" formEndControlName="enddate"
                                 [(fromValue)]="gridConfig.filters[2].fieldValue"
                                 [(toValue)]="gridConfig.filters[3].fieldValue">
                             </airmid-datepicker>
-                            
+
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Receipt No</mat-label>
                                 <input matInput placeholder="Search Receipt No" autocomplete="off"
@@ -230,26 +267,26 @@
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
-    
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>First Name</mat-label>
-                                    <input matInput placeholder="Search First Name" autocomplete="off"
-                                        [(ngModel)]="gridConfig2.filters[0].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig2.filters[0].fieldValue='%'">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Last Name</mat-label>
-                                    <input matInput placeholder="Search Last Name" autocomplete="off"
-                                        [(ngModel)]="gridConfig2.filters[1].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig2.filters[1].fieldValue='%'">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>First Name</mat-label>
+                                <input matInput placeholder="Search First Name" autocomplete="off"
+                                    [(ngModel)]="gridConfig2.filters[0].fieldValue" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig2.filters[0].fieldValue='%'">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Last Name</mat-label>
+                                <input matInput placeholder="Search Last Name" autocomplete="off"
+                                    [(ngModel)]="gridConfig2.filters[1].fieldValue" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig2.filters[1].fieldValue='%'">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
 
                             <!-- <airmid-textbox label="RegNo" formControlName="RegNo"
                                 [(ngModel)]="gridConfig.filters[4].fieldValue"
@@ -302,7 +339,8 @@
                     </div>
 
                 </div>
-                <div class="info-badge-top border-bottom" style="margin-left: 18%;" fxLayout="row" fxLayoutAlign="space-between" flex>
+                <div class="info-badge-top border-bottom" style="margin-left: 18%;" fxLayout="row"
+                    fxLayoutAlign="space-between" flex>
                     <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
                         <button type="button" mat-icon-button>
                             <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
@@ -311,13 +349,14 @@
                         <button type="button" mat-icon-button>
                             <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
                         </button>
-            
+
                     </div>
                 </div>
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                     <ng-template #actionButtonTemplateIPRefund let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <button mat-icon-button (click)="getRefundreceiptview(element)" matTooltip="Bill Date Update">
+                            <button mat-icon-button (click)="getRefundreceiptview(element)"
+                                matTooltip="Bill Date Update">
                                 <mat-icon>print</mat-icon>
                             </button>
                             <button mat-icon-button matTooltip="Send message On WhatsApp">
@@ -329,20 +368,20 @@
                         <ng-container filters>
 
                             <airmid-datepicker [formGroup]="_IPBrowseBillService.myFilterIprefundbrowseform"
-                            [isRangePicker]="true" formStartControlName="startdate" formEndControlName="enddate"
-                            [(fromValue)]="gridConfig2.filters[2].fieldValue"
-                            [(toValue)]="gridConfig2.filters[3].fieldValue">
-                        </airmid-datepicker>
+                                [isRangePicker]="true" formStartControlName="startdate" formEndControlName="enddate"
+                                [(fromValue)]="gridConfig2.filters[2].fieldValue"
+                                [(toValue)]="gridConfig2.filters[3].fieldValue">
+                            </airmid-datepicker>
 
-                        <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>RegNo</mat-label>
-                            <input matInput placeholder="Search RegNo" autocomplete="off"
-                                [(ngModel)]="gridConfig2.filters[4].fieldValue" />
-                            <button matSuffix mat-icon-button aria-label="Clear"
-                                (click)="gridConfig2.filters[4].fieldValue='0'">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                        </mat-form-field>
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>RegNo</mat-label>
+                                <input matInput placeholder="Search RegNo" autocomplete="off"
+                                    [(ngModel)]="gridConfig2.filters[4].fieldValue" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig2.filters[4].fieldValue='0'">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>First Name</mat-label>
@@ -403,7 +442,7 @@
                                 </mat-form-field>
                             </form> -->
 
-                           
+
 
                             <mat-radio-group value="" [(ngModel)]="gridConfig2.filters[5].fieldValue"
                                 fxLayoutAlign="center center">

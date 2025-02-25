@@ -11,7 +11,6 @@ import { CdkTreeModule } from '@angular/cdk/tree';
 import { CdkTableModule } from '@angular/cdk/table';
 import { MatTreeModule } from '@angular/material/tree';
 import { SharedModule } from '../shared/shared.module';
-import { ReportConfigurationComponent } from './report-configuration/report-configuration.component';
 
 
 const appRoutes: Routes = [
@@ -77,7 +76,7 @@ const appRoutes: Routes = [
 
 @NgModule({
   declarations: [ 
-    ReportConfigurationComponent,
+    
   ],
   imports: [
     RouterModule.forChild(appRoutes),

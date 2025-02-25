@@ -533,7 +533,7 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId){
 
 
     public getReportData(param){
-      return this._httpClient1.PostData("MReportConfiguration/List",param);
+      return this._httpClient1.PostData("ReportConfig/List",param);
     }
 
     

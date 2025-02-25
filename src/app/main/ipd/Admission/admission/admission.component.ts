@@ -123,12 +123,14 @@ export class AdmissionComponent implements OnInit {
 
   @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
   @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+  @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
   ngAfterViewInit() {
     // Assign the template to the column dynamically
     this.gridConfig.columnsList.find(col => col.key === 'patientTypeID')!.template = this.actionsTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'isMLC')!.template = this.actionsTemplate1;
+    this.gridConfig.columnsList.find(col => col.key === 'isOpToIpconv')!.template = this.actionsTemplate2;
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
   }
@@ -136,8 +138,8 @@ export class AdmissionComponent implements OnInit {
   gridConfig: gridModel = {
     apiUrl: "Admission/AdmissionList",
     columnsList: [
-      { heading: "PatientType", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100},
-      // { heading: "-", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 110 },
+      { heading: "PatientType", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:100},
+      { heading: "-", key: "isOpToIpconv", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:40 },
       { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.template, width: 80},
       { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
       { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
@@ -145,8 +147,8 @@ export class AdmissionComponent implements OnInit {
       { heading: "DoctorName", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
       { heading: "RefDocName", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
       { heading: "IPDNo", key: "ipdno", sort: true, align: 'left', emptySign: 'NA'},
-      { heading: "PatientType", key: "PatientType", sort: true, align: 'left', emptySign: 'NA'},
-      { heading: "WardName", key: "WardId", sort: true, align: 'left', emptySign: 'NA', type: 14 },
+      { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA'},
+      { heading: "WardName", key: "roomName", sort: true, align: 'left', emptySign: 'NA', type: 14 },
       { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "ClassName", key: "className", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -317,10 +319,7 @@ export class AdmissionComponent implements OnInit {
     });
   }
 
-  selectChangedeptdoc(obj: any) {
-    console.log(obj);
-
-  }
+ 
 
   getValidationdoctorMessages() {
     return {

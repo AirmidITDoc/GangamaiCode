@@ -60,7 +60,7 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [AppointmentListComponent, NewAppointmentComponent, EditConsultantDoctorComponent, EditRefranceDoctorComponent, CrossConsultationComponent, ImageViewComponent, PatientvitalInformationComponent, UpdateRegPatientInfoComponent, 
-        PreviousDeptListComponent,AppointmentBillingComponent],
+        PreviousDeptListComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,

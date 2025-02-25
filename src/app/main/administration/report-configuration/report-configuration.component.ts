@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
 import { fuseAnimations } from '@fuse/animations';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 
 @Component({
     selector: 'app-report-configuration',
@@ -17,17 +18,17 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class ReportConfigurationComponent implements OnInit{
 
-    myform: any;
+    myform: FormGroup;
     constructor(public _ReportConfigurationService: ReportConfigurationService, public _matDialog: MatDialog,
-            public toastr: ToastrService,)
+            public toastr: ToastrService,private _formBuilder: UntypedFormBuilder,)
                 { }
         @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
         gridConfig: gridModel = {
-            apiUrl: "MReportConfig/List",
+            apiUrl: "ReportConfig/List",
             columnsList: [
-                { heading: "Code", key: "reportId", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-                { heading: "ReportSection", key: "reportSection", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-                { heading: "ReportName", key: "reportName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "Code", key: "reportId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+                { heading: "ReportSection", key: "reportSection", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+                { heading: "ReportName", key: "reportName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
                 { heading: "Parentid", key: "parentid", sort: true, align: 'left', emptySign: 'NA', width: 80 },
                 { heading: "ReportMode", key: "reportMode", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "ReportTitle", key: "reportTitle", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -35,8 +36,8 @@ export class ReportConfigurationComponent implements OnInit{
                 { heading: "ReportColumn", key: "reportColumn", sort: true, align: 'left', emptySign: 'NA', width: 300 },
                 { heading: "ReportFilter", key: "reportFilter", sort: true, align: "left", emptySign: 'NA', width: 150 },
                 { heading: "ReportHeaderFile", key: "reportHeaderFile", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                { heading: "ReportBodyFile", key: "reportBodyFile", sort: true, align: 'left', emptySign: 'NA', width: 180 },
-                { heading: "ReportFolderName", key: "reportFolderName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "ReportBodyFile", key: "reportBodyFile", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+                { heading: "ReportFolderName", key: "reportFolderName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
                 { heading: "ReportFileName", key: "reportFileName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "ReportSPName", key: "reportSpname", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "ReportPageOrientation", key: "reportPageOrientation", sort: true, align: 'left', emptySign: 'NA', width: 200},
@@ -66,8 +67,17 @@ export class ReportConfigurationComponent implements OnInit{
             row: 25
         }
     
-        ngOnInit(): void { }
+        ngOnInit(): void {
+            this.myform=this.createseacrhform();
+         }
     
+
+         createseacrhform(): FormGroup {
+            return this._formBuilder.group({
+                reportName: [""]               
+            });
+        }
+
         onSave(row: any = null) {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button

@@ -36,7 +36,7 @@ import { NewCasepaperComponent } from '../new-casepaper/new-casepaper.component'
 import { PatientvitalInformationComponent } from './new-appointment/patientvital-information/patientvital-information.component';
 import { RegInsert } from '../registration/registration.component';
 import { UpdateRegPatientInfoComponent } from './update-reg-patient-info/update-reg-patient-info.component';
-import { SearchInforObj } from '../op-search-list/opd-search-list/opd-search-list.component';
+import { SearchInforObj, SearchInforObj1 } from '../op-search-list/opd-search-list/opd-search-list.component';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -207,17 +207,18 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
-    showBilling(row: any = null) {
-        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-        buttonElement.blur(); // Remove focus from the button
+    // showBilling(row) {
+    //     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    //     buttonElement.blur(); // Remove focus from the button
 
-        const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
-            maxWidth: "90vw",
-            maxHeight: "90vh",
-            width: "80%",
-            data:row
-        });
-    }
+    //     this.advanceDataStored.storage = new SearchInforObj1(row);
+    //     const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
+    //         maxWidth: "90vw",
+    //         maxHeight: "90vh",
+    //         width: "80%",
+    //         // data:row
+    //     });
+    // }
 
     OnEditRegistration(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -304,12 +305,15 @@ export class AppointmentListComponent implements OnInit {
     OnBillPayment(row) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        this.advanceDataStored.storage = new SearchInforObj(row);
+        this.advanceDataStored.storage = new SearchInforObj1(row);
+        console.log(row)
+
+console.log(this.advanceDataStored.storage)
        const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
             maxWidth: "99vw",
             height: "98vh",
             width: "100%",
-            data:row
+            // data:row
            
         });
     }

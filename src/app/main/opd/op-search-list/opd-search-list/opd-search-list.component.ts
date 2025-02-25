@@ -422,6 +422,140 @@ export class SearchInforObj
         }
     }
 }
+
+export class SearchInforObj1
+{
+  
+    visitId:any;
+    regId:any;
+    patientName:any;
+    prefixId:any;
+    aadharCardNo:any;
+    isOpToIpconv:any;
+    dateofBirth:any;
+    address:any;
+    maritalStatusId:any;
+    firstName:any;
+    middleName:any;
+    lastName:any;
+    visitDate:any;
+    dVisitDate:any;
+    visitTime:any;
+    hospitalId:any;
+    hospitalName:any;
+    patientTypeId:any;
+    patientType:any;
+    vistDateTime:any;
+    opdNo:any;
+    tariffId:any;
+    tariffName:any;
+    departmentId:any;
+    appPurposeId:any;
+    companyId:any;
+    companyName:any;
+    classId:any;
+    className:any;
+    age:any;
+    ageYear:any;
+    ageMonth:any;
+    ageDay:any;
+    regNoWithPrefix:any;
+    cityId:any;
+    religionId:any;
+    areaId:any;
+    followupDate:any;
+    isMark:any;
+    mPbillNo:any;
+    patientOldNew:any;
+    oldPatCnt:any;
+    newPatCnt:any;
+    isCancelled:any;
+    crossConsulCnt:any;
+    mobileNo:any;
+    departmentName:any;
+    doctorId:any;
+    doctorname:any;
+    refDocId:any;
+    refDocName:any;
+    phoneAppId:any;
+    crossConsulFlag:any;
+    isMLC:any;
+    roomName:any;
+    docNameId:any;
+    wardId:any;
+    bedName:any;
+    relativeName:any;
+    isBillGenerated:any;
+    phoneNo:any;
+    relatvieMobileNo:any;
+    bedId:any;
+    regNo:any;
+    genderName:any;
+
+     /**
+     * Constructor
+     *
+     * @param SearchInforObj1
+     */
+      constructor(SearchInforObj1) {
+        {
+           this.visitId = SearchInforObj1.visitId || '';
+           this.regId = SearchInforObj1.regId || '';
+           this.isOpToIpconv = SearchInforObj1.isOpToIpconv || '';
+           this.prefixId = SearchInforObj1.prefixId || '';
+           this.patientName = SearchInforObj1.patientName || '';
+           this.maritalStatusId = SearchInforObj1.maritalStatusId || '';
+           this.firstName = SearchInforObj1.firstName || '';
+           this.middleName = SearchInforObj1.middleName || '';
+           this.lastName = SearchInforObj1.lastName || '';
+           this.age = SearchInforObj1.age || '';
+           this.aadharCardNo = SearchInforObj1.aadharCardNo || '';
+           this.dateofBirth = SearchInforObj1.dateofBirth || '';
+           this.genderName = SearchInforObj1.genderName || '';
+           this.opdNo =SearchInforObj1.opdNo || 0 ;
+          //  this.doa = SearchInforObj1.doa | 0;
+          //  this.admissionTime = SearchInforObj1.admissionTime || 0;
+          //  this.patientTypeID = SearchInforObj1.patientTypeID || '';
+          //  this.patientType = SearchInforObj1.patientType || '';
+          //  this.hospitalID = SearchInforObj1.hospitalID || '';
+          //  this.areaId = SearchInforObj1.areaId || '';
+           this.roomName = SearchInforObj1.roomName || '';
+           this.bedName = SearchInforObj1.bedName || '';
+           this.docNameId = SearchInforObj1.docNameId || 0;
+           this.wardId = SearchInforObj1.wardId || 0;
+           this.bedId = SearchInforObj1.bedId || 0;
+          this.doctorname = SearchInforObj1.doctorname || 0;
+            this.refDocName = SearchInforObj1.refDocName || 0;
+         
+            this.isBillGenerated =SearchInforObj1.isBillGenerated || 0;
+         
+           this.tariffId =SearchInforObj1.tariffId || 0;
+           this.classId=SearchInforObj1.classId || '',
+           this.tariffName=SearchInforObj1.tariffName ||''
+           this.className=SearchInforObj1.className || '',
+           this.regNo=SearchInforObj1.regNo||0
+           this.ageYear=SearchInforObj1.ageYear || '',
+           this.address=SearchInforObj1.address ||0
+           this.cityId=SearchInforObj1.cityId|| ""
+           this.phoneNo=SearchInforObj1.phoneNo || ""
+             this.mobileNo=SearchInforObj1.mobileNo || ""
+           this.relativeName=SearchInforObj1.relativeName|| ""
+           this.relatvieMobileNo=SearchInforObj1.relatvieMobileNo || 0;
+
+           this.departmentId=SearchInforObj1.departmentId || '',
+           this.departmentName=SearchInforObj1.departmentName||0
+           this.companyId=SearchInforObj1.companyId || '',
+           this.companyName=SearchInforObj1.companyName ||0
+          
+           this.isMLC=SearchInforObj1.isMLC || 0;
+
+
+
+
+        }
+    }
+}
+
 export class ChargesList{
   ChargesId: number;
   ServiceId: number;

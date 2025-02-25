@@ -41,9 +41,9 @@ export class NewReportConfigurationComponent implements OnInit{
         if (!this.myform.invalid) 
         {
             console.log("Report-Config JSON :-", this.myform.value);
-            debugger
+            
             this._ReportConfigurationService.insertReportConfig(this.myform.value).subscribe((data) => {
-            this.toastr.success(data.message);
+            this.toastr.success(data);
                 this.onClear(true);
             }, (error) => {
                 this.toastr.error(error.message);

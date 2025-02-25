@@ -591,10 +591,7 @@ public getUMOCombo() {
 }
 
 
-public updateIPDDischargSummary(employee)
-{    
-  return this._httpClient.post("InPatient/UpdateIPDischargeSummary",employee);
-}
+
  // Search Window Option
 
  // Admitted Doctor Master Combobox List
@@ -1143,6 +1140,17 @@ public getItemlist(Param){//m_Rtrv_IPDrugName,Retrieve_ItemName_BalanceQty
 //new
 public InsertIPLabReqCharges(employee) {
   return this._httpClient.post("InPatient/LabRequestCharges",employee)
+}
+
+public SaveDischargeInitiate(employee) {
+ 
+  return this._httpClient1.PostData("Nursing/SaveDischargeInitiate", employee)
+}
+
+
+public updateIPDDischargSummary(employee)
+{    
+  return this._httpClient1.PostData("InPatient/UpdateIPDischargeSummary",employee);
 }
 }
 

@@ -19,8 +19,8 @@
 
                         <div class="redio-container" style="width: 40%;padding: 10px;">
 
-                            <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" fxFlex
-                                placeholderText="Enter Patient Name" ApiUrl="VisitDetail/search-patient?Keyword="
+                            <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No" [formGroup]="searchFormGroup" formControlName="RegId" fxFlex
+                            placeholderText="Enter Patient Name/RegId.." ApiUrl="VisitDetail/search-patient?Keyword="
                                 (selectionChange)="getSelectedObj($event)" TextField="formattedText"
                                 ValueField="regId"></airmid-autocomplete>
                         </div>

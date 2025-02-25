@@ -48,20 +48,19 @@ import { IPAdvanceComponent } from '../ip-search-list/ip-advance/ip-advance.comp
 export class IPBillBrowseListComponent implements OnInit {
     myFilterform: FormGroup;
     myFilterFormIPBrowsePayment:FormGroup;
-
+    menuActions: Array<string> = [];
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     hasSelectedContacts: boolean;
     
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
-    // fromDate =this.datePipe.transform(new Date(), "mm/ddyyyy") //"01/01/2021"
-    // toDate = this.datePipe.transform(new Date(), "mm/ddyyyy") //"01/01/2024"
+   
     allfilters = [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue:"01/01/2024", opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: "12/12/2024", opType: OperatorComparer.Equals },
         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "IsIntrimOrFinal", fieldValue: "0", opType: OperatorComparer.Equals },
@@ -71,40 +70,53 @@ export class IPBillBrowseListComponent implements OnInit {
     ]
      ngAfterViewInit() {
               this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIP;  
-              this.gridConfig.columnsList.find(col => col.key === 'interimOrFinal')!.template = this.ColorCode; 
+              this.gridConfig.columnsList.find(col => col.key === 'patientTypeId')!.template = this.patientTypetemp; 
+              this.gridConfig.columnsList.find(col => col.key === 'interimOrFinal')!.template = this.Billstatus; 
+              this.gridConfig.columnsList.find(col => col.key === 'balanceAmt')!.template = this.balancestatus; 
+              this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.isCancelledstatus; 
 
               this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIPRefund;  
 
           }
           @ViewChild('actionButtonTemplateIP') actionButtonTemplateIP!: TemplateRef<any>;
-          @ViewChild('ColorCode') ColorCode!: TemplateRef<any>;
+          @ViewChild('actionButtonTemplatepayment') actionButtonTemplatepayment!: TemplateRef<any>;
+
+          
+          @ViewChild('patientTypetemp') patientTypetemp!: TemplateRef<any>;
+          @ViewChild('Billstatus') Billstatus!: TemplateRef<any>;
+          @ViewChild('balancestatus') balancestatus!: TemplateRef<any>;
+          @ViewChild('isCancelledstatus') isCancelledstatus!: TemplateRef<any>;
           
           @ViewChild('actionButtonTemplateIPRefund') actionButtonTemplateIPRefund!: TemplateRef<any>;
 
     gridConfig: gridModel = {
         apiUrl: "Billing/IPBillList",
         columnsList: [
-            // { heading: "OpdIpdType", key: "opD_IPD_Type", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "-", key: "interimOrFinal", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+            { heading: "", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50},
+            { heading: "", key: "interimOrFinal", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+            { heading: "", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+            { heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+            
+            
             { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:150},
             { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width:150},
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Age", key: "age", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Mobile", key: "Mobileno", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Mobile", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width:150},
             { heading: "DOD", key: "dischargeDate", sort: true, align: 'left', emptySign: 'NA', width:150},
-            { heading: "IPDNO", key: "opdIpdId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IPDNO", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UnitName", key: "unitName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', },
             { heading: "DiscAmt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "CompDiscAmt", key: "compDiscAmt", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "NetAmount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "BalanceAmt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "BalanceAmt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "CashPay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "CardPay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
@@ -123,18 +135,6 @@ export class IPBillBrowseListComponent implements OnInit {
         sortOrder: 0,
         filters: this.allfilters,
 
-        //   [
-        //       { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        //       { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        //      { fieldName: "From_Dt", fieldValue: "01/01/2020", opType: OperatorComparer.Equals },
-        //       { fieldName: "To_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
-        //       { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-        //       { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Contains },
-        //       { fieldName: "IsIntrimOrFinal", fieldValue: "0", opType: OperatorComparer.Equals },
-        //       { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-        //       { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-        //      // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        //   ],
         row: 25
     }
 
@@ -159,21 +159,17 @@ export class IPBillBrowseListComponent implements OnInit {
             { heading: "Remark ", key: "remark0", sort: true, align: "center", emptySign: 'NA' },
             { heading: "User Name", key: "userName", sort: true, align: "center", emptySign: 'NA' },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.print, callback: (data: any) => {
-                            this.getPaymentreceiptview(data);
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
+                heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+                template: this.actionButtonTemplatepayment  // Assign ng-template to the column
+            }
         ],
         sortField: "RegNo",
         sortOrder: 0,
         filters: [
             { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: "12/12/2024", opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "ReceiptNo", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -217,16 +213,52 @@ export class IPBillBrowseListComponent implements OnInit {
         row: 25
     }
 
-    constructor(public _IPBrowseBillService: IPBrowseBillService, public _matDialog: MatDialog,
+    constructor(public _IPBrowseBillService: IPBrowseBillService, public _matDialog: MatDialog, private _ActRoute: Router,
         public toastr: ToastrService, public datePipe: DatePipe) { }
 
     ngOnInit(): void {
         this.myFilterform = this._IPBrowseBillService.filterForm_IpdBrowse();
         this.myFilterFormIPBrowsePayment=this._IPBrowseBillService.filterForm_IpdpaymentBrowse()
+
+        if (this._ActRoute.url == '/ipd/ipd-bill-browse-list') {
+            this.menuActions.push('Print Final Bill Groupwise');
+            this.menuActions.push('Print FinalBill Classwise');
+            this.menuActions.push('Print FinalBill ClassService');
+            this.menuActions.push('Print IP Final Bill');
+            // this.menuActions.push('Print FinalBill WardWise');
+          }
+      
     }
 
     onSave(row: any = null) {
     }
+
+    getRecord1(contact, m): void {
+        debugger
+        if (m == "Print Final Bill Groupwise") 
+          if (!contact.InterimOrFinal)
+            this.viewgetBillReportPdf(contact.BillNo)
+          else
+            this.viewgetInterimBillReportPdf(contact.BillNo)
+      
+      if (m == "Print FinalBill Classwise") 
+        this.viewgetBillReportclasswisePdf(contact)
+        if (m == "Print FinalBill ClassService") 
+          this.viewgetBillReportclassservicewisePdf(contact)
+          // if (m == "Print FinalBill WardWise") 
+          //   this.viewgetBillReportwardwisePdf(contact)
+    
+             if (m == "Print IP Final Bill") 
+            this.viewgetFinalBillReportNewPdf(contact.BillNo)
+      }
+
+      viewgetBillReportPdf(e){}
+      viewgetInterimBillReportPdf(e){}
+      viewgetBillReportclasswisePdf(e){}
+      viewgetBillReportclassservicewisePdf(e){}
+      viewgetFinalBillReportNewPdf(e){}
+
+
     getValidationMessages() {
         return {
             FirstName: [
@@ -282,6 +314,136 @@ export class IPBillBrowseListComponent implements OnInit {
         }
     }
 
+
+    Billpayment(contact) {
+
+        console.log(contact)
+        let PatientHeaderObj = {};
+    
+        PatientHeaderObj['Date'] = contact.BillDate;
+        PatientHeaderObj['PatientName'] = contact.PatientName;
+        PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
+        PatientHeaderObj['MobileNo'] = contact.MobileNo;
+        PatientHeaderObj['PatientAge'] = contact.PatientAge;
+        PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
+        PatientHeaderObj['BillId'] = contact.BillNo;
+        PatientHeaderObj['CompanyName'] = contact.CompanyName;
+        PatientHeaderObj['RegNo'] = contact.RegNo;
+        PatientHeaderObj['RegId'] = contact.RegId;
+        // this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+    
+    console.log(PatientHeaderObj)
+    
+    
+        const dialogRef = this._matDialog.open(IPSettlementComponent,
+          {
+            maxWidth: "95vw",
+            height: '740px',
+            width: '100%',
+            data: {
+    
+              registerObj: contact,
+              FromName: "IP-Bill"
+            }
+          });
+    
+        dialogRef.afterClosed().subscribe(result => {
+    
+        //   let updateIpBillobj = {};
+    
+    
+        //   updateIpBillobj['BillNo'] = contact.BillNo;
+        //   updateIpBillobj['BillBalAmount'] = result.submitDataPay.BalAmt || 0;
+    
+        //   const updateIpBill = new UpdateBill(updateIpBillobj);
+    
+    
+        //   let iPsettlementAdvanceDetailUpdateobj = {};
+        //   // need loop here
+    
+        //   iPsettlementAdvanceDetailUpdateobj['advanceDetailID'] = contact.BillNo;
+        //   iPsettlementAdvanceDetailUpdateobj['usedAmount'] = 0;
+        //   iPsettlementAdvanceDetailUpdateobj['balanceAmount'] = result.submitDataPay.ipPaymentInsert.balanceAmountController
+    
+        //   const iPsettlementAdvanceDetailUpdate = new Advheaderdetail(iPsettlementAdvanceDetailUpdateobj);
+    
+    
+        //   let iPsettlementAdvanceHeaderUpdateobj = {};
+    
+        //   iPsettlementAdvanceHeaderUpdateobj['advanceId'] = contact.BillNo;
+        //   iPsettlementAdvanceHeaderUpdateobj['advanceUsedAmount'] = 0;
+        //   iPsettlementAdvanceHeaderUpdateobj['balanceAmount'] = result.submitDataPay.ipPaymentInsert.balanceAmountController
+    
+        //   const iPsettlementAdvanceHeaderUpdate = new UpdateBill(iPsettlementAdvanceHeaderUpdateobj);
+    
+        //   let CreditPaymentobj = {};
+        //   CreditPaymentobj['paymentId'] = 0;
+        //   CreditPaymentobj['BillNo'] = contact.BillNo;
+        //   // CreditPaymentobj['ReceiptNo'] = '';
+        //   CreditPaymentobj['PaymentDate'] = this.currentDate || '01/01/1900';
+        //   CreditPaymentobj['PaymentTime'] = this.currentDate || '01/01/1900';
+        //   CreditPaymentobj['CashPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CashPayAmount) || 0;
+        //   CreditPaymentobj['ChequePayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.ChequePayAmount) || 0;
+        //   CreditPaymentobj['ChequeNo'] = result.submitDataPay.ipPaymentInsert.ChequeNo || '';
+        //   CreditPaymentobj['BankName'] = result.submitDataPay.ipPaymentInsert.BankName || '';
+        //   CreditPaymentobj['ChequeDate'] = result.submitDataPay.ipPaymentInsert.ChequeDate || '01/01/1900';
+        //   CreditPaymentobj['CardPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CardPayAmount) || 0;
+        //   CreditPaymentobj['CardNo'] = result.submitDataPay.ipPaymentInsert.CardNo || '';
+        //   CreditPaymentobj['CardBankName'] = result.submitDataPay.ipPaymentInsert.CardBankName || '';
+        //   CreditPaymentobj['CardDate'] = result.submitDataPay.ipPaymentInsert.CardDate || '01/01/1900';
+        //   CreditPaymentobj['AdvanceUsedAmount'] = 0;
+        //   CreditPaymentobj['AdvanceId'] = 0;
+        //   CreditPaymentobj['RefundId'] = 0;
+        //   CreditPaymentobj['TransactionType'] = 0;
+        //   CreditPaymentobj['Remark'] = result.submitDataPay.ipPaymentInsert.Remark || '';
+        //   CreditPaymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+        //     CreditPaymentobj['IsCancelled'] = 0;
+        //   CreditPaymentobj['IsCancelledBy'] = 0;
+        //   CreditPaymentobj['IsCancelledDate'] = this.currentDate;
+        //   // CreditPaymentobj['CashCounterId'] = 0;
+        //   // CreditPaymentobj['IsSelfORCompany'] = 0;
+        //   // CreditPaymentobj['CompanyId'] = 0;
+        //   CreditPaymentobj['opD_IPD_Type'] = 0;
+        //   CreditPaymentobj['neftPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.neftPayAmount) || 0;
+        //   CreditPaymentobj['neftNo'] = result.submitDataPay.ipPaymentInsert.neftNo || '';
+        //   CreditPaymentobj['neftBankMaster'] = result.submitDataPay.ipPaymentInsert.neftBankMaster || '';
+        //   CreditPaymentobj['neftDate'] = result.submitDataPay.ipPaymentInsert.neftDate || '01/01/1900';
+        //   CreditPaymentobj['PayTMAmount'] = result.submitDataPay.ipPaymentInsert.PayTMAmount || 0;
+        //   CreditPaymentobj['PayTMTranNo'] = result.submitDataPay.ipPaymentInsert.paytmTransNo || '';
+        //   CreditPaymentobj['PayTMDate'] = result.submitDataPay.ipPaymentInsert.PayTMDate || '01/01/1900'
+        //   // CreditPaymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
+        //   // CreditPaymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
+    
+        //   console.log(CreditPaymentobj)
+        //   const ipPaymentInsert = new IpPaymentInsert(CreditPaymentobj);
+    
+        //   let Data = {
+        //     "updateIpBill": updateIpBill,
+        //     "ipPaymentCreditUpdat": ipPaymentInsert,
+        //     "iPsettlementAdvanceDetailUpdate": iPsettlementAdvanceDetailUpdate,
+        //     "iPsettlementAdvanceHeaderUpdate": iPsettlementAdvanceHeaderUpdate
+        //   };
+    
+        //   console.log(Data)
+        //   this._IpBillBrowseListService.InsertIPCreditBillingPayment(Data).subscribe(response => {
+        //     if (response) {
+        //       Swal.fire('IP Bill With Settlement!', 'Bill Payment Successfully !', 'success').then((result) => {
+        //         if (result) {
+    
+        //           this.viewgetBillReportPdf(response)
+        //           this._matDialog.closeAll();
+        //           this.onShow_IpdBrowse();
+        //           this.getWhatsappshareIPPaymentRec(response,this.vMobileNo)
+        //         }
+        //       });
+        //     } else {
+        //       Swal.fire('Error !', 'IP Billing Payment not saved', 'error');
+        //     }
+    
+        //   });
+        });
+    
+      }
 
     getFinalBillview(Id) {
         setTimeout(() => {
