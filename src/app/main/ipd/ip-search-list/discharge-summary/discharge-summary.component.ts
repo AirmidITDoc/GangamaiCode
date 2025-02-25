@@ -620,7 +620,7 @@ export class DischargeSummaryComponent implements OnInit {
           console.log(SubmitData);
           setTimeout(() => {
             this._IpSearchListService.updateIPDDischargSummary(SubmitData).subscribe(response => {
-              this.toastr.success(response);
+              // this.toastr.success(response);
               // this.onClear(true);
               this._matDialog.closeAll();
             }, (error) => {
