@@ -28,8 +28,8 @@
                                   
                                     <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
                                       
-                                            <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId"
-                                            placeholderText="Enter Patient Name" fxFlex="50%"
+                                            <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No" [formGroup]="searchFormGroup" formControlName="RegId"
+                                            placeholderText="Enter Patient Name/RegId.." fxFlex="50%"
                                             ApiUrl="VisitDetail/search-patient?Keyword="
                                             (selectionChange)="getSelectedObj($event)" TextField="formattedText"
                                             ValueField="regId"></airmid-autocomplete>
