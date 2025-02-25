@@ -13,13 +13,14 @@
             </span>
         </div>
 
-        <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
+        <div fxLayout="row" fxLayoutAlign="end" class="left-icon">  
             <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
                 <span class="modal-icon">
                     <mat-icon>close</mat-icon>
                 </span>
             </button>
         </div>
+ 
  
     </mat-toolbar>
 
@@ -102,9 +103,14 @@
                     </mat-card> 
 
                     <div fxLayoutAlign="end">
-                        <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px"  >
+                        <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px">
+                        
+                            <button mat-raised-button (click)="addNewheadExpenses()" style="background-color: aliceblue;color: brown;">
+                                <mat-icon>add</mat-icon>Expenses Head
+                            </button>
+
                             <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                            <button class="btn btn-primary"   (click)="OnSave()">Save</button>
+                            <button class="btn btn-primary" (click)="OnSave()">Save</button>
                         </div>
                     </div>
                 </div>

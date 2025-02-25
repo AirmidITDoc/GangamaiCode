@@ -32,69 +32,69 @@
                                     <span class="h2">Patient Information</span>
                                 </div>
                                 <div class="patient-info-box my-8">
-                                    <div class="patient-info-row row-gap-" fxLayout="row wrap"
-                                        fxLayoutAlign="space-between">
-                                        <!-- <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                            <span class="patient-col-key ">UHID No</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.RegNo}}</span>
-                                        </div> -->
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                            <span class="patient-col-key ">Patient Name</span>
-                                            <span>:</span>
-                                            <span
-                                                class="patient-col-value">{{advanceData.RegNo}}-{{advanceData.PatientName}}</span>
+                                    <div class="patient-info-row row-gap-" fxLayout="row" fxLayoutAlign="space-between">
+                                    
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            <div class="patient-col gap-3">
+                                                <span class="patient-col-key ">Patient Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{advanceData.RegNo}}-{{advanceData.PatientName}}</span>
+                                            </div>
+                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%" *ngIf="advanceData.DoctorName">
+                                                <span class="patient-col-key ">Doctor Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{advanceData.DoctorName}}</span>
+                                            </div>
+                                    
+                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%" *ngIf="advanceData.DepartmentName">
+                                                <span class="patient-col-key ">Department Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{advanceData.DepartmentName}}</span>
+                                            </div>
+                                    
+                                        </div> 
+                                   
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%">
+                                                <span class="patient-col-key ">BillNo </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{advanceData.BillNo}}</span>
+                                            </div>
+                                            <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%" *ngIf="advanceData.BillTime">
+                                                <span class="patient-col-key">BillDate </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{Date}}</span>
+                                            </div>
+                                    
+                                            <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%" style="color: blue;font-weight: bold;">
+                                                <span class="patient-col-key">Net Amount</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{advanceData.NetPayAmount | currency:"INR":"symbol"}}</span>
+                                            </div>
                                         </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%"
-                                            *ngIf="advanceData.Age">
-                                            <span class="patient-col-key ">Age</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.Age}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                            <span class="patient-col-key ">OPD | IPD No </span>
-                                            <span>:</span>
-                                            <span class="patient-col-value" *ngIf="advanceData.IPDNo">
-                                                {{advanceData.IPDNo}}</span>
-                                            <span class="patient-col-value" *ngIf="advanceData.OPDNo">
-                                                {{advanceData.OPDNo}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%"
-                                            *ngIf="advanceData.DoctorName">
-                                            <span class="patient-col-key ">Doctor Name</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.DoctorName}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%"
-                                            *ngIf="advanceData.DepartmentName">
-                                            <span class="patient-col-key ">Department Name</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.DepartmentName}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%"
-                                            *ngIf="advanceData.CompanyName">
-                                            <span class="patient-col-key ">Company Name</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.CompanyName}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%">
-                                            <span class="patient-col-key ">BillNo </span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.BillNo}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%"
-                                            *ngIf="advanceData.BillTime">
-                                            <span class="patient-col-key">BillDate </span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.BillTime |
-                                                date:'dd/MM/YYYY'}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%"
-                                            style="color: blue;font-weight: bold;">
-                                            <span class="patient-col-key">Net Amount</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.NetPayAmount | currency:"INR":"symbol"}}</span>
-                                        </div>
+                                    
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%" *ngIf="advanceData.Age">
+                                                <span class="patient-col-key ">Age</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{advanceData.Age}}</span>
+                                            </div>
+                                    
+                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                <span class="patient-col-key ">OPD | IPD No </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value" *ngIf="advanceData.IPDNo">
+                                                    {{advanceData.IPDNo}}</span>
+                                                <span class="patient-col-value" *ngIf="advanceData.OPDNo">
+                                                    {{advanceData.OPDNo}}</span>
+                                            </div>
+
+                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%" *ngIf="advanceData.CompanyName">
+                                                <span class="patient-col-key ">Company Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{advanceData.CompanyName}}</span>
+                                            </div> 
+                                        </div>  
                                     </div>
                                 </div>
                             </div>

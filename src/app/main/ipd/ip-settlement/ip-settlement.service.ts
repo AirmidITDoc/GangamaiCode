@@ -14,7 +14,10 @@ export class IPSettlementService {
 
   //Adv paymnet
    
-  public getAdvcanceDetailslist(query) {
+  public getAdvcanceDetailslist(query,loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
   }
   

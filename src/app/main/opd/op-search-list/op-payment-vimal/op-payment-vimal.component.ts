@@ -114,8 +114,9 @@ export class OpPaymentVimalComponent implements OnInit {
         this.GetBalanceAmt();
     }
     IsMoreAmt = false;
-    onAddPayment() {
+    onAddPayment() { 
         this.submitted = true;
+        debugger
         if (this.patientDetailsFormGrp.invalid) {
             return;
         }
@@ -140,7 +141,8 @@ export class OpPaymentVimalComponent implements OnInit {
         this.patientDetailsFormGrp.get("amount1").setValue(this.balanceAmt);
         this.patientDetailsFormGrp.get("paymentType1").setValue(null);
         this.BindPaymentTypes();
-        this.GetBalanceAmt();
+        this.GetBalanceAmt();  
+       
     }
     setPaidAmount() {
         debugger
@@ -433,6 +435,43 @@ export class OpPaymentVimalComponent implements OnInit {
         // this.Paymentobj["NEFTPayAmount"] = this.Payments.data.find(x => x.PaymentType == "net banking")?.Amount ?? 0;
         // this.Paymentobj["CardPayAmount"] = this.Payments.data.find(x => x.PaymentType == "card")?.Amount ?? 0;
         // console.log(JSON.stringify(this.Paymentobj));
+        
+         if(this.amount1 > 0){
+            if(this.patientDetailsFormGrp.get('paymentType1').value == undefined || this.patientDetailsFormGrp.get('paymentType1').value == null){
+                this.toastr.warning('Please select payment mode or remove amount..', 'warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                  });
+                  return 
+            } 
+
+            if(this.patientDetailsFormGrp.get('paymentType1').value){
+                if(this.patientDetailsFormGrp.get('paymentType1').value.viewValue != "cash"){
+
+                    if(this.patientDetailsFormGrp.get('referenceNo1').value == undefined || this.patientDetailsFormGrp.get('referenceNo1').value == '0' || 
+                    this.patientDetailsFormGrp.get('referenceNo1').value == null || this.patientDetailsFormGrp.get('referenceNo1').value == ''){
+                        this.toastr.warning('Please enter Referance Number..', 'warning !', {
+                            toastClass: 'tostr-tost custom-toast-warning',
+                          });
+                          return 
+                    }  
+                    if(this.patientDetailsFormGrp.get('bankName1').value == undefined || this.patientDetailsFormGrp.get('bankName1').value == null
+                     || this.patientDetailsFormGrp.get('bankName1').value == ''){
+                        this.toastr.warning('Please select bank name..', 'warning !', {
+                            toastClass: 'tostr-tost custom-toast-warning',
+                          });
+                          return 
+                    }   
+                    if (this.patientDetailsFormGrp.get('bankName1').value) {
+                        if (!this.BankNameList1.some(item => item.BankId == this.patientDetailsFormGrp.get('bankName1').value.BankId)) {
+                            this.toastr.warning('Please select valid bank name..', 'warning !', {
+                                toastClass: 'tostr-tost custom-toast-warning',
+                            });
+                            return
+                        }
+                    } 
+                } 
+            }  
+         }
         this.onAddPayment();
         // if (this.balanceAmt != 0) {
         //     Swal.fire('Please select payment mode, Balance Amount is' + this.balanceAmt)
@@ -442,7 +481,7 @@ export class OpPaymentVimalComponent implements OnInit {
         //     let balamt = this.netPayAmt - this.paidAmt
         //     Swal.fire('Please pay remaing amount, Balance Amount is ' + balamt)
         //     return
-        // }
+        // } 
 
         if (this.data.FromName == "IP-SETTLEMENT" || this.data.FromName == "OP-SETTLEMENT") {
             this.Paymentobj['PaymentId'] = '0';
@@ -568,7 +607,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
             this.Paymentobj['tdsAmount'] = 0;  
         }
-        else if(this.data.FromName == "IP-IntrimBIll"){ 
+        else if(this.data.FromName == "IP-IntrimBIll" || this.data.FromName == "IP-Bill"){ 
             this.Paymentobj['billNo'] = 0;
             this.Paymentobj['receiptNo'] = '0';
             this.Paymentobj['PaymentDate'] =  this.dateTimeObj.date; //this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
@@ -599,7 +638,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['PayTMAmount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
             this.Paymentobj['PayTMTranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? 0;
             this.Paymentobj['PayTMDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-             this.Paymentobj['tdsAmount'] = 0;  
+             this.Paymentobj['tdsAmount'] = 0;   
           } 
         console.log(JSON.stringify(this.Paymentobj));
 
@@ -609,7 +648,7 @@ export class OpPaymentVimalComponent implements OnInit {
             ipPaymentInsert:this.Paymentobj
         };
         let IsSubmit
-        if(this.data.FromName == "IP-SETTLEMENT" || this.data.FromName == "OP-SETTLEMENT" || this.data.FromName == "IP-Pharma-SETTLEMENT"){
+        if(this.data.FromName == "IP-SETTLEMENT" || this.data.FromName == "OP-SETTLEMENT" || this.data.FromName == "IP-Pharma-SETTLEMENT" || this.data.FromName == "IP-Bill"){
 
             let Advancesarr = [];
             this.dataSource.data.forEach((element) => {
@@ -628,7 +667,7 @@ export class OpPaymentVimalComponent implements OnInit {
              IsSubmit = {
                 "submitDataPay": submitDataPay,
                 "submitDataAdvancePay": Advancesarr,
-                "PaidAmt": this.patientDetailsFormGrp.get('paidAmountController').value,
+                "PaidAmt":this.paidAmt, // this.patientDetailsFormGrp.get('paidAmountController').value,
                 "BalAmt": this.patientDetailsFormGrp.get('balanceAmountController').value,
                 "IsSubmitFlag": true,
             }

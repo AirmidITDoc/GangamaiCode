@@ -37,6 +37,7 @@ import { ConfigService } from 'app/core/services/config.service';
 import { query } from '@angular/animations';
 import { OpPackageBillInfoComponent } from 'app/main/opd/OPBilling/new-opbilling/op-package-bill-info/op-package-bill-info.component';
 import { element } from 'protractor';
+import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
 
 
 @Component({
@@ -1102,6 +1103,11 @@ ServiceList:any=[];
     let netAmt;
     netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0).toFixed(2); 
     this.vNetBillAmount = netAmt;  
+    if (netAmt > this.vAdvTotalAmount) {
+      this.vBalanceAmt =  parseInt(netAmt) - parseInt(this.vAdvTotalAmount);  
+    }else{
+      this.vBalanceAmt = 0
+    }
     return netAmt;
   }
   //Total Advance Amt
@@ -1109,9 +1115,9 @@ ServiceList:any=[];
     let AdvanceAmt;
     AdvanceAmt = element.reduce((sum, { BalanceAmount }) => sum += +(BalanceAmount || 0), 0);
     this.vAdvTotalAmount = AdvanceAmt; 
-    if (this.vNetBillAmount < this.vAdvTotalAmount) {
-      this.vBalanceAmt = parseInt(this.vAdvTotalAmount) - this.vNetBillAmount;  
-    } 
+    // if (this.vNetBillAmount < this.vAdvTotalAmount) {
+    //   this.vBalanceAmt = parseInt(this.vAdvTotalAmount) - this.vNetBillAmount;  
+    // } 
     return AdvanceAmt;
   }
 //Admin Charge Check Box On 
@@ -1696,30 +1702,59 @@ CalculateAdminCharge(){
       }
       else{
       let PatientHeaderObj = {};
-      PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
+ 
       PatientHeaderObj['Date'] = this.dateTimeObj.date;
-      PatientHeaderObj['UHIDNO'] =this.selectedAdvanceObj.RegNo;
-      PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.Doctorname;
-      PatientHeaderObj['IPDNo'] = this.selectedAdvanceObj.IPDNo ; // this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
-      PatientHeaderObj['NetPayAmount'] = this.Ipbillform.get('FinalAmount').value;
+      PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName; 
       PatientHeaderObj['AdvanceAmount'] = this.Ipbillform.get('FinalAmount').value;
+      PatientHeaderObj['NetPayAmount'] = this.Ipbillform.get('FinalAmount').value;
+      PatientHeaderObj['BillNo'] = 0;
       PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
+      PatientHeaderObj['IPDNo'] = this.selectedAdvanceObj.IPDNo;
+      PatientHeaderObj['RegNo'] = this.selectedAdvanceObj.RegNo; 
+      PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.Doctorname; 
+      PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj.CompanyName;
+      PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj.DepartmentName;
+      PatientHeaderObj['Age'] = this.selectedAdvanceObj.AgeYear; 
 
-        console.log('============================== Save IP Billing ===========');
+
+      // PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
+      // PatientHeaderObj['Date'] = this.dateTimeObj.date;
+      // PatientHeaderObj['UHIDNO'] =this.selectedAdvanceObj.RegNo;
+      // PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.Doctorname;
+      // PatientHeaderObj['IPDNo'] = this.selectedAdvanceObj.IPDNo ; // this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
+      // PatientHeaderObj['NetPayAmount'] = this.Ipbillform.get('FinalAmount').value;
+      // PatientHeaderObj['AdvanceAmount'] = this.Ipbillform.get('FinalAmount').value;
+      // PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID; 
       //==============-======--==============Payment======================
       // IPAdvancePaymentComponent
       this.advanceDataStored.storage = new AdvanceDetailObj(PatientHeaderObj);
-      const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            vPatientHeaderObj: PatientHeaderObj,
-            FromName: "IP-Bill",
-            advanceObj: PatientHeaderObj
-          }
-        });
+      // const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
+      //   {
+      //     maxWidth: "85vw",
+      //     height: '750px',
+      //     width: '100%',
+      //     data: {
+      //       vPatientHeaderObj: PatientHeaderObj,
+      //       FromName: "IP-Bill",
+      //       advanceObj: PatientHeaderObj
+      //     }
+      //   });   
+                const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+                    {
+                        maxWidth: "95vw",
+                        height: '650px',
+                        width: '85%',
+                        //  data: {
+                        //    advanceObj: PatientHeaderObj,
+                        //    FromName: "IP-SETTLEMENT"
+                        //  }
+                        data: {
+                            vPatientHeaderObj: PatientHeaderObj,
+                            FromName: "IP-Bill",
+                            advanceObj: PatientHeaderObj,
+                        }
+                    });
+
 
       dialogRef.afterClosed().subscribe(result => {
         // console.log('============================== Save IP Billing ===========');
@@ -1783,7 +1818,7 @@ CalculateAdminCharge(){
         
         let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
         UpdateAdvanceDetailarr1 = result.submitDataAdvancePay; 
-
+        console.log(UpdateAdvanceDetailarr1)
         // new
         let UpdateBillBalAmtObj = {};
         UpdateBillBalAmtObj['BillNo'] = 0;
@@ -1791,8 +1826,12 @@ CalculateAdminCharge(){
 
 
         let UpdateAdvanceDetailarr = [];
+        let TotalAdvUsedAmt = 0;
+        let TotalAdvBalAmt = 0;
         if (result.submitDataAdvancePay.length > 0) {
           result.submitDataAdvancePay.forEach((element) => {
+            TotalAdvBalAmt +=element.BalanceAmount 
+            TotalAdvUsedAmt +=element.UsedAmount 
             let UpdateAdvanceDetailObj = {};
             UpdateAdvanceDetailObj['AdvanceDetailID'] = element.AdvanceDetailID;
             UpdateAdvanceDetailObj['UsedAmount'] = element.UsedAmount;
@@ -1808,11 +1847,11 @@ CalculateAdminCharge(){
             UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
         }
 
-        let UpdateAdvanceHeaderObj = {};
+        let UpdateAdvanceHeaderObj = {}; 
         if (result.submitDataAdvancePay.length > 0) {
           UpdateAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceId'],
-            UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = UpdateAdvanceDetailarr1[0]['AdvanceAmount'],
-            UpdateAdvanceHeaderObj['BalanceAmount'] = UpdateAdvanceDetailarr1[0]['BalanceAmount']
+            UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = TotalAdvUsedAmt, //UpdateAdvanceDetailarr1[0]['AdvanceAmount'],
+            UpdateAdvanceHeaderObj['BalanceAmount'] =TotalAdvBalAmt// UpdateAdvanceDetailarr1[0]['BalanceAmount']
         }
         else {
           UpdateAdvanceHeaderObj['AdvanceId'] = 0,

@@ -839,7 +839,7 @@ public updateIPDDischargSummaryTemplate(employee)
     ];
   }
   public gettemplateCombo(){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_DischargeTemplate",{})
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_Dischargetemplate",{})
   }
 
   public gettemplateCombofrDiscSumm(data){

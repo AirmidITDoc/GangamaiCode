@@ -24,7 +24,6 @@ export class ItemMasterService {
             ItemID: [""], 
             ItemName:['', [
                 Validators.required,
-                Validators.pattern("^[a-zA-Z._ -]+$"),
                 Validators.maxLength(200),
               ]],
             ItemTypeID: ["", Validators.required],

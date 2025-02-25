@@ -64,4 +64,10 @@ export class DailyExpensesService {
     }
     return this._httpClient.post("Administration/CancleTExpenseParam",data);
    }
+   public SaveExpensesHead(data,loader = true){
+    if(loader){
+      this.loaderService.show();
+    }
+    return this._httpClient.post("Administration/SaveMExpensesHeadMaster",data);
+   }
 }

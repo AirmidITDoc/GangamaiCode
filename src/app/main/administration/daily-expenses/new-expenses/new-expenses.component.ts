@@ -8,6 +8,8 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { DatePipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { ExpensesHeadMasterComponent } from '../expenses-head-master/expenses-head-master.component';
+import { result } from 'lodash';
 
 @Component({
   selector: 'app-new-expenses',
@@ -39,7 +41,7 @@ export class NewExpensesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getRoleNamelist1();
+    this.getheadNamelist1();
   }
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -47,7 +49,7 @@ export class NewExpensesComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-  getRoleNamelist1() {
+  getheadNamelist1() {
     // debugger
     this._DailyExpensesService.getExpHeadCombobox().subscribe(data => {
       this.ExpHeadList = data;
@@ -111,7 +113,7 @@ export class NewExpensesComponent implements OnInit {
       "expAmount":this._DailyExpensesService.NewExpensesForm.get('ExpAmount').value || '',
       "personName": this._DailyExpensesService.NewExpensesForm.get('PersonName').value || '',
       "narration": this._DailyExpensesService.NewExpensesForm.get('Reason').value || '',
-      "isAddedby": 1,
+      "isAddedby":  this._loggedService.currentUserValue.user.id,
       "isCancelled": 0,
       "voucharNo": this._DailyExpensesService.NewExpensesForm.get('VoucharNo').value || '',
       "expHeadId":this._DailyExpensesService.NewExpensesForm.get('expenseshead').value.ExpHedId || ''
@@ -189,5 +191,15 @@ export class NewExpensesComponent implements OnInit {
       event.preventDefault();
       return false;
     }
+  }
+  addNewheadExpenses(){
+    const dialogRef = this._matDialog.open(ExpensesHeadMasterComponent ,
+      {
+        width:'45%',
+        height:'35%'
+      }); 
+      dialogRef.afterClosed().subscribe(result => {
+        this.getheadNamelist1();
+      });
   }
 }

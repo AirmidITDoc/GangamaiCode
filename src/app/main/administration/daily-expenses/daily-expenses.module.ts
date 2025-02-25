@@ -36,6 +36,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatChipsModule } from '@angular/material/chips'; 
 import { DailyExpensesComponent } from './daily-expenses.component';
 import { NewExpensesComponent } from './new-expenses/new-expenses.component';
+import { ExpensesHeadMasterComponent } from './expenses-head-master/expenses-head-master.component';
 
 
 
@@ -47,7 +48,7 @@ const routes : Routes =[
 ];
 
 @NgModule({
-  declarations: [DailyExpensesComponent, NewExpensesComponent],
+  declarations: [DailyExpensesComponent, NewExpensesComponent, ExpensesHeadMasterComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
