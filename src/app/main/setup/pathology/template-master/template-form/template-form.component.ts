@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { TemplateServieService } from '../template-servie.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -12,6 +12,7 @@ import { FormGroup } from '@angular/forms';
     styleUrls: ['./template-form.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
+    changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class TemplateFormComponent implements OnInit {
 
