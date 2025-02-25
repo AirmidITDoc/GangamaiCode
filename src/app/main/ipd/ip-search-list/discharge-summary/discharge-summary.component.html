@@ -1,7 +1,7 @@
-<div class="modal-wrapper grid-container">
+<!-- <div class="modal-wrapper grid-container"> -->
 
     <!-- Modal header -->
-    <div class="modal-header accent">
+    <!-- <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Discharge Summary</span>
@@ -21,9 +21,9 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
-    <div style="padding: 12px;">
+    <!-- <div style="padding: 12px;">
         <mat-card style="padding: 5px;">
             <div class="patient-info-sales my-8">
                 <div class="sales-patient-info-title">
@@ -121,16 +121,16 @@
                 </div>
             </div>
         </mat-card>
-    </div>
-    <div class="modal-body" fusePerfectScrollbar>
+    </div> -->
+    <!-- <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="DischargesumForm">
                 <div fxLayout="column" class="gap-12">
 
                     <div class="modal-card-container">
                         <div class="mat-tab-container">
-                            <mat-tab-group>
-                                <mat-tab label="FINAL DIAGNOSS">
+                            <mat-tab-group> -->
+                                <!-- <mat-tab label="FINAL DIAGNOSS">
                                     <mat-card class="mat-tab-card-container">
                                         <div fxLayout="column" fxLayoutGap="10px">
                                             <div fxLayout="row" fxLayoutGap="10px">
@@ -257,12 +257,12 @@
                                             </mat-form-field>
                                         </div>
                                     </mat-card>
-                                </mat-tab>
+                                </mat-tab> -->
 
-                                <mat-tab label="COURSES IN THE HOSPITAL">
+                                <!-- <mat-tab label="COURSES IN THE HOSPITAL">
                                     <mat-card class="mat-tab-card-container">
-                                        <div fxLayout="column" class="gap-8">
-                                            <div class="card-content">
+                                        <div fxLayout="column" class="gap-8"> -->
+                                            <!-- <div class="card-content">
                                                 <div class="form-title mb-2 pb-2 border-bottom">
                                                     <span class="h2 font-weight-600">COURSES IN THE HOSPITAL</span>
                                                 </div>
@@ -277,9 +277,9 @@
                                                             </textarea>
                                                     </mat-form-field>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <!-- *ngIf="DischargesumForm.get('isNormalOrDeath').value == 'True'" -->
-                                            <div class="card-content"
+                                            <!-- <div class="card-content"
                                                >
                                                 <div class="form-title mb-2 pb-2 border-bottom">
                                                     <span class="h2 font-weight-600">TREATMENT ADVICED</span>
@@ -296,11 +296,11 @@
                                             </div>
                                         </div>
                                     </mat-card>
-                                </mat-tab>
+                                </mat-tab> -->
 
-                                <mat-tab label="OTHER CON DR.OPINION">
-                                    <mat-card class="mat-tab-card-container">
-                                        <div class="form-title mb-2 pb-2 border-bottom">
+                                <!-- <mat-tab label="OTHER CON DR.OPINION">
+                                    <mat-card class="mat-tab-card-container"> -->
+                                        <!-- <div class="form-title mb-2 pb-2 border-bottom">
                                             <span class="h2 font-weight-600">OTHER CON DR.OPINION</span>
                                         </div>
                                         <div class="form-input">
@@ -310,14 +310,14 @@
                                                     formControlName="otherConDrOpinions"
                                                     [(ngModel)]="vOtherConDrOpinions" cols="300" rows="8"></textarea>
                                             </mat-form-field>
-                                        </div>
+                                        </div> -->
                                         <!-- *ngIf="DischargesumForm.get('isNormalOrDeath').value == 'True'" -->
-                                        <div class="form-title mb-2 pb-2 border-bottom"
+                                        <!-- <div class="form-title mb-2 pb-2 border-bottom"
                                            >
                                             <span class="h2 font-weight-600">PAIN MANAGMENT TECHNIQUE</span>
-                                        </div>
+                                        </div> -->
                                         <!-- *ngIf="DischargesumForm.get('isNormalOrDeath').value == 'True'" -->
-                                        <div class="form-input"
+                                        <!-- <div class="form-input"
                                             >
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>PAIN MANAGMENT TECHNIQUE</mat-label>
@@ -329,17 +329,17 @@
                                         </div>
 
                                     </mat-card>
-                                </mat-tab>
-
+                                </mat-tab> -->
+<!-- 
                                 <mat-tab label="FOLLOW UP">
                                     <mat-card class="mat-tab-card-container">
                                         <div fxLayout="column" class="gap-8">
                                             <div class="card-content">
                                                 <div class="form-title mb-2 pb-2 border-bottom">
                                                     <span class="h2 font-weight-600">FOLLOW UP</span>
-                                                </div>
+                                                </div> -->
                                                 <!-- *ngIf="DischargesumForm.get('isNormalOrDeath').value == 'True'" -->
-                                                <div class="form-input" fxLayoutGap="8px grid">
+                                                <!-- <div class="form-input" fxLayoutGap="8px grid">
                                                     <mat-form-field appearance="outline" fxFlex
                                                        >
                                                         <mat-label>FOLLOW UP</mat-label>
@@ -353,11 +353,11 @@
                                                             [(ngModel)]="vConditionofTimeDischarge" cols="300"
                                                             rows="6"></textarea>
                                                     </mat-form-field>
-                                                </div>
-                                            </div>
+                                                </div> -->
+                                            <!-- </div> -->
 
 
-                                            <div class="card-content">
+                                            <!-- <div class="card-content">
                                                 <div class="input-container">
                                                     <div fxLayout="row wrap" fxLayoutGap="8px grid">
                                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
@@ -377,9 +377,9 @@
                                                                 <input name="ClaimNumber" formControlName="claimNumber"
                                                                     [(ngModel)]="vClaimNumber" matInput>
                                                             </mat-form-field>
-                                                        </div>
+                                                        </div> -->
 
-                                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                                        <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
                                                            
 
                                                             <airmid-dropdown label="Ref.Doctor Name"
@@ -408,9 +408,9 @@
                                                                 [validations]="getValidationMessages().dischargeDoctor3"
                                                                 [mode]="autocompleteModeRefDoctor">
                                                             </airmid-dropdown>
-                                                        </div>
+                                                        </div> -->
 
-                                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                                        <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
                                                             <mat-form-field appearance="outline" fxFlex>
                                                                 <mat-label>Doctor Assistant Name</mat-label>
                                                                 <input name="DoctorAssistantName"
@@ -425,14 +425,14 @@
                                             </div>
                                         </div>
                                     </mat-card>
-                                </mat-tab>
+                                </mat-tab> -->
 
-                                <mat-tab label="MEDICINE AT THE TIME OF DISCHARGE">
+                                <!-- <mat-tab label="MEDICINE AT THE TIME OF DISCHARGE">
                                     <mat-card class="mat-tab-card-container">
                                         <div class="form-title mb-2 pb-2 border-bottom">
                                             <span class="h2 font-weight-600">MEDICINE AT THE TIME OF DISCHARGE</span>
-                                        </div>
-
+                                        </div> -->
+<!-- 
                                         <div fxLayout="column" fxLayoutGap="10px">
                                             <div fxFlex.gt-sm="100%" fxFlex>
                                                 <form [formGroup]="MedicineItemForm">
@@ -442,7 +442,7 @@
                                                         placeholderText="Enter Service Name" fxFlex
                                                         ApiUrl="VisitDetail/GetServiceListwithTraiff?TariffId=1&ClassId=2&ServiceName="
                                                         (selectionChange)="getSelectedserviceObj($event)" TextField="serviceName"
-                                                        ValueField="serviceId"></airmid-autocomplete>
+                                                        ValueField="serviceId"></airmid-autocomplete> -->
                                                         <!-- <mat-form-field appearance="outline" fxFlex="50%">
                                                             <mat-label>ItemName</mat-label>
                                                             <input type="text" name="ItemId" formControlName="ItemId" #itemid (keydown)="onEnterItem($event)"
@@ -464,7 +464,7 @@
                                                             </mat-error>
                                                         </mat-form-field>  -->
 
-                                                        <airmid-dropdown label="Dose Name" formControlName="DoseId"
+                                                        <!-- <airmid-dropdown label="Dose Name" formControlName="DoseId"
                                                             [formGroup]="MedicineItemForm"
                                                             [mode]="autocompleteModeDose">
                                                         </airmid-dropdown>
@@ -494,16 +494,16 @@
                                                     </div>
                                                 </form>
                                             </div>
-                                        </div>
-                                        <div class="modal-card-container table-container">
-                                            <div class="table-row gap-12" fxLayout="column" fxLayout.gt-md="row">
+                                        </div> -->
+                                        <!-- <div class="modal-card-container table-container">
+                                            <div class="table-row gap-12" fxLayout="column" fxLayout.gt-md="row"> -->
                                                 <!-- Table 1 -->
-                                                <div class="table" fxFlex="100%">
+                                                <!-- <div class="table" fxFlex="100%">
                                                     <mat-card>
                                                         <mat-table class="mat-table-1 h-250" matSort
-                                                            [dataSource]="dsItemList" [@animateStagger]="{value:'50'}">
+                                                            [dataSource]="dsItemList" [@animateStagger]="{value:'50'}"> -->
 
-                                                            <ng-container matColumnDef="ItemName">
+                                                            <!-- <ng-container matColumnDef="ItemName">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxHide fxShow.gt-sm>
                                                                     ItemName</mat-header-cell>
@@ -528,7 +528,7 @@
                                                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                                     <span> {{element.Days}}</span>
                                                                 </mat-cell>
-                                                            </ng-container>
+                                                            </ng-container> -->
 
                                                             <!-- <ng-container matColumnDef="Remark">
                                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -538,7 +538,7 @@
                                                                     </mat-cell>
                                                                 </ng-container> -->
 
-                                                            <ng-container matColumnDef="Action" stickyEnd>
+                                                            <!-- <ng-container matColumnDef="Action" stickyEnd>
                                                                 <mat-header-cell *matHeaderCellDef
                                                                     class="table-actions">Action
                                                                 </mat-header-cell>
@@ -563,9 +563,9 @@
                                                     </mat-card>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
 
-
+<!-- 
                                     </mat-card>
                                 </mat-tab>
 
@@ -587,9 +587,9 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div> -->
 
-    <div class="modal-footer">
+    <!-- <div class="modal-footer">
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
@@ -597,4 +597,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
