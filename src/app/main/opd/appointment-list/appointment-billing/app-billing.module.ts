@@ -38,8 +38,8 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 //import { WebcamModule } from "ngx-webcam";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { AppointmentBillService } from "./appointment-bill.service";
 import { AppointmentBillingComponent } from "./appointment-billing.component";
-import { AppointmentlistService } from "../appointmentlist.service";
 
 
 const routes: Routes = [
@@ -50,7 +50,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [],
+    declarations: [AppointmentBillingComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,
@@ -95,7 +95,6 @@ const routes: Routes = [
         //NgxPrintModule,
         MatButtonToggleModule
     ],
-    // providers: [AppBillingService,DatePipe],
-    // entryComponents: [AppointmentBillingComponent],
+    providers: [AppointmentBillService, DatePipe]
 })
 export class AppBillingModule { }

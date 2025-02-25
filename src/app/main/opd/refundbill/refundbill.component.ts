@@ -510,29 +510,29 @@ patientDetail1 = new VisitMaster1({});
 
 
         let RefundDetailarr = [];
-        // this.dataSource2.data.forEach((element) => {
+        this.dataSource2.data.forEach((element) => {
 
           let InsertRefundDetailObj = {};
-// console.log(element)
+          console.log(element)
           InsertRefundDetailObj['refundId'] = 0;
-          InsertRefundDetailObj['serviceId'] =12,// element.ServiceId || 0;
-          InsertRefundDetailObj['serviceAmount'] = 21111//element.NetAmount || 0;
-          InsertRefundDetailObj['refundAmount'] = 322,//element.refundAmt || 0;
-          InsertRefundDetailObj['doctorId'] =2,///element.doctorId
+          InsertRefundDetailObj['serviceId'] =element.ServiceId || 0;
+          InsertRefundDetailObj['serviceAmount'] = element.NetAmount || 0;
+          InsertRefundDetailObj['refundAmount'] = element.RefundAmt || 0;
+          InsertRefundDetailObj['doctorId'] =element.doctorId
           InsertRefundDetailObj['remark'] = this.RefundOfBillFormGroup.get('Remark').value || '';
           InsertRefundDetailObj['addBy'] = 1,// this.accountService.currentUserValue.user.id,
-            InsertRefundDetailObj['chargesId'] =32,// element.chargesId
+            InsertRefundDetailObj['chargesId'] = element.chargesId
           RefundDetailarr.push(InsertRefundDetailObj);
-        // })
+        })
 
         let AddchargesRefundAmountarr = [];
-        // this.dataSource2.data.forEach((element) => {
-          debugger
+        this.dataSource2.data.forEach((element) => {
+          console.log(this.dataSource2.data)
           let AddchargesRefundAmountObj = {};
-          AddchargesRefundAmountObj['chargesId'] = 11,//element.chargesId || 0;
-          AddchargesRefundAmountObj['refundAmount'] =12,// parseFloat(element.RefundAmt) || 0;// parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
+          AddchargesRefundAmountObj['chargesId'] = element.chargesId || 0;
+          AddchargesRefundAmountObj['refundAmount'] = parseFloat(element.RefundAmt) || 0;// parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
           AddchargesRefundAmountarr.push(AddchargesRefundAmountObj);
-        // });
+        });
 
 
         //Patient info 
@@ -545,7 +545,7 @@ patientDetail1 = new VisitMaster1({});
         //  PatientHeaderObj['DepartmentName'] = this.DepartmentName;
         //  PatientHeaderObj['OPD_IPD_Id'] = this.vOPDNo;
         PatientHeaderObj['Age'] = this.AgeYear;
-        PatientHeaderObj['NetPayAmount'] = this.RefundOfBillFormGroup.get('TotalRefundAmount').value;
+        PatientHeaderObj['NetPayAmount'] = Math.round(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
 
         debugger
 
@@ -601,8 +601,8 @@ patientDetail1 = new VisitMaster1({});
           // console.log('============================== Return Adv ===========');
           let submitData = {
             "refund": InsertRefundObj,
-            "tRefundDetails": InsertRefundDetailObj,
-            "addCharges": AddchargesRefundAmountObj,
+            "tRefundDetails": RefundDetailarr,
+            "addCharges": AddchargesRefundAmountarr,
             "payment":Paymentobj,// result.submitDataPay.ipPaymentInsert
           };
 
@@ -860,6 +860,7 @@ export class InsertRefundDetail {
   refundAmt: any;
   balanceAmount: any;
   refAmount: any;
+  RefundAmt:any;
 
   constructor(InsertRefundDetailObj) {
     {
@@ -882,6 +883,7 @@ export class InsertRefundDetail {
       this.refundAmt = InsertRefundDetailObj.refundAmt || 0;
       this.balanceAmount = InsertRefundDetailObj.balanceAmount || 0;
       this.refAmount = InsertRefundDetailObj.refAmount || 0;
+      this.RefundAmt = InsertRefundDetailObj.RefundAmt || 0;
     }
   }
 }
