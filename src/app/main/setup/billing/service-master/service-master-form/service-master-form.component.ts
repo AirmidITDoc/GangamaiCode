@@ -26,6 +26,7 @@ export class ServiceMasterFormComponent implements OnInit {
     showEmg: boolean = false;
     showDoctor: boolean = false;
     submitted = false;
+    ServiceId = 0;
     // TariffId=0
     registerObj = new ServiceMaster({});
     butDisabled: boolean = false;
@@ -89,7 +90,7 @@ export class ServiceMasterFormComponent implements OnInit {
     displayedColumns: string[] = [
         'classId',
         'className',
-        'ClassRate',
+        'classRate',
         // 'action'
     ];
 
@@ -108,6 +109,8 @@ export class ServiceMasterFormComponent implements OnInit {
             this.vServiceName = this.registerObj.serviceName;
             this.vServiceShortDesc = this.registerObj.serviceShortDesc;            
             this.getClassList(this.registerObj.serviceId)
+            this.ServiceId = this.registerObj.serviceId;
+            this.ServiceId = 0;
         }
       
         var mdata = {
@@ -228,9 +231,9 @@ export class ServiceMasterFormComponent implements OnInit {
         let doctorId = 0;
         if (this.serviceForm.get("DoctorId").value)
             doctorId = this.serviceForm.get("DoctorId").value
-
-        if (!this.serviceForm.get("ServiceId").value) {
-
+        debugger
+        if (this.serviceForm.get("ServiceId").value==0) {
+            console.log(this.serviceForm.get("ServiceId").value);
             var data1 = [];
             var clas_d = [];
             var class_det = {
@@ -240,12 +243,16 @@ export class ServiceMasterFormComponent implements OnInit {
                 "classRate": 0,
                 "effectiveDate": this.serviceForm.get("EffectiveDate").value || "01/01/1900",
             }
+            console.log(this.DSServicedetailList.data)
             this.DSServicedetailList.data.forEach(element => {
-
+                
+                console.log(element);
                 let c = JSON.parse(JSON.stringify(class_det));
-                c['classId'] = element.ClassId;
-                c['classRate'] = element.ClassRate || 0;
+                c['classId'] = element.classId;
+                c['classRate'] = element.classRate || 0;
                 clas_d.push(c)
+                console.log("C :- ",c);
+                console.log("class_d :-",clas_d)
             });
 
             console.log("ServiceInsert data1:", data1);
@@ -281,8 +288,7 @@ export class ServiceMasterFormComponent implements OnInit {
         }
 
         else {
-            //update
-
+           
             var data1 = [];
             var clas_d = [];
             var class_det = {
@@ -330,7 +336,7 @@ export class ServiceMasterFormComponent implements OnInit {
                 this.toastr.error(error.message);
             })
         }
-        // }
+        
 
         this.dialogRef.close();
 

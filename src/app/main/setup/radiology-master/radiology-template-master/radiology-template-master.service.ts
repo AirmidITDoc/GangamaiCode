@@ -17,18 +17,25 @@ export class RadiologyTemplateMasterService {
  
   
 
+  /**
+   * {
+  "templateId": 0,
+  "templateName": "xyz",
+  "templateDesc": "shilpa"
+}
+   */
   createRadiologytemplateForm(): FormGroup {
     return this._formBuilder.group({
-      templateId:[0],
-      templateName:['',
-        [
-        Validators.required,
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-    ]
-  ],
-      templateDesc:['', Validators.required],
+        templateId:[0],
+        templateName:['',
+            [
+                Validators.required,
+                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+            ]
+        ],
+        templateDesc:['', Validators.required],
         });
-  }
+    }
   createSearchForm(): FormGroup {
     return this._formBuilder.group({
         TemplateNameSearch: [""],

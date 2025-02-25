@@ -24,7 +24,7 @@ export class RadiologyTestMasterService {
             testName: [""],
             printTestName: [""],
             categoryId: [""],
-            serviceId: [1],
+            serviceId: [""],
             templateName:[""],
             mRadiologyTemplateDetails: [
                 {

@@ -16,6 +16,13 @@
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        
+        <ng-template #actionsisTemplateTest let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon (click)="AssignServCompany(element)" matTooltip="assigntoserv">business</mat-icon>
+            </div>
+        </ng-template>
+
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <mat-form-field appearance="outline" fxFlex>

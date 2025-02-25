@@ -48,7 +48,7 @@ export class RadiologyTemplateMasterComponent implements OnInit {
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "templateId",
+        sortField: "TemplateName",
         sortOrder: 0,
         filters: [
             { fieldName: "templateName", fieldValue: "", opType: OperatorComparer.Contains },

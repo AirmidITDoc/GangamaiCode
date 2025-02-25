@@ -60,7 +60,15 @@ export class ServiceMasterComponent implements OnInit {
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this._serviceMasterService.deactivateTheStatus(data.serviceId).subscribe((response: any) => {
+                            // this._serviceMasterService.deactivateTheStatus(data.serviceId).subscribe((response: any) => {
+                            //     this.toastr.success(response.message);
+                            //     this.grid.bindGridData();
+                            // });
+                            debugger
+                            let s={
+                                serviceId:data.serviceId
+                            }
+                            this._serviceMasterService.ServiceMasterCancle(data.serviceId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
@@ -243,9 +251,12 @@ export class Servicedetail {
     ServiceId: any;
     TariffId: any;
     ClassId: any;
+    classId: any;
+    classRate: any;
     ClassRate: any;
     EffectiveDate: Date;
     ClassName: any;
+    className: any;
 
     constructor(Servicedetail) {
         {
@@ -254,7 +265,9 @@ export class Servicedetail {
             this.TariffId = Servicedetail.TariffId || "";
             this.ClassId = Servicedetail.ClassId || "";
             this.ClassRate = Servicedetail.ClassRate || 0;
+            this.classRate = Servicedetail.classRate || 0;
             this.ClassName = Servicedetail.ClassName || "";
+            this.className = Servicedetail.className || "";
             this.EffectiveDate = Servicedetail.EffectiveDate || "";
         }
     }
