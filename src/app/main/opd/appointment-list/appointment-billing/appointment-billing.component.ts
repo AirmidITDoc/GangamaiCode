@@ -73,7 +73,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   autocompleteModeConcession: string = "Concession";
 
   public dataSource = new MatTableDataSource<any>();
-
+  
 
   public searchForm!: FormGroup;
   public chargeForm!: FormGroup;
@@ -105,7 +105,6 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     if (this.data) {
-      debugger
       this.patientDetail = this.data;
       this.PatientName = this.patientDetail.patientName
       this.vOPIPId= this.patientDetail.visitId
@@ -309,6 +308,12 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       this.resetForm();
       this.chargeForm.get("qty").setValue(1);
 
+      // Focus drop to "serviceName" control.
+
+      const serviceNameElement = document.querySelector(`[name='serviceName']`) as HTMLElement;
+      if(serviceNameElement){
+        serviceNameElement.focus();
+      }
     }
   }
   deleteCharge(index: number) {
