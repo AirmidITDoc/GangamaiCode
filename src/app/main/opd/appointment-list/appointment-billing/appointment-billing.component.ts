@@ -107,6 +107,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     if (this.data) {
       this.patientDetail = this.data;
       this.PatientName = this.patientDetail.patientName
+      this.vOPIPId= this.patientDetail.visitId
+      this.savebtn=false
       console.log("DATA : ", this.patientDetail);
     }
 
@@ -840,6 +842,7 @@ console.log(this.vOPIPId)
           console.log(submitData);
           this._AppointmentlistService.InsertOPBilling(submitData).subscribe(response => {
             this.toastrService.success(response.message);
+            console.log(response)
             this.viewgetOPBillReportPdf(response)
             this.dialogRef.close();
           }, (error) => {

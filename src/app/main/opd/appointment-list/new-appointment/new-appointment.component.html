@@ -37,7 +37,7 @@
                     <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="center center">
                         <!-- <div class="form-right-container input-error-hidden" *ngIf="Regflag" style="border: 1px solid red;"> -->
 
-                        <airmid-autocomplete class="w-350" label="Patient Search" [formGroup]="searchFormGroup" formControlName="RegId" *ngIf="Regflag" placeholderText="Search Reg No / Patient Name / Mobile No" ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
+                        <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No" [formGroup]="searchFormGroup" formControlName="RegId" *ngIf="Regflag" placeholderText="Search Reg No / Patient Name / Mobile No" ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
 
                         <airmid-autocomplete class="w-350" label="Phone Appointment" [formGroup]="searchFormGroup" formControlName="PhoneRegId" *ngIf="IsPhoneAppflag" placeholderText="Search Reg No / Patient Name / Mobile No" ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObjphone($event)"></airmid-autocomplete>
 

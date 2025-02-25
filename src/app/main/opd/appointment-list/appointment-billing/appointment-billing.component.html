@@ -28,9 +28,9 @@
                     <div class="patient-search-container input-error-hidden">
                         <form [formGroup]="searchForm">
                             <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px">
-
-                                <airmid-autocomplete lbl="RgId" [formGroup]="searchForm" formControlName="regId"
-                                    placeholderText="Enter Patient Name" fxFlex
+                               
+                                <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No" [formGroup]="searchForm" formControlName="regId"
+                                placeholderText="Enter Patient Name/RegId.." fxFlex
                                     ApiUrl="VisitDetail/search-patient?Keyword="
                                     (selectionChange)="getSelectedObj($event)" TextField="formattedText"
                                     ValueField="regId"></airmid-autocomplete>
