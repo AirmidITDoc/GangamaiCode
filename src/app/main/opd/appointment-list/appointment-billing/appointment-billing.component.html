@@ -175,7 +175,7 @@
                                     </div>
 
                                     <div fxFlex>
-                                     <airmid-autocomplete lbl="RgId" [formGroup]="chargeForm" formControlName="serviceName"
+                                     <airmid-autocomplete label="Enter Service Name" [formGroup]="chargeForm" formControlName="serviceName"
                                         placeholderText="Enter Service Name" fxFlex
                                         ApiUrl="VisitDetail/GetServiceListwithTraiff?TariffId=1&ClassId=2&ServiceName="
                                         (selectionChange)="getSelectedserviceObj($event)" TextField="serviceName"
