@@ -60,7 +60,7 @@ import { OPIPFeedbackComponent } from '../Feedback/opip-feedback/opip-feedback.c
 import { CompanyBillComponent } from './company-bill/company-bill.component';
 import { MatTimepickerModule } from 'mat-timepicker';
 import { InitiateDischargeComponent } from './discharge/initiate-discharge/initiate-discharge.component';
-import { DischargeInitiateProcessComponent } from './discharge/initiate-discharge/discharge-initiate-process/discharge-initiate-process.component';
+// import { DischargeInitiateProcessComponent } from './discharge/initiate-discharge/discharge-initiate-process/discharge-initiate-process.component';
 import { DischargeSummaryTemplateComponent } from './discharge-summary-template/discharge-summary-template.component';
 
 const routes: Routes = [
@@ -91,7 +91,7 @@ const routes: Routes = [
         // OPIPFeedbackComponent,
         CompanyBillComponent,
         InitiateDischargeComponent,
-        DischargeInitiateProcessComponent,
+        // DischargeInitiateProcessComponent,
         DischargeSummaryTemplateComponent,
        
     ],
