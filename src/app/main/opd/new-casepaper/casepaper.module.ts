@@ -23,7 +23,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
-// import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
@@ -46,8 +46,6 @@ import { MatTreeModule } from '@angular/material/tree';
 import { PrescriptionTemplateComponent } from './prescription-template/prescription-template.component';
 import { PrePresciptionListComponent } from './pre-presciption-list/pre-presciption-list.component';
 import { AddItemComponent } from './add-item/add-item.component';
-
-
 
 const routes: Routes = [
     {
@@ -85,7 +83,7 @@ const routes: Routes = [
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseSidebarModule,
-        // MatDialogModule,
+        MatDialogModule,
         MatStepperModule,
         // WebcamModule,
         ReactiveFormsModule,

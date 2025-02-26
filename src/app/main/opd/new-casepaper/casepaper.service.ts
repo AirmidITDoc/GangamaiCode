@@ -157,4 +157,16 @@ public getServiceList(param,loader = true){
 public getVisitById(Id) {
   return this._httpClient1.GetData("VisitDetail/" + Id);
 }
+public updateItemMaster(param,loader = true){ 
+  if (loader) {
+    this._loaderService.show();
+}
+  return this._httpClient.post("Inventory/ItemMasterUpdate", param);
+}
+public insertItemMaster(Param: any) {
+  if (Param.itemId) {
+
+      return this._httpClient.put("ItemMaster/Edit/" + Param.itemId, Param);
+  } else return this._httpClient.post("ItemMaster/InsertEDMX", Param);
+}
 }

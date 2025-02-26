@@ -172,13 +172,12 @@ export class ParametermasterService {
         return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_GenderMasterForCombo",{});
     }
 
-
-    public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData(
-            "Generic/ExecByQueryStatement?query=" + m_data, {});
+    public deactivateTheStatus(param) {
+        return this._httpClient.PostData("ParameterMaster/ParameterCancel", param);
     }
-    // public deactivateTheStatus(m_data) {
-    //     return this._httpClient.DeleteData("PathCategoryMaster?Id=" + m_data.toString());
+        
+    // public deactivateTheStatus(parameterId: number) {
+    //     return this._httpClient.DeleteData(`ParameterMaster/ParameterCancel?parameterId=${parameterId}`);
     // }
 
     public insertParameterMaster(Param: any) {

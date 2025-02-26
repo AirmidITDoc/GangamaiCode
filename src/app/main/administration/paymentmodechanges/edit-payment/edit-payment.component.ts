@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { PaymentmodechangesforpharmacyService } from '../paymentmodechangesfor-pharmacy.service';
+// import { PaymentmodechangesService } from '../paymentmodechanges.service'; 
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -7,24 +7,25 @@ import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import Swal from 'sweetalert2';
-import { PaymentPharmayList } from '../paymentmodechangesfor-pharmacy.component';
 import { fuseAnimations } from '@fuse/animations';
 import { DatePipe } from '@angular/common';
+import { PaymentmodechangesforpharmacyService } from '../../paymentmodechangesfor-pharmacy/paymentmodechangesfor-pharmacy.service';
+import { PaymentChange } from '../paymentmodechanges.component';
 
 @Component({
-  selector: 'app-edit-paymentmode',
-  templateUrl: './edit-paymentmode.component.html',
-  styleUrls: ['./edit-paymentmode.component.scss'],
+  selector: 'app-edit-payment',
+  templateUrl: './edit-payment.component.html',
+  styleUrls: ['./edit-payment.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
 })
-export class EditPaymentmodeComponent implements OnInit {
+export class EditPaymentComponent implements OnInit {
 
   filteredOptionsStorename: Observable<string[]>;
   filteredOptionsDoctorName: Observable<string[]>;
   isStoreSelected: boolean = false;
   isDoctorSelected: boolean = false;
-  registerObj = new PaymentPharmayList({});
+  registerObj = new PaymentChange({});
   vpaymentId: any = 0;
   filteredOptionsBank1: Observable<string[]>;
   optionsBank1: any[] = [];
@@ -74,12 +75,12 @@ export class EditPaymentmodeComponent implements OnInit {
     public _Paymentmodesevice: PaymentmodechangesforpharmacyService,
     private accountService: AuthenticationService,
     public toastr: ToastrService,
-    public dialogRef: MatDialogRef<EditPaymentmodeComponent>,
+    public dialogRef: MatDialogRef<EditPaymentComponent>,
     private _formBuilder: UntypedFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
   ngOnInit(): void {
-    
+    debugger
     if (this.data) {
       this.registerObj = this.data.registerObj;
       console.log("EditData:",this.registerObj)
@@ -263,7 +264,7 @@ export class EditPaymentmodeComponent implements OnInit {
         
       };
       console.log(paymentModeUpdateObj);
-      this._Paymentmodesevice.PaymentPhyUpdate(paymentModeUpdateObj).subscribe(response => {
+      this._Paymentmodesevice.PaymentUpdate(paymentModeUpdateObj).subscribe(response => {
         console.log(response);
         if (response) {
           this.toastr.success('Payment Mode Detail Updated', 'Save !', {
@@ -380,7 +381,7 @@ export class EditPaymentmodeComponent implements OnInit {
           "Tdsamount": 0
       };
       console.log(paymentModeUpdateObj);
-      this._Paymentmodesevice.PaymentPhyUpdate(paymentModeUpdateObj).subscribe(response => {
+      this._Paymentmodesevice.PaymentUpdate(paymentModeUpdateObj).subscribe(response => {
         console.log(response);
         if (response) {
           this.toastr.success('Payment Mode Detail Updated', 'Save !', {
@@ -829,4 +830,3 @@ getValidationMessages(){
     }
   }
 }
-// "url":"http://117.216.212.131:2020/api"

@@ -124,7 +124,7 @@
                         <ng-container filters>
 
                             <airmid-datepicker [formGroup]="_IPBrowseBillService.myFilterIpbillbrowseform"
-                                [isRangePicker]="true" formStartControlName="startdate" formEndControlName="enddate"
+                                [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate"
                                 [(fromValue)]="gridConfig.filters[2].fieldValue"
                                 [(toValue)]="gridConfig.filters[3].fieldValue">
                             </airmid-datepicker>
@@ -185,20 +185,6 @@
 
         </mat-tab>
 
-
-        <ng-template #actionButtonTemplatepayment let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <button mat-icon-button (click)="getPaymentreceiptview(element)" matTooltip="Bill Date Update">
-                    <mat-icon>print</mat-icon>
-                </button>
-
-               <button mat-icon-button matTooltip="Send message On WhatsApp">
-                    <img width="500" height="20px" src="assets/images/logos/WhatsApp.png">
-                </button>
-               
-            </div>
-        </ng-template>
-
         <mat-tab label="IP Browse Payment List">
 
             <div fusePerfectScrollbar
@@ -229,11 +215,23 @@
                     </div>
                 </div>
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <ng-template #actionButtonTemplatepayment let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <button mat-icon-button (click)="getPaymentreceiptview(element)" matTooltip="Bill Date Update">
+                                <mat-icon>print</mat-icon>
+                            </button>
+            
+                           <button mat-icon-button matTooltip="Send message On WhatsApp">
+                                <img width="500" height="20px" src="assets/images/logos/WhatsApp.png">
+                            </button>
+                           
+                        </div>
+                    </ng-template>
                     <airmid-table [gridConfig]="gridConfig1" class="content">
                         <ng-container filters>
 
                             <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true"
-                                formStartControlName="startdate" formEndControlName="enddate"
+                                formStartControlName="fromDate" formEndControlName="enddate"
                                 [(fromValue)]="gridConfig.filters[2].fieldValue"
                                 [(toValue)]="gridConfig.filters[3].fieldValue">
                             </airmid-datepicker>
@@ -368,7 +366,7 @@
                         <ng-container filters>
 
                             <airmid-datepicker [formGroup]="_IPBrowseBillService.myFilterIprefundbrowseform"
-                                [isRangePicker]="true" formStartControlName="startdate" formEndControlName="enddate"
+                                [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate"
                                 [(fromValue)]="gridConfig2.filters[2].fieldValue"
                                 [(toValue)]="gridConfig2.filters[3].fieldValue">
                             </airmid-datepicker>

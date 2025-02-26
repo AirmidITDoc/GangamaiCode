@@ -298,8 +298,8 @@ export class TestmasterService {
         }
     }
 
-    public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("PathUnitMaster", m_data);
+    public deactivateTheStatus(param) {
+        return this._httpClient.PostData("PathTestMaster/PathTestCanceled", param);
     }
 }
 

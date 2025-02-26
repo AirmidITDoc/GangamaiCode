@@ -119,7 +119,7 @@ export class CreateUserService {
       // Grnverify: '',
       // ViewBrowseBill: '0',
       // IsActive: 'true',
-      // isActive:[true,[Validators.required]],
+      isActive:[true,[Validators.required]],
     });
   }
 

@@ -373,14 +373,14 @@ debugger
 
             var mdata = {
                 "TestId": 0,
-                "TestName": this.testForm.get("TestName").value,
-                "PrintTestName": this.testForm.get("PrintTestName").value,
+                "TestName": this.testForm.get("TestName").value || "",
+                "PrintTestName": this.testForm.get("PrintTestName").value || "",
                 "CategoryId": this.testForm.get("CategoryId").value || 12,
                 "IsSubTest": this.Subtest !== undefined ? this.Subtest : false,//this.testForm.get('IsSubTest').value,
-                "TechniqueName": this.testForm.get("TechniqueName").value,
-                "MachineName": this.testForm.get("MachineName").value,
-                "SuggestionNote": this.testForm.get("SuggestionNote").value,
-                "FootNote": this.testForm.get("FootNote").value,
+                "TechniqueName": this.testForm.get("TechniqueName").value || "",
+                "MachineName": this.testForm.get("MachineName").value || "",
+                "SuggestionNote": this.testForm.get("SuggestionNote").value || "",
+                "FootNote": this.testForm.get("FootNote").value || "",
                 "IsDeleted": Boolean(JSON.parse(this.testForm.get("isActive").value)), //true
                 "ServiceId": this.testForm.get("ServiceId").value || 15,
                 "IsTemplateTest": this._TestmasterService.is_templatetest,//this.testForm.get('IsTemplateTest').value,

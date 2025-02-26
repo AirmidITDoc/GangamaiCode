@@ -11,6 +11,7 @@ import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { ToastrService } from "ngx-toastr";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import Swal from "sweetalert2";
 
 
 @Component({
@@ -23,13 +24,13 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 export class ParametermasterComponent implements OnInit {
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-        @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-        @ViewChild('actionsNumeric') actionsNumeric!: TemplateRef<any>;
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('actionsNumeric') actionsNumeric!: TemplateRef<any>;
 
-        ngAfterViewInit() {
-            this.gridConfig.columnsList.find(col => col.key === 'isNumericParameter')!.template = this.actionsNumeric;
-            this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-            }
+    ngAfterViewInit() {
+        this.gridConfig.columnsList.find(col => col.key === 'isNumericParameter')!.template = this.actionsNumeric;
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    }
 
     gridConfig: gridModel = {
         apiUrl: "ParameterMaster/MPathParameterList",
@@ -44,12 +45,12 @@ export class ParametermasterComponent implements OnInit {
 
             { heading: "Unit Name", key: "unitId", sort: true, align: 'left', emptySign: 'NA' },
 
-            { heading: "IsNumeric", key: "isNumericParameter", width: 100, sort: true, align: 'left', type: gridColumnTypes.template},
+            { heading: "IsNumeric", key: "isNumericParameter", width: 100, sort: true, align: 'left', type: gridColumnTypes.template },
 
-            { heading: "IsPrintDisSummary", key: "isPrintDisSummary", sort: true, align: 'left', emptySign: 'NA', width:150 },
-            
+            { heading: "IsPrintDisSummary", key: "isPrintDisSummary", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+
             { heading: "Formula", key: "formula", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            
+
             { heading: "Added By", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
             { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
@@ -103,7 +104,7 @@ export class ParametermasterComponent implements OnInit {
         console.log(row)
 
         // wroung api used
-        if(row.isNumericParameter==1){
+        if (row.isNumericParameter == 1) {
             var param = {
                 "first": 0,
                 "rows": 10,
@@ -129,7 +130,7 @@ export class ParametermasterComponent implements OnInit {
                 "exportType": "JSON"
             }
         }
-        else{
+        else {
             var param = {
                 "first": 0,
                 "rows": 10,
@@ -155,12 +156,12 @@ export class ParametermasterComponent implements OnInit {
                 "exportType": "JSON"
             }
         }
-        
+
         console.log(param)
 
-        this._ParameterService.getTableData(param,row.isNumericParameter).subscribe((data) => {
+        this._ParameterService.getTableData(param, row.isNumericParameter).subscribe((data) => {
 
-            console.log("data:",data.data)
+            console.log("data:", data.data)
             // if (row.IsNumericParameter == 1) {
 
             //     m_data['numericList'] = data;
@@ -209,7 +210,7 @@ export class ParametermasterComponent implements OnInit {
         });
     }
     onaddformula(row) {
-    
+
         const dialogRef = this._matDialog.open(AddformulaComponent, {
             maxWidth: "50vw",
             maxHeight: "55vh",
@@ -237,11 +238,75 @@ export class ParametermasterComponent implements OnInit {
 
         }
     }
+
+    // deactivateParameter(row) {
+    //     Swal.fire({
+    //         title: 'Confirm Status',
+    //         text: 'Are you sure you want to Change Active Status?',
+    //         icon: 'warning',
+    //         showCancelButton: true,
+    //         confirmButtonColor: '#3085d6',
+    //         cancelButtonColor: '#d33',
+    //         confirmButtonText: 'Yes, Change Status!'
+    //     }).then((result) => {
+    //         debugger
+    //         if (result.isConfirmed) {
+    //             this._ParameterService.deactivateTheStatus(row.parameterId).subscribe(
+    //                 (data) => {
+    //                     Swal.fire('Changed!', 'Parameter Status has been Changed.', 'success');
+    //                     this.grid.bindGridData(); // Refresh grid data
+    //                 },
+    //                 (error) => {
+    //                     Swal.fire('Error!', 'Failed to Change Parameter Status.', 'error');
+    //                 }
+    //             );
+    //         }
+    //     });
+    // }
+
+    deactivateParameter(row) {
+        Swal.fire({
+            title: 'Confirm Status',
+            text: 'Are you sure you want to Change Active Status?',
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: 'Yes, Change Status!'
+        }).then((flag) => {
+            if (flag.isConfirmed) {
+                const requestBody = {
+                    "parameterId": row.parameterId
+                };
+                console.log(requestBody)
+
+                this._ParameterService.deactivateTheStatus(requestBody).subscribe(
+                    (response) => {
+                        if (response) {
+                            this.toastr.success('Status has been Changed Successfully.', 'Status!', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                            });
+                        } else {
+                            this.toastr.error('Failed to Change ParameterMaster Status! Please check API error..', 'Error!', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                            });
+                        }
+                    },
+                    (error) => {
+                        this.toastr.error('An error occurred while Changing the Status.', 'Error!', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
+                    }
+                );
+            }
+        });
+    }
+
 }
 
 export class PathparameterMaster {
     ParameterID: number;
-    parameterId:any;
+    parameterId: any;
     ParameterShortName: string;
     ParameterName: string;
     PrintParameterName: string;
@@ -264,7 +329,7 @@ export class PathparameterMaster {
     constructor(PathparameterMaster) {
         {
             this.ParameterID = PathparameterMaster.parameterId || "";
-            this.parameterId=PathparameterMaster.parameterId || "";
+            this.parameterId = PathparameterMaster.parameterId || "";
             this.ParameterShortName = PathparameterMaster.ParameterShortName || "";
             this.ParameterName = PathparameterMaster.ParameterName || "";
             this.MethodName = PathparameterMaster.MethodName || "";

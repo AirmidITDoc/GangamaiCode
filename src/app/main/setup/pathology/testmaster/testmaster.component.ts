@@ -11,6 +11,7 @@ import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-testmaster",
@@ -50,7 +51,7 @@ export class TestmasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "Pathology/PathologyTestList",
         columnsList: [
-            { heading: "IsTemplateTest", key: "isTemplateTest", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 150},
+            { heading: "IsTemplateTest", key: "isTemplateTest", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 150 },
             { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "TestName", key: "testName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "PrintTestName", key: "printTestName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -58,7 +59,7 @@ export class TestmasterComponent implements OnInit {
             { heading: "BillingServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Technique Name", key: "techniqueName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Machine Name", key: "machineName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "IsSub Test", key: "isSubTest", sort: true, align: 'left', type: gridColumnTypes.template, width: 100},
+            { heading: "IsSub Test", key: "isSubTest", sort: true, align: 'left', type: gridColumnTypes.template, width: 100 },
             { heading: "Added By", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsActive", key: "isdeleted", type: gridColumnTypes.status, align: "center", width: 100 },
             {
@@ -92,6 +93,44 @@ export class TestmasterComponent implements OnInit {
             }
         });
     }
+
+    deactivateTestMaster(row) {
+        Swal.fire({
+        title: 'Confirm Status',
+          text: 'Are you sure you want to Change Active Status?',
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: 'Yes, Change Status!'
+        }).then((flag) => {
+          if (flag.isConfirmed) {
+            const requestBody = {
+                "testId": row.testId
+            };
+            console.log(requestBody)
+      
+            this._TestService.deactivateTheStatus(requestBody).subscribe(
+              (response) => {
+                if (response) {
+                  this.toastr.success('Status has been Changed Successfully.', 'Status!', {
+                    toastClass: 'tostr-tost custom-toast-success',
+                  });
+                } else {
+                  this.toastr.error('Failed to Change TestMaster Status! Please check API error..', 'Error!', {
+                    toastClass: 'tostr-tost custom-toast-error',
+                  });
+                }
+              },
+              (error) => {                
+                this.toastr.error('An error occurred while Changing the Status.', 'Error!', {
+                  toastClass: 'tostr-tost custom-toast-error',
+                });
+              }
+            );
+          } 
+        });
+      }
 
 }
 

@@ -78,7 +78,13 @@ export class PaymentmodechangesforpharmacyService {
     //   return this._httpClient.PostData("Generic/GetByProc?procName=RetrieveBankMasterForCombo", {})
     // }
     
-    public PaymentmodeUpdate(employee) {
+    public PaymentUpdate(employee) {
+      debugger
+      if(employee.PaymentId)
+      return this._httpClient.PutData("Payment/Edit/" + employee.PaymentId, employee);
+    }
+
+    public PaymentPhyUpdate(employee) {
       debugger
       if(employee.PaymentId)
       return this._httpClient.PutData("paymentpharmacy/Edit/" + employee.PaymentId, employee);

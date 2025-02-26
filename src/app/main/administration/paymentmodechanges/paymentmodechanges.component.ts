@@ -14,6 +14,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { ToastrService } from 'ngx-toastr';
+import { EditPaymentComponent } from './edit-payment/edit-payment.component';
 
 @Component({
   selector: 'app-paymentmodechanges',
@@ -227,7 +228,7 @@ export class PaymentmodechangesComponent implements OnInit {
 
  onEdit(row) {
   console.log(row)
-  const dialogRef = this._matDialog.open(EditPaymentmodeComponent,
+  const dialogRef = this._matDialog.open(EditPaymentComponent,
     { 
       height: "85%",
       width: '75%',
@@ -285,6 +286,39 @@ export class PaymentChange{
   CardAmt:number;
   User:any;
 
+  Date: Number;
+  ReceiptNo: number;
+  SalesNo: number;
+  patientName: string;
+  paidAmount: number;
+  cashPayAmount: number;
+  chequePayAmount: number;
+  ChequeNo: any;
+  ChequeBankName: any;
+  cardPayAmount: number;
+  CardNo: any;
+  CardBankName: any;
+  neftPayAmount: any;
+  NEFTNo: any;
+  NEFTBankName: any;
+  payTMAmount: any;
+  PayTMTranNo: any;
+  // PaymentId: any;
+  TarrifName: any;
+  NetAmount: any;
+  paymentId:any;
+  billNo:any;
+  NeftPay: any;
+  receiptNo:any;
+  advanceUsedAmount:any;
+advanceId:any;
+refundId:any;
+transactionType:any;
+remark:any
+addBy:any
+chequeDate:any
+cardDate:any
+
  constructor(PaymentChange){
   {
     this.PayDate = PaymentChange.PayDate || 0;
@@ -297,6 +331,43 @@ export class PaymentChange{
       this.ChequeAmt = PaymentChange.ChequeAmt || 0;
       this.CardAmt = PaymentChange.CardAmt || 0;
       this.User = PaymentChange.User || '';
+
+      this.Date = PaymentChange.Date || 0;
+      this.ReceiptNo = PaymentChange.ReceiptNo || 0;
+      this.SalesNo = PaymentChange.SalesNo || 0;
+      this.patientName = PaymentChange.patientName || "";
+      this.paidAmount = PaymentChange.paidAmount || 0;
+      this.cashPayAmount = PaymentChange.cashPayAmount || 0;
+      this.chequePayAmount = PaymentChange.chequePayAmount || 0;
+      this.ChequeNo = PaymentChange.ChequeNo || 0;
+      this.ChequeBankName = PaymentChange.ChequeBankName || 0;
+      this.cardPayAmount = PaymentChange.cardPayAmount || 0;
+      this.CardBankName = PaymentChange.CardBankName || '';
+      this.CardNo = PaymentChange.CardNo || 0;
+      this.neftPayAmount = PaymentChange.neftPayAmount || 0;
+      this.NEFTNo = PaymentChange.NEFTNo || 0;
+      this.NEFTBankName = PaymentChange.NEFTBankName || '';
+      this.paymentId=PaymentChange.paymentId || 0;
+      this.billNo=PaymentChange.billNo || 0;
+      this.receiptNo=PaymentChange.receiptNo || 0;
+      this.chequeDate=PaymentChange.chequeDate || 0;
+      this.cardDate=PaymentChange.cardDate || 0;
+
+      this.advanceUsedAmount=PaymentChange.advanceUsedAmount || 0;
+      this.advanceId=PaymentChange.advanceId || 0;
+      this.refundId=PaymentChange.refundId || 0;
+      this.transactionType=PaymentChange.transactionType || 0;
+      this.remark=PaymentChange.remark || 0;
+      this.addBy=PaymentChange.addBy || 0;
+      // this.PaymentId = PaymentPharmayList.PaymentId || 0;
+      this.payTMAmount = PaymentChange.payTMAmount || 0;
+      this.PayTMTranNo = PaymentChange.PayTMTranNo || 0;
+      this.TarrifName = PaymentChange.TarrifName || 0;
+      this.NetAmount = PaymentChange.NetAmount || 0;
+      this.CashAmt = PaymentChange.CashAmt || 0;
+      this.ChequeAmt = PaymentChange.ChequeAmt || 0;
+      this.CardAmt = PaymentChange.CardAmt || 0;
+      this.NeftPay = PaymentChange.NeftPay || 0;
   }
  }
 

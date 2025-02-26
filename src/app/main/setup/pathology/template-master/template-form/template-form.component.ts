@@ -17,49 +17,26 @@ import { FormGroup } from '@angular/forms';
 export class TemplateFormComponent implements OnInit {
 
     templateForm: FormGroup;
-
-    vTemplateDesc: any;
-    // editorConfig: AngularEditorConfig = {
-    // editable: true,
-    // spellcheck: true,
-    // height: '20rem',
-    // minHeight: '20rem',
-    // translate: 'yes',
-    // placeholder: 'Enter text here...',
-    // enableToolbar: true,
-    // showToolbar: true,
-    // };
-    editorConfig: AngularEditorConfig = {
-        editable: true,
-        spellcheck: true,
-        height: '15rem',
-        minHeight: '5rem',
-        placeholder: 'Enter text here...',
-        translate: 'no',
-        defaultParagraphSeparator: '',
-        defaultFontName: 'Arial', enableToolbar: true,
-        showToolbar: true,
-        sanitize: false,
-        toolbarPosition: 'top',
-        customClasses: [
-            {
-                name: "quote",
-                class: "quote",
-            },
-            {
-                name: 'redText',
-                class: 'redText'
-            },
-            {
-                name: "titleText",
-                class: "titleText",
-                tag: "h1",
-            },
-        ]
-    };
     vTemplateName: any;
     TemplateId = 0;
     vTemplateDescInHtml: any;
+    vTemplateDesc: any;
+
+    editorConfig: AngularEditorConfig = {
+        editable: true,
+        spellcheck: true,
+        height: '24rem',
+        minHeight: '24rem',
+        translate: 'yes',
+        placeholder: 'Enter text here...',
+        enableToolbar: true,
+        showToolbar: true,
+      };
+    
+      onBlur(e: any) {
+        this.vTemplateDesc = e.target.innerHTML;
+        throw new Error('Method not implemented.');
+      }
     constructor(
         public _TemplateServieService: TemplateServieService,
         public dialogRef: MatDialogRef<TemplateFormComponent>,
@@ -95,7 +72,7 @@ export class TemplateFormComponent implements OnInit {
                 "templateId": 0,
                 "templateName": this.templateForm.get("templateName").value,
                 "templateDesc": this.templateForm.get("templateDesc").value,
-                "templateDescInHtml": "string"
+                "templateDescInHtml": this.templateForm.get("templateDesc").value
             }
             console.log('json mdata:', mdata);
 
@@ -111,7 +88,7 @@ export class TemplateFormComponent implements OnInit {
                 "templateId": this.TemplateId,
                 "templateName": this.templateForm.get("templateName").value,
                 "templateDesc": this.templateForm.get("templateDesc").value,
-                "templateDescInHtml": "string"
+                "templateDescInHtml": this.templateForm.get("templateDesc").value
             }
             console.log('json mdata:', mdata);
 
@@ -131,14 +108,5 @@ export class TemplateFormComponent implements OnInit {
     }
 
     onClear() { }
-
-    onBlur(e: any) {
-        throw new Error('Method not implemented.');
-        // this.vTemplateDesc = e.target.innerHTML;
-    }
-
-    // onBlur(e: any) {
-    //     this.vConsentText = e.target.innerHTML;
-    //   }
 
 }

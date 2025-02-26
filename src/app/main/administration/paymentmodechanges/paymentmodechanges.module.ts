@@ -37,6 +37,7 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { DateUpdateComponent } from './date-update/date-update.component';
 import { PaymentmodechangesService } from './paymentmodechanges.service';
+import { EditPaymentComponent } from './edit-payment/edit-payment.component';
 
 
 const routes: Routes = [
@@ -47,7 +48,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [PaymentmodechangesComponent, DateUpdateComponent],
+    declarations: [PaymentmodechangesComponent, DateUpdateComponent, EditPaymentComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,

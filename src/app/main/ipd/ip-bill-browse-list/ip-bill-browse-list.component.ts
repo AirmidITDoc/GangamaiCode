@@ -75,6 +75,7 @@ export class IPBillBrowseListComponent implements OnInit {
               this.gridConfig.columnsList.find(col => col.key === 'balanceAmt')!.template = this.balancestatus; 
               this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.isCancelledstatus; 
 
+              this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplatepayment; 
               this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIPRefund;  
 
           }
@@ -98,14 +99,14 @@ export class IPBillBrowseListComponent implements OnInit {
             { heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
             
             
-            { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:150},
+            { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:200, type:9},
             { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width:150},
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "Age", key: "age", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Mobile", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width:150},
-            { heading: "DOD", key: "dischargeDate", sort: true, align: 'left', emptySign: 'NA', width:150},
+            { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width:200,type:9},
+            { heading: "DOD", key: "dischargeDate", sort: true, align: 'left', emptySign: 'NA', width:200,type:9},
             { heading: "IPDNO", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA' },
@@ -147,7 +148,7 @@ export class IPBillBrowseListComponent implements OnInit {
             { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BalanceAmt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA',type:9 },
             { heading: "CashPay", key: "cashPay", sort: true, align: "center" },
             { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "CardPay", key: "cardPay", sort: true, align: "center" },
@@ -159,7 +160,7 @@ export class IPBillBrowseListComponent implements OnInit {
             { heading: "Remark ", key: "remark0", sort: true, align: "center", emptySign: 'NA' },
             { heading: "User Name", key: "userName", sort: true, align: "center", emptySign: 'NA' },
             {
-                heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+                heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplatepayment  // Assign ng-template to the column
             }
         ],
@@ -180,11 +181,10 @@ export class IPBillBrowseListComponent implements OnInit {
         row: 25
     }
 
-
     gridConfig2: gridModel = {
         apiUrl: "Billing/IPRefundBillList",
         columnsList: [
-            { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', type: 8 },
+            { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', type: 8, width:200 },
             { heading: "UHID", key: "uhidNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "RefundAmt", key: "refundId", sort: true, align: 'left', emptySign: 'NA' },

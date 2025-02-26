@@ -316,6 +316,8 @@ refundId:any;
 transactionType:any;
 remark:any
 addBy:any
+chequeDate:any
+cardDate:any
   // PaidAmount:any;
 
   constructor(PaymentPharmayList) {
@@ -338,6 +340,8 @@ addBy:any
       this.paymentId=PaymentPharmayList.paymentId || 0;
       this.billNo=PaymentPharmayList.billNo || 0;
       this.receiptNo=PaymentPharmayList.receiptNo || 0;
+      this.chequeDate=PaymentPharmayList.chequeDate || 0;
+      this.cardDate=PaymentPharmayList.cardDate || 0;
 
       this.advanceUsedAmount=PaymentPharmayList.advanceUsedAmount || 0;
       this.advanceId=PaymentPharmayList.advanceId || 0;
