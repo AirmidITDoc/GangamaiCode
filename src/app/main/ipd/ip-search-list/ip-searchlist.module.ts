@@ -60,8 +60,9 @@ import { OPIPFeedbackComponent } from '../Feedback/opip-feedback/opip-feedback.c
 import { CompanyBillComponent } from './company-bill/company-bill.component';
 import { MatTimepickerModule } from 'mat-timepicker';
 import { InitiateDischargeComponent } from './discharge/initiate-discharge/initiate-discharge.component';
-// import { DischargeInitiateProcessComponent } from './discharge/initiate-discharge/discharge-initiate-process/discharge-initiate-process.component';
+import { DischargeInitiateProcessComponent } from './discharge/initiate-discharge/discharge-initiate-process/discharge-initiate-process.component';
 import { DischargeSummaryTemplateComponent } from './discharge-summary-template/discharge-summary-template.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 const routes: Routes = [
     {
@@ -91,7 +92,7 @@ const routes: Routes = [
         // OPIPFeedbackComponent,
         CompanyBillComponent,
         InitiateDischargeComponent,
-        // DischargeInitiateProcessComponent,
+        DischargeInitiateProcessComponent,
         DischargeSummaryTemplateComponent,
        
     ],
@@ -136,7 +137,8 @@ const routes: Routes = [
         MatDatepickerModule,
        MatTooltipModule,
         MatStepperModule,
-        MatTimepickerModule
+        MatTimepickerModule,
+         AngularEditorModule,
     ],
     providers: [
         IPSearchListService,

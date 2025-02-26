@@ -109,7 +109,7 @@
 
                                         <input type="hidden" name="visitId" formControlName="visitId" [(ngModel)]="data.visitId">
 
-                                        <airmid-dropdown label="Doctor Name" formControlName="refDocId"
+                                        <airmid-dropdown label="Doctor Name" formControlName="refDocId" fxFlex="60%"
                                             [formGroup]="RefrancedrForm" [value]="data?.refDocId"
                                             [validations]="getValidationMessages().refDocId" 
                                             [mode]="autocompleteModerefdoc">

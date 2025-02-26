@@ -152,8 +152,7 @@ export class NewAppointmentComponent implements OnInit {
         this.VisitFormGroup.markAllAsTouched();
 
         this.searchFormGroup = this.createSearchForm();
-        // if (this.data)
-        //     this.registerObj = this.data;
+       
     }
     createSearchForm() {
         return this.formBuilder.group({
@@ -483,17 +482,30 @@ export class NewAppointmentComponent implements OnInit {
         this.ddlGender.SetSelection(e.sexId);
     }
 
-    onChangestate(e) {
-        console.log(e)
-        this.ddlCountry.SetSelection(e.countryId);
-    }
+  
 
     onChangecity(e) {
-        console.log()
-        this.ddlState.SetSelection(e.cityId);
-        this.ddlCountry.SetSelection(e.stateId);
-    }
+        console.log(e)
+        this.registerObj.stateId=e.stateId
+        this._AppointmentlistService.getstateId(e.stateId).subscribe((Response)=>{
+            console.log(Response)
+            this.ddlCountry.SetSelection(Response.countryId);
+        });
 
+        
+        // setTimeout(() => {
+        //     this._registerService.getRegistraionById(this.data.regId).subscribe((response) => {
+        //         this.registerObj = response;
+        //         console.log(this.registerObj)
+        //         this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
+        //        });
+        // }, 500);
+       }
+
+       onChangestate(e) {
+        console.log(e)
+        // this.ddlCountry.SetSelection(e.countryId);
+    }
     getVisitRecord(row) {
         this.departmentId = row.DepartmentId;
         this.DosctorId = row.DoctorId;

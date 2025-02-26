@@ -186,7 +186,9 @@ export class DischargeSummaryTemplateComponent {
       this.MedicineItemForm.get('ItemId').setValue(obj); 
       // this.refdocId = obj.value
   }
-  
+  onBlur(e: any) {
+    this.vTemplateDesc = e.target.innerHTML;
+  }
     
     isItemIdSelected: boolean = false;
     MedicineItemform(): FormGroup {

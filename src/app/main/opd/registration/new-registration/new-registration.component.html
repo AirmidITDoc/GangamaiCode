@@ -124,19 +124,7 @@
                                         </airmid-textbox>
                                     </div>
                                 </div>
-                                <div fxLayout="row wrap" fxLayoutGap="12px grid">
-
-                                    <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
-                                        <input matInput [matDatepicker]="picker2" placeholder="Choose a Date"  formControlName="RegTime">
-                                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                                        <mat-datepicker #picker2></mat-datepicker>
-                                    </mat-form-field>
-                                    <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
-                                        <input matInput [matDatepicker]="picker1"  [(ngModel)]="registerObj.regDate" placeholder="Choose a Date" formControlName="RegDate">
-                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                        <mat-datepicker #picker1></mat-datepicker>
-                                    </mat-form-field>
-                                </div>
+                               
                             </div>
                             
                         </div>
@@ -151,8 +139,9 @@
     <div class="modal-footer">
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
-                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+              
                 <button type="button" class="btn btn-primary" (click)="OnSubmit()">Save</button>
+                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
             </div>
         </div>
     </div>

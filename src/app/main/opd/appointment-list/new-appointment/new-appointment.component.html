@@ -20,7 +20,7 @@
         </div>
     </div>
 
-    <!-- Modal body -->
+   
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="searchFormGroup">
@@ -120,12 +120,17 @@
                                         <airmid-dropdown label="City" formControlName="CityId" [formGroup]="personalFormGroup" [value]="registerObj?.cityId" [validations]="getValidationMessages().cityId" ValueField="cityId" TextField="cityName" (selectionChange)="onChangecity($event)" ApiUrl="CityMaster/get-cities">
                                         </airmid-dropdown>
                                     </div>
-
+                                    <!-- [mode]="autocompleteModestate" -->
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="State" formControlName="StateId" [value]="registerObj?.stateId" [formGroup]="personalFormGroup" [disabled]="true" [validations]="getValidationMessages().stateId" #ddlState
-                                        (selectionChange)="onChangestate($event)"   [mode]="autocompleteModestate"> 
-                                        <!-- ApiUrl="StateMaster/get-state"> -->
-                                       
+                                        <!-- <airmid-dropdown label="State" formControlName="StateId" [value]="registerObj?.stateId" [formGroup]="personalFormGroup" [disabled]="true" [validations]="getValidationMessages().stateId" #ddlState
+                                        (selectionChange)="onChangestate($event)"  [mode]="autocompleteModestate">
+                                       </airmid-dropdown> -->
+
+
+                                        <airmid-dropdown label="StateId" formControlName="StateId" [formGroup]="personalFormGroup"
+                                         [value]="registerObj?.stateId" [validations]="getValidationMessages().stateId"
+                                          ValueField="stateId" TextField="stateName" (selectionChange)="onChangestate($event)"
+                                           ApiUrl="StateMaster/get-state">
                                         </airmid-dropdown>
                                     </div>
 
@@ -264,11 +269,7 @@
                                     <airmid-dropdown label="Purpose" formControlName="AppPurposeId" [formGroup]="VisitFormGroup" [validations]="getValidationMessages().PurposeId" [mode]="autocompleteModepurpose">
                                     </airmid-dropdown>
                                 </div>
-                                <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
-                                    <input matInput [matDatepicker]="picker2" placeholder="Choose a Date" name="Date" formControlName="visitDate">
-                                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker2></mat-datepicker>
-                                </mat-form-field>
+                               
                             </div>
                         </form>
                     </mat-expansion-panel>
@@ -277,12 +278,12 @@
         </div>
     </div>
 
-    <!-- Modal footer -->
+   
     <div class="modal-footer">
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
-                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+              <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
 
             </div>
 

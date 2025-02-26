@@ -30,6 +30,7 @@ export class NewReportConfigurationComponent implements OnInit{
     
     ngOnInit(): void {
         this.myform = this._ReportConfigurationService.createForm();
+        this.myform.markAllAsTouched();
         if((this.data?.reportId??0) > 0)
         {
             this.isActive=this.data.isActive
@@ -43,7 +44,8 @@ export class NewReportConfigurationComponent implements OnInit{
             console.log("Report-Config JSON :-", this.myform.value);
             
             this._ReportConfigurationService.insertReportConfig(this.myform.value).subscribe((data) => {
-            this.toastr.success(data);
+          console.log(data)
+                this.toastr.success(data.message);
                 this.onClear(true);
             }, (error) => {
                 this.toastr.error(error.message);
