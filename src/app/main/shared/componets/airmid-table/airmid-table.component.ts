@@ -6,7 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { gridModel, gridRequest, gridResponseType } from 'app/core/models/gridRequest';
+import { gridModel, gridRequest, gridResponseType, OperatorComparer } from 'app/core/models/gridRequest';
 import { DATE_TYPES, gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
@@ -36,8 +36,8 @@ export class AirmidTableComponent implements OnInit {
     headers = [];
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @Output() onSelectRow = new EventEmitter<any>();
-    @Input() ShowFilter :boolean=true;
-    @Input() FullWidth :boolean=false;
+    @Input() ShowFilter: boolean = true;
+    @Input() FullWidth: boolean = false;
     public defaultColumnWidth = 120;
     ngOnInit(): void {
         this.bindGridData();
@@ -52,6 +52,8 @@ export class AirmidTableComponent implements OnInit {
         return this.gridConfig.columnsList.map(x => x.key.replaceAll(' ', ''));
     }
     bindGridData() {
+        this.updateFilters();
+
         var param: gridRequest = {
             sortField: this.sort?.active ?? this.gridConfig.sortField,
             sortOrder: this.sort?.direction ?? 'asc' == 'asc' ? 0 : -1, filters: this.gridConfig.filters,
@@ -65,6 +67,24 @@ export class AirmidTableComponent implements OnInit {
             this.dataSource.sort = this.sort;
             this.resultsLength = data["recordsFiltered"];
         });
+    }
+    updateFilters(): void {
+        this.gridConfig.filters = this.gridConfig.filters.map(filter => {
+            let { fieldValue, opType, ...rest } = filter;
+
+            // If opType is 'Equals' and fieldValue is null or undefined, set it to "0"
+            if (opType === OperatorComparer.Equals && (fieldValue === null || fieldValue === undefined)) {
+                fieldValue = '0';
+            }
+
+            // If opType is 'Contains' and fieldValue doesn't start with '%', add '%'
+            if (opType === OperatorComparer.Contains && typeof fieldValue === 'string' && !fieldValue.startsWith('%')) {
+                fieldValue = `%${fieldValue}`;
+            }
+
+            return { ...rest, opType, fieldValue };
+        });
+
     }
     onClear() {
 
@@ -87,7 +107,14 @@ export class AirmidTableComponent implements OnInit {
             this.confirmDialogRef = null;
         });
     }
-    SelectRow(row){
+    SelectRow(row) {
         this.onSelectRow.emit(row);
+    }
+    getRowClasses(row: any): { [key: string]: boolean } {
+
+        return {
+            'table-row-green': row?.patientType && row.patientType !== 'Self',
+            // You can add more classes dynamically
+        }
     }
 }

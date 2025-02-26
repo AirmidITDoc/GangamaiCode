@@ -36,6 +36,9 @@
                 line-height: 26px;
                 // font-family: $font-primary;
                 margin: 0;
+                button:has(img) {
+                    padding: 0 !important;
+                }
                 &:not(:first-of-type) {
                     padding: 3px 10px;
                 }
@@ -181,6 +184,18 @@
                 }
             }
         }
+
+        // Table row classes (You can add more classes like this)
+        .table-row-primary {
+            background-color: $primary-200 !important;
+        }
+        .table-row-green {
+            background-color: $green-200 !important;
+        }
+        .table-row-yellow {
+            background-color: $yellow-200 !important;
+        }
+        
     }
     .airmid-table-container {
         .airmid-table {
@@ -198,18 +213,18 @@
                     height: 40px;
                 }
             }
-            .mat-mdc-form-field{
-                .mat-mdc-form-field-infix{
+            .mat-mdc-form-field {
+                .mat-mdc-form-field-infix {
                     padding: 0 !important;
                     min-height: auto;
                     width: 100%;
                 }
-                .mat-mdc-form-field-subscript-wrapper{
+                .mat-mdc-form-field-subscript-wrapper {
                     display: none;
                 }
             }
-            mat-footer-row{
-                mat-footer-cell{
+            mat-footer-row {
+                mat-footer-cell {
                     display: flex;
                     justify-content: center;
                     align-items: center;
