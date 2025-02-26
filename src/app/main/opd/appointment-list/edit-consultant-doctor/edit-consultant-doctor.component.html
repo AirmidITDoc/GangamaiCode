@@ -3,14 +3,15 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Consultant Doctor Name Changes</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Doctor Name Update </span>
             </div>
             <div class="modal-header-right">
-                    <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </div>
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -25,73 +26,72 @@
                             <div class="patient-info-container">
                                 <div class="patient-sub">
                                     <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                    fxLayoutAlign="space-between">
-                                    <div fxLayout="column" fxLayoutGap="10px">
-                                        <div class="patient-col">
-                                            <span class="patient-col-key">UHID No
-                                            </span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{data.regId}}</span>
+                                        fxLayoutAlign="space-between">
+                                        <div fxLayout="column" fxLayoutGap="10px">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">UHID No
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{data.regId}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Patient Name
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{data.patientName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Doctor Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{data.doctorname}}</span>
+                                            </div>
                                         </div>
-                                        <div class="patient-col">
-                                            <span class="patient-col-key">Patient Name
-                                            </span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{data.patientName}}</span>
+                                        <div fxLayout="column" fxLayoutGap="10px">
+
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">OPD No</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{data.opdNo}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Age | Sex
+                                                </span>
+                                                <span>:</span>
+                                                <span
+                                                    class="patient-col-value">{{data.ageYear}}Y|{{data.ageMonth}}M|{{data.ageDay}}
+                                                    D | {{data.genderName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Department</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{data.departmentName}}</span>
+                                            </div>
+
+
                                         </div>
-                                        <div class="patient-col">
-                                            <span class="patient-col-key">Doctor Name</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{data.doctorname}}</span>
+                                        <div fxLayout="column" fxLayoutGap="10px" style="margin-right: 100px;">
+
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Patient Type | Tarrif
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{data.patientType}} |
+                                                    {{data.tariffName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Company Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value"
+                                                    style="color: orange;">{{data.companyName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Ref-Doctor Name
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{data.refDocName}}</span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div fxLayout="column" fxLayoutGap="10px">
-
-                                        <div class="patient-col">
-                                            <span class="patient-col-key">OPD No</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{data.opdNo}}</span>
-                                        </div>
-                                        <div class="patient-col">
-                                            <span class="patient-col-key">Age | Sex
-                                            </span>
-                                            <span>:</span>
-                                            <span
-                                                class="patient-col-value">{{data.ageYear}}Y|{{data.ageMonth}}M|{{data.ageDay}}
-                                                D | {{data.genderName}}</span>
-                                        </div>
-                                        <div class="patient-col">
-                                            <span class="patient-col-key">Department</span>
-                                            <span>:</span>
-                                            <span
-                                                class="patient-col-value">{{data.departmentName}}</span>
-                                        </div>
-
-
-                                    </div>
-                                    <div fxLayout="column" fxLayoutGap="10px" style="margin-right: 100px;">
-
-                                        <div class="patient-col">
-                                            <span class="patient-col-key">Patient Type | Tarrif
-                                            </span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{data.patientType}} |
-                                                {{data.tariffName}}</span>
-                                        </div>
-                                        <div class="patient-col">
-                                            <span class="patient-col-key">Company Name</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value"
-                                                style="color: orange;">{{data.companyName}}</span>
-                                        </div>
-                                        <div class="patient-col">
-                                            <span class="patient-col-key">Ref-Doctor Name
-                                            </span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{data.refDocName}}</span>
-                                        </div>
-                                    </div>
-                                </div>
                                 </div>
                             </div>
                         </mat-card>
@@ -104,28 +104,30 @@
                                 </div>
                                 <div class="form-body">
                                     <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
-
-                                        <!-- <input type="hidden" name="regId" formControlName="regId" [(ngModel)]="data.regId"> -->
-
-                                        <airmid-dropdown label="Department Name" formControlName="departmentId"
+                                        <airmid-dropdown label="Department Name" formControlName="departmentId" fxFlex
                                             [formGroup]="ConsdrForm" [value]="data?.departmentId"
-                                            [validations]="getValidationMessages().departmentId" 
-                                             [mode]="autocompletedepartment"  (selectionChange)="selectChangedepartment($event)">
+                                            [validations]="getValidationMessages().departmentId"
+                                            [mode]="autocompletedepartment"
+                                            (selectionChange)="selectChangedepartment($event)">
                                         </airmid-dropdown>
 
-                                        <airmid-dropdown label="Doctor Name" formControlName="consultantDocId"
-                                        [value]="data?.doctorId" [formGroup]="ConsdrForm"  [mode]="autocompleteModedeptdoc"
-                                        [validations]="getValidationMessages().consultantDocId" #ddldoctor>
-                                    </airmid-dropdown>
+                                        <airmid-dropdown label="Doctor Name" formControlName="consultantDocId" fxFlex
+                                            [value]="data?.doctorId" [formGroup]="ConsdrForm"
+                                            [mode]="autocompleteModedeptdoc"
+                                            [validations]="getValidationMessages().consultantDocId" #ddldoctor>
+                                        </airmid-dropdown>
+
                                     </div>
                                 </div>
                             </div>
                             <div fxLayoutAlign="end">
-                                <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px" style="margin: 0px 20px 0px 50px; ">
+                                <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px"
+                                    style="margin: 0px 20px 0px 50px; ">
                                     <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                                     <button class="btn btn-primary" (click)="onSubmit()">Save</button>
                                 </div>
-                            </div> 
+                            </div>
+
 
                         </mat-card>
                     </div>

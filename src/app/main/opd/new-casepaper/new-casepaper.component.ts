@@ -1211,8 +1211,8 @@ onTemplDetAdd(){
            let that = this;
            const dialogRef = this._matDialog.open(DosemasterComponent,
                {
-                   maxWidth: "45vw",
-                   height: '35%',
+                   maxWidth: "85vw",
+                   height: '85%',
                    width: '70%',
                });
            dialogRef.afterClosed().subscribe(result => {

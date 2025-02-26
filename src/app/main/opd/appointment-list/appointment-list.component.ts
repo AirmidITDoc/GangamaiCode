@@ -288,7 +288,7 @@ export class AppointmentListComponent implements OnInit {
                     maxWidth: "90vw",
                     height: "890px",
                     width: "100%",
-                    data: element
+                    // data: element
                 });
             dialogRef.afterClosed().subscribe(result => {
                 if (result) {

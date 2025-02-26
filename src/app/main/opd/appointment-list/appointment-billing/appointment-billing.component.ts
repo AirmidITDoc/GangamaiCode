@@ -547,7 +547,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       this._AppointmentlistService.getVisitById( this.vOPIPId).subscribe(data => {
         this.patientDetail1  = data ;
         console.log(data)
-        console.log(this.patientDetail1)
+       // console.log(this.patientDetail1)
     });
     }, 1000);
     }

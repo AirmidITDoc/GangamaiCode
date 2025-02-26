@@ -97,11 +97,10 @@
                         </div>
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-dropdown label="Doctor Name" formControlName="doctorId" [value]="data?.doctorId"
-                                [formGroup]="phoneappForm" [validations]="getValidationMessages().doctorId" #ddlDoctor
-                                (selectionChange)="setbutton($event)" >
+                                [formGroup]="phoneappForm" [validations]="getValidationMessages().doctorId" #ddlDoctor>
                             </airmid-dropdown>
                         </div>
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="false">
+                        <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="false">
                             <mat-form-field appearance="outline" fxFlex>
                                 <input matInput [matDatepicker]="picker1" [min]="minDate" placeholder="Choose a AppDate"
                                     name="AppointmentDate" formControlName="appDate">
@@ -110,22 +109,8 @@
                             </mat-form-field>
 
 
-                        </div>
-                        <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="false">
-                          <mat-form-field appearance="outline" fxFlex>
-                              <input matInput [matDatepicker]="picker2" [min]="minDate" placeholder="Choose a AppDate" name="AppointmentDate" formControlName="appTime">
-                              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                              <mat-datepicker #picker2></mat-datepicker>
-                          </mat-form-field>
-
-                      </div> -->
-                        <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="false">
-                          <mat-form-field appearance="outline" fxFlex>
-                              <input matInput [matDatepicker]="picker3" [min]="minDate" placeholder="Choose a phAppTime" name="PhAppointmentDate" formControlName="phAppTime">
-                              <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-                              <mat-datepicker #picker3></mat-datepicker>
-                          </mat-form-field>
-                      </div> -->
+                        </div> -->
+                        
                     </div>
                 </div>
             </form>
@@ -136,8 +121,9 @@
     <div class="modal-footer">
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
+                <button type="button" class="btn btn-primary" (click)="OnSubmit()">Save</button>
                 <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button type="button" id="myButton" class="btn btn-primary" (click)="OnSubmit()">Save</button>
+               
             </div>
         </div>
     </div>

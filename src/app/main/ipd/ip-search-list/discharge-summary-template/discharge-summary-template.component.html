@@ -144,14 +144,10 @@
                             <form [formGroup]="discSummary" style="border: blue;">
                                 <div fxFlexFill fxLayout="row">
 
-
-                                   
-                                    <airmid-dropdown label="Doctor Name"
-                                    formControlName="TemplateId"
-                                    [formGroup]="discSummary"
-                                    [validations]="getValidationMessages().TemplateId"
-                                    [mode]="autocompleteModetemplate">
-                                </airmid-dropdown>
+                                    <airmid-dropdown label="Template Name" formControlName="TemplateId"
+                                        [formGroup]="discSummary" [validations]="getValidationMessages().TemplateId"
+                                        [mode]="autocompleteModetemplate">
+                                    </airmid-dropdown>
 
 
                                     <button (click)="onAddTemplate()" class="btn btn-primary btn-with-icon py-8"
@@ -164,34 +160,29 @@
                                 </div>
                                 <div fxLayoutGap="5px">
 
-                                    <!-- <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                                    <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
                                         style="height:300px;" [(ngModel)]="vTemplateDesc" required
-                                        formControlName="TemplateDesc"></angular-editor> -->
-
-
-                                </div>
-                                <div>
-                                    <airmid-dropdown label="Doctor Name"
-                                    formControlName="dischargeDoctor1"
-                                    [formGroup]="discSummary"
-                                    [validations]="getValidationMessages().dischargeDoctor1"
-                                    [mode]="autocompleteModeRefDoctor">
-                                </airmid-dropdown>
-
-                                <airmid-dropdown label="RMO.Doctor Name"
-                                formControlName="dischargeDoctor2"
-                                [formGroup]="discSummary"
-                                [validations]="getValidationMessages().dischargeDoctor2"
-                                [mode]="autocompleteModeRefDoctor">
-                            </airmid-dropdown>
+                                        formControlName="TemplateDesc"></angular-editor>
 
                                 </div>
-
-                                <div fxLayoutGap="5px">
-
-
-
+                                <div fxLayout="column" fxLayout.gt-xs="row wrap" fxLayoutGap="8px grid">
+                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-dropdown label="Doctor Name" formControlName="dischargeDoctor1"
+                                            [formGroup]="discSummary"
+                                            [validations]="getValidationMessages().dischargeDoctor1"
+                                            [mode]="autocompleteModeRefDoctor">
+                                        </airmid-dropdown>
+                                    </div>
+                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-dropdown label="RMO.Doctor Name" formControlName="dischargeDoctor2"
+                                            [formGroup]="discSummary"
+                                            [validations]="getValidationMessages().dischargeDoctor2"
+                                            [mode]="autocompleteModeRefDoctor">
+                                        </airmid-dropdown>
+                                    </div>
                                 </div>
+
+
                             </form>
                         </div>
                     </mat-card>

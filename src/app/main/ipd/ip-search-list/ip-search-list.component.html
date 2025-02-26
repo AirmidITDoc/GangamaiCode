@@ -42,9 +42,14 @@
             <ng-template #iconMlc let-element>
                 <div>
 
-                    <button mat-icon-button *ngIf="element.isMLC==1; " matTooltip="IsMLC" (click)="NewMLc(element)">
+                    <button mat-icon-button *ngIf="element.isMLC==1; else noMLC" matTooltip="IsMLC"
+                        (click)="NewMLc(element)">
                         <mat-icon>edit</mat-icon>
+
                     </button>
+                    <ng-template #noMLC>
+                        <span>--</span>
+                    </ng-template>
                     <button mat-icon-button *ngIf="element.isMLC==1;" matTooltip="Print MLC paper"
                         (click)="getMLCdetailview(element.amissionId)">
                         <mat-icon>print</mat-icon>
@@ -110,6 +115,25 @@
             <ng-template #actionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
 
+                    <button mat-icon-button (click)="printDischargeslip(element)" *ngIf="element.isDischarged"
+                        matTooltip="Discharge Slip Print">
+                        <mat-icon>
+                            <img width="20px" height="6px" src="assets/images/logos/dischargesummary.jpeg"
+                                style="background:-moz-linear-gradient(00,9,22);">
+                        </mat-icon>
+                    </button>
+
+
+                    <button mat-icon-button (click)="printDischargesummary(element)" *ngIf="element.isDischarged"
+                        matTooltip="Discharge Summary Print">
+                        <mat-icon>
+                            <img width="20px" height="6px" src="assets/images/logos/discharge.jpeg"
+                                style="background-color: transparent;">
+                        </mat-icon>
+
+                    </button>
+
+
                     <button mat-icon-button (click)="printDischargesummaryWithoutletterhead(element)"
                         *ngIf="element.isDischarged" matTooltip="Discharge Summary Without LetterHead Print">
                         <mat-icon>
@@ -141,7 +165,7 @@
                 <ng-container filters>
 
                     <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
-                        formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue" 
+                        formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue"
                         [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
 
 
