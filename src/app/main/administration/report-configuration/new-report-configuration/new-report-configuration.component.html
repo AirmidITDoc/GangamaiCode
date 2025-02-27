@@ -90,7 +90,21 @@
                         </div>
                     </div>
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
-                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex fxFlex.xs="100%">
+                            <airmid-textbox label="ReportHeader" formControlName="reportHeader" [value]="data?.reportHeader"
+                                [formGroup]="myform" [validations]="getValidationMessages().reportHeader" [maxLength]="100">
+                            </airmid-textbox>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <div fxFlex fxFlex.xs="100%">
+                            <airmid-textbox label="ReportColumn" formControlName="reportColumn" [value]="data?.reportColumn"
+                                [formGroup]="myform" [validations]="getValidationMessages().reportColumn" [maxLength]="100">
+                            </airmid-textbox>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <!-- <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="ReportHeader" 
                                 formControlName="reportHeader" 
@@ -99,9 +113,9 @@
                                 [validations]="getValidationMessages().reportHeader" 
                                 [maxLength]="100">
                             </airmid-textbox>
-                        </div>
+                        </div> -->
 
-                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <!-- <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="ReportColumn" 
                                 formControlName="reportColumn" 
@@ -110,9 +124,9 @@
                                 [validations]="getValidationMessages().reportColumn" 
                                 [maxLength]="100">
                             </airmid-textbox>
-                        </div>
+                        </div> -->
 
-                        <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex fxFlex.xs="100%">
                             <airmid-textbox 
                                 label="ReportFilter" 
                                 formControlName="reportFilter" 
