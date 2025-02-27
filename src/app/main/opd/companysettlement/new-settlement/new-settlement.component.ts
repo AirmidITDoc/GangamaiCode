@@ -22,54 +22,6 @@ export class NewSettlementComponent {
   
   autocompleteModebank: string = "Bank";
 
-  paymentArr1: any[] = this.opService.getPaymentArr();
-  BindPaymentTypes() {
-    let full = this.opService.getPaymentArr();
-    let final = [];
-    full.forEach((item) => {
-      if (!this.Payments.data.find(x => x.PaymentType == item.value)) {
-        final.push(item);
-      }
-    });
-    this.paymentArr1 = final;
-  } 
-
-  onChangePaymentType() { 
-    if (this.selectedPaymnet1 == 'cash') {
-      this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
-      this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
-      this.patientDetailsFormGrp.get('regDate1').clearValidators();
-      this.patientDetailsFormGrp.get('regDate1').updateValueAndValidity();
-      this.patientDetailsFormGrp.get('bankName1').clearValidators();
-      this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
-    }
-    else {
-      this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
-      if (this.selectedPaymnet1 == 'cheque') {
-        this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
-      }
-      else if (this.selectedPaymnet1 == 'card') {
-        this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
-      }
-      else if (this.selectedPaymnet1 == 'net banking') {
-        this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
-      }
-      else {
-        this.patientDetailsFormGrp.get('bankName1').clearValidators();
-        this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
-      }
-    }
-  }
-  Payments = new MatTableDataSource<PaymentList>();
-  selectedSaleDisplayedCol = [
-    'PaymentType',
-    'Amount',
-    'BankName',
-    'RefNo',
-    'RegDate',
-    'buttons'
-  ];
   netPayAmt: any = 0;
   nowDate: Date;
   amount1: number;
@@ -83,75 +35,6 @@ export class NewSettlementComponent {
   BankNameList1: any = [];
   isSaveDisabled: boolean = false;
   submitted: boolean = false;
-  get f(): { [key: string]: AbstractControl } {
-    return this.patientDetailsFormGrp.controls;
-  }
-  IsAllowAdd() {
-    return this.netPayAmt > ((this.paidAmt || 0) + Number(this.amount1));
-  }
-  GetBalanceAmt() { 
-    this.balanceAmt = Number(this.netPayAmt || 0) - (Number(this.paidAmt || 0) + Number(this.amount1 || 0));
-  }
-BankId=0
-BankNam:any;
-  selectChangebank(event){
-console.log(event)
-this.BankId=event.value
-this.BankNam=event.text
-  }
-  onAddPayment() {
-    this.submitted = true;
-debugger
-    if (this.patientDetailsFormGrp.invalid) {
-      return;
-    }
-    let tmp = this.Payments.data;
-   
-    tmp.push({
-      Id: this.getNewId(),
-      PaymentType: this.selectedPaymnet1, Amount: this.amount1,
-      RefNo: this.patientDetailsFormGrp.get("referenceNo1")?.value ?? "",
-      BankId:this.BankId,// this.patientDetailsFormGrp.get("bankName1").value?.BankId ?? 0,
-      BankName:this.BankNam,// this.patientDetailsFormGrp.get("bankName1").value?.BankName ?? "",
-      RegDate: this.patientDetailsFormGrp.get("regDate1")?.value ?? ""
-    });
-    this.Payments.data = tmp;
-    this.paidAmt = this.Payments.data.reduce(function (a, b) { return a + Number(b['Amount']); }, 0);
-    this.balanceAmt = this.netPayAmt - this.paidAmt; 
-    // this.patientDetailsFormGrp.reset();
-    // this.patientDetailsFormGrp.get('paidAmountController').setValue(this.paidAmt);
-    this.patientDetailsFormGrp.get('balanceAmountController').setValue(this.balanceAmt);
-    this.patientDetailsFormGrp.get("referenceNo1").setValue('');
-    this.patientDetailsFormGrp.get("bankName1").setValue(null);
-    //this.patientDetailsFormGrp.get("regDate1").setValue(null);
-    this.patientDetailsFormGrp.get("amount1").setValue(this.balanceAmt);
-    this.patientDetailsFormGrp.get("paymentType1").setValue(null);
-    this.BindPaymentTypes();
-    this.GetBalanceAmt();
-  }
-  getNewId() {
-    return Math.max(...this.Payments.data.map(o => o.Id), 0) + 1;
-  }
-  deletePayment(payment) {
-    Swal.fire({
-      title: "Are you sure to remove this payment?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        let tmp = this.Payments.data;
-        tmp.splice(this.Payments.data.findIndex(x => x.Id == payment.Id), 1);
-        this.Payments.data = tmp;
-        this.paidAmt = this.Payments.data.reduce(function (a, b) { return a + Number(b['Amount']); }, 0);
-        this.balanceAmt = this.netPayAmt - this.paidAmt;
-        this.BindPaymentTypes();
-      }
-    });
-  }
   RegNo:any;
   DoctorName:any;
   CompanyName:any;
@@ -161,6 +44,20 @@ debugger
   OPD_IPD_Id:any;
   TariffName:any;
   registerObj=new RegInsert({});
+  Payments = new MatTableDataSource<PaymentList>();
+  selectedSaleDisplayedCol = [
+    'PaymentType',
+    'Amount',
+    'BankName',
+    'RefNo',
+    'RegDate',
+    'buttons'
+  ];
+  
+
+  paymentArr1: any[] = this.opService.getPaymentArr();
+
+
   constructor(
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<NewSettlementComponent>,
@@ -176,13 +73,12 @@ debugger
       this.advanceData = this.data.vPatientHeaderObj;
       console.log(this.advanceData)
 
-      setTimeout(() => {
-        this._CompanysettlementService.getRegistraionById(this.advanceData.RegNo).subscribe((response) => {
-            this.registerObj = response;
-            console.log(this.registerObj)
-            // this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
-           });
-    }, 500);
+    //   setTimeout(() => {
+    //     this._CompanysettlementService.getRegistraionById(this.advanceData.RegNo).subscribe((response) => {
+    //         this.registerObj = response;
+    //         console.log(this.registerObj)
+    //        });
+    // }, 500);
 
       
     }
@@ -303,6 +199,9 @@ debugger
     if (this.data.FromName == "SalesSETTLEMENT") {
       this.data = this.data.vPatientHeaderObj;
       this.advanceData = this.data.vPatientHeaderObj;
+console.log( this.data.vPatientHeaderObj)
+
+
 
       this.selectedPaymnet1 = this.paymentArr1[0].value;
       this.amount1 = this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
@@ -312,6 +211,116 @@ debugger
     }
    
   }
+  BindPaymentTypes() {
+    let full = this.opService.getPaymentArr();
+    let final = [];
+    full.forEach((item) => {
+      if (!this.Payments.data.find(x => x.PaymentType == item.value)) {
+        final.push(item);
+      }
+    });
+    this.paymentArr1 = final;
+  } 
+
+  onChangePaymentType() { 
+    if (this.selectedPaymnet1 == 'cash') {
+      this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
+      this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
+      this.patientDetailsFormGrp.get('regDate1').clearValidators();
+      this.patientDetailsFormGrp.get('regDate1').updateValueAndValidity();
+      this.patientDetailsFormGrp.get('bankName1').clearValidators();
+      this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
+    }
+    else {
+      this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
+      if (this.selectedPaymnet1 == 'cheque') {
+        this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
+      }
+      else if (this.selectedPaymnet1 == 'card') {
+        this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
+      }
+      else if (this.selectedPaymnet1 == 'net banking') {
+        this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
+      }
+      else {
+        this.patientDetailsFormGrp.get('bankName1').clearValidators();
+        this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
+      }
+    }
+  }
+  
+  get f(): { [key: string]: AbstractControl } {
+    return this.patientDetailsFormGrp.controls;
+  }
+  IsAllowAdd() {
+    return this.netPayAmt > ((this.paidAmt || 0) + Number(this.amount1));
+  }
+  GetBalanceAmt() { 
+    this.balanceAmt = Number(this.netPayAmt || 0) - (Number(this.paidAmt || 0) + Number(this.amount1 || 0));
+  }
+BankId=0
+BankNam:any;
+  selectChangebank(event){
+console.log(event)
+this.BankId=event.value
+this.BankNam=event.text
+  }
+  onAddPayment() {
+    this.submitted = true;
+
+    if (this.patientDetailsFormGrp.invalid) {
+      return;
+    }
+    let tmp = this.Payments.data;
+   
+    tmp.push({
+      Id: this.getNewId(),
+      PaymentType: this.selectedPaymnet1, Amount: this.amount1,
+      RefNo: this.patientDetailsFormGrp.get("referenceNo1")?.value ?? "",
+      BankId:this.BankId,// this.patientDetailsFormGrp.get("bankName1").value?.BankId ?? 0,
+      BankName:this.BankNam,// this.patientDetailsFormGrp.get("bankName1").value?.BankName ?? "",
+      RegDate: this.patientDetailsFormGrp.get("regDate1")?.value ?? ""
+    });
+    this.Payments.data = tmp;
+    this.paidAmt = this.Payments.data.reduce(function (a, b) { return a + Number(b['Amount']); }, 0);
+    this.balanceAmt = this.netPayAmt - this.paidAmt; 
+    // this.patientDetailsFormGrp.reset();
+    // this.patientDetailsFormGrp.get('paidAmountController').setValue(this.paidAmt);
+    this.patientDetailsFormGrp.get('balanceAmountController').setValue(this.balanceAmt);
+    this.patientDetailsFormGrp.get("referenceNo1").setValue('');
+    this.patientDetailsFormGrp.get("bankName1").setValue(null);
+    //this.patientDetailsFormGrp.get("regDate1").setValue(null);
+    this.patientDetailsFormGrp.get("amount1").setValue(this.balanceAmt);
+    this.patientDetailsFormGrp.get("paymentType1").setValue(null);
+    this.BindPaymentTypes();
+    this.GetBalanceAmt();
+  }
+  getNewId() {
+    return Math.max(...this.Payments.data.map(o => o.Id), 0) + 1;
+  }
+  deletePayment(payment) {
+    Swal.fire({
+      title: "Are you sure to remove this payment?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let tmp = this.Payments.data;
+        tmp.splice(this.Payments.data.findIndex(x => x.Id == payment.Id), 1);
+        this.Payments.data = tmp;
+        this.paidAmt = this.Payments.data.reduce(function (a, b) { return a + Number(b['Amount']); }, 0);
+        this.balanceAmt = this.netPayAmt - this.paidAmt;
+        this.BindPaymentTypes();
+      }
+    });
+  }
+ 
+
   dateTimeObj: Date;
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;

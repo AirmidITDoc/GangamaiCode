@@ -141,57 +141,7 @@ patientDetail1 = new VisitMaster1({});
     'RefundAmount'
   ];
 
-  getSelectedObj(obj) {
-    if ((obj.regId ?? 0) > 0) {
-      console.log(obj)
-      this.vOPIPId = obj.visitId
-      setTimeout(() => {
-        this._RefundbillService.getRegistraionById(obj.regId).subscribe((response) => {
-          this.registerObj = response;
-          this.RegId = this.registerObj.regId
-          console.log(response)
 
-        });
-
-      }, 500);
-    }
-
-    this.getRefundofBillOPDListByReg(obj.regId);
-
-    setTimeout(() => {
-
-      this._RefundbillService.getVisitById(this.vOPIPId).subscribe(data => {
-        this.patientDetail1 = data;
-        console.log(data)
-        console.log(this.patientDetail1)
-      });
-    }, 1000);
-  }
-
-
-
-  // getSelectedObj(obj) {
-  //     console.log(obj)
-  //     this.RegId = obj.value;
-
-  //     if ((this.RegId ?? 0) > 0) {
-
-  //       setTimeout(() => {
-  //         this._RefundbillService.getRegistraionById(this.RegId).subscribe((response) => {
-  //           this.registerObj = response;
-  //           this.RegId=this.registerObj.regId
-  //           console.log(response)
-
-  //         });
-
-  //       }, 500);
-  //     }
-
-  //   this.getRefundofBillOPDListByReg(this.RegId);
-  // }
-
-
-  // Billdetail
 
   dataSource = new MatTableDataSource<InsertRefundDetail>();
   dataSource3 = new MatTableDataSource<RegRefundBillMaster>();
@@ -248,35 +198,25 @@ patientDetail1 = new VisitMaster1({});
     });
   }
 
-  // Patient Search;
-  getSearchList() {
-
-    var m_data = {
-      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
-    }
-    this._RefundbillService.getRegisteredList(m_data).subscribe(data => {
-      this.PatientListfilteredOptions = data;
-      console.log(data)
-      if (this.PatientListfilteredOptions.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
+  refundBillForm() {
+    this.myRefundBillForm = this.formBuilder.group({
+      BillId: [''],
+      billId: [''],
+      ServiceId: [''],
+      serviceId: [''],
+      serviceName: [''],
+      ServiceName: [''],
+      Price: [Validators.pattern("^[0-9]*$")],
+      Qty: [Validators.pattern("^[0-9]*$")],
+      totalAmount: [Validators.pattern("^[0-9]*$")],
+      advanceAmt: [Validators.pattern("^[0-9]*$")],
+      BillingClassId: [''],
+      price: [Validators.pattern("^[0-9]*$")],
+      qty: [Validators.pattern("^[0-9]*$")],
+      DoctorId: [''],
+      DoctorName: [''],
     });
-
   }
-  AgeMonth: any;
-  AgeDay: any;
-  GenderName: any;
-
-
-  getOptionText1(option) {
-    if (!option)
-      return '';
-    return option.FirstName + ' ' + option.MiddleName + ' ' + option.LastName;
-
-  }
-
 
   //Give BillNumber For List
   getRefundofBillOPDListByReg(RegId) {
@@ -361,24 +301,33 @@ patientDetail1 = new VisitMaster1({});
     this.dataSource2.data["BalanceAmount"] = 0;
   }
 
-  refundBillForm() {
-    this.myRefundBillForm = this.formBuilder.group({
-      BillId: [''],
-      billId: [''],
-      ServiceId: [''],
-      serviceId: [''],
-      serviceName: [''],
-      ServiceName: [''],
-      Price: [Validators.pattern("^[0-9]*$")],
-      Qty: [Validators.pattern("^[0-9]*$")],
-      totalAmount: [Validators.pattern("^[0-9]*$")],
-      advanceAmt: [Validators.pattern("^[0-9]*$")],
-      BillingClassId: [''],
-      price: [Validators.pattern("^[0-9]*$")],
-      qty: [Validators.pattern("^[0-9]*$")],
-      DoctorId: [''],
-      DoctorName: [''],
-    });
+  getSelectedObj(obj) {
+    if ((obj.value ?? 0) > 0) {
+      console.log(obj)
+      this.vOPIPId = obj.visitId
+      setTimeout(() => {
+        this._RefundbillService.getRegistraionById(obj.value).subscribe((response) => {
+          this.registerObj = response;
+          this.RegId = this.registerObj.regId
+          this.RegNo=this.registerObj.regNo
+          this.PatientName=this.registerObj.firstName +" "+ this.registerObj.middleName+ " " +this.registerObj.lastName
+          console.log(response)
+
+        });
+
+      }, 500);
+    }
+
+    this.getRefundofBillOPDListByReg(obj.value);
+
+    // setTimeout(() => {
+
+    //   this._RefundbillService.getVisitById(this.vOPIPId).subscribe(data => {
+    //     this.patientDetail1 = data;
+    //     console.log(data)
+    //     console.log(this.patientDetail1)
+    //   });
+    // }, 1000);
   }
 
 
@@ -543,7 +492,7 @@ patientDetail1 = new VisitMaster1({});
         PatientHeaderObj['DoctorName'] = this.Doctorname;
         PatientHeaderObj['CompanyName'] = this.CompanyName;
         //  PatientHeaderObj['DepartmentName'] = this.DepartmentName;
-        //  PatientHeaderObj['OPD_IPD_Id'] = this.vOPDNo;
+         PatientHeaderObj['OPD_IPD_Id'] = this.vOPDNo;
         PatientHeaderObj['Age'] = this.AgeYear;
         PatientHeaderObj['NetPayAmount'] = Math.round(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
 
@@ -561,10 +510,7 @@ patientDetail1 = new VisitMaster1({});
             }
           });
 
-       
-
-
-        dialogRef.afterClosed().subscribe(result => {
+       dialogRef.afterClosed().subscribe(result => {
           this.Paymentdataobj = result.submitDataPay.ipPaymentInsert;
           console.log( this.Paymentdataobj)
           let Paymentobj = {};
@@ -628,9 +574,6 @@ patientDetail1 = new VisitMaster1({});
       this.searchFormGroup.get('RegId').setValue("");
       this.PatientName = '';
       this.AgeYear = '';
-      this.AgeMonth = '';
-      this.GenderName = '';
-      this.AgeDay = '';
       this.TotalRefundAmount = 0;
       this.RefundBalAmount = 0;
       this.RegNo = '';
@@ -678,13 +621,7 @@ patientDetail1 = new VisitMaster1({});
 
     this._matDialog.closeAll();
   }
-  getBillingClassCombo() {
-    this._RefundbillService.getClassList({ "Id": this.selectedAdvanceObj.ClassId }).subscribe(data => {
-      this.BillingClassCmbList = data;
-      this.myserviceForm.get('BillingClassId').setValue(this.BillingClassCmbList[0]);
-    });
-  }
-  
+ 
   updatedVal(e) {
     if (e && e.length >= 2) {
       this.showAutocomplete = true;
@@ -716,7 +653,7 @@ patientDetail1 = new VisitMaster1({});
 
   Serviceselect(row, event) {
 
-    console.log(row);
+    // console.log(row);
     this.RefAmt = this.RefundBalAmount;
 
     this.TotalRefundAmount = 0;
@@ -726,8 +663,8 @@ patientDetail1 = new VisitMaster1({});
     this.ChargeId = row.ChargeId;
 
     this.serselamttot = parseInt(row.NetAmount) + parseInt(this.serselamttot);
-    console.log(this.RefundBalAmount);
-    console.log(this.serselamttot);
+    // console.log(this.RefundBalAmount);
+    // console.log(this.serselamttot);
 
     if (this.RefAmt1 >= this.serselamttot) {
       this.TotalRefundAmount = row.Price;

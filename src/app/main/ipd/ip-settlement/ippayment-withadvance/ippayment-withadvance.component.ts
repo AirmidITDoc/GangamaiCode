@@ -79,25 +79,8 @@ export class IPpaymentWithadvanceComponent implements OnInit {
   dateTimeObj: any;
   AdvanceId: any;
 
-  BankNameList: any = [];
-  BankNameList1: any = [];
-  BankNameList2: any = [];
 
-//bANK filter
-public bankFilterCtrl: FormControl = new FormControl();
-public filteredBank: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-//cheque filter
-public chequebankFilterCtrl: FormControl = new FormControl();
-public filteredChequebank: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-//Card filter
-public cardbankFilterCtrl: FormControl = new FormControl();
-public filteredCardbank: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-private _onDestroy = new Subject<void>();
+  autocompleteModebank: string = "Bank";
 
 
   displayedColumns = [
@@ -183,30 +166,7 @@ private _onDestroy = new Subject<void>();
     this.createForm();
     this.getAdvcanceDetails(false);
     console.log(this.authServie.currentUserValue);
-
-
-    this.getBankNameList();
-    this.getBankNameList1();
-    this.getBankNameList2();
-
     
-    this.bankFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterBank();
-      });
-
-    this.chequebankFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filtercardbank();
-      });
-
-    this.cardbankFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterchequebank();
-      });
   }
 
   createForm() {
@@ -242,92 +202,6 @@ private _onDestroy = new Subject<void>();
     });
   }
 
-
-  // bank filter code
-  private filterBank() {
-
-    if (!this.BankNameList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.bankFilterCtrl.value;
-    if (!search) {
-      this.filteredBank.next(this.BankNameList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredBank.next(
-      this.BankNameList.filter(bank => bank.BankName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-
-  // bank filter code
-  private filtercardbank() {
-
-    if (!this.BankNameList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.chequebankFilterCtrl.value;
-    if (!search) {
-      this.filteredChequebank.next(this.BankNameList2.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredChequebank.next(
-      this.BankNameList2.filter(bank => bank.BankName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-
-  // bank filter code
-  private filterchequebank() {
-
-    if (!this.BankNameList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.cardbankFilterCtrl.value;
-    if (!search) {
-      this.filteredCardbank.next(this.BankNameList1.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredCardbank.next(
-      this.BankNameList1.filter(bank => bank.BankName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-
-
-  getBankNameList() {
-    this.ipSearchService.getBankMasterCombo().subscribe(data => {
-      this.BankNameList = data;
-      this.filteredBank.next(this.BankNameList.slice()); 
-    });
-  } 
-  getBankNameList1() {
-    this.ipSearchService.getBankMasterCombo().subscribe(data => {
-      this.BankNameList1 = data;
-      this.filteredCardbank.next(this.BankNameList1.slice());
-    });
-  } 
-  getBankNameList2() {
-    this.ipSearchService.getBankMasterCombo().subscribe(data => {
-      this.BankNameList2 = data;
-      this.filteredChequebank.next(this.BankNameList2.slice());
-    });
-  } 
   getAdvcanceDetails(isReset?: any) {
     
     // checking 
@@ -824,21 +698,29 @@ private _onDestroy = new Subject<void>();
     this.dialogRef.close(IsSubmit);
   }
 
-  // getAdvanceHeaderObj() {
-  //   const x = {
-  //     AdvanceDetailID: 0,
-  //     TransactionID: 0,
-  //     Date: this.dateTimeObj.date,
-  //     Time: this.dateTimeObj.time,
-  //     UsedAmount: '0',
-  //     RefundAmount: '0',
-  //     ReasonOfAdvanceId: '0',
-  //     Reason: 'sada'
-  //   };
-  //   // let xx = {advanceHeaderInsert: x}
-  //   const y = new AdvanceDetails(x);
-  //   return y;
-  // }
+  BankId=0
+BankNam:any;
+  selectChangebank(event){
+console.log(event)
+this.BankId=event.value
+this.BankNam=event.text
+  }
+  
+   getValidationMessages(){
+    return {
+      cardBankNameController: [
+        { name: "required", Message: "bankName is required" }
+      ],
+      chequeBankNameController: [
+        { name: "required", Message: "Bank Name is required" }
+      ],
+      bankFilterCtrl: [
+        { name: "required", Message: "Bank Name is required" }
+      ]
+    };
+  }
+
+
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {

@@ -6,7 +6,7 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Company Settlement
+                    OP Payment Settlement
                 </span>
             </div>
         </div>
@@ -23,6 +23,11 @@
                             placeholderText="Enter Patient Name/RegId.." ApiUrl="VisitDetail/search-patient?Keyword="
                                 (selectionChange)="getSelectedObj($event)" TextField="formattedText"
                                 ValueField="regId"></airmid-autocomplete>
+
+                                <!-- <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No" [formGroup]="searchFormGroup" 
+                                            formControlName="RegId" placeholderText="Search Reg No / Patient Name / Mobile No" ApiUrl="OutPatient/auto-complete?Keyword=" 
+                                            (selectionChange)="getSelectedObj($event)" fxFlex="60%"></airmid-autocomplete> -->
+
                         </div>
                     </div>
                 </form>
@@ -30,7 +35,7 @@
 
             <div fxlayout="row" style="padding: 0px 5px 0px 5px">
                 <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
-                    <mat-card style="padding: 5px;">
+                    <!-- <mat-card style="padding: 5px;">
                         <div class="patient-info-container">
                             <div class="patient-info-box">
                                 <div class="patient-info-title border-bottom pb-2">
@@ -53,8 +58,7 @@
                                             <span class="patient-col-key">Age | Gender</span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{registerObj.ageYear}}Y
-                                                <!-- |{{registerObj.ageMonth}}M|{{registerObj.ageDay}}D | -->
-                                                {{registerObj.genderId}}</span>
+                                            {{registerObj.genderId}}</span>
                                         </div>
                                         <div class="patient-col">
                                             <span class="patient-col-key">Mobile No</span>
@@ -66,7 +70,7 @@
                                 </div>
                             </div>
                         </div>
-                    </mat-card>
+                    </mat-card> -->
                 </div>
             </div>
         </div>

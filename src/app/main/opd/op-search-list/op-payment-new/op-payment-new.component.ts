@@ -287,7 +287,7 @@ export class OpPaymentNewComponent implements OnInit {
 
       this.selectedPaymnet1 = this.paymentArr1[0].value;
       this.amount1 = this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
-      this.PatientName = "SAS",//this.advanceData.PatientName;
+      this.PatientName = this.advanceData.PatientName;
         this.amount1 = parseInt(this.advanceData.NetAmount);
       this.Paymentobj['TransactionType'] = 4;
     }

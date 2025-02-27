@@ -259,7 +259,7 @@
                                 </mat-form-field> -->
     
     
-                            <mat-form-field appearance="outline" style="width: 180px;">
+                            <!-- <mat-form-field appearance="outline" style="width: 180px;">
                                 <mat-label>Select Bank Name</mat-label>
                                 <mat-select formControlName="cardBankNameController" placeholder="Bank" #singleSelect
                                     [(ngModel)]="cardBankName">
@@ -273,7 +273,13 @@
                                     </mat-option>
                                 </mat-select>
     
-                            </mat-form-field>
+                            </mat-form-field> -->
+
+                            <airmid-dropdown label="Bank Name" formControlName="cardBankNameController"
+                            [formGroup]="paymentForm"  [validations]="getValidationMessages().cardBankNameController" (selectionChange)="selectChangebank($event)"
+                            [mode]="autocompleteModebank">
+                        </airmid-dropdown>
+
                         </div>
                         <div style="margin-right: 10px;">
                             <mat-form-field appearance="outline">
@@ -323,12 +329,8 @@
                             </mat-form-field>
                         </div>
                         <div style="margin-right: 10px;">
-                            <!-- <mat-form-field appearance="outline">
-                                    <mat-label>Enter Bank Name</mat-label>
-                                    <input matInput [(ngModel)]="chequeBankName" formControlName="chequeBankNameController">
-                                </mat-form-field> -->
-    
-                            <mat-form-field appearance="outline" style="width: 180px;">
+                          
+                            <!-- <mat-form-field appearance="outline" style="width: 180px;">
                                 <mat-label>Select Bank Name</mat-label>
                                 <mat-select formControlName="chequeBankNameController" placeholder="Bank" #singleSelect
                                     [(ngModel)]="chequeBankName">
@@ -342,7 +344,13 @@
                                     </mat-option>
                                 </mat-select>
     
-                            </mat-form-field>
+                            </mat-form-field> -->
+
+
+                            <airmid-dropdown label="Bank Name" formControlName="chequeBankNameController"
+                            [formGroup]="paymentForm"  [validations]="getValidationMessages().chequeBankNameController" (selectionChange)="selectChangebank($event)"
+                            [mode]="autocompleteModebank">
+                        </airmid-dropdown>
                         </div>
                         <div style="margin-right: 10px;">
                             <mat-form-field appearance="outline">
@@ -396,7 +404,7 @@
                                     <input matInput [(ngModel)]="neftBankName" formControlName="neftBankNameController">
                                 </mat-form-field> -->
     
-                            <mat-form-field appearance="outline" style="width: 180px;">
+                            <!-- <mat-form-field appearance="outline" style="width: 180px;">
                                 <mat-label>Select Bank Name</mat-label>
                                 <mat-select formControlName="neftBankNameController" placeholder="Bank" #singleSelect
                                     [(ngModel)]="neftBankName">
@@ -410,7 +418,13 @@
                                     </mat-option>
                                 </mat-select>
     
-                            </mat-form-field>
+                            </mat-form-field> -->
+
+                            <airmid-dropdown label="Bank Name" formControlName="bankFilterCtrl"
+                            [formGroup]="paymentForm"  [validations]="getValidationMessages().bankFilterCtrl" (selectionChange)="selectChangebank($event)"
+                            [mode]="autocompleteModebank">
+                        </airmid-dropdown>
+
                         </div>
                         <div style="margin-right: 10px;">
                             <mat-form-field appearance="outline">

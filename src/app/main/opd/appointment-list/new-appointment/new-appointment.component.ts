@@ -328,9 +328,7 @@ export class NewAppointmentComponent implements OnInit {
         }
 
     }
-
-
-    getSelectedObjphone(obj) {
+getSelectedObjphone(obj) {
       this.PatientName = obj.PatientName;
         this.RegId = obj.value;
         this.VisitFlagDisp = true;
@@ -344,9 +342,6 @@ export class NewAppointmentComponent implements OnInit {
         }
 
     }
-
-
-  
 
     onSave() {
         console.log(this.personalFormGroup.value)
@@ -492,19 +487,14 @@ export class NewAppointmentComponent implements OnInit {
             this.ddlCountry.SetSelection(Response.countryId);
         });
 
-        
-        // setTimeout(() => {
-        //     this._registerService.getRegistraionById(this.data.regId).subscribe((response) => {
-        //         this.registerObj = response;
-        //         console.log(this.registerObj)
-        //         this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
-        //        });
-        // }, 500);
-       }
+      }
 
        onChangestate(e) {
         console.log(e)
-        // this.ddlCountry.SetSelection(e.countryId);
+        // this._AppointmentlistService.getstateId(e.stateId).subscribe((Response)=>{
+        //     console.log(Response)
+        //     this.ddlCountry.SetSelection(Response.countryId);
+        // });
     }
     getVisitRecord(row) {
         this.departmentId = row.DepartmentId;

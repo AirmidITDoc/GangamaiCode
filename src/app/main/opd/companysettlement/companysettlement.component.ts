@@ -100,16 +100,16 @@ vbalanceamt: any = 0;
         let PatientName = contact.firstName +" "+ contact.lastName
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
-        PatientHeaderObj['RegNo'] = contact.regID;
-        PatientHeaderObj['PatientName'] = PatientName;
-        PatientHeaderObj['OPD_IPD_Id'] = contact.OPDNo;
-        PatientHeaderObj['Age'] = contact.ageYear;
+        PatientHeaderObj['RegNo'] = contact.regNo;
+        PatientHeaderObj['PatientName'] = contact.PatientName;
+        PatientHeaderObj['OPD_IPD_Id'] = contact.opD_IPD_ID;
+        PatientHeaderObj['Age'] = contact.patientAge;
         PatientHeaderObj['DepartmentName'] = contact.DepartmentName;
-        PatientHeaderObj['DoctorName'] = contact.DoctorName;
-        PatientHeaderObj['TariffName'] = contact.TariffName;
-        PatientHeaderObj['CompanyName'] = contact.CompanyName;
-        PatientHeaderObj['NetPayAmount'] = contact.netPayableAmt; 
-      
+        PatientHeaderObj['DoctorName'] = contact.departmentName;
+        PatientHeaderObj['TariffName'] = contact.tariffName;
+        PatientHeaderObj['CompanyName'] = contact.companyName;
+        PatientHeaderObj['NetPayAmount'] = contact.netPayableAmt;
+       
         const dialogRef = this._matDialog.open(NewSettlementComponent,
             {
                 maxWidth: "80vw",
@@ -179,12 +179,13 @@ vbalanceamt: any = 0;
         
         console.log(obj)
         this.RegId1 = obj.regId;
-        // this.PatientName=obj.text;
+        // this.RegId1=obj.value;
+        this.GetDetails(obj.value)
        setTimeout(() => {
             this._CompanysettlementService.getRegistraionById(this.RegId1).subscribe((response) => {
             this.registerObj = response;
             console.log(response)
-                this.GetDetails(response)
+                // this.GetDetails(obj.value)
             });
 
         }, 500);
@@ -192,7 +193,7 @@ vbalanceamt: any = 0;
 }
 
 GetDetails(data) {
-    
+    console.log(data)
     this.gridConfig = {
         apiUrl: "OPBill/OPBillListSettlementList",
         columnsList: [
