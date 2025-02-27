@@ -101,7 +101,9 @@ const routes: Routes = [
         MatTooltipModule,
         MatTreeModule,
         MatSliderModule,
-        MatButtonToggleModule
+        MatButtonToggleModule,
+        MatDialogModule ,
+        CommonModule,
     ],
     providers: [
         CasepaperService,

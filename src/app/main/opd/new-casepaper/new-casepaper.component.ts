@@ -190,9 +190,10 @@ export class NewCasepaperComponent implements OnInit {
     public _WhatsAppEmailService: WhatsAppEmailService,
     private configService: ConfigService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-  ) { }
+  ) {console.log('Dialog Data:', data); }
 
   ngOnInit(): void {
+    debugger
 
     this.searchFormGroup = this.createSearchForm();
     this.caseFormGroup = this.createForm();
@@ -1362,7 +1363,7 @@ export class CasepaperVisitDetails {
   TotalDayes: number;
   AgeYear: number;
   OPDNo: any;
-  _matDialog: any;
+  // _matDialog: any;
   RegNo: any;
   Temp: any;
   DepartmentName: any;

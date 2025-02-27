@@ -32,25 +32,6 @@
                                 </mat-form-field>
                             </div>
                             <div fxLayout="column" class="gap-8">
-                                <!-- <mat-form-field appearance="outline">
-                                    <mat-label>Parameter Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select Parameter"
-                                        matInput formControlName="ParameterId" [matAutocomplete]="autopara" required>
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="_ParameterService.formulaform.get('ParameterId').setValue(''); isparaSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="_ParameterService.formulaform.get('ParameterId').setValue(''); isparaSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autopara="matAutocomplete"
-                                        [displayWith]="getOptionTextparameter">
-                                        <mat-option *ngFor="let option of filteredOptionsParameter | async"
-                                            [value]="option" >
-                                            {{option.ParameterName}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field> -->
-                                <!-- (onSelectionChange)="onChangeparaList(option)" -->
                                 <airmid-dropdown label="Parameter Name" 
                                 formControlName="ParameterId" [formGroup]="_ParameterService.formulaform"
                                 [validations]="getValidationMessages().ParameterId" 
@@ -61,13 +42,6 @@
                             </div>
                             <!--  -->
                             <div fxLayout="row"  class="gap-8">
-
-                                <!-- <mat-form-field appearance="outline" fxFlex="50%">
-                                    <mat-label>Selected Parameter</mat-label>
-                                    <input name="Parameter" placeholder="Parameter" formControlName="Formulapara"
-                                        matInput [(ngModel)]="paraname">
-                                </mat-form-field> -->
-
                                 <mat-form-field appearance="outline" fxFlex="40%">
                                     <mat-label>Oprator</mat-label>
                                     <mat-select formControlName="OPrator" required

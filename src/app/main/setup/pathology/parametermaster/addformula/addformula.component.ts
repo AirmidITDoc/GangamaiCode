@@ -55,18 +55,10 @@ export class AddformulaComponent implements OnInit {
     public dialogRef: MatDialogRef<AddformulaComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
-  ) {
-    // if (this.data) {
-    //   console.log(this.data)
-    //   this.registerObj = this.data.registerObj;
-    //   this.ParameterId = this.registerObj.parameterId
-    //   this.parameterName = this.registerObj.parameterName
-    //   this.finalformula = this.registerObj.formula
-    // }
-  }
+  ) { }
 
   ngOnInit(): void {
-    debugger
+    // debugger
     if (this.data) {
       console.log(this.data)
       this.registerObj = this.data.registerObj;
@@ -91,73 +83,35 @@ export class AddformulaComponent implements OnInit {
   }
   onClear() {
     this._ParameterService.formulaform.reset();
-
   }
 
   addoprator(event) {
     this.oprator = event
-
   }
   
   addoprator1() {
-    // debugger
-    // this.paraname=this._ParameterService.formulaform.get("ParameterId").value.parameterName
     this.paraname=this.parameterData
     this.paranamenew = "{{" + this.paraname + "}}"
     this.finalformula = this.finalformula + this.paranamenew + this.oprator;
-
   }
+
   onSubmit() {
-debugger
+// debugger
     if (!this._ParameterService.formulaform.invalid) {
 
-      if(!this.VFormulaId){
         var mdata = {
-            "formulaId": 0,
-            "ParameterId":this.ParameterId,
-            "parameterName": this._ParameterService.formulaform.get("parameterName").value,
-            "Formula":this._ParameterService.formulaform.get("Formula").value,
-            "isActive": JSON.parse(this._ParameterService.formulaform.get("isActive").value),
-            "createdBy":1
+            "parameterId":this.ParameterId,
+            "formula":this._ParameterService.formulaform.get("Formula").value
           };
 
           console.log('json mdata:', mdata);
 
-        this._ParameterService.formulaSave(mdata).subscribe((response) => {
+        this._ParameterService.formulaUpdate(mdata).subscribe((response) => {
             this.toastr.success(response.message);
             this.onClose();
         }, (error) => {
             this.toastr.error(error.message);
         });
-    }
-    else{
-        var mdata1 = {
-          "formulaId": this.VFormulaId,
-          "ParameterId":this.ParameterId,
-          "parameterName": this._ParameterService.formulaform.get("parameterName").value,
-          "Formula":this._ParameterService.formulaform.get("Formula").value,
-          "isActive": JSON.parse(this._ParameterService.formulaform.get("isActive").value),
-          "createdBy":1
-          };
-
-          console.log('json mdata:', mdata1);
-
-        this._ParameterService.formulaSave(mdata1).subscribe((response) => {
-            this.toastr.success(response.message);
-            this.onClose();
-        }, (error) => {
-            this.toastr.error(error.message);
-        });
-    }
-
-      // console.log("formula json:", this._ParameterService.formulaform.value);
-
-      // this._ParameterService.formulaSave(this._ParameterService.formulaform.value).subscribe((response) => {
-      //   this.toastr.success(response.message);
-      //   this.onClear();
-      // }, (error) => {
-      //   this.toastr.error(error.message);
-      // });
     }
     else {
       this.toastr.warning('please check from is invalid', 'Warning !', {
@@ -165,20 +119,6 @@ debugger
       });
       return;
     }
-
-    // let Query = "Update M_PathParameterMaster set Formula=" + "'" + this.finalformula + "'" + "where ParameterID=" + this.ParameterId;
-    // console.log(Query);
-
-    // this._ParameterService.deactivateTheStatus(Query)
-    //   .subscribe((data) => {
-    //     Swal.fire('Changed!', 'Parameter Formula has been Changed.', 'success');
-
-    //   }, (error) => {
-
-    //     Swal.fire('Error!', 'Failed to Formula  Parameter status.', 'error');
-    //   });
-
-    // this.dialogRef.close();
   }
   onClose() {
     this.dialogRef.close();
