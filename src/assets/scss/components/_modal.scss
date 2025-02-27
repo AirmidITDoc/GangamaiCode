@@ -1,7 +1,8 @@
 $modal-gap: 16px;
 $modalHeader: 60px;
 .mat-typography {
-    mat-dialog-container {
+    mat-dialog-container,.modal-page {
+        height: 100%;
         .modal-wrapper {
             overflow: auto;
             &.grid-container {

@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, Optional } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -97,19 +97,23 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   public chargeList: ChargesList[] = [];
   public packageList: ChargesList[] = [];
   public serviceList: ChargesList[] = [];
+  public isModal = false;
   selectedAdvanceObj: SearchInforObj;
   dateTimeObj: any;
  
   constructor(private _matDialog: MatDialog,
-    //  @Inject(MAT_DIALOG_DATA) public data: any, 
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any, 
      public datePipe: DatePipe,
      private advanceDataStored: AdvanceDataStored,
    private commonService: PrintserviceService,
     public _AppointmentlistService: AppointmentBillService, 
     // private dialogRef: MatDialogRef<AppointmentBillingComponent>,
-     private formBuilder: FormBuilder, private toastrService: ToastrService) { }
+     private formBuilder: FormBuilder, private toastrService: ToastrService,
+     @Optional() public dialogRef:MatDialogRef<AppointmentBillingComponent>
+    ) { };
 
   ngOnInit() {
+    this.isModal = !!this.dialogRef;
     console.log("DATA : ",this.advanceDataStored.storage);
     // if (this.data) {
 
