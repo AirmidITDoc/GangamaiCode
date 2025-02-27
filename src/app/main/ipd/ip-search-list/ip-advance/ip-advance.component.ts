@@ -26,6 +26,9 @@ import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.s
 import { ToastrService } from 'ngx-toastr';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { map, startWith } from 'rxjs/operators';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 
 
 @Component({
@@ -36,6 +39,52 @@ import { map, startWith } from 'rxjs/operators';
   animations: fuseAnimations
 })
 export class IPAdvanceComponent implements OnInit {
+  
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+      gridConfig: gridModel = {
+          apiUrl: "Advance/PatientWiseAdvanceList",
+          columnsList: [
+              { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
+              { heading: "AdvanceNo", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
+              { heading: "AdvanceAmt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+              { heading: "UsedAmt", key: "usedAmount", sort: true, align: 'left', emptySign: 'NA' },
+              { heading: "BalanceAmt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+              { heading: "RefundAmt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' }, 
+              { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+              { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 250 }, 
+              { heading: "CashPayAmt", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA' },
+              { heading: "ChequePayAmt", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA' },
+              { heading: "CardPayAmt", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+              { heading: "NeftPayAmt", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 250 }, 
+              { heading: "PayTMAmt", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA' },
+              { heading: "Reason", key: "reason", sort: true, align: 'left', emptySign: 'NA', width: 200 }
+              // {
+              //     heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+              //         {
+              //             action: gridActions.edit, callback: (data: any) => {
+              //                 //this.onSave(data);
+              //             }
+              //         }, {
+              //             action: gridActions.delete, callback: (data: any) => {
+              //                 // this._MenuMasterService.deactivateTheStatus(data.id).subscribe((response: any) => {
+              //                 //     this.toastr.success(response.message);
+              //                 //     this.grid.bindGridData();
+              //                 // });
+              //             }
+              //         }]
+              // }  
+          ],
+          sortField: "AdvanceDetailID",
+          sortOrder: 0,
+          filters: [
+              { fieldName: "AdmissionID", fieldValue: "10", opType: OperatorComparer.Equals },
+              { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+              { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }  
+          ],
+          row: 25 
+      } 
+
+      
 
   msg: any;
   sIsLoading: string = '';
@@ -106,6 +155,22 @@ export class IPAdvanceComponent implements OnInit {
 
   ngOnInit(): void {
     debugger
+    this.createAdvform(); 
+    if(this.data){
+      console.log("Advance data:",this.data)
+      this.registerObj = this.data.Obj;
+    }
+
+    // if (this.advanceDataStored.storage) { 
+    //   this.selectedAdvanceObj = this.advanceDataStored.storage;
+    //   this.vMobileNo= this.selectedAdvanceObj.MobileNo
+    //   console.log( this.selectedAdvanceObj)
+    // } 
+    let AdmissionId = this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value
+    this.getAdvanceList();
+    this.getCashCounterComboList(); 
+  }
+  createAdvform(){
     this.AdvFormGroup = this.formBuilder.group({
       advanceAmt: ['', [Validators.pattern('^[0-9]{2,8}$')]],
       comment: [''],
@@ -113,24 +178,19 @@ export class IPAdvanceComponent implements OnInit {
       cashpay: ['1'],
       CashCounterID:['']
     });
-
-    if(this.data){
-      console.log("Advance data:",this.data)
-      this.registerObj = this.data;
-    }
-
-    if (this.advanceDataStored.storage) {
-     
-      this.selectedAdvanceObj = this.advanceDataStored.storage;
-      this.vMobileNo= this.selectedAdvanceObj.MobileNo
-      console.log( this.selectedAdvanceObj)
-    }
-
-    let AdmissionId = this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value
-    this.getAdvanceList();
-    this.getCashCounterComboList();
-
   }
+
+  getValidationMessages() {
+    return {  
+      CashCounterID: [
+        { name: "required", Message: "CashCounter Name is required" }
+      ],
+      advanceAmt: [
+        { name: "required", Message: "Advance Amount is required" }
+      ]
+    };
+  }
+
 getAdvanceDetaId(){
   let Query ;
   Query = "select * from AdvanceDetail where RefId=" + this.selectedAdvanceObj.RegID 

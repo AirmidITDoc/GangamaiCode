@@ -1,4 +1,5 @@
-<div class="page-layout modal-wrapper grid-container">
+<div class="page-layout modal-wrapper grid-container" 
+fusePerfectScrollbar>
 
     <div class="modal-header accent">
         <div class="modal-header-content">
@@ -22,10 +23,10 @@
     </div>
 
 
-    <div class="modal-body content" fusePerfectScrollbar>
+    <div class="modal-body content" >
         <div class="center">
             <div class="content-card">
-                <div fxLayout="column" fxLayoutGap="8px">
+                <div fxLayout="column" fxLayoutGap="4px">
                     <div fxlayout="row">
                         <div fxFlex.gt-sm="100%" fxFlex fxLayoutGap="4px"> 
                             <mat-card fxFlex.gt-sm="74%" fxFlex style="padding: 6px;">
@@ -77,15 +78,14 @@
                                                     </span>
                                                     <span>:</span>
                                                     <span
-                                                        class="patient-col-value">{{registerObj?.AgeYear}}Y|{{registerObj?.AgeMonth}}M|{{registerObj?.AgeDay}}
-                                                        D | {{registerObj?.GenderName}}</span>
+                                                        class="patient-col-value">{{registerObj?.ageYear}}Y|{{registerObj?.ageMonth}}M|{{registerObj?.ageDay}}
+                                                        D | {{registerObj?.genderName}}</span>
                                                 </div>
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Ref-Doctor Name
                                                     </span>
                                                     <span>:</span>
-                                                    <!-- <span
-                                                                                                                        class="patient-col-value">{{registerObj?.RefDocName}}</span> -->
+                                                    <span class="patient-col-value">{{registerObj?.refDocName}}</span>
                                                 </div>
                             
                                             </div>
@@ -94,29 +94,25 @@
                                                     <span class="patient-col-key">Ward | Bed Name
                                                     </span>
                                                     <span>:</span>
-                                                    <!-- <span
-                                                                                                                        class="patient-col-value">{{registerObj?.RoomName}}
-                                                                                                                        | {{registerObj?.BedName}}</span> -->
+                                                    <span class="patient-col-value">{{registerObj?.roomName}}
+                                                        | {{registerObj?.bedName}}</span>
                                                 </div>
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Patient Type
                                                     </span>
                                                     <span>:</span>
-                                                    <!-- <span
-                                                                                                                        class="patient-col-value">{{registerObj?.PatientType}}</span> -->
+                                                    <span class="patient-col-value">{{registerObj?.patientType}}</span>
                                                 </div>
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Tarrif Name
                                                     </span>
                                                     <span>:</span>
-                                                    <!-- <span
-                                                                                                                        class="patient-col-value">{{registerObj?.TariffName}}</span> -->
+                                                    <span class="patient-col-value">{{registerObj?.tariffName}}</span>
                                                 </div>
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Company Name</span>
                                                     <span>:</span>
-                                                    <!-- <span class="patient-col-value"
-                                                                                                                        style="color: orange;">{{registerObj?.CompanyName}}</span> -->
+                                                    <span class="patient-col-value" style="color: orange;">{{registerObj?.companyName}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -172,7 +168,10 @@
                     </div>
 
                     <div fxFlex.gt-sm="100%" fxFlex> 
-                        <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" class="h-250">
+                        <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false"> 
+                        </airmid-table>
+
+                        <!-- <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" class="h-250">
 
                             <ng-container matColumnDef="Date">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
@@ -308,81 +307,54 @@
                                 [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
                         </mat-table> 
                         <mat-paginator [pageSizeOptions]="[ 10, 25, 100]" [pageSize]="10" showFirstLastButtons>
-                        </mat-paginator>
+                        </mat-paginator> -->
                     </div>
                 </div>
 
-                <mat-card style="padding: 6px;">
-                    <div fxlayout="row" style="margin-top: 10px;">
-
-                        <div class="dialog-content-wrapper">
-
-                            <form [formGroup]="AdvFormGroup" class="mat-error-fix">
-                                <div class="bill-amts" fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
-                                    fxLayoutAlign="space-between start">
-                                    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                                        <mat-form-field appearance="outline" style="width:200px ;">
-                                            <mat-label>Advance Amount</mat-label>
-                                            <input matInput [(ngModel)]="advanceAmount" formControlName="advanceAmt"
-                                                name="advanceAmt" required (keypress)="keyPressCharater($event)">
-                                            <mat-error class="error"
-                                                *ngIf="AdvFormGroup.get('advanceAmt').hasError('required') && AdvFormGroup.get('advanceAmt').touched">
-                                                Advance Amount is required</mat-error>
-                                            <mat-error class="error"
-                                                *ngIf="AdvFormGroup.get('advanceAmt').hasError('pattern') && AdvFormGroup.get('advanceAmt').touched">
-                                                Please enter valid Amount</mat-error>
-                                        </mat-form-field>
-
-                                        <mat-form-field appearance="outline" style="width: 400px;">
-                                            <mat-label>Reason Of Advacne</mat-label>
-                                            <input matInput formControlName="comment" name="comment" maxlength="200">
-                                            <mat-error class="error"
-                                                *ngIf="AdvFormGroup.get('comment').invalid && AdvFormGroup.get('comment').touched">
-                                                Advance Amount is required</mat-error>
-                                        </mat-form-field>
-
-
-                                        <!-- <mat-form-field appearance="outline" style="width: 220px;">
-                                        <mat-label>Cash Counter</mat-label>
-                                        <input matAutocompletePosition="below" type="text" placeholder="Select Cash Counter"
-                                             matInput formControlName="CashCounterID"
-                                            [matAutocomplete]="autoSearchCashCounter" #CashCounterName>
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="AdvFormGroup.get('CashCounterID').setValue(''); isCashCounterSelected = false;">close</mat-icon>
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="AdvFormGroup.get('CashCounterID').setValue(''); isCashCounterSelected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #autoSearchCashCounter="matAutocomplete"
-                                            [displayWith]="getOptionTextCashCounter">
-                                            <mat-option *ngFor="let option of filteredOptionsCashCounter| async"
-                                                [value]="option">
-                                                {{option.CashCounterName}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                      </mat-form-field> -->
-
-                                        <airmid-dropdown label="Cash Counter" formControlName="CashCounterID" class="w-300"
-                                            [formGroup]="AdvFormGroup" [mode]="autocompleteModeCashCounter">
-                                        </airmid-dropdown>
-                                    </div>
+              
+                    <div fxlayout="row" fxLayout="column" fxLayoutGap="6px">
+                        <form [formGroup]="AdvFormGroup" class="mat-error-fix">
+                            <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="start">
+                                <!-- <mat-form-field appearance="outline" style="width:200px ;">
+                                                                                                    <mat-label>Advance Amount</mat-label>
+                                                                                                    <input matInput [(ngModel)]="advanceAmount" formControlName="advanceAmt"
+                                                                                                        name="advanceAmt" required (keypress)="keyPressCharater($event)">  
+                                                                                                </mat-form-field> -->
+                    
+                                <!-- <mat-form-field appearance="outline" style="width: 400px;">
+                                                                                                    <mat-label>Reason Of Advacne</mat-label>
+                                                                                                    <input matInput formControlName="comment" name="comment" maxlength="200"> 
+                                                                                                </mat-form-field>  -->
+                    
+                                <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Advance Amount" formControlName="advanceAmt" [value]="registerObj.firstName"
+                                        [formGroup]="AdvFormGroup" [validations]="getValidationMessages().advanceAmt" [maxLength]="50">
+                                    </airmid-textbox>
                                 </div>
-                            </form>
-                            <div class="modal-footer">
-                                <div class="footer-navigation-container">
-                                    <div class="modal-footer-buttons">
-                                        <button class="btn btn-primary" (click)="getStatementPrint()">Statement</button>
-                                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                        <button class="btn btn-primary" (click)="onSave()"
-                                            [disabled]="AdvFormGroup.invalid">Save</button>
-                                    </div>
+                    
+                                <div fxFlex="43%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Reason Of Advacne" formControlName="comment" [formGroup]="AdvFormGroup"
+                                        [maxLength]="450">
+                                    </airmid-textbox>
+                                </div>
+                    
+                                <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-dropdown label="Cash Counter" formControlName="CashCounterID"
+                                    [formGroup]="AdvFormGroup" [mode]="autocompleteModeCashCounter"
+                                    [validations]="getValidationMessages().CashCounterID">
+                                </airmid-dropdown>
                                 </div>
                             </div>
+                        </form>
+                        <div class="modal-footer" fxLayoutAlign="end"> 
+                                <div class="modal-footer-buttons" fxlayout="row" fxLayoutGap="4px">
+                                    <button class="btn btn-primary" (click)="getStatementPrint()">Statement</button>
+                                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                    <button class="btn btn-primary" (click)="onSave()">Save</button>
+                                </div> 
                         </div>
                     </div>
-                </mat-card>
             </div>
         </div>
-    </div>
-
+    </div> 
 </div>
