@@ -101,6 +101,7 @@ export class ReportGenerationComponent implements OnInit {
 
     hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     ngOnInit(): void {
+        debugger
         this._activeRoute.paramMap.subscribe(params => {
             this.rid = ~~(params.get('rid') || 106);
         });
