@@ -25,14 +25,14 @@ export class ReportConfigurationService {
             reportSection:["",
                 [
                     Validators.required, 
-                    Validators.maxLength(50),
+                    Validators.maxLength(500),
                     Validators.pattern("^[A-Za-z @#&]+$") //include space 
                 ]
             ],
             reportName:["",
                 [
                     Validators.required, 
-                    Validators.maxLength(50),
+                    Validators.maxLength(500),
                     Validators.pattern("^[A-Za-z @#&]+$")
                 ]
             ],
@@ -46,61 +46,61 @@ export class ReportConfigurationService {
             reportMode:["",
                 [
                     Validators.required, 
-                    Validators.maxLength(50),
+                    Validators.maxLength(500),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             reportTitle:["",
                 [
                     Validators.required, 
-                    Validators.maxLength(50),
+                    Validators.maxLength(500),
                     Validators.pattern("^[A-Za-z @#&]+$")
                 ]
             ],
             reportHeader:["",
                 [
                     Validators.required, 
-                    Validators.maxLength(100),
+                    // Validators.maxLength(2000),
                 ]
             ],
             reportColumn:["",
                 [
                     Validators.required, 
-                    Validators.maxLength(100),
+                    // Validators.maxLength(1000),
                 ]
             ],
             reportHeaderFile:["",
                 [
                     Validators.required, 
-                    Validators.maxLength(50),
+                    Validators.maxLength(500),
                     Validators.pattern("^[A-Za-z .,@$&]+$") //.html
                 ]
             ],
             reportBodyFile:["", 
                 [
                     Validators.required, 
-                    Validators.maxLength(50),
+                    Validators.maxLength(500),
                     Validators.pattern("^[A-Za-z .,@$&]+$") //.html
                 ]
             ],
             reportFolderName:["",
                 [
                     Validators.required, 
-                    Validators.maxLength(50),
+                    Validators.maxLength(500),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             reportFileName:["",
                 [
                     Validators.required, 
-                    Validators.maxLength(50),
+                    Validators.maxLength(500),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             reportSpname:["",
                 [
                     Validators.required, 
-                    Validators.maxLength(50),
+                    Validators.maxLength(500),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
@@ -109,8 +109,8 @@ export class ReportConfigurationService {
             // isActive:[true,[Validators.required]],
             reportFilter: ["",
                 [
-                    Validators.required, 
-                    Validators.maxLength(50),
+                    // Validators.required, 
+                    Validators.maxLength(500),
                     Validators.pattern("^[A-Za-z .,@$&]+$") //.html
                 ]
             ],
