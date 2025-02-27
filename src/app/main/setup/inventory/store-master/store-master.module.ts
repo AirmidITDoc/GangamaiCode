@@ -70,6 +70,13 @@ const routes: Routes = [
         MatDialogModule,
         // QuillModule.forRoot()
         // MonacoEditorModule.forRoot() 
+        MatCardModule,
+        MatToolbarModule,
+        MatSlideToggleModule,
+        FuseSharedModule,
+        // RichTextEditorModule
+        //  NgMultiSelectDropDownModule.forRoot()
+        AngularEditorModule,
     ],
     providers: [StoreMasterService, DatePipe]
 })

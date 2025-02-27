@@ -32,6 +32,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
             columnsList: [
                 { heading: "Patient", key: "patient", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA'},
+                { heading: "AdvanceNo", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "UHID", key: "uHID", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "IPDNo", key: "iPDNo", sort: true, align: 'left', emptySign: 'NA'},
@@ -40,7 +41,6 @@ export class BrowseIPAdvanceComponent implements OnInit {
                 { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "AdvanceAmt", key: "advanceAmt", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "CashPay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA'},

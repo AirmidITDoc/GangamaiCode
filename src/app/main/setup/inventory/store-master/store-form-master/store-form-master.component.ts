@@ -35,6 +35,23 @@ export class StoreFormMasterComponent implements OnInit {
     //     this.Header = e.target.innerHTML;
     // }
 
+    onBlur(e: any) {
+        this.vTemplateDesc = e.target.innerHTML;
+        throw new Error('Method not implemented.');
+    }
+
+    editorConfig: AngularEditorConfig = {
+        editable: true,
+        spellcheck: true,
+        height: '24rem',
+        minHeight: '24rem',
+        translate: 'yes',
+        placeholder: 'Enter text here...',
+        enableToolbar: true,
+        showToolbar: true,
+    };
+
+    vTemplateDesc: any;
     storeForm: FormGroup;
     isActive: boolean = true;
     registerObj = new StoreMaster({});
@@ -55,8 +72,8 @@ export class StoreFormMasterComponent implements OnInit {
         {
             this.isActive =this.data.isActive
             this.storeForm.patchValue(this.data);
-            // this.Header = this.data.Header
-            // this.editor = new Editor();
+            this.vTemplateDesc = this.data.templateDesc;
+            
             setTimeout(() => {
                 this._StoreMasterService.getStoreById(this.data.storeId).subscribe((response) => {
                     this.registerObj = response;
