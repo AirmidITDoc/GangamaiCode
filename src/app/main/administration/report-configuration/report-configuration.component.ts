@@ -85,7 +85,7 @@ export class ReportConfigurationComponent implements OnInit{
             let that = this;
             const dialogRef = this._matDialog.open( NewReportConfigurationComponent, 
                 {
-                    maxWidth: "90vw",
+                    maxWidth: "80vw",
                     maxHeight: '95%',
                     width: '90%',
                     data: row

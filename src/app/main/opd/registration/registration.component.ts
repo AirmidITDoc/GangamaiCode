@@ -277,7 +277,7 @@ export class RegInsert {
             this.PrefixID = RegInsert.PrefixID || 0;
             this.PrefixID = RegInsert.PrefixID || 0;
             this.firstName = RegInsert.firstName || '';
-            this.middleName = RegInsert.middleName || '';
+            this.middleName = RegInsert.middleName || '%';
             this.lastName = RegInsert.lastName || '';
             this.FirstName = RegInsert.FirstName || '';
             this.MiddleName = RegInsert.MiddleName || '';

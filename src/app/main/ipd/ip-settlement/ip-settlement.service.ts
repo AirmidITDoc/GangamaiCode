@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IPSettlementService {
 
-  constructor(public _httpClient:HttpClient,
+  constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
     private _loaderService: LoaderService,
     private _formBuilder: UntypedFormBuilder) { }
 
@@ -28,12 +29,7 @@ public getCreditBillList(data,loader = true) {
 }
   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IP_Bill_List_Settlement" ,data)
 }
-public InsertIPSettlementPayment (employee,loader = true){
-  if (loader) {
-    this._loaderService.show();
-}
-   return this._httpClient.post("InPatient/IPSettlement", employee)
-}
+
 
 public getIPBILLBrowsePrint(BillNo) {
   return this._httpClient.post("Generic/GetByProc?procName=rptIPDFinalBill", BillNo)
@@ -58,14 +54,17 @@ public getIPsettlementPrint(PaymentId){
     return this._httpClient.get("InPatient/view-IP-SettlementReceipt?PaymentId=" + PaymentId);
   }
 
-  public getAdmittedpatientlist(employee){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
-  }
 
-  public getBankMasterCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveBankMasterForCombo", {})
+
+public InsertIPSettlementPayment (employee){
+ 
+   return this._httpClient1.PostData("InPatient/IPSettlement", employee)
 }
 
+
+public getRegistraionById(Id) {
+  return this._httpClient1.GetData("OutPatient/" + Id);
+}
 
 
 fieldValidations() {

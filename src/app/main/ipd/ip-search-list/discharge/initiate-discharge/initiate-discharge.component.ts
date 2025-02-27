@@ -7,6 +7,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { ToastrService } from 'ngx-toastr';
 import { ConfigService } from 'app/core/services/config.service';
 import { DatePipe } from '@angular/common';
+import { DischargeInitiateProcessComponent } from './discharge-initiate-process/discharge-initiate-process.component';
 
 @Component({
   selector: 'app-initiate-discharge',
@@ -63,18 +64,17 @@ export class InitiateDischargeComponent {
     this.dialogRef.close();
   }
   DischargeInitiate(){
-  //   const dialogRef = this._matDialog.open(InitiateProcessComponent,
-  //     {
-  //       maxWidth: "50vw",
-  //       height: '70%',
-  //       width: '100%',
-  //       data: {
-  //         Obj: this.selectedAdvanceObj
-  //       }
-  //     });
-  //     dialogRef.afterClosed().subscribe(result => {
-  //       console.log(result)
-  //     });
+    const dialogRef = this._matDialog.open(DischargeInitiateProcessComponent,
+      {
+        maxWidth: "50vw",
+        height: '70%',
+        width: '100%',
+        data:this.data
+        
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log(result)
+      });
   }
 }
 export class ApprovList{

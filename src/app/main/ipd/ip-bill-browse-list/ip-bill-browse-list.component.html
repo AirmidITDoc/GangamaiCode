@@ -2,13 +2,13 @@
     dynamicTableHeight>
     <mat-toolbar class="top-header accent">
         <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
-            <button mat-icon-button class="sidebar-toggle ">
+            <!-- <button mat-icon-button class="sidebar-toggle ">
                 <mat-icon>menu</mat-icon>
             </button>
             <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-            </mat-icon>
+            </mat-icon> -->
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                IP Browse List
+                IP Bill List
             </span>
         </div>
 
@@ -27,7 +27,7 @@
                     <div class="top-header-info">
                         <div class="top-header-title">
                             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                IP Browse Bill List
+                                IP Bill List
                             </span>
                         </div>
                     </div>
@@ -38,6 +38,7 @@
                 </div>
                 <div class="info-badge-top border-bottom" style="margin-left: 18%;" fxLayout="row"
                     fxLayoutAlign="space-between" flex>
+
                     <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
 
                         <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
@@ -185,7 +186,7 @@
 
         </mat-tab>
 
-        <mat-tab label="IP Browse Payment List">
+        <mat-tab label="IP Payment Receipt List">
 
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
@@ -195,7 +196,7 @@
                     <div class="top-header-info">
                         <div class="top-header-title">
                             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                IP Browse Payment List
+                                IP Payment Receipt List
                             </span>
                         </div>
                     </div>
@@ -308,12 +309,12 @@
                             </airmid-textbox> -->
 
 
-                            <mat-radio-group value="" [(ngModel)]="gridConfig.filters[6].fieldValue"
+                            <!-- <mat-radio-group value="" [(ngModel)]="gridConfig.filters[6].fieldValue"
                                 fxLayoutAlign="center center">
 
                                 <mat-radio-button mat-fab value="1">IsInterim</mat-radio-button>
                                 <mat-radio-button mat-fab value="0">IsFinal</mat-radio-button>
-                            </mat-radio-group>
+                            </mat-radio-group> -->
                         </ng-container>
                     </airmid-table>
                 </div>
@@ -321,7 +322,7 @@
 
         </mat-tab>
 
-        <mat-tab label="IP Browse Refund List">
+        <mat-tab label="IP Refund Of Bill List">
 
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
@@ -331,7 +332,7 @@
                     <div class="top-header-info">
                         <div class="top-header-title">
                             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                IP Browse Refund List
+                                IP Refund Of Bill List
                             </span>
                         </div>
                     </div>
@@ -442,12 +443,12 @@
 
 
 
-                            <mat-radio-group value="" [(ngModel)]="gridConfig2.filters[5].fieldValue"
+                            <!-- <mat-radio-group value="" [(ngModel)]="gridConfig2.filters[5].fieldValue"
                                 fxLayoutAlign="center center">
                                 <mat-radio-button value="">All</mat-radio-button>
                                 <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
                                 <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                            </mat-radio-group>
+                            </mat-radio-group> -->
                         </ng-container>
                     </airmid-table>
                 </div>

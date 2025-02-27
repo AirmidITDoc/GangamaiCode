@@ -350,38 +350,37 @@
                                                             </mat-cell>
                                                         </ng-container>
 
-                                                        <ng-container matColumnDef="Demo">
+                                                        <ng-container matColumnDef="DoseName">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                               Dose Name
                                                             </mat-header-cell>
                                                             
                                                             <mat-cell *matCellDef="let element; let i = index" fxHide fxShow.gt-sm>
                                                               <span *ngIf="editingIndex !== i"> 
-                                                                {{ element.DrugName }} 
+                                                                {{ element.DoseName }} 
                                                                 <mat-icon (click)="editDose(i)" class="edit-icon">edit</mat-icon>
                                                               </span>
                                                           
                                                               <airmid-dropdown 
                                                                 *ngIf="editingIndex === i"
-                                                                label="Template List"
-                                                                formControlName="TemplateId"
+                                                                formControlName="DoseId"
                                                                 [formGroup]="MedicineItemForm"
-                                                                [validations]="getValidationMessages().TemplateId"
-                                                                [mode]="autocompleteModeTemplate"
-                                                                (selectionChange)="selectChangeTemplateName($event)">
+                                                                [validations]="getValidationMessages().DoseId"
+                                                                [mode]="autocompleteModeDose"
+                                                                (selectionChange)="selectChangeDoseName($event)">
                                                               </airmid-dropdown>
                                                             </mat-cell>
                                                           </ng-container>
                                                           
 
-                                                        <ng-container matColumnDef="DoseName">
+                                                        <!-- <ng-container matColumnDef="DoseName">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                 fxShow.gt-sm>
                                                                 Dose Name</mat-header-cell>
                                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                                 <span> {{element.DoseName}}</span>
                                                             </mat-cell>
-                                                        </ng-container>
+                                                        </ng-container> -->
 
                                                         <ng-container matColumnDef="Days">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide

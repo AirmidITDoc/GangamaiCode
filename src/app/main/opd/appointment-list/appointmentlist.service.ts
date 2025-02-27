@@ -284,8 +284,8 @@ public InsertOPBillingpayment(employee) {
         return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PreviousDoctorVisitList", param)
     }
 
+  
     public getstateId(Id) {
-
-        return this._httpClient1.GetData("StateMaster/?Id=" + Id + "&version=" + 1);
+        return this._httpClient1.GetData("StateMaster/" + Id);
     }
 }

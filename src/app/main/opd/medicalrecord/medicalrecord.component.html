@@ -1,0 +1,173 @@
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Appointment List
+                </span>
+            </div>
+        </div>
+        <div class="gap-8" style="margin-top: 10px; padding: 5px;" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <form [formGroup]="searchFormGroup" style="gap: 8px;">
+                <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" fxFlex="50%"
+                    placeholderText="Enter Patient Name" fxFlex ApiUrl="VisitDetail/search-patient?Keyword="
+                    (selectionChange)="getSelectedObj($event)" TextField="formattedText"
+                    ValueField="regId"></airmid-autocomplete>
+
+                    <span style="margin-right: 40px;">
+                        <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </span>
+
+            </form>
+
+        </div>
+
+
+    </div>
+    <div class="info-badge-top p-12 border-bottom" fxLayout="row" fxLayoutAlign="space-between" flex>
+        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+            <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                <span class="blue-600-fg">Total Count : {{Vtotalcount}}</span>
+            </div>
+            <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                <span class="green-600-fg"> New Patient : {{VNewcount}}</span>
+            </div>
+            <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                <span class="orange-600-fg">FollowUp : {{VFollowupcount}}</span>
+            </div>
+            <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                <span class="red-600-fg">Bill Count : {{VBillcount}}</span>
+            </div>
+            <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                <span class="blue-600-fg">Cross Consultant Count :
+                    {{VCrossConscount}}</span>
+            </div>
+
+        </div>
+    </div>
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+        <ng-template #actionsTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+
+                <mat-icon *ngIf="element.patientOldNew=='1'" matTooltip="PatientNew"
+                    class="pill green-600 s-16">circle</mat-icon>
+                <mat-icon *ngIf="element.patientOldNew=='2'" matTooltip="PatientOld" class="pill orange-600 s-16">circle
+                </mat-icon>
+
+            </div>
+        </ng-template>
+
+        <ng-template #actionsTemplate1 let-element>
+            <div>
+
+                <mat-icon *ngIf="element.mPbillNo=='1'|| element.mPbillNo=='2' " matTooltip="Bill Generated"
+                    class="pill red-600 s-16">circle</mat-icon>
+                <mat-icon style=" border: black 1px solid;" *ngIf="element.mPbillNo=='0' "
+                    matTooltip="Did not Generated Bill" class="pill white-600 s-16">
+                    circle
+                </mat-icon>
+            </div>
+        </ng-template>
+
+        <ng-template #actionsTemplate2 let-element>
+            <div>
+                <mat-icon *ngIf="element.phoneAppId !== 0" matTooltip="Phone Appointment" class=" cyan-600 s-16">
+                    settings_phone
+                </mat-icon>
+            </div>
+        </ng-template>
+
+        <ng-template #actionsTemplate3 let-element>
+            <div>
+                <mat-icon title="CrossConsulFlag" *ngIf="element.crossConsulFlag==1"
+                    class="active-icon green-600 s-16">cached
+                    icon</mat-icon>
+            </div>
+        </ng-template>
+
+        <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                
+                <button mat-icon-button matTooltip="OPD CasePaper" (click)="getOpCasePaper(element)">
+                    <mat-icon> list_alt</mat-icon>
+                </button>
+
+                <button mat-icon-button matTooltip="Certificate" (click)="OpenCertificate(element)">
+                    <mat-icon> insert_drive_file</mat-icon>
+                </button>
+
+                <button mat-icon-button matTooltip="Edit" (click)="OnEditRegistration(element)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+
+                <button mat-icon-button matTooltip="print"
+                    (click)="OnViewReportPdf(element,true)">
+                    <mat-icon title="Print Menu">print</mat-icon>
+                </button>
+                
+                <button mat-icon-button matTooltip="CrossConsultation"
+                    (click)="OnNewCrossConsultation(element)">
+                    <mat-icon>cached icon</mat-icon>
+                </button>
+            </div>
+        </ng-template>
+
+        <airmid-table [gridConfig]="gridConfig" class="content">
+            <ng-container filters>
+                <form [formGroup]="myformSearch">
+
+                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true" formStartControlName="fromDate"
+                        formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue"
+                        [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>First Name</mat-label>
+                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myformSearch"
+                            formControlName="FirstName" [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                        <button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="gridConfig.filters[0].fieldValue=''">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myformSearch"
+                            formControlName="LastName" [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                        <button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="gridConfig.filters[1].fieldValue=''">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>RegNo</mat-label>
+                        <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myformSearch"
+                            formControlName="RegNo" [(ngModel)]="gridConfig.filters[2].fieldValue" />
+                        <button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="gridConfig.filters[2].fieldValue=''">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [formGroup]="myformSearch"
+                        [(ngModel)]="gridConfig.filters[3].fieldValue"
+                        [validations]="getValidationdoctorMessages().DoctorId" [mode]="autocompleteModedeptdoc"
+                        (selectionChange)="selectChangedeptdoc($event)">
+                    </airmid-dropdown>
+
+                </form>
+            </ng-container>
+        </airmid-table>
+    </div>
+</div>

@@ -105,20 +105,6 @@ export class ParametermasterService {
         });
     }
 
-    // createformulaForm():FormGroup{
-    //     return this._formBuilder.group({
-    //         // ParameterNameSearch: [""],
-    //         formulaId:[],
-    //         ParameterId:[null],
-    //         parameterName:[""],
-    //         // OPrator:[""],      
-    //         Formula: [""],
-    //         isActive:["true"],
-    //         createdBy:[1],
-    //         // Formulapara:[""],    
-    //     });
-    // }
-
     createformulaForm(): FormGroup {
         return this._formBuilder.group({
             formulaId: [0],  // Ensuring null values don't become strings
@@ -130,16 +116,10 @@ export class ParametermasterService {
         });
     }
     
-
-    public formulaSave(Param: any) {
-        debugger
-         return this._httpClient.PostData("MPathTestFormula", Param);
-    }
-
     public formulaUpdate(Param: any) {
         debugger
-        if (Param.ParameterId) {
-            return this._httpClient.PutData("MPathTestFormula/" + Param.ParameterId, Param);
+        if (Param.parameterId) {
+            return this._httpClient.PutData("ParameterMaster/EditFormula/" + Param.parameterId, Param);
         } 
     }
 

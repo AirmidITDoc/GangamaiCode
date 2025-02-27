@@ -55,7 +55,9 @@ export class RoleTemplateService {
         debugger
         return this._httpClient.DeleteData("RoleMaster?Id=" + m_data.toString());
     }
-
+    public savePermission(Param) {
+        return this._httpClient.PostData("RoleMaster/save-permission", Param);
+    }
     
     populateForm(param) {
         this.myform.patchValue(param);

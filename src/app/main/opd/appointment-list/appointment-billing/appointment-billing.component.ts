@@ -703,7 +703,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     console.log(submitData);
     this._AppointmentlistService.InsertOPBillingCredit(submitData).subscribe(response => {
       this.toastrService.success(response.message);
-      // this.dialogRef.close();
+      this._matDialog.closeAll();
     }, (error) => {
       this.toastrService.error(error.message);
     });
@@ -853,7 +853,7 @@ console.log(this.vOPIPId)
             this.toastrService.success(response.message);
             console.log(response)
             this.viewgetOPBillReportPdf(response)
-            // this.dialogRef.close();
+            this._matDialog.closeAll();
           }, (error) => {
             this.toastrService.error(error.message);
           });
@@ -934,7 +934,7 @@ console.log(this.vOPIPId)
       this._AppointmentlistService.InsertOPBilling(submitData).subscribe(response => {
         this.toastrService.success(response.message);
         this.viewgetOPBillReportPdf(response)
-        // this.dialogRef.close();
+        this._matDialog.closeAll();
       }, (error) => {
         this.toastrService.error(error.message);
       });

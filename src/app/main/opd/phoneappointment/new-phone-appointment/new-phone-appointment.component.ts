@@ -147,21 +147,8 @@ debugger
      
       this.phoneappForm.get('phAppDate').setValue(this.datePipe.transform(this.phoneappForm.get('phAppDate').value, 'yyyy-MM-dd'))
 
-      // if(!this.timeflag){
-
-      //   let selectedDate = new Date(this.phoneappForm.get('phAppTime').value);
-      //   let splitDate = selectedDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-      //   let splitTime = this.phoneappForm.get('phAppTime').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-      //   this.isTimeChanged = true;
-      //   this.phdatetime=splitTime[1]
-      // }
-    
-    if (!this.phoneappForm.invalid) {
-      
-      // this.phdatetime = this.phoneappForm.get('phAppDate').value + "" + this.phdatetime
-      // console.log(this.phdatetime)
-      // console.log(this.phoneappForm.value);
-      
+      if (!this.phoneappForm.invalid) {
+     
       console.log(this.phoneappForm.value);
       this._phoneAppointListService.phoneMasterSave(this.phoneappForm.value).subscribe((response) => {
         this.toastr.success(response.message);
@@ -173,6 +160,8 @@ debugger
       Swal.fire("Enter Proper Data ...Form is Invalid !.......")
     }
   }
+
+  
   Phappcancle(data) {
     this._phoneAppointListService.phoneMasterCancle(data.phoneAppId).subscribe((response: any) => {
       this.toastr.success(response.message);

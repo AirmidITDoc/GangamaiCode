@@ -126,8 +126,6 @@ export class TestFormMasterComponent implements OnInit {
             console.log(this.registerObj);
             this.vTestId = this.registerObj.testId
             this.vTestName=this.registerObj.testName
-            this.vFootNote=this.registerObj.footNote
-            this.vSuggestionNote=this.registerObj.suggestionNote
             this.TemplateId = this.registerObj.TemplateId;
             this.isActive=this.registerObj.isdeleted;
 
@@ -157,11 +155,6 @@ export class TestFormMasterComponent implements OnInit {
                 this.testForm.get("Status").setValue(2);
                 this.fetchSubTestlist(this.registerObj);
             }
-
-            // this._TestmasterService.populateForm(this.registerObj);
-            // this.getcategoryNameCombobox();
-            // this.getServiceNameCombobox();
-
         }
 
         this.getParameterList();
@@ -172,12 +165,9 @@ export class TestFormMasterComponent implements OnInit {
             CategoryId: this.data?.categoryId,
             ServiceId: this.data?.serviceID,
             TechniqueName: this.data?.techniqueName,
-            MachineName: this.data?.machineName
-            // unitName: this.data?.unitName.trim(),
-            //   printSeqNo: this.data?.printSeqNo,
-            //   isconsolidated: JSON.stringify(this.data?.isconsolidated),
-            //   isConsolidatedDR: JSON.stringify(this.data?.isConsolidatedDR),
-            // isDeleted: JSON.stringify(this.data?.isActive),
+            MachineName: this.data?.machineName,
+            FootNote: this.data?.footNote,
+            SuggestionNote: this.data?.suggestionNote
         };
         this.testForm.patchValue(m_data);
     }
@@ -362,7 +352,7 @@ debugger
             let mPathTemplateDetails = this.Templatetdatasource.data.map((row: any) => ({
                 "PtemplateId": 0,
                 "TestId": 0,
-                "TemplateId": 12,
+                "TemplateId": row.templateId,
             }));
             let mPathTestDetailMasters = this.DSTestList.data.map((row: any) => ({
                 "TestDetId": 0,
@@ -401,7 +391,7 @@ debugger
             let mPathTemplateDetails = this.Templatetdatasource.data.map((row: any) => ({
                 "PtemplateId": 0,
                 "TestId": 0,
-                "TemplateId": 12,  //teplate id is not comming becasue we not using dropdown so
+                "TemplateId": row.templateId, //teplate id is not comming becasue we not using dropdown so
             }));
             let mPathTestDetailMasters = this.DSTestList.data.map((row: any) => ({
                 "TestDetId": 0,
@@ -540,29 +530,23 @@ debugger
         });
     }
 
-
+    DDtemplateId=0
+    DDtemplateName=""
+    selectChangeTemplate(data){
+        console.log(data)
+        this.DDtemplateId=data.value
+        this.DDtemplateName=data.text
+    }
     list = [];
-    // onAddTemplate() {
-    //     debugger
-    //     this.list.push(
-    //         {
-    //             templateId: this.templatedetailsForm.get("TemplateId").value.TemplateId,
-    //             templateName: this.templatedetailsForm.get("TemplateName").value,
-    //         });
-    //     this.Templatetdatasource.data = this.list
-    //     this.templatedetailsForm.get('TemplateName').reset();
-    // }
 
     onAddTemplate() {
         console.log("event is :", event);
-    
         if (!this.list) {
             this.list = [];
-        }
-    
+        }    
         const newItem = {
-            templateId: this.templatedetailsForm.get("TemplateId").value, // Ensure correct property name
-            templateName: this.templatedetailsForm.get("TemplateName").value, // Ensure correct property name
+            templateId: this.DDtemplateId, //this.templatedetailsForm.get("TemplateId").value, // Ensure correct property name
+            templateName: this.DDtemplateName //this.templatedetailsForm.get("TemplateName").value, // Ensure correct property name
         };
     
         this.list.push(newItem);
@@ -576,9 +560,7 @@ debugger
         this.templatedetailsForm.get("TemplateId").reset();
         this.templatedetailsForm.get("TemplateName").reset();
     }
-    
-    
-
+        
     addParameter(row) {
         // debugger;
 
@@ -611,7 +593,6 @@ debugger
         this.DSTestListtemp.paginator = this.paginator;
     }
 
-
     addparameterdata(row) {
         // debugger
         console.log("Adding Parameter:", row);
@@ -636,17 +617,15 @@ debugger
     }
 
     addSubTest(row) {
-        // debugger
+        debugger
 
         if (!row || !row.parameterID) {
             console.error("Invalid row data!");
             return;
         }
-
         if (!this.chargeslist) {
             this.chargeslist = [];
         }
-
         if (this.chargeslist.length > 0) {
             let isDuplicate = this.chargeslist.some(ele => ele.parameterID === row.parameterID);
 
@@ -668,12 +647,13 @@ debugger
     }
 
     addsubtestdata(row) {
-        // debugger
+        debugger
         console.log("Adding Parameter:", row);
 
         this.ChargeList = this.DSTestList.data || [];
 
-        let exists = this.ChargeList.some(item => item.subTestID === row.subTestID);
+        let exists = this.ChargeList.some(item => item.parameterID === row.parameterID);
+        // let exists = this.ChargeList.some(item => item.subTestID === row.subTestID);
         if (!exists) {
             this.ChargeList.push({
                 parameterID: row.parameterID,

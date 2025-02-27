@@ -355,14 +355,10 @@
                                                                                 <div fxLayout="row" fxLayoutGap="5px">
 
                                                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                                        <airmid-textbox 
-                                                                                            label="TemplateName" 
-                                                                                            formControlName="TemplateName" 
-                                                                                            [value]="registerObj?.TemplateName"
-                                                                                            [formGroup]="templatedetailsForm"
-                                                                                            [validations]="_TestmasterService.getValidationMessages().TemplateName"
-                                                                                            [maxLength]="50">
-                                                                                        </airmid-textbox>
+                                                                                        <airmid-dropdown label="TemplateName" formControlName="TemplateName" [formGroup]="templatedetailsForm"
+                                                                                            [validations]="_TestmasterService.getValidationMessages().TemplateName" [mode]="autocompleteModeTemplate"
+                                                                                            (selectionChange)="selectChangeTemplate($event)">
+                                                                                        </airmid-dropdown>
                                                                                     </div>
 
                                                                                     <button (click)="onAddTemplate()"
@@ -474,29 +470,25 @@
                                         <div fxLayout="row" fxLayoutGap="5px" *ngIf="!_TestmasterService.is_templatetest">
 
                                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <mat-form-field appearance="outline" fxFlex>
-                                                    <mat-label>Foot Note</mat-label>
-                                                    <textarea matInput display="block" rows="2" formControlName="FootNote" [(ngModel)]="vFootNote"
-                                                        name="FootNote">
-                                                    </textarea>
-                                                    <mat-error class="error"
-                                                        *ngIf="testForm.get('FootNote').invalid && testForm.get('FootNote').touched">
-                                                        FootNote is required
-                                                    </mat-error>
-                                                </mat-form-field>
+                                                <airmid-textbox 
+                                                    label="Foot Note" 
+                                                    formControlName="FootNote" 
+                                                    [value]="registerObj?.footNote"
+                                                    [formGroup]="testForm"
+                                                    [validations]="_TestmasterService.getValidationMessages().FootNote"
+                                                    [maxLength]="50">
+                                                </airmid-textbox>
                                             </div>
 
                                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <mat-form-field appearance="outline" fxFlex>
-                                                    <mat-label>Suggestion Note</mat-label>
-                                                    <textarea matInput display="block" rows="2" formControlName="SuggestionNote"
-                                                        name="SuggestionNote" [(ngModel)]="vSuggestionNote">
-                                                    </textarea>
-                                                    <mat-error class="error"
-                                                        *ngIf="testForm.get('SuggestionNote').invalid && testForm.get('SuggestionNote').touched">
-                                                        SuggestionNote is required
-                                                    </mat-error>
-                                                </mat-form-field>
+                                                <airmid-textbox 
+                                                    label="Suggestion Note" 
+                                                    formControlName="SuggestionNote" 
+                                                    [value]="registerObj?.suggestionNote"
+                                                    [formGroup]="testForm"
+                                                    [validations]="_TestmasterService.getValidationMessages().SuggestionNote"
+                                                    [maxLength]="50">
+                                                </airmid-textbox>
                                             </div>
 
                                         </div>

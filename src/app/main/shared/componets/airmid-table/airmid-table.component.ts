@@ -113,8 +113,14 @@ export class AirmidTableComponent implements OnInit {
     getRowClasses(row: any): { [key: string]: boolean } {
 
         return {
-            'table-row-green': row?.patientType && row.patientType !== 'Self',
+            'table-row-green': row?.patientType && row.patientType !== 'Self' || row?.isCancelled && row.isCancelled !== '1',
             // You can add more classes dynamically
+
+            // 'table-row-yellow': row?.balanceAmt && row.balanceAmt !== '0',
+
+            'table-row-blue': row?.balanceAmt && row.balanceAmt !== '0',
         }
+
+        
     }
 }

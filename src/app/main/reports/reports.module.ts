@@ -38,8 +38,8 @@ const appRoutes: Routes = [
     {
         path: "ipreport",
         loadChildren: () =>
-            import("./ip-report/ipreort.module").then(
-                (m) => m.IPReortModule
+            import("./report-generation/report-generation.module").then(
+                (m) => m.ReportGenerationModule
             ),
     },
     {
@@ -59,8 +59,8 @@ const appRoutes: Routes = [
     {
         path: "opreports",
         loadChildren: () =>
-            import("./op-reports/opreports.module").then(
-                (m) => m.OPReportsModule
+            import("./report-generation/report-generation.module").then(
+                (m) => m.ReportGenerationModule
             ),
     },
     {

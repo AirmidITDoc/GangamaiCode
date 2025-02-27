@@ -121,9 +121,9 @@ export class RolePermissionComponent implements OnInit {
                 }
             }
         }
-        var objNode = this.dataSource.data.find(x => x["menuId"] == obj.menuId);
-        if (objNode)
-            objNode[proptype] = $event.checked;
+        var objMatchedNode =this.dataSource["_flattenedData"].value.find(t => t.menuId == obj.menuId);// this.dataSource.data.find(x => x["menuId"] == obj.menuId);
+        if (objMatchedNode)
+            objMatchedNode[proptype] = $event.checked;
     }
 
 
@@ -132,12 +132,12 @@ export class RolePermissionComponent implements OnInit {
     }
 
     onSubmit() {
-        var data = this.dataSource.data.map(obj => ({ ...obj, RoleId: this.roleId }));
-        // this._RoleService.savePermission(data).subscribe((Menu) => {
-        //     this.toastr.success('Permission updated Successfully.', 'updated !', {
-        //         toastClass: 'tostr-tost custom-toast-success',
-        //     });
-        // });
+        var data = this.dataSource["_flattenedData"].value.map(obj => ({ ...obj, RoleId: this.roleId }));
+        this._RoleTemplateService.savePermission(data).subscribe((Menu) => {
+            this.toastr.success('Permission updated Successfully.', 'updated !', {
+                toastClass: 'tostr-tost custom-toast-success',
+            });
+        });
     }
 
 }

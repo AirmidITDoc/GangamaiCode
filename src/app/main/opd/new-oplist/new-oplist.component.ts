@@ -109,20 +109,7 @@ export class NewOPListComponent implements OnInit {
                 heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplate
             }  // Assign ng-template to the column
-            // {
-            //     heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
-
-            //         {
-            //             action: gridActions.print, callback: (data: any) => {
-            //                 this.viewgetOPBillReportPdf(data);
-            //             }
-            //         },
-            //         {
-            //             action: gridActions.view, callback: (data: any) => {
-            //                 this.getWhatsappshareBill(data);
-            //             }
-            //         }]
-            // } //Action 1-view, 2-Edit,3-delete
+           
         ],
         sortField: "PbillNo",
         sortOrder: 0,
@@ -157,20 +144,7 @@ export class NewOPListComponent implements OnInit {
                 heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplate1
             },  // Assign ng-template to the column
-            // {
-            //     heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
-
-            //         {
-            //             action: gridActions.print, callback: (data: any) => {
-            //                 this.viewgetOPPaymentReportPdf(data);
-            //             }
-            //         },
-            //         {
-            //             action: gridActions.whatsapp, callback: (data: any) => {
-            //                 this.getWhatsappsharePaymentReceipt(data, true);
-            //             }
-            //         }]
-            // } //Action 1-view, 2-Edit,3-delete
+          
         ],
         sortField: "RegNo",
         sortOrder: 0,
@@ -217,20 +191,7 @@ export class NewOPListComponent implements OnInit {
                 heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplate2
             },
-            // {
-            //     heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
-
-            //         {
-            //             action: gridActions.print, callback: (data: any) => {
-            //                 this.viewgetOPRefundBillReportPdf(data);
-            //             }
-            //         },
-            //         {
-            //             action: gridActions.view, callback: (data: any) => {
-            //                 this.getWhatsappshareRefundBill(data);
-            //             }
-            //         }]
-            // } //Action 1-view, 2-Edit,3-delete
+            
         ],
         sortField: "RefundId",
         sortOrder: 0,
@@ -317,16 +278,16 @@ export class NewOPListComponent implements OnInit {
         debugger
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
-            PatientHeaderObj['RegNo'] = contact.regID;
-        PatientHeaderObj['PatientName'] = contact.PatientName;
-        PatientHeaderObj['OPD_IPD_Id'] = contact.OPDNo;
-        PatientHeaderObj['Age'] = contact.ageYear;
+            PatientHeaderObj['RegNo'] = contact.regNo;
+        PatientHeaderObj['PatientName'] = contact.patientName;
+        PatientHeaderObj['OPD_IPD_Id'] = contact.opD_IPD_ID;
+        PatientHeaderObj['Age'] = contact.patientAge;
         PatientHeaderObj['DepartmentName'] = contact.DepartmentName;
-        PatientHeaderObj['DoctorName'] = contact.DoctorName;
-        PatientHeaderObj['TariffName'] = contact.TariffName;
-        PatientHeaderObj['CompanyName'] = contact.CompanyName;
+        PatientHeaderObj['DoctorName'] = contact.departmentName;
+        PatientHeaderObj['TariffName'] = contact.tariffName;
+        PatientHeaderObj['CompanyName'] = contact.companyName;
         PatientHeaderObj['NetPayAmount'] = contact.netPayableAmt;
-        this.vMobileNo = contact.MobileNo;
+        this.vMobileNo = contact.mobileNo;
 
 
         const dialogRef = this._matDialog.open(NewSettlementComponent,
@@ -361,12 +322,14 @@ export class NewOPListComponent implements OnInit {
                 this._OPListService.InsertOPBillingsettlement(data).subscribe(response => {
                     this.toastr.success(response.message);
                     this.viewgetOPPayemntPdf(response);
+                    this.grid.bindGridData();
                 }, (error) => {
                     this.toastr.error(error.message);
                 });
 
             }
         });
+       
     }
 
     // getBilllistview(){

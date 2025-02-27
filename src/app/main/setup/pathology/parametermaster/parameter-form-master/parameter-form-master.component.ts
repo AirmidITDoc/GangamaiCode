@@ -92,6 +92,7 @@ export class ParameterFormMasterComponent implements OnInit {
         public dialogRef: MatDialogRef<ParametermasterComponent>,
         public _matDialog: MatDialog,
         @Inject(MAT_DIALOG_DATA) public data: any,
+        private _loggedService: AuthenticationService,
         public toastr: ToastrService) { }
 
     ngOnInit(): void {
@@ -174,32 +175,16 @@ export class ParameterFormMasterComponent implements OnInit {
             mPathParaRangeMasters = this.dsParameterAgeList.data.map((row: any) => ({
                 "pathparaRangeId": 0,
                 "paraId": 0,
-                "sexId": row.sexId, //this.numericForm.get("sexId").value || 1,
+                "sexId": row.sexId,//this.numericForm.get("sexId").value || 1,
+                "minAge": row.minAge,
+                "maxAge": row.maxAge,
+                "ageType": row.ageType, //"string",
                 "minValue": row.minValue, //this.numericForm.get("minValue").value,
-                "maxvalue": row.maxValue, //this.numericForm.get("maxvalue").value
+                "maxValue": row.maxValue, //this.numericForm.get("maxvalue").value
+                "isDeleted": row.IsDeleted,
+                "addedby": this._loggedService.currentUserValue.userId || 1,
+                "updatedby": 0
             }));
-            // var info: any = {
-            //     paraId: 0 || +this._ParameterService.myform.get("parameterId").value,
-            //     sexId: 0,
-            //     minValue: "%",
-            //     maxValue: "%",
-            //     addedby:1,
-            //     ageType: "%",
-            //     minAge: 0,
-            //     IsDeleted:this._ParameterService.myform.get("IsDeleted").value ||1,
-            //     maxAge: 0
-            // };
-            // this.dsParameterAgeList.data.forEach(element => {
-            //     let c = JSON.parse(JSON.stringify(info));
-            //     c['sexId'] = element.GenderName == 'Male' ? 1 : element.GenderName == 'Female' ? 2 : 3;
-            //     c['minValue'] = element.MinValue;
-            //     c['minAge'] = +element.MinAge;
-            //     c['maxAge'] = +element.MaxAge;
-            //     c['maxvalue'] = element.MaxValue;
-            //     c['ageType'] = element.AgeType;
-            //     c['IsDeleted'] = element.IsDeleted;
-            //   numeric_info.push(c)
-            // });
         }
 
         if (!this.parameterForm.get("parameterId").value) {
@@ -238,7 +223,7 @@ export class ParameterFormMasterComponent implements OnInit {
             });
         } else {
             var m_data1 = {
-                "parameterId": this.vParameterId,
+                "parameterId": this.vParameterId || this.parameterForm.get("parameterId").value,
                 "parameterShortName": this.parameterForm.get('parameterShortName').value,
                 "parameterName": this.parameterForm.get('parameterName').value,
                 "printParameterName": this.parameterForm.get('printParameterName').value,
@@ -294,7 +279,7 @@ export class ParameterFormMasterComponent implements OnInit {
             maxAge: this.numericForm.get('maxAge').value,
             minValue: this.numericForm.get('minValue').value,
             maxValue: this.numericForm.get('maxvalue').value,
-            IsDeleted: 1,
+            IsDeleted: this._ParameterService.myform.get("IsDeleted").value || 1,
             ageType: this.numericForm.get('ageType').value,
         };
         console.log("sata:-",)

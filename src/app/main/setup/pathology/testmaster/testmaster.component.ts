@@ -185,6 +185,7 @@ export class TestList {
     TestId: number;
     TestName: any;
     ParameterName: any;
+    parameterName: any;
     ParameterID: number;
     Isdeleted: any;
     IsDeleted: any;
@@ -197,6 +198,7 @@ export class TestList {
     constructor(TestList) {
         {
             this.ParameterName = TestList.ParameterName || "";
+            this.parameterName = TestList.parameterName || "";
             this.TestId = TestList.TestId || "";
             this.TestName = TestList.TestName || "";
             this.Isdeleted = TestList.Isdeleted || "";

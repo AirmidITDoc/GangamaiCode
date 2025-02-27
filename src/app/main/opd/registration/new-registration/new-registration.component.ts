@@ -112,6 +112,7 @@ export class NewRegistrationComponent implements OnInit {
         }
     }
 
+ 
     onClose() {
         this.dialogRef.close();
     }
