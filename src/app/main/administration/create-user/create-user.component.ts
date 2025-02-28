@@ -45,21 +45,6 @@ export class CreateUserComponent implements OnInit {
                     heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
                     template: this.actionButtonTemplate  // Assign ng-template to the column
                 }
-                // {
-                //     heading: "Action", key: "action" , width: 100, align: "right", type: gridColumnTypes.action, actions: [
-                //         {
-                //             action: gridActions.edit, callback: (data: any) => {
-                //                 this.onSave(data);
-                //             }
-                //         }, {
-                //             action: gridActions.delete, callback: (data: any) => {
-                //                 this._CreateUserService.deactivateTheStatus(data.userId).subscribe((response: any) => {
-                //                     this.toastr.success(response.message);
-                //                     this.grid.bindGridData();
-                //                 });
-                //             }
-                //         }]
-                // } //Action 1-view, 2-Edit,3-delete
             ],
             sortField: "UserId",
             sortOrder: 0,
@@ -144,6 +129,8 @@ export class CreateUserComponent implements OnInit {
                 toastClass: 'tostr-tost custom-toast-error',
               });
             }
+            
+            this.grid.bindGridData();
           },
           (error) => {
             

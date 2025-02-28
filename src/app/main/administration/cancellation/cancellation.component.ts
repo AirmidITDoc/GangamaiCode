@@ -98,7 +98,7 @@ export class CancellationComponent implements OnInit {
 
   // 1st table
   opdGridConfig: gridModel = {
-    apiUrl: "Administration/BrowseOPDBillPagiList",
+    apiUrl: "OPBill/BrowseOPDBillPagiList",
     columnsList: [
       { heading: "-", key: "opD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
       { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
@@ -167,7 +167,7 @@ export class CancellationComponent implements OnInit {
   // 2nd table
 
   gridConfig1: gridModel = {
-    apiUrl: "Administration/IPAdvanceList",
+    apiUrl: "Advance/AdvanceList",
     columnsList: [
       { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9 },
       { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -228,7 +228,7 @@ export class CancellationComponent implements OnInit {
 
   // 4th table
   gridConfig3: gridModel = {
-    apiUrl: "Administration/IPRefundAdvanceReceiptList",
+    apiUrl: "Advance/RefundOfAdvanceList",
     columnsList: [
       { heading: "RefundDate", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9 },
       { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -322,7 +322,6 @@ export class CancellationComponent implements OnInit {
     }).then((result) => {
       debugger
       if (result.isConfirmed) {
-        this.isLoading123 = true;
           let SubmitDate = {
             "billNo":contact.billNo || 0
           }
@@ -337,7 +336,7 @@ export class CancellationComponent implements OnInit {
               toastClass: 'tostr-tost custom-toast-error',
             });
           }
-          this.isLoading123 = false;
+          this.grid.bindGridData();
         });
       } else {
         // this.getSearchList();
@@ -359,7 +358,6 @@ export class CancellationComponent implements OnInit {
       debugger
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        this.isLoading123 = true;
           let SubmitDate = {
             "billNo":contact.billNo || 0
           }
@@ -374,7 +372,7 @@ export class CancellationComponent implements OnInit {
               toastClass: 'tostr-tost custom-toast-error',
             });
           }
-          this.isLoading123 = false;
+          this.grid.bindGridData();
         });
       } else {
         // this.getSearchList();

@@ -53,6 +53,8 @@ export class DischargeCancelComponent implements OnInit {
   formattedTime:any;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  registerObj:any;
+  registerObjAM:any;
   
   constructor(
     public _DischargeCancelService: DischargeCancelService,
@@ -75,43 +77,6 @@ export class DischargeCancelComponent implements OnInit {
     console.log(this.dateTimeObj)
   } 
  
-   getSearchList() {
-    var m_data = {
-      "Keyword": `${this._DischargeCancelService.DischargeForm.get('RegID').value}%`
-    }
-    if (this._DischargeCancelService.DischargeForm.get('RegID').value.length >= 1) {
-      this._DischargeCancelService.getAdmittedpatientlist(m_data).subscribe(resData => {
-        this.filteredOptions = resData;
-        console.log(resData) 
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        } 
-      });
-    } 
-  } 
-  getOptionText(option) {
-    if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
-  } 
-  getSelectedObj(obj){
-    console.log(obj)
-   this.vRegNo = obj.RegNo;
-   this.vPatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
-   this.vAdmissionDate = obj.AdmissionDate;
-   this.vAdmissionTime = obj.AdmissionTime;
-   this.vMobileNo = obj.MobileNo;  
-   this.vIPDNo = obj.IPDNo; 
-   this.vDoctorName = obj.DoctorName;
-   this.vTariffName =obj.TariffName
-   this.vCompanyName = obj.CompanyName 
-   this.vRoomName = obj.RoomName;
-   this.vBedName = obj.BedName
-   this.vGenderName = obj.GenderName
-   this.vAge = obj.Age  
-   this.AdmissionId = obj.AdmissionID;
-  }
   getDischargedList(event){
     if(event.checked == true){
       this.patientInfoReset();
@@ -121,44 +86,71 @@ export class DischargeCancelComponent implements OnInit {
       this.vCheckBox = false;
     } 
 }
-getDischargedSearchList() {
-  var m_data = {
-    "Keyword": `${this._DischargeCancelService.DischargeForm.get('RegID').value}%`
-  }
-  if (this._DischargeCancelService.DischargeForm.get('RegID').value.length >= 1) {
-    this._DischargeCancelService.getDischargepatientlist(m_data).subscribe(resData => {
-      this.filteredOptions = resData;
-      console.log(resData) 
-      if (this.filteredOptions.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      } 
-    });
-  } 
-} 
-getOptionDischargeText(option) {
-  if (!option) return '';
-  return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
-} 
-getSelectedDischargeObj(obj){
-  console.log(obj)
- this.vRegNo = obj.RegNo;
- this.vPatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
- this.vAdmissionDate = obj.AdmissionDate;
- this.vAdmissionTime = obj.AdmissionTime;
- this.vMobileNo = obj.MobileNo;  
- this.vIPDNo = obj.IPDNo; 
- this.vDoctorName = obj.DoctorName;
- this.vTariffName =obj.TariffName
- this.vCompanyName = obj.CompanyName 
- this.vRoomName = obj.RoomName;
- this.vBedName = obj.BedName
- this.vGenderName = obj.GenderName
- this.vAge = obj.Age  
- this.AdmissionId = obj.AdmissionID;
-}
  
+getSelectedObjAM(obj) {
+  debugger
+  if ((obj.regID ?? 0) > 0) {
+    console.log("Admitted patient:",obj)
+    this.vRegNo=obj.regNo
+    this.vDoctorName=obj.doctorName
+    this.vPatientName=obj.firstName + " " + obj.middleName + " " + obj.lastName
+    this.vDepartment=obj.departmentName
+    this.vAdmissionDate=obj.admissionDate
+    this.vAdmissionTime=obj.admissionTime
+    this.vIPDNo=obj.ipdNo
+    this.vAge=obj.age
+    this.vAgeMonth=obj.ageMonth
+    this.vAgeDay=obj.ageDay
+    this.vGenderName=obj.genderName
+    this.vRefDocName=obj.refDocName
+    this.vRoomName=obj.roomName
+    this.vBedName=obj.bedName
+    this.vPatientType=obj.patientType
+    this.vTariffName=obj.tariffName
+    this.vCompanyName=obj.companyName
+    setTimeout(() => {
+      this._DischargeCancelService.getAdmittedpatientlist(obj.regID).subscribe((response) => {
+        this.registerObjAM = response;        
+        console.log(this.registerObjAM)
+      });
+
+    }, 500);
+  }
+}
+
+getSelectedObjDC(obj) {
+  debugger
+  if ((obj.regId ?? 0) > 0) {
+    console.log("Discharge patient:",obj)
+    this.vRegNo=obj.regNo
+    this.vDoctorName=obj.doctorName
+    this.vDepartment=obj.departmentName
+    this.vAdmissionDate=obj.admissionDate
+    this.vAdmissionTime=obj.admissionTime
+    this.vIPDNo=obj.ipdNo
+    this.vAge=obj.age
+    this.vAgeMonth=obj.ageMonth
+    this.vAgeDay=obj.ageDay
+    this.vGenderName=obj.genderName
+    this.vRefDocName=obj.refDocName
+    this.vRoomName=obj.roomName
+    this.vBedName=obj.bedName
+    this.vPatientType=obj.patientType
+    this.vTariffName=obj.tariffName
+    this.vCompanyName=obj.companyName
+    let nameField = obj.formattedText;
+    let extractedName = nameField.split('|')[0].trim();
+    this.vPatientName=extractedName;
+    setTimeout(() => {
+      this._DischargeCancelService.getVisitById(obj.regId).subscribe((response) => {
+        this.registerObj = response;
+        console.log(this.registerObj)
+      });
+
+    }, 500);
+  }
+}
+
   isLoading123:boolean=false;
   DischargeCancel(){ 
     Swal.fire({

@@ -11,6 +11,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { DatePipe } from '@angular/common';
 import { PaymentmodechangesforpharmacyService } from '../../paymentmodechangesfor-pharmacy/paymentmodechangesfor-pharmacy.service';
 import { PaymentChange } from '../paymentmodechanges.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 
 @Component({
   selector: 'app-edit-payment',
@@ -71,6 +72,7 @@ export class EditPaymentComponent implements OnInit {
   vNEFTNo: any;  
   vBillNo:any;
   autocompleteModeBankName: string = "Bank";
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   constructor(
     public _Paymentmodesevice: PaymentmodechangesforpharmacyService,
     private accountService: AuthenticationService,
@@ -238,7 +240,7 @@ export class EditPaymentComponent implements OnInit {
           "CashPayAmount": this._Paymentmodesevice.paymentform.get('CashPayAmt').value || 0,    
           "ChequePayAmount": this._Paymentmodesevice.paymentform.get('ChequePayAmt').value || 0,  
           "ChequeNo": this._Paymentmodesevice.paymentform.get('ChequeNo').value || "",    
-          "BankName": "Bank",    
+          "BankName": ChequeBank || "",    
           "ChequeDate": this.registerObj.chequeDate || "1900-01-01",    
           "CardPayAmount": this._Paymentmodesevice.paymentform.get('CardPayAmt').value || 0,    
           "CardNo": this._Paymentmodesevice.paymentform.get('CardNo').value || "",    
@@ -356,7 +358,7 @@ export class EditPaymentComponent implements OnInit {
           "CashPayAmount": this._Paymentmodesevice.paymentform.get('CashPayAmt').value || 0,    
           "ChequePayAmount": this._Paymentmodesevice.paymentform.get('ChequePayAmt').value || 0,  
           "ChequeNo": this._Paymentmodesevice.paymentform.get('ChequeNo').value || "",    
-          "BankName": "Bank",    
+          "BankName": ChequeBank || "",    
           "ChequeDate": "2024-08-10",    
           "CardPayAmount": this._Paymentmodesevice.paymentform.get('CardPayAmt').value || 0,    
           "CardNo": this._Paymentmodesevice.paymentform.get('CardNo').value || "",    
@@ -388,7 +390,7 @@ export class EditPaymentComponent implements OnInit {
             toastClass: 'tostr-tost custom-toast-success',
           });
           this.dialogRef.close();
-          this.Reset();
+          this.Reset();          
         } else {
           this.toastr.error('API Error!', 'Error !', {
             toastClass: 'tostr-tost custom-toast-error',

@@ -41,7 +41,7 @@
                                 
                                 <div fxFlex="19%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <div fxLayout="row" style="padding: 10px;">
-                                    <mat-radio-group formControlName="OP_IP_Type" name="Radio" (change)="getBillListForDoctorList()">
+                                    <mat-radio-group formControlName="OP_IP_Type" name="Radio">
                                         <mat-radio-button value="2">ALL</mat-radio-button>&nbsp;
                                         <mat-radio-button value="0">OP</mat-radio-button>&nbsp;
                                         <mat-radio-button value="1">IP</mat-radio-button>&nbsp;
@@ -87,14 +87,13 @@
                                         [value]="data?.PbillNo"
                                         [formGroup]="_DoctorShareService.UserFormGroup"
                                         [validations]="getValidationMessages().opNo"
-                                        matInput (keyup)="getBillListForDoctorList()"
                                         (keypress)="keyPressAlphanumeric($event)"
                                         [maxLength]="50">
                                     </airmid-textbox> 
                                 </div>
                                 
                                  <div style="padding: 10px;"> 
-                                    <button mat-raised-button class="searchButton" matTooltip="search" (click)="getBillListForDoctorList()">
+                                    <button mat-raised-button class="searchButton" matTooltip="search">
                                         <mat-icon class="searchiconbutton">search</mat-icon>
                                     </button>
                                 </div>

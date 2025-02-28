@@ -13,6 +13,7 @@ import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { ParametermasterComponent, PathparameterMaster } from "../parametermaster.component";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 @Component({
     selector: "app-parameter-form-master",
@@ -30,7 +31,7 @@ export class ParameterFormMasterComponent implements OnInit {
     autocompleteModeUnitId: string = "Unit";
 
     ageType: string[] = ["Days", "Months", "Years"];
-
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     displayedColumns: string[] = [
         "GenderName",
         "MinAge",
@@ -219,6 +220,7 @@ export class ParameterFormMasterComponent implements OnInit {
                     this.toastr.success('Record Saved Successfully.', 'Saved !', {
                         toastClass: 'tostr-tost custom-toast-success',
                     });
+                    this.grid.bindGridData();
                 }
             });
         } else {
@@ -253,6 +255,7 @@ export class ParameterFormMasterComponent implements OnInit {
                     this.toastr.success('Record Updated Successfully.', 'Updated !', {
                         toastClass: 'tostr-tost custom-toast-success',
                     });
+                    this.grid.bindGridData();
                 }
             });
         }
