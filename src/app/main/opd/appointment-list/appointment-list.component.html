@@ -158,7 +158,7 @@
                     <mat-label>First Name</mat-label>
                     <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myformSearch"
                         formControlName="FirstName" [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                    <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[0].fieldValue=''">
+                    <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[0].fieldValue='%'">
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
@@ -167,7 +167,7 @@
                     <mat-label>Last Name</mat-label>
                     <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myformSearch"
                         formControlName="LastName" [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                    <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[1].fieldValue=''">
+                    <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[1].fieldValue='%'">
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
@@ -176,7 +176,7 @@
                     <mat-label>RegNo</mat-label>
                     <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myformSearch"
                         formControlName="RegNo" [(ngModel)]="gridConfig.filters[2].fieldValue" />
-                    <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[2].fieldValue=''">
+                    <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[2].fieldValue='0'">
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>

@@ -170,7 +170,7 @@
                     </div>
 
                     <div fxFlex.gt-sm="100%" fxFlex>
-                        <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
+                        <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" tableClasses="h-400">
                         </airmid-table>
                     </div>
                 </div>
@@ -201,15 +201,15 @@
                             </div>
                         </div>
                     </form>
-                    <div class="modal-footer" fxLayoutAlign="end">
-                        <div class="modal-footer-buttons" fxlayout="row" fxLayoutGap="4px">
-                            <button class="btn btn-primary" (click)="getStatementPrint()">Statement</button>
-                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                            <button class="btn btn-primary" (click)="onSave()">Save</button>
-                        </div>
-                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="modal-footer" >
+        <div class="modal-footer-buttons">
+            <button class="btn btn-primary" (click)="getStatementPrint()">Statement</button>
+            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+            <button class="btn btn-primary" (click)="onSave()">Save</button>
         </div>
     </div>
 </div>

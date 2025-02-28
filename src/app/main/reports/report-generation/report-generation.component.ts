@@ -64,6 +64,7 @@ export class ReportGenerationComponent implements OnInit {
     reportsData: any = [];
     reportDetail: any;
     sIsLoading= '';
+    selectedNode:ExampleFlatNode | null = null;
     private transformer = (node: FoodNode, level: number) => {
         return {
             expandable: !!node.children && node.children.length > 0,
@@ -132,7 +133,9 @@ export class ReportGenerationComponent implements OnInit {
                 });
                 TREE_DATA = mainData
                 this.dataSource.data = TREE_DATA;
-                this.toastr.success(response.message);
+                if (response && response.message) {
+                    this.toastr.success(response.message);
+                }
             },
             (error) => {
                 this.toastr.error(error.message);
@@ -140,6 +143,7 @@ export class ReportGenerationComponent implements OnInit {
         );
     }
     GetReportDeails(node: any){
+        this.selectedNode = node;
         this.reportDetail = this.reportsData.find(x => (x.reportId == node?.id));
         this.ReportName = this.reportDetail.reportName;
         let controllerPermission = this.reportDetail?.reportFilter?.split(",");

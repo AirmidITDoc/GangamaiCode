@@ -38,6 +38,7 @@ export class AirmidTableComponent implements OnInit {
     @Output() onSelectRow = new EventEmitter<any>();
     @Input() ShowFilter: boolean = true;
     @Input() FullWidth: boolean = false;
+    @Input() tableClasses: string = '';
     public defaultColumnWidth = 120;
     ngOnInit(): void {
         this.bindGridData();
@@ -121,6 +122,6 @@ export class AirmidTableComponent implements OnInit {
             'table-row-blue': row?.balanceAmt && row.balanceAmt !== '0',
         }
 
-        
+
     }
 }

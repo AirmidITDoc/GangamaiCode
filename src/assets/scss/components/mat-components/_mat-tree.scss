@@ -1,0 +1,14 @@
+.mat-typography {
+    mat-tree {
+        mat-tree-node {
+            cursor: pointer;
+            transition:all 0.1s;
+            &.selected {
+                background-color: $gray-300;
+            }
+            &:not(.selected):hover {
+                background-color: $gray-200;
+            }
+        }
+    }
+}
