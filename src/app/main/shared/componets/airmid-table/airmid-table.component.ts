@@ -52,7 +52,7 @@ export class AirmidTableComponent implements OnInit {
         return this.gridConfig.columnsList.map(x => x.key.replaceAll(' ', ''));
     }
     bindGridData() {
-        this.updateFilters();
+        // this.updateFilters();
 
         var param: gridRequest = {
             sortField: this.sort?.active ?? this.gridConfig.sortField,
@@ -68,24 +68,24 @@ export class AirmidTableComponent implements OnInit {
             this.resultsLength = data["recordsFiltered"];
         });
     }
-    updateFilters(): void {
-        this.gridConfig.filters = this.gridConfig.filters.map(filter => {
-            let { fieldValue, opType, ...rest } = filter;
+    // updateFilters(): void {
+    //     this.gridConfig.filters = this.gridConfig.filters.map(filter => {
+    //         let { fieldValue, opType, ...rest } = filter;
 
-            // If opType is 'Equals' and fieldValue is null or undefined, set it to "0"
-            if (opType === OperatorComparer.Equals && (fieldValue === null || fieldValue === undefined)) {
-                fieldValue = '0';
-            }
+    //         // If opType is 'Equals' and fieldValue is null or undefined, set it to "0"
+    //         if (opType === OperatorComparer.Equals && (fieldValue === null || fieldValue === undefined || fieldValue === "")) {
+    //             fieldValue = '0';
+    //         }
 
-            // If opType is 'Contains' and fieldValue doesn't start with '%', add '%'
-            if (opType === OperatorComparer.Contains && typeof fieldValue === 'string' && !fieldValue.startsWith('%')) {
-                fieldValue = `%${fieldValue}`;
-            }
+    //         // If opType is 'Contains' and fieldValue doesn't start with '%', add '%'
+    //         if (opType === OperatorComparer.Contains && typeof fieldValue === 'string' && !fieldValue.startsWith('%')) {
+    //             fieldValue = `%${fieldValue}`;
+    //         }
 
-            return { ...rest, opType, fieldValue };
-        });
+    //         return { ...rest, opType, fieldValue };
+    //     });
 
-    }
+    // }
     onClear() {
 
     }
