@@ -86,7 +86,6 @@ export class NewCasepaperComponent implements OnInit {
   noOptionFound: boolean = false;
   currentDate = new Date();
   caseFormGroup: FormGroup;
-  medicineItemform: FormGroup;
   searchFormGroup: FormGroup;
   MedicineItemForm: FormGroup;
   ItemForm: FormGroup;
@@ -201,7 +200,7 @@ export class NewCasepaperComponent implements OnInit {
 
     this.searchFormGroup = this.createSearchForm();
     this.caseFormGroup = this.createForm();
-    this.medicineItemform=this.MedicineItemform();
+    this.MedicineItemform();
     this.specificDate = new Date();
     this.dateStyle = 'Day'
     this.onDaysChange();
@@ -308,7 +307,7 @@ export class NewCasepaperComponent implements OnInit {
   }
 
   MedicineItemform() {
-    return this._formBuilder.group({
+    this.MedicineItemForm = this._formBuilder.group({
       ItemId: '',
       DoseId: '',
       Day: '',
@@ -820,7 +819,6 @@ onTemplDetAdd(){
           this.viewgetOpprescriptionReportwithoutheaderPdf();
             this.getWhatsappshareSales(this.vOPIPId, this.vMobileNo)
             this.onClear();
-            this.onClose();
           }
         });
       } else {
@@ -830,8 +828,8 @@ onTemplDetAdd(){
 
   }
   onClose() {
-    this.caseFormGroup.reset({LangaugeRadio: ["true"],LetteHeadRadio: ['NormalHead']});
-    this.medicineItemform.reset();
+    this.caseFormGroup.reset({LangaugeRadio: ["true"]});
+    // this.numericForm.reset();
     this.dialogRef.close();
 }
   onClear() {
