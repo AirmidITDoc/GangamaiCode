@@ -70,13 +70,6 @@ const appRoutes: Routes = [
                 (m) => m.OPReportsModule
             ),
     },
-   {
-        path: "commanreport",
-        loadChildren: () =>
-            import("./report-generation/report-generation.module").then(
-                (m) => m.ReportGenerationModule
-            ),
-    },
     {
         path: "commanreport/:rid",
         loadChildren: () =>
