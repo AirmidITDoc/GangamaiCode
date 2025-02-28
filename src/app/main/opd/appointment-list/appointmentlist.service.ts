@@ -47,16 +47,7 @@ export class AppointmentlistService {
 
  
 
-    createRefranceDrForm() {
-        return this._formBuilder.group({
-            visitId: 0,
-            // regId:0,
-            refDocId: ['', [
-                Validators.required]],
-
-        });
-    }
-
+  
    
     createPesonalForm() {
         return this._formBuilder.group({
@@ -274,12 +265,13 @@ public InsertOPBillingpayment(employee) {
         return this._httpClient1.PostData("OPBill/OPBillingInsert", employee)
     }
 
-    public InsertVitalInfo(element){
-       
-        return this._httpClient1.PostData("OutPatient/UpdateVitalInformation",element)
-      }
-
-      public getLastVisitDoctorList(param) {
+    public InsertVitalInfo(visitId,element){
+        debugger
+           return this._httpClient1.PutData("VisitDetail/EditVital/"+visitId,element);
+    } 
+    
+    
+    public getLastVisitDoctorList(param) {
       
         return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PreviousDoctorVisitList", param)
     }

@@ -54,42 +54,31 @@ export class PatientvitalInformationComponent {
   ) { }
 
   ngOnInit(): void {
-    if ((this.data?.visitId ?? 0) > 0) {
-      setTimeout(() => {
-        this._OpAppointmentService.getVisitById(this.data.visitId).subscribe((response) => {
-          this.registerObj1 = response;
-          // this.regId=response.regId;
-          // this.crossconForm.get("consultantDocId").setValue(this.registerObj1.consultantDocId)
-     
-          // this.ddldoctor.SetSelection(this.registerObj1.consultantDocId);
-    
-          // this.registerObj1.visitTime= this.datePipe.transform(new Date(),'yyyy-MM-ddTHH:mm')
-          console.log(response)
-        });
-      }, 500);
-    }
-
+   
     this.MyFormGroup = this.createMyForm();
   }
+  
   createMyForm(){
     return this._formBuilder.group({
-      Height: '',
-      Weight: '',
-      BMI: '',
-      BSL: '',
-      SpO2: [''],
-      Pulse: [''],
-      BP: [''],
-      Temp: [''],
+      visitId:this.data.visitId,
+      height: '',
+      pweight: '',
+      bmi: '',
+      bsl: '',
+      spO2: [''],
+      temp: [''],
+      pulse: [''],
+      bp: [''],
     });
   }
 
   
   getBMIcalculation() {
+    debugger
     if (this.vHeight > 0 && this.vWeight > 0) {
       debugger
       let Height = (this.vHeight / 100)
-      this.vBMI = Math.round((this.vWeight) / ((Height) * (Height)));
+      this.vBMI = String(Math.round((this.vWeight) / ((Height) * (Height))));
     }
     else if (this.vHeight <= 0) {
       this.vBMI = 0;
@@ -102,23 +91,9 @@ export class PatientvitalInformationComponent {
   }
 
   onSave(){
-   
-    let VitalInfoSave = {};
-    VitalInfoSave['visitId'] = this.advanceObj.VisitId || 0 ;
-    VitalInfoSave['height'] =  this.vHeight||  '' ;
-    VitalInfoSave['pWeight'] = this.vWeight ||  '' ;
-    VitalInfoSave['bmi'] = this.vBMI ||  '' ;
-    VitalInfoSave['bsl'] = this.vBSL ||  '' ;
-    VitalInfoSave['spO2'] = this.vSpO2 ||  '' ;
-    VitalInfoSave['temp'] = this.vTemp  ||  '' ;
-    VitalInfoSave['pulse'] = this.vPulse   ||  '' ;
-    VitalInfoSave['bp'] = this.vBP ||  '' ; 
-
-    let SubmitData={
-      "updateVitalInformation":VitalInfoSave
-    }
-    console.log(SubmitData)
-    this._OpAppointmentService.InsertVitalInfo(SubmitData).subscribe(response => {
+   let visitId=this.data.visitId
+    console.log(this.MyFormGroup.value)
+   this._OpAppointmentService.InsertVitalInfo(visitId,this.MyFormGroup.value).subscribe((response) => {
       if(response){
       this.toastr.success('Record Saved Successfully.', 'Save !', {
         toastClass: 'tostr-tost custom-toast-success',
@@ -135,21 +110,7 @@ export class PatientvitalInformationComponent {
 }  
 
   onClose(){
-    this.RegId = ''
-    this.CompanyId = ''
-    this.RegNo = ''
-    this.PatientName = ''
-    this.Doctorname = ''
-    this.vOPDNo = ''
-    this.AgeYear = ''
-    this.AgeMonth = ''
-    this.AgeDay = ''
-    this.GenderName = ''
-    this.DepartmentName = ''
-    this.PatientType = ''
-    this.Tarrifname = ''
-    this.CompanyName = ''
-    this.RefDocName = ''
+   
     this.MyFormGroup.reset();
     this._matDialog.closeAll();
   }

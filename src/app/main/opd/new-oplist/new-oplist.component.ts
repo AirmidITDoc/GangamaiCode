@@ -73,7 +73,7 @@ export class NewOPListComponent implements OnInit {
 
     gridConfig: gridModel = {
 
-        apiUrl: "VisitDetail/OPBillList",
+        apiUrl: "OPBill/BrowseOPDBillPagiList",
         columnsList: [
             { heading: "Patient", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 70 },
             { heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
@@ -118,7 +118,7 @@ export class NewOPListComponent implements OnInit {
     }
 
     gridConfig1: gridModel = {
-        apiUrl: "VisitDetail/OPPaymentList",
+        apiUrl: "OPBill/OPPaymentList",
         columnsList: [
             { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 130 },
             { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -165,7 +165,7 @@ export class NewOPListComponent implements OnInit {
 
 
     gridConfig2: gridModel = {
-        apiUrl: "VisitDetail/OPRefundList",
+        apiUrl: "OPBill/OPRefundList",
         columnsList: [
             { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
             { heading: "RefundNo", key: "refundNo", sort: true, align: 'left', emptySign: 'NA' },

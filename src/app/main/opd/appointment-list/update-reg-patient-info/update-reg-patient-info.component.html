@@ -3,7 +3,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Appointment</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Update Registred Patient</span>
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
@@ -28,7 +28,7 @@
 
                   
                     <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="center center">
-                       <airmid-dropdown class="w-350" label="Unit Name" formControlName="UnitId" [value]="UnitId" [formGroup]="searchFormGroup" [mode]="autocompleteModeunit"></airmid-dropdown>
+                       <!-- <airmid-dropdown class="w-350" label="Unit Name" formControlName="UnitId" [value]="UnitId" [formGroup]="searchFormGroup" [mode]="autocompleteModeunit"></airmid-dropdown> -->
                     </div>
 
                 </div>
@@ -40,10 +40,7 @@
                             <mat-panel-title>
                                 <div class="panel-title" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="65%" fxFlex.lt-md="100%">
                                     <span>Personal Information :</span>
-                                    <span>
-                                        <!-- {{RegOrPhoneflag}} -->
-                                        <mat-icon style="margin-left:10px;" *ngIf="vPhoneFlage">settings_phone</mat-icon>
-                                    </span>
+                                   
                                 </div>
                             </mat-panel-title>
                         </mat-expansion-panel-header>
@@ -254,11 +251,7 @@
                                     <airmid-dropdown label="Purpose" formControlName="AppPurposeId" [formGroup]="VisitFormGroup" [validations]="getValidationMessages().PurposeId" [mode]="autocompleteModepurpose">
                                     </airmid-dropdown>
                                 </div>
-                                <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
-                                    <input matInput [matDatepicker]="picker2" placeholder="Choose a Date" name="Date" formControlName="visitDate">
-                                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker2></mat-datepicker>
-                                </mat-form-field>
+                               
                             </div>
                         </form>
                     </mat-expansion-panel>
@@ -271,7 +264,7 @@
     <div class="modal-footer">
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
-                <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
+                <button type="button" class="btn btn-primary" (click)="onSaveRegistered()">Save</button>
                 <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
                
             </div>
