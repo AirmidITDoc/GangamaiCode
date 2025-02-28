@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@angular/core";
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse, HttpResponse } from "@angular/common/http";
-import { Observable, throwError } from "rxjs";
+import { EMPTY, Observable, throwError } from "rxjs";
 import { AppConfig, APP_CONFIG } from './../app-config.module';
 import { AuthenticationService } from "./services/authentication.service";
 import { catchError, finalize, map } from 'rxjs/operators';
@@ -35,10 +35,15 @@ export class JwtInterceptor implements HttpInterceptor {
             catchError((err: HttpErrorResponse) => { // Type the error as HttpErrorResponse
                 this._ls.hide();
                 if (err.status == 401) {
-                    this.toastr.error(err.error.message, 'Authentication !', {
-                        toastClass: 'tostr-tost custom-toast-error',
-                    });
-                    this.router.navigate(["/unauthorize"]);
+                    if (err.url.endsWith('/login/get-menus')) {
+                        return EMPTY;
+                    }
+                    else {
+                        this.toastr.error(err.error.message, 'Authentication !', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
+                        this.router.navigate(["/unauthorize"]);
+                    }
                 }
                 else if (err.status == 403) {
                     this.toastr.error(err.error.message, 'Authentication !', {

@@ -8,7 +8,7 @@
                 style="color: white;">account_box
             </mat-icon>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-               Administration Task
+                Administration Task
             </span>
         </div>
     </mat-toolbar>
@@ -17,76 +17,48 @@
             <div id="pause" class="d-flex align-items-center justify-content-center">
                 <div id="spinner"></div>
             </div>
-        </div> 
+        </div>
         <div class="center p-16 pb-56" fxFlexAlign="start center">
             <div class="content-card" style="border-radius: 4px;">
                 <div fxFlexFill fxLayout="row" fxLayout="column" fxLayoutGap="10px">
                     <form [formGroup]="_DischargeCancelService.DischargeForm">
-            
-                        <mat-card style="padding: 15px;" fxlayout="row">
-                            <div class="radio-container" style="padding: 15px;">
-                                <mat-radio-group formControlName="Op_ip_id" fxFlex="5%">
-                                    <mat-radio-button value="1">IP</mat-radio-button>
-                                </mat-radio-group>
-                            </div>
-            
-                            <mat-form-field appearance="outline" fxFlex="50%" *ngIf="!vCheckBox">
-                                <mat-label>PatientName</mat-label>
-                                <input type="text" name="RegID" formControlName="RegID" matInput required
-                                    placeholder="RegNo / First Name / Last Name / Mobile No" [matAutocomplete]="auto" #RegID
-                                    (input)="getSearchList()">
-                                <span matSuffix style="display: flex;">
-                                    <mat-icon class="mat-icon-close"
-                                        (click)="_DischargeCancelService.DischargeForm.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                                    <mat-icon class="mat-icon-close"
-                                        (click)="_DischargeCancelService.DischargeForm.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                                </span>
-                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
-                                    (optionSelected)='getSelectedObj($event.option.value)'>
-                                    <mat-option *ngFor="let option of filteredOptions" [value]="option">
-                                        {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
-                                        {{option.RegNo}} |
-                                        {{option.MobileNo}}
-                                    </mat-option>
-                                    <mat-error *ngIf="_DischargeCancelService.DischargeForm.get('RegID').hasError('required')">
-                                        Required field cannot be left blank
-                                    </mat-error>
-                                </mat-autocomplete>
-                            </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex="50%" *ngIf="vCheckBox">
-                                <mat-label>PatientName</mat-label>
-                                <input type="text" name="RegIDDischargeId" formControlName="RegID" matInput required
-                                    placeholder="RegNo / First Name / Last Name / Mobile No" [matAutocomplete]="auto" #RegID
-                                    (input)="getDischargedSearchList()">
-                                <span matSuffix style="display: flex;">
-                                    <mat-icon class="mat-icon-close"
-                                        (click)="_DischargeCancelService.DischargeForm.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                                    <mat-icon class="mat-icon-close"
-                                        (click)="_DischargeCancelService.DischargeForm.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                                </span>
-                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionDischargeText"
-                                    (optionSelected)='getSelectedDischargeObj($event.option.value)'>
-                                    <mat-option *ngFor="let option of filteredOptions" [value]="option">
-                                        {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
-                                        {{option.RegNo}} |
-                                        {{option.MobileNo}}
-                                    </mat-option>
-                                    <mat-error *ngIf="_DischargeCancelService.DischargeForm.get('RegID').hasError('required')">
-                                        Required field cannot be left blank
-                                    </mat-error>
-                                </mat-autocomplete>
-                            </mat-form-field>
-            
-                            <div style="padding: 15px;">
-                                <mat-checkbox fxFlex="15%" [checked] value="1" formControlName="IsDischarged"
-                                    [(ngModel)]="vCheckBox" (change)="getDischargedList($event)">IsDischarged
-                                </mat-checkbox>
+                        <mat-card style="padding: 15px;" fxlayout="row">
+                            <div fxlayout="row">
+                                <div class="radio-container" style="padding: 15px;">
+                                    <mat-radio-group formControlName="Op_ip_id" fxFlex="5%">
+                                        <mat-radio-button value="1">IP</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+    
+                                <airmid-autocomplete lbl="RegID" *ngIf="!vCheckBox"
+                                     [formGroup]="_DischargeCancelService.DischargeForm" 
+                                    formControlName="RegID" fxFlex="80%"
+                                     placeholderText="RegNo / First Name / Last Name / Mobile No(AD)" 
+                                    ApiUrl="Admission/search-patient?Keyword=" 
+                                    (selectionChange)="getSelectedObjAM($event)"
+                                    ValueField="regId">
+                                </airmid-autocomplete>
+    
+                                <airmid-autocomplete lbl="RegID" *ngIf="vCheckBox"
+                                     [formGroup]="_DischargeCancelService.DischargeForm" 
+                                    formControlName="RegID" fxFlex="80%"
+                                     placeholderText="RegNo / First Name / Last Name / Mobile No(DC)" 
+                                    ApiUrl="VisitDetail/search-patient?Keyword=" 
+                                    (selectionChange)="getSelectedObjDC($event)"
+                                    TextField="formattedText" ValueField="regId">
+                                </airmid-autocomplete>
+    
+                                <div style="padding: 15px;">
+                                    <mat-checkbox fxFlex="15%" [checked] value="1" formControlName="IsDischarged"
+                                        [(ngModel)]="vCheckBox" (change)="getDischargedList($event)">IsDischarged
+                                    </mat-checkbox>
+                                </div>
                             </div>
-            
+
                         </mat-card>
                     </form>
-            
+
                     <mat-card style="padding: 15px;">
                         <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                             <div class="patient-info-container">
@@ -95,8 +67,8 @@
                                         <span class="h1">Patient Information</span>
                                     </div>
                                     <hr>
-                                    <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
-                                        class="patient-info">
+                                    <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
+                                        fxLayoutAlign="space-between center" class="patient-info">
                                         <div class="patient-sub">
                                             <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
                                                 fxLayoutAlign="space-between">
@@ -125,11 +97,12 @@
                                                     </div>
                                                 </div>
                                                 <div fxLayout="column" fxLayoutGap="10px">
-            
+
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">DOA | Time</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{vAdmissionDate | date:'dd/MM/YYYY'}} |
+                                                        <span class="patient-col-value">{{vAdmissionDate |
+                                                            date:'dd/MM/YYYY'}} |
                                                             {{vAdmissionTime | date:'hh:mm a' }}
                                                         </span>
                                                     </div>
@@ -142,7 +115,9 @@
                                                         <span class="patient-col-key">Age | Sex
                                                         </span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{vAge}}Y|{{vAgeMonth}}M|{{vAgeDay}} D |
+                                                        <span
+                                                            class="patient-col-value">{{vAge}}Y|{{vAgeMonth}}M|{{vAgeDay}}
+                                                            D |
                                                             {{vGenderName}}</span>
                                                     </div>
                                                     <div class="patient-col">
@@ -151,14 +126,15 @@
                                                         <span>:</span>
                                                         <span class="patient-col-value">{{vRefDocName}}</span>
                                                     </div>
-            
+
                                                 </div>
                                                 <div fxLayout="column" fxLayoutGap="10px">
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Ward | Bed Name
                                                         </span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{vRoomName}} | {{vBedName}}</span>
+                                                        <span class="patient-col-value">{{vRoomName}} |
+                                                            {{vBedName}}</span>
                                                     </div>
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Patient Type
@@ -186,44 +162,39 @@
                             </div>
                         </div>
                     </mat-card>
-            
+
                     <form [formGroup]="_DischargeCancelService.DischargeForm">
                         <div fxLayout="row" fxLayoutGap="6px" *ngIf="!vCheckBox && vRegNo">
-            
-                            <!-- <mat-form-field appearance="outline" fxFlex="30%">
-                                        <mat-label>Admission Date</mat-label>
-                                        <input matInput [matDatepicker]="picker" placeholder="From date"
-                                            formControlName="startdate">
-                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                        <mat-datepicker #picker></mat-datepicker>
-                                    </mat-form-field>   -->
-                            <mat-card style="padding: 15px;">
-                                <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
-                                    style="width: 200px;">
+                            <mat-card style="padding: 15px;" fxFlex>
+                                <app-common-date [screenFrom]="screenFromString"
+                                    (dateTimeEventEmitter)="getDateTime($event)" style="width: 200px;">
                                 </app-common-date>
                             </mat-card>
-            
+
                         </div>
                     </form>
-            
+
                     <div fxLayoutAlign="space-between">
                         <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px">
                             <button *ngIf="!vCheckBox && vRegNo" class="btn btn-danger" (click)="AdmisssionCancel()"
                                 style="color: white;" [disabled]="vRegNo>0">Admission Cancel</button>
                         </div>
-            
-                        <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px" style="margin: 0px 20px 0px 50px; ">
+
+                        <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px"
+                            style="margin: 0px 20px 0px 50px; ">
                             <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
                             <button *ngIf="vCheckBox" class="btn btn-primary" style="color: white;"
                                 (click)="DischargeCancel()">Dicharge Cancel</button>
-                            <button *ngIf="!vCheckBox" class="btn btn-primary" (click)="OnAdmDateTimeUpdate()">Save</button>
+                            <button *ngIf="!vCheckBox" class="btn btn-primary"
+                                (click)="OnAdmDateTimeUpdate()">Save</button>
                         </div>
                     </div>
 
 
                     <div fxLayout="row" fxLayoutAlign=center>
                         <span style="color: rgb(161, 158, 158);margin-top: 30px;">Note :- </span>&nbsp;
-                        <span style="color: rgb(161, 158, 158);margin-top: 30px;">User can update Admission Date & Time/Discharge Cancel</span>
+                        <span style="color: rgb(161, 158, 158);margin-top: 30px;">User can update Admission Date &
+                            Time/Discharge Cancel</span>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,7 @@ export class DischargeCancelService {
   DischargeForm : FormGroup;
   constructor(
     public _formbuilder:UntypedFormBuilder,
+    public _httpClient1: ApiCaller,
     public _httpClient:HttpClient
   )
    { this.DischargeForm = this.CreateDischargeForm()}
@@ -22,9 +24,15 @@ export class DischargeCancelService {
       end: [(new Date()).toISOString()],
     });
    }
-   public getAdmittedpatientlist(employee){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
+   public getAdmittedpatientlist(id){
+    debugger
+    return this._httpClient1.GetData("Admission/" + id);
   }
+
+  // i used visit DD for demo use here discharge dropdown
+  public getVisitById(Id) {
+    return this._httpClient1.GetData("VisitDetail/" + Id);
+}
   public SaveDischargeCancel(employee){
     return this._httpClient.post("Administration/IPDischargeCancel", employee)
   }

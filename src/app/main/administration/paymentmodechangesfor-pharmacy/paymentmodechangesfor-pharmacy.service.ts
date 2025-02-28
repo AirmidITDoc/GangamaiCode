@@ -66,14 +66,6 @@ export class PaymentmodechangesforpharmacyService {
         return this._httpClient.DeleteData("StoreMaster?Id=" + m_data.toString());
     }
 
-
-    public getIpPharAdvanceList(Param){
-      return this._httpClient.PostData("Generic/GetByProc?procName=Retrieve_BrowseIPAdvPayPharReceipt",Param)
-    }
-    public getSalesNoList(Param){
-      return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_BrowsePharmacyPayReceipt",Param)
-    }
-
     // public getBankMasterCombo() {
     //   return this._httpClient.PostData("Generic/GetByProc?procName=RetrieveBankMasterForCombo", {})
     // }
