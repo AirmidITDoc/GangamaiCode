@@ -27,10 +27,10 @@ export class RadiologyTemplateMasterComponent implements OnInit {
         apiUrl: "RadiologyTemplate/List",
         columnsList: [
             { heading: "Code", key: "templateId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Template Name", key: "templateName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Template Desc", key: "templateDesc", width: 200, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Added By", key: "username", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Updated By", key: "updatedbyname", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "TemplateName", key: "templateName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "TemplateDesc", key: "templateDesc", width: 200, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "AddedBy", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UpdatedBy", key: "updatedbyname", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -63,17 +63,16 @@ export class RadiologyTemplateMasterComponent implements OnInit {
 
     ) { }
 
-    ngOnInit(): void {
-
-    }
+    ngOnInit(): void { }
+    
     onSave(row: any = null) {
         
         let that = this;
         const dialogRef = this._matDialog.open(RadiologyTemplateFormComponent,
             {
-                maxWidth: "85vw",
-                height: '75%',
-                width: '90%',
+                maxWidth: "95vw",
+                maxHeight: '95vh',
+                width: '95%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {

@@ -20,7 +20,9 @@ import { values } from 'lodash';
   animations: fuseAnimations
 })
 export class RadiologyTestMasterComponent implements OnInit {
-  confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    
     gridConfig: gridModel = {
         apiUrl: "RadiologyTest/RadiologyTestList",
         columnsList: [
@@ -64,12 +66,13 @@ export class RadiologyTestMasterComponent implements OnInit {
 
     ngOnInit(): void {}
     onSearch() {}
+
     onSave(row:any = null) {
         const dialogRef = this._matDialog.open(UpdateradiologymasterComponent,
         {
-            maxWidth: "70vw",
-            height: '95%',
-            width: '70%',
+            maxWidth: "95vw",
+            maxHeight: '95vh',
+            width: '95%',
             data: row
         });
         dialogRef.afterClosed().subscribe(result => {
@@ -81,50 +84,48 @@ export class RadiologyTestMasterComponent implements OnInit {
         });
     }
 
-onDeactive(testId) {
-    this.confirmDialogRef = this._matDialog.open(
-        FuseConfirmDialogComponent,
-        {
-            disableClose: false,
-        }
-    );
-    this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-    this.confirmDialogRef.afterClosed().subscribe((result) => {
-        if (result) {
-            this._radiologytestService.deactivateTheStatus(testId).subscribe((response: any) => {
-                if (response.StatusCode == 200) {
-                    this.toastr.success(response.Message);
-                    // this.getGenderMasterList();
-                    // How to refresh Grid.
-                }
-            });
-        }
-        this.confirmDialogRef = null;
-    });
-}
-  onEdit(row) {
+    onDeactive(testId) {
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                this._radiologytestService.deactivateTheStatus(testId).subscribe((response: any) => {
+                    if (response.StatusCode == 200) {
+                        this.toastr.success(response.Message);
+                        // this.getGenderMasterList();
+                        // How to refresh Grid.
+                    }
+                });
+            }
+            this.confirmDialogRef = null;
+        });
+    }
+
+    onEdit(row) {
+    
+        row["IsDeleted"]= JSON.stringify(row.IsActive)
+        console.log(row)
+        this._radiologytestService.populateForm(row);
+        const dialogRef = this._matDialog.open(UpdateradiologymasterComponent, {
+        maxWidth: "80%", 
+        width: "95%",
+        height: "85%",
+            data : {
+                Obj : row,
+            }
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log("The dialog was closed - Insert Action", result);
+            
+        });
+    }
   
-    row["IsDeleted"]= JSON.stringify(row.IsActive)
-    console.log(row)
-    this._radiologytestService.populateForm(row);
-    const dialogRef = this._matDialog.open(UpdateradiologymasterComponent, {
-      maxWidth: "80%", 
-      width: "95%",
-      height: "85%",
-        data : {
-            Obj : row,
-          }
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-        console.log("The dialog was closed - Insert Action", result);
-        
-    });
 }
-  
-
-
-}
-
 
 export class TestList {
   testId:any;

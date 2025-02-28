@@ -20,34 +20,31 @@
             <form [formGroup]="categoryForm">
                 <input type="hidden" name="categoryId" formControlName="categoryId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <div fxFlex>
                         <airmid-textbox 
-                            label="Category Name" 
+                            label="CategoryName" 
                             formControlName="categoryName" 
                             [value]="data?.categoryName"
                             [formGroup]="categoryForm"
                             [validations]="getValidationMessages().categoryName"
                             [maxLength]="50">
                         </airmid-textbox>
+                    </div>
                 </div>
 
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
- 
                     <div>
                         <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="categoryForm" [(ngModel)]="isActive" ></app-airmid-slider>
                     </div>
-         
                     <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
                         <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                         <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                             <span>Save</span>
                         </button>
                     </div>
-         
                 </div>
 
             </form>
-
         </div>
-
     </div>
 </div>

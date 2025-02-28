@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
@@ -24,99 +24,90 @@ export class BrowseIPAdvanceComponent implements OnInit {
         public toastr: ToastrService
       ) { }
 
-      ngOnInit(): void { }
+    ngOnInit(): void { }
+
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('actionButtonTemplateone') actionButtonTemplateone!: TemplateRef<any>;
+
+
+    ngAfterViewInit() {
+        this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateone;
+    }
 
      @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
         gridConfig: gridModel = {
-            apiUrl: "MReportConfig/List",
+            apiUrl: "Advance/AdvanceList",
             columnsList: [
-                { heading: "Patient", key: "patient", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "AdvanceNo", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "UHID", key: "uHID", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "IPDNo", key: "iPDNo", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "AdvanceAmt", key: "advanceAmt", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "CashPay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "CardPay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "OnlinePay", key: "onlinePay", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "BalanceAmt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "RefundAmt", key: "refundAmt", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA'},
+                { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 9}, 
+                { heading: "AdvanceNo", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA'}, 
+                { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
+                { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200}, 
+                { heading: "IPDNo", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA'}, 
+                { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150}, 
+                { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA'}, 
+                { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA'}, 
+                { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA'}, 
+                { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA'}, 
+                { heading: "AdvanceAmt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA'}, 
+                { heading: "CashPay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA'}, 
+                { heading: "ChequePay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA'}, 
+                { heading: "CardPay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA'}, 
+                { heading: "OnlinePay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA'}, 
+                { heading: "BalanceAmt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA'}, 
+                { heading: "RefundAmt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA'}, 
+                { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA'}, 
                 {
-                    heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                        {
-                            action: gridActions.edit, callback: (data: any) => {
-                                this.onSave(data);
-                            }
-                        }, 
-                        {
-                            action: gridActions.delete, callback: (data: any) => {
-                                this._BrowseIpAdvanceService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
-                                    this.toastr.success(response.message);
-                                    this.grid.bindGridData();
-                                });
-                            }
-                        }]
-                } //Action 1-view, 2-Edit,3-delete
+                    heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
+                    template: this.actionButtonTemplateone  // Assign ng-template to the column
+                }
             ],
-            sortField: "ReportName",
+            sortField: "RegID",
             sortOrder: 0,
             filters: [
-                { fieldName: "Date", fieldValue: "", opType: OperatorComparer.Contains },
-                { fieldName: "RegistrationNo", fieldValue: "", opType: OperatorComparer.Contains },
-                { fieldName: "FirstName", fieldValue: "", opType: OperatorComparer.Equals },
-                { fieldName: "LastName", fieldValue: "", opType: OperatorComparer.Equals },
-                { fieldName: "PBillNo", fieldValue: "", opType: OperatorComparer.Equals }
+                { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+                { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+                { fieldName: "From_Dt", fieldValue: "2000-01-01", opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: "2025-01-01", opType: OperatorComparer.Equals },
+                { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
             ],
             row: 25
         }
     
         gridConfig1: gridModel = {
-            apiUrl: "MReportConfig/List",
+            apiUrl: "Advance/RefundOfAdvanceList",
             columnsList: [
-                { heading: "UHIDNo", key: "uHIDNo", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "AdvanceAmt", key: "advanceAmt", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Date", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 9},
+                { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 }, //
+                { heading: "AdvanceAmt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA' }, //
                 { heading: "AdvanceUsedAmt", key: "advanceUsedAmt", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "BalanceAmt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "RefundAmt", key: "refundAmt", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "PayDate", key: "payDate", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "CashPay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "CardPay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "BalanceAmt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA' }, //
+                { heading: "RefundAmt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' }, //
+                { heading: "PayDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 9}, //
+                { heading: "CashPay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA' }, //
+                { heading: "ChequePay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA' }, //
+                { heading: "CardPay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA' }, //
+                { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 150 }, //
+                { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' }, //
                 {
-                    heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                        {
-                            action: gridActions.edit, callback: (data: any) => {
-                                this.onSave(data);
-                            }
-                        }, {
-                            action: gridActions.delete, callback: (data: any) => {
-                                this._BrowseIpAdvanceService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
-                                    this.toastr.success(response.message);
-                                    this.grid.bindGridData();
-                                });
-                            }
-                        }]
-                } //Action 1-view, 2-Edit,3-delete
+                    heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
+                    template: this.actionButtonTemplate  // Assign ng-template to the column
+                }
             ],
-            sortField: "ReportName",
+            sortField: "RegId",
             sortOrder: 0,
             filters: [
-                { fieldName: "Date", fieldValue: "", opType: OperatorComparer.Contains },
-                { fieldName: "RegistrationNo", fieldValue: "", opType: OperatorComparer.Contains },
-                { fieldName: "FirstName", fieldValue: "", opType: OperatorComparer.Equals },
-                { fieldName: "LastName", fieldValue: "", opType: OperatorComparer.Equals },
+                { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+                { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+                { fieldName: "From_Dt", fieldValue: "01-01-2023", opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: "01-01-2026", opType: OperatorComparer.Equals },
+                { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
             ],
             row: 25
         }
@@ -138,6 +129,11 @@ export class BrowseIPAdvanceComponent implements OnInit {
             //     }
             // });
         }
+
+        OnViewReportPdf(data) { }
+        
+        whatsappAppoitment(data) { }
+        getPaymentreceiptview(data) { }
 }
 
 

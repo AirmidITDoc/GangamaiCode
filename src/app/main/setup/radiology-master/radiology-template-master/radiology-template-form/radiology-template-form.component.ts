@@ -14,20 +14,21 @@ import { FormGroup } from '@angular/forms';
   animations: fuseAnimations
 })
 export class RadiologyTemplateFormComponent implements OnInit {
-  templateForm: FormGroup;
-  vTemplateDesc:any;
-  vTemplateName:any;
-  editorConfig: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: '20rem',
-    minHeight: '20rem',
-    translate: 'yes',
-    placeholder: 'Enter text here...',
-    enableToolbar: true,
-    showToolbar: true,
+    templateForm: FormGroup;
+    vTemplateDesc:any;
+    vTemplateName:any;
+    isActive:boolean=true;
+    editorConfig: AngularEditorConfig = {
+        editable: true,
+        spellcheck: true,
+        height: '20rem',
+        minHeight: '20rem',
+        translate: 'yes',
+        placeholder: 'Enter text here...',
+        enableToolbar: true,
+        showToolbar: true,
+    };
 
-  };
 
   constructor(
       public _TemplateServieService: RadiologyTemplateMasterService,
@@ -36,51 +37,95 @@ export class RadiologyTemplateFormComponent implements OnInit {
       public toastr: ToastrService
   ) { }
  
-  ngOnInit(): void {
-      this.templateForm = this._TemplateServieService.createRadiologytemplateForm();
-      var m_data = {
-          templateId: this.data?.templateId,
-          templateName: this.data?.templateName.trim(),
-          templateDesc: this.data?.templateDesc.trim(),
-      };
-      this.templateForm.patchValue(m_data);
-  }
-  onSubmit() {
+//   ngOnInit(): void {
+//       this.templateForm = this._TemplateServieService.createRadiologytemplateForm();
+//       var m_data = {
+//           templateId: this.data?.templateId,
+//           templateName: this.data?.templateName.trim(),
+//           templateDesc: this.data?.templateDesc.trim(),
+//       };
+//       this.templateForm.patchValue(m_data);
+//   }
 
-    if(this.templateForm.invalid){
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-            toastClass:'tostr-tost custom-toast-warning',
-        })
-        return;
-    }else{
-        if (!this.templateForm.get("templateId").value) {
-            
-            var mdata={
-                  "templateId": 0,
-                  "templateName": this.templateForm.get("templateName").value,
-                  "templateDesc": this.templateForm.get("templateDesc").value        
-            }
-            console.log('json mdata:',mdata);
-
-              this._TemplateServieService.templateMasterSave(mdata).subscribe((response) => {
-                  this.toastr.success(response.message);
-                  this.onClear();
-              }, (error) => {
-                  this.toastr.error(error.message);
-              });
-          }
+    ngOnInit(): void {
+        this.templateForm = this._TemplateServieService.createRadiologytemplateForm();
+        if((this.data?.templateId??0) > 0)
+        {
+            this.isActive = this.data.isActive
+            this.templateForm.patchValue(this.data);
+        }
     }
-    this.onClose();
-}
-onClose(){
-  this.templateForm.reset();
-  this.dialogRef.close();
-}
-  onBlur(e: any) {
-    this.vTemplateDesc = e.target.innerHTML;
-  }
-  onClear() {
-      this.templateForm.reset();
-      this.dialogRef.close();
-  }
+//   onSubmit() {
+
+//     if(this.templateForm.invalid){
+//         this.toastr.warning('please check from is invalid', 'Warning !', {
+//             toastClass:'tostr-tost custom-toast-warning',
+//         })
+//         return;
+//     }else{
+//         if (!this.templateForm.get("templateId").value) {
+            
+//             var mdata={
+//                   "templateId": 0,
+//                   "templateName": this.templateForm.get("templateName").value,
+//                   "templateDesc": this.templateForm.get("templateDesc").value        
+//             }
+//             console.log('json mdata:',mdata);
+
+//               this._TemplateServieService.templateMasterSave(mdata).subscribe((response) => {
+//                   this.toastr.success(response.message);
+//                   this.onClear();
+//               }, (error) => {
+//                   this.toastr.error(error.message);
+//               });
+//           }
+//     }
+//     this.onClose();
+// }
+
+    onSubmit() {
+            
+        if(!this.templateForm.invalid)
+        {
+        
+        console.log("template json:", this.templateForm.value);
+
+        this._TemplateServieService.templateMasterSave(this.templateForm.value).subscribe((response)=>{
+            this.toastr.success(response.message);
+            this.onClear(true);
+        }, (error)=>{
+            this.toastr.error(error.message);
+        });
+        } 
+        else
+        {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }             
+    }
+
+    getValidationMessages(){
+        return{
+            templateName: [
+                { name: "required", Message: "templateName Name is required" },
+                { name: "maxlength", Message: "templateName name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        }
+    }
+
+    onClose(){
+        this.templateForm.reset();
+        this.dialogRef.close();
+    }
+    onBlur(e: any) {
+        this.vTemplateDesc = e.target.innerHTML;
+    }
+
+    onClear(val: boolean) {
+        this.templateForm.reset();
+        this.dialogRef.close(val);
+    }
 }
