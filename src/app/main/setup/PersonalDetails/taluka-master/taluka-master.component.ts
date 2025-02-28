@@ -65,9 +65,9 @@ export class TalukaMasterComponent implements OnInit {
            let that = this;
            const dialogRef = this._matDialog.open(NewTalukaComponent,
                {
-                   maxWidth: "45vw",
-                   height: '35%',
-                   width: '70%',
+                    maxWidth: "50vw",
+                    maxHeight: '50%',
+                    width: '70%',
                    data: row
                });
            dialogRef.afterClosed().subscribe(result => {
