@@ -62,8 +62,8 @@ export class ItemTypeMasterComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(NewItemtypeComponent,
             {
-                maxWidth: "45vw",
-                height: '35%',
+                maxWidth: "50vw",
+                maxHeight: '50%',
                 width: '70%',
                 data: row
             });

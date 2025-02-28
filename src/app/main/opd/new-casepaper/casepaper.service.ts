@@ -70,7 +70,7 @@ public getServiceList(param,loader = true){
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.post("OutPatient/PrescriptionInsert", param);
+    return this._httpClient1.PostData("OPDPrescriptionMedical/InsertSP", param);
   }
   public SavePrescriptionTemplate(param,loader = true){ 
     if (loader) {

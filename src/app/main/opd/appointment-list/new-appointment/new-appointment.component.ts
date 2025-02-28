@@ -344,8 +344,7 @@ getSelectedObjphone(obj) {
     }
 
     onSave() {
-        console.log(this.personalFormGroup.value)
-        console.log(this.VisitFormGroup.value)
+     
         console.log("Personal", this.personalFormGroup.valid, "Visit", this.VisitFormGroup.valid)
         if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
 
@@ -369,7 +368,7 @@ getSelectedObjphone(obj) {
             }
 
         } else {
-            Swal.fire("Form Invalid chk....")
+            Swal.fire("Enter Proper Form Invalid chk....")
         }
     }
 

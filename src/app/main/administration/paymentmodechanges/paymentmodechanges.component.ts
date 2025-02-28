@@ -120,7 +120,7 @@ export class PaymentmodechangesComponent implements OnInit {
         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        { fieldName: "Reg_No", fieldValue: "52", opType: OperatorComparer.Equals },
+        { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "PBillNo", fieldValue: "1", opType: OperatorComparer.Equals },
         { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
@@ -239,7 +239,8 @@ export class PaymentmodechangesComponent implements OnInit {
       
     });
   dialogRef.afterClosed().subscribe(result => {
-    console.log('The dialog was closed - Insert Action', result);
+    console.log('The dialog was closed - Insert Action', result);    
+    this.grid.bindGridData();
     // if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '0')
       // this.getOPReceiptList();
     // else if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '1')

@@ -180,57 +180,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  getSearchList() {
-    if (this._PaymentmodechangeforpharmacyService.userFormGroup.get('Radio').value == '1') {
-      this.getSalesList();
-    } else {
-      this.getIPPharAdvanceList();
-    }
-  }
-  getIPPharAdvanceList() {
-    this.sIsLoading = 'loading-data';
-    var vdata = {
-      'F_Name': this._PaymentmodechangeforpharmacyService.userFormGroup.get('FirstName').value || '%',
-      'L_Name': this._PaymentmodechangeforpharmacyService.userFormGroup.get('LastName').value || '%',
-      'FromDate': this.datePipe.transform(this._PaymentmodechangeforpharmacyService.userFormGroup.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      'ToDate': this.datePipe.transform(this._PaymentmodechangeforpharmacyService.userFormGroup.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      'Reg_No': this._PaymentmodechangeforpharmacyService.userFormGroup.get('RegNo').value || 0,
-      'SalesNo': this._PaymentmodechangeforpharmacyService.userFormGroup.get('SalesNo').value || 0,
-    }
-    this._PaymentmodechangeforpharmacyService.getIpPharAdvanceList(vdata).subscribe(data => {
-      this.dsPaymentPharmacyList.data = data as PaymentPharmayList[];
-      console.log(this.dsPaymentPharmacyList.data)
-      this.dsPaymentPharmacyList.sort = this.sort;
-      this.dsPaymentPharmacyList.paginator = this.paginator;
-
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
-  getSalesList() {
-    this.sIsLoading = 'loading-data';
-    var vdata = {
-      'F_Name': this._PaymentmodechangeforpharmacyService.userFormGroup.get('FirstName').value || '%',
-      'L_Name': this._PaymentmodechangeforpharmacyService.userFormGroup.get('LastName').value || '%',
-      'FromDate': this.datePipe.transform(this._PaymentmodechangeforpharmacyService.userFormGroup.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      'ToDate': this.datePipe.transform(this._PaymentmodechangeforpharmacyService.userFormGroup.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      'Reg_No': this._PaymentmodechangeforpharmacyService.userFormGroup.get('RegNo').value || 0,
-      'SalesNo': this._PaymentmodechangeforpharmacyService.userFormGroup.get('SalesNo').value || 0,
-      // 'StoreId':this._PaymentmodechangeforpharmacyService.userFormGroup.get('StoreId').value.storeid || 0,
-    }
-    this._PaymentmodechangeforpharmacyService.getSalesNoList(vdata).subscribe(data => {
-      this.dsPaymentPharmacyList.data = data as PaymentPharmayList[];
-      this.dsPaymentPharmacyList.sort = this.sort;
-      this.dsPaymentPharmacyList.paginator = this.paginator;
-      console.log(this.dsPaymentPharmacyList.data)
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
+  
   onEdit(m) {
     console.log(m)
     let xx = {
@@ -274,7 +224,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      this.getSalesList();
+      this.grid.bindGridData();
     });
   }
   BillDate() {
