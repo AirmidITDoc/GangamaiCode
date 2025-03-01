@@ -10,9 +10,10 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
-import { IndentList } from '../sales/sales.component';
+import { IndentList, Printsal } from '../sales/sales.component';
 import { ToastrService } from 'ngx-toastr';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-ip-sales-return',
@@ -555,7 +556,7 @@ keyPressAlphanumeric(event) {
       this.toastr.success('Record Saved Successfully.', 'Save !', {
         toastClass: 'tostr-tost custom-toast-success',
       });
-       this.ViewSalesRetPdf(response);  
+      this.getSalesRetPrint(response);
       this.OnReset();
       this.savebtn=false;   
     } else {
@@ -586,7 +587,7 @@ keyPressAlphanumeric(event) {
       this.toastr.success('Record Saved Successfully.', 'Save !', {
         toastClass: 'tostr-tost custom-toast-success',
       });
-       this.ViewSalesRetPdf(response);
+      this.getSalesRetPrint(response);
       this.savebtn=false;  
       this.OnReset();
     
@@ -606,6 +607,84 @@ keyPressAlphanumeric(event) {
       this.isLoading123=false;
     }, 2000);
   }
+  reportPrintObj: Printsal;
+  reportPrintObjTax: Printsal;
+  subscriptionArr: Subscription[] = [];
+  reportPrintObjList: Printsal[] = [];
+  printTemplate: any;
+  @ViewChild('billSalesReturn') billSalesReturn:ElementRef;
+  getSalesRetPrint(el){ 
+    var D_data = {
+      "SalesID": el,
+      "OP_IP_Type": this.vOP_IP_Type,
+    }
+    let printContents;
+    this.subscriptionArr.push(
+      this._IpSalesRetService.getSalesReturnPrint(D_data).subscribe(res => {
+        this.reportPrintObjList = res as Printsal[];
+        // console.log(this.reportPrintObjList);
+        this.reportPrintObj = res[0] as Printsal;
+        console.log(this.reportPrintObj);
+        setTimeout(() => {
+          this.print3();
+       }, 1000);
+      })
+    );
+  }
+  print3() {
+    let popupWin, printContents;
+   
+    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+    
+    popupWin.document.write(` <html>
+    <head><style type="text/css">`);
+    popupWin.document.write(`
+      </style>
+      <style type="text/css" media="print">
+    @page { size: portrait; }
+  </style>
+          <title></title>
+      </head>
+    `);
+    popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billSalesReturn.nativeElement.innerHTML}</body>
+    <script>
+      var css = '@page { size: portrait; }',
+      head = document.head || document.getElementsByTagName('head')[0],
+      style = document.createElement('style');
+      style.type = 'text/css';
+      style.media = 'print';
+  
+      if (style.styleSheet){
+          style.styleSheet.cssText = css;
+      } else {
+          style.appendChild(document.createTextNode(css));
+      }
+      head.appendChild(style);
+    </script>
+    </html>`);
+    // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
+    // </html>`);
+    
+    popupWin.document.close();
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 getIpPrescriptinRetrunlist(){
   var vdata={
     "PresReId":this.vAdmissionID
@@ -617,28 +696,26 @@ getIpPrescriptinRetrunlist(){
   })
 }
 
-  ViewSalesRetPdf(SalesReturnId) {
-    
-    setTimeout(() => {
+  // ViewSalesRetPdf(SalesReturnId) { 
+  //   setTimeout(() => { 
+  //     this._IpSalesRetService.getSalesReturnPdf(SalesReturnId,this.vOP_IP_Type).subscribe(res => {
+  //       const dialogRef = this._matDialog.open(PdfviewerComponent,
+  //         {
+  //           maxWidth: "85vw",
+  //           height: '750px',
+  //           width: '100%',
+  //           data: {
+  //             base64: res["base64"] as string,
+  //             title: "Pharma Sales Return bill viewer"
+  //           }
+  //         });
+  //       dialogRef.afterClosed().subscribe(result => {
+  //       this.sIsLoading = ' ';
+  //       });
+  //     });
 
-      this._IpSalesRetService.getSalesReturnPdf(SalesReturnId,this.vOP_IP_Type).subscribe(res => {
-        const dialogRef = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "Pharma Sales Return bill viewer"
-            }
-          });
-        dialogRef.afterClosed().subscribe(result => {
-        this.sIsLoading = ' ';
-        });
-      });
-
-    }, 100);
-  }
+  //   }, 100);
+  // }
 
 
 
@@ -661,6 +738,7 @@ getIpPrescriptinRetrunlist(){
     this.vGenderName =  '';
     this.vAge =  '';
     this._IpSalesRetService.userFormGroup.get('Op_ip_id').setValue('1');
+    this._IpSalesRetService.userFormGroup.get('TypeodPay').setValue('CashPay');
   }
 
   onClear() {

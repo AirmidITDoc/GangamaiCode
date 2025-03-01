@@ -96,6 +96,7 @@ export class GSTReportComponent implements OnInit {
    }
  
    ReportSelection(el) {
+    console.log(el)
      this.ReportName = el.ReportName;
      this.ReportID = el.ReportId;
      
@@ -150,13 +151,20 @@ export class GSTReportComponent implements OnInit {
       this.FlagPatientSelected=false;
       this.clearField();
     } 
-    else if (this.ReportName == 'Purchase Retum GST Report Date Wise Purchase Return GST Report - Summary') {
+    else if (this.ReportName == 'Purchase Retum GST Report Date Wise') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
-      this.FlagPatientSelected=false;
-      
+      this.FlagPatientSelected=false; 
+             this.clearField();
+    } 
+    else if (this.ReportName == 'Purchase Return GST Report - Summary') {
+      this.FlagUserSelected = false;
+      this.FlagStoreSelected = true;
+      this.FlagReportTypeSelected= false;
+      this.FlagDoctorIDSelected=false;
+      this.FlagPatientSelected=false; 
              this.clearField();
     } 
     else if (this.ReportName == 'Purchase GST Summary') {
@@ -172,13 +180,13 @@ export class GSTReportComponent implements OnInit {
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= true;
       this.FlagDoctorIDSelected=false;
-      this.FlagPatientSelected=false;
+      this.FlagPatientSelected=false; 
              this.clearField();
     } 
     else if (this.ReportName == 'Sales GST Date Wise Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
-      this.FlagReportTypeSelected= true;
+      this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
       this.FlagPatientSelected=false;
              this.clearField();
@@ -267,7 +275,7 @@ export class GSTReportComponent implements OnInit {
 
 
     getPrint() {
-   
+   debugger
       if (this.ReportName == 'Sales Profit Summary Report') {
         this.viewSalesprofitsummaryPdf();
       } else if (this.ReportName == 'Sales Profit Bill Report') {
@@ -289,18 +297,21 @@ export class GSTReportComponent implements OnInit {
      else if (this.ReportName == 'Purchase GST Report - Summary') {
       this.viewgetpurchasegstsummaryPdf();
      } 
-     else if (this.ReportName == 'Purchase Retum GST Report Date Wise Purchase Return GST Report - Summary') {
+     else if (this.ReportName == 'Purchase Retum GST Report Date Wise') {
       this.viewgetpurchasereturngstdatewisePdf();
+     } 
+     else if (this.ReportName == 'Purchase Return GST Report - Summary') {
+      this.viewgetpurchasereturnsummaryPdf();
      } 
      else if (this.ReportName == 'Purchase GST Summary') {
       this.viewgetpurchasegstsummaryPdf();
      } 
      else if (this.ReportName == 'Sales GST Report') {
-      this.viewsalesgst();
+      this.viewgetSalesGstreportPdf();
      } 
-    //  else if (this.ReportName == 'Sales GST Date Wise Report') {
-    //   this.viewsalesgst();
-    //  } 
+     else if (this.ReportName == 'Sales GST Date Wise Report') {
+      this.viewgetSalesGstdatewisereportPdf();
+     } 
      else if (this.ReportName == 'Sales Return GST Report') {
     //  this.viewgetSalesreturngstPdf();
 
@@ -643,7 +654,7 @@ export class GSTReportComponent implements OnInit {
        
          this._GstReportService.getpurchasereturngstsummaryReport(
           this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",storeId
          ).subscribe(res => {
            const dialogRef = this._matDialog.open(PdfviewerComponent,
              {
@@ -685,7 +696,7 @@ export class GSTReportComponent implements OnInit {
                width: '100%',
                data: {
                  base64: res["base64"] as string,
-                 title: "Purchase Return Date Wise  Viewer"
+                 title: "Purchase Return Date Wise Report"
                }
              });
            dialogRef.afterClosed().subscribe(result => {
@@ -698,14 +709,7 @@ export class GSTReportComponent implements OnInit {
        }, 100);
      }
 
-     viewsalesgst(){
-      debugger
-      if(this._GstReportService.userForm.get("ReportType").value=='0')
-        this.viewgetSalesGstreportPdf()
-      else
-      this.viewgetSalesGstdatewisereportPdf()
-     }
-
+ 
 
      viewgetSalesGstreportPdf() {
       this.sIsLoading = 'loading-data';
@@ -714,8 +718,7 @@ export class GSTReportComponent implements OnInit {
    if(this.StoreId){
      storeId=this.StoreId
    }
-       setTimeout(() => {
-       
+       setTimeout(() => { 
          this._GstReportService.getSalesGstReport(
           this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
         this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",storeId

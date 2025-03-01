@@ -395,7 +395,7 @@ export class CommonReportComponent implements OnInit {
 
   getPrint() {
 
-
+debugger
     if (this.ReportName == 'Doctor Wise Patient Count Report') {
       this.viewgetDocwisepatientcountReportPdf();
     }
@@ -1177,8 +1177,8 @@ export class CommonReportComponent implements OnInit {
 
 
     let DoctorId = 0;
-    if (this._OPReportsService.userForm.get('DoctorId').value)
-      DoctorId = this._OPReportsService.userForm.get('DoctorId').value.DoctorId
+    if (this._OPReportsService.userForm.get('DoctorID').value)
+      DoctorId = this._OPReportsService.userForm.get('DoctorID').value.DoctorId
 
     this.sIsLoading = 'loading-data';
     setTimeout(() => {

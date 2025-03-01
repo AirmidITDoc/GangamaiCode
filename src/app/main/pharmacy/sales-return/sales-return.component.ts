@@ -85,6 +85,7 @@ export class SalesReturnComponent implements OnInit {
     'SalesNo',
     'RegNo',
     'PatientName',
+    'PatientType',
     'TotalAmount',
     'PaidType',
   ];
@@ -454,7 +455,7 @@ export class SalesReturnComponent implements OnInit {
 
   
   SelectedItem(contact) {
-  debugger
+  debugger 
     this.OP_IP_Type=contact.OP_IP_Type;
     this.IsPrescriptionFlag=contact.IsPrescriptionFlag;
     this.TempItemselectedlist.data=this.selectedssaleDetailList.data;
@@ -549,12 +550,13 @@ export class SalesReturnComponent implements OnInit {
   onSave() {
     if (this.FinalTotalAmount != 0 && this.FinalTotalAmount != null && this.FinalTotalAmount != 'NaN' && this.selectedssaleDetailList.data.length > 0) {
      this.isLoading123 = true;
-      if (this.PaymentType == 'Paid') {
-        this.onCashOnlinePaySave()
-      }
-      else if (this.PaymentType == 'Credit') {
-        this.onCreditpaySave()
-      }
+     this.onPaySave();
+      // if (this.PaymentType == 'Paid') {
+      //   this.onCashOnlinePaySave()
+      // }
+      // else if (this.PaymentType == 'Credit') {
+      //   this.onCreditpaySave()
+      // }
     }
     else {
       Swal.fire("Chk Return Amount and Item List !")
@@ -564,41 +566,42 @@ export class SalesReturnComponent implements OnInit {
       this.isLoading123 = false;
     }, 2000);
   }
-  keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
-    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
-    }
-  }  
-  onCreditpaySave() {
-
-    let nowDate = new Date();
-    let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-    this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
+ 
+  onPaySave() {
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
 
     let salesReturnHeader = {};
-    salesReturnHeader['Date'] = this.newDateTimeObj.date; 
-    salesReturnHeader['Time'] = this.newDateTimeObj.time;
+    salesReturnHeader['Date'] = formattedDate;
+    salesReturnHeader['Time'] = formattedTime;
     salesReturnHeader['SalesId'] = this.SalesID;
     salesReturnHeader['OP_IP_ID'] = this.OP_IP_Id;
-    salesReturnHeader['OP_IP_Type'] = 2;
-    salesReturnHeader['TotalAmount'] = this.TotalAmt;
+    salesReturnHeader['OP_IP_Type'] = this.OP_IP_Type;
+    salesReturnHeader['TotalAmount'] = this.FinalReturnform.get('ReturnAmt').value || 0;
     salesReturnHeader['VatAmount'] = this.VatAmount || 0;
-    salesReturnHeader['DiscAmount'] =this.DiscAmt || 0;
-    salesReturnHeader['NetAmount'] =this.NetAmt || 0;
-    salesReturnHeader['PaidAmount'] = this.NetAmt || 0;
-    salesReturnHeader['BalanceAmount'] = 0;
-    salesReturnHeader['isSellted'] = true;
-    salesReturnHeader['isPrint'] = true,
-    salesReturnHeader['isFree'] = true;
-    salesReturnHeader['unitID'] = 1;
+    salesReturnHeader['DiscAmount'] = this.FinalReturnform.get('TotDiscAmount').value || 0;
+    salesReturnHeader['NetAmount'] = Math.round(this.FinalReturnform.get('ReturnAmt').value) || 0;
+    let PaidAmount
+    let balanceAmount
+    if(this.PaymentType =='Paid'){
+      PaidAmount = Math.round(this.FinalReturnform.get('ReturnAmt').value) || 0;
+      balanceAmount = 0;
+    }else{
+      balanceAmount = Math.round(this.FinalReturnform.get('ReturnAmt').value) || 0; 
+      PaidAmount = 0;
+    }   
+    salesReturnHeader['PaidAmount'] = PaidAmount || 0;
+    salesReturnHeader['BalanceAmount'] = balanceAmount || 0;
+    salesReturnHeader['IsSellted'] = 1;
+    salesReturnHeader['IsPrint'] = 0,
+    salesReturnHeader['IsFree'] = 0;
+    salesReturnHeader['UnitID'] = 1;
     salesReturnHeader['addedBy'] = this._loggedService.currentUserValue.user.id,
-    salesReturnHeader['storeID '] =this._loggedService.currentUserValue.user.storeId,
-    salesReturnHeader['narration'] = '';
-    salesReturnHeader['salesReturnId'] = 0
+    salesReturnHeader['StoreID'] = this._loggedService.currentUserValue.user.storeId,
+    salesReturnHeader['Narration'] = "";
+    salesReturnHeader['SalesReturnId'] = 0
 
     let salesReturnDetailInsertCreditarr = [];
     this.selectedssaleDetailList.data.forEach((element) => {
@@ -606,7 +609,7 @@ export class SalesReturnComponent implements OnInit {
       salesReturnDetailCredit['SalesReturnId'] = 0;
       salesReturnDetailCredit['itemId'] = element.ItemId;
       salesReturnDetailCredit['batchNo'] = element.BatchNo;
-      salesReturnDetailCredit['batchExpDate'] = element.BatchExpDate;
+      salesReturnDetailCredit['batchExpDate'] = element.BatchExpDate;      
       salesReturnDetailCredit['unitMRP'] = element.UnitMRP;
       salesReturnDetailCredit['qty'] = element.ReturnQty;
       salesReturnDetailCredit['totalAmount'] = element.TotalAmount;
@@ -620,8 +623,14 @@ export class SalesReturnComponent implements OnInit {
       salesReturnDetailCredit['PurRate'] = element.PurRateWf;
       salesReturnDetailCredit['PurTot'] = element.PurTotAmt;
       salesReturnDetailCredit['SalesID'] = this.SalesID;
-      salesReturnDetailCredit['SalesDetID'] = this.SalesDetId;
-      salesReturnDetailCredit['isCashOrCredit'] =0;
+      salesReturnDetailCredit['SalesDetID'] = this.SalesDetId; 
+      let isCashOrCredit 
+      if(this.PaymentType=='Paid'){
+        isCashOrCredit = 0;
+      }else{ 
+        isCashOrCredit = 1;
+      }  
+      salesReturnDetailCredit['isCashOrCredit'] = isCashOrCredit;  
       salesReturnDetailCredit['cgstPer'] = element.CGSTPer;
       salesReturnDetailCredit['cgstAmt'] = element.CGSTAmount;
       salesReturnDetailCredit['sgstPer'] = element.SGSTPer;
@@ -631,126 +640,8 @@ export class SalesReturnComponent implements OnInit {
       salesReturnDetailCredit['stkID'] = element.StkID;
       salesReturnDetailInsertCreditarr.push(salesReturnDetailCredit);
     });
- 
-    let updateCurStkSalesCreditarray = [];
-    this.selectedssaleDetailList.data.forEach((element) => {
-      let updateCurStkSalesCredit = {};
-      updateCurStkSalesCredit['itemId'] = element.ItemId;
-      updateCurStkSalesCredit['issueQty'] = element.ReturnQty;
-      updateCurStkSalesCredit['storeID'] = this._loggedService.currentUserValue.user.storeId,
-        updateCurStkSalesCredit['stkID'] = element.StkID;
 
-      updateCurStkSalesCreditarray.push(updateCurStkSalesCredit);
-    });
-
-    let Update_SalesReturnQtySalesTblarray = [];
-    this.selectedssaleDetailList.data.forEach((element) => {
-    let Update_SalesReturnQtySalesTbl = {};
-    Update_SalesReturnQtySalesTbl['SalesDetId'] = element.SalesDetId;
-    Update_SalesReturnQtySalesTbl['ReturnQty'] = element.ReturnQty;
-    Update_SalesReturnQtySalesTblarray.push(Update_SalesReturnQtySalesTbl);
-  });
-
-    let Update_SalesRefundAmt_SalesHeader = {};
-    Update_SalesRefundAmt_SalesHeader['SalesReturnId'] = 0;
-
-    let Cal_GSTAmount_SalesReturn = {};
-    Cal_GSTAmount_SalesReturn['SalesReturnID'] = 0;
-
-    let Insert_ItemMovementReport_Cursor = {};
-    Insert_ItemMovementReport_Cursor['Id'] = 0;
-    Insert_ItemMovementReport_Cursor['TypeId'] = 2;
-    // console.log("Procced with Payment Option");
-
-    let submitData = {
-      "salesReturnHeader": salesReturnHeader,
-      "salesReturnDetail": salesReturnDetailInsertCreditarr,
-      "salesReturn_CurStk_Upt": updateCurStkSalesCreditarray,
-      "update_SalesReturnQty_SalesTbl": Update_SalesReturnQtySalesTblarray,
-      "update_SalesRefundAmt_SalesHeader": Update_SalesRefundAmt_SalesHeader,
-      "cal_GSTAmount_SalesReturn": Cal_GSTAmount_SalesReturn,
-      "insert_ItemMovementReport_Cursor": Insert_ItemMovementReport_Cursor,
-    };
-    console.log(submitData);
-    this._SalesReturnService.InsertCreditSalesReturn(submitData).subscribe(response => {
-      if (response) {
-        Swal.fire('Credit SalesReturn!', 'Data saved Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            this.getSalesRetPrint(response);
-            this.Itemchargeslist = [];
-            this._matDialog.closeAll();
-          }
-        });
-      } else {
-        Swal.fire('Error !', 'Sale Return Credit data not saved', 'error');
-      }
-      this.sIsLoading = '';
-    });
-    this.dssaleList.data=[];
-    this.dssaleDetailList.data = [];
-    this.selectedssaleDetailList.data = [];
-
-  }
-
-  onCashOnlinePaySave() {
-    let nowDate = new Date();
-    let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-    this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
-
-    let salesReturnHeader = {};
-    salesReturnHeader['Date'] = this.newDateTimeObj.date;
-    salesReturnHeader['Time'] = this.newDateTimeObj.time;
-    salesReturnHeader['SalesId'] = this.SalesID;
-    salesReturnHeader['OP_IP_ID'] = this.OP_IP_Id;
-    salesReturnHeader['OP_IP_Type'] = 2;
-    salesReturnHeader['TotalAmount'] = this.FinalReturnform.get('ReturnAmt').value;
-    salesReturnHeader['VatAmount'] = this.VatAmount || 0;
-    salesReturnHeader['DiscAmount'] =this.FinalReturnform.get('TotDiscAmount').value|| 0;
-    salesReturnHeader['NetAmount'] =this.FinalReturnform.get('ReturnAmt').value || 0;
-    salesReturnHeader['PaidAmount'] = this.FinalReturnform.get('ReturnAmt').value || 0;
-    salesReturnHeader['BalanceAmount'] = 0;
-    salesReturnHeader['IsSellted'] = 1;
-    salesReturnHeader['IsPrint'] = 0,
-    salesReturnHeader['IsFree'] = 0;
-    salesReturnHeader['UnitID'] = 1;
-    salesReturnHeader['addedBy'] = this._loggedService.currentUserValue.user.id,
-    salesReturnHeader['StoreID'] =this._loggedService.currentUserValue.user.storeId,
-    salesReturnHeader['Narration'] = "";
-    salesReturnHeader['SalesReturnId'] = 0
-
-    let salesReturnDetailInsertCreditarr = [];
-    this.selectedssaleDetailList.data.forEach((element) => {
-      let salesReturnDetailCredit = {};
-      salesReturnDetailCredit['SalesReturnId'] = 0;
-      salesReturnDetailCredit['itemId'] = element.ItemId;
-      salesReturnDetailCredit['batchNo'] = element.BatchNo;
-      salesReturnDetailCredit['batchExpDate'] = element.BatchExpDate;
-      salesReturnDetailCredit['unitMRP'] = element.UnitMRP;
-      salesReturnDetailCredit['qty'] = element.ReturnQty;
-      salesReturnDetailCredit['totalAmount'] = element.TotalAmount;
-      salesReturnDetailCredit['vatPer'] = element.VatPer;
-      salesReturnDetailCredit['vatAmount'] = element.VatAmount;
-      salesReturnDetailCredit['discPer'] = element.DiscPer;
-      salesReturnDetailCredit['discAmount'] = element.DiscAmount;
-      salesReturnDetailCredit['grossAmount'] = element.GrossAmount;
-      salesReturnDetailCredit['landedPrice'] = element.LandedPrice;
-      salesReturnDetailCredit['totalLandedAmount'] = element.TotalLandedAmount;
-      salesReturnDetailCredit['PurRate'] = element.PurRateWf;
-      salesReturnDetailCredit['PurTot'] = element.PurTotAmt;
-      salesReturnDetailCredit['SalesID'] = element.SalesId;
-      salesReturnDetailCredit['SalesDetID'] = element.SalesDetId;
-      salesReturnDetailCredit['isCashOrCredit'] =0;
-      salesReturnDetailCredit['cgstPer'] = element.CGSTPer;
-      salesReturnDetailCredit['cgstAmt'] = element.CGSTAmount;
-      salesReturnDetailCredit['sgstPer'] = element.SGSTPer;
-      salesReturnDetailCredit['sgstAmt'] = element.SGSTAmount;
-      salesReturnDetailCredit['igstPer'] = element.IGSTPer
-      salesReturnDetailCredit['igstAmt'] = element.IGSTAmount
-      salesReturnDetailCredit['stkID'] = element.StkID;
-      salesReturnDetailInsertCreditarr.push(salesReturnDetailCredit);
-    });
- 
-      console.log(salesReturnDetailInsertCreditarr);
+    console.log(salesReturnDetailInsertCreditarr);
     let updateCurStkSalesCreditarray = [];
     this.selectedssaleDetailList.data.forEach((element) => {
       let updateCurStkSalesCredit = {};
@@ -760,15 +651,15 @@ export class SalesReturnComponent implements OnInit {
       updateCurStkSalesCredit['stkID'] = element.StkID;
       updateCurStkSalesCreditarray.push(updateCurStkSalesCredit);
     });
-
+ 
     let Update_SalesReturnQtySalesTblarray = [];
     this.selectedssaleDetailList.data.forEach((element) => {
-    let Update_SalesReturnQtySalesTbl = {};
-    Update_SalesReturnQtySalesTbl['SalesDetId'] = element.SalesDetId;
-    Update_SalesReturnQtySalesTbl['ReturnQty'] = element.ReturnQty;
-    Update_SalesReturnQtySalesTblarray.push(Update_SalesReturnQtySalesTbl);
-  });
-
+      let Update_SalesReturnQtySalesTbl = {};
+      Update_SalesReturnQtySalesTbl['SalesDetId'] = element.SalesDetId;
+      Update_SalesReturnQtySalesTbl['ReturnQty'] = element.ReturnQty;
+      Update_SalesReturnQtySalesTblarray.push(Update_SalesReturnQtySalesTbl);
+    }); 
+  
     let Update_SalesRefundAmt_SalesHeader = {};
     Update_SalesRefundAmt_SalesHeader['SalesReturnId'] = 0;
 
@@ -780,96 +671,401 @@ export class SalesReturnComponent implements OnInit {
     Insert_ItemMovementReport_Cursor['TypeId'] = 2;
 
     let PaymentInsertobj = {};
-    // if (this._SalesReturnService.IndentSearchGroup.get('CashPay').value == 'Other') {
-      let PatientHeaderObj = {};
+    PaymentInsertobj['BillNo'] = 0,
+    PaymentInsertobj['ReceiptNo'] = '',
+    PaymentInsertobj['PaymentDate'] = formattedDate;
+    PaymentInsertobj['PaymentTime'] = formattedTime;
+    PaymentInsertobj['CashPayAmount'] = this.FinalReturnform.get('ReturnAmt').value || 0;
+    PaymentInsertobj['ChequePayAmount'] = 0,
+    PaymentInsertobj['ChequeNo'] = 0,
+    PaymentInsertobj['BankName'] = '',
+    PaymentInsertobj['ChequeDate'] = '01/01/1900',
+    PaymentInsertobj['CardPayAmount'] = 0,
+    PaymentInsertobj['CardNo'] = '',
+    PaymentInsertobj['CardBankName'] = '',
+    PaymentInsertobj['CardDate'] = '01/01/1900',
+    PaymentInsertobj['AdvanceUsedAmount'] = 0;
+    PaymentInsertobj['AdvanceId'] = 0;
+    PaymentInsertobj['RefundId'] = 0;
+    PaymentInsertobj['TransactionType'] = 5;
+    PaymentInsertobj['Remark'] = '',
+    PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+    PaymentInsertobj['IsCancelled'] = 0;
+    PaymentInsertobj['IsCancelledBy'] = 0;
+    PaymentInsertobj['IsCancelledDate'] = '01/01/1900',
+    PaymentInsertobj['OPD_IPD_Type'] = 3;
+    PaymentInsertobj['NEFTPayAmount'] = 0,
+    PaymentInsertobj['NEFTNo'] = '',
+    PaymentInsertobj['NEFTBankMaster'] = '',
+    PaymentInsertobj['NEFTDate'] = '01/01/1900',
+    PaymentInsertobj['PayTMAmount'] = 0,
+    PaymentInsertobj['PayTMTranNo'] = '',
+    PaymentInsertobj['PayTMDate'] = '01/01/1900',
+    PaymentInsertobj['paymentId'] = 0
 
-      PatientHeaderObj['Date'] = this.newDateTimeObj.date; ;
-      PatientHeaderObj['PatientName'] = this.PatientName;
-      PatientHeaderObj['OPD_IPD_Id'] = 2,// this.reportPrintObj.RegNo;
-      PatientHeaderObj['NetPayAmount'] = this.FinalReturnform.get('ReturnAmt').value || 0;
+ if(this.PaymentType =='Paid'){
 
-        PaymentInsertobj['BillNo'] = 0,
-        PaymentInsertobj['ReceiptNo'] = '',
-        PaymentInsertobj['PaymentDate'] =   this.newDateTimeObj.date; ;
-        PaymentInsertobj['PaymentTime'] = this.newDateTimeObj.time;
-        PaymentInsertobj['CashPayAmount'] = this.FinalReturnform.get('ReturnAmt').value || 0;
-        PaymentInsertobj['ChequePayAmount'] = 0,
-        PaymentInsertobj['ChequeNo'] = 0,
-        PaymentInsertobj['BankName'] = '',
-        PaymentInsertobj['ChequeDate'] = '01/01/1900',
-        PaymentInsertobj['CardPayAmount'] = 0,
-        PaymentInsertobj['CardNo'] = '',
-        PaymentInsertobj['CardBankName'] = '',
-        PaymentInsertobj['CardDate'] = '01/01/1900',
-        PaymentInsertobj['AdvanceUsedAmount'] = 0;
-        PaymentInsertobj['AdvanceId'] = 0;
-        PaymentInsertobj['RefundId'] = 0;
-        PaymentInsertobj['TransactionType'] = 5;
-        PaymentInsertobj['Remark'] = '',
-        PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
-        PaymentInsertobj['IsCancelled'] = 0;
-        PaymentInsertobj['IsCancelledBy'] = 0;
-        PaymentInsertobj['IsCancelledDate'] = '01/01/1900',
-        PaymentInsertobj['OPD_IPD_Type'] = 3;
-        PaymentInsertobj['NEFTPayAmount'] = 0,
-        PaymentInsertobj['NEFTNo'] = '',
-        PaymentInsertobj['NEFTBankMaster'] = '',
-        PaymentInsertobj['NEFTDate'] = '01/01/1900',
-        PaymentInsertobj['PayTMAmount'] = 0,
-        PaymentInsertobj['PayTMTranNo'] = '',
-        PaymentInsertobj['PayTMDate'] = '01/01/1900'
-
-    let submitData = {
-      "salesReturnHeader": salesReturnHeader,
-      "salesReturnDetail": salesReturnDetailInsertCreditarr,
-      "salesReturn_CurStk_Upt": updateCurStkSalesCreditarray,
-      "update_SalesReturnQty_SalesTbl": Update_SalesReturnQtySalesTblarray,
-      "update_SalesRefundAmt_SalesHeader": Update_SalesRefundAmt_SalesHeader,
-      "cal_GSTAmount_SalesReturn": Cal_GSTAmount_SalesReturn,
-      "insert_ItemMovementReport_Cursor": Insert_ItemMovementReport_Cursor,
-      "salesReturnPayment":  PaymentInsertobj
-    };
-    console.log(submitData);
-    this._SalesReturnService.InsertCashSalesReturn(submitData).subscribe(response => {
-      if (response) {
-         console.log(response);
-         this.toastr.success('Record Saved Successfully.', 'Save !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-        this.getSalesRetPrint(response);
-        this.Itemchargeslist = [];
-        this._matDialog.closeAll();
-        // Swal.fire({
-        //   position: "center",
-        //   icon: "success",
-        //   title: "Record Saved Successfully",
-        //   showConfirmButton: false,
-        //   timer: 1500
-        // })
-        // Swal.fire('Paid SalesReturn!', 'Data saved Successfully !', 'success').then((result) => {
-        //   if (result.isConfirmed) {
-        //     // this.getPrint3(response);
-        //     this.Itemchargeslist = [];
-        //     this._matDialog.closeAll();
-        //   }
-        // });
-      } else {
-        this.toastr.error('transaction error!', 'error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      }
-      this.sIsLoading = '';
-    }, error => {
-      this.toastr.error('API error!', 'error !', {
+  let submitData = {
+    "salesReturnHeader": salesReturnHeader,
+    "salesReturnDetail": salesReturnDetailInsertCreditarr,
+    "salesReturn_CurStk_Upt": updateCurStkSalesCreditarray,
+    "update_SalesReturnQty_SalesTbl": Update_SalesReturnQtySalesTblarray,
+    "update_SalesRefundAmt_SalesHeader": Update_SalesRefundAmt_SalesHeader,
+    "cal_GSTAmount_SalesReturn": Cal_GSTAmount_SalesReturn,
+    "insert_ItemMovementReport_Cursor": Insert_ItemMovementReport_Cursor,
+    "salesReturnPayment": PaymentInsertobj
+  };
+  console.log(submitData);
+  this._SalesReturnService.InsertCashSalesReturn(submitData).subscribe(response => {
+    if (response) {
+      console.log(response);
+      this.toastr.success('Record Saved Successfully.', 'Save !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
+      this.getSalesRetPrint(response);
+      this.onClose();  
+    } else {
+      this.toastr.error('transaction error!', 'error !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
+    } 
+  }, error => {
+    this.toastr.error('API error!', 'error !', {
+      toastClass: 'tostr-tost custom-toast-error',
     });
-    this.dssaleList.data=[];
-    this.dssaleDetailList.data = [];
-    this.selectedssaleDetailList.data = [];
-
-    // }
+  }); 
+ }
+ else{ 
+  let submitData = {
+    "salesReturnHeader": salesReturnHeader,
+    "salesReturnDetail": salesReturnDetailInsertCreditarr,
+    "salesReturn_CurStk_Upt": updateCurStkSalesCreditarray,
+    "update_SalesReturnQty_SalesTbl": Update_SalesReturnQtySalesTblarray,
+    "update_SalesRefundAmt_SalesHeader": Update_SalesRefundAmt_SalesHeader,
+    "cal_GSTAmount_SalesReturn": Cal_GSTAmount_SalesReturn,
+    "insert_ItemMovementReport_Cursor": Insert_ItemMovementReport_Cursor
+  };
+  console.log(submitData);
+  this._SalesReturnService.InsertCreditSalesReturn(submitData).subscribe(response => {
+    if (response) {
+      console.log(response);
+      this.toastr.success('Record Saved Successfully.', 'Save !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });  
+      this.getSalesRetPrint(response);
+      this.onClose();
+    
+    } else {
+      this.toastr.error('transaction error!', 'error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    }
+    this.sIsLoading = '';
+  }, error => {
+    this.toastr.error('API error!', 'error !', {
+      toastClass: 'tostr-tost custom-toast-error',
+    });
+  });  
+ } 
+    setTimeout(() => { 
+      this.isLoading123=false;
+    }, 2000);
   }
+  
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }  
+
+  // onCreditpaySave() {
+
+  //   const currentDate = new Date();
+  //   const datePipe = new DatePipe('en-US');
+  //   const formattedTime = datePipe.transform(currentDate, 'shortTime');
+  //   const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
+  //   let salesReturnHeader = {};
+  //   salesReturnHeader['Date'] = formattedDate; 
+  //   salesReturnHeader['Time'] = formattedTime;
+  //   salesReturnHeader['SalesId'] = this.SalesID;
+  //   salesReturnHeader['OP_IP_ID'] = this.OP_IP_Id;
+  //   salesReturnHeader['OP_IP_Type'] = this.OP_IP_Type;
+  //   salesReturnHeader['TotalAmount'] = this.TotalAmt;
+  //   salesReturnHeader['VatAmount'] = this.VatAmount || 0;
+  //   salesReturnHeader['DiscAmount'] =this.DiscAmt || 0;
+  //   salesReturnHeader['NetAmount'] =this.NetAmt || 0;  
+  //   salesReturnHeader['PaidAmount'] = 0;
+  //   salesReturnHeader['BalanceAmount'] = this.NetAmt || 0;
+  //   salesReturnHeader['IsSellted'] = 1;
+  //   salesReturnHeader['IsPrint'] = 0,
+  //   salesReturnHeader['IsFree'] = 0;
+  //   salesReturnHeader['UnitID'] = 1;
+  //   salesReturnHeader['addedBy'] = this._loggedService.currentUserValue.user.id,
+  //   salesReturnHeader['StoreID '] =this._loggedService.currentUserValue.user.storeId,
+  //   salesReturnHeader['Narration'] = '';
+  //   salesReturnHeader['SalesReturnId'] = 0
+
+  //   let salesReturnDetailInsertCreditarr = [];
+  //   this.selectedssaleDetailList.data.forEach((element) => {
+  //     let salesReturnDetailCredit = {};
+  //     salesReturnDetailCredit['SalesReturnId'] = 0;
+  //     salesReturnDetailCredit['itemId'] = element.ItemId;
+  //     salesReturnDetailCredit['batchNo'] = element.BatchNo;
+  //     salesReturnDetailCredit['batchExpDate'] = element.BatchExpDate;
+  //     salesReturnDetailCredit['unitMRP'] = element.UnitMRP;
+  //     salesReturnDetailCredit['qty'] = element.ReturnQty;
+  //     salesReturnDetailCredit['totalAmount'] = element.TotalAmount;
+  //     salesReturnDetailCredit['vatPer'] = element.VatPer;
+  //     salesReturnDetailCredit['vatAmount'] = element.VatAmount;
+  //     salesReturnDetailCredit['discPer'] = element.DiscPer;
+  //     salesReturnDetailCredit['discAmount'] = element.DiscAmount;
+  //     salesReturnDetailCredit['grossAmount'] = element.GrossAmount;
+  //     salesReturnDetailCredit['landedPrice'] = element.LandedPrice;
+  //     salesReturnDetailCredit['totalLandedAmount'] = element.TotalLandedAmount;
+  //     salesReturnDetailCredit['PurRate'] = element.PurRateWf;
+  //     salesReturnDetailCredit['PurTot'] = element.PurTotAmt;
+  //     salesReturnDetailCredit['SalesID'] = this.SalesID;
+  //     salesReturnDetailCredit['SalesDetID'] = this.SalesDetId; 
+  //     salesReturnDetailCredit['isCashOrCredit'] =1;
+  //     salesReturnDetailCredit['cgstPer'] = element.CGSTPer;
+  //     salesReturnDetailCredit['cgstAmt'] = element.CGSTAmount;
+  //     salesReturnDetailCredit['sgstPer'] = element.SGSTPer;
+  //     salesReturnDetailCredit['sgstAmt'] = element.SGSTAmount;
+  //     salesReturnDetailCredit['igstPer'] = element.IGSTPer
+  //     salesReturnDetailCredit['igstAmt'] = element.IGSTAmount
+  //     salesReturnDetailCredit['stkID'] = element.StkID;
+  //     salesReturnDetailInsertCreditarr.push(salesReturnDetailCredit);
+  //   });
+ 
+  //   let updateCurStkSalesCreditarray = [];
+  //   this.selectedssaleDetailList.data.forEach((element) => {
+  //     let updateCurStkSalesCredit = {};
+  //     updateCurStkSalesCredit['itemId'] = element.ItemId;
+  //     updateCurStkSalesCredit['issueQty'] = element.ReturnQty;
+  //     updateCurStkSalesCredit['storeID'] = this._loggedService.currentUserValue.user.storeId,
+  //       updateCurStkSalesCredit['stkID'] = element.StkID;
+
+  //     updateCurStkSalesCreditarray.push(updateCurStkSalesCredit);
+  //   });
+
+  //   let Update_SalesReturnQtySalesTblarray = [];
+  //   this.selectedssaleDetailList.data.forEach((element) => {
+  //   let Update_SalesReturnQtySalesTbl = {};
+  //   Update_SalesReturnQtySalesTbl['SalesDetId'] = element.SalesDetId;
+  //   Update_SalesReturnQtySalesTbl['ReturnQty'] = element.ReturnQty;
+  //   Update_SalesReturnQtySalesTblarray.push(Update_SalesReturnQtySalesTbl);
+  // });
+
+  //   let Update_SalesRefundAmt_SalesHeader = {};
+  //   Update_SalesRefundAmt_SalesHeader['SalesReturnId'] = 0;
+
+  //   let Cal_GSTAmount_SalesReturn = {};
+  //   Cal_GSTAmount_SalesReturn['SalesReturnID'] = 0;
+
+  //   let Insert_ItemMovementReport_Cursor = {};
+  //   Insert_ItemMovementReport_Cursor['Id'] = 0;
+  //   Insert_ItemMovementReport_Cursor['TypeId'] = 2;
+  //   // console.log("Procced with Payment Option");
+
+  //   let submitData = {
+  //     "salesReturnHeader": salesReturnHeader,
+  //     "salesReturnDetail": salesReturnDetailInsertCreditarr,
+  //     "salesReturn_CurStk_Upt": updateCurStkSalesCreditarray,
+  //     "update_SalesReturnQty_SalesTbl": Update_SalesReturnQtySalesTblarray,
+  //     "update_SalesRefundAmt_SalesHeader": Update_SalesRefundAmt_SalesHeader,
+  //     "cal_GSTAmount_SalesReturn": Cal_GSTAmount_SalesReturn,
+  //     "insert_ItemMovementReport_Cursor": Insert_ItemMovementReport_Cursor,
+  //   };
+  //   console.log(submitData);
+  //   this._SalesReturnService.InsertCreditSalesReturn(submitData).subscribe(response => {
+  //     if (response) {
+  //       Swal.fire('Credit SalesReturn!', 'Data saved Successfully !', 'success').then((result) => {
+  //         if (result.isConfirmed) {
+  //           this.getSalesRetPrint(response);
+  //           this.Itemchargeslist = [];
+  //           this._matDialog.closeAll();
+  //         }
+  //       });
+  //     } else {
+  //       Swal.fire('Error !', 'Sale Return Credit data not saved', 'error');
+  //     }
+  //     this.sIsLoading = '';
+  //   });
+  //   this.dssaleList.data=[];
+  //   this.dssaleDetailList.data = [];
+  //   this.selectedssaleDetailList.data = [];
+
+  // } 
+  // onCashOnlinePaySave() {
+  //   const currentDate = new Date();
+  //   const datePipe = new DatePipe('en-US');
+  //   const formattedTime = datePipe.transform(currentDate, 'shortTime');
+  //   const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
+  //   let salesReturnHeader = {};
+  //   salesReturnHeader['Date'] = formattedDate;
+  //   salesReturnHeader['Time'] = formattedTime;
+  //   salesReturnHeader['SalesId'] = this.SalesID;
+  //   salesReturnHeader['OP_IP_ID'] = this.OP_IP_Id;
+  //   salesReturnHeader['OP_IP_Type'] = this.OP_IP_Type;
+  //   salesReturnHeader['TotalAmount'] = this.FinalReturnform.get('ReturnAmt').value;
+  //   salesReturnHeader['VatAmount'] = this.VatAmount || 0;
+  //   salesReturnHeader['DiscAmount'] =this.FinalReturnform.get('TotDiscAmount').value|| 0;
+  //   salesReturnHeader['NetAmount'] =this.FinalReturnform.get('ReturnAmt').value || 0;
+  //   salesReturnHeader['PaidAmount'] =  this.FinalReturnform.get('ReturnAmt').value || 0;
+  //   salesReturnHeader['BalanceAmount'] =0;
+  //   salesReturnHeader['IsSellted'] = 1;
+  //   salesReturnHeader['IsPrint'] = 0,
+  //   salesReturnHeader['IsFree'] = 0;
+  //   salesReturnHeader['UnitID'] = 1;
+  //   salesReturnHeader['addedBy'] = this._loggedService.currentUserValue.user.id,
+  //   salesReturnHeader['StoreID'] =this._loggedService.currentUserValue.user.storeId,
+  //   salesReturnHeader['Narration'] = "";
+  //   salesReturnHeader['SalesReturnId'] = 0
+
+  //   let salesReturnDetailInsertCreditarr = [];
+  //   this.selectedssaleDetailList.data.forEach((element) => {
+  //     let salesReturnDetailCredit = {};
+  //     salesReturnDetailCredit['SalesReturnId'] = 0;
+  //     salesReturnDetailCredit['itemId'] = element.ItemId;
+  //     salesReturnDetailCredit['batchNo'] = element.BatchNo;
+  //     salesReturnDetailCredit['batchExpDate'] = element.BatchExpDate;
+  //     salesReturnDetailCredit['unitMRP'] = element.UnitMRP;
+  //     salesReturnDetailCredit['qty'] = element.ReturnQty;
+  //     salesReturnDetailCredit['totalAmount'] = element.TotalAmount;
+  //     salesReturnDetailCredit['vatPer'] = element.VatPer;
+  //     salesReturnDetailCredit['vatAmount'] = element.VatAmount;
+  //     salesReturnDetailCredit['discPer'] = element.DiscPer;
+  //     salesReturnDetailCredit['discAmount'] = element.DiscAmount;
+  //     salesReturnDetailCredit['grossAmount'] = element.GrossAmount;
+  //     salesReturnDetailCredit['landedPrice'] = element.LandedPrice;
+  //     salesReturnDetailCredit['totalLandedAmount'] = element.TotalLandedAmount;
+  //     salesReturnDetailCredit['PurRate'] = element.PurRateWf;
+  //     salesReturnDetailCredit['PurTot'] = element.PurTotAmt;
+  //     salesReturnDetailCredit['SalesID'] = element.SalesId;
+  //     salesReturnDetailCredit['SalesDetID'] = element.SalesDetId;
+  //     salesReturnDetailCredit['isCashOrCredit'] =0;
+  //     salesReturnDetailCredit['cgstPer'] = element.CGSTPer;
+  //     salesReturnDetailCredit['cgstAmt'] = element.CGSTAmount;
+  //     salesReturnDetailCredit['sgstPer'] = element.SGSTPer;
+  //     salesReturnDetailCredit['sgstAmt'] = element.SGSTAmount;
+  //     salesReturnDetailCredit['igstPer'] = element.IGSTPer
+  //     salesReturnDetailCredit['igstAmt'] = element.IGSTAmount
+  //     salesReturnDetailCredit['stkID'] = element.StkID;
+  //     salesReturnDetailInsertCreditarr.push(salesReturnDetailCredit);
+  //   });
+ 
+  //     console.log(salesReturnDetailInsertCreditarr);
+  //   let updateCurStkSalesCreditarray = [];
+  //   this.selectedssaleDetailList.data.forEach((element) => {
+  //     let updateCurStkSalesCredit = {};
+  //     updateCurStkSalesCredit['itemId'] = element.ItemId;
+  //     updateCurStkSalesCredit['issueQty'] = element.ReturnQty;
+  //     updateCurStkSalesCredit['storeID'] = this._loggedService.currentUserValue.user.storeId,
+  //     updateCurStkSalesCredit['stkID'] = element.StkID;
+  //     updateCurStkSalesCreditarray.push(updateCurStkSalesCredit);
+  //   });
+
+  //   let Update_SalesReturnQtySalesTblarray = [];
+  //   this.selectedssaleDetailList.data.forEach((element) => {
+  //   let Update_SalesReturnQtySalesTbl = {};
+  //   Update_SalesReturnQtySalesTbl['SalesDetId'] = element.SalesDetId;
+  //   Update_SalesReturnQtySalesTbl['ReturnQty'] = element.ReturnQty;
+  //   Update_SalesReturnQtySalesTblarray.push(Update_SalesReturnQtySalesTbl);
+  // });
+
+  //   let Update_SalesRefundAmt_SalesHeader = {};
+  //   Update_SalesRefundAmt_SalesHeader['SalesReturnId'] = 0;
+
+  //   let Cal_GSTAmount_SalesReturn = {};
+  //   Cal_GSTAmount_SalesReturn['SalesReturnID'] = 0;
+
+  //   let Insert_ItemMovementReport_Cursor = {};
+  //   Insert_ItemMovementReport_Cursor['Id'] = 0;
+  //   Insert_ItemMovementReport_Cursor['TypeId'] = 2;
+
+  //   let PaymentInsertobj = {};
+  //   // if (this._SalesReturnService.IndentSearchGroup.get('CashPay').value == 'Other') {
+  //     let PatientHeaderObj = {};
+
+  //     PatientHeaderObj['Date'] = this.newDateTimeObj.date; ;
+  //     PatientHeaderObj['PatientName'] = this.PatientName;
+  //     PatientHeaderObj['OPD_IPD_Id'] = 2,// this.reportPrintObj.RegNo;
+  //     PatientHeaderObj['NetPayAmount'] = this.FinalReturnform.get('ReturnAmt').value || 0;
+
+  //       PaymentInsertobj['BillNo'] = 0,
+  //       PaymentInsertobj['ReceiptNo'] = '',
+  //       PaymentInsertobj['PaymentDate'] =   this.newDateTimeObj.date; ;
+  //       PaymentInsertobj['PaymentTime'] = this.newDateTimeObj.time;
+  //       PaymentInsertobj['CashPayAmount'] = this.FinalReturnform.get('ReturnAmt').value || 0;
+  //       PaymentInsertobj['ChequePayAmount'] = 0,
+  //       PaymentInsertobj['ChequeNo'] = 0,
+  //       PaymentInsertobj['BankName'] = '',
+  //       PaymentInsertobj['ChequeDate'] = '01/01/1900',
+  //       PaymentInsertobj['CardPayAmount'] = 0,
+  //       PaymentInsertobj['CardNo'] = '',
+  //       PaymentInsertobj['CardBankName'] = '',
+  //       PaymentInsertobj['CardDate'] = '01/01/1900',
+  //       PaymentInsertobj['AdvanceUsedAmount'] = 0;
+  //       PaymentInsertobj['AdvanceId'] = 0;
+  //       PaymentInsertobj['RefundId'] = 0;
+  //       PaymentInsertobj['TransactionType'] = 5;
+  //       PaymentInsertobj['Remark'] = '',
+  //       PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+  //       PaymentInsertobj['IsCancelled'] = 0;
+  //       PaymentInsertobj['IsCancelledBy'] = 0;
+  //       PaymentInsertobj['IsCancelledDate'] = '01/01/1900',
+  //       PaymentInsertobj['OPD_IPD_Type'] = 3;
+  //       PaymentInsertobj['NEFTPayAmount'] = 0,
+  //       PaymentInsertobj['NEFTNo'] = '',
+  //       PaymentInsertobj['NEFTBankMaster'] = '',
+  //       PaymentInsertobj['NEFTDate'] = '01/01/1900',
+  //       PaymentInsertobj['PayTMAmount'] = 0,
+  //       PaymentInsertobj['PayTMTranNo'] = '',
+  //       PaymentInsertobj['PayTMDate'] = '01/01/1900'
+
+  //   let submitData = {
+  //     "salesReturnHeader": salesReturnHeader,
+  //     "salesReturnDetail": salesReturnDetailInsertCreditarr,
+  //     "salesReturn_CurStk_Upt": updateCurStkSalesCreditarray,
+  //     "update_SalesReturnQty_SalesTbl": Update_SalesReturnQtySalesTblarray,
+  //     "update_SalesRefundAmt_SalesHeader": Update_SalesRefundAmt_SalesHeader,
+  //     "cal_GSTAmount_SalesReturn": Cal_GSTAmount_SalesReturn,
+  //     "insert_ItemMovementReport_Cursor": Insert_ItemMovementReport_Cursor,
+  //     "salesReturnPayment":  PaymentInsertobj
+  //   };
+  //   console.log(submitData);
+  //   this._SalesReturnService.InsertCashSalesReturn(submitData).subscribe(response => {
+  //     if (response) {
+  //        console.log(response);
+  //        this.toastr.success('Record Saved Successfully.', 'Save !', {
+  //         toastClass: 'tostr-tost custom-toast-success',
+  //       });
+  //       this.getSalesRetPrint(response);
+  //       this.Itemchargeslist = [];
+  //       this._matDialog.closeAll();
+  //     } else {
+  //       this.toastr.error('transaction error!', 'error !', {
+  //         toastClass: 'tostr-tost custom-toast-error',
+  //       });
+  //     }
+  //     this.sIsLoading = '';
+  //   }, error => {
+  //     this.toastr.error('API error!', 'error !', {
+  //       toastClass: 'tostr-tost custom-toast-error',
+  //     });
+  //   });
+  //   this.dssaleList.data=[];
+  //   this.dssaleDetailList.data = [];
+  //   this.selectedssaleDetailList.data = [];
+
+  //   // }
+  // }
 
   getTotAmtSum(element) {
     this.FinalTotalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
@@ -882,7 +1078,7 @@ export class SalesReturnComponent implements OnInit {
     debugger
     var D_data = {
       "SalesID": el,
-      "OP_IP_Type": 2//this.OP_IP_Type,
+      "OP_IP_Type": this.OP_IP_Type,
     }
     let printContents;
     this.subscriptionArr.push(
@@ -897,6 +1093,7 @@ export class SalesReturnComponent implements OnInit {
       })
     );
   }
+  
 
   convertToWord(e) {
     return converter.toWords(e);
@@ -963,7 +1160,15 @@ export class SalesReturnComponent implements OnInit {
   }
 
   onClose() {
-    this.Itemselectedlist = [];
+    this.Itemselectedlist = []; 
+    this.SearchForm.get('StoreId').setValue(this.StoreList[0]);
+    this.SearchForm.get('RegNo').setValue(''); 
+    this.SearchForm.get('F_Name').setValue(''); 
+    this.SearchForm.get('L_Name').setValue(''); 
+    this.SearchForm.get('SalesNo').setValue(''); 
+    this.dssaleList.data = [];
+    this.dssaleDetailList.data = [];
+    this.selectedssaleDetailList.data = [];  
   }
 }
 

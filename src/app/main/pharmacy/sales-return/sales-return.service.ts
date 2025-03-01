@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class SalesReturnService {
 
   constructor(
     public _httpClient: HttpClient,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder, 
+    private _loaderService: LoaderService
   ) { 
     this.userFormGroup = this.IndentID();
     this.IndentSearchGroup= this.IndentSearchFrom();
@@ -72,7 +74,10 @@ export class SalesReturnService {
     });
   }
  
-  public getSalesBillList(Param){
+  public getSalesBillList(Param,loader = true){
+    if(loader){
+      this._loaderService.show()
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseSalesBill",Param);
   }
 
@@ -80,29 +85,48 @@ export class SalesReturnService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
 
-  public getSalesDetCashList(Param){
+  public getSalesDetCashList(Param,loader = true){
+    if(loader){
+      this._loaderService.show()
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SalesBill_Return_Cash",Param);
   }
 
-  public getSalesDetCreditList(Param){
+  public getSalesDetCreditList(Param,loader = true){
+    if(loader){
+      this._loaderService.show()
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SalesBill_Return_Credit",Param);
   }
 
-  public InsertSalesReturn(employee){
+  public InsertSalesReturn(employee,loader = true){
+    if(loader){
+      this._loaderService.show()
+    }
     return this._httpClient.post("Pharmacy/InsertSalesReturn", employee)
   }
-  public getSalesReturnPrint(emp){
+  public getSalesReturnPrint(emp,loader = true){
+    if(loader){
+      this._loaderService.show()
+    }
     return this._httpClient.post("Generic/GetByProc?procName=m_rptSalesReturnPrint",emp);
   }
   public getTemplate(query) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
   } 
 
-  public InsertCreditSalesReturn(employee){
+  public InsertCreditSalesReturn(employee,loader = true){
+    if(loader){
+      this._loaderService.show()
+    }
     return this._httpClient.post("Pharmacy/InsertSalesReturnCredit", employee)
   }
   
-  public InsertCashSalesReturn (employee){
+  public InsertCashSalesReturn (employee,loader = true){
+    if(loader){
+      this._loaderService.show()
+    }
     return this._httpClient.post("Pharmacy/InsertSalesReturnPaid", employee)
   }
+  
 }

@@ -497,34 +497,62 @@ getOPDpackagedetList(obj) {
       )
     } 
   }
-  // OnSaveEditSupplier(contact){
-  //   console.log(contact)
-  // let Query 
-  // Query = "update T_GRNHeader set SupplierId = " + this.EditSupplierId  + "where grnid =" + contact.GRNID ;
-  // this._GRNService.UpdateSupplierName(Query).subscribe(response =>{
-  //   if (response) {
-  //     this.toastr.success('Record Updated Successfully.', 'Updated !', {
-  //       toastClass: 'tostr-tost custom-toast-success',
-  //     });
-  //     this.getGRNList();
-  //   }
-  //   else {
-  //     this.toastr.error('Record Data not Updated !, Please check error..', 'Error !', {
-  //       toastClass: 'tostr-tost custom-toast-error',
-  //     });
-  //   }  
-  // });
-  // }
  
-  deleteTableRowPackage(element) {
-    let index = this.PacakgeList.indexOf(element);
-    if (index >= 0) {
-      this.PacakgeList.splice(index, 1);
-      this.dsPackageDet.data = [];
-      this.dsPackageDet.data = this.PacakgeList;
+  // deleteTableRowPackage(element) {
+  //   let index = this.PacakgeList.indexOf(element);
+  //   if (index >= 0) {
+  //     this.PacakgeList.splice(index, 1);
+  //     this.dsPackageDet.data = [];
+  //     this.dsPackageDet.data = this.PacakgeList;
+  //   }
+  //   Swal.fire('Success !', 'PacakgeList Row Deleted Successfully', 'success');
+  // }
+  deleteTableRowPackage(contact) { 
+      Swal.fire({
+        title: 'Do you want to Delete Service',
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Delete it!"
+  
+      }).then((flag) => { 
+        if (flag.isConfirmed) {
+
+          if (this.data.FormName == 'IPD Package'){
+            let Chargescancle = {};
+            Chargescancle['ChargesId'] = contact.ChargesId;
+            Chargescancle['userId'] = this._loggedService.currentUserValue.user.id;
+    
+            let submitData = {
+              "deleteCharges": Chargescancle
+            };
+            console.log(submitData);
+            this._OpBillingService.AddServicecancle(submitData).subscribe(response => {
+              if (response) {
+                debugger
+                Swal.fire('Service deleted !', 'Service deleted Successfully!', 'success').then((result) => { 
+                  this.getpackagedetList(this.registerObj) 
+                });
+              } else {
+                Swal.fire('Error !', 'Service not deleted  ', 'error');
+              }
+              this.isLoading = '';
+            });
+          }else{
+            let index = this.PacakgeList.indexOf(contact);
+            if (index >= 0) {
+              this.PacakgeList.splice(index, 1);
+              this.dsPackageDet.data = [];
+              this.dsPackageDet.data = this.PacakgeList;
+            }
+            Swal.fire('Success !', 'PacakgeList Row Deleted Successfully', 'success');
+          }
+         
+        }
+      });
     }
-    Swal.fire('Success !', 'PacakgeList Row Deleted Successfully', 'success');
-  }
   gettablecalculation(element) {
     console.log(element)
     if (element.Qty == 0 || element.Qty == '') {

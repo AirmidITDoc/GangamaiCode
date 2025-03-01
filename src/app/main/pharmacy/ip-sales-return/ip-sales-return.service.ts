@@ -53,11 +53,17 @@ export class IpSalesReturnService {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPSalesBillForReturn_Credit",Param);
   }
 
-  public InsertCreditSalesReturn(employee){
+  public InsertCreditSalesReturn(employee,loader = true){
+    if(loader){
+      this._loaderService.show()
+    }
     return this._httpClient.post("Pharmacy/InsertSalesReturnCredit", employee)
   }
   
-  public InsertCashSalesReturn (employee){
+  public InsertCashSalesReturn (employee,loader = true){
+    if(loader){
+      this._loaderService.show()
+    }
     return this._httpClient.post("Pharmacy/InsertSalesReturnPaid", employee)
   }
 
@@ -81,13 +87,22 @@ export class IpSalesReturnService {
   public getSalesReturnCredit(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SalesBill_Return_Credit",{});
   }
-  public getSalesReturnPdf(SalesId,OP_IP_Type) {
-    return this._httpClient.get("Pharmacy/view-SalesTaxReturn_Report?SalesId=" + SalesId + "&OP_IP_Type=" + OP_IP_Type);
+  public getSalesReturnPdf(SalesID,OP_IP_Type,loader = true){
+    if(loader){
+      this._loaderService.show()
+    }
+    return this._httpClient.get("Pharmacy/view-SalesTaxReturn_Report?SalesID=" + SalesID + "&OP_IP_Type=" + OP_IP_Type);
     }
     public getIpPrescriptinRetrunlist(param,loader = true){
       if(loader){
         this._loaderService.show()
       }
       return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPPrescReturnItemDetOnSalesReturn",param);
+    }
+    public getSalesReturnPrint(emp,loader = true){
+      if(loader){
+        this._loaderService.show()
+      }
+      return this._httpClient.post("Generic/GetByProc?procName=m_rptSalesReturnPrint",emp);
     }
 }

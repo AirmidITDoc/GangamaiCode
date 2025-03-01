@@ -152,9 +152,9 @@
 
                                             <mat-table #table matSort [dataSource]="dssaleList1" [@animateStagger]="{value:'50'}">
                                                 <ng-container matColumnDef="OP_Ip_Type" sticky>
-                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-60">
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-90">
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" class="w-60">
+                                                    <mat-cell *matCellDef="let contact" class="w-90">
                                                         <mat-icon *ngIf="contact.OP_IP_Type==1" matTooltip="IP" class="pill green-600 s-16">circle</mat-icon>
                                                         <mat-icon *ngIf="contact.OP_IP_Type==0" matTooltip="OP" class="pill orange s-16">circle</mat-icon>
                                                         <mat-icon *ngIf="contact.OP_IP_Type==2" matTooltip="External" class="pill blue s-16">circle</mat-icon>
@@ -163,7 +163,7 @@
                                                             <mat-icon>replay</mat-icon>
                                                         </button>
                                                         <button mat-icon-button matTooltip="Credit Bill"
-                                                            *ngIf="contact.PaidType=='Credit' && contact.IsRefundFlag==false" (click)="OnPayment(contact)">
+                                                            *ngIf="contact.PaidType=='Credit' && contact.BalanceAmount > '0'" (click)="OnPayment(contact)">
                                                             <mat-icon>payment</mat-icon>
                                                         </button>
                                                     </mat-cell>
@@ -606,9 +606,9 @@
                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
                                                 <ng-container matColumnDef="OP_Ip_Type" sticky>
-                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80">
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-50">
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" class="w-80">
+                                                    <mat-cell *matCellDef="let contact" class="w-50">
                                                         <mat-icon *ngIf="contact.OP_IP_Type==1" matTooltip="IP"
                                                             class="pill green-600 s-16">circle</mat-icon>
                                                         <mat-icon *ngIf="contact.OP_IP_Type==0" matTooltip="OP"
@@ -647,10 +647,10 @@
 
 
                                                 <ng-container matColumnDef="PatientName" sticky>
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  class="w-150">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  class="w-250">
                                                         Patient Name
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm  class="w-150">
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm  class="w-250">
                                                         {{contact.PatientName}}
                                                     </mat-cell>
                                                 </ng-container>
@@ -695,9 +695,9 @@
 
                                                 <ng-container matColumnDef="action" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                                        style="color: white;" class="w-140">Action
+                                                        style="color: white;" class="w-130">Action
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let row" class="w-140">
+                                                    <mat-cell *matCellDef="let row" class="w-130">
                                                         <button mat-icon-button matTooltip="Print">
                                                             <mat-icon (click)="getSalesRetPrint(row)">print</mat-icon>
                                                         </button>
@@ -737,7 +737,7 @@
                                                 </mat-footer-row>
 
                                             </mat-table>
-                                            <mat-paginator  [pageSizeOptions]="[15, 25, 35, 100]" [pageSize]="15"
+                                            <mat-paginator #SalesRetPaginator [pageSizeOptions]="[15, 25, 35, 100]" [pageSize]="15"
                                                 showFirstLastButtons> </mat-paginator>
 
 

@@ -30,4 +30,10 @@ export class OpBillingService {
     }
     return this._httpClient.post("InPatient/UpdateIPDPackageCharges", employee);
   }
+  public AddServicecancle(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("InPatient/DeleteIPCharges", employee);
+  }
 }

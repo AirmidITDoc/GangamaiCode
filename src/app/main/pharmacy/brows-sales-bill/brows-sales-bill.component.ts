@@ -165,6 +165,7 @@ export class BrowsSalesBillComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatPaginator) IPListpaginator: MatPaginator;
+  @ViewChild('SalesRetPaginator', { static: true }) public SalesRetPaginator: MatPaginator;
 
   constructor(
     public _AdmissionService: IPSearchListService,
@@ -401,7 +402,7 @@ export class BrowsSalesBillComponent implements OnInit {
       this.sIsLoading = '';
       this._BrowsSalesBillService.getSalesList(vdata).subscribe(data => { 
         this.dssaleList1.data = data as SaleList[];
-       // console.log(this.dssaleList1.data);
+        console.log(this.dssaleList1.data);
         this.dssaleList1.sort = this.sort;
         this.dssaleList1.paginator = this.paginator; 
         this.sIsLoading = this.dssaleList1.data.length == 0 ? 'no-data' : '';
@@ -444,7 +445,7 @@ export class BrowsSalesBillComponent implements OnInit {
         this.dssalesReturnList.data = data as SalesReturnList[];
         console.log(this.dssalesReturnList.data);
         this.dssalesReturnList.sort = this.sort;
-      this.dssalesReturnList.paginator = this.paginator;
+      this.dssalesReturnList.paginator = this.SalesRetPaginator;
         this.sIsLoading = this.dssalesReturnList.data.length == 0 ? 'no-data' : 'no data';
         this.sIsLoading = ''; 
       },

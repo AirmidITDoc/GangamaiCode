@@ -104,12 +104,12 @@ export class GstReportService {
   
     return this._httpClient.get("GSTReport/view-PurchaseRetumGSTReportDateWise?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
-  public getpurchasereturngstsummaryReport(FromDate,ToDate,loader = true){
+  public getpurchasereturngstsummaryReport(FromDate,ToDate,StoreId,loader = true){
     if (loader) {
       this._loaderService.show();
   }
   
-    return this._httpClient.get("GSTReport/view-PurchaseRetumGSTReportDateWise?FromDate="+FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("GSTReport/view-PurchaseReturnGSTReportSummary?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
   
   public getSalesGstReport(FromDate,ToDate,StoreId,loader = true){
