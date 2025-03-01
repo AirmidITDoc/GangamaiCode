@@ -11,8 +11,8 @@
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <form [formGroup]="searchFormGroup" style="color:wheat;">
-                <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" fxFlex="70%"
-                    placeholderText="Enter Patient Name" fxFlex ApiUrl="VisitDetail/search-patient?Keyword="
+                <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" fxFlex="90%"
+                    placeholderText="Enter Patient Name"  ApiUrl="VisitDetail/search-patient?Keyword="
                     (selectionChange)="getSelectedObj($event)" TextField="formattedText"
                     ValueField="regId"></airmid-autocomplete>
 

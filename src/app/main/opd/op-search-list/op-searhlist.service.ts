@@ -548,4 +548,9 @@ export class OPSearhlistService {
     public getReportView(Param) {
         return this._httpClient1.PostData("Report/ViewReport", Param);
     }
+
+
+    getNewMenuMasterList(emp) {
+        return this._httpClient1.PostData("MenuMaster/MenuMasterList",emp)
+      }
 }

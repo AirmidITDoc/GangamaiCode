@@ -273,7 +273,7 @@ public InsertOPBillingpayment(employee) {
     
     public getLastVisitDoctorList(param) {
       
-        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PreviousDoctorVisitList", param)
+        return this._httpClient1.PostData("VisitDetail/OPprevDoctorVisitList", param)
     }
 
   

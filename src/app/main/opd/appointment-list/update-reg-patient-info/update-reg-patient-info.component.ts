@@ -19,6 +19,7 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { PatientvitalInformationComponent } from '../new-appointment/patientvital-information/patientvital-information.component';
 import { VisitMaster1 } from '../appointment-list.component';
+import { debug } from 'console';
 
 @Component({
   selector: 'app-update-reg-patient-info',
@@ -259,6 +260,7 @@ export class UpdateRegPatientInfoComponent {
   }
   PrevregisterObj: any;
   getLastDepartmetnNameList(row) {
+    debugger
     const dialogRef = this._matDialog.open(PreviousDeptListComponent,
       {
         maxWidth: "45vw",

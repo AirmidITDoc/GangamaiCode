@@ -37,6 +37,7 @@ import { PatientvitalInformationComponent } from './new-appointment/patientvital
 import { RegInsert } from '../registration/registration.component';
 import { UpdateRegPatientInfoComponent } from './update-reg-patient-info/update-reg-patient-info.component';
 import { SearchInforObj, SearchInforObj1 } from '../op-search-list/opd-search-list/opd-search-list.component';
+import { TestingTableComponent } from '../testing-table/testing-table.component';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -85,6 +86,7 @@ export class AppointmentListComponent implements OnInit {
         this.menuActions.push("Update Consultant Doctor");
         this.menuActions.push("Update Referred Doctor");
         this.menuActions.push("Medical Record");
+        this.menuActions.push("Report Record");
         this.Appointdetail(this.gridConfig)
 
     }
@@ -296,6 +298,25 @@ export class AppointmentListComponent implements OnInit {
                 }
             });
         }
+        else if (m == "Report Record") {
+            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+            buttonElement.blur(); // Remove focus from the button
+
+            let that = this;
+            const dialogRef = this._matDialog.open(TestingTableComponent,
+                {
+                    maxWidth: "90vw",
+                    height: "890px",
+                    width: "100%",
+                    data: element
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    that.grid.bindGridData();
+                }
+            });
+        }
+       
     }
 
     OnViewReportPdf(element) {
@@ -496,13 +517,13 @@ export class AppointmentListComponent implements OnInit {
 
             }, 500);
 
-            setTimeout(() => {
-                this._AppointmentlistService.getVisitById(this.vOPIPId).subscribe(data => {
-                    this.patientDetail1 = data;
-                    console.log(data)
-                    console.log(this.patientDetail1)
-                });
-            }, 1000);
+            // setTimeout(() => {
+            //     this._AppointmentlistService.getVisitById(this.vOPIPId).subscribe(data => {
+            //         this.patientDetail1 = data;
+            //         console.log(data)
+            //         console.log(this.patientDetail1)
+            //     });
+            // }, 1000);
         }
         this.updateRegisteredPatientInfo(obj);
     }

@@ -252,7 +252,7 @@ patientDetail1 = new VisitMaster1({});
       console.log(Visit);
       this.dataSource3.data = Visit.data
       console.log(this.dataSource3.data);
-     
+      this.vOPIPId = this.dataSource3.data
     });
 
 
@@ -304,8 +304,7 @@ patientDetail1 = new VisitMaster1({});
   getSelectedObj(obj) {
     if ((obj.value ?? 0) > 0) {
       console.log(obj)
-      this.vOPIPId = obj.visitId
-      setTimeout(() => {
+    setTimeout(() => {
         this._RefundbillService.getRegistraionById(obj.value).subscribe((response) => {
           this.registerObj = response;
           this.RegId = this.registerObj.regId
@@ -492,7 +491,7 @@ patientDetail1 = new VisitMaster1({});
         PatientHeaderObj['DoctorName'] = this.Doctorname;
         PatientHeaderObj['CompanyName'] = this.CompanyName;
         //  PatientHeaderObj['DepartmentName'] = this.DepartmentName;
-         PatientHeaderObj['OPD_IPD_Id'] = this.vOPDNo;
+        //  PatientHeaderObj['OPD_IPD_Id'] = this.vOPDNo;
         PatientHeaderObj['Age'] = this.AgeYear;
         PatientHeaderObj['NetPayAmount'] = Math.round(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
 
@@ -505,7 +504,7 @@ patientDetail1 = new VisitMaster1({});
             width: '80%',
             data: {
               vPatientHeaderObj: PatientHeaderObj,
-              FromName: "OP-Bill",
+              FromName: "OP-RefundOfBill",
               advanceObj: PatientHeaderObj,
             }
           });

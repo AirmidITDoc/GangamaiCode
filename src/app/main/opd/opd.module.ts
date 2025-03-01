@@ -5,6 +5,7 @@ import { CompanysettlementComponent } from './companysettlement/companysettlemen
 import { SharedModule } from "../shared/shared.module";
 import { RefundbillComponent } from './refundbill/refundbill.component';
 
+
 const appRoutes: Routes = [
   {
     path: "phone-appointment",
@@ -57,7 +58,9 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [ ],
+  declarations: [ 
+    
+  ],
   imports: [
     RouterModule.forChild(appRoutes),
     SharedModule

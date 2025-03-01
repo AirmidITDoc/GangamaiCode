@@ -23,7 +23,7 @@ export class PreviousDeptListComponent {
   dsLastDepartmentname = new MatTableDataSource<RegInsert>();
 
   constructor(
-   
+
     public _opappointmentService: AppointmentlistService,
     private dialogRef: MatDialogRef<PreviousDeptListComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -43,15 +43,37 @@ export class PreviousDeptListComponent {
 
   getLastVisitDoctorList(Obj) {
     var vdata = {
-      'RegId': Obj.RegId || 0
+      "first": 0,
+      "rows": 20,
+      "sortField": "RegId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "RegId",
+          "fieldValue": "140306",
+          "opType": "Equals"
+        },
+        {
+             "fieldName": "Start",
+             "fieldValue": "0",
+             "opType": "Equals"
+           },
+        {
+             "fieldName": "Length",
+             "fieldValue": "10",
+             "opType": "Equals"
+           }
+      ],
+      "exportType": "JSON"
     }
     this._opappointmentService.getLastVisitDoctorList(vdata).subscribe(data => {
-      this.dsLastDepartmentname.data = data as RegInsert[]
+      this.dsLastDepartmentname.data = data.data as RegInsert[]
+      console.log(data)
     })
   }
-  getDoctor(contact){
+  getDoctor(contact) {
     console.log(contact)
-  this.dialogRef.close(contact)
+    this.dialogRef.close(contact)
   }
   onClose() {
     this.dialogRef.close();

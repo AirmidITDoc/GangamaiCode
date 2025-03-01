@@ -281,18 +281,7 @@ constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
     });
   }
 
-  DischargesaveForm(): FormGroup{
-    return this._formBuilder.group({
-    
-    dischargeId: 0,
-    admissionId: 0,
-    dischargeDate: "2029-09-07",
-    dischargeTime: "",
-    dischargeTypeId: 0,
-    dischargedDocId: 0,
-    dischargedRmoid: 10,
-    });
-  }
+ 
   refundAdvanceForm(): FormGroup {
     return this._formBuilder.group({
       AdmissionId:'',
@@ -1115,10 +1104,7 @@ public deactivateTheStatus(m_data) {
   return this._httpClient1.PostData("Admission", m_data);
 }
 
-public insertIPDDischargSummary(employee)
-{    
-  return this._httpClient1.PostData("DischargeSummary/Insert",employee);
-}
+
 
 
 public getRegistraionById(Id) {
@@ -1152,7 +1138,12 @@ public SaveDischargeInitiate(employee) {
 
 public updateIPDDischargSummary(employee)
 {    
-  return this._httpClient1.PostData("InPatient/UpdateIPDischargeSummary",employee);
+  return this._httpClient1.PostData("DischargeSummary/DischargeUpdate",employee);
+}
+
+public insertIPDDischargSummary(employee)
+{    
+  return this._httpClient1.PostData("DischargeSummary/DischargeInsert",employee);
 }
 }
 
