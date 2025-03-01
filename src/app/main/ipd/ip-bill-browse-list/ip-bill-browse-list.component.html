@@ -1,28 +1,14 @@
 <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
     dynamicTableHeight>
-    <mat-toolbar class="top-header accent">
-        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
-            <!-- <button mat-icon-button class="sidebar-toggle ">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-            </mat-icon> -->
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                IP Bill List
-            </span>
-        </div>
 
-    </mat-toolbar>
-
-
-    <mat-tab-group>
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
 
         <mat-tab label="IP Browse Bill List">
 
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
-                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                <!-- <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
                     fxLayoutAlign.gt-xs="space-between center ">
                     <div class="top-header-info">
                         <div class="top-header-title">
@@ -35,9 +21,8 @@
                     <button mat-raised-button (click)="IPAdvanceComponent()">IPAdvance
                     </button>
 
-                </div>
-                <div class="info-badge-top border-bottom" style="margin-left: 18%;" fxLayout="row"
-                    fxLayoutAlign="space-between" flex>
+                </div> -->
+                <div class="info-badge-top border-bottom" fxLayout="row" fxLayoutAlign="space-between" flex>
 
                     <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
 
@@ -191,30 +176,6 @@
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
-                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-                    fxLayoutAlign.gt-xs="space-between center ">
-                    <div class="top-header-info">
-                        <div class="top-header-title">
-                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                IP Payment Receipt List
-                            </span>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="info-badge-top border-bottom" style="margin-left: 18%;" fxLayout="row"
-                    fxLayoutAlign="space-between" flex>
-                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
-                        <button type="button" mat-icon-button>
-                            <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
-                        </button>
-
-                        <button type="button" mat-icon-button>
-                            <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
-                        </button>
-
-                    </div>
-                </div>
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                     <ng-template #actionButtonTemplatepayment let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
@@ -327,30 +288,6 @@
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
-                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-                    fxLayoutAlign.gt-xs="space-between center ">
-                    <div class="top-header-info">
-                        <div class="top-header-title">
-                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                IP Refund Of Bill List
-                            </span>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="info-badge-top border-bottom" style="margin-left: 18%;" fxLayout="row"
-                    fxLayoutAlign="space-between" flex>
-                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
-                        <button type="button" mat-icon-button>
-                            <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
-                        </button>
-
-                        <button type="button" mat-icon-button>
-                            <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
-                        </button>
-
-                    </div>
-                </div>
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                     <ng-template #actionButtonTemplateIPRefund let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">

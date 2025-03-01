@@ -78,7 +78,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
                 { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
                 { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
             ],
-            row: 25
+            row: 30
         }
     
         gridConfig1: gridModel = {

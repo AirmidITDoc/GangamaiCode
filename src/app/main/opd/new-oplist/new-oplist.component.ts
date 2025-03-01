@@ -218,8 +218,8 @@ export class NewOPListComponent implements OnInit {
         this.myFilterpayform = this._OPListService.myFilterpaymentbrowseform();
         this.myFilterrefundform = this._OPListService.myFilterrefundbrowseform();
 
-        this.menuActions.push("Print Final Bill");
-        this.menuActions.push("Print Final Bill with Package Details");
+        this.menuActions.push("Bill Print");
+        this.menuActions.push("Bill Print-Package Info");
     }
 
     onSave(row: any = null) {
@@ -266,9 +266,9 @@ export class NewOPListComponent implements OnInit {
         console.log(element)
         // element.billNo = 2
         console.log('Third action clicked for:', element);
-        if (m == "Print Final Bill")
+        if (m == "Bill Print")
             this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
-        else if (m == "Print Final Bill with Package Details")
+        else if (m == "Bill Print-Package Info")
             this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
     }
 
