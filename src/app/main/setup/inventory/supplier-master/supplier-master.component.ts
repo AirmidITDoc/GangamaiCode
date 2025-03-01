@@ -48,21 +48,10 @@ export class SupplierMasterComponent implements OnInit {
                             this.onSave(data);
                         }
                     }, 
-                    // {
-                    //     action: gridActions.delete, callback: (data: any) => {
-                    //         this._supplierService.deactivateTheStatus(data.supplierId).subscribe((response: any) => {
-                    //             this.toastr.success(response.message);
-                    //             this.grid.bindGridData();
-                    //         });
-                    //     }
-                    // },
                     {
                         action: gridActions.delete, callback: (data: any) => {
                             debugger
-                            let s={
-                                supplierId:data.supplierId
-                            }
-                            this._supplierService.SupplierMasterCancle(s).subscribe((response: any) => {
+                            this._supplierService.SupplierMasterCancle(data.supplierId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });

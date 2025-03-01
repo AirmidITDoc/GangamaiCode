@@ -21,9 +21,10 @@
             <ng-container filters>
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Supplier Name</mat-label>
-                    <input matInput placeholder="Search Supplier Name" autocomplete="off" [formGroup]="myformSearch"
-                        [(ngModel)]="gridConfig.filters[0].fieldValue" formControlName="SupplierNameSearch" />
-                    <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[0].fieldValue=''">
+                    <input matInput placeholder="Search Supplier Name" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[0].fieldValue"/>
+                    <button matSuffix mat-icon-button aria-label="Clear" 
+                    (click)="gridConfig.filters[0].fieldValue='%'">
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>

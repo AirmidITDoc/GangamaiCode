@@ -26,27 +26,31 @@ export class ServiceMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
      ngAfterViewInit() {
               // Assign the template to the column dynamically
-              this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate; 
+              this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+              this.gridConfig.columnsList.find(col => col.key === 'creditedtoDoctor')!.template = this.iconcreditedtoDoctor; 
+              this.gridConfig.columnsList.find(col => col.key === 'isPathology')!.template = this.iconisPathology; 
+              this.gridConfig.columnsList.find(col => col.key === 'isRadiology')!.template = this.iconisRadiology; 
           }
           @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+          @ViewChild('iconcreditedtoDoctor') iconcreditedtoDoctor!: TemplateRef<any>;
+          @ViewChild('iconisPathology') iconisPathology!: TemplateRef<any>;
+          @ViewChild('iconisRadiology') iconisRadiology!: TemplateRef<any>;
 
     gridConfig: gridModel = {
         apiUrl: "BillingService/BillingList",
         columnsList: [
-            { heading: "Code", key: "serviceId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "GroupId", key: "groupId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Service Short Desc", key: "serviceShortDesc", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IsEditable", key: "isEditable", sort: true, type: gridColumnTypes.status, align: 'left', width: 100 },
-            { heading: "CreditedToDoctor", key: "creditedtoDoctor", sort: true, align: 'left', width: 100, type: 21 },
-            { heading: "IsPathology", key: "isPathology", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 19 },
-            { heading: "IsRadiology", key: "isRadiology", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 20 },
-            { heading: "PrintOrder", key: "printOrder", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Service Short Desc", key: "serviceShortDesc", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "IsEmergency", key: "isEmergency", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "EmgAmt", key: "emgAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "PrintOrder", key: "printOrder", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "EmergencyAmt", key: "emgAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "IsEditable", key: "isEditable", sort: true, type: gridColumnTypes.status, align: 'left', width: 100 },
+            { heading: "CreditedToDoctor", key: "creditedtoDoctor", sort: true, align: 'left', width: 150, type: gridColumnTypes.template },
+            { heading: "IsPathology", key: "isPathology", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
+            { heading: "IsRadiology", key: "isRadiology", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
+            { heading: "IsPackage", key: "isPackage", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.template  },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             // {
                 //     heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
@@ -60,14 +64,7 @@ export class ServiceMasterComponent implements OnInit {
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            // this._serviceMasterService.deactivateTheStatus(data.serviceId).subscribe((response: any) => {
-                            //     this.toastr.success(response.message);
-                            //     this.grid.bindGridData();
-                            // });
                             debugger
-                            let s={
-                                serviceId:data.serviceId
-                            }
                             this._serviceMasterService.ServiceMasterCancle(data.serviceId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();

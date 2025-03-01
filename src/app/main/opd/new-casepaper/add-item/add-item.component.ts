@@ -47,7 +47,7 @@ export class AddItemComponent {
   vSearchItemId:any;
 
   autocompleteModeItem: string = "ItemType"; 
-  autocompleteModeItemGeneric:string="";
+  autocompleteModeItemGeneric:string="ItemGeneric";
 autocompleteModePurchaseUOMId:string="Unit";
 autocompleteModeStoreId:string="Store";
 

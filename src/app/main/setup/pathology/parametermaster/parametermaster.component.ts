@@ -239,63 +239,25 @@ export class ParametermasterComponent implements OnInit {
         }
     }
 
-    // deactivateParameter(row) {
-    //     Swal.fire({
-    //         title: 'Confirm Status',
-    //         text: 'Are you sure you want to Change Active Status?',
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'Yes, Change Status!'
-    //     }).then((result) => {
-    //         debugger
-    //         if (result.isConfirmed) {
-    //             this._ParameterService.deactivateTheStatus(row.parameterId).subscribe(
-    //                 (data) => {
-    //                     Swal.fire('Changed!', 'Parameter Status has been Changed.', 'success');
-    //                     this.grid.bindGridData(); // Refresh grid data
-    //                 },
-    //                 (error) => {
-    //                     Swal.fire('Error!', 'Failed to Change Parameter Status.', 'error');
-    //                 }
-    //             );
-    //         }
-    //     });
-    // }
-
     deactivateParameter(row) {
         Swal.fire({
             title: 'Confirm Status',
             text: 'Are you sure you want to Change Active Status?',
-            icon: "warning",
+            icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, Change Status!'
-        }).then((flag) => {
-            if (flag.isConfirmed) {
-                const requestBody = {
-                    "parameterId": row.parameterId
-                };
-                console.log(requestBody)
-
-                this._ParameterService.deactivateTheStatus(requestBody).subscribe(
-                    (response) => {
-                        if (response) {
-                            this.toastr.success('Status has been Changed Successfully.', 'Status!', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                            });
-                        } else {
-                            this.toastr.error('Failed to Change ParameterMaster Status! Please check API error..', 'Error!', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                            });
-                        }
+        }).then((result) => {
+            debugger
+            if (result.isConfirmed) {
+                this._ParameterService.deactivateTheStatus(row.parameterId).subscribe(
+                    (data) => {
+                        Swal.fire('Changed!', 'Parameter Status has been Changed.', 'success');
+                        this.grid.bindGridData(); // Refresh grid data
                     },
                     (error) => {
-                        this.toastr.error('An error occurred while Changing the Status.', 'Error!', {
-                            toastClass: 'tostr-tost custom-toast-error',
-                        });
+                        Swal.fire('Error!', 'Failed to Change Parameter Status.', 'error');
                     }
                 );
             }
