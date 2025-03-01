@@ -66,18 +66,18 @@ export class AppointmentListComponent implements OnInit {
     VBillcount = 0;
     VCrossConscount = 0;
     patientDetail = new RegInsert({});
-      patientDetail1 = new VisitMaster1({});
-      RegId = 0
-    
-      vOPIPId = 0;
+    patientDetail1 = new VisitMaster1({});
+    RegId = 0
+
+    vOPIPId = 0;
 
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
         private commonService: PrintserviceService,
         private advanceDataStored: AdvanceDataStored,
         private formBuilder: FormBuilder,
         public toastr: ToastrService, public datePipe: DatePipe,
-    ) {}
-    
+    ) { }
+
     ngOnInit(): void {
         this.myformSearch = this._AppointmentlistService.filterForm();
         this.searchFormGroup = this.createSearchForm();
@@ -101,7 +101,7 @@ export class AppointmentListComponent implements OnInit {
         { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
 
     ];
- 
+
     ngAfterViewInit() {
         // Assign the template to the column dynamically
         this.gridConfig.columnsList.find(col => col.key === 'patientOldNew')!.template = this.actionsTemplate;
@@ -231,7 +231,7 @@ export class AppointmentListComponent implements OnInit {
                 maxHeight: '90%',
                 width: '90%',
                 data: row
-              
+
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
@@ -299,7 +299,7 @@ export class AppointmentListComponent implements OnInit {
     }
 
     OnViewReportPdf(element) {
-      this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceipt");
+        this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceipt");
     }
 
     OnBillPayment(row) {
@@ -308,13 +308,13 @@ export class AppointmentListComponent implements OnInit {
         this.advanceDataStored.storage = new SearchInforObj1(row);
         console.log(row)
 
-console.log(this.advanceDataStored.storage)
-       const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
+        console.log(this.advanceDataStored.storage)
+        const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
             maxWidth: "99vw",
             height: "98vh",
             width: "100%",
             // data:row
-           
+
         });
     }
 
@@ -342,12 +342,12 @@ console.log(this.advanceDataStored.storage)
         const dialogRef = this._matDialog.open(PatientvitalInformationComponent,
             {
                 maxWidth: '95%',
-                height: '58%',
-                data: element   
+                height: '48%',
+                data: element
             });
 
         dialogRef.afterClosed().subscribe(result => {
-           
+            this.grid.bindGridData();
         });
     }
 
@@ -485,29 +485,27 @@ console.log(this.advanceDataStored.storage)
 
     getSelectedObj(obj) {
         if ((obj.regId ?? 0) > 0) {
-          console.log(obj)
-           this.vOPIPId = obj.visitId
-          
-          setTimeout(() => {
-            this._AppointmentlistService.getRegistraionById(obj.regId).subscribe((response) => {
-              this.patientDetail = response;
-            // this.PatientName = this.patientDetail.firstName + " " + this.patientDetail.middleName + " " + this.patientDetail.lastName
-              console.log(this.patientDetail)
-            });
-    
-          }, 500);
-    
-             setTimeout(() => {
-         
-          this._AppointmentlistService.getVisitById( this.vOPIPId).subscribe(data => {
-            this.patientDetail1  = data ;
-            console.log(data)
-            console.log(this.patientDetail1)
-        });
-        }, 1000);
+            console.log(obj)
+            this.vOPIPId = obj.visitId
+
+            setTimeout(() => {
+                this._AppointmentlistService.getRegistraionById(obj.regId).subscribe((response) => {
+                    this.patientDetail = response;
+                    console.log(this.patientDetail)
+                });
+
+            }, 500);
+
+            setTimeout(() => {
+                this._AppointmentlistService.getVisitById(this.vOPIPId).subscribe(data => {
+                    this.patientDetail1 = data;
+                    console.log(data)
+                    console.log(this.patientDetail1)
+                });
+            }, 1000);
         }
         this.updateRegisteredPatientInfo(obj);
-      }
+    }
 
     updateRegisteredPatientInfo(obj) {
         const dialogRef = this._matDialog.open(UpdateRegPatientInfoComponent,
@@ -518,10 +516,12 @@ console.log(this.advanceDataStored.storage)
                 data: obj
             });
         dialogRef.afterClosed().subscribe(result => {
-        this.searchFormGroup.get('RegId').setValue('');
+            this.searchFormGroup.get('RegId').setValue('');
+              this.grid.bindGridData();
         });
+      
     }
-   
+
     selectChangedeptdoc(obj: any) {
         this.gridConfig.filters[3].fieldValue = obj.value
     }
@@ -560,7 +560,7 @@ export class VisitMaster1 {
     firstFollowupVisit: any;
     addedBy: any;
     updatedBy: any;
-    doctorID:any;
+    doctorID: any;
     /**
      * Constructor
      *
@@ -639,9 +639,9 @@ export class Regdetail {
     VisitId: any;
     WardId: any;
     BedId: any;
-    companyId:any;
-    tarrifId:any;
-    departmentId:any;
+    companyId: any;
+    tarrifId: any;
+    departmentId: any;
     /**
      * Constructor
      *
@@ -691,65 +691,65 @@ export class Regdetail {
             this.VisitId = RegInsert.VisitId || 0;
             this.WardId = RegInsert.WardId || 0;
             this.BedId = RegInsert.BedId || 0;
-            this.companyId=RegInsert.companyId || 0;
-            this.tarrifId=RegInsert.tarrifId || 0;
-            this.departmentId=RegInsert.departmentId || 0;
+            this.companyId = RegInsert.companyId || 0;
+            this.tarrifId = RegInsert.tarrifId || 0;
+            this.departmentId = RegInsert.departmentId || 0;
         }
     }
 }
 
 
-export class ChargesList{
+export class ChargesList {
     ChargesId: number;
     ServiceId: number;
     serviceId: number;
-    ServiceName : String;
-    Price:any;
+    ServiceName: String;
+    Price: any;
     Qty: any;
     TotalAmt: number;
     DiscPer: number;
     DiscAmt: number;
     NetAmount: number;
-    DoctorId:number;
+    DoctorId: number;
     ChargeDoctorName: String;
     ChargesDate: Date;
-    IsPathology:boolean;
-    IsRadiology:boolean;
-    ClassId:number;
+    IsPathology: boolean;
+    IsRadiology: boolean;
+    ClassId: number;
     ClassName: string;
     ChargesAddedName: string;
-    PackageId:any;
-    PackageServiceId:any;
-    IsPackage:any;
-    PacakgeServiceName:any;
+    PackageId: any;
+    PackageServiceId: any;
+    IsPackage: any;
+    PacakgeServiceName: any;
     BillwiseTotalAmt: any;
-    DoctorName:any;
-    OpdIpdId:any;
-    
-    constructor(ChargesList){
-            this.ChargesId = ChargesList.ChargesId || '';
-            this.ServiceId = ChargesList.ServiceId || '';
-            this.serviceId = ChargesList.serviceId || '';
-            this.ServiceName = ChargesList.ServiceName || '';
-            this.Price = ChargesList.Price || '';
-            this.Qty = ChargesList.Qty || '';
-            this.TotalAmt = ChargesList.TotalAmt || '';
-            this.DiscPer = ChargesList.DiscPer || '';
-            this.DiscAmt = ChargesList.DiscAmt || '';
-            this.NetAmount = ChargesList.NetAmount || '';
-            this.DoctorId=ChargesList.DoctorId || 0;
-            this.DoctorName = ChargesList.DoctorName || '';
-            this.ChargeDoctorName = ChargesList.ChargeDoctorName || '';
-            this.ChargesDate = ChargesList.ChargesDate || '';
-            this.IsPathology = ChargesList.IsPathology || '';
-            this.IsRadiology = ChargesList.IsRadiology || '';
-            this.ClassId=ChargesList.ClassId || 0;
-            this.ClassName = ChargesList.ClassName || '';
-            this.ChargesAddedName = ChargesList.ChargesAddedName || '';
-            this.PackageId=ChargesList.PackageId || 0;
-            this.PackageServiceId=ChargesList.PackageServiceId || 0;
-            this.IsPackage=ChargesList.IsPackage || 0; 
-            this.PacakgeServiceName = ChargesList.PacakgeServiceName || '';
-            this.OpdIpdId = ChargesList.OpdIpdId || '';
+    DoctorName: any;
+    OpdIpdId: any;
+
+    constructor(ChargesList) {
+        this.ChargesId = ChargesList.ChargesId || '';
+        this.ServiceId = ChargesList.ServiceId || '';
+        this.serviceId = ChargesList.serviceId || '';
+        this.ServiceName = ChargesList.ServiceName || '';
+        this.Price = ChargesList.Price || '';
+        this.Qty = ChargesList.Qty || '';
+        this.TotalAmt = ChargesList.TotalAmt || '';
+        this.DiscPer = ChargesList.DiscPer || '';
+        this.DiscAmt = ChargesList.DiscAmt || '';
+        this.NetAmount = ChargesList.NetAmount || '';
+        this.DoctorId = ChargesList.DoctorId || 0;
+        this.DoctorName = ChargesList.DoctorName || '';
+        this.ChargeDoctorName = ChargesList.ChargeDoctorName || '';
+        this.ChargesDate = ChargesList.ChargesDate || '';
+        this.IsPathology = ChargesList.IsPathology || '';
+        this.IsRadiology = ChargesList.IsRadiology || '';
+        this.ClassId = ChargesList.ClassId || 0;
+        this.ClassName = ChargesList.ClassName || '';
+        this.ChargesAddedName = ChargesList.ChargesAddedName || '';
+        this.PackageId = ChargesList.PackageId || 0;
+        this.PackageServiceId = ChargesList.PackageServiceId || 0;
+        this.IsPackage = ChargesList.IsPackage || 0;
+        this.PacakgeServiceName = ChargesList.PacakgeServiceName || '';
+        this.OpdIpdId = ChargesList.OpdIpdId || '';
     }
-  } 
+} 

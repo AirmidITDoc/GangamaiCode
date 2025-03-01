@@ -27,6 +27,7 @@ RegId1="0";
 BillNo:any;
 vpaidamt: any = 0;
 vbalanceamt: any = 0;
+Age=0;
 // @ViewChild('grid1') grid1: AirmidTableComponent;
 
     constructor(public _CompanysettlementService: CompanysettlementService, 
@@ -64,20 +65,7 @@ vbalanceamt: any = 0;
                 heading: "Action", key: "action", align: "right",sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplate  // Assign ng-template to the column
             }
-            // {
-            //     heading: "Action", key: "action", align: "right", width:100,type: gridColumnTypes.action, actions: [
-            //         {
-            //             action: gridActions.edit, callback: (data: any) => {
-            //                 this.onSave(data);
-            //             }
-            //         }, 
-            //         {
-            //             action: gridActions.print, callback: (data: any) => {
-            //                 this.viewgetOPPayemntPdf(data);
-            //             }
-            //         }
-            //         ]
-            // } 
+          
         ],
         sortField: "BillNo",
         sortOrder: 0,
@@ -101,9 +89,9 @@ vbalanceamt: any = 0;
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
         PatientHeaderObj['RegNo'] = contact.regNo;
-        PatientHeaderObj['PatientName'] = contact.PatientName;
+        PatientHeaderObj['PatientName'] =this.PatientName;
         PatientHeaderObj['OPD_IPD_Id'] = contact.opD_IPD_ID;
-        PatientHeaderObj['Age'] = contact.patientAge;
+        PatientHeaderObj['Age'] = this.Age;
         PatientHeaderObj['DepartmentName'] = contact.DepartmentName;
         PatientHeaderObj['DoctorName'] = contact.departmentName;
         PatientHeaderObj['TariffName'] = contact.tariffName;
@@ -150,7 +138,7 @@ vbalanceamt: any = 0;
               });
 
               this.searchFormGroup.get('RegId').setValue('')
-             
+             this.grid.bindGridData();
     }
 
 
@@ -185,7 +173,8 @@ vbalanceamt: any = 0;
             this._CompanysettlementService.getRegistraionById(this.RegId1).subscribe((response) => {
             this.registerObj = response;
             console.log(response)
-                // this.GetDetails(obj.value)
+            this.PatientName=response.firstName + " " + response.middleName + " " + response.lastName
+            this.Age=response.age
             });
 
         }, 500);
@@ -194,6 +183,7 @@ vbalanceamt: any = 0;
 
 GetDetails(data) {
     console.log(data)
+    debugger
     this.gridConfig = {
         apiUrl: "OPBill/OPBillListSettlementList",
         columnsList: [

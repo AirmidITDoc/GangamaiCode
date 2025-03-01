@@ -8,9 +8,8 @@ import { ReportService } from "./service/report-generation.service";
 import { FlatTreeControl } from "@angular/cdk/tree";
 import { MatTreeFlatDataSource, MatTreeFlattener } from "@angular/material/tree";
 import { Observable } from "rxjs";
-import { map, startWith } from 'rxjs/operators';
 import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { OperatorComparer } from "app/core/models/gridRequest";
 
 
@@ -64,6 +63,7 @@ export class ReportGenerationComponent implements OnInit {
     reportsData: any = [];
     reportDetail: any;
     sIsLoading= '';
+    selectedNode:ExampleFlatNode | null = null;
     private transformer = (node: FoodNode, level: number) => {
         return {
             expandable: !!node.children && node.children.length > 0,
@@ -92,19 +92,30 @@ export class ReportGenerationComponent implements OnInit {
         public datePipe: DatePipe,
         private _loggedUser: AuthenticationService,
         public toastr: ToastrService,
-        private _activeRoute: ActivatedRoute
+        private _activeRoute: ActivatedRoute,
+        private router: Router
     ) {
         this.UId = this._loggedUser.currentUserValue.userId;
         this.UserName = this._loggedUser.currentUserValue.userName;
         console.log(this.UId);
+        this.router.routeReuseStrategy.shouldReuseRoute = () => {
+            return false;
+          }
+      
+          this.router.events.subscribe((evt) => {
+            if (evt instanceof NavigationEnd) {
+              this.router.navigated = false;
+            }
+          });
     }
 
     hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     ngOnInit(): void {
-        debugger
         this._activeRoute.paramMap.subscribe(params => {
-            this.rid = ~~(params.get('rid') || 106);
+            this.rid = ~~(params.get('rid') || 0);
         });
+        if(this.rid == 0)
+            this.toastr.error("Report not found");
         this.GetAllReporConfig();
     }
     GetAllReporConfig() {
@@ -132,7 +143,9 @@ export class ReportGenerationComponent implements OnInit {
                 });
                 TREE_DATA = mainData
                 this.dataSource.data = TREE_DATA;
-                this.toastr.success(response.message);
+                if (response && response.message) {
+                    this.toastr.success(response.message);
+                }
             },
             (error) => {
                 this.toastr.error(error.message);
@@ -140,6 +153,8 @@ export class ReportGenerationComponent implements OnInit {
         );
     }
     GetReportDeails(node: any){
+        this.OnClose();
+        this.selectedNode = node;
         this.reportDetail = this.reportsData.find(x => (x.reportId == node?.id));
         this.ReportName = this.reportDetail.reportName;
         let controllerPermission = this.reportDetail?.reportFilter?.split(",");
@@ -169,7 +184,13 @@ export class ReportGenerationComponent implements OnInit {
     SelecteCashCounterObj(obj) {
         this.CashCounterId = obj.value;
     }
-    OnClose() {}
+    OnClose() {
+        this.flagDoctorSelected = false;
+        this.flagUserSelected = false;
+        this.flagDepartmentSelected = false;
+        this.flagServiceSelected = false;
+        this.flagCashcounterSelected = false;
+    }
     GetPrint() {
         setTimeout(() => {
             let paramFilterList = [
@@ -240,7 +261,6 @@ export class ReportGenerationComponent implements OnInit {
                 });
 
                 matDialog.afterClosed().subscribe(result => {
-                    debugger
                 });
             },
             (error) => {

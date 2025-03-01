@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { AppointmentlistService } from '../appointmentlist.service';
 import { DatePipe } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -32,6 +32,7 @@ export class EditRefranceDoctorComponent implements OnInit {
   
   constructor(
     public _AppointmentlistService: AppointmentlistService,
+    public _formBuilder: UntypedFormBuilder,
     public dialogRef: MatDialogRef<EditRefranceDoctorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog:MatDialog,
@@ -40,10 +41,22 @@ export class EditRefranceDoctorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.RefrancedrForm = this._AppointmentlistService.createRefranceDrForm();
+    this.RefrancedrForm = this.createRefranceDrForm();
       this.RefrancedrForm.patchValue(this.data);
 
   }
+
+
+    createRefranceDrForm() {
+          return this._formBuilder.group({
+              visitId: 0,
+              regId:this.data.regId,
+              refDocId: ['', [
+                  Validators.required]],
+  
+          });
+      }
+  
 
   onSubmit() {
     if (this.RefrancedrForm.valid) {
@@ -59,19 +72,15 @@ export class EditRefranceDoctorComponent implements OnInit {
   }
   RefDoctorId=0;
   onCancleRefDoc() {
-    
-    var data={
-      RefDocId:this.RefDoctorId,
-      VisitId:this.VisitId
-    }
-
-    console.log(data);
-    this._AppointmentlistService.RefDoctorCancle(data).subscribe(response => {
+    this.RefrancedrForm.get("refDocId").setValue(0)
+    console.log(this.RefrancedrForm.value);
+    this._AppointmentlistService.EditRefDoctor(this.RefrancedrForm.value).subscribe((response) => {
       this.toastr.success(response.message);
       this.onClear(true);
     }, (error) => {
       this.toastr.error(error.message);
     });
+    
      
   }
 

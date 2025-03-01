@@ -38,61 +38,38 @@ export class UpdateRegPatientInfoComponent {
   currentDate = new Date();
 
   registerObj = new RegInsert({});
-  isRegSearchDisabled: boolean = false;
-  Regdisplay: boolean = false;
-  Regflag: boolean = false;
-  submitted = false;
-  isLinear = true;
-  showtable: boolean = false;
-  isRateLimitReached = false;
-  isLoadings = false;
-  isOpen = false;
-  savedValue: number = null;
-  noOptionFound: boolean = false;
-  noOptionFound1: boolean = false;
-  AdList: boolean = false;
-  chkprint: boolean = false;
-  VisitFlagDisp: boolean = false;
-  hasSelectedContacts: boolean;
   isCompanySelected: boolean = false;
   IsPhoneAppflag: boolean = true;
 
-  loadID = 0;
   VisitTime: String;
-  AgeYear: any;
-  AgeMonth: any;
-  AgeDay: any;
-  capturedImage: any;
-  VisitID: any;
-  msg: any;
   registration: any;
-  newRegSelected: any = 'registration';
   Patientnewold: any = 1;
-  IsPathRad: any;
-  PatientName: any = '';
-  RegId: any = 0;
-  OPIP: any = '';
-  VisitId = 0;
-  patienttype = 0
-  UnitId = 1;
-  Vtotalcount = 0;
-  VNewcount = 0;
-  VFollowupcount = 0;
-  VBillcount = 0;
-  VCrossConscount = 0;
+  // IsPathRad: any;
+  // PatientName: any = '';
+  // RegId: any = 0;
+  // OPIP: any = '';
+  // VisitId = 0;
+  // patienttype = 0
+  // UnitId = 1;
+  // Vtotalcount = 0;
+  // VNewcount = 0;
+  // VFollowupcount = 0;
+  // VBillcount = 0;
+  // VCrossConscount = 0;
 
-  RegOrPhoneflag = '';
-  vPhoneFlage = 0;
-  vPhoneAppId: any;
-  RegNo = 0;
-  departmentId: any;
-  DosctorId: any;
-  DoctorId: any;
+  // RegOrPhoneflag = '';
+  // vPhoneFlage = 0;
+  // vPhoneAppId: any;
+  // RegNo = 0;
+  // departmentId: any;
+  // DosctorId: any;
+  // DoctorId: any;
   vhealthCardNo: any;
   Healthcardflag: boolean = false;
   vDays: any = 0;
   HealthCardExpDate: any;
   followUpDate: string;
+  patienttype: any = 1;
 
     patientDetail = new RegInsert({});
     patientDetail1 = new VisitMaster1({});
@@ -152,8 +129,7 @@ export class UpdateRegPatientInfoComponent {
     this.personalFormGroup.markAllAsTouched();
     this.VisitFormGroup.markAllAsTouched();
 
-    this.searchFormGroup = this.createSearchForm();
-console.log(this.data)
+     console.log(this.data)
       if ((this.data.regId ?? 0) > 0) {
       setTimeout(() => {
           this._AppointmentlistService.getRegistraionById(this.data.regId).subscribe((response) => {
@@ -175,14 +151,42 @@ console.log(this.data)
 
     }
   
-  createSearchForm() {
-    return this.formBuilder.group({
-      regRadio: ['registration'],
-      regRadio1: ['registration1'],
-      RegId: [''],
-      PhoneRegId: [''],
-      UnitId: [1]
+ 
+
+  onSaveRegistered() {
+    this.VisitFormGroup.get("regId").setValue(this.registerObj.regId)
+    this.VisitFormGroup.get("patientOldNew").setValue(2)
+    if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
+
+      if (this.isCompanySelected && this.VisitFormGroup.get('CompanyId').value == 0) {
+        this.toastr.warning('Please select valid Company ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+
+      this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+      this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
+      this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+      this.VisitFormGroup.get('visitTime').setValue(this.dateTimeObj.time)
+
+    let submitData = {
+      "registration": this.personalFormGroup.value,
+      "visit": this.VisitFormGroup.value
+    };
+    console.log(submitData);
+
+    this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
+      this.toastr.success(response.message);
+      this.OnViewReportPdf(response.visitId)
+      this.onClear(true);
+      this._matDialog.closeAll();
+    }, (error) => {
+      this.toastr.error(error.message);
     });
+
+  }
+  // this.grid.Bind
   }
 
   OnViewReportPdf(element) {
@@ -209,129 +213,34 @@ console.log(this.data)
       this.VisitFormGroup.get('SubCompanyId').updateValueAndValidity();
       this.patienttype = 1;
     }
-
-
-  }
-
-
-  getregdetails() {
-
-    let RegId = this.searchFormGroup.get("RegId").value
-    if (RegId > 0) {
-      setTimeout(() => {
-        this._AppointmentlistService.getRegistraionById(RegId).subscribe((response) => {
-          this.registerObj = response;
-          console.log(this.registerObj)
-        });
-      }, 500);
-    }
-    else {
-      this.searchFormGroup.reset();
-
-    }
-  }
-
-
-
-  getOptionText(option) {
-    if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
-  }
-
-  getSelectedObj(obj) {
-    this.PatientName = obj.PatientName;
-    this.RegId = obj.value;
-    this.VisitFlagDisp = true;
-    if ((this.RegId ?? 0) > 0) {
-      console.log(this.data)
-      setTimeout(() => {
-        this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
-          this.registerObj = response;
-          console.log(this.registerObj)
-        });
-
-      }, 500);
-    }
-
-  }
-
-
-  onSave() {
-    console.log(this.personalFormGroup.value)
-    console.log(this.VisitFormGroup.value)
-    console.log("Personal", this.personalFormGroup.valid, "Visit", this.VisitFormGroup.valid)
-    if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
-
-      if (this.isCompanySelected && this.VisitFormGroup.get('CompanyId').value == 0) {
-        this.toastr.warning('Please select valid Company ', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-
-      this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-      this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
-      this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-      this.VisitFormGroup.get('visitTime').setValue(this.dateTimeObj.time)
-
-        this.onSaveRegistered();
-        this.onClose();
-      
-
-    } else {
-      Swal.fire("Form Invalid chk....")
-    }
-  }
-
-
-  onSaveRegistered() {
-    this.VisitFormGroup.get("regId").setValue(this.registerObj.regId)
-    this.VisitFormGroup.get("patientOldNew").setValue(2)
-    let submitData = {
-      "registration": this.personalFormGroup.value,
-      "visit": this.VisitFormGroup.value
-    };
-    console.log(submitData);
-
-    this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
-      this.toastr.success(response.message);
-      this.OnViewReportPdf(response.visitId)
-      this.onClear(true);
-      this._matDialog.closeAll();
-    }, (error) => {
-      this.toastr.error(error.message);
-    });
-
-
-  }
-
+}
 
   VitalInfo(contact) {
-    let xx = {
-      RegId: contact.RegId,
-      OPD_IPD_ID: contact.OPD_IPD_ID,
-      RegNo: contact.RegNoWithPrefix,
-      VisitId: contact.VisitId,
-      PatientName: contact.PatientName,
-      Doctorname: contact.Doctorname,
-      AdmDateTime: contact.AdmDateTime,
-      AgeYear: contact.AgeYear,
-      AgeMonth: contact.AgeMonth,
-      AgeDay: contact.AgeDay,
-      DepartmentName: contact.DepartmentName,
-      ClassId: contact.ClassId,
-      OPDNo: contact.OPDNo,
-      PatientType: contact.PatientType,
-      ClassName: contact.ClassName,
-      TariffName: contact.TariffName,
-      TariffId: contact.TariffId,
-      CompanyId: contact.CompanyId,
-      CompanyName: contact.CompanyName,
-      RefDocName: contact.RefDocName,
-      MobileNo: contact.MobileNo,
-      Lbl: "PatientVitalInfo"
-    };
-    console.log(xx)
+    // let xx = {
+    //   RegId: contact.RegId,
+    //   OPD_IPD_ID: contact.OPD_IPD_ID,
+    //   RegNo: contact.RegNoWithPrefix,
+    //   VisitId: contact.VisitId,
+    //   PatientName: contact.PatientName,
+    //   Doctorname: contact.Doctorname,
+    //   AdmDateTime: contact.AdmDateTime,
+    //   AgeYear: contact.AgeYear,
+    //   AgeMonth: contact.AgeMonth,
+    //   AgeDay: contact.AgeDay,
+    //   DepartmentName: contact.DepartmentName,
+    //   ClassId: contact.ClassId,
+    //   OPDNo: contact.OPDNo,
+    //   PatientType: contact.PatientType,
+    //   ClassName: contact.ClassName,
+    //   TariffName: contact.TariffName,
+    //   TariffId: contact.TariffId,
+    //   CompanyId: contact.CompanyId,
+    //   CompanyName: contact.CompanyName,
+    //   RefDocName: contact.RefDocName,
+    //   MobileNo: contact.MobileNo,
+    //   Lbl: "PatientVitalInfo"
+    // };
+  
     console.log(contact)
     // this.advanceDataStored.storage = new SearchInforObj(xx);
     const dialogRef = this._matDialog.open(PatientvitalInformationComponent,
@@ -339,7 +248,7 @@ console.log(this.data)
         maxWidth: '80%',
         height: '58%',
         data: {
-          registerObj: xx,
+          registerObj: contact,
         },
       });
 
@@ -393,12 +302,6 @@ console.log(this.data)
     this.ddlCountry.SetSelection(e.stateId);
   }
 
-  getVisitRecord(row) {
-    this.departmentId = row.DepartmentId;
-    this.DosctorId = row.DoctorId;
-    Swal.fire(this.departmentId, this.DoctorId)
-    this.VisitFlagDisp = false;
-  }
 
   selectChangedepartment(obj: any) {
     debugger

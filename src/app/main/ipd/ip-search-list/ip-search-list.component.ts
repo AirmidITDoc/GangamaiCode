@@ -410,7 +410,7 @@ export class IPSearchListComponent implements OnInit {
             });
         }
         else if (m == "Advance") {
-            console.log(element);
+            //console.log(element);
             this.advanceDataStored.storage = new AdvanceDetailObj(element);
             // this._IpSearchListService.populateForm(element); 
             let Advflag: boolean = false;
