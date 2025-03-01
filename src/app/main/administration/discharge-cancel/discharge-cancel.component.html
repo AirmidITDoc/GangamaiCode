@@ -37,7 +37,7 @@
                                      placeholderText="RegNo / First Name / Last Name / Mobile No(AD)" 
                                     ApiUrl="Admission/search-patient?Keyword=" 
                                     (selectionChange)="getSelectedObjAM($event)"
-                                    ValueField="regId">
+                                    ValueField="admissionID" TextField="firstName">
                                 </airmid-autocomplete>
     
                                 <airmid-autocomplete lbl="RegID" *ngIf="vCheckBox"

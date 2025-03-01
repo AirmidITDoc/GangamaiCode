@@ -148,9 +148,9 @@ export class SupplierMasterService {
         this.supplierForm.patchValue(param);
     }
 
-    public SupplierMasterCancle(Param: any) {
-        // debugger
-      return this._httpClient.PostData("Supplier/Cancel", Param);
+    public SupplierMasterCancle(Id: any) {
+        debugger
+      return this._httpClient.DeleteData(`Supplier/SupplierDelete?Id=${Id}`);
     }
 }
 

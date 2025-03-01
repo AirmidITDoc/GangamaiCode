@@ -218,13 +218,21 @@
                                                             (keydown)="onEnterChiefComplaint($event)"></textarea>
                                                     </mat-form-field>
 
-                                                    <mat-form-field appearance="outline" fxFlex>
+                                                    <!-- <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>Diagnosis</mat-label>
                                                         <textarea name="Diagnosis" formControlName="Diagnosis"
                                                             placeholder="Diagnosis" [(ngModel)]="vDiagnosis" matInput
                                                             #ChiefComp
                                                             (keydown)="onEnterChiefComplaint($event)"></textarea>
-                                                    </mat-form-field>
+                                                    </mat-form-field> -->
+                                                    <!-- <div fxFlex="50%" style="border: 1px solid red;"> -->
+                                                        <airmid-dropdown label="Diagnosis" formControlName="Diagnosis"
+                                                    [formGroup]="caseFormGroup"
+                                                    [validations]="getValidationMessages().Diagnosis"
+                                                    [mode]="autocompleteModeDiagnosis"
+                                                    (selectionChange)="selectChangeDiagnosis($event)">
+                                                </airmid-dropdown>
+                                                    <!-- </div> -->
 
                                                     <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>Examination</mat-label>

@@ -27,15 +27,50 @@
                 </button>
             </div>
         </ng-template> -->
-        
+
+        <ng-template #iconcreditedtoDoctor let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <mat-icon *ngIf="element.creditedtoDoctor == true" matTooltip="CreditedtoDoctor">
+                    <img width="30px" height="30px" src="assets/images/logos/doctor.png">
+                </mat-icon>
+                <mat-icon *ngIf="element.creditedtoDoctor == false" class="active-icon red-500 s-16">
+                    close
+                </mat-icon>
+            </div>
+        </ng-template>
+
+        <ng-template #iconisPathology let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <mat-icon *ngIf="element.isPathology == 1" matTooltip="Ispathology">
+                    <img width="30px" height="30px" src="assets/images/logos/pathology.png">
+                </mat-icon>
+                <mat-icon *ngIf="element.isPathology == 0" class="active-icon red-500 s-16">
+                    close
+                </mat-icon>
+            </div>
+        </ng-template>
+
+        <ng-template #iconisRadiology let-element >
+            <div>
+                <mat-icon *ngIf="element.isRadiology == 1" matTooltip="IsRadiology">
+                    <img width="18px" height="14px" src="assets/images/logos/radiology.png">
+                </mat-icon>
+                <mat-icon *ngIf="element.isRadiology != 1"
+                    class="active-icon red-500 s-16">close
+                </mat-icon> 
+            </div>
+                
+        </ng-template>
+
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Service Name</mat-label>
                     <input matInput placeholder="Search Service Name" autocomplete="off"
                         [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                    <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="gridConfig.filters[0].fieldValue='%'">
+                    <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[0].fieldValue='%'">
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
@@ -51,14 +86,12 @@
                 <form [formGroup]="_serviceMasterService.myformSearch">
                     <airmid-dropdown label="Tariff Name" formControlName="TariffId"
                         [formGroup]="_serviceMasterService.myformSearch" [(ngModel)]="gridConfig.filters[1].fieldValue"
-                        [mode]="autocompleteModetariff"
-                        (selectDdlObject)="selectChangetariff($event)"  >
+                        [mode]="autocompleteModetariff" (selectDdlObject)="selectChangetariff($event)">
                     </airmid-dropdown>
                     <!-- [validations]="getValidationgroupMessages.GroupId" -->
                     <airmid-dropdown label="Group Name" formControlName="GroupId"
                         [formGroup]="_serviceMasterService.myformSearch" [(ngModel)]="gridConfig.filters[2].fieldValue"
-                       [mode]="autocompleteModegroupName"
-                        (selectDdlObject)="selectChangegroup($event)">
+                        [mode]="autocompleteModegroupName" (selectDdlObject)="selectChangegroup($event)">
                     </airmid-dropdown>
                 </form>
 

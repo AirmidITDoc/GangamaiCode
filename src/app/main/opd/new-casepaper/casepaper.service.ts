@@ -97,6 +97,14 @@ public getServiceList(param,loader = true){
 
     return this._httpClient.post("Generic/GetByProc?procName=rtrv_CaseparVisitDetails", employee)
   }
+
+  public getRtrvTestService(visistId,loader = true) {
+    if(loader){
+      this._loaderService.show();
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OPRequestList",visistId);
+  }
+  
   // registration patient list
   public getRegistrationList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientRegistrationList", employee)
@@ -137,9 +145,9 @@ public getServiceList(param,loader = true){
   } 
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_GetVisitInfo",param)
   } 
-  public getcheifcomplaintList( ) { 
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CheifcomplaintList",{})
-  } 
+  // public getcheifcomplaintList( ) { 
+  //   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CheifcomplaintList",{})
+  // } 
   public getTemplateList() {
     return this._httpClient.post("Generic/GetByProc?procName=m_RtrvPresTemplateName_List", {})
   }

@@ -121,9 +121,9 @@ export class ServiceMasterService {
         return this._httpClient.DeleteData("BillingService/ServiceCanceled?Id=" + m_data.toString());
     }
 
-    public ServiceMasterCancle(Param: any) {
+    public ServiceMasterCancle(Id: any) {
         debugger
-      return this._httpClient.PostData("BillingService/ServiceCanceled", Param);
+      return this._httpClient.DeleteData(`BillingService/ServicDelete?Id=${Id}`);
     }
 
     public serviceMasterInsert(Param: any) {

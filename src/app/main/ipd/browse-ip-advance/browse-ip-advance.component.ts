@@ -26,6 +26,10 @@ export class BrowseIPAdvanceComponent implements OnInit {
 
     ngOnInit(): void { }
 
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
+
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('actionButtonTemplateone') actionButtonTemplateone!: TemplateRef<any>;
 
@@ -39,7 +43,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
         gridConfig: gridModel = {
             apiUrl: "Advance/AdvanceList",
             columnsList: [
-                { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 9}, 
+                { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 6}, 
                 { heading: "AdvanceNo", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA'}, 
                 { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200}, 
@@ -67,8 +71,8 @@ export class BrowseIPAdvanceComponent implements OnInit {
             filters: [
                 { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
                 { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-                { fieldName: "From_Dt", fieldValue: "2000-01-01", opType: OperatorComparer.Equals },
-                { fieldName: "To_Dt", fieldValue: "2025-01-01", opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
                 { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
                 { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals },
                 { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
@@ -81,13 +85,13 @@ export class BrowseIPAdvanceComponent implements OnInit {
             apiUrl: "Advance/RefundOfAdvanceList",
             columnsList: [
                 { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Date", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 9},
+                { heading: "Date", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 6},
                 { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 }, //
                 { heading: "AdvanceAmt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA' }, //
                 { heading: "AdvanceUsedAmt", key: "advanceUsedAmt", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "BalanceAmt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA' }, //
                 { heading: "RefundAmt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' }, //
-                { heading: "PayDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 9}, //
+                { heading: "PayDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 6}, //
                 { heading: "CashPay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA' }, //
                 { heading: "ChequePay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA' }, //
                 { heading: "CardPay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA' }, //
@@ -103,8 +107,8 @@ export class BrowseIPAdvanceComponent implements OnInit {
             filters: [
                 { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
                 { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-                { fieldName: "From_Dt", fieldValue: "01-01-2023", opType: OperatorComparer.Equals },
-                { fieldName: "To_Dt", fieldValue: "01-01-2026", opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
                 { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
                 { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
                 { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },

@@ -44,7 +44,7 @@ export class CategoryMasterService {
         } else return this._httpClient.PostData("RadiologyCategoryMaster", Param);
     }
 
-    public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("RadiologyCategoryMaster?Id=" + m_data.toString());
+    public deactivateTheStatus(Id:number) {
+        return this._httpClient.DeleteData(`RadiologyCategoryMaster?Id=${Id}`);
     }
 }

@@ -1,184 +1,198 @@
 <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
-        dynamicTableHeight>
+    dynamicTableHeight>
 
-        <mat-toolbar class="top-header accent">
-            <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
-                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    IP Advacne List
-                </span>
-            </div>
-        </mat-toolbar>
+    <mat-toolbar class="top-header accent">
+        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                IP Advacne List
+            </span>
+        </div>
+    </mat-toolbar>
 
-        
-    
-    
-        <mat-tab-group>
-            <!-- 1st -->
-            <mat-tab label="IP Browse Advance List">
-                <div fusePerfectScrollbar
-                    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                    dynamicTableHeight>
-                    <mat-toolbar class="top-header accent">
-                        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
-                            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                Browse IPD Advance 
-                            </span>
+
+
+
+    <mat-tab-group>
+        <!-- 1st -->
+        <mat-tab label="IP Browse Advance List">
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+                <mat-toolbar class="top-header accent">
+                    <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+                        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                            Browse IPD Advance
+                        </span>
+                    </div>
+                </mat-toolbar>
+                <div class="info-badge-top border-bottom" style="margin-left: 18%;" fxLayout="row"
+                    fxLayoutAlign="space-between" flex>
+                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                        <button type="button" mat-icon-button>
+                            <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
+                        </button>
+
+                        <button type="button" mat-icon-button>
+                            <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
+                        </button>
+
+                    </div>
+                </div>
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                    <ng-template #actionButtonTemplateone let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+
+                            <button mat-icon-button matTooltip="IPD Advance" (click)="OnViewReportPdf(element,true)">
+                                <mat-icon> print</mat-icon>
+                            </button>
+
+                            <button mat-icon-button matTooltip="Send message On WhatsApp"
+                                (click)="whatsappAppoitment(element)">
+                                <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                            </button>
+
                         </div>
-                    </mat-toolbar>
-                    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    </ng-template>
 
-                        <ng-template #actionButtonTemplateone let-element>
-                            <div fxLayout="row" fxLayoutAlign="center center">
-                    
-                                <button mat-icon-button matTooltip="IPD Advance" (click)="OnViewReportPdf(element,true)">
-                                    <mat-icon> print</mat-icon>
-                                </button>
-                    
-                                <button mat-icon-button matTooltip="Send message On WhatsApp" (click)="whatsappAppoitment(element)">
-                                    <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
-                                </button>
-                    
-                            </div>
-                        </ng-template>
+                    <airmid-table [gridConfig]="gridConfig" class="content">
+                        <ng-container filters>
+                                <airmid-datepicker [formGroup]="_BrowseIpAdvanceService.UserFormGroup" [isRangePicker]="true"
+                                    formStartControlName="startdate" formEndControlName="enddate"
+                                    [(fromValue)]="gridConfig.filters[2].fieldValue"
+                                    [(toValue)]="gridConfig.filters[3].fieldValue"></airmid-datepicker>
 
-                        <airmid-table [gridConfig]="gridConfig" class="content">
-                            <ng-container filters>
-    
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Enter a Date Range</mat-label>
-                                    <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="start"  [(ngModel)]="gridConfig.filters[0].fieldValue" 
-                                            placeholder="Start date">
-                                        <input matEndDate formControlName="end" placeholder="End date"
-                                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                    </mat-date-range-input>
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-date-range-picker #picker></mat-date-range-picker>
-                                </mat-form-field> 
-                                
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Advance No</mat-label>
+                                    <input matInput placeholder="Search Advance No" autocomplete="off"
+                                        [(ngModel)]="gridConfig.filters[5].fieldValue" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="gridConfig.filters[5].fieldValue='0'">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Registration No</mat-label>
                                     <input matInput placeholder="Search Registration No" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[1].fieldValue=''">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-                                
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>First Name</mat-label>
-                                    <input matInput placeholder="Search First Name" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[2].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[2].fieldValue=''">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-    
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Last Name</mat-label>
-                                    <input matInput placeholder="Search Last Name" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[3].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[3].fieldValue=''">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-    
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>PBill No</mat-label>
-                                    <input matInput placeholder="Search PBill No" autocomplete="off"
                                         [(ngModel)]="gridConfig.filters[4].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[4].fieldValue=''">
+                                        (click)="gridConfig.filters[4].fieldValue='0'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
 
-                            </ng-container>
-                        </airmid-table>
-                    </div>
-                </div>
-            </mat-tab>
-
-            <!-- 2nd -->
-            <mat-tab label="IP Refund Of Advance">
-                <div fusePerfectScrollbar
-                    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                    dynamicTableHeight>
-                    <mat-toolbar class="top-header accent">
-                        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
-                            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                Browse IPD Return Advance Receipt
-                            </span>
-                        </div>
-                    </mat-toolbar>
-                    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    
-                        <ng-template #actionButtonTemplate let-element>
-                            <div fxLayout="row" fxLayoutAlign="center center">
-                                <button mat-icon-button (click)="getPaymentreceiptview(element)" matTooltip="IPD Return Advance Receipt">
-                                    <mat-icon>print</mat-icon>
-                                </button>
-                
-                               <button mat-icon-button matTooltip="Send message On WhatsApp">
-                                    <img width="500" height="20px" src="assets/images/logos/WhatsApp.png">
-                                </button>
-                               
-                            </div>
-                        </ng-template>
-                        
-                        <airmid-table [gridConfig]="gridConfig1" class="content">
-                            <ng-container filters>
-    
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Enter a Date Range</mat-label>
-                                    <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="start"  [(ngModel)]="gridConfig.filters[0].fieldValue" 
-                                            placeholder="Start date">
-                                        <input matEndDate formControlName="end" placeholder="End date"
-                                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                    </mat-date-range-input>
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-date-range-picker #picker></mat-date-range-picker>
-                                </mat-form-field> 
-                                
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Registration No</mat-label>
-                                    <input matInput placeholder="Search Registration No" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[1].fieldValue=''">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-                                
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>First Name</mat-label>
                                     <input matInput placeholder="Search First Name" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[2].fieldValue" />
+                                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[2].fieldValue=''">
+                                        (click)="gridConfig.filters[0].fieldValue='%'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
-    
+
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Last Name</mat-label>
                                     <input matInput placeholder="Search Last Name" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[3].fieldValue" />
+                                        [(ngModel)]="gridConfig.filters[1].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[3].fieldValue=''">
+                                        (click)="gridConfig.filters[1].fieldValue='%'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
-
-                            </ng-container>
-                        </airmid-table>
-                    </div>
+                            <!-- </form> -->
+                        </ng-container>
+                    </airmid-table>
                 </div>
-            </mat-tab>
+            </div>
+        </mat-tab>
 
-        </mat-tab-group>
+        <!-- 2nd -->
+        <mat-tab label="IP Refund Of Advance">
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+                <mat-toolbar class="top-header accent">
+                    <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+                        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                            Browse IPD Return Advance Receipt
+                        </span>
+                    </div>
+                </mat-toolbar>
+                <ng-template #actionButtonTemplateone let-element>
+                    <div fxLayout="row" fxLayoutAlign="center center">
+
+                        <button mat-icon-button matTooltip="IPD Advance" (click)="OnViewReportPdf(element,true)">
+                            <mat-icon> print</mat-icon>
+                        </button>
+
+                        <button mat-icon-button matTooltip="Send message On WhatsApp"
+                            (click)="whatsappAppoitment(element)">
+                            <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                        </button>
+
+                    </div>
+                </ng-template>
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                    <ng-template #actionButtonTemplate let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <button mat-icon-button (click)="getPaymentreceiptview(element)"
+                                matTooltip="IPD Return Advance Receipt">
+                                <mat-icon>print</mat-icon>
+                            </button>
+
+                            <button mat-icon-button matTooltip="Send message On WhatsApp">
+                                <img width="500" height="20px" src="assets/images/logos/WhatsApp.png">
+                            </button>
+
+                        </div>
+                    </ng-template>
+
+                    <airmid-table [gridConfig]="gridConfig1" class="content">
+                        <ng-container filters>
+
+                            <airmid-datepicker [formGroup]="_BrowseIpAdvanceService.UserFormGroup" [isRangePicker]="true"
+                                    formStartControlName="startdate" formEndControlName="enddate"
+                                    [(fromValue)]="gridConfig1.filters[2].fieldValue"
+                                    [(toValue)]="gridConfig1.filters[3].fieldValue"></airmid-datepicker>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Registration No</mat-label>
+                                <input matInput placeholder="Search Registration No" autocomplete="off"
+                                    [(ngModel)]="gridConfig1.filters[4].fieldValue" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig1.filters[4].fieldValue='0'">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>First Name</mat-label>
+                                <input matInput placeholder="Search First Name" autocomplete="off"
+                                    [(ngModel)]="gridConfig1.filters[0].fieldValue" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig1.filters[0].fieldValue='%'">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Last Name</mat-label>
+                                <input matInput placeholder="Search Last Name" autocomplete="off"
+                                    [(ngModel)]="gridConfig1.filters[1].fieldValue" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig1.filters[1].fieldValue='%'">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+                        </ng-container>
+                    </airmid-table>
+                </div>
+            </div>
+        </mat-tab>
+
+    </mat-tab-group>
 </div>

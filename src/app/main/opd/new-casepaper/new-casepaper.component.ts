@@ -172,10 +172,11 @@ export class NewCasepaperComponent implements OnInit {
   dsCopyItemList = new MatTableDataSource<MedicineItemList>();
   
   autocompleteModeItem: string = "ItemType"; //ItemDrugType
-  autocompleteModeDose:string="Dose";
-  autocompleteModeTemplate:string="Template";
-  autocompleteModeServcie:string="ServiceName";
-  autocompleteModeDoctor:string="RefDoctor";
+  autocompleteModeDose:string="DoseMaster";
+  autocompleteModeTemplate:string="PrescriptionTemplateMaster";
+  autocompleteModeServcie:string="Service"; //ServiceName
+  autocompleteModeDoctor:string="RefDoctor"; 
+  autocompleteModeDiagnosis:string="CasepaperDignosis";
 
   AllTypeDescription:any=[]
 
@@ -204,7 +205,7 @@ export class NewCasepaperComponent implements OnInit {
     this.specificDate = new Date();
     this.dateStyle = 'Day'
     this.onDaysChange();
-    this.getHistoryList();
+    // this.getHistoryList();
 
     if(this.data){
       this.regObj=this.data
@@ -226,12 +227,19 @@ export class NewCasepaperComponent implements OnInit {
       this.CompanyName=this.regObj.companyName
       this.RefDocName=this.regObj.refDocName
       this.vClassId=this.regObj.classId
+      this.getpreviousVisitData(this.regObj);
+      this.getnewVisistList(this.regObj);
+      this.getServiceList();
+      this.getVisistList();
+      this.getRtrvTestService();
+      this.getRtrvCheifComplaintList(this.regObj)
     }
   }
 
   vDays: any = 10;
   followUpDate: string;
   specificDate: Date;
+
   onDaysChange() {
 
     if (this.dateStyle == 'Day') {
@@ -318,6 +326,7 @@ export class NewCasepaperComponent implements OnInit {
       start: [''],
       Remark: '',
       Days: '',
+      Serviceid:'',
       FollowupMonths: '',
       FollowupYears: '',
       dateStylebtn: ['Day'],
@@ -339,6 +348,7 @@ export class NewCasepaperComponent implements OnInit {
   ConsultantDocId:any;
 
   getSelectedObj(obj) {
+    this.onClear();
     if ((obj.regId ?? 0) > 0) {
       console.log(obj)
        this.vOPIPId = obj.visitId
@@ -362,40 +372,125 @@ export class NewCasepaperComponent implements OnInit {
     });
     }, 1000);
     }
+    this.getVitalInfo(obj); 
+    this.getpreviousVisitData(obj);
+    this.getnewVisistList(obj);
+    this.getServiceList();
+    this.getVisistList();
+    this.getRtrvTestService();
+    this.getRtrvCheifComplaintList(obj)
     //  call one function which has all 3 list 
 
   }
 
   RefDocNameId: any;
   PrefollowUpDate: string;
-  // getpreviousVisitData(obj) {
-  //   var mdata = {
-  //     "visitId": obj.VisitId
+  getpreviousVisitData(obj) {
+    var mdata = {
+      "visitId": obj.VisitId
+    }
+    this._CasepaperService.RtrvPreviousprescriptionDetails(mdata).subscribe(Visit => {
+      this.dsItemList.data = Visit as MedicineItemList[];
+      this.Chargelist = Visit as MedicineItemList[];
+      console.log(this.dsItemList.data)  
+      if (this.dsItemList.data.length > 0) {
+        if(this.vitalInfo[0].Height > 0){
+          this.vHeight = this.vitalInfo[0].Height;
+          this.vWeight = this.vitalInfo[0].PWeight;
+          this.vBMI = this.vitalInfo[0].BMI;
+          this.vSpO2 = this.vitalInfo[0].SpO2;
+          this.vTemp = this.vitalInfo[0].Temp;
+          this.vPulse = this.vitalInfo[0].Pulse;
+          this.vBSL = this.vitalInfo[0].BSL;
+          this.vBP = this.vitalInfo[0].BP;
+        }else{
+          this.vHeight = this.dsItemList.data[0].PHeight;
+          this.vWeight = this.dsItemList.data[0].PWeight;
+          this.vBMI = this.dsItemList.data[0].BMI;
+          this.vSpO2 = this.dsItemList.data[0].SpO2;
+          this.vTemp = this.dsItemList.data[0].Temp;
+          this.vPulse = this.dsItemList.data[0].Pulse;
+          this.vBSL = this.dsItemList.data[0].BSL;
+          this.vBP = this.dsItemList.data[0].BP;
+        } 
+        this.vChiefComplaint = this.dsItemList.data[0].ChiefComplaint;
+        this.vDiagnosis = this.dsItemList.data[0].Diagnosis;
+        this.vExamination = this.dsItemList.data[0].Examination;
+        this.PrefollowUpDate = this.datePipe.transform(this.dsItemList.data[0].FollowupDate, 'MM/dd/YYYY');
+        this.specificDate = new Date(this.PrefollowUpDate)
+        this.MedicineItemForm.get('Remark').setValue(this.dsItemList.data[0].Advice)
+        this.RefDocName = this.dsItemList.data[0].Doctorname
+        // this.PatientReferDocId = this.dsItemList.data[0].PatientReferDocId 
+      }
+    });
+  }
+  vitalInfo:any;
+getVitalInfo(obj){
+  let query
+  query ="select * from visitdetails where visitid=" + obj.VisitId
+  //console.log(query)
+  // this._CasepaperService.getvitalInfo(query).subscribe(data=>{
+    // this.vitalInfo = data
+    //console.log(this.vitalInfo) 
+  // })               
+}
+
+RtrvTestServiceList: any = [];
+getRtrvTestService() {
+  var vdata = {
+    "VisitId": this.VisitId || 0
+  }
+  this._CasepaperService.getRtrvTestService(vdata).subscribe(data => {
+    this.RtrvTestServiceList = data
+    //console.log(this.RtrvTestServiceList)
+    if (this.RtrvTestServiceList) {
+      this.RtrvTestServiceList.forEach(element => {
+        this.selectedItems.push(
+          {
+            ServiceId: element.ServiceId || 0,
+            ServiceName: element.ServiceName || ''
+          });
+      })
+     // console.log(this.selectedItems)
+    }
+  })
+}
+
+RtrvDescriptionList:any=[];
+getRtrvCheifComplaintList(obj) { 
+  this.addCheiflist = [];
+  this.addDiagnolist = [];
+  this.addExaminlist = [];
+  this.AllTypeDescription = [];
+  var vdata={
+    "VisitId":obj.VisitId
+  }
+  // this._CasepaperService.getRtrvCheifComplaintList(vdata).subscribe(data => {
+  //   this.RtrvDescriptionList = data;
+  //   console.log(this.RtrvDescriptionList) 
+  //   let Cheifcomplaint = this.RtrvDescriptionList.filter(item => item.DescriptionType == 'Complaint')
+  //   if(Cheifcomplaint){
+  //     Cheifcomplaint.forEach(element=>{
+  //       const value = element.DescriptionName;
+  //       this.addCheiflist.push(value.trim());
+  //     })
   //   }
-  //   this._CasepaperService.RtrvPreviousprescriptionDetails(mdata).subscribe(Visit => {
-  //     this.dsItemList.data = Visit as MedicineItemList[];
-  //        this.Chargelist = Visit as MedicineItemList[];
-  //     // console.log(this.dsItemList.data)
-  //     if (this.dsItemList.data.length > 0) {
-  //       this.vHeight = this.dsItemList.data[0].PHeight;
-  //       this.vWeight = this.dsItemList.data[0].PWeight;
-  //       this.vBMI = this.dsItemList.data[0].BMI;
-  //       this.vSpO2 = this.dsItemList.data[0].SpO2;
-  //       this.vTemp = this.dsItemList.data[0].Temp;
-  //       this.vPulse = this.dsItemList.data[0].Pulse;
-  //       this.vBSL = this.dsItemList.data[0].BSL;
-  //       this.vBP = this.dsItemList.data[0].BP;
-  //       this.vChiefComplaint = this.dsItemList.data[0].ChiefComplaint;
-  //       this.vDiagnosis = this.dsItemList.data[0].Diagnosis;
-  //       this.vExamination = this.dsItemList.data[0].Examination;
-  //       this.PrefollowUpDate = this.datePipe.transform(this.dsItemList.data[0].FollowupDate, 'MM/dd/YYYY');
-  //       this.specificDate = new Date(this.PrefollowUpDate)
-  //       this.MedicineItemForm.get('Remark').setValue(this.dsItemList.data[0].Advice)
-  //       this.RefDocName = this.dsItemList.data[0].Doctorname
-  //       this.getAdmittedDoctorCombo();
-  //     }
-  //   });
-  // }
+  //   let Diagnosis = this.RtrvDescriptionList.filter(item => item.DescriptionType == 'Diagnosis')
+  //   if(Diagnosis){
+  //     Diagnosis.forEach(element=>{
+  //       const value = element.DescriptionName;
+  //       this.addDiagnolist.push(value.trim()); 
+  //     })
+  //   }
+  //   let Examination = this.RtrvDescriptionList.filter(item => item.DescriptionType == 'Examination')
+  //   if(Examination){
+  //     Examination.forEach(element=>{
+  //       const value = element.DescriptionName;
+  //       this.addExaminlist.push(value.trim()); 
+  //     })
+  //   } 
+  // }); 
+}
 
   getBMIcalculation() {
     if (this.vHeight > 0 && this.vWeight > 0) {
@@ -425,13 +520,15 @@ export class NewCasepaperComponent implements OnInit {
     this.durgName=row.text
   }
 
-  selectChangeDoseName(row){    
+  selectChangeDoseName(row){ 
+    debugger   
     console.log("Dose:",row)
     this.doseId=row.value
     this.doseName=row.text
   }
 
   selectChangeTemplateName(row){   
+    debugger
     console.log("Template:",row)
     this.templateId=row.value
     this.templateName=row.text
@@ -441,7 +538,9 @@ export class NewCasepaperComponent implements OnInit {
   }
   selectChangeDoctorName(row){
     console.log("DoctorName:",row)
-
+  }
+  selectChangeDiagnosis(row){
+    console.log("Diagnosis:",row)
   }
   getValidationMessages(){
     return{
@@ -450,6 +549,7 @@ export class NewCasepaperComponent implements OnInit {
       TemplateId:[],
       Serviceid:[],
       DoctorID:[],
+      Diagnosis:[],
     }
   }
   editingIndex: number | null = null;
@@ -690,13 +790,13 @@ onTemplDetAdd(){
       'opdIpdType' : 0,
       'date' : formattedDate,
       'pTime' : this.dateTimeObj.time,
-      'classId' : this.vClassId || 12,
+      'classId' : this.vClassId || "12",
       'genericId' : 1,
       'drugId' : 0, //element.DrugId || 0;
       'doseId' : 0, // element.DoseId || 0;
       'days' : 0, // element.Days || 0;
       'instruction' : "string", // element.Instruction || '';
-      'remark' : 'string',
+      'remark' : this.MedicineItemForm.get('Remark').value || '',
       'doseOption2' : 0, // element.DoseId1 || 0;
       'daysOption2' : 0 ,//parseInt(element.Day1.toString()) || 0;
       'doseOption3' : 0, // element.DoseId2 || 0;
@@ -819,6 +919,7 @@ onTemplDetAdd(){
           this.viewgetOpprescriptionReportwithoutheaderPdf();
             this.getWhatsappshareSales(this.vOPIPId, this.vMobileNo)
             this.onClear();
+            this.onClose();
           }
         });
       } else {
@@ -1303,16 +1404,16 @@ onTemplDetAdd(){
            });
   } 
 
-  getHistoryList() {
-    this._CasepaperService.getcheifcomplaintList().subscribe(data => {
-      this.HistoryList = data;
-      console.log(this.HistoryList)
-      this.filteredHistory = this.caseFormGroup.get('ChiefComplaint').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filter(value) : this.HistoryList.slice()),
-      );
-    });
-  }
+  // getHistoryList() {
+  //   this._CasepaperService.getcheifcomplaintList().subscribe(data => {
+  //     this.HistoryList = data;
+  //     console.log(this.HistoryList)
+  //     this.filteredHistory = this.caseFormGroup.get('ChiefComplaint').valueChanges.pipe(
+  //       startWith(''),
+  //       map(value => value ? this._filter(value) : this.HistoryList.slice()),
+  //     );
+  //   });
+  // }
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
     return this.HistoryList.filter(item => item.toLowerCase().includes(filterValue));
