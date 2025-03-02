@@ -30,9 +30,9 @@
     </mat-select>
 
     <!-- Pending... -->
-    <button type="button" mat-icon-button aria-label="Clear" class="dropdown-close-icon" (click)="clearSelection($event)" *ngIf="+value">
+    <span mat-icon-button aria-label="Clear" class="dropdown-close-icon" (click)="clearSelection($event)" *ngIf="+value">
         <mat-icon>close</mat-icon>
-    </button>
+    </span>
     <mat-error>
         <ng-container *ngFor="let error of activeErrors">
             {{ error }}

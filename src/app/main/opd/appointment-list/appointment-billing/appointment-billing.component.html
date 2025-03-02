@@ -175,7 +175,7 @@
                                             </mat-form-field> -->
                                         </div>
     
-                                        <div fxFlex>
+                                        <div fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%">
                                          <airmid-autocomplete label="Enter Service Name" [formGroup]="chargeForm" formControlName="serviceName"
                                             placeholderText="Enter Service Name" fxFlex
                                             ApiUrl="VisitDetail/GetServiceListwithTraiff?TariffId=1&ClassId=2&ServiceName="
@@ -213,7 +213,7 @@
                                         </div>
                                         <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
                                             <airmid-textbox label="Discount per" formControlName="discountPer"
-                                                [formGroup]="chargeForm" [validations]="getValidationMessages().discountPer"
+                                                [formGroup]="chargeForm" [validations]="getValidationMessages().discountPer" [min]="0" [max]="100"
                                                 [type]="'number'">
                                             </airmid-textbox>
     
@@ -221,7 +221,7 @@
                                         <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
                                             <airmid-textbox label="Discount amount" [formGroup]="chargeForm"
                                                 formControlName="discountAmount"
-                                                [validations]="getValidationMessages().discountAmount" [type]="'number'">
+                                                [validations]="getValidationMessages().discountAmount" [type]="'number'" [min]="0" [max]="chargeForm.get('totalAmount')?.value">
                                             </airmid-textbox>
                                         </div>
                                         <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
@@ -294,6 +294,7 @@
                                                             <mat-cell *matCellDef="let contact">
                                                                 <mat-form-field floatLabel="never">
                                                                     <input matInput placeholder="Price"
+                                                                        type="number"
                                                                         [(ngModel)]="contact.Price" required
                                                                         (ngModelChange)="onPriceOrQtyChange(contact)">
                                                                 </mat-form-field>
@@ -306,6 +307,8 @@
                                                             <mat-cell *matCellDef="let contact">
                                                                 <mat-form-field floatLabel="never" appearance="fill">
                                                                     <input matInput placeholder="Qty"
+                                                                        type="number"
+                                                                        min="1"
                                                                         [(ngModel)]="contact.Qty" required
                                                                         (ngModelChange)="onPriceOrQtyChange(contact)">
                                                                 </mat-form-field>

@@ -1,6 +1,6 @@
 <mat-form-field [appearance]="appearance" [style.width.%]="width">
     <mat-label>{{ label }}</mat-label>
-    <input matInput [formControl]="formGroup?.controls[formControlName]" [maxlength]="maxLength" (blur)="onTouched()" [type]="type" [value]="value" [placeholder]="placeholder" (keyup)="onKeyUp($event)" [readonly]="readonly" (input)="onValueChange($event)" (change)="onChange($event)" [name]="formControlName" [formGroup]="formGroup" appFocusNext/>
+    <input matInput [formControl]="formGroup?.controls[formControlName]" [maxlength]="maxLength" (blur)="onTouched()" [type]="type" [value]="value" [placeholder]="placeholder" (keyup)="onKeyUp($event)" [readonly]="readonly" (input)="onValueChange($event)" (change)="onChange($event)" [name]="formControlName" [formGroup]="formGroup" appFocusNext [min]="min" [max]="max" />
     
     <mat-error>
         <ng-container *ngFor="let error of activeErrors">

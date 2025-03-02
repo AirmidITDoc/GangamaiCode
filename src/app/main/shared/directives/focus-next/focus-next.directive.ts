@@ -6,7 +6,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class FocusNextDirective implements AfterViewInit {
   private formElements: Array<HTMLElement> = [];
-
+  private parentElement: Element | null = null
   @Input() name: string; // FormControlName
   @Input() formGroup: FormGroup;
   constructor(private el: ElementRef) {
@@ -14,9 +14,8 @@ export class FocusNextDirective implements AfterViewInit {
 
   ngAfterViewInit(): void {
     const modalElement = document.querySelector("mat-dialog-container");
-    const parentElement = modalElement ? modalElement : document.body;
+    this.parentElement = modalElement ? modalElement : document.body;
 
-    this.formElements = Array.from(parentElement.querySelectorAll("input, mat-select, button"));
   }
   @HostListener("keydown.enter", ['$event'])
   handleEnter(event: KeyboardEvent): void {
@@ -30,6 +29,7 @@ export class FocusNextDirective implements AfterViewInit {
   }
 
   // focusNext(): void {
+  //   this.formElements = Array.from(this.parentElement.querySelectorAll("input, mat-select, button"));
   //   if (!this.formElements.length) return;
 
   //   const control = this.formGroup?.get(this.name);
@@ -44,7 +44,7 @@ export class FocusNextDirective implements AfterViewInit {
   //     const potentialElement = this.formElements[currentIndex];
 
   //     // Skip elements that are readonly or disabled
-  //     if (potentialElement  && !potentialElement.hasAttribute('readonly') && !potentialElement.hasAttribute('disabled')) {
+  //     if (potentialElement && !potentialElement.hasAttribute('readonly') && !potentialElement.hasAttribute('disabled')) {
   //       nextElement = potentialElement;
   //       break;
   //     }
@@ -64,6 +64,8 @@ export class FocusNextDirective implements AfterViewInit {
   //   }
   // }
   focusNext(): void {
+    this.formElements = Array.from(this.parentElement.querySelectorAll("input, mat-select, button"));
+
     if (!this.formElements.length) return;
 
     const control = this.formGroup?.get(this.name);

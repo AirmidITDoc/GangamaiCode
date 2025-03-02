@@ -62,6 +62,8 @@ export class AirmidTextboxComponent implements
     @Input() readonly: boolean = false;
     @Input() width: number = 100;
     @Input() isMovable = true;
+    @Input() min:number = -Infinity;
+    @Input() max:number = Infinity;
 
 
     @Input()

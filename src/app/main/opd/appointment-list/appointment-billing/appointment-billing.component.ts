@@ -144,13 +144,16 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     this.handleChange('discountPer', () => this.updateDiscountAmount());
     this.handleChange('discountAmount', () => this.updateDiscountPercentage());
     this.handleChange('totalDiscountPer', () => this.updateTotalDiscountAmt(), this.totalChargeForm);
+    this.handleChange('totalDiscountAmount', () => this.updateTotalDiscountPer(), this.totalChargeForm);
   }
 
   calculateTotalCharge(row: any = null): void {
-    let qty = this.chargeForm.get("qty").value;
-    let price = this.chargeForm.get("price").value;
+    let qty = +this.chargeForm.get("qty").value;
+    let price = +this.chargeForm.get("price").value;
+
+    if (qty <= 0 || price <= 0) return;
+
     let total = qty * price;
-    if (qty <= 0) return;
     this.chargeForm.patchValue({
       totalAmount: total,
       netAmount: total  // Set net amount initially
@@ -203,7 +206,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     let discountAmount = this.chargeForm.get("discountAmount").value;
     let totalAmount = this.chargeForm.get("totalAmount").value;
 
-    if (discountAmount > totalAmount) {
+    if (discountAmount < 0 || discountAmount > totalAmount ) {
       this.chargeForm.get("discountAmount").setValue(0);
       this.chargeForm.get("discountPer").setValue(0);
       this.isUpdating = false;
@@ -249,11 +252,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   createChargeForm() {
     return this.formBuilder.group({
       serviceName: ['', Validators.required],
-      price: [0, [Validators.required]],
+      price: [0, [Validators.required, Validators.min(0)]],
       qty: [1, [Validators.required, Validators.min(1)]],
       totalAmount: [0,],
       discountPer: [0, [Validators.min(0), Validators.max(100)]],
-      discountAmount: [0, [Validators.required]],
+      discountAmount: [0, [Validators.required, Validators.min(0)]],
       netAmount: [0, [Validators.min(0)]],
       DoctorID: [0]
     });
@@ -262,8 +265,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     // This all total amounts are calclated based on total data...
     return this.formBuilder.group({
       totalAmount: [0],
-      totalDiscountPer: [0, [Validators.min(0), Validators.max(100)]],
-      totalDiscountAmount: [0, [Validators.required]],
+      totalDiscountPer: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
+      totalDiscountAmount: [0, [Validators.required, Validators.min(0)]],
       totalNetAmount: [0, [Validators.min(0)]],
       paymentType: ['CashPay'],
       concessionId: [1]
@@ -358,7 +361,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   }
   onPriceOrQtyChange(row: ChargesList = null): void {
     if (!row) return;
-    const totalAmount = (+row.Price || 0) * (+row.Qty || 0);
+
+    row.Price = Math.abs(row.Price);
+    row.Qty = Math.abs(row.Qty);
+
+    const totalAmount = row.Price * row.Qty;
 
     // If discount percentage exists, recalculate discount amount
     if (row.DiscPer) {
@@ -408,25 +415,60 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     this.calculateTotalAmount();
   }
   updateTotalDiscountAmt(): void {
-    debugger
-    this.Consessionres = true
-    if (this.totalChargeForm.get("totalDiscountPer").value == 0)
-      this.Consessionres = false
-    const discountControl = this.totalChargeForm.get("totalDiscountPer");
-    if (discountControl.valid && !this.isDiscountApplied) {
+    if (this.isUpdating) return; // Stop recursion
+    this.isUpdating = true;
+
+    const totalDiscountPer = +this.totalChargeForm.get("totalDiscountPer").value;
+    if (totalDiscountPer < 0 || totalDiscountPer > 100) {
+      this.totalChargeForm.get("totalDiscountPer").setValue(0);
+      this.totalChargeForm.get("totalDiscountAmount").setValue(0);
+
+      this.isUpdating = false;
+      this.Consessionres = false;
+      this.toastrService.error("Discount must be between 0 to 100.");
+      return;
+    }
+    this.Consessionres = totalDiscountPer !== 0;
+    if (!this.isDiscountApplied) {
       const totalAmount = +this.totalChargeForm.get("totalAmount").value;
-      const discountPer = +discountControl.value;
-      const discountAmount = (totalAmount * discountPer) / 100;
+      const discountAmount = (totalAmount * totalDiscountPer) / 100;
       const netAmount = totalAmount - discountAmount;
       this.totalChargeForm.patchValue({
         totalDiscountAmount: discountAmount,
         totalNetAmount: netAmount
       }, { emitEvent: false });
     }
+    this.isUpdating = false;
+  }
+  updateTotalDiscountPer(): void {
+    if (this.isUpdating) return; // Stop recursion
+    this.isUpdating = true;
+
+    const totalDiscountAmount = +this.totalChargeForm.get("totalDiscountAmount").value;
+    const totalChargeAmount = +this.totalChargeForm.get("totalAmount").value;
+
+    if (totalDiscountAmount < 0 || totalDiscountAmount > totalChargeAmount) {
+      this.totalChargeForm.get("totalDiscountPer").setValue(0);
+      this.totalChargeForm.get("totalDiscountAmount").setValue(0);
+      this.isUpdating = false;
+      this.Consessionres = false;
+      this.toastrService.error("Discount must be between 0 and the total amount.");
+      return;
+    }
+    this.Consessionres = totalDiscountAmount !== 0;
+    if (!this.isDiscountApplied) {
+      const disountPer = Number(totalChargeAmount ? ((totalDiscountAmount / totalChargeAmount) * 100).toFixed(2) : "0.00");
+      const netAmount = totalChargeAmount - totalDiscountAmount;
+      this.totalChargeForm.patchValue({
+        totalDiscountPer: disountPer,
+        totalNetAmount: netAmount
+      }, { emitEvent: false });
+    }
+    this.isUpdating = false;
   }
   resetForm(): void {
     this.chargeForm.reset({
-      serviceName: 'Default service name for testing',
+      serviceName: '',
       price: 0,
       qty: 0,
       totalAmount: 0,
@@ -568,7 +610,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         { name: "pattern", Message: "only Number allowed." }
       ],
       price: [
-        { name: "pattern", Message: "only Number allowed." }
+        { name: "pattern", Message: "only Number allowed." },
+        { name: "min", Message: "Enter valid price." }
       ],
       qty: [
         { name: "required", Message: "Qty required!", },
