@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, Input, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { ChargesList } from 'app/main/opd/op-search-list/opd-search-list/opd-search-list.component';
@@ -29,6 +29,7 @@ import { map, startWith } from 'rxjs/operators';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { element } from 'protractor';
 
 
 @Component({
@@ -47,6 +48,15 @@ export class IPAdvanceComponent implements OnInit {
   Filepath:any;
   AdmissionId:any=0; 
   autocompleteModeCashCounter: string="CashCounter";
+ 
+      @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>; 
+     
+    
+      ngAfterViewInit() {
+        // Assign the template to the column dynamically 
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;  
+      }
+ 
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   gridConfig: gridModel = {
@@ -65,7 +75,10 @@ export class IPAdvanceComponent implements OnInit {
           { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA' },
           { heading: "NEFT Pay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA' }, 
           { heading: "PayTM Pay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Reason", key: "reason", sort: true, align: 'left', emptySign: 'NA' , width: 300} 
+          { heading: "Reason", key: "reason", sort: true, align: 'left', emptySign: 'NA' , width: 300} ,
+          { heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
+          }
       ],
       sortField: "AdvanceDetailID",
       sortOrder: 0,
@@ -106,22 +119,57 @@ export class IPAdvanceComponent implements OnInit {
     public toastr: ToastrService,
     private formBuilder: UntypedFormBuilder) 
     { }
-
+TotalAdvanceAmt:any=0;
+TotalAdvUsedAmt:any=0;
+TotalAdvaBalAmt:any=0;
+TotalAdvRefAmt:any=0;
   ngOnInit(): void { 
     debugger
     this.createAdvform(); 
     if(this.data){
       this.registerObj = this.data.Obj;
       console.log("Advance data:",this.registerObj)
-      this.AdmissionId =this.registerObj.admissionId
-    
-
+      this.AdmissionId =this.registerObj.admissionId 
 
       if (this.AdmissionId > 0) {
+        var vdata = {
+          "first": 0,
+          "rows": 10,
+          "sortField": "AdmissionID",
+          "sortOrder": 0,
+          "filters": [
+            {
+              "fieldName": "AdmissionID",
+              "fieldValue": String(this.AdmissionId),
+              "opType": "Equals"
+            },
+            {
+              "fieldName": "Start",
+              "fieldValue": "0",
+              "opType": "Equals"
+            },
+            {
+              "fieldName": "Length",
+              "fieldValue": "10",
+              "opType": "Equals"
+            }
+          ],
+          "exportType": "JSON"
+        }
+     
         setTimeout(() => {
-            this._IpSearchListService.AdvanceHeaderlist(this.AdmissionId).subscribe((response) => {
-                this.selectedAdvanceObj = response;
+            this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
+                this.selectedAdvanceObj = response.data; 
                 console.log(this.selectedAdvanceObj) 
+                console.log(this.vAdvanceId) 
+                if(this.selectedAdvanceObj.length > 0)
+                  this.vAdvanceId = this.selectedAdvanceObj[0].advanceId
+                this.selectedAdvanceObj.forEach(element=>{
+                    this.TotalAdvanceAmt  += element.advanceAmount
+                    this.TotalAdvUsedAmt  += element.usedAmount
+                    this.TotalAdvaBalAmt  += element.balanceAmount
+                    this.TotalAdvRefAmt  += element.refundAmount 
+                })
                });
         }, 500);
     } 
@@ -131,12 +179,12 @@ export class IPAdvanceComponent implements OnInit {
    
 }
   createAdvform(){
-    this.AdvFormGroup = this.formBuilder.group({
-      advanceAmt: ['',Validators.required, [Validators.pattern('^[0-9]{2,8}$')]],
+    this.AdvFormGroup = this.formBuilder.group({ 
       comment: [''],
       CashCounterId: [0],
       cashpay: ['1'],
-      CashCounterID:['5',Validators.required]
+      CashCounterID:['5',Validators.required],
+      advanceAmt: ['', [Validators.pattern("^[0-9]*$"),Validators.required]],   
     });
   }  
   getValidationMessages() {
@@ -190,7 +238,7 @@ export class IPAdvanceComponent implements OnInit {
     let AdvanceDetObj = {};
     AdvanceDetObj['date'] = formattedDate || '1900-01-01';
     AdvanceDetObj['time'] = formattedTime || '1900-01-01';
-    AdvanceDetObj['advanceId'] = 0;
+    AdvanceDetObj['advanceId'] = this.vAdvanceId  || 0;
     AdvanceDetObj['refId'] = this.registerObj.regId;
     AdvanceDetObj['transactionId'] = 2;
     AdvanceDetObj['opdIpdId'] = this.registerObj.admissionId;
@@ -209,7 +257,7 @@ export class IPAdvanceComponent implements OnInit {
 
     let advanceHeaderUpdateObj = {};
     advanceHeaderUpdateObj['advanceAmount'] = this.AdvFormGroup.get('advanceAmt').value || 0;
-    advanceHeaderUpdateObj['advanceId'] = 0;
+    advanceHeaderUpdateObj['advanceId'] = this.vAdvanceId ;
 
     let PatientHeaderObj = {};
     PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '1900-01-01',
@@ -274,39 +322,15 @@ export class IPAdvanceComponent implements OnInit {
     this.AdvFormGroup.get('advanceAmt').reset(0);
     this.AdvFormGroup.get('comment').reset('');
     this.AdvFormGroup.get('CashCounterId').setValue(5);
-  }
-
+    this.vAdvanceId = 0;
+  } 
   
- 
-  getAdvancetotal(element) { 
-    let netAmt;
-    netAmt = element.reduce((sum, { AdvanceAmount }) => sum += +(AdvanceAmount || 0), 0);
-    this.TotalAdvamt = netAmt;
-    return netAmt;
-  } 
-  getAdvBalance(element) {
-    let netAmt;
-    netAmt = element.reduce((sum, { BalanceAmount }) => sum += +(BalanceAmount || 0), 0);
-    // this.Advavilableamt = netAmt;
-    return netAmt;
-  } 
-  getAdvanceusedtotal(element) {
-    let netAmt;
-    netAmt = element.reduce((sum, { UsedAmount }) => sum += +(UsedAmount || 0), 0);
-    // this.Advavilableamt = netAmt;
-    return netAmt;
-  } 
-  getAdvancerefund(element) {
-    let netAmt;
-    netAmt = element.reduce((sum, { RefundAmount }) => sum += +(RefundAmount || 0), 0);
-    // this.Advavilableamt = netAmt;
-    return netAmt;
-  } 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
 
   keyPressCharater(event){
+    debugger
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
@@ -413,7 +437,10 @@ export class IPAdvanceComponent implements OnInit {
           { heading: "CardPayAmt", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 200 },
           { heading: "NeftPayAmt", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 250 }, 
           { heading: "PayTMAmt", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Reason", key: "reason", sort: true, align: 'left', emptySign: 'NA', width: 200 }
+          { heading: "Reason", key: "reason", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+          { heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
+          }
       
       ],
       sortField: "AdvanceDetailID",

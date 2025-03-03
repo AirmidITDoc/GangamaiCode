@@ -650,9 +650,10 @@ public getUMOCombo() {
   public UpdateAdvanceHeader(employee){
   return this._httpClient1.PostData("Advance/Edit",employee)  
   }
-  public AdvanceHeaderlist(employee) {
-    return this._httpClient1.PostData("Advance/PatientWiseAdvanceList", employee)
-  } 
+ 
+  public AdvanceHeaderlist(Id) {
+    return this._httpClient1.PostData("Advance/PatientWiseAdvanceList" , Id);
+}
 
   public insertIPRefundOfAdvance(employee)
   {

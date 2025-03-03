@@ -112,7 +112,7 @@
             </mat-table>
         </div>
         <div class="table-footer-wrapper">
-            <div class="table-export-wrapper">
+            <div class="table-export-wrapper"  *ngIf="ShowButtons==true;else elseButtonBlock">
                 <button class="btn btn-primary btn-with-icon">
                     <span class="btn-icon">
                         <i class="fa-solid fa-file-excel fa-lg"></i>
@@ -132,6 +132,12 @@
                     <span>CSV</span>
                 </button>
             </div>
+
+            <ng-template #elseButtonBlock>
+                <div class="table-footer-wrapper">
+                    
+                </div>
+            </ng-template>
             <div class="table-pagination-wrapper">
                 <mat-paginator class="paginator" [pageSizeOptions]="[25, 50, 100, 500]" [pageSize]="25" [length]="resultsLength" showFirstLastButtons (page)="bindGridData()"></mat-paginator>
             </div>
