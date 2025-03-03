@@ -25,7 +25,6 @@ export class PrescriptionReturnService {
       PrescriptionStatus:['Pending']
     })
   }
-
   
   PrescriptionRetSearchFrom() {
     return this._FormBuilder.group({
@@ -85,9 +84,13 @@ public getRegistraionById(Id) {
     return this._httpClient1.PutData("Nursing/PrescriptionReturnUpdate",emp)
   }
 
-  public getAdmittedPatientList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch", employee)
+  public getAdmittedpatientlist(id){
+    debugger
+    return this._httpClient1.GetData("Admission/" + id);
   }
+  public getVisitById(Id) {
+    return this._httpClient1.GetData("VisitDetail/" + Id);
+}
   public getRegistrationList(employee)
 {
   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientRegistrationList",employee)
