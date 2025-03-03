@@ -786,9 +786,7 @@ public getUMOCombo() {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
 
-  public getDischargeId(data){
-    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
-  }
+  
   public getchargesList(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
@@ -828,12 +826,8 @@ public getUMOCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ConcessionReasonMasterForCombo", {});
   }
   
-  public getDischargeSummary(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_T_DischargeSummary",employee)
-  }
-  public getPrescriptionList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IP_Prescription_Discharge",employee)
-  }
+  
+  
   
   public getDepartmentCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=ps_Cmb_rtrv_DocDepartmentMasterForCombo", {})
@@ -1086,7 +1080,7 @@ public BedtransferUpdate(Param: any) {
 
 public DichargeInsert(Param: any) {
   if (Param.dischargeId) {
-      return this._httpClient1.PutData("DischargeSP/IPDischargeInsert" + Param.dischargeId, Param);
+      return this._httpClient1.PutData("ischargeSP/IPDischargeInsertD" + Param.dischargeId, Param);
   } else return this._httpClient1.PostData("DischargeSP/IPDischargeInsert", Param);
 }
 
@@ -1141,9 +1135,24 @@ public updateIPDDischargSummary(employee)
   return this._httpClient1.PostData("DischargeSummary/DischargeUpdate",employee);
 }
 
-public insertIPDDischargSummary(employee)
-{    
-  return this._httpClient1.PostData("DischargeSummary/DischargeInsert",employee);
+
+public insertIPDDischargSummary(param)
+{
+if (param.dischargesummaryId) {
+  return this._httpClient1.PostData("DischargeSummary/DischargeUpdate", param);
+  } else return this._httpClient1.PostData("DischargeSummary/DischargeInsert", param);
+}
+
+
+public getDischargeSummary(employee) {
+  return this._httpClient1.PostData("DischargeSummary/IPDischargeSummaryData",employee)
+}
+public getPrescriptionList(employee) {
+  return this._httpClient1.PostData("DischargeSummary/IPPrescriptionDischargeData",employee)
+}
+
+public getDischargeId(Id){
+  return this._httpClient1.GetData("DischargeSummary/" + Id);
 }
 }
 
