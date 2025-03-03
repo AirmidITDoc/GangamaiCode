@@ -31,18 +31,13 @@ export class CanteenRequestComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "Nursing/PrescriptionWardList",
         columnsList: [
-            { heading: "Code", key: "reqId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 450 },
-            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "AdmissionTime", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "OP_IP_ID", key: "oP_IP_ID", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "OPD_IPD_Type", key: "oPD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "IsBillGenerated", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "BedName", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-
+            { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Visit/AdmDate", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "WardName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "AddUserName", key: "oP_IP_ID", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsBillGenerated", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA' },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
@@ -75,26 +70,26 @@ export class CanteenRequestComponent implements OnInit {
     gridConfig1: gridModel = {
         apiUrl: "Nursing/PrescriptionDetailList",
         columnsList: [
-            { heading: "Code", key: "reqId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 450 },
-            { heading: "UnitMRP", key: "unitMRP", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            // { heading: "Code", key: "reqId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "UnitMRP", key: "unitMRP", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
 
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._CanteenRequestService.deactivateTheStatus(data.ipMedID).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
+            // {
+            //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+            //         {
+            //             action: gridActions.edit, callback: (data: any) => {
+            //                 this.onSave(data);
+            //             }
+            //         }, {
+            //             action: gridActions.delete, callback: (data: any) => {
+            //                 this._CanteenRequestService.deactivateTheStatus(data.ipMedID).subscribe((response: any) => {
+            //                     this.toastr.success(response.message);
+            //                     this.grid.bindGridData();
+            //                 });
+            //             }
+            //         }]
+            // } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "ReqId",
         sortOrder: 0,
@@ -130,5 +125,23 @@ export class CanteenRequestComponent implements OnInit {
         });
     }
 
-    NewRequest() { }
+    NewRequest(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        const dialogRef = this._matDialog.open(NewCanteenRequestComponent,
+            {
+                maxWidth: "90vw",
+                height: '90%',
+                width: '90%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+            console.log('The dialog was closed - Action', result);
+        });
+    }
 }

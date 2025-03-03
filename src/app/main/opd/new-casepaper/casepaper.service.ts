@@ -23,20 +23,17 @@ export class CasepaperService {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_M_PastHistoryMasterForCombo", {})
   }
 
-  public getDiagnosisList() {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_M_ComplaintMasterForCombo", {})
-  }
  //Deartment Combobox List
  public getDepartmentCombo() {
   return this._httpClient.post("Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo", {})
 } 
 //Deartment Combobox List
-public getServiceList(param,loader = true){ 
-  if (loader) {
-    this._loaderService.show();
-}//m_Rtrv_PathRadServiceList"
- return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesList", param)
-}
+// public getServiceList(param,loader = true){ 
+//   if (loader) {
+//     this._loaderService.show();
+// }//m_Rtrv_PathRadServiceList"
+//  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesList", param)
+// }
   //Doctor Master Combobox List
   public getDoctorMasterCombo(Id) {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo_Conditional", { "Id": Id })
@@ -49,21 +46,14 @@ public getServiceList(param,loader = true){
   
       return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DoctorListMasterForCombo",param)
     } 
-  public getDoseList() {
-    return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_DoseMasterList", {})
-  }
+  // public getDoseList() {
+  //   return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_DoseMasterList", {})
+  // }
 
   public getDrugList(drugValue) {
     // return this._httpClient.post("Generic/GetByProc?procName=ps_RtvrDrugName", { "ItemName": drugValue })
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty", { "ItemName": drugValue })
     
-  }
-  public getComplaintList() {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_M_ComplaintMasterForCombo", {});
-  }
-
-  public getExaminationList() {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_M_ExaminationMasterForCombo", {});
   }
 
   public onSaveCasepaper(param,loader = true){ 

@@ -11,6 +11,10 @@
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onTariff()">+ New Tariff
+            </button>
+            <button mat-raised-button (click)="onEdit()">+ OnEdit
+            </button>
             <button mat-raised-button (click)="onSave()">+ New Service
             </button>
         </div>
@@ -58,6 +62,18 @@
                     <img width="18px" height="14px" src="assets/images/logos/radiology.png">
                 </mat-icon>
                 <mat-icon *ngIf="element.isRadiology != 1"
+                    class="active-icon red-500 s-16">close
+                </mat-icon> 
+            </div>
+                
+        </ng-template>
+
+        <ng-template #iconisPackage let-element >
+            <div>
+                <mat-icon *ngIf="element.isPackage == 1" matTooltip="IsPackage">
+                    <img width="18px" height="14px" src="assets/images/logos/Package.png">
+                </mat-icon>
+                <mat-icon *ngIf="element.isPackage != 1"
                     class="active-icon red-500 s-16">close
                 </mat-icon> 
             </div>

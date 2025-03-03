@@ -72,8 +72,8 @@ public getRegistraionById(Id) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList", employee)
   }
 
-  public getAdmittedpatientlist(employee){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
+  public getAdmittedpatientlist(id){
+    return this._httpClient1.GetData("Admission/" + id);
   }
   public presciptionSave(employee) {
     return this._httpClient.post("InPatient/InsertIPPrescription", employee);

@@ -7,9 +7,9 @@
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
-                    <div class="comman-date">
+                    <!-- <div class="comman-date">
                         <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                    </div>
+                    </div> -->
                     <div class="close-icon">
                         <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog">
                             <mat-icon>close</mat-icon>
@@ -29,7 +29,57 @@
                         <mat-card>
                             <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="space-between">
                                 <div class="input-container" fxLayout="row" fxFlex="100%" fxFlex.gt-sm="70%" class="gap-8" fxLayoutAlign="start center">
-                                    <mat-form-field appearance="outline" fxFlex="20%">
+
+                                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                                        <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown 
+                                                label="ItemName" 
+                                                formControlName="itemName"
+                                                [formGroup]="data?.itemName"
+                                                [validations]="getValidationMessages().itemName"
+                                                [mode]="autocompleteModegroupName">
+                                            </airmid-dropdown>
+                                        </div>
+                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-textbox 
+                                                label="BalQty" 
+                                                formControlName="balqty" 
+                                                [value]="data?.balqty"
+                                                [formGroup]="registeredForm"
+                                                [validations]="getValidationMessages().balqty"
+                                                [maxLength]="50">
+                                            </airmid-textbox>
+                                        </div>
+                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-textbox 
+                                                label="UsedQty" 
+                                                formControlName="usedqty" 
+                                                [value]="data?.usedqty"
+                                                [formGroup]="registeredForm"
+                                                [validations]="getValidationMessages().usedqty"
+                                                [maxLength]="50">
+                                            </airmid-textbox>
+                                        </div>
+                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-textbox 
+                                                label="Remark" 
+                                                formControlName="remark" 
+                                                [value]="data?.remark"
+                                                [formGroup]="registeredForm"
+                                                [validations]="getValidationMessages().remark"
+                                                [maxLength]="50">
+                                            </airmid-textbox>
+                                        </div>
+                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                                        </div>
+                                        <div class="input-add-button">
+                                            <button class="btn btn-primary" (click)="onSaveEntry()" [disabled]="!add" addbutton> Add </button>
+                                            <!-- [disabled]="_salesService.IndentSearchGroup.invalid" -->
+                                        </div>
+                                    </div>
+
+                                    <!-- <mat-form-field appearance="outline" fxFlex="20%">
                                         <input type="text" name="SrvcName" formControlName="SrvcName" placeholder="Service Name" matInput [matAutocomplete]="auto" (input)="getServiceListCombobox()" required #itemid (keydown)="onEnterItem($event)">
 
                                         <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText" showPanel="true" (optionsScroll)="onScroll()" (optionSelected)='getSelectedObj($event.option.value)'>
@@ -38,15 +88,14 @@
                                             </mat-option>
                                         </mat-autocomplete>
                                         <mat-hint>
-                                            <!-- <span *ngIf="!noOptionFound">Select Service Name</span> -->
                                             <span *ngIf="noOptionFound" style="color: #f44336;"> No data Found</span>
                                         </mat-hint>
                                         <mat-error *ngIf="registeredForm.get('SrvcName').hasError('required')">
                                             Required field cannot be left blank
                                         </mat-error>
-                                    </mat-form-field>
+                                    </mat-form-field> -->
 
-                                    <mat-form-field appearance="outline" fxFlex>
+                                    <!-- <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Qty</mat-label>
                                         <input matInput name="Qty" (keyup)="calculateTotalAmt()" formControlName="Qty" required (keydown)="onEnterqty($event)" #qty>
                                         <mat-error *ngIf="registeredForm.get('Qty').invalid && registeredForm.get('Qty').touched">
@@ -56,14 +105,11 @@
                                     <mat-form-field appearance="outline" fxFlex="60%">
                                         <mat-label>Remark</mat-label>
                                         <input matInput name="Remark" formControlName="Remark" (keydown)="onEnterremark($event)" #remark>
-                                    </mat-form-field>
+                                    </mat-form-field> -->
 
-                                    <div class="input-add-button">
-                                        <button class="btn btn-primary" (click)="onSaveEntry()" [disabled]="!add" addbutton> Add </button>
-                                        <!-- [disabled]="_salesService.IndentSearchGroup.invalid" -->
-                                    </div>
+                                    
                                 </div>
-                                <div class="input-container" fxLayout="row" fxFlex="100%" fxFlex.gt-sm="30%" class="gap-8" fxLayoutAlign="start center">
+                                <!-- <div class="input-container" fxLayout="row" fxFlex="100%" fxFlex.gt-sm="30%" class="gap-8" fxLayoutAlign="start center"> -->
                                     <!-- <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Department</mat-label>
                                         <mat-select formControlName="Departmentid" placeholder="Bank" #singleSelect required>
@@ -75,20 +121,33 @@
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field> -->
-                                    <airmid-dropdown label="Department Name" formControlName="Departmentid" [formGroup]="registeredForm"
+                                    <!-- <airmid-dropdown label="Department Name" formControlName="Departmentid" [formGroup]="registeredForm"
                                         [validations]="getValidationMessages().Departmentid" 
                                         [mode]="autocompletedepartment">
                                     </airmid-dropdown>
-                                </div>
+                                </div> -->
                             </div>
                         </mat-card>
                     </div>
                     <div class="modal-card-container table-container">
                         <div class="table-row gap-12" fxLayout="column" fxLayout.gt-md="row">
                             <!-- Table 1 -->
-                            <div class="table-left" fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="70%">
+                            <!-- <div class="table-left" fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="70%"> -->
                                 <mat-card fxFlexFill>
-                                    <div class="table-wrapper">
+
+                                    <div fusePerfectScrollbar
+                                        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                                        dynamicTableHeight>
+                                        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                                            <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
+                                                <ng-container filters>
+
+                                                </ng-container>
+                                            </airmid-table>
+                                        </div>
+                                    </div>
+
+                                    <!-- <div class="table-wrapper">
                                         <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" class="h-280">
 
                                             <ng-container matColumnDef="SrvcName">
@@ -115,14 +174,6 @@
                                                     <span> {{contact.ExpDate }}</span>
                                                 </mat-cell>
                                             </ng-container>
-
-                                            <!-- <ng-container matColumnDef="Qty">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                <span> {{contact.Qty }}</span>
-                                            </mat-cell>
-                                        </ng-container> -->
 
                                             <ng-container matColumnDef="BalanceQty">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -175,7 +226,6 @@
 
                                             <ng-container matColumnDef="noData">
                                                 <mat-footer-cell *matFooterCellDef colspan="6">
-                                                    <!-- <mat-spinner class="spinner" [diameter]="35" [color]="blue"></mat-spinner> -->
                                                     <span>No Data Found</span>
                                                 </mat-footer-cell>
                                             </ng-container>
@@ -196,12 +246,12 @@
                                                     <span class="net-amt-value">{{getNetAmtSum(dataSource.data)}}</span>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
+                                        </div> 
+                                    </div>  -->
                                 </mat-card>
-                            </div>
+                            <!-- </div> -->
                             <!-- Table 2 -->
-                            <div class="table-right" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="30%">
+                            <!-- <div class="table-right" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="30%">
                                 <mat-card fxFlexFill>
                                     <div class="table-wrapper">
                                         <mat-table #table matSort [dataSource]="dataSource1" class="h-280" [@animateStagger]="{value:'50'}">
@@ -229,7 +279,6 @@
 
                                             <ng-container matColumnDef="noData">
                                                 <mat-footer-cell *matFooterCellDef colspan="6">
-                                                    <!-- <mat-spinner class="spinner" [diameter]="35" [color]="blue"></mat-spinner> -->
                                                     <span>No Data Found</span>
                                                 </mat-footer-cell>
                                             </ng-container>
@@ -244,9 +293,12 @@
                                         </mat-table>
                                     </div>
                                 </mat-card>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
+
+
+
                 </div>
             </form>
         </div>

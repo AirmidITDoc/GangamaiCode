@@ -10,6 +10,9 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import { element } from 'protractor';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 
 @Component({
   selector: 'app-new-canteen-request',
@@ -19,16 +22,59 @@ import { element } from 'protractor';
   animations: fuseAnimations
 })
 export class NewCanteenRequestComponent implements OnInit {
-  displayedVisitColumns: string[] = [
-    'Date',
-    'Time'
-  ]
-  displayedVisitColumns2: string[] = [
-    'ItemName',
-    'Qty',
-    'Remark',
-    'buttons'
-  ]
+
+    data: any;
+    autocompleteModegroupName:string = "Service";
+    autocompleteModestoreName:string = "Store";
+    autocompleteModewardName:string = "Room";
+
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    gridConfig1: gridModel = {
+        apiUrl: "CurrencyMaster/List",
+        columnsList: [
+            { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Time", key: "time", sort: true, align: 'left', emptySign: 'NA' },
+        ],
+        sortField: "firstName",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "firstName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+        ],
+        row: 25
+    }
+
+    
+    gridConfig: gridModel = {
+        apiUrl: "CurrencyMaster/List",
+        columnsList: [
+            { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Buttons", key: "button", sort: true, align: 'left', emptySign: 'NA' },
+        ],
+        sortField: "firstName",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "firstName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+        ],
+        row: 25
+    }
+
+
+//   displayedVisitColumns: string[] = [
+//     'Date',
+//     'Time'
+//   ]
+//   displayedVisitColumns2: string[] = [
+//     'ItemName',
+//     'Qty',
+//     'Remark',
+//     'buttons'
+//   ]
   
   vOPIPId: any = 0;
   vOPDNo: any ;
@@ -80,6 +126,17 @@ export class NewCanteenRequestComponent implements OnInit {
     this.gePharStoreList();
     this.getWardList(); 
   }
+
+    getValidationMessages(){
+        return{
+            StoreId: [],
+            WardName: [],
+            ItemId: [],
+            Qty: [],
+            Remark: [],
+
+        }
+    }
 
   getSearchList() {
     var m_data = {

@@ -97,6 +97,25 @@ export class NewPrescriptionComponent implements OnInit {
   vOPDNo: any = 0;
   vTariffId: any = 0;
   vClassId: any = 0;
+  vRegNo:any;
+  vPatientName:any; 
+  vAdmissionDate:any;
+  vMobileNo:any; 
+  vIPDNo:any; 
+  vTariffName:any;
+  vCompanyName:any; 
+  vDoctorName:any;
+  vRoomName:any;
+  vBedName:any;
+  vAge:any;
+  vGenderName:any;
+  vAdmissionTime:any;
+  vAgeMonth:any;
+  vAgeDay:any;
+  vDepartment:any;
+  vRefDocName:any;
+  vPatientType:any;
+  vDOA:any;
 
   dsPresList = new MatTableDataSource<MedicineItemList>();
   dsiVisitList = new MatTableDataSource<MedicineItemList>();
@@ -164,107 +183,82 @@ export class NewPrescriptionComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-  getSearchList() {
-    var m_data = {
-      "Keyword": `${this.myForm.get('RegID').value}%`
-    }
-    if (this.myForm.get('RegID').value.length >= 1) {
-      this._PrescriptionService.getAdmittedpatientlist(m_data).subscribe(resData => {
-        this.filteredOptions = resData;
-        console.log(resData)
-        this.PatientListfilteredOptions = resData;
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
-
-      });
-    } 
-  }
- 
-  // getOptionText(option) {
-  //   if (!option) return '';
-  //   return option.FirstName + ' '+ option.MiddleName + ' ' + option.LastName + ' (' + option.RegNo + ')';
-  // }
-  // getSelectedObj(obj) {
-    
-  //   if(obj.IsDischarged == 1){
-  //     Swal.fire('Selected Patient is already discharged');
-  //     this.PatientName = ''  
-  //     this.vAdmissionID =  ''
-  //     this.RegNo = ''
-  //     this.Doctorname =  ''
-  //     this.Tarrifname = ''
-  //     this.CompanyName =''
-  //     this.vOPDNo = ''
-  //     this.WardName =''
-  //     this.BedNo = ''
+  // getSearchList() {
+  //   var m_data = {
+  //     "Keyword": `${this.myForm.get('RegID').value}%`
   //   }
-  //   else{
-      
-  //     this.registerObj = obj;
-  //     this.selectedAdvanceObj = obj;
-  //     this.selectedAdvanceObj.PatientName= obj.FirstName + ' ' + obj.LastName;
-  //     this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
-  //     this.RegNo = obj.RegNo;
-  //     this.RegId = obj.RegId;
-  //     this.vAdmissionID = obj.AdmissionID;
-  //     this.CompanyName = obj.CompanyName;
-  //     this.Tarrifname = obj.TariffName;
-  //     this.Doctorname = obj.DoctorName;
-  //     // this.vOpIpId = obj.AdmissionID;
-  //     this.vOPDNo = obj.IPDNo;
-  //     this.WardName = obj.RoomName;
-  //     this.BedNo = obj.BedName;
-  //     this.vClassId=obj.ClassId;
-  //     console.log(obj);
+  //   if (this.myForm.get('RegID').value.length >= 1) {
+  //     this._PrescriptionService.getAdmittedpatientlist(m_data).subscribe(resData => {
+  //       this.filteredOptions = resData;
+  //       console.log(resData)
+  //       this.PatientListfilteredOptions = resData;
+  //       if (this.filteredOptions.length == 0) {
+  //         this.noOptionFound = true;
+  //       } else {
+  //         this.noOptionFound = false;
+  //       }
+
+  //     });
   //   } 
-  // } 
-
-  getSelectedObj(obj) {
-    console.log(obj)
-    this.RegId = obj.value;
+  // }
+ 
+  getSelectedObjIP(obj) {
     debugger
-    if ((this.RegId ?? 0) > 0) {
-
+    if ((obj.regID ?? 0) > 0) {
+      console.log("Admitted patient:",obj)
+      this.vRegNo=obj.regNo
+      this.vDoctorName=obj.doctorName
+      this.vPatientName=obj.firstName + " " + obj.middleName + " " + obj.lastName
+      this.vDepartment=obj.departmentName
+      this.vAdmissionDate=obj.admissionDate
+      this.vAdmissionTime=obj.admissionTime
+      this.vIPDNo=obj.ipdNo
+      this.vAge=obj.age
+      this.vAgeMonth=obj.ageMonth
+      this.vAgeDay=obj.ageDay
+      this.vGenderName=obj.genderName
+      this.vRefDocName=obj.refDocName
+      this.vRoomName=obj.roomName
+      this.vBedName=obj.bedName
+      this.vPatientType=obj.patientType
+      this.vTariffName=obj.tariffName
+      this.vCompanyName=obj.companyName
+      this.vDOA=obj.admissionDate
       setTimeout(() => {
-        this._PrescriptionService.getRegistraionById(this.RegId).subscribe((response) => {
-          this.registerObj = response;
-          console.log(response)
-
+        this._PrescriptionService.getAdmittedpatientlist(obj.regID).subscribe((response) => {
+          this.registerObj = response;        
+          console.log(this.registerObj)
         });
-
+  
       }, 500);
     }
-
   }
 
-  getSearchItemList() {  
-    if(this.myForm.get('StoreId').value.StoreId > 0){ 
-      var m_data = {
-        "ItemName": `${this.ItemForm.get('ItemId').value}%`,
-        "StoreId": this.myForm.get('StoreId').value.StoreId
-      }
-      console.log(m_data);
-      // if (this.ItemForm.get('ItemId').value.length >= 2) {
-      this._PrescriptionService.getItemlist(m_data).subscribe(data => {
-        this.filteredOptionsItem = data;
-        // console.log(this.data);
-        this.filteredOptionsItem = data;
-        if (this.filteredOptionsItem.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
-      });
-    }else{
-      this.toastr.warning('Please select  Store', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      }); 
-    }
+  // getSearchItemList() {  
+  //   if(this.myForm.get('StoreId').value.StoreId > 0){ 
+  //     var m_data = {
+  //       "ItemName": `${this.ItemForm.get('ItemId').value}%`,
+  //       "StoreId": this.myForm.get('StoreId').value.StoreId
+  //     }
+  //     console.log(m_data);
+  //     // if (this.ItemForm.get('ItemId').value.length >= 2) {
+  //     this._PrescriptionService.getItemlist(m_data).subscribe(data => {
+  //       this.filteredOptionsItem = data;
+  //       // console.log(this.data);
+  //       this.filteredOptionsItem = data;
+  //       if (this.filteredOptionsItem.length == 0) {
+  //         this.noOptionFound = true;
+  //       } else {
+  //         this.noOptionFound = false;
+  //       }
+  //     });
+  //   }else{
+  //     this.toastr.warning('Please select  Store', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     }); 
+  //   }
     
-  } 
+  // } 
   // getOptionItemText(option) {
   //   this.ItemId = option.ItemID;
   //   if (!option) return '';
@@ -368,7 +362,7 @@ export class NewPrescriptionComponent implements OnInit {
     console.log(row);
 
     this.registerObj = row;
-    this.getSelectedObj(row);
+    this.getSelectedObjIP(row);
   }
 
   onChangeReg(event) {

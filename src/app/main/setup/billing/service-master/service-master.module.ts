@@ -34,6 +34,8 @@ import { MatTabsModule } from "@angular/material/tabs";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatListModule } from "@angular/material/list";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { TariffComponent } from './tariff/tariff.component';
+import { EditpackageComponent } from './editpackage/editpackage.component';
 
 const routes: Routes = [
     {
@@ -43,7 +45,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [ServiceMasterComponent, ServiceMasterFormComponent],
+    declarations: [ServiceMasterComponent, ServiceMasterFormComponent, TariffComponent, EditpackageComponent],
     imports: [
         RouterModule.forChild(routes),
         MatButtonModule,

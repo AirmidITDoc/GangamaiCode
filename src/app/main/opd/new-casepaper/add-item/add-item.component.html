@@ -60,27 +60,35 @@
                                     </airmid-dropdown>
 
                                     <div fxLayout="row" fxLayoutGap="6px">
-                                       
-                                        <airmid-dropdown label="Store Name" formControlName="StoreId"
-                                            [formGroup]="myform" [validations]="getValidationMessages().StoreId"
-                                            [mode]="autocompleteModeStoreId"
-                                            (selectionChange)="selectChangeStoreId($event)">
-                                        </airmid-dropdown>
 
-                                        <div fxLayout="column" fxFlex>
-                                            <mat-chip-listbox #chipList>
-                                                <mat-chip *ngFor="let item of myform.value.StoreId">
-                                                    {{ item.storeName }} <mat-icon
-                                                        (click)="remove(item)">close</mat-icon>
-                                                </mat-chip>
-                                            </mat-chip-listbox>
-                                        </div>
+                                        <form [formGroup]="myform">
+                                            <div fxLayout="row">
+                                                <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                                    <airmid-dropdown 
+                                                        label="Store" 
+                                                        formControlName="mAssignSupplierToStores"
+                                                        [formGroup]="myform" 
+                                                        [IsMultiPle]="true" 
+                                                        [value]="registerObj.mAssignSupplierToStores"
+                                                        [validations]="getValidationMessages().StoreId" #ddlStore
+                                                        ValueField="storeId" 
+                                                        TextField="storeName"
+                                                        ApiUrl="StoreMaster/get-store" 
+                                                        [ReqFullObj]="true">
+                                                    </airmid-dropdown>
+                                                </div>
+                                                <mat-chip-listbox #chipList>
+                                                    <mat-chip *ngFor="let item of myform.value.mAssignSupplierToStores">
+                                                        {{ item.storeName }} <mat-icon
+                                                            (click)="removestore(item)">close</mat-icon>
+                                                    </mat-chip>
+                                                </mat-chip-listbox>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </mat-card>
                         </div>
-
-
                     </form>
                     <div style="padding: 8px;" fxLayoutAlign="end">
                         <div class="sales-footer-buttons gap-6" fxLayout="row">
