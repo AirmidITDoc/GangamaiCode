@@ -467,6 +467,9 @@ export class IPSearchListComponent implements OnInit {
     printDischargesummaryWithoutletterhead(event) { }
     printDischargesummary(event) { }
     printDischargeslip(event) { }
+    getSelectedRow(row:any):void{
+        console.log("Selected row : ", row);
+    }
 }
 
 

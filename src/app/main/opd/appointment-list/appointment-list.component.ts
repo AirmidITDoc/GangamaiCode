@@ -528,6 +528,9 @@ export class AppointmentListComponent implements OnInit {
         this.updateRegisteredPatientInfo(obj);
     }
 
+    getSelectedRow(row:any):void{
+        console.log("Selected row : ", row);
+    }
     updateRegisteredPatientInfo(obj) {
         const dialogRef = this._matDialog.open(UpdateRegPatientInfoComponent,
             {

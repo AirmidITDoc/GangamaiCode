@@ -40,6 +40,8 @@ export class AirmidTableComponent implements OnInit {
     @Input() ShowButtons: boolean = true;
     @Input() FullWidth: boolean = false;
     @Input() tableClasses: string = '';
+
+    public selectedRow:any = null;
     public defaultColumnWidth = 120;
     ngOnInit(): void {
         this.bindGridData();
@@ -110,12 +112,14 @@ export class AirmidTableComponent implements OnInit {
         });
     }
     SelectRow(row) {
-        this.onSelectRow.emit(row);
+        this.selectedRow = row;
+        this.onSelectRow.emit(this.selectedRow);
     }
     getRowClasses(row: any): { [key: string]: boolean } {
 
         return {
             'table-row-green': row?.patientType && row.patientType !== 'Self' || row?.isCancelled && row.isCancelled !== '1',
+            'table-row-gray':row === this.selectedRow,
             // You can add more classes dynamically
 
             // 'table-row-yellow': row?.balanceAmt && row.balanceAmt !== '0',
