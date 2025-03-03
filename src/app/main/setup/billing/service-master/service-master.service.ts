@@ -72,37 +72,6 @@ export class ServiceMasterService {
         });
     }
 
-    /**
-             * {
-  "serviceId": 0,
-  "groupId": 0,
-  "serviceShortDesc": "shilpa",
-  "serviceName": "xyz",
-  "price": 500,
-  "isEditable": true,
-  "creditedtoDoctor": true,
-  "isPathology": 0,
-  "isRadiology": 0,
-  "printOrder": 0,
-  "isPackage": 0,
-  "subGroupId": 0,
-  "doctorId": 0,
-  "isEmergency": true,
-  "emgAmt": 0,
-  "emgPer": 0,
-  "isDocEditable": true,
-  "serviceDetails": [
-    {
-      "serviceDetailId": 0,
-      "serviceId": 0,
-      "tariffId": 123,
-      "classId": 0,
-      "classRate": 0
-    }
-  ]
-}
-
-             */
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             TariffId:[""],
@@ -111,8 +80,15 @@ export class ServiceMasterService {
             IsDeletedSearch: ["2"],
         });
     }
+
     initializeFormGroup() {
         this.createServicemasterForm();
+    }
+
+    public tariffMasterSave(Param: any) {
+        if (Param.tariffId) {
+            return this._httpClient.PutData("TarrifMaster/" + Param.tariffId, Param);
+        } else return this._httpClient.PostData("TarrifMaster", Param);
     }
     
 

@@ -7,6 +7,8 @@ import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { MatDialog } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { TariffComponent } from "./tariff/tariff.component";
+import { EditpackageComponent } from "./editpackage/editpackage.component";
 
 
 @Component({
@@ -29,12 +31,14 @@ export class ServiceMasterComponent implements OnInit {
               this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
               this.gridConfig.columnsList.find(col => col.key === 'creditedtoDoctor')!.template = this.iconcreditedtoDoctor; 
               this.gridConfig.columnsList.find(col => col.key === 'isPathology')!.template = this.iconisPathology; 
-              this.gridConfig.columnsList.find(col => col.key === 'isRadiology')!.template = this.iconisRadiology; 
+              this.gridConfig.columnsList.find(col => col.key === 'isRadiology')!.template = this.iconisRadiology;
+              this.gridConfig.columnsList.find(col => col.key === 'iconisPackage')!.template = this.iconisPackage; 
           }
           @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
           @ViewChild('iconcreditedtoDoctor') iconcreditedtoDoctor!: TemplateRef<any>;
           @ViewChild('iconisPathology') iconisPathology!: TemplateRef<any>;
           @ViewChild('iconisRadiology') iconisRadiology!: TemplateRef<any>;
+          @ViewChild('iconisPackage') iconisPackage!: TemplateRef<any>;
 
     gridConfig: gridModel = {
         apiUrl: "BillingService/BillingList",
@@ -156,6 +160,47 @@ export class ServiceMasterComponent implements OnInit {
                 maxWidth: "95vw",
                 height: '95%',
                 width: '70%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+            console.log('The dialog was closed - Action', result);
+        });
+    }
+
+    onTariff(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        const dialogRef = this._matDialog.open(TariffComponent,
+            {
+                maxWidth: "50vw",
+                maxHeight: '50%',
+                width: '70%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+            console.log('The dialog was closed - Action', result);
+        });
+    }
+    EditpackageComponent
+
+    onEdit(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        const dialogRef = this._matDialog.open(EditpackageComponent,
+            {
+                maxWidth: "90vw",
+                height: '90%',
+                width: '90%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {

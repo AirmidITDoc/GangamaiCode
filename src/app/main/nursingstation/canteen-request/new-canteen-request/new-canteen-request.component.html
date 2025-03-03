@@ -2,12 +2,6 @@
     
         <mat-toolbar class="accent" style="width: 100%;justify-content: space-between;height: 50px;">
             <div fxLayout="row" fxLayoutAlign="start center">
-                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                    <mat-icon>menu</mat-icon>
-                </button>
-                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                    style="color: white;">account_box
-                </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
                     New Request
                 </span>
@@ -26,35 +20,35 @@
                 <div fxLayout="column" class="gap-10">
                     <div class="modal-card-container">
                         
-                            <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="center center">
-                                <div class="radio-container">
-                                    <mat-radio-group formControlName="Op_ip_id" fxFlex="5%">
-                                        <mat-radio-button value="1">IP</mat-radio-button>
-                                    </mat-radio-group>
-                                </div>
-                                <div class="input-container gap-8" fxFlex>
-                                    <mat-form-field appearance="outline" disabled="isRegSearchDisabled" fxFlex>
-                                        <input type="text" name="RegID" formControlName="RegID"
-                                            placeholder="RegNo / First Name / Last Name / Mobile No" matInput
-                                            [matAutocomplete]="auto1" (input)="getSearchList()">
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="_CanteenRequestservice.MyForm.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="_CanteenRequestservice.MyForm.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText"
-                                            (optionSelected)='getSelectedObj($event.option.value)'>
-                                            <mat-option *ngFor="let option of PatientListfilteredOptions"
-                                                [value]="option">
-                                                {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
-                                                {{option.RegNo}} |
-                                                {{option.MobileNo}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                    </mat-form-field>
-                                </div>
+                        <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="center center">
+                            <div class="radio-container">
+                                <mat-radio-group formControlName="Op_ip_id" fxFlex="5%">
+                                    <mat-radio-button value="1">IP</mat-radio-button>
+                                </mat-radio-group>
                             </div>
+                            <div class="input-container gap-8" fxFlex>
+                                <mat-form-field appearance="outline" disabled="isRegSearchDisabled" fxFlex>
+                                    <input type="text" name="RegID" formControlName="RegID"
+                                        placeholder="RegNo / First Name / Last Name / Mobile No" matInput
+                                        [matAutocomplete]="auto1" (input)="getSearchList()">
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_CanteenRequestservice.MyForm.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_CanteenRequestservice.MyForm.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText"
+                                        (optionSelected)='getSelectedObj($event.option.value)'>
+                                        <mat-option *ngFor="let option of PatientListfilteredOptions"
+                                            [value]="option">
+                                            {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
+                                            {{option.RegNo}} |
+                                            {{option.MobileNo}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                        </div>
                         
                     </div>
                     <div class="modal-card-container">
@@ -166,8 +160,29 @@
                     </div>
                     <mat-card style="padding: 6px;">
                     <div class="modal-card-container"> 
-                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
-                                <mat-form-field appearance="outline" fxFlex="100%">
+
+                        <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-dropdown 
+                                    label="Select Store" 
+                                    formControlName="StoreId"
+                                    [formGroup]="_CanteenRequestservice.MyForm"
+                                    [validations]="getValidationMessages().StoreId"
+                                    [mode]="autocompleteModestoreName">
+                                </airmid-dropdown>
+                            </div>
+                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-dropdown 
+                                    label="Ward Name" 
+                                    formControlName="WardName"
+                                    [formGroup]="_CanteenRequestservice.MyForm"
+                                    [validations]="getValidationMessages().WardName"
+                                    [mode]="autocompleteModewardName">
+                                </airmid-dropdown>
+                            </div>
+                        </div>
+                            <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8"> -->
+                                <!-- <mat-form-field appearance="outline" fxFlex="100%">
                                     <mat-label>To Store Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Store"  [(ngModel)]="vStoredId"
                                         matInput formControlName="StoreId" [matAutocomplete]="autoStore" required>
@@ -183,9 +198,9 @@
                                             {{option.StoreName}}
                                         </mat-option>
                                     </mat-autocomplete>
-                                </mat-form-field>
+                                </mat-form-field> -->
 
-                                <mat-form-field appearance="outline" fxFlex="100%">
+                                <!-- <mat-form-field appearance="outline" fxFlex="100%">
                                     <mat-label>Ward Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select WardName"
                                         matInput formControlName="WardName" [matAutocomplete]="autoward" required>
@@ -201,13 +216,13 @@
                                             {{option.RoomName}}
                                         </mat-option>
                                     </mat-autocomplete>
-                                </mat-form-field>
-                            </div> 
+                                </mat-form-field> -->
+                            <!-- </div>  -->
                     </div>
                     <div class="modal-card-container">
                         <div fxFlex.gt-sm="100%" fxFlex>
                             <form [formGroup]="_CanteenRequestservice.ItemForm">
-                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8"> 
+                                <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8"> 
                                     <mat-form-field appearance="outline" fxFlex="1 1 auto">
                                         <mat-label>ItemName</mat-label>
                                         <input type="text" name="ItemId" formControlName="ItemId" #itemid
@@ -230,20 +245,53 @@
                                             *ngIf="_CanteenRequestservice.ItemForm.get('ItemId').invalid && _CanteenRequestservice.ItemForm.get('ItemId').touched">
                                             Select ItemName
                                         </mat-error>
-                                    </mat-form-field>
+                                    </mat-form-field> -->
+                                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                                        <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown 
+                                                label="ItemName" 
+                                                formControlName="ItemId"
+                                                [formGroup]="_CanteenRequestservice.MyForm"
+                                                [validations]="getValidationMessages().ItemId"
+                                                [mode]="autocompleteModegroupName">
+                                            </airmid-dropdown>
+                                        </div>
+                                        <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-textbox 
+                                                label="Qty" 
+                                                formControlName="Qty" 
+                                                [value]="data?.Qty"
+                                                [formGroup]="_CanteenRequestservice.MyForm"
+                                                [validations]="getValidationMessages().Qty"
+                                                #qty (keypress)="keyPressAlphanumeric($event)"
+                                                [maxLength]="50">
+                                            </airmid-textbox>
+                                        </div>
+                                        <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-textbox 
+                                                label="Remark" 
+                                                formControlName="Remark" 
+                                                [value]="data?.Remark"
+                                                [formGroup]="_CanteenRequestservice.MyForm"
+                                                [validations]="getValidationMessages().Remark"
+                                                #remark (keydown)="onEnterremark($event)"
+                                                [maxLength]="50">
+                                            </airmid-textbox>
+                                        </div>
 
-                                    <mat-form-field appearance="outline" fxFlex="1 1 auto">
+                                    <!-- <mat-form-field appearance="outline" fxFlex="1 1 auto">
                                         <mat-label>Qty</mat-label>
                                         <input type="text" OnlyNumber [(ngModel)]="vQty" name="Qty"
                                             (keydown)="onEnterqty($event)" formControlName="Qty" matInput required #qty
                                             (keypress)="keyPressAlphanumeric($event)">
-                                    </mat-form-field> 
+                                    </mat-form-field>  -->
                                     <!-- (keydown)="onEnterremark($event)" -->
-                                    <mat-form-field appearance="outline" fxFlex="10 1 auto">
+
+                                    <!-- <mat-form-field appearance="outline" fxFlex="10 1 auto">
                                         <mat-label>Remark</mat-label>
                                         <input type="text" name="Remark" [(ngModel)]="vRemark" formControlName="Remark"
                                             matInput #remark (keydown)="onEnterremark($event)">
-                                    </mat-form-field>
+                                    </mat-form-field> -->
 
                                     <div class="input-add-button">
                                         <div matTooltip="Select  name to enable this button!!"
@@ -269,7 +317,17 @@
                             <!-- Table 1 -->
                             <div class="table-left" fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="70%">
                                 <mat-card>
-                                    <mat-table class="mat-table-1 h-250" matSort [dataSource]="dsItemList"
+                                        
+                                    <div fusePerfectScrollbar
+                                        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                                        dynamicTableHeight>
+                                        <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
+                                            <ng-container filters>
+
+                                            </ng-container>
+                                        </airmid-table>
+                                    </div>
+                                    <!-- <mat-table class="mat-table-1 h-250" matSort [dataSource]="dsItemList"
                                         [@animateStagger]="{value:'50'}">
 
                                         <ng-container matColumnDef="ItemName">
@@ -313,14 +371,24 @@
                                         </mat-header-row>
                                         <mat-row *matRowDef="let row; columns: displayedVisitColumns2;" class="element"
                                             [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                    </mat-table>
+                                    </mat-table> -->
                                 </mat-card>
 
                             </div>
                             <!-- Table 2 -->
                             <div class="table-right" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="30%">
                                 <mat-card>
-                                    <mat-table class="mat-table-2 h-250" matSort [dataSource]="dsCanteenDateList"
+
+                                    <div fusePerfectScrollbar
+                                        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                                        dynamicTableHeight>
+                                        <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false">
+                                            <ng-container filters>
+
+                                            </ng-container>
+                                        </airmid-table>
+                                    </div>
+                                    <!-- <mat-table class="mat-table-2 h-250" matSort [dataSource]="dsCanteenDateList"
                                         [@animateStagger]="{value:'50'}">
 
                                         <ng-container matColumnDef="Date">
@@ -343,7 +411,7 @@
                                         </mat-header-row>
                                         <mat-row *matRowDef="let row; columns: displayedVisitColumns;" class="element"
                                             [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                    </mat-table>
+                                    </mat-table> -->
                                 </mat-card>
                             </div>
                         </div>

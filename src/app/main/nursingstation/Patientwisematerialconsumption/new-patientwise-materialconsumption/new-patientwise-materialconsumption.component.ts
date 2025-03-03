@@ -16,6 +16,8 @@ import { PatientwiseMaterialConsumptionService } from '../patientwise-material-c
 import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 
 @Component({
   selector: 'app-new-patientwise-materialconsumption',
@@ -25,35 +27,96 @@ import { fuseAnimations } from '@fuse/animations';
   animations: fuseAnimations
 })
 export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
+    [x: string]: any;
 
-  hasSelectedContacts: boolean;
-paidamt:number;
-balanceamt:number;
-screenFromString = 'admission-form';
-  msg: any;
-  DepartmentList: any = [];
-  chargeslist: any = [];
+    hasSelectedContacts: boolean;
+    data: any;
+    paidamt:number;
+    balanceamt:number;
+    screenFromString = 'admission-form';
+    msg: any;
+    DepartmentList: any = [];
+    chargeslist: any = [];
   
-  displayedColumns = [
-     'SrvcName',
-    // 'ItemName',
-    'BatchNo',
-    'ExpDate',
-    // 'Qty',
-    'BalanceQty',
-    'Used',
-    'Rate',
-    'TotalAmount',
-    'Remark',
+//     displayedColumns = [
+//      'SrvcName',
+//     // 'ItemName',
+//     'BatchNo',
+//     'ExpDate',
+//     // 'Qty',
+//     'BalanceQty',
+//     'Used',
+//     'Rate',
+//     'TotalAmount',
+//     'Remark',
     
-    // 'action'
-  ];
+//     // 'action'
+//   ];
 
-  tableColumns = [
-    'PatientName',
-    'IPDNo',
+//   tableColumns = [
+//     'PatientName',
+//     'IPDNo',
   
-  ];
+//   ];
+
+    gridConfig: gridModel = {
+        apiUrl:"IPPrescription/PatietWiseMatetialList",
+        columnsList: [
+            { heading: "ItemName", key: "itemname", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "BatchNo", key: "batch", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "LandedTotalAmt", key: "land", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Remark", key: "reMark", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "AddedBy", key: "adDedBy", sort: true, align: 'left', emptySign: 'NA'},
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data);
+                        }
+                    }, 
+                    {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this._PatientwiseMaterialConsumptionService.deactivateTheStatus(data.materialConsumptionId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "MaterialConsumptionId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "ToStoreId", fieldValue: "10009", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+        ],
+        row: 25
+    }
+    grid: any;
+    toDate: string;
+    fromDate: string;
+    toastr: any;
+
+        onSave(row: any = null) {
+                const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+                buttonElement.blur(); // Remove focus from the button
+        
+                let that = this;
+                // const dialogRef = this._matDialog.open(ServiceMasterFormComponent,
+                //     {
+                //         maxWidth: "95vw",
+                //         height: '95%',
+                //         width: '70%',
+                //         data: row
+                //     });
+                // dialogRef.afterClosed().subscribe(result => {
+                //     if (result) {
+                //         that.grid.bindGridData();
+                //     }
+                //     console.log('The dialog was closed - Action', result);
+                // });
+            }
 
   dataSource = new MatTableDataSource<ChargesList>();
   dataSource1 = new MatTableDataSource<patientinfo>();
@@ -173,6 +236,17 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
     // });
    
   }
+
+    getValidationMessages(){
+        return{
+            itemName: [],
+            balqty: [],
+            usedqty: [],
+            remark: [],
+
+
+        }
+    }
 
  
 
@@ -472,13 +546,13 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
       
   }
 
-  getValidationMessages() {
-    return {
-      Departmentid: [
-            { name: "required", Message: "Department Name is required" }
-        ]
-    };
-  }
+//   getValidationMessages() {
+//     return {
+//       Departmentid: [
+//             { name: "required", Message: "Department Name is required" }
+//         ]
+//     };
+//   }
 
   OnSave() {
     // console.log(this.myForm.get('WardName').value.RoomId)

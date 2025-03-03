@@ -47,7 +47,9 @@ export class CanteenRequestService {
       return this._formbuilder.group({
         start: [(new Date()).toISOString()],
         end: [(new Date()).toISOString()],
-        RegNo:['']
+        RegNo:[''],
+        fromDate: [(new Date()).toISOString()],
+        enddate: [(new Date()).toISOString()],
       })
     }
 

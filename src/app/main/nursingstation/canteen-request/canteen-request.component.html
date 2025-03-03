@@ -2,102 +2,73 @@
     dynamicTableHeight>
     <mat-toolbar class="top-header accent">
         <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
-            <button mat-icon-button class="sidebar-toggle ">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-            </mat-icon>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 Canteen Request
             </span>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="NewRequest()">New Request
+            <button mat-raised-button (click)="NewRequest()">+ New Request
             </button>
         </div>
     </mat-toolbar>
 
+    <div fusePerfectScrollbar
+        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+        dynamicTableHeight>
 
-    <mat-tab-group>
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+            <airmid-table [gridConfig]="gridConfig" class="content">
+                <ng-container filters>
 
-        <mat-tab label="Canteen Request List">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>From Date</mat-label>
+                        <input matInput placeholder="Search From Date" autocomplete="off"
+                            [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                        <button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="gridConfig.filters[0].fieldValue=''">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
 
-            <div fusePerfectScrollbar
-                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                dynamicTableHeight>
-                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-                    fxLayoutAlign.gt-xs="space-between center ">
-                    <div class="top-header-info">
-                        <div class="top-header-title">
-                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                Canteen Request
-                            </span>
-                        </div>
-                    </div>
+                    <!-- <div fxFlex="18%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-datepicker [formGroup]="SearchMyForm" [isRangePicker]="true" formStartControlName="fromDate"
+                                formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
+                                [(toValue)]="gridConfig.filters[1].fieldValue">
+                        </airmid-datepicker> 
+                    </div> -->
 
-                </div>
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <airmid-table [gridConfig]="gridConfig" class="content">
-                        <ng-container filters>
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>To Date</mat-label>
+                        <input matInput placeholder="Search To Date" autocomplete="off"
+                            [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                        <button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="gridConfig.filters[1].fieldValue=''">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>            
 
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>From Date</mat-label>
-                                <input matInput placeholder="Search From Date" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[0].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>To Date</mat-label>
-                                <input matInput placeholder="Search To Date" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[1].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>            
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Reg_No</mat-label>
-                                <input matInput placeholder="Search Reg_No" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[3].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[3].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Reg_No</mat-label>
+                        <input matInput placeholder="Search Reg_No" autocomplete="off"
+                            [(ngModel)]="gridConfig.filters[3].fieldValue" />
+                        <button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="gridConfig.filters[3].fieldValue=''">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
 
 
-                        </ng-container>
-                    </airmid-table>
-                </div>
+                </ng-container>
+            </airmid-table>
+        </div>
 
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <airmid-table [gridConfig]="gridConfig1" class="content">
-                        <ng-container filters>
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+            <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false">
+                <ng-container filters>
 
-                                                   
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>ReqId</mat-label>
-                                <input matInput placeholder="Search ReqId" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[0].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-
-
-                        </ng-container>
-                    </airmid-table>
-                </div>
-            </div>
-
-        </mat-tab>
-           
-    </mat-tab-group>
-
+                </ng-container>
+            </airmid-table>
+        </div>
+    </div>
 
 </div>

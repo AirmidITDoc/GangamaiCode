@@ -1,0 +1,88 @@
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Package Details</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="center p-12 pb-56" style="border-radius: 4px;">
+            <div class="content-card">
+                <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
+                    <mat-card style="padding: 5px;">
+                        <form [formGroup]="serviceForm">
+                            <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                                <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox 
+                                        label="ServiceName" 
+                                        formControlName="ServiceName" 
+                                        [value]="data?.subGroupName"
+                                        [formGroup]="serviceForm"
+                                        [validations]="getValidationMessages().ServiceName"
+                                        [maxLength]="50">
+                                    </airmid-textbox>
+                                </div>
+                            </div>
+                            
+                            <div fxLayout="row" fxLayoutGap="5px">
+                                <div fxFlex="60%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown 
+                                        label="PackageServiceName" 
+                                        formControlName="ServiceShortDesc"
+                                        [formGroup]="serviceForm"
+                                        [validations]="getValidationMessages().ServiceShortDesc"
+                                        [mode]="autocompleteModegroupName">
+                                    </airmid-dropdown>
+                                </div>
+                                <button (click)="onAddTemplate()"
+                                    class="btn btn-primary btn-with-icon py-8"
+                                        style="margin-left: 10px;">
+                                    <span class="btn-icon">
+                                        <mat-icon>add</mat-icon>
+                                    </span>
+                                </button>
+                            </div>
+                        </form>
+                    </mat-card>
+
+                    <mat-card style="padding: 5px;">
+                        <div fxFlex.gt-sm="100%" fxFlex>
+                            <div fusePerfectScrollbar
+                                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                                dynamicTableHeight>
+                                <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
+                                    <ng-container filters>
+    
+                                    </ng-container>
+                                </airmid-table>
+                            </div>
+            
+                        </div>
+                    </mat-card>
+
+                    <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+                        <div></div>
+                        <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                            <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                                <span>Save</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

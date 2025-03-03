@@ -9,10 +9,12 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 export class PatientwiseMaterialConsumptionService {
 
   mySearchForm:FormGroup;
+  MyForm: FormGroup;
   
   constructor(public _httpClient: HttpClient,public _httpClient1: ApiCaller,
     public _formBuilder: UntypedFormBuilder) { 
       this.mySearchForm = this.SearchFilterForm();
+      this.MyForm = this.createMyForm();
     }
 
     SearchFilterForm():FormGroup{
@@ -20,8 +22,17 @@ export class PatientwiseMaterialConsumptionService {
           startdate :[(new Date()).toISOString()],
           enddate :[(new Date()).toISOString()],
         })
-    
-      }
+    }
+
+    createMyForm():FormGroup{
+        return this._formBuilder.group({
+            itemName:[],
+            balqty: [],
+            usedqty: [],
+            remark: [],
+            
+        })
+    }
   
   // Get billing Service List 
   public getBillingServiceList(employee) {

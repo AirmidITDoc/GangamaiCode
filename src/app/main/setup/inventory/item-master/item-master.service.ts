@@ -199,7 +199,8 @@ export class ItemMasterService {
     }
 
     public ItemMasterCancle(Param: any) {
-        // debugger
+        debugger
       return this._httpClient.PostData("ItemMaster/ItemCanceled", Param);
     }
+    
 }
