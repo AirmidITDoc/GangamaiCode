@@ -8,70 +8,122 @@
             <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
             </mat-icon>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-             Prescription List
+             IP List
             </span>
         </div>
-
-        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">New Prescription
-            </button>
-        </div>
-
     </mat-toolbar>
 
 
-    <!-- <mat-tab-group> -->
+    <mat-tab-group>
 
-        <!-- <mat-tab> -->
+        <mat-tab label=" IP Browse Advance List">
+            <ng-template mat-tab-label>
+                IP Browse Prescription List
+             </ng-template>
 
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
-                <!-- <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-                    fxLayoutAlign.gt-xs="space-between center ">
-                    <div class="top-header-info">
-                        <div class="top-header-title">
-                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                Prescription
-                            </span>
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                    <div class="top-header">
+                        <div class="top-header-info">
+                            
+                            <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                <span>IP Prescription </span>
+                            </div>
+                        </div>
+                        <div class="top-header-right">
+                            <div class="header-add-button">
+                                <button mat-raised-button (click)="onSave()">Add Prescription</button>
+                            </div>
                         </div>
                     </div>
 
-                </div> -->
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <airmid-table [gridConfig]="gridConfig" class="content"  (onSelectRow)="GetDetails($event)" #grid>
+                    <airmid-table [gridConfig]="gridConfig1" class="content"  (onSelectRow)="GetDetails($event)" #grid>
                         <ng-container filters>
 
-                            <airmid-datepicker [formGroup]="_PrescriptionService.mysearchform" [isRangePicker]="true" 
-                                formStartControlName="startdate"
-                                formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
-                                [(toValue)]="gridConfig.filters[1].fieldValue">
-                            </airmid-datepicker>
+                            <airmid-datepicker [formGroup]="_PrescriptionService.mysearchform" [isRangePicker]="true"
+                            formStartControlName="startdate" formEndControlName="enddate" 
+                            [(fromValue)]="gridConfig1.filters[0].fieldValue"
+                            [(toValue)]="gridConfig1.filters[1].fieldValue">
+                        </airmid-datepicker>
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Reg_No</mat-label>
                                 <input matInput placeholder="Search Reg_No" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[3].fieldValue" />
+                                    [(ngModel)]="gridConfig1.filters[2].fieldValue" />
                                 <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[3].fieldValue=''">
+                                    (click)="gridConfig1.filters[2].fieldValue=''">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
-
 
                         </ng-container>
                     </airmid-table>
                 </div>
 
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
-                    <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false">
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <airmid-table [gridConfig]="gridConfig4" class="content">
+                       
                     </airmid-table>
                 </div>
             </div>
 
-        <!-- </mat-tab> -->
+        </mat-tab>
+
+        <mat-tab label=" IP Prescription Return">
+            <ng-template mat-tab-label>
+                Prescription Return List
+             </ng-template>
+
+             <div fusePerfectScrollbar
+             class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+             dynamicTableHeight>
+             <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                <div class="top-header">
+                    <div class="top-header-info">
+                        
+                        <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                            <span>Prescription Return List</span>
+                        </div>
+                    </div>
+                    <div class="top-header-right">
+                        <div class="header-add-button">
+                            <button mat-raised-button (click)="onPrescriptionReturn()">Prescription Return</button>
+                        </div>
+                    </div>
+                </div>
+                 <airmid-table [gridConfig]="gridConfig3" class="content">
+                     <ng-container filters>                            
+                        <airmid-datepicker [formGroup]="_PrescriptionService.mysearchform" [isRangePicker]="true"
+                         formStartControlName="startdate" formEndControlName="enddate" 
+                         [(fromValue)]="gridConfig3.filters[0].fieldValue"
+                         [(toValue)]="gridConfig3.filters[1].fieldValue">
+                     </airmid-datepicker>
+
+                     <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Reg_No</mat-label>
+                        <input matInput placeholder="Search Reg_No" autocomplete="off"
+                            [(ngModel)]="gridConfig3.filters[2].fieldValue" />
+                        <button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="gridConfig3.filters[2].fieldValue=''">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                     </ng-container>
+                 </airmid-table>
+             </div>             
+             <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                 <airmid-table [gridConfig]="gridConfig4" class="content">
+                    
+                 </airmid-table>
+             </div>
+         </div>
+        </mat-tab>
            
-    <!-- </mat-tab-group> -->
+    </mat-tab-group>
 
 
 </div>

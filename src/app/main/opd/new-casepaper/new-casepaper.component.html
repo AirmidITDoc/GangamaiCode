@@ -210,37 +210,82 @@
                                                 </div>
 
                                                 <div fxLayout="column">
-                                                    <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>ChiefComplaint</mat-label>
-                                                        <textarea name="ChiefComplaint" formControlName="ChiefComplaint"
-                                                            placeholder="ChiefComplaint" [(ngModel)]="vChiefComplaint"
-                                                            matInput #ChiefComp
-                                                            (keydown)="onEnterChiefComplaint($event)"></textarea>
-                                                    </mat-form-field>
 
-                                                    <!-- <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>Diagnosis</mat-label>
-                                                        <textarea name="Diagnosis" formControlName="Diagnosis"
-                                                            placeholder="Diagnosis" [(ngModel)]="vDiagnosis" matInput
-                                                            #ChiefComp
-                                                            (keydown)="onEnterChiefComplaint($event)"></textarea>
-                                                    </mat-form-field> -->
-                                                    <!-- <div fxFlex="50%" style="border: 1px solid red;"> -->
-                                                        <airmid-dropdown label="Diagnosis" formControlName="Diagnosis"
-                                                    [formGroup]="caseFormGroup"
-                                                    [validations]="getValidationMessages().Diagnosis"
-                                                    [mode]="autocompleteModeDiagnosis"
-                                                    (selectionChange)="selectChangeDiagnosis($event)">
-                                                </airmid-dropdown>
-                                                    <!-- </div> -->
+                                                    <div fxLayout="row">
+                                                        <div fxFlex="40%">
+                                                            <airmid-dropdown 
+                                                                label="ChiefComplaint"
+                                                                formControlName="mAssignChiefComplaint" 
+                                                                [formGroup]="caseFormGroup"
+                                                                [validations]="getValidationMessages().ChiefComplaint" #ddlChiefComplaint
+                                                                [IsMultiPle]="true" 
+                                                                [value]="regObj.mAssignChiefComplaint"
+                                                                ValueField="complaintId" 
+                                                                TextField="complaintDescr"
+                                                                ApiUrl="OPDPrescriptionMedical/get-ChiefComplaint" 
+                                                                [ReqFullObj]="true"
+                                                                (selectionChange)="selectChangeCheifComplaint($event)">
+                                                            </airmid-dropdown>
+                                                        </div>
+                                                        <mat-chip-listbox #chipList>
+                                                            <mat-chip
+                                                                *ngFor="let item of caseFormGroup.value.mAssignChiefComplaint">
+                                                                {{ item.complaintDescr }} <mat-icon
+                                                                    (click)="removeChiefComplaint(item)">close</mat-icon>
+                                                            </mat-chip>
+                                                        </mat-chip-listbox>
+                                                    </div>
 
-                                                    <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>Examination</mat-label>
-                                                        <textarea name="Examination" formControlName="Examination"
-                                                            placeholder="Examination" [(ngModel)]="vExamination"
-                                                            matInput #ChiefComp
-                                                            (keydown)="onEnterChiefComplaint($event)"></textarea>
-                                                    </mat-form-field>
+                                                    <div fxLayout="row">
+                                                        <div fxFlex="40%">
+                                                            <airmid-dropdown 
+                                                                label="Diagnosis"
+                                                                formControlName="mAssignDiagnosis" 
+                                                                [formGroup]="caseFormGroup"
+                                                                [validations]="getValidationMessages().Diagnosis" #ddlDiagnosis
+                                                                [IsMultiPle]="true" 
+                                                                [value]="regObj.mAssignDiagnosis"
+                                                                ValueField="visitId" 
+                                                                TextField="descriptionType"
+                                                                ApiUrl="OPDPrescriptionMedical/get-Dignosis" 
+                                                                [ReqFullObj]="true"
+                                                                (selectionChange)="selectChangeDiagnosis($event)">
+                                                            </airmid-dropdown>
+                                                        </div>
+                                                        <mat-chip-listbox #chipList>
+                                                            <mat-chip
+                                                                *ngFor="let item of caseFormGroup.value.mAssignDiagnosis">
+                                                                {{ item.descriptionType }} <mat-icon
+                                                                    (click)="removedignosis(item)">close</mat-icon>
+                                                            </mat-chip>
+                                                        </mat-chip-listbox>
+                                                    </div>
+
+                                                    <div fxLayout="row">
+                                                        <div fxFlex="40%">
+                                                            <airmid-dropdown 
+                                                                label="Examination"
+                                                                formControlName="mAssignExamination" 
+                                                                [formGroup]="caseFormGroup"
+                                                                [validations]="getValidationMessages().Examination" #ddlExamination
+                                                                [IsMultiPle]="true" 
+                                                                [value]="regObj.mAssignExamination"
+                                                                ValueField="examinationId" 
+                                                                TextField="examinationDescr"
+                                                                ApiUrl="OPDPrescriptionMedical/get-Examination" 
+                                                                [ReqFullObj]="true"
+                                                                (selectionChange)="selectChangeExamination($event)">
+                                                            </airmid-dropdown>
+                                                        </div>
+                                                        <mat-chip-listbox #chipList>
+                                                            <mat-chip
+                                                                *ngFor="let item of caseFormGroup.value.mAssignExamination">
+                                                                {{ item.examinationDescr }} <mat-icon
+                                                                    (click)="removeExamination(item)">close</mat-icon>
+                                                            </mat-chip>
+                                                        </mat-chip-listbox>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </form>
@@ -359,36 +404,28 @@
                                                         </ng-container>
 
                                                         <ng-container matColumnDef="DoseName">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                              Dose Name
-                                                            </mat-header-cell>
-                                                            
-                                                            <mat-cell *matCellDef="let element; let i = index" fxHide fxShow.gt-sm>
-                                                              <span *ngIf="editingIndex !== i"> 
-                                                                {{ element.DoseName }} 
-                                                                <mat-icon (click)="editDose(i)" class="edit-icon">edit</mat-icon>
-                                                              </span>
-                                                          
-                                                              <airmid-dropdown 
-                                                                *ngIf="editingIndex === i"
-                                                                formControlName="DoseId"
-                                                                [formGroup]="MedicineItemForm"
-                                                                [validations]="getValidationMessages().DoseId"
-                                                                [mode]="autocompleteModeDose"
-                                                                (selectionChange)="selectChangeDoseName($event)">
-                                                              </airmid-dropdown>
-                                                            </mat-cell>
-                                                          </ng-container>
-                                                          
-
-                                                        <!-- <ng-container matColumnDef="DoseName">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                 fxShow.gt-sm>
-                                                                Dose Name</mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                <span> {{element.DoseName}}</span>
+                                                                Dose Name
+                                                            </mat-header-cell>
+
+                                                            <mat-cell *matCellDef="let element; let i = index" fxHide
+                                                                fxShow.gt-sm>
+                                                                <span *ngIf="editingIndex !== i">
+                                                                    {{ element.DoseName }}
+                                                                    <mat-icon (click)="editDose(i)"
+                                                                        class="edit-icon">edit</mat-icon>
+                                                                </span>
+
+                                                                <airmid-dropdown *ngIf="editingIndex === i"
+                                                                    formControlName="DoseId"
+                                                                    [formGroup]="MedicineItemForm"
+                                                                    [validations]="getValidationMessages().DoseId"
+                                                                    [mode]="autocompleteModeDose"
+                                                                    (selectionChange)="selectChangeDoseName($event)">
+                                                                </airmid-dropdown>
                                                             </mat-cell>
-                                                        </ng-container> -->
+                                                        </ng-container>
 
                                                         <ng-container matColumnDef="Days">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
@@ -496,24 +533,29 @@
                                                 </span>
                                             </div>
                                             <hr>
-                                            <div fxLayout="row" fxLayoutGap="6px">
-                                                <div fxLayout="column" fxLayoutGap="6px" fxFlex="35%">
-
-                                                    <airmid-dropdown label="Service List" formControlName="Serviceid"
-                                                        [formGroup]="MedicineItemForm"
-                                                        [validations]="getValidationMessages().Serviceid"
-                                                        [mode]="autocompleteModeServcie"
+                                            <div fxLayout="row">
+                                                <div fxFlex="40%">
+                                                    <airmid-dropdown 
+                                                        label="Service List"
+                                                        formControlName="mAssignService" 
+                                                        [formGroup]="caseFormGroup"
+                                                        [validations]="getValidationMessages().Serviceid" #ddlService
+                                                        [IsMultiPle]="true" 
+                                                        [value]="regObj.mAssignService"
+                                                        ValueField="serviceId" 
+                                                        TextField="serviceName"
+                                                        ApiUrl="OPDPrescriptionMedical/get-Service" 
+                                                        [ReqFullObj]="true"
                                                         (selectionChange)="selectChangeServiceName($event)">
                                                     </airmid-dropdown>
                                                 </div>
-                                                <div fxLayout="column" fxLayoutGap="6px" fxFlex="50%">
-                                                    <mat-chip-listbox #chipList>
-                                                        <mat-chip *ngFor="let item of selectedItems">
-                                                            {{ item.ServiceName }} <mat-icon
-                                                                (click)="remove(item)">close</mat-icon>
-                                                        </mat-chip>
-                                                    </mat-chip-listbox>
-                                                </div>
+                                                <mat-chip-listbox #chipList>
+                                                    <mat-chip
+                                                        *ngFor="let item of caseFormGroup.value.mAssignService">
+                                                        {{ item.serviceName }} <mat-icon
+                                                            (click)="removeService(item)">close</mat-icon>
+                                                    </mat-chip>
+                                                </mat-chip-listbox>
                                             </div>
                                         </form>
                                     </mat-card>

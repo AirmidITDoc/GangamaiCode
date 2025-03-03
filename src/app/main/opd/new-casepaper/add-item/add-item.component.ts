@@ -12,6 +12,8 @@ import { CasepaperService } from '../casepaper.service';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { AnyARecord } from 'dns';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import { MedicineItemList } from '../new-casepaper.component';
 
 @Component({
   selector: 'app-add-item',
@@ -27,7 +29,7 @@ export class AddItemComponent {
   currentDate = new Date
   vRemark: any;;
   vItemName: any;
-  registerObj: any;
+  registerObj= new MedicineItemList ({});
   isItemGenericNameIdSelected: boolean = false;
   filteredItemgeneric: Observable<string[]>
   vItemGeneric: any;
@@ -51,6 +53,8 @@ export class AddItemComponent {
 autocompleteModePurchaseUOMId:string="Unit";
 autocompleteModeStoreId:string="Store";
 
+    @ViewChild('ddlStore') ddlStore: AirmidDropDownComponent;
+
   constructor(
     private _CasepaperService: CasepaperService,
     private _loggedService: AuthenticationService,
@@ -64,6 +68,7 @@ autocompleteModeStoreId:string="Store";
 
   ngOnInit(): void {
     this.myform = this.CreateMyform();
+    // this.ddlStore.SetSelection(this.registerObj.mAssignSupplierToStores);
   }
   CreateMyform() {
     return this._formBuilder.group({
@@ -72,12 +77,27 @@ autocompleteModeStoreId:string="Store";
       PurchaseUOMId: [''],
       StoreId: [''],
       ItemId: [''],
-      SearchItemId:['']
+      SearchItemId:[''],
+      mAssignSupplierToStores: [
+        {
+            assignId: 0,
+            storeId: 0,
+            supplierId: 0
+        }
+    ]
     })
   }
   populateForm(param) {
     this.myform.patchValue(param);
   }
+
+  removestore(item) {
+    debugger
+    let removedIndex = this.myform.value.mAssignSupplierToStores.findIndex(x => x.storeId == item.storeId);
+    this.myform.value.mAssignSupplierToStores.splice(removedIndex, 1);
+    this.ddlStore.SetSelection(this.myform.value.mAssignSupplierToStores.map(x => x.storeId));
+}
+
   // Patient Search;
   // getItemList() {
   //   var m_data = {

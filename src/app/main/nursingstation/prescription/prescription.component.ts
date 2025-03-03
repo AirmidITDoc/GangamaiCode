@@ -40,7 +40,7 @@ export class PrescriptionComponent implements OnInit {
     hasSelectedContacts: boolean;
 
 
-    gridConfig: gridModel = {
+    gridConfig1: gridModel = {
         apiUrl: "Nursing/PrescriptionWardList",
         columnsList: [
             { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -77,23 +77,39 @@ export class PrescriptionComponent implements OnInit {
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "20", opType: OperatorComparer.Equals }
+        ],
+        row: 25
+    }
+    // gridConfig2: gridModel = new gridModel();
+
+    gridConfig2: gridModel = {
+        apiUrl: "Nursing/PrescriptionReturnList",
+        columnsList: [
+            { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA'},
+        ],
+        sortField: "PresReId",
+        sortOrder: 0,
+        filters: [
+
+            // { fieldName: "PresReId", fieldValue: "8", opType: OperatorComparer.Equals },
+            // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            // { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
             // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
         row: 25
     }
-    gridConfig1: gridModel = new gridModel();
+
     isShowDetailTable: boolean = false;
     GetDetails(data) {
         debugger
         this.gridConfig1 = {
             apiUrl: "Nursing/PrescriptionDetailList",
             columnsList: [
-                // { heading: "Code", key: "ipMedID", sort: true, align: 'left', emptySign: 'NA', width: 100 },
                 { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
-                // { heading: "MedicalRecoredId", key: "medicalRecoredId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                // { heading: "OP_IP_ID", key: "oP_IP_ID", sort: true, align: 'left', emptySign: 'NA', width: 100 },
                 {
                     heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
                         {
@@ -113,18 +129,74 @@ export class PrescriptionComponent implements OnInit {
             sortField: "ipMedID",
             sortOrder: 0,
             filters: [
-                //   { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
-                { fieldName: "ipMedID", fieldValue: data.ipMedID.toString(), opType: OperatorComparer.Equals },
-                //   { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-                // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+                // //   { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
+                // { fieldName: "ipMedID", fieldValue: data.ipMedID.toString(), opType: OperatorComparer.Equals },
+                // //   { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+                // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+                // { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+                // // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
             ],
             row: 25
         }
         this.isShowDetailTable = true;
         this.grid1.gridConfig = this.gridConfig1;
         this.grid1.bindGridData();
+    }
+
+    gridConfig3: gridModel = {
+        apiUrl: "Nursing/PrescriptionReturnList",
+        columnsList: [            
+            { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Patient Name", key: "patientname", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Adm Date", key: "admDate", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "IPMedID", key: "ipMedId", sort: true, align: 'left', emptySign: 'NA'},   
+            {
+                heading: "Action", key: "action",width: 50,align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data);
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this._PrescriptionService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
+                        }
+                    }]
+            },//Action 1-view, 2-Edit,3-delete
+            
+        ],
+        sortField: "PresReId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
+            { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "20", opType: OperatorComparer.Equals }
+        ],
+        row: 25
+    }
+    gridConfig4: gridModel = {
+        apiUrl: "Nursing/PrescriptionReturnList",
+        columnsList: [
+            { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA'},
+        ],
+        sortField: "PresReId",
+        sortOrder: 0,
+        filters: [
+
+            // { fieldName: "PresReId", fieldValue: "8", opType: OperatorComparer.Equals },
+            // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            // { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row: 25
     }
 
     constructor(public _PrescriptionService: PrescriptionService, public _matDialog: MatDialog,
@@ -139,6 +211,22 @@ export class PrescriptionComponent implements OnInit {
                 maxWidth: "80vw",
                 height: '85%',
                 width: '100%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+
+    onPrescriptionReturn(row: any = null) {
+        let that = this;
+        const dialogRef = this._matDialog.open(NewPrescriptionreturnComponent,
+            {
+                maxWidth: "75vw",
+                height: '75%',
+                width: '70%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {

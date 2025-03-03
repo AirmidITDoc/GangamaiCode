@@ -59,8 +59,8 @@ export class IPBillBrowseListComponent implements OnInit {
     allfilters = [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "From_Dt", fieldValue:"01/01/2024", opType: OperatorComparer.Equals },
-        { fieldName: "To_Dt", fieldValue: "12/12/2024", opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "IsIntrimOrFinal", fieldValue: "0", opType: OperatorComparer.Equals },
@@ -169,8 +169,8 @@ export class IPBillBrowseListComponent implements OnInit {
         filters: [
             { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "From_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "12/12/2024", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "ReceiptNo", fieldValue: "%", opType: OperatorComparer.Contains },

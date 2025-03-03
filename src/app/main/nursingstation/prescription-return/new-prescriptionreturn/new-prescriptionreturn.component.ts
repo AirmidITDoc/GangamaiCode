@@ -53,6 +53,24 @@ export class NewPrescriptionreturnComponent implements OnInit {
   vPresReturnId:any;
   vPresDetailsId:any;
   registerObj1:any;
+  vRegNo:any;
+  vPatientName:any; 
+  vAdmissionDate:any;
+  vMobileNo:any; 
+  vIPDNo:any; 
+  vTariffName:any;
+  vCompanyName:any; 
+  vDoctorName:any;
+  vRoomName:any;
+  vBedName:any;
+  vAge:any;
+  vGenderName:any;
+  vAdmissionTime:any;
+  vAgeMonth:any;
+  vAgeDay:any;
+  vDepartment:any;
+  vRefDocName:any;
+  vPatientType:any;
 
   constructor(public _PrescriptionReturnService: PrescriptionReturnService,
     private _fuseSidebarService: FuseSidebarService,
@@ -103,7 +121,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
       MobileNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
       Validators.minLength(10),
       Validators.maxLength(10),]],
-      PatientType: ['External', [Validators.required]],
+      PatientType: ['OP', [Validators.required]],
       // OP_IP_ID: [0,[Validators.required]],
       TotalAmt: '',
 
@@ -232,77 +250,67 @@ export class NewPrescriptionreturnComponent implements OnInit {
     }
   }
 
-  // onChangePatientType(event) {
-    
-  //     if (event.value == 'OP') {
-  //         // this.registerObj = new RegInsert({});
-  //         this.personalFormGroup.reset();
-  //         this.personalFormGroup.get('RegId').reset();
-  //         this.searchFormGroup.get('RegId').disable();
-  //         this.isRegSearchDisabled = false;
-
-  //         // this.personalFormGroup = this.createPesonalForm();
-  //         // this.personalFormGroup.markAllAsTouched();
-  //         // this.VisitFormGroup = this.createVisitdetailForm();
-  //         // this.VisitFormGroup.markAllAsTouched();
-  //         // // this.Regdisplay = false;
-  //         // this.showtable = false;
-  //         this.Regflag = false;
-  //         this.IsPhoneAppflag = true;
-
-  //     } else if (event.value == 'IP') {
-
-  //         // this.personalFormGroup.get('RegId').enable();
-  //         // this.searchFormGroup.get('RegId').enable();
-  //         // this.searchFormGroup.get('RegId').reset();
-  //         // this.personalFormGroup.reset();
-  //         // this.Patientnewold = 2;
-
-  //         // this.personalFormGroup = this.createPesonalForm();
-  //         // this.personalFormGroup.markAllAsTouched();
-  //         // this.VisitFormGroup = this.createVisitdetailForm();
-  //         // this.VisitFormGroup.markAllAsTouched();
-  //         this.Regflag = true;
-  //         this.IsPhoneAppflag = false;
-  //         this.isRegSearchDisabled = true;
-
-  //         // this.getregdetails();
-
-  //     }
-
-  // }
-
   getSelectedObjOP(obj) {
-    console.log(obj)
-    this.RegId = obj.value;
     debugger
-    if ((this.RegId ?? 0) > 0) {
-
+    if ((obj.regId ?? 0) > 0) {
+      console.log("Visite Patient:",obj)
+      this.vRegNo=obj.regNo
+      this.vDoctorName=obj.doctorName
+      this.vDepartment=obj.departmentName
+      this.vAdmissionDate=obj.admissionDate
+      this.vAdmissionTime=obj.admissionTime
+      this.vIPDNo=obj.ipdNo
+      this.vAge=obj.age
+      this.vAgeMonth=obj.ageMonth
+      this.vAgeDay=obj.ageDay
+      this.vGenderName=obj.genderName
+      this.vRefDocName=obj.refDocName
+      this.vRoomName=obj.roomName
+      this.vBedName=obj.bedName
+      this.vPatientType=obj.patientType
+      this.vTariffName=obj.tariffName
+      this.vCompanyName=obj.companyName
+      let nameField = obj.formattedText;
+      let extractedName = nameField.split('|')[0].trim();
+      this.vPatientName=extractedName;
       setTimeout(() => {
-        this._PrescriptionReturnService.getRegistraionById(this.RegId).subscribe((response) => {
+        this._PrescriptionReturnService.getVisitById(obj.regId).subscribe((response) => {
           this.registerObj = response;
-          console.log(response)
-
+          console.log(this.registerObj)
         });
-
+  
       }, 500);
     }
 
   }
 
   getSelectedObjIP(obj) {
-    console.log(obj)
-    this.RegId = obj.value;
     debugger
-    if ((this.RegId ?? 0) > 0) {
-
+    if ((obj.regID ?? 0) > 0) {
+      console.log("Admitted patient:",obj)
+      this.vRegNo=obj.regNo
+      this.vDoctorName=obj.doctorName
+      this.vPatientName=obj.firstName + " " + obj.middleName + " " + obj.lastName
+      this.vDepartment=obj.departmentName
+      this.vAdmissionDate=obj.admissionDate
+      this.vAdmissionTime=obj.admissionTime
+      this.vIPDNo=obj.ipdNo
+      this.vAge=obj.age
+      this.vAgeMonth=obj.ageMonth
+      this.vAgeDay=obj.ageDay
+      this.vGenderName=obj.genderName
+      this.vRefDocName=obj.refDocName
+      this.vRoomName=obj.roomName
+      this.vBedName=obj.bedName
+      this.vPatientType=obj.patientType
+      this.vTariffName=obj.tariffName
+      this.vCompanyName=obj.companyName
       setTimeout(() => {
-        this._PrescriptionReturnService.getRegistraionById(this.RegId).subscribe((response) => {
-          this.registerObj = response;
-          console.log(response)
-
+        this._PrescriptionReturnService.getAdmittedpatientlist(obj.regID).subscribe((response) => {
+          this.registerObj = response;        
+          console.log(this.registerObj)
         });
-
+  
       }, 500);
     }
   }
@@ -404,36 +412,36 @@ export class NewPrescriptionreturnComponent implements OnInit {
   }
 
 
-  getSearchList() {
-    var m_data = {
-      "Keyword": `${this.ItemSubform.get('RegID').value}%`
-    }
-    if (this.ItemSubform.get('RegID').value.length >= 1) {
-      // this._PrescriptionReturnService.getAdmittedPatientList(m_data).subscribe(resData => {
-      this._PrescriptionReturnService.getAdmittedPatientList(m_data).subscribe(resData => {
-        this.filteredOptions = resData;
-        // console.log(resData);
-        this.PatientListfilteredOptions = resData;
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
+  // getSearchList() {
+  //   var m_data = {
+  //     "Keyword": `${this.ItemSubform.get('RegID').value}%`
+  //   }
+  //   if (this.ItemSubform.get('RegID').value.length >= 1) {
+  //     // this._PrescriptionReturnService.getAdmittedPatientList(m_data).subscribe(resData => {
+  //     this._PrescriptionReturnService.getAdmittedPatientList(m_data).subscribe(resData => {
+  //       this.filteredOptions = resData;
+  //       // console.log(resData);
+  //       this.PatientListfilteredOptions = resData;
+  //       if (this.filteredOptions.length == 0) {
+  //         this.noOptionFound = true;
+  //       } else {
+  //         this.noOptionFound = false;
+  //       }
 
-      });
-    }
-  }
+  //     });
+  //   }
+  // }
 
-  getOptionText(option) {
-    // this.ItemId = option.ItemId;
-    if (!option) return '';
-    return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
-  }
+  // getOptionText(option) {
+  //   // this.ItemId = option.ItemId;
+  //   if (!option) return '';
+  //   return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
+  // }
 
-  getOptionTextReg(option) {
-    if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
-  }
+  // getOptionTextReg(option) {
+  //   if (!option) return '';
+  //   return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
+  // }
   getSelectedObj(obj) {
     // 
     // this.registerObj = obj;
