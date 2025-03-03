@@ -2,7 +2,7 @@ import { Component, EventEmitter, Inject, OnInit, Output, ViewChild, ViewEncapsu
 import { fuseAnimations } from '@fuse/animations';
 import { AdvanceDetailObj, Discharge, IPSearchListComponent } from '../ip-search-list.component';
 import { MatPaginator } from '@angular/material/paginator';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
@@ -73,7 +73,7 @@ export class DischargeComponent implements OnInit {
   
   constructor(
     public _IpSearchListService: IPSearchListService,
-    private accountService: AuthenticationService,
+    private _formBuilder: UntypedFormBuilder,
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
@@ -95,10 +95,11 @@ export class DischargeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.DischargeForm=this._IpSearchListService.DischargesaveForm();
+    this.DischargeForm=this.DischargesaveForm();
+    console.log(this.data)
     if (this.data) { 
       this.vAdmissionId = this.data.admissionId;
-   this.vBedId=this.data.bedId
+      this.vBedId=this.data.bedId
     } 
 
     if ((this.data?.regId ?? 0) > 0) {
@@ -127,6 +128,8 @@ export class DischargeComponent implements OnInit {
       }, 500);
     }
 
+
+    
     // if(this._ConfigService.configParams.IsDischargeInitiateflow == 1){
     //   this.ChkConfigInitiate = false
     // }else{
@@ -137,23 +140,29 @@ export class DischargeComponent implements OnInit {
   }
 
 
- 
+  DischargesaveForm(): FormGroup{
+    return this._formBuilder.group({
+    
+    dischargeId: 0,
+    admissionId: this.data.admissionId,
+    dischargeDate: "2029-09-07",
+    dischargeTime: "",
+    dischargeTypeId: 0,
+    dischargedDocId: 0,
+    dischargedRmoid: 10,
+    });
+  }
  
  onDischarge() {
-    this.isLoading = 'submit';
-
-    const formattedDate = this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd");
-    const formattedTime = formattedDate+this.dateTimeObj.time;
-
- 
+    console.log(this.DischargeForm.value)
     if (!this.DischargeId) {
       var m_data = {
         "dischargeModel":this.DischargeForm.value,
         "dischargeAdmissionModel": {
           "admissionID": this.vAdmissionID,
           "isDischarged": 1,
-          "dischargeDate":formattedDate || '01/01/1900', // this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',
-          "dischargeTime":formattedTime || '01/01/1900',//this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900', 
+          "dischargeDate":this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd"),
+          "dischargeTime":this.dateTimeObj.time
         },
         "bedModel": {
           "bedId":  this.vBedId,
@@ -162,7 +171,7 @@ export class DischargeComponent implements OnInit {
 console.log(m_data);
       this._IpSearchListService.DichargeInsert(m_data).subscribe((response) => {
         this.toastr.success(response.message);
-        this.onClear(true);
+       this._matDialog.closeAll();
       }, (error) => {
         this.toastr.error(error.message);
       });
