@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
@@ -28,6 +28,9 @@ import { PrebillDetailsComponent } from './prebill-details/prebill-details.compo
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { ConfigService } from 'app/core/services/config.service';
 import { query } from '@angular/animations';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridColumnTypes } from 'app/core/models/tableActions';
 
 
 @Component({
@@ -254,6 +257,8 @@ export class IPBillingComponent implements OnInit {
 
   registerObj1:any;
 
+  opD_IPD_Id:any="10"
+
   constructor(
     private _Activatedroute: ActivatedRoute,
     private changeDetectorRefs: ChangeDetectorRef,
@@ -289,6 +294,8 @@ export class IPBillingComponent implements OnInit {
     if(this.data){
       this.selectedAdvanceObj = this.data.Obj;
       console.log(this.selectedAdvanceObj)
+      this.opD_IPD_Id = this.selectedAdvanceObj.admissionId
+      console.log(this.opD_IPD_Id)
       // this.vClassId = this.selectedAdvanceObj.classId
       // this.ClassName = this.selectedAdvanceObj.className 
       // this.vMobileNo=this.selectedAdvanceObj.mobileNo;
@@ -327,6 +334,90 @@ export class IPBillingComponent implements OnInit {
     } 
     this.setClassdata(); 
   } 
+
+  
+    @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+    @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('actionButtonTemplatePrevlist') actionButtonTemplatePrevlist!: TemplateRef<any>;
+    @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>; 
+  
+    ngAfterViewInit() {
+      // Assign the template to the column dynamically
+      this.gridConfig.columnsList.find(col => col.key === 'isPathology')!.template = this.actionsTemplate;
+      this.gridConfig.columnsList.find(col => col.key === 'isPackage')!.template = this.actionsTemplate1;
+      this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate; 
+      this.gridConfig.columnsList.find(col => col.key === 'check')!.template = this.actionsTemplate2;
+      this.gridConfig1.columnsList.find(col => col.key === 'action1')!.template = this.actionButtonTemplatePrevlist; 
+      this.gridConfig.columnsList.find(col => col.key === 'isRadiology')!.template = this.actionsTemplate1; 
+    } 
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  gridConfig: gridModel = {
+      apiUrl: "IPBill/IPAddchargesList",
+      columnsList: [
+          { heading: "", key: "check", align: 'left',sticky: true,type: gridColumnTypes.template, width: 60},
+          { heading: "Status", key: "isPathology",  align: 'left', emptySign: 'NA',type: gridColumnTypes.template, width: 70},
+          { heading: "", key: "isPackage",  align: 'left', emptySign: 'NA',type: gridColumnTypes.template, width: 50},
+          { heading: "Date", key: "chargesDate", sort: true, align: 'left', emptySign: 'NA' , width: 110},
+         // { heading: "ServiceId", key: "serviceId", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA' ,width: 200},
+          { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 110 },
+          { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 110},
+          { heading: "Total Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA',width: 130 }, 
+          { heading: "Disc %", key: "concessionPercentage", sort: true, align: 'left', emptySign: 'NA' , width: 110},
+          { heading: "Disc Amt", key: "concessionAmount", sort: true, align: 'left', emptySign: 'NA',width: 130 }, 
+          { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA',width: 130  },
+          { heading: "ChargeDoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' ,width: 200 },
+          { heading: "className", key: "className", sort: true, align: 'left', emptySign: 'NA'  ,width: 200},
+          { heading: "chargesAddedBy", key: "chargesAddedName", sort: true, align: 'left', emptySign: 'NA' ,width: 200 }, 
+          { heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
+          }
+      ],
+      sortField: "ServiceId",
+      sortOrder: 0,
+      filters: [
+          { fieldName: "OPD_IPD_Id", fieldValue: String(this.opD_IPD_Id), opType: OperatorComparer.Equals },
+          { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }  
+      ],
+      row: 10 
+  }  
+
+ 
+
+  gridConfig1: gridModel = {
+    apiUrl: "IPBill/IPPreviousBillList",
+    columnsList: [ 
+        { heading: "Date", key: "bDate", sort: true, align: 'left', emptySign: 'NA' , width: 110},
+        { heading: "billNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA',width: 110 }, 
+        { heading: "Total Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA',width: 130 },  
+        { heading: "Disc Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA',width: 130 }, 
+        { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA',width: 130  },
+        { heading: "Bal Amt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' ,width: 130 },
+        { heading: "cashPayAmt", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA',width: 130 },  
+        { heading: "chequePayAmt", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA',width: 130 }, 
+        { heading: "cardPayAmt", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA',width: 130  },
+        { heading: "AdvUsedAmt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA' ,width: 130 }, 
+        { heading: "Action", key: "action1", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+          template: this.actionButtonTemplatePrevlist  // Assign ng-template to the column
+        }
+    ],
+    sortField: "BillNo",
+    sortOrder: 0,
+    filters: [
+        { fieldName: "IP_Id", fieldValue: String(this.opD_IPD_Id), opType: OperatorComparer.Equals },
+        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }  
+    ],
+    row: 10 
+}  
+
+
+
+
+
+
   setClassdata() {
     const toSelectClass = this.ClassList.find(c => c.ClassId == this.vClassId);
     this.Serviceform.get('ChargeClass').setValue(toSelectClass);
@@ -615,12 +706,12 @@ ServiceList:any=[];
 
     this.isLoading = 'save';
     if ((this.SrvcName && (parseInt(this.vPrice) > 0 || this.vPrice == '0') && this.vQty) && (parseFloat(this.vServiceNetAmt) > 0)) {
-
+    
       var m_data = {
-        "chargeID": 0,
+        "chargesId": 0,
         "chargesDate": this.datePipe.transform(this.Serviceform.get('Date').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-        "opD_IPD_Type": 1,
-        "opD_IPD_Id": this.selectedAdvanceObj.AdmissionID,
+        "opdIpdType": 1,
+        "opdIpdId": this.selectedAdvanceObj.AdmissionID,
         "serviceId": this.serviceId,
         "price": this.vPrice || 0,
         "qty": this.vQty || 0,
@@ -633,20 +724,36 @@ ServiceList:any=[];
         "docPercentage": 0,
         "docAmt": 0,
         "hospitalAmt": this.FAmount,// this.vServiceNetAmt,
-        "isGenerated": 0,
+        "isGenerated": false,
         "addedBy": this.accountService.currentUserValue.userId,
-        "isCancelled": 0,
+        "isCancelled": false,
         "isCancelledBy": 0,
         "isCancelledDate": "01/01/1900",
         "isPathology": this.b_isPath,
         "isRadiology": this.b_isRad,
+        "isDoctorShareGenerated":0,
+        "isInterimBillFlag":0,
         "isPackage": 0,
-        "packageMainChargeID": 0,
-        "isSelfOrCompanyService": false,
+        "isSelfOrCompanyService": 0,
         "packageId": 0,
-        "chargeTime":this.datePipe.transform(this.Serviceform.get('Date').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
-        "classId":this.Serviceform.get('ChargeClass').value.ClassId     // this.selectedAdvanceObj.ClassId,
-      }
+        "chargesTime":this.datePipe.transform(this.Serviceform.get('Date').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+        "packageMainChargeId": 0,
+        "classId":this.Serviceform.get('ChargeClass').value.ClassId,     // this.selectedAdvanceObj.ClassId,
+        "refundAmount": 0,
+        "cPrice": 0,
+        "cQty": 0,
+        "cTotalAmount": 0,
+        "isComServ": false,
+        "isPrintCompSer": false,
+        "serviceName": "string",
+        "chPrice": 0,
+        "chQty": 0,
+        "chTotalAmount": 0,
+        "isBillableCharity": false,
+        "salesId": 0,
+        "billNo": 0,
+        "isHospMrk": 0
+      }  
       console.log(m_data);
       let submitData = {
         "addCharges": m_data
@@ -1202,6 +1309,8 @@ CalculateAdminCharge(){
 
   //select cehckbox
   tableElementChecked(event, element) {
+    console.log(event)
+    console.log(element)
     if (event.checked) {
       this.interimArray.push(element);
       // console.log(this.interimArray)

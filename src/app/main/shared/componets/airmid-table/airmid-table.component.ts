@@ -37,6 +37,7 @@ export class AirmidTableComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @Output() onSelectRow = new EventEmitter<any>();
     @Input() ShowFilter: boolean = true;
+    @Input() ShowButtons: boolean = true;
     @Input() FullWidth: boolean = false;
     @Input() tableClasses: string = '';
     public defaultColumnWidth = 120;

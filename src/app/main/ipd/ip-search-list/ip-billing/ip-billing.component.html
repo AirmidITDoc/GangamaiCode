@@ -417,7 +417,7 @@
                 <mat-tab-group class="mat-tab-header-small" #tabGroup (selectedTabChange)="tabChanged($event)">
 
                     <mat-tab label="Charges List">
-                        <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
+                        <!-- <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                             class="table1 mt-8" style="height: calc(100vh - 500px);">
 
                             <ng-container matColumnDef="checkbox" sticky>
@@ -603,7 +603,45 @@
                                         currency:'INR'}}</span>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
+                        <ng-template #actionsTemplate let-element>
+                            <div fxLayout="row" fxLayoutAlign="center center">  
+                                    <mat-icon *ngIf="element.isPathology != 1" title="IsRadiology">
+                                        <img width="15px" height="8px" src="assets/images/logos/radiology.png">
+                                    </mat-icon>
+                                    <mat-icon *ngIf="element.isPathology == 1" title="IsPatholgy">
+                                        <img width="15px" height="9px" src="assets/images/logos/pathology.png">  
+                                    </mat-icon>
+                            </div>
+                        </ng-template>
+                        <ng-template #actionsTemplate1 let-element>
+                            <div fxLayout="row" fxLayoutAlign="center center"> 
+                                    <mat-icon *ngIf="element.isPackage == 1" title="IsPackage">
+                                        <img width="15px" height="9px" src="assets/images/logos/package.png">
+                                    </mat-icon>
+                            </div>
+                        </ng-template>
+
+                        <ng-template #actionsTemplate2 let-element>
+                            <div fxLayout="row" >  
+                                <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, element)">
+                                </mat-checkbox>
+                            </div>
+                        </ng-template> 
+
+                        <ng-template #actionButtonTemplate let-element>
+                            <div fxLayout="row" fxLayoutAlign="center center">
+                                <span class="material-icons" style="cursor: pointer;color: #c95a5a;"
+                                (click)="deletecharges(contact)">
+                                delete
+                            </span>
+                            </div>
+                        </ng-template>
+
+                        <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
+
+                        </airmid-table>  
+                   
                     </mat-tab>
                     
                     <mat-tab label="Advance">
@@ -876,7 +914,25 @@
                     </mat-tab>
 
                     <mat-tab label="Prev.Bill">
-                        <mat-table matSort [dataSource]="prevbilldatasource" [@animateStagger]="{value:'50'}"
+                        <ng-template #actionButtonTemplatePrevlist let-element>
+                            <div fxLayout="row" fxLayoutAlign="center center"> 
+                                <button mat-icon-button  matTooltip="Details" (click)="getPreBilldet(contact)">
+                                    <mat-icon>visibility</mat-icon>
+                                </button>
+                                <button mat-icon-button   matTooltip="Bill Print"  (click)="viewgetInterimBillReportPdf(contact)">
+                                    <mat-icon>print</mat-icon>
+                                </button>
+                                <button mat-icon-button matTooltip="Send Bill On WhatsApp"
+                                class="p-4"  >
+                                <img width="100" height="20px"
+                                    src="assets/images/logos/WhatsApp.png">
+                                 </button>
+                            </div>
+                        </ng-template>
+                        <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false" :ShowButtons="false" >
+
+                        </airmid-table>
+                        <!-- <mat-table matSort [dataSource]="prevbilldatasource" [@animateStagger]="{value:'50'}"
                             class="table3 mt-8" style="height: calc(100vh - 500px);">
 
                             <ng-container matColumnDef="Action" stickyEnd>
@@ -1004,7 +1060,7 @@
                             <mat-footer-row *matFooterRowDef="['noData']"
                                 [ngClass]="{'hide':!(prevbilldatasource!=null && prevbilldatasource.data.length==0)}">
                             </mat-footer-row>
-                        </mat-table>
+                        </mat-table> -->
                     </mat-tab>
 
                 </mat-tab-group>

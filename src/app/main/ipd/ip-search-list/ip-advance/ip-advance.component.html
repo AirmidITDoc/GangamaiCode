@@ -128,21 +128,19 @@
                                         <span class="h3 font-weight-600">Advance Summary </span>
                                     </div>
                                     <div class="bil-summary-list px-4 mt-8">
-                                        <!-- <ul class="gap-4 list-basic" fxLayout="column">
+                                        <ul class="gap-4 list-basic" fxLayout="column">
                                             <li>
                                                 <div class="list-item">
                                                     <span class="list-item-key">Advance Amount :</span>
                                                     <span class="list-item-value">
-                                                        {{getAdvancetotal(dataSource.data)|
-                                                        currency:'INR'}}</span>
+                                                        {{TotalAdvanceAmt | currency:'INR'}}</span>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="list-item">
                                                     <span class="list-item-key">Advance Used Amount :</span>
                                                     <span class="list-item-value">
-                                                        {{getAdvanceusedtotal(dataSource.data)|
-                                                        currency:'INR'}}
+                                                        {{TotalAdvUsedAmt | currency:'INR'}}
                                                     </span>
                                                 </div>
                                             </li>
@@ -150,19 +148,17 @@
                                                 <div class="list-item">
                                                     <span class="list-item-key">Balance Amount :</span>
                                                     <span class="list-item-value">
-                                                        {{getAdvBalance(dataSource.data)|
-                                                        currency:'INR'}}</span>
+                                                        {{TotalAdvaBalAmt | currency:'INR'}}</span>
                                                 </div>
                                             </li> 
                                             <li>
                                                 <div class="list-item">
                                                     <span class="list-item-key">Refund Amount :</span>
                                                     <span class="list-item-value">
-                                                        {{getAdvancerefund(dataSource.data)|
-                                                        currency:'INR'}}</span>
+                                                        {{TotalAdvRefAmt | currency:'INR'}}</span>
                                                 </div>
                                             </li>
-                                        </ul> -->
+                                        </ul>
                                     </div>
                                 </div>
                             </mat-card>
@@ -170,6 +166,13 @@
                     </div>
 
                     <div fxFlex.gt-sm="100%" fxFlex>
+                        <ng-template #actionButtonTemplate let-element>
+                            <div fxLayout="row" fxLayoutAlign="center center">   
+                                <button mat-icon-button   matTooltip="Advance Print"  (click)="viewgetAdvanceReceiptReportPdf(element,false)">
+                                    <mat-icon>print</mat-icon>
+                                </button>  
+                            </div>
+                        </ng-template>
                         <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" tableClasses="h-400">
                         </airmid-table>
                     </div>
@@ -183,13 +186,14 @@
                             <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-textbox label="Advance Amount" formControlName="advanceAmt"
                                     [value]="registerObj.firstName" [formGroup]="AdvFormGroup"
-                                    [validations]="getValidationMessages().advanceAmt" [maxLength]="50">
+                                    [validations]="getValidationMessages().advanceAmt" [maxLength]="12"
+                                    (keypress)="keyPressCharater($event)">
                                 </airmid-textbox>
                             </div>
 
                             <div fxFlex="43%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-textbox label="Reason Of Advacne" formControlName="comment"
-                                    [formGroup]="AdvFormGroup" [maxLength]="450">
+                                    [formGroup]="AdvFormGroup" [maxLength]="50">
                                 </airmid-textbox>
                             </div>
 
