@@ -9,12 +9,12 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 export class PatientwiseMaterialConsumptionService {
 
   mySearchForm:FormGroup;
-  MyForm: FormGroup;
+  registeredForm: FormGroup;
   
   constructor(public _httpClient: HttpClient,public _httpClient1: ApiCaller,
     public _formBuilder: UntypedFormBuilder) { 
       this.mySearchForm = this.SearchFilterForm();
-      this.MyForm = this.createMyForm();
+      this.registeredForm = this.createMyForm();
     }
 
     SearchFilterForm():FormGroup{
@@ -30,7 +30,13 @@ export class PatientwiseMaterialConsumptionService {
             balqty: [],
             usedqty: [],
             remark: [],
+            PatientType: [],
+            OP_IP_Type: ['1'] ,
+            RegID:[],
             
+            startdate: [(new Date()).toISOString()],
+            enddate: [(new Date()).toISOString()],
+            consumption: false,
         })
     }
   

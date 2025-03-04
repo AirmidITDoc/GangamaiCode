@@ -1,0 +1,68 @@
+<div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
+    <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+               New Template 
+            </span>
+        </div>
+        <div fxLayout="row" fxLayoutALign="end start">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+    <div class="content">
+        <div class="center p-2" fusePerfectScrollbar>
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <div fxlayout="row" style=" background-color: white;
+                             padding: 5px 10px 5px 10px;">
+                            <form [formGroup]="myform">
+                                <div class="dialog-content-wrapper">
+                                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
+
+
+                                        <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                                           
+                                                <airmid-textbox 
+                                                    label="TemplateName" 
+                                                    formControlName="templateName" 
+                                                    [value]="data?.templateName"
+                                                    [formGroup]="myform"
+                                                    [validations]="getValidationMessages().templateName"
+                                                    [maxLength]="50">
+                                                </airmid-textbox>
+
+                                                
+                                        </div>
+
+                                        <!-- <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                                                <mat-label>Template Details</mat-label>
+                                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                                                    style="height:300px;" [(ngModel)]="vTemplateDesc" required
+                                                    formControlName="templateDesc">
+                                                </angular-editor>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+                                    <div>
+                                        <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="myform" [(ngModel)]="isActive" ></app-airmid-slider>
+                                    </div>
+                                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                                        <button class="btn btn-primary " color="accent" (click)="onSubmit()" >
+                                            <span>Save</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

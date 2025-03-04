@@ -37,6 +37,10 @@ export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
     msg: any;
     DepartmentList: any = [];
     chargeslist: any = [];
+    autocompleteModeItemName:string = "Item";
+    autocompleteModeStoreName:string = "Store";
+    registeredForm: FormGroup;
+    consumption: boolean = true;
   
 //     displayedColumns = [
 //      'SrvcName',
@@ -64,9 +68,16 @@ export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
         columnsList: [
             { heading: "ItemName", key: "itemname", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "BatchNo", key: "batch", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "LandedTotalAmt", key: "land", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "BatchExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "BalQty", key: "balqty", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "UsedQty", key: "usedqty", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "LandedRate", key: "LandedRate", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "PurchaseRate", key: "purchaseRate", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "UnitMRP", key: "unitmrp", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "MRPTotalAmt", key: "mrptotalamt", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "StartDate", key: "startdate", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "EndDate", key: "enddate", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "Remark", key: "reMark", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "AddedBy", key: "adDedBy", sort: true, align: 'left', emptySign: 'NA'},
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
@@ -98,25 +109,141 @@ export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
     fromDate: string;
     toastr: any;
 
-        onSave(row: any = null) {
-                const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-                buttonElement.blur(); // Remove focus from the button
+    onSave(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        // const dialogRef = this._matDialog.open(ServiceMasterFormComponent,
+        //     {
+        //         maxWidth: "95vw",
+        //         height: '95%',
+        //         width: '70%',
+        //         data: row
+        //     });
+        // dialogRef.afterClosed().subscribe(result => {
+        //     if (result) {
+        //         that.grid.bindGridData();
+        //     }
+        //     console.log('The dialog was closed - Action', result);
+        // });
+    }
+
+    ngOnInit(): void {
+    
+        this.createForm();
+        this.consumption = this.data.consumption
+        if (this.advanceDataStored.storage) {
+            this.selectedAdvanceObj = this.advanceDataStored.storage;
+        }
+
+        //  this.getServiceListCombobox();
+        //  this.getDepartmentList();
+        //  this.getChargesList();
+        // this.getBillingClassCombo();
         
-                let that = this;
-                // const dialogRef = this._matDialog.open(ServiceMasterFormComponent,
-                //     {
-                //         maxWidth: "95vw",
-                //         height: '95%',
-                //         width: '70%',
-                //         data: row
-                //     });
-                // dialogRef.afterClosed().subscribe(result => {
-                //     if (result) {
-                //         that.grid.bindGridData();
-                //     }
-                //     console.log('The dialog was closed - Action', result);
-                // });
-            }
+        // this.departmentFilterCtrl.valueChanges
+        // .pipe(takeUntil(this._onDestroy))
+        // .subscribe(() => {
+        //   this.filterDepartment();
+        // });
+    
+    }
+
+    onChangePatientType(event) {
+        if (event.value == 'OP') {
+            this.OP_IPType = 0;
+            this.RegId = "";
+            // this.paymethod = true;
+            // this.ItemSubform.get('MobileNo').clearValidators();
+            // this.ItemSubform.get('PatientName').clearValidators();
+            // this.ItemSubform.get('MobileNo').updateValueAndValidity();
+            // this.ItemSubform.get('PatientName').updateValueAndValidity();
+        }
+        else if (event.value == 'IP') {
+            this.OP_IPType = 1;
+            this.RegId = "";
+
+            // this.ItemSubform.get('MobileNo').clearValidators();
+            // this.ItemSubform.get('PatientName').clearValidators();
+            // this.ItemSubform.get('MobileNo').updateValueAndValidity();
+            // this.ItemSubform.get('PatientName').updateValueAndValidity();
+        } else {
+            // this.ItemSubform.get('MobileNo').reset();
+            // this.ItemSubform.get('MobileNo').setValidators([Validators.required]);
+            // this.ItemSubform.get('MobileNo').enable();
+            // this.ItemSubform.get('PatientName').reset();
+            // this.ItemSubform.get('PatientName').setValidators([Validators.required]);
+            // this.ItemSubform.get('PatientName').enable();
+            // this.ItemSubform.updateValueAndValidity();
+
+            this.OP_IPType = 2;
+        }
+    }
+
+    getSelectedObjOP(obj) {
+        debugger
+        // if ((obj.regId ?? 0) > 0) {
+        //     console.log("Visite Patient:",obj)
+        //     this.vRegNo=obj.regNo
+        //     this.vDoctorName=obj.doctorName
+        //     this.vDepartment=obj.departmentName
+        //     this.vAdmissionDate=obj.admissionDate
+        //     this.vAdmissionTime=obj.admissionTime
+        //     this.vIPDNo=obj.ipdNo
+        //     this.vAge=obj.age
+        //     this.vAgeMonth=obj.ageMonth
+        //     this.vAgeDay=obj.ageDay
+        //     this.vGenderName=obj.genderName
+        //     this.vRefDocName=obj.refDocName
+        //     this.vRoomName=obj.roomName
+        //     this.vBedName=obj.bedName
+        //     this.vPatientType=obj.patientType
+        //     this.vTariffName=obj.tariffName
+        //     this.vCompanyName=obj.companyName
+        //     let nameField = obj.formattedText;
+        //     let extractedName = nameField.split('|')[0].trim();
+        //     this.vPatientName=extractedName;
+        //     setTimeout(() => {
+        //     this._PrescriptionReturnService.getVisitById(obj.regId).subscribe((response) => {
+        //         this.registerObj = response;
+        //         console.log(this.registerObj)
+        //     });
+        
+        //     }, 500);
+        // }
+    }
+
+    getSelectedObjIP(obj) {
+        debugger
+        // if ((obj.regID ?? 0) > 0) {
+        //     console.log("Admitted patient:",obj)
+        //     this.vRegNo=obj.regNo
+        //     this.vDoctorName=obj.doctorName
+        //     this.vPatientName=obj.firstName + " " + obj.middleName + " " + obj.lastName
+        //     this.vDepartment=obj.departmentName
+        //     this.vAdmissionDate=obj.admissionDate
+        //     this.vAdmissionTime=obj.admissionTime
+        //     this.vIPDNo=obj.ipdNo
+        //     this.vAge=obj.age
+        //     this.vAgeMonth=obj.ageMonth
+        //     this.vAgeDay=obj.ageDay
+        //     this.vGenderName=obj.genderName
+        //     this.vRefDocName=obj.refDocName
+        //     this.vRoomName=obj.roomName
+        //     this.vBedName=obj.bedName
+        //     this.vPatientType=obj.patientType
+        //     this.vTariffName=obj.tariffName
+        //     this.vCompanyName=obj.companyName
+        //     setTimeout(() => {
+        //     this._PrescriptionReturnService.getAdmittedpatientlist(obj.regID).subscribe((response) => {
+        //         this.registerObj = response;        
+        //         console.log(this.registerObj)
+        //     });
+        
+        //     }, 500);
+        // }
+    }
 
   dataSource = new MatTableDataSource<ChargesList>();
   dataSource1 = new MatTableDataSource<patientinfo>();
@@ -166,7 +293,7 @@ export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
   
   BillingClassCmbList: any = [];
   IPBillingInfor: any = [];
-  registeredForm: FormGroup;
+//   registeredForm: FormGroup;
   myShowAdvanceForm: FormGroup;
   concessionAmtOfNetAmt: any = 0;
   netPaybleAmt: any;
@@ -217,25 +344,7 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
     private router: Router, private route: ActivatedRoute
     ) { }
 
-  ngOnInit(): void {
-    
-    this.createForm();
-    if (this.advanceDataStored.storage) {
-      this.selectedAdvanceObj = this.advanceDataStored.storage;
-    }
-
-    //  this.getServiceListCombobox();
-    //  this.getDepartmentList();
-    //  this.getChargesList();
-    // this.getBillingClassCombo();
-    
-    // this.departmentFilterCtrl.valueChanges
-    // .pipe(takeUntil(this._onDestroy))
-    // .subscribe(() => {
-    //   this.filterDepartment();
-    // });
-   
-  }
+  
 
     getValidationMessages(){
         return{

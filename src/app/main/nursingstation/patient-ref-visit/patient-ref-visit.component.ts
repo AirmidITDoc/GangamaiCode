@@ -11,6 +11,10 @@ import { PatientrefvisitService } from './patientrefvisit.service';
 import { MatAccordion } from '@angular/material/expansion';
 import { AdmissionService } from 'app/main/ipd/Admission/admission/admission.service';
 import { fuseAnimations } from '@fuse/animations';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-patient-ref-visit',
@@ -20,6 +24,7 @@ import { fuseAnimations } from '@fuse/animations';
   animations: fuseAnimations
 })
 export class PatientRefVisitComponent implements OnInit {
+    [x: string]: any;
 
   step = 0;
   @ViewChild(MatAccordion) accordion: MatAccordion;
@@ -28,25 +33,71 @@ export class PatientRefVisitComponent implements OnInit {
     this.step = index;
   }
 
+
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    
+    gridConfig: gridModel = {
+        apiUrl: "Nursing/PrescriptionWardList",
+        columnsList: [
+            { heading: "Adm_Vit_ID", key: "adm_Vit_ID", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "RegNoWithPrefix", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IP_OP_Number", key: "ip_OP_Number", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Adm_DoctorName", key: "adm_DoctorName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "ClassName", key: "className", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IPNumber", key: "iPNumber", sort: true, align: 'left', emptySign: 'NA' },
+            {
+                heading: "Select", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onEdit(data);
+                        }
+                    }, 
+                    {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this._PatientrefvisitService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "ReqId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
+            { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row: 25
+    }
+
   msg:any;
   SearchName : string;
   screenFromString = 'OP-billing';
-  displayedColumns: string[] = [
-    'Adm_Vit_ID',
-    'PatientName',
-    'RegNoWithPrefix',
-    'AgeYear',
-    'IP_OP_Number',
-    'Adm_DoctorName',
-    'ClassName',
-    'TariffName',
-    'CompanyName',
-    'IPNumber',
-    // 'MobileNo',
-    // 'AgeYear',
+//   displayedColumns: string[] = [
+//     'Adm_Vit_ID',
+//     'PatientName',
+//     'RegNoWithPrefix',
+//     'AgeYear',
+//     'IP_OP_Number',
+//     'Adm_DoctorName',
+//     'ClassName',
+//     'TariffName',
+//     'CompanyName',
+//     'IPNumber',
+//     // 'MobileNo',
+//     // 'AgeYear',
  
-    'action'
-  ];
+//     'action'
+//   ];
 
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator:MatPaginator;
@@ -67,7 +118,7 @@ export class PatientRefVisitComponent implements OnInit {
     // public notification:NotificationServiceService,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
-    private advanceDataStored: AdvanceDataStored,
+    private advanceDataStored: AdvanceDataStored,public toastr: ToastrService,
     // public dialogRef: MatDialogRef<PatientrefvisitComponent>, 
     ) { }
 
@@ -104,6 +155,15 @@ export class PatientRefVisitComponent implements OnInit {
             this.sIsLoading = '';
           });
     
+  }
+
+  getValidationMessages() {
+    return {
+        Note: [],
+        hsNcode:[],
+        regNo: [],
+
+    };
   }
 
 

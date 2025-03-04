@@ -1,21 +1,21 @@
 <div class="simple page-layout inner-scroll inner-sidebar left-sidebar">
     <mat-toolbar style="width: 100%;justify-content: space-between;">
         <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+            <!-- <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
             </button>
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                 style="color: white;">account_box
-            </mat-icon>
+            </mat-icon> -->
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
                 Doctor Note
             </span>
         </div>
-        <div class="close-icon">
+        <!-- <div class="close-icon">
             <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
-        </div>
+        </div> -->
     </mat-toolbar>
     <div class="content">
         <div class="center p-12 pb-56" style="border-radius: 4px;">
@@ -26,6 +26,24 @@
                             placeholderText="IP-RegNo/FirstName/LastName" ApiUrl="OutPatient/auto-complete?Keyword="
                             (selectionChange)="getSelectedObj($event)">
                         </airmid-autocomplete> -->
+
+                        <div class="layout-card-container">
+                            <!-- <form [formGroup]="_NursingStationService.myform"> -->
+                                
+                                    <div class="patient-search">
+                                        <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+                                          
+                                            <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
+                
+                                                    <airmid-autocomplete class="w-350" label="Patient Search" [formGroup]="searchFormGroup"  fxFlex="40%"
+                                                    formControlName="RegId" placeholderText="IP RegNo / PatientName / MobileNo" ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
+        
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                            <!-- </form> -->
+                        </div>
                     </div>
                 </form>
 
@@ -145,10 +163,18 @@
                                                     <div fxLayout="row" fxLayoutGap="10px">
                                                         <div fxFlex.gt-sm="40%" fxFlex>
                                                             <mat-card style="padding: 5px;">
+
+                                                                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                                                                    <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
+                                                                        <ng-container filters>
+                                                        
+                                                                        </ng-container>
+                                                                    </airmid-table>
+                                                                </div>
                                                                 <!-- <airmid-table [gridConfig]="gridConfig" class="content">
                                                                     
                                                                 </airmid-table> -->
-                                                                <mat-table class="table2" matSort
+                                                                <!-- <mat-table class="table2" matSort
                                                                     [dataSource]="dsDoctorNoteList"
                                                                     [@animateStagger]="{value:'50'}"
                                                                     style="overflow: auto;height:305px;padding-bottom: 0px;">
@@ -210,7 +236,7 @@
                                                                 <mat-paginator #paginator
                                                                     [pageSizeOptions]="[10, 25, 50, 100]"
                                                                     [pageSize]="10" showFirstLastButtons>
-                                                                </mat-paginator>
+                                                                </mat-paginator> -->
                                                             </mat-card>
                                                         </div>
                                                         <div fxFlex.gt-sm="60%" fxFlex>
@@ -249,11 +275,11 @@
 
                                                                     </div>
                                                                     <div>
-                                                                        <mat-form-field appearance="outline" fxFlex>
+                                                                        <!-- <mat-form-field appearance="outline" fxFlex>
                                                                         <mat-label>Description</mat-label>
                                                                                 <textarea rows="10" matInput name="Description" formControlName="Description" placeholder="Add Note....."
                                                                                     type="text" id="Description" #description required [(ngModel)]="vDescription">
-                                                                                </textarea>
+                                                                                </textarea> -->
                                                                         <!-- <mat-label>Template Details</mat-label>
                                                                         <angular-editor (blur)="onBlur($event)"
                                                                             [config]="editorConfig"
@@ -261,7 +287,13 @@
                                                                             [(ngModel)]="vDescription" required
                                                                             formControlName="Description">
                                                                         </angular-editor> -->
-                                                                        </mat-form-field>
+                                                                        <!-- </mat-form-field> -->
+
+                                                                        <!-- <mat-label>Template Details</mat-label>
+                                                                        <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                                                                            style="height:300px;" [(ngModel)]="vTemplateDesc" required
+                                                                            formControlName="templateDesc">
+                                                                        </angular-editor> -->
                                                                     </div>
                                                                 </mat-card>
 
@@ -352,7 +384,17 @@
 
                                                 <div fxFlex.gt-sm="100%" fxFlex>
                                                     <mat-card style="padding: 5px;">
-                                                        <mat-table class="table2" matSort
+
+                                                        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                                                            <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false">
+                                                                <ng-container filters>
+                                                
+                                                                </ng-container>
+                                                            </airmid-table>
+                                                        </div>
+
+
+                                                        <!-- <mat-table class="table2" matSort
                                                             [dataSource]="dsHandOverNoteList"
                                                             [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
@@ -446,7 +488,7 @@
                                                         </mat-table>
                                                         <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]"
                                                             [pageSize]="10" showFirstLastButtons>
-                                                        </mat-paginator>
+                                                        </mat-paginator> -->
                                                     </mat-card>
                                                 </div>
                                                 <div fxLayout="row" fxLayoutGap="6px" fxLayoutAlign="end">

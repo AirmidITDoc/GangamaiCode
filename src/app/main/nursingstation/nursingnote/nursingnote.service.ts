@@ -1,16 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NursingnoteService {
-  myform: FormGroup;
-  constructor(public _httpClient: HttpClient,
-    public _formBuilder: UntypedFormBuilder) {
-      this.myform = this.createtemplateForm();
-     }
+    
+    myform: FormGroup;
+
+    constructor(public _httpClient: ApiCaller,
+        public _formBuilder: UntypedFormBuilder) 
+    {
+        this.myform = this.createtemplateForm();
+    }
 
      
   createtemplateForm(): FormGroup {
@@ -19,24 +23,42 @@ export class NursingnoteService {
       Description:[''],
       Op_ip_id:['1'],
       RegID:[''],
-      HandOverType:['0']
+      HandOverType:['0'],
+      isActive:[true,[Validators.required]],
     });
   }
 
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.DeleteData("ItemCategoryMaster?Id=" + m_data.toString());
+    }
+
+    public getRefundofBillOPDList(employee) {
+        console.log(employee)
+        debugger
+     return this._httpClient.PostData("RefundOfBill/OPBilllistforrefundList",employee);
+
+    }
+
+    public templateMasterSave(Param: any) {
+        if (Param.templateId) {
+            return this._httpClient.PutData("RadiologyTemplate/" + Param.templateId, Param);
+        } else return this._httpClient.PostData("RadiologyTemplate", Param);
+    }
+
 
   public DoctorNoteInsert(employee) {
-    return this._httpClient.post("InPatient/DoctorNoteInsert", employee)
+    return this._httpClient.PostData("InPatient/DoctorNoteInsert", employee)
   }
   public getDoctorCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_NursingNotesTemplateMaterForCombo", {})
+    return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_NursingNotesTemplateMaterForCombo", {})
   }
   public getAdmittedpatientlist(employee){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
+    return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
   }
   public getNoteList() {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_NursingNotesTemplateMaterForCombo", {})
+    return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_NursingNotesTemplateMaterForCombo", {})
   }
   public getNursingNotelist(employee){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_NursingNotesList ", employee)
+    return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_NursingNotesList ", employee)
   }
 }

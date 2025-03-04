@@ -74,7 +74,6 @@ const routes: Routes = [
         FuseSidebarModule,
         MatChipsModule,
         MatProgressSpinnerModule,
-        // WebcamModule,
         ReactiveFormsModule,
         MatAutocompleteModule,
         MatSidenavModule,
@@ -87,7 +86,6 @@ const routes: Routes = [
         MatStepperModule,
         NgxMatSelectSearchModule,
         MatDatepickerModule,
-        //  NgMultiSelectDropDownModule.forRoot(),
         MatTooltipModule
     ],
     providers: [

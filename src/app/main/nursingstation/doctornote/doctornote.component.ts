@@ -3,7 +3,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { AdmissionPersonlModel } from "app/main/ipd/Admission/admission/admission.component";
-import { DoctornoteService } from "../doctornote.service";
+import { DoctornoteService } from "./doctornote.service";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { AdvanceDataStored } from "app/main/ipd/advance";
 import { FormGroup, FormControl, UntypedFormBuilder, Validators } from "@angular/forms";
@@ -16,11 +16,11 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { CreateTemplateComponent } from './create-template/create-template.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { SSL_OP_NO_TLSv1_1 } from 'constants';
+import { NewTemplateComponent } from './new-template/new-template.component';
 
 
 @Component({
@@ -32,7 +32,131 @@ import { SSL_OP_NO_TLSv1_1 } from 'constants';
 })
 export class DoctornoteComponent implements OnInit {
 
+    vTemplateDesc:any;
+    vTemplateName:any;
+    isActive:boolean=true;
+    editorConfig: AngularEditorConfig = {
+        editable: true,
+        spellcheck: true,
+        height: '20rem',
+        minHeight: '20rem',
+        translate: 'yes',
+        placeholder: 'Enter text here...',
+        enableToolbar: true,
+        showToolbar: true,
+    };
+
    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+
+    gridConfig: gridModel = {
+        apiUrl: "Nursing/PrescriptionWardList",
+        columnsList: [
+            { heading: "DateTime", key: "date", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Note", key: "note", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "CreatedBy", key: "createdby", sort: true, align: 'left', emptySign: 'NA' },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onEdit(data);
+                        }
+                    }, 
+                    {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this._NursingStationService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "ReqId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
+            { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row: 25
+    }
+
+    gridConfig1: gridModel = {
+        apiUrl: "Nursing/PrescriptionWardList",
+        columnsList: [
+            { heading: "DateTime", key: "date", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Shift", key: "shift", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "I", key: "i", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "S", key: "s", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "B", key: "b", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "A", key: "a", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "R", key: "r", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Comments", key: "comments", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "CreatedBy", key: "createdby", sort: true, align: 'left', emptySign: 'NA' },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onEdit(data);
+                        }
+                    }, 
+                    {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this._NursingStationService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "ReqId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
+            { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row: 25
+    }
+   
+       onSave(row: any = null) {
+           let that = this;
+        //    const dialogRef = this._matDialog.open(NewTemplateComponent,
+        //        {
+        //            maxWidth: "90vw",
+        //            height: '90%',
+        //            width: '90%',
+        //            data: row
+        //        });
+        //    dialogRef.afterClosed().subscribe(result => {
+        //        if (result) {
+        //            that.grid.bindGridData();
+        //        }
+        //    });
+       }
+
+    NewTemplate(row: any = null) {
+        let that = this;
+        const dialogRef = this._matDialog.open(NewTemplateComponent,
+            {
+                maxWidth: "90vw",
+                height: '90%',
+                width: '90%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
 
   displayedColumns: string[] = [
     'RegNo',
@@ -112,20 +236,19 @@ export class DoctornoteComponent implements OnInit {
     }
   }
 
-  editorConfig: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: '12rem',
-    minHeight: '12rem',
-    translate: 'yes',
-    placeholder: 'Enter text here...',
-    enableToolbar: true,
-    showToolbar: true,
-  };
+//   editorConfig: AngularEditorConfig = {
+//     editable: true,
+//     spellcheck: true,
+//     height: '12rem',
+//     minHeight: '12rem',
+//     translate: 'yes',
+//     placeholder: 'Enter text here...',
+//     enableToolbar: true,
+//     showToolbar: true,
+//   };
 
   onBlur(e: any) {
-    // this.vDescription = e.target.innerHTML;
-    throw new Error('Method not implemented.');
+    this.vTemplateDesc = e.target.innerHTML;
   }
 
   ngOnInit(): void {
@@ -230,17 +353,17 @@ onEdit(row) {
       
     }
 
-  NewTemplate() {
-    const dialogRef = this._matDialog.open(CreateTemplateComponent,
-      {
-        maxWidth: "75vw",
-        height: '85%',
-        width: '100%',
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      this.getDoctorNoteList();
-    });
-  }
+//   NewTemplate() {
+//     const dialogRef = this._matDialog.open(NewTemplateComponent,
+//       {
+//         maxWidth: "75vw",
+//         height: '85%',
+//         width: '100%',
+//       });
+//     dialogRef.afterClosed().subscribe(result => {
+//       this.getDoctorNoteList();
+//     });
+//   }
 
   OnAdd() {
     if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {

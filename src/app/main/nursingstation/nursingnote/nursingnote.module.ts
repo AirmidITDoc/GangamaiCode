@@ -36,7 +36,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { NursingnoteComponent } from './nursingnote.component';
-import { NursingnoteService } from '../nursingnote.service';
+import { NursingnoteService } from './nursingnote.service';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { NewTemplateComponent } from './new-template/new-template.component';
 
 
 const routes: Routes = [
@@ -47,7 +49,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [NursingnoteComponent],
+    declarations: [NursingnoteComponent, NewTemplateComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,
@@ -87,8 +89,13 @@ const routes: Routes = [
         MatStepperModule,
         NgxMatSelectSearchModule,
         MatDatepickerModule,
-        //  NgMultiSelectDropDownModule.forRoot(),
-        MatTooltipModule
+        MatTooltipModule,
+        MatProgressSpinnerModule,
+        MatCardModule,
+        MatToolbarModule,
+        MatSlideToggleModule,
+        FuseSharedModule,
+        AngularEditorModule,
     ],
     providers: [
         DatePipe,

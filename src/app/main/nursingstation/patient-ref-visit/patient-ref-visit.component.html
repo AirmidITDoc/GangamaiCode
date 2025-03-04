@@ -14,8 +14,48 @@
                     <div class="layout-card-container">
                         <mat-card>
                             <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="space-between start" class="gap-8">
-                                <div class="input-container gap-8" fxLayout="row wrap">
-                                    <mat-form-field appearance="outline" fxFlex>
+                                <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+
+                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-datepicker [formGroup]="_AdmissionService.myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
+                                                formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
+                                                [(toValue)]="gridConfig.filters[1].fieldValue">
+                                        </airmid-datepicker> 
+                                    </div>
+                                    
+                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-textbox 
+                                            label="Reg No" 
+                                            formControlName="regNo" 
+                                            [value]="data?.regNo" 
+                                            [formGroup]="_AdmissionService.myFilterform" 
+                                            [validations]="getValidationMessages().regNo" 
+                                            [maxLength]="30">
+                                        </airmid-textbox>
+                                    </div>
+
+                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-textbox 
+                                            label="FirstName" 
+                                            formControlName="regNo" 
+                                            [value]="data?.regNo" 
+                                            [formGroup]="_AdmissionService.myFilterform" 
+                                            [validations]="getValidationMessages().regNo" 
+                                            [maxLength]="30">
+                                        </airmid-textbox>
+                                    </div>
+
+                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-textbox 
+                                            label="LastName" 
+                                            formControlName="regNo" 
+                                            [value]="data?.regNo" 
+                                            [formGroup]="_AdmissionService.myFilterform" 
+                                            [validations]="getValidationMessages().regNo" 
+                                            [maxLength]="30">
+                                        </airmid-textbox>
+                                    </div>
+                                    <!-- <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Enter a date range</mat-label>
                                         <mat-date-range-input [rangePicker]="picker">
                                             <input matStartDate formControlName="start" placeholder="Start date">
@@ -38,15 +78,26 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Last Name</mat-label>
                                         <input name="LastName" formControlName="LastName" placeholder="Enter Last Name" matInput>
-                                    </mat-form-field>
+                                    </mat-form-field> -->
 
-                                    <mat-form-field appearance="outline" fxFlex>
+                                    <!-- <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>IPDNo </mat-label>
                                         <input name="IPDNo" formControlName="IPDNo" placeholder="EnterIPDNo" matInput>
-                                    </mat-form-field>
+                                    </mat-form-field> -->
+
+                                    <div fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-textbox 
+                                            label="IPDNo" 
+                                            formControlName="regNo" 
+                                            [value]="data?.regNo" 
+                                            [formGroup]="_AdmissionService.myFilterform" 
+                                            [validations]="getValidationMessages().regNo" 
+                                            [maxLength]="30">
+                                        </airmid-textbox>
+                                    </div>
 
                                     <div class="radio-container">
-                                        <div fxLayout="column" class="gap-8">
+                                        <div fxLayout="column" class="gap-2">
                                             <mat-radio-group aria-label="Select an option" formControlName="PatientType" (change)="getOPIPPatientList()">PatientType
                                                 <mat-radio-button value="1" [checked]="true"> IP </mat-radio-button>
                                                 <mat-radio-button value="0"> OP</mat-radio-button>
@@ -75,7 +126,16 @@
                     </div>
                     <div class="layout-card-containr">
                         <mat-card>
-                            <div class="table-wrapper">
+
+                            <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                                <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
+                                    <ng-container filters>
+                    
+                                    </ng-container>
+                                </airmid-table>
+                            </div>
+
+                            <!-- <div class="table-wrapper">
                                 <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
                                     <div class="spinner-border text-danger"></div>
                                 </div>
@@ -160,8 +220,8 @@
                                             <button mat-icon-button (click)="onEdit(row)">
                                                 <mat-icon title="Edit Menu">launch</mat-icon>
                                             </button>
-                                            <!-- <button mat-icon-button (click)="onDeactive(row.RegId)" color="warn"><mat-icon>delete_outline</mat-icon></button> -->
-                                        </mat-cell>
+                                             <button mat-icon-button (click)="onDeactive(row.RegId)" color="warn"><mat-icon>delete_outline</mat-icon></button> -->
+                                        <!-- </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="noData">
@@ -183,7 +243,7 @@
                                 </mat-table>
 
                                 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
-                            </div>
+                            </div> --> 
                         </mat-card>
                     </div>
                 </div>

@@ -46,11 +46,11 @@ const approtes: Routes = [
 },
 {
   path:"doctornote",
-  loadChildren: () => import("./doctornote/doctornote/doctornote.module").then((m)=>m.DoctornoteModule), 
+  loadChildren: () => import("./doctornote/doctornote.module").then((m)=>m.DoctornoteModule), 
 },
 {
   path:"nursingnote",
-  loadChildren: () => import("./nursingnote/nursingnote/nursingnote.module").then((m)=>m.NursingnoteModule), 
+  loadChildren: () => import("./nursingnote/nursingnote.module").then((m)=>m.NursingnoteModule), 
 },
 {
   path:"canteenrequest",

@@ -35,12 +35,12 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { DoctornoteComponent } from './doctornote.component';
-import { DoctornoteService } from '../doctornote.service';
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { AngularEditorModule } from "@kolkov/angular-editor";
-import { CreateTemplateComponent } from './create-template/create-template.component';
+import { NewTemplateComponent } from './new-template/new-template.component';
+import { DoctornoteComponent } from './doctornote.component';
+import { DoctornoteService } from './doctornote.service';
 
 const routes: Routes = [
   {
@@ -50,7 +50,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [DoctornoteComponent, CreateTemplateComponent],
+    declarations: [DoctornoteComponent, NewTemplateComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,
@@ -77,7 +77,6 @@ const routes: Routes = [
         FuseSidebarModule,
         MatChipsModule,
         MatProgressSpinnerModule,
-        // WebcamModule,
         ReactiveFormsModule,
         MatAutocompleteModule,
         MatSidenavModule,
@@ -90,7 +89,6 @@ const routes: Routes = [
         MatStepperModule,
         NgxMatSelectSearchModule,
         MatDatepickerModule,
-        //  NgMultiSelectDropDownModule.forRoot(),
         MatTooltipModule,
         ScrollingModule,
         MatButtonToggleModule,

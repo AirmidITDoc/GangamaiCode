@@ -78,8 +78,6 @@
     dynamicTableHeight>
     <mat-toolbar style="height: 50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">account_box</mat-icon>
             <span class="=logo-text h2" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
                 Patient Wise Material Consumption List
             </span>
@@ -88,6 +86,7 @@
             <mat-icon>add</mat-icon> Add
         </button>
     </mat-toolbar>
+    
     <div fusePerfectScrollbar
         class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
         dynamicTableHeight>

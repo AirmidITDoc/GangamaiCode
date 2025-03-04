@@ -1,21 +1,21 @@
 <div class="simple page-layout inner-scroll inner-sidebar left-sidebar">
     <mat-toolbar style="width: 100%;justify-content: space-between;">
         <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+            <!-- <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
             </button>
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                 style="color: white;">account_box
-            </mat-icon>
+            </mat-icon> -->
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
                 Nursing Note
             </span>
         </div>
-        <div class="close-icon">
+        <!-- <div class="close-icon">
             <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
-        </div>
+        </div> -->
     </mat-toolbar>
     <div class="content">
         <div class="center p-12 pb-56" style="border-radius: 4px;">
@@ -63,6 +63,23 @@
                             </app-common-date> 
                        
                         </div> -->
+                        <div class="layout-card-container">
+                            <!-- <form [formGroup]="_NursingStationService.myform"> -->
+                                
+                                    <div class="patient-search">
+                                        <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+                                          
+                                            <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
+                
+                                                    <airmid-autocomplete class="w-350" label="IP Reg No / Patient Name / Mobile No" [formGroup]="_NursingStationService.myform"  fxFlex="40%"
+                                                    formControlName="RegId" placeholderText="IP Reg No / Patient Name / Mobile No" ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
+        
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                            <!-- </form> -->
+                        </div>
 
                         <mat-card  style="padding: 5px;">
                             <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
@@ -183,7 +200,16 @@
                                                     <div fxLayout="row" fxLayoutGap="10px">
                                                         <div fxFlex.gt-sm="40%" fxFlex>
                                                             <mat-card style="padding: 5px;">
-                                                            <mat-table class="table2" matSort [dataSource]="dsNursingNoteList"
+
+                                                                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                                                                    <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
+                                                                        <ng-container filters>
+                                                        
+                                                                        </ng-container>
+                                                                    </airmid-table>
+                                                                </div>
+                                                                
+                                                            <!-- <mat-table class="table2" matSort [dataSource]="dsNursingNoteList"
                                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;height:360px;">
                             
                                                                 <ng-container matColumnDef="VDate">
@@ -191,16 +217,8 @@
                                                                         VDate </mat-header-cell>
                                                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                                         {{element.VDate}} </mat-cell>
-                                                                </ng-container>
-                            
-                                                                <!-- <ng-container matColumnDef="Time">
-                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                                        Time </mat-header-cell>
-                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                        {{element.Time}} </mat-cell>
                                                                 </ng-container> -->
-                            
-                                                                <ng-container matColumnDef="Note">
+                                                                <!-- <ng-container matColumnDef="Note">
                                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                                         Note </mat-header-cell>
                                                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
@@ -242,7 +260,7 @@
                                                             </mat-table>
                                                             <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
                                                                 showFirstLastButtons>
-                                                            </mat-paginator>
+                                                            </mat-paginator> -->
                                                           </mat-card>
                                                         </div>
                                                        
@@ -250,7 +268,30 @@
                                                          
                                                             <div fxLayout="column" fxLayoutGap="10px">
                                                                 <mat-card style="padding: 5px;height: 358px;overflow: auto;">
-                                                                    <div style="padding: 5px;" fxLayout="row" fxLayoutGap="20px">
+
+                                                                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                                                                        <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                            <airmid-dropdown 
+                                                                                label="Notes" 
+                                                                                formControlName="ItemId"
+                                                                                [formGroup]="_NursingStationService.myform"
+                                                                                [validations]="getValidationMessages().ItemId"
+                                                                                [mode]="autocompleteModegroupName">
+                                                                            </airmid-dropdown>
+                                                                        </div>
+                                                                        <div class="input-add-button">
+                                                                            <div>
+                                                                                <button #addbutton class="btn btn-primary btn-with-icon"  (click)="onAdd()" id="btnAdd">
+                                                                                    <span class="btn-icon">
+                                                                                        <mat-icon> add </mat-icon>
+                                                                                    </span>
+                                                                                    <span>Add</span>
+                                                                                </button> 
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- <div style="padding: 5px;" fxLayout="row" fxLayoutGap="20px">
                                                             
                                                                         <mat-form-field appearance="outline" fxFlex="60%">
                                                                             <mat-label>Notes</mat-label>
@@ -273,20 +314,25 @@
                                                                             </div>
                                                                         </div>
                                                                       
-                                                                    </div>
+                                                                    </div> -->
                                                             
                                                                     <div>
-                                                                        <mat-form-field appearance="outline" fxFlex>
+                                                                        <!-- <mat-form-field appearance="outline" fxFlex>
                                                                             <mat-label>Description</mat-label>
                                                                             <textarea rows="16" matInput name="Description" formControlName="Description"
                                                                                 placeholder="Add Note....." type="text" id="Description" #description required
                                                                                 [(ngModel)]="vDescription"></textarea>
-                                                                        </mat-form-field>
+                                                                        </mat-form-field> -->
+                                                                        <!-- <mat-label>Template Details</mat-label>
+                                                                        <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                                                                            style="height:300px;" [(ngModel)]="vTemplateDesc" required
+                                                                            formControlName="templateDesc">
+                                                                        </angular-editor> -->
                                                                     </div>
                                                                 </mat-card>
                                                                 <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end">
-                                                                    <button class="btn btn-primary-outline" type="button" value="Input">New Template</button>
-                                                                    <button class="btn btn-danger-outline" type="button" value="Input">Reset</button>
+                                                                    <button class="btn btn-primary-outline" type="button" value="Input" (click)="onTemplate()">New Template</button>
+                                                                    <button class="btn btn-danger-outline" type="button" value="Input" (click)="onClear()">Reset</button>
                                                                     <button class="btn btn-primary" type="submit" value="submit">Save</button>
                                                                 </div>
                                                             </div>
@@ -307,7 +353,17 @@
                                                     <div fxLayout="row" fxLayoutGap="10px">
                                                         <div fxFlex.gt-sm="40%" fxFlex>
                                                             <mat-card style="padding: 5px;">
-                                                            <mat-table class="table2" matSort [dataSource]="dsMadicationChartList"
+
+                                                                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                                                                    <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false">
+                                                                        <ng-container filters>
+                                                        
+                                                                        </ng-container>
+                                                                    </airmid-table>
+                                                                </div>
+
+
+                                                            <!-- <mat-table class="table2" matSort [dataSource]="dsMadicationChartList"
                                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;height:360px;">
                             
                                                                 <ng-container matColumnDef="ItemName">
@@ -359,7 +415,7 @@
                                                             </mat-table>
                                                             <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
                                                                 showFirstLastButtons>
-                                                            </mat-paginator>
+                                                            </mat-paginator> -->
                                                           </mat-card>
                                                         </div>
                                                        
@@ -367,7 +423,15 @@
                                                          
                                                             <div fxLayout="column" fxLayoutGap="10px">
                                                                 <mat-card style="padding: 5px;">
-                                                                    <mat-table class="table2" matSort [dataSource]="dsMadicationChart1List"
+
+                                                                    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                                                                        <airmid-table [gridConfig]="gridConfig2" #grid :ShowFilter="false">
+                                                                            <ng-container filters>
+                                                            
+                                                                            </ng-container>
+                                                                        </airmid-table>
+                                                                    </div>
+                                                                    <!-- <mat-table class="table2" matSort [dataSource]="dsMadicationChart1List"
                                                                         [@animateStagger]="{value:'50'}" style="overflow: auto;height:360px;">
                                     
                                                                         <ng-container matColumnDef="DrugName">
@@ -433,7 +497,7 @@
                                                                     </mat-table>
                                                                     <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
                                                                         showFirstLastButtons>
-                                                                    </mat-paginator>
+                                                                    </mat-paginator> -->
                                                                   </mat-card>
                                                             </div>
                                                         
@@ -488,26 +552,77 @@
                                                             <span>Any Need</span>
                                                             <span>Any Risk</span>
                                                         </div>
+
+                                                        <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    
+                                                            <div fxFlex="60%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                <airmid-textbox 
+                                                                    label="Comments" 
+                                                                    formControlName="comments" 
+                                                                    [value]="data?.comments"
+                                                                    [formGroup]="_NursingStationService.myform"
+                                                                    [validations]="getValidationMessages().comments"
+                                                                    [maxLength]="50">
+                                                                </airmid-textbox>
+                                                            </div>
+                                
+                                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                <div fxLayout="row" style="padding: 10px;">
+                                                                    <mat-radio-group name="HandOverType" formControlName="HandOverType" fxLayout="column">
+                                                                        <mat-radio-button value="0">Morning</mat-radio-button>
+                                                                        <mat-radio-button value="1"> Evening</mat-radio-button>
+                                                                        <mat-radio-button value="2">Night</mat-radio-button>
+                                                                    </mat-radio-group>
+
+                                                                    <div style="padding: 30px 10px 0 10px;">
+                                                                        <button type="button" class="btn btn-primary btn-with-icon py-8" #addbutton id="btnAdd">
+                                                                            <mat-icon>add</mat-icon>
+                                                                        </button>
+                                                                    </div>
+
+                                                                </div>
+                                                                
+                                                                
+                                                            </div>
                                     
-                                                        <div fxLayout="column" fxLayoutGap="6px" style="padding: 10px 10px 0 60px;">
-                                                            <mat-radio-group name="HandOverType" formControlName="HandOverType" fxLayout="column">
+                                                        <!-- <div fxLayout="column" fxLayoutGap="6px" style="padding: 10px 10px 0 60px;"> -->
+
+                                                                <!-- <airmid-textbox 
+                                                                    label="Comments" 
+                                                                    formControlName="comments" 
+                                                                    [value]="data?.comments"
+                                                                    [formGroup]="_NursingStationService.myform"
+                                                                    [validations]="getValidationMessages().comments"
+                                                                    [maxLength]="50">
+                                                                </airmid-textbox> -->
+                                                                
+                                                            <!-- <mat-radio-group name="HandOverType" formControlName="HandOverType" fxLayout="column">
                                                                 <mat-radio-button value="0">Morning</mat-radio-button>
                                                                 <mat-radio-button value="1"> Evening</mat-radio-button>
                                                                 <mat-radio-button value="2">Night</mat-radio-button>
-                                                            </mat-radio-group>
+                                                            </mat-radio-group> -->
                                                         </div> &nbsp;&nbsp;
                                     
-                                                        <div style="padding: 30px 10px 0 10px;">
+                                                         <!-- <div style="padding: 30px 10px 0 10px;">
                                                             <button type="button" class="btn btn-primary btn-with-icon py-8" #addbutton id="btnAdd">
                                                                 <mat-icon>add</mat-icon>
                                                             </button>
-                                                        </div>&nbsp;
+                                                        </div>&nbsp;  -->
                                     
                                                     </div>
                                     
                                                     <div fxFlex.gt-sm="100%" fxFlex>
                                                         <mat-card style="padding: 5px;">
-                                                            <mat-table class="table2" matSort [dataSource]="dsHandOverNoteList"
+
+                                                            <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                                                                <airmid-table [gridConfig]="gridConfig3" #grid :ShowFilter="false">
+                                                                    <ng-container filters>
+                                                    
+                                                                    </ng-container>
+                                                                </airmid-table>
+                                                            </div>
+
+                                                            <!-- <mat-table class="table2" matSort [dataSource]="dsHandOverNoteList"
                                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;">
                                     
                                                                 <ng-container matColumnDef="VDate">
@@ -516,13 +631,6 @@
                                                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                                         {{element.VDate}} {{element.Time}} </mat-cell>
                                                                 </ng-container>
-                                    
-                                                                <!-- <ng-container matColumnDef="Time">
-                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                                        Time </mat-header-cell>
-                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                        {{element.Time}} </mat-cell>
-                                                                </ng-container> -->
                                     
                                                                 <ng-container matColumnDef="Shift">
                                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -601,7 +709,7 @@
                                                             </mat-table>
                                                             <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
                                                                 showFirstLastButtons>
-                                                            </mat-paginator>
+                                                            </mat-paginator> -->
                                                         </mat-card>
                                                     </div>
                                                    
