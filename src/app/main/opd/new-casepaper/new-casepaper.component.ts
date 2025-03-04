@@ -431,6 +431,7 @@ export class NewCasepaperComponent implements OnInit {
   RefDocNameId: any;
   PrefollowUpDate: string;
   getpreviousVisitData(obj) {
+    debugger
     var mdata = {
       "visitId": obj.VisitId
     }

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, FormGroupName } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -10,18 +11,38 @@ export class ConsentService {
 
   constructor(
     public _frombuilder : UntypedFormBuilder,
-    public _httpClient : HttpClient
+    public _httpClient : HttpClient,
+    public _httpClient1:ApiCaller,
   ) 
   {this.myform = this.CreateMyform() }
 
-  CreateMyform(){
+  CreateMyform() {
     return this._frombuilder.group({
-      RegID:[''],
-      PatientType:['OP'],
-      TemplateDesc:[''],
-      Template:[''],
-      Department:[''],
-      Language:['0']
+      RegID: [''],
+      PatientType: ['OP'],
+      MobileNo: '',
+      PatientName: '',
+      ConsentName: '',
+      ConsentText: [''],
+      Template: [''],
+      Department: [''],
+      Language: ['1'],
+      IsIPOrOP:['2'],
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
     })
   }
+
+  public getAdmittedpatientlist(id){
+    debugger
+    return this._httpClient1.GetData("Admission/" + id);
+  }
+  public getVisitById(Id) {
+    return this._httpClient1.GetData("VisitDetail/" + Id);
+}
+
+public getDoctorsByDepartment(deptId) {
+  // return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId="+deptId)
+}
+
 }

@@ -185,6 +185,16 @@ export class ReportGenerationComponent implements OnInit {
         this.CashCounterId = obj.value;
     }
     OnClose() {
+        this._ReportService.userForm.get("UserId").setValue('');
+        this._ReportService.userForm.get("DoctorId").setValue('');
+        this._ReportService.userForm.get("DepartmentId").setValue('');
+        this._ReportService.userForm.get("ServiceId").setValue('');
+        this._ReportService.userForm.get("CashCounterId").setValue('');
+        this.UserId = 0;
+        this.DoctorId = 0;
+        this.ServiceId = 0;
+        this.DepartmentId = 0;
+        this.CashCounterId = 0;
         this.flagDoctorSelected = false;
         this.flagUserSelected = false;
         this.flagDepartmentSelected = false;
@@ -208,31 +218,31 @@ export class ReportGenerationComponent implements OnInit {
             if(this.flagUserSelected)
                 paramFilterList.push({
                     "fieldName": "UserId",
-                    "fieldValue": this.UserId,
+                    "fieldValue": this.UserId.toString() || "0",
                     "opType": OperatorComparer.Equals         
                 });
             if(this.flagDoctorSelected)
                 paramFilterList.push({
                     "fieldName": "DoctorId",
-                    "fieldValue": this.DoctorId,
+                    "fieldValue": (this.DoctorId || "0").toString(),
                     "opType": OperatorComparer.Equals        
                 });  
             if(this.flagDepartmentSelected)
                 paramFilterList.push({
                     "fieldName": "DepartmentId",
-                    "fieldValue": this.DepartmentId,
+                    "fieldValue": this.DepartmentId.toString() || "0",
                     "opType": OperatorComparer.Equals          
                 });      
             if(this.flagServiceSelected)
                 paramFilterList.push({
                     "fieldName": "ServiceId",
-                    "fieldValue": this.ServiceId,
+                    "fieldValue": this.ServiceId.toString() || "0",
                     "opType": OperatorComparer.Equals          
                 });
             if(this.flagCashcounterSelected)
                 paramFilterList.push({
-                    "fieldName": "CashcounterId",
-                    "fieldValue": this.CashCounterId,
+                    "fieldName": "CashCounterId",
+                    "fieldValue": this.CashCounterId.toString() || "0",
                     "opType": OperatorComparer.Equals          
                 });                                                            
             let param = {

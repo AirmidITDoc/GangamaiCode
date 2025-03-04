@@ -44,15 +44,8 @@ export class RequestforlabtestComponent implements OnInit {
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
+                        action: gridActions.print, callback: (data: any) => {
                             this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._RequestforlabtestService.deactivateTheStatus(data.requestId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -81,21 +74,21 @@ export class RequestforlabtestComponent implements OnInit {
             { heading: "BillDateTime", key: "billdatetime", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "PBill No", key: "pBillno", sort: true, align: 'left', emptySign: 'NA'},
 
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._RequestforlabtestService.deactivateTheStatus(data.RequestId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
+            // {
+            //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+            //         {
+            //             action: gridActions.edit, callback: (data: any) => {
+            //                 this.onSave(data);
+            //             }
+            //         }, {
+            //             action: gridActions.delete, callback: (data: any) => {
+            //                 this._RequestforlabtestService.deactivateTheStatus(data.RequestId).subscribe((response: any) => {
+            //                     this.toastr.success(response.message);
+            //                     this.grid.bindGridData();
+            //                 });
+            //             }
+            //         }]
+            // } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "RequestId",
         sortOrder: 0,

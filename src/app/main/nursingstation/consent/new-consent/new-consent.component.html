@@ -1,0 +1,263 @@
+<div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
+    <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <button mat-icon-button class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                style="color: white;">
+                <mat-icon>account_box</mat-icon>
+            </button>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                New Consent
+            </span>
+        </div>
+        <div fxLayout="row" fxLayoutALign="end start">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <div class="content">
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
+
+            <div class="content-card" style="border-radius:4px; ">
+                <div class="nav material2">
+                    <div fxFlexFill fxLayout="column" fxLayoutGap="9px">
+
+                        <form [formGroup]="_ConsentService.myform" style="padding: 6px 6px 5px 5px;">
+                            <div fxLayout="column" fxLayoutGap="10px">
+
+                                <div class="modal-card-container">
+                                    <mat-card>
+                                        <div fxLayout="row" fxLayout.sm="column" class="gap-16"
+                                            fxLayoutAlign="start center center">
+                                            <div class="radio-container">
+                                                <mat-radio-group aria-label="Select an option"
+                                                    [(ngModel)]="vSelectedOption" formControlName="PatientType"
+                                                    name="PatientType" (change)="onChangePatientType($event)"
+                                                    (blur)="onChangePatientType($event)">
+                                                    <mat-radio-button value="OP">OP</mat-radio-button>
+                                                    <mat-radio-button value="IP">IP</mat-radio-button>
+                                                </mat-radio-group>
+
+                                            </div>
+                                            <div class="input-container gap-8" fxFlex="80%">
+
+                                                <airmid-autocomplete lbl="RgId"
+                                                    *ngIf="_ConsentService.myform.get('PatientType').value == 'OP'"
+                                                    [formGroup]="_ConsentService.myform" formControlName="RegID"
+                                                    placeholderText="OP-RegNo/FirstName/LastName"
+                                                    ApiUrl="VisitDetail/search-patient?Keyword="
+                                                    (selectionChange)="getSelectedObjOP($event)"
+                                                    TextField="formattedText" ValueField="regId">
+                                                </airmid-autocomplete>
+
+                                                <airmid-autocomplete lbl="RgId"
+                                                    *ngIf="_ConsentService.myform.get('PatientType').value == 'IP'"
+                                                    [formGroup]="_ConsentService.myform" formControlName="RegID"
+                                                    placeholderText="IP-RegNo/FirstName/LastName"
+                                                    ApiUrl="Admission/search-patient?Keyword="
+                                                    (selectionChange)="getSelectedObjIP($event)"
+                                                    ValueField="admissionID" TextField="firstName">
+                                                </airmid-autocomplete>
+                                            </div>
+                                        </div>
+                                    </mat-card>
+                                </div>
+
+                                <div class="modal-card-container" style="padding: 10px 2px 5px 0px ;">
+                                    <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                                        <div class="patient-info-container">
+                                            <div class="patient-info-box">
+                                                <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
+                                                    <div class="patient-info-sales my-8">
+                                                        <div class="patient-info-title border-bottom pb-2">
+                                                            <span class="h1">Patient Information</span>
+                                                        </div>
+                                                        <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
+                                                            fxLayoutAlign="space-between center" class="patient-info">
+                                                            <div class="patient-sub">
+                                                                <div class="patient-info-row patient-info-1-111 pt-8"
+                                                                    fxLayout="row" fxLayoutAlign="space-between">
+                                                                    <div fxLayout="column" fxLayoutGap="6px">
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">UHID No
+                                                                            </span>
+                                                                            <span>:</span>
+                                                                            <span
+                                                                                class="patient-col-value">{{vRegNo}}</span>
+                                                                        </div>
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">Patient Name
+                                                                            </span>
+                                                                            <span>:</span>
+                                                                            <span
+                                                                                class="patient-col-value">{{vPatientName
+                                                                                }}</span>
+                                                                        </div>
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">Doctor
+                                                                                Name</span>
+                                                                            <span>:</span>
+                                                                            <span
+                                                                                class="patient-col-value">{{vDoctorName}}</span>
+                                                                        </div>
+                                                                        <div class="patient-col">
+                                                                            <span
+                                                                                class="patient-col-key">Department</span>
+                                                                            <span>:</span>
+                                                                            <span
+                                                                                class="patient-col-value">{{vDepartment}}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div fxLayout="column" fxLayoutGap="6px">
+
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">DOA |
+                                                                                Time</span>
+                                                                            <span>:</span>
+                                                                            <span class="patient-col-value">{{vDOA |
+                                                                                date:'dd/MM/YYYY'}}</span>
+                                                                        </div>
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">
+                                                                                {{vSelectedOption === 'OP' ? 'OPD No' :
+                                                                                'IPD No'}}
+                                                                            </span>
+                                                                            <span>:</span>
+                                                                            <span>{{ vSelectedOption === 'OP' ? vOPDNo :
+                                                                                vIPDNo}}</span>
+                                                                        </div>
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">Age | Sex
+                                                                            </span>
+                                                                            <span>:</span>
+                                                                            <span
+                                                                                class="patient-col-value">{{vAge}}Y|{{vAgeMonth}}M|{{vAgeDay}}D
+                                                                                | {{vGenderName}}</span>
+                                                                        </div>
+
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">Ref-Doctor
+                                                                                Name
+                                                                            </span>
+                                                                            <span>:</span>
+                                                                            <span
+                                                                                class="patient-col-value">{{vRefDocName}}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div fxLayout="column" fxLayoutGap="6px">
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">Ward | Bed
+                                                                                Name
+                                                                            </span>
+                                                                            <span>:</span>
+                                                                            <span
+                                                                                class="patient-col-value">{{vRoomName}}
+                                                                                | {{vBedName}}</span>
+                                                                        </div>
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">Patient Type
+                                                                            </span>
+                                                                            <span>:</span>
+                                                                            <span
+                                                                                class="patient-col-value">{{vPatientType}}</span>
+                                                                        </div>
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">Tarrif Name
+                                                                            </span>
+                                                                            <span>:</span>
+                                                                            <span
+                                                                                class="patient-col-value">{{vTariffName}}</span>
+                                                                        </div>
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">Company
+                                                                                Name</span>
+                                                                            <span>:</span>
+                                                                            <span class="patient-col-value"
+                                                                                style="color: orange;">{{vCompanyName}}</span>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </mat-card>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <mat-card style="padding: 10px;">
+                                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
+
+                                        <div class="gap-8" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" fxLayout="row">
+
+                                            <airmid-dropdown label="Department Name" formControlName="Department"
+                                                [formGroup]="_ConsentService.myform" fxFlex="35%"
+                                                [validations]="getValidationMessages().Department"
+                                                [mode]="autocompletedepartment"
+                                                (selectionChange)="selectChangedepartment($event)">
+                                            </airmid-dropdown>
+
+                                            <airmid-dropdown label="Template" formControlName="Template"
+                                                [formGroup]="_ConsentService.myform" fxFlex="35%"
+                                                [validations]="getValidationMessages().Template" #ddlTemplate
+                                                (selectionChange)="onTemplateSelect($event)">
+                                            </airmid-dropdown>
+
+                                            <mat-radio-group name="Language" value="1" formControlName="Language"
+                                                style="padding: 15px 0px 0px 0px">
+                                                <mat-radio-button value="1" class="mr-sm-12">English</mat-radio-button>
+                                                <mat-radio-button value="0" class="mr-sm-12">Marathi</mat-radio-button>
+                                            </mat-radio-group>
+
+                                            <div class="modal-footer-buttons gap-8 m-8">
+                                                <button class="btn btn-primary" (click)="addTemplateDescription()"
+                                                    [disabled]="isButtonDisabled">
+                                                    Add
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- <div>
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Template Details</mat-label>
+                                                <textarea rows="10" matInput name="ConsentText" formControlName="ConsentText" placeholder="Add Note....."
+                                                    type="text" required [(ngModel)]="vConsentText">
+                                                </textarea>
+                                            </mat-form-field>
+                                        </div> -->
+
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <mat-label>Consent Details</mat-label>
+                                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                                                    style="height:300px;" [(ngModel)]="vConsentText" required
+                                                    formControlName="ConsentText">
+                                                </angular-editor>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-card>
+
+                            </div>
+                        </form>
+
+                        <div class="modal-footer-buttons gap-8 m-8" fxLayout="row" fxLayoutAlign="end"
+                            style="margin-right: 15px;">
+                            <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+                            <button class="btn btn-primary" (click)="onSave()">
+                                Save</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

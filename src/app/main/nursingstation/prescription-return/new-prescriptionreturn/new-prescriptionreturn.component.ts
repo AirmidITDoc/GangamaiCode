@@ -48,7 +48,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   BatchNo: any = '';
   Qty: any;
   screenFromString = 'payment-form';
-  autocompleteitem: string = "Item";
+  autocompleteitem: string = "ItemType";
   Chargelist:any=[];
   vPresReturnId:any;
   vPresDetailsId:any;
@@ -71,6 +71,9 @@ export class NewPrescriptionreturnComponent implements OnInit {
   vDepartment:any;
   vRefDocName:any;
   vPatientType:any;
+  vDOA:any;
+  vSelectedOption: any = 'OP';
+  vOPDNo:any;
 
   constructor(public _PrescriptionReturnService: PrescriptionReturnService,
     private _fuseSidebarService: FuseSidebarService,
@@ -102,6 +105,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
 
   saleSelectedDatasource = new MatTableDataSource<IndentList>();
   ngOnInit(): void {
+    this.vSelectedOption = this.OP_IPType === 1 ? 'IP' : 'OP';
     if(this.data){
       this.registerObj1 = this.data.row;
       console.log("Icd RegisterObj:", this.registerObj1)
@@ -135,29 +139,6 @@ export class NewPrescriptionreturnComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-  // getSearchItemList() {  
-  //     var m_data = {
-  //       "ItemName": `${this.ItemSubform.get('ItemId').value}%`,
-  //       "StoreId": this._loggedService.currentUserValue.storeId
-  //     }
-  //     console.log(m_data);
-  //     // if (this.ItemForm.get('ItemId').value.length >= 2) {
-  //     this._PrescriptionReturnService.getItemlist(m_data).subscribe(data => {
-  //       this.filteredOptionsItem = data;
-  //       // console.log(this.data);
-  //       this.filteredOptionsItem = data;
-  //       if (this.filteredOptionsItem.length == 0) {
-  //         this.noOptionFound = true;
-  //       } else {
-  //         this.noOptionFound = false;
-  //       }
-  //     });  
-  // } 
-  // getOptionItemText(option) {
-  //   this.ItemId = option.ItemID;
-  //   if (!option) return '';
-  //   return option.ItemName;
-  // } 
   getSelectedObjItem(obj) {
     // if (this.saleSelectedDatasource.data.length > 0) {
     //   this.saleSelectedDatasource.data.forEach((element) => {
@@ -176,9 +157,19 @@ export class NewPrescriptionreturnComponent implements OnInit {
     //   this.BalanceQty = obj.BalanceQty;
     // }
   }
+
+  selectChangeItem(obj: any) {
+    debugger
+    console.log("Item:",obj);
+    this.ItemId=obj.value;
+    this.ItemSubform.get('ItemId').setValue(obj);
+
+    this.getBatch();
+}
+
   getBatch() {
-    this.qty.nativeElement.focus();
-    
+    debugger
+    // this.qty.nativeElement.focus();    
     const dialogRef = this._matDialog.open(BatchpopupComponent,
       {
         maxWidth: "800px",
@@ -190,10 +181,11 @@ export class NewPrescriptionreturnComponent implements OnInit {
           "ItemId": this.ItemId,// this._PrescriptionReturnService.PrecReturnSearchGroup.get('ItemId').value.ItemId,
           "StoreId": this._PrescriptionReturnService.PrecReturnSearchGroup.get('StoreId').value.storeid,
           "OP_IP_Id": this.OP_IP_Id
-        }
+        }        
       });
+      console.log(this.data)
     dialogRef.afterClosed().subscribe(result => {
-      // console.log(result);
+      console.log(result);
       this.BatchNo = result.BatchNo;
       // this.BatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
       // this.MRP = result.UnitMRP;
@@ -201,8 +193,6 @@ export class NewPrescriptionreturnComponent implements OnInit {
       this.BalanceQty = result.Qty;
      
     });
-
-    // this.qty.nativeElement.focus();
   }
 
   getValidationMessages() {
@@ -212,12 +202,6 @@ export class NewPrescriptionreturnComponent implements OnInit {
       ]
     };
   }
-
-  selectChangeItem(obj: any) {
-    debugger
-    console.log("Item:",obj);
-    this.ItemSubform.get('ItemId').setValue(obj);
-}
 
   onChangePatientType(event) {
     if (event.value == 'OP') {
@@ -248,6 +232,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
 
       this.OP_IPType = 2;
     }
+    this.patientInfoReset();
   }
 
   getSelectedObjOP(obj) {
@@ -259,7 +244,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
       this.vDepartment=obj.departmentName
       this.vAdmissionDate=obj.admissionDate
       this.vAdmissionTime=obj.admissionTime
-      this.vIPDNo=obj.ipdNo
+      this.vOPDNo=obj.opdNo
       this.vAge=obj.age
       this.vAgeMonth=obj.ageMonth
       this.vAgeDay=obj.ageDay
@@ -281,7 +266,6 @@ export class NewPrescriptionreturnComponent implements OnInit {
   
       }, 500);
     }
-
   }
 
   getSelectedObjIP(obj) {
@@ -305,6 +289,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
       this.vPatientType=obj.patientType
       this.vTariffName=obj.tariffName
       this.vCompanyName=obj.companyName
+      this.vDOA=obj.admissionDate
       setTimeout(() => {
         this._PrescriptionReturnService.getAdmittedpatientlist(obj.regID).subscribe((response) => {
           this.registerObj = response;        
@@ -313,6 +298,24 @@ export class NewPrescriptionreturnComponent implements OnInit {
   
       }, 500);
     }
+  }
+
+  patientInfoReset(){
+    this.ItemSubform.get('RegID').setValue('');
+    this.ItemSubform.get('RegID').reset();
+    this.vRegNo = '';
+    this.vPatientName ='';
+    this.vAdmissionDate = '';
+    this.vAdmissionTime = '';
+    this.vMobileNo = '';
+    this.vIPDNo ='';
+    this.vDoctorName = '';
+    this.vTariffName ='';
+    this.vCompanyName = '';
+    this.vRoomName = '';
+    this.vBedName = '';
+    this.vGenderName = '';
+    this.vAge = '';
   }
 
   @ViewChild('itemid') itemid: ElementRef;
