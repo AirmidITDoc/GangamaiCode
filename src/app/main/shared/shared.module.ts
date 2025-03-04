@@ -54,6 +54,7 @@ import { Error403Component } from './APIerrorpages/error-403/error-403.component
 import { Error404Component } from './APIerrorpages/error-404/error-404.component';
 import { Error500Component } from './APIerrorpages/error-500/error-500.component';
 import { FocusNextDirective } from './directives/focus-next/focus-next.directive';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 
 @NgModule({
@@ -62,6 +63,7 @@ import { FocusNextDirective } from './directives/focus-next/focus-next.directive
     imports: [
         CommonModule,
         MatFormFieldModule,
+        CKEditorModule,
         MatInputModule,
         FormsModule,
         ReactiveFormsModule,
@@ -105,6 +107,7 @@ import { FocusNextDirective } from './directives/focus-next/focus-next.directive
         AirmidTable1Component,
         AirmidTextbox1Component,
         AirmidDateofbirthComponent,
+        AirmidEditorComponent,
         AirmidSliderComponent,
         AirmidDatepickerComponent,
         PrintCallingComponent,

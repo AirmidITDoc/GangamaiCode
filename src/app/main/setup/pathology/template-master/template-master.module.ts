@@ -90,6 +90,7 @@ const routes: Routes = [
         MatProgressSpinnerModule,
         SharedModule,
         MatDialogModule
+         
     ],
     providers: [TemplateServieService, DatePipe]
 })
