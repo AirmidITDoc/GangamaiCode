@@ -76,7 +76,7 @@
                                         </airmid-autocomplete>
                                     </ng-container>
                                     <ng-container *ngIf="flagDoctorSelected">
-                                        <airmid-autocomplete label="Doctor" [formGroup]="_ReportService.userForm" formControlName="DoctorID" placeholderText="Enter Doctor" ApiUrl="Report/DoctorList/auto-complete?Keyword=" (selectionChange)="SelectedDoctorObj($event)">
+                                        <airmid-autocomplete label="Doctor" [formGroup]="_ReportService.userForm" formControlName="DoctorId" placeholderText="Enter Doctor" ApiUrl="Report/DoctorList/auto-complete?Keyword=" (selectionChange)="SelectedDoctorObj($event)">
                                         </airmid-autocomplete>
                                     </ng-container>
                                     <ng-container *ngIf="flagServiceSelected">
