@@ -1,4 +1,5 @@
-<div id="contact" class="simple page-layout inner-scroll inner-sidebar right-sidebar" fusePerfectScrollbar>
+<!-- <div id="contact" class="simple page-layout inner-scroll inner-sidebar right-sidebar" fusePerfectScrollbar>
+    
     <mat-toolbar style="height: 50px;justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -33,14 +34,6 @@
                                         <mat-icon class="mat-icon-close"
                                             (click)="_ConsentService.myform.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
                                     </span>
-                                    <!-- <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionTextReg"
-                                        (optionSelected)='getSelectedObjReg($event.option.value)'>
-                                        <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
-                                            {{option.FirstName}} {{option.MiddleName}}
-                                            {{option.LastName}} | {{option.RegNo}} |
-                                            {{option.MobileNo}}
-                                        </mat-option>
-                                    </mat-autocomplete> -->
                                 </mat-form-field>
 
                                 <mat-radio-group aria-label="Select an option" formControlName="PatientType"
@@ -58,7 +51,7 @@
                                         </h3>
                                     </div>
                                     <div class="flex-item">
-                                        <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                                        <h6 class="labels-h6">{{Gender}}</h6>
                                     </div>
                                 
                                     <div class="flex-item" style="margin-left: 10px;">
@@ -67,7 +60,7 @@
                                         </h3>
                                     </div>
                                     <div class="flex-item">
-                                        <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                                        <h6 class="labels-h6">{{Gender}}</h6>
                                     </div>
                                 
                                     <div class="flex-item" style="margin-left: 10px;">
@@ -76,7 +69,7 @@
                                         </h3>
                                     </div>
                                     <div class="flex-item">
-                                        <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                                        <h6 class="labels-h6">{{Gender}}</h6>
                                     </div>
                                 
                                     <div class="flex-item" style="margin-left: 5px;">
@@ -85,7 +78,7 @@
                                         </h3>
                                     </div>
                                     <div class="flex-item">
-                                        <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                                        <h6 class="labels-h6">{{Gender}}</h6>
                                     </div>
                                 
                                     <div class="flex-item" style="margin-left: 5px;">
@@ -94,7 +87,7 @@
                                         </h3>
                                     </div>
                                     <div class="flex-item">
-                                        <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                                        <h6 class="labels-h6">{{Gender}}</h6>
                                     </div>
                                 
                                     <div class="flex-item" style="margin-left: 10px;">
@@ -103,7 +96,7 @@
                                         </h3>
                                     </div>
                                     <div class="flex-item">
-                                        <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                                        <h6 class="labels-h6">{{Gender}}</h6>
                                     </div>
 
                                 </div> 
@@ -199,9 +192,9 @@
                                     <mat-label>Department</mat-label>
                                     <mat-select formControlName="Department" name="Department" Placeholder="select Department">
                                         <mat-option></mat-option>
-                                        <!-- <mat-option *ngFor="let m of DepartmentList" [value]="m">
+                                        <mat-option *ngFor="let m of DepartmentList" [value]="m">
                                             {{m.Department}}
-                                        </mat-option> -->
+                                        </mat-option>
                                     </mat-select>
                                 </mat-form-field>
 
@@ -209,9 +202,9 @@
                                     <mat-label>Template</mat-label>
                                     <mat-select formControlName="Template" name="Template" Placeholder="select Template">
                                         <mat-option></mat-option>
-                                        <!-- <mat-option *ngFor="let m of TemplateList" [value]="m">
+                                        <mat-option *ngFor="let m of TemplateList" [value]="m">
                                             {{m.Template}}
-                                        </mat-option> -->
+                                        </mat-option>
                                     </mat-select>
                                 </mat-form-field>
 
@@ -237,4 +230,79 @@
         </div>
     </div>
 
+</div> -->
+
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <button mat-icon-button class="logo-icon mr-16"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                    <mat-icon>account_box</mat-icon>
+                </button>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Consent
+                </span>
+            </div>
+        </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="NewConsent()">
+                <mat-icon>how_to_reg</mat-icon>New Consent
+            </button>
+        </div>
+    </div>
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <airmid-table [gridConfig]="gridConfig" class="content">
+            <ng-container filters>
+
+                <airmid-datepicker [formGroup]="_ConsentService.myform" [isRangePicker]="true"
+                    formStartControlName="start" formEndControlName="end"
+                    [(fromValue)]="gridConfig.filters[0].fieldValue" [(toValue)]="gridConfig.filters[1].fieldValue">
+                </airmid-datepicker>
+
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Patient Name</mat-label>
+                    <input matInput placeholder="Search Patient Name" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[2].fieldValue" />
+                    <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[2].fieldValue=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>UHID No</mat-label>
+                    <input matInput placeholder="Search UHID No" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[3].fieldValue" />
+                    <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[3].fieldValue=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <form [formGroup]="_ConsentService.myform">
+                    <div fxFlex fxLayout="row">
+
+                        <mat-radio-group name="IsIPOrOP" formControlName="IsIPOrOP" fxLayout="row" value="2"
+                            style="padding: 6px;" class="gap-4">
+                            <mat-label>Type:</mat-label>
+                            <div fxLayout="row">
+                                <mat-radio-button value="2">All
+                                </mat-radio-button>&nbsp;
+                                <mat-radio-button value="1">IP
+                                </mat-radio-button>&nbsp;
+                                <mat-radio-button value="0">OP
+                                </mat-radio-button>
+                            </div>
+                        </mat-radio-group>
+                    </div>
+                </form>
+
+            </ng-container>
+        </airmid-table>
+    </div>
 </div>

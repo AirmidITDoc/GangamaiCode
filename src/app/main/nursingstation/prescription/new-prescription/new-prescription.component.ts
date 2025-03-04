@@ -123,7 +123,7 @@ export class NewPrescriptionComponent implements OnInit {
  
   autocompletestore: string = "Store";
   autocompleteward: string = "Room";
-  autocompleteitem: string = "Item";
+  autocompleteitem: string = "ItemType";
 
   constructor(private _FormBuilder: UntypedFormBuilder,
     private ref: MatDialogRef<NewPrescriptionComponent>,
@@ -182,25 +182,6 @@ export class NewPrescriptionComponent implements OnInit {
   getDateTime(dateTimeObj) { 
     this.dateTimeObj = dateTimeObj;
   }
-
-  // getSearchList() {
-  //   var m_data = {
-  //     "Keyword": `${this.myForm.get('RegID').value}%`
-  //   }
-  //   if (this.myForm.get('RegID').value.length >= 1) {
-  //     this._PrescriptionService.getAdmittedpatientlist(m_data).subscribe(resData => {
-  //       this.filteredOptions = resData;
-  //       console.log(resData)
-  //       this.PatientListfilteredOptions = resData;
-  //       if (this.filteredOptions.length == 0) {
-  //         this.noOptionFound = true;
-  //       } else {
-  //         this.noOptionFound = false;
-  //       }
-
-  //     });
-  //   } 
-  // }
  
   getSelectedObjIP(obj) {
     debugger
@@ -377,8 +358,8 @@ export class NewPrescriptionComponent implements OnInit {
 
   onAdd() {
     debugger
-    if ((this.ItemForm.get('ItemId').value == '' || this.ItemForm.get('ItemId').value == null || this.ItemForm.get('ItemId').value == undefined)) {
-      this.toastr.warning('Please select Item', 'Warning !', {
+    if (!this.ItemForm.get('ItemId')?.value) {
+      this.toastr.warning('Please select Item', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
@@ -497,14 +478,20 @@ export class NewPrescriptionComponent implements OnInit {
   
   //api integrate
   OnSavePrescription() {
-    if (( this.RegNo== '' || this.RegNo == null || this.RegNo == undefined)) {
+    if (( this.vRegNo== '' || this.vRegNo == null || this.vRegNo == undefined)) {
       this.toastr.warning('Please select patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if(!this.WardList.some(item => item.RoomName ===this.myForm.get('WardName').value.RoomName)){
-      this.toastr.warning('Please Select valid Ward Name', 'Warning !', {
+    // if(!this.WardList.some(item => item.RoomName ===this.myForm.get('WardName').value.RoomName)){
+    //   this.toastr.warning('Please Select valid Ward Name', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    if (!this.myForm.get('WardName')?.value) {
+      this.toastr.warning('Please select Ward Name', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
@@ -512,8 +499,7 @@ export class NewPrescriptionComponent implements OnInit {
 
     this.isLoading = 'submit'; 
     let insertIP_Prescriptionarray = [];
-    let insertIP_MedicalRecordArray = {}; 
- 
+    let insertIP_MedicalRecordArray = {};  
 
     insertIP_MedicalRecordArray['medicalRecoredId'] = 0;
     insertIP_MedicalRecordArray['admissionId'] = this.vAdmissionID;

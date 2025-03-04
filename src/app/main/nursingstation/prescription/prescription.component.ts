@@ -40,7 +40,7 @@ export class PrescriptionComponent implements OnInit {
     hasSelectedContacts: boolean;
 
 
-    gridConfig1: gridModel = {
+    gridConfig: gridModel = {
         apiUrl: "Nursing/PrescriptionWardList",
         columnsList: [
             { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -80,26 +80,7 @@ export class PrescriptionComponent implements OnInit {
         ],
         row: 25
     }
-    // gridConfig2: gridModel = new gridModel();
-
-    gridConfig2: gridModel = {
-        apiUrl: "Nursing/PrescriptionReturnList",
-        columnsList: [
-            { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA'},
-        ],
-        sortField: "PresReId",
-        sortOrder: 0,
-        filters: [
-
-            // { fieldName: "PresReId", fieldValue: "8", opType: OperatorComparer.Equals },
-            // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            // { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
-    }
+    gridConfig1: gridModel = new gridModel();
 
     isShowDetailTable: boolean = false;
     GetDetails(data) {

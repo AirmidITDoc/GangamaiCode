@@ -54,10 +54,14 @@ public getRegistraionById(Id) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch", employee)
   }
 
+  public getAdmittedpatientlist(id){
+    debugger
+    return this._httpClient1.GetData("Admission/" + id);
+  }
+
   public getPatientVisitedListSearch(employee) {//m_Rtrv_PatientVisitedListSearch
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
   }
-
   
   public getServiceListDetails(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathRadServiceList",Param);
@@ -95,6 +99,11 @@ public getRegistraionById(Id) {
   public deactivateTheStatus(m_data) {
     return this._httpClient1.PostData("PhoneApp", m_data);
   }
+
+  // demo list
+  public getAllList(param) {
+    return this._httpClient1.PostData("ParameterMaster/MPathParameterList",param);
+}
   
 }
 

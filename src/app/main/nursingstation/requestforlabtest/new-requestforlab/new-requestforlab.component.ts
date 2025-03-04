@@ -15,8 +15,8 @@ import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admissio
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
 import { OperatorComparer } from 'app/core/models/gridRequest';
- 
- 
+
+
 @Component({
   selector: 'app-new-requestforlab',
   templateUrl: './new-requestforlab.component.html',
@@ -27,9 +27,9 @@ import { OperatorComparer } from 'app/core/models/gridRequest';
 export class NewRequestforlabComponent implements OnInit {
 
   isRegIdSelected: boolean = false;
-  isServiceIdSelected:boolean=false;
+  isServiceIdSelected: boolean = false;
   isRegSearchDisabled: boolean;
-  isServiceSearchDisabled:boolean;
+  isServiceSearchDisabled: boolean;
   filteredOptions: any;
   PatientListfilteredOptions: any;
   noOptionFound: boolean = false;
@@ -41,22 +41,39 @@ export class NewRequestforlabComponent implements OnInit {
   isLoading: String = '';
   sIsLoading: string = "";
   matDialogRef: any;
-  SpinLoading:boolean=false;
+  SpinLoading: boolean = false;
   CompanyName: any;
   Tarrifname: any;
   Doctorname: any;
-  vOPIPId:any =0;
-  vOPDNo:any=0;
-  vTariffId:any=0;
-  vClassId:any=0;
-  vAge:any=0;
+  vOPIPId: any = 0;
+  vOPDNo: any = 0;
+  vTariffId: any = 0;
+  vClassId: any = 0;
+  vAge: any = 0;
   selectedAdvanceObj = new AdmissionPersonlModel({});
+  vRegNo: any;
+  vPatientName: any;
+  vAdmissionDate: any;
+  vMobileNo: any;
+  vIPDNo: any;
+  vTariffName: any;
+  vCompanyName: any;
+  vDoctorName: any;
+  vRoomName: any;
+  vBedName: any;
+  vGenderName: any;
+  vAdmissionTime: any;
+  vAgeMonth: any;
+  vAgeDay: any;
+  vDepartment: any;
+  vRefDocName: any;
+  vPatientType: any;
+  vDOA: any;
+  vRegId: any;
 
-  
   displayedServiceColumns: string[] = [
-  'ServiceName',
+    'ServiceName',
     'Action'
-   
   ]
 
   displayedServiceselected: string[] = [
@@ -73,68 +90,67 @@ export class NewRequestforlabComponent implements OnInit {
   chargeslist: any = [];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  
+
   vAdmissionID: any;
   date: Date;
-  
- 
+
+
   constructor(private _FormBuilder: UntypedFormBuilder,
     private dialogRef: MatDialogRef<NewRequestforlabComponent>,
-    private _matDialog:MatDialog,
-    public _RequestforlabtestService: RequestforlabtestService, 
+    private _matDialog: MatDialog,
+    public _RequestforlabtestService: RequestforlabtestService,
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,
-    private _loggedService: AuthenticationService) { 
-      this.date = new Date();
-      if (this.advanceDataStored.storage) {
-        
-         this.selectedAdvanceObj = this.advanceDataStored.storage;
-         // this.PatientHeaderObj = this.advanceDataStored.storage;
-         console.log( this.selectedAdvanceObj)
-       }
+    private _loggedService: AuthenticationService) {
+    this.date = new Date();
+    if (this.advanceDataStored.storage) {
+
+      this.selectedAdvanceObj = this.advanceDataStored.storage;
+      // this.PatientHeaderObj = this.advanceDataStored.storage;
+      console.log(this.selectedAdvanceObj)
     }
+  }
 
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
-    this.myFormGroup = this.createMyForm(); 
-    this.getServiceList();
+    this.myFormGroup = this.createMyForm();
   }
   tariffId = "0";
   groupId = "0";
   getServiceList() {
     debugger
     let ServiceName = this.myFormGroup.get("ServiceId").value + "%" || '%';
-    if(this.RegNo){
-    var param = {
-      sortField: "ServiceId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "ServiceName", fieldValue: ServiceName, opType: OperatorComparer.Contains },
-                { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
-                { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals },
-                { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
-                { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            ],
-            row: 125
-    }
-    this._RequestforlabtestService.getserviceList(param).subscribe(Menu => {
+    if (this.vRegNo) {
+      var param = {
+        sortField: "ServiceId",
+        sortOrder: 0,
+        filters: [
+          { fieldName: "ServiceName", fieldValue: ServiceName, opType: OperatorComparer.Contains },
+          { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
+          { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals },
+          { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
+          { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+        ],
+        row: 125
+      }
+      this._RequestforlabtestService.getserviceList(param).subscribe(Menu => {
 
         this.dsLabRequest2.data = Menu.data as LabRequest[];
         this.dsLabRequest2.sort = this.sort;
         this.dsLabRequest2.paginator = this.paginator;
         console.log(this.dsLabRequest2.data)
-    });
-  }else{
-    if (!this.searchFormGroup.get('RegID')?.value && !this.registerObj?.RegId) {
-      this.toastr.warning('Please Select Patient', 'Warning!', {
-        toastClass: 'tostr-tost custom-toast-warning',
       });
-      return;
+    } else {
+      if (!this.searchFormGroup.get('RegID')?.value && !this.vRegId) {
+        this.toastr.warning('Please Select Patient', 'Warning!', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
     }
   }
-}
 
-  createMyForm():FormGroup {
+  createMyForm(): FormGroup {
     return this._FormBuilder.group({
       IsPathRad: ['3'],
       ServiceName1: '',
@@ -142,127 +158,103 @@ export class NewRequestforlabComponent implements OnInit {
       ServiceId: '',
       ServiceName2: '',
       Price2: '',
-      PatientName:'',
-      RegId:'',
-      AdmissionID:0,
-      Requestdate:'',
-      IsOnFileTest:''
+      PatientName: '',
+      RegId: '',
+      AdmissionID: 0,
+      Requestdate: '',
+      IsOnFileTest: '',
+      NameSearch: ''
     })
   }
-  createSearchForm():FormGroup{
+  createSearchForm(): FormGroup {
     return this._FormBuilder.group({
-      RegID:[''],
-      radioIp:['1'] 
+      RegID: [''],
+      radioIp: ['1']
     });
   }
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
-  } 
+  }
 
   getSelectedObjIP(obj) {
-    console.log(obj)
-    this.RegId = obj.value;
     debugger
-    if ((this.RegId ?? 0) > 0) {
-
+    if ((obj.regID ?? 0) > 0) {
+      console.log("Admitted patient:", obj)
+      this.vRegNo = obj.regNo
+      this.vRegId = obj.regID
+      this.vDoctorName = obj.doctorName
+      this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
+      this.vDepartment = obj.departmentName
+      this.vAdmissionDate = obj.admissionDate
+      this.vAdmissionTime = obj.admissionTime
+      this.vIPDNo = obj.ipdNo
+      this.vAge = obj.age
+      this.vAgeMonth = obj.ageMonth
+      this.vAgeDay = obj.ageDay
+      this.vGenderName = obj.genderName
+      this.vRefDocName = obj.refDocName
+      this.vRoomName = obj.roomName
+      this.vBedName = obj.bedName
+      this.vPatientType = obj.patientType
+      this.vTariffName = obj.tariffName
+      this.vCompanyName = obj.companyName
+      this.vDOA = obj.admissionDate
       setTimeout(() => {
-        this._RequestforlabtestService.getRegistraionById(this.RegId).subscribe((response) => {
+        this._RequestforlabtestService.getAdmittedpatientlist(obj.regID).subscribe((response) => {
           this.registerObj = response;
-          console.log(response)
-        //   if (response) {
-        //     this.registerObj = {
-        //         ...response,
-        //         PatientName: `${response.FirstName || ''} ${response.LastName || ''}`.trim()
-        //     };
-        // }
-        });
+          console.log(this.registerObj)
 
+          // call service list function
+          this.getServiceList();
+        });
       }, 500);
     }
   }
- 
+
   onEdit(row) {
     console.log(row);
-
     this.registerObj = row;
     // this.getSelectedObj(row);
   }
-  WardName:any;
-  RegNo:any; 
-  BedNo:any;
-//   getSelectedObj(obj) {
-//     if(obj.IsDischarged == 1){
-//       Swal.fire('Selected Patient is already discharged');
-//       this.PatientName = ''  
-//       this.vAdmissionID =  ''
-//       this.RegNo = ''
-//       this.Doctorname =  ''
-//       this.Tarrifname = ''
-//       this.CompanyName =''
-//       this.vOPDNo = ''
-//       this.WardName =''
-//       this.BedNo = ''
-//     }
-//     else{
-//       this.registerObj = obj; 
-//       this.selectedAdvanceObj=obj;
-//       this.selectedAdvanceObj.PatientName= obj.FirstName + ' ' + obj.LastName;
-//       this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
-//       this.RegNo = obj.RegNo;
-//       this.vAdmissionID = obj.AdmissionID
-//       this.CompanyName = obj.CompanyName;
-//       this.Tarrifname = obj.TariffName;
-//       this.Doctorname = obj.DoctorName; 
-//       this.vOPDNo = obj.AdmissionID;
-//       this.WardName = obj.RoomName;
-//       this.BedNo = obj.BedName;
-//       this.vClassId = obj.ClassId;
-//       this.vTariffId = obj.TariffId;
-//       console.log(obj);
-//       this.getServiceListdata();
-//     } 
-//  this.dsLabRequest2.data = [];
-//  this.dstable1.data = [];
-//   }
 
-  getServiceListdata() {
-    // 
-    if(this.RegNo){
-      this.sIsLoading = ''
-      var Param = {
-        "ServiceName":`${this.myFormGroup.get('ServiceId').value}%` ||'%',
-        "IsPathRad":parseInt(this.myFormGroup.get('IsPathRad').value) || 0,
-        "ClassId":   this.vClassId || 0,
-        "TariffId":  this.vTariffId  || 0
-    }
-      console.log(Param);
-      this._RequestforlabtestService.getServiceListDetails(Param).subscribe(data => {
-        this.dsLabRequest2.data = data as LabRequest[];
-        // this.chargeslist = data as LabRequestList[];
-        this.dsLabRequest2.data = data as LabRequest[];
-       console.log(this.dsLabRequest2)
-        this.sIsLoading = '';
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-    }
-    else{
-      if (!this.searchFormGroup.get('RegID')?.value && !this.registerObj?.RegId) {
-        this.toastr.warning('Please Select Patient', 'Warning!', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
+  // getServiceListdata() {
+  //   // 
+  //   if (this.RegNo) {
+  //     this.sIsLoading = ''
+  //     var Param = {
+  //       "ServiceName": `${this.myFormGroup.get('ServiceId').value}%` || '%',
+  //       "IsPathRad": parseInt(this.myFormGroup.get('IsPathRad').value) || 0,
+  //       "ClassId": this.vClassId || 0,
+  //       "TariffId": this.vTariffId || 0
+  //     }
+  //     console.log(Param);
+  //     this._RequestforlabtestService.getServiceListDetails(Param).subscribe(data => {
+  //       this.dsLabRequest2.data = data as LabRequest[];
+  //       // this.chargeslist = data as LabRequestList[];
+  //       this.dsLabRequest2.data = data as LabRequest[];
+  //       console.log(this.dsLabRequest2)
+  //       this.sIsLoading = '';
+  //     },
+  //       error => {
+  //         this.sIsLoading = '';
+  //       });
+  //   }
+  //   else {
+  //     if (!this.searchFormGroup.get('RegID')?.value && !this.registerObj?.RegId) {
+  //       this.toastr.warning('Please Select Patient', 'Warning!', {
+  //         toastClass: 'tostr-tost custom-toast-warning',
+  //       });
+  //       return;
+  //     }
 
-      // this.toastr.warning('Please select patient ', 'Warning !', {
-      //   toastClass: 'tostr-tost custom-toast-warning',
-      // });
-    }
-   
-  }
- 
+  //     // this.toastr.warning('Please select patient ', 'Warning !', {
+  //     //   toastClass: 'tostr-tost custom-toast-warning',
+  //     // });
+  //   }
+
+  // }
+
   onChangeReg(event) {
     if (event.value == 'registration') {
       this.registerObj = new RegInsert({});
@@ -303,7 +295,7 @@ export class NewRequestforlabComponent implements OnInit {
 
     }, 100);
   }
- 
+
   onSaveEntry(row) {
     debugger
     this.isLoading = 'save';
@@ -321,7 +313,7 @@ export class NewRequestforlabComponent implements OnInit {
     } else if (this.chargeslist && this.chargeslist.length == 0) {
       this.addChargList(row);
     }
-    else{
+    else {
       this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -344,33 +336,32 @@ export class NewRequestforlabComponent implements OnInit {
     this.dstable1.paginator = this.paginator;
   }
 
-  deleteTableRow(element) { 
-      this.chargeslist= this.dstable1.data ;
-      let index = this.chargeslist.indexOf(element);
-      if (index >= 0) {
-        this.chargeslist.splice(index, 1);
-        this.dstable1.data = [];
-        this.dstable1.data = this.chargeslist;
-      }
-      this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
-        toastClass: 'tostr-tost custom-toast-success',
-      });  
+  deleteTableRow(element) {
+    this.chargeslist = this.dstable1.data;
+    let index = this.chargeslist.indexOf(element);
+    if (index >= 0) {
+      this.chargeslist.splice(index, 1);
+      this.dstable1.data = [];
+      this.dstable1.data = this.chargeslist;
+    }
+    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    });
   }
   onClose() {
     this.dialogRef.close();
     this.myFormGroup.reset();
     this.dsLabRequest2.data = [];
-    this.dstable1.data =[];
+    this.dstable1.data = [];
   }
 
-  
-  savebtn:boolean=false;
+  savebtn: boolean = false;
   OnSave() {
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-    if ((this.RegNo == '' || this.RegNo == null || this.RegNo == undefined)) {
+    if ((this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined)) {
       this.toastr.warning('Please select patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -386,7 +377,7 @@ export class NewRequestforlabComponent implements OnInit {
     this.savebtn = true;
     let submissionObj = {};
     let ipPathOrRadiRequestInsertArray = {};
-    let ipPathOrRadiRequestLabRequestInsertArray = []; 
+    let ipPathOrRadiRequestLabRequestInsertArray = [];
 
     ipPathOrRadiRequestInsertArray['reqDate'] = formattedDate;
     ipPathOrRadiRequestInsertArray['reqTime'] = formattedTime;
@@ -396,10 +387,10 @@ export class NewRequestforlabComponent implements OnInit {
     ipPathOrRadiRequestInsertArray['isCancelled'] = 0;
     ipPathOrRadiRequestInsertArray['isCancelledBy'] = 0;
     ipPathOrRadiRequestInsertArray['isCancelledDate'] = formattedDate;
-    ipPathOrRadiRequestInsertArray['isCancelledTime'] =  formattedTime;
+    ipPathOrRadiRequestInsertArray['isCancelledTime'] = formattedTime;
     ipPathOrRadiRequestInsertArray['IsOnFileTest'] = this.myFormGroup.get('IsOnFileTest').value || 0;
-    ipPathOrRadiRequestInsertArray['requestId '] = 0 
-   
+    ipPathOrRadiRequestInsertArray['requestId '] = 0
+
     this.dstable1.data.forEach((element) => {
       let ipPathOrRadiRequestLabRequestInsert = {};
       ipPathOrRadiRequestLabRequestInsert['requestId'] = 0;
@@ -411,9 +402,9 @@ export class NewRequestforlabComponent implements OnInit {
     });
 
     submissionObj = {
-      'ipPathOrRadiRequestInsert' : ipPathOrRadiRequestInsertArray,
-      'ipPathOrRadiRequestLabRequestInsert' :ipPathOrRadiRequestLabRequestInsertArray
-    } 
+      'ipPathOrRadiRequestInsert': ipPathOrRadiRequestInsertArray,
+      'ipPathOrRadiRequestLabRequestInsert': ipPathOrRadiRequestLabRequestInsertArray
+    }
     console.log(submissionObj);
     this._RequestforlabtestService.LabRequestSave(submissionObj).subscribe(response => {
       console.log(response);
@@ -437,7 +428,6 @@ export class NewRequestforlabComponent implements OnInit {
     });
   }
 
-    
 }
 export class LabRequest {
   ServiceName: any;
