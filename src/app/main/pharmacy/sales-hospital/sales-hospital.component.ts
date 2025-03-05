@@ -1148,8 +1148,7 @@ export class SalesHospitalComponent implements OnInit {
   patientList : any = []; 
   DoctorNameList : any = [];  
  
-  getSalesPatientList() {
-    debugger
+  getSalesPatientList() { 
     this._salesService.getSalesPatientList1().subscribe(data => {
       this.patientList = data;  
       this.filteredOptionPatientNameList = this.ItemSubform.get('PatientName').valueChanges.pipe(
@@ -1163,15 +1162,15 @@ export class SalesHospitalComponent implements OnInit {
       const filterValue = value && value.ExternalPatientName ? value.ExternalPatientName.toLowerCase() : value.toLowerCase();
       return this.patientList.filter(option => option.ExternalPatientName.toLowerCase().includes(filterValue));
     }
-  }  
+  }   
+ 
   getOptionTextPatientName(option) {
     if (!option)
       return '';
     return option.ExternalPatientName;
   }  
 
-  getSalesDoctorList() {
-    debugger
+  getSalesDoctorList() { 
     this._salesService.getSalesDoctorList().subscribe(data => {
       this.DoctorNameList = data;  
       this.filteredOptionDoctorList = this.ItemSubform.get('DoctorName').valueChanges.pipe(
@@ -3201,10 +3200,13 @@ export class SalesHospitalComponent implements OnInit {
   onAddDraftList(contact) {
     console.log(contact)
     if(contact.OP_IP_Type == 2){
+      this.vSelectedOption = 'External'; 
       this.PatientName = contact.PatientName;
-      this.MobileNo = contact.ExtMobileNo;
+      this.ItemSubform.get('PatientName').setValue(contact.PatientName)
+      this.MobileNo = parseInt(contact.ExtMobileNo);
       this.vextAddress = contact.extAddress;
       this.DoctorName = contact.AdmDoctorName;
+      this.ItemSubform.get('DoctorName').setValue(contact.AdmDoctorName)
       this.DraftID = contact.DSalesId;
     }else{
       this.DoctorNamecheck = true;  
@@ -3337,6 +3339,12 @@ export class SalesHospitalComponent implements OnInit {
 
       // if (this.ItemName && (parseInt(contact.Qty) != 0) && this.MRP > 0 && this.NetAmt > 0) {
       // this.saleSelectedDatasource.data = [];
+      if(this.Itemchargeslist.find(item=> item.BatchNo == contact.BatchNo)){
+        this.toastr.warning('selected draft bill already added in sales list', 'warning !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+        return
+      }
 
       this.Itemchargeslist.push(
         {
@@ -3539,13 +3547,14 @@ export class SalesHospitalComponent implements OnInit {
   //   });
   // }
 
-  getDraftbillPrint(el) {
-    console.log(el);
+  getDraftbillPrint(DSalesId) {
+    debugger
+    console.log(DSalesId);
     this.sIsLoading = 'loading-data';
  
      setTimeout(() => {
      
-       this._salesService.getSalesDraftPrint(el).subscribe(res => {
+       this._salesService.getSalesDraftPrint(DSalesId).subscribe(res => {
          const dialogRef = this._matDialog.open(PdfviewerComponent,
            {
              maxWidth: "85vw",

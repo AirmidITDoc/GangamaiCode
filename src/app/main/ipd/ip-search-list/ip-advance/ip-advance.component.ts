@@ -610,10 +610,9 @@ vAdvanceDetId:any;
   }
   }
 
-  getStatementPrint() {
-    let AdvanceDetailID=0
+  getStatementPrint() { 
     this._IpSearchListService.getViewAdvancestatementReceipt(
-      AdvanceDetailID
+      this.selectedAdvanceObj.AdmissionID
     ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {

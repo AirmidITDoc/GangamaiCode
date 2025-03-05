@@ -623,13 +623,17 @@ public updateIPDDischargSummary(employee)
   return this._httpClient.post("InPatient/UpdateIPDischargeSummary",employee);
 }
 
-public insertIPDDischargSummarytemplate(employee)
-{    
+public insertIPDDischargSummarytemplate(employee,loader = true) {
+  if (loader) {
+    this._loaderService.show();
+} 
   return this._httpClient.post("InPatient/InsertIPDischargeSummaryTemplate",employee);
 }
 
-public updateIPDDischargSummaryTemplate(employee)
-{    
+public updateIPDDischargSummaryTemplate(employee,loader = true) {
+  if (loader) {
+    this._loaderService.show();
+} 
   return this._httpClient.post("InPatient/UpdateIPDischargeSummarytemplate",employee);
 }
  // Search Window Option
@@ -1243,12 +1247,18 @@ getIpDischargeReceipt(AdmId){
   return this._httpClient.get("InPatient/view-DischargSummaryWithouHeader?AdmissionID=" + AdmissionID)
  }
 
- getIpDischargesummaryTempReceipt(AdmissionID){
+ getIpDischargesummaryTempReceipt(AdmissionID,loader = true) {
+  if (loader) {
+    this._loaderService.show();
+} 
   return this._httpClient.get("InPatient/view-NewDischargSummaryTemplate?AdmissionID=" + AdmissionID)
  }
 
 
- getViewAdvancestatementReceipt(AdmissionID){
+ getViewAdvancestatementReceipt(AdmissionID,loader = true) {
+  if (loader) {
+    this._loaderService.show();
+} 
   return this._httpClient.get("InPatient/view-IP-AdvanceSummaryReceipt?AdmissionID=" + AdmissionID)
  }
 

@@ -44,11 +44,15 @@ app-sales {
         }
     
         .mat-column-BatchNo {
-            width: 90px;
-            max-width: 90px;
-            min-width: 90px;
+            width: 110px;
+            max-width: 110px;
+            min-width: 110px; 
             text-align: left;
-            white-space: nowrap;
+            white-space: nowrap; 
+            overflow: hidden;
+            text-overflow: ellipsis; 
+            overflow: hidden !important;
+           justify-content:left; 
         }
     
         .mat-column-BatchExpDate {

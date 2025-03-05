@@ -733,20 +733,39 @@ export class IPSearchListComponent implements OnInit {
 
   printDischargesummary(contact) {
 
-    this._IpSearchListService.getIpDischargesummaryReceipt(
-      contact.AdmissionID
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Discharge SummaryViewer"
-          }
-        });
-    });
+    if(this._configue.configParams.IsDischargeTemplate){
+      this._IpSearchListService.getIpDischargesummaryTempReceipt(
+        contact.AdmissionID
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Discharge SummaryViewer"
+            }
+          });
+      });
+    }else{
+      this._IpSearchListService.getIpDischargesummaryReceipt(
+        contact.AdmissionID
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Discharge SummaryViewer"
+            }
+          });
+      });
+    }
+
+  
   }
   printDischargesummaryWithoutletterhead(contact) {
 

@@ -1,4 +1,4 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
     <!-- HEADER -->
     <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
         fxLayoutAlign.gt-xs="space-between center">
@@ -40,9 +40,10 @@
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
                                         <input matInput placeholder="Search --> Cash Counter Name" autocomplete="off"
-                                            name="CashCounterNameSearch" formControlName="CashCounterNameSearch" />
+                                            name="CashCounterNameSearch" formControlName="CashCounterNameSearch" 
+                                            (keyup)="onSearch()"/>
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="onSearchClear()">
+                                            (click)="onSearchClear()" >
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>
@@ -50,8 +51,8 @@
                                     <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
                                         fxLayoutAlign="center center">
                                         <mat-radio-button value="2">All</mat-radio-button>
-                                        <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
-                                        <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
+                                        <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
+                                        <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
                                     </mat-radio-group>
 
                                     <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
@@ -65,7 +66,7 @@
                         <div fxlayout="row">
                             <div style="width: 100%;">
                                 <mat-table #table matSort [dataSource]="DSCashCounterMasterList"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto">
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;height: 500px;">
                                     <ng-container matColumnDef="CashCounterId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
                                         </mat-header-cell>
@@ -95,9 +96,9 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <mat-icon *ngIf="!element.IsActive"
-                                                class="active-icon green-600 s-16">check_circle</mat-icon>
                                             <mat-icon *ngIf="element.IsActive"
+                                                class="active-icon green-600 s-16">check_circle</mat-icon>
+                                            <mat-icon *ngIf="!element.IsActive"
                                                 class="active-icon red-500 s-16">close</mat-icon>
                                         </mat-cell>
                                     </ng-container>
@@ -184,8 +185,8 @@
                                     </div>
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
-                                            <mat-radio-button value='false' class="mr-sm-12"
+                                        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='1'>
+                                            <mat-radio-button value='1' class="mr-sm-12"
                                                 fxFlex>IsActive</mat-radio-button>
 
                                         </mat-radio-group>

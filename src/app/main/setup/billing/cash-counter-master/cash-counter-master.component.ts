@@ -53,10 +53,7 @@ export class CashCounterMasterComponent implements OnInit {
     }
     getCashcounterMasterList() {
         var param = {
-            CashCounterName:
-                this._cashcounterService.myformSearch
-                    .get("CashCounterNameSearch")
-                    .value.trim() || "%",
+            CashCounterName:this._cashcounterService.myformSearch.get("CashCounterNameSearch").value.trim() + "%" || "%",
         };
         this._cashcounterService
             .getCashcounterMasterList(param)
@@ -69,7 +66,7 @@ export class CashCounterMasterComponent implements OnInit {
     }
 
     onClear() {
-        this._cashcounterService.myform.reset({ IsDeleted: "false" });
+        this._cashcounterService.myform.reset({ IsDeleted: "1" });
         this._cashcounterService.initializeFormGroup();
     }
 

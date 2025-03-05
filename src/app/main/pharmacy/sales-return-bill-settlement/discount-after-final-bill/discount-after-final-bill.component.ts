@@ -49,6 +49,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       this.selectedAdvanceObj = this.data.PatientInfo
       console.log(this.selectedAdvanceObj)
       this.registerObj = this.data.Obj;
+      console.log(this.registerObj)
       this.vDiscAmount = Math.round(this.registerObj.DiscAmount);
       this.vTotalAmount =  Math.round(this.registerObj.TotalAmount);
       this.vFinalNetAmt =  Math.round(this.registerObj.NetAmount)
@@ -125,20 +126,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
     } 
     this.vFinalDiscAmt = Math.round(parseFloat(DiscAmt2) + parseFloat(this.vDiscAmount)).toFixed(2);
     this.vNetamount = Math.round((parseFloat(this.vTotalAmount) - parseFloat(this.vFinalDiscAmt))).toFixed(2);
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
+  } 
 
   OnSave(){
     debugger
@@ -162,12 +150,14 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       });
       return
     } 
+    let balanceAmount = 0
+    balanceAmount = this.registerObj.BalanceAmount - this.MyFrom.get('DiscAmount2').value
     var m_data1 = {
       "phBillDiscountAfterUpdate": {
-        "salesId": this.selectedAdvanceObj.salesId || 0,
+        "salesId": this.registerObj.SalesId || 0,
         "netPayableAmt": this.MyFrom.get('NetAmount').value || 0,
         "concessionAmt":this.MyFrom.get('DiscAmount2').value || 0, 
-        "balanceAmt": this.selectedAdvanceObj.BalanceAmt || 0,
+        "balanceAmt": balanceAmount || 0,
         "concessionReasonId": this.MyFrom.get('ConcessionId').value.ConcessionId || 0
       }
     } 

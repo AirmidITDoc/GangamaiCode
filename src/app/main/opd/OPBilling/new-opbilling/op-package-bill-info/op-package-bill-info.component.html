@@ -7,8 +7,13 @@
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                 style="color: white;">account_box
             </mat-icon>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;"
+            *ngIf="FormName!= 'IPD Package'">
                 Op Package Bill
+            </span>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;"
+            *ngIf="FormName == 'IPD Package'">
+                IP Package Bill
             </span>
         </div>
 
