@@ -34,38 +34,26 @@ export class SampleCollectionComponent implements OnInit {
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     hasSelectedContacts: boolean;
-
-
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
     gridConfig: gridModel = {
-        apiUrl: "Nursing/PrescriptionReturnList",
+        apiUrl: "Pathology/SampleCollectionList",
         columnsList: [
-            { heading: "Code", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "-", key: "type", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Date", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-            { heading: "OP_IP_No", key: "oP_IP_No", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "VATime", key: "vATime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Visit_Adm_ID", key: "visit_Adm_ID", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "PathDate", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "CompanyName", key: "vompanyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "IsSampleCollection", key: "isSampleCollection", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-
+            { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._SampleCollectionService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -73,15 +61,15 @@ export class SampleCollectionComponent implements OnInit {
         sortField: "PresReId",
         sortOrder: 0,
         filters: [
-            { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "30", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
-            { fieldName: "IsCompleted", fieldValue: "1", opType: OperatorComparer.Equals },
-            { fieldName: "OP_IP_Type", fieldValue: "1", opType: OperatorComparer.Equals },
+            { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
+            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+            { fieldName: "Length", fieldValue: "100", opType: OperatorComparer.Equals }
         ],
         row: 25
     }
@@ -89,31 +77,10 @@ export class SampleCollectionComponent implements OnInit {
     gridConfig1: gridModel = {
         apiUrl: "Nursing/PrescriptionReturnList",
         columnsList: [
-            { heading: "Code", key: "presReId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 450 },
-            { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            // { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-            // { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-            // { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-            // { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA',width:50 },
-            // { heading: "Net Pay", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._SampleCollectionService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
+            { heading: "Completed", key: "completed", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "SampleNo", key: "sampleno", sort: true, align: 'left', emptySign: 'NA', width: 450 },
+            { heading: "TestName", key: "testName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "CollectionDate/Time", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         ],
         sortField: "PresReId",
         sortOrder: 0,
@@ -127,17 +94,47 @@ export class SampleCollectionComponent implements OnInit {
         row: 25
     }
 
-    constructor(public _SampleCollectionService: SampleCollectionService, public _matDialog: MatDialog,
+    constructor(public _SampleCollectionService: SampleCollectionService,
+         public _matDialog: MatDialog,
+         public datePipe: DatePipe,
         public toastr: ToastrService,) { }
     ngOnInit(): void {
+    }
+
+    exportReportPdf() {
+        // let actualData = [];
+        // this.dataSource.data.forEach(e => {
+        //   var tempObj = [];
+        //   tempObj.push(e.RegNo);
+        //   tempObj.push(e.PatientName);
+        //   tempObj.push(e.AdmDate);
+        //   tempObj.push(e.ReqDate);
+        //   tempObj.push(e.WardName);
+        //   tempObj.push(e.BedName);
+        //   tempObj.push(e.IsTestCompted);
+        //   tempObj.push(e.IsOnFileTest);
+
+        //   // tempObj.push(e.PathAmount);
+        //   actualData.push(tempObj);
+        // });
+        // let headers = [['RegNo','PatientName', 'AdmDate', 'ReqDate', 'WardName', 'BedName','IsTestCompted', 'IsOnFileTest' ]];
+        // this.reportDownloadService.exportPdfDownload(headers, actualData, 'Sample Request');
+    }
+
+    exportSamplerequstReportExcel() {
+        // this.sIsLoading == 'loading-data'
+        // let exportHeaders = ['ReqDate', 'ReqTime', 'ServiceName', 'AddedByName', 'IsStatus','PBillNo','IsPathology','IsRadiology','IsTestCompted'];
+        // this.reportDownloadService.getExportJsonData(this.dataSource1.data, exportHeaders, 'Sample Request Detail');
+        // this.dataSource1.data = [];
+        // this.sIsLoading = '';
     }
 
     onSave(row: any = null) {
         let that = this;
         const dialogRef = this._matDialog.open(SampledetailtwoComponent,
             {
-                maxWidth: "75vw",
-                height: '75%',
+                // maxWidth: "75vw",
+                maxHeight: '75vh',
                 width: '70%',
                 data: row
             });

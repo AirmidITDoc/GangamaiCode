@@ -238,7 +238,7 @@ export class SampleList {
   SampleCollectionTime: Date;
   PathReportID: any; 
   SampleNo:any;
-  
+  RegNo:any;  
 
   constructor(SampleList) {
     this.VADate = SampleList.VADate || '';
@@ -249,5 +249,6 @@ export class SampleList {
     this.SampleCollectionTime = SampleList.SampleCollectionTime || '';
     this.PathReportID = SampleList.PathReportID || 0; 
     this.SampleNo = SampleList.SampleNo || 0; 
+    this.RegNo = SampleList.RegNo || 0; 
   } 
 }

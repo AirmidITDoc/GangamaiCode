@@ -202,8 +202,7 @@ export class NewCasepaperComponent implements OnInit {
   ) { console.log('Dialog Data:', data); }
 
   ngOnInit(): void {
-    debugger
-
+    // debugger
     this.searchFormGroup = this.createSearchForm();
     this.caseFormGroup = this.createForm();
     this.MedicineItemform();
@@ -234,12 +233,14 @@ export class NewCasepaperComponent implements OnInit {
       this.vClassId = this.regObj.classId
       this.getpreviousVisitData(this.regObj);
       this.getnewVisistList(this.regObj);
+      this.getnewVisistListDemo(this.regObj);
       this.getVisistList();
+
+      this.getPrescription(this.regObj)
     }
   }
 
   removedignosis(item) {
-    debugger
     let removedIndex = this.caseFormGroup.value.mAssignDiagnosis.findIndex(x => x.visitId == item.visitId);
     this.caseFormGroup.value.mAssignDiagnosis.splice(removedIndex, 1);
     this.ddlDiagnosis.SetSelection(this.caseFormGroup.value.mAssignDiagnosis.map(x => x.visitId));
@@ -424,14 +425,18 @@ export class NewCasepaperComponent implements OnInit {
     this.getVitalInfo(obj);
     this.getpreviousVisitData(obj);
     this.getnewVisistList(obj);
+    this.getnewVisistListDemo(obj);
     this.getVisistList();
 
+    this.getPrescription(obj)
   }
 
   RefDocNameId: any;
   PrefollowUpDate: string;
+
+  // do retrive code here
   getpreviousVisitData(obj) {
-    debugger
+    // debugger
     var mdata = {
       "visitId": obj.VisitId
     }
@@ -470,6 +475,43 @@ export class NewCasepaperComponent implements OnInit {
       }
     });
   }
+
+  // tried
+   getPrescription(obj) {
+      debugger
+      var m_data2 = {
+        "first": 0,
+        "rows": 10,
+        "sortField": "VisitId",
+        "sortOrder": 0,
+        "filters": [
+          {
+            "fieldName": "VisitId",
+            "fieldValue": String(obj.visitId),//"40773",	
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "Start",
+            "fieldValue": "0",
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "Length",
+            "fieldValue": "10",
+            "opType": "Equals"
+          }
+        ],
+        "exportType": "JSON"
+      }
+      console.log("VisitId:",m_data2)
+      this._CasepaperService.RtrvPreviousprescriptionDetailsdemo(m_data2).subscribe((data) => {
+        this.dsItemList.data = data?.data as MedicineItemList[];
+        if (this.dsItemList.data)
+          this.Chargelist = data.data as MedicineItemList[];
+        console.log(this.dsItemList.data);
+      });
+    }
+
   vitalInfo: any;
   getVitalInfo(obj) {
     let query
@@ -517,7 +559,7 @@ export class NewCasepaperComponent implements OnInit {
   }
 
   selectChangeTemplateName(row) {
-    debugger
+    // debugger
     console.log("Template:", row)
     this.templateId = row.value
     this.templateName = row.text
@@ -682,7 +724,7 @@ selectChangeExamination(row) {
 
 
   onTemplDetAdd() {
-    debugger
+    // debugger
     if ((this.vOPIPId == '' || this.vOPIPId == '0')) {
       this.toastr.warning('Please select Patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -1192,6 +1234,41 @@ selectChangeExamination(row) {
       this.extractUniqueDates();
     });
   }
+
+  getnewVisistListDemo(obj) {
+    debugger
+    var D_data = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "VisitId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "RegID",
+          "fieldValue": String(obj.regId),//"40773",	
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "Start",
+          "fieldValue": "0",
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "Length",
+          "fieldValue": "10",
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON"
+    }
+    console.log(D_data);
+    this._CasepaperService.getRtrvVisitedListdemo(D_data).subscribe(Visit => {
+      this.patients = Visit as MedicineItemList[];
+      this.extractUniqueDates();
+      console.log("visitPatient info:", this.patients)
+    });
+  }
+
   extractUniqueDates() {
     const dates = this.patients.map(patient => patient.VisitDate);
     this.uniqueDates = Array.from(new Set(dates));

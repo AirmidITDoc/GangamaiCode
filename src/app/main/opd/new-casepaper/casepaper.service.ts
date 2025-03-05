@@ -74,12 +74,15 @@ export class CasepaperService {
   public getOPDPrecriptionPrint(PrecriptionId) {
     return this._httpClient.post("Generic/GetByProc?procName=rptOPDPrecriptionPrint ", PrecriptionId)
   }
+
+  // retrive list when we edit featch table, hightlist
   public RtrvPreviousprescriptionDetails(visistId,loader = true) {
     if(loader){
       this._loaderService.show();
     }
     return this._httpClient.post("Generic/GetByProc?procName=Get_PrescriptionDetailsVisitWise",visistId);
   }
+
   public getVisitedList(employee,loader = true) {
     if(loader){
       this._loaderService.show();
@@ -128,7 +131,7 @@ export class CasepaperService {
     return this._httpClient.get("OutPatient/view-OP_PrescriptionwithoutHeader?VisitId=" + VisitId);
   }
 
-
+// used for prePrescription list
   public getRtrvVisitedList(param, loader = true) {
     if (loader) {
       this._loaderService.show();
@@ -147,6 +150,13 @@ export class CasepaperService {
   } 
     return this._httpClient.post("Generic/GetByProc?procName=m_RtrvTemplate_PrescriptionList",param)
   } 
+  // used to retrive cheifcom,dignosis,exami data
+  public getRtrvCheifComplaintList(visistId,loader = true) {
+    if(loader){
+      this._loaderService.show();
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OPCasepaperDignosisList",visistId);
+  }
 
   // raksha
   public getRegistraionById(Id) {
@@ -166,5 +176,13 @@ public insertItemMaster(Param: any) {
 
       return this._httpClient.put("ItemMaster/Edit/" + Param.itemId, Param);
   } else return this._httpClient.post("ItemMaster/InsertEDMX", Param);
+}
+
+public RtrvPreviousprescriptionDetailsdemo(employee) {
+  return this._httpClient1.PostData("OPDPrescriptionMedical/PrescriptionDetailsVisitList",employee)
+}
+
+public getRtrvVisitedListdemo(employee) {
+  return this._httpClient1.PostData("OPDPrescriptionMedical/GetVisitList",employee)
 }
 }

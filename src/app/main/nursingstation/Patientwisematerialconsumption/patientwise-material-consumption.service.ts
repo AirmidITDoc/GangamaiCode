@@ -30,13 +30,23 @@ export class PatientwiseMaterialConsumptionService {
             balqty: [],
             usedqty: [],
             remark: [],
-            PatientType: [],
+            PatientType: ['OP'],
             OP_IP_Type: ['1'] ,
             RegID:[],
-            
+            IsHealthCard: false,
             startdate: [(new Date()).toISOString()],
             enddate: [(new Date()).toISOString()],
             consumption: false,
+            HealthCardNo: false,
+            MobileNo:[],
+            PatientName:[],
+            regRadio:['OP'],
+            Remark:[],
+            MRPTotalAmount:[],
+            PurTotalAmount:[],
+            LandedTotalAmount:[],
+            storeId:[],
+
         })
     }
   

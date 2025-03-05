@@ -29,7 +29,7 @@ export class ResultEntryService {
       ]],
       // BillNo:[''],
       // BillDate:[''],
-      PatientTypeSearch: ['0'],
+      PatientTypeSearch: ['2'],
       StatusSearch: ['0'],
       CategoryId: [''],
       start: [new Date().toISOString()],

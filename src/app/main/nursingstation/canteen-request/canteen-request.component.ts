@@ -25,8 +25,9 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 })
 export class CanteenRequestComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    hasSelectedContacts: boolean;
+    @ViewChild('grid1') grid1: AirmidTableComponent;
 
+    hasSelectedContacts: boolean;
 
     gridConfig: gridModel = {
         apiUrl: "Nursing/PrescriptionWardList",
@@ -62,48 +63,42 @@ export class CanteenRequestComponent implements OnInit {
             { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
         row: 25
     }
 
-    gridConfig1: gridModel = {
+    gridConfig1: gridModel = new gridModel();
+
+    isShowDetailTable: boolean = false;
+
+    GetDetails(data) {
+        debugger
+        this.gridConfig1 = {
         apiUrl: "Nursing/PrescriptionDetailList",
         columnsList: [
             // { heading: "Code", key: "reqId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
             // { heading: "UnitMRP", key: "unitMRP", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
-
-            // {
-            //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-            //         {
-            //             action: gridActions.edit, callback: (data: any) => {
-            //                 this.onSave(data);
-            //             }
-            //         }, {
-            //             action: gridActions.delete, callback: (data: any) => {
-            //                 this._CanteenRequestService.deactivateTheStatus(data.ipMedID).subscribe((response: any) => {
-            //                     this.toastr.success(response.message);
-            //                     this.grid.bindGridData();
-            //                 });
-            //             }
-            //         }]
-            // } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "ReqId",
         sortOrder: 0,
         filters: [
-
-            { fieldName: "ReqId", fieldValue: "ReqId", opType: OperatorComparer.Equals },
-            { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
-            { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+            // { fieldName: "ReqId", fieldValue: "ReqId", opType: OperatorComparer.Equals },
+            // { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
+            // { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
+            // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            // { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
             // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
         row: 25
+      }
+        this.isShowDetailTable = true;
+        this.grid1.gridConfig = this.gridConfig1;
+        this.grid1.bindGridData();
     }
+
+    
     constructor(public _CanteenRequestService: CanteenRequestService, public _matDialog: MatDialog,
         public toastr: ToastrService,) { }
     ngOnInit(): void {
