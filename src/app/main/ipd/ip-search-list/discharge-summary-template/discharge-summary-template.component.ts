@@ -12,6 +12,7 @@ import { AdmissionPersonlModel } from '../../Admission/admission/admission.compo
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
+import { DischargeSummary, MedicineItemList } from '../discharge-summary/discharge-summary.component';
 
 @Component({
   selector: 'app-discharge-summary-template',
@@ -19,7 +20,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./discharge-summary-template.component.scss']
 })
 export class DischargeSummaryTemplateComponent {
-  // discSummary: FormGroup;
+  
   MedicineItemForm: FormGroup;
   discSummary: FormGroup;
   editorConfig: AngularEditorConfig = {
@@ -34,818 +35,659 @@ export class DischargeSummaryTemplateComponent {
 
   };
 
-    displayedColumns: string[] = [
-      'ItemName',
-      'DoseName',
-      'Day',
-      //  'Remark',
-      'Action'
-    ]
-  
-   
-    submitted = false;
-    msg: any;
-    Id: any;
-    a: any;
-    
-    DischargeSummaryId: any;
-    
-    DischargeSList = new DischargeSummary({});
-    screenFromString = 'discharge-summary';
-    dateTimeObj: any;
-    filteredOptionsItem: any;
-    noOptionFound: any;
-    ItemId: any;
-    isDoseSelected: boolean = false;
-    vDay: any;
-    vInstruction: any;
-    Chargelist: any = [];
-  
-    // @ViewChild(MatSort) sort: MatSort;
-    // @ViewChild(MatPaginator) paginator: MatPaginator;
-    @Input() dataArray: any;
-    selectedAdvanceObj: AdvanceDetailObj;
-    registerObj = new DischargeSummary({});
-  
-  
-  
-    menuActions: Array<string> = [];
-    vAdmissionId: any = 0;
-    vDischargeId: any = 0;
-    RetrDischargeSumryList: any = [];
-    vDiagnosis: any;
-    vClinicalCondition: any;
-    vSURGERYprocedure: any;
-    vPathology: any;
-    vRadiology: any;
-    vTreatmentGiven: any;
-    vTreatmentAdvisedAfterDischarge: any;
-    vOtherConDrOpinions: any;
-    vPainManagementTechnique: any;
-    vLifeStyle: any;
-    vConditionofTimeDischarge: any;
-    vSurgicalFinding: any;
-    vDoctorAssistantName: any;
-    vClaimNumber: any;
-    vPreOthNumber: any;
-    IsNormalDeath: any=1;
-    vOperativeNotes: any;
-    vhistory: any;
-    vClinicalFinding = "BP : \nP : \nR : \nSPO2 : \n\nRS : \nP/A :\nCVS : \nCNS :"
-  
-    vBp: any;
-    vP: any;
-    vR: any;
-    vSPO2: any;
-    vRS: any;
-    vPA: any;
-    vCVS: any;
-    vCNS: any;
-    vTemplateDesc: any;
+  displayedColumns: string[] = [
+    'itemName',
+    'doseName',
+    'day',
+    //  'Remark',
+    'Action'
+  ]
+
+
+  submitted = false;
+  msg: any;
+  Id: any;
+  a: any;
+
+  DischargeSummaryId: any;
+
+  DischargeSList = new DischargeSummary({});
+  screenFromString = 'discharge-summary';
+  dateTimeObj: any;
+  filteredOptionsItem: any;
+  noOptionFound: any;
+  ItemId: any;
+  isDoseSelected: boolean = false;
+  vDay: any;
+  vInstruction: any;
+  Chargeslist: any = [];
+
+  @Input() dataArray: any;
+  selectedAdvanceObj: AdvanceDetailObj;
+  registerObj = new DischargeSummary({});
+  menuActions: Array<string> = [];
+  vAdmissionId: any = 0;
+  vDischargeId: any = 0;
+  RetrDischargeSumryList: any = [];
+  vDiagnosis: any;
+  vClinicalCondition: any;
+  vSURGERYprocedure: any;
+  vPathology: any;
+  vRadiology: any;
+  vTreatmentGiven: any;
+  vTreatmentAdvisedAfterDischarge: any;
+  vOtherConDrOpinions: any;
+  vPainManagementTechnique: any;
+  vLifeStyle: any;
+  vConditionofTimeDischarge: any;
+  vSurgicalFinding: any;
+  vDoctorAssistantName: any;
+  vClaimNumber: any;
+  vPreOthNumber: any;
+  IsNormalDeath: any = 1;
+  vOperativeNotes: any;
+  vhistory: any;
+  vClinicalFinding = "BP : \nP : \nR : \nSPO2 : \n\nRS : \nP/A :\nCVS : \nCNS :"
+  bp: any = 1000;
+  vBp: any;
+  vP: any;
+  vR: any;
+  vSPO2: any;
+  vRS: any;
+  vPA: any;
+  vCVS: any;
+  vCNS: any;
+  vTemplateDesc: any;
   vTemplateId: any;
-    vIsNormalDeath=false;
-      registerObj1 = new AdmissionPersonlModel({});
-      @ViewChild('itemid') itemid: ElementRef;
-    
-      bp: any = 1000;
-      lngAdmId: any = [];
-  
-      autocompleteModeDose: string = "Dose";
-      autocompleteModeRefDoctor: string = "RefDoctor";
-      autocompleteModeDoctor: string = "ConDoctor";
-      autocompleteitem: string = "Item";
-      autocompleteModetemplate:string="Template"
-        
-    dsItemList = new MatTableDataSource<MedicineItemList>();
-  
-    constructor(public _IpSearchListService: IPSearchListService,
-      public _matDialog: MatDialog,
-      private _formBuilder: FormBuilder,
-      private _ActRoute: Router,
-      public toastr: ToastrService,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public dialogRef: MatDialogRef<DischargeSummaryTemplateComponent>,
-      public datePipe: DatePipe) {    }
-   
-    ngOnInit(): void {
-      this.discSummary = this.showDischargeSummaryForm();
-      this.MedicineItemForm = this.MedicineItemform();
-  
-      console.log(this.data)
-      if (this.data) {
-      
-        this.registerObj = this.data;
-        this.vAdmissionId = this.selectedAdvanceObj.AdmissionID;
-        this.getDischargeSummaryData(this.registerObj)
-        this.getPrescriptionList(this.registerObj)
-  
-      }
-  
-      if ((this.data?.regId ?? 0) > 0) {
-       
-        setTimeout(() => {
-          this._IpSearchListService.getRegistraionById(this.data.regId).subscribe((response) => {
-            this.registerObj= response;
-            console.log(this.registerObj)
-  
-          });
-  
-          this._IpSearchListService.getAdmissionById(this.data.admissionId).subscribe((response) => {
-            this.registerObj1 = response;
-            if(this.registerObj1){
-              this.registerObj1.phoneNo=this.registerObj1.phoneNo.trim()
-              this.registerObj1.mobileNo=this.registerObj1.mobileNo.trim()
-  
-            this.registerObj1.admissionTime=  this.datePipe.transform(this.registerObj1.admissionTime, 'hh:mm:ss a')
-            this.registerObj1.dischargeTime=  this.datePipe.transform(this.registerObj1.dischargeTime, 'hh:mm:ss a')
-       
-            }
-            console.log(this.registerObj1)
-  
-          });
-  
-  
-        }, 500);
-      }
-  
-      
-      this.getAdmissionInfo();
-      this.getdischargeIdbyadmission();
-      
-      // if (this.vIsNormalDeath == True) {
-      //   this.IsDeath = 1;
-      // } else {
-      //   this.IsDeath = 0;
-      // }
-  
+  vIsNormalDeath = 1;
+  doseId = 0
+  doseName1 = ""
+  registerObj1 = new AdmissionPersonlModel({});
+  @ViewChild('itemid') itemid: ElementRef;
+  lngAdmId: any = [];
+
+  autocompleteModeDose: string = "DoseMaster";
+  autocompleteModeRefDoctor: string = "RefDoctor";
+  autocompleteModeDoctor: string = "ConDoctor";
+  autocompleteitem: string = "Item";
+  autocompleteModetemplate: string = "Template"
+
+  dsItemList = new MatTableDataSource<MedicineItemList>();
+
+  constructor(public _IpSearchListService: IPSearchListService,
+    public _matDialog: MatDialog,
+    private _formBuilder: FormBuilder,
+    private _ActRoute: Router,
+    public toastr: ToastrService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<DischargeSummaryTemplateComponent>,
+    public datePipe: DatePipe) { }
+
+  ngOnInit(): void {
+    this.discSummary = this.showDischargeSummaryForm();
+    this.MedicineItemForm = this.MedicineItemform();
+
+    console.log(this.data)
+    if (this.data) {
+
+      this.registerObj = this.data;
+      this.vAdmissionId = this.selectedAdvanceObj.AdmissionID;
+      this.getDischargeSummaryData(this.registerObj)
+      this.getPrescriptionList(this.registerObj)
+
     }
-  
-    selectChangeItem(obj: any) {
-      debugger
-      console.log("Item:",obj);
-      this.MedicineItemForm.get('ItemId').setValue(obj); 
-      // this.refdocId = obj.value
+
+    if ((this.data?.regId ?? 0) > 0) {
+
+      setTimeout(() => {
+        this._IpSearchListService.getRegistraionById(this.data.regId).subscribe((response) => {
+          this.registerObj = response;
+          console.log(this.registerObj)
+
+        });
+
+        this._IpSearchListService.getAdmissionById(this.data.admissionId).subscribe((response) => {
+          this.registerObj1 = response;
+          if (this.registerObj1) {
+            this.registerObj1.phoneNo = this.registerObj1.phoneNo.trim()
+            this.registerObj1.mobileNo = this.registerObj1.mobileNo.trim()
+
+            this.registerObj1.admissionTime = this.datePipe.transform(this.registerObj1.admissionTime, 'hh:mm:ss a')
+            this.registerObj1.dischargeTime = this.datePipe.transform(this.registerObj1.dischargeTime, 'hh:mm:ss a')
+
+          }
+          console.log(this.registerObj1)
+
+        });
+
+
+      }, 500);
+    }
+
+
+    this.getdischargeIdbyadmission();
+
+    // if (this.vIsNormalDeath == True) {
+    //   this.IsDeath = 1;
+    // } else {
+    //   this.IsDeath = 0;
+    // }
+
+  }
+
+  selectChangeItem(obj: any) {
+    debugger
+    console.log("Item:", obj);
+    this.MedicineItemForm.get('ItemId').setValue(obj);
+    // this.refdocId = obj.value
   }
   onBlur(e: any) {
     this.vTemplateDesc = e.target.innerHTML;
   }
-    
-    isItemIdSelected: boolean = false;
-    MedicineItemform(): FormGroup {
-      return this._formBuilder.group({
-        ItemId: '',
-        DoseId: '',
-        Day: '',
-        Instruction: '',
-      });
-    }
-    showDischargeSummaryForm(): FormGroup {
-      return this._formBuilder.group({
-  
-    dischargeSummaryId: 0,
-    admissionId:'',
-    dischargeId: '',
-    history: "",
-    diagnosis: "",
-    investigation: "",
-    clinicalFinding: "",
-    opertiveNotes: "",
-    treatmentGiven: "",
-    treatmentAdvisedAfterDischarge: "",
-    followupdate: "2024-09-08",
-    remark: "",
-    dischargeSummaryDate: "2024-09-08",
-    opDate: "2024-09-08",
-    optime: "10:00:00 AM",
-    dischargeDoctor1: 0,
-    dischargeDoctor2: 0,
-    dischargeDoctor3: 0,
-    dischargeSummaryTime: "11:00:00 PM",
-    doctorAssistantName: "",
-    claimNumber: "",
-    preOthNumber: "",
-    addedByDate: "2024-09-08",
-    updatedByDate: "2024-09-08",
-    surgeryProcDone: "",
-    icd10code: "",
-    clinicalConditionOnAdmisssion: "",
-    otherConDrOpinions: "",
-    conditionAtTheTimeOfDischarge: "",
-    painManagementTechnique: "",
-    lifeStyle: "",
-    warningSymptoms: "",
-    radiology: "",
-    isNormalOrDeath: false
-      });
-    }
-    
-  
-    getSelectedserviceObj(obj) {
-      console.log(obj)
 
- // this.SrvcName1 = obj.serviceName;
- // this.vPrice = obj.classRate;
- // this.vQty = 1;
- // this.vChargeTotalAmount = obj.price;
- // this.vCahrgeNetAmount = obj.price;
- // this.serviceId = obj.serviceId;
- // this.IsPathology = obj.isPathology;
- // this.IsRadiology = obj.isRadiology;
- // this.vIsPackage = obj.isPackage;
- // this.CreditedtoDoctor = obj.creditedtoDoctor;
- // if (this.CreditedtoDoctor == true) {
- //   this.isDoctor = true;
- //   this.chargeForm.get('DoctorID').reset();
- //   this.chargeForm.get('DoctorID').setValidators([Validators.required]);
- //   this.chargeForm.get('DoctorID').enable();
+  isItemIdSelected: boolean = false;
+  MedicineItemform(): FormGroup {
+    return this._formBuilder.group({
+      ItemId: '',
+      DoseId: '',
+      Day: '',
+      Instruction: '',
+    });
+  }
+  showDischargeSummaryForm(): FormGroup {
+    return this._formBuilder.group({
+      admissionId: 0,
+      dischargeId: 0,
+      followupdate: this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
+      dischargeDoctor1: 0,
+      dischargeDoctor2: 0,
+      dischargeDoctor3: 0,
+      addedBy: 10,
+      isNormalOrDeath: 1,
+      dischargeSummaryId: 0,
+      TemplateId:0,
+      templateDescriptionHtml: ""
+    });
+  }
 
- // } else {
- //   this.isDoctor = false;
- //   this.chargeForm.get('DoctorID').reset();
- //   this.chargeForm.get('DoctorID').clearValidators();
- //   this.chargeForm.get('DoctorID').updateValueAndValidity();
- //   this.chargeForm.get('DoctorID').disable();
- // }
-}
-      
-   
-    @ViewChild('dosename') dosename: ElementRef;
-    @ViewChild('Day') Day: ElementRef;
-    @ViewChild('Instruction') Instruction: ElementRef;
-    @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
-    add: boolean = false;
-  
-    onEnterItem(event): void {
-      if (event.which === 13) {
-        this.dosename.nativeElement.focus();
-      }
+  getdose(event) {
+    this.doseName1 = event.text
+    this.doseId = event.value
+  }
+  getSelectedserviceObj(obj) {
+    console.log(obj)
+
+  }
+
+
+  @ViewChild('dosename') dosename: ElementRef;
+  @ViewChild('Day') Day: ElementRef;
+  @ViewChild('Instruction') Instruction: ElementRef;
+  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+  add: boolean = false;
+
+  onEnterItem(event): void {
+    if (event.which === 13) {
+      this.dosename.nativeElement.focus();
     }
-    public onEnterDose(event): void {
-      if (event.which === 13) {
-        this.Day.nativeElement.focus();
-      }
+  }
+  public onEnterDose(event): void {
+    if (event.which === 13) {
+      this.Day.nativeElement.focus();
     }
-    public onEnterqty(event): void {
-      if (event.which === 13) {
-        this.Instruction.nativeElement.focus();
-      }
+  }
+  public onEnterqty(event): void {
+    if (event.which === 13) {
+      this.Instruction.nativeElement.focus();
     }
-    public onEnterremark(event): void {
-      if (event.which === 13) {
-        this.addbutton.focus;
-        this.add = true;
-      }
+  }
+  public onEnterremark(event): void {
+    if (event.which === 13) {
+      this.addbutton.focus;
+      this.add = true;
     }
-    getDateTime(dateTimeObj) {
-      this.dateTimeObj = dateTimeObj;
-    }
-  
-    getOptionItemText(option) {
-      this.ItemId = option.ItemID;
-      if (!option) return '';
-      return option.ItemName;
-    }
-    getSelectedObjItem(obj) {
-      // console.log(obj)
-      this.ItemId = obj.ItemId;
-    }
-    getOptionTextDose(option) {
-      return option && option.DoseName ? option.DoseName : '';
-    }
-  
-    onAdd() {
-     
-      const iscekDuplicate = this.dsItemList.data.some(item => item.ItemID == this.ItemId)
-      if (!iscekDuplicate) {
-        this.dsItemList.data = [];
-        debugger
-        this.Chargelist.push(
-          {
-            
-            ItemID: this.MedicineItemForm.get('ItemId').value.ServiceId || 0,
-            ItemName: this.MedicineItemForm.get('ItemId').value.serviceName || '',
-            DoseName:"d1",// this.MedicineItemForm.get('DoseId').value.DoseName || '',
-            DoseId: 2,//this.MedicineItemForm.get('DoseId').value.DoseId || '',
-            Days: this.vDay,
-            Instruction: this.vInstruction || ''
-          });
-        this.dsItemList.data = this.Chargelist
-        } else {
-        this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
+  }
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
+  }
+
+  getOptionItemText(option) {
+    this.ItemId = option.ItemID;
+    if (!option) return '';
+    return option.ItemName;
+  }
+  getSelectedObjItem(obj) {
+    // console.log(obj)
+    this.ItemId = obj.ItemId;
+  }
+  getOptionTextDose(option) {
+    return option && option.DoseName ? option.DoseName : '';
+  }
+
+  onAdd() {
+
+    const iscekDuplicate = this.dsItemList.data.some(item => item.itemID == this.ItemId)
+    if (!iscekDuplicate) {
+      this.dsItemList.data = [];
+      this.Chargeslist.push(
+        {
+          itemID: this.MedicineItemForm.get('ItemId').value.serviceId || 0,
+          itemName: this.MedicineItemForm.get('ItemId').value.serviceName || '',
+          doseName: this.doseName1,//this.MedicineItemForm.get('DoseId').value || '',
+          doseId: this.doseId,// this.MedicineItemForm.get('DoseId').value || 0,
+          days: this.MedicineItemForm.get('Day').value || 0,
+          instruction: this.vInstruction || ''
         });
-        return;
-      }
-      // this.MedicineItemForm.get('ItemId').reset('');
-      // this.MedicineItemForm.get('DoseId').reset('');
-      // this.MedicineItemForm.get('Day').reset('');
-      // this.MedicineItemForm.get('Instruction').reset('');
-      // this.itemid.nativeElement.focus();
-    }
-  
-    deleteTableRow(event, element) {
-      debugger
-      let index = this.Chargelist.indexOf(element);
-      if (index >= 0) {
-        this.Chargelist.splice(index, 1);
-        this.dsItemList.data = [];
-        this.dsItemList.data = this.Chargelist;
-      }
-      this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
-        toastClass: 'tostr-tost custom-toast-success',
+      this.dsItemList.data = this.Chargeslist
+    } else {
+      this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
       });
+      return;
     }
-   
-    onAddTemplate() {
+    this.MedicineItemForm.get('ItemId').reset('');
+    this.MedicineItemForm.get('DoseId').reset('');
+    this.MedicineItemForm.get('Day').reset('');
+    this.MedicineItemForm.get('Instruction').reset('');
+    // this.itemid.nativeElement.focus();
+  }
 
-      this.vTemplateDesc = this.discSummary.get('TemplateId').value.TemplateDescription || ''
-  
+  deleteTableRow(event, element) {
+    debugger
+    let index = this.Chargeslist.indexOf(element);
+    if (index >= 0) {
+      this.Chargeslist.splice(index, 1);
+      this.dsItemList.data = [];
+      this.dsItemList.data = this.Chargeslist;
     }
-    getAdmissionInfo() {
-   ;
-    }
-  
-    getPrescriptionList(el) {
-      
-      var m_data2 = {
-        "AdmissionId": el.AdmissionID
-      }
-      //console.log(m_data2)
-      this._IpSearchListService.getPrescriptionList(m_data2).subscribe((data) => {
-        this.dsItemList.data = data as MedicineItemList[];
-        this.Chargelist = data as MedicineItemList[];
-        console.log(this.dsItemList.data);
-      });
-    }
-   
-    getDischargeSummaryData(el) {
-      // debugger
-      var m_data2 = {
-        "AdmissionId": el.AdmissionID
-      }
-      //console.log(m_data2)
-      this._IpSearchListService.getDischargeSummary(m_data2).subscribe((data) => {
-        this.RetrDischargeSumryList = data as DischargeSummary;
-        console.log(this.RetrDischargeSumryList);
-        if (this.RetrDischargeSumryList.length != 0) {
-          this.DischargeSummaryId = this.RetrDischargeSumryList[0].DischargeSummaryId
-          this.vDiagnosis = this.RetrDischargeSumryList[0].Diagnosis
-          this.vhistory = this.RetrDischargeSumryList[0].History
-          this.vClinicalCondition = this.RetrDischargeSumryList[0].ClinicalConditionOnAdmisssion
-          this.vClinicalFinding = this.RetrDischargeSumryList[0].ClinicalFinding
-          this.vSURGERYprocedure = this.RetrDischargeSumryList[0].SurgeryProcDone
-          this.vOperativeNotes = this.RetrDischargeSumryList[0].OpertiveNotes
-          this.vPathology = this.RetrDischargeSumryList[0].Investigation
-          this.vRadiology = this.RetrDischargeSumryList[0].Radiology
-          this.vTreatmentGiven = this.RetrDischargeSumryList[0].TreatmentGiven
-          this.vTreatmentAdvisedAfterDischarge = this.RetrDischargeSumryList[0].TreatmentAdvisedAfterDischarge
-          this.vOtherConDrOpinions = this.RetrDischargeSumryList[0].OtherConDrOpinions
-          this.vPainManagementTechnique = this.RetrDischargeSumryList[0].PainManagementTechnique
-          this.vLifeStyle = this.RetrDischargeSumryList[0].LifeStyle
-          this.vConditionofTimeDischarge = this.RetrDischargeSumryList[0].ConditionAtTheTimeOfDischarge
-          this.vDoctorAssistantName = this.RetrDischargeSumryList[0].DoctorAssistantName
-          this.vClaimNumber = this.RetrDischargeSumryList[0].ClaimNumber
-          this.vPreOthNumber = this.RetrDischargeSumryList[0].PreOthNumber
-          // this.DocName1 = this.RetrDischargeSumryList[0].DischargeDoctor1
-          // this.DocName2 = this.RetrDischargeSumryList[0].DischargeDoctor2
-          // this.DocName3 = this.RetrDischargeSumryList[0].DischargeDoctor3
-          this.IsNormalDeath = this.RetrDischargeSumryList[0].IsNormalOrDeath 
+    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    });
+  }
+
+  onAddTemplate() {
+
+    this.vTemplateDesc ="sssssssssssssssssssssss" //this.discSummary.get('TemplateId').value.TemplateDescription || ''
+
+  }
+
+  getPrescriptionList(el) {
+
+    var m_data2 = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "AdmissionId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "AdmissionId",
+          "fieldValue": "40773",
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "Start",
+          "fieldValue": "0",
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "Length",
+          "fieldValue": "10",
+          "opType": "Equals"
         }
-     
-        if (this.IsNormalDeath == 1) {
-          this.vIsNormalDeath = true;
-          this.discSummary.get("IsNormalOrDeath").setValue('True');
-        }
-        else {
-          this.vIsNormalDeath = false;
-          this.discSummary.get("IsNormalOrDeath").setValue('false');
-        }
-      });
+      ],
+      "exportType": "JSON"
     }
-    getdischargeIdbyadmission() {
-      let Query = "Select DischargeId from Discharge where  AdmissionID=" + this.selectedAdvanceObj.AdmissionID + " ";
-  
-      this._IpSearchListService.getDischargeId(Query).subscribe(data => {
-        this.registerObj = data[0];
-        this.vDischargeId = this.registerObj.DischargeId
-      });
-    }
-   
-   
-    onClose() {
-      this.discSummary.reset();
-      this._matDialog.closeAll();
-    }
-    ClinicalFInding: any;
-  
-  
-    Istemplate = false;
-    chkTemplate(event) {
-      if (event.checked)
-        this.Istemplate = true
-      else
-        this.Istemplate = true
-    }
-  
-    saveflag: boolean = false
-    onSubmit() {
-      Swal.fire({
-        title: 'Do you want to Save the Discharge Summary ',
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, Save!"
-  
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-  
-          this.saveflag = true
-          let DoctorName1 = 0;
-          if (this.discSummary.get("dischargeDoctor1").value)
-            DoctorName1 = this.discSummary.get("dischargeDoctor1").value;
-  
-          let DoctorName2 = 0;
-          if (this.discSummary.get("dischargeDoctor2").value)
-            DoctorName2 = this.discSummary.get("dischargeDoctor2").value;
-  
-          let DoctorName3 = 0;
-          if (this.discSummary.get("dischargeDoctor3").value)
-            DoctorName3 = this.discSummary.get("dischargeDoctor3").value;
-  
-          if (!this.DischargeSummaryId) {
+    console.log(m_data2)
+    this._IpSearchListService.getPrescriptionList(m_data2).subscribe((data) => {
+      this.dsItemList.data = data.data as MedicineItemList[];
+      this.Chargeslist = data as MedicineItemList[];
+      console.log(this.dsItemList.data);
+    });
+  }
+
+
+  onClose() {
+    // this.discSummary.reset();
+    this._matDialog.closeAll();
+  }
+  ClinicalFInding: any;
+
+  Istemplate = false;
+  chkTemplate(event) {
+    if (event.checked)
+      this.Istemplate = true
+    else
+      this.Istemplate = true
+  }
+
+  saveflag: boolean = false
+  OnSave() {
+    Swal.fire({
+      title: 'Do you want to Save the Discharge Summary ',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Save!"
+
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+
+        this.saveflag = true
+
+        if (!this.DischargeSummaryId) {
+
+          let dischargModeldata = {};
+
+          dischargModeldata['dischargesummaryId'] = this.DischargeSummaryId || 0,
+            dischargModeldata['dischargeId'] = this.vDischargeId,
+            dischargModeldata['admissionId'] = this.vAdmissionId || 0,
            
-  
-            let insertIPPrescriptionDischarge = [];
-            this.dsItemList.data.forEach(element => {
-              let insertIPPrescriptionDischargeObj = {};
-              insertIPPrescriptionDischargeObj['opD_IPD_ID'] = this.vAdmissionId || 0;
-              insertIPPrescriptionDischargeObj['opD_IPD_Type'] = 1;
-              insertIPPrescriptionDischargeObj['date'] = this.dateTimeObj.date;
-              insertIPPrescriptionDischargeObj['pTime'] = this.dateTimeObj.time;
-              insertIPPrescriptionDischargeObj['classID'] = 0;
-              insertIPPrescriptionDischargeObj['genericId'] = 0;
-              insertIPPrescriptionDischargeObj['drugId'] = element.ItemID || 0;
-              insertIPPrescriptionDischargeObj['doseId'] = element.DoseId || 0;
-              insertIPPrescriptionDischargeObj['days'] = element.Days || 0;
-              insertIPPrescriptionDischargeObj['instructionId'] = 0;
-              insertIPPrescriptionDischargeObj['qtyPerDay'] = 0;
-              insertIPPrescriptionDischargeObj['totalQty'] = 0;
-              insertIPPrescriptionDischargeObj['instruction'] = 0;
-              insertIPPrescriptionDischargeObj['remark'] = 0;
-              insertIPPrescriptionDischargeObj['isEnglishOrIsMarathi'] = 0;
-              insertIPPrescriptionDischargeObj['storeId'] =1,// this.accountService.currentUserValue.user.storeId || 0;
-              insertIPPrescriptionDischargeObj['createdBy'] =1// this.accountService.currentUserValue.user.id,
-                insertIPPrescriptionDischarge.push(insertIPPrescriptionDischargeObj);
-            });
-            let SubmitData = {
-              'insertIPDDischargSummary': this.discSummary.value(),
-              'insertIPPrescriptionDischarge': insertIPPrescriptionDischarge
-            }
-            console.log(SubmitData);
-            this._IpSearchListService.insertIPDDischargSummary(SubmitData).subscribe(response => {
-               this.toastr.success(response.message);
-              // this.onClear(true);
-              this._matDialog.closeAll();
-          }, (error) => {
-              this.toastr.error(error.message);
+            dischargModeldata['followupdate'] = this.discSummary.get("diagnosis").value || '',
+            dischargModeldata['dischargeDoctor1'] = this.discSummary.get("dischargeDoctor1").value,
+            dischargModeldata['dischargeDoctor2'] = this.discSummary.get("dischargeDoctor2").value,
+            dischargModeldata['dischargeDoctor3'] = this.discSummary.get("dischargeDoctor3").value,
+            dischargModeldata['addedBy'] = 1
+            dischargModeldata['isNormalOrDeath'] = this.discSummary.get("isNormalOrDeath").value
+
+
+            dischargModeldata['templateDescriptionHtml'] = this.discSummary.get("templateDescriptionHtml").value || ''
+           
+
+          let insertIPPrescriptionDischarge = [];
+          this.dsItemList.data.forEach(element => {
+            let Prescdiscgargemodel = {};
+            Prescdiscgargemodel['opdIpdId'] = this.vAdmissionId || 0;
+            Prescdiscgargemodel['opdIpdType'] = 1;
+            Prescdiscgargemodel['date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd');
+            Prescdiscgargemodel['pTime'] = this.dateTimeObj.time;
+            Prescdiscgargemodel['classId'] = 0;
+            Prescdiscgargemodel['genericId'] = 0;
+            Prescdiscgargemodel['drugId'] = element.itemID || 0;
+            Prescdiscgargemodel['doseId'] = element.doseId || 0;
+            Prescdiscgargemodel['days'] = element.days || 0;
+            Prescdiscgargemodel['instructionId'] = 0;
+            Prescdiscgargemodel['qtyPerDay'] = 0;
+            Prescdiscgargemodel['totalQty'] = 0;
+            Prescdiscgargemodel['instruction'] = "";
+            Prescdiscgargemodel['remark'] = "";
+            Prescdiscgargemodel['isEnglishOrIsMarathi'] = true;
+            Prescdiscgargemodel['storeId'] = 1;//this.accountService.currentUserValue.user.storeId || 0;
+            Prescdiscgargemodel['createdBy'] = 1;//this.accountService.currentUserValue.user.id,
+            insertIPPrescriptionDischarge.push(Prescdiscgargemodel);
           });
-          } else {
-            let updateIPDDischargSummaryObj = {};
-            updateIPDDischargSummaryObj['dischargesummaryId'] = this.DischargeSummaryId || 0,
-              updateIPDDischargSummaryObj['dischargeId'] = this.vDischargeId,
-              updateIPDDischargSummaryObj['history'] = this.discSummary.get("history").value || '',
-              updateIPDDischargSummaryObj['diagnosis'] = this.discSummary.get("Diagnosis").value || '',
-              updateIPDDischargSummaryObj['clinicalFinding'] = this.discSummary.get("ClinicalFinding").value || '',
-              updateIPDDischargSummaryObj['clinicalConditionOnAdmisssion'] = this.discSummary.get("ClinicalConditionOnAdmisssion").value || '',
-              updateIPDDischargSummaryObj['surgeryProcDone'] = this.discSummary.get("SurgeryProcDone").value || '',
-              updateIPDDischargSummaryObj['opertiveNotes'] = this.discSummary.get("OperativeNotes").value || '',
-              updateIPDDischargSummaryObj['radiology'] = this.discSummary.get("Radiology").value || '',
-              updateIPDDischargSummaryObj['investigation'] = this.discSummary.get("Pathology").value || '',
-              updateIPDDischargSummaryObj['treatmentGiven'] = this.discSummary.get("TreatmentGiven").value || '',
-              updateIPDDischargSummaryObj['treatmentAdvisedAfterDischarge'] = this.discSummary.get("TreatmentAdvisedAfterDischarge").value || '',
-              updateIPDDischargSummaryObj['followupdate'] = this.dateTimeObj.date,
-              updateIPDDischargSummaryObj['remark'] = ''
-            updateIPDDischargSummaryObj['opDate'] = this.dateTimeObj.date,
-              updateIPDDischargSummaryObj['opTime'] = this.dateTimeObj.date,
-              updateIPDDischargSummaryObj['dischargeDoctor1'] = DoctorName1,
-              updateIPDDischargSummaryObj['dischargeDoctor2'] = DoctorName2,
-              updateIPDDischargSummaryObj['dischargeDoctor3'] = DoctorName3,
-              updateIPDDischargSummaryObj['doctorAssistantName'] = this.discSummary.get("DoctorAssistantName").value || '',
-              updateIPDDischargSummaryObj['claimNumber'] = this.discSummary.get("ClaimNumber").value || 0,
-              updateIPDDischargSummaryObj['preOthNumber'] = this.discSummary.get("PreOthNumber").value || 0,
-              updateIPDDischargSummaryObj['updatedBy'] = 1,//this.accountService.currentUserValue.user.id,
-              updateIPDDischargSummaryObj['icD10CODE'] = ''
-            updateIPDDischargSummaryObj['otherConDrOpinions'] = this.discSummary.get("OtherConDrOpinions").value || '',
-              updateIPDDischargSummaryObj['conditionAtTheTimeOfDischarge'] = this.discSummary.get("ConditionAtTheTimeOfDischarge").value || '',
-              updateIPDDischargSummaryObj['painManagementTechnique'] = this.discSummary.get("PainManagementTechnique").value || '',
-              updateIPDDischargSummaryObj['lifeStyle'] = this.discSummary.get("LifeStyle").value || '',
-              updateIPDDischargSummaryObj['warningSymptoms'] = '',
-              updateIPDDischargSummaryObj['isNormalOrDeath'] = this.discSummary.get("IsNormalOrDeath").value
-  
-  
-  
-            let insertIPPrescriptionDischarge = [];
-            this.dsItemList.data.forEach(element => {
-              let insertIPPrescriptionDischargeObj = {};
-              insertIPPrescriptionDischargeObj['opD_IPD_ID'] = this.vAdmissionId || 0;
-              insertIPPrescriptionDischargeObj['opD_IPD_Type'] = 1;
-              insertIPPrescriptionDischargeObj['date'] = this.dateTimeObj.date;
-              insertIPPrescriptionDischargeObj['pTime'] = this.dateTimeObj.time;
-              insertIPPrescriptionDischargeObj['classID'] = 0;
-              insertIPPrescriptionDischargeObj['genericId'] = 0;
-              insertIPPrescriptionDischargeObj['drugId'] = element.ItemID || 0;
-              insertIPPrescriptionDischargeObj['doseId'] = element.DoseId || 0;
-              insertIPPrescriptionDischargeObj['days'] = element.Days || 0;
-              insertIPPrescriptionDischargeObj['instructionId'] = 0;
-              insertIPPrescriptionDischargeObj['qtyPerDay'] = 0;
-              insertIPPrescriptionDischargeObj['totalQty'] = 0;
-              insertIPPrescriptionDischargeObj['instruction'] = 0;
-              insertIPPrescriptionDischargeObj['remark'] = 0;
-              insertIPPrescriptionDischargeObj['isEnglishOrIsMarathi'] = 0;
-              insertIPPrescriptionDischargeObj['storeId'] =1,// this.accountService.currentUserValue.user.storeId || 0;
-              insertIPPrescriptionDischargeObj['createdBy'] =1,// this.accountService.currentUserValue.user.id,
-                insertIPPrescriptionDischarge.push(insertIPPrescriptionDischargeObj);
-            });
-  
-  
-            let deleteIPPrescriptionDischargeobj = {};
-            deleteIPPrescriptionDischargeobj['opD_IPD_ID'] = this.vAdmissionId || 0;
-  
-            let SubmitData = {
-              'updateIPDDischargSummary': updateIPDDischargSummaryObj,
-              'insertIPPrescriptionDischarge': insertIPPrescriptionDischarge,
-              'deleteIPPrescriptionDischarge': deleteIPPrescriptionDischargeobj
-            }
-            console.log(SubmitData);
-            setTimeout(() => {
-              this._IpSearchListService.updateIPDDischargSummary(SubmitData).subscribe(response => {
-                this.toastr.success(response);
-                // this.onClear(true);
-                this._matDialog.closeAll();
-              }, (error) => {
-                this.toastr.error(error.message);
-              });
-              
-            }, 500);
+
+          let SubmitData = {
+            'discharge': dischargModeldata,
+            'prescriptionTemplate': insertIPPrescriptionDischarge
           }
+          console.log(SubmitData);
+          this._IpSearchListService.insertIPDDischargSummaryTemplate(SubmitData).subscribe(response => {
+            this.toastr.success(response.message);
+            this._matDialog.closeAll();
+          }, (error) => {
+            this.toastr.error(error.message);
+          });
         }
-      })
-    }
-  
-  
-    viewgetDischargesummaryPdf(AdmId) {
-  
-    }
-  
-  
-    viewgetDischargesummaryTempPdf(AdmId) {
-  
-    }
-
-    onClear(){}
-
-    getItemMaster() { 
-      // const dialogRef = this._matDialog.open(AddItemComponent,
-      //   {
-      //     maxWidth: "60vw",
-      //     maxHeight: "65vh",
-      //     width: '100%',
-      //     height: "100%" 
-      //   });
-      // dialogRef.afterClosed().subscribe(result => {
-      //   console.log('The dialog was closed - Insert Action', result);
-      // });
-    } 
-  
-    SetDeathOrNormal() {
-  
-    }
-  
-    getValidationMessages() {
-      return {
-          RegId: [],
-          dischargeDoctor1: [
-              { name: "required", Message: "First Name is required" },
-              { name: "maxLength", Message: "Enter only upto 50 chars" },
-              { name: "pattern", Message: "only char allowed." }
-          ],
-          dischargeDoctor2: [
-              // { name: "required", Message: "Middle Name is required" },
-              // { name: "maxLength", Message: "Enter only upto 50 chars" },
-              { name: "pattern", Message: "only char allowed." }
-          ],
-          dischargeDoctor3: [
-              { name: "required", Message: "Last Name is required" },
-              // { name: "maxLength", Message: "Enter only upto 50 chars" },
-              { name: "pattern", Message: "only char allowed." }
-          ],
-          address: [
-              { name: "required", Message: "Address is required" },
-  
-          ],
-          prefixId: [
-              { name: "required", Message: "Prefix Name is required" }
-          ],
-          genderId: [
-              { name: "required", Message: "Gender is required" }
-          ],
-          areaId: [
-              { name: "required", Message: "Area Name is required" }
-          ],
-          cityId: [
-              { name: "required", Message: "City Name is required" }
-          ],
-          religionId: [
-              { name: "required", Message: "Religion Name is required" }
-          ],
-          countryId: [
-              { name: "required", Message: "Country Name is required" }
-          ],
-          maritalStatusId: [
-              { name: "required", Message: "Mstatus Name is required" }
-          ],
-          stateId: [
-              { name: "required", Message: "State Name is required" }
-          ],
-          mobileNo: [
-              { name: "pattern", Message: "Only numbers allowed" },
-              { name: "required", Message: "Mobile No is required" },
-              { name: "minLength", Message: "10 digit required." },
-              { name: "maxLength", Message: "More than 10 digits not allowed." }
-  
-          ],
-          phoneNo: [
-              { name: "pattern", Message: "Only numbers allowed" },
-              // { name: "required", Message: "phoneNo No is required" },
-              { name: "minLength", Message: "10 digit required." },
-              { name: "maxLength", Message: "More than 10 digits not allowed." }
-  
-          ],
-          aadharCardNo: [
-              { name: "pattern", Message: "Only numbers allowed" },
-              { name: "required", Message: "AadharCard No is required" },
-              { name: "minLength", Message: "12 digit required." },
-              { name: "maxLength", Message: "More than 12 digits not allowed." }
-          ],
-          MaritalStatusId: [
-              { name: "required", Message: "Mstatus Name is required" }
-          ],
-          patientTypeId: [
-              { name: "required", Message: "Country Name is required" }
-          ],
-          tariffId: [
-              { name: "required", Message: "Mstatus Name is required" }
-          ],
-          departmentId: [
-              { name: "required", Message: "Department Name is required" }
-          ],
-          DoctorID: [
-              { name: "required", Message: "Doctor Name is required" }
-          ],
-          refDocId: [
-              { name: "required", Message: "Ref Doctor Name is required" }
-          ],
-          PurposeId: [
-              { name: "required", Message: "Purpose Name is required" }
-          ],
-          CompanyId: [
-              { name: "required", Message: "Company Name is required" }
-          ],
-          SubCompanyId: [
-              { name: "required", Message: "SubCompany Name is required" }
-          ],
-          bedId: [
-              { name: "required", Message: "bedId Name is required" }
-          ],
-          wardId: [
-              { name: "required", Message: "wardId Name is required" }
-          ],
-          TemplateId:[
-            { name: "required", Message: "Template Name is required" }
-        ]
-  
-      };
-  }
-  }
-  
-  
-  
-  export class DischargeSummary {
-    AdmissionId: any;
-    DischargeId: any;
-    History: any;
-    Diagnosis: any;
-    Investigation: any;
-    ClinicalFinding: any;
-    OpertiveNotes: any;
-    TreatmentGiven: any;
-    TreatmentAdvisedAfterDischarge: any;
-    Followupdate: any;
-    Remark: any;
-    DischargeSummaryDate: any;
-    OPDate: any;
-    OPTime: any;
-    DischargeDoctor1: any;
-    DischargeDoctor2: any;
-    DischargeDoctor3: any;
-    DischargeSummaryTime: any;
-    DoctorAssistantName: any;
-    ClaimNumber: any;
-    PreOthNumber: any;
-    AddedBy: any;
-    AddedByDate: any;
-    UpdatedBy: any;
-    UpdatedByDate: any;
-    SurgeryProcDone: any;
-    ICD10CODE: any;
-    ClinicalConditionOnAdmisssion: any;
-    OtherConDrOpinions: any;
-    ConditionAtTheTimeOfDischarge: any;
-    PainManagementTechnique: any;
-    LifeStyle: any;
-    WarningSymptoms: any;
-    Radiology: any;
-    IsNormalOrDeath: any;
-    DischargesummaryId: any;
-    Pathology: any;
-    DocNameID: any;
-    TemplateDescriptionHtml: any;
-    IsDischarged: any;
-  
-  
-    constructor(DischargeSummary) {
-      this.DischargesummaryId = DischargeSummary.DischargesummaryId || 0,
-        this.AdmissionId = DischargeSummary.AdmissionId || 0,
-        this.DischargeId = DischargeSummary.DischargeId || 0,
-        this.History = DischargeSummary.History || 0,
-        this.Diagnosis = DischargeSummary.Diagnosis || 0,
-        this.Investigation = DischargeSummary.Investigation || 0,
-        this.ClinicalFinding = DischargeSummary.ClinicalFinding || 0,
-        this.OpertiveNotes = DischargeSummary.OpertiveNotes || 0,
-        this.TreatmentGiven = DischargeSummary.TreatmentGiven || 0,
-        this.TreatmentAdvisedAfterDischarge = DischargeSummary.TreatmentAdvisedAfterDischarge || 0,
-        this.Followupdate = DischargeSummary.Followupdate || new Date(),
-        this.Remark = DischargeSummary.Remark || 0,
-        this.DischargeSummaryDate = DischargeSummary.DischargeSummaryDate || 0,
-        this.OPDate = DischargeSummary.OPDate || 0,
-        this.OPTime = DischargeSummary.OPTime || 0,
-        this.DischargeDoctor1 = DischargeSummary.DischargeDoctor1 || 0,
-        this.DischargeDoctor2 = DischargeSummary.DischargeDoctor2 || 0,
-        this.DischargeDoctor3 = DischargeSummary.DischargeDoctor3 || 0,
-        this.DischargeSummaryTime = DischargeSummary.DischargeSummaryTime || 0,
-        this.DoctorAssistantName = DischargeSummary.DoctorAssistantName || 0
-      this.Pathology = DischargeSummary.Pathology || '';
-      this.TemplateDescriptionHtml = DischargeSummary.TemplateDescriptionHtml || '';
-      this.IsDischarged = DischargeSummary.IsDischarged || 0;
-    }
-  }
-  export class MedicineItemList {
-    ItemID: any;
-    ItemId: any;
-    ItemName: string;
-    DoseName: any;
-    Days: number;
-    DoseName1: any;
-    Day1: number;
-    DoseName2: any;
-    Day2: number;
-    Instruction: any;
-    DoseId: any;
-    DoseId1: any;
-    DoseId2: any;
-    Day: any;
-    DaysOption2: any;
-    DaysOption3: any;
-    DoseNameOption2: any;
-    DoseNameOption3: any;
-    /**
-    * Constructor
-    *
-    * @param MedicineItemList
-    */
-    constructor(MedicineItemList) {
-      {
-        this.ItemId = MedicineItemList.ItemId || 0;
-        this.ItemID = MedicineItemList.ItemID || 0;
-        this.ItemName = MedicineItemList.ItemName || "";
-  
-        this.Instruction = MedicineItemList.Instruction || '';
-        this.DoseName = MedicineItemList.DoseName || '';
-        this.Days = MedicineItemList.Days || 0;
-        this.DoseName1 = MedicineItemList.DoseName1 || '';
-        this.Day1 = MedicineItemList.Day1 || 0;
-        this.DoseName2 = MedicineItemList.DoseName2 || '';
-        this.Day2 = MedicineItemList.Day2 || 0;
-        this.DoseId1 = MedicineItemList.DoseId1 || '';
-        this.DoseId2 = MedicineItemList.DoseId2 || 0;
-        this.DaysOption2 = MedicineItemList.DaysOption2 || 0;
-        this.DaysOption3 = MedicineItemList.DaysOption3 || 0;
-        this.DoseNameOption2 = MedicineItemList.DoseNameOption2 || '';
-        this.DoseNameOption3 = MedicineItemList.DoseNameOption3 || '';
       }
-    }
+    })
   }
-  
+
+
+
+  getPrescription(AdmissionId) {
+
+    var m_data2 = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "AdmissionId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "AdmissionId",
+          "fieldValue": String(AdmissionId),//"40773",	
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "Start",
+          "fieldValue": "0",
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "Length",
+          "fieldValue": "10",
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON"
+    }
+    console.log(m_data2)
+    this._IpSearchListService.getPrescriptionList(m_data2).subscribe((data) => {
+      this.dsItemList.data = data?.data as MedicineItemList[];
+      if (this.dsItemList.data)
+        this.Chargeslist = data.data as MedicineItemList[];
+      console.log(this.dsItemList.data);
+    });
+  }
+
+  getDischargeSummaryData(AdmissionId) {
+
+    var m_data2 = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "AdmissionId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "AdmissionId",
+          "fieldValue": String(AdmissionId),// "40622",	
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "Start",
+          "fieldValue": "0",
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "Length",
+          "fieldValue": "10",
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON"
+    }
+
+    console.log(m_data2)
+    this._IpSearchListService.getDischargeSummary(m_data2).subscribe((data) => {
+      console.log(data);
+      debugger
+      this.RetrDischargeSumryList = data?.data as DischargeSummary;
+      console.log(this.RetrDischargeSumryList);
+      if (this.RetrDischargeSumryList.length != 0) {
+        this.DischargeSummaryId = this.RetrDischargeSumryList[0].dischargeSummaryId || 0
+        this.vDiagnosis = this.RetrDischargeSumryList[0].diagnosis
+        this.vhistory = this.RetrDischargeSumryList[0].history
+        this.vClinicalCondition = this.RetrDischargeSumryList[0].clinicalConditionOnAdmisssion
+        this.vClinicalFinding = this.RetrDischargeSumryList[0].clinicalFinding
+        this.vSURGERYprocedure = this.RetrDischargeSumryList[0].surgeryProcDone
+        this.vOperativeNotes = this.RetrDischargeSumryList[0].opertiveNotes
+        this.vPathology = this.RetrDischargeSumryList[0].pathology
+        this.vRadiology = this.RetrDischargeSumryList[0].radiology
+        this.vTreatmentGiven = this.RetrDischargeSumryList[0].treatmentGiven
+        this.vTreatmentAdvisedAfterDischarge = this.RetrDischargeSumryList[0].treatmentAdvisedAfterDischarge
+        this.vOtherConDrOpinions = this.RetrDischargeSumryList[0].otherConDrOpinions
+        this.vPainManagementTechnique = this.RetrDischargeSumryList[0].painManagementTechnique
+        this.vLifeStyle = this.RetrDischargeSumryList[0].lifeStyle
+        this.vConditionofTimeDischarge = this.RetrDischargeSumryList[0].conditionAtTheTimeOfDischarge
+        this.vDoctorAssistantName = this.RetrDischargeSumryList[0].doctorAssistantName
+        this.vClaimNumber = this.RetrDischargeSumryList[0].claimNumber
+        this.vPreOthNumber = this.RetrDischargeSumryList[0].preOthNumber
+        this.IsNormalDeath = this.RetrDischargeSumryList[0].isNormalOrDeath
+        this.discSummary.get("dischargeDoctor1").setValue(this.RetrDischargeSumryList[0].dischargeDoctor1)
+        this.discSummary.get("dischargeDoctor2").setValue(this.RetrDischargeSumryList[0].dischargeDoctor2)
+        this.discSummary.get("dischargeDoctor3").setValue(this.RetrDischargeSumryList[0].dischargeDoctor3)
+
+
+      }
+
+      if (this.IsNormalDeath == 1) {
+        this.vIsNormalDeath = 1;
+        this.discSummary.get("isNormalOrDeath").setValue('1');
+      }
+      else {
+        this.vIsNormalDeath = 0;
+        this.discSummary.get("isNormalOrDeath").setValue('0');
+      }
+    });
+  }
+  getdischargeIdbyadmission() {
+    debugger
+    this._IpSearchListService.getDischargeId(this.data.admissionId).subscribe(data => {
+      console.log(data)
+
+      if (data.dischargeId)
+        this.vDischargeId = data.dischargeId
+      else this.vDischargeId = 0
+    });
+  }
+
+  viewgetDischargesummaryPdf(AdmId) {
+
+  }
+
+
+  viewgetDischargesummaryTempPdf(AdmId) {
+
+  }
+
+  onClear() { 
+    this._matDialog.closeAll()
+  }
+
+  getItemMaster() {
+    // const dialogRef = this._matDialog.open(AddItemComponent,
+    //   {
+    //     maxWidth: "60vw",
+    //     maxHeight: "65vh",
+    //     width: '100%',
+    //     height: "100%" 
+    //   });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log('The dialog was closed - Insert Action', result);
+    // });
+  }
+
+  SetDeathOrNormal() {
+
+  }
+
+  getValidationMessages() {
+    return {
+      RegId: [],
+      dischargeDoctor1: [
+        { name: "required", Message: "First Name is required" },
+        { name: "maxLength", Message: "Enter only upto 50 chars" },
+        { name: "pattern", Message: "only char allowed." }
+      ],
+      dischargeDoctor2: [
+        // { name: "required", Message: "Middle Name is required" },
+        // { name: "maxLength", Message: "Enter only upto 50 chars" },
+        { name: "pattern", Message: "only char allowed." }
+      ],
+      dischargeDoctor3: [
+        { name: "required", Message: "Last Name is required" },
+        // { name: "maxLength", Message: "Enter only upto 50 chars" },
+        { name: "pattern", Message: "only char allowed." }
+      ],
+      address: [
+        { name: "required", Message: "Address is required" },
+
+      ],
+      prefixId: [
+        { name: "required", Message: "Prefix Name is required" }
+      ],
+      genderId: [
+        { name: "required", Message: "Gender is required" }
+      ],
+      areaId: [
+        { name: "required", Message: "Area Name is required" }
+      ],
+      cityId: [
+        { name: "required", Message: "City Name is required" }
+      ],
+      religionId: [
+        { name: "required", Message: "Religion Name is required" }
+      ],
+      countryId: [
+        { name: "required", Message: "Country Name is required" }
+      ],
+      maritalStatusId: [
+        { name: "required", Message: "Mstatus Name is required" }
+      ],
+      stateId: [
+        { name: "required", Message: "State Name is required" }
+      ],
+      mobileNo: [
+        { name: "pattern", Message: "Only numbers allowed" },
+        { name: "required", Message: "Mobile No is required" },
+        { name: "minLength", Message: "10 digit required." },
+        { name: "maxLength", Message: "More than 10 digits not allowed." }
+
+      ],
+      phoneNo: [
+        { name: "pattern", Message: "Only numbers allowed" },
+        // { name: "required", Message: "phoneNo No is required" },
+        { name: "minLength", Message: "10 digit required." },
+        { name: "maxLength", Message: "More than 10 digits not allowed." }
+
+      ],
+      aadharCardNo: [
+        { name: "pattern", Message: "Only numbers allowed" },
+        { name: "required", Message: "AadharCard No is required" },
+        { name: "minLength", Message: "12 digit required." },
+        { name: "maxLength", Message: "More than 12 digits not allowed." }
+      ],
+      MaritalStatusId: [
+        { name: "required", Message: "Mstatus Name is required" }
+      ],
+      patientTypeId: [
+        { name: "required", Message: "Country Name is required" }
+      ],
+      tariffId: [
+        { name: "required", Message: "Mstatus Name is required" }
+      ],
+      departmentId: [
+        { name: "required", Message: "Department Name is required" }
+      ],
+      DoctorID: [
+        { name: "required", Message: "Doctor Name is required" }
+      ],
+      refDocId: [
+        { name: "required", Message: "Ref Doctor Name is required" }
+      ],
+      PurposeId: [
+        { name: "required", Message: "Purpose Name is required" }
+      ],
+      CompanyId: [
+        { name: "required", Message: "Company Name is required" }
+      ],
+      SubCompanyId: [
+        { name: "required", Message: "SubCompany Name is required" }
+      ],
+      bedId: [
+        { name: "required", Message: "bedId Name is required" }
+      ],
+      wardId: [
+        { name: "required", Message: "wardId Name is required" }
+      ],
+      TemplateId: [
+        { name: "required", Message: "Template Name is required" }
+      ],
+      doseId:[]
+
+    };
+  }
+}
+

@@ -404,6 +404,7 @@ getSelectedObjphone(obj) {
 
         this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
             this.toastr.success(response.message);
+            console.log(response)
             this.OnViewReportPdf(response.visitId)
             this.onClear(true);
             this._matDialog.closeAll();

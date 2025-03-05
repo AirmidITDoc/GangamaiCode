@@ -750,6 +750,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     console.log(submitData);
     this._AppointmentlistService.InsertOPBillingCredit(submitData).subscribe(response => {
       this.toastrService.success(response.message);
+      this.viewgetCreditOPBillReportPdf(response.billNo)
       this._matDialog.closeAll();
     }, (error) => {
       this.toastrService.error(error.message);
@@ -899,7 +900,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
           this._AppointmentlistService.InsertOPBilling(submitData).subscribe(response => {
             this.toastrService.success(response.message);
             console.log(response)
-            this.viewgetOPBillReportPdf(response)
+            this.viewgetOPBillReportPdf(response.billNo)
             this._matDialog.closeAll();
           }, (error) => {
             this.toastrService.error(error.message);
@@ -980,7 +981,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       console.log(submitData);
       this._AppointmentlistService.InsertOPBilling(submitData).subscribe(response => {
         this.toastrService.success(response.message);
-        this.viewgetOPBillReportPdf(response)
+        console.log(response);
+        this.viewgetOPBillReportPdf(response.billNo)
+          
         this._matDialog.closeAll();
       }, (error) => {
         this.toastrService.error(error.message);
@@ -989,11 +992,15 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
   }
 
-
+  viewgetCreditOPBillReportPdf(element) {
+    debugger
+    console.log('Third action clicked for:', element);
+    this.commonService.Onprint("BillNo", element, "OpBillReceipt");
+  }
   viewgetOPBillReportPdf(element) {
     debugger
     console.log('Third action clicked for:', element);
-    this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
+    this.commonService.Onprint("BillNo", element, "OpBillReceipt");
   }
   onClose() { }
 

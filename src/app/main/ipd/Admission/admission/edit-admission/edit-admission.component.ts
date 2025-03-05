@@ -25,6 +25,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AdmissionPersonlModel, Bed, RegInsert } from '../admission.component';
 import { Console } from 'console';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 
 @Component({
@@ -78,6 +79,7 @@ export class EditAdmissionComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private router: Router,
     public toastr: ToastrService,
+     private commonService: PrintserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     dialogRef.disableClose = true;
@@ -113,11 +115,10 @@ export class EditAdmissionComponent implements OnInit {
           if (this.registerObj1) {
             this.registerObj1.phoneNo = this.registerObj1.phoneNo.trim()
             this.registerObj1.mobileNo = this.registerObj1.mobileNo.trim()
-
-            debugger
-            // this.admissionFormGroup.get("DepartmentId").setValue(this.registerObj1.departmentId)
             if(this.registerObj1.patientTypeId==2){
               this.isCompanySelected=true
+              this.admissionFormGroup.get("DepartmentId").setValue(this.registerObj1.departmentId
+              )
               this.admissionFormGroup.get("CompanyId").setValue(this.registerObj1.companyId)
             }
           }
@@ -181,6 +182,7 @@ export class EditAdmissionComponent implements OnInit {
     this._AdmissionService.AdmissionUpdate(this.registerObj1.admissionId, submitData).subscribe(response => {
       this.toastr.success(response.message);
       this.onClear();
+      this.getAdmittedPatientCasepaperview(response.admissionId);
       this._matDialog.closeAll();
     }, (error) => {
       this.toastr.error(error.message);
@@ -191,6 +193,9 @@ export class EditAdmissionComponent implements OnInit {
     // }
 
   }
+  getAdmittedPatientCasepaperview(AdmissionId) {
+    this.commonService.Onprint("AdmissionId", AdmissionId, "IpCasepaperReport");
+}
 
   getValidationMessages() {
     return {

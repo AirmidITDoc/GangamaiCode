@@ -15,10 +15,11 @@ import { map, startWith, takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
-import { T } from '@angular/cdk/keycodes';
+import { T, V } from '@angular/cdk/keycodes';
 import { ConfigService } from 'app/core/services/config.service';
 import { AdmissionPersonlModel, RegInsert } from '../../Admission/admission/admission.component';
 import { InitiateDischargeComponent } from './initiate-discharge/initiate-discharge.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-discharge',
@@ -29,48 +30,47 @@ import { InitiateDischargeComponent } from './initiate-discharge/initiate-discha
 })
 export class DischargeComponent implements OnInit {
 
-  
+
   isLoading: string = '';
-  DischargeForm:FormGroup;
+  DischargeForm: FormGroup;
   currentDate = new Date();
   // screenFromString = 'discharge';
   screenFromString = 'OP-billing';
   selectedAdvanceObj: AdvanceDetailObj;
-  DischargeId: any;
+  DischargeId: any = 0;
   Today: Date = new Date();
-  
 
-  RtrvDischargeList:any=[];
-  vComments:any;
-  IsCancelled:any;
+
+  RtrvDischargeList: any = [];
+  vComments: any;
+  IsCancelled: any;
   dateTimeObj: any;
-  vAdmissionId:any; 
-  vMode:any=0;
-  vDoctorId:any=0;
-  vDescType:any=0;
-  vAdmissionID:any=20;
-  vBedId=101;
+  vAdmissionId: any;
+  vMode: any = 0;
+  vDoctorId: any = 0;
+  vDescType: any = 0;
+  vBedId = 0;
 
   isTimeChanged: boolean = false;
   dateTimeString: any;
-  timeflag=0
+  timeflag = 0
   public now: Date = new Date();
   minDate: Date;
-  ChkConfigInitiate:boolean=false;
+  ChkConfigInitiate: boolean = false;
 
-   registerObj1 = new AdmissionPersonlModel({});
-       registerObj = new RegInsert({});
-  
+  registerObj1 = new AdmissionPersonlModel({});
+  registerObj = new RegInsert({});
+
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
 
-     // New Api
-     autocompletcondoc: string = "ConDoctor";
-     autocompletedichargetype: string = "DichargeType";
-     autocompletemode: string = "Mode";
-  
+  // New Api
+  autocompletcondoc: string = "ConDoctor";
+  autocompletedichargetype: string = "DichargeType";
+  autocompletemode: string = "Mode";
+
   constructor(
     public _IpSearchListService: IPSearchListService,
     private _formBuilder: UntypedFormBuilder,
@@ -79,9 +79,10 @@ export class DischargeComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     public dialogRef: MatDialogRef<DischargeComponent>,
     public toastr: ToastrService,
-    public _ConfigService : ConfigService,
+    public _ConfigService: ConfigService,
+     private commonService: PrintserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-  ) { 
+  ) {
     setInterval(() => {
       this.now = new Date();
       this.dateTimeString = this.now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
@@ -91,34 +92,35 @@ export class DischargeComponent implements OnInit {
           this.DischargeForm.get('dischargeTime').setValue(this.now);
       }
     }, 1);
-    
+
   }
 
   ngOnInit(): void {
-    this.DischargeForm=this.DischargesaveForm();
+    this.DischargeForm = this.DischargesaveForm();
     console.log(this.data)
-    if (this.data) { 
+    if (this.data) {
       this.vAdmissionId = this.data.admissionId;
-      this.vBedId=this.data.bedId
-    } 
+      this.vBedId = this.data.bedId
+      this.getdischargeIdbyadmission()
+    }
 
     if ((this.data?.regId ?? 0) > 0) {
-     
+
       setTimeout(() => {
         this._IpSearchListService.getRegistraionById(this.data.regId).subscribe((response) => {
-          this.registerObj= response;
+          this.registerObj = response;
           console.log(this.registerObj)
 
         });
 
         this._IpSearchListService.getAdmissionById(this.data.admissionId).subscribe((response) => {
           this.registerObj1 = response;
-          if(this.registerObj1){
-            this.registerObj1.phoneNo=this.registerObj1.phoneNo.trim()
-            this.registerObj1.mobileNo=this.registerObj1.mobileNo.trim()
-          this.registerObj1.admissionTime=  this.datePipe.transform(this.registerObj1.admissionTime, 'hh:mm:ss a')
-          this.registerObj1.dischargeTime=  this.datePipe.transform(this.registerObj1.dischargeTime, 'hh:mm:ss a')
-     
+          if (this.registerObj1) {
+            this.registerObj1.phoneNo = this.registerObj1.phoneNo.trim()
+            this.registerObj1.mobileNo = this.registerObj1.mobileNo.trim()
+            this.registerObj1.admissionTime = this.datePipe.transform(this.registerObj1.admissionTime, 'hh:mm:ss a')
+            this.registerObj1.dischargeTime = this.datePipe.transform(this.registerObj1.dischargeTime, 'hh:mm:ss a')
+
           }
           console.log(this.registerObj1)
 
@@ -129,7 +131,7 @@ export class DischargeComponent implements OnInit {
     }
 
 
-    
+
     // if(this._ConfigService.configParams.IsDischargeInitiateflow == 1){
     //   this.ChkConfigInitiate = false
     // }else{
@@ -140,107 +142,136 @@ export class DischargeComponent implements OnInit {
   }
 
 
-  DischargesaveForm(): FormGroup{
-    return this._formBuilder.group({
-    
-    dischargeId: 0,
-    admissionId: this.data.admissionId,
-    dischargeDate: "2029-09-07",
-    dischargeTime: "",
-    dischargeTypeId: 0,
-    dischargedDocId: 0,
-    dischargedRmoid: 10,
+  getdischargeIdbyadmission() {
+    debugger
+    this._IpSearchListService.getDischargeId(this.data.admissionId).subscribe(data => {
+      console.log(data)
+
+      if (data) {
+        this.IsCancelled = data.isCancelled || 0
+        // if (this.IsCancelled == '1') {
+        // this.DischargeId = 0
+        // } else {
+        this.DischargeId = data.dischargeId || 0
+        // }
+
+
+        this.DischargeForm.get("dischargedDocId").setValue(data.dischargedDocId)
+        this.DischargeForm.get("dischargeTypeId").setValue(data.dischargeTypeId)
+        this.DischargeForm.get("dischargedRmoid").setValue(data.dischargedRmoid)
+
+      }
+
     });
   }
- 
- onDischarge() {
+
+
+  DischargesaveForm(): FormGroup {
+    return this._formBuilder.group({
+
+      dischargeId: this.DischargeId,
+      // admissionId: this.data.admissionId,
+      dischargeDate: "2029-09-07",
+      dischargeTime: "",
+      dischargeTypeId: 0,
+      dischargedDocId: 0,
+      dischargedRmoid: 10,
+      addedBy: 1
+    });
+  }
+
+  onDischarge() {
     console.log(this.DischargeForm.value)
-    if (!this.DischargeId) {
-      var m_data = {
-        "dischargeModel":this.DischargeForm.value,
-        "dischargeAdmissionModel": {
-          "admissionID": this.vAdmissionID,
+
+
+
+    let dischargModeldata = {};
+
+    dischargModeldata['dischargeDate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
+      dischargModeldata['dischargeTime'] = this.dateTimeObj.time
+    dischargModeldata['dischargeTypeId'] = this.DischargeForm.get("dischargedDocId").value || 0,
+      dischargModeldata['dischargedDocId'] = this.DischargeForm.get("dischargeTypeId").value || 0,
+      dischargModeldata['dischargedRmoid'] = 1,//this.DischargeForm.get("dischargedRmoid").value || 0,
+      dischargModeldata['addedBy'] = 1
+    dischargModeldata['dischargeId'] = this.DischargeId
+    dischargModeldata['admissionId'] = this.vAdmissionId
+    debugger
+    if (this.DischargeId == 0){
+      dischargModeldata['admissionId'] = this.vAdmissionId
+    var m_data = {
+      "discharge": dischargModeldata,
+      "admission": {
+        "admissionId": this.vAdmissionId,
+        "isDischarged": 1,
+        "dischargeDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+        "dischargeTime": this.dateTimeObj.time
+      },
+      "bed": {
+        "bedId": this.vBedId,
+      }
+    }
+
+    this._IpSearchListService.DichargeInsert(m_data).subscribe((response) => {
+      this.toastr.success(response.message);
+      console.log(response)
+      this.viewgetDischargeSlipPdf(response.admissionId)
+      this._matDialog.closeAll();
+    }, (error) => {
+      this.toastr.error(error.message);
+    });
+  }else if (this.DischargeId != 0){
+      dischargModeldata['modeOfDischargeId'] = 1
+      dischargModeldata['modifiedBy'] = 1
+
+      var m_data1 = {
+        "discharge": dischargModeldata,
+        "admission": {
+          "admissionId": this.vAdmissionId,
           "isDischarged": 1,
-          "dischargeDate":this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd"),
-          "dischargeTime":this.dateTimeObj.time
-        },
-        "bedModel": {
-          "bedId":  this.vBedId,
+          "dischargeDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+          "dischargeTime": this.dateTimeObj.time
         }
       }
-console.log(m_data);
-      this._IpSearchListService.DichargeInsert(m_data).subscribe((response) => {
+  
+        this._IpSearchListService.DichargeUpdate(m_data1).subscribe((response) => {
         this.toastr.success(response.message);
-       this._matDialog.closeAll();
+        console.log(response)
+        this.viewgetDischargeSlipPdf(response.admissionId)
+        this._matDialog.closeAll();
       }, (error) => {
         this.toastr.error(error.message);
       });
-  
     }
-  
     this.DischargeForm.reset();
   }
- 
 
-   getValidationMessages() {
+  viewgetDischargeSlipPdf(data) {
+
+    this.commonService.Onprint("AdmId", data, "IpDischargeReceipt");
+}
+  getValidationMessages() {
     return {
       dischargeTypeId: [
-            { name: "required", Message: "dischargeType Name is required" }
-        ],
-        dischargedDocId: [
-          { name: "required", Message: "Doctor Name is required" }
+        { name: "required", Message: "dischargeType Name is required" }
+      ],
+      dischargedDocId: [
+        { name: "required", Message: "Doctor Name is required" }
       ],
       dischargedRmoid: [
         { name: "required", Message: "Mode Name is required" }
-    ]
+      ]
     };
-}
-@Output() dateTimeEventEmitter = new EventEmitter<{}>();
-  isDatePckrDisabled: boolean = false;
-phdatetime: any;
-  onChangeDate(value) {
-    if (value) {
-      const dateOfReg = new Date(value);
-      let splitDate = dateOfReg.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-      let splitTime = this.DischargeForm.get('dischargeDate').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-     this.eventEmitForParent(splitDate[0], splitTime[1]);
-    }
-  }
- 
-  onChangeTime(event) {
-    this.timeflag=1
-    if (event) {
-
-      let selectedDate = new Date(this.DischargeForm.get('phAppTime').value);
-      let splitDate = selectedDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-      let splitTime = this.DischargeForm.get('dischargeTime').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-      this.isTimeChanged = true;
-      this.phdatetime=splitTime[1]
-      console.log(this.phdatetime)
-      this.eventEmitForParent(splitDate[0], splitTime[1]);
-        }
   }
 
-  eventEmitForParent(actualDate, actualTime) {
-    let localaDateValues = actualDate.split('/');
-    let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
-    this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
-  }
-  dateTimeControl = new FormControl('');
-  selectedTime: string | null = null;
   onClose() {
     this.DischargeForm.reset();
     this.dialogRef.close();
   }
-  DischargedateTimeObj: any;
-  getDischargeDateTime(DischargedateTimeObj) {
-    this.DischargedateTimeObj = DischargedateTimeObj;
-  }
 
   onClear(val: boolean) {
     // this.personalform.reset();
-    
-   }
+
+  }
   getchkConfigInitiate() {
     // let Query = "SELECT Isnull(Count(IsApproved),0)as DeptCount,(SELECT Isnull(Count(b.IsApproved),0)as TotalCnt FROM dbo.initiateDischarge B Where b.AdmId=A.AdmId and b.IsApproved = 1)as Approved_Cnt " +
     //   " FROM dbo.initiateDischarge A Where AdmId=" + this.selectedAdvanceObj.AdmissionID + " Group by AdmId"
@@ -254,33 +285,33 @@ phdatetime: any;
     //     console.log(this.vDeptCount)
     //   } 
     // })
-}
+  }
 
 
-DischargeInitiate() {
-  // if(this.selectedAdvanceObj.IsInitinatedDischarge == '1'){
-  //   this.toastr.warning('selected patient already Initiated ', 'Warning !', {
-  //     toastClass: 'tostr-tost custom-toast-warning',
-  //   });
-  //   return;
-  // }
-  const dialogRef = this._matDialog.open(InitiateDischargeComponent,
-    {
-      maxWidth: "50vw",
-      height: '72%',
-      width: '100%',
-      data: {
-        Obj: this.data
-      }
+  DischargeInitiate() {
+    // if(this.selectedAdvanceObj.IsInitinatedDischarge == '1'){
+    //   this.toastr.warning('selected patient already Initiated ', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    const dialogRef = this._matDialog.open(InitiateDischargeComponent,
+      {
+        maxWidth: "50vw",
+        height: '72%',
+        width: '100%',
+        data: {
+          Obj: this.data
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
     });
-  dialogRef.afterClosed().subscribe(result => {
-    console.log(result)
-  });
-}
+  }
 
-getDateTime(dateTimeObj) {
-  this.dateTimeObj = dateTimeObj;
-}
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
+  }
 }
 
 

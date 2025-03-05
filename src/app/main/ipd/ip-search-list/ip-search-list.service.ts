@@ -1080,15 +1080,15 @@ public BedtransferUpdate(Param: any) {
 }
 
 public DichargeInsert(Param: any) {
-  if (Param.dischargeId) {
-      return this._httpClient1.PutData("ischargeSP/IPDischargeInsertD" + Param.dischargeId, Param);
-  } else return this._httpClient1.PostData("DischargeSP/IPDischargeInsert", Param);
+  // if (Param.dischargeId) {
+  //     return this._httpClient1.PutData("DischargeSummary/DischargeUpdate" + Param.dischargeId, Param);
+  // } else
+   return this._httpClient1.PostData("DischargeSummary/DischargeInsert", Param);
 }
 
 public DichargeUpdate(Param: any) {
-  if (Param.dischargeId) {
-      return this._httpClient1.PutData("DischargeSP/IPDischargeUpdate" + Param.dischargeId, Param);
-  } else return this._httpClient1.PostData("DischargeSP/IPDischargeUpdate", Param);
+ return this._httpClient1.PutData("DischargeSummary/DischargeUpdate", Param);
+ 
 }
 
 public getMaster(mode,Id) {
@@ -1133,15 +1133,16 @@ public SaveDischargeInitiate(employee) {
 
 public updateIPDDischargSummary(employee)
 {    
-  return this._httpClient1.PostData("DischargeSummary/DischargeUpdate",employee);
+  return this._httpClient1.PostData("DischargeSummary/DischargeSummaryUpdate",employee);
 }
 
 
 public insertIPDDischargSummary(param)
 {
-if (param.dischargesummaryId) {
-  return this._httpClient1.PostData("DischargeSummary/DischargeUpdate", param);
-  } else return this._httpClient1.PostData("DischargeSummary/DischargeInsert", param);
+// if (param.dischargesummaryId) {
+//   return this._httpClient1.PostData("DischargeSummary/DischargeUpdate", param);
+  // } else
+   return this._httpClient1.PostData("DischargeSummary/DischargeSummaryInsert", param);
 }
 
 
@@ -1155,6 +1156,18 @@ public getPrescriptionList(employee) {
 public getDischargeId(Id){
   return this._httpClient1.GetData("DischargeSummary/" + Id);
 }
+
+public insertIPDDischargSummaryTemplate(employee)
+{    
+  return this._httpClient1.PostData("DischargeSummary/DischargeTemplateInsert",employee);
+}
+
+
+public UpdateIPDDischargSummaryTemplate(employee)
+{    
+  return this._httpClient1.PostData("DischargeSummary/DischargeTemplateUpdate",employee);
+}
+
 }
 
 // Set NODE_OPTIONS="--max-old-space-size=8192"

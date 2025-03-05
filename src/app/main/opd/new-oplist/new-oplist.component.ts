@@ -249,15 +249,10 @@ export class NewOPListComponent implements OnInit {
     }
     getWhatsappsharePaymentReceipt(Id, Mobile) { }
 
-    // viewgetOPPaymentReportPdf(data){
-    //     debugger
-    //     console.log(data)
-    //     this.commonService.Onprint("RefundId", data.paymentId, "OPRefundReceipt");
-    // }
-
+ 
     viewgetOPRefundBillReportPdf(data) {
-
-        this.commonService.Onprint("RefundId", data.RefundId, "OPRefundReceipt");
+console.log(data)
+        this.commonService.Onprint("RefundId", data.refundId, "OPRefundReceipt");
     }
     getWhatsappshareRefundBill(Id) { }
 

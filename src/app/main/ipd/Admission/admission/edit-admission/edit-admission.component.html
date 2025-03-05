@@ -149,11 +149,13 @@
                   </div>
       
                   <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                 
                     <airmid-dropdown label="Department Name" formControlName="DepartmentId"
-                      [value]="registerObj1?.departmentId" [formGroup]="admissionFormGroup"
-                      [validations]="getValidationMessages().DepartmentId" 
-                      (selectionChange)="selectChangedepartment($event)">
-                    </airmid-dropdown>
+                                            [value]="registerObj1?.departmentId" [formGroup]="admissionFormGroup"
+                                            [validations]="getValidationMessages().DepartmentId"
+                                            [mode]="autocompleteModeDepartment"
+                                            (selectionChange)="selectChangedepartment($event)">
+                                        </airmid-dropdown>
       
                   </div>
       

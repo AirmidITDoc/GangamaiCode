@@ -139,38 +139,40 @@
             <div fxFlex.gt-sm="100%" fxFlex fxlayout="row"
                 style="  padding: 5px 10px 5px 10px;background-color: white;">
                 <form [formGroup]="DischargeForm">
+                    <input type="hidden" formControlName="dischargeId" [(ngModel)]="DischargeId">
+
                     <div class="dialog-content-wrapper">
                         <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
                             <div fxlayout="row" fxFlex>
                                 <div class="patient-info-title border-bottom pb-2">
-                                    <span class="h1">Discharge Information</span>
+                                    <span class="h1">Discharge Information :DischargeId</span>
                                 </div>
 
                                 <div fxLayoutGap="4px">
                                     <airmid-dropdown label="DischargedDoc" formControlName="dischargedDocId"
-                                        [formGroup]="DischargeForm"
+                                        [formGroup]="DischargeForm" fxFlex
                                         [validations]="getValidationMessages().dischargedDocId"
                                         [mode]="autocompletcondoc">
                                     </airmid-dropdown>
 
                                     <airmid-dropdown label="DischargeType" formControlName="dischargeTypeId"
-                                        [formGroup]="DischargeForm"
+                                        [formGroup]="DischargeForm" fxFlex
                                         [validations]="getValidationMessages().dischargeTypeId"
                                         [mode]="autocompletedichargetype">
                                     </airmid-dropdown>
 
                                     <airmid-dropdown label="Mode" formControlName="dischargedRmoid"
-                                        [formGroup]="DischargeForm"
+                                        [formGroup]="DischargeForm" fxFlex
                                         [validations]="getValidationMessages().dischargedRmoid"
                                         [mode]="autocompletemode">
                                     </airmid-dropdown>
 
 
-                                    <mat-form-field appearance="outline" fxFlex>
+                                    <!-- <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Comments</mat-label>
                                         <input name="Comments" formControlName="Comments" placeholder="Comments"
                                             matInput [(ngModel)]="vComments">
-                                    </mat-form-field>
+                                    </mat-form-field> -->
 
                                 </div>
                             </div>

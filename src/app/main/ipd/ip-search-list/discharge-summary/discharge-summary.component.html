@@ -434,36 +434,7 @@
                                                             (selectionChange)="getSelectedserviceObj($event)"
                                                             TextField="serviceName"
                                                             ValueField="serviceId"></airmid-autocomplete>
-                                                        <!-- <mat-form-field appearance="outline" fxFlex="50%">
-                                                            <mat-label>ItemName</mat-label>
-                                                            <input type="text" name="ItemId" formControlName="ItemId"
-                                                                #itemid (keydown)="onEnterItem($event)"
-                                                                placeholder="Item Name " matInput
-                                                                [matAutocomplete]="auto" (input)="getSearchItemList()"
-                                                                required>
-                                                            <span matSuffix style="display: flex;">
-                                                                <mat-icon class="mat-icon-close"
-                                                                    (click)="MedicineItemForm.get('ItemId').setValue(''); isItemIdSelected = false;">
-                                                                    close </mat-icon>
-                                                                <mat-icon class="mat-icon-close"
-                                                                    (click)="MedicineItemForm.get('ItemId').setValue(''); isItemIdSelected = false;">search</mat-icon>
-                                                            </span>
-                                                            <mat-autocomplete #auto="matAutocomplete"
-                                                                [displayWith]="getOptionItemText"
-                                                                (optionSelected)='getSelectedObjItem($event.option.value)'>
-                                                                <mat-option *ngFor="let option of filteredOptionsItem"
-                                                                    [value]="option">
-                                                                    {{option.ItemId}} | {{option.ItemName}}
-                                                                    |{{option.BalanceQty}}
-                                                                </mat-option>
-                                                            </mat-autocomplete>
-                                                            <mat-error class="error"
-                                                                *ngIf="MedicineItemForm.get('ItemId').invalid && MedicineItemForm.get('ItemId').touched">
-                                                                Select ItemName
-                                                            </mat-error>
-                                                        </mat-form-field> -->
-
-
+                                                      
                                                         <airmid-dropdown label="Dose Name" formControlName="DoseId"
                                                             [formGroup]="MedicineItemForm"
                                                             [validations]="getValidationMessages().DoseId"
@@ -471,9 +442,9 @@
                                                             [mode]="autocompleteModeDose">
                                                         </airmid-dropdown>
 
-                                                        <airmid-textbox label="Day" formControlName="Day" [value]="vDay"
+                                                        <!-- <airmid-textbox label="Day" formControlName="Day" [value]="vDay"
                                                             [formGroup]="MedicineItemForm">
-                                                        </airmid-textbox>
+                                                        </airmid-textbox> -->
 
                                                         <div class="input-add-button">
                                                             <div matTooltip="Select Itemname to enable this button!!"
@@ -584,13 +555,7 @@
 
                                 <app-airmid-slider label="Normal/Death Summary"   formControlName="isNormalOrDeath" [formGroup]="DischargesumForm" [(ngModel)]="vIsNormalDeath" ></app-airmid-slider>
                             </div>
-                            <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <div fxLayout="row" class="gap-8">
-                                        <mat-checkbox formControlName="template" (change)="chkTemplate($event)"
-                                        style="padding: 15px;"> Is Template Print
-                                    </mat-checkbox>&nbsp;
-                                    </div>
-                                </div> -->
+                           
                         </mat-card>
                     </form>
                 </div>

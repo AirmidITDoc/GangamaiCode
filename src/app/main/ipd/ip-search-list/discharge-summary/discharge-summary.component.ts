@@ -18,6 +18,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MatTableDataSource } from '@angular/material/table';
 import { element } from 'protractor';
 import { AdmissionPersonlModel, RegInsert } from '../../Admission/admission/admission.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-discharge-summary',
@@ -113,6 +114,8 @@ export class DischargeSummaryComponent implements OnInit {
   autocompleteModeRefDoctor: string = "RefDoctor";
   autocompleteModeDoctor: string = "ConDoctor";
   autocompleteitem: string = "Item";
+  autocompletetemplate: string = "DischargeTemplate";
+  
 
 
   dsItemList = new MatTableDataSource<MedicineItemList>();
@@ -125,6 +128,7 @@ export class DischargeSummaryComponent implements OnInit {
     private accountService: AuthenticationService,
     public dialogRef: MatDialogRef<DischargeSummaryComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
+     private commonService: PrintserviceService,
     public datePipe: DatePipe) { }
 
 
@@ -237,9 +241,6 @@ export class DischargeSummaryComponent implements OnInit {
     console.log(obj)
 
   }
-
-
-
 
   @ViewChild('dosename') dosename: ElementRef;
   @ViewChild('Day') Day: ElementRef;
@@ -399,12 +400,9 @@ export class DischargeSummaryComponent implements OnInit {
         this.vLifeStyle = this.RetrDischargeSumryList[0].lifeStyle
         this.vConditionofTimeDischarge = this.RetrDischargeSumryList[0].conditionAtTheTimeOfDischarge
         this.vDoctorAssistantName = this.RetrDischargeSumryList[0].doctorAssistantName
-        this.vClaimNumber = this.RetrDischargeSumryList[0].claimNumber
-        this.vPreOthNumber = this.RetrDischargeSumryList[0].preOthNumber
-        // this.DocName1 = this.RetrDischargeSumryList[0].dischargeDoctor1
-        // this.DocName2 = this.RetrDischargeSumryList[0].dischargeDoctor2
-        this.DocName3 = this.RetrDischargeSumryList[0].dischargeDoctor3
-        this.IsNormalDeath = this.RetrDischargeSumryList[0].isNormalOrDeath
+        this.vClaimNumber = String(this.RetrDischargeSumryList[0].claimNumber)
+        this.vPreOthNumber = String(this.RetrDischargeSumryList[0].preOthNumber)
+        this.vIsNormalDeath = this.RetrDischargeSumryList[0].isNormalOrDeath
         this.DischargesumForm.get("dischargeDoctor1").setValue(this.RetrDischargeSumryList[0].dischargeDoctor1)
         this.DischargesumForm.get("dischargeDoctor2").setValue(this.RetrDischargeSumryList[0].dischargeDoctor2)
         this.DischargesumForm.get("dischargeDoctor3").setValue(this.RetrDischargeSumryList[0].dischargeDoctor3)
@@ -412,14 +410,14 @@ export class DischargeSummaryComponent implements OnInit {
 
       }
 
-      if (this.IsNormalDeath == 1) {
-        this.vIsNormalDeath = 1;
-        this.DischargesumForm.get("isNormalOrDeath").setValue('1');
-      }
-      else {
-        this.vIsNormalDeath = 0;
-        this.DischargesumForm.get("isNormalOrDeath").setValue('0');
-      }
+      // if (this.IsNormalDeath == 1) {
+      //   this.vIsNormalDeath = 1;
+      //   this.DischargesumForm.get("isNormalOrDeath").setValue('1');
+      // }
+      // else {
+      //   this.vIsNormalDeath = 0;
+      //   this.DischargesumForm.get("isNormalOrDeath").setValue('0');
+      // }
     });
   }
   getdischargeIdbyadmission() {
@@ -460,18 +458,11 @@ export class DischargeSummaryComponent implements OnInit {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
 
-        // this.saveflag = true
-        // let DoctorName1 = 0;
-        // if (this.DischargesumForm.get("dischargeDoctor1").value)
-        //   DoctorName1 = this.DischargesumForm.get("dischargeDoctor1").value;
+        if(this.DischargesumForm.get("isNormalOrDeath").value==false)
+          this.vIsNormalDeath=0
+        if(this.DischargesumForm.get("isNormalOrDeath").value==true)
+          this.vIsNormalDeath=1
 
-        // let DoctorName2 = 0;
-        // if (this.DischargesumForm.get("dischargeDoctor2").value)
-        //   DoctorName2 = this.DischargesumForm.get("dischargeDoctor2").value;
-
-        // let DoctorName3 = 0;
-        // if (this.DischargesumForm.get("dischargeDoctor3").value)
-        //   DoctorName3 = this.DischargesumForm.get("dischargeDoctor3").value;
         let dischargModeldata = {};
 
         dischargModeldata['dischargesummaryId'] = this.DischargeSummaryId || 0,
@@ -504,7 +495,7 @@ export class DischargeSummaryComponent implements OnInit {
           dischargModeldata['lifeStyle'] = this.DischargesumForm.get("lifeStyle").value || '',
           dischargModeldata['warningSymptoms'] = '',
           dischargModeldata['radiology'] = this.DischargesumForm.get("radiology").value || '',
-          dischargModeldata['isNormalOrDeath'] = this.DischargesumForm.get("isNormalOrDeath").value
+          dischargModeldata['isNormalOrDeath'] =this.vIsNormalDeath// this.DischargesumForm.get("isNormalOrDeath").value
 
 
         let insertIPPrescriptionDischarge = [];
@@ -530,7 +521,6 @@ export class DischargeSummaryComponent implements OnInit {
           insertIPPrescriptionDischarge.push(Prescdiscgargemodel);
         });
 
-        
         if (this.DischargeSummaryId == undefined) {
           dischargModeldata['admissionId'] = this.vAdmissionId || 0,
             dischargModeldata['addedBy'] = 1
@@ -543,6 +533,7 @@ export class DischargeSummaryComponent implements OnInit {
           setTimeout(() => {
             this._IpSearchListService.insertIPDDischargSummary(data).subscribe(response => {
               this.toastr.success(response.message);
+              this.viewgetDischargesummaryPdf(response.admissionId)
               this._matDialog.closeAll();
             }, (error) => {
               this.toastr.error(error.message);
@@ -562,6 +553,7 @@ export class DischargeSummaryComponent implements OnInit {
           setTimeout(() => {
             this._IpSearchListService.updateIPDDischargSummary(data1).subscribe(response => {
               this.toastr.success(response.message);
+              this.viewgetDischargesummaryPdf(response.admissionId)
               this._matDialog.closeAll();
             }, (error) => {
               this.toastr.error(error.message);
@@ -576,8 +568,7 @@ export class DischargeSummaryComponent implements OnInit {
 
 
   viewgetDischargesummaryPdf(AdmId) {
-
-
+    this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryReport");
   }
 
 
