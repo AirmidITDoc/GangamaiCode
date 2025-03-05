@@ -30,6 +30,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class MaterialConsumptionPatientwiseComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    // @ViewChild('grid') grid: AirmidTableComponent;
+    @ViewChild('grid1') grid1: AirmidTableComponent;
+
     hasSelectedContacts: boolean;
     autocompleteModestore: string = "Store";
 
@@ -73,13 +76,33 @@ export class MaterialConsumptionPatientwiseComponent implements OnInit {
             { fieldName: "ToStoreId", fieldValue: "10009", opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "StoreId", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
         ],
         row: 25
     }
 
-    gridConfig1: gridModel = {
+    selectChangedeptdoc(obj: any) {
+
+        this.gridConfig.filters[2].fieldValue = obj.value
+
+    }
+    getValidationdoctorMessages() {
+        return {
+            storeId: [
+                { name: "required", Message: "Doctor Name is required" }
+            ]
+        };
+    }
+
+    gridConfig1: gridModel = new gridModel();
+
+    isShowDetailTable: boolean = false;
+
+    GetDetails(data) {
+        debugger
+        this.gridConfig1 = {
         apiUrl:"IPPrescription/PatietWiseMatetialList",
         columnsList: [
             { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
@@ -100,14 +123,20 @@ export class MaterialConsumptionPatientwiseComponent implements OnInit {
         sortField: "MaterialConsumptionId",
         sortOrder: 0,
         filters: [
-            { fieldName: "ToStoreId", fieldValue: "10009", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+            // { fieldName: "ToStoreId", fieldValue: "10009", opType: OperatorComparer.Equals },
+            // { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            // { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+            // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            // { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
         ],
         row: 25
+      }
+        this.isShowDetailTable = true;
+        this.grid1.gridConfig = this.gridConfig1;
+        this.grid1.bindGridData();
     }
+
+    
 
 
     onSave(row: any = null) {
@@ -115,7 +144,7 @@ export class MaterialConsumptionPatientwiseComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewPatientwiseMaterialconsumptionComponent,
             {
                 maxWidth: "75vw",
-                height: '75%',
+                maxHeight: '75%',
                 width: '70%',
                 data: row
             });

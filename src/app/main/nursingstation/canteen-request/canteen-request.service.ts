@@ -28,7 +28,7 @@ export class CanteenRequestService {
         StoreId: '',
         RegID: [''],
         Op_ip_id: ['1'],
-        AdmissionID: 0
+        AdmissionID: 0,
       })
     }
     createItemorm(){
@@ -48,8 +48,8 @@ export class CanteenRequestService {
         start: [(new Date()).toISOString()],
         end: [(new Date()).toISOString()],
         RegNo:[''],
-        fromDate: [(new Date()).toISOString()],
-        enddate: [(new Date()).toISOString()],
+        startdate :[(new Date()).toISOString()],
+          enddate :[(new Date()).toISOString()],
       })
     }
 

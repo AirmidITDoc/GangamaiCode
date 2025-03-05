@@ -16,8 +16,9 @@
     <div fusePerfectScrollbar
         class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
         dynamicTableHeight>
+
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-            <airmid-table [gridConfig]="gridConfig" class="content">
+            <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="GetDetails($event)" #grid :ShowButtons="false">
                 <ng-container filters>
 
                 <mat-form-field appearance="outline" fxFlex>
@@ -30,12 +31,10 @@
                     </button>
                 </mat-form-field>
 
-                <!-- <div fxFlex="18%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-datepicker [formGroup]="SearchMyForm" [isRangePicker]="true" formStartControlName="fromDate"
-                            formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
-                            [(toValue)]="gridConfig.filters[1].fieldValue">
-                    </airmid-datepicker> 
-                </div> -->
+                <!-- <airmid-datepicker [formGroup]="_CanteenRequestservice.SearchMyForm" [isRangePicker]="true"
+                        formStartControlName="startdate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
+                        [(toValue)]="gridConfig.filters[1].fieldValue">
+                    </airmid-datepicker> -->
 
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>To Date</mat-label>
@@ -62,8 +61,8 @@
             </airmid-table>
         </div>
 
-        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-            <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false">
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
+            <airmid-table [gridConfig]="gridConfig1" #grid1 :ShowFilter="false" :ShowButtons="false">
                 <ng-container filters>
 
                 </ng-container>

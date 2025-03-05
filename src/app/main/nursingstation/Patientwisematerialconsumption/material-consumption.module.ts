@@ -89,7 +89,8 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatDatepickerModule,
         //  NgMultiSelectDropDownModule.forRoot(),
-        MatTooltipModule
+        MatTooltipModule,
+        
     ],
     providers: [
         DatePipe,
