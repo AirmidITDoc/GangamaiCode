@@ -1,0 +1,7 @@
+// Overiding ck-editor styles
+
+.ckeditor-container{
+	.ck-editor__editable {
+		min-height: 250px !important;
+	}
+}

@@ -1,14 +1,24 @@
 <!-- <div role="main">
     <ckeditor [editor]="editor" [data]="value" [disabled]="disabled" [(ngModel)]="value"></ckeditor>
 </div> -->
-<mat-form-field appearance="outline" fxFlex>
+<!-- <mat-form-field appearance="outline" fxFlex>
     <mat-label>{{label}}</mat-label>
     <textarea matInput [formControlName]="formControlName" style="display: none;"></textarea>
-    <ckeditor [editor]="editor" [data]="value" [disabled]="disabled" [(ngModel)]="value"
-        [formControlName]="formControlName"></ckeditor>
     <mat-error>
         <ng-container *ngFor="let error of activeErrors">
             {{ error }}
         </ng-container>
     </mat-error>
-</mat-form-field>
+</mat-form-field> -->
+<div class="ckeditor-container">
+    <mat-card>
+        <mat-card-content>
+            <div class="editor-title" *ngIf="label">
+                <h2 class="fw-600 border-bottom">{{label}}</h2>
+            </div>
+            <div class="editor-area">
+                <ckeditor [editor]="editor" [data]="value" [disabled]="disabled" [(ngModel)]="value" [formControlName]="formControlName"></ckeditor>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
