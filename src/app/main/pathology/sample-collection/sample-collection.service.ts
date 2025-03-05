@@ -32,6 +32,7 @@ export class SampleCollectionService {
       // BillDate:[''],
       PatientTypeSearch: ['0'],
       StatusSearch: ['0'],
+      Istype:['2'],
       CategoryId: [''],
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],

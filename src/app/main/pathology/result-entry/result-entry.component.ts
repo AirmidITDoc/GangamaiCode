@@ -24,6 +24,9 @@ import { SampledetailtwoComponent } from '../sample-collection/sampledetailtwo/s
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 
 @Component({
     selector: 'app-result-entry',
@@ -115,8 +118,78 @@ export class ResultEntryComponent implements OnInit {
     ];
 
     hasSelectedContacts: boolean;
-    constructor(
 
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
+    gridConfig: gridModel = {
+        apiUrl: "Nursing/PrescriptionReturnList",
+        columnsList: [
+            { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PatientName", key: "patientname", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Gender", key: "gender", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data) // EDIT Records
+                        }
+                    }]
+            }
+        ],
+        sortField: "PresReId",
+        sortOrder: 0,
+        filters: [
+
+            { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "20", opType: OperatorComparer.Equals }
+        ],
+        row: 25
+    }
+
+    gridConfig1: gridModel = {
+        apiUrl: "Nursing/PrescriptionReturnList",
+        columnsList: [
+            { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PatientName", key: "patientname", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Gender", key: "gender", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data) // EDIT Records
+                        }
+                    }]
+            }
+        ],
+        sortField: "PresReId",
+        sortOrder: 0,
+        filters: [
+
+            { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "20", opType: OperatorComparer.Equals }
+        ],
+        row: 25
+    }
+
+    constructor(
         private formBuilder: UntypedFormBuilder,
         public _SampleService: ResultEntryService,
         public datePipe: DatePipe,
@@ -127,11 +200,7 @@ export class ResultEntryComponent implements OnInit {
         public toastr: ToastrService,
         public _WhatsAppEmailService: WhatsAppEmailService,
         private _fuseSidebarService: FuseSidebarService,
-    ) {
-
-
-    }
-
+    ) { }
 
     ngOnInit(): void {
         this.getPatientsList();
@@ -143,9 +212,28 @@ export class ResultEntryComponent implements OnInit {
     // validation
     get f() { return this._SampleService.myformSearch.controls; }
 
-
     toggleSidebar(name): void {
         this._fuseSidebarService.getSidebar(name).toggleOpen();
+    }
+
+    exportSamplerequstReportExcel() {
+
+    }
+
+    onSave(row: any = null) {
+        let that = this;
+        const dialogRef = this._matDialog.open(SampledetailtwoComponent,
+            {
+                // maxWidth: "75vw",
+                maxHeight: '75vh',
+                width: '70%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
     }
 
     getPatientsList() {
@@ -190,7 +278,7 @@ export class ResultEntryComponent implements OnInit {
 
     // for sampledetails tablemyformSearch
     onEdit(m) {
-        
+
         m["Selected"] = true;
         console.log(m)
         this.reportPrintObj = m
@@ -348,6 +436,53 @@ export class ResultEntryComponent implements OnInit {
         // this.selection.clear();
     }
 
+    // Reentryone() {
+    //     const dialogRef = this._matDialog.open(ResultEntryOneComponent,
+    //         {
+    //             maxWidth: "90%",
+    //             height: '95%',
+    //             width: '100%',
+    //         });
+
+
+    //     dialogRef.afterClosed().subscribe(result => {
+    //         console.log('Pathology Template  Saved ..', result);
+    //     });
+    // }
+
+    // Reentrytwo() {
+    //     const dialogRef = this._matDialog.open(ResultEntrytwoComponent,
+    //         {
+    //             maxWidth: "90%",
+    //             height: '95%',
+    //             width: '100%',
+    //         });
+
+
+    //     dialogRef.afterClosed().subscribe(result => {
+    //         console.log('Pathology Template  Saved ..', result);
+    //     });
+    // }
+
+    Printresultentrywithheader() {
+        console.log(this.selection.selected)
+        let pathologyDelete = [];
+        this.selection.selected.forEach((element) => {
+            this.SOPIPtype = element["OPD_IPD_Type"]
+            let pathologyDeleteObj = {};
+            pathologyDeleteObj['pathReportId'] = element["PathReportID"]
+            pathologyDelete.push(pathologyDeleteObj);
+        });
+
+        let submitData = {
+            "printInsert": pathologyDelete,
+        };
+        console.log(submitData);
+        this._SampleService.PathPrintResultentryInsert(submitData).subscribe(response => {
+
+        });
+        this.selection.clear();
+    }
 
     getWhatsappshareResult(contact) {
 
@@ -413,8 +548,6 @@ export class ResultEntryComponent implements OnInit {
         }
     }
 
-
-
     Cancleresult(row) {
 
         Swal.fire({
@@ -450,8 +583,6 @@ export class ResultEntryComponent implements OnInit {
         });
         this.onEdit(row);
     }
-
-
 
     getPrint(contact) {
 
@@ -516,7 +647,6 @@ export class ResultEntryComponent implements OnInit {
         // this.selection.clear();
     }
 
-
     Printresultentry() {
         console.log(this.selection.selected)
         let pathologyDelete = [];
@@ -538,8 +668,6 @@ export class ResultEntryComponent implements OnInit {
         });
         this.selection.clear();
     }
-
-
 
     viewgetPathologyTestReportPdf(OPD_IPD_Type) {
 
@@ -568,8 +696,6 @@ export class ResultEntryComponent implements OnInit {
         }, 100);
     }
 
-
-
     exportResultentryReportExcel() {
         this.sIsLoading == 'loading-data'
         let exportHeaders = ['Date', 'Time', 'RegNo', 'PatientName', 'DoctorName', 'PatientType', 'PBillNo', 'GenderName', 'AgeYear', 'PathDues'];
@@ -597,9 +723,6 @@ export class ResultEntryComponent implements OnInit {
         let headers = [['Date', 'Time', 'RegNo', 'DoctorName', 'PatientType', 'PBillNo', 'GenderName', 'AgeYear', 'PathAmount']];
         this.reportDownloadService.exportPdfDownload(headers, actualData, 'Result Entry');
     }
-
-
-
 
     onClose() {
 
@@ -750,7 +873,7 @@ export class SampleDetailObj {
     RefDocName: any;
     ServiceId: any;
     ChargeId: any;
-    GenderId:any;
+    GenderId: any;
     /**
     * Constructor
     *

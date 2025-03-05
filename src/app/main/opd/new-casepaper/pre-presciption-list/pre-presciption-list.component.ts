@@ -30,6 +30,9 @@ export class PrePresciptionListComponent implements OnInit {
   groupedData: { [key: string]: any[]} = {}; 
   dsItemList = new MatTableDataSource<MedicineItemList>();
   
+  patients: any[] = []; // Using 'any' type for simplicity
+  uniqueDates: string[] = [];   
+
   constructor(
     private _CasepaperService: CasepaperService, 
     private _formBuilder: UntypedFormBuilder, 
@@ -46,7 +49,8 @@ export class PrePresciptionListComponent implements OnInit {
       this.RegId = this.data.Obj 
       console.log(this.data.Obj)
     }
-    this.getPrescriptionListFill1();  
+    this.getPrescriptionListFill1(); 
+    this.getnewVisistListDemo(this.data); 
   }
 //DateWise table Data 
   getPrescriptionListFill1() { 
@@ -60,8 +64,42 @@ export class PrePresciptionListComponent implements OnInit {
       // this.groupByVisitDate();  
     })
   }
-  patients: any[] = []; // Using 'any' type for simplicity
-  uniqueDates: string[] = [];   
+
+  
+  getnewVisistListDemo(obj) {
+    debugger
+    var D_data = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "VisitId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "RegID",
+          "fieldValue": String(obj.regId),//"40773",	
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "Start",
+          "fieldValue": "0",
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "Length",
+          "fieldValue": "10",
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON"
+    }
+    console.log(D_data);
+    this._CasepaperService.getRtrvVisitedListdemo(D_data).subscribe(Visit => {
+      this.patients = Visit as MedicineItemList[];
+      this.extractUniqueDates();
+      console.log("visitPatient info:", this.patients)
+    });
+  }
+
   extractUniqueDates() {
     const dates = this.patients.map(patient => patient.VisitDate);
     this.uniqueDates = Array.from(new Set(dates));

@@ -43,20 +43,20 @@
                                         <div class="patient-col">
                                             <span class="patient-col-key">UHID No
                                             </span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{selectedAdvanceObj1.RegNo}}</span>
+                                            <!-- <span>:</span>
+                                            <span class="patient-col-value">{{selectedAdvanceObj1.RegNo}}</span> -->
                                         </div>
                                         <div class="patient-col">
                                             <span class="patient-col-key">Patient Name
                                             </span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{selectedAdvanceObj1.PatientName}}</span>
+                                            <!-- <span>:</span>
+                                            <span class="patient-col-value">{{selectedAdvanceObj1.PatientName}}</span> -->
                                         </div>
                                         <div class="patient-col">
                                             <span class="patient-col-key">Doctor Name</span>
                                             <span>:</span>
-                                            <span class="patient-col-value">{{selectedAdvanceObj1.DoctorName
-                                                }}</span>
+                                            <!-- <span class="patient-col-value">{{selectedAdvanceObj1.DoctorName
+                                                }}</span> -->
                                         </div>
                                         <div class="patient-col">
                                             <span class="patient-col-key">Department</span>
@@ -66,7 +66,8 @@
                                     </div>
                                     <div fxLayout="column" fxLayoutGap="6px">
 
-                                        <div class="patient-col" *ngIf="selectedAdvanceObj1.PatientType == 'IP'">
+                                        <div class="patient-col">
+                                            <!--  *ngIf="selectedAdvanceObj1.PatientType == 'IP'" -->
                                             <span class="patient-col-key">DOA | Time</span>
                                             <span>:</span>
                                             <!-- <span class="patient-col-value">{{selectedAdvanceObj.DOA}}</span> -->
@@ -74,15 +75,15 @@
                                         <div class="patient-col">
                                             <span class="patient-col-key">OPD/IPD No</span>
                                             <span>:</span>
-                                            <span class="patient-col-value">{{selectedAdvanceObj1.OP_IP_No}} </span>
+                                            <!-- <span class="patient-col-value">{{selectedAdvanceObj1.OP_IP_No}} </span> -->
                                         </div>
                                         <div class="patient-col">
                                             <span class="patient-col-key">Age | Sex
                                             </span>
                                             <span>:</span>
                                             <!-- {{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}} -->
-                                            <span class="patient-col-value">{{selectedAdvanceObj1.AgeYear}}Y| D |
-                                                {{selectedAdvanceObj1.GenderName}}</span>
+                                            <!-- <span class="patient-col-value">{{selectedAdvanceObj1.AgeYear}}Y| D |
+                                                {{selectedAdvanceObj1.GenderName}}</span> -->
                                         </div>
                                         <div class="patient-col">
                                             <span class="patient-col-key">Ref-Doctor Name
@@ -93,7 +94,8 @@
 
                                     </div>
                                     <div fxLayout="column" fxLayoutGap="6px">
-                                        <div class="patient-col" *ngIf="selectedAdvanceObj1.PatientType == 'IP'">
+                                        <div class="patient-col">
+                                            <!--  *ngIf="selectedAdvanceObj1.PatientType == 'IP'" -->
                                             <span class="patient-col-key">Ward | Bed Name
                                             </span>
                                             <span>:</span>
@@ -103,7 +105,7 @@
                                             <span class="patient-col-key">Patient Type
                                             </span>
                                             <span>:</span>
-                                            <span class="patient-col-value">{{selectedAdvanceObj1.PatientType}}</span>
+                                            <!-- <span class="patient-col-value">{{selectedAdvanceObj1.PatientType}}</span> -->
                                         </div>
                                         <div class="patient-col">
                                             <span class="patient-col-key">Tarrif Name

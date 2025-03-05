@@ -12,6 +12,9 @@ import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import { HttpClient } from '@angular/common/http';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 
 @Component({
   selector: 'app-sample-request',
@@ -43,8 +46,6 @@ export class SampleRequestComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
-
 
   dataSource = new MatTableDataSource<LabOrRadRequestList>();
   displayedColumns: string[] = [
@@ -82,6 +83,52 @@ export class SampleRequestComponent implements OnInit {
   ];
 
   hasSelectedContacts: boolean;
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent; 
+  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  
+      gridConfig: gridModel = {
+          apiUrl: "Pathology/LabOrRadRequestList",
+          columnsList: [            
+            { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Patient Name", key: "patientname", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Adm Date", key: "admDate", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "IPMedID", key: "ipMedId", sort: true, align: 'left', emptySign: 'NA'},                 
+          ],
+          sortField: "PresReId",
+          sortOrder: 0,
+          filters: [
+  
+            { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "20", opType: OperatorComparer.Equals }
+          ],
+          row: 25
+      }
+      gridConfig1: gridModel = {
+          apiUrl: "Nursing/PrescriptionReturnList",
+          columnsList: [
+            { heading: "ReqDate", key: "date", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "ReqTime", key: "time", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "AddedBy", key: "AddedBy", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "BillingUser", key: "BillingUser", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "AddedByDate", key: "AddedByDate", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "IsStatus", key: "IsStatus", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "PBillNo", key: "PBillNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "IsPathology", key: "IsPathology", sort: true, align: 'left', emptySign: 'NA'},
+          ],
+          sortField: "PresReId",
+          sortOrder: 0,
+          filters: [
+          ],
+          row: 25
+      }
+
   constructor(
     private formBuilder: UntypedFormBuilder,
     private _httpClient: HttpClient,

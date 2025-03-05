@@ -8,6 +8,148 @@
             <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
             </mat-icon>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                Sample Request List
+            </span>
+        </div>
+
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onSave()">New  Sample Collection
+            </button>
+        </div>
+
+    </mat-toolbar>
+
+    <div fusePerfectScrollbar
+        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+        dynamicTableHeight>
+
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        
+            <div style="padding: 10px; height: 40px;">
+                <div fxLayout="row wrap" fxLayoutAlign="end center" class="gap-8">
+                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                        <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                        <span>: OP </span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                        <mat-icon class="pill green s-16">circle</mat-icon>
+                        <span>: IP </span>
+                    </div>
+                    <div class="table-header-right">
+                        <div class="export-buttons">
+                            <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
+                                <button mat-icon-button (click)="exportReportPdf()">
+                                    <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
+                                </button>
+        
+                                <button mat-icon-button (click)="exportSamplerequstReportExcel()">
+                                    <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false">
+                <ng-container filters>
+        
+                    <airmid-datepicker [formGroup]="_SampleCollectionService.myformSearch" [isRangePicker]="true"
+                        formStartControlName="start" formEndControlName="end" [(fromValue)]="gridConfig.filters[3].fieldValue"
+                        [(toValue)]="gridConfig.filters[4].fieldValue">
+                    </airmid-datepicker>
+        
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Reg_No</mat-label>
+                        <input matInput placeholder="Search Reg_No" autocomplete="off"
+                            [(ngModel)]="gridConfig.filters[2].fieldValue" />
+                        <button matSuffix mat-icon-button aria-label="Clear" 
+                        (click)="gridConfig.filters[2].fieldValue=''">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>First Name</mat-label>
+                        <input matInput placeholder="Search First Name" autocomplete="off"
+                            [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                        <button matSuffix mat-icon-button aria-label="Clear" 
+                        (click)="gridConfig.filters[0].fieldValue=''">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Last Name</mat-label>
+                        <input matInput placeholder="Search Last Name" autocomplete="off"
+                            [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                        <button matSuffix mat-icon-button aria-label="Clear" 
+                        (click)="gridConfig.filters[1].fieldValue=''">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+    
+                    <!-- <form [formGroup]="_SampleCollectionService.myformSearch"> -->
+                        <div fxLayout="column" fxLayoutAlign="start start">
+                            <div fxFlex fxLayout="row">
+                                <mat-radio-group name="Istype" formControlName="Istype" fxLayout="row" value="2"
+                                 style="padding: 6px;" class="gap-4" [(ngModel)]="gridConfig.filters[6].fieldValue">
+                                    <mat-label>Type:</mat-label>
+                                    <div fxLayout="row">
+                                        <mat-radio-button value='2'>All</mat-radio-button>
+                                        <mat-radio-button value='1'>IP</mat-radio-button>
+                                        <mat-radio-button value='0'>OP</mat-radio-button>
+                                    </div>
+                                </mat-radio-group>
+                            </div>
+                    
+                            <div fxFlex fxLayout="row">
+                                <mat-radio-group name="StatusSearch" formControlName="StatusSearch" fxLayout="row" value="0"
+                                    style="padding: 6px;" class="gap-4" [(ngModel)]="gridConfig.filters[5].fieldValue">
+                                    <mat-label>Status:</mat-label>
+                                    <div fxLayout="row">
+                                        <mat-radio-button value='0'>Pending</mat-radio-button>
+                                        <mat-radio-button value='1'>Completed</mat-radio-button>
+                                    </div>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    <!-- </form> -->
+        
+                </ng-container>
+            </airmid-table>
+        </div>
+
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+            <div style="padding: 10px; height: 30px;">
+                <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                    <div class="table-header-title" style="padding: 10px;">
+                        <span class="h3 font-weight-600">Tets Details</span>
+                    </div>
+                </div>
+            </div>
+
+            <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false" :ShowButtons="false">
+                <ng-container filters>
+
+                </ng-container>
+            </airmid-table>
+        </div>
+    </div>
+</div>
+
+
+<!-- <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
+    dynamicTableHeight>
+    <mat-toolbar class="top-header accent">
+        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+            <button mat-icon-button class="sidebar-toggle ">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
              Sample Collection List
             </span>
         </div>
@@ -90,7 +232,6 @@
 
                             <mat-radio-group value="" [(ngModel)]="gridConfig.filters[5].fieldValue"
                             fxLayoutAlign="center center">
-                            <!-- <mat-radio-button value="">IsCompleted</mat-radio-button> -->
                             <mat-radio-button mat-fab value="1">IsCompleted</mat-radio-button>
                             <mat-radio-button mat-fab value="0">NotCompleted</mat-radio-button>
                         </mat-radio-group>
@@ -101,4 +242,4 @@
             </div>
 
 
-</div>
+</div> -->
