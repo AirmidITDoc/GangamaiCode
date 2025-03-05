@@ -3,16 +3,14 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Material Consumption</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> New Material Consumption</span>
             </div>
             <div class="modal-header-right">
-                <!-- <div class="comman-date-container"> -->
-                    <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </div>
-                <!-- </div> -->
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -20,384 +18,233 @@
     <!-- Modal body -->
     <div class="modal-body" fusePerfectScrollbar>
     <div class="modal-body-container">
-            <form [formGroup]="registeredForm">
+            <form [formGroup]="myForm">
                 <div fxLayout="column" class="gap-12">
                     <div class="modal-card-container">
-                        <!-- <mat-card> -->
-                            <!-- <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="space-between">
-                                <div class="input-container" fxLayout="row" fxFlex="100%" fxFlex.gt-sm="70%" class="gap-8" fxLayoutAlign="start center"> -->
-                                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                        <div>
-                                            <app-airmid-slider 
-                                                label="IsPatientWiseConsumption"   
-                                                formControlName="consumption" 
-                                                [formGroup]="registeredForm" 
-                                                [(ngModel)]="consumption">
-                                            </app-airmid-slider>
-                                        </div>
-                                    </div>
-                                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                        
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-dropdown 
-                                                label="FromStore" 
-                                                formControlName="itemName"
-                                                [formGroup]="registeredForm"
-                                                [validations]="getValidationMessages().itemName"
-                                                [mode]="autocompleteModeStoreName">
-                                            </airmid-dropdown>
-                                        </div>
-
-                                        <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="center center">
-                                            
-                                            <!-- <div fxFlex="19%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <div fxLayout="row" style="padding: 10px;">
-                                                    <mat-radio-group formControlName="OP_IP_Type" name="Radio">
-                                                        <mat-radio-button value="2">ALL</mat-radio-button>&nbsp;
-                                                        <mat-radio-button value="0">OP</mat-radio-button>&nbsp;
-                                                        <mat-radio-button value="1">IP</mat-radio-button>&nbsp;
-                                                    </mat-radio-group>
-                                                </div>
-                                            </div> -->
-                                            
-                                            <div class="radio-container">
-                                                <mat-radio-group aria-label="Select an option" formControlName="PatientType"
-                                                    name="PatientType" (change)="onChangePatientType($event)"
-                                                    (blur)="onChangePatientType($event)">
-                                                    <mat-radio-button value="IP">IP</mat-radio-button>&nbsp;
-                                                    <mat-radio-button value="OP">OP</mat-radio-button>&nbsp;
-                                                </mat-radio-group>
-                                            </div>
-
-                                            <div class="input-container gap-8" fxFlex="80%">
-            
-                                                <!-- <airmid-autocomplete lbl="RgId" 
-                                                *ngIf="registeredForm.get('PatientType').value == 'OP'"
-                                                    [formGroup]="registeredForm" formControlName="RegID" 
-                                                    placeholderText="OP-RegNo/FirstName/LastName"
-                                                     ApiUrl="VisitDetail/search-patient?Keyword=" 
-                                                    (selectionChange)="getSelectedObjOP($event)"
-                                                    TextField="formattedText" ValueField="regId">
-                                                </airmid-autocomplete> -->
-            
-                                                <!-- <airmid-autocomplete lbl="RgId" 
-                                                *ngIf="registeredForm.get('PatientType').value == 'IP'"
-                                                    [formGroup]="registeredForm" formControlName="RegID" 
-                                                    placeholderText="IP-RegNo/FirstName/LastName" 
-                                                    ApiUrl="Admission/search-patient?Keyword=" 
-                                                    (selectionChange)="getSelectedObjIP($event)"
-                                                    ValueField="admissionID" TextField="firstName">
-                                                </airmid-autocomplete> -->
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                        <!-- 1st -->
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-dropdown 
-                                                label="ItemName" 
-                                                formControlName="itemName"
-                                                [formGroup]="registeredForm"
-                                                [validations]="getValidationMessages().itemName"
-                                                [mode]="autocompleteModeItemName">
-                                            </airmid-dropdown>
-                                        </div>
-                                        <!-- 2nd -->
-                                        <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox 
-                                                label="BalQty" 
-                                                formControlName="balqty" 
-                                                [value]="data?.balqty"
-                                                [formGroup]="registeredForm"
-                                                [validations]="getValidationMessages().balqty"
-                                                [maxLength]="50">
-                                            </airmid-textbox>
-                                        </div>
-                                        <!-- 3rd -->
-                                        <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox 
-                                                label="UsedQty" 
-                                                formControlName="usedqty" 
-                                                [value]="data?.usedqty"
-                                                [formGroup]="registeredForm"
-                                                [validations]="getValidationMessages().usedqty"
-                                                [maxLength]="50">
-                                            </airmid-textbox>
-                                        </div>
-                                        <!-- 4th -->
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox 
-                                                label="Remark" 
-                                                formControlName="remark" 
-                                                [value]="data?.remark"
-                                                [formGroup]="registeredForm"
-                                                [validations]="getValidationMessages().remark"
-                                                [maxLength]="50">
-                                            </airmid-textbox>
-                                        </div>
-                                        <!-- 5th -->
-                                        <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date> -->
-                                            <airmid-datepicker [formGroup]="registeredForm" [isRangePicker]="true"
-                                                formStartControlName="startdate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[1].fieldValue"
-                                                [(toValue)]="gridConfig.filters[2].fieldValue">
-                                            </airmid-datepicker>
-                                        </div>
-                                        <!-- 6th -->
-                                        <div class="input-add-button">
-                                            <button class="btn btn-primary" (click)="onSaveEntry()" [disabled]="!add" addbutton> Add </button>
-                                        </div>
-                                    </div>
-
-                                    <!-- <mat-form-field appearance="outline" fxFlex="20%">
-                                        <input type="text" name="SrvcName" formControlName="SrvcName" placeholder="Service Name" matInput [matAutocomplete]="auto" (input)="getServiceListCombobox()" required #itemid (keydown)="onEnterItem($event)">
-
-                                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText" showPanel="true" (optionsScroll)="onScroll()" (optionSelected)='getSelectedObj($event.option.value)'>
-                                            <mat-option *ngFor="let option of filteredOptions" [value]="option">
-                                                {{option.ServiceName}} {{option.Price}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                        <mat-hint>
-                                            <span *ngIf="noOptionFound" style="color: #f44336;"> No data Found</span>
-                                        </mat-hint>
-                                        <mat-error *ngIf="registeredForm.get('SrvcName').hasError('required')">
-                                            Required field cannot be left blank
-                                        </mat-error>
-                                    </mat-form-field> -->
-
-                                    <!-- <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Qty</mat-label>
-                                        <input matInput name="Qty" (keyup)="calculateTotalAmt()" formControlName="Qty" required (keydown)="onEnterqty($event)" #qty>
-                                        <mat-error *ngIf="registeredForm.get('Qty').invalid && registeredForm.get('Qty').touched">
-                                            Qty is required</mat-error>
-                                    </mat-form-field>
-
-                                    <mat-form-field appearance="outline" fxFlex="60%">
-                                        <mat-label>Remark</mat-label>
-                                        <input matInput name="Remark" formControlName="Remark" (keydown)="onEnterremark($event)" #remark>
-                                    </mat-form-field> -->
-
-                                    
-                                <!-- </div> -->
-                                <!-- <div class="input-container" fxLayout="row" fxFlex="100%" fxFlex.gt-sm="30%" class="gap-8" fxLayoutAlign="start center"> -->
-                                    <!-- <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Department</mat-label>
-                                        <mat-select formControlName="Departmentid" placeholder="Bank" #singleSelect required>
-                                            <mat-option>
-                                                <ngx-mat-select-search [formControl]="departmentFilterCtrl" [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                                            </mat-option>
-                                            <mat-option *ngFor="let element of filteredDepartment | async" [value]="element">
-                                                {{element.departmentName}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field> -->
-                                    <!-- <airmid-dropdown label="Department Name" formControlName="Departmentid" [formGroup]="registeredForm"
-                                        [validations]="getValidationMessages().Departmentid" 
-                                        [mode]="autocompletedepartment">
-                                    </airmid-dropdown>
+                        <mat-card>
+                            <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                                <!-- <div>
+                                    <app-airmid-slider 
+                                        label="IsPatientWiseConsumption"   
+                                        formControlName="consumption" 
+                                        [formGroup]="myForm" 
+                                        [(ngModel)]="isPatientWiseConsumption">
+                                    </app-airmid-slider>
                                 </div> -->
-                            <!-- </div> -->
-                        <!-- </mat-card> -->
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <div fxLayout="row" class="gap-8">
+                                        <mat-checkbox  formControlName="IsHealthCard" (change)="chkHealthcard($event)" style="padding: 15px;">IsPatientWiseConsumption
+                                        </mat-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                            <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                                
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown 
+                                        label="FromStore" 
+                                        formControlName="itemName"
+                                        [formGroup]="myForm"
+                                        [validations]="getValidationMessages().itemName"
+                                        [mode]="autocompleteModeStoreName">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div>
+                                    <div fxLayout="row" [formGroup]="myForm"
+                                    *ngIf="Healthcardflag" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center center">
+                                        
+                                        <div class="radio-container">
+                                            <mat-radio-group aria-label="Select an option" formControlName="PatientType"
+                                                name="PatientType" (change)="onChangePatientType($event)"
+                                                (blur)="onChangePatientType($event)" [(ngModel)]="vSelectedOption">
+                                                <mat-radio-button value="OP">OP</mat-radio-button>
+                                                <mat-radio-button value="IP">IP</mat-radio-button>
+                                            </mat-radio-group>
+                                        </div>
+
+                                        <div class="input-container gap-8" fxFlex="80%">
+        
+                                            <airmid-autocomplete lbl="RgId" 
+                                            *ngIf="myForm.get('PatientType')?.value == 'OP'"
+                                                [formGroup]="myForm" formControlName="RegID" 
+                                                placeholderText="OP-RegNo/FirstName/LastName"
+                                                    ApiUrl="VisitDetail/search-patient?Keyword=" 
+                                                (selectionChange)="getSelectedObjOP($event)"
+                                                TextField="formattedText" ValueField="regId">
+                                            </airmid-autocomplete>
+        
+                                            <airmid-autocomplete lbl="RgId" 
+                                            *ngIf="myForm.get('PatientType')?.value == 'IP'"
+                                                [formGroup]="myForm" formControlName="RegID" 
+                                                placeholderText="IP-RegNo/FirstName/LastName" 
+                                                ApiUrl="Admission/search-patient?Keyword=" 
+                                                (selectionChange)="getSelectedObjIP($event)"
+                                                ValueField="admissionID" TextField="firstName">
+                                            </airmid-autocomplete>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                            </div>
+
+                            <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                                <!-- 1st -->
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown 
+                                        label="ItemName" 
+                                        formControlName="itemName"
+                                        [formGroup]="myForm"
+                                        [validations]="getValidationMessages().itemName"
+                                        [mode]="autocompleteModeItemName">
+                                    </airmid-dropdown>
+                                </div>
+                                <!-- 2nd -->
+                                <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox 
+                                        label="BalQty" 
+                                        formControlName="balqty" 
+                                        [value]="data?.balqty"
+                                        [formGroup]="myForm"
+                                        [validations]="getValidationMessages().balqty"
+                                        [maxLength]="50">
+                                    </airmid-textbox>
+                                </div>
+                                <!-- 3rd -->
+                                <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox 
+                                        label="UsedQty" 
+                                        formControlName="usedqty" 
+                                        [value]="data?.usedqty"
+                                        [formGroup]="myForm"
+                                        [validations]="getValidationMessages().usedqty"
+                                        [maxLength]="50">
+                                    </airmid-textbox>
+                                </div>
+                                <!-- 4th -->
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox 
+                                        label="Remark" 
+                                        formControlName="remark" 
+                                        [value]="data?.remark"
+                                        [formGroup]="myForm"
+                                        [validations]="getValidationMessages().remark"
+                                        [maxLength]="50">
+                                    </airmid-textbox>
+                                </div>
+                                <!-- 5th -->
+                                <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-datepicker [formGroup]="myForm" [isRangePicker]="true"
+                                        formStartControlName="startdate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[1].fieldValue"
+                                        [(toValue)]="gridConfig.filters[2].fieldValue">
+                                    </airmid-datepicker>
+                                </div>
+                                <!-- 6th -->
+                                <div class="input-add-button">
+                                    <button class="btn btn-primary" (click)="onSaveEntry()" [disabled]="!add" addbutton> Add </button>
+                                </div>
+                            </div>
+                        </mat-card>
                     </div>
                     <div class="modal-card-container table-container">
                         <div class="table-row gap-12" fxLayout="column" fxLayout.gt-md="row">
-                            <!-- Table 1 -->
-                            <!-- <div class="table-left" fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="70%"> -->
-                                <mat-card fxFlexFill>
+                            <mat-card fxFlexFill>
 
-                                    <div fusePerfectScrollbar
-                                        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                                        dynamicTableHeight>
-                                        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                                            <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
-                                                <ng-container filters>
+                                <div fusePerfectScrollbar
+                                    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                                    dynamicTableHeight>
+                                    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                                        <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
+                                            <ng-container filters>
 
-                                                </ng-container>
-                                            </airmid-table>
-                                        </div>
+                                            </ng-container>
+                                        </airmid-table>
                                     </div>
+                                </div>
 
-                                    <!-- <div class="table-wrapper">
-                                        <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" class="h-280">
+                                <div fxLayout="row" fxLayoutGap="20px" fxLayoutALign="start center">
 
-                                            <ng-container matColumnDef="SrvcName">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-150">ItemName</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" class="w-150" [matTooltip]="contact.SrvcName">
-                                                    <span> {{contact.SrvcName}}</span>
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="BatchNo">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    Batch No
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <span> {{contact.BatchNo}}</span>
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="ExpDate">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    Exp.Date
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <span> {{contact.ExpDate }}</span>
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="BalanceQty">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    Bal. Qty
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <span> {{contact.BalanceQty }}</span>
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="Used">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Used
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <span> {{contact.Used }}</span>
-                                                </mat-cell>
-                                            </ng-container>
-                                            <ng-container matColumnDef="Rate">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    Rate
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <span> {{contact.Rate | currency:'INR' }}</span>
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="TotalAmount">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    TotalAmount
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <span> {{contact.TotalAmount}}</span>
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="Remark">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    Remark
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <span> {{contact.Remark}}</span>
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="loading">
-                                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                                    loading data...
-                                                </mat-footer-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="noData">
-                                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                                    <span>No Data Found</span>
-                                                </mat-footer-cell>
-                                            </ng-container>
-
-                                            <mat-header-row class="accent min-width-1000" *matHeaderRowDef="displayedColumns; sticky: true">
-                                            </mat-header-row>
-                                            <mat-row *matRowDef="let contact; columns: displayedColumns;" class=" min-width-1000" [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}">
-                                            </mat-footer-row>
-                                            <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
-                                            </mat-footer-row>
-
-                                        </mat-table>
-                                        <div class="net-amt-section">
-                                            <div class="net-amt">
-                                                <div class="net-amt-box">
-                                                    <span class="net-amt-label">Net Amount : </span>
-                                                    <span class="net-amt-value">{{getNetAmtSum(dataSource.data)}}</span>
-                                                </div>
-                                            </div>
-                                        </div> 
-                                    </div>  -->
-                                </mat-card>
-                            <!-- </div> -->
-                            <!-- Table 2 -->
-                            <!-- <div class="table-right" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="30%">
-                                <mat-card fxFlexFill>
-                                    <div fusePerfectScrollbar
-                                        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                                        dynamicTableHeight>
-                                        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                                            <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false">
-                                                <ng-container filters>
-
-                                                </ng-container>
-                                            </airmid-table>
-                                        </div>
-                                    </div> -->
-
-
-
-                                    <!-- <div class="table-wrapper">
-                                        <mat-table #table matSort [dataSource]="dataSource1" class="h-280" [@animateStagger]="{value:'50'}">
-                                            <ng-container matColumnDef="PatientName">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header style="margin-right:1px;">PatientName</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact">
-                                                    {{contact.PatientName}}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="IPDNo">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    IPDNO
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.IPDNo}}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="loading">
-                                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                                    loading data...
-                                                </mat-footer-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="noData">
-                                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                                    <span>No Data Found</span>
-                                                </mat-footer-cell>
-                                            </ng-container>
-
-                                            <mat-header-row class="accent" *matHeaderRowDef="tableColumns; sticky: true">
-                                            </mat-header-row>
-                                            <mat-row *matRowDef="let contact; columns: tableColumns;" [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource1!=null}">
-                                            </mat-footer-row>
-                                            <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
-                                            </mat-footer-row>
-                                        </mat-table>
-                                    </div> -->
-                                <!-- </mat-card>
-                            </div> -->
+                                    <span class="net-amt-mat-label" style="font-weight:bold;padding-bottom: 8px;">No Of
+                                        Item:
+                                    </span>&nbsp;
+                                    <!-- <span class="net-amt-value"
+                                        style="margin-left:10px;font-weight:bolder;color: blue;">{{dsNewmaterialList.data.length}}
+                                    </span> -->&nbsp;
+        
+    
+                                    <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Total MRPAmount
+                                        Amount :
+                                    </span>&nbsp;
+                                    <!-- <span class="net-amt-value text-primary"
+                                        style="margin-left:10px;font-weight:bolder;color: blue;">{{getTotalamt(dsNewmaterialList.data)
+                                        | currency:'INR' }}</span>  -->
+                                </div>
+        
+                            </mat-card>
                         </div>
                     </div>
 
+                    <mat-card>
+                        <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+                            
+                            <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                                <!-- 1st -->
+                                <div fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox 
+                                        label="Remark"  #Remark
+                                        rows="1"
+                                        formControlName="Remark" 
+                                        [value]="data?.Remark"
+                                        [formGroup]="myForm"
+                                        [validations]="getValidationMessages().Remark">
+                                    </airmid-textbox>
+                                </div>
+                                <!-- 2nd -->
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox 
+                                        label="MRPTotalAmount" 
+                                        formControlName="MRPTotalAmount" 
+                                        [value]="data?.MRPTotalAmount"
+                                        [formGroup]="myForm"
+                                        [validations]="getValidationMessages().MRPTotalAmount"
+                                        [(ngModel)]="vMRPTotalAmount">
+                                    </airmid-textbox>
+                                </div>
+                                <!-- 3rd -->
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox 
+                                        label="PurTotalAmount" 
+                                        formControlName="PurTotalAmount" 
+                                        [value]="data?.PurTotalAmount"
+                                        [formGroup]="myForm"
+                                        [validations]="getValidationMessages().PurTotalAmount"
+                                        [(ngModel)]="vPurTotalAmount">
+                                    </airmid-textbox>
+                                </div>
+                                <!-- 4th -->
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox 
+                                        label="LandedTotalAmount" 
+                                        formControlName="LandedTotalAmount" 
+                                        [value]="data?.LandedTotalAmount"
+                                        [formGroup]="myForm"
+                                        [validations]="getValidationMessages().LandedTotalAmount"
+                                        [(ngModel)]="vLandedTotalAmount">
+                                    </airmid-textbox>
+                                </div>
+                            </div>
 
+                            <div class="new-appointment-actions gap-10" fxLayoutAlign="end center">
+                                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                <button class="btn btn-primary" (click)="OnSave()">Save</button>
+                            </div>
+                            
+                        </div>
+                    </mat-card>
 
                 </div>
             </form>
-        </div>
-    </div>
-
-    <!-- Modal footer -->
-    <div class="modal-footer">
-        <div class="footer-navigation-container">
-            <div class="modal-footer-buttons">
-                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button class="btn btn-primary" (click)="OnSave()">Save</button>
-            </div>
-            <!-- [disabled]="registeredForm.invalid" -->
         </div>
     </div>
 </div>

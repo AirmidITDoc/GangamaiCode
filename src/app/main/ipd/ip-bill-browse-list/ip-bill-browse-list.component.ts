@@ -65,7 +65,7 @@ export class IPBillBrowseListComponent implements OnInit {
         { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "IsIntrimOrFinal", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+        { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
 
     ]
      ngAfterViewInit() {
@@ -91,7 +91,7 @@ export class IPBillBrowseListComponent implements OnInit {
           @ViewChild('actionButtonTemplateIPRefund') actionButtonTemplateIPRefund!: TemplateRef<any>;
 
     gridConfig: gridModel = {
-        apiUrl: "Billing/IPBillList",
+        apiUrl: "Billing/BrowseIPBillList",
         columnsList: [
             { heading: "", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50},
             { heading: "", key: "interimOrFinal", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
@@ -140,7 +140,7 @@ export class IPBillBrowseListComponent implements OnInit {
     }
 
     gridConfig1: gridModel = {
-        apiUrl: "Billing/IPPaymentList",
+        apiUrl: "Billing/BrowseIPPaymentList",
         columnsList: [
 
             { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -167,16 +167,15 @@ export class IPBillBrowseListComponent implements OnInit {
         sortField: "RegNo",
         sortOrder: 0,
         filters: [
-            { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "ReceiptNo", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
+            { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
         ],
         row: 25
     }
@@ -201,14 +200,13 @@ export class IPBillBrowseListComponent implements OnInit {
         sortField: "RegNo",
         sortOrder: 0,
         filters: [
-            { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
         ],
         row: 25
     }

@@ -29,6 +29,13 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
     [x: string]: any;
 
+    isPatientWiseConsumption = true; 
+    selectedStore: string;
+    patientType: string;
+    patientSearch: string;
+
+    vhealthCardNo: any;
+
     hasSelectedContacts: boolean;
     data: any;
     paidamt:number;
@@ -130,7 +137,8 @@ export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
     }
 
     ngOnInit(): void {
-    
+        
+        this.myForm = this._NursingStationService.createMyForm();
         this.createForm();
         this.consumption = this.data.consumption
         if (this.advanceDataStored.storage) {
@@ -154,32 +162,33 @@ export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
         if (event.value == 'OP') {
             this.OP_IPType = 0;
             this.RegId = "";
-            // this.paymethod = true;
-            // this.ItemSubform.get('MobileNo').clearValidators();
-            // this.ItemSubform.get('PatientName').clearValidators();
-            // this.ItemSubform.get('MobileNo').updateValueAndValidity();
-            // this.ItemSubform.get('PatientName').updateValueAndValidity();
+            this.paymethod = true;
+            this.myForm.get('MobileNo').clearValidators();
+            this.myForm.get('PatientName').clearValidators();
+            this.myForm.get('MobileNo').updateValueAndValidity();
+            this.myForm.get('PatientName').updateValueAndValidity();
         }
         else if (event.value == 'IP') {
             this.OP_IPType = 1;
             this.RegId = "";
 
-            // this.ItemSubform.get('MobileNo').clearValidators();
-            // this.ItemSubform.get('PatientName').clearValidators();
-            // this.ItemSubform.get('MobileNo').updateValueAndValidity();
-            // this.ItemSubform.get('PatientName').updateValueAndValidity();
+            this.myForm.get('MobileNo').clearValidators();
+            this.myForm.get('PatientName').clearValidators();
+            this.myForm.get('MobileNo').updateValueAndValidity();
+            this.myForm.get('PatientName').updateValueAndValidity();
         } else {
-            // this.ItemSubform.get('MobileNo').reset();
-            // this.ItemSubform.get('MobileNo').setValidators([Validators.required]);
-            // this.ItemSubform.get('MobileNo').enable();
-            // this.ItemSubform.get('PatientName').reset();
-            // this.ItemSubform.get('PatientName').setValidators([Validators.required]);
-            // this.ItemSubform.get('PatientName').enable();
-            // this.ItemSubform.updateValueAndValidity();
+            this.myForm.get('MobileNo').reset();
+            this.myForm.get('MobileNo').setValidators([Validators.required]);
+            this.myForm.get('MobileNo').enable();
+            this.myForm.get('PatientName').reset();
+            this.myForm.get('PatientName').setValidators([Validators.required]);
+            this.myForm.get('PatientName').enable();
+            this.myForm.updateValueAndValidity();
 
             this.OP_IPType = 2;
         }
     }
+
 
     getSelectedObjOP(obj) {
         debugger
@@ -293,7 +302,7 @@ export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
   
   BillingClassCmbList: any = [];
   IPBillingInfor: any = [];
-//   registeredForm: FormGroup;
+//   myForm: FormGroup;
   myShowAdvanceForm: FormGroup;
   concessionAmtOfNetAmt: any = 0;
   netPaybleAmt: any;
@@ -332,6 +341,7 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
     private _fuseSidebarService: FuseSidebarService,
     private changeDetectorRefs: ChangeDetectorRef,
     public _NursingStationService:PatientwiseMaterialConsumptionService,
+    
     private _ActRoute: Router,
     public _matDialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
@@ -345,6 +355,17 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
     ) { }
 
   
+    chkHealthcard(event) {
+        if (event.checked) {
+            this.Healthcardflag = true;
+            // this.personalFormGroup.get('HealthCardNo').setValidators([Validators.required]);
+        } else {
+            this.Healthcardflag = false;
+            // this.personalFormGroup.get('HealthCardNo').reset();
+            // this.personalFormGroup.get('HealthCardNo').clearValidators();
+            // this.personalFormGroup.get('HealthCardNo').updateValueAndValidity();
+        }
+    }
 
     getValidationMessages(){
         return{
@@ -352,7 +373,10 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
             balqty: [],
             usedqty: [],
             remark: [],
-
+            Remark:[],
+            MRPTotalAmount:[],
+            PurTotalAmount:[],
+            LandedTotalAmount:[],
 
         }
     }

@@ -165,7 +165,7 @@
                                                             <mat-card style="padding: 5px;">
 
                                                                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                                                                    <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
+                                                                    <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
                                                                         <ng-container filters>
                                                         
                                                                         </ng-container>
@@ -386,7 +386,7 @@
                                                     <mat-card style="padding: 5px;">
 
                                                         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                                                            <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false">
+                                                            <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false" :ShowButtons="false">
                                                                 <ng-container filters>
                                                 
                                                                 </ng-container>
@@ -491,10 +491,10 @@
                                                         </mat-paginator> -->
                                                     </mat-card>
                                                 </div>
-                                                <div fxLayout="row" fxLayoutGap="6px" fxLayoutAlign="end">
+                                                <!-- <div fxLayout="row" fxLayoutGap="6px" fxLayoutAlign="end">
                                                     <button class="btn btn-danger-outline">Reset</button>
                                                     <button class="btn btn-primary ">Save</button>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
                                     </div>
