@@ -171,19 +171,18 @@ export class StoreMasterService {
     }
 
     public getStoreById(Id) {
-
         return this._httpClient.GetData("StoreMaster/" + Id);
     }
 
     public storeMasterSave(Param: any) {
     if (Param.storeId) {
             debugger
-            return this._httpClient.PutData("StoreMaster/", Param);
+            return this._httpClient.PutData("StoreMaster/"+ Param.storeId, Param);
         } else return this._httpClient.PostData("StoreMaster", Param);
     }
 
-  
+
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("StoreMaster?Id" + m_data.toString());
+        return this._httpClient.DeleteData("StoreMaster?Id="+ m_data.toString());
     }
 }

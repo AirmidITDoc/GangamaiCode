@@ -24,10 +24,13 @@ export class RadiologyTemplateMasterService {
                         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                     ]
                 ],
-            templateDesc:["", Validators.required],
-            isActive:[true,[Validators.required]],
+            templateDesc:["", 
+                // Validators.required
+            ],
+            isActive:[true,[Validators.required]]
         });
     }
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             TemplateNameSearch: [""],
@@ -39,16 +42,6 @@ export class RadiologyTemplateMasterService {
         this.createRadiologytemplateForm();
         this.createSearchForm();
     }
-
-//   getValidationMessages() {
-//     return {
-//         templateName: [
-//             { name: "required", Message: "Template Name is required" },
-//             { name: "maxlength", Message: "Template name should not be greater than 50 char." },
-//             { name: "pattern", Message: "Special char not allowed." }
-//         ]
-//     };
-//   }
   
     public templateMasterSave(Param: any) {
         if (Param.templateId) {
