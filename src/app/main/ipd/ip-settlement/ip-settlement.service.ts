@@ -58,7 +58,7 @@ public getIPsettlementPrint(PaymentId){
 
 public InsertIPSettlementPayment (employee){
  
-   return this._httpClient1.PostData("InPatient/IPSettlement", employee)
+   return this._httpClient1.PostData("IPBill/PaymentSettelment", employee)
 }
 
 

@@ -167,7 +167,7 @@ export class NewOPListComponent implements OnInit {
     gridConfig2: gridModel = {
         apiUrl: "OPBill/OPRefundList",
         columnsList: [
-            { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
+            { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
             { heading: "RefundNo", key: "refundNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },

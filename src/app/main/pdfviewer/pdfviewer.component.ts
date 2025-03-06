@@ -21,6 +21,7 @@ export class PdfviewerComponent implements OnInit {
       // console.log(this.base64);
       this.title = this.data.title as string;
       console.log(this.data);
+      console.log(this.title);
     }
   }
   onClose() {

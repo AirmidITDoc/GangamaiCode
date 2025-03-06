@@ -98,7 +98,6 @@ export class IPBillBrowseListComponent implements OnInit {
             { heading: "", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
             { heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
             
-            
             { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:200, type:9},
             { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width:150},

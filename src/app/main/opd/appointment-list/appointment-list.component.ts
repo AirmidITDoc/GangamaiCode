@@ -182,6 +182,19 @@ export class AppointmentListComponent implements OnInit {
     onChangeEndDate(value) {
         this.gridConfig.filters[5].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }
+
+    ListView(value) {
+        debugger
+        console.log(value)
+         if(value.value!==0)
+            this.DoctorId=value.value
+        else
+        this.DoctorId="0"
+       
+    }
+
+
+
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

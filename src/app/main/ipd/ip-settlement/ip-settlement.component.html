@@ -14,17 +14,20 @@
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
         <div class="modal-body-container">
             <mat-card style="padding: 5px;">
-            <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
-                <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;">
+                <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
+                    <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;">
 
-                    <div class="redio-container" style="width: 40%;padding: 10px;">
-                       
-                     <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No" [formGroup]="searchFormGroup"  fxFlex="40%"
-                     formControlName="RegId" placeholderText="Search Reg No / Patient Name / Mobile No" ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
+                        <div class="redio-container" style="width: 40%;padding: 10px;">
 
+                            <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No"
+                                [formGroup]="searchFormGroup" fxFlex="40%" formControlName="RegId"
+                                placeholderText="Search Reg No / Patient Name / Mobile No"
+                                ApiUrl="OutPatient/auto-complete?Keyword="
+                                (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
+
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
             </mat-card>
 
             <div fxlayout="row" style="padding: 0px 5px 0px 5px">
@@ -52,7 +55,6 @@
                                             <span class="patient-col-key">Age | Gender</span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{registerObj.ageYear}}Y
-                                                <!-- |{{registerObj.ageMonth}}M|{{registerObj.ageDay}}D | -->
                                                 {{registerObj.genderId}}</span>
                                         </div>
                                         <div class="patient-col">
@@ -70,35 +72,39 @@
             </div>
         </div>
 
-        <ng-template #actionsTemplate1 let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.companyId =='0'" matTooltip="Patient Category Self">account_box
+      
+        <ng-template #actionsTemplate let-element>
+            <div>
+                <mat-icon *ngIf="element.companyId=='0'" matTooltip="Patient Category Self">account_box
                 </mat-icon>
-    
-                <mat-icon *ngIf="element.companyId !='0'" matTooltip="Patient Category Company">business
+
+                <mat-icon *ngIf="element.companyId!='0'" matTooltip="Patient Category Company">business
                 </mat-icon>
-              
             </div>
         </ng-template>
-    
 
-        <!-- *ngIf="element.balanceAmt !=0 " -->
+
+
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-              
-                <button mat-icon-button matTooltip="Settlement" (click)="openPaymentpopup(element)">
-                    <mat-icon matTooltip="Settlement" *ngIf="element.balanceAmt!=0">receipt</mat-icon>
-                    <mat-icon matTooltip="Paid" *ngIf="element.balanceAmt==0" [disabled]="true">payment</mat-icon>
+
+
+                <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement"
+                    *ngIf="element.balanceAmt!='0'">
+                    <mat-icon title="Settlement">receipt</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Paid" *ngIf="element.balanceAmt=='0'">
+                    <mat-icon title="Settlement">payment</mat-icon>
                 </button>
 
-                <button mat-icon-button   matTooltip="Print">
+                <button mat-icon-button matTooltip="Print" (click)="viewgetOPPayemntPdf(element)">
                     <mat-icon>print</mat-icon>
                 </button>
-             
+
             </div>
         </ng-template>
 
-        <!-- #grid1 :ShowFilter="false" -->
+        
         <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
             <ng-container filters>
                 <form [formGroup]="myFormGroup">
@@ -117,7 +123,7 @@
                  [(ngModel)]="gridConfig.filters[0].fieldValue"></airmid-autocomplete> -->
 
                 </form>
-                
+
             </ng-container>
         </airmid-table>
     </div>

@@ -42,152 +42,181 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
     animations: fuseAnimations
 })
 export class IPSettlementComponent implements OnInit {
-     searchFormGroup: FormGroup
-       myFormGroup: FormGroup
-   RegId1="0";
-   BillNo:any;
-   vpaidamt: any = 0;
-   vbalanceamt: any = 0;
-   FinalAmt=0;
-   // @ViewChild('grid1') grid1: AirmidTableComponent;
-   
-       constructor(public _IPSettlementService: IPSettlementService, 
-            private commonService: PrintserviceService,
-                   public _matDialog: MatDialog,
-                   public datePipe: DatePipe,
-                   public toastr: ToastrService, public formBuilder: UntypedFormBuilder,) 
-                   { }
-                   
-       @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-       @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
-       @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
-       @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-   
-       ngAfterViewInit() {
-           this.gridConfig.columnsList.find(col => col.key === 'companyId')!.template = this.actionsTemplate1;
-          this.gridConfig.columnsList.find(col => col.key === 'balanceAmt')!.template = this.actionsTemplate2;
-          this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-   
-       }
-       gridConfig: gridModel = {
-           apiUrl: "OPBill/OPBillListSettlementList",
-           columnsList: [
-               { heading: "--", key: "companyId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:70},
-               { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
-               { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
-               { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-               { heading: "BillAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
-               { heading: "ConsessionAmt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' },
-               { heading: "NetAmount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
-               { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' },
-               { heading: "BalanceAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
-               {
-                   heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
-                   template: this.actionButtonTemplate  // Assign ng-template to the column
-               }
-               // {
-               //     heading: "Action", key: "action", align: "right", width:100,type: gridColumnTypes.action, actions: [
-               //         {
-               //             action: gridActions.edit, callback: (data: any) => {
-               //                 this.onSave(data);
-               //             }
-               //         }, 
-               //         {
-               //             action: gridActions.print, callback: (data: any) => {
-               //                 this.viewgetOPPayemntPdf(data);
-               //             }
-               //         }
-               //         ]
-               // } 
-           ],
-           sortField: "BillNo",
-           sortOrder: 0,
-           filters: [
-               { fieldName: "RegId", fieldValue: String(this.RegId1), opType: OperatorComparer.Contains },
-               { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-               { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
-           ],
-           row: 25
-       }
-   
-       ngOnInit(): void {
-           this.searchFormGroup = this.createSearchForm();
-           this.myFormGroup= this.createSearchForm1();
-       }
-       openPaymentpopup(contact) {
-       
-            console.log(contact)
-            const currentDate = new Date();
-            const datePipe = new DatePipe('en-US');
-            const formattedTime = datePipe.transform(currentDate, 'shortTime');
-            const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-            this.FinalAmt = contact.NetPayableAmt;
-    
-            let PatientHeaderObj = {};
-            PatientHeaderObj['Date'] = formattedDate;
-            PatientHeaderObj['PatientName'] = this.PatientName; 
-            PatientHeaderObj['AdvanceAmount'] = contact.BalanceAmt;
-            PatientHeaderObj['NetPayAmount'] = contact.BalanceAmt;
-            PatientHeaderObj['BillNo'] = contact.BillNo;
-            PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
-            PatientHeaderObj['IPDNo'] = contact.IPDNo;
-            PatientHeaderObj['RegNo'] = contact.RegNo; 
-    
-            const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
-                {
-                    maxWidth: "95vw",
-                    height: '650px',
-                    width: '85%',
-                    //  data: {
-                    //    advanceObj: PatientHeaderObj,
-                    //    FromName: "IP-SETTLEMENT"
-                    //  }
-                    data: {
-                        vPatientHeaderObj: PatientHeaderObj,
-                        FromName: "IP-SETTLEMENT",
-                        advanceObj: PatientHeaderObj,
-                    }
-                });
-    
-            dialogRef.afterClosed().subscribe(result => {
-                console.log(result)
+    searchFormGroup: FormGroup
+    myFormGroup: FormGroup
+    RegId1 = "0";
+    BillNo: any;
+    vpaidamt: any = 0;
+    vbalanceamt: any = 0;
+    FinalAmt = 0;
+    // @ViewChild('grid1') grid1: AirmidTableComponent;
+
+    constructor(public _IPSettlementService: IPSettlementService,
+        private commonService: PrintserviceService,
+        public _matDialog: MatDialog,
+        public datePipe: DatePipe,
+        public toastr: ToastrService, public formBuilder: UntypedFormBuilder,) { }
+
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+    @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+    @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+
+    ngAfterViewInit() {
+        this.gridConfig.columnsList.find(col => col.key === 'companyId')!.template = this.actionsTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'balanceAmt')!.template = this.actionsTemplate2;
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+
+    }
+    gridConfig: gridModel = {
+        apiUrl: "IPBill/IPBillList",
+        columnsList: [
+            {
+                heading: "-", key: "companyId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
+                template: this.actionsTemplate, width: 20
+            },
+            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "BillAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "ConsessionAmt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "NetAmount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "BalanceAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
+            {
+                heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+                template: this.actionButtonTemplate  // Assign ng-template to the column
+            }
+
+        ],
+        sortField: "BillNo",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "RegId", fieldValue: String(this.RegId1), opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
+        ],
+        row: 25
+    }
+
+    ngOnInit(): void {
+        this.searchFormGroup = this.createSearchForm();
+        this.myFormGroup = this.createSearchForm1();
+    }
+    openPaymentpopup(contact) {
+
+        console.log(contact)
+        const currentDate = new Date();
+        const datePipe = new DatePipe('en-US');
+        const formattedTime = datePipe.transform(currentDate, 'shortTime');
+        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+        this.FinalAmt = contact.NetPayableAmt;
+
+        let PatientHeaderObj = {};
+        PatientHeaderObj['Date'] = formattedDate;
+        PatientHeaderObj['PatientName'] = this.PatientName;
+        PatientHeaderObj['AdvanceAmount'] = contact.advUsdPay;
+        PatientHeaderObj['NetPayAmount'] = contact.balanceAmt;
+        PatientHeaderObj['BillNo'] = contact.billNo;
+        PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
+        PatientHeaderObj['IPDNo'] = contact.opD_IPD_ID;
+        PatientHeaderObj['RegNo'] = contact.RegNo;
+
+        const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+            {
+                maxWidth: "95vw",
+                height: '650px',
+                width: '85%',
+
+                data: {
+                    vPatientHeaderObj: PatientHeaderObj,
+                    FromName: "IP-SETTLEMENT",
+                    advanceObj: PatientHeaderObj,
+                }
+            });
+
+
+        dialogRef.afterClosed().subscribe(result => {
+             let NeftNo="0"
+            console.log(result.submitDataPay.ipPaymentInsert)
+            debugger
+            if(result.submitDataPay.ipPaymentInsert.NEFTNo =="undefined")
+                NeftNo="0"
+            else
+            NeftNo=result.submitDataPay.ipPaymentInsert.NEFTNo
+            if (result.IsSubmitFlag) {
+                let Paymentobj = {};
+
+                Paymentobj['PaymentId'] = '0';
+                Paymentobj['billNo'] = contact.billNo;
+                Paymentobj['PaymentDate'] = result.submitDataPay.ipPaymentInsert.PaymentDate;
+                Paymentobj['PaymentTime'] = result.submitDataPay.ipPaymentInsert.PaymentTime; //this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+                Paymentobj['CashPayAmount'] = result.submitDataPay.ipPaymentInsert.CashPayAmount ?? 0;
+                Paymentobj['ChequePayAmount'] = result.submitDataPay.ipPaymentInsert.ChequePayAmount ?? 0;
+                Paymentobj['ChequeNo'] = String(result.submitDataPay.ipPaymentInsert.ChequeNo) ?? "0";
+                Paymentobj['BankName'] = result.submitDataPay.ipPaymentInsert.BankName ?? "";
+                Paymentobj['ChequeDate'] = result.submitDataPay.ipPaymentInsert.ChequeDate;
+                Paymentobj['CardPayAmount'] = result.submitDataPay.ipPaymentInsert.CardPayAmount
+                Paymentobj['CardNo'] = result.submitDataPay.ipPaymentInsert.CardNo;
+                Paymentobj['CardBankName'] = result.submitDataPay.ipPaymentInsert.CardBankName
+                Paymentobj['CardDate'] = result.submitDataPay.ipPaymentInsert.CardDate
+                Paymentobj['AdvanceUsedAmount'] = result.submitDataPay.ipPaymentInsert.AdvanceUsedAmount
+                Paymentobj['AdvanceId'] = result.submitDataPay.ipPaymentInsert.AdvanceId
+                Paymentobj['RefundId'] = 0;
+                Paymentobj['TransactionType'] = 0;
+                Paymentobj['Remark'] = '';
+                Paymentobj['AddBy'] = 1;
+                Paymentobj['IsCancelled'] = false;
+                Paymentobj['IsCancelledBy'] = '0';
+                Paymentobj['IsCancelledDate'] = result.submitDataPay.ipPaymentInsert.IsCancelledDate
+                Paymentobj['opdipdType'] = 1;
+                Paymentobj['neftpayAmount'] = result.submitDataPay.ipPaymentInsert.NEFTPayAmount
+                Paymentobj['neftno'] =NeftNo;
+                Paymentobj['neftbankMaster'] = result.submitDataPay.ipPaymentInsert.NEFTBankMaster
+                Paymentobj['neftdate'] = result.submitDataPay.ipPaymentInsert.NEFTDate
+                Paymentobj['payTmamount'] = result.submitDataPay.ipPaymentInsert.PayTMAmount
+                Paymentobj['payTmtranNo'] = "0",//result.submitDataPay.ipPaymentInsert.PayTMTranNo || 0
+                    Paymentobj['payTmdate'] = result.submitDataPay.ipPaymentInsert.PayTMDate
+                Paymentobj['tdsAmount'] = result.submitDataPay.ipPaymentInsert.tdsAmount
+
                 let BillUpdateObj = {};
-    
-                BillUpdateObj['BillNo'] = contact.BillNo;
-                BillUpdateObj['BillBalAmount'] = result.BalAmt;
-    
+
+                BillUpdateObj['billNo'] = contact.billNo;
+                BillUpdateObj['balanceAmt'] = result.BalAmt;
+
                 console.log("Procced with Payment Option");
                 let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
-              
+
                 if (result.IsSubmitFlag) {
                     console.log(result);
                     result.submitDataPay.ipPaymentInsert.TransactionType = 0;
                     UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
                     console.log(UpdateAdvanceDetailarr1);
-    
+
                     let UpdateAdvanceDetailarr = [];
                     let BalanceAmt = 0;
                     let UsedAmt = 0;
                     if (result.submitDataAdvancePay.length > 0) {
                         result.submitDataAdvancePay.forEach((element) => {
                             let UpdateAdvanceDetailObj = {};
-                            UpdateAdvanceDetailObj['AdvanceDetailID'] = element.AdvanceDetailID;
-                            UpdateAdvanceDetailObj['UsedAmount'] = element.UsedAmount;
+                            UpdateAdvanceDetailObj['advanceDetailID'] = element.AdvanceDetailID;
+                            UpdateAdvanceDetailObj['usedAmount'] = element.UsedAmount;
                             UsedAmt += element.UsedAmount;
-                            UpdateAdvanceDetailObj['BalanceAmount'] = element.BalanceAmount;
+                            UpdateAdvanceDetailObj['balanceAmount'] = element.BalanceAmount;
                             BalanceAmt += element.BalanceAmount;
                             UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
                         });
                     }
                     else {
                         let UpdateAdvanceDetailObj = {};
-                        UpdateAdvanceDetailObj['AdvanceDetailID'] = 0,
-                            UpdateAdvanceDetailObj['UsedAmount'] = 0,
-                            UpdateAdvanceDetailObj['BalanceAmount'] = 0,
+                        UpdateAdvanceDetailObj['advanceDetailID'] = 0,
+                            UpdateAdvanceDetailObj['usedAmount'] = 0,
+                            UpdateAdvanceDetailObj['balanceAmount'] = 0,
                             UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
                     }
-    
-    
+
+
                     let UpdateAdvanceHeaderObj = {};
                     if (result.submitDataAdvancePay.length > 0) {
                         UpdateAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceId'],
@@ -195,120 +224,110 @@ export class IPSettlementComponent implements OnInit {
                             UpdateAdvanceHeaderObj['BalanceAmount'] = BalanceAmt
                     }
                     else {
-                        UpdateAdvanceHeaderObj['AdvanceId'] = 0,
-                            UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
-                            UpdateAdvanceHeaderObj['BalanceAmount'] = 0
+                        UpdateAdvanceHeaderObj['advanceId'] = 0,
+                            UpdateAdvanceHeaderObj['advanceUsedAmount'] = 0,
+                            UpdateAdvanceHeaderObj['balanceAmount'] = 0
                     }
-     
+
                     let submitData = {
-                        "ipPaymentCreditUpdate": result.submitDataPay.ipPaymentInsert,
-                        "updateIpBill": BillUpdateObj,
-                        "iPsettlementAdvanceDetailUpdate": UpdateAdvanceDetailarr,
-                        "iPsettlementAdvanceHeaderUpdate": UpdateAdvanceHeaderObj 
+                        "payment":Paymentobj,// result.submitDataPay.ipPaymentInsert,
+                        "billupdate": BillUpdateObj,
+                        "advanceDetailupdate": UpdateAdvanceDetailarr,
+                        "advanceHeaderupdate": UpdateAdvanceHeaderObj 
                     };
+                    let data={
+                        submitDataPay:submitData
+                    }
+
+                 
                     console.log(submitData);
                     this._IPSettlementService.InsertIPSettlementPayment(submitData).subscribe(response => {
-                        if (response) {
-                            Swal.fire('Payment Done  !', 'Ip Settlemet Done Successfully !', 'success').then((result) => {
-                                if (result.isConfirmed) { 
-                                    this.viewgetOPPayemntPdf(response);
-                                    this._matDialog.closeAll();
-                                    // this.getCreditBillDetails();
-                                }
-                            });
-                        } else {
-                            Swal.fire('Error !', 'IP Settlement data not saved', 'error');
-                        }
-    
+                        this.toastr.success(response.message);
+                        console.log(response)
+                        this.viewgetIPPayemntPdf(response)
+                        this._matDialog.closeAll();
+                    }, (error) => {
+                        this.toastr.error(error.message);
                     });
+
+
                 }
+
+            }
+        });
+        this.grid.bindGridData();
+    }
+
+    viewgetIPPayemntPdf(data) {
+        
+        this.commonService.Onprint("PaymentId", data.paymentId, "IpPaymentReceipt");
+    }
+
+    createSearchForm() {
+        return this.formBuilder.group({
+            RegId: 0,
+            AppointmentDate: [(new Date()).toISOString()],
+        });
+    }
+    createSearchForm1() {
+        return this.formBuilder.group({
+            RegId: 0
+        });
+    }
+
+    //    110193
+    registerObj = new RegInsert({});
+    RegId = 0;
+    PatientName: any;
+    getSelectedObj(obj) {
+        
+        console.log(obj)
+        this.RegId1 = obj.value;
+        this.GetDetails(this.RegId1)
+        setTimeout(() => {
+            this._IPSettlementService.getRegistraionById(this.RegId1).subscribe((response) => {
+                this.registerObj = response;
+                console.log(response)
+
             });
+
+        }, 500);
+
+    }
+
+    GetDetails(data) {
+        debugger
+        this.gridConfig = {
+            apiUrl: "IPBill/IPBillList",
+            columnsList: [
+                {
+                    heading: "-", key: "companyId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
+                    template: this.actionsTemplate, width: 20
+                },
+                { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "BillAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "ConsessionAmt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "NetAmount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "BalanceAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
+                {
+                    heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+                    template: this.actionButtonTemplate  // Assign ng-template to the column
+                }
+
+            ],
+            sortField: "RegId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "RegId", fieldValue: String(this.RegId1), opType: OperatorComparer.Equals },
+                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
+            ],
+            row: 25
         }
-    
-            
-       
-   
-   
-       viewgetOPPayemntPdf(data){
-           debugger
-           this.commonService.Onprint("PaymentId",data.paymentId,"OPPaymentReceipt");
-       }
-       
-       createSearchForm() {
-           return this.formBuilder.group({
-           RegId: 0,
-           AppointmentDate: [(new Date()).toISOString()],
-           });
-       }
-       createSearchForm1() {
-           return this.formBuilder.group({
-           RegId: 0       
-           });
-       }
-   
-      
-       registerObj = new RegInsert({});
-       RegId=0;
-       PatientName:any;
-       getSelectedObj(obj) {
-           debugger
-           console.log(obj)
-           this.RegId1 = obj.regId;
-           // this.PatientName=obj.text;
-          setTimeout(() => {
-               this._IPSettlementService.getRegistraionById(this.RegId1).subscribe((response) => {
-               this.registerObj = response;
-               console.log(response)
-                   this.GetDetails(response)
-               });
-   
-           }, 500);
-           
-   }
-   
-   GetDetails(data) {
-       debugger
-       this.gridConfig = {
-           apiUrl: "OPBill/OPBillListSettlementList",
-           columnsList: [
-               {heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA',width:60},
-               { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
-               { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
-               { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-               { heading: "BillAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
-               { heading: "ConsessionAmt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' },
-               { heading: "NetAmount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
-               { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' },
-               { heading: "BalanceAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
-               {
-                   heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
-                   template: this.actionButtonTemplate  // Assign ng-template to the column
-               }
-               // {
-               //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-               //         {
-               //             action: gridActions.edit, callback: (data: any) => {
-               //                 this.onSave(data);
-               //             }
-               //         }, 
-               //         {
-               //             action: gridActions.print, callback: (data: any) => {
-               //                 this.viewgetOPPayemntPdf(data);
-               //             }
-               //         }
-               //         ]
-               // } 
-           ],
-           sortField: "BillNo",
-           sortOrder: 0,
-           filters: [
-               { fieldName: "RegId", fieldValue: String(this.RegId1), opType: OperatorComparer.Contains },
-               { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-               { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
-           ],
-           row: 25
-       }
-       this.grid.gridConfig = this.gridConfig;
-       this.grid.bindGridData();
-   }
-   }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    }
+}

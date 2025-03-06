@@ -554,7 +554,7 @@ patientDetail1 = new VisitMaster1({});
           console.log(submitData)
           this._RefundbillService.InsertOPRefundBilling(submitData).subscribe(response => {
             this.toastrService.success(response.message);
-            this.viewgetOPRefundBillReportPdf(response)
+            this.viewgetOPRefundBillReportPdf(response.refundId)
           }, (error) => {
             this.toastrService.error(error.message);
           });
@@ -582,7 +582,7 @@ patientDetail1 = new VisitMaster1({});
 
   viewgetOPRefundBillReportPdf(data) {
 
-    this.commonService.Onprint("RefundId", data.RefundId, "OPRefundReceipt");
+    this.commonService.Onprint("RefundId", data, "OPRefundReceipt");
 }
 
   getWhatsappshareRefundbill(el, vmono) {
