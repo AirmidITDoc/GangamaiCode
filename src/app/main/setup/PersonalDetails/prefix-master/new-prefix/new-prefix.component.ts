@@ -29,7 +29,6 @@ export class NewPrefixComponent implements OnInit {
     ngOnInit(): void {
 
         this.prefixForm = this._PrefixMasterService.createPrefixForm();
-        // ((this.data?.cityId??0) > 0)
         if ((this.data?.prefixId??0) > 0){
             this.isActive=this.data.isActive
             this.prefixForm.patchValue(this.data);

@@ -67,7 +67,7 @@ export class TemplateFormComponent implements OnInit {
     onSubmit() {
 
         if (!this.TemplateId) {
-
+            
             var mdata = {
                 "templateId": 0,
                 "templateName": this.templateForm.get("templateName").value,
