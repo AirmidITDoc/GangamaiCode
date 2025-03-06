@@ -76,12 +76,12 @@ export class CasepaperService {
   }
 
   // retrive list when we edit featch table, hightlist
-  public RtrvPreviousprescriptionDetails(visistId,loader = true) {
-    if(loader){
-      this._loaderService.show();
-    }
-    return this._httpClient.post("Generic/GetByProc?procName=Get_PrescriptionDetailsVisitWise",visistId);
-  }
+  // public RtrvPreviousprescriptionDetails(visistId,loader = true) {
+  //   if(loader){
+  //     this._loaderService.show();
+  //   }
+  //   return this._httpClient.post("Generic/GetByProc?procName=Get_PrescriptionDetailsVisitWise",visistId);
+  // }
 
   public getVisitedList(employee,loader = true) {
     if(loader){
@@ -132,12 +132,12 @@ export class CasepaperService {
   }
 
 // used for prePrescription list
-  public getRtrvVisitedList(param, loader = true) {
-    if (loader) {
-      this._loaderService.show();
-  } 
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_GetVisitInfo",param)
-  } 
+  // public getRtrvVisitedList(param, loader = true) {
+  //   if (loader) {
+  //     this._loaderService.show();
+  // } 
+  //   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_GetVisitInfo",param)
+  // } 
   // public getcheifcomplaintList( ) { 
   //   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CheifcomplaintList",{})
   // } 
@@ -184,5 +184,9 @@ public RtrvPreviousprescriptionDetailsdemo(employee) {
 
 public getRtrvVisitedListdemo(employee) {
   return this._httpClient1.PostData("OPDPrescriptionMedical/GetVisitList",employee)
+}
+
+public getItemMasterById(Id) {
+  return this._httpClient1.GetData("ItemMaster/" + Id);
 }
 }

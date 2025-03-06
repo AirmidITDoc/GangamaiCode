@@ -201,7 +201,7 @@ export class ParameterFormMasterComponent implements OnInit {
                 "Formula": this.parameterForm.get('Formula').value,
                 "isPrintDisSummary": true,
                 "mParameterDescriptiveMasters": data2,
-                "mPathParaRangeMasters": mPathParaRangeMasters, //numeric_info
+                "mPathParaRangeWithAgeMasters": mPathParaRangeMasters, //numeric_info
             }
             console.log(m_data);
 
@@ -235,7 +235,7 @@ export class ParameterFormMasterComponent implements OnInit {
                 "Formula": this.parameterForm.get('Formula').value,
                 "isPrintDisSummary": true,
                 "mParameterDescriptiveMasters": data2,
-                "mPathParaRangeMasters": mPathParaRangeMasters, //numeric_info
+                "mPathParaRangeWithAgeMasters": mPathParaRangeMasters, //numeric_info
             }
             console.log(m_data1);
 
@@ -282,7 +282,7 @@ export class ParameterFormMasterComponent implements OnInit {
             maxAge: this.numericForm.get('maxAge').value,
             minValue: this.numericForm.get('minValue').value,
             maxValue: this.numericForm.get('maxvalue').value,
-            IsDeleted: this._ParameterService.myform.get("IsDeleted").value || 1,
+            IsDeleted: Boolean(this._ParameterService.myform.get("IsDeleted").value) || true,
             ageType: this.numericForm.get('ageType').value,
         };
         console.log("sata:-",)

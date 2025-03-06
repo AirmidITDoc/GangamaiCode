@@ -86,7 +86,7 @@ export class StoreFormMasterComponent implements OnInit {
 
 
     onSubmit() {
-        
+        debugger
         // if (!this.storeForm.invalid) {
             console.log("StoreCategoryMaster Insert:", this.storeForm.value)
             debugger
@@ -98,6 +98,8 @@ export class StoreFormMasterComponent implements OnInit {
             });
         // }
         // else {
+        //     console.log("StoreCategoryMaster Insert:", this.storeForm.value)
+
         //     this.toastr.warning('please check from is invalid', 'Warning !', {
         //         toastClass: 'tostr-tost custom-toast-warning',
         //     });

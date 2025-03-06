@@ -30,7 +30,7 @@ export class SampledetailtwoComponent implements OnInit {
   msg: any;
   date: any;
   isLoading: String = '';
-Currentdate:any;
+  Currentdate: any;
   displayedColumns: string[] = [
     'select',
     // 'VADate',
@@ -53,12 +53,36 @@ Currentdate:any;
   PathReportID: any;
   dateTimeObj: any;
   // selectedAdvanceObj1:AdmissionPersonlModel;
-  selectedAdvanceObj1:any; 
+  selectedAdvanceObj1: any;
+
+  regObj: any;
+  PatientName: any;
+  MobileNo: any;
+  DepartmentName: any;
+  AgeMonth: any;
+  AgeDay: any;
+  GenderName: any;
+  RefDocName: any;
+  WardName: any;
+  RegNo: any;
+  vOPIPId: any;
+  VisitId: any;
+  RegId: any;
+  Doctorname: any;
+  vOPDIPdNo: any;
+  AgeYear: any;
+  PatientType: any;
+  Tarrifname: any;
+  CompanyName: any;
+  vClassId: any;
+  Lbl:any;
+  DOA:any;
+  DOT:any;
 
   dataSource = new MatTableDataSource<SampleList>();
   sIsLoading: string = '';
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator; 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(private formBuilder: UntypedFormBuilder,
     public _SampleService: SampleCollectionService,
     public datePipe: DatePipe,
@@ -75,48 +99,72 @@ Currentdate:any;
     this.advanceData = data;
     console.log(this.advanceData);
     console.log(new Date())
-    
-    let mydate= new Date()
+
+    let mydate = new Date()
 
     // this.date = mydate.toISOString().slice(0, 19).replace('T', ' ');
-    
-    this.date = (this.datePipe.transform(new Date(),"MM-dd-YYYY hh:mm tt"));
+
+    this.date = (this.datePipe.transform(new Date(), "MM-dd-YYYY hh:mm tt"));
 
     //this.date= (this.datePipe.transform(new Date(),"MM-dd-YYYY hh:mm")).toString().slice(0, 16) || '01/01/1900',
     //this.date = new Date();
 
- 
-    console.log( this.date )
+
+    console.log(this.date)
 
 
     var now = new Date();
-now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-this.date = now.toISOString().slice(0,16);
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    this.date = now.toISOString().slice(0, 16);
   }
-
-
 
   ngOnInit(): void {
 
-    if (this.advanceData) {
-      this.selectedAdvanceObj = this.advanceData.regobj;
-      this.selectedAdvanceObj1= this.advanceData.regobj;
-      console.log(this.selectedAdvanceObj1);
+    if (this.data) {
+      this.regObj = this.data
+      console.log(this.regObj)
+      this.RegNo = this.regObj.regNo
+      this.vOPIPId = this.regObj.visitId
+      this.VisitId = this.regObj.visitId
+      this.RegId = this.regObj.regId
+      this.PatientName = this.regObj.patientName
+      this.Doctorname = this.regObj.doctorName
+      this.vOPDIPdNo = this.regObj.oP_IP_No
+      this.AgeYear = this.regObj.ageYear
+      this.AgeMonth = this.regObj.ageMonth
+      this.AgeDay = this.regObj.ageDay
+      this.GenderName = this.regObj.GenderName
+      this.DepartmentName = this.regObj.departmentName
+      this.PatientType = this.regObj.patientType
+      this.Tarrifname = this.regObj.tariffName
+      this.CompanyName = this.regObj.companyName
+      this.RefDocName = this.regObj.refDocName
+      this.vClassId = this.regObj.classId
+      this.Lbl = this.regObj.lbl
+      this.DOA = this.regObj.doa
+      this.DOT = this.regObj.dot
+      this.WardName=this.regObj.wardName
     }
+
+    // if (this.advanceData) {
+    //   this.selectedAdvanceObj = this.advanceData.regobj;
+    //   this.selectedAdvanceObj1 = this.advanceData.regobj;
+    //   console.log(this.selectedAdvanceObj1);
+    // }
 
     this.getSampledetailList();
   }
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
-  } 
+  }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
 
   tableElementChecked(event, element) {
 
-    if (event) { 
+    if (event) {
       if (event.checked) {
         this.interimArray.push(element);
       } else if (this.interimArray.length > 0) {
@@ -128,47 +176,46 @@ this.date = now.toISOString().slice(0,16);
       this.samplelist.push(element);
       console.log();
     }
-    
+
   }
-  getSampledetailList() { 
-    
+  getSampledetailList() {
+
     let OPIP
-    if (this.selectedAdvanceObj1.LBL == "IP" || this.selectedAdvanceObj1.Lbl == "IP") {
+    if (this.regObj.lbl == "IP" || this.regObj.lbl == "IP") {
       OPIP = 1;
     }
-    else if (this.selectedAdvanceObj1.LBL == "OP" || this.selectedAdvanceObj1.Lbl == "OP"){
+    else if (this.regObj.lbl == "OP" || this.regObj.lbl == "OP") {
       OPIP = 0;
-    } 
-     
+    }
+
     var m_data = {
-      "BillNo": this.selectedAdvanceObj1.BillNo,
-      "BillDate": this.datePipe.transform(this.selectedAdvanceObj1.PathDate, "yyyy-MM-dd"),
+      "BillNo": this.regObj.billNo,
+      "BillDate": this.datePipe.transform(this.regObj.pathDate, "yyyy-MM-dd"),
       "OP_IP_Type": OPIP,
     }
-     console.log(m_data);
+    console.log(m_data);
     this._SampleService.getSampleDetailsList(m_data).subscribe(Visit => {
       this.dataSource.data = Visit as SampleList[];
-      console.log( this.dataSource.data )
+      console.log(this.dataSource.data)
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
-      this.sIsLoading = ''; 
+      this.sIsLoading = '';
     },
       error => {
         // this.sIsLoading = '';
-      }); 
+      });
   }
 
-
-  onSave() { 
-    this.isLoading = 'save'; 
-    if(this.selection.selected.length==0){
+  onSave() {
+    this.isLoading = 'save';
+    if (this.selection.selected.length == 0) {
       Swal.fire('Error !', 'Please select sample data', 'error');
       return;
     }
 
-    let updatesamcollection = []; 
+    let updatesamcollection = [];
 
-   this.selection.selected.forEach((element) => {
+    this.selection.selected.forEach((element) => {
       console.log(element);
       let UpdateAddSampleDetailsObj = {};
       UpdateAddSampleDetailsObj['PathReportID'] = element.PathReportID,
@@ -192,11 +239,11 @@ this.date = now.toISOString().slice(0,16);
       } else {
         Swal.fire('Error !', 'Pathology Sample collection data not update', 'error');
       }
-    }); 
-    this.isLoading = ''; 
-  } 
-  
-  
+    });
+    this.isLoading = '';
+  }
+
+
   selection = new SelectionModel<SampleList>(true, []);
   masterToggle() {
     // if there is a selection then clear that selection
@@ -212,7 +259,7 @@ this.date = now.toISOString().slice(0,16);
   }
 
   isSomeSelected() {
-   
+
     return this.selection.selected.length > 0;
   }
 
@@ -220,25 +267,24 @@ this.date = now.toISOString().slice(0,16);
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
 
-     return numSelected === numRows;
-    
+    return numSelected === numRows;
+
   }
 
-
   onClose() {
-    this.dialogRef.close(); 
-  } 
-} 
+    this.dialogRef.close();
+  }
+}
 export class SampleList {
   VADate: Date;
-  VATime:Date;
+  VATime: Date;
   PathTestID: Number;
   ServiceName: String;
   IsSampleCollection: boolean;
   SampleCollectionTime: Date;
-  PathReportID: any; 
-  SampleNo:any;
-  RegNo:any;  
+  PathReportID: any;
+  SampleNo: any;
+  RegNo: any;
 
   constructor(SampleList) {
     this.VADate = SampleList.VADate || '';
@@ -247,8 +293,8 @@ export class SampleList {
     this.ServiceName = SampleList.ServiceName || '';
     this.IsSampleCollection = SampleList.IsSampleCollection || 0;
     this.SampleCollectionTime = SampleList.SampleCollectionTime || '';
-    this.PathReportID = SampleList.PathReportID || 0; 
-    this.SampleNo = SampleList.SampleNo || 0; 
-    this.RegNo = SampleList.RegNo || 0; 
-  } 
+    this.PathReportID = SampleList.PathReportID || 0;
+    this.SampleNo = SampleList.SampleNo || 0;
+    this.RegNo = SampleList.RegNo || 0;
+  }
 }

@@ -36,7 +36,7 @@ export class PrefixMasterComponent implements OnInit {
                             this.onSave(data);
                         }
                     }, {
-                        action: gridActions.delete, message: 'Are you sure want to delete this prefix?', callback: (data: any) => {
+                        action: gridActions.delete, message: 'Are you sure want to deactive?', callback: (data: any) => {
                             this._PrefixMasterService.deactivateTheStatus(data.prefixId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();

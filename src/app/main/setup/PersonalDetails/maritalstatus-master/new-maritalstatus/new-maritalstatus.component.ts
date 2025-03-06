@@ -25,8 +25,9 @@ export class NewMaritalstatusComponent implements OnInit {
     this.maritalForm = this._MaritalstatusMasterService.createMaritalForm();
    
     if ((this.data?.maritalStatusId??0) > 0) {
-    this.maritalForm.patchValue(this.data);
-  }
+        this.isActive=this.data.isActive
+        this.maritalForm.patchValue(this.data);
+    }
   }
   
   onSubmit() {

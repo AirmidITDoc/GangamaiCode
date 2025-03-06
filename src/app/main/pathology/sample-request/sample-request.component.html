@@ -53,8 +53,8 @@
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Reg_No</mat-label>
                         <input matInput placeholder="Search Reg_No" autocomplete="off"
-                            [(ngModel)]="gridConfig.filters[3].fieldValue" />
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[3].fieldValue=''">
+                            [(ngModel)]="gridConfig.filters[2].fieldValue" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[2].fieldValue=''">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
@@ -62,8 +62,8 @@
                     <form [formGroup]="_PathologyService.myformSearch">
                         <div fxLayout="column" fxLayoutAlign="start start">
                             <div fxFlex fxLayout="row">
-                                <mat-radio-group name="Istype" formControlName="Istype" fxLayout="row" value="1" style="padding: 6px;"
-                                    class="gap-4">
+                                <mat-radio-group name="Istype" formControlName="Istype" fxLayout="row" value="1" 
+                                style="padding: 6px;" class="gap-4" [(ngModel)]="gridConfig.filters[4].fieldValue">
                                     <mat-label>Type:</mat-label>
                                     <div fxLayout="row">
                                         <mat-radio-button value='1'>IP</mat-radio-button>
@@ -74,7 +74,7 @@
                     
                             <div fxFlex fxLayout="row">
                                 <mat-radio-group name="StatusSearch" formControlName="StatusSearch" fxLayout="row" value="0"
-                                    style="padding: 6px;" class="gap-4" (change)="onShow($event)">
+                                    style="padding: 6px;" class="gap-4" (change)="onShow($event)" [(ngModel)]="gridConfig.filters[3].fieldValue">
                                     <mat-label>Status:</mat-label>
                                     <div fxLayout="row">
                                         <mat-radio-button value='0'>Pending</mat-radio-button>

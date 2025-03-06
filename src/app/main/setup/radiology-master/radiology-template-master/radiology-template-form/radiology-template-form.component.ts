@@ -18,16 +18,26 @@ export class RadiologyTemplateFormComponent implements OnInit {
     vTemplateDesc:any;
     vTemplateName:any;
     isActive:boolean=true;
+    // editorConfig: AngularEditorConfig = {
+    //     editable: true,
+    //     spellcheck: true,
+    //     height: '20rem',
+    //     minHeight: '20rem',
+    //     translate: 'yes',
+    //     placeholder: 'Enter text here...',
+    //     enableToolbar: true,
+    //     showToolbar: true,
+    // };
     editorConfig: AngularEditorConfig = {
         editable: true,
         spellcheck: true,
-        height: '20rem',
-        minHeight: '20rem',
+        height: '24rem',
+        minHeight: '24rem',
         translate: 'yes',
         placeholder: 'Enter text here...',
         enableToolbar: true,
         showToolbar: true,
-    };
+      };
 
 
   constructor(
@@ -55,36 +65,9 @@ export class RadiologyTemplateFormComponent implements OnInit {
             this.templateForm.patchValue(this.data);
         }
     }
-//   onSubmit() {
-
-//     if(this.templateForm.invalid){
-//         this.toastr.warning('please check from is invalid', 'Warning !', {
-//             toastClass:'tostr-tost custom-toast-warning',
-//         })
-//         return;
-//     }else{
-//         if (!this.templateForm.get("templateId").value) {
-            
-//             var mdata={
-//                   "templateId": 0,
-//                   "templateName": this.templateForm.get("templateName").value,
-//                   "templateDesc": this.templateForm.get("templateDesc").value        
-//             }
-//             console.log('json mdata:',mdata);
-
-//               this._TemplateServieService.templateMasterSave(mdata).subscribe((response) => {
-//                   this.toastr.success(response.message);
-//                   this.onClear();
-//               }, (error) => {
-//                   this.toastr.error(error.message);
-//               });
-//           }
-//     }
-//     this.onClose();
-// }
 
     onSubmit() {
-            
+            debugger
         if(!this.templateForm.invalid)
         {
         
@@ -99,6 +82,7 @@ export class RadiologyTemplateFormComponent implements OnInit {
         } 
         else
         {
+            console.log("template json:", this.templateForm.value);
         this.toastr.warning('please check from is invalid', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
             });
@@ -120,6 +104,7 @@ export class RadiologyTemplateFormComponent implements OnInit {
         this.templateForm.reset();
         this.dialogRef.close();
     }
+    
     onBlur(e: any) {
         this.vTemplateDesc = e.target.innerHTML;
     }

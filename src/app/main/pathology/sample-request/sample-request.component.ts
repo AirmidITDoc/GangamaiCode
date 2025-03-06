@@ -99,13 +99,14 @@ export class SampleRequestComponent implements OnInit {
           ],
           sortField: "PresReId",
           sortOrder: 0,
-          filters: [
-  
+          filters: [  
             { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "IsCompleted", fieldValue: "1", opType: OperatorComparer.Equals },
+            { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "20", opType: OperatorComparer.Equals }
+            { fieldName: "Length", fieldValue: "100", opType: OperatorComparer.Equals }
           ],
           row: 25
       }

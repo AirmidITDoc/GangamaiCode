@@ -34,7 +34,7 @@ export class CompanyMasterListComponent implements OnInit {
         this.companyForm = this._CompanyMasterService.createCompanymasterForm();
         if ((this.data?.companyId?? 0) > 0) {
 
-            
+            this.isActive=this.data.isActive
             if(this.data.city)
                 this.data.city=this.data.city.trim();
 

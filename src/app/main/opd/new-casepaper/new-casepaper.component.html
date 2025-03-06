@@ -403,14 +403,37 @@
                                                             </mat-cell>
                                                         </ng-container>
 
+                                                        <ng-container matColumnDef="ItemGenericName">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-sm class="w-300">
+                                                                ItemGenericName
+                                                            </mat-header-cell>
+
+                                                            <mat-cell *matCellDef="let element; let in = index" fxHide
+                                                                fxShow.gt-sm class="w-300">
+                                                                <span *ngIf="editingIndex1 !== in">
+                                                                    {{ element.GenericName }}
+                                                                    <mat-icon (click)="editItem(in)"
+                                                                        class="edit-icon">edit</mat-icon>
+                                                                </span>
+
+                                                                <airmid-dropdown label="ItemGeneric Name" *ngIf="editingIndex1 === in"
+                                                                 formControlName="ItemGenericNameId"
+                                                                [formGroup]="MedicineItemForm"
+                                                                [mode]="autocompleteModeItemGeneric"
+                                                                (selectionChange)="selectChangeItemGenericName($event)">
+                                                            </airmid-dropdown>
+                                                            </mat-cell>
+                                                        </ng-container>
+
                                                         <ng-container matColumnDef="DoseName">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                                fxShow.gt-sm>
+                                                                fxShow.gt-sm class="w-300">
                                                                 Dose Name
                                                             </mat-header-cell>
 
                                                             <mat-cell *matCellDef="let element; let i = index" fxHide
-                                                                fxShow.gt-sm>
+                                                                fxShow.gt-sm class="w-300">
                                                                 <span *ngIf="editingIndex !== i">
                                                                     {{ element.DoseName }}
                                                                     <mat-icon (click)="editDose(i)"
@@ -707,7 +730,7 @@
                                                                             </span>
                                                                             <span>:</span>
                                                                             <span
-                                                                                class="patient-col-value">{{patient.PHeight}}
+                                                                                class="patient-col-value">{{patient.pHeight}}
                                                                                 <span matSuffix
                                                                                     style="font-size: 13px;"> |
                                                                                     cm</span>
@@ -720,7 +743,7 @@
                                                                             </span>
                                                                             <span>:</span>
                                                                             <span
-                                                                                class="patient-col-value">{{patient.PWeight}}
+                                                                                class="patient-col-value">{{patient.pWeight}}
                                                                                 <span matSuffix style="font-size:13px;">
                                                                                     | Kg</span>
                                                                             </span>
@@ -738,14 +761,14 @@
                                                                             </span>
                                                                             <span>:</span>
                                                                             <span
-                                                                                class="patient-col-value">{{patient.SpO2}}</span>
+                                                                                class="patient-col-value">{{patient.spO2}}</span>
                                                                         </div>
 
                                                                         <div class="patient-col">
                                                                             <span class="patient-col-key">BSL</span>
                                                                             <span>:</span>
                                                                             <span
-                                                                                class="patient-col-value">{{patient.BSL}}</span>
+                                                                                class="patient-col-value">{{patient.bsl}}</span>
                                                                         </div>
 
                                                                         <div class="patient-col">
@@ -753,7 +776,7 @@
                                                                             </span>
                                                                             <span>:</span>
                                                                             <span
-                                                                                class="patient-col-value">{{patient.Pulse}}
+                                                                                class="patient-col-value">{{patient.pulse}}
                                                                                 <span matSuffix
                                                                                     style="font-size: 13px;"> |
                                                                                     bpm</span>
@@ -764,7 +787,7 @@
                                                                             <span class="patient-col-key">BP</span>
                                                                             <span>:</span>
                                                                             <span
-                                                                                class="patient-col-value">{{patient.BP}}
+                                                                                class="patient-col-value">{{patient.bp}}
                                                                                 <span matSuffix
                                                                                     style="font-size: 13px;"> |
                                                                                     mmHg</span>
@@ -776,7 +799,7 @@
                                                                                 class="patient-col-key">Temprature</span>
                                                                             <span>:</span>
                                                                             <span
-                                                                                class="patient-col-value">{{patient.Temp}}
+                                                                                class="patient-col-value">{{patient.temp}}
                                                                                 <span matSuffix
                                                                                     style="font-size: 13px;"> | F</span>
                                                                             </span>
@@ -793,7 +816,7 @@
                                                                                 </span>
                                                                                 <span>:</span>
                                                                                 <span
-                                                                                    class="patient-col-value">{{patient.ChiefComplaint}}</span>
+                                                                                    class="patient-col-value">{{patient.chiefComplaint}}</span>
                                                                             </div>
                                                                         </div>
                                                                         <div fxLayout="column" fxLayoutGap="6px">
@@ -802,7 +825,7 @@
                                                                                     class="patient-col-key">Diagnosis</span>
                                                                                 <span>:</span>
                                                                                 <span
-                                                                                    class="patient-col-value">{{patient.Diagnosis}}</span>
+                                                                                    class="patient-col-value">{{patient.diagnosis}}</span>
                                                                             </div>
                                                                         </div>
                                                                         <div fxLayout="column" fxLayoutGap="6px">
@@ -812,7 +835,7 @@
                                                                                 </span>
                                                                                 <span>:</span>
                                                                                 <span
-                                                                                    class="patient-col-value">{{patient.Examination}}</span>
+                                                                                    class="patient-col-value">{{patient.examination}}</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -837,7 +860,7 @@
                                                             <mat-header-cell *matHeaderCellDef>ItemName
                                                             </mat-header-cell>
                                                             <mat-cell *matCellDef="let patient">
-                                                                <span> {{patient.DrugName}}</span>
+                                                                <span> {{patient.drugName}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -845,7 +868,7 @@
                                                             <mat-header-cell *matHeaderCellDef>DoseName
                                                             </mat-header-cell>
                                                             <mat-cell *matCellDef="let patient">
-                                                                <span> {{patient.DoseName}}</span>
+                                                                <span> {{patient.doseName}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -853,7 +876,7 @@
                                                             <mat-header-cell *matHeaderCellDef>Days
                                                             </mat-header-cell>
                                                             <mat-cell *matCellDef="let patient">
-                                                                <span> {{patient.Days}}</span>
+                                                                <span> {{patient.days}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -861,7 +884,7 @@
                                                             <mat-header-cell *matHeaderCellDef>Instruction
                                                             </mat-header-cell>
                                                             <mat-cell *matCellDef="let patient">
-                                                                <span> {{patient.Instruction}}</span>
+                                                                <span> {{patient.instruction}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
