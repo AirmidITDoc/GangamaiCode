@@ -33,6 +33,7 @@ import { SearchInforObj, SearchInforObj1 } from '../op-search-list/opd-search-li
 import { NewAppointmentComponent } from '../appointment-list/new-appointment/new-appointment.component';
 import { CrossConsultationComponent } from '../appointment-list/cross-consultation/cross-consultation.component';
 import { PatientcertificateComponent } from './patientcertificate/patientcertificate.component';
+import { UpdateRegPatientInfoComponent } from '../appointment-list/update-reg-patient-info/update-reg-patient-info.component';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -306,8 +307,12 @@ export class MedicalrecordComponent implements OnInit {
     this.updateRegisteredPatientInfo(obj);
   }
 
+  getSelectedRow(row:any):void{
+    console.log("Selected row : ", row);
+}
+
   updateRegisteredPatientInfo(obj) {
-    const dialogRef = this._matDialog.open(NewAppointmentComponent,
+    const dialogRef = this._matDialog.open(UpdateRegPatientInfoComponent,
       {
         maxWidth: "100%",
         height: '95%',

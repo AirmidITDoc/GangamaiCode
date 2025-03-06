@@ -57,12 +57,12 @@ export class PrePresciptionListComponent implements OnInit {
     var vdata ={
       "RegID": this.RegId
     }
-    this._CasepaperService.getRtrvVisitedList(vdata).subscribe(Visit => {
-      this.patients = Visit as MedicineItemList[];  
-      this.extractUniqueDates(); 
-      console.log(this.patients); 
-      // this.groupByVisitDate();  
-    })
+    // this._CasepaperService.getRtrvVisitedList(vdata).subscribe(Visit => {
+    //   this.patients = Visit as MedicineItemList[];  
+    //   this.extractUniqueDates(); 
+    //   console.log(this.patients); 
+    //   // this.groupByVisitDate();  
+    // })
   }
 
   

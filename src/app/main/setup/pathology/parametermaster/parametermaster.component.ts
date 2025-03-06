@@ -189,7 +189,7 @@ export class ParametermasterComponent implements OnInit {
 
             dialogRef.afterClosed().subscribe((result) => {
                 console.log("The dialog was closed - Insert Action", result);
-
+                this.grid.bindGridData();
             });
         })
     }
@@ -223,7 +223,7 @@ export class ParametermasterComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
-
+            this.grid.bindGridData();
         });
     }
     currentStatus = 0;

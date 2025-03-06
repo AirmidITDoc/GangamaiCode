@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -18,7 +18,7 @@ import { ExcelDownloadService } from 'app/main/shared/services/excel-download.se
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from 'ngx-toastr';
 
@@ -33,21 +33,34 @@ import { ToastrService } from 'ngx-toastr';
 export class SampleCollectionComponent implements OnInit {
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    @ViewChild('iconlbl') iconlbl!: TemplateRef<any>;
+    @ViewChild('iconcompanyName') iconcompanyName!: TemplateRef<any>;
+    @ViewChild('iconisSampleCollection') iconisSampleCollection!: TemplateRef<any>;
+
+    ngAfterViewInit() {
+        this.gridConfig.columnsList.find(col => col.key === 'lbl')!.template = this.iconlbl;
+        this.gridConfig.columnsList.find(col => col.key === 'companyName')!.template = this.iconcompanyName;
+        this.gridConfig.columnsList.find(col => col.key === 'isSampleCollection')!.template = this.iconisSampleCollection;
+        // this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    }
+
     hasSelectedContacts: boolean;
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
     gridConfig: gridModel = {
-        apiUrl: "Pathology/SampleCollectionList",
+        apiUrl: "PathlogySampleCollection/SampleCollectionPatientList",
         columnsList: [
-            { heading: "-", key: "type", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Date", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "-", key: "lbl", width: 30, sort: true, align: 'left', type: gridColumnTypes.template },
+            { heading: "-", key: "companyName", width: 30, sort: true, align: 'left', type: gridColumnTypes.template },
+            { heading: "-", key: "isSampleCollection", width: 50, sort: true, align: 'left', type: gridColumnTypes.template },
+            { heading: "Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
             { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
             { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "CompanyName", key: "cm", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -66,7 +79,7 @@ export class SampleCollectionComponent implements OnInit {
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "IsCompleted", fieldValue: "1", opType: OperatorComparer.Equals },
             { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "100", opType: OperatorComparer.Equals }
@@ -95,10 +108,16 @@ export class SampleCollectionComponent implements OnInit {
     }
 
     constructor(public _SampleCollectionService: SampleCollectionService,
-         public _matDialog: MatDialog,
-         public datePipe: DatePipe,
+        public _matDialog: MatDialog,
+        public datePipe: DatePipe,
         public toastr: ToastrService,) { }
+
     ngOnInit(): void {
+        
+    }
+
+    getSelectedRow(row:any):void{
+        console.log("Selected row : ", row);
     }
 
     exportReportPdf() {
