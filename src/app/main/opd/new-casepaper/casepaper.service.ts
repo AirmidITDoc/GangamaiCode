@@ -189,4 +189,11 @@ public getRtrvVisitedListdemo(employee) {
 public getItemMasterById(Id) {
   return this._httpClient1.GetData("ItemMaster/" + Id);
 }
+public getItemGenericById(Id) {
+  return this._httpClient1.GetData("ItemGenericName/" + Id);
+}
+
+public getStoreById(Id) {
+  return this._httpClient1.GetData("StoreMaster/" + Id);
+}
 }

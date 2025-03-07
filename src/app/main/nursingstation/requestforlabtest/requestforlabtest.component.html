@@ -28,7 +28,7 @@
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <airmid-table [gridConfig]="gridConfig" class="content">
+        <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)">
             <ng-container filters>
 
                 <airmid-datepicker [formGroup]="_RequestforlabtestService.mySearchForm" [isRangePicker]="true" 
@@ -52,25 +52,9 @@
         </airmid-table>
        
     </div>
-    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <airmid-table [gridConfig]="gridConfig1" class="content">
-            <ng-container filters>
-
-             
-                                          
-                <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>RequestId</mat-label>
-                    <input matInput placeholder="Search RequestId" autocomplete="off"
-                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                    <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="gridConfig.filters[0].fieldValue=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
-
-
-
-            </ng-container>
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
+    *ngIf="isShowDetailTable">
+        <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false">
         </airmid-table>
     </div>
 </div>

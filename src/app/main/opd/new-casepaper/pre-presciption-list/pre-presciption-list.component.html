@@ -96,34 +96,34 @@
                                                 <mat-header-cell *matHeaderCellDef>ItemName
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let patient">
-                                                    <span> {{patient.DrugName}}</span>
+                                                    <span> {{patient.drugName}}</span>
                                                 </mat-cell>
                                             </ng-container>
-                            
+
                                             <ng-container matColumnDef="DoseName">
                                                 <mat-header-cell *matHeaderCellDef>DoseName
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let patient">
-                                                    <span> {{patient.DoseName}}</span>
+                                                    <span> {{patient.doseName}}</span>
                                                 </mat-cell>
                                             </ng-container>
-                            
+
                                             <ng-container matColumnDef="Days">
                                                 <mat-header-cell *matHeaderCellDef>Days
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let patient">
-                                                    <span> {{patient.Days}}</span>
+                                                    <span> {{patient.days}}</span>
                                                 </mat-cell>
                                             </ng-container>
-                            
+
                                             <ng-container matColumnDef="Remark">
                                                 <mat-header-cell *matHeaderCellDef>Instruction
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let patient">
-                                                    <span> {{patient.Instruction}}</span>
+                                                    <span> {{patient.instruction}}</span>
                                                 </mat-cell>
                                             </ng-container>
-                            
+
                                             <ng-container matColumnDef="loading">
                                                 <mat-footer-cell *matFooterCellDef colspan="6">
                                                     loading data...

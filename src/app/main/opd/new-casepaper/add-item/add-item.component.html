@@ -66,19 +66,19 @@
                                                 <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="50%">
                                                     <airmid-dropdown 
                                                         label="Store" 
-                                                        formControlName="mAssignSupplierToStores"
+                                                        formControlName="mAssignItemToStores"
                                                         [formGroup]="myform" 
                                                         [IsMultiPle]="true" 
-                                                        [value]="registerObj.mAssignSupplierToStores"
                                                         [validations]="getValidationMessages().StoreId" #ddlStore
                                                         ValueField="storeId" 
                                                         TextField="storeName"
                                                         ApiUrl="StoreMaster/get-store" 
                                                         [ReqFullObj]="true">
                                                     </airmid-dropdown>
+                                                    <!-- [value]="registerObj.mAssignItemToStores" -->
                                                 </div>
                                                 <mat-chip-listbox #chipList>
-                                                    <mat-chip *ngFor="let item of myform.value.mAssignSupplierToStores">
+                                                    <mat-chip *ngFor="let item of myform.value.mAssignItemToStores">
                                                         {{ item.storeName }} <mat-icon
                                                             (click)="removestore(item)">close</mat-icon>
                                                     </mat-chip>

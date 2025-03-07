@@ -38,14 +38,15 @@ export class PrescriptionComponent implements OnInit {
     @ViewChild('grid') grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
     hasSelectedContacts: boolean;
-
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
     gridConfig: gridModel = {
         apiUrl: "Nursing/PrescriptionWardList",
         columnsList: [
             { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
             // { heading: "Code", key: "presReId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:200 },
             { heading: "Vst_Adm_Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Pres_DateTime", key: "date", sort: true, align: 'left', emptySign: 'NA' },
             // { heading: "OP_IP_Id", key: "oP_IP_Id", sort: true, align: 'left', emptySign: 'NA', width: 80 },
@@ -72,8 +73,8 @@ export class PrescriptionComponent implements OnInit {
         sortField: "PresReld",
         sortOrder: 0,
         filters: [
-            { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
-            { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
+            { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "20", opType: OperatorComparer.Equals }
@@ -153,8 +154,8 @@ export class PrescriptionComponent implements OnInit {
         sortField: "PresReId",
         sortOrder: 0,
         filters: [
-            { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
-            { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
+            { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "20", opType: OperatorComparer.Equals }
@@ -181,7 +182,8 @@ export class PrescriptionComponent implements OnInit {
     }
 
     constructor(public _PrescriptionService: PrescriptionService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService,
+        public datePipe: DatePipe,) { }
     ngOnInit(): void {
     }
 
