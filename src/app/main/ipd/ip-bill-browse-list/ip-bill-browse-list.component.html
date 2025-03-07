@@ -80,7 +80,7 @@
 
                     <ng-template #actionButtonTemplateIP let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <button mat-icon-button (click)="getFinalBillview(element)" matTooltip="IP Browse Bill List">
+                            <button mat-icon-button (click)="OnViewReportPdf(element,true)" matTooltip="IP Browse Bill List">
                                 <mat-icon>print</mat-icon>
                             </button>
 
@@ -179,7 +179,7 @@
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                     <ng-template #actionButtonTemplatepayment let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <button mat-icon-button (click)="getPaymentreceiptview(element)" matTooltip="IP Payment Receipt List">
+                            <button mat-icon-button (click)="OnViewReportPdf(element,true)" matTooltip="IP Payment Receipt List">
                                 <mat-icon>print</mat-icon>
                             </button>
             
@@ -263,7 +263,7 @@
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                     <ng-template #actionButtonTemplateIPRefund let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <button mat-icon-button (click)="getRefundreceiptview(element)"
+                            <button mat-icon-button (click)="OnViewReportPdf(element,true)"
                                 matTooltip="IP Refund Of Bill List">
                                 <mat-icon>print</mat-icon>
                             </button>

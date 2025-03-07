@@ -55,7 +55,7 @@
                                     *ngIf="Healthcardflag" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center center">
                                         
                                         <div class="radio-container">
-                                            <mat-radio-group aria-label="Select an option" formControlName="PatientType"
+                                            <mat-radio-group fxLayout="row" aria-label="Select an option" formControlName="PatientType"
                                                 name="PatientType" (change)="onChangePatientType($event)"
                                                 (blur)="onChangePatientType($event)" [(ngModel)]="vSelectedOption">
                                                 <mat-radio-button value="OP">OP</mat-radio-button>
