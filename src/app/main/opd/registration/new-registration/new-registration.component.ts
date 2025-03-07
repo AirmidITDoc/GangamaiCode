@@ -221,16 +221,12 @@ export class NewRegistrationComponent implements OnInit {
       PrefixId: '',
       PrefixID: '',
       FirstName: ['', [
-        Validators.required,
-        Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+        Validators.required 
       ]],
-      MiddleName: ['', [
-        Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
-      ]],
+      MiddleName: [''],
     
       LastName: ['', [
-        Validators.required,
-        Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
+        Validators.required 
       ]],
       GenderId: '',
       Address: '',

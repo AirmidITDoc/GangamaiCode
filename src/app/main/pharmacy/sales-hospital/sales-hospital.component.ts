@@ -1819,9 +1819,7 @@ export class SalesHospitalComponent implements OnInit {
     return this.FinalGSTAmt;
   }
 
-  getNetAmtSum(element) {
-
-
+  getNetAmtSum(element) { 
     this.FinalNetAmount = (element.reduce((sum, { NetAmt }) => sum += +(NetAmt || 0), 0)).toFixed(2);
     this.FinalTotalAmt = (element.reduce((sum, { TotalMRP }) => sum += +(TotalMRP || 0), 0)).toFixed(2);
     this.FinalDiscAmt = (element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0)).toFixed(2);
@@ -2991,7 +2989,7 @@ export class SalesHospitalComponent implements OnInit {
   }
 
   getCellCalculation(contact, Qty) {
-    // debugger
+    debugger
     let Qtyfinal = this.Qty;
     console.log(contact)
     this.StockId = contact.StockId;
@@ -3084,6 +3082,7 @@ export class SalesHospitalComponent implements OnInit {
   }
 
   tblCalucation(contact, Qty) {
+    debugger
     let TotalMRP;
     this.RQty = parseInt(contact.Qty) || 1;
     if (this.RQty && contact.UnitMRP) {
@@ -3362,15 +3361,15 @@ export class SalesHospitalComponent implements OnInit {
           NetAmt: this.NetAmt || 0,
           RoundNetAmt: Math.round(this.NetAmt),
           StockId: contact.StockId,
-          VatPer: contact.VatPer,
+          VatPer: contact.VatPercentage,
           VatAmount: this.GSTAmount,
           LandedRate: contact.LandedRate,
           LandedRateandedTotal: this.LandedRateandedTotal,
-          CgstPer: contact.CgstPer,
+          CgstPer: contact.CGSTPer,
           CGSTAmt: this.CGSTAmt,
-          SgstPer: contact.SgstPer,
+          SgstPer: contact.SGSTPer,
           SGSTAmt: this.SGSTAmt,
-          IgstPer: contact.IgstPer,
+          IgstPer: contact.IGSTPer,
           IGSTAmt: this.IGSTAmt,
           PurchaseRate: contact.PurchaseRate,
           PurTotAmt: this.PurTotAmt,
