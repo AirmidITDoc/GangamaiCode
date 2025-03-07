@@ -149,6 +149,8 @@ export class DoctornoteComponent implements OnInit {
                 maxWidth: "90vw",
                 height: '90%',
                 width: '90%',
+                // maxHeight: '95vh',
+                // width: '90%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -158,27 +160,27 @@ export class DoctornoteComponent implements OnInit {
         });
     }
 
-  displayedColumns: string[] = [
-    'RegNo',
-    'PatienName'
-  ]
-  displayedDoctorNote: string[] = [
-    'Date&Time',
-    // 'Time',
-    'Note',
-    'Action'
-  ]
-  displayedHandOverNote: string[] = [
-    'Date&Time',
-    // 'Time',
-    'Shift',
-    'I',
-    'S',
-    'B',
-    'A',
-    'R',
-    'Action'
-  ]
+//   displayedColumns: string[] = [
+//     'RegNo',
+//     'PatienName'
+//   ]
+//   displayedDoctorNote: string[] = [
+//     'Date&Time',
+//     // 'Time',
+//     'Note',
+//     'Action'
+//   ]
+//   displayedHandOverNote: string[] = [
+//     'Date&Time',
+//     // 'Time',
+//     'Shift',
+//     'I',
+//     'S',
+//     'B',
+//     'A',
+//     'R',
+//     'Action'
+//   ]
 
   currentDate = new Date();
   screenFromString = 'opd-casepaper';

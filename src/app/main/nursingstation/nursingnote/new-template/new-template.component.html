@@ -24,7 +24,7 @@
 
 
                                         <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                           
+                                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <airmid-textbox 
                                                     label="TemplateName" 
                                                     formControlName="templateName" 
@@ -33,8 +33,14 @@
                                                     [validations]="getValidationMessages().templateName"
                                                     [maxLength]="50">
                                                 </airmid-textbox>
-
+                                            </div>
                                                 
+                                        </div>
+
+                                        <div  fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-editor label="Template Details" formControlName="templateDesc" [(value)]="vTemplateDesc" [formGroup]="myform"></airmid-editor>
+                                            </div>
                                         </div>
 
                                         <!-- <div fxLayout="row wrap" fxLayoutGap="12px grid">

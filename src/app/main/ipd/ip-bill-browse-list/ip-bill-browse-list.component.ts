@@ -37,6 +37,7 @@ import { MatDialogRef } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from 'ngx-toastr';
 import { IPAdvanceComponent } from '../ip-search-list/ip-advance/ip-advance.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
     selector: 'app-ip-bill-browse-list',
@@ -57,8 +58,8 @@ export class IPBillBrowseListComponent implements OnInit {
 
    
     allfilters = [
-        { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
         { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
@@ -209,7 +210,9 @@ export class IPBillBrowseListComponent implements OnInit {
         row: 25
     }
 
-    constructor(public _IPBrowseBillService: IPBrowseBillService, public _matDialog: MatDialog, private _ActRoute: Router,
+    constructor(public _IPBrowseBillService: IPBrowseBillService, 
+        private commonService: PrintserviceService,
+        public _matDialog: MatDialog, private _ActRoute: Router,
         public toastr: ToastrService, public datePipe: DatePipe) { }
 
     ngOnInit(): void {
@@ -477,6 +480,10 @@ export class IPBillBrowseListComponent implements OnInit {
             });
 
         }, 100);
+    }
+
+    OnViewReportPdf(element) {
+        this.commonService.Onprint("RegNo", element.RegNo, "AppointmentReceipt");
     }
 
     getPaymentreceiptview(Id) {

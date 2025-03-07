@@ -30,7 +30,7 @@ export class PatientwiseMaterialConsumptionService {
             balqty: [],
             usedqty: [],
             remark: [],
-            PatientType: ['OP'],
+            PatientType: ["OP"],
             OP_IP_Type: ['1'] ,
             RegID:[],
             IsHealthCard: false,

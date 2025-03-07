@@ -35,11 +35,13 @@
                                                     [maxLength]="50">
                                                 </airmid-textbox>
 
-                                                <mat-label>Template Details</mat-label>
+                                                <!-- <mat-label>Template Details</mat-label>
                                                 <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
                                                     style="height:300px;" [(ngModel)]="vTemplateDesc" required
                                                     formControlName="templateDesc">
-                                                </angular-editor>
+                                                </angular-editor> -->
+                                                <airmid-editor label="Template Details" formControlName="templateDesc" [(value)]="vTemplateDesc" [formGroup]="templateForm"></airmid-editor>
+
 
                                             </div>
                                         </div>

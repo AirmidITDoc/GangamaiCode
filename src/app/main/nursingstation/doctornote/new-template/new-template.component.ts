@@ -22,8 +22,8 @@ export class NewTemplateComponent implements OnInit {
     editorConfig: AngularEditorConfig = {
         editable: true,
         spellcheck: true,
-        height: '20rem',
-        minHeight: '20rem',
+        height: '24rem',
+        minHeight: '24rem',
         translate: 'yes',
         placeholder: 'Enter text here...',
         enableToolbar: true,
@@ -46,6 +46,37 @@ export class NewTemplateComponent implements OnInit {
             this.myform.patchValue(this.data);
         }
     }
+
+    onChangePatientType(event) {
+            // if (event.value == 'OP') {
+            //     this.OP_IPType = 0;
+            //     this.RegId = "";
+            //     this.paymethod = true;
+            //     this.myform.get('MobileNo').clearValidators();
+            //     this.myform.get('PatientName').clearValidators();
+            //     this.myform.get('MobileNo').updateValueAndValidity();
+            //     this.myform.get('PatientName').updateValueAndValidity();
+            // }
+            // else if (event.value == 'IP') {
+            //     this.OP_IPType = 1;
+            //     this.RegId = "";
+    
+            //     this.myform.get('MobileNo').clearValidators();
+            //     this.myform.get('PatientName').clearValidators();
+            //     this.myform.get('MobileNo').updateValueAndValidity();
+            //     this.myform.get('PatientName').updateValueAndValidity();
+            // } else {
+            //     this.myform.get('MobileNo').reset();
+            //     this.myform.get('MobileNo').setValidators([Validators.required]);
+            //     this.myform.get('MobileNo').enable();
+            //     this.myform.get('PatientName').reset();
+            //     this.myform.get('PatientName').setValidators([Validators.required]);
+            //     this.myform.get('PatientName').enable();
+            //     this.myform.updateValueAndValidity();
+    
+            //     this.OP_IPType = 2;
+            // }
+        }
 
     onSubmit() {
             

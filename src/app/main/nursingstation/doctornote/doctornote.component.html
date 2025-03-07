@@ -294,6 +294,8 @@
                                                                             style="height:300px;" [(ngModel)]="vTemplateDesc" required
                                                                             formControlName="templateDesc">
                                                                         </angular-editor> -->
+                                                                        <airmid-editor label="Template Details" formControlName="templateDesc" [(value)]="vTemplateDesc" [formGroup]="_NursingStationService.myform"></airmid-editor>
+
                                                                     </div>
                                                                 </mat-card>
 
