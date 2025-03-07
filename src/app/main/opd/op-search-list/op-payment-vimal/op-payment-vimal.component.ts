@@ -445,7 +445,7 @@ export class OpPaymentVimalComponent implements OnInit {
             } 
 
             if(this.patientDetailsFormGrp.get('paymentType1').value){
-                if(this.patientDetailsFormGrp.get('paymentType1').value.viewValue != "cash"){
+                if(this.patientDetailsFormGrp.get('paymentType1').value != "cash"){
 
                     if(this.patientDetailsFormGrp.get('referenceNo1').value == undefined || this.patientDetailsFormGrp.get('referenceNo1').value == '0' || 
                     this.patientDetailsFormGrp.get('referenceNo1').value == null || this.patientDetailsFormGrp.get('referenceNo1').value == ''){
@@ -454,21 +454,24 @@ export class OpPaymentVimalComponent implements OnInit {
                           });
                           return 
                     }  
-                    if(this.patientDetailsFormGrp.get('bankName1').value == undefined || this.patientDetailsFormGrp.get('bankName1').value == null
-                     || this.patientDetailsFormGrp.get('bankName1').value == ''){
-                        this.toastr.warning('Please select bank name..', 'warning !', {
-                            toastClass: 'tostr-tost custom-toast-warning',
-                          });
-                          return 
-                    }   
-                    if (this.patientDetailsFormGrp.get('bankName1').value) {
-                        if (!this.BankNameList1.some(item => item.BankId == this.patientDetailsFormGrp.get('bankName1').value.BankId)) {
-                            this.toastr.warning('Please select valid bank name..', 'warning !', {
-                                toastClass: 'tostr-tost custom-toast-warning',
-                            });
-                            return
-                        }
-                    } 
+                    if(this.patientDetailsFormGrp.get('paymentType1').value != "upi"){
+                        if(this.patientDetailsFormGrp.get('bankName1').value == undefined || this.patientDetailsFormGrp.get('bankName1').value == null
+                        || this.patientDetailsFormGrp.get('bankName1').value == ''){
+                           this.toastr.warning('Please select bank name..', 'warning !', {
+                               toastClass: 'tostr-tost custom-toast-warning',
+                             });
+                             return 
+                       }   
+                       if (this.patientDetailsFormGrp.get('bankName1').value) {
+                           if (!this.BankNameList1.some(item => item.BankId == this.patientDetailsFormGrp.get('bankName1').value.BankId)) {
+                               this.toastr.warning('Please select valid bank name..', 'warning !', {
+                                   toastClass: 'tostr-tost custom-toast-warning',
+                               });
+                               return
+                           }
+                       } 
+                    }
+                  
                 } 
             }  
          }
@@ -621,8 +624,13 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['CardNo'] = this.Payments.data.find(x => x.PaymentType == "card")?.RefNo ?? 0;
             this.Paymentobj['CardBankName'] = this.Payments.data.find(x => x.PaymentType == "card")?.BankName ?? "";
             this.Paymentobj['CardDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-            this.Paymentobj['AdvanceUsedAmount'] = 0;
-            this.Paymentobj['AdvanceId'] = 0;
+            if(this.IsAdv){
+                this.Paymentobj['AdvanceUsedAmount'] = this.advanceUsedAmt || 0; 
+                this.Paymentobj['AdvanceId'] =   this.AdvanceId || 0; 
+                }else{
+                this.Paymentobj['AdvanceUsedAmount'] = 0;
+                this.Paymentobj['AdvanceId'] = 0;
+                } 
             this.Paymentobj['RefundId'] = 0;
             this.Paymentobj['TransactionType'] = 0;
             this.Paymentobj['Remark'] = '';

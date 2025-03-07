@@ -257,7 +257,7 @@ vAdvanceDetId:any;
       AdvanceDetObj['IsCancelledBy'] = 0;
       AdvanceDetObj['IsCancelledDate'] = '01/01/1900';
       AdvanceDetObj['Reason'] = this.AdvFormGroup.get("comment").value;
-      // AdvanceDetObj['CashCounterId'] = 2;//this.AdvFormGroup.get('CashCounterId').value.CashCounterId;
+     AdvanceDetObj['CashCounterId'] = this.AdvFormGroup.get('CashCounterID').value.CashCounterId;
       debugger
       let PatientHeaderObj = {};
       // PatientHeaderObj['Date'] = this.dateTimeObj.date || '01/01/1900'
@@ -397,9 +397,9 @@ vAdvanceDetId:any;
       AdvanceDetObj['IsCancelledBy'] = 0;
       AdvanceDetObj['IsCancelledDate'] = '01/01/1900';
       AdvanceDetObj['Reason'] = this.AdvFormGroup.get("comment").value;
-    
+      AdvanceDetObj['CashCounterId'] = this.AdvFormGroup.get('CashCounterID').value.CashCounterId;
+
       AdvanceDetObjarry.push(AdvanceDetObj);
-      // AdvanceDetObj['CashCounterId'] = 2;//this.AdvFormGroup.get('CashCounterId').value.CashCounterId;
 
       let advanceHeaderObj = {};
       advanceHeaderObj['AdvanceId'] = this.vAdvanceId;
