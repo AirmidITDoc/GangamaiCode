@@ -44,6 +44,8 @@
                                 [mode]="autocompleteModeClass"  (selectionChange)="getSelectedClassObj($event)">
                                 </airmid-dropdown> 
                             </div>
+                            
+
 
                             <div fxFlex="100%">
                                 <airmid-autocomplete label="Enter Service Name" [formGroup]="Serviceform" formControlName="ServiceName"
@@ -242,14 +244,14 @@
                                                     <div class="list-item">
                                                         <span class="list-item-key">Advance Amount :</span>
                                                         <span class="list-item-value">
-                                                            {{getAdvAmtSum(advancedatasource.data) | currency:'INR'
+                                                            {{TotalAdvanceAmt | currency:'INR'
                                                             }}</span>
                                                     </div>
                                                 </li>
                                                 <li>
                                                     <div class="list-item">
-                                                        <span class="list-item-key">Balance Amount :</span>
-                                                        <span class="list-item-value"> {{vBalanceAmt | currency:'INR'}}</span>
+                                                        <span class="list-item-key">Bill Balance Amount :</span>
+                                                        <span class="list-item-value"> {{BillBalAmount | currency:'INR'}}</span>
                                                     </div>
                                                 </li> 
                                                 <li>
@@ -290,162 +292,159 @@
                         </button>
                     </div>
                 </div>
-                <mat-tab-group class="mat-tab-header-small" #tabGroup (selectedTabChange)="tabChanged($event)">
+                <mat-tab-group class="mat-tab-header-small"  >
 
                     <mat-tab label="Charges List">
-                        <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
-                        class="table1 mt-8" style="height: calc(100vh - 500px);">
-
-                        <ng-container matColumnDef="checkbox" sticky>
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-60">
-                                <span class="material-icons" (click)="getChargesList()">
-                                    cached
-                                </span>
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" class="w-60">
-                                <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)">
-                                </mat-checkbox>
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="IsCheck" sticky>
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-50">Status</mat-header-cell>
-                            <mat-cell *matCellDef="let contact" class="w-50">
-                                <mat-icon *ngIf="contact.isPathology != 1" matTooltip="IsRadiology">
-                                    <img width="15px" height="8px" src="assets/images/logos/radiology.png">
-                                </mat-icon>
-                                <mat-icon *ngIf="contact.isPathology == 1" matTooltip="IsPatholgy">
-                                    <img width="15px" height="9px" src="assets/images/logos/pathology.png">  
-                                </mat-icon>
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="ChargesDate">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header>ChargesDate</mat-header-cell>
-                            <mat-cell *matCellDef="let contact">
-                                <span> {{contact.chargesDate}}</span>
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="ServiceName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                class="w-200 border-right">Service Name
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200 border-right">
-                                <span> {{contact.serviceName}}</span>
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="Price">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                <span> {{contact.price}}</span>
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="Qty">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                <span> {{contact.qty}}</span>
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="TotalAmt">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Total Amt
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                <span> {{contact.totalAmt | currency:'INR' }}</span>
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="DiscPer">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc %
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                <span> {{contact.concessionPercentage}}</span>
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="DiscAmt">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc Amt
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                <span> {{contact.concessionAmount | currency:'INR' }}</span>
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="NetAmount">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Net Amt
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                <span> {{contact.netAmount | currency:'INR' }}</span>
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="DoctorName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                class="w-200">ChargeDoctorName
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
-                                <span> {{contact.doctorName || '--'}}</span>
-                            </mat-cell>
-                        </ng-container> 
-
-                        <ng-container matColumnDef="ClassName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="accent">ClassName
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                <span> {{contact.className}}</span>
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="ChargesAddedName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ChargesAddedName
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                <span> {{contact.chargesAddedName}}</span>
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="buttons" stickyEnd>
-                            <mat-header-cell *matHeaderCellDef class="table-actions " class="w-70">Action
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" class="w-70">
-                                <ng-container class="actions">  
-                                    <span class="material-icons" style="cursor: pointer;color: #c95a5a;"
-                                        (click)="deletecharges(contact)">
-                                        delete
+                        <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" class="table1 mt-8"
+                            style="height: calc(100vh - 500px);">
+                    
+                            <ng-container matColumnDef="checkbox" sticky>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-60">
+                                    <span class="material-icons" (click)="getChargesList()">
+                                        cached
                                     </span>
-                                </ng-container> 
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="loading">
-                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                            </mat-header-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="noData">
-                            <mat-footer-cell *matFooterCellDef colspan="6"> 
-                                <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
-                                </mat-spinner>
-                                <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
-                            </mat-footer-cell>
-                        </ng-container>
-
-                        <mat-header-row class="accent min-width-1600"
-                            *matHeaderRowDef="displayedColumns; sticky: true">
-                        </mat-header-row>
-                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="min-width-1600"
-                            [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}"
-                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}">
-                        </mat-footer-row>
-                        <mat-footer-row *matFooterRowDef="['noData']"
-                            [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
-                        </mat-footer-row>
-                    </mat-table>
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" class="w-60">
+                                    <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)">
+                                    </mat-checkbox>
+                                </mat-cell>
+                            </ng-container>
+                    
+                            <ng-container matColumnDef="IsCheck" sticky>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-50">Status</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" class="w-50">
+                                    <mat-icon *ngIf="contact.isPathology != 1" matTooltip="IsRadiology">
+                                        <img width="15px" height="8px" src="assets/images/logos/radiology.png">
+                                    </mat-icon>
+                                    <mat-icon *ngIf="contact.isPathology == 1" matTooltip="IsPatholgy">
+                                        <img width="15px" height="9px" src="assets/images/logos/pathology.png">
+                                    </mat-icon>
+                                </mat-cell>
+                            </ng-container>
+                    
+                            <ng-container matColumnDef="ChargesDate">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>ChargesDate</mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    <span> {{contact.chargesDate}}</span>
+                                </mat-cell>
+                            </ng-container>
+                    
+                            <ng-container matColumnDef="ServiceName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200 border-right">Service Name
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200 border-right">
+                                    <span> {{contact.serviceName}}</span>
+                                </mat-cell>
+                            </ng-container>
+                    
+                            <ng-container matColumnDef="Price">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.price}}</span>
+                                </mat-cell>
+                            </ng-container>
+                    
+                            <ng-container matColumnDef="Qty">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.qty}}</span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="TotalAmt">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Total Amt
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.totalAmt | currency:'INR' }}</span>
+                                </mat-cell>
+                            </ng-container>
+                    
+                            <ng-container matColumnDef="DiscPer">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc %
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.concessionPercentage}}</span>
+                                </mat-cell>
+                            </ng-container>
+                    
+                            <ng-container matColumnDef="DiscAmt">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc Amt
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.concessionAmount | currency:'INR' }}</span>
+                                </mat-cell>
+                            </ng-container>
+                    
+                            <ng-container matColumnDef="NetAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Net Amt
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.netAmount | currency:'INR' }}</span>
+                                </mat-cell>
+                            </ng-container>
+                    
+                            <ng-container matColumnDef="DoctorName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">ChargeDoctorName
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                    <span> {{contact.doctorName || '--'}}</span>
+                                </mat-cell>
+                            </ng-container>
+                    
+                            <ng-container matColumnDef="ClassName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="accent">ClassName
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.className}}</span>
+                                </mat-cell>
+                            </ng-container>
+                    
+                            <ng-container matColumnDef="ChargesAddedName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ChargesAddedName
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.chargesAddedName}}</span>
+                                </mat-cell>
+                            </ng-container>
+                    
+                            <ng-container matColumnDef="buttons" stickyEnd>
+                                <mat-header-cell *matHeaderCellDef class="table-actions " class="w-70">Action
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" class="w-70">
+                                    <ng-container class="actions">
+                                        <span class="material-icons" style="cursor: pointer;color: #c95a5a;"
+                                            (click)="deletecharges(contact)">
+                                            delete
+                                        </span>
+                                    </ng-container>
+                                </mat-cell>
+                            </ng-container>
+                    
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+                    
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
+                                    </mat-spinner>
+                                    <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                </mat-footer-cell>
+                            </ng-container>
+                    
+                            <mat-header-row class="accent min-width-1600" *matHeaderRowDef="displayedColumns; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="min-width-1600"
+                                [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}"
+                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+                            </mat-footer-row>
+                        </mat-table>
                         <div class="net-amt-section mb-2 mt-16" style="margin-left: 500px;">
                             <div class="net-amt gap-24">
                                 <div class="net-amt-box">
@@ -462,24 +461,28 @@
                                     <span class="net-amt-value">{{getDiscountSum(dataSource.data) |
                                         currency:'INR'}}</span>
                                 </div>
-
+                    
                                 <div class="net-amt-box">
                                     <span class="net-amt-label">Net Amt : </span>
-
+                    
                                     <span class="net-amt-value">{{getNetAmtSum(dataSource.data) |
                                         currency:'INR'}}</span>
                                 </div>
                             </div>
-                        </div> -->
-                       
-
-                       
- 
-                   
+                        </div>
                     </mat-tab>
                     
                     <mat-tab label="Advance">
-                        <mat-table matSort [dataSource]="advancedatasource" [@animateStagger]="{value:'50'}"
+                        <ng-template #actionButtonTemplate let-element>
+                            <div fxLayout="row" fxLayoutAlign="center center">   
+                                <button mat-icon-button   matTooltip="Advance Print"  >
+                                    <mat-icon>print</mat-icon>
+                                </button>  
+                            </div>
+                        </ng-template>
+                        <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false"  tableClasses="h-300">
+                        </airmid-table>
+                        <!-- <mat-table matSort [dataSource]="advancedatasource" [@animateStagger]="{value:'50'}"
                             class="table3 mt-8" style="height: calc(100vh - 500px);">
 
 
@@ -600,8 +603,8 @@
                             <mat-footer-row *matFooterRowDef="['noData']"
                                 [ngClass]="{'hide':!(advancedatasource!=null && advancedatasource.data.length==0)}">
                             </mat-footer-row>
-                        </mat-table>
-                        <div class="net-amt-section mb-2 mt-16">
+                        </mat-table> -->
+                        <!-- <div class="net-amt-section mb-2 mt-16">
                             <div class="net-amt gap-24" fxLayout="row" fxLayoutAlign="start center">
                                 <div class="net-amt-box">
                                     <span class="net-amt-label">No of Items : </span>
@@ -613,7 +616,7 @@
                                         currency:'INR'}}</span>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </mat-tab>
                     
                     <mat-tab label="Package Det.">
@@ -763,7 +766,7 @@
                                  </button>
                             </div>
                         </ng-template>
-                        <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false" :ShowButtons="false" >
+                        <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false" :ShowButtons="false"  tableClasses="h-300">
 
                         </airmid-table>
                         <!-- <mat-table matSort [dataSource]="prevbilldatasource" [@animateStagger]="{value:'50'}"
@@ -921,7 +924,7 @@
                                     <mat-form-field appearance="outline" fxFlex="10%" *ngIf="isAdminDisabled">
                                         <mat-label>Admin Amount</mat-label>
                                         <input matInput [(ngModel)]="vAdminAmt" name="AdminAmt" readonly
-                                            formControlName="AdminAmt"  >
+                                            formControlName="AdminAmt">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline"  fxFlex="6%" *ngIf="BillDiscperFlag">
@@ -935,16 +938,7 @@
                                         <mat-label>Disc Amount</mat-label>
                                         <input matInput [(ngModel)]="vFinalDiscountAmt" name="concessionAmt"   
                                             formControlName="concessionAmt" (keyup)="getDiscAmtCal()">
-                                    </mat-form-field>
-
-                                    <!-- <mat-form-field *ngIf="ConcessionShow" appearance="outline" fxFlex="15%">
-                                        <mat-label>Concession Reason Type</mat-label>
-                                        <mat-select formControlName="ConcessionId" [(ngModel)]="vConcessionId">
-                                            <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">
-                                                {{Doc.ConcessionReason}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field> -->
+                                    </mat-form-field> 
 
                                     <div *ngIf="ConcessionShow">
                                         <airmid-dropdown label="Concession Reason" fxFlex="15%"
@@ -959,34 +953,12 @@
                                         <mat-label>Net Amount</mat-label>
                                         <input matInput [(ngModel)]="vNetBillAmount" formControlName="FinalAmount"
                                             name="vNetBillAmount" readonly required>
-                                    </mat-form-field>
-
-                                    <!-- <mat-form-field appearance="outline" fxFlex="20%">
-                                        <mat-label>Cash Counter</mat-label>
-                                        <input matAutocompletePosition="below" type="text" placeholder="Select Cash Counter"
-                                             matInput formControlName="CashCounterID"
-                                            [matAutocomplete]="autoSearchCashCounter" #CashCounterName [(ngModel)]="vCashCounterID">
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="Ipbillform.get('CashCounterID').setValue(''); isCashCounterSelected = false;">close</mat-icon>
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="Ipbillform.get('CashCounterID').setValue(''); isCashCounterSelected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #autoSearchCashCounter="matAutocomplete"
-                                            [displayWith]="getOptionTextCashCounter">
-                                            <mat-option *ngFor="let option of filteredOptionsCashCounter| async"
-                                                [value]="option">
-                                                {{option.CashCounterName}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                    </mat-form-field> -->
+                                    </mat-form-field>  
  
                                     <airmid-dropdown label="Select Cash Counter " formControlName="CashCounterID" class="w-300"
                                     [formGroup]="Ipbillform" [validations]="getValidationMessages().cashCounterId"
                                     [mode]="autocompleteModeCashcounter">
-                                    </airmid-dropdown>
-
- 
+                                    </airmid-dropdown> 
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Remark</mat-label>
@@ -1006,48 +978,19 @@
                                         </mat-checkbox>
                                         <mat-checkbox formControlName="CreditBill" (checked)=true>
                                            Credit Bill
-                                        </mat-checkbox>
-
-                                     
-
-                                        <!-- <div class="cash-container gap-12">
-                                            <div class="net-amt-section">
-                                                <div class="net-amt">
-                                                    <div class="net-amt-box">
-                                                        <span class="net-amt-label">Phar. Cash : </span>
-                                                        <span class="net-amt-value">{{vPharcash}}</span>
-                                                    </div>
-                                                    <div class="net-amt-box">
-                                                        <span class="net-amt-label">IP Cash : </span>
-                                                        <span class="net-amt-value">{{vIpCash}}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> -->
-                                       
+                                        </mat-checkbox> 
                                     </div>
                                     <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center">
                                         <div class="button-row-group">
                                             <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                                             <button class="btn btn-primary-outline" (click)="getInterimData()">Interim</button>
                                             <button class="btn btn-primary" (click)="onSave()" [disabled]="Ipbillform.invalid">Save</button>
-                                    
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center">
-                        <div class="button-row-group">
-                            <button class="btn btn-danger-outline" (click)="onClose()">Cancel</button>
-                            <button class="btn btn-primary-outline" (click)="getInterimData()"
-                                [disabled]="Ipbillform.invalid">Interim</button>
-                            <button class="btn btn-primary" (click)="onSave()"
-                                [disabled]="Ipbillform.invalid">Save</button>
-
-                        </div>
-                    </div> -->
+                    </div> 
                 </div>
             </form>
         </div>
