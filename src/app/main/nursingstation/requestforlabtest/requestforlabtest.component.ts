@@ -119,7 +119,7 @@ export class RequestforlabtestComponent implements OnInit {
             sortField: "RequestId",
             sortOrder: 0,
             filters: [
-                { fieldName: "RequestId", fieldValue: this.vRequestId, opType: OperatorComparer.Equals },
+                // { fieldName: "RequestId", fieldValue: this.vRequestId, opType: OperatorComparer.Equals },
                 // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
                 // { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
                 // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }

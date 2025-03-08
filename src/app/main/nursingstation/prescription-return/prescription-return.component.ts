@@ -26,16 +26,19 @@ import { ToastrService } from 'ngx-toastr';
 export class PrescriptionReturnComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     hasSelectedContacts: boolean;
-
+    @ViewChild('grid1') grid1: AirmidTableComponent;
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
     gridConfig: gridModel = {
         apiUrl: "Nursing/PrescriptionReturnList",
         columnsList: [            
-            // { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-            // { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-            // { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-            // { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA',width:50 },
-            // { heading: "Net Pay", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' ,width:50},    
+            { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Patient Name", key: "patientname", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Adm Date", key: "admDate", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "IPMedID", key: "ipMedId", sort: true, align: 'left', emptySign: 'NA'},   
             {
                 heading: "Action", key: "action",width: 50,align: "right", type: gridColumnTypes.action, actions: [
                     {
@@ -51,69 +54,52 @@ export class PrescriptionReturnComponent implements OnInit {
                         }
                     }]
             },//Action 1-view, 2-Edit,3-delete
-            { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Patient Name", key: "patientname", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Adm Date", key: "admDate", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "IPMedID", key: "ipMedId", sort: true, align: 'left', emptySign: 'NA'},
+            
         ],
         sortField: "PresReId",
         sortOrder: 0,
         filters: [
-
-            { fieldName: "PresReId", fieldValue: "8", opType: OperatorComparer.Equals },
+            { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
-    }
-    gridConfig1: gridModel = {
-        apiUrl: "Nursing/PrescriptionReturnList",
-        columnsList: [
-            // { heading: "Code", key: "presReId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA'},
-            // { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-            // { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-            // { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-            // { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA',width:50 },
-            // { heading: "Net Pay", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-            // {
-            //     heading: "Action", key: "action", width: 50, align: "right", type: gridColumnTypes.action, actions: [
-            //         {
-            //             action: gridActions.edit, callback: (data: any) => {
-            //                 this.onSave(data);
-            //             }
-            //         }, {
-            //             action: gridActions.delete, callback: (data: any) => {
-            //                 this._PrescriptionReturnService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
-            //                     this.toastr.success(response.message);
-            //                     this.grid.bindGridData();
-            //                 });
-            //             }
-            //         }]
-            // } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "PresReId",
-        sortOrder: 0,
-        filters: [
-
-            { fieldName: "PresReId", fieldValue: "8", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            { fieldName: "Length", fieldValue: "20", opType: OperatorComparer.Equals }
         ],
         row: 25
     }
 
     constructor(public _PrescriptionReturnService: PrescriptionReturnService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService,
+        public datePipe: DatePipe) { }
     ngOnInit(): void {
     }
 
+    gridConfig1: gridModel = new gridModel();
+    isShowDetailTable: boolean = false;
+    GetDetails1(data){
+        this.gridConfig1 = {
+            apiUrl: "Nursing/PrescriptionReturnList",
+            columnsList: [
+                // { heading: "Code", key: "presReId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+                { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA'},
+                { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA'},
+                { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA'},
+            ],
+            sortField: "PresReId",
+            sortOrder: 0,
+            filters: [
+    
+                // { fieldName: "PresReId", fieldValue: "8", opType: OperatorComparer.Equals },
+                // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+                // { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+                // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            ],
+            row: 25
+        }
+        this.isShowDetailTable = true;
+        this.grid1.gridConfig = this.gridConfig1;
+        this.grid1.bindGridData();
+    }
     onSave(row: any = null) {
         let that = this;
         const dialogRef = this._matDialog.open(NewPrescriptionreturnComponent,

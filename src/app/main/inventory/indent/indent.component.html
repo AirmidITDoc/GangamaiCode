@@ -11,27 +11,63 @@
                 Indent List 
             </span>
         </div>
+
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onSave()">New Indent
+            </button>
+        </div>
     </mat-toolbar>
 
-    <mat-tab-group>
-        <mat-tab label="Indent List">
+    <!-- <mat-tab-group> -->
+        <!-- <mat-tab label="Indent List"> -->
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
-                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-                    fxLayoutAlign.gt-xs="space-between center ">
-                    <div class="top-header-info">
-                        <div class="top-header-title">
-                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                Indent List 
-                            </span>
-                        </div>
-                    </div>
-                </div> 
-                <div fxlayout="row"> 
+
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <airmid-table [gridConfig]="gridConfig" class="content">
+                    <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="GetDetails1($event)" #grid>
+
                         <ng-container filters>
+                            <airmid-datepicker [formGroup]="_IndentService.IndentSearchGroup" [isRangePicker]="true"
+                                formStartControlName="start" formEndControlName="end"
+                                [(fromValue)]="gridConfig.filters[2].fieldValue"
+                                [(toValue)]="gridConfig.filters[3].fieldValue">
+                            </airmid-datepicker>
+
+                            <airmid-dropdown label="From Store" 
+                                    formControlName="StoreId" 
+                                    [(ngModel)]="gridConfig.filters[0].fieldValue"
+                                    [formGroup]="_IndentService.IndentSearchGroup"
+                                    [mode]="autocompletestore"
+                                    (selectionChange)="selectChangeStore($event)">
+                                </airmid-dropdown>
+
+                                <airmid-dropdown label="To Store" 
+                                    formControlName="StoreId" 
+                                    [formGroup]="_IndentService.IndentSearchGroup"
+                                    [(ngModel)]="gridConfig.filters[1].fieldValue"
+                                    [mode]="autocompletestore"
+                                    (selectionChange)="selectChangeStore($event)">
+                                </airmid-dropdown>
+
+                                <form [formGroup]="_IndentService.IndentSearchGroup">
+                                    <div fxLayout="column" fxLayoutAlign="start start">
+                                        <div fxFlex fxLayout="row">
+                                            <mat-radio-group name="Status" formControlName="Status" fxLayout="row" value="1" 
+                                            style="padding: 6px;" class="gap-4" [(ngModel)]="gridConfig.filters[4].fieldValue">
+                                                <mat-label>Status:</mat-label>
+                                                <div fxLayout="row">
+                                                    <mat-radio-button value='1'>Close</mat-radio-button>
+                                                    <mat-radio-button value='0'>Pending</mat-radio-button>
+                                                </div>
+                                            </mat-radio-group>
+                                        </div>
+                                    </div>
+                                </form>
+
+                        </ng-container>
+
+                        <!-- <ng-container filters>
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>FromStoreId </mat-label>
                                 <input matInput placeholder="Search FromStoreId " autocomplete="off"
@@ -81,21 +117,22 @@
                                 </button>
                             </mat-form-field>
 
-                            <!-- <mat-radio-group value="" [(ngModel)]="gridConfig.filters[5].fieldValue"
+                            <mat-radio-group value="" [(ngModel)]="gridConfig.filters[5].fieldValue"
                                 fxLayoutAlign="center center">
                                 <mat-radio-button value="">All</mat-radio-button>
                                 <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
                                 <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                            </mat-radio-group> -->
-                        </ng-container>
+                            </mat-radio-group>
+                        </ng-container> -->
                     </airmid-table>
-                    <!-- <airmid-table [gridConfig]="gridConfig1" class="content">
-                </airmid-table> -->
                 </div>
-                </div>
-                <div fxlayout="row">
+
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
+                    *ngIf="isShowDetailTable">
+                    <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false">
+                    </airmid-table>
                 </div>
             </div>
-        </mat-tab>
-    </mat-tab-group>
+        <!-- </mat-tab> -->
+    <!-- </mat-tab-group> -->
 </div>

@@ -283,49 +283,46 @@ export class MedicalrecordComponent implements OnInit {
 
   getSelectedObj(obj) {
     if ((obj.regId ?? 0) > 0) {
-      console.log(obj)
-      this.vOPIPId = obj.visitId
+        console.log(obj)
+        this.vOPIPId = obj.visitId
 
-      setTimeout(() => {
-        this._AppointmentlistService.getRegistraionById(obj.regId).subscribe((response) => {
-          this.patientDetail = response;
-          // this.PatientName = this.patientDetail.firstName + " " + this.patientDetail.middleName + " " + this.patientDetail.lastName
-          console.log(this.patientDetail)
-        });
+        setTimeout(() => {
+            this._AppointmentlistService.getRegistraionById(obj.regId).subscribe((response) => {
+                this.patientDetail = response;
+                console.log(this.patientDetail)
+            });
 
-      }, 500);
+        }, 500);
 
-      setTimeout(() => {
-
-        this._AppointmentlistService.getVisitById(this.vOPIPId).subscribe(data => {
-          this.patientDetail1 = data;
-          console.log(data)
-          console.log(this.patientDetail1)
-        });
-      }, 1000);
+        // setTimeout(() => {
+        //     this._AppointmentlistService.getVisitById(this.vOPIPId).subscribe(data => {
+        //         this.patientDetail1 = data;
+        //         console.log(data)
+        //         console.log(this.patientDetail1)
+        //     });
+        // }, 1000);
     }
     this.updateRegisteredPatientInfo(obj);
-  }
+}
 
   getSelectedRow(row:any):void{
     console.log("Selected row : ", row);
 }
 
-  updateRegisteredPatientInfo(obj) {
-    const dialogRef = this._matDialog.open(UpdateRegPatientInfoComponent,
+updateRegisteredPatientInfo(obj) {
+  const dialogRef = this._matDialog.open(UpdateRegPatientInfoComponent,
       {
-        maxWidth: "100%",
-        height: '95%',
-        width: '95%',
-        data: {
-          obj: obj
-        }
+          maxWidth: "100%",
+          height: '95%',
+          width: '95%',
+          data: obj
       });
-    dialogRef.afterClosed().subscribe(result => {
-      this.getVisitList1();
+  dialogRef.afterClosed().subscribe(result => {
       this.searchFormGroup.get('RegId').setValue('');
-    });
-  }
+        this.grid.bindGridData();
+  });
+
+}
 
   getVisitList1() {
     // call list

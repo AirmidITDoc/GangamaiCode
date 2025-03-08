@@ -29,43 +29,30 @@
                         <div fxLayout="column">
 
                             <form [formGroup]="_ReturnToDepartmentList.userFormGroup" style="padding-bottom: 10px;">
-                                <div fxLayout="row" fxLayoutAlign="start none" fxLayoutGap="8px">
-                                    <mat-card fxFlex="60%" style="padding: 6px 6px 5px 5px;" fxLayoutGap="4px">
-                                        <input  name="ReturnQty" formControlName="ReturnQty" type="hidden">
-                                        <mat-form-field appearance="outline" fxFlex="28%">
-                                            <mat-label>From Store</mat-label>
-                                            <mat-select name="StoreId" formControlName="StoreId">
-                                                <mat-option *ngFor="let m of StoreList" [value]="m">
-                                                    {{m.StoreName}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
+                                <div fxLayout="row" fxLayoutAlign="center center" fxLayout="row" fxLayoutGap="8px">
 
-                                        <mat-form-field appearance="outline" fxFlex="45%">
-                                            <mat-label>To Store</mat-label>
-                                            <input matAutocompletePosition="below" type="text"
-                                                placeholder="Select Store" matInput formControlName="ToStoreId"
-                                                [matAutocomplete]="auto" required>
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_ReturnToDepartmentList.userFormGroup.get('ToStoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_ReturnToDepartmentList.userFormGroup.get('ToStoreId').setValue(''); isStoreSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #auto="matAutocomplete"
-                                                [displayWith]="getOptionTextStoresList">
-                                                <mat-option *ngFor="let option of filteredOptionsStore | async"
-                                                    [value]="option">
-                                                    {{option.StoreName}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>&nbsp;&nbsp;
+                                    <mat-card fxFlex="75%" fxLayout="row" fxLayoutAlign="start center"
+                                        fxLayoutGap="10px">
+                                        <input name="ReturnQty" formControlName="ReturnQty" type="hidden">
+
+                                        <airmid-dropdown label="From Store" formControlName="StoreId"
+                                            [formGroup]="_ReturnToDepartmentList.userFormGroup" fxFlex="25%"
+                                            [value]="data?.StoreId" [mode]="autocompletestore">
+                                        </airmid-dropdown>
+
+                                        <airmid-dropdown label="To Store" formControlName="ToStoreId"
+                                            [formGroup]="_ReturnToDepartmentList.userFormGroup" fxFlex="25%"
+                                            [value]="data?.ToStoreId" [mode]="autocompletestore">
+                                        </airmid-dropdown>
 
                                         <app-common-date [screenFrom]="screenFromString"
-                                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-
+                                            (dateTimeEventEmitter)="getDateTime($event)">
+                                        </app-common-date>
                                     </mat-card>
-                                    <mat-card fxFlex="40%" style="padding: 6px 6px 5px 5px;" fxLayoutGap="4px">
+
+
+                                    <mat-card fxFlex="25%" fxLayout="row" fxLayoutAlign="center center"
+                                        fxLayoutGap="10px">
                                         <mat-form-field appearance="outline" style="margin-left:2%;">
                                             <mat-label>Enter a date range</mat-label>
                                             <mat-date-range-input [rangePicker]="picker">
@@ -260,7 +247,7 @@
                                         <mat-cell *matCellDef="let contact">
                                             <mat-form-field appearance="legacy">
                                                 <input matInput [(ngModel)]="contact.ReturnQty" type="text" OnlyNumber
-                                                (keyup)="Celldatacalculation(contact,contact.ReturnQty)">
+                                                    (keyup)="Celldatacalculation(contact,contact.ReturnQty)">
                                             </mat-form-field>
                                         </mat-cell>
                                     </ng-container>
@@ -389,7 +376,7 @@
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Remark</mat-label>
                                         <input matInput placeholder="Remark" [(ngModel)]="vRemark"
-                                            formControlName="Remark" #Remark  >
+                                            formControlName="Remark" #Remark>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="10%">
@@ -424,7 +411,8 @@
 
                                     <div class="sales-footer-buttons gap-8">
                                         <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
-                                        <button class="btn btn-primary" (click)="OnSave()" [disabled]="Savebtn">Save</button>&nbsp;
+                                        <button class="btn btn-primary" (click)="OnSave()"
+                                            [disabled]="Savebtn">Save</button>&nbsp;
                                     </div>
                                 </div>
                             </form>
