@@ -79,7 +79,9 @@
                                                 </div>
                                                 <mat-chip-listbox #chipList>
                                                     <mat-chip *ngFor="let item of myform.value.mAssignItemToStores">
-                                                        {{ item.storeName }} <mat-icon
+                                                        <!-- {{ item.storeName }} -->
+                                                        {{ item.storeName }}  {{ item.name }}
+                                                         <mat-icon
                                                             (click)="removestore(item)">close</mat-icon>
                                                     </mat-chip>
                                                 </mat-chip-listbox>

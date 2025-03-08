@@ -1,0 +1,63 @@
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
+    dynamicTableHeight>
+    <mat-toolbar class="top-header accent">
+        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+            <!-- <button mat-icon-button class="sidebar-toggle ">
+                <mat-icon>menu</mat-icon>
+            </button> -->
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                Return From Department List
+            </span>
+        </div>
+        <button mat-raised-button (click)="NewReturnFrom()">
+            <mat-icon>add</mat-icon> Add
+        </button>
+    </mat-toolbar>
+
+    <div fusePerfectScrollbar
+        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+        dynamicTableHeight>
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+            <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="GetDetails1($event)" #grid>
+
+                <ng-container filters>
+                    <airmid-datepicker [formGroup]="_ReturnToDepartmentList.ReturnSearchGroup" [isRangePicker]="true"
+                        formStartControlName="start" formEndControlName="end"
+                        [(fromValue)]="gridConfig.filters[2].fieldValue" [(toValue)]="gridConfig.filters[3].fieldValue">
+                    </airmid-datepicker>
+
+                    <airmid-dropdown label="From Store" formControlName="StoreId"
+                        [(ngModel)]="gridConfig.filters[0].fieldValue" [formGroup]="_ReturnToDepartmentList.ReturnSearchGroup"
+                        [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)">
+                    </airmid-dropdown>
+
+                    <airmid-dropdown label="To Store" formControlName="StoreId"
+                        [formGroup]="_ReturnToDepartmentList.ReturnSearchGroup" [(ngModel)]="gridConfig.filters[1].fieldValue"
+                        [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)">
+                    </airmid-dropdown>
+
+                    <div fxLayout="row">
+                        <button
+                        matTooltip="Pdf" style="width: 45px;border-color: white;">
+                        <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
+                    </button>&nbsp;
+
+                    <button 
+                        style="background-color: white;color: white;width: 45px;">
+                        <img width="32" height="10px" src="assets/images/logos/xls.png">
+                    </button>
+                    </div>
+                    
+                </ng-container>
+            </airmid-table>
+        </div>
+
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
+            <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false">
+            </airmid-table>
+        </div>
+    </div>
+
+</div>

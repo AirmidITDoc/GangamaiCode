@@ -84,7 +84,8 @@ autocompleteModeStoreId:string="Store";
         {
             assignId: 0,
             storeId: 0,
-            supplierId: 0
+            supplierId: 0,
+            storeName:''
         }
     ]
     })
@@ -121,7 +122,7 @@ autocompleteModeStoreId:string="Store";
 itemGeneric:any;
 vItemGenericNameId:any;
 vItemGenericName:any;
-
+name=''
   selectChangeItemName(row) {
     debugger
     console.log("Drug:", row)
@@ -135,24 +136,31 @@ vItemGenericName:any;
           console.log("all data:", this.itemObjects)
           this.myform.get("ItemGenericNameId").setValue(this.itemObjects.itemGenericNameId)
           this.myform.get("PurchaseUOMId").setValue(this.itemObjects.purchaseUomid)
-          this.myform.get("mAssignItemToStores").setValue(this.itemObjects.mAssignItemToStores)
+          // this.myform.get("mAssignItemToStores").setValue(this.itemObjects.mAssignItemToStores)
+          
 
           // retriving store data
-          // this.registerObj=this.itemObjects.mAssignItemToStores[0].storeId
           console.log("jjjj:",this.itemObjects.mAssignItemToStores)
           this.vStoreId=this.itemObjects.mAssignItemToStores[0].storeId;
-          // this.ddlStore.SetSelection(this.itemObjects.mAssignItemToStores[0].storeId);
+          // this.ddlStore.SetSelection(this.itemObjects.mAssignItemToStores);
 
-        // if ((this.vStoreId ?? 0) > 0) {
-        //   setTimeout(() => {
-        //     this._CasepaperService.getStoreById(this.vStoreId).subscribe((response) => {
-        //       this.registerObj = response;
-        //         console.log("getStore:",this.registerObj)
-
-        //         // this.ddlStore.SetSelection(this.registerObj.mAssignItemToStores);
-        //     });
-        //   }, 500);
-        // }
+        if ((this.vStoreId ?? 0) > 0) {
+          setTimeout(() => {
+            this._CasepaperService.getStoreById(this.vStoreId).subscribe((response) => {
+              this.registerObj = response;
+                console.log("getStore:",this.registerObj)
+                this.name=this.registerObj.storeName
+                console.log("ssssssssssssssssssss:",this.name)
+                this.myform.get("mAssignItemToStores").setValue(
+                  this.itemObjects.mAssignItemToStores.map(store => ({
+                      ...store,
+                      name: this.name // Assign name dynamically to each item
+                  }))
+              );
+              
+            });
+          }, 500);
+        }
         });
       // }, 500);
     }

@@ -33,18 +33,24 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 })
 export class IndentComponent implements OnInit {
     hasSelectedContacts: boolean;
+    autocompletestore: string = "Store";
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    @ViewChild('grid1') grid1: AirmidTableComponent;
+
     gridConfig: gridModel = {
         apiUrl: "Indent/IndentList",
         columnsList: [
-            { heading: "Code", key: "indentNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "From StoreId", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "To StoreId", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "FromStoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 700 },
-            //  { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "Verify", key: "verify", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IndentNo", key: "indentNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Indent Date", key: "indentDate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "From Store Name", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "To Store Name", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Added By", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
             {
-                heading: "Action", key: "action", width: 50, align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
@@ -64,20 +70,46 @@ export class IndentComponent implements OnInit {
         filters: [
             { fieldName: "FromStoreId", fieldValue: "10009", opType: OperatorComparer.Equals },
             { fieldName: "ToStoreId", fieldValue: "10003", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: "01/01/2018", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "11/11/2024", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Status", fieldValue: "1", opType: OperatorComparer.Equals }
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
         row: 25
     }
 
-
-
+    gridConfig1: gridModel = new gridModel();
+    isShowDetailTable: boolean = false;
+    GetDetails1(data) {
+        debugger
+        this.gridConfig1 = {
+            apiUrl: "IssueToDepartment/IssueToDepttList",
+            columnsList: [
+                { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Issue Qty", key: "qtyIssue", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Pending Qty", key: "qtyPending", sort: true, align: 'left', emptySign: 'NA' },
+            ],
+            sortField: "IssueId",
+            sortOrder: 0,
+            filters: [
+                // { fieldName: "FromStoreId", fieldValue: "10009", opType: OperatorComparer.Equals },
+                // { fieldName: "ToStoreId", fieldValue: "10003", opType: OperatorComparer.Equals },
+                // { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                // { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                // { fieldName: "Status", fieldValue: "1", opType: OperatorComparer.Equals }
+            ],
+            row: 25
+        }
+        this.isShowDetailTable = true;
+        this.grid1.gridConfig = this.gridConfig1;
+        this.grid1.bindGridData();
+    }
 
     constructor(
         public _IndentService: IndentService,
-        public toastr: ToastrService, public _matDialog: MatDialog
+        public toastr: ToastrService, public _matDialog: MatDialog,
+        public datePipe: DatePipe
     ) { }
 
     ngOnInit(): void { }
@@ -85,9 +117,9 @@ export class IndentComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(NewIndentComponent,
             {
-                maxWidth: "95vw",
-                height: '95%',
-                width: '70%',
+                // maxWidth: "95vw",
+                maxHeight: '95vh',
+                width: '100%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -95,5 +127,9 @@ export class IndentComponent implements OnInit {
                 that.grid.bindGridData();
             }
         });
+    }
+
+    selectChangeStore(obj: any) {
+        this.gridConfig.filters[2].fieldValue = obj.value
     }
 }

@@ -239,6 +239,8 @@ export class NewCasepaperComponent implements OnInit {
       this.vClassId = this.regObj.classId
       this.getPrescription(this.regObj);
       this.getnewVisistListDemo(this.regObj);
+      this.getRtrvTestService(this.regObj);  //retrive list
+      this.getRtrvCheifComplaintList(this.regObj); // retrive list
     }
   }
 
@@ -427,7 +429,9 @@ export class NewCasepaperComponent implements OnInit {
     }
     this.getPrescription(obj);
     this.getnewVisistListDemo(obj);
-    this.getVitalInfo(obj);
+    // this.getVitalInfo(obj);
+    this.getRtrvTestService(obj); // retrive list
+    this.getRtrvCheifComplaintList(obj); // retrive list
   }
 
   RefDocNameId: any;
@@ -475,19 +479,6 @@ export class NewCasepaperComponent implements OnInit {
       
       console.log("iiiiii:", this.Chargelist);
       if (this.dsItemList.data.length > 0) {
-        // if (Array.isArray(this.dsItemList.data) && this.dsItemList.data.length > 0) {
-        //   const item = this.dsItemList.data[0];
-        //   console.log("ooooooo:",item)
-        // if (this.vitalInfo[0].Height > 0) {
-        //   this.vHeight = this.vitalInfo[0].Height;
-        //   this.vWeight = this.vitalInfo[0].PWeight;
-        //   this.vBMI = this.vitalInfo[0].BMI;
-        //   this.vSpO2 = this.vitalInfo[0].SpO2;
-        //   this.vTemp = this.vitalInfo[0].Temp;
-        //   this.vPulse = this.vitalInfo[0].Pulse;
-        //   this.vBSL = this.vitalInfo[0].BSL;
-        //   this.vBP = this.vitalInfo[0].BP;
-        // } else {
           this.vHeight = this.dsItemList.data[0].pHeight;
           this.vWeight = this.dsItemList.data[0].pWeight;
           this.vBMI = this.dsItemList.data[0].bmi;
@@ -496,7 +487,7 @@ export class NewCasepaperComponent implements OnInit {
           this.vPulse = this.dsItemList.data[0].pulse;
           this.vBSL = this.dsItemList.data[0].bsl;
           this.vBP = this.dsItemList.data[0].bp;
-        // }
+
         this.vChiefComplaint = this.dsItemList.data[0].chiefComplaint;
         this.vDiagnosis = this.dsItemList.data[0].diagnosis;
         this.vExamination = this.dsItemList.data[0].examination;
@@ -513,6 +504,63 @@ export class NewCasepaperComponent implements OnInit {
       }
     });
 
+  }
+
+  RtrvDescriptionList:any=[];
+  getRtrvCheifComplaintList(obj) { 
+    this.addCheiflist = [];
+    this.addDiagnolist = [];
+    this.addExaminlist = [];
+    this.AllTypeDescription = [];
+    var vdata= {
+      "first": 0,
+      "rows": 10,
+      "sortField": "VisitId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "RegID",
+          "fieldValue": String(obj.regId),//"40773",	
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "Start",
+          "fieldValue": "0",
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "Length",
+          "fieldValue": "10",
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON"
+    }
+    this._CasepaperService.getRtrvCheifComplaintList(vdata).subscribe(data => {
+      this.RtrvDescriptionList = data;
+      console.log(this.RtrvDescriptionList) 
+      let Cheifcomplaint = this.RtrvDescriptionList.filter(item => item.DescriptionType == 'Complaint')
+      if(Cheifcomplaint){
+        Cheifcomplaint.forEach(element=>{
+          const value = element.DescriptionName;
+          this.addCheiflist.push(value.trim());
+        })
+      }
+      let Diagnosis = this.RtrvDescriptionList.filter(item => item.DescriptionType == 'Diagnosis')
+      if(Diagnosis){
+        Diagnosis.forEach(element=>{
+          const value = element.DescriptionName;
+          this.addDiagnolist.push(value.trim()); 
+        })
+      }
+      let Examination = this.RtrvDescriptionList.filter(item => item.DescriptionType == 'Examination')
+      if(Examination){
+        Examination.forEach(element=>{
+          const value = element.DescriptionName;
+          this.addExaminlist.push(value.trim()); 
+        })
+      } 
+    }); 
   }
 
   vitalInfo: any;
@@ -604,6 +652,50 @@ export class NewCasepaperComponent implements OnInit {
       this.selectedItems = [];
     }
     console.log("Updated selectedItems:", this.selectedItems);
+  }
+
+  RtrvTestServiceList: any = [];
+  getRtrvTestService(obj) {
+    debugger
+    var m_data2 = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "VisitId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "VisitId",
+          "fieldValue": String(obj.visitId),//"40773",	
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "Start",
+          "fieldValue": "0",
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "Length",
+          "fieldValue": "10",
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON"
+    }
+    this._CasepaperService.getRtrvTestService(m_data2).subscribe(data => {
+      this.RtrvTestServiceList = data
+      console.log("uuuuu:",this.RtrvTestServiceList)
+      if (this.RtrvTestServiceList) {
+        this.RtrvTestServiceList.forEach(element => {
+          this.selectedItems.push(
+            {
+              ServiceId: element.ServiceId || 0,
+              ServiceName: element.ServiceName || ''
+            });
+            // take service formcontrol & pass value (refer add item store)
+        })
+       // console.log(this.selectedItems)
+      }
+    })
   }
 
   selectChangeDoctorName(row) {
@@ -1267,18 +1359,6 @@ export class NewCasepaperComponent implements OnInit {
   patients: any[] = []; // Using 'any' type for simplicity
   uniqueDates: string[] = [];
   displayedColumns: string[] = ['patientName', 'age', 'gender'];
-  // getnewVisistList(obj) {
-  //   this.sIsLoading = 'loading';
-  //   var D_data = {
-  //     "RegId": obj.RegID,
-  //   }
-  //   console.log(D_data);
-  //   this.sIsLoading = 'loading-data';
-  //   this._CasepaperService.getRtrvVisitedList(D_data).subscribe(Visit => {
-  //     this.patients = Visit as MedicineItemList[];
-  //     // this.extractUniqueDates();
-  //   });
-  // }
 
   getnewVisistListDemo(obj) {
     // debugger
@@ -1761,6 +1841,7 @@ genericName:any;
 days:any;
 instruction:any;
 storeId:any;
+storeName:any;
   /**
   * Constructor
   *
@@ -1822,6 +1903,7 @@ storeId:any;
       this.genericName = MedicineItemList.genericName || ''
       this.days = MedicineItemList.days || ''
       this.storeId = MedicineItemList.storeId || ''
+      this.storeName = MedicineItemList.storeName || ''
       this.instruction = MedicineItemList.instruction || ''
     }
   }
