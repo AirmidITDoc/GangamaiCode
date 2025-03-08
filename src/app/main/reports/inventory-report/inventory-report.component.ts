@@ -84,16 +84,18 @@ export class InventoryReportComponent implements OnInit {
   FlagDoctorSelected: boolean = false;
   FlagBillNoSelected: boolean = false;
   FlagMonthSelected: boolean = false;
+  FlagItemCategorySelected: boolean = false;
   ReportName: any;
   SpinLoading: boolean = false;
   sIsLoading: string = '';
   ReportID:any=0
-
+  filteredItemcategory: Observable<string[]>;
   filteredOptionsstore: Observable<string[]>;
   filteredOptionsstore1: Observable<string[]>;
   isSearchstoreSelected: boolean = false;
   isSearchstore1Selected: boolean = false;
   isItemIdSelected: boolean = false;
+  isItemCategoryIdSelected: boolean = false;
   FlagStoreSelected: boolean = false;
   FlagDaterangeSelected: boolean = true;
   FlagStore1Selected: boolean = false;
@@ -103,6 +105,7 @@ export class InventoryReportComponent implements OnInit {
   optionsSearchstore: any[] = [];
   optionsSearchstore1: any[] = [];
   optionsSearchItem: any[] = [];
+  ItemCategorycmbList: any= [];
   filteredOptionssupplier:any;
   noOptionFoundsupplier:any;
   isSupplierIdSelected:boolean=false;
@@ -137,6 +140,7 @@ export class InventoryReportComponent implements OnInit {
     this.GetUserList();
     this.gePharStoreList();
     this.getSearchItemList()
+    this.getitemcategoryNameMasterCombo();
     this.filteredOptionsUser = this._OPReportsService.userForm.get('UserId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterUser(value)),
@@ -195,7 +199,25 @@ console.log(event.value)
   getOptionTextsearchstore(option) {
     return option && option.StoreName ? option.StoreName : '';
   }
-
+  getitemcategoryNameMasterCombo() {
+    this._OPReportsService.getitemcategoryMasterCombo().subscribe(data => {
+      this.ItemCategorycmbList = data;
+      //console.log(this.ItemCategorycmbList)
+      this.filteredItemcategory = this._OPReportsService.userForm.get('ItemCategoryId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterCategory(value) : this.ItemCategorycmbList.slice()),
+      );
+    });
+  }
+  private _filterCategory(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.ItemCategoryName ? value.ItemCategoryName.toLowerCase() : value.toLowerCase();
+      return this.ItemCategorycmbList.filter(option => option.ItemCategoryName.toLowerCase().includes(filterValue));
+    }
+  }
+  getOptionTextItemcategory(option) {
+    return option && option.ItemCategoryName ? option.ItemCategoryName : '';
+  }
   gePharStoreList() {
     this._OPReportsService.getStoreList().subscribe(data => {
       this.StoreList = data;
@@ -246,6 +268,7 @@ console.log(event.value)
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
       this.FlagDaterangeSelected=true;
+      this.FlagItemCategorySelected= false;
     }else if (this.ReportName == 'Supplier List') {
       this.FlagUserSelected = false;
       this.FlagnonmovedaySelected = false;
@@ -259,6 +282,7 @@ console.log(event.value)
       this.FlagdrugtypeSelected=false;
       this.FlagDaterangeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagItemCategorySelected= false;
     }
     else if (this.ReportName == 'Indent Report') {
       this.FlagUserSelected = false;
@@ -273,6 +297,7 @@ console.log(event.value)
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
       this.FlagDaterangeSelected=true;
+      this.FlagItemCategorySelected= false;
     } 
     else if (this.ReportName == 'Monthly Purchase(GRN) Report') {
       this.FlagUserSelected = false;
@@ -287,6 +312,7 @@ console.log(event.value)
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
       this.FlagDaterangeSelected=true;
+      this.FlagItemCategorySelected= false;
     } 
      
     else if (this.ReportName == 'GRN Report') {
@@ -302,6 +328,7 @@ console.log(event.value)
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= true;
       this.FlagDaterangeSelected=true;
+      this.FlagItemCategorySelected= false;
     } 
     else if (this.ReportName == 'GRN Return Report') {
       this.FlagUserSelected = false;
@@ -316,6 +343,7 @@ console.log(event.value)
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
       this.FlagDaterangeSelected=true;
+      this.FlagItemCategorySelected= false;
     }
     else if (this.ReportName == 'GRN Report - NABH') {
       this.FlagUserSelected = false;
@@ -330,6 +358,7 @@ console.log(event.value)
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
       this.FlagDaterangeSelected=true;
+      this.FlagItemCategorySelected= false;
     }
     
     else if (this.ReportName == 'GRN Wise Product Qty Report') {
@@ -345,6 +374,7 @@ console.log(event.value)
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
       this.FlagDaterangeSelected=true;
+      this.FlagItemCategorySelected= false;
     }
     else if (this.ReportName == 'GRN Purchase Report') {
       this.FlagUserSelected = false;
@@ -358,6 +388,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagItemCategorySelected= false;
     }
      else if (this.ReportName == 'Supplier Wise GRN List') {
       this.FlagUserSelected = false;
@@ -370,6 +401,7 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagItemCategorySelected= false;
     }
     else if (this.ReportName == 'Issue To Department') {
       this.FlagUserSelected = false;
@@ -383,6 +415,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagItemCategorySelected= false;
     }
     else if (this.ReportName == 'Issue To Department Item Wise') {
       this.FlagUserSelected = false;
@@ -396,6 +429,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagItemCategorySelected= false;
     }
      else if (this.ReportName == 'Return From Department') {
       this.FlagUserSelected = false;
@@ -409,6 +443,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagItemCategorySelected= false;
     }
     else if (this.ReportName == 'Purchase Order') {
       this.FlagUserSelected = false;
@@ -422,6 +457,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagItemCategorySelected= false;
     }
     else if (this.ReportName == 'Material Consumption Monthly Summary') {
       this.FlagUserSelected = false;
@@ -435,6 +471,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagItemCategorySelected= false;
     }
      else if (this.ReportName == 'Material Consumption') {
       this.FlagUserSelected = false;
@@ -448,6 +485,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagItemCategorySelected= false;
     }
     else if (this.ReportName == 'Item Expiry Report') {
       this.FlagUserSelected = false;
@@ -462,6 +500,7 @@ console.log(event.value)
       this.FlagdrugtypeSelected=false;
       this.FlagDaterangeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagItemCategorySelected= false;
     }
      else if (this.ReportName == 'Current Stock Report') {
       this.FlagBillNoSelected = false;
@@ -476,6 +515,7 @@ console.log(event.value)
       this.FlagStoreSelected = true;
       this.FlagSupplierSelected = false;
       this.FlagReportTypeSelected= false;
+      this.FlagItemCategorySelected= false;
     }
    
      else if (this.ReportName == 'Item Wise Supplier List') {
@@ -490,6 +530,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagItemCategorySelected= false;
     }
     else if (this.ReportName == 'Current Stock Date Wise') {
       this.FlagUserSelected = false;
@@ -504,6 +545,7 @@ console.log(event.value)
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
       this.FlagDaterangeSelected=true;
+      this.FlagItemCategorySelected= false;
     }
      else if (this.ReportName == 'Non-Moving Item List') {
       this.FlagUserSelected = false;
@@ -518,6 +560,7 @@ console.log(event.value)
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
       this.FlagDaterangeSelected=true;
+      this.FlagItemCategorySelected= false;
     }
     else if (this.ReportName == 'Non-Moving Item Without Batch List') {
       this.FlagUserSelected = false;
@@ -532,6 +575,7 @@ console.log(event.value)
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
       this.FlagDaterangeSelected=true;
+      this.FlagItemCategorySelected= false;
     }
     else if (this.ReportName == 'Patient Wise Material Consumption') {
       this.FlagUserSelected = false;
@@ -545,6 +589,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagItemCategorySelected= false;
     }
      else if (this.ReportName == 'Last Purchase Rate Wise Consumtion') {
       this.FlagUserSelected = false;
@@ -559,6 +604,7 @@ console.log(event.value)
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
       this.FlagDaterangeSelected=true;
+      this.FlagItemCategorySelected= false;
     }
     else if (this.ReportName == 'Item Count') {
       this.FlagUserSelected = false;
@@ -573,6 +619,7 @@ console.log(event.value)
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
       this.FlagDaterangeSelected=true;
+      this.FlagItemCategorySelected= false;
     }
      else if (this.ReportName == 'Supplier Wise Debit Credit Note') {
       this.FlagUserSelected = false;
@@ -586,6 +633,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagItemCategorySelected= false;
     }   else if (this.ReportName == 'Stock Adjustment Report') {
       this.FlagUserSelected = false;
       this.FlagnonmovedaySelected = false;
@@ -598,6 +646,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagItemCategorySelected= false;
     }
      else if (this.ReportName == 'Purchase Wise GRN Summary') {
       this.FlagUserSelected = false;
@@ -611,6 +660,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagItemCategorySelected= false;
     }   else if (this.ReportName == 'Issue To Department Monthly Summary') {
       this.FlagUserSelected = false;
       this.FlagnonmovedaySelected = false;
@@ -623,7 +673,23 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagItemCategorySelected= false;
     }
+    else if (this.ReportName == 'Current Stock Category Wise Report') { 
+      this.FlagBillNoSelected = false;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
+      this.FlagdrugtypeSelected=true;
+      this.FlagDaterangeSelected=false;
+      this.FlagStore1Selected = false;
+      this.FlagStoreSelected = true;
+      this.FlagSupplierSelected = false;
+      this.FlagReportTypeSelected= false;
+      this.FlagItemCategorySelected= true;
+    } 
 
   }
 
@@ -719,7 +785,10 @@ console.log(event.value)
     else if (this.ReportName == 'Issue To Department Monthly Summary') {
       this.viewgetIssutodeptmonthlysummaryPdf();
     }
-
+    else if (this.ReportName == 'Current Stock Category Wise Report') {
+      this.viewgetCurrentStockCategorywisePdf();
+      
+    }
 
   }
 
@@ -1216,6 +1285,70 @@ debugger
   
       }, 100);
     }
+    viewgetCurrentStockCategorywisePdf() {
+      debugger
+      let IsNarcotic=0;
+      let ish1Drug=0;
+      let isScheduleH=0;
+      let IsHighRisk=0;
+      let IsScheduleX=0;
+      let ItemCategoryId=0;
+      let StoreId=0;
+  
+     if (this._OPReportsService.userForm.get('StoreId').value)
+      StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+
+     if (this._OPReportsService.userForm.get('ItemCategoryId').value)
+      ItemCategoryId = this._OPReportsService.userForm.get('ItemCategoryId').value.ItemCategoryId
+     
+     if (this._OPReportsService.userForm.get('IsNarcotic').value)
+    IsNarcotic =1
+    else
+    IsNarcotic =0
+     if (this._OPReportsService.userForm.get('ish1Drug').value)
+      ish1Drug = 1
+    else
+    ish1Drug = 0
+     if (this._OPReportsService.userForm.get('isScheduleH').value)
+      isScheduleH = 1
+    else
+    isScheduleH = 0
+     if (this._OPReportsService.userForm.get('IsHighRisk').value)
+      IsHighRisk = 1
+    else
+    IsHighRisk = 0
+     if (this._OPReportsService.userForm.get('IsScheduleX').value)
+      IsScheduleX = 1
+    else
+    IsScheduleX = 0
+     debugger
+      
+      
+       this.sIsLoading = 'loading-data';
+      
+        setTimeout(() => {
+        
+          this._OPReportsService.getCurrentstockcategorywiselistReport(
+         StoreId,IsNarcotic,ish1Drug,isScheduleH,IsHighRisk,IsScheduleX,ItemCategoryId
+          ).subscribe(res => {
+            const dialogRef = this._matDialog.open(PdfviewerComponent,
+              {
+                maxWidth: "85vw",
+                height: '750px',
+                width: '100%',
+                data: {
+                  base64: res["base64"] as string,
+                  title: "Current Stock Report  Viewer"
+                }
+              });
+            dialogRef.afterClosed().subscribe(result => {
+              
+              this.sIsLoading = '';
+            });
+          });
+    
+        }, 100);
+      }
    viewNonMovingItemPdf() {
     this.sIsLoading = 'loading-data';
    let NonMovingDay =0

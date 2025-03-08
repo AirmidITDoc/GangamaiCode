@@ -236,6 +236,26 @@
                                             </mat-autocomplete>
                                         </mat-form-field>
                                     </div>
+                                    <div *ngIf="FlagItemCategorySelected" style="margin-left:2%;">
+                                        <mat-form-field appearance="outline" fxFlex="40%">
+                                            <mat-label>ItemCategory Name</mat-label>
+                                            <input matAutocompletePosition="below" type="text" placeholder="Select ItemCategoryId" matInput
+                                              formControlName="ItemCategoryId" [matAutocomplete]="autoItemCategoryId" #ItemCatageory
+                                          >
+                                            <span matSuffix style="display: flex;">
+                                              <mat-icon class="mat-icon-close"
+                                                (click)="_OPReportsService.userForm.get('ItemCategoryId').setValue(''); isItemCategoryIdSelected = false;">close</mat-icon>
+                                              <mat-icon class="mat-icon-close"
+                                                (click)="_OPReportsService.userForm.get('ItemCategoryId').setValue(''); isItemCategoryIdSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autoItemCategoryId="matAutocomplete" [displayWith]="getOptionTextItemcategory">
+                                              <mat-option *ngFor="let option of filteredItemcategory | async" [value]="option">
+                                                {{option.ItemCategoryName}}
+                                              </mat-option>
+                                            </mat-autocomplete>
+                                          </mat-form-field>
+                                    </div>
+                                   
                                     <div *ngIf="FlagItemSelected" style="margin-left:2%;">
 
 <!-- 

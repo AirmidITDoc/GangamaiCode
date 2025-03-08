@@ -155,6 +155,29 @@
                                                 </mat-autocomplete>
                                             </mat-form-field>
 
+                                        
+                                                <mat-form-field appearance="outline" fxFlex="40%" *ngIf="FlagDepartmentSelected"
+                                                    >
+                                                    <mat-label>Department</mat-label>
+                                                    <input matAutocompletePosition="below" type="text"
+                                                        placeholder="Select Department"  matInput  #dept  
+                                                        formControlName="DepartmentId" [matAutocomplete]="autoDep">
+                                                    <span matSuffix style="display: flex;">
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="_OPReportsService.userForm.get('DepartmentId').setValue(''); isDepartmentSelected = false;">close</mat-icon>
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="_OPReportsService.userForm.get('DepartmentId').setValue(''); isDepartmentSelected = false;">search</mat-icon>
+                                                    </span>
+                                                    <mat-autocomplete #autoDep="matAutocomplete"
+                                                        [displayWith]="getOptionTextDep">
+                                                        <mat-option *ngFor="let option of filteredOptionsDep | async"
+                                                            [value]="option">
+                                                            {{option.DepartmentName}}
+                                                        </mat-option>
+                                                    </mat-autocomplete>
+                                                </mat-form-field>
+                                          
+
 
                                             
                                         <mat-form-field appearance="outline" *ngIf="FlagVisitSelected">

@@ -41,7 +41,8 @@ export class OPReportsService {
         isScheduleH:[0],
         IsHighRisk:[0],
         IsScheduleX:[0],
-        ReportType:[1]
+        ReportType:[1],
+        ItemCategoryId:''
         // Radio:['1']
 
       })
@@ -55,7 +56,7 @@ export class OPReportsService {
   }
 
   public getDoctorList(){
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo",{})
+    return this._httpClient.post("Generic/GetByProc?procName=m_RetrieveConsultantDoctorMasterForCombo",{})
   }
  
   public getOpPaymentview(PaymentId,loader = true){
@@ -70,11 +71,11 @@ export class OPReportsService {
     return this._httpClient.get("OutPatient/view-PatientAppointment?VisitId=" + VisitId);
   }
 
-  public getDocwisevisitsummaryView(FromDate,ToDate,loader = true){
+  public getDocwisevisitsummaryView(FromDate,ToDate,DoctorId,loader = true){
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.get("OPReport/view-OPDoctorWiseVisitCountSummary?FromDate="+FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("OPReport/view-OPDoctorWiseVisitCountSummary?FromDate="+FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId);
   }
   
 //opReports
@@ -105,11 +106,11 @@ export class OPReportsService {
     return this._httpClient.get("OPReport/view-RefDoctorWiseReport?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
   
-  public getdepartmentwisecountsummView(FromDate,ToDate,loader = true){
+  public getdepartmentwisecountsummView(FromDate,ToDate,DepartmentId,loader = true){
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.get("OPReport/view-DepartmentWisecountSummury?FromDate="+FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("OPReport/view-DepartmentWisecountSummury?FromDate="+FromDate+"&ToDate="+ToDate+"&DepartmentId="+DepartmentId);
   }
   public getDocwisevisitCountsummaryView(FromDate,ToDate,loader = true){
     if (loader) {
@@ -516,7 +517,7 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
   
   public getDoctorMaster(loader = true) {
    
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+    return this._httpClient.post("Generic/GetByProc?procName=m_RetrieveConsultantDoctorMasterForCombo", {})
   }
 
 
@@ -734,7 +735,12 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId,loader = true){
   }
     return this._httpClient.get("InventoryReports/view-CurrentStockReport?StoreId="+StoreId+"&IsNarcotic="+IsNarcotic+"&ish1Drug="+ish1Drug+"&isScheduleH="+isScheduleH+"&IsHighRisk="+IsHighRisk+"&IsScheduleX="+IsScheduleX);
   }
-  
+  public getCurrentstockcategorywiselistReport(StoreId,IsNarcotic,ish1Drug,isScheduleH,IsHighRisk,IsScheduleX,ItemCategaryId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.get("InventoryReports/view-CurrentStockCategiryWiseReport?StoreId="+StoreId+"&IsNarcotic="+IsNarcotic+"&ish1Drug="+ish1Drug+"&isScheduleH="+isScheduleH+"&IsHighRisk="+IsHighRisk+"&IsScheduleX="+IsScheduleX+"&ItemCategaryId="+ItemCategaryId);
+  }
 
   public getReturnfromdeptReport(IssueId,loader = true){
     if (loader) {
@@ -1087,4 +1093,10 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId,loader = true){
   } 
     return this._httpClient.post("Generic/GetByProc?procName=rptOPDailyCollectionReport",data) 
   }
+  public getitemcategoryMasterCombo() {
+    return this._httpClient.post(
+        "Generic/GetByProc?procName=Retrieve_ItemCategoryMasterForCombo",
+        {}
+    );
+}
   }
