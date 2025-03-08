@@ -673,14 +673,13 @@ public getUMOCombo() {
     this.myRefundAdvanceForm.patchValue(employee);
         
   }
-  
-  
+ 
   // Insert add Charges 
   public InsertIPAddCharges(employee, loader = true) {
     if (loader) {
       this._loaderService.show();
   } 
-    return this._httpClient.post("InPatient/AddIPCharges", employee);
+    return this._httpClient1.PostData("IPBill/AddChargeInsert", employee);
   }
 
   
@@ -786,11 +785,10 @@ public getUMOCombo() {
   public getCheckBalanceAmt(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
-
-  
-  public getchargesList(data) {
-    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
-  }
+ 
+  public getchargesList(Id) {
+    return this._httpClient1.PostData("IPBill/IPAddchargesList" , Id);
+}
   public getBillheaderList(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
