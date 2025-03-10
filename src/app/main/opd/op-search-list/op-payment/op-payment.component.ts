@@ -448,7 +448,7 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['paymentId'] = 0;
     }
     else if (this.data.FromName == "OP-Bill"  || this.data.FromName == "OP-RefundOfBill" ||
-      this.data.FromName == "IP-RefundOfBill" || this.data.FromName == "IP-RefundOfAdvance") {
+      this.data.FromName == "IP-RefundOfBill"  ) {
       this.Paymentobj['BillNo'] = this.data.billNo;
       this.Paymentobj['ReceiptNo'] = "";
       this.Paymentobj['PaymentDate'] = formattedDate
@@ -557,7 +557,7 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['payTMDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
 
     }
-    else if(this.data.FromName == "IP-Advance") {
+    else if(this.data.FromName == "IP-Advance" || this.data.FromName == "IP-RefundOfAdvance") {
 
         this.Paymentobj['billNo'] = 0;
         this.Paymentobj['receiptNo'] = "";
