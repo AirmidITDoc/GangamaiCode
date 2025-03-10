@@ -171,11 +171,22 @@ public updateItemMaster(param,loader = true){
 }
   return this._httpClient.post("Inventory/ItemMasterUpdate", param);
 }
-public insertItemMaster(Param: any) {
+public insertItemMaster(Param: any) {  
+  return this._httpClient1.PostData("ItemMaster/InsertEDMX", Param);
+}
+
+public updateItemMaster1(Param: any) {
+  debugger
+  if (Param.itemId) {
+      return this._httpClient1.PutData("ItemMaster/Edit/" + Param.itemId, Param);
+  }
+}
+
+public insertItemMasterDemo(Param: any) {
   if (Param.itemId) {
 
-      return this._httpClient.put("ItemMaster/Edit/" + Param.itemId, Param);
-  } else return this._httpClient.post("ItemMaster/InsertEDMX", Param);
+      return this._httpClient1.PutData("ItemMaster/Edit/" + Param.itemId, Param);
+  } else return this._httpClient1.PostData("ItemMaster/InsertEDMX", Param);
 }
 
 public RtrvPreviousprescriptionDetailsdemo(employee) {
@@ -197,6 +208,14 @@ public getStoreById(Id) {
   return this._httpClient1.GetData("StoreMaster/" + Id);
 }
 public getRtrvTestService(employee) {  
-  return this._httpClient1.PostData("OPDPrescriptionMedical/GetVisitList",employee)
+  return this._httpClient1.PostData("OPDPrescriptionMedical/OPRequestList",employee)
+}
+public getRtrvCheifComplaintList1(employee) {
+  return this._httpClient1.PostData("OPDPrescriptionMedical/GetDignosisList",employee);
+}
+public genericMasterSave(Param: any) {
+  if (Param.genericId) {
+      return this._httpClient1.PutData("GenericMaster/" + Param.genericId, Param);
+  }
 }
 }

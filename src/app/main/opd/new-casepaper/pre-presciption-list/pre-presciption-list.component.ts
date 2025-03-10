@@ -45,7 +45,7 @@ export class PrePresciptionListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    debugger
+    // debugger
     if(this.data){
       this.RegId = this.data.Obj 
       console.log(this.data.Obj)
@@ -55,7 +55,7 @@ export class PrePresciptionListComponent implements OnInit {
   }
   
   getnewVisistListDemo(obj) {
-    debugger
+    // debugger
     var D_data = {
       "first": 0,
       "rows": 10,
@@ -101,10 +101,6 @@ export class PrePresciptionListComponent implements OnInit {
   getCopyPreviouseList(date:string){ 
     this.CopyPresciptionList.date = [];
     this.CopyList =  this.patients.filter(patient => patient.visitDate === date); // 
-    console.log(this.CopyList)
-  //  this.CopyList.forEach(element =>{
-  //   this.CopyPresciptionList.push(element)  
-  //  }) 
     console.log(this.CopyList)
    this.dialogRef.close(this.CopyList); 
   }

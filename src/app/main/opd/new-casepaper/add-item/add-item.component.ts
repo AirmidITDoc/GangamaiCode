@@ -49,9 +49,9 @@ export class AddItemComponent {
   vSearchItemId:any;
   vStoreId:any;
 
-  autocompleteModeItem: string = "ItemType"; 
+  autocompleteModeItem: string = "Item"; 
   autocompleteModeItemGeneric:string="ItemGeneric";
-autocompleteModePurchaseUOMId:string="Unit";
+autocompleteModePurchaseUOMId:string="UnitOfMeasurment";
 autocompleteModeStoreId:string="Store";
 
     @ViewChild('ddlStore') ddlStore: AirmidDropDownComponent;
@@ -67,8 +67,12 @@ autocompleteModeStoreId:string="Store";
     private _formBuilder: FormBuilder
   ) { }
 
+  
+  itemForm: FormGroup;
   ngOnInit(): void {
     this.myform = this.CreateMyform();
+
+    this.itemForm = this.createItemmasterForm();
     
     // this.ddlStore.SetSelection(this.registerObj.mAssignItemToStores);
   }
@@ -90,6 +94,119 @@ autocompleteModeStoreId:string="Store";
     ]
     })
   }
+
+  createItemmasterForm(): FormGroup {
+    return this._formBuilder.group({
+        itemId: 0,
+        itemShortName: ["",
+            [
+            ]
+        ],
+        itemName: ["",
+            [
+            ]
+        ],
+        itemTypeId: ["",
+            [
+            ]
+        ],
+        itemCategaryId: ["",
+            [
+            ]
+        ],
+        itemGenericNameId: ["",
+            [
+            ]
+        ],
+        itemClassId: ["",
+            [
+            ]
+        ],
+        purchaseUomid: [0,
+            [
+            ]
+        ],
+        stockUomid: [0,
+            [
+            ]
+        ],
+        conversionFactor: ["",
+            [
+            ]
+        ],
+        currencyId: ["",
+            [
+            ]
+        ],
+        taxPer: ["0"],
+        isBatchRequired: [true as boolean],
+        minQty: ["",
+            [
+            ]
+        ],
+        maxQty: ["",
+            [
+            ]
+        ],
+        reOrder: ["0",
+            [
+            ]
+        ],
+        hsNcode: ["",
+            [
+            ]
+        ],
+        cgst: ["",
+            [
+            ]
+        ],
+        sgst: ["",
+            [
+            ]
+        ],
+        igst: ["",
+            [
+            ]
+        ],
+
+        manufId: ["",
+            [
+                // Validators.required,
+            ]
+        ],
+        isNarcotic: true,
+        isH1drug: true,
+        isScheduleH: true,
+        isHighRisk: true,
+        isScheduleX: true,
+        isLasa: true,
+        isEmgerency: true,
+        drugType: [0,
+            [
+            ]
+        ],
+        drugTypeName: [""],
+        prodLocation: ["",
+            [
+            ]
+        ],
+        itemCompnayId: ["",
+            [
+                // Validators.required,
+            ]
+        ],
+        itemTime: [(new Date()).toISOString()],
+        mAssignItemToStores: [
+            {
+                assignId: 0,
+                storeId: 0,
+                itemId: 0
+            }
+        ]
+
+    });
+}
+
   populateForm(param) {
     this.myform.patchValue(param);
   }
@@ -134,6 +251,7 @@ name=''
         this._CasepaperService.getItemMasterById(this.itemId).subscribe((response) => {
           this.itemObjects = response;
           console.log("all data:", this.itemObjects)
+          this.vItemId=this.itemObjects.itemId
           this.myform.get("ItemGenericNameId").setValue(this.itemObjects.itemGenericNameId)
           this.myform.get("PurchaseUOMId").setValue(this.itemObjects.purchaseUomid)
           // this.myform.get("mAssignItemToStores").setValue(this.itemObjects.mAssignItemToStores)
@@ -142,7 +260,6 @@ name=''
           // retriving store data
           console.log("jjjj:",this.itemObjects.mAssignItemToStores)
           this.vStoreId=this.itemObjects.mAssignItemToStores[0].storeId;
-          // this.ddlStore.SetSelection(this.itemObjects.mAssignItemToStores);
 
         if ((this.vStoreId ?? 0) > 0) {
           setTimeout(() => {
@@ -172,8 +289,11 @@ name=''
   selectChangePurchaseUOMId(row){
     console.log("PurchaseUOMId:",row)
   }
+  storedData:any=[];
   selectChangeStoreId(row){
     console.log("StoreId:",row)
+    this.storedData=row
+    console.log(this.storedData)
   }
 
   getValidationMessages(){
@@ -207,73 +327,86 @@ name=''
     return this.myform.controls;
   }
 
-
   onSave() {
+    debugger
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
 
-    if ((this.vItemName == undefined || this.vItemName == undefined || this.vItemName == undefined)) {
-      this.toastr.warning('Please enter ItemName.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if ((this.vItemGeneric == undefined || this.vItemGeneric == undefined || this.vItemGeneric == undefined)) {
+    // if (!this.myform.get("ItemId")?.value) {
+    //   this.toastr.warning('Please select a Item Name', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    // if (this.myform.get("ItemId")?.value !== null && this.myform.get("ItemId")?.value !== undefined && this.myform.get("ItemId")?.value !== '') {
+    //   this.toastr.warning('Please select an Item Name', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    
+    if (!this.myform.get("ItemGenericNameId")?.value) {
       this.toastr.warning('Please enter Item Generic Name.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if ((this.myform.get('ItemGenericNameId').value)) {
-      if (!this.ItemGenericcmbList.filter(item => item.ItemGenericNameId == this.myform.get('ItemGenericNameId').value.ItemGenericNameId)) {
-        this.toastr.warning('select valid Item Generic Name..', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-    }
-    if ((this.vPurchaseUOMId == undefined || this.vPurchaseUOMId == undefined || this.vPurchaseUOMId == undefined)) {
+
+    if (!this.myform.get("PurchaseUOMId")?.value) {
       this.toastr.warning('Please enter UnitMeasurementName..', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if ((this.myform.get('PurchaseUOMId').value)) {
-      if (!this.ItemUomcmbList.filter(item => item.UnitOfMeasurementId == this.myform.get('PurchaseUOMId').value.UnitOfMeasurementId)) {
-        this.toastr.warning('select valid UnitMeasurementName..', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-    }
-    if ((!this.selectedItems.length)) {
+    if ((!this.myform.get("mAssignItemToStores")?.value)) {
       this.toastr.warning('Please select StoreName.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
+
     let itemGenericNameId = 0;
     if (this.myform.get("ItemGenericNameId").value)
-      itemGenericNameId = this.myform.get("ItemGenericNameId").value.ItemGenericNameId;
+      itemGenericNameId = this.myform.get("ItemGenericNameId").value;
 
     let PURumoId = 0;
     if (this.myform.get("PurchaseUOMId").value)
-      PURumoId = this.myform.get("PurchaseUOMId").value.UnitOfMeasurementId
+      PURumoId = this.myform.get("PurchaseUOMId").value
+
+  //   if (!this.itemForm.invalid) {
+  //     console.log("Item JSON :-", this.itemForm.value);
+  //     debugger
+  //     this._CasepaperService.insertItemMasterDemo(this.itemForm.value).subscribe((data) => {
+  //         this.toastr.success(data.message);
+  //         // this.onClear(true);
+  //     }, (error) => {
+  //         this.toastr.error(error.message);
+  //     });
+  // }
+  // else {
+  //     this.toastr.warning('please check from is invalid', 'Warning !', {
+  //         toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     return;
+  // }
 
     console.log(this.selectedItems);
-    if (!this.myform.get('ItemId').value) {
+    if (!this.vItemId) {
       var data2 = [];
-      this.selectedItems.forEach(element => {
+      this.storedData.forEach(element => {
         let data = {
-          storeId: element.Storeid,
+          assignId:0,
+          storeId: element.storeId,
           itemId: 0,
         }
         data2.push(data);
       });
       var m_data = {
-        insertItemMaster: {
+          itemId: 0,
           itemName: this.myform.get("ItemName").value || "%",
+          itemShortName: '%',
           itemTypeId: 0,
           ItemCategaryId: 0,
           itemGenericNameId: itemGenericNameId || 0,
@@ -283,32 +416,28 @@ name=''
           conversionFactor: 0,
           currencyId: 0,
           taxPer: 0,
-          isDeleted: 1,
-          addedBy: this._loggedService.currentUserValue.user.id || 0,
           isBatchRequired: 0,
           minQty: 0,
           maxQty: 0,
-          reorder: 0,
+          reOrder: 0,
           hsNcode: "%",
           cgst: "0",
           sgst: "0",
           igst: "0",
           manufId: 0,
           isNarcotic: 0,
-          prodLocation: '',
           isH1Drug: 0,
           isScheduleH: 0,
           isHighRisk: 0,
           isScheduleX: 0,
-          isLASA: 0,
+          isLasa: 0,
           isEmgerency: 0,
           drugType: 0,
           drugTypeName: '',
+          prodLocation: '',
           itemCompnayId: 0,
-          isCreatedBy: formattedDate,
-          itemId:this.myform.get('ItemId').value || 0,
-        },
-        insertAssignItemToStore: data2,
+          itemTime: formattedTime,
+          mAssignItemToStores: data2,
       };
       console.log(m_data);
       this._CasepaperService.insertItemMaster(m_data).subscribe((data) => {
@@ -330,60 +459,54 @@ name=''
     } else {
       var data3 = [];
       this.selectedItems.forEach(element => {
+        // this.storedData.forEach(element => {
         let data4 = {
-          storeId: element.Storeid,
+          assignId: element.assignId,
+          storeId: element.storeId,
           itemId: this.myform.get("ItemId").value || 0,
         }
         data3.push(data4);
       });
       console.log(data3);
 
-      var m_dataUpdate = {
-        updateItemMaster: {
-          itemId: this.myform.get('ItemId').value || 0,
-          itemShortName: '%',
-          itemName: this.myform.get("ItemName").value || "%",
-          itemTypeId: 0,
-          itemCategoryId: 0,
-          itemGenericNameId: itemGenericNameId || 0,
-          itemClassId: 0,
-          purchaseUOMID: PURumoId || 0,
-          stockUOMID: 0,
-          conversionFactor: 0,
-          currencyId: 0,
-          taxPer: 0,
-          isBatchRequired: 0,
-          isDeleted: 0,
-          upDatedBy: 0,
-          minQty: "0",
-          maxQty: "0",
-          reorder: "0",
-          isNursingFlag: 0,
-          hsNcode: "%",
-          cgst: "0",
-          sgst: "0",
-          igst: "0",
-          isNarcotic: 0,
-          manufId: "0",
-          prodLocation: "%",
-          isH1Drug: 0,
-          isScheduleH: 0,
-          isHighRisk: 0,
-          isScheduleX: 0,
-          isLASA: 0,
-          isEmgerency: 0,
-          drugType: 0,
-          drugTypeName: '',
-          itemCompnayId: 0,
-          isUpdatedBy: formattedDate
-        },
-        deleteAssignItemToStore: {
-          itemId: this.registerObj.ItemId || 0,
-        },
-        insertAssignItemToStore: data3,
-      };
-      console.log(m_dataUpdate);
-      this._CasepaperService.updateItemMaster(m_dataUpdate).subscribe((data) => {
+      var U_data = {
+        itemId:this.vItemId || 0,
+        itemName: this.myform.get("ItemName").value || "%",
+        itemShortName: '%',
+        itemTypeId: 0,
+        ItemCategaryId: 0,
+        itemGenericNameId: itemGenericNameId || 0,
+        itemClassId: 0,
+        purchaseUOMId: PURumoId || 0,
+        stockUOMId: 0,
+        conversionFactor: 0,
+        currencyId: 0,
+        taxPer: 0,
+        isBatchRequired: 0,
+        minQty: 0,
+        maxQty: 0,
+        reOrder: 0,
+        hsNcode: "%",
+        cgst: "0",
+        sgst: "0",
+        igst: "0",
+        manufId: 0,
+        isNarcotic: 0,
+        isH1Drug: 0,
+        isScheduleH: 0,
+        isHighRisk: 0,
+        isScheduleX: 0,
+        isLasa: 0,
+        isEmgerency: 0,
+        drugType: 0,
+        drugTypeName: '',
+        prodLocation: '',
+        itemCompnayId: 0,
+        itemTime: formattedTime,
+        mAssignItemToStores: data2,
+    };
+      console.log(U_data);
+      this._CasepaperService.updateItemMaster1(U_data).subscribe((data) => {
         if (data) {
           this.toastr.success('Record updated Successfully.', 'updated !', {
             toastClass: 'tostr-tost custom-toast-success',
@@ -400,6 +523,7 @@ name=''
         });
       });
     } 
+  
   }
   onClose() {
     this.myform.reset();
@@ -409,8 +533,6 @@ name=''
     this.myform.reset(); 
     this.selectedItems = [];
   }
-
-
 
   @ViewChild('Itemname') Itemname: ElementRef;
   @ViewChild('ItemGeneric') ItemGeneric: ElementRef;

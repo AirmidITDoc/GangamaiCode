@@ -146,12 +146,13 @@ chargelist:any=[];
   }
   onClose(){
     this.vTemplatename = '';
-    this._matDialog.closeAll(); 
+    this.dialogRef.close();
   }
 
   onClear(){
-
+    this.vTemplatename = '';
   }
+
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
