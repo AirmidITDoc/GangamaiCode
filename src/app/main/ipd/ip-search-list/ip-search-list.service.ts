@@ -1078,9 +1078,7 @@ public BedtransferUpdate(Param: any) {
 }
 
 public DichargeInsert(Param: any) {
-  // if (Param.dischargeId) {
-  //     return this._httpClient1.PutData("DischargeSummary/DischargeUpdate" + Param.dischargeId, Param);
-  // } else
+ 
    return this._httpClient1.PostData("DischargeSummary/DischargeInsert", Param);
 }
 
@@ -1124,8 +1122,16 @@ public InsertIPLabReqCharges(employee) {
 }
 
 public SaveDischargeInitiate(employee) {
+ if(employee.initateDiscId){
+  return this._httpClient1.PostData("DischargeSummary/InitiateDischargeInsert", employee)
+ }else{
+  return this._httpClient1.PostData("DischargeSummary/InitiateDischargeUpdate", employee)
+ }
+}
+
+public UpdateDischargeInitiate(employee) {
  
-  return this._httpClient1.PostData("Nursing/SaveDischargeInitiate", employee)
+  return this._httpClient1.PostData("DischargeSummary/InitiateDischargeUpdate", employee)
 }
 
 
@@ -1145,6 +1151,10 @@ public insertIPDDischargSummary(param)
 
 
 public getDischargeSummary(employee) {
+  return this._httpClient1.PostData("DischargeSummary/IPDischargeSummaryData",employee)
+}
+
+public getchkConfigInitiate(employee) {
   return this._httpClient1.PostData("DischargeSummary/IPDischargeSummaryData",employee)
 }
 public getPrescriptionList(employee) {
