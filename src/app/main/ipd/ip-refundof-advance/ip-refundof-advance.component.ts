@@ -1,23 +1,17 @@
-import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-// import { AdvanceDetailObj } from '../ip-search-list.component';
+import { Observable, Subscription } from 'rxjs'; 
 import { DatePipe } from '@angular/common';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-// import { AdvanceDataStored } from '../../advance';
-// import { IPSearchListService } from '../ip-search-list.service';
-import Swal from 'sweetalert2';
-// import { IPAdvancePaymentComponent } from '../ip-advance-payment/ip-advance-payment.component';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog'; 
+import Swal from 'sweetalert2'; 
 import { fuseAnimations } from '@fuse/animations';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-// import { RegInsert } from '../../Admission/admission/admission.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component'; 
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
-// import { IpAdvancePaymentInsert } from '../ip-paymentwith-advance/ip-paymentwith-advance.component';
+import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component'; 
 import { ToastrService } from 'ngx-toastr';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { RegInsert } from '../Admission/admission/admission.component';
@@ -37,7 +31,7 @@ import { map, startWith } from 'rxjs/operators';
 })
 export class IPRefundofAdvanceComponent implements OnInit {
 
-  icon_disable = false;
+ 
   screenFromString = 'refund-of-advance';
   RefundOfAdvanceFormGroup: FormGroup;
   dateTimeObj: any;
@@ -48,8 +42,8 @@ export class IPRefundofAdvanceComponent implements OnInit {
   BillDate: Date;
   RefundAmount: number;
   AdvanceAmount: number;
-  UsedAmount: number;
-  BalanceAdvance: number = 0;
+
+
   NewRefundAmount: number = 0;
   TotRefundAmount: number = 0;
   TotRefundAmt: number = 0;
@@ -57,14 +51,10 @@ export class IPRefundofAdvanceComponent implements OnInit {
   Remark: string;
   isLoading: string = '';
   isLoadingStr: string = '';
-  AdmissionId: number;
-  advId: any;
-  AdvanceId: any;
-  pay_balance_Data: any;
+  AdmissionId: number; 
+
   advDetailId: any;
-  AdvanceDetailID: any;
-  isCashCounterSelected:boolean=false;
-  filteredOptionsCashCounter:Observable<string[]>;
+  AdvanceDetailID: any; 
   vOPIPId: any;
   vRegId: any;
   Age:any;
@@ -79,23 +69,18 @@ export class IPRefundofAdvanceComponent implements OnInit {
     'AdvanceAmount',
     'UsedAmount',
     'BalanceAmount',
-    'RefundAmt', 
-    // 'action'
+    'RefundAmt',  
+  ];
+  displayedColumns1 = [
+    'RefundDate', 
+    'RefundAmount', 
   ];
   dataSource = new MatTableDataSource<IPRefundofAdvance>();
 
   dsrefundlist = new MatTableDataSource<IPRefundofAdvance>();
 
 
-  displayedColumns1 = [
-    'RefundDate',
-    // 'AdvanceAmount',
-    // 'UsedAmount',
-    // 'BalanceAmount',
-    'RefundAmount',
-    // 'AdvanceId'
-    // // 'action'
-  ];
+  
   dataSource1 = new MatTableDataSource<IPRefundofAdvance>();
 
 
@@ -108,9 +93,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   City: any;
   CompanyName: any;
   Tarrifname: any;
-  Doctorname: any;
-  Paymentdata: any;
-  // vOPIPId: any = 0;
+  Doctorname: any; 
   vOPDNo: any = 0;
   vTariffId: any = 0;
   vClassId: any = 0;
@@ -120,21 +103,20 @@ export class IPRefundofAdvanceComponent implements OnInit {
   noOptionFound: boolean = false;
   PatientListfilteredOptions: any;
   isRegIdSelected: boolean = false;
-  registerObj = new RegInsert({});
+  registerObj:any;
 
   constructor(public _IpSearchListService: IPSearchListService,
     public _matDialog: MatDialog,
     private _ActRoute: Router,
     public datePipe: DatePipe,
+    @Inject(MAT_DIALOG_DATA) public data: any, 
+    private dialogRef: MatDialogRef<IPRefundofAdvanceComponent>,
     private accountService: AuthenticationService,
     private advanceDataStored: AdvanceDataStored,
     public toastr: ToastrService, 
-    public _WhatsAppEmailService:WhatsAppEmailService,
-    //private dialogRef: MatDialogRef<IPRefundofAdvanceComponent>,
-    private formBuilder: UntypedFormBuilder) {
-    // dialogRef.disableClose = true;
-    
-  }
+    public _WhatsAppEmailService:WhatsAppEmailService, 
+    private formBuilder: UntypedFormBuilder,) 
+    {}
   DepartmentName:any;
   AgeMonth:any;
   AgeDay:any;
@@ -146,52 +128,35 @@ export class IPRefundofAdvanceComponent implements OnInit {
   DOA:any;
   IPDNo:any;
   autocompleteModeCashcounter: string = "CashCounter";
+  AdvanceId: any; 
+  UsedAmount: number = 0;
+  BalanceAdvance: number = 0;
 
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
-    this.RefundOfAdvanceFormGroup = this.formBuilder.group({ 
-      BalanceAdvance: [0, Validators.required],
-      AdvanceDetailID: [''],
-      NewRefundAmount: ['0'],
-      Remark: [''],
-    });
+    this.RefundOfAdvanceFormGroup = this.createRefAdvForm();  
 
-
-    if (this.advanceDataStored.storage) {
-      this.selectedAdvanceObj = this.advanceDataStored.storage;
-      console.log(this.selectedAdvanceObj);
-      this.vRegId =this.selectedAdvanceObj.RegID;
-      this.vOPIPId = this.selectedAdvanceObj.AdmissionID;
-      this.PatientName = this.selectedAdvanceObj.PatientName;
-      this.Doctorname = this.selectedAdvanceObj.Doctorname
-      this.Tarrifname= this.selectedAdvanceObj.TariffName
-      this.Age= this.selectedAdvanceObj.AgeYear
-      this.AgeMonth = this.selectedAdvanceObj.AgeMonth
-      this.AgeDay = this.selectedAdvanceObj.AgeDay
-      this.CompanyName= this.selectedAdvanceObj.CompanyName
-      this.RegNo= this.selectedAdvanceObj.RegNo
-      this.GenderName = this.selectedAdvanceObj.GenderName
-      this.RefDocName = this.selectedAdvanceObj.RefDocName
-      this.vMobileNo=this.selectedAdvanceObj.MobileNo
-      this.DepartmentName  = this.selectedAdvanceObj.DepartmentName
-      this.RoomName =  this.selectedAdvanceObj.RoomName
-      this.BedName = this.selectedAdvanceObj.BedName
-      this.PatientType = this.selectedAdvanceObj.PatientType
-      this.DOA = this.selectedAdvanceObj.DOA 
-      this.IPDNo = this.selectedAdvanceObj.IPDNo 
-      //this.getRefundofAdvanceListRegIdwise();
-    } 
-   // this.getRefundofAdvanceListRegIdwise();
-    // this.getReturndetails();
-    // this.getCashCounterComboList();
+    if(this.data){
+    this.registerObj = this.data
+    console.log(this.registerObj)
+    this.getRefundofAdvanceListRegIdwise();
+    }
   }
 
   createSearchForm() {
     return this.formBuilder.group({
       RegId: [''],
-      CashCounterID:['']
+      CashCounterID:['8']
     });
   } 
+  createRefAdvForm() {
+    return this.formBuilder.group({
+      BalanceAdvance: [0], 
+      NewRefundAmount: [0,Validators.required],
+      Remark: [''],
+    });
+  } 
+ 
   getValidationMessages() {
     return {
       serviceName: [
@@ -201,35 +166,13 @@ export class IPRefundofAdvanceComponent implements OnInit {
         { name: "required", Message: "First Name is required" },
   
         { name: "pattern", Message: "only Number allowed." }
-      ],
-      price: [
-        { name: "pattern", Message: "only Number allowed." }
-      ],
-      qty: [
-        { name: "required", Message: "Qty required!", },
-        { name: "pattern", Message: "only Number allowed.", },
-        { name: "min", Message: "Enter valid qty.", }
-      ],
-      totalAmount: [
+      ], 
+      NewRefundAmount: [
         {
           name: "pattern", Message: "only Number allowed."
         }
-      ],
-      totalNetAmount: [
-        {
-          name: "pattern", Message: "only Number allowed."
-        }
-      ],
-      doctoreId: [
-        { name: "pattern", Message: "only Char allowed." }
-      ],
-      discountPer: [
-        { name: "pattern", Message: "only Number allowed." }
-      ],
-      discountAmount: [{ name: "pattern", Message: "only Number allowed." }],
-      netAmount: [{ name: "pattern", Message: "only Number allowed." }],
-      concessionId: [{}],
-      DoctorId: [{}]
+      ], 
+      BalanceAdvance: [{ name: "pattern", Message: "only Number allowed." }],  
     }
   }
     //new code 
@@ -241,7 +184,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
             // console.log(this.data)
              setTimeout(() => {
                  this._IpSearchListService.getRegistraionById(this.RegId).subscribe((response) => {
-                     this.registerObj = response;
+                     //this.registerObj = response;
                      this.PatientName = this.registerObj.firstName + " " + this.registerObj.middleName + " " + this.registerObj.lastName
 
                      console.log(this.registerObj)
@@ -251,52 +194,13 @@ export class IPRefundofAdvanceComponent implements OnInit {
          }
   
      }
-
-  getRefundtotSum1(element) {
-    let netAmt1;
-    netAmt1 = element.reduce((sum, { RefundAmount }) => sum += +(RefundAmount || 0), 0);
-    this.TotRefundAmount = netAmt1;
-    return netAmt1; 
-  }
-
-  getRefundSum(element) {
-    let netAmt1;
-    netAmt1 = element.reduce((sum, { AdvanceAmount }) => sum += +(AdvanceAmount || 0), 0);
-    let netAmt2 = element.reduce((sum, { RefundAmt }) => sum += +(RefundAmt || 0), 0);
-    let balAmt = element.reduce((sum, { BalanceAmount }) => sum += +(BalanceAmount || 0), 0);
-    this.NewRefundAmount = netAmt2;
-    this.BalanceAdvance = balAmt ;
-    return netAmt1; 
-  }
-
-
-  // Patient Search;
-  getSearchList() {
-
-    var m_data = {
-      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
-    }
-
-    this._IpSearchListService.getPatientVisitedListSearch(m_data).subscribe(data => {
-      this.PatientListfilteredOptions = data;
-      console.log(this.PatientListfilteredOptions)
-      if (this.PatientListfilteredOptions.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
-    });
-
-  }
-
+ 
   getSelectedObj1(obj) {
     console.log(obj)
     this.dataSource.data = [];
     this.registerObj = obj; 
-    this.vClassId = obj.classId
-    
-    this.Age=obj.Age;
-
+    this.vClassId = obj.classId 
+    this.Age=obj.Age; 
     this.vRegId =obj.RegId;
     this.vOPIPId = obj.AdmissionID;
     this.PatientName =obj.FirstName + " " + obj.LastName;
@@ -316,218 +220,159 @@ export class IPRefundofAdvanceComponent implements OnInit {
     this.PatientType = obj.PatientType
     this.DOA = obj.DOA 
     this.IPDNo = obj.IPDNo 
-    this.onEdit(obj);
-    //this.getRefundofAdvanceListRegIdwise();
+    //this.getPreviousRefList(obj);
+    this.getRefundofAdvanceListRegIdwise();
   }
 
-  getOptionText1(option) {
-    if (!option)
-      return '';
-    return option.FirstName + ' ' + option.MiddleName + ' ' + option.LastName;
-
-  }
-
-  getReturndetails() {
-    // 
-    // var m_data = {
-    //   "AdmissionId": this.vOPIPId
-    // }
-    // this.isLoading = 'list-loading';
-    // this._IpSearchListService.getAdvReturndetails(m_data).subscribe(data => {
-    //   this.dataSource1.data = data as IPRefundofAdvance[];
-    //   console.log(this.dataSource1.data);
-    // });
-  }
+ 
+ 
 
   getRefundofAdvanceListRegIdwise() {
-    var m_data = {
-      "RegID":this.vRegId
+    debugger
+    var m_data = { 
+        "first": 0,
+        "rows": 10,
+        "sortField": "AdvanceId",
+        "sortOrder": 0,
+        "filters": [
+          {
+            "fieldName": "RegID",
+            "fieldValue": String(this.registerObj.regId),
+            "opType": "Equals"
+          },
+         {
+            "fieldName": "Start",
+            "fieldValue": "0",
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "Length",
+            "fieldValue": "10",
+            "opType": "Equals"
+          }
+        ],
+        "exportType": "JSON" 
     }
-    console.log(m_data)
-    //this.isLoadingStr = 'loading';
-    // this._IpSearchListService.getRefundofAdvanceList(m_data).subscribe(data => {
-    //   this.dsrefundlist.data = data as IPRefundofAdvance[];
-    //   console.log(this.dsrefundlist.data)
-    //   this.dsrefundlist.sort = this.sort;
-    //   this.dsrefundlist.paginator = this.paginator;
-    //   this.isLoadingStr = this.dsrefundlist.data.length == 0 ? 'no-data' : '';
-    // });
-  }
-  keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
-    if (/[a-zA-Z0-9]/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
-    }
-  }
-  keyPressCharater(event){
-    var inp = String.fromCharCode(event.keyCode);
-    if (/^\d*\.?\d*$/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
-    }
-  }
-
+    console.log(m_data) 
+    this._IpSearchListService.getRefundofAdvanceList(m_data).subscribe(response => {
+      console.log(response)
+      this.dsrefundlist.data = response.data 
+      this.chargeList = this.dsrefundlist.data
+      console.log(this.dsrefundlist.data)
+      this.dsrefundlist.sort = this.sort;
+      this.dsrefundlist.paginator = this.paginator;
+      this.isLoadingStr = this.dsrefundlist.data.length == 0 ? 'no-data' : ''; 
+      this.getRefundSum(); 
+    });
+  } 
   RefundAmt: any;
-  getCellCalculation(element, RefundAmt) { 
-
-      if(RefundAmt > 0 && RefundAmt <= element.NetBallAmt){
-        element.BalanceAmount = ((element.NetBallAmt) - (RefundAmt));
+  chargeList:any=[];
+  //Refund Amount calculation
+  getCellCalculation(element, RefundAmt) {  
+    console.log(element) 
+      if(RefundAmt > 0 && RefundAmt <= element.netBallAmt){
+        element.balanceAmount = ((element.netBallAmt) - (RefundAmt));
       }
-      else if (parseInt(RefundAmt) > parseInt(element.NetBallAmt)){
+      else if (parseInt(RefundAmt) > parseInt(element.netBallAmt)){
         this.toastr.warning('Enter Refund Amount Less than Balance Amount ', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
-        element.RefundAmt = ''
-        element.BalanceAmount = element.NetBallAmt ;
+        element.refundAmount = ''
+        element.balanceAmount = element.netBallAmt ;
       }
       else if(RefundAmt == 0 || RefundAmt == '' || RefundAmt == undefined || RefundAmt == null){
         element.RefundAmt = ''
-        element.BalanceAmount = element.NetBallAmt ;
-      }
+        element.balanceAmount = element.netBallAmt ;
+      } 
 
-  }
+      this.AdvanceId = element.advanceId
+      this.UsedAmount += element.usedAmount
+      this.BalanceAdvance += element.balanceAmount 
 
-
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-  }
-
-  populateForm2(employee) {
-    this.RefundOfAdvanceFormGroup.patchValue(employee);
-
+      this.getRefundSum();
+  } 
+  getRefundSum() {   
+    let totalRefAmt = this.chargeList.reduce((sum, { refundAmount }) => sum += +(refundAmount || 0), 0);
+    let totalBalAmt = this.chargeList.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0);
+ 
+    this.RefundOfAdvanceFormGroup.patchValue({
+      NewRefundAmount: totalRefAmt,
+      BalanceAdvance: totalBalAmt 
+    }) 
   }
 
  
+  onSave() {
+       const currentDate = new Date();
+        const datePipe = new DatePipe('en-US');
+        const formattedTime = datePipe.transform(currentDate, 'shortTime');
+        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');  
+    const formValue = this.RefundOfAdvanceFormGroup.value;
+
+    if(formValue.NewRefundAmount == '' || formValue.NewRefundAmount == 0 || formValue.NewRefundAmount == null || formValue.NewRefundAmount == undefined){
+      this.toastr.warning('Enter a Refund Amount', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(formValue.NewRefundAmount == '' || formValue.NewRefundAmount == 0 || formValue.NewRefundAmount == null || formValue.NewRefundAmount == undefined){
+      this.toastr.warning('Enter a Refund Amount', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    
+    let IPRefundofAdvanceObj = {};
+    IPRefundofAdvanceObj['refundDate'] = formattedDate;
+    IPRefundofAdvanceObj['refundTime'] = formattedTime;
+    IPRefundofAdvanceObj['billId'] =  0;
+    IPRefundofAdvanceObj['advanceId'] = this.AdvanceId;
+    IPRefundofAdvanceObj['opdipdType'] = 1;
+    IPRefundofAdvanceObj['opdipdid'] = this.registerObj.admissionId || 0, 
+    IPRefundofAdvanceObj['refundAmount'] = this.RefundOfAdvanceFormGroup.get('NewRefundAmount').value || 0; 
+    IPRefundofAdvanceObj['remark'] = this.RefundOfAdvanceFormGroup.get("Remark").value;
+    IPRefundofAdvanceObj['transactionId'] = 2;
+    IPRefundofAdvanceObj['addedBy'] = this.accountService.currentUserValue.userId,
+    IPRefundofAdvanceObj['isCancelled'] = false;
+    IPRefundofAdvanceObj['isCancelledBy'] = 0;
+    IPRefundofAdvanceObj['isCancelledDate'] = '1900-01-01';
+    IPRefundofAdvanceObj['refundId'] = 0;
  
-  onEdit(row) {
-
-    console.log(row);
-
-    this.BalanceAdvance = 0;
-    this.RefundAmount = 0;
-    this.UsedAmount = row.UsedAmount;
-    this.advId = row.AdvanceId;
-    this.advDetailId = row.AdvanceDetailID;
-    this.BalanceAmount = row.BalanceAmount;
-    
-    //this.NewRefundAmount = 0;
-    console.log(row);
-    let Query = "select RefundDate,RefundAmount from refund where AdvanceId=" + row.AdvanceId
-    
-    this._IpSearchListService.getPreRefundofAdvance(Query).subscribe(Visit => {
-      this.dataSource1.data =  Visit as IPRefundofAdvance[]; 
+    let advanceHeaderupdate = {};
+    advanceHeaderupdate['advanceId'] = this.AdvanceId;
+    advanceHeaderupdate['advanceUsedAmount'] = this.UsedAmount;
+    advanceHeaderupdate['balanceAmount'] = this.BalanceAdvance;
+   
+    let advDetailRefundObj = [];
+    this.dsrefundlist.data.forEach((element) =>{
+      let advDetailRefund = {};  
+      advDetailRefund['advDetailId'] = element.advanceDetailID || 0;
+      advDetailRefund['refundDate'] = formattedDate;
+      advDetailRefund['refundTime'] = formattedTime;
+      advDetailRefund['advRefundAmt'] =element.refundAmount || 0;
+      advDetailRefundObj.push(advDetailRefund)
     }); 
  
-    // if (row.BalanceAmount == 0) {
-    //   this.icon_disable = true;
-    // }
-    // else {
-    //   this.icon_disable = false;
-    //   var m_data = { "AdvanceDetailID": row.AdvanceDetailID, "BalanceAmount": row.BalanceAmount, "AdvanceId": row.AdvanceId }
-      
-
-    //   console.log(m_data);
-    //   this.advId = row.AdvanceId;
-    //   this.advDetailId = row.AdvanceDetailID;
-    // }
-
-    // this.BalanceAmount = row.BalanceAmount;
-    // this.BalanceAdvance = parseInt(row.BalanceAmount) - parseInt(row.RefundAmount);
-    // this.RefundAmount = row.RefundAmount;
-
-
-    // if (this.UsedAmount != 0) {
-    //   this.BalanceAdvance = parseInt(row.RefundAmount) - parseInt(row.UsedAmount);
-    // }
-
-  }
-  onSave() {
- 
-    this.isLoading = 'submit';
-
-    let IPRefundofAdvanceObj = {};
-    IPRefundofAdvanceObj['RefundDate'] = this.dateTimeObj.date;
-    IPRefundofAdvanceObj['RefundTime'] = this.dateTimeObj.time;
-    IPRefundofAdvanceObj['BillId'] = this.BillNo || 0;
-    IPRefundofAdvanceObj['AdvanceId'] = this.advId;
-    IPRefundofAdvanceObj['OPD_IPD_Type'] = 1;
-    IPRefundofAdvanceObj['OPD_IPD_ID'] = this.vOPIPId,
-      IPRefundofAdvanceObj['BalanceAmount'] = this.BalanceAdvance;
-    IPRefundofAdvanceObj['UsedAmount'] = this.UsedAmount;
-    IPRefundofAdvanceObj['RefundAmount'] = this.NewRefundAmount;
-    IPRefundofAdvanceObj['Remark'] = this.RefundOfAdvanceFormGroup.get("Remark").value;
-    IPRefundofAdvanceObj['TransactionId'] = 2;
-    IPRefundofAdvanceObj['AddedBy'] = this.accountService.currentUserValue.userId,
-      IPRefundofAdvanceObj['IsCancelled'] = false;
-    IPRefundofAdvanceObj['IsCancelledBy'] = 0;
-    IPRefundofAdvanceObj['IsCancelledDate'] = '01/01/1900';
-    IPRefundofAdvanceObj['RefundId'] = 0;
-
-
-    let UpdateAdvanceHeaderObj = {};
-    UpdateAdvanceHeaderObj['AdvanceId'] = this.advId;
-    UpdateAdvanceHeaderObj['advanceUsedAmount'] = this.UsedAmount;
-    UpdateAdvanceHeaderObj['BalanceAmount'] = this.BalanceAdvance;
-
-    let InsertIPRefundofAdvanceDetail = [];
+    let adveDetailupdateObj = [];
     this.dsrefundlist.data.forEach((element) =>{
-      let InsertIPRefundofAdvanceDetailObj = {}; 
-      InsertIPRefundofAdvanceDetailObj['AdvRefId'] =0;
-      InsertIPRefundofAdvanceDetailObj['AdvDetailId'] = element.AdvanceId || 0;
-      InsertIPRefundofAdvanceDetailObj['RefundDate'] = this.dateTimeObj.date;
-      InsertIPRefundofAdvanceDetailObj['RefundTime'] = this.dateTimeObj.time;
-      InsertIPRefundofAdvanceDetailObj['AdvRefundAmt'] =element.RefundAmt || 0;
-      InsertIPRefundofAdvanceDetail.push(InsertIPRefundofAdvanceDetailObj)
-    });
+      let adveDetailupdate = {}; 
+      adveDetailupdate['advanceDetailID'] = element.advanceDetailID || 0;
+      adveDetailupdate['balanceAmount'] = element.balanceAmount || 0;
+      adveDetailupdate['refundAmount'] = element.refundAmount || 0;
+      adveDetailupdateObj.push(adveDetailupdate)
+    });  
 
-    let UpdateAdvanceDetailBalAmount = [];
-    this.dsrefundlist.data.forEach((element) =>{
-      let UpdateAdvanceDetailBalAmountObj = {}; 
-      UpdateAdvanceDetailBalAmountObj['AdvanceDetailID'] = element.AdvanceDetailID || 0;
-      UpdateAdvanceDetailBalAmountObj['RefundAmount'] = element.RefundAmt || 0;
-      UpdateAdvanceDetailBalAmountObj['BalanceAmount'] = element.BalanceAmount || 0;
-      UpdateAdvanceDetailBalAmount.push(UpdateAdvanceDetailBalAmountObj)
-    });
-
-
-    const IPRefundofAdvanceInsert = new IPRefundofAdvance(IPRefundofAdvanceObj);
-    const advanceHeaderUpdate = new AdvanceHeader(UpdateAdvanceHeaderObj); 
-
-    let PatientHeaderObj = {};
-
-    // PatientHeaderObj['Date'] = this.dateTimeObj.date; 
-    // PatientHeaderObj['NetPayAmount'] = this.NewRefundAmount;
-    // PatientHeaderObj['PatientName'] = this.PatientName;
-    // PatientHeaderObj['BillId'] = 0; 
-    // PatientHeaderObj['IPDNo'] = this.vOPIPId
-    // PatientHeaderObj['Doctorname'] = this.Doctorname;  
-    // PatientHeaderObj['UHIDNO'] =  this.RegNo
-
-    PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-    PatientHeaderObj['PatientName'] = this.PatientName;
-    PatientHeaderObj['RegNo'] = this.RegNo;
-    PatientHeaderObj['DoctorName'] = this.Doctorname;
-    PatientHeaderObj['CompanyName'] = this.CompanyName;
-    PatientHeaderObj['DepartmentName'] = this.DepartmentName;
-    PatientHeaderObj['OPD_IPD_Id'] =  this.IPDNo;
-    PatientHeaderObj['Age'] =  this.Age;
-    PatientHeaderObj['NetPayAmount'] =  this.NewRefundAmount;
-
-    // const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
-    //   {
-    //     maxWidth: "75vw",
-    //     maxHeight: "93vh", width: '100%', height: "100%",
-    //     data: {
-
-    //       advanceObj: PatientHeaderObj,
-    //       FromName: "Advance-Refund"
-    //     }
-    //   });
+      let PatientHeaderObj = {};   
+      PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '1900-01-01',
+      PatientHeaderObj['PatientName'] = this.registerObj.patientName;
+      PatientHeaderObj['RegNo'] = this.registerObj.regNo,
+      PatientHeaderObj['DoctorName'] = this.registerObj.doctorname;
+      PatientHeaderObj['CompanyName'] = this.registerObj.companyName;
+      PatientHeaderObj['DepartmentName'] = this.registerObj.departmentName;
+      PatientHeaderObj['OPD_IPD_Id'] = this.registerObj.ipdno;
+      PatientHeaderObj['Age'] = this.registerObj.ageYear;
+      PatientHeaderObj['NetPayAmount'] = this.RefundOfAdvanceFormGroup.get('NewRefundAmount').value || 0; 
+  
     const dialogRef = this._matDialog.open(OpPaymentComponent,
       {
         maxWidth: "80vw",
@@ -538,47 +383,37 @@ export class IPRefundofAdvanceComponent implements OnInit {
           FromName: "IP-RefundOfAdvance",
           advanceObj: PatientHeaderObj,
         }
-      });
-
+      }); 
     dialogRef.afterClosed().subscribe(result => {
       if (result.IsSubmitFlag) {
         console.log('============================== Return RefAdv ===========');
         let submitData = {
-          "insertIPRefundofAdvance": IPRefundofAdvanceInsert,
-          "updateAdvanceHeader": advanceHeaderUpdate,
-          "insertIPRefundofAdvanceDetail": InsertIPRefundofAdvanceDetail,
-          "updateAdvanceDetailBalAmount":UpdateAdvanceDetailBalAmount,
-          "insertPayment": result.submitDataPay.ipPaymentInsert
-        };
-
-        console.log(submitData);
-        this._IpSearchListService.insertIPRefundOfAdvance(submitData).subscribe(response => {
-          console.log(response);
-          if (response) {
-            Swal.fire('Congratulations !', 'Refund Of Advance data saved Successfully !', 'success').then((result) => {
-              if (result.isConfirmed) {
-                this.getRefundofAdvanceListRegIdwise(); 
-                this.viewgetRefundofAdvanceReportPdf(response);
-                this.getWhatsappsRefundAdvance(response,this.vMobileNo)
-                this._matDialog.closeAll();   
-              }
-            });
-          } else {
-            Swal.fire('Error !', 'Refund Of Advance data not saved', 'error');
-          }
-          this.isLoading = '';
+          "refund": IPRefundofAdvanceObj,
+          "advanceHeaderupdate": advanceHeaderupdate,
+          "advDetailRefund": advDetailRefundObj,
+          "adveDetailupdate":adveDetailupdateObj,
+          "payment": result.submitDataPay.ipPaymentInsert
+        }; 
+        console.log(submitData); 
+        this._IpSearchListService.insertIPRefundOfAdvance(submitData).subscribe(response => { 
+          this.toastr.success(response.message);
+          this.viewgetRefundofAdvanceReportPdf(response);
+          this.getWhatsappsRefundAdvance(response, this.vMobileNo);
+          this._matDialog.closeAll();
+        }, (error) => {
+          this.toastr.error(error.message);
         });
       }
-    });
-
+    });  
+}
+  onClose(){
+    this._IpSearchListService.myRefundAdvanceForm.reset(); 
+    this._matDialog.closeAll();
   }
-
   sIsLoading: string = '';
   viewgetRefundofAdvanceReportPdf(RefundId) {
-    setTimeout(() => {
-      // this.SpinLoading =true;
-      this.sIsLoading = 'loading-data';
-      //  this.AdList=true;
+    setTimeout(() => { 
+      this.sIsLoading = 'loading-data'; 
       this._IpSearchListService.getRefundofAdvanceview(
         RefundId
       ).subscribe(res => {
@@ -592,19 +427,15 @@ export class IPRefundofAdvanceComponent implements OnInit {
               title: "Refund Of Advance  Viewer"
             }
           });
-        dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.sIsLoading = '';
-          // this.SpinLoading = false;
+        dialogRef.afterClosed().subscribe(result => { 
+          this.sIsLoading = ''; 
         });
 
       });
 
     }, 100);
-  }
-
-  getWhatsappsRefundAdvance(el, vmono) {
-    
+  } 
+  getWhatsappsRefundAdvance(el, vmono) { 
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": vmono || 0,
@@ -632,46 +463,55 @@ export class IPRefundofAdvanceComponent implements OnInit {
         });
       }
     });
-  }
-  onClose() {
-    this._IpSearchListService.myRefundAdvanceForm.reset();
-
-    this._matDialog.closeAll();
-  }
-  CashCounterList:any=[];
-  getCashCounterComboList() {
-    this._IpSearchListService.getCashcounterList().subscribe(data => {
-      this.CashCounterList = data
-      console.log(this.CashCounterList)
-      this.searchFormGroup.get('CashCounterID').setValue(this.CashCounterList[7])
-      this.filteredOptionsCashCounter = this.searchFormGroup.get('CashCounterID').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterCashCounter(value) : this.CashCounterList.slice()),
-      ); 
-    });
-  }
-  private _filterCashCounter(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.CashCounterName ? value.CashCounterName.toLowerCase() : value.toLowerCase();
-      return this.CashCounterList.filter(option => option.CashCounterName.toLowerCase().includes(filterValue));
-    } 
   } 
-  getOptionTextCashCounter(option){ 
-    if (!option)
-      return '';
-    return option.CashCounterName;
+  getPreviousRefList(row) { 
+    // console.log(row); 
+    // this.BalanceAdvance = 0;
+    // this.RefundAmount = 0;
+    // this.UsedAmount = row.UsedAmount;
+    // this.advId = row.AdvanceId;
+    // this.advDetailId = row.AdvanceDetailID;
+    // this.BalanceAmount = row.BalanceAmount; 
+    // //this.NewRefundAmount = 0;
+    // console.log(row);
+    // let Query = "select RefundDate,RefundAmount from refund where AdvanceId=" + row.AdvanceId
+    
+    // this._IpSearchListService.getPreRefundofAdvance(Query).subscribe(Visit => {
+    //   this.dataSource1.data =  Visit as IPRefundofAdvance[]; 
+    // });  
   }
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+  keyPressCharater(event){
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
+  } 
 }
 
 export class IPRefundofAdvance {
   RefundDate: Date;
   RefundTime: any;
   BillId: number;
-  AdvanceId: number;
+  advanceId: number;
   OPD_IPD_Type: number;
   OPD_IPD_ID: number;
-  UsedAmount: number;
-  BalanceAmount: number;
+  usedAmount: number;
+  balanceAmount: number;
   RefundAmount: number;
   Remark: string;
   TransactionId: number;
@@ -681,19 +521,20 @@ export class IPRefundofAdvance {
   IsCancelledDate: Date;
   RefundId: number;
   Date: any;
-  RefundAmt:any;
-  AdvanceDetailID:any;
+  refundAmount:any;
+  advanceDetailID:any; 
+
 
   constructor(IPRefundofAdvanceObj) {
 
     this.RefundDate = IPRefundofAdvanceObj.RefundDate || '0';
     this.RefundTime = IPRefundofAdvanceObj.RefundTime || '0';
     this.BillId = IPRefundofAdvanceObj.BillId || 0;
-    this.AdvanceId = IPRefundofAdvanceObj.AdvanceId || '0';
+    this.advanceId = IPRefundofAdvanceObj.advanceId || '0';
     this.OPD_IPD_Type = IPRefundofAdvanceObj.OPD_IPD_Type || '0';
     this.OPD_IPD_ID = IPRefundofAdvanceObj.OPD_IPD_ID || '0';
-    this.UsedAmount = IPRefundofAdvanceObj.UsedAmount || '0';
-    this.BalanceAmount = IPRefundofAdvanceObj.BalanceAmount || '0';
+    this.usedAmount = IPRefundofAdvanceObj.usedAmount || '0';
+    this.balanceAmount = IPRefundofAdvanceObj.balanceAmount || '0';
     this.RefundAmount = IPRefundofAdvanceObj.RefundAmount || '0';
     this.Remark = IPRefundofAdvanceObj.Remark || '';
     this.TransactionId = IPRefundofAdvanceObj.TransactionId || 0;
@@ -703,8 +544,8 @@ export class IPRefundofAdvance {
     this.IsCancelledDate = IPRefundofAdvanceObj.IsCancelledDate || '';
     this.RefundId = IPRefundofAdvanceObj.RefundId || '0';
     this.Date = IPRefundofAdvanceObj.Date || ''; 
-    this.RefundAmt = IPRefundofAdvanceObj.RefundAmt || 0;
-    this.AdvanceDetailID = IPRefundofAdvanceObj.AdvanceDetailID || '0';
+    this.refundAmount = IPRefundofAdvanceObj.refundAmount || 0;
+    this.advanceDetailID = IPRefundofAdvanceObj.advanceDetailID || '0';
   }
 
 }
@@ -753,18 +594,9 @@ export class AdvanceDetailBalAmount {
 
     this.AdvanceDetailID = UpdateAdvanceDetailBalAmountObj.AdvanceDetailID || 0;
     this.BalanceAmount = UpdateAdvanceDetailBalAmountObj.BalanceAmount || 0;
-    this.RefundAmount = UpdateAdvanceDetailBalAmountObj.RefundAmount || 0;
-
-  }
-
-}
-// Relatedquery
-// select * from AdvRefundDetail order by 1 desc
-// select * from AdvanceHeader order by 1 desc
-// select * from AdvRefundDetail order by 1 desc
-
-
-
+    this.RefundAmount = UpdateAdvanceDetailBalAmountObj.RefundAmount || 0; 
+  } 
+} 
 export class BrowseIpdreturnadvanceReceipt {
   PaymentId: Number;
   BillNo: Number;

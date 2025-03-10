@@ -185,9 +185,8 @@
 
                             <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-textbox label="Advance Amount" formControlName="advanceAmt"
-                                    [value]="registerObj.firstName" [formGroup]="AdvFormGroup"
-                                    [validations]="getValidationMessages().advanceAmt" [maxLength]="12"
-                                    (keypress)="keyPressCharater($event)">
+                                    [formGroup]="AdvFormGroup" [validations]="getValidationMessages().advanceAmt" 
+                                    [maxLength]="12" (keypress)="keyPressCharater($event)">
                                 </airmid-textbox>
                             </div>
 

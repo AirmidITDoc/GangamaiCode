@@ -599,11 +599,11 @@ public getUMOCombo() {
   {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_T_AdvanceList",employee)
   }
-  // Rtrv_IPRefundAdvanceDetails
-  public getRefundofAdvanceList(employee)
-  {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_RefundOfAdvance",employee)
-  }
+  // Rtrv_IPRefundAdvanceDetails 
+  public getRefundofAdvanceList(Id) {
+    return this._httpClient1.PostData("Advance/PatientRefundOfAdvancesList" , Id);
+}
+
   public getReturndetails(employee){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPRefundDetails",employee)
   }
@@ -654,11 +654,10 @@ public getUMOCombo() {
   public AdvanceHeaderlist(Id) {
     return this._httpClient1.PostData("Advance/PatientWiseAdvanceList" , Id);
 }
-
-  public insertIPRefundOfAdvance(employee)
-  {
-    return this._httpClient.post("InPatient/InsertIPRefundofAdvance",employee)
-  }
+ 
+  public insertIPRefundOfAdvance(employee) {
+    return this._httpClient1.PostData("Advance/IPRefundofAdvanceInsert", employee)
+  } 
   public insertIPRefundOfBill(employee)
   {
     return this._httpClient.post("InPatient/InsertIPRefundofBill",employee)
