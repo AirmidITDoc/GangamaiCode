@@ -207,6 +207,7 @@
     }
     .airmid-table-container {
         .airmid-table {
+            height: 100%;
             .action-list {
                 display: flex;
                 gap: 8px;
@@ -251,6 +252,24 @@
                 display: flex;
                 gap: 8px;
             }
+        }
+    }
+    .dynamic-table-wrapper {
+        height: 100%;
+        .airmid-table-container {
+            height: 100%;
+            .content-card {
+                height: 100%;
+                display: flex;
+                flex-flow: column;
+                .table-wrapper{
+                    flex: 1;
+                }
+            }
+        }
+        .mat-mdc-tab-body-wrapper{
+            flex: 1;
+            padding-top: 4px;
         }
     }
     .table-wrapper {

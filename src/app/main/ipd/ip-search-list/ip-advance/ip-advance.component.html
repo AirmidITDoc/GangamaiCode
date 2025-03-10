@@ -8,8 +8,7 @@
             <div class="modal-header-right">
                 <div class="comman-date-container">
                     <div class="comman-date">
-                        <app-common-date [screenFrom]="screenFromString"
-                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                        <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                     </div>
                     <div class="close-icon">
                         <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
@@ -23,192 +22,178 @@
 
 
     <div class="modal-body content">
-        <div class="center">
-            <div class="content-card">
-                <div fxLayout="column" fxLayoutGap="4px">
-                    <div fxlayout="row">
-                        <div fxFlex.gt-sm="100%" fxFlex fxLayoutGap="4px">
-                            <mat-card fxFlex.gt-sm="74%" fxFlex style="padding: 6px;">
-                                <div class="patient-info-container">
-                                    <div class="patient-info-box">
-                                        <div class="patient-info-title border-bottom pb-2">
-                                            <span class="h1">Patient Information</span>
+        <div fxLayout="column" class="gap-8 h-100-p">
+            <div class="modal-card-container">
+                <div fxFlex.gt-sm="100%" fxFlex fxLayoutGap="4px">
+                    <mat-card fxFlex.gt-sm="74%" fxFlex style="padding: 6px;">
+                        <div class="patient-info-container">
+                            <div class="patient-info-box">
+                                <div class="patient-info-title border-bottom pb-2">
+                                    <span class="h1">Patient Information</span>
+                                </div>
+                                <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row" fxLayoutAlign="space-between">
+    
+                                    <div fxLayout="column" fxLayoutGap="6px">
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">UHID No
+                                            </span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{registerObj?.regNo}}</span>
                                         </div>
-                                        <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                            fxLayoutAlign="space-between">
-
-                                            <div fxLayout="column" fxLayoutGap="6px">
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">UHID No
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{registerObj?.regNo}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Patient Name
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{registerObj?.patientName}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Doctor Name</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{registerObj?.doctorname}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Department</span>
-                                                    <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{registerObj?.departmentName}}</span>
-                                                </div>
-                                            </div>
-                                            <div fxLayout="column" fxLayoutGap="6px">
-
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">DOA | Time</span>
-                                                    <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{registerObj?.admissionDate}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">IPD No</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{registerObj?.ipdno}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Age | Sex
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{registerObj?.ageYear}}Y|{{registerObj?.ageMonth}}M|{{registerObj?.ageDay}}
-                                                        D | {{registerObj?.genderName}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Ref-Doctor Name
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{registerObj?.refDocName}}</span>
-                                                </div>
-
-                                            </div>
-                                            <div fxLayout="column" fxLayoutGap="6px">
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Ward | Bed Name
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{registerObj?.roomName}}
-                                                        | {{registerObj?.bedName}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Patient Type
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{registerObj?.patientType}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Tarrif Name
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{registerObj?.tariffName}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Company Name</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value"
-                                                        style="color: orange;">{{registerObj?.companyName}}</span>
-                                                </div>
-                                            </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Patient Name
+                                            </span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{registerObj?.patientName}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Doctor Name</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{registerObj?.doctorname}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Department</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{registerObj?.departmentName}}</span>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="column" fxLayoutGap="6px">
+    
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">DOA | Time</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{registerObj?.admissionDate}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">IPD No</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{registerObj?.ipdno}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Age | Sex
+                                            </span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{registerObj?.ageYear}}Y|{{registerObj?.ageMonth}}M|{{registerObj?.ageDay}}
+                                                D | {{registerObj?.genderName}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Ref-Doctor Name
+                                            </span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{registerObj?.refDocName}}</span>
+                                        </div>
+    
+                                    </div>
+                                    <div fxLayout="column" fxLayoutGap="6px">
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Ward | Bed Name
+                                            </span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{registerObj?.roomName}}
+                                                | {{registerObj?.bedName}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Patient Type
+                                            </span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{registerObj?.patientType}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Tarrif Name
+                                            </span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{registerObj?.tariffName}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Company Name</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value" style="color: orange;">{{registerObj?.companyName}}</span>
                                         </div>
                                     </div>
                                 </div>
-                            </mat-card>
-                            <mat-card fxFlex.gt-sm="26%" fxFlex style="padding: 6px;">
-                                <div class="bill-summary px-12">
-                                    <div class="bill-summary-title py-8 border-bottom">
-                                        <span class="h3 font-weight-600">Advance Summary </span>
-                                    </div>
-                                    <div class="bil-summary-list px-4 mt-8">
-                                        <ul class="gap-4 list-basic" fxLayout="column">
-                                            <li>
-                                                <div class="list-item">
-                                                    <span class="list-item-key">Advance Amount :</span>
-                                                    <span class="list-item-value">
-                                                        {{TotalAdvanceAmt | currency:'INR'}}</span>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="list-item">
-                                                    <span class="list-item-key">Advance Used Amount :</span>
-                                                    <span class="list-item-value">
-                                                        {{TotalAdvUsedAmt | currency:'INR'}}
-                                                    </span>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="list-item">
-                                                    <span class="list-item-key">Balance Amount :</span>
-                                                    <span class="list-item-value">
-                                                        {{TotalAdvaBalAmt | currency:'INR'}}</span>
-                                                </div>
-                                            </li> 
-                                            <li>
-                                                <div class="list-item">
-                                                    <span class="list-item-key">Refund Amount :</span>
-                                                    <span class="list-item-value">
-                                                        {{TotalAdvRefAmt | currency:'INR'}}</span>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </mat-card>
-                        </div>
-                    </div>
-
-                    <div fxFlex.gt-sm="100%" fxFlex>
-                        <ng-template #actionButtonTemplate let-element>
-                            <div fxLayout="row" fxLayoutAlign="center center">   
-                                <button mat-icon-button   matTooltip="Advance Print"  (click)="viewgetAdvanceReceiptReportPdf(element)">
-                                    <mat-icon>print</mat-icon>
-                                </button>  
-                            </div>
-                        </ng-template>
-                        <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" tableClasses="h-400">
-                        </airmid-table>
-                    </div>
-                </div>
-
-
-                <div fxlayout="row" fxLayout="column" fxLayoutGap="6px">
-                    <form [formGroup]="AdvFormGroup" class="mat-error-fix">
-                        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="start">
-
-                            <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="Advance Amount" formControlName="advanceAmt"
-                                    [formGroup]="AdvFormGroup" [validations]="getValidationMessages().advanceAmt" 
-                                    [maxLength]="12" (keypress)="keyPressCharater($event)">
-                                </airmid-textbox>
-                            </div>
-
-                            <div fxFlex="43%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="Reason Of Advacne" formControlName="comment"
-                                    [formGroup]="AdvFormGroup" [maxLength]="50">
-                                </airmid-textbox>
-                            </div>
-
-                            <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-dropdown label="Cash Counter" formControlName="CashCounterID"
-                                    [formGroup]="AdvFormGroup" [mode]="autocompleteModeCashCounter"
-                                    [validations]="getValidationMessages().CashCounterID">
-                                </airmid-dropdown>
                             </div>
                         </div>
-                    </form>
+                    </mat-card>
+                    <mat-card fxFlex.gt-sm="26%" fxFlex style="padding: 6px;">
+                        <div class="bill-summary px-12">
+                            <div class="bill-summary-title py-8 border-bottom">
+                                <span class="h3 font-weight-600">Advance Summary </span>
+                            </div>
+                            <div class="bil-summary-list px-4 mt-8">
+                                <ul class="gap-4 list-basic" fxLayout="column">
+                                    <li>
+                                        <div class="list-item">
+                                            <span class="list-item-key">Advance Amount :</span>
+                                            <span class="list-item-value">
+                                                {{TotalAdvanceAmt | currency:'INR'}}</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="list-item">
+                                            <span class="list-item-key">Advance Used Amount :</span>
+                                            <span class="list-item-value">
+                                                {{TotalAdvUsedAmt | currency:'INR'}}
+                                            </span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="list-item">
+                                            <span class="list-item-key">Balance Amount :</span>
+                                            <span class="list-item-value">
+                                                {{TotalAdvaBalAmt | currency:'INR'}}</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="list-item">
+                                            <span class="list-item-key">Refund Amount :</span>
+                                            <span class="list-item-value">
+                                                {{TotalAdvRefAmt | currency:'INR'}}</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </mat-card>
                 </div>
+    
+            </div>
+            <div class="modal-card-container h-100-p" >
+                <div fxFlex.gt-sm="100%" fxFlex class="dynamic-table-wrapper">
+                    <ng-template #actionButtonTemplate let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <button mat-icon-button matTooltip="Advance Print" (click)="viewgetAdvanceReceiptReportPdf(element)">
+                                <mat-icon>print</mat-icon>
+                            </button>
+                        </div>
+                    </ng-template>
+                    <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
+                    </airmid-table>
+                </div>
+            </div>
+            <div class="modal-card-container">
+                <form [formGroup]="AdvFormGroup" class="mat-error-fix">
+                    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="start">
+    
+                        <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="Advance Amount" formControlName="advanceAmt" [formGroup]="AdvFormGroup" [validations]="getValidationMessages().advanceAmt" [maxLength]="12" (keypress)="keyPressCharater($event)">
+                            </airmid-textbox>
+                        </div>
+    
+                        <div fxFlex="43%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="Reason Of Advacne" formControlName="comment" [formGroup]="AdvFormGroup" [maxLength]="50">
+                            </airmid-textbox>
+                        </div>
+    
+                        <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-dropdown label="Cash Counter" formControlName="CashCounterID" [formGroup]="AdvFormGroup" [mode]="autocompleteModeCashCounter" [validations]="getValidationMessages().CashCounterID">
+                            </airmid-dropdown>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    <div class="modal-footer" >
+    <div class="modal-footer">
         <div class="modal-footer-buttons">
             <button class="btn btn-primary" (click)="getStatementPrint()">Statement</button>
             <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
