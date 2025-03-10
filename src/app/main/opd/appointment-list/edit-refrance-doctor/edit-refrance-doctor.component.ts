@@ -50,7 +50,7 @@ export class EditRefranceDoctorComponent implements OnInit {
     createRefranceDrForm() {
           return this._formBuilder.group({
               visitId: 0,
-              regId:this.data.regId,
+              // regId:this.data.regId,
               refDocId: ['', [
                   Validators.required]],
   

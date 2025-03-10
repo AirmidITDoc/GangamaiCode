@@ -3,6 +3,13 @@
     <input matInput [placeholder]="placeholderText" [formControl]="formGroup.controls[formControlName]"
         [disabled]="disabled" [formControlName]="formControlName" onlyNumber [matAutocomplete]="auto"
         (input)="onSearchData($event.target.value)" [formGroup]="formGroup" appFocusNext [name]="formControlName">
+       
+        <span matSuffix style="display: flex;margin-right:  10px;">
+            <mat-icon class="mat-icon-close"
+                (click)="clearSelection($event)">close</mat-icon>
+            <!-- <mat-icon class="mat-icon-close"
+                (click)="clearSelection($event)">search</mat-icon> -->
+        </span>
     <mat-autocomplete requireSelection (optionSelected)="selectedOption($event.option.value)" #auto="matAutocomplete"
         [displayWith]="displayFn" aria-label="{{TextField}}">
         <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
@@ -14,4 +21,5 @@
             {{ error }}
         </ng-container>
     </mat-error>
+    
 </mat-form-field>

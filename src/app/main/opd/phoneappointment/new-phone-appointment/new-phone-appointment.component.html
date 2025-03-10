@@ -3,7 +3,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Schduled Phone Appointment</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Phone Appointment</span>
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
@@ -21,8 +21,8 @@
         <div class="modal-body-container">
             <form [formGroup]="searchFormGroup">
                 <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
-                    <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" fxFlex="50%"
-                        placeholderText="Enter Patient Name/RegId.." ApiUrl="OutPatient/auto-complete?Keyword="
+                    <airmid-autocomplete lbl="Search Reg No / Patient Name / Mobile No"  [formGroup]="searchFormGroup" formControlName="RegId" fxFlex="50%"
+                    placeholderText="Search Reg No / Patient Name / Mobile No" ApiUrl="OutPatient/auto-complete?Keyword="
                         (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
 
                 </div>

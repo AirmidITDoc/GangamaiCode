@@ -86,7 +86,7 @@ export class AppointmentListComponent implements OnInit {
         this.menuActions.push("Update Consultant Doctor");
         this.menuActions.push("Update Referred Doctor");
         this.menuActions.push("Medical Record");
-        this.menuActions.push("Report Record");
+        // this.menuActions.push("Report Record");
         this.Appointdetail(this.gridConfig)
 
     }
@@ -142,32 +142,7 @@ export class AppointmentListComponent implements OnInit {
                 heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplate  // Assign ng-template to the column
             }
-            // {heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.action, actions: [
-            //         {
-            //             // Pending page...
-            //             action: gridActions.edit, callback: (data: any) => {
-            //                 this.showBilling(data);
-            //             }
-            //         },
-            //         {
-            //             action: gridActions.edit, callback: (data: any) => {
-            //                 this.onRegistrationEdit(data);
-            //                 this.grid.bindGridData();
-            //             }
-            //         },
-            //         {
-            //             action: gridActions.edit, callback: (data: any) => {
-            //                 this.EditConsultdr(data);
-            //             }
-            //         },
-            //         {
-            //             action: gridActions.edit, callback: (data: any) => {
-            //                 this.Editrefrancedr(data);
-            //             }
-            //         },
-            //     ]
-            // }, //Action 1-view, 2-Edit,3-delete
-
+           
         ],
 
         sortField: "VisitId",
@@ -265,8 +240,8 @@ export class AppointmentListComponent implements OnInit {
             const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
                 {
                     maxWidth: "70vw",
-                    height: "410px",
-                    width: "70%",
+                    height: "390px",
+                    width: "50%",
                     data: element
                 });
             dialogRef.afterClosed().subscribe(result => {
@@ -362,7 +337,8 @@ export class AppointmentListComponent implements OnInit {
         const dialogRef = this._matDialog.open(CrossConsultationComponent,
             {
                 maxWidth: '75vw',
-                height: '400px', width: '100%',
+                height: "390px",
+                width: "50%",
                 data: element
             });
         dialogRef.afterClosed().subscribe(result => {

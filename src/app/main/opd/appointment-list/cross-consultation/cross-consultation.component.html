@@ -3,7 +3,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Cross Consult</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Cross Consultation</span>
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
@@ -115,7 +115,7 @@
                                             [(ngModel)]="data.regId">
 
 
-                                        <mat-form-field appearance="outline" fxFlex.sm="50%">
+                                        <mat-form-field appearance="outline" fxFlex="30%">
                                             <input matInput type="datetime-local" placeholder="Visit Date / Time"
                                                 formControlName="visitTime"
                                                 [ngModel]="date | date:'yyyy-MM-ddTHH:mm'" />
@@ -123,7 +123,7 @@
                                      
 
                                         <airmid-dropdown label="Department Name" formControlName="departmentId"
-                                            [value]="data?.departmentId" [formGroup]="crossconForm"
+                                            [value]="data?.departmentId" [formGroup]="crossconForm" fxFlex="30%"
                                             [validations]="getValidationMessages().Departmentid"
                                             [mode]="autocompletedepartment"
                                             (selectionChange)="selectChangedepartment($event)">
@@ -131,7 +131,7 @@
 
 
                                       
-                                        <airmid-dropdown label="Doctor Name" formControlName="consultantDocId"
+                                        <airmid-dropdown label="Doctor Name" formControlName="consultantDocId" fxFlex="30%"
                                         [value]="data?.doctorId" [formGroup]="crossconForm"  [mode]="autocompleteModedeptdoc"
                                         [validations]="getValidationMessages().consultantDocId" #ddldoctor>
                                     </airmid-dropdown>

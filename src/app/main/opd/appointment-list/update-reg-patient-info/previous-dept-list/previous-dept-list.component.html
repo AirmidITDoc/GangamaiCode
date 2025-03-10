@@ -25,29 +25,29 @@
                                 <mat-table #table1 matSort [dataSource]="dsLastDepartmentname"
                                     [@animateStagger]="{value:'50'}" style="overflow-x: auto;">
 
-                                    <ng-container matColumnDef="VisitDate">
+                                    <ng-container matColumnDef="visitDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             Visit Date
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.VisitDate | date:'dd/MM/YYYY'}}</span>
+                                            <span> {{contact.visitDate | date:'dd/MM/YYYY'}}</span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="DepartmentName">
+                                    <ng-container matColumnDef="departmentName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             Department Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.DepartmentName || '-'}}</span>
+                                            <span> {{contact.departmentName || '-'}}</span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="DoctorName">
+                                    <ng-container matColumnDef="doctorName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>DoctorName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.DoctorName || '-'}}</span>
+                                            <span> {{contact.doctorName || '-'}}</span>
                                         </mat-cell>
                                     </ng-container>
 

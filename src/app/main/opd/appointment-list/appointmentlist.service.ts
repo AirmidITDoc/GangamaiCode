@@ -27,10 +27,10 @@ export class AppointmentlistService {
         return this._formBuilder.group({
             RegNo: '',
             FirstName: ['', [
-                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+                   Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
             ]],
             LastName: ['', [
-                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+                Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
             ]],
             DoctorId: '',
             fromDate: [(new Date()).toISOString()],
@@ -56,14 +56,14 @@ export class AppointmentlistService {
                 PrefixId: ['', [Validators.required]],
                 FirstName: ['', [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+                    Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
                 ]],
                 MiddleName: ['', [
-                    Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+                    Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
                 ]],
                 LastName: ['', [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
+                    Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
                 ]],
                 GenderId: new FormControl('', [Validators.required]),
                 Address: '',
@@ -162,17 +162,17 @@ export class AppointmentlistService {
 
     public EditConDoctor(Param: any) {
 
-        return this._httpClient1.PutData("ConsRefDoctor/Edit/" + Param.visitId, Param);
+        return this._httpClient1.PutData("VisitDetail/ConsultantDoctorUpdate/" + Param.visitId, Param);
     }
 
     public EditRefDoctor(Param: any) {
 
-        return this._httpClient1.PostData("ConsRefDoctor/RefDoctorUpdate", Param);
+        return this._httpClient1.PutData("VisitDetail/RefDoctorUpdate", Param);
     }
     
     public RefDoctorCancle(Param: any) {
 
-        return this._httpClient1.PostData("ConsRefDoctor/RefDoctorUpdate", Param);
+        return this._httpClient1.PutData("VisitDetail/RefDoctorUpdate", Param);
     }
 
     public deactivateTheStatus(m_data) {
@@ -180,7 +180,7 @@ export class AppointmentlistService {
     }
 
     public crossconsultSave(Param: any) {
-        return this._httpClient1.PostData("CrossConsultation/CrossConsultationInsert", Param);
+        return this._httpClient1.PostData("VisitDetail/CrossConsultationInsert", Param);
 
     }
 

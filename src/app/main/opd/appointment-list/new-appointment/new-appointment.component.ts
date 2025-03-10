@@ -95,8 +95,9 @@ export class NewAppointmentComponent implements OnInit {
     vDays: any = 0;
     HealthCardExpDate: any;
     followUpDate: string;
-
-    screenFromString = 'admission-form';
+    
+   
+    screenFromString = 'appointment';
     @ViewChild('attachments') attachment: any;
     @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
     @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
@@ -211,12 +212,12 @@ export class NewAppointmentComponent implements OnInit {
     onChangePatient(value) {
         debugger
         var mode = "Company"
-        if (value.text == "Company") {
+        if (value.text != "Self") {
             this._AppointmentlistService.getMaster(mode, 1);
             this.VisitFormGroup.get('CompanyId').setValidators([Validators.required]);
             this.isCompanySelected = true;
             this.patienttype = 2;
-        } else if (value.text != "Company") {
+        } else if (value.text == "Self") {
             this.isCompanySelected = false;
             this.VisitFormGroup.get('CompanyId').clearValidators();
             this.VisitFormGroup.get('SubCompanyId').clearValidators();
@@ -412,50 +413,6 @@ getSelectedObjphone(obj) {
             this.toastr.error(error.message);
         });
 
-
-    }
-
-
-    VitalInfo(contact) {
-        let xx = {
-            RegId: contact.RegId,
-            OPD_IPD_ID: contact.OPD_IPD_ID,
-            RegNo: contact.RegNoWithPrefix,
-            VisitId: contact.VisitId,
-            PatientName: contact.PatientName,
-            Doctorname: contact.Doctorname,
-            AdmDateTime: contact.AdmDateTime,
-            AgeYear: contact.AgeYear,
-            AgeMonth: contact.AgeMonth,
-            AgeDay: contact.AgeDay,
-            DepartmentName: contact.DepartmentName,
-            ClassId: contact.ClassId,
-            OPDNo: contact.OPDNo,
-            PatientType: contact.PatientType,
-            ClassName: contact.ClassName,
-            TariffName: contact.TariffName,
-            TariffId: contact.TariffId,
-            CompanyId: contact.CompanyId,
-            CompanyName: contact.CompanyName,
-            RefDocName: contact.RefDocName,
-            MobileNo: contact.MobileNo,
-            Lbl: "PatientVitalInfo"
-        };
-        console.log(xx)
-        console.log(contact)
-        // this.advanceDataStored.storage = new SearchInforObj(xx);
-        const dialogRef = this._matDialog.open(PatientvitalInformationComponent,
-            {
-                maxWidth: '80%',
-                height: '58%',
-                data: {
-                    registerObj: xx,
-                },
-            });
-
-        dialogRef.afterClosed().subscribe(result => {
-            
-        });
 
     }
 

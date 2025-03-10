@@ -23,7 +23,7 @@ export class CrossConsultationComponent implements OnInit {
   crossconForm: FormGroup;
   date = new Date().toISOString();
   
-  screenFromString = 'admission-form';
+  screenFromString = 'appointment';
 
   registerObj1 = new VisitMaster1({});
   
@@ -105,7 +105,8 @@ export class CrossConsultationComponent implements OnInit {
     
   console.log(data);
  this._AppointmentlistService.crossconsultSave(data).subscribe((response) => {
-      this.toastr.success(response.message);
+  console.log(response);
+      this.toastr.success(response);
       this.onClear(true);
     }, (error) => {
       this.toastr.error(error.message);

@@ -42,7 +42,8 @@ export class PatientvitalInformationComponent {
   vSpO2: any;
   vPulse: any;
    registerObj1 = new VisitMaster1({});
-  
+   patientDetail1 = new VisitMaster1({});
+
   constructor( 
     public _OpAppointmentService: AppointmentlistService,
     private _formBuilder: FormBuilder,
@@ -56,6 +57,27 @@ export class PatientvitalInformationComponent {
   ngOnInit(): void {
    
     this.MyFormGroup = this.createMyForm();
+    if(this.data){
+      console.log(this.data)
+      this.VisitId=this.data.visitId
+            debugger
+      setTimeout(() => {
+        this._OpAppointmentService.getVisitById(this.VisitId).subscribe(data => {
+          this.patientDetail1 = data;
+          console.log(data)
+          this.vHeight=data.height
+          this.vWeight=data.pweight
+          this.vBSL=data.bmi
+          this.vBMI=data.bmi 
+          this.vBP=data. bp
+          this.vTemp=data.temp
+          this.vSpO2=data.spO2
+          this.vPulse=data.pulse
+        });
+      }, 1000);
+    }
+
+    
   }
   
   createMyForm(){
@@ -74,9 +96,8 @@ export class PatientvitalInformationComponent {
 
   
   getBMIcalculation() {
-    debugger
+    
     if (this.vHeight > 0 && this.vWeight > 0) {
-      debugger
       let Height = (this.vHeight / 100)
       this.vBMI = String(Math.round((this.vWeight) / ((Height) * (Height))));
     }
@@ -94,18 +115,12 @@ export class PatientvitalInformationComponent {
    let visitId=this.data.visitId
     console.log(this.MyFormGroup.value)
    this._OpAppointmentService.InsertVitalInfo(visitId,this.MyFormGroup.value).subscribe((response) => {
-      if(response){
-      this.toastr.success('Record Saved Successfully.', 'Save !', {
-        toastClass: 'tostr-tost custom-toast-success',
-      });   
-          this.onClose();
-   
-    } else {
-      this.toastr.success('Record data not saved', 'error', {
-        toastClass: 'tostr-tost custom-toast-success',
-      }); 
-    } 
-  });  
+    this.toastr.success(response.message);
+    console.log(response)
+   this._matDialog.closeAll();
+}, (error) => {
+    this.toastr.error(error.message);
+});
 
 }  
 

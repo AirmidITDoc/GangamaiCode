@@ -76,10 +76,20 @@ export class CommonDateComponent implements OnInit {
             this.timeLabel = 'Discharge Time';
             this.isDatePckrDisabled = true;
         }
-        else if (this.screenFromString == 'appointment-form') {
-            this.dateLabel = 'Admission Date';
-            this.timeLabel = 'Admission Start Time';
-            this.timeLabel2 = 'Admission End Time';
+        else if (this.screenFromString == 'OP-billing') {
+            this.dateLabel = 'Billing Date';
+            this.timeLabel = 'Billing Time';
+            this.isDatePckrDisabled = true;
+        }
+        else if (this.screenFromString == 'appointment') {
+            this.dateLabel = 'Visit Date';
+            this.timeLabel = 'Visit Time';
+            this.isDatePckrDisabled = true;
+        }
+        else if (this.screenFromString == 'Common-form') {
+            this.dateLabel = 'Date';
+            this.timeLabel = 'Time';
+            // this.timeLabel2 = 'Admission End Time';
             this.isDatePckrDisabled = false;
             if (this.dateForm.get('timeController2'))
                 this.dateForm.get('timeController2').setValue(this.now);

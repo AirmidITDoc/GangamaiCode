@@ -5,10 +5,15 @@
                 <span>OPD REFUND OF BILL </span>
             </div>
         </div>
-        <div class="top-header-right">
+        <div class="modal-header-right">
             <div class="comman-date-container">
-                <div class="comman-date">
-                    <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                <app-common-date [screenFrom]="'OP-billing'"
+                    (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                <div class="close-icon" *ngIf="isModal">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
                 </div>
             </div>
         </div>
@@ -16,91 +21,87 @@
 
     <!--Middle Data-->
     <div class="layout-body" fusePerfectScrollbar>
-        
+
         <!-- CENTER -->
         <div class="layout-body-container">
             <div fxLayout="column" class="gap-12">
                 <div class="layout-card-container">
                     <form [formGroup]="searchFormGroup">
-                        
-                            <div class="patient-search">
-                                <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
-                                  
-                                    <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
-                                      
-                                            <!-- <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No" [formGroup]="searchFormGroup" formControlName="RegId"
+
+                        <div class="patient-search">
+                            <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+
+                                <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
+
+                                    <!-- <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No" [formGroup]="searchFormGroup" formControlName="RegId"
                                             placeholderText="Enter Patient Name/RegId.." fxFlex="50%"
                                             ApiUrl="OutPatient/auto-complete?Keyword="
                                             (selectionChange)="getSelectedObj($event)" TextField="formattedText"
                                             ValueField="regId"></airmid-autocomplete>
          -->
-                                            <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No" [formGroup]="searchFormGroup"  fxFlex="40%"
-                                            formControlName="RegId" placeholderText="Search Reg No / Patient Name / Mobile No" ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
+                                    <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No"
+                                        [formGroup]="searchFormGroup" fxFlex="40%" formControlName="RegId"
+                                        placeholderText="Search Reg No / Patient Name / Mobile No"
+                                        ApiUrl="OutPatient/auto-complete?Keyword="
+                                        (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
 
-                                    </div>
                                 </div>
                             </div>
-                        
+                        </div>
+
                     </form>
                 </div>
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
-                fxLayoutGap="5px">
-                <div fxFlex.gt-sm="100%" fxFlex>
-                    <div fxlayout="row" style="background-color: white;padding: 5px;" >
-                        <div class="patient-info-sales my-8">
-                            <div class="sales-patient-info-title">
-                                <span style="font-weight: 700;">
-                                    Patient Information
-                                </span>
-                            </div>
-                            <hr>
-                            <div class="sales-patient-info" fxFlexFill
-                                fxLayout="row"
-                                fxLayoutAlign="space-between center"
-                                class="patient-info">
-                                <div class="patient-sub">
-                                    <div class="patient-info-row patient-info-1-111 pt-8"
-                                        fxLayout="row"
-                                        fxLayoutGap="200px">
-                                        <div class="patient-col">
-                                            <span
-                                                class="patient-col-key">UHID No
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <div fxlayout="row" style="background-color: white;padding: 5px;">
+                            <div class="patient-info-sales my-8">
+                                <div class="sales-patient-info-title">
+                                    <span style="font-weight: 700;">
+                                        Patient Information
+                                    </span>
+                                </div>
+                                <hr>
+                                <div class="sales-patient-info" fxFlexFill fxLayout="row"
+                                    fxLayoutAlign="space-between center" class="patient-info">
+                                    <div class="patient-sub">
+                                        <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                            fxLayoutGap="200px">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">UHID No
                                                 </span>
-                                            <span>:</span>
-                                            <span
-                                                class="patient-col-value">{{registerObj.regId}}</span>
-                                        </div>
-                                        <div class="patient-col">
-                                            <span
-                                                class="patient-col-key">Patient Name
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj.regId}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Patient Name
                                                 </span>
-                                            <span>:</span>
-                                            <span
-                                                class="patient-col-value">{{registerObj.firstName}} {{registerObj.lastName}}</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj.firstName}}
+                                                    {{registerObj.lastName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Age | Gender</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj.ageYear}}Y |
+                                                    {{registerObj.genderId}}</span>
+                                            </div>
+
                                         </div>
-                                        <div class="patient-col">
-                                            <span
-                                                class="patient-col-key">Age | Gender</span>
-                                            <span>:</span>
-                                            <span
-                                                class="patient-col-value">{{registerObj.ageYear}}Y | {{registerObj.genderId}}</span>
-                                        </div>
-                                        
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-           
+
                 <div class="layout-card-container table-container">
                     <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
                         <!-- Table 1 -->
                         <div class="table-left" fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="70%">
                             <mat-card>
                                 <div class="table-wrapper">
-                                    <mat-table class="h-200" matSort [dataSource]="dataSource3" [@animateStagger]="{value:'50'}">
+                                    <mat-table class="h-200" matSort [dataSource]="dataSource3"
+                                        [@animateStagger]="{value:'50'}">
 
                                         <ng-container matColumnDef="billNo">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -153,25 +154,29 @@
 
                                         <ng-container matColumnDef="noData">
                                             <mat-footer-cell *matFooterCellDef colspan="6">
-                                            
+
                                                 <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
                                                 </mat-spinner>
                                                 <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
                                             </mat-footer-cell>
                                         </ng-container>
 
-                                        <mat-header-row class="accent min-width-600" *matHeaderRowDef="displayedColumns; sticky: true">
+                                        <mat-header-row class="accent min-width-600"
+                                            *matHeaderRowDef="displayedColumns; sticky: true">
                                         </mat-header-row>
-                                        <mat-row *matRowDef="let row; columns: displayedColumns;" class="element min-width-600" [@animate]="{value:'*',params:{y:'100%'}}" (click)="onEdit(row)">
+                                        <mat-row *matRowDef="let row; columns: displayedColumns;"
+                                            class="element min-width-600" [@animate]="{value:'*',params:{y:'100%'}}"
+                                            (click)="onEdit(row)">
                                         </mat-row>
-                                     
+
                                     </mat-table>
-                                   
+
                                     <div class="net-amt-section mt-8">
                                         <div class="net-amt">
                                             <div class="net-amt-box">
                                                 <span class="net-amt-label">Total Refund : </span>
-                                                <span class="net-amt-value">{{getRefundtotSum1(dataSource3.data)}} </span>
+                                                <span class="net-amt-value">{{getRefundtotSum1(dataSource3.data)}}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -182,7 +187,8 @@
                         <div class="table-right" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="30%">
                             <mat-card>
                                 <div class="table-wrapper">
-                                    <mat-table class="h-200" matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
+                                    <mat-table class="h-200" matSort [dataSource]="dataSource1"
+                                        [@animateStagger]="{value:'50'}">
 
                                         <ng-container matColumnDef="RefundDate">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -210,24 +216,29 @@
 
                                         <ng-container matColumnDef="noData">
                                             <mat-footer-cell *matFooterCellDef colspan="6">
-                                             <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
+                                                <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
                                                 </mat-spinner>
                                                 <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
                                             </mat-footer-cell>
                                         </ng-container>
 
-                                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumns2; sticky: true">
+                                        <mat-header-row class="accent"
+                                            *matHeaderRowDef="displayedColumns2; sticky: true">
                                         </mat-header-row>
-                                        <mat-row *matRowDef="let row; columns: displayedColumns2;" class="element" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource1!=null}"></mat-footer-row>
-                                        <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
+                                        <mat-row *matRowDef="let row; columns: displayedColumns2;" class="element"
+                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        <mat-footer-row *matFooterRowDef="['loading']"
+                                            [ngClass]="{'hide':dataSource1!=null}"></mat-footer-row>
+                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                            [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
                                         </mat-footer-row>
                                     </mat-table>
                                     <div class="net-amt-section mt-8">
                                         <div class="net-amt">
                                             <div class="net-amt-box">
                                                 <span class="net-amt-label">Already Refund Amount : </span>
-                                                <span class="net-amt-value">{{getRefundtotSum(dataSource1.data) | currency:'INR' }}</span>
+                                                <span class="net-amt-value">{{getRefundtotSum(dataSource1.data) |
+                                                    currency:'INR' }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -242,7 +253,8 @@
                         <div class="table-main" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                             <mat-card>
                                 <div class="table-wrapper">
-                                    <mat-table class="h-200" matSort [dataSource]="dataSource2" [@animateStagger]="{value:'50'}">
+                                    <mat-table class="h-200" matSort [dataSource]="dataSource2"
+                                        [@animateStagger]="{value:'50'}">
 
 
                                         <ng-container matColumnDef="serviceName">
@@ -298,10 +310,11 @@
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                                 <mat-form-field appearance="fill">
-                                                <!-- <mat-form-field appearance="legacy"> -->
-                                                    <input matInput [(ngModel)]="element.RefundAmt" type="text" OnlyNumber 
-                                                    (keyup)="gettablecalculation(element,element.RefundAmt)" 
-                                                    (keypress)="keyPressCharater($event)" >
+                                                    <!-- <mat-form-field appearance="legacy"> -->
+                                                    <input matInput [(ngModel)]="element.RefundAmt" type="text"
+                                                        OnlyNumber
+                                                        (keyup)="gettablecalculation(element,element.RefundAmt)"
+                                                        (keypress)="keyPressCharater($event)">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -310,12 +323,13 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 Bal Amount </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                              <span>{{element.balanceAmount}}</span>
+                                                <span>{{element.balanceAmount}}</span>
                                             </mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="refundAmount">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> Prev.Ref Amt </mat-header-cell>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                Prev.Ref Amt </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                 <span>{{element.refundAmount | currency:'INR'}}</span>
                                             </mat-cell>
@@ -336,13 +350,17 @@
                                             </mat-footer-cell>
                                         </ng-container>
 
-                                        <mat-header-row class="accent min-width-1100" *matHeaderRowDef="displayedColumns1; sticky: true">
+                                        <mat-header-row class="accent min-width-1100"
+                                            *matHeaderRowDef="displayedColumns1; sticky: true">
                                         </mat-header-row>
-                                        <mat-row *matRowDef="let row; columns: displayedColumns1;" class="element min-width-1100" [@animate]="{value:'*',params:{y:'100%'}}">
+                                        <mat-row *matRowDef="let row; columns: displayedColumns1;"
+                                            class="element min-width-1100" [@animate]="{value:'*',params:{y:'100%'}}">
                                         </mat-row>
-                                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource2!=null}">
+                                        <mat-footer-row *matFooterRowDef="['loading']"
+                                            [ngClass]="{'hide':dataSource2!=null}">
                                         </mat-footer-row>
-                                        <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource2!=null && dataSource.data.length==0)}">
+                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                            [ngClass]="{'hide':!(dataSource2!=null && dataSource.data.length==0)}">
                                         </mat-footer-row>
 
                                     </mat-table>
@@ -350,7 +368,8 @@
                                         <div class="net-amt">
                                             <div class="net-amt-box">
                                                 <span class="net-amt-label">Total of Items : </span>
-                                                <span class="net-amt-value">{{getServicetotSum(dataSource2.data) | currency:'INR' }}</span>
+                                                <span class="net-amt-value">{{getServicetotSum(dataSource2.data) |
+                                                    currency:'INR' }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -366,12 +385,15 @@
                                 <div fxLayout="row" class="gap-8">
                                     <mat-form-field appearance="outline">
                                         <mat-label>Total Refund Amount</mat-label>
-                                        <input matInput [(ngModel)]="TotalRefundAmount" readonly formControlName="TotalRefundAmount" name="TotalRefundAmount" (keyup)="calculateTotalRefund()" required>
+                                        <input matInput [(ngModel)]="TotalRefundAmount" readonly
+                                            formControlName="TotalRefundAmount" name="TotalRefundAmount"
+                                            (keyup)="calculateTotalRefund()" required>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline">
                                         <mat-label>Refund Bal Amount</mat-label>
-                                        <input matInput [(ngModel)]="RefundBalAmount" formControlName="RefundBalAmount" name="RefundBalAmount" [value]="BalanceAmount" readonly>
+                                        <input matInput [(ngModel)]="RefundBalAmount" formControlName="RefundBalAmount"
+                                            name="RefundBalAmount" [value]="BalanceAmount" readonly>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
@@ -382,8 +404,10 @@
                                     <div class="layout-footer">
                                         <div class="footer-navigation-container">
                                             <div class="layout-footer-buttons">
-                                                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                                <button type="button" class="btn btn-primary" (click)="onSave()" >Save</button>
+                                                <button type="button" class="btn btn-danger-outline"
+                                                    (click)="onClose()">Close</button>
+                                                <button type="button" class="btn btn-primary"
+                                                    (click)="onSave()">Save</button>
                                             </div>
                                         </div>
                                     </div>
@@ -396,7 +420,7 @@
         </div>
         <!-- / CONTENT -->
     </div>
-   
+
     <!-- / CENTER -->
 </div>
 <!--End of Middle Data-->

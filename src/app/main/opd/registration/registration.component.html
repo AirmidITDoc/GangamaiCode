@@ -30,7 +30,7 @@
                         <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform"
                             formControlName="FirstName" [(ngModel)]="gridConfig.filters[0].fieldValue" />
                         <button matSuffix mat-icon-button aria-label="Clear"
-                            (click)="gridConfig.filters[0].fieldValue=''">
+                            (click)="gridConfig.filters[0].fieldValue='%'">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
@@ -41,7 +41,7 @@
                         <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
                             formControlName="LastName" [(ngModel)]="gridConfig.filters[1].fieldValue" />
                         <button matSuffix mat-icon-button aria-label="Clear"
-                            (click)="gridConfig.filters[1].fieldValue=''">
+                            (click)="gridConfig.filters[1].fieldValue='%'">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
@@ -51,7 +51,7 @@
                         <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myFilterform"
                             formControlName="RegNo" [(ngModel)]="gridConfig.filters[2].fieldValue" />
                         <button matSuffix mat-icon-button aria-label="Clear"
-                            (click)="gridConfig.filters[2].fieldValue=''">
+                            (click)="gridConfig.filters[2].fieldValue='0'">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
@@ -61,7 +61,7 @@
                         <input matInput placeholder="Search MobileNo" autocomplete="off" [formGroup]="myFilterform"  formControlName="MobileNo"
                             [(ngModel)]="gridConfig.filters[5].fieldValue" [maxLength]="10" />
                         <button matSuffix mat-icon-button aria-label="Clear"
-                            (click)="gridConfig.filters[5].fieldValue=''">
+                            (click)="gridConfig.filters[5].fieldValue='%'">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>

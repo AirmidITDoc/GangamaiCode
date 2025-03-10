@@ -32,7 +32,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
   RegId = 0;
 
-  screenFromString = 'admission-form';
+  screenFromString = 'appointment-form';
   submitted = false;
   isChecked = true;
   isTimeChanged: boolean = false;
@@ -140,7 +140,7 @@ phdatetime: any;
   selectedTime: string | null = null;
 
   OnSubmit() {
-debugger
+
     console.log(this.phoneappForm.value);
        this.phoneappForm.get('appDate').setValue(this.datePipe.transform(this.phoneappForm.get('appDate').value, 'yyyy-MM-dd'))
       this.phoneappForm.get('appTime').setValue(this.datePipe.transform(this.phoneappForm.get('appTime').value, 'hh:mm:ss a'))
@@ -151,6 +151,7 @@ debugger
      
       console.log(this.phoneappForm.value);
       this._phoneAppointListService.phoneMasterSave(this.phoneappForm.value).subscribe((response) => {
+        console.log(response)
         this.toastr.success(response.message);
         this.onClear(true);
       }, (error) => {

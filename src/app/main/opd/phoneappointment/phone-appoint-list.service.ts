@@ -23,10 +23,10 @@ export class PhoneAppointListService {
     filterForm(): FormGroup {
         return this._formBuilder.group({
             FirstName: ['', [
-                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+                Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
             ]],
             LastName: ['', [
-                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+                Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
             ]],
             DoctorId: '',
             fromDate: [(new Date()).toISOString()],

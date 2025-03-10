@@ -209,7 +209,8 @@ export class AirmidDropDownComponent implements OnInit {
         event.stopPropagation();
         const control = this.formGroup.controls[this.formControlName];
         if (control) {
-            control.reset();
+            control.setValue("0")
+            // control.reset();
         }
     }
     ngOnChanges(changes: SimpleChanges): void {

@@ -67,7 +67,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   vFinalnetPaybleAmt: any = 0;
   className = "OPD";
   savebtn: boolean = true;
-
+  screenFromString = 'Common-form';
 
   Consessionres: boolean = false;
   autocompleteModeCashcounter: string = "CashCounter";
@@ -290,8 +290,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       const discountAmount = (totalAmount * formValue.discountPer) / 100;
       const netAmount = totalAmount - discountAmount;
       debugger
-      // console.log(this.chargeForm.value)
-      // Create a new row of data
+     if(totalAmount > 0){
       const newRow = {
         ServiceId: formValue.serviceName.serviceId,
         ServiceName: formValue.serviceName.serviceName,
@@ -331,7 +330,10 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       if (serviceNameElement) {
         serviceNameElement.focus();
       }
+    }else{
+      Swal.fire("Can't Enter Invalid Data !")
     }
+  }
   }
   deleteCharge(index: number) {
     this.chargeList.splice(index, 1);

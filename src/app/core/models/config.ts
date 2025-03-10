@@ -68,7 +68,7 @@ export class ConfigSettingParams {
     SalesCounterId:number;
     SalesReturnCounterId:number;
     SalesReceiptCounterID:number;
-    
+    IsDischargeInitiateflow:any;
  /**
      * Constructor
      *
@@ -145,6 +145,7 @@ export class ConfigSettingParams {
         this.SalesCounterId= ConfigSettingParams.SalesCounterId;
         this.SalesReturnCounterId = ConfigSettingParams.SalesReturnCounterId;
         this.SalesReceiptCounterID =ConfigSettingParams.SalesReceiptCounterID;
+        this.IsDischargeInitiateflow =ConfigSettingParams.IsDischargeInitiateflow;
     }
 
 }

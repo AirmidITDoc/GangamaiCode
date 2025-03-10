@@ -217,31 +217,7 @@ export class UpdateRegPatientInfoComponent {
 }
 
   VitalInfo(contact) {
-    // let xx = {
-    //   RegId: contact.RegId,
-    //   OPD_IPD_ID: contact.OPD_IPD_ID,
-    //   RegNo: contact.RegNoWithPrefix,
-    //   VisitId: contact.VisitId,
-    //   PatientName: contact.PatientName,
-    //   Doctorname: contact.Doctorname,
-    //   AdmDateTime: contact.AdmDateTime,
-    //   AgeYear: contact.AgeYear,
-    //   AgeMonth: contact.AgeMonth,
-    //   AgeDay: contact.AgeDay,
-    //   DepartmentName: contact.DepartmentName,
-    //   ClassId: contact.ClassId,
-    //   OPDNo: contact.OPDNo,
-    //   PatientType: contact.PatientType,
-    //   ClassName: contact.ClassName,
-    //   TariffName: contact.TariffName,
-    //   TariffId: contact.TariffId,
-    //   CompanyId: contact.CompanyId,
-    //   CompanyName: contact.CompanyName,
-    //   RefDocName: contact.RefDocName,
-    //   MobileNo: contact.MobileNo,
-    //   Lbl: "PatientVitalInfo"
-    // };
-  
+      
     console.log(contact)
     // this.advanceDataStored.storage = new SearchInforObj(xx);
     const dialogRef = this._matDialog.open(PatientvitalInformationComponent,
@@ -274,6 +250,15 @@ export class UpdateRegPatientInfoComponent {
       console.log('The dialog was closed - Insert Action', result);
       this.PrevregisterObj = result
 
+      console.log(result)
+      
+this.VisitFormGroup.get("DepartmentId").setValue(this.PrevregisterObj.departmentId)
+this.patientDetail1.doctorID=this.PrevregisterObj.consultantDocId
+// this.VisitFormGroup.get("ConsultantDocId").setValue(this.PrevregisterObj.consultantDocId)
+
+// this.ddlDoctor.SetSelection(this.PrevregisterObj.consultantDocId)
+
+// this.selectChangedepartment(this.PrevregisterObj)
     });
   }
 

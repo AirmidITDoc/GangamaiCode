@@ -114,7 +114,7 @@ export class RefundbillComponent implements OnInit {
   vMobileNo: any;
 patientDetail1 = new VisitMaster1({});
   Paymentdataobj: PaymentInsert[] = [];
-
+  public isModal = false;
 
   @ViewChild('picker') datePickerElement = MatDatepicker;
   displayedColumns1 = [

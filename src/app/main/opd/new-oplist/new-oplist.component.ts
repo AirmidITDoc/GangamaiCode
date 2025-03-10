@@ -235,9 +235,7 @@ export class NewOPListComponent implements OnInit {
 
 
     viewgetOPBillReportPdf(element) {
-        debugger
-        console.log('Third action clicked for:', element);
-        this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
+       this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
     }
 
 
@@ -317,14 +315,15 @@ console.log(data)
                 this._OPListService.InsertOPBillingsettlement(data).subscribe(response => {
                     this.toastr.success(response.message);
                     this.viewgetOPPayemntPdf(response);
-                    this.grid.bindGridData();
+                  
                 }, (error) => {
                     this.toastr.error(error.message);
                 });
 
             }
         });
-       
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
     }
 
     // getBilllistview(){

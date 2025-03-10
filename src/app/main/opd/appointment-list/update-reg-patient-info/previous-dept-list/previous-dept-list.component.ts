@@ -13,9 +13,9 @@ import { AppointmentlistService } from '../../appointmentlist.service';
 })
 export class PreviousDeptListComponent {
   displayedColumns: string[] = [
-    'VisitDate',
-    'DepartmentName',
-    'DoctorName'
+    'visitDate',
+    'departmentName',
+    'doctorName'
   ]
 
   registerObj: any;
@@ -50,7 +50,7 @@ export class PreviousDeptListComponent {
       "filters": [
         {
           "fieldName": "RegId",
-          "fieldValue": "140306",
+          "fieldValue": String(Obj.regId),//"140306",
           "opType": "Equals"
         },
         {
@@ -67,8 +67,9 @@ export class PreviousDeptListComponent {
       "exportType": "JSON"
     }
     this._opappointmentService.getLastVisitDoctorList(vdata).subscribe(data => {
-      this.dsLastDepartmentname.data = data.data as RegInsert[]
       console.log(data)
+      this.dsLastDepartmentname.data = data.data as RegInsert[]
+      console.log(data.data)
     })
   }
   getDoctor(contact) {
