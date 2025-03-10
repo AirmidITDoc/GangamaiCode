@@ -73,7 +73,8 @@
                                                         ValueField="storeId" 
                                                         TextField="storeName"
                                                         ApiUrl="StoreMaster/get-store" 
-                                                        [ReqFullObj]="true">
+                                                        [ReqFullObj]="true"
+                                                        (selectionChange)="selectChangeStoreId($event)">
                                                     </airmid-dropdown>
                                                     <!-- [value]="registerObj.mAssignItemToStores" -->
                                                 </div>

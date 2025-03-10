@@ -214,15 +214,21 @@
                                                                         [formGroup]="caseFormGroup"
                                                                         [validations]="getValidationMessages().ChiefComplaint" #ddlChiefComplaint
                                                                         [IsMultiPle]="true" 
-                                                                        [value]="regObj.mAssignChiefComplaint"
                                                                         ValueField="complaintId" 
                                                                         TextField="complaintDescr"
                                                                         ApiUrl="OPDPrescriptionMedical/get-ChiefComplaint" 
                                                                         [ReqFullObj]="true"
                                                                         (selectionChange)="selectChangeCheifComplaint($event)">
                                                                     </airmid-dropdown>
+                                                                    <!-- [value]="regObj.mAssignChiefComplaint" -->
                                                                 </div>
                                                                 <mat-chip-listbox #chipList>
+                                                                    <!-- <mat-chip
+                                                                        *ngFor="let item of addCheiflist">
+                                                                        {{ item.complaintDescr }} <mat-icon
+                                                                            (click)="removeChiefComplaint(item)">close</mat-icon>
+                                                                    </mat-chip> -->
+
                                                                     <mat-chip
                                                                         *ngFor="let item of caseFormGroup.value.mAssignChiefComplaint">
                                                                         {{ item.complaintDescr }} <mat-icon
@@ -249,7 +255,7 @@
                                                                 [IsMultiPle]="true" 
                                                                 [value]="regObj.mAssignDiagnosis"
                                                                 ValueField="visitId" 
-                                                                TextField="descriptionType"
+                                                                TextField="descriptionName"
                                                                 ApiUrl="OPDPrescriptionMedical/get-Dignosis" 
                                                                 [ReqFullObj]="true"
                                                                 (selectionChange)="selectChangeDiagnosis($event)">
@@ -258,9 +264,14 @@
                                                             <mat-chip-listbox #chipList>
                                                                 <mat-chip
                                                                     *ngFor="let item of caseFormGroup.value.mAssignDiagnosis">
-                                                                    {{ item.descriptionType }} <mat-icon
+                                                                    {{ item.descriptionName }} <mat-icon
                                                                         (click)="removedignosis(item)">close</mat-icon>
                                                                 </mat-chip>
+                                                                <!-- <mat-chip
+                                                                *ngFor="let item of addDiagnolist">
+                                                                {{ item.descriptionName }} <mat-icon
+                                                                    (click)="removedignosis(item)">close</mat-icon>
+                                                            </mat-chip> -->
                                                             </mat-chip-listbox>
                                                         </div>
                                                     </form>
@@ -400,11 +411,14 @@
                                                     </div>
                                                 </form>
                                             </div>
-                                            <div class="modal-card-container table-container">
+                                            <div class="modal-card-container table-container fusePerfectScrollbar">
                                                 <div class="table" fxFlex="100%">
-                                                    <mat-table class="mat-table-1 h-230" matSort
+                                                    <!-- <mat-table class="mat-table-1 h-230" matSort
                                                         [dataSource]="dsItemList" [@animateStagger]="{value:'50'}"
-                                                        style="overflow: auto;">
+                                                        style="overflow: auto;"> -->
+
+                                                        <mat-table matSort [dataSource]="dsItemList"
+                                                        [@animateStagger]="{value:'50'}" class="airmid-table mt-4 h-200">
 
                                                         <ng-container matColumnDef="ItemName">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
@@ -416,60 +430,78 @@
                                                         </ng-container>
 
                                                         <ng-container matColumnDef="ItemGenericName">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                                fxShow.gt-sm class="w-300">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-300">
                                                                 ItemGenericName
                                                             </mat-header-cell>
-
-                                                            <mat-cell *matCellDef="let element; let in = index" fxHide
-                                                                fxShow.gt-sm class="w-300">
+                                                        
+                                                            <mat-cell *matCellDef="let element; let in = index" fxHide fxShow.gt-sm class="w-300">
+                                                                <!-- Display text when not in edit mode -->
                                                                 <span *ngIf="editingIndex1 !== in">
                                                                     {{ element.GenericName || vItemGN }}
-                                                                    <mat-icon (click)="editItem(in)"
-                                                                        class="edit-icon">edit</mat-icon>
+                                                                    <mat-icon (click)="editItem(in, element)" class="edit-icon">edit</mat-icon>
                                                                 </span>
+                                                        
+                                                                <!-- Show dropdown and save button when in edit mode -->
+                                                                <div *ngIf="editingIndex1 === in" style="display: flex; align-items: center; gap: 10px;">
+                                                                    <airmid-dropdown 
+                                                                        label="ItemGeneric Name" 
+                                                                        formControlName="ItemGenericNameId"
+                                                                        [formGroup]="MedicineItemForm"
+                                                                        [mode]="autocompleteModeItemGeneric"
+                                                                        (selectionChange)="selectChangeItemGenericName($event)">
+                                                                    </airmid-dropdown>
+                                                        
+                                                                    <button mat-icon-button (click)="OnSaveEditGeneric(element)" matTooltip="Save">
+                                                                        <mat-icon class="active-icon green-600 s-16">check</mat-icon>
+                                                                    </button>
 
-                                                                <airmid-dropdown label="ItemGeneric Name" *ngIf="editingIndex1 === in"
-                                                                 formControlName="ItemGenericNameId"
-                                                                [formGroup]="MedicineItemForm"
-                                                                [mode]="autocompleteModeItemGeneric"
-                                                                (selectionChange)="selectChangeItemGenericName($event)">
-                                                            </airmid-dropdown>
+                                                                    <button mat-icon-button (click)="GenericdisableEditing(element)" matTooltip="Close">
+                                                                        <mat-icon class="active-icon red-600 s-16">close</mat-icon>
+                                                                    </button>
+                                                                </div>
                                                             </mat-cell>
-                                                        </ng-container>
+                                                        </ng-container>                                                        
 
                                                         <ng-container matColumnDef="DoseName">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                                fxShow.gt-sm class="w-300">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-300">
                                                                 Dose Name
                                                             </mat-header-cell>
-
-                                                            <mat-cell *matCellDef="let element; let i = index" fxHide
-                                                                fxShow.gt-sm class="w-300">
+                                                        
+                                                            <mat-cell *matCellDef="let element; let i = index" fxHide fxShow.gt-sm class="w-300">
+                                                              
                                                                 <span *ngIf="editingIndex !== i">
-                                                                    {{ element.DoseName || vDoseName}}
-                                                                    <mat-icon (click)="editDose(i)"
-                                                                        class="edit-icon">edit</mat-icon>
+                                                                    {{ element.DoseName || vDoseName }}
+                                                                    <mat-icon (click)="editDose(i, element)" class="edit-icon">edit</mat-icon>
                                                                 </span>
-
-                                                                <airmid-dropdown *ngIf="editingIndex === i"
-                                                                    formControlName="DoseId"
-                                                                    [formGroup]="MedicineItemForm"
-                                                                    [validations]="getValidationMessages().DoseId"
-                                                                    [mode]="autocompleteModeDose"
-                                                                    (selectionChange)="selectChangeDoseName($event)">
-                                                                </airmid-dropdown>
+                                                        
+                                                                <div *ngIf="editingIndex === i" style="display: flex; align-items: center; gap: 5px;">
+                                                                    <airmid-dropdown 
+                                                                        formControlName="DoseId"
+                                                                        [formGroup]="MedicineItemForm"
+                                                                        [validations]="getValidationMessages().DoseId"
+                                                                        [mode]="autocompleteModeDose"
+                                                                        (selectionChange)="selectChangeDoseName($event)">
+                                                                    </airmid-dropdown>
+                                                        
+                                                                    <button mat-icon-button (click)="OnSaveEditDose(element)" matTooltip="Save">
+                                                                        <mat-icon class="active-icon green-600 s-16">check</mat-icon>
+                                                                    </button>
+                                                        
+                                                                    <button mat-icon-button (click)="DosedisableEditing(i)" matTooltip="Close">
+                                                                        <mat-icon class="active-icon red-600 s-16">close</mat-icon>
+                                                                    </button>
+                                                                </div>
                                                             </mat-cell>
                                                         </ng-container>
+                                                       
 
                                                         <ng-container matColumnDef="Days">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                 fxShow.gt-sm>Days</mat-header-cell>
                                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                <!-- <span> {{element.Days}}</span> -->
-                                                                <mat-form-field appearance="fill">
+                                                                <mat-form-field appearance="fill" floatLabel="never">
                                                                     <input matInput [(ngModel)]="element.Days || vDayys"
-                                                                        type="text" OnlyNumber>
+                                                                        type="number" OnlyNumber>
                                                                 </mat-form-field>
                                                             </mat-cell>
                                                         </ng-container>
@@ -479,7 +511,7 @@
                                                                 fxShow.gt-sm>Instruction
                                                             </mat-header-cell>
                                                             <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                                <mat-form-field appearance="fill">
+                                                                <mat-form-field appearance="fill" floatLabel="never">
                                                                     <input matInput [(ngModel)]="element.Instruction || vInst"
                                                                         type="text">
                                                                 </mat-form-field>

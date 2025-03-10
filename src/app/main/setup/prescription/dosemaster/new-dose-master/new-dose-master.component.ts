@@ -67,12 +67,12 @@ export class NewDoseMasterComponent implements OnInit {
             doseName: [
                 { name: "required", Message: "Dose Name is required" },
                 { name: "maxlength", Message: "Dose name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
+                // { name: "pattern", Message: "Special char not allowed." }
             ],
             doseNameInEnglish: [
                 { name: "required", Message: "DoseName In English is required" },
                 { name: "maxlength", Message: "DoseName In English should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
+                // { name: "pattern", Message: "Special char not allowed." }
             ],
             doseQtyPerDay: [
                 { name: "required", Message: "Dose Qty Per Day is required" },
