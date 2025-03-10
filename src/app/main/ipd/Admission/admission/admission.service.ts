@@ -261,5 +261,9 @@ export class AdmissionService {
     public getMLCById(Id) {
         return this._httpClient1.GetData("MlcInformation/" + Id);
     }
+
+    public getstateId(Id) {
+        return this._httpClient1.GetData("StateMaster/" + Id);
+    }
 }
 

@@ -59,7 +59,7 @@
                     <mat-form-field appearance="outline">
                         <mat-label>MobileNo</mat-label>
                         <input matInput placeholder="Search MobileNo" autocomplete="off" [formGroup]="myFilterform"  formControlName="MobileNo"
-                            [(ngModel)]="gridConfig.filters[5].fieldValue" />
+                            [(ngModel)]="gridConfig.filters[5].fieldValue" [maxLength]="10" />
                         <button matSuffix mat-icon-button aria-label="Clear"
                             (click)="gridConfig.filters[5].fieldValue=''">
                             <mat-icon>close</mat-icon>

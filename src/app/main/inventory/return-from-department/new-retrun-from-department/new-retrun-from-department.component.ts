@@ -77,6 +77,7 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
   dsIssueList = new MatTableDataSource<IssueList>();
   dsItemDetailsList = new MatTableDataSource<ItemList>();
 
+  autocompletestore: string = "Store";
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
@@ -95,40 +96,40 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.gePharStoreList();
-    this.getToStoreSearchList();
+    // this.gePharStoreList();
+    // this.getToStoreSearchList();
 
-    this.filteredOptionsStore = this._ReturnToDepartmentList.userFormGroup.get('ToStoreId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterToStore(value)),
-    );
+    // this.filteredOptionsStore = this._ReturnToDepartmentList.userFormGroup.get('ToStoreId').valueChanges.pipe(
+    //   startWith(''),
+    //   map(value => this._filterToStore(value)),
+    // );
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  gePharStoreList() {
-    var vdata = {
-      Id: this._loggedService.currentUserValue.storeId
-    }
-    this._ReturnToDepartmentList.getLoggedStoreList(vdata).subscribe(data => {
-      this.StoreList = data;
-      this._ReturnToDepartmentList.userFormGroup.get('StoreId').setValue(this.StoreList[0]);
-    });
-  }
-  getToStoreSearchList() {
-    this._ReturnToDepartmentList.getToStoreSearchList().subscribe(data => {
-      this.ToStoreList = data;
-    });
-  }
-  private _filterToStore(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-      return this.ToStoreList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
-    }
-  }
-  getOptionTextStoresList(option) {
-    return option && option.StoreName ? option.StoreName : '';
-  }
+  // gePharStoreList() {
+  //   var vdata = {
+  //     Id: this._loggedService.currentUserValue.storeId
+  //   }
+  //   this._ReturnToDepartmentList.getLoggedStoreList(vdata).subscribe(data => {
+  //     this.StoreList = data;
+  //     this._ReturnToDepartmentList.userFormGroup.get('StoreId').setValue(this.StoreList[0]);
+  //   });
+  // }
+  // getToStoreSearchList() {
+  //   this._ReturnToDepartmentList.getToStoreSearchList().subscribe(data => {
+  //     this.ToStoreList = data;
+  //   });
+  // }
+  // private _filterToStore(value: any): string[] {
+  //   if (value) {
+  //     const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+  //     return this.ToStoreList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+  //   }
+  // }
+  // getOptionTextStoresList(option) {
+  //   return option && option.StoreName ? option.StoreName : '';
+  // }
 
   getNewReturnToDepartmentList() {
     this.sIsLoading = 'loading-data';
@@ -148,21 +149,21 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
         this.sIsLoading = '';
       });
   }
-  getItemList(param) {
-    this.vIssueId = param.IssueId
-    var vdata = {
-      "IssueId": param.IssueId
-    }
-    this._ReturnToDepartmentList.getNewReturnItemList(vdata).subscribe(data => {
-      this.dsItemList.data = data as ItemList[];
-      this.dsItemList.sort = this.sort;
-      this.dsItemList.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
+  // getItemList(param) {
+  //   this.vIssueId = param.IssueId
+  //   var vdata = {
+  //     "IssueId": param.IssueId
+  //   }
+  //   this._ReturnToDepartmentList.getNewReturnItemList(vdata).subscribe(data => {
+  //     this.dsItemList.data = data as ItemList[];
+  //     this.dsItemList.sort = this.sort;
+  //     this.dsItemList.paginator = this.paginator;
+  //     this.sIsLoading = '';
+  //   },
+  //     error => {
+  //       this.sIsLoading = '';
+  //     });
+  // }
   chargeslist: any = [];
   getItemdetails(param) {
     this.chargeslist.push(

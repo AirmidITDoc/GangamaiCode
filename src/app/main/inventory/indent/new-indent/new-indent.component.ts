@@ -60,6 +60,9 @@ registerObj:any;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
+  autocompletestore: string = "Store";
+  autocompleteitem: string = "ItemType"; //Item
+
   constructor(
     public _IndentService: IndentService,
     public _matDialog: MatDialog,
@@ -72,48 +75,48 @@ registerObj:any;
 
   ngOnInit(): void {
     
-    this.filteredOptionsStore = this._IndentService.newIndentFrom.get('ToStoreId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterToStore(value)),
-    );
-    this.getTostoreListCombobox();
-    this.getFromStoreSearchList();
-    if(this.data.Obj){
-      this.registerObj = this.data.Obj;
+    // this.filteredOptionsStore = this._IndentService.newIndentFrom.get('ToStoreId').valueChanges.pipe(
+    //   startWith(''),
+    //   map(value => this._filterToStore(value)),
+    // );
+    // this.getTostoreListCombobox();
+    // this.getFromStoreSearchList();
+    if(this.data){
+      this.registerObj = this.data;
       console.log(this.registerObj);
       this.getupdateIndentList(this.registerObj);
     }
 
   }
-  getFromStoreSearchList() {
-    var data = {
-      "Id": this._loggedService.currentUserValue.storeId
-    }
-    this._IndentService.getFromStoreNameSearch(data).subscribe(data => {
-      this.FromStoreList = data;
-      this._IndentService.StoreFrom.get('FromStoreId').setValue(this.FromStoreList[0]);
-    });
-  }
-  getTostoreListCombobox() {
-    this._IndentService.getToStoreNameSearch().subscribe(data => {
-      this.ToStoreList = data;
-      console.log(this.ToStoreList)
-      if (this.data) {
-        const ddValue = this.ToStoreList.filter(c => c.StoreId == this.vToStoreId);
-        this._IndentService.newIndentFrom.get('ToStoreId').setValue(ddValue[0]);
-      } 
-    });
+  // getFromStoreSearchList() {
+  //   var data = {
+  //     "Id": this._loggedService.currentUserValue.storeId
+  //   }
+  //   this._IndentService.getFromStoreNameSearch(data).subscribe(data => {
+  //     this.FromStoreList = data;
+  //     this._IndentService.StoreFrom.get('FromStoreId').setValue(this.FromStoreList[0]);
+  //   });
+  // }
+  // getTostoreListCombobox() {
+  //   this._IndentService.getToStoreNameSearch().subscribe(data => {
+  //     this.ToStoreList = data;
+  //     console.log(this.ToStoreList)
+  //     if (this.data) {
+  //       const ddValue = this.ToStoreList.filter(c => c.StoreId == this.vToStoreId);
+  //       this._IndentService.newIndentFrom.get('ToStoreId').setValue(ddValue[0]);
+  //     } 
+  //   });
     
-  }
-  private _filterToStore(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-      return this.ToStoreList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
-    }
-  }
-  getOptionTextStores(option) {
-    return option && option.StoreName ? option.StoreName : '';
-  }
+  // }
+  // private _filterToStore(value: any): string[] {
+  //   if (value) {
+  //     const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+  //     return this.ToStoreList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+  //   }
+  // }
+  // getOptionTextStores(option) {
+  //   return option && option.StoreName ? option.StoreName : '';
+  // }
   getIndentItemName() {
     var Param = {
       "ItemName": `${this._IndentService.newIndentFrom.get('ItemName').value}%`,
@@ -129,48 +132,94 @@ registerObj:any;
       }
     });
   }
-  getOptionText(option) {
-    if (!option)
-      return '';
-    return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
-  }
-  getSelectedObj(obj) {
-    this.vItemId = obj.ItemID,
-      this.ItemName = obj.ItemName;
-      this.vQty = '' ; //obj.BalQty;
+  // getOptionText(option) {
+  //   if (!option)
+  //     return '';
+  //   return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
+  // }
+  // getSelectedObj(obj) {
+  //   this.vItemId = obj.ItemID,
+  //     this.ItemName = obj.ItemName;
+  //     this.vQty = '' ; //obj.BalQty;
+  // }
+
+  itemid=0;
+  itemName='';
+  selectChangeItem(data){
+    this.itemid=data.value
+    this.itemName=data.text
   }
 
+  // onAdd() {
+  //   if (!this._IndentService.newIndentFrom.get('ItemName')?.value) {
+  //     this.toastr.warning('Please enter a item', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     return;
+  //   }
+  //   if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
+  //     this.toastr.warning('Please enter a Qty', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     return;
+  //   }
+  //   const isDuplicate = this.dsIndentNameList.data.some(item => item.ItemID === this._IndentService.newIndentFrom.get('ItemName').value.ItemID);
+  //   if (!isDuplicate) {
+  //     this.chargeslist = this.dsIndentNameList.data;
+  //     this.chargeslist.push(
+  //       {
+  //         ItemId: this.itemid || 0,
+  //         ItemName: this.itemName || '',
+  //         // ItemId: this._IndentService.newIndentFrom.get('ItemName').value.ItemID || 0,
+  //         // ItemName: this._IndentService.newIndentFrom.get('ItemName').value.ItemName,
+  //         Qty: this._IndentService.newIndentFrom.get('Qty').value || 0,
+  //       });
+  //     this.dsIndentNameList.data = this.chargeslist;
+  //   } else {
+  //     this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //   }
+  //   this.ItemReset();
+  //   this.itemname.nativeElement.focus();
+  // }
+
   onAdd() {
-    if ((this.vItemName == '' || this.vItemName == null || this.vItemName == undefined)) {
-      this.toastr.warning('Please enter a item', 'Warning !', {
+    debugger
+    if (!this._IndentService.newIndentFrom.get('ItemName')?.value) {
+      this.toastr.warning('Please select Item', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
     if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
-      this.toastr.warning('Please enter a Qty', 'Warning !', {
+      this.toastr.warning('Please enter a qty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    const isDuplicate = this.dsIndentNameList.data.some(item => item.ItemID === this._IndentService.newIndentFrom.get('ItemName').value.ItemID);
-    if (!isDuplicate) {
-      this.chargeslist = this.dsIndentNameList.data;
-      this.chargeslist.push(
-        {
-          ItemId: this._IndentService.newIndentFrom.get('ItemName').value.ItemID || 0,
-          ItemName: this._IndentService.newIndentFrom.get('ItemName').value.ItemName,
-          Qty: this._IndentService.newIndentFrom.get('Qty').value || 0,
-        });
-      this.dsIndentNameList.data = this.chargeslist;
-    } else {
-      this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+    const selectedItem = this._IndentService.newIndentFrom.get('ItemName').value;
+    const iscekDuplicate = this.dsIndentNameList.data.some(item => item.ItemID == this.itemid)
+    if(!iscekDuplicate){
+    this.dsIndentNameList.data = [];
+    this.chargeslist.push(
+      {
+        ItemID: this.itemid || 0,
+        ItemName: this.itemName || '',
+        Qty:  this._IndentService.newIndentFrom.get('Qty').value || this.vQty,
+      });
+    this.dsIndentNameList.data = this.chargeslist
+    //console.log(this.dsItemList.data); 
+    }else{
+      this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
+      return;
     }
-    this.ItemReset();
-    this.itemname.nativeElement.focus();
+    this._IndentService.newIndentFrom.get('ItemName').reset('');
+    this._IndentService.newIndentFrom.get('Qty').reset(''); 
   }
+
   deleteTableRow(element) {
     let index = this.chargeslist.indexOf(element);
     if (index >= 0) {
@@ -269,7 +318,6 @@ registerObj:any;
         });
       });
     } else {
-
       
       let updateIndent = {};
       updateIndent['indentId'] = this.vIndentId;
@@ -320,6 +368,19 @@ registerObj:any;
     }
 
   }
+
+  getValidationMessages() {
+    return {
+      FromStoreId: [
+            // { name: "required", Message: "Store Name is required" }
+        ],
+        ToStoreId: [
+          // { name: "required", Message: "Ward Name is required" }
+      ],
+      ItemName:[]
+    };
+  }
+
   OnReset() {
     this._IndentService.newIndentFrom.reset();
     this.dsIndentNameList.data = [];

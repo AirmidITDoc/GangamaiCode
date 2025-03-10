@@ -40,7 +40,7 @@
                         </div>
                     </div>
 
-                    <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="GetDetails($event)" #grid>
+                    <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="GetDetails1($event)" #grid>
                         <ng-container filters>
                             <airmid-datepicker [formGroup]="_PrescriptionService.mysearchform" [isRangePicker]="true"
                                 formStartControlName="startdate" formEndControlName="enddate"
@@ -94,7 +94,7 @@
                             </div>
                         </div>
                     </div>
-                    <airmid-table [gridConfig]="gridConfig3" class="content">
+                    <airmid-table [gridConfig]="gridConfig3" class="content" (onSelectRow)="GetDetails2($event)" #grid2>
                         <ng-container filters>
                             <airmid-datepicker [formGroup]="_PrescriptionService.mysearchform" [isRangePicker]="true"
                                 formStartControlName="startdate" formEndControlName="enddate"
@@ -115,11 +115,13 @@
                         </ng-container>
                     </airmid-table>
                 </div>
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <airmid-table [gridConfig]="gridConfig4" class="content">
-
+                
+                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
+                    *ngIf="isShowDetailTable">
+                    <airmid-table [gridConfig]="gridConfig4" class="content" #grid4 :ShowFilter="false">
                     </airmid-table>
                 </div>
+
             </div>
         </mat-tab>
 

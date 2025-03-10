@@ -30,6 +30,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { element } from 'protractor';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 
 @Component({
@@ -116,6 +117,7 @@ export class IPAdvanceComponent implements OnInit {
     public _WhatsAppEmailService:WhatsAppEmailService,
     private dialogRef: MatDialogRef<IPAdvanceComponent>,
     private accountService: AuthenticationService,
+     private commonService: PrintserviceService,
     public toastr: ToastrService,
     private formBuilder: UntypedFormBuilder) 
     { }
@@ -293,8 +295,9 @@ TotalAdvRefAmt:any=0;
         };
         console.log(submitData);
         this._IpSearchListService.InsertAdvanceHeader(submitData).subscribe(response => {
+          console.log(response)
           this.toastr.success(response.message);
-          this.viewgetAdvanceReceiptReportPdf(response, true);
+          this.viewgetAdvanceReceiptReportPdf(response);
           this.getWhatsappsAdvance(response, this.vMobileNo);
           this._matDialog.closeAll();
         }, (error) => {
@@ -309,8 +312,9 @@ TotalAdvRefAmt:any=0;
         };
         console.log(submitData);
         this._IpSearchListService.UpdateAdvanceHeader(submitData).subscribe(response => {
+          console.log(response)
           this.toastr.success(response.message);
-          this.viewgetAdvanceReceiptReportPdf(response, true);
+          this.viewgetAdvanceReceiptReportPdf(response);
           this.getWhatsappsAdvance(response, this.vMobileNo);
           this._matDialog.closeAll();
         }, (error) => {
@@ -339,26 +343,9 @@ TotalAdvRefAmt:any=0;
       return false;
     }
   } 
-  viewgetAdvanceReceiptReportPdf(AdvanceID,Flag) {
-    let AdvanceDetailID
-    if(Flag)
-    AdvanceDetailID = AdvanceID
-    else
-    AdvanceDetailID = AdvanceID.AdvanceDetailID 
-    this._IpSearchListService.getViewAdvanceReceipt(
-      AdvanceDetailID
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Advance Viewer"
-          }
-        });
-    });
+  viewgetAdvanceReceiptReportPdf(data) {
+   
+    this.commonService.Onprint("AdvanceDetailID", data.advanceDetailID, "IpAdvanceReceipt");
   }
 
   getWhatsappsAdvance(el, vmono) { 

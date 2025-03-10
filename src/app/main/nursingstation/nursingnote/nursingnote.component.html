@@ -317,6 +317,8 @@
                                                                     </div> -->
                                                             
                                                                     <div>
+                                                                        <airmid-editor label="Template Details" formControlName="templateDesc" [(value)]="vTemplateDesc" [formGroup]="_NursingStationService.myform"></airmid-editor>
+
                                                                         <!-- <mat-form-field appearance="outline" fxFlex>
                                                                             <mat-label>Description</mat-label>
                                                                             <textarea rows="16" matInput name="Description" formControlName="Description"
@@ -553,9 +555,9 @@
                                                             <span>Any Risk</span>
                                                         </div>
 
+                                                        <span style="font-size:80px;padding-top: 10px;">  </span>
                                                         <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                    
-                                                            <div fxFlex="60%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                 <airmid-textbox 
                                                                     label="Comments" 
                                                                     formControlName="comments" 
@@ -564,50 +566,23 @@
                                                                     [validations]="getValidationMessages().comments"
                                                                     [maxLength]="50">
                                                                 </airmid-textbox>
-                                                            </div>
-                                
-                                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <div fxLayout="row" style="padding: 10px;">
-                                                                    <mat-radio-group name="HandOverType" formControlName="HandOverType" fxLayout="column">
+
+                                                                <div fxLayout="row" >
+                                                                    <mat-radio-group name="HandOverType" fxLayout="row" formControlName="HandOverType" >
                                                                         <mat-radio-button value="0">Morning</mat-radio-button>
                                                                         <mat-radio-button value="1"> Evening</mat-radio-button>
                                                                         <mat-radio-button value="2">Night</mat-radio-button>
                                                                     </mat-radio-group>
-
-                                                                    <div style="padding: 30px 10px 0 10px;">
-                                                                        <button type="button" class="btn btn-primary btn-with-icon py-8" #addbutton id="btnAdd">
-                                                                            <mat-icon>add</mat-icon>
-                                                                        </button>
-                                                                    </div>
-
                                                                 </div>
-                                                                
-                                                                
-                                                            </div>
-                                    
-                                                        <!-- <div fxLayout="column" fxLayoutGap="6px" style="padding: 10px 10px 0 60px;"> -->
 
-                                                                <!-- <airmid-textbox 
-                                                                    label="Comments" 
-                                                                    formControlName="comments" 
-                                                                    [value]="data?.comments"
-                                                                    [formGroup]="_NursingStationService.myform"
-                                                                    [validations]="getValidationMessages().comments"
-                                                                    [maxLength]="50">
-                                                                </airmid-textbox> -->
-                                                                
-                                                            <!-- <mat-radio-group name="HandOverType" formControlName="HandOverType" fxLayout="column">
-                                                                <mat-radio-button value="0">Morning</mat-radio-button>
-                                                                <mat-radio-button value="1"> Evening</mat-radio-button>
-                                                                <mat-radio-button value="2">Night</mat-radio-button>
-                                                            </mat-radio-group> -->
-                                                        </div> &nbsp;&nbsp;
+                                                            </div>
+                                                        </div> 
                                     
-                                                         <!-- <div style="padding: 30px 10px 0 10px;">
+                                                         <div style="padding: 30px 10px 0 10px;">
                                                             <button type="button" class="btn btn-primary btn-with-icon py-8" #addbutton id="btnAdd">
                                                                 <mat-icon>add</mat-icon>
                                                             </button>
-                                                        </div>&nbsp;  -->
+                                                        </div>&nbsp; 
                                     
                                                     </div>
                                     

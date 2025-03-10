@@ -91,12 +91,12 @@ export class CasepaperService {
     return this._httpClient.post("Generic/GetByProc?procName=rtrv_CaseparVisitDetails", employee)
   }
 
-  public getRtrvTestService(visistId,loader = true) {
-    if(loader){
-      this._loaderService.show();
-    }
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OPRequestList",visistId);
-  }
+  // public getRtrvTestService(visistId,loader = true) {
+  //   if(loader){
+  //     this._loaderService.show();
+  //   }
+  //   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OPRequestList",visistId);
+  // }
   
   // registration patient list
   public getRegistrationList(employee) {
@@ -188,5 +188,15 @@ public getRtrvVisitedListdemo(employee) {
 
 public getItemMasterById(Id) {
   return this._httpClient1.GetData("ItemMaster/" + Id);
+}
+public getItemGenericById(Id) {
+  return this._httpClient1.GetData("ItemGenericName/" + Id);
+}
+
+public getStoreById(Id) {
+  return this._httpClient1.GetData("StoreMaster/" + Id);
+}
+public getRtrvTestService(employee) {  
+  return this._httpClient1.PostData("OPDPrescriptionMedical/GetVisitList",employee)
 }
 }

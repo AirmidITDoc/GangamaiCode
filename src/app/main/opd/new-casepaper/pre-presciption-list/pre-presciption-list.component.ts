@@ -45,26 +45,14 @@ export class PrePresciptionListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    debugger
     if(this.data){
       this.RegId = this.data.Obj 
       console.log(this.data.Obj)
     }
-    this.getPrescriptionListFill1(); 
+    // this.getPrescriptionListFill1(); 
     this.getnewVisistListDemo(this.data); 
   }
-//DateWise table Data 
-  getPrescriptionListFill1() { 
-    var vdata ={
-      "RegID": this.RegId
-    }
-    // this._CasepaperService.getRtrvVisitedList(vdata).subscribe(Visit => {
-    //   this.patients = Visit as MedicineItemList[];  
-    //   this.extractUniqueDates(); 
-    //   console.log(this.patients); 
-    //   // this.groupByVisitDate();  
-    // })
-  }
-
   
   getnewVisistListDemo(obj) {
     debugger
@@ -76,7 +64,7 @@ export class PrePresciptionListComponent implements OnInit {
       "filters": [
         {
           "fieldName": "RegID",
-          "fieldValue": String(obj.regId),//"40773",	
+          "fieldValue": String(this.RegId),//"40773",	
           "opType": "Equals"
         },
         {
@@ -94,25 +82,25 @@ export class PrePresciptionListComponent implements OnInit {
     }
     console.log(D_data);
     this._CasepaperService.getRtrvVisitedListdemo(D_data).subscribe(Visit => {
-      this.patients = Visit as MedicineItemList[];
+      this.patients = Visit?.data as MedicineItemList[];
       this.extractUniqueDates();
       console.log("visitPatient info:", this.patients)
     });
   }
 
   extractUniqueDates() {
-    const dates = this.patients.map(patient => patient.VisitDate);
+    const dates = this.patients.map(patient => patient.visitDate);
     this.uniqueDates = Array.from(new Set(dates));
   } 
   getFirstPatientForDate(date: string) {
-    return this.patients.filter(patient => patient.VisitDate === date); //
+    return this.patients.filter(patient => patient.visitDate === date); //
   }
 
   CopyPresciptionList:any=[];
   CopyList:any=[];
   getCopyPreviouseList(date:string){ 
     this.CopyPresciptionList.date = [];
-    this.CopyList =  this.patients.filter(patient => patient.VisitDate === date); // 
+    this.CopyList =  this.patients.filter(patient => patient.visitDate === date); // 
     console.log(this.CopyList)
   //  this.CopyList.forEach(element =>{
   //   this.CopyPresciptionList.push(element)  
@@ -121,15 +109,4 @@ export class PrePresciptionListComponent implements OnInit {
    this.dialogRef.close(this.CopyList); 
   }
 
-  //old datewise table list function
-    // groupByVisitDate(): void {
-  //   this.visitData.forEach((element) => {
-  //     const date = new Date(element.VisitDate).toLocaleDateString(); // Format date as needed
-  //     if (!this.groupedData[date]) {
-  //       this.groupedData[date] = [];
-  //     }
-  //     this.groupedData[date].push(element);
-  //   });
-  // }
- 
 }

@@ -168,7 +168,9 @@
                         </button>
                     </mat-form-field>
 
-                    <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [formGroup]="myformSearch" [(ngModel)]="gridConfig.filters[3].fieldValue" [validations]="getValidationdoctorMessages().DoctorId" [mode]="autocompleteModedeptdoc" (selectionChange)="selectChangedeptdoc($event)">
+                    <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [formGroup]="myformSearch"
+                     [(ngModel)]="gridConfig.filters[3].fieldValue" [validations]="getValidationdoctorMessages().DoctorId"
+                      [mode]="autocompleteModedeptdoc" (selectionChange)="ListView($event)">
                     </airmid-dropdown>
 
                 </form>

@@ -314,12 +314,22 @@ export class NewAdmissionComponent implements OnInit {
   }
 
   onChangestate(e) {
-    this.ddlCountry.SetSelection(e.stateId);
+    // this.ddlCountry.SetSelection(e.stateId);
   }
 
+  // onChangecity(e) {
+  //   this.ddlState.SetSelection(e.cityId);
+  //   this.ddlCountry.SetSelection(e.stateId);
+  // }
+
   onChangecity(e) {
-    this.ddlState.SetSelection(e.cityId);
-    this.ddlCountry.SetSelection(e.stateId);
+    console.log(e)
+    this.registerObj.stateId=e.stateId
+    this._AdmissionService.getstateId(e.stateId).subscribe((Response)=>{
+        console.log(Response)
+        this.ddlCountry.SetSelection(Response.countryId);
+    });
+
   }
 
   dateTimeObj: any;

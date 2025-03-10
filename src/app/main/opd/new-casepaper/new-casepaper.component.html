@@ -133,112 +133,115 @@
                                                     Vitals
                                                 </div>
                                                 <hr>
-                                                <div fxLayout="row" fxLayoutGap="4px">
-                                                    <mat-form-field appearance="outline" fxFlex="10%">
+
+                                                <div fxLayout="row wrap" fxLayoutGap="10px">
+                                                    <!-- Height -->
+                                                    <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>Height</mat-label>
-                                                        <!-- <span matTextPrefix>cm</span> -->
-                                                        <input name="Height" formControlName="Height"
-                                                            placeholder="Height in m" [(ngModel)]="vHeight" matInput
-                                                            #EHeight (keydown)="onEnterHeight($event)" type="text"
-                                                            OnlyNumber (keyup)="getBMIcalculation()"
-                                                            (keypress)="keyPressCharater($event)">
-                                                        <span matSuffix style="font-size: x-large;"> |cm</span>
+                                                        <input matInput formControlName="Height" placeholder="Height in cm" [(ngModel)]="vHeight"
+                                                            (keydown)="onEnterHeight($event)" OnlyNumber (keyup)="getBMIcalculation()" (keypress)="keyPressCharater($event)">
+                                                            <span matSuffix style="font-size: x-large;">|</span>
+                                                            <span matSuffix style="margin-right: 10px; font-size: x-large;">cm</span>
                                                     </mat-form-field>
-
-                                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                                
+                                                    <!-- Weight -->
+                                                    <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>Weight</mat-label>
-                                                        <input name="Weight" formControlName="Weight"
-                                                            placeholder="Weight in Kg" [(ngModel)]="vWeight" matInput
-                                                            #EWeight (keydown)="onEnterWeight($event)" type="text"
-                                                            OnlyNumber (keyup)="getBMIcalculation()"
-                                                            (keypress)="keyPressCharater($event)">
-                                                        <span matSuffix style="font-size: x-large;"> |kg</span>
+                                                        <input matInput formControlName="Weight" placeholder="Weight in Kg" [(ngModel)]="vWeight"
+                                                            (keydown)="onEnterWeight($event)" OnlyNumber (keyup)="getBMIcalculation()" (keypress)="keyPressCharater($event)">
+                                                            <span matSuffix style="font-size: x-large;">|</span>
+                                                        <span matSuffix style="margin-right: 10px; font-size: x-large;">kg</span>
                                                     </mat-form-field>
-
-                                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                                
+                                                    <!-- BMI -->
+                                                    <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>BMI</mat-label>
-                                                        <input name="BMI" formControlName="BMI" placeholder="BMI"
-                                                            matInput [(ngModel)]="vBMI" #EBMI
-                                                            (keydown)="onEnterBMI($event)" type="text" OnlyNumber
-                                                            readonly>
-                                                        <!-- <mat-icon matSuffix>KG</mat-icon> -->
+                                                        <input matInput formControlName="BMI" placeholder="BMI" [(ngModel)]="vBMI" readonly>
                                                     </mat-form-field>
-
-                                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                                
+                                                    <!-- BSL -->
+                                                    <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>BSL</mat-label>
-                                                        <input name="BSL" formControlName="BSL" placeholder="BSL"
-                                                            matInput [(ngModel)]="vBSL" #EBSL
-                                                            (keydown)="onEnterBSL($event)" type="text" OnlyNumber
-                                                            (keypress)="keyPressCharater($event)">
-                                                        <!-- <mat-icon matSuffix>KG</mat-icon> -->
+                                                        <input matInput formControlName="BSL" placeholder="BSL" [(ngModel)]="vBSL" (keydown)="onEnterBSL($event)" OnlyNumber (keypress)="keyPressCharater($event)">
                                                     </mat-form-field>
-
-                                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                                
+                                                    <!-- SpO2 -->
+                                                    <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>SpO2</mat-label>
-                                                        <input name="SpO2" formControlName="SpO2" placeholder="SpO2"
-                                                            [(ngModel)]="vSpO2" matInput #ESpO2
-                                                            (keydown)="onEnterSpO2($event)" type="text" OnlyNumber
-                                                            (keypress)="keyPressCharater($event)">
-                                                        <!-- <mat-icon matSuffix>KG</mat-icon> -->
+                                                        <input matInput formControlName="SpO2" placeholder="SpO2" [(ngModel)]="vSpO2" (keydown)="onEnterSpO2($event)" OnlyNumber (keypress)="keyPressCharater($event)">
                                                     </mat-form-field>
-
-                                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                                
+                                                    <!-- Pulse -->
+                                                    <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>Pulse</mat-label>
-                                                        <input name="Pulse" formControlName="Pulse" placeholder="Pulse"
-                                                            [(ngModel)]="vPulse" matInput #EPulse
-                                                            (keydown)="onEnterPulse($event)" type="text" OnlyNumber
-                                                            (keypress)="keyPressCharater($event)">
-                                                        <span matSuffix style="font-size: x-large;"> |bpm</span>
+                                                        <input matInput formControlName="Pulse" placeholder="Pulse" [(ngModel)]="vPulse" (keydown)="onEnterPulse($event)" OnlyNumber (keypress)="keyPressCharater($event)">
+                                                        <span matSuffix style="font-size: x-large;">|</span>
+                                                        <span matSuffix style="margin-right: 10px; font-size: x-large;">bpm</span>
                                                     </mat-form-field>
-
-                                                    <mat-form-field appearance="outline" fxFlex="13%">
+                                                
+                                                    <!-- BP -->
+                                                    <mat-form-field appearance="outline" fxFlex="12%">
                                                         <mat-label>BP</mat-label>
-                                                        <input name="BP" formControlName="BP" placeholder="BP" matInput
-                                                            #EBP [(ngModel)]="vBP" (keydown)="onEnterBP($event)"
-                                                            type="text" OnlyNumber (keypress)="keyPressOk($event)">
-                                                        <span matSuffix style="font-size: x-large;"> |mmHg</span>
+                                                        <input matInput formControlName="BP" placeholder="BP" [(ngModel)]="vBP" (keydown)="onEnterBP($event)" OnlyNumber (keypress)="keyPressOk($event)">
+                                                        <span matSuffix style="font-size: x-large;">|</span>
+                                                        <span matSuffix style="margin-right: 10px; font-size: x-large;">mmHg</span>
                                                     </mat-form-field>
-
-                                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                                
+                                                    <!-- Temperature -->
+                                                    <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>Temp</mat-label>
-                                                        <input name="Temp" formControlName="Temp" placeholder="Temp"
-                                                            [(ngModel)]="vTemp" matInput #ETemp
-                                                            (keydown)="onEnterTemp($event)" type="text" OnlyNumber
-                                                            (keypress)="keyPressCharater($event)">
-                                                        <span matSuffix style="font-size: x-large;"> |F</span>
+                                                        <input matInput formControlName="Temp" placeholder="Temp" [(ngModel)]="vTemp" (keydown)="onEnterTemp($event)" OnlyNumber (keypress)="keyPressCharater($event)">
+                                                        <span matSuffix style="font-size: x-large;">|</span>
+                                                        <!-- <span matSuffix style="margin-right: 10px; font-size: x-large;">°F</span> -->
+                                                        <span matSuffix style="margin-right: 10px; font-size: x-large;">F</span>
                                                     </mat-form-field>
                                                 </div>
-
+                                                
                                                 <div fxLayout="column">
 
-                                                    <div fxLayout="row">
-                                                        <div fxFlex="40%">
-                                                            <airmid-dropdown 
-                                                                label="ChiefComplaint"
-                                                                formControlName="mAssignChiefComplaint" 
-                                                                [formGroup]="caseFormGroup"
-                                                                [validations]="getValidationMessages().ChiefComplaint" #ddlChiefComplaint
-                                                                [IsMultiPle]="true" 
-                                                                [value]="regObj.mAssignChiefComplaint"
-                                                                ValueField="complaintId" 
-                                                                TextField="complaintDescr"
-                                                                ApiUrl="OPDPrescriptionMedical/get-ChiefComplaint" 
-                                                                [ReqFullObj]="true"
-                                                                (selectionChange)="selectChangeCheifComplaint($event)">
-                                                            </airmid-dropdown>
-                                                        </div>
-                                                        <mat-chip-listbox #chipList>
-                                                            <mat-chip
-                                                                *ngFor="let item of caseFormGroup.value.mAssignChiefComplaint">
-                                                                {{ item.complaintDescr }} <mat-icon
-                                                                    (click)="removeChiefComplaint(item)">close</mat-icon>
-                                                            </mat-chip>
-                                                        </mat-chip-listbox>
-                                                    </div>
+                                                        <form [formGroup]="caseFormGroup">
+                                                            <div class="investigation-title">
+                                                                <span style="font-weight: 700;">
+                                                                    Chief Complaint
+                                                                </span>
+                                                            </div>
+                                                            <hr>
+                                                            <div fxLayout="row">
+                                                                <div fxFlex="40%">
+                                                                    <airmid-dropdown 
+                                                                        label="ChiefComplaint"
+                                                                        formControlName="mAssignChiefComplaint" 
+                                                                        [formGroup]="caseFormGroup"
+                                                                        [validations]="getValidationMessages().ChiefComplaint" #ddlChiefComplaint
+                                                                        [IsMultiPle]="true" 
+                                                                        [value]="regObj.mAssignChiefComplaint"
+                                                                        ValueField="complaintId" 
+                                                                        TextField="complaintDescr"
+                                                                        ApiUrl="OPDPrescriptionMedical/get-ChiefComplaint" 
+                                                                        [ReqFullObj]="true"
+                                                                        (selectionChange)="selectChangeCheifComplaint($event)">
+                                                                    </airmid-dropdown>
+                                                                </div>
+                                                                <mat-chip-listbox #chipList>
+                                                                    <mat-chip
+                                                                        *ngFor="let item of caseFormGroup.value.mAssignChiefComplaint">
+                                                                        {{ item.complaintDescr }} <mat-icon
+                                                                            (click)="removeChiefComplaint(item)">close</mat-icon>
+                                                                    </mat-chip>
+                                                                </mat-chip-listbox>
+                                                            </div>
+                                                        </form>
 
-                                                    <div fxLayout="row">
-                                                        <div fxFlex="40%">
-                                                            <airmid-dropdown 
+                                                    <form [formGroup]="caseFormGroup">
+                                                        <div class="investigation-title">
+                                                            <span style="font-weight: 700;">
+                                                                Diagnosis
+                                                            </span>
+                                                        </div>
+                                                        <hr>
+                                                        <div fxLayout="row">
+                                                            <div fxFlex="40%">
+                                                                <airmid-dropdown 
                                                                 label="Diagnosis"
                                                                 formControlName="mAssignDiagnosis" 
                                                                 [formGroup]="caseFormGroup"
@@ -251,19 +254,27 @@
                                                                 [ReqFullObj]="true"
                                                                 (selectionChange)="selectChangeDiagnosis($event)">
                                                             </airmid-dropdown>
+                                                            </div>
+                                                            <mat-chip-listbox #chipList>
+                                                                <mat-chip
+                                                                    *ngFor="let item of caseFormGroup.value.mAssignDiagnosis">
+                                                                    {{ item.descriptionType }} <mat-icon
+                                                                        (click)="removedignosis(item)">close</mat-icon>
+                                                                </mat-chip>
+                                                            </mat-chip-listbox>
                                                         </div>
-                                                        <mat-chip-listbox #chipList>
-                                                            <mat-chip
-                                                                *ngFor="let item of caseFormGroup.value.mAssignDiagnosis">
-                                                                {{ item.descriptionType }} <mat-icon
-                                                                    (click)="removedignosis(item)">close</mat-icon>
-                                                            </mat-chip>
-                                                        </mat-chip-listbox>
-                                                    </div>
+                                                    </form>
 
-                                                    <div fxLayout="row">
-                                                        <div fxFlex="40%">
-                                                            <airmid-dropdown 
+                                                    <form [formGroup]="caseFormGroup">
+                                                        <div class="investigation-title">
+                                                            <span style="font-weight: 700;">
+                                                                Examination
+                                                            </span>
+                                                        </div>
+                                                        <hr>
+                                                        <div fxLayout="row">
+                                                            <div fxFlex="40%">
+                                                                <airmid-dropdown 
                                                                 label="Examination"
                                                                 formControlName="mAssignExamination" 
                                                                 [formGroup]="caseFormGroup"
@@ -276,15 +287,16 @@
                                                                 [ReqFullObj]="true"
                                                                 (selectionChange)="selectChangeExamination($event)">
                                                             </airmid-dropdown>
+                                                            </div>
+                                                            <mat-chip-listbox #chipList>
+                                                                <mat-chip
+                                                                    *ngFor="let item of caseFormGroup.value.mAssignExamination">
+                                                                    {{ item.examinationDescr }} <mat-icon
+                                                                        (click)="removeExamination(item)">close</mat-icon>
+                                                                </mat-chip>
+                                                            </mat-chip-listbox>
                                                         </div>
-                                                        <mat-chip-listbox #chipList>
-                                                            <mat-chip
-                                                                *ngFor="let item of caseFormGroup.value.mAssignExamination">
-                                                                {{ item.examinationDescr }} <mat-icon
-                                                                    (click)="removeExamination(item)">close</mat-icon>
-                                                            </mat-chip>
-                                                        </mat-chip-listbox>
-                                                    </div>
+                                                    </form>
 
                                                 </div>
                                             </div>
@@ -399,7 +411,7 @@
                                                                 fxShow.gt-sm>
                                                                 Drug Name</mat-header-cell>
                                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                <span> {{element.DrugName}}</span>
+                                                                <span> {{element.DrugName || vDrugName}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -412,7 +424,7 @@
                                                             <mat-cell *matCellDef="let element; let in = index" fxHide
                                                                 fxShow.gt-sm class="w-300">
                                                                 <span *ngIf="editingIndex1 !== in">
-                                                                    {{ element.GenericName }}
+                                                                    {{ element.GenericName || vItemGN }}
                                                                     <mat-icon (click)="editItem(in)"
                                                                         class="edit-icon">edit</mat-icon>
                                                                 </span>
@@ -435,7 +447,7 @@
                                                             <mat-cell *matCellDef="let element; let i = index" fxHide
                                                                 fxShow.gt-sm class="w-300">
                                                                 <span *ngIf="editingIndex !== i">
-                                                                    {{ element.DoseName }}
+                                                                    {{ element.DoseName || vDoseName}}
                                                                     <mat-icon (click)="editDose(i)"
                                                                         class="edit-icon">edit</mat-icon>
                                                                 </span>
@@ -456,7 +468,7 @@
                                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                                 <!-- <span> {{element.Days}}</span> -->
                                                                 <mat-form-field appearance="fill">
-                                                                    <input matInput [(ngModel)]="element.Days"
+                                                                    <input matInput [(ngModel)]="element.Days || vDayys"
                                                                         type="text" OnlyNumber>
                                                                 </mat-form-field>
                                                             </mat-cell>
@@ -468,59 +480,11 @@
                                                             </mat-header-cell>
                                                             <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                                                 <mat-form-field appearance="fill">
-                                                                    <input matInput [(ngModel)]="element.Instruction"
+                                                                    <input matInput [(ngModel)]="element.Instruction || vInst"
                                                                         type="text">
                                                                 </mat-form-field>
                                                             </mat-cell>
                                                         </ng-container>
-
-                                                        <!-- <ng-container matColumnDef="DoseName1">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                                DoseName1
-                                                            </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                        
-                                                                <mat-select placeholder="DoseName1" (selectionChange)="getdoseDetailValue1(element,$event.value)">
-                                                                    <mat-option *ngFor="let Result of doseresults" [(ngModel)]="element.DoseName1" [value]="Result.DoseName">
-                                                                        {{ Result.DoseName }}
-                                                                    </mat-option>
-                                                                </mat-select>
-                                                            </mat-cell>
-                                                        </ng-container> -->
-
-                                                        <!-- <ng-container matColumnDef="Day1">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">Days
-                                                            </mat-header-cell>
-                                                            <mat-cell class="w-80" *matCellDef="let element" fxShow.gt-sm>
-                                                                <mat-form-field appearance="legacy">
-                                                                    <input matInput [(ngModel)]="element.Day1" (keypress)="keyPressAlphanumeric($event)">
-                                                                </mat-form-field>
-                                                            </mat-cell>
-                                                        </ng-container> -->
-
-                                                        <!-- <ng-container matColumnDef="DoseName2">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                                DoseName2
-                                                            </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                        
-                                                                <mat-select placeholder="DoseName1" (selectionChange)="getdoseDetailValue2(element,$event.value)">
-                                                                    <mat-option *ngFor="let Result of doseresults" [(ngModel)]="element.DoseName2" [value]="Result.DoseName">
-                                                                        {{ Result.DoseName }}
-                                                                    </mat-option>
-                                                                </mat-select>
-                                                            </mat-cell>
-                                                        </ng-container> -->
-
-                                                        <!-- <ng-container matColumnDef="Day2">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">Days
-                                                            </mat-header-cell>
-                                                            <mat-cell class="w-80" *matCellDef="let element" fxShow.gt-sm>
-                                                                <mat-form-field appearance="legacy">
-                                                                    <input matInput [(ngModel)]="element.Day2" (keypress)="keyPressAlphanumeric($event)">
-                                                                </mat-form-field>
-                                                            </mat-cell>
-                                                        </ng-container> -->
 
                                                         <ng-container matColumnDef="Action" stickyEnd>
                                                             <mat-header-cell *matHeaderCellDef
@@ -698,13 +662,14 @@
                             <div class="center p-12">
                                 <div fxlayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
 
-                                    <div *ngFor="let date of uniqueDates">
+                                    <div *ngFor="let visitId of uniqueDates">
                                         <mat-card style="padding: 6px;">
                                             <div fxLayout="column" fxLayoutGap="6px">
                                                 <div>
                                                     <div class="visit-info-title" fxLayoutAlign="space-between">
                                                         <span style="font-weight: 900;color: blueviolet;">
-                                                            Visit Date : {{ date | date: 'dd/MM/YYYY' }}
+                                                            <!-- Visit Date : {{ date | date: 'dd/MM/YYYY' }} -->
+                                                            Visit ID :- {{visitId}}
                                                             <!-- {{ date | date:' fullDate'}}  -->
                                                         </span>
                                                         <span style="font-weight: 900;color: blueviolet;">
@@ -718,7 +683,7 @@
                                                         </div>
                                                     </div>
                                                     <hr>
-                                                    <div *ngFor="let patient of getPatientsForDate(date)">
+                                                    <div *ngFor="let patient of getPatientsForDate(visitId)">
                                                         <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
                                                             fxLayoutAlign="space-between center" class="patient-info">
                                                             <div class="patient-sub">
@@ -852,7 +817,7 @@
                                                         </span>
                                                     </div>
                                                     <hr>
-                                                    <table mat-table [dataSource]="getFirstPatientForDate(date)"
+                                                    <table mat-table [dataSource]="getFirstPatientForDate(visitId)"
                                                         class="mat-table-1 h-220" [@animateStagger]="{value:'50'}"
                                                         style="width: 100%;overflow: auto">
 
