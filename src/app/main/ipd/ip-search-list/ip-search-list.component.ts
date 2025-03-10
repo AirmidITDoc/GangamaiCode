@@ -191,7 +191,7 @@ export class IPSearchListComponent implements OnInit {
 
     }
 
-
+   
     OngetRecord(element, m) {
         debugger
         console.log('Third action clicked for:', element);
@@ -287,9 +287,10 @@ export class IPSearchListComponent implements OnInit {
         }
         else if (m == "Refund of Advance") {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-            buttonElement.blur(); // Remove focus from the button
-
-            let that = this;
+            buttonElement.blur(); // Remove focus from the button 
+            let that = this; 
+             this.advanceDataStored.storage = new AdvanceDetailObj(element); 
+             console.log(this.advanceDataStored.storage)
             const dialogRef = this._matDialog.open(IPRefundofAdvanceComponent,
                 {
                     maxWidth: "100%",
