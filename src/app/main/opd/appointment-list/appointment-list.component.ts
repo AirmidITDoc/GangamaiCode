@@ -90,6 +90,9 @@ export class AppointmentListComponent implements OnInit {
         this.Appointdetail(this.gridConfig)
 
     }
+    f_name:any = "" 
+    regNo:any="0"
+    l_name:any="" 
 
     allfilters = [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -119,32 +122,30 @@ export class AppointmentListComponent implements OnInit {
     @ViewChild('actionsTemplate3') actionsTemplate3!: TemplateRef<any>;
 
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-
+    allcolumns=[
+        { heading: "Patient", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
+        { heading: "", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+        { heading: "", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+        { heading: "", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+        { heading: "UHID", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', type: 22 },
+        { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        {
+            heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
+        } 
+    ]
     gridConfig: gridModel = {
         apiUrl: "VisitDetail/AppVisitList",
-        columnsList: [
-            { heading: "Patient", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
-            { heading: "", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-            { heading: "", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-            { heading: "", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-            { heading: "UHID", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-            { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', type: 22 },
-            { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            {
-                heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
-                template: this.actionButtonTemplate  // Assign ng-template to the column
-            }
-           
-        ],
-
+        columnsList:this.allcolumns , 
         sortField: "VisitId",
         sortOrder: 0,
         filters: this.allfilters,
@@ -158,6 +159,44 @@ export class AppointmentListComponent implements OnInit {
         this.gridConfig.filters[5].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }
 
+    OnClearValues(){
+        this.myformSearch.reset();
+    }
+    onChangeFirst() {
+        this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
+        this.f_name = this.myformSearch.get('FirstName').value + "%"
+        this.l_name = this.myformSearch.get('LastName').value + "%"
+        this.regNo = this.myformSearch.get('RegNo').value 
+        this.getfilterdata();
+    }
+
+getfilterdata(){
+    debugger
+    this.gridConfig = {
+        apiUrl: "VisitDetail/AppVisitList",
+        columnsList:this.allcolumns , 
+        sortField: "VisitId",
+        sortOrder: 0,
+        filters:  [
+            { fieldName: "F_Name", fieldValue: this.f_name , opType: OperatorComparer.Contains },
+            { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+            { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+            { fieldName: "Doctor_Id", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+    
+        ],
+        row: 25
+    }
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData(); 
+}
+  
+
     ListView(value) {
         debugger
         console.log(value)
@@ -165,7 +204,8 @@ export class AppointmentListComponent implements OnInit {
             this.DoctorId=value.value
         else
         this.DoctorId="0"
-       
+
+        this.onChangeFirst();
     }
 
 
