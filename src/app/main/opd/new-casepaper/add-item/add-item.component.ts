@@ -14,6 +14,7 @@ import { map, startWith } from 'rxjs/operators';
 import { AnyARecord } from 'dns';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { MedicineItemList } from '../new-casepaper.component';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-add-item',
@@ -29,7 +30,7 @@ export class AddItemComponent {
   currentDate = new Date
   vRemark: any;;
   vItemName: any;
-  registerObj= new MedicineItemList ({});
+  registerObj = new MedicineItemList({});
   isItemGenericNameIdSelected: boolean = false;
   filteredItemgeneric: Observable<string[]>
   vItemGeneric: any;
@@ -46,15 +47,15 @@ export class AddItemComponent {
   vItemId: any;
   ItemListfilteredOptions: any;
   noOptionFound: any;
-  vSearchItemId:any;
-  vStoreId:any;
+  vSearchItemId: any;
+  vStoreIds: any;
 
-  autocompleteModeItem: string = "Item"; 
-  autocompleteModeItemGeneric:string="ItemGeneric";
-autocompleteModePurchaseUOMId:string="UnitOfMeasurment";
-autocompleteModeStoreId:string="Store";
+  autocompleteModeItem: string = "Item";
+  autocompleteModeItemGeneric: string = "ItemGeneric";
+  autocompleteModePurchaseUOMId: string = "UnitOfMeasurment";
+  autocompleteModeStoreId: string = "Store";
 
-    @ViewChild('ddlStore') ddlStore: AirmidDropDownComponent;
+  @ViewChild('ddlStore') ddlStore: AirmidDropDownComponent;
 
   constructor(
     private _CasepaperService: CasepaperService,
@@ -67,13 +68,13 @@ autocompleteModeStoreId:string="Store";
     private _formBuilder: FormBuilder
   ) { }
 
-  
+
   itemForm: FormGroup;
   ngOnInit(): void {
     this.myform = this.CreateMyform();
 
     this.itemForm = this.createItemmasterForm();
-    
+
     // this.ddlStore.SetSelection(this.registerObj.mAssignItemToStores);
   }
   CreateMyform() {
@@ -83,129 +84,129 @@ autocompleteModeStoreId:string="Store";
       PurchaseUOMId: [''],
       StoreId: [''],
       ItemId: [''],
-      SearchItemId:[''],
+      SearchItemId: [''],
       mAssignItemToStores: [
         {
-            assignId: 0,
-            storeId: 0,
-            supplierId: 0,
-            storeName:''
+          assignId: 0,
+          storeId: 0,
+          supplierId: 0,
+          storeName: ''
         }
-    ]
+      ]
     })
   }
 
   createItemmasterForm(): FormGroup {
     return this._formBuilder.group({
-        itemId: 0,
-        itemShortName: ["",
-            [
-            ]
-        ],
-        itemName: ["",
-            [
-            ]
-        ],
-        itemTypeId: ["",
-            [
-            ]
-        ],
-        itemCategaryId: ["",
-            [
-            ]
-        ],
-        itemGenericNameId: ["",
-            [
-            ]
-        ],
-        itemClassId: ["",
-            [
-            ]
-        ],
-        purchaseUomid: [0,
-            [
-            ]
-        ],
-        stockUomid: [0,
-            [
-            ]
-        ],
-        conversionFactor: ["",
-            [
-            ]
-        ],
-        currencyId: ["",
-            [
-            ]
-        ],
-        taxPer: ["0"],
-        isBatchRequired: [true as boolean],
-        minQty: ["",
-            [
-            ]
-        ],
-        maxQty: ["",
-            [
-            ]
-        ],
-        reOrder: ["0",
-            [
-            ]
-        ],
-        hsNcode: ["",
-            [
-            ]
-        ],
-        cgst: ["",
-            [
-            ]
-        ],
-        sgst: ["",
-            [
-            ]
-        ],
-        igst: ["",
-            [
-            ]
-        ],
-
-        manufId: ["",
-            [
-                // Validators.required,
-            ]
-        ],
-        isNarcotic: true,
-        isH1drug: true,
-        isScheduleH: true,
-        isHighRisk: true,
-        isScheduleX: true,
-        isLasa: true,
-        isEmgerency: true,
-        drugType: [0,
-            [
-            ]
-        ],
-        drugTypeName: [""],
-        prodLocation: ["",
-            [
-            ]
-        ],
-        itemCompnayId: ["",
-            [
-                // Validators.required,
-            ]
-        ],
-        itemTime: [(new Date()).toISOString()],
-        mAssignItemToStores: [
-            {
-                assignId: 0,
-                storeId: 0,
-                itemId: 0
-            }
+      itemId: 0,
+      itemShortName: ["",
+        [
         ]
+      ],
+      itemName: ["",
+        [
+        ]
+      ],
+      itemTypeId: ["",
+        [
+        ]
+      ],
+      itemCategaryId: ["",
+        [
+        ]
+      ],
+      itemGenericNameId: ["",
+        [
+        ]
+      ],
+      itemClassId: ["",
+        [
+        ]
+      ],
+      purchaseUomid: [0,
+        [
+        ]
+      ],
+      stockUomid: [0,
+        [
+        ]
+      ],
+      conversionFactor: ["",
+        [
+        ]
+      ],
+      currencyId: ["",
+        [
+        ]
+      ],
+      taxPer: ["0"],
+      isBatchRequired: [true as boolean],
+      minQty: ["",
+        [
+        ]
+      ],
+      maxQty: ["",
+        [
+        ]
+      ],
+      reOrder: ["0",
+        [
+        ]
+      ],
+      hsNcode: ["",
+        [
+        ]
+      ],
+      cgst: ["",
+        [
+        ]
+      ],
+      sgst: ["",
+        [
+        ]
+      ],
+      igst: ["",
+        [
+        ]
+      ],
+
+      manufId: ["",
+        [
+          // Validators.required,
+        ]
+      ],
+      isNarcotic: true,
+      isH1drug: true,
+      isScheduleH: true,
+      isHighRisk: true,
+      isScheduleX: true,
+      isLasa: true,
+      isEmgerency: true,
+      drugType: [0,
+        [
+        ]
+      ],
+      drugTypeName: [""],
+      prodLocation: ["",
+        [
+        ]
+      ],
+      itemCompnayId: ["",
+        [
+          // Validators.required,
+        ]
+      ],
+      itemTime: [(new Date()).toISOString()],
+      mAssignItemToStores: [
+        {
+          assignId: 0,
+          storeId: 0,
+          itemId: 0
+        }
+      ]
 
     });
-}
+  }
 
   populateForm(param) {
     this.myform.patchValue(param);
@@ -216,30 +217,18 @@ autocompleteModeStoreId:string="Store";
     let removedIndex = this.myform.value.mAssignItemToStores.findIndex(x => x.storeId == item.storeId);
     this.myform.value.mAssignItemToStores.splice(removedIndex, 1);
     this.ddlStore.SetSelection(this.myform.value.mAssignItemToStores.map(x => x.storeId));
-}
+  }
 
   filteredStore: any = [];
   storelist: any = [];
 
-  RtrvtoggleSelection() {
-    if (this.filteredStore.data) {
-      this.filteredStore.data.forEach(element => {
-        this.selectedItems.push(
-          {
-            Storeid: element.StoreId || 0,
-            StoreName: element.StoreName || ''
-          });
-      })
-      console.log(this.selectedItems)
-    }
-  }
-  
-  itemId=0
-  itemObjects:any;
-itemGeneric:any;
-vItemGenericNameId:any;
-vItemGenericName:any;
-name=''
+  itemId = 0
+  itemObjects: any;
+  itemGeneric: any;
+  vItemGenericNameId: any;
+  vItemGenericName: any;
+  name = ''
+  selectedItems = [];
   selectChangeItemName(row) {
     debugger
     console.log("Drug:", row)
@@ -248,81 +237,107 @@ name=''
 
     if ((this.itemId ?? 0) > 0) {
       // setTimeout(() => {
-        this._CasepaperService.getItemMasterById(this.itemId).subscribe((response) => {
-          this.itemObjects = response;
-          console.log("all data:", this.itemObjects)
-          this.vItemId=this.itemObjects.itemId
-          this.myform.get("ItemGenericNameId").setValue(this.itemObjects.itemGenericNameId)
-          this.myform.get("PurchaseUOMId").setValue(this.itemObjects.purchaseUomid)
-          // this.myform.get("mAssignItemToStores").setValue(this.itemObjects.mAssignItemToStores)
-          
+      this._CasepaperService.getItemMasterById(this.itemId).subscribe((response) => {
+        this.itemObjects = response;
+        console.log("all data:", this.itemObjects)
+        this.vItemId = this.itemObjects.itemId
+        this.myform.get("ItemGenericNameId").setValue(this.itemObjects.itemGenericNameId)
+        this.myform.get("PurchaseUOMId").setValue(this.itemObjects.purchaseUomid)
+        // this.myform.get("mAssignItemToStores").setValue(this.itemObjects.mAssignItemToStores)
 
-          // retriving store data
-          console.log("jjjj:",this.itemObjects.mAssignItemToStores)
-          this.vStoreId=this.itemObjects.mAssignItemToStores[0].storeId;
+        // retriving store data
+        console.log("jjjj:", this.itemObjects.mAssignItemToStores)
+        this.selectedItems = this.itemObjects.mAssignItemToStores;
+        // this.vStoreId = this.itemObjects.mAssignItemToStores[0].storeId;
 
-        if ((this.vStoreId ?? 0) > 0) {
+        // if ((this.vStoreId ?? 0) > 0) {
+        //   setTimeout(() => {
+        //     this._CasepaperService.getStoreById(this.vStoreId).subscribe((response) => {
+        //       this.registerObj = response;
+        //       console.log("getStore:", this.registerObj)
+        //       this.name = this.registerObj.storeName
+        //       console.log("ssssssssssssssssssss:", this.name)
+        //       this.myform.get("mAssignItemToStores").setValue(
+        //         this.itemObjects.mAssignItemToStores.map(store => ({
+        //           ...store,
+        //           name: this.name 
+        //         }))
+        //       );
+
+        //     });
+        //   }, 500);
+        // }
+
+        this.vStoreIds = this.itemObjects.mAssignItemToStores.map(store => store.storeId); // Extract all storeIds
+        
+        if (this.vStoreIds.length > 0) {
           setTimeout(() => {
-            this._CasepaperService.getStoreById(this.vStoreId).subscribe((response) => {
-              this.registerObj = response;
-                console.log("getStore:",this.registerObj)
-                this.name=this.registerObj.storeName
-                console.log("ssssssssssssssssssss:",this.name)
-                this.myform.get("mAssignItemToStores").setValue(
-                  this.itemObjects.mAssignItemToStores.map(store => ({
-                      ...store,
-                      name: this.name // Assign name dynamically to each item
-                  }))
+            const requests = this.vStoreIds.map(storeId =>
+              this._CasepaperService.getStoreById(storeId)
+            );
+        
+            forkJoin(requests).subscribe((responses: any[]) => {
+              console.log("getStores:", responses);
+        
+              // Map store names to corresponding store IDs
+              const storeMap: { [key: number]: string } = responses.reduce((acc, store, index) => {
+                acc[this.vStoreIds[index]] = store.storeName;
+                return acc;
+              }, {} as { [key: number]: string });
+        
+              console.log("Store Map:", storeMap);
+        
+              this.myform.get("mAssignItemToStores").setValue(
+                this.itemObjects.mAssignItemToStores.map(store => ({
+                  ...store,
+                  name: storeMap[store.storeId] // Assign name dynamically to each item
+                }))
               );
-              
             });
           }, 500);
         }
-        });
+        
+
+      });
       // }, 500);
     }
   }
 
-  selectChangeItemGenericName(row){    
-    console.log("ItemGenericName:",row)
+  selectChangeItemGenericName(row) {
+    console.log("ItemGenericName:", row)
   }
-  selectChangePurchaseUOMId(row){
-    console.log("PurchaseUOMId:",row)
-  }
-  storedData:any=[];
-  selectChangeStoreId(row){
-    console.log("StoreId:",row)
-    this.storedData=row
-    console.log(this.storedData)
+  selectChangePurchaseUOMId(row) {
+    console.log("PurchaseUOMId:", row)
   }
 
-  getValidationMessages(){
-    return{
-      ItemId:[],
-      ItemGenericNameId:[],
-      PurchaseUOMId:[],
-      StoreId:[],
-      SearchItemId:[],
+  selectChangeStoreId(row) {
+    console.log("StoreId:", row);
+
+    if (!this.selectedItems) {
+        this.selectedItems = [];
+    }
+
+    row.forEach(newStore => {
+        const isDuplicate = this.selectedItems.some(item => item.storeId === newStore.storeId);
+        if (!isDuplicate) {
+            this.selectedItems.push(newStore);
+        }
+    });
+
+    console.log("Updated selectedItems:", this.selectedItems);
+}
+
+
+  getValidationMessages() {
+    return {
+      ItemId: [],
+      ItemGenericNameId: [],
+      PurchaseUOMId: [],
+      StoreId: [],
+      SearchItemId: [],
     }
   }
 
-  selectedItems = [];
-  toggleSelection(item: any) {
-    item.selected = !item.selected;
-    if (item.selected) {
-      this.selectedItems.push(item);
-    }
-    else {
-      const i = this.selectedItems.findIndex(value => value.storeId === item.storeId);
-      this.selectedItems.splice(i, 1);
-    }
-  }
-  remove(item: string): void {
-    const index = this.selectedItems.indexOf(item);
-    if (index >= 0) {
-      this.selectedItems.splice(index, 1);
-    }
-  }
   get f() {
     return this.myform.controls;
   }
@@ -346,7 +361,7 @@ name=''
     //   });
     //   return;
     // }
-    
+
     if (!this.myform.get("ItemGenericNameId")?.value) {
       this.toastr.warning('Please enter Item Generic Name.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -375,69 +390,69 @@ name=''
     if (this.myform.get("PurchaseUOMId").value)
       PURumoId = this.myform.get("PurchaseUOMId").value
 
-  //   if (!this.itemForm.invalid) {
-  //     console.log("Item JSON :-", this.itemForm.value);
-  //     debugger
-  //     this._CasepaperService.insertItemMasterDemo(this.itemForm.value).subscribe((data) => {
-  //         this.toastr.success(data.message);
-  //         // this.onClear(true);
-  //     }, (error) => {
-  //         this.toastr.error(error.message);
-  //     });
-  // }
-  // else {
-  //     this.toastr.warning('please check from is invalid', 'Warning !', {
-  //         toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
-  // }
+    //   if (!this.itemForm.invalid) {
+    //     console.log("Item JSON :-", this.itemForm.value);
+    //     debugger
+    //     this._CasepaperService.insertItemMasterDemo(this.itemForm.value).subscribe((data) => {
+    //         this.toastr.success(data.message);
+    //         // this.onClear(true);
+    //     }, (error) => {
+    //         this.toastr.error(error.message);
+    //     });
+    // }
+    // else {
+    //     this.toastr.warning('please check from is invalid', 'Warning !', {
+    //         toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    // }
 
     console.log(this.selectedItems);
     if (!this.vItemId) {
       var data2 = [];
-      this.storedData.forEach(element => {
+      this.selectedItems.forEach(element => {
         let data = {
-          assignId:0,
+          assignId: 0,
           storeId: element.storeId,
           itemId: 0,
         }
         data2.push(data);
       });
       var m_data = {
-          itemId: 0,
-          itemName: this.myform.get("ItemName").value || "%",
-          itemShortName: '%',
-          itemTypeId: 0,
-          ItemCategaryId: 0,
-          itemGenericNameId: itemGenericNameId || 0,
-          itemClassId: 0,
-          purchaseUOMId: PURumoId || 0,
-          stockUOMId: 0,
-          conversionFactor: 0,
-          currencyId: 0,
-          taxPer: 0,
-          isBatchRequired: 0,
-          minQty: 0,
-          maxQty: 0,
-          reOrder: 0,
-          hsNcode: "%",
-          cgst: "0",
-          sgst: "0",
-          igst: "0",
-          manufId: 0,
-          isNarcotic: 0,
-          isH1Drug: 0,
-          isScheduleH: 0,
-          isHighRisk: 0,
-          isScheduleX: 0,
-          isLasa: 0,
-          isEmgerency: 0,
-          drugType: 0,
-          drugTypeName: '',
-          prodLocation: '',
-          itemCompnayId: 0,
-          itemTime: formattedTime,
-          mAssignItemToStores: data2,
+        itemId: 0,
+        itemName: this.myform.get("ItemName").value || "%",
+        itemShortName: '%',
+        itemTypeId: 0,
+        ItemCategaryId: 0,
+        itemGenericNameId: itemGenericNameId || 0,
+        itemClassId: 0,
+        purchaseUOMId: PURumoId || 0,
+        stockUOMId: 0,
+        conversionFactor: "%",
+        currencyId: 0,
+        taxPer: 0,
+        isBatchRequired: true,
+        minQty: 0,
+        maxQty: 0,
+        reOrder: 0,
+        hsNcode: "%",
+        cgst: "0",
+        sgst: "0",
+        igst: "0",
+        manufId: 0,
+        isNarcotic: true,
+        isH1Drug: true,
+        isScheduleH: true,
+        isHighRisk: true,
+        isScheduleX: true,
+        isLasa: true,
+        isEmgerency: true,
+        drugType: 0,
+        drugTypeName: '',
+        prodLocation: '',
+        itemCompnayId: 0,
+        itemTime: formattedTime,
+        mAssignItemToStores: data2,
       };
       console.log(m_data);
       this._CasepaperService.insertItemMaster(m_data).subscribe((data) => {
@@ -459,18 +474,17 @@ name=''
     } else {
       var data3 = [];
       this.selectedItems.forEach(element => {
-        // this.storedData.forEach(element => {
         let data4 = {
-          assignId: element.assignId,
-          storeId: element.storeId,
-          itemId: this.myform.get("ItemId").value || 0,
+          assignId: element.assignId || 0,
+          storeId: element.storeId || 0,
+          itemId: element.itemId || 0 //this.myform.get("ItemId").value || 0,
         }
         data3.push(data4);
       });
       console.log(data3);
 
       var U_data = {
-        itemId:this.vItemId || 0,
+        itemId: this.vItemId || 0,
         itemName: this.myform.get("ItemName").value || "%",
         itemShortName: '%',
         itemTypeId: 0,
@@ -479,10 +493,10 @@ name=''
         itemClassId: 0,
         purchaseUOMId: PURumoId || 0,
         stockUOMId: 0,
-        conversionFactor: 0,
+        conversionFactor: '%',
         currencyId: 0,
         taxPer: 0,
-        isBatchRequired: 0,
+        isBatchRequired: true,
         minQty: 0,
         maxQty: 0,
         reOrder: 0,
@@ -491,20 +505,20 @@ name=''
         sgst: "0",
         igst: "0",
         manufId: 0,
-        isNarcotic: 0,
-        isH1Drug: 0,
-        isScheduleH: 0,
-        isHighRisk: 0,
-        isScheduleX: 0,
-        isLasa: 0,
-        isEmgerency: 0,
+        isNarcotic: true,
+        isH1Drug: true,
+        isScheduleH: true,
+        isHighRisk: true,
+        isScheduleX: true,
+        isLasa: true,
+        isEmgerency: true,
         drugType: 0,
         drugTypeName: '',
         prodLocation: '',
         itemCompnayId: 0,
         itemTime: formattedTime,
-        mAssignItemToStores: data2,
-    };
+        mAssignItemToStores: data3,
+      };
       console.log(U_data);
       this._CasepaperService.updateItemMaster1(U_data).subscribe((data) => {
         if (data) {
@@ -522,15 +536,15 @@ name=''
           toastClass: 'tostr-tost custom-toast-error',
         });
       });
-    } 
-  
+    }
+
   }
   onClose() {
     this.myform.reset();
     this.dialogRef.close();
   }
   OnClear() {
-    this.myform.reset(); 
+    this.myform.reset();
     this.selectedItems = [];
   }
 
@@ -560,5 +574,5 @@ name=''
     if (event.which === 13) {
       //this.PurchaseUOMId.nativeElement.focus();
     }
-  }  
+  }
 }
