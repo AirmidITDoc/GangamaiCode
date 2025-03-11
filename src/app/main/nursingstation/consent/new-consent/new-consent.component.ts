@@ -56,23 +56,25 @@ export class NewConsentComponent {
   vOPDNo:any;
 
   autocompletedepartment: string = "Department";
+  autocompleteModeTemplate: string= "Template"; 
+
   @ViewChild('ddlTemplate') ddlTemplate: AirmidDropDownComponent;
 
-  editorConfig: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: '24rem',
-    minHeight: '24rem',
-    translate: 'yes',
-    placeholder: 'Enter text here...',
-    enableToolbar: true,
-    showToolbar: true,
-  };
+    editorConfig: AngularEditorConfig = {
+        editable: true,
+        spellcheck: true,
+        height: '24rem',
+        minHeight: '24rem',
+        translate: 'yes',
+        placeholder: 'Enter text here...',
+        enableToolbar: true,
+        showToolbar: true,
+    };
 
-  onBlur(e: any) {
-    // this.vConsentText = e.target.innerHTML;
-    throw new Error('Method not implemented.');
-  }
+    onBlur(e: any) {
+        this.vConsentText = e.target.innerHTML;
+        // throw new Error('Method not implemented.');
+    }
 
   constructor(
     public _ConsentService: ConsentService,

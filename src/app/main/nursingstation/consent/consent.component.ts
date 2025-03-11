@@ -80,7 +80,7 @@ export class ConsentComponent implements OnInit {
       { heading: "Consent Name", key: "consentName", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "Consent Desc", key: "consentDesc", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "Age", key: "age", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Mobile", key: "mobile", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "MobileNo", key: "mobile", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "Added By", key: "username", sort: true, align: 'left', emptySign: 'NA' },
       {
         heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
