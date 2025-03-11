@@ -123,31 +123,30 @@ export class AppointmentListComponent implements OnInit {
 
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
+    allcolumns=[
+        { heading: "Patient", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
+        { heading: "", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+        { heading: "", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+        { heading: "", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+        { heading: "UHID", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', type: 22 },
+        { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        {
+            heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
+        } 
+    ]
     gridConfig: gridModel = {
         apiUrl: "VisitDetail/AppVisitList",
-        columnsList: [
-            { heading: "Patient", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
-            { heading: "", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-            { heading: "", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-            { heading: "", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-            { heading: "UHID", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-            { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', type: 22 },
-            { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            {
-                heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
-                template: this.actionButtonTemplate  // Assign ng-template to the column
-            }
-           
-        ],
-
+        columnsList: this.allcolumns, 
         sortField: "VisitId",
         sortOrder: 0,
         filters: this.allfilters,
