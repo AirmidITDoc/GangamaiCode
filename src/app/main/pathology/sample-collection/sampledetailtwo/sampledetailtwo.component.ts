@@ -207,7 +207,11 @@ export class SampledetailtwoComponent implements OnInit {
   }
 
   onSave() {
-    this.isLoading = 'save';
+    debugger
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
     if (this.selection.selected.length == 0) {
       Swal.fire('Error !', 'Please select sample data', 'error');
       return;
@@ -217,16 +221,25 @@ export class SampledetailtwoComponent implements OnInit {
 
     this.selection.selected.forEach((element) => {
       console.log(element);
-      let UpdateAddSampleDetailsObj = {};
-      UpdateAddSampleDetailsObj['PathReportID'] = element.PathReportID,
-        UpdateAddSampleDetailsObj['SampleDateTime'] = this._SampleService.sampldetailform.get('SampleDateTime').value || '01/01/1900'
-      UpdateAddSampleDetailsObj['IsSampleCollection'] = 1;// this.datePipe.transform(this._SampleService.sampldetailform.get('SampleDateTime').value, "MM-dd-yyyy"),//  
-      UpdateAddSampleDetailsObj['No'] = element.SampleNo || 0;
+      let UpdateAddSampleDetailsObj = {
+        "pathReportId": element.PathReportID || 1,
+        "pathDate": formattedDate,
+        "pathTime": formattedTime,
+        "isSampleCollection": element.isSampleCollection || true,
+        "sampleNo": element.SampleNo || 0
+      }
+      // UpdateAddSampleDetailsObj['PathReportID'] = element.PathReportID,
+      //   UpdateAddSampleDetailsObj['SampleDateTime'] = this._SampleService.sampldetailform.get('SampleDateTime').value || '01/01/1900'
+      // UpdateAddSampleDetailsObj['IsSampleCollection'] = 1;// this.datePipe.transform(this._SampleService.sampldetailform.get('SampleDateTime').value, "MM-dd-yyyy"),//  
+      // UpdateAddSampleDetailsObj['No'] = element.SampleNo || 0;
       updatesamcollection.push(UpdateAddSampleDetailsObj);
     });
     let submitData = {
-      "updatepathologysamplecollection": updatesamcollection
+      updatesamcollection
     };
+    // let submitData = {
+    //   "updatepathologysamplecollection": updatesamcollection
+    // };
     console.log(submitData);
     this._SampleService.UpdateSampleCollection(submitData).subscribe(data => {
       this.msg = data;
@@ -281,6 +294,7 @@ export class SampleList {
   PathTestID: Number;
   ServiceName: String;
   IsSampleCollection: boolean;
+  isSampleCollection:boolean;
   SampleCollectionTime: Date;
   PathReportID: any;
   SampleNo: any;
@@ -292,6 +306,7 @@ export class SampleList {
     this.PathTestID = SampleList.PathTestID || 0;
     this.ServiceName = SampleList.ServiceName || '';
     this.IsSampleCollection = SampleList.IsSampleCollection || 0;
+    this.isSampleCollection = SampleList.isSampleCollection || 0;
     this.SampleCollectionTime = SampleList.SampleCollectionTime || '';
     this.PathReportID = SampleList.PathReportID || 0;
     this.SampleNo = SampleList.SampleNo || 0;

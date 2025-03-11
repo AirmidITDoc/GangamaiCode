@@ -129,21 +129,24 @@ Age=0;
                  console.log(data)
                 this._CompanysettlementService.InsertOPBillingsettlement(data).subscribe(response => {
                     this.toastr.success(response.message);
+                    this.GetDetails(this.RegId1)
                    this.viewgetOPPayemntPdf(response);
+                //    this._matDialog.closeAll();
+                  
                   }, (error) => {
                     this.toastr.error(error.message);
                   });
-               
+                
                 }
               });
 
               this.searchFormGroup.get('RegId').setValue('')
-             this.grid.bindGridData();
+             
     }
 
 
     viewgetOPPayemntPdf(data){
-        debugger
+        
         this.commonService.Onprint("PaymentId",data.paymentId,"OPPaymentReceipt");
     }
     
@@ -166,11 +169,11 @@ Age=0;
     getSelectedObj(obj) {
         
         console.log(obj)
-        this.RegId1 = obj.regId;
-        // this.RegId1=obj.value;
+        // this.RegId1 = obj.regId;
+        this.RegId1=obj.value;
         this.GetDetails(obj.value)
        setTimeout(() => {
-            this._CompanysettlementService.getRegistraionById(this.RegId1).subscribe((response) => {
+            this._CompanysettlementService.getRegistraionById(obj.value).subscribe((response) => {
             this.registerObj = response;
             console.log(response)
             this.PatientName=response.firstName + " " + response.middleName + " " + response.lastName

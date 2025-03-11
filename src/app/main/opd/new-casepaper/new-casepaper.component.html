@@ -138,7 +138,7 @@
                                                     <!-- Height -->
                                                     <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>Height</mat-label>
-                                                        <input matInput formControlName="Height" placeholder="Height in cm" [(ngModel)]="vHeight"
+                                                        <input matInput formControlName="Height" placeholder="Height in cm" [(ngModel)]="vHeight" required
                                                             (keydown)="onEnterHeight($event)" OnlyNumber (keyup)="getBMIcalculation()" (keypress)="keyPressCharater($event)">
                                                             <span matSuffix style="font-size: x-large;">|</span>
                                                             <span matSuffix style="margin-right: 10px; font-size: x-large;">cm</span>
@@ -147,7 +147,7 @@
                                                     <!-- Weight -->
                                                     <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>Weight</mat-label>
-                                                        <input matInput formControlName="Weight" placeholder="Weight in Kg" [(ngModel)]="vWeight"
+                                                        <input matInput formControlName="Weight" placeholder="Weight in Kg" [(ngModel)]="vWeight" required
                                                             (keydown)="onEnterWeight($event)" OnlyNumber (keyup)="getBMIcalculation()" (keypress)="keyPressCharater($event)">
                                                             <span matSuffix style="font-size: x-large;">|</span>
                                                         <span matSuffix style="margin-right: 10px; font-size: x-large;">kg</span>
@@ -218,6 +218,7 @@
                                                                         TextField="complaintDescr"
                                                                         ApiUrl="OPDPrescriptionMedical/get-ChiefComplaint" 
                                                                         [ReqFullObj]="true"
+                                                                        [value]="regObj.mAssignChiefComplaint"
                                                                         (selectionChange)="selectChangeCheifComplaint($event)">
                                                                     </airmid-dropdown>
                                                                     <!-- [value]="regObj.mAssignChiefComplaint" -->
