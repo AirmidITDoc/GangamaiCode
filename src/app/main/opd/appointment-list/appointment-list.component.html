@@ -43,7 +43,11 @@
             </div>
         </div>
         <form [formGroup]="searchFormGroup" class="input-error-hidden w-400">
-            <airmid-autocomplete label="RgId" [formGroup]="searchFormGroup" formControlName="RegId" fxFlex="100%" placeholderText="Enter Patient Name" ApiUrl="VisitDetail/search-patient?Keyword=" (selectionChange)="getSelectedObj($event)" TextField="formattedText" ValueField="regId"></airmid-autocomplete>
+            <!-- <airmid-autocomplete label="RgId" [formGroup]="searchFormGroup" formControlName="RegId" fxFlex="100%" placeholderText="Enter Patient Name" ApiUrl="VisitDetail/search-patient?Keyword=" (selectionChange)="getSelectedObj($event)" TextField="formattedText" ValueField="regId"></airmid-autocomplete> -->
+       
+            <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No" [formGroup]="searchFormGroup" formControlName="regId"  placeholderText="Search Reg No / Patient Name / Mobile No" ApiUrl="VisitDetail/search-patient?Keyword=" (selectionChange)="getSelectedObj($event)"
+            TextField="formattedText" ValueField="regId"></airmid-autocomplete>
+
         </form>
     </div>
 
@@ -146,7 +150,7 @@
 
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
-                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myformSearch" formControlName="FirstName" [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myformSearch" formControlName="FirstName" (input)="onChangeFirst()"/>
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[0].fieldValue='%'">
                             <mat-icon>close</mat-icon>
                         </button>
@@ -154,7 +158,7 @@
 
                     <mat-form-field appearance="outline">
                         <mat-label>Last Name</mat-label>
-                        <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myformSearch" formControlName="LastName" [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                        <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myformSearch" formControlName="LastName" (input)="onChangeFirst()" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[1].fieldValue='%'">
                             <mat-icon>close</mat-icon>
                         </button>
@@ -162,7 +166,7 @@
 
                     <mat-form-field appearance="outline">
                         <mat-label>RegNo</mat-label>
-                        <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myformSearch" formControlName="RegNo" [(ngModel)]="gridConfig.filters[2].fieldValue" />
+                        <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myformSearch" formControlName="RegNo" (input)="onChangeFirst()" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[2].fieldValue='0'">
                             <mat-icon>close</mat-icon>
                         </button>
@@ -170,7 +174,8 @@
 
                     <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [formGroup]="myformSearch"
                      [(ngModel)]="gridConfig.filters[3].fieldValue" [validations]="getValidationdoctorMessages().DoctorId"
-                      [mode]="autocompleteModedeptdoc" (selectionChange)="ListView($event)">
+                      [mode]="autocompleteModedeptdoc" (selectionChange)="ListView($event)"
+                      (keyup)="ListView($event)">
                     </airmid-dropdown>
 
                 </form>
