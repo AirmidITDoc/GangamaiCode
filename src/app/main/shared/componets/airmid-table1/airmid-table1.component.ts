@@ -20,8 +20,8 @@ export class AirmidTable1Component implements OnInit {
   constructor(private _httpClient: ApiCaller, public datePipe: DatePipe,public _matDialog: MatDialog,) {
   }
   dateType = DATE_TYPES;
-  @Input() gridConfig1: gridModel;
-  @Input() gridConfig: gridModel1; // or whatever type of datasource you have
+  @Input() gridConfig: gridModel;
+  @Input() gridConfig1: gridModel1; // or whatever type of datasource you have
   resultsLength = 0;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
@@ -36,7 +36,7 @@ export class AirmidTable1Component implements OnInit {
   // }
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   // ngAfterContentInit() {
-  //     this.gridConfig.columnsList.forEach(columnDef => this.table.addColumnDef(columnDef));
+  //     this.gridConfig1.columnsList.forEach(columnDef => this.table.addColumnDef(columnDef));
   // }
   headers = [];
   ngOnInit(): void {
@@ -49,23 +49,23 @@ export class AirmidTable1Component implements OnInit {
       return gridColumnTypes;
   }
   public get Headers(){
-      return this.gridConfig.columnsList.map(x => x.key.replaceAll(' ', ''));
+      return this.gridConfig1.columnsList.map(x => x.key.replaceAll(' ', ''));
   }
  bindGridData() {
          // this.updateFilters();
  
          var param1: gridRequest1 = {
 
-            // sortField: this.sort?.active ?? this.gridConfig.sortField,
+            // sortField: this.sort?.active ?? this.gridConfig1.sortField,
             sortOrder: this.sort?.direction ?? 'asc' == 'asc' ? 0 : -1, 
             columns: [],
             first: (this.paginator?.pageIndex ?? 0),
-            rows: (this.paginator?.pageSize ?? this.gridConfig.row),
-             mode:this.gridConfig.mode,
-             searchFields: this.gridConfig.searchFields,
+            rows: (this.paginator?.pageSize ?? this.gridConfig1.row),
+             mode:this.gridConfig1.mode,
+             searchFields: this.gridConfig1.searchFields,
              exportType: gridResponseType.JSON
          };
-         this._httpClient.PostData(this.gridConfig.apiUrl, param1).subscribe((data: any) => {
+         this._httpClient.PostData(this.gridConfig1.apiUrl, param1).subscribe((data: any) => {
              this.dataSource.data = data.data as [];
              debugger
              this.dataSource.sort = this.sort;

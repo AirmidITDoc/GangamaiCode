@@ -7,6 +7,18 @@ export class gridRequest {
     columns: [] = [];
     exportType: gridResponseType = gridResponseType.JSON;
 }
+
+export class gridRequest1 {
+    first: number = 0;
+    rows: number = 10;
+     mode: string = "";
+    sortOrder: number = 0;
+    searchFields: gridFilter[] = [];
+    columns: [] = [];
+    exportType: gridResponseType = gridResponseType.JSON;
+}
+
+
 export class gridFilter {
     fieldName: string = "";
     fieldValue: string = "";
@@ -23,6 +35,18 @@ export class gridModel {
     filters: gridFilter[] = [];
     row: number = 25;
 }
+
+export class gridModel1 {
+    columnsList: any[] = [];
+    apiUrl: string = "";
+    mode: string = "";
+    sortOrder: number = 0;
+    searchFields: gridFilter[] = [];
+    sortField: string = "";
+    row: number = 25;
+}
+
+
 export enum OperatorComparer {
     Contains='Contains',
     StartsWith='StartsWith',
