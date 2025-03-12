@@ -374,14 +374,14 @@ export class ResultEntryOneComponent implements OnInit {
     
             this.isLoading = 'submit';
             let PathInsertArry = [];
-            let pathologyDeleteObjarray = [];
+            // let pathologyDeleteObjarray = [];
             let pathologyUpdateReportObjarray = [];
     
-            this.data.RIdData.forEach((element) => {
-                let pathologyDeleteObj = {};
-                pathologyDeleteObj['pathReportID'] = element.PathReportId// element1.PathReportId;
-                pathologyDeleteObjarray.push(pathologyDeleteObj);
-            });
+            // this.data.RIdData.forEach((element) => {
+            //     let pathologyDeleteObj = {};
+            //     pathologyDeleteObj['pathReportID'] = element.PathReportId// element1.PathReportId;
+            //     pathologyDeleteObjarray.push(pathologyDeleteObj);
+            // });
     
             this.dataSource.data.forEach((element) => {
     
@@ -433,7 +433,7 @@ export class ResultEntryOneComponent implements OnInit {
     
             console.log('==============================  PathologyResult ===========');
             let submitData = {
-                "deletepathreportheader": pathologyDeleteObjarray,
+                // "deletepathreportheader": pathologyDeleteObjarray,
                 "insertpathreportdetail": PathInsertArry,
                 "updatepathreportheader": pathologyUpdateReportObjarray
             };
@@ -475,68 +475,61 @@ export class ResultEntryOneComponent implements OnInit {
 
         this.isLoading = 'submit';
         let PathInsertArry = [];
-        let pathologyDeleteObjarray = [];
         let pathologyUpdateReportObjarray = [];
-
-        this.data.RIdData.forEach((element) => {
-            let pathologyDeleteObj = {};
-            pathologyDeleteObj['pathReportID'] = element.PathReportId// element1.PathReportId;
-            pathologyDeleteObjarray.push(pathologyDeleteObj);
-        });
 
         this.dataSource.data.forEach((element) => {
 
-            let pathologyInsertReportObj = {};
-            pathologyInsertReportObj['PathReportId'] = element.PathReportId //element1.PathReportId;
-            pathologyInsertReportObj['CategoryID'] = element.CategoryId || 0;
-            pathologyInsertReportObj['TestID'] = element.TestId || 0;
-            pathologyInsertReportObj['SubTestId'] = element.SubTestId || 0;
-            pathologyInsertReportObj['ParameterId'] = element.ParameterId || 0;
-            pathologyInsertReportObj['ResultValue'] = element.ResultValue || ' ';
-            pathologyInsertReportObj['UnitId'] = element.UnitId || 1;
-            pathologyInsertReportObj['NormalRange'] = element.NormalRange || '';
-            pathologyInsertReportObj['PrintOrder'] = element.PrintOrder || 0;
-            pathologyInsertReportObj['PIsNumeric'] = element.PIsNumeric || 0;
-            pathologyInsertReportObj['CategoryName'] = element.CategoryName || '';
-            pathologyInsertReportObj['TestName'] = element.TestName || '';
-            pathologyInsertReportObj['SubTestName'] = element.SubTestName || '';
-            pathologyInsertReportObj['ParameterName'] = element.ParameterName || '';
-            pathologyInsertReportObj['UnitName'] = element.UnitName || '';
-            pathologyInsertReportObj['PatientName'] = this.selectedAdvanceObj2.PatientName || '';
-            pathologyInsertReportObj['RegNo'] = this.selectedAdvanceObj2.RegNo;
-            pathologyInsertReportObj['MinValue'] = parseFloat(element.MinValue) || 0;
-            pathologyInsertReportObj['MaxValue'] = parseFloat(element.MaxValue) || 0;
-            pathologyInsertReportObj['SampleID'] = element.SampleID || '';
+            let pathologyResult = {};
+            pathologyResult['pathReportDetId'] = 0 //element1.PathReportId;
+            pathologyResult['pathReportId'] = element.PathReportId //element1.PathReportId;
+            pathologyResult['categoryId'] = element.CategoryId || 0;
+            pathologyResult['testId'] = element.TestId || 0;
+            pathologyResult['subTestId'] = element.SubTestId || 0;
+            pathologyResult['parameterId'] = element.ParameterId || 0;
+            pathologyResult['resultValue'] = element.ResultValue || ' ';
+            pathologyResult['unitId'] = element.UnitId || 1;
+            pathologyResult['normalRange'] = element.NormalRange || '';
+            pathologyResult['printOrder'] = element.PrintOrder || 0;
+            pathologyResult['pisNumeric'] = element.PIsNumeric || 0;
+            pathologyResult['categoryName'] = element.CategoryName || '';
+            pathologyResult['testName'] = element.TestName || '';
+            pathologyResult['subTestName'] = element.SubTestName || '';
+            pathologyResult['parameterName'] = element.ParameterName || '';
+            pathologyResult['unitName'] = element.UnitName || '';
+            pathologyResult['patientName'] = this.selectedAdvanceObj2.PatientName || '';
+            pathologyResult['regNo'] = this.selectedAdvanceObj2.RegNo;
+            pathologyResult['minValue'] = parseFloat(element.MinValue) || 0;
+            pathologyResult['maxValue'] = parseFloat(element.MaxValue) || 0;
+            pathologyResult['sampleId'] = element.SampleID || '';
 
-            pathologyInsertReportObj['ParaBoldFlag'] = element.ParaBoldFlag || '';
+            pathologyResult['paraBoldFlag'] = element.ParaBoldFlag || '';
 
-            PathInsertArry.push(pathologyInsertReportObj);
+            PathInsertArry.push(pathologyResult);
         });
 
         this.data.RIdData.forEach((element) => {
-            let pathologyUpdateReportObj = {};
+            let pathologyReport = {};
 
-            pathologyUpdateReportObj['PathReportID'] = element.PathReportId// element1.PathReportId;
-            pathologyUpdateReportObj['ReportDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-                pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
-                pathologyUpdateReportObj['IsCompleted'] = true;
-            pathologyUpdateReportObj['IsPrinted'] = true;
-            pathologyUpdateReportObj['PathResultDr1'] = this.otherForm.get('PathResultDoctorId').value.DoctorId || 0;
-            pathologyUpdateReportObj['PathResultDr2'] = 0; //this.otherForm.get('DoctorId').value.DoctorId || 0;
-            pathologyUpdateReportObj['PathResultDr3'] = 0;
-            pathologyUpdateReportObj['IsTemplateTest'] = 0;
-            pathologyUpdateReportObj['SuggestionNotes'] = this.otherForm.get('suggestionNotes').value || "";
-            pathologyUpdateReportObj['AdmVisitDoctorID'] = 0; //this.otherForm.get('AdmDoctorID').value.DoctorID || 0;
-            pathologyUpdateReportObj['RefDoctorID'] = this.otherForm.get('RefDoctorID').value.DoctorID || 0;
+            pathologyReport['pathReportId'] = element.PathReportId// element1.PathReportId;
+            pathologyReport['reportDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
+                pathologyReport['reportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
+                pathologyReport['isCompleted'] = true;
+            pathologyReport['isPrinted'] = true;
+            pathologyReport['pathResultDr1'] = this.otherForm.get('PathResultDoctorId').value.DoctorId || 0;
+            pathologyReport['pathResultDr2'] = 0; //this.otherForm.get('DoctorId').value.DoctorId || 0;
+            pathologyReport['pathResultDr3'] = 0;
+            pathologyReport['isTemplateTest'] = 0;
+            pathologyReport['suggestionNotes'] = this.otherForm.get('suggestionNotes').value || "";
+            pathologyReport['admVisitDoctorId'] = 0; //this.otherForm.get('AdmDoctorID').value.DoctorID || 0;
+            pathologyReport['refDoctorId'] = this.otherForm.get('RefDoctorID').value.DoctorID || 0;
 
-            pathologyUpdateReportObjarray.push(pathologyUpdateReportObj);
+            pathologyUpdateReportObjarray.push(pathologyReport);
         });
 
         console.log('==============================  PathologyResult ===========');
         let submitData = {
-            "deletepathreportheader": pathologyDeleteObjarray,
-            "insertpathreportdetail": PathInsertArry,
-            "updatepathreportheader": pathologyUpdateReportObjarray
+            "pathologyResult": PathInsertArry,
+            "pathologyReport": pathologyUpdateReportObjarray
         };
         console.log(submitData);
         this._SampleService.PathResultentryInsert(submitData).subscribe(response => {

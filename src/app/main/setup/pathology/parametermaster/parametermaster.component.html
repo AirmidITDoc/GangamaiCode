@@ -52,10 +52,12 @@
 
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
+                <form [formGroup]="searchFormGroup" fxLayout="column">
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Parameter Name</mat-label>
                     <input matInput placeholder="Search Parameter Name" autocomplete="off"
-                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                    [formGroup]="searchFormGroup" formControlName="ParameterNameSearch"
+                    (input)="onChangeFirst()"/>
                     <button matSuffix mat-icon-button aria-label="Clear"
                         (click)="gridConfig.filters[0].fieldValue='%'">
                         <mat-icon>close</mat-icon>
@@ -67,6 +69,7 @@
                     <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
                     <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
                 </mat-radio-group>
+                </form>
             </ng-container>
         </airmid-table>
     </div>

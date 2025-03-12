@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,10 @@ export class ResultEntryService {
   myformSearch: FormGroup;
 
   myform: FormGroup;
-  constructor(private _httpClient: HttpClient, private _formBuilder: UntypedFormBuilder) { 
+  constructor(
+    private _httpClient: HttpClient,
+    private _httpClient1: ApiCaller,
+     private _formBuilder: UntypedFormBuilder) { 
     this.myformSearch = this.createSearchForm();
     this.myform = this.createtemplateForm();
   }
@@ -62,7 +66,7 @@ export class ResultEntryService {
     return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
   }
   public PathResultentryInsert(employee) {
-    return this._httpClient.post("Pathology/PathResultentryInsert", employee);
+    return this._httpClient1.PostData("Pathology/InsertResultEntry", employee);
   }
 
   public getPathologyDoctorCombo() {

@@ -221,14 +221,12 @@
                                                                         [value]="regObj.mAssignChiefComplaint"
                                                                         (selectionChange)="selectChangeCheifComplaint($event)">
                                                                     </airmid-dropdown>
-                                                                    <!-- [value]="regObj.mAssignChiefComplaint" -->
                                                                 </div>
                                                                 <mat-chip-listbox #chipList>
-                                                                    <!-- <mat-chip
-                                                                        *ngFor="let item of addCheiflist">
-                                                                        {{ item.complaintDescr }} <mat-icon
-                                                                            (click)="removeChiefComplaint(item)">close</mat-icon>
-                                                                    </mat-chip> -->
+                                                                    <!-- <mat-chip *ngFor="let item of (addCheiflist.concat(caseFormGroup.value.mAssignChiefComplaint || []))">
+                                                                        {{ item.complaintDescr }} 
+                                                                        <mat-icon (click)="removeChiefComplaint(item)">close</mat-icon>
+                                                                      </mat-chip>                                                                       -->
 
                                                                     <mat-chip
                                                                         *ngFor="let item of caseFormGroup.value.mAssignChiefComplaint">
@@ -254,13 +252,13 @@
                                                                 [formGroup]="caseFormGroup"
                                                                 [validations]="getValidationMessages().Diagnosis" #ddlDiagnosis
                                                                 [IsMultiPle]="true" 
-                                                                [value]="regObj.mAssignDiagnosis"
                                                                 ValueField="visitId" 
                                                                 TextField="descriptionName"
                                                                 ApiUrl="OPDPrescriptionMedical/get-Dignosis" 
                                                                 [ReqFullObj]="true"
                                                                 (selectionChange)="selectChangeDiagnosis($event)">
                                                             </airmid-dropdown>
+                                                            
                                                             </div>
                                                             <mat-chip-listbox #chipList>
                                                                 <mat-chip
@@ -268,11 +266,11 @@
                                                                     {{ item.descriptionName }} <mat-icon
                                                                         (click)="removedignosis(item)">close</mat-icon>
                                                                 </mat-chip>
-                                                                <!-- <mat-chip
-                                                                *ngFor="let item of addDiagnolist">
-                                                                {{ item.descriptionName }} <mat-icon
-                                                                    (click)="removedignosis(item)">close</mat-icon>
-                                                            </mat-chip> -->
+
+                                                                <!-- <mat-chip *ngFor="let item of (addDiagnolist.concat(caseFormGroup.value.mAssignDiagnosis || []))">
+                                                                    {{ item.descriptionName }} 
+                                                                    <mat-icon (click)="removedignosis(item)">close</mat-icon>
+                                                                  </mat-chip>  -->
                                                             </mat-chip-listbox>
                                                         </div>
                                                     </form>
@@ -306,6 +304,10 @@
                                                                     {{ item.examinationDescr }} <mat-icon
                                                                         (click)="removeExamination(item)">close</mat-icon>
                                                                 </mat-chip>
+                                                                <!-- <mat-chip *ngFor="let item of (addExaminlist.concat(caseFormGroup.value.mAssignExamination || []))">
+                                                                    {{ item.examinationDescr }} 
+                                                                    <mat-icon (click)="removeExamination(item)">close</mat-icon>
+                                                                  </mat-chip>                                                                    -->
                                                             </mat-chip-listbox>
                                                         </div>
                                                     </form>

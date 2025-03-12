@@ -71,7 +71,7 @@ export class SampleCollectionComponent implements OnInit {
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "PresReId",
+        sortField: "RegNo",
         sortOrder: 0,
         filters: [
             { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
