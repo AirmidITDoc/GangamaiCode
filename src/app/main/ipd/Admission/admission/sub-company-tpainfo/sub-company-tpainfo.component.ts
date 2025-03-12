@@ -46,7 +46,7 @@ export class SubCompanyTPAInfoComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.SubcompanyFormGroup = this.createmlcForm();
+    this.SubcompanyFormGroup = this.createsubtpaForm();
     this.SubcompanyFormGroup.markAllAsTouched();
     console.log(this.data)
     // if (this.data) {
@@ -57,7 +57,7 @@ export class SubCompanyTPAInfoComponent implements OnInit {
 }
  
   
-  createmlcForm() {
+createsubtpaForm() {
     return this.formBuilder.group({
       subCompanyId : 0,
       compTypeId:['', Validators.required],
@@ -68,7 +68,20 @@ export class SubCompanyTPAInfoComponent implements OnInit {
       phoneNo: ['', [Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       mobileNo: ['',Validators.required, [Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       faxNo: '%',
-      // IsActive:''
+      IsActive:'',
+
+
+      addedBy:10,
+  updatedBy: 10,
+  isCancelled: true,
+  isCancelledBy: 0,
+  isCancelledDate: "2018-01-01",
+  createdBy: 10,
+  createdDate:"2018-01-01",
+  modifiedBy: 10,
+  modifiedDate: "2018-01-01"
+
+
     });
   }
 

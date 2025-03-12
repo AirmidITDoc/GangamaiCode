@@ -76,9 +76,7 @@ public getRegistraionById(Id) {
  }
 
 
-  public LabRequestSave(employee) {
-    return this._httpClient.post("InPatient/IPPathOrRadiRequest", employee);
-  }
+
 
   public sendPaymentDetails(emp){
     return this._httpClient.post("PaymentGetway/OnlinePayment",emp);
@@ -104,7 +102,9 @@ public getRegistraionById(Id) {
   public getAllList(param) {
     return this._httpClient1.PostData("ParameterMaster/MPathParameterList",param);
 }
-  
+public LabRequestSave(employee) {
+  return this._httpClient1.PostData("Nursing/NursingInsertLabRequest", employee);
+}
 }
 
 

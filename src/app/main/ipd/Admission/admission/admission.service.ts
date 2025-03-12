@@ -55,14 +55,14 @@ export class AdmissionService {
             PrefixId: ['', [Validators.required]],
             FirstName: ['', [
                 Validators.required,
-                Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+                Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
             ]],
             MiddleName: ['', [
-                Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+                 Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
             ]],
             LastName: ['', [
                 Validators.required,
-                Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
+                Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
             ]],
             GenderId: new FormControl('', [Validators.required]),
             Address: '',
@@ -264,6 +264,11 @@ export class AdmissionService {
 
     public getstateId(Id) {
         return this._httpClient1.GetData("StateMaster/" + Id);
+    }
+
+
+    public CompanyUpdate(param) {
+        return this._httpClient1.PostData("VisitDetail/DeptDoctorList",param)
     }
 }
 

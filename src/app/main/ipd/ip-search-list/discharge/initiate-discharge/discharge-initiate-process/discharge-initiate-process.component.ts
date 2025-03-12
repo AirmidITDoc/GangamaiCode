@@ -52,6 +52,7 @@ export class DischargeInitiateProcessComponent {
 
   ngOnInit(): void {
     this.InitiateForm = this.createInitiateForm()
+    console.log(this.data)
     if (this.data) {
       this.registerObj = this.data.Obj;
       console.log(this.registerObj)
@@ -118,31 +119,43 @@ this.deptname=event.text
       return;
     }
 
-    let saveDischargeInitiateParam = [];
-    this.dsDepartmentlist.data.forEach(element => {
-      let saveDischargeInitiateParamObj = {
-        "admID": this.registerObj.AdmissionID || 0,
-        "departmentName": element.DepartmentName || '',
-        "departmentID": element.DepartmentID || 0,
-        "isApproved": 0,
-        "approvedBy": 0,
-        "approvedDatetime": "2024-12-19T08:01:44.541Z"
-      }
-      saveDischargeInitiateParam.push(saveDischargeInitiateParamObj)
-    })
+    // let saveDischargeInitiateParam = [];
+    // this.dsDepartmentlist.data.forEach(element => {
+    //   let saveDischargeInitiateParamObj = {
+    //     "admID": this.registerObj.AdmissionID || 0,
+    //     "departmentName": element.DepartmentName || '',
+    //     "departmentID": element.DepartmentID || 0,
+    //     "isApproved": 0,
+    //     "approvedBy": 0,
+    //     "approvedDatetime": "2024-12-19T08:01:44.541Z"
+    //   }
+    //   saveDischargeInitiateParam.push(saveDischargeInitiateParamObj)
+    // })
 
-    let updateDischargeInitiateParam = {
-      "admID":this.registerObj.AdmissionID || 0,
-      "isInitinatedDischarge": 1
-    }
+    // let updateDischargeInitiateParam = {
+    //   "admID":this.registerObj.AdmissionID || 0,
+    //   "isInitinatedDischarge": 1
+    // }
 
-    let submitData = {
-      "saveDischargeInitiateParam": saveDischargeInitiateParam,
-      "updateDischargeInitiateParam":updateDischargeInitiateParam
+    // let submitData = {
+    //   "saveDischargeInitiateParam": saveDischargeInitiateParam,
+    //   "updateDischargeInitiateParam":updateDischargeInitiateParam
+    // }
+
+    var submitData1={
+"initateDiscId": 0,
+  "admId": 210,
+  "departmentName": "D",
+  "departmentId": 10,
+  "isApproved": true,
+  "approvedBy": 10,
+  "approvedDatetime":  "2024-09-18T11:24:02.656Z",
+  "isNoDues": true,
+  "comments": "string"
     }
     
-    console.log(submitData)
-    this._IpSearchListService.SaveDischargeInitiate(submitData).subscribe(response => {
+    console.log(submitData1)
+    this._IpSearchListService.SaveDischargeInitiate(submitData1).subscribe(response => {
       this.toastr.success(response);
       this.dialogRef.close();
       }, (error) => {

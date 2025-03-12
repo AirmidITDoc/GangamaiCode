@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { gridModel, gridRequest, gridResponseType } from 'app/core/models/gridRequest';
+import { gridModel, gridModel1, gridRequest, gridRequest1, gridResponseType } from 'app/core/models/gridRequest';
 import { DATE_TYPES, gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { DatePipe } from '@angular/common';
@@ -20,12 +20,17 @@ export class AirmidTable1Component implements OnInit {
   constructor(private _httpClient: ApiCaller, public datePipe: DatePipe,public _matDialog: MatDialog,) {
   }
   dateType = DATE_TYPES;
-  @Input() gridConfig: gridModel; // or whatever type of datasource you have
+  @Input() gridConfig1: gridModel;
+  @Input() gridConfig: gridModel1; // or whatever type of datasource you have
   resultsLength = 0;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
   // @ContentChildren(MatColumnDef) columnDefs: QueryList<MatColumnDef>;
   dataSource = new MatTableDataSource<any>();
+  @Input() ShowButtons: boolean = true;
+  @Input() FullWidth: boolean = false;
+  @Input() ShowFilter: boolean = true;
+      @Input() tableClasses: string = '';
   // @ViewChild(MatSort) set sort(sort: MatSort) {
   //     this.dataSource.sort = sort;
   // }
@@ -46,21 +51,27 @@ export class AirmidTable1Component implements OnInit {
   public get Headers(){
       return this.gridConfig.columnsList.map(x => x.key.replaceAll(' ', ''));
   }
-  bindGridData() {
-      var param: gridRequest = {
-          sortField: this.sort?.active ?? this.gridConfig.sortField,
-          sortOrder: this.sort?.direction ?? 'asc' == 'asc' ? 0 : -1, filters: this.gridConfig.filters,
-          columns: [],
-          first: (this.paginator?.pageIndex ?? 0),
-          rows: (this.paginator?.pageSize ?? this.gridConfig.row),
-          exportType: gridResponseType.JSON
-      };
-      this._httpClient.PostData(this.gridConfig.apiUrl, param).subscribe((data: any) => {
-          this.dataSource.data = data.data as [];
-          this.dataSource.sort = this.sort;
-          this.resultsLength = data["recordsFiltered"];
-      });
-  }
+ bindGridData() {
+         // this.updateFilters();
+ 
+         var param1: gridRequest1 = {
+
+            sortField: this.sort?.active ?? this.gridConfig.sortField,
+            sortOrder: this.sort?.direction ?? 'asc' == 'asc' ? 0 : -1, 
+            columns: [],
+            first: (this.paginator?.pageIndex ?? 0),
+            rows: (this.paginator?.pageSize ?? this.gridConfig.row),
+             mode:this.gridConfig.mode,
+             searchFields: this.gridConfig.searchFields,
+             exportType: gridResponseType.JSON
+         };
+         this._httpClient.PostData(this.gridConfig.apiUrl, param1).subscribe((data: any) => {
+             this.dataSource.data = data.data as [];
+             debugger
+             this.dataSource.sort = this.sort;
+             this.resultsLength = data["recordsFiltered"];
+         });
+     }
   onClear() {
 
   }

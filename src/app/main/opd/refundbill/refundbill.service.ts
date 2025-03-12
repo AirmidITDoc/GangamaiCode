@@ -94,7 +94,7 @@ export class RefundbillService {
 
     public InsertOPRefundBilling(Param) {
       
-            return this._httpClient.PostData("RefundOfBill/OPInsert" ,Param);
+            return this._httpClient.PostData("RefundOfBill/IPRefundofBILLInsert" ,Param);
       }
 
     getOprefundofbillview(RefundId) {

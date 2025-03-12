@@ -22,6 +22,9 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { ToastrService } from 'ngx-toastr'; 
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
+import { gridModel, gridModel1, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridColumnTypes } from 'app/core/models/tableActions';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 
 
 
@@ -171,6 +174,45 @@ export class PurchaseOrderComponent implements OnInit {
   subscriptionArr: Subscription[] = [];
   dateTimeObj: any;
 
+gridConfig1: gridModel1 = {
+  apiUrl: "Common",
+  columnsList: [
+    { heading: "PurchaseID", key: "PurchaseID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100 },
+    { heading: "PurchaseNo", key: "PurchaseNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 }
+    // { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 80 },
+    // { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+    // { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    // { heading: "Date", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
+    // { heading: "DoctorName", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    // { heading: "RefDocName", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    // { heading: "IPDNo", key: "ipdno", sort: true, align: 'left', emptySign: 'NA' },
+    // { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
+    // { heading: "WardName", key: "roomName", sort: true, align: 'left', emptySign: 'NA', type: 14 },
+    // { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
+    // { heading: "ClassName", key: "className", sort: true, align: 'left', emptySign: 'NA' },
+    // { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    // { heading: "RelativeName", key: "relativeName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 14 },
+    // {
+    //   heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+    //   template: this.actionButtonTemplate  // Assign ng-template to the column
+    // }
+  ],
+
+  sortField: "PurchaseID",
+  sortOrder: 0,
+  searchFields: [{ fieldName: "ToStoreId", fieldValue: "%", opType: OperatorComparer.Contains },
+  { fieldName: "From_Dt", fieldValue: "08/06/2022", opType: OperatorComparer.Contains },
+  { fieldName: "To_Dt", fieldValue: "08/06/2025", opType: OperatorComparer.Equals },
+  { fieldName: "IsVerify", fieldValue: "0", opType: OperatorComparer.Equals },
+  { fieldName: "Supplier_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+  { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+  { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
+
+  ],
+ mode:"PurchaseOrder",
+ row:10
+
+}
 
   constructor(
     public _PurchaseOrder: PurchaseOrderService,
@@ -187,6 +229,7 @@ export class PurchaseOrderComponent implements OnInit {
   ngOnInit(): void {
     this.getFromStoreSearch();
     this.getPurchaseOrderList();
+    this.getPurchaseOrderList1();
   }
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -195,6 +238,8 @@ export class PurchaseOrderComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
   resultsLength = 0;
+
+
 
   getPurchaseOrderList() {
     var Param = {
@@ -214,6 +259,63 @@ export class PurchaseOrderComponent implements OnInit {
       this.dsPurchaseOrder.sort = this.sort;
       this.resultsLength= data["Table"][0]["total_row"];
       this.sIsLoading = '';
+    },
+      error => {
+        this.sIsLoading = '';
+      });
+  }
+
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  getPurchaseOrderList1() {
+    var Param = {
+   
+
+  "searchFields": [
+    {
+      "fieldName": "ToStoreId",
+      "fieldValue": "2",
+      "opType": "Equals"
+    },
+  {
+      "fieldName": "From_Dt",
+      "fieldValue": "08/06/2022",
+      "opType": "Equals"
+    },
+{
+      "fieldName": "To_Dt",
+      "fieldValue": "08/06/2025",
+      "opType": "Equals"
+    },
+{
+      "fieldName": "IsVerify",
+      "fieldValue": "0",
+      "opType": "Equals"
+    },
+{
+      "fieldName": "Supplier_Id",
+      "fieldValue": "0",
+      "opType": "Equals"
+    },
+{
+      "fieldName": "Start",
+      "fieldValue": "0",
+      "opType": "Equals"
+    },
+{
+      "fieldName": "Length",
+      "fieldValue": "10",
+      "opType": "Equals"
+    }
+  ],
+  "mode": "PurchaseOrder"
+}
+    
+    console.log(Param);
+    this._PurchaseOrder.getPurchaseOrder(Param).subscribe(data => {
+      console.log(data)
+      this.dsPurchaseOrder.data = data  as PurchaseOrder[];
+      // this.grid.gridConfig = this.gridConfig1;
+      this.grid.bindGridData();
     },
       error => {
         this.sIsLoading = '';

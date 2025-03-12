@@ -571,12 +571,17 @@ patientDetail1 = new VisitMaster1({});
       this.dataSource3.data = [];
       this.RefundOfBillFormGroup.reset();
       this.searchFormGroup.get('RegId').setValue("");
-      this.PatientName = '';
-      this.AgeYear = '';
+      // this.PatientName = '';
+      // this.AgeYear = '';
       this.TotalRefundAmount = 0;
       this.RefundBalAmount = 0;
       this.RegNo = '';
-
+      this.registerObj.regId=0
+       this.registerObj.firstName=""
+        this.registerObj.lastName=""
+        this.registerObj.ageYear=""
+  this.registerObj.genderId=""
+        
     }
   }
 

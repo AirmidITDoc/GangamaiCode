@@ -139,7 +139,8 @@
                 </div>
             </ng-template>
             <div class="table-pagination-wrapper">
-                <mat-paginator class="paginator" [pageSizeOptions]="[25, 50, 100, 500]" [pageSize]="25" [length]="resultsLength" showFirstLastButtons (page)="bindGridData()"></mat-paginator>
+                <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 100, 500]" [pageSize]="5" [length]="resultsLength" showFirstLastButtons (page)="bindGridData()"></mat-paginator>
+           
             </div>
         </div>
     </div>

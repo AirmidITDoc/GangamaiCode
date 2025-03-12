@@ -158,59 +158,6 @@ export class AdmissionComponent implements OnInit {
         template: this.actionButtonTemplate  // Assign ng-template to the column
       }
 
-      //   { heading: "RelatvieMobileNo", key: "relatvieMobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100, type:14 },
-      // {
-      //     heading: "Action", key: "action", align: "right", width: 400 ,sticky:true, type: gridColumnTypes.action, actions: [
-      //         {
-      //             action: gridActions.edit, callback: (data: any) => {
-      //                 this.EditRegistration(data);
-      //             }
-      //         },
-
-      //         {
-      //             action: gridActions.edit, callback: (data: any) => {
-      //                 this.onbedTransfer(data);
-      //             }
-      //         },
-      //         {
-      //           action: gridActions.edit, callback: (data: any) => {
-      //               this.ondischarge(data);
-      //           }
-      //       },
-      //       {
-      //         action: gridActions.edit, callback: (data: any) => {
-      //             this.ondischargesummarydata(data);
-      //         }
-      //     },
-      //         {
-      //             action: gridActions.print, callback: (data: any) => {
-      //                 this.getAdmittedPatientCasepaperview(data);
-      //             }
-      //         },
-      //         {
-      //             action: gridActions.print , callback: (data: any) => {
-      //                 this.getAdmittedPatientCasepaperTempview(data);
-      //             }
-      //         },
-      //         {
-      //             action: gridActions.edit, callback: (data: any) => {
-      //                 this.getEditAdmission(data);
-      //             }
-      //         },
-      //         {
-      //           action: gridActions.edit, callback: (data: any) => {
-      //               this.NewMLc(data);
-      //           }
-      //       },
-      //         {
-      //             action: gridActions.delete, callback: (data: any) => {
-
-      //                 // this.AppointmentCancle(data);
-
-      //             }
-      //         }
-      //       ]
-      // } //Action 1-view, 2-Edit,3-delete
     ],
 
     sortField: "AdmissionId",
@@ -532,6 +479,9 @@ export class AdmissionComponent implements OnInit {
       });
 
     }, 100);
+ 
+ 
+    // this.commonService.Onprint("AdmissionId", element.admissionId, "AdmissionList"); 
   }
 
 

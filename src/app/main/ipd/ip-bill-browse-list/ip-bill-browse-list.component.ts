@@ -48,19 +48,19 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 })
 export class IPBillBrowseListComponent implements OnInit {
     myFilterform: FormGroup;
-    myFilterFormIPBrowsePayment:FormGroup;
+    myFilterFormIPBrowsePayment: FormGroup;
     menuActions: Array<string> = [];
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     hasSelectedContacts: boolean;
-    
-  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
-   
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
+
     allfilters = [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-        { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -69,50 +69,50 @@ export class IPBillBrowseListComponent implements OnInit {
         { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
 
     ]
-     ngAfterViewInit() {
-              this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIP;  
-              this.gridConfig.columnsList.find(col => col.key === 'patientTypeId')!.template = this.patientTypetemp; 
-              this.gridConfig.columnsList.find(col => col.key === 'interimOrFinal')!.template = this.Billstatus; 
-              this.gridConfig.columnsList.find(col => col.key === 'balanceAmt')!.template = this.balancestatus; 
-              this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.isCancelledstatus; 
+    ngAfterViewInit() {
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIP;
+        this.gridConfig.columnsList.find(col => col.key === 'patientTypeId')!.template = this.patientTypetemp;
+        this.gridConfig.columnsList.find(col => col.key === 'interimOrFinal')!.template = this.Billstatus;
+        this.gridConfig.columnsList.find(col => col.key === 'balanceAmt')!.template = this.balancestatus;
+        this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.isCancelledstatus;
 
-              this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplatepayment; 
-              this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIPRefund;  
+        this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplatepayment;
+        this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIPRefund;
 
-          }
-          @ViewChild('actionButtonTemplateIP') actionButtonTemplateIP!: TemplateRef<any>;
-          @ViewChild('actionButtonTemplatepayment') actionButtonTemplatepayment!: TemplateRef<any>;
+    }
+    @ViewChild('actionButtonTemplateIP') actionButtonTemplateIP!: TemplateRef<any>;
+    @ViewChild('actionButtonTemplatepayment') actionButtonTemplatepayment!: TemplateRef<any>;
 
-          
-          @ViewChild('patientTypetemp') patientTypetemp!: TemplateRef<any>;
-          @ViewChild('Billstatus') Billstatus!: TemplateRef<any>;
-          @ViewChild('balancestatus') balancestatus!: TemplateRef<any>;
-          @ViewChild('isCancelledstatus') isCancelledstatus!: TemplateRef<any>;
-          
-          @ViewChild('actionButtonTemplateIPRefund') actionButtonTemplateIPRefund!: TemplateRef<any>;
+
+    @ViewChild('patientTypetemp') patientTypetemp!: TemplateRef<any>;
+    @ViewChild('Billstatus') Billstatus!: TemplateRef<any>;
+    @ViewChild('balancestatus') balancestatus!: TemplateRef<any>;
+    @ViewChild('isCancelledstatus') isCancelledstatus!: TemplateRef<any>;
+
+    @ViewChild('actionButtonTemplateIPRefund') actionButtonTemplateIPRefund!: TemplateRef<any>;
 
     gridConfig: gridModel = {
         apiUrl: "Billing/BrowseIPBillList",
         columnsList: [
-            { heading: "", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50},
+            { heading: "", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
             { heading: "", key: "interimOrFinal", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
             { heading: "", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
             { heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-            
-            { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:200, type:9},
+
+            { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
             { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width:150},
-            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:300},
+            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
             { heading: "Age", key: "age", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Mobile", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width:200,type:9},
-            { heading: "DOD", key: "dischargeDate", sort: true, align: 'left', emptySign: 'NA', width:200,type:9},
+            { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
+            { heading: "DOD", key: "dischargeDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
             { heading: "IPDNO", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' ,width:200 },
-            { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA',width:200 },
+            { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
             // { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA',width:200 },
-            { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA',width:200 },
+            { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', },
             { heading: "DiscAmount", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "CompanyDiscAmt", key: "compDiscAmt", sort: true, align: 'left', emptySign: 'NA' },
@@ -145,10 +145,10 @@ export class IPBillBrowseListComponent implements OnInit {
 
             { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:300},
+            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
             { heading: "TotalAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BalAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA',type:9 },
+            { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', type: 9 },
             { heading: "CashPay", key: "cashPay", sort: true, align: "center" },
             { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "CardPay", key: "cardPay", sort: true, align: "center" },
@@ -182,9 +182,9 @@ export class IPBillBrowseListComponent implements OnInit {
     gridConfig2: gridModel = {
         apiUrl: "Billing/BrowseIPRefundlist",
         columnsList: [
-            { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', type: 8, width:200 },
+            { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
             { heading: "UHID", key: "uhidNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width:300 },
+            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
             { heading: "RefundAmount", key: "refundId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "CashPay", key: "cashPay", sort: true, align: "center" },
@@ -210,14 +210,14 @@ export class IPBillBrowseListComponent implements OnInit {
         row: 25
     }
 
-    constructor(public _IPBrowseBillService: IPBrowseBillService, 
+    constructor(public _IPBrowseBillService: IPBrowseBillService,
         private commonService: PrintserviceService,
         public _matDialog: MatDialog, private _ActRoute: Router,
         public toastr: ToastrService, public datePipe: DatePipe) { }
 
     ngOnInit(): void {
         this.myFilterform = this._IPBrowseBillService.filterForm_IpdBrowse();
-        this.myFilterFormIPBrowsePayment=this._IPBrowseBillService.filterForm_IpdpaymentBrowse()
+        this.myFilterFormIPBrowsePayment = this._IPBrowseBillService.filterForm_IpdpaymentBrowse()
 
         if (this._ActRoute.url == '/ipd/ipd-bill-browse-list') {
             this.menuActions.push('Print Final Bill Groupwise');
@@ -225,37 +225,48 @@ export class IPBillBrowseListComponent implements OnInit {
             this.menuActions.push('Print FinalBill ClassService');
             this.menuActions.push('Print IP Final Bill');
             // this.menuActions.push('Print FinalBill WardWise');
-          }
-      
+        }
+
     }
 
     onSave(row: any = null) {
     }
 
-    getRecord1(contact, m): void {
-        debugger
-        if (m == "Print Final Bill Groupwise") 
-          if (!contact.InterimOrFinal)
-            this.viewgetBillReportPdf(contact.BillNo)
-          else
-            this.viewgetInterimBillReportPdf(contact.BillNo)
-      
-      if (m == "Print FinalBill Classwise") 
-        this.viewgetBillReportclasswisePdf(contact)
-        if (m == "Print FinalBill ClassService") 
-          this.viewgetBillReportclassservicewisePdf(contact)
-          // if (m == "Print FinalBill WardWise") 
-          //   this.viewgetBillReportwardwisePdf(contact)
-    
-             if (m == "Print IP Final Bill") 
-            this.viewgetFinalBillReportNewPdf(contact.BillNo)
-      }
+    OngetRecord(contact, m): void {
+        console.log(contact)
+        if (m == "Print Final Bill Groupwise")
+            if (!contact.InterimOrFinal)
+                this.viewgetFinalBillReportGroupwisePdf(contact.billNo)
+            else
+                this.viewgetInterimBillReportPdf(contact.billNo)
 
-      viewgetBillReportPdf(e){}
-      viewgetInterimBillReportPdf(e){}
-      viewgetBillReportclasswisePdf(e){}
-      viewgetBillReportclassservicewisePdf(e){}
-      viewgetFinalBillReportNewPdf(e){}
+        if (m == "Print FinalBill Classwise")
+            this.viewgetBillReportclasswisePdf(contact.billNo)
+        if (m == "Print FinalBill ClassService")
+            this.viewgetBillReportclassservicewisePdf(contact.billNo)
+
+        if (m == "Print IP Final Bill")
+            this.viewgetFinalBillReportNewPdf(contact.billNo)
+    }
+
+    // viewgetBillReportPdf(billNo) {
+    //     this.commonService.Onprint("BillNo", billNo, "IpFinalBill");
+    // }
+    viewgetInterimBillReportPdf(billNo) {
+        this.commonService.Onprint("BillNo", billNo, "IpInterimBill");
+    }
+    viewgetBillReportclasswisePdf(billNo) {
+        this.commonService.Onprint("BillNo", billNo, "IpFinalClasswiseBill");
+    }
+    viewgetBillReportclassservicewisePdf(billNo) {
+        this.commonService.Onprint("BillNo", billNo, "IpFinalBillClassservicewise");
+    }
+    viewgetFinalBillReportNewPdf(billNo) {
+        this.commonService.Onprint("BillNo", billNo, "IpFinalBill");
+    }
+    viewgetFinalBillReportGroupwisePdf(billNo) {
+        this.commonService.Onprint("BillNo", billNo, "IpFinalGroupwiseBill");
+    }
 
 
     getValidationMessages() {
@@ -318,7 +329,7 @@ export class IPBillBrowseListComponent implements OnInit {
 
         console.log(contact)
         let PatientHeaderObj = {};
-    
+
         PatientHeaderObj['Date'] = contact.BillDate;
         PatientHeaderObj['PatientName'] = contact.PatientName;
         PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
@@ -330,238 +341,42 @@ export class IPBillBrowseListComponent implements OnInit {
         PatientHeaderObj['RegNo'] = contact.RegNo;
         PatientHeaderObj['RegId'] = contact.RegId;
         // this.advanceDataStored.storage = new AdvanceDetailObj(contact);
-    
-    console.log(PatientHeaderObj)
-    
-    
+
+        console.log(PatientHeaderObj)
+
+
         const dialogRef = this._matDialog.open(IPSettlementComponent,
-          {
-            maxWidth: "95vw",
-            height: '740px',
-            width: '100%',
-            data: {
-    
-              registerObj: contact,
-              FromName: "IP-Bill"
-            }
-          });
-    
-        dialogRef.afterClosed().subscribe(result => {
-    
-        //   let updateIpBillobj = {};
-    
-    
-        //   updateIpBillobj['BillNo'] = contact.BillNo;
-        //   updateIpBillobj['BillBalAmount'] = result.submitDataPay.BalAmt || 0;
-    
-        //   const updateIpBill = new UpdateBill(updateIpBillobj);
-    
-    
-        //   let iPsettlementAdvanceDetailUpdateobj = {};
-        //   // need loop here
-    
-        //   iPsettlementAdvanceDetailUpdateobj['advanceDetailID'] = contact.BillNo;
-        //   iPsettlementAdvanceDetailUpdateobj['usedAmount'] = 0;
-        //   iPsettlementAdvanceDetailUpdateobj['balanceAmount'] = result.submitDataPay.ipPaymentInsert.balanceAmountController
-    
-        //   const iPsettlementAdvanceDetailUpdate = new Advheaderdetail(iPsettlementAdvanceDetailUpdateobj);
-    
-    
-        //   let iPsettlementAdvanceHeaderUpdateobj = {};
-    
-        //   iPsettlementAdvanceHeaderUpdateobj['advanceId'] = contact.BillNo;
-        //   iPsettlementAdvanceHeaderUpdateobj['advanceUsedAmount'] = 0;
-        //   iPsettlementAdvanceHeaderUpdateobj['balanceAmount'] = result.submitDataPay.ipPaymentInsert.balanceAmountController
-    
-        //   const iPsettlementAdvanceHeaderUpdate = new UpdateBill(iPsettlementAdvanceHeaderUpdateobj);
-    
-        //   let CreditPaymentobj = {};
-        //   CreditPaymentobj['paymentId'] = 0;
-        //   CreditPaymentobj['BillNo'] = contact.BillNo;
-        //   // CreditPaymentobj['ReceiptNo'] = '';
-        //   CreditPaymentobj['PaymentDate'] = this.currentDate || '01/01/1900';
-        //   CreditPaymentobj['PaymentTime'] = this.currentDate || '01/01/1900';
-        //   CreditPaymentobj['CashPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CashPayAmount) || 0;
-        //   CreditPaymentobj['ChequePayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.ChequePayAmount) || 0;
-        //   CreditPaymentobj['ChequeNo'] = result.submitDataPay.ipPaymentInsert.ChequeNo || '';
-        //   CreditPaymentobj['BankName'] = result.submitDataPay.ipPaymentInsert.BankName || '';
-        //   CreditPaymentobj['ChequeDate'] = result.submitDataPay.ipPaymentInsert.ChequeDate || '01/01/1900';
-        //   CreditPaymentobj['CardPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CardPayAmount) || 0;
-        //   CreditPaymentobj['CardNo'] = result.submitDataPay.ipPaymentInsert.CardNo || '';
-        //   CreditPaymentobj['CardBankName'] = result.submitDataPay.ipPaymentInsert.CardBankName || '';
-        //   CreditPaymentobj['CardDate'] = result.submitDataPay.ipPaymentInsert.CardDate || '01/01/1900';
-        //   CreditPaymentobj['AdvanceUsedAmount'] = 0;
-        //   CreditPaymentobj['AdvanceId'] = 0;
-        //   CreditPaymentobj['RefundId'] = 0;
-        //   CreditPaymentobj['TransactionType'] = 0;
-        //   CreditPaymentobj['Remark'] = result.submitDataPay.ipPaymentInsert.Remark || '';
-        //   CreditPaymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
-        //     CreditPaymentobj['IsCancelled'] = 0;
-        //   CreditPaymentobj['IsCancelledBy'] = 0;
-        //   CreditPaymentobj['IsCancelledDate'] = this.currentDate;
-        //   // CreditPaymentobj['CashCounterId'] = 0;
-        //   // CreditPaymentobj['IsSelfORCompany'] = 0;
-        //   // CreditPaymentobj['CompanyId'] = 0;
-        //   CreditPaymentobj['opD_IPD_Type'] = 0;
-        //   CreditPaymentobj['neftPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.neftPayAmount) || 0;
-        //   CreditPaymentobj['neftNo'] = result.submitDataPay.ipPaymentInsert.neftNo || '';
-        //   CreditPaymentobj['neftBankMaster'] = result.submitDataPay.ipPaymentInsert.neftBankMaster || '';
-        //   CreditPaymentobj['neftDate'] = result.submitDataPay.ipPaymentInsert.neftDate || '01/01/1900';
-        //   CreditPaymentobj['PayTMAmount'] = result.submitDataPay.ipPaymentInsert.PayTMAmount || 0;
-        //   CreditPaymentobj['PayTMTranNo'] = result.submitDataPay.ipPaymentInsert.paytmTransNo || '';
-        //   CreditPaymentobj['PayTMDate'] = result.submitDataPay.ipPaymentInsert.PayTMDate || '01/01/1900'
-        //   // CreditPaymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
-        //   // CreditPaymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
-    
-        //   console.log(CreditPaymentobj)
-        //   const ipPaymentInsert = new IpPaymentInsert(CreditPaymentobj);
-    
-        //   let Data = {
-        //     "updateIpBill": updateIpBill,
-        //     "ipPaymentCreditUpdat": ipPaymentInsert,
-        //     "iPsettlementAdvanceDetailUpdate": iPsettlementAdvanceDetailUpdate,
-        //     "iPsettlementAdvanceHeaderUpdate": iPsettlementAdvanceHeaderUpdate
-        //   };
-    
-        //   console.log(Data)
-        //   this._IpBillBrowseListService.InsertIPCreditBillingPayment(Data).subscribe(response => {
-        //     if (response) {
-        //       Swal.fire('IP Bill With Settlement!', 'Bill Payment Successfully !', 'success').then((result) => {
-        //         if (result) {
-    
-        //           this.viewgetBillReportPdf(response)
-        //           this._matDialog.closeAll();
-        //           this.onShow_IpdBrowse();
-        //           this.getWhatsappshareIPPaymentRec(response,this.vMobileNo)
-        //         }
-        //       });
-        //     } else {
-        //       Swal.fire('Error !', 'IP Billing Payment not saved', 'error');
-        //     }
-    
-        //   });
-        });
-    
-      }
+            {
+                maxWidth: "95vw",
+                height: '740px',
+                width: '100%',
+                data: {
 
-    getFinalBillview(Id) {
-        setTimeout(() => {
-
-            let param = {
-                "searchFields": [
-                    {
-                        "fieldName": "BillNo",
-                        "fieldValue": Id,
-                        "opType": "13"
-                    }
-                ],
-                "mode": "IpFinalBill"
-            }
-
-            debugger
-            console.log(param)
-            this._IPBrowseBillService.getReportView(param).subscribe(res => {
-                const matDialog = this._matDialog.open(PdfviewerComponent,
-                    {
-                        maxWidth: "85vw",
-                        height: '750px',
-                        width: '100%',
-                        data: {
-                            base64: res["base64"] as string,
-                            title: "IP Bill  Viewer"
-
-                        }
-
-                    });
-
-                matDialog.afterClosed().subscribe(result => {
-
-                });
+                    registerObj: contact,
+                    FromName: "IP-Bill"
+                }
             });
 
-        }, 100);
+        dialogRef.afterClosed().subscribe(result => {
+
+        });
+
+    }
+
+    getFinalBillview(billNo) {
+        this.commonService.Onprint("BillNo", billNo, "IpFinalBill");
     }
 
     OnViewReportPdf(element) {
-        this.commonService.Onprint("RegNo", element.RegNo, "AppointmentReceipt");
+        this.commonService.Onprint("PaymentId", element.paymentId, "IpPaymentReceipt");
     }
 
-    getPaymentreceiptview(Id) {
-        debugger
-        setTimeout(() => {
-
-            let param = {
-
-                "searchFields": [
-                    {
-                        "fieldName": "PaymentId",
-                        "fieldValue": Id,
-                        "opType": "13"
-                    }
-                ],
-                "mode": "IpPaymentReceipt"
-            }
-
-            debugger
-            console.log(param)
-            this._IPBrowseBillService.getReportView(param).subscribe(res => {
-                const matDialog = this._matDialog.open(PdfviewerComponent,
-                    {
-                        maxWidth: "85vw",
-                        height: '750px',
-                        width: '100%',
-                        data: {
-                            base64: res["base64"] as string,
-                            title: "IP Payment  Viewer"
-
-                        }
-
-                    });
-
-                matDialog.afterClosed().subscribe(result => {
-
-                });
-            });
-
-        }, 100);
+    getPaymentreceiptview(element) {
+        this.commonService.Onprint("PaymentId", element.paymentId, "IpPaymentReceipt");
     }
 
-    getRefundreceiptview(AdmissionId) {
-        setTimeout(() => {
-
-            let param = {
-                "searchFields": [
-                    {
-                        "fieldName": "BillNo",
-                        "fieldValue": "50848",
-                        "opType": "13"
-                    }
-                ],
-                "mode": "IpFinalBill"
-            }
-
-            debugger
-            console.log(param)
-            this._IPBrowseBillService.getReportView(param).subscribe(res => {
-                const matDialog = this._matDialog.open(PdfviewerComponent,
-                    {
-                        maxWidth: "85vw",
-                        height: '750px',
-                        width: '100%',
-                        data: {
-                            base64: res["base64"] as string,
-                            title: "IP Bill  Viewer"
-
-                        }
-
-                    });
-
-                matDialog.afterClosed().subscribe(result => {
-
-                });
-            });
-
-        }, 100);
+    getRefundreceiptview(element) {
+        this.commonService.Onprint("RefundId", element.refundId, "IpBillRefundReceipt");
     }
 
     IPAdvanceComponent() {

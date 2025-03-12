@@ -1,225 +1,146 @@
-<fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar table-filter-wrapper">
-    <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center">
-        <span class="h5">Search Facility</span>
-    </div>
-    <div class="nav material2">
-        <form>
-            <div fxLayout="column" fxLayoutAlign="start none" class="table-filter">
-                <ng-content select="[filters]"></ng-content>
-                <div class="action-buttons">
-                    <button mat-raised-button (click)="onClear()" matTooltip="close">
-                        <mat-icon class="cleariconbutton">close</mat-icon>
-                    </button>
-                    <button mat-raised-button (click)="bindGridData()" matTooltip="search">
-                        <mat-icon class="searchiconbutton">search</mat-icon>
-                    </button>
+<div class="search-bar-container" *ngIf="ShowFilter==true && FullWidth==false;else elseBlock">
+    <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar table-filter-wrapper">
+        <div class="sidebar-content" *ngIf="ShowFilter==true">
+            <div class="sidebar-header accent">
+                <span class="search-title">Search Facility</span>
+            </div>
+            <div class="sidebar-body">
+                <div class="sidebar-form">
+                    <form>
+                        <div fxLayout="column" fxLayoutAlign="start none" class="table-filter">
+                            <ng-content select="[searchFields]"></ng-content>
+                            <div class="action-buttons">
+                                <button mat-raised-button (click)="onClear()" matTooltip="close">
+                                    <mat-icon class="cleariconbutton">close</mat-icon>
+                                </button>
+                                <button mat-raised-button (click)="bindGridData()" matTooltip="search">
+                                    <mat-icon class="searchiconbutton">search</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </form>
+        </div>
+    </fuse-sidebar>
+</div>
+<ng-template #elseBlock>
+    <div class="search-bar-container">
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar table-filter-wrapper">
+
+        </fuse-sidebar>
     </div>
-</fuse-sidebar>
+</ng-template>
 <div class="center p-12 pb-56 airmid-table-container" fxFlexAlign="start center">
     <div class="content-card">
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
-            <div width="100%">
-                <div fxlayout="row">
-                    <div style="width: 100%;">
-                        <mat-table #table matSort [dataSource]="dataSource" (matSortChange)="bindGridData()"
-                            style="overflow:auto">
-                            <ng-container *ngFor="let row of gridConfig?.columnsList" [matColumnDef]="row.key">
-                                <mat-header-cell [style.min-width.px]="row.width" *matHeaderCellDef mat-sort-header
-                                    [disabled]="!row.sort"> {{
-                                    row?.heading }}
-                                </mat-header-cell>
-                                <mat-cell [style.min-width.px]="row.width" *matCellDef="let element; let i = index"
-                                    fxShow.gt-sm>
-                                    <ng [ngSwitch]="row?.type||GridColumnType.default" fxShow.gt-sm>
-                                        <ng *ngSwitchCase="GridColumnType.customText">
-                                            <span> {{ element[row.key] ? [row.text1] : [row.text2] }}</span>
+        <div class="table-wrapper">
+            <mat-table #table matSort [dataSource]="dataSource" (matSortChange)="bindGridData()" [class]="'airmid-table ' + tableClasses">
+                <ng-container *ngFor="let row of gridConfig?.columnsList;" [matColumnDef]="row.key" [stickyEnd]="row?.key === 'action'">
+                    <mat-header-cell [style.min-width.px]="row.width || defaultColumnWidth" *matHeaderCellDef mat-sort-header [disabled]="!row.sort"> {{
+                        row?.heading }}
+                    </mat-header-cell>
+                    <mat-cell [style.min-width.px]="row.width || defaultColumnWidth" *matCellDef="let element; let i = index" fxShow.gt-sm>
+                        <ng-container *ngIf="row.type==GridColumnType.template; else defaultTemplate">
+                            <ng-container *ngTemplateOutlet="row.template; context: { $implicit: element,column: column,row:row }"></ng-container>
+                        </ng-container>
+                        <ng-template #defaultTemplate>
+                            <ng [ngSwitch]="row?.type||GridColumnType.default" fxShow.gt-sm>
+                                <ng *ngSwitchCase="GridColumnType.customText" [matTooltip]="element[row.key] ? element[row.key] : '--'">
+                                    <span class="text-overflow"> {{ element[row.key] ? [row.text1] : [row.text2] || '--'}}</span>
+                                </ng>
+                                <ng *ngSwitchCase="GridColumnType.status" fxHide fxShow.gt-sm>
+                                    <mat-icon *ngIf="getStatus(element[row.key])" class="active-icon green-600 s-16" style="color: azure;">check_circle</mat-icon>
+                                    <mat-icon *ngIf="!getStatus(element[row.key])" class="active-icon red-500 s-16">close</mat-icon>
+                                </ng>
+                                <ng *ngSwitchCase="GridColumnType.image">
+                                    <div class="profile_image_wrapper">
+                                        <img class="showImage" height="50px" width="50px" [src]="element[row.key] ? element[row.key] : 'assets/images/noimage.jpg'">
+                                    </div>
+                                </ng>
+                                <ng *ngSwitchCase="GridColumnType.date">
+                                    <span class="text-overflow" [matTooltip]="element[row.key] ? (element[row.key] | date: dateType.MEDIUM_DATE) : '-'">{{ element[row.key] ? (element[row.key] | date:
+                                        dateType.MEDIUM_DATE) : '-'}}</span>
+                                </ng>
+                                <ng *ngSwitchCase="GridColumnType.time">
+                                    <span class="text-overflow">{{ element[row.key] ? (element[row.key] | date:
+                                        dateType.SHORT_TIME) : '-'}}</span>
+                                </ng>
+                                <ng *ngSwitchCase="GridColumnType.dateWithTime">
+                                    <span class="text-overflow">{{ element[row.key] ? (element[row.key] | date:
+                                        dateType.DATE_WITH_TIME) : '-'}}</span>
+                                </ng>
+                                <ng *ngSwitchCase="GridColumnType.dateByTime">
+                                    <span class="text-overflow">{{ element[row.key] ? (element[row.key] | date:
+                                        dateType.DATE__TIME) : '-'}}</span>
+                                </ng>
+                                <ng *ngSwitchCase="GridColumnType.wordBreak">
+                                    <a class="table-link bold break-spaces text-overflow" test="{{element[row.key] | json}}" (click)="$event.stopPropagation();actionLink.emit({action: row.actionType, data: element})">{{
+                                        element[row.key]}}
+                                    </a>
+                                </ng>
+                                <ng *ngSwitchDefault>
+                                    <span class="text-overflow" [matTooltip]="element[row.key] || '--'">{{ element[row.key] || '--'}}</span>
+                                </ng>
+                                <ng *ngSwitchCase="GridColumnType.action">
+                                    <div class="action-list">
+                                        <ng *ngFor="let sta of row.actions">
+                                            <button mat-icon-button *ngIf="sta.action == GridAction.view" (click)="sta.callback(element)" style="color:blue;">
+                                                <mat-icon title="View">remove_red_eye</mat-icon>
+                                            </button>
+                                            <button mat-icon-button *ngIf="sta.action == GridAction.edit" (click)="sta.callback(element)" style="color:black;">
+                                                <mat-icon title="Edit Menu">edit</mat-icon>
+                                            </button>
+                                            <button mat-icon-button *ngIf="sta.action == GridAction.delete" (click)="onDelete(sta,element)" color="warn">
+                                                <mat-icon>delete_outline</mat-icon>
+                                            </button>
+                                            <button mat-icon-button *ngIf="sta.action == GridAction.print" (click)="sta.callback(element)" color="#5e35b1">
+                                                <mat-icon>print</mat-icon>
+                                            </button>
+                                            <button mat-icon-button *ngIf="sta.action == GridAction.CossConsult" (click)="sta.callback(element)" color="#5e35b1">
+                                                <mat-icon title="CrossConsultation">cached icon</mat-icon>
+                                            </button>
                                         </ng>
-                                        <ng *ngSwitchCase="GridColumnType.status" fxHide fxShow.gt-sm>
-                                            <mat-icon *ngIf="getStatus(element[row.key])"
-                                                class="active-icon green-600 s-16"
-                                                style="color: azure;">check_circle</mat-icon>
-                                            <mat-icon *ngIf="!getStatus(element[row.key])"
-                                                class="active-icon red-500 s-16">close</mat-icon>
-                                        </ng>
-                                        <ng *ngSwitchCase="GridColumnType.Statuschk" fxHide fxShow.gt-sm>
-                                            <mat-icon *ngIf="getStatus(element[row.key])" matTooltip="Yes">account_box
-                                            </mat-icon>
+                                    </div>
+                                </ng>
+                            </ng>
+                        </ng-template>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row class="accent" *matHeaderRowDef="Headers; sticky: true">
+                </mat-header-row>
+                <mat-row *matRowDef="let row; columns: Headers;" class="element"  [ngClass]="getRowClasses(row)" (click)="SelectRow(row)"></mat-row>
+            </mat-table>
+        </div>
+        <div class="table-footer-wrapper">
+            <div class="table-export-wrapper"  *ngIf="ShowButtons==true;else elseButtonBlock">
+                <button class="btn btn-primary btn-with-icon">
+                    <span class="btn-icon">
+                        <i class="fa-solid fa-file-excel fa-lg"></i>
+                    </span>
+                    <span>Excel</span>
+                </button>
+                <button class="btn btn-primary btn-with-icon">
+                    <span class="btn-icon">
+                        <i class="fa-solid fa-file-pdf fa-lg"></i>
+                    </span>
+                    <span>Pdf</span>
+                </button>
+                <button class="btn btn-primary btn-with-icon">
+                    <span class="btn-icon">
+                        <i class="fa-solid fa-file-csv fa-lg"></i>
+                    </span>
+                    <span>CSV</span>
+                </button>
+            </div>
 
-                                            <mat-icon *ngIf="!getStatus(element[row.key])" matTooltip="No">business
-                                            </mat-icon>
-                                        </ng>
-
-                                        <ng *ngSwitchCase="GridColumnType.StatusPhoneApp" fxHide fxShow.gt-sm>
-                                            <mat-icon *ngIf="getStatus(element[row.key])" matTooltip="Phone Appointment"
-                                                class="cyan-600 s-16">
-                                                settings_phone
-                                            </mat-icon>
-                                        </ng>
-                                        <ng *ngSwitchCase="GridColumnType.StatusCrosscons" fxHide fxShow.gt-sm>
-                                            <mat-icon title="CrossConsult" *ngIf="getStatus(element[row.key])"
-                                                (click)="CrossCons()" class="active-icon red-600 s-16">cached
-                                                icon</mat-icon>
-                                            <mat-icon title="NotCrossConsult" *ngIf="!getStatus(element[row.key])"
-                                                class="active-icon green-600 s-16">check_circle</mat-icon>
-                                        </ng>
-
-                                        <ng *ngSwitchCase="GridColumnType.StatusBillgenerate" fxHide fxShow.gt-sm>
-                                            <mat-icon title="Bill Generated" *ngIf="!getStatus(element[row.key])"
-                                                class="active-icon green-600 s-16">bill</mat-icon>
-                                        </ng>
-
-                                        <ng *ngSwitchCase="GridColumnType.StatusBillcancle" fxHide fxShow.gt-sm>
-                                            <mat-icon title="Bill Cancle" *ngIf="getStatus(element[row.key])"
-                                                class="active-icon red-600 s-16">
-                                                close</mat-icon>
-                                        </ng>
-
-                                        <ng *ngSwitchCase="GridColumnType.Statusoldnew" fxHide fxShow.gt-sm>
-                                            <mat-icon
-                                                *ngIf="getStatus(element[row.key])=='1' || getStatus(element[row.key])=='1'"
-                                                matTooltip="PatientNew" class="pill green-600 s-16">circle</mat-icon>
-                                            <mat-icon *ngIf="getStatus(element[row.key])=='2' " matTooltip="PatientOld"
-                                                class="pill orange-600 s-16">circle
-                                            </mat-icon>
-                                        </ng>
-
-                                        <ng *ngSwitchCase="GridColumnType.StatusOPTOIPConvert" fxHide fxShow.gt-sm>
-                                            <mat-icon title="OPTOIPConvert" *ngIf="getStatus(element[row.key])"
-                                                class="disabled-icon">
-                                                redo</mat-icon>
-                                        </ng>
-                                        <ng *ngSwitchCase="GridColumnType.StatusIsPathology" fxHide fxShow.gt-sm>
-                                            <mat-icon *ngIf="!getStatus(element[row.key])"
-                                                class="active-icon red-500 s-16">close
-                                            </mat-icon>
-                                            <mat-icon *ngIf="getStatus(element[row.key])" matTooltip="IsPathology">
-                                                <img width="22px" height="17px" src="assets/images/logos/pathology.png">
-                                            </mat-icon>
-                                        </ng>
-                                        <ng *ngSwitchCase="GridColumnType.StatusIsRadiology" fxHide fxShow.gt-sm>
-                                            <mat-icon *ngIf="getStatus(element[row.key])" matTooltip="IsRadiology">
-                                                <img width="18px" height="14px" src="assets/images/logos/radiology.png">
-                                            </mat-icon>
-                                            <mat-icon *ngIf="!getStatus(element[row.key])"
-                                                class="active-icon red-500 s-16">close
-                                            </mat-icon>
-                                        </ng>
-                                        <ng *ngSwitchCase="GridColumnType.StatusCreditdr" fxHide fxShow.gt-sm>
-                                            <mat-icon *ngIf="getStatus(element[row.key])" matTooltip="CreditedtoDoctor">
-                                                <img width="20px" height="15px"
-                                                    src="assets/images/logos/doctor.png"></mat-icon>
-                                            <mat-icon *ngIf="!getStatus(element[row.key])"
-                                                class="active-icon red-500 s-16">close</mat-icon>
-                                        </ng>
-
-                                        <ng *ngSwitchCase="GridColumnType.StatusPatientType" fxHide fxShow.gt-sm>
-                                            <mat-icon **ngIf="getStatus(element[row.key])"
-                                                matTooltip="Patient Category Self">account_box
-                                            </mat-icon>
-
-                                            <mat-icon *ngIf="!getStatus(element[row.key])"
-                                                matTooltip="Patient Category other">business
-                                            </mat-icon>
-                                        </ng>
-
-
-
-                                        <ng *ngSwitchCase="GridColumnType.IsMLC" fxHide fxShow.gt-sm>
-                                            <mat-icon *ngIf="getStatus(element[row.key])" matTooltip="CreditedtoDoctor">
-                                                <img width="20px" height="15px"
-                                                    src="assets/images/logos/doctor.png"></mat-icon>
-                                            <mat-icon *ngIf="!getStatus(element[row.key])"
-                                                class="active-icon red-500 s-16">print</mat-icon>
-                                        </ng>
-
-
-                                        <ng *ngSwitchCase="GridColumnType.image">
-                                            <div class="profile_image_wrapper">
-                                                <img class="showImage" height="50px" width="50px"
-                                                    [src]="element[row.key] ? element[row.key] : 'assets/images/noimage.jpg'">
-                                            </div>
-                                        </ng>
-                                        <ng *ngSwitchCase="GridColumnType.date">
-                                            {{ element[row.key] ? (element[row.key] | date: dateType.MEDIUM_DATE) :
-                                            '-'}}
-                                        </ng>
-                                        <ng *ngSwitchCase="GridColumnType.time">
-                                            {{ element[row.key] ? (element[row.key] | date: dateType.SHORT_TIME) : '-'}}
-                                        </ng>
-                                        <ng *ngSwitchCase="GridColumnType.dateWithTime">
-                                            {{ element[row.key] ? (element[row.key] | date: dateType.DATE_WITH_TIME) :
-                                            '-'}}
-                                        </ng>
-                                        <ng *ngSwitchCase="GridColumnType.dateByTime">
-                                            {{ element[row.key] ? (element[row.key] | date: dateType.DATE__TIME) : '-'}}
-                                        </ng>
-                                        <ng *ngSwitchCase="GridColumnType.wordBreak">
-                                            <a class="table-link bold break-spaces" test="{{element[row.key] | json}}"
-                                                (click)="$event.stopPropagation();actionLink.emit({action: row.actionType, data: element})">{{
-                                                element[row.key]}}
-                                            </a>
-                                        </ng>
-                                        <ng *ngSwitchDefault>
-                                            {{ element[row.key]}}
-                                        </ng>
-                                        <ng *ngSwitchCase="GridColumnType.action" sticky:true>
-                                            <ng *ngFor="let sta of row.actions">
-                                                <button mat-icon-button *ngIf="sta.action == GridAction.view"
-                                                    (click)="sta.callback(element)" style="color:blue;">
-                                                    <mat-icon title="View">remove_red_eye</mat-icon>
-                                                </button>
-                                                <button mat-icon-button *ngIf="sta.action == GridAction.edit"
-                                                    (click)="sta.callback(element)" style="color:black;">
-                                                    <mat-icon title="Edit Menu">launch</mat-icon>
-                                                </button>
-                                                <button mat-icon-button *ngIf="sta.action == GridAction.delete"
-                                                    (click)="sta.callback(element)" color="warn">
-                                                    <mat-icon>delete_outline</mat-icon>
-                                                </button>
-                                                <button mat-icon-button *ngIf="sta.action == GridAction.print"
-                                                    (click)="sta.callback(element)" color="#5e35b1">
-                                                    <mat-icon>print</mat-icon>
-                                                </button>
-                                                <button mat-icon-button *ngIf="sta.action == GridAction.CossConsult"
-                                                    (click)="sta.callback(element)" color="#5e35b1">
-                                                    <mat-icon title="CrossConsultation">cached icon</mat-icon>
-
-                                                </button>
-                                                <button mat-icon-button *ngIf="sta.action == GridAction.OPBill"
-                                                    (click)="sta.callback(element)" color="#5e35b1">
-                                                    <mat-icon title="OP Bill">payment</mat-icon>
-
-                                                </button>
-
-                                            </ng>
-                                        </ng>
-                                    </ng>
-                                </mat-cell>
-                            </ng-container>
-                            <mat-header-row class="accent" *matHeaderRowDef="Headers; sticky: true">
-                            </mat-header-row>
-                            <mat-row *matRowDef="let row; columns: Headers;" class="element"></mat-row>
-                        </mat-table>
-                        <mat-toolbar>
-                            <mat-toolbar-row>
-                                <div class="table-export-wrapper">
-                                    <button mat-raised-button>Excel</button>
-                                    <button mat-raised-button>Pdf</button>
-                                    <button mat-raised-button>Csv</button>
-                                </div>
-                                <div class="table-pagination-wrapper">
-                                    <mat-paginator class="paginator" [pageSizeOptions]="[25, 50, 100, 500]"
-                                        [pageSize]="25" [length]="resultsLength" showFirstLastButtons
-                                        (page)="bindGridData()"></mat-paginator>
-                                </div>
-                            </mat-toolbar-row>
-                        </mat-toolbar>
-
-                    </div>
+            <ng-template #elseButtonBlock>
+                <div class="table-footer-wrapper">
+                    
                 </div>
+            </ng-template>
+            <div class="table-pagination-wrapper">
+                <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 100, 500]" [pageSize]="5" [length]="resultsLength" showFirstLastButtons (page)="bindGridData()"></mat-paginator>
+           
             </div>
         </div>
     </div>

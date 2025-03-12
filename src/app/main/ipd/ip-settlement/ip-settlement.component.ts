@@ -238,24 +238,22 @@ export class IPSettlementComponent implements OnInit {
                     let data={
                         submitDataPay:submitData
                     }
-
-                 
                     console.log(submitData);
                     this._IPSettlementService.InsertIPSettlementPayment(submitData).subscribe(response => {
                         this.toastr.success(response.message);
-                        console.log(response)
-                        this.viewgetIPPayemntPdf(response)
-                        this._matDialog.closeAll();
+                        this.GetDetails(this.RegId1)
+                       this.viewgetIPPayemntPdf(response)
+                        // this._matDialog.closeAll();
+                       
                     }, (error) => {
                         this.toastr.error(error.message);
                     });
-
-
+                   
                 }
 
             }
         });
-        this.grid.bindGridData();
+        this.searchFormGroup.get('RegId').setValue('')
     }
 
     viewgetIPPayemntPdf(data) {

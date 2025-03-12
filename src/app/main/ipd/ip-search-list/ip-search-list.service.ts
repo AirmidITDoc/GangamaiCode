@@ -1136,7 +1136,7 @@ public UpdateDischargeInitiate(employee) {
 
 public updateIPDDischargSummary(employee)
 {    
-  return this._httpClient1.PostData("DischargeSummary/DischargeSummaryUpdate",employee);
+  return this._httpClient1.PutData("DischargeSummary/DischargeSummaryUpdate",employee);
 }
 
 

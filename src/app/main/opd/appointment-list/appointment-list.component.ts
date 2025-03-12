@@ -148,7 +148,7 @@ export class AppointmentListComponent implements OnInit {
         sortField: "VisitId",
         sortOrder: 0,
         filters: this.allfilters,
-        row: 125
+        row: 5
     }
 
     onChangeStartDate(value) {

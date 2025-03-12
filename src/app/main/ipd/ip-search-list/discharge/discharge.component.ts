@@ -183,8 +183,6 @@ export class DischargeComponent implements OnInit {
   onDischarge() {
     console.log(this.DischargeForm.value)
 
-
-
     let dischargModeldata = {};
 
     dischargModeldata['dischargeDate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
@@ -272,19 +270,22 @@ export class DischargeComponent implements OnInit {
     // this.personalform.reset();
 
   }
+
+  vApproved_Cnt:any;
+  vDeptCount:any;
   getchkConfigInitiate() {
-    // let Query = "SELECT Isnull(Count(IsApproved),0)as DeptCount,(SELECT Isnull(Count(b.IsApproved),0)as TotalCnt FROM dbo.initiateDischarge B Where b.AdmId=A.AdmId and b.IsApproved = 1)as Approved_Cnt " +
-    //   " FROM dbo.initiateDischarge A Where AdmId=" + this.selectedAdvanceObj.AdmissionID + " Group by AdmId"
-    // console.log(Query)
-    // this._IpSearchListService.getchkConfigInitiate(Query).subscribe((data) => {
-    //   console.log(data)
-    //   if(data){
-    //     this.vApproved_Cnt = data[0]?.Approved_Cnt
-    //     this.vDeptCount = data[0]?.DeptCount
-    //     console.log(this.vApproved_Cnt)
-    //     console.log(this.vDeptCount)
-    //   } 
-    // })
+   var data={
+
+   }
+    this._IpSearchListService.getchkConfigInitiate(data).subscribe((data) => {
+      console.log(data)
+      if(data){
+        this.vApproved_Cnt = data[0]?.Approved_Cnt
+        this.vDeptCount = data[0]?.DeptCount
+        console.log(this.vApproved_Cnt)
+        console.log(this.vDeptCount)
+      } 
+    })
   }
 
 
@@ -301,7 +302,7 @@ export class DischargeComponent implements OnInit {
         height: '72%',
         width: '100%',
         data: {
-          Obj: this.data
+          // Obj: this.data
         }
       });
     dialogRef.afterClosed().subscribe(result => {

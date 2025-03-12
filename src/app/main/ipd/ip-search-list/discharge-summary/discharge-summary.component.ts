@@ -484,7 +484,7 @@ export class DischargeSummaryComponent implements OnInit {
           dischargModeldata['dischargeDoctor3'] = this.DischargesumForm.get("dischargeDoctor3").value,
           dischargModeldata['dischargeSummaryTime'] = "11:00:00AM",
           dischargModeldata['doctorAssistantName'] = this.DischargesumForm.get("doctorAssistantName").value || '',
-          dischargModeldata['claimNumber'] = this.DischargesumForm.get("claimNumber").value || 0,
+          dischargModeldata['claimNumber'] = "0",//this.DischargesumForm.get("claimNumber").value || 0,
           dischargModeldata['preOthNumber'] = this.DischargesumForm.get("preOthNumber").value || 0,
           dischargModeldata['surgeryProcDone'] = this.DischargesumForm.get("surgeryProcDone").value || '',
           dischargModeldata['icd10code'] = ''
@@ -533,7 +533,7 @@ export class DischargeSummaryComponent implements OnInit {
           setTimeout(() => {
             this._IpSearchListService.insertIPDDischargSummary(data).subscribe(response => {
               this.toastr.success(response.message);
-              this.viewgetDischargesummaryPdf(response.admissionId)
+              // this.viewgetDischargesummaryPdf(response.admissionId)
               this._matDialog.closeAll();
             }, (error) => {
               this.toastr.error(error.message);
@@ -553,7 +553,7 @@ export class DischargeSummaryComponent implements OnInit {
           setTimeout(() => {
             this._IpSearchListService.updateIPDDischargSummary(data1).subscribe(response => {
               this.toastr.success(response.message);
-              this.viewgetDischargesummaryPdf(response.admissionId)
+              // this.viewgetDischargesummaryPdf(response.admissionId)
               this._matDialog.closeAll();
             }, (error) => {
               this.toastr.error(error.message);

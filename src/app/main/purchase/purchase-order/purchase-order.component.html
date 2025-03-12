@@ -321,10 +321,7 @@
                                                         <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12" [length]="resultsLength"
                                                         showFirstLastButtons (page)="getPurchaseOrderList()">
                                                     </mat-paginator>
-                                                    <!-- [length]="resultsLength"  -->
-                                                        <!-- <mat-paginator #paginator [pageSizeOptions]="[12, 24, 35, 100]"
-                                                            [pageSize]="12" showFirstLastButtons>
-                                                        </mat-paginator> -->
+                                                   
                                                     </div>
                                                 </div>
 
@@ -339,142 +336,58 @@
                                                                     class="backgroundBlur">
                                                                     <div class="spinner-border text-danger"></div>
                                                                 </div>
-                                                                <!-- sppinner -->
-                                                                <mat-table matSort [dataSource]="dsPurchaseItemList"
-                                                                    [@animateStagger]="{value:'50'}"
-                                                                    style="overflow:auto;">
-                                                                    <ng-container matColumnDef="ItemName">
-                                                                        <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxHide fxShow.gt-sm
-                                                                            class="w-200">
-                                                                            ItemName
-                                                                        </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm
-                                                                            class="w-200">
-                                                                            {{contact.ItemName}}
-                                                                        </mat-cell>
-                                                                    </ng-container>
-
-                                                                    <ng-container matColumnDef="Qty">
-                                                                        <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxShow.gt-sm>
-                                                                            Qty</mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact"
-                                                                            fxShow.gt-sm>
-                                                                            {{contact.Qty}}
-                                                                        </mat-cell>
-                                                                    </ng-container>
-
-                                                                    <ng-container matColumnDef="Rate">
-                                                                        <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxShow.gt-sm>
-                                                                            Rate </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact"
-                                                                            fxShow.gt-sm>
-                                                                            {{contact.Rate | number:'1.2-2'}}
-                                                                        </mat-cell>
-                                                                    </ng-container>
-
-                                                                    <ng-container matColumnDef="DiscPer">
-                                                                        <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxShow.gt-sm>
-                                                                            DiscPer </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact"
-                                                                            fxShow.gt-sm>
-                                                                            {{contact.DiscPer | number:'1.2-2'}}
-                                                                        </mat-cell>
-                                                                    </ng-container>
-
-                                                                    <ng-container matColumnDef="DiscAmount">
-                                                                        <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxShow.gt-sm>
-                                                                            DiscAmount </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact"
-                                                                            fxShow.gt-sm>
-                                                                            {{contact.DiscAmount | number:'1.2-2'}}
-                                                                        </mat-cell>
-                                                                    </ng-container>
-
-                                                                    <ng-container matColumnDef="VatPer">
-                                                                        <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxShow.gt-sm>
-                                                                            GSTPer </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact"
-                                                                            fxShow.gt-sm>
-                                                                            {{contact.VatPer}}
-                                                                        </mat-cell>
-                                                                    </ng-container>
-
-                                                                    <ng-container matColumnDef="VatAmount">
-                                                                        <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxShow.gt-sm>
-                                                                            GSTAmount </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact"
-                                                                            fxShow.gt-sm>
-                                                                            {{contact.VatAmount | number:'1.2-2'}}
-                                                                        </mat-cell>
-                                                                    </ng-container>
-
-                                                                    <ng-container matColumnDef="TotalAmount">
-                                                                        <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxShow.gt-sm>
-                                                                            TotalAmount </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact"
-                                                                            fxShow.gt-sm>
-                                                                            {{contact.TotalAmount | number:'1.2-2'}}
-                                                                        </mat-cell>
-                                                                    </ng-container>
-
-                                                                    <ng-container matColumnDef="MRP">
-                                                                        <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxShow.gt-sm>
-                                                                            MRP </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact"
-                                                                            fxShow.gt-sm>
-                                                                            {{contact.MRP | number:'1.2-2'}}
-                                                                        </mat-cell>
-                                                                    </ng-container>
-
-                                                                    <ng-container matColumnDef="GrandTotalAmount">
-                                                                        <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxShow.gt-sm>
-                                                                            Net Amount </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact"
-                                                                            fxShow.gt-sm>
-                                                                            {{contact.GrandTotalAmount |
-                                                                            number:'1.2-2'}}
-                                                                        </mat-cell>
-                                                                    </ng-container>
-
-
-
-                                                                    <ng-container matColumnDef="loading">
-                                                                        <mat-header-cell *matFooterCellDef colspan="6"
-                                                                            style="display: none;">
-                                                                        </mat-header-cell>
-                                                                    </ng-container>
-
-                                                                    <ng-container matColumnDef="noData">
-                                                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                                                            no data found...
-                                                                        </mat-footer-cell>
-                                                                    </ng-container>
-
-                                                                    <mat-header-row class="accent"
-                                                                        *matHeaderRowDef="displayedColumns1; sticky: true">
-                                                                    </mat-header-row>
-                                                                    <mat-row
-                                                                        *matRowDef="let contact; columns: displayedColumns1;"
-                                                                        class="contact"
-                                                                        [@animate]="{value:'*',params:{y:'100%'}}"
-                                                                        appHighlight></mat-row>
-                                                                    <mat-footer-row *matFooterRowDef="['loading']"
-                                                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                                                    </mat-footer-row>
-                                                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                                                        [ngClass]="{'hide':!(dsPurchaseItemList!=null && dsPurchaseItemList.data.length==0)}">
-                                                                    </mat-footer-row>
-                                                                </mat-table>
+                                                                <app-airmid-table1 [gridConfig]="gridConfig1" class="content">
+                                                                    <!-- <ng-container filters> -->
+                                                                        <!-- <form [formGroup]="myFilterform">
+                                                                            
+                                                                            <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
+                                                                            formEndControlName="enddate" [(fromValue)]="gridConfig.filters[3].fieldValue"
+                                                                            [(toValue)]="gridConfig.filters[4].fieldValue"></airmid-datepicker>
+                                                        
+                                                                            <mat-form-field appearance="outline">
+                                                                                <mat-label>ToStoreId</mat-label>
+                                                                                <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform"
+                                                                                    formControlName="FirstName" [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                                                                                <button matSuffix mat-icon-button aria-label="Clear"
+                                                                                    (click)="gridConfig.filters[0].fieldValue='%'">
+                                                                                    <mat-icon>close</mat-icon>
+                                                                                </button>
+                                                                            </mat-form-field>
+                                                        
+                                                        
+                                                                            <mat-form-field appearance="outline">
+                                                                                <mat-label>Last Name</mat-label>
+                                                                                <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
+                                                                                    formControlName="LastName" [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                                                                                <button matSuffix mat-icon-button aria-label="Clear"
+                                                                                    (click)="gridConfig.filters[1].fieldValue='%'">
+                                                                                    <mat-icon>close</mat-icon>
+                                                                                </button>
+                                                                            </mat-form-field>
+                                                        
+                                                                            <mat-form-field appearance="outline">
+                                                                                <mat-label>RegNo</mat-label>
+                                                                                <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myFilterform"
+                                                                                    formControlName="RegNo" [(ngModel)]="gridConfig.filters[2].fieldValue" />
+                                                                                <button matSuffix mat-icon-button aria-label="Clear"
+                                                                                    (click)="gridConfig.filters[2].fieldValue='0'">
+                                                                                    <mat-icon>close</mat-icon>
+                                                                                </button>
+                                                                            </mat-form-field>
+                                                                           
+                                                                            <mat-form-field appearance="outline">
+                                                                                <mat-label>MobileNo</mat-label>
+                                                                                <input matInput placeholder="Search MobileNo" autocomplete="off" [formGroup]="myFilterform"  formControlName="MobileNo"
+                                                                                    [(ngModel)]="gridConfig.filters[5].fieldValue" [maxLength]="10" />
+                                                                                <button matSuffix mat-icon-button aria-label="Clear"
+                                                                                    (click)="gridConfig.filters[5].fieldValue='%'">
+                                                                                    <mat-icon>close</mat-icon>
+                                                                                </button>
+                                                                            </mat-form-field>
+                                                        
+                                                                        </form> -->
+                                                                    <!-- </ng-container> -->
+                                                                </app-airmid-table1>
 
                                                                 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
                                                                     [pageSize]="16" showFirstLastButtons>
@@ -509,422 +422,3 @@
 
     </div>
 </div>
-<div hidden class="bill-template-wrapper" style="font-size: 30.25%;" #PurchaseOrderTemplate>
-
-    <div style=" align-items: center; margin-bottom: 10px;text-align: center; ">
-        <div style="border: 1px solid black;width: 1000px;height: 50px;border-top-right-radius: 110px;
-        margin-top: 0px;border-top-left-radius: 110px;padding: 6px ;">
-            <h2
-                style="text-transform: uppercase;font-weight: 1000;margin:0;text-align: center;color: rgb(248, 197, 57);padding-top: 6px;">
-                jnanayogi shri siddeshwar
-                super speciality hospital
-            </h2>
-        </div>
-        <div style="display: flex;">
-            <div style="border: 1px solid black;width: 700px;height: 50px;border-bottom-right-radius: 110px;">
-                <span
-                    style="text-transform: uppercase;font-size: 11px;font-weight: 500;text-align: center;color: black">(A
-                    Unit of Shri
-                    Siddeshwar Loka Kalyana Charitable
-                    Trust)</span><br>
-                <span style="font-size:11px;font-weight: 500;text-align: center;color: black;">Survey No.10/4, Near
-                    S-Hyper Mart, Vijayapur
-                    586 101 </span><br>
-                <span style="font-size: 11px;font-weight: 500;text-align: center;color: black;">Call :-08352-249399 |
-                    info@ jsshospitals.com
-                    | www.jsshospitals.com
-                    | Reg.No :-BIJ00467ALSSh </span>
-
-            </div>
-            <span
-                style="font-size: 20px; text-transform: uppercase;font-weight: 500;margin-top: 20px;margin-left: 60px;color:black">Purchase
-                Order </span>
-        </div>
-
-    </div>
-    <table style="font-size:11px;">
-        <tr>
-            <td><span style="font-weight: 500;margin-right: 25px;">Supplier Name</span>
-                <span>{{reportPrintObjList[0]?.SupplierName}}</span>
-            </td>
-            <td> <span style="font-weight: 500;margin-right: 35px;margin-left: 300px;">PO No.</span>
-                <span>{{reportPrintObjList[0]?.PurchaseNo}} </span>
-            </td>
-
-        </tr>
-
-        <tr>
-            <td><span style="font-weight: 500;margin-right: 60px;">Address</span>
-                <span>{{reportPrintObjList[0]?.Address}}</span>
-            </td>
-            <td><span style="font-weight: 500;margin-right:27px;margin-left: 300px;">PO Date</span>
-                <span> {{reportPrintObjList[0]?.PurchaseDate | date: 'dd/MM/yyyy'}} </span>
-            </td>
-        </tr>
-
-        <tr>
-            <td><span style="font-weight: 500;margin-right: 60px;">Email Id</span>
-                <span>{{reportPrintObjList[0]?.Email}}</span>
-            </td>
-            <td><span style="font-weight: 500;margin-right: 30px;margin-left: 300px;">GST No.</span>
-                <span>{{reportPrintObjList[0]?.GSTNo}}</span>'
-            </td>
-
-        </tr>
-
-        <tr>
-            <td><span style="font-weight: 500;margin-right: 45px;">Mobile No.</span>
-                <span>{{reportPrintObjList[0]?.Mobile}}</span>'
-            </td>
-            <td><span style="font-weight: 500;margin-right: 21px;margin-left: 300px;">Phone No</span>
-                <span>{{reportPrintObjList[0]?.Phone}} </span>
-            </td>
-        </tr>
-    </table>
-
-
-    <hr>
-
-    <table class="table6"
-        style="width: 100%;  text-align: right;border-spacing: 1px;border-collapse: separate;border-color: gray;">
-        <tr style="font-size:15px;">
-
-            <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px; 
-                 border-top-left-radius: 20px;color: black;">
-                Sr.No</td>
-            <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;
-                color: black;">
-
-                Item Name</td>
-            <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
-                color: black;">
-                Unit</td>
-            <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
-                color: black;">
-                Qty</td>
-            <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
-                color: black;">
-                MRP</td>
-            <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
-                color: black;">
-                Rate</td>
-            <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
-                color: black;">
-                Total Amount</td>
-            <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
-                color: black;">
-                Disc</td>
-            <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
-                color: black;">
-                GST </td>
-
-            <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
-              border-top-right-radius: 20px;color: black;">
-                Net Amount</td>
-        </tr>
-        <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:11px;">
-            <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{indx + 1}}</td>
-            <td style="border: 1px solid gray;vertical-align: top;text-align:left;
-            padding: 15px;height: 20px;">{{item?.ItemName}}</td>
-            <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.UnitofMeasurementName}}</td>
-            <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.Qty}}</td>
-            <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.MRP | currency:'INR':'symbol-narrow':'0.2'}}</td>
-            <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.Rate | currency:'INR':'symbol-narrow':'0.2'}}</td>
-            <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.ItemTotalAmount | currency:'INR':'symbol-narrow':'0.2'}}</td>
-            <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.ItemDiscAmount | currency:'INR':'symbol-narrow':'0.2'}}</td>
-            <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.VatAmount | currency:'INR':'symbol-narrow':'0.2'}}</td>
-            <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.GrandTotalAmount | currency:'INR':'symbol-narrow':'0.2'}}</td>
-
-        </tr>
-        <!-- <tr style="height:20px;">
-          
-            <td colspan="3" style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;color: black;font-weight:bold;">Total</td>
-            <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
-            padding: 15px;height: 20px;color: black;">{{TotalQty}}</td>
-            <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
-            padding: 15px;height: 20px;color: black;">{{TotalRate.toFixed(2)}}</td>
-            <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
-            padding: 15px;height: 20px;color: black;">{{TotalAmt.toFixed(2)}}</td>
-            <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
-            padding: 15px;height: 20px;color: black;">{{TOtalDiscPer.toFixed(2)}}</td>
-            <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
-            padding: 15px;height: 20px;color: black;">{{TotalGSTAmt.toFixed(2)}}</td>
-            <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
-            padding: 15px;height: 20px;color: black;">{{TotalNetAmt.toFixed(2)}}</td>
-
-        </tr> -->
-        <tr style="height: 5px;">
-            <td colspan="2" style="border: 1px solid gray;font-weight: 500;
-           padding: 15px;text-align: left;vertical-align: top;">Freight Amount :-
-                <span>{{reportPrintObjList[0]?.FreightAmount | currency:'INR':'symbol-narrow':'0.2'}}</span>
-            </td>
-            <td colspan="4" style="border: 1px solid gray;vertical-align: top;
-             padding: 15px;text-align: left;font-weight: 500;"> Transport Charges :-
-                <span>{{reportPrintObjList[0]?.TransportChanges | currency:'INR':'symbol-narrow':'0.2'}}</span>
-            </td>
-            <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;text-align: left;"> Grand Total Amount</td>
-            <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;text-align: right;">{{reportPrintObjList[0]?.TotalAmount |
-                currency:'INR':'symbol-narrow':'0.2'}}</td>
-        </tr>
-        <tr>
-            <!-- <td colspan="7"></td> -->
-            <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;text-align: left;font-weight: 500;">Handling Charges :-
-                <span>{{reportPrintObjList[0]?.HandlingCharges | currency:'INR':'symbol-narrow':'0.2'}}</span>
-            </td>
-            <td colspan="4" style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;text-align: left;font-weight: 500;"> Octri Amount :-
-                <span>{{reportPrintObjList[0]?.OctriAmount | currency:'INR':'symbol-narrow':'0.2'}}</span>
-            </td>
-            <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-             padding: 15px;text-align: left;">Discount Amount</td>
-            <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-             padding: 15px;height: 20px;text-align: right;">{{reportPrintObjList[0]?.DiscAmount |
-                currency:'INR':'symbol-narrow':'0.2'}}</td>
-        </tr>
-        <tr>
-            <td colspan="6" style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;text-align: left;font-weight: 500;">Remark :-
-                <span>{{reportPrintObjList[0]?.Remarks}}</span>
-            </td>
-            <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-             padding: 15px;text-align: left;">GST Amount</td>
-            <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-             padding: 15px;height: 20px;text-align: right;">{{reportPrintObjList[0]?.TaxAmount |
-                currency:'INR':'symbol-narrow':'0.2'}}</td>
-        </tr>
-
-        <tr rowspan="2">
-            <td colspan="6" style="font-weight: 500;border: 1px solid gray;vertical-align: top;
-            padding: 15px;text-align: left; border-bottom-left-radius: 20px;">Total Amount in words :-
-                {{finalamt}}</td>
-            <td colspan="2" style="border: 1px solid gray;vertical-align: top;text-align: left;font-weight:bold;
-             padding: 15px;color: black; ">Total Net Amount</td>
-            <td colspan="2" style="border: 1px solid gray;vertical-align: top;text-align: right;font-weight:bold;
-             padding: 15px;height: 20px;color: black;border-bottom-right-radius: 20px;">
-                {{reportPrintObjList[0]?.GrandTotal | currency:'INR':'symbol-narrow':'0.2'}}</td>
-        </tr>
-
-    </table>
-    <hr><br>
-
-
-    <div style="display: flex;">
-        <div>
-            <span style="font-weight: 500;margin-left: 45px;">{{reportPrintObjList[0]?.AddedByName |
-                uppercase}}</span><br>
-            <span style="font-weight: 500;margin-left: 55px;"> Added By</span>
-        </div>
-
-        <span style="margin-left: 670px; font-weight: 500;">Authorized Signature</span>
-
-    </div><br>
-
-
-    <div style="border: 1px solid black;width: 1000px;height: 30px;border-bottom-right-radius: 110px;
-    margin-top: 0px;border-bottom-left-radius: 110px;padding: 6px ;">
-        <div style="font-style: italic; opacity:1;text-align: center;font-size: 15px; margin-top: 8px; color:  black;">
-            This is Computer generated invoice hence doesn’t require signature
-        </div>
-    </div>
-
-
-
-
-
-
-</div>
-
-
-
-
-<!-- <div hidden class="bill-template-wrapper" style="font-size: 30.25%;" #PurchaseOrderTemplate>
-
-    <div style=" align-items: center; margin-bottom: 10px;text-align: center;">
-
-        <h2 style="text-transform: uppercase;font-weight: 500;margin:0;text-align: center;">jnanayogi shri siddeshwar
-            super speciality hospital
-        </h2>
-        <span style="text-transform: uppercase;font-size: 11px;font-weight: 500;text-align: center;">(A Unit of Shri
-            Siddeshwar Loka Kalyana Charitable
-            Trust)</span><br>
-        <span style="font-size:11px;font-weight: 500;text-align: center;">Survey No.10/4, Near S-Hyper Mart, Vijayapur
-            586 101 </span><br>
-        <span style="font-size: 11px;font-weight: 500;text-align: center;">Call :-08352-249399 | info@ jsshospitals.com
-            | www.jsshospitals.com
-            | Reg.No :-BIJ00467ALSSh </span><br><br>
-
-
-        <span
-            style="text-transform: uppercase;font-weight: 500;margin:0;text-align: center; background-color: gray;">Purchase
-            Order </span>
-        <hr> <br>
-
-    </div>
-    <table>
-        <tr>
-            <td> <span style="font-weight: 500;margin-right: 82px;">PO No.</span>
-                <span style="font-size:11px; ">{{reportPrintObjList[0]?.PurchaseNo}} </span>
-            </td>
-            <td><span style="font-weight: 500;margin-right:34px;margin-left: 100px;">PO Date</span>
-                <span style="font-size:11px;"> {{reportPrintObjList[0]?.PurchaseDate | date: 'dd/MM/yyyy'}} </span>
-            </td>
-        </tr>
-
-        <tr>
-            <td><span style="font-weight: 500;margin-right: 25px;">Supplier Name</span>
-                <span style="font-size:11px;">{{reportPrintObjList[0]?.SupplierName}}</span>
-            </td>
-            <td><span style="font-weight: 500;margin-right: 73px;margin-left: 100px;">Fax</span>
-                <span style="font-size:11px;">{{reportPrintObjList[0]?.Fax}}</span>
-            </td>
-        </tr>
-
-        <tr>
-            <td><span style="font-weight: 500;margin-right: 75px;">Address</span>
-                <span style="font-size:11px;">{{reportPrintObjList[0]?.Address}}</span>
-            </td>
-            <td><span style="font-weight: 500;margin-right: 38px;margin-left: 100px;">Email Id</span>
-                <span style="font-size:11px;">{{reportPrintObjList[0]?.Email}}</span>
-            </td>
-        </tr>
-
-        <tr>
-            <td><span style="font-weight: 500;margin-right: 75px;">GST No.</span>
-                <span style="font-size:11px;">{{reportPrintObjList[0]?.GSTNo}}</span>'
-            </td>
-            <td><span style="font-weight: 500;margin-right: 25px;margin-left: 100px;">Phone No</span>
-                <span style="font-size:11px;">{{reportPrintObjList[0]?.Phone}} </span>
-            </td>
-        </tr>
-    </table>
-
-
-    <hr>
-
-    <table class="table" style="width: 100%;border-collapse: collapse; text-align: right;">
-        <tr style="font-size:12px;">
-
-            <td
-                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;">
-                Sr.No</td>
-            <td
-                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;">
-                Item Name</td>
-            <td
-                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
-                Unit</td>
-            <td
-                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
-                Qty</td>
-            <td
-                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
-                Rate</td>
-            <td
-                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
-                Total Amount</td>
-            <td
-                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
-                Disc%</td>
-            <td
-                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
-                CGST </td>
-            <td
-                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
-                SGST</td>
-            <td
-                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
-                IGST</td>
-            <td
-                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
-                Net Amount</td>
-        </tr>
-        <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:10px;">
-            <td style="border: 1px solid black;vertical-align: top;
-            padding: 0;height: 20px;">{{indx + 1}}</td>
-            <td style="border: 1px solid black;vertical-align: top;
-            padding: 0;height: 20px;">{{item?.ItemName}}</td>
-            <td style="border: 1px solid black;vertical-align: top;
-            padding: 0;height: 20px;">{{item?.UnitofMeasurementName}}</td>
-            <td style="border: 1px solid black;vertical-align: top;
-            padding: 0;height: 20px;">{{item?.Qty}}</td>
-            <td style="border: 1px solid black;vertical-align: top;
-            padding: 0;height: 20px;">{{item?.Rate}}</td>
-            <td style="border: 1px solid black;vertical-align: top;
-            padding: 0;height: 20px;">{{item?.ItemTotalAmount}}</td>
-            <td style="border: 1px solid black;vertical-align: top;
-            padding: 0;height: 20px;">{{item?.DiscPer }}</td>
-            <td style="border: 1px solid black;vertical-align: top;
-            padding: 0;height: 20px;">{{item?.CGSTPer}}</td>
-            <td style="border: 1px solid black;vertical-align: top;
-              padding: 0;height: 20px;">{{item?.SGST}}</td>
-            <td style="border: 1px solid black;vertical-align: top;
-                padding: 0;height: 20px;">{{item?.IGST}}</td>
-            <td style="border: 1px solid black;vertical-align: top;
-            padding: 0;height: 20px;">{{item?.GrandTotalAmount}}</td>
-          
-        </tr>
-
-    </table><br>
-
-    <span style="vertical-align: top;padding:0 10px 10px;">
-
-        <span style="margin-left: 490px;font-weight: 500;margin-right: 20px;">Total Amount</span>
-        <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.ItemTotalAmount}}</span> <br>
-        <span style="margin-left: 500px;font-weight: 500;margin-right: 25px;">DiscnAmount</span>
-        <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.ItemDiscAmount}}</span> <br>
-        <span style="margin-left: 500px;font-weight: 500;margin-right: 30px;">GST Amount</span>
-        <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.VatAmount}}</span> <br>
-        <span style="margin-left: 500px;font-weight: 500;margin-right: 25px;">Net Amount</span>
-        <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.GrandTotalAmount}}</span> <br>
-    </span><br>
-    <span style="font-weight: 500;"> Total Amount in words :-</span>
-    <hr>
-    <div style="display: flex;">
-        <span style="font-weight: 500;">Remark</span>
-        <div style="font-weight: 400;margin-left: 100px;">Terms & Conditions </div>
-        <ul style="margin: 5px 0 0 0; font-size: 10px; padding-left: 17px; font-weight: 400;">
-            <li>
-                Exchange NOT accepted after 72 hrs. of Purchase, Bill is
-                required for Exchange
-            </li>
-            <li>
-                Insulin’s & Vaccines will not be taken back. Fridge Items
-                will not be taken Back
-            </li>
-            <li>
-                All disputes are subject to Vijayapura jurisdiction only
-            </li>
-            <li>
-                Please check the medicines before leaving the medical
-            </li>
-            <li>
-                Consult your Doctor before consuming the medicines.
-            </li>
-        </ul>
-    </div><br><br>
-
-    <div style="display: flex;">
-        <span style="vertical-align: top;padding:0 10px 10px">
-            <span style="font-weight: 500;">ADMIN ADMIN</span>
-            <span style="margin-left: 380px;font-weight: 500; margin-right: 30px;">Authorized Signature</span>
-
-        </span>
-    </div>
-
-    <div style="font-style: italic; opacity:.6;text-align: center;font-size: 12px; margin-top: 15px;">
-        This is Computer generated invoice hence doesn’t require signature
-    </div>
-</div> -->

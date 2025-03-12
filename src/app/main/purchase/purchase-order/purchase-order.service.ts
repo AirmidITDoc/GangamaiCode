@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class PurchaseOrderService {
   //PurchaseOrderHeader:FormGroup;
   
   constructor(
-    public _httpClient: HttpClient,
+    public _httpClient: HttpClient,public _httpClient1: ApiCaller,
     private _formBuilder: UntypedFormBuilder
   ) {
     this.userFormGroup = this.getPurchaseOrderForm();
@@ -148,9 +149,7 @@ export class PurchaseOrderService {
   public getItemList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemNameList_GRN", Param);
   }
-  public getPurchaseOrder(Param) {
-    return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_PurchaseOrderList_by_Name_Pagn", Param);
-  }
+
   // m_Rtrv_PurchaseOrderList_by_Name m_Rtrv_PurchaseOrderList_by_Name_Pagn
   
   public getPurchaseItemList(Param) {
@@ -204,6 +203,11 @@ public EmailSendInsert(emp){
 }
   populateForm(employee) {
     // this.PurchaseStoreFrom.patchValue(employee);
+  }
+
+
+  public getPurchaseOrder(Param) {
+    return this._httpClient1.PostData("Common", Param);
   }
 }
 

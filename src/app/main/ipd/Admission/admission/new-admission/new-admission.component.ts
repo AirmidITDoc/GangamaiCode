@@ -215,12 +215,12 @@ export class NewAdmissionComponent implements OnInit {
   onChangePatient(value) {
     
     var mode = "Company"
-    if (value.text == "Company") {
+    if (value.text != "Self") {
       this._AdmissionService.getMaster(mode, 1);
       this.admissionFormGroup.get('CompanyId').setValidators([Validators.required]);
       this.isCompanySelected = true;
       this.patienttype = 2;
-    } else if (value.text != "Company") {
+    } else if (value.text == "Self") {
       this.isCompanySelected = false;
       this.admissionFormGroup.get('CompanyId').clearValidators();
       this.admissionFormGroup.get('SubCompanyId').clearValidators();
@@ -267,11 +267,7 @@ export class NewAdmissionComponent implements OnInit {
 
     }
     else {
-      console.log(this.registerObj1)
-      console.log(this.personalFormGroup.value)
-
-      console.log(this.admissionFormGroup.value)
-           
+     
       let submitData = {
         "AdmissionReg": this.personalFormGroup.value,
         "ADMISSION": this.admissionFormGroup.value
