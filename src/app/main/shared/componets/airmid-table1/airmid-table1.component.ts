@@ -56,7 +56,7 @@ export class AirmidTable1Component implements OnInit {
  
          var param1: gridRequest1 = {
 
-            sortField: this.sort?.active ?? this.gridConfig.sortField,
+            // sortField: this.sort?.active ?? this.gridConfig.sortField,
             sortOrder: this.sort?.direction ?? 'asc' == 'asc' ? 0 : -1, 
             columns: [],
             first: (this.paginator?.pageIndex ?? 0),
