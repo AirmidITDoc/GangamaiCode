@@ -409,7 +409,7 @@
                                         </div>
                                     </div>
                                     <div class="gap-8" fxLayout="row" fxLayout.xs="column">
-                                        <div fxFlex.gt-xs="100%" fxFlex.xs="100%">
+                                        <div fxFlex.gt-xs="60%" fxFlex.xs="100%">
                                             <button mat-raised-button *ngIf="selection.selected.length>0"
                                                 (click)="printBulkQrCode()">
                                                 Print QrCode/Barcode
@@ -623,7 +623,7 @@
 
 
                                         </div>
-                                        <!-- <div fxFlex.gt-xs="40%" fxFlex.xs="100%">
+                                         <div fxFlex.gt-xs="40%" fxFlex.xs="100%">
                                             <mat-table #table class="table4" matSort [dataSource]="dsLastThreeItemList"
                                                 style="overflow:auto;">
                                                 <ng-container matColumnDef="SupplierName">
@@ -699,7 +699,7 @@
                                                     [ngClass]="{'hide':!(dsLastThreeItemList!=null && dsLastThreeItemList.data.length==0)}">
                                                 </mat-footer-row>
                                             </mat-table>
-                                        </div> -->
+                                        </div> 
                                     </div>
                                 </div>
                             </div>

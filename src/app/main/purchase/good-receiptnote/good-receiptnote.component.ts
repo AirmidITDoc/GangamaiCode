@@ -595,6 +595,8 @@ export class GoodReceiptnoteComponent implements OnInit {
                 console.log('The dialog was closed - Insert Action', result);
                 this.getGRNList();
             })
+
+            this.LastThreeItemList(contact)
     }
 
     onVerify(row) {
