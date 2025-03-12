@@ -414,6 +414,12 @@ export class InterimBillComponent implements OnInit {
   // } 
   onSave() {
     debugger
+      const currentDate = new Date();
+        const datePipe = new DatePipe('en-US');
+        const formattedTime = datePipe.transform(currentDate, 'shortTime');
+        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
+
     if (this.InterimFormGroup.get('discPer').value > 0 || this.InterimFormGroup.get('concessionAmt').value > 0) {
       if (!this.InterimFormGroup.get('ConcessionId').value) {
         this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
@@ -448,11 +454,11 @@ export class InterimBillComponent implements OnInit {
       insertBillUpdateBillNo1obj['netPayableAmt'] = this.InterimFormGroup.get('NetpayAmount').value, // this.netAmount;
       insertBillUpdateBillNo1obj['paidAmt'] = this.InterimFormGroup.get('NetpayAmount').value || 0,//this.advanceAmount;
       insertBillUpdateBillNo1obj['balanceAmt'] = 0;
-    insertBillUpdateBillNo1obj['billDate'] = this.dateTimeObj.date;
+    insertBillUpdateBillNo1obj['billDate'] = formattedDate;
     insertBillUpdateBillNo1obj['opD_IPD_Type'] = 1;
       insertBillUpdateBillNo1obj['AddedBy'] = this.accountService.currentUserValue.user.id || 0;
     insertBillUpdateBillNo1obj['totalAdvanceAmount'] = this.selectedAdvanceObj.AdvTotalAmount;
-    insertBillUpdateBillNo1obj['billTime'] = this.dateTimeObj.date;
+    insertBillUpdateBillNo1obj['billTime'] = formattedTime;
     insertBillUpdateBillNo1obj['concessionReasonId'] = this.InterimFormGroup.get('ConcessionId').value.ConcessionId || 0,
       insertBillUpdateBillNo1obj['isSettled'] = false;
       insertBillUpdateBillNo1obj['isPrinted'] = true;
