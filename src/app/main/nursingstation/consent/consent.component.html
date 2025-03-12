@@ -239,13 +239,6 @@
         fxLayoutAlign.gt-xs="space-between center ">
         <div class="top-header-info">
             <div class="top-header-title">
-                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                    <mat-icon>menu</mat-icon>
-                </button>
-                <button mat-icon-button class="logo-icon mr-16"
-                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-                    <mat-icon>account_box</mat-icon>
-                </button>
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                     Consent
                 </span>
@@ -257,7 +250,37 @@
             </button>
         </div>
     </div>
+
+    <!-- <div class="info-badge-top p-12 border-bottom">
+        <div fxLayout="row wrap" fxLayoutAlign="start center" class="gap-8">
+            <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                <span class="green-600-fg">IP</span>
+            </div>
+            <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                <span class="orange-600-fg">OP</span>
+            </div>
+        </div>
+    </div> -->
+
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+        <div class="info-badge-top p-12 border-bottom" style="margin-left: 18%;" fxLayout="row"
+            fxLayoutAlign="space-between" flex>
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill orange s-16">circle</mat-icon>
+                    <span class="orange-fg"> OP</span>
+                </div>
+                <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill green s-16">circle</mat-icon>
+                    <span class="green-fg">IP</span>
+                </div>
+
+            </div>
+        </div>
+      
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
 

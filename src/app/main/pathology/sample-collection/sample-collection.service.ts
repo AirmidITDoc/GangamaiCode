@@ -57,7 +57,7 @@ export class SampleCollectionService {
   }
 
   public UpdateSampleCollection(employee) {
-    return this._httpClient.post("Pathology/PathSamplecollection", employee);
+    return this._httpClient.post("PathlogySampleCollection/PathlogySampleCollectionUpdate", employee);
   }
 
   public InsertLabDetail(employee){

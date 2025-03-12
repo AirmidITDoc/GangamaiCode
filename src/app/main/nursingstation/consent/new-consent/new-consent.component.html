@@ -206,10 +206,11 @@
                                             <airmid-dropdown label="Template" formControlName="Template"
                                                 [formGroup]="_ConsentService.myform" fxFlex="35%"
                                                 [validations]="getValidationMessages().Template" #ddlTemplate
+                                                [mode]="autocompleteModeTemplate"
                                                 (selectionChange)="onTemplateSelect($event)">
                                             </airmid-dropdown>
 
-                                            <mat-radio-group name="Language" value="1" formControlName="Language"
+                                            <mat-radio-group fxLayout="row" name="Language" value="1" formControlName="Language"
                                                 style="padding: 15px 0px 0px 0px">
                                                 <mat-radio-button value="1" class="mr-sm-12">English</mat-radio-button>
                                                 <mat-radio-button value="0" class="mr-sm-12">Marathi</mat-radio-button>
@@ -223,22 +224,11 @@
                                             </div>
                                         </div>
 
-                                        <!-- <div>
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Template Details</mat-label>
-                                                <textarea rows="10" matInput name="ConsentText" formControlName="ConsentText" placeholder="Add Note....."
-                                                    type="text" required [(ngModel)]="vConsentText">
-                                                </textarea>
-                                            </mat-form-field>
-                                        </div> -->
 
                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                             <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <mat-label>Consent Details</mat-label>
-                                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                                    style="height:300px;" [(ngModel)]="vConsentText" required
-                                                    formControlName="ConsentText">
-                                                </angular-editor>
+                                                <airmid-editor label="Template Details" formControlName="templateDesc" [(value)]="vConsentText" [formGroup]="_ConsentService.myform"></airmid-editor>
+
                                             </div>
                                         </div>
                                     </div>

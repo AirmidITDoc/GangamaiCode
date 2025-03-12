@@ -57,9 +57,9 @@ export class RequestforlabtestComponent implements OnInit {
         filters: [
             { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "1008", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
         ],
         row: 25
     }
@@ -119,9 +119,9 @@ export class RequestforlabtestComponent implements OnInit {
             sortField: "RequestId",
             sortOrder: 0,
             filters: [
-                // { fieldName: "RequestId", fieldValue: this.vRequestId, opType: OperatorComparer.Equals },
-                // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                // { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+                { fieldName: "RequestId", fieldValue: "1", opType: OperatorComparer.Equals },
+                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
                 // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
             ],
             row: 25
