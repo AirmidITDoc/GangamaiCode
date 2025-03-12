@@ -12,6 +12,7 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { ToastrService } from "ngx-toastr";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import Swal from "sweetalert2";
+import { FormGroup } from "@angular/forms";
 
 
 @Component({
@@ -23,6 +24,9 @@ import Swal from "sweetalert2";
 })
 export class ParametermasterComponent implements OnInit {
 
+    paraName:any="";
+    searchFormGroup: FormGroup;
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('actionsNumeric') actionsNumeric!: TemplateRef<any>;
@@ -32,41 +36,45 @@ export class ParametermasterComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     }
 
+    allcolumns=[
+        { heading: "Code", key: "parameterId", width: 100, sort: true, align: 'left', emptySign: 'NA' },
+
+        { heading: "Parameter Name", key: "parameterName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
+
+        { heading: "Short Name", key: "parameterShortName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
+
+        { heading: "PrintParameterName", key: "printParameterName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
+
+        { heading: "Unit Name", key: "unitId", sort: true, align: 'left', emptySign: 'NA' },
+
+        { heading: "IsNumeric", key: "isNumericParameter", width: 100, sort: true, align: 'left', type: gridColumnTypes.template },
+
+        { heading: "IsPrintDisSummary", key: "isPrintDisSummary", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+
+        { heading: "Formula", key: "formula", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+
+        { heading: "Added By", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+
+        { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
+
+        {
+            heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
+        } 
+    ]
+
+    allFilters=[
+        { fieldName: "ParameterName", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+    ]
+
     gridConfig: gridModel = {
         apiUrl: "ParameterMaster/MPathParameterList",
-        columnsList: [
-            { heading: "Code", key: "parameterId", width: 100, sort: true, align: 'left', emptySign: 'NA' },
-
-            { heading: "Parameter Name", key: "parameterName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
-
-            { heading: "Short Name", key: "parameterShortName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
-
-            { heading: "PrintParameterName", key: "printParameterName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
-
-            { heading: "Unit Name", key: "unitId", sort: true, align: 'left', emptySign: 'NA' },
-
-            { heading: "IsNumeric", key: "isNumericParameter", width: 100, sort: true, align: 'left', type: gridColumnTypes.template },
-
-            { heading: "IsPrintDisSummary", key: "isPrintDisSummary", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-
-            { heading: "Formula", key: "formula", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
-            { heading: "Added By", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
-            { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
-
-            {
-                heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
-                template: this.actionButtonTemplate  // Assign ng-template to the column
-            }
-        ],
+        columnsList: this.allcolumns,
         sortField: "parameterId",
         sortOrder: 0,
-        filters: [
-            { fieldName: "ParameterName", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-        ],
+        filters: this.allFilters,
         row: 25
     }
     constructor(
@@ -78,7 +86,33 @@ export class ParametermasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
+        this.searchFormGroup = this._ParameterService.createSearchForm();
+    }
+    OnClearValues(){
+        this.searchFormGroup.get('ParameterNameSearch').setValue('%')
+    }
+    onChangeFirst() {
+        this.paraName = this.searchFormGroup.get('ParameterNameSearch').value + "%"
+        this.getfilterdata();
+    }
 
+    getfilterdata(){
+        debugger
+        this.gridConfig = {
+            apiUrl: "ParameterMaster/MPathParameterList",
+            columnsList:this.allcolumns , 
+            sortField: "parameterId",
+            sortOrder: 0,
+            filters:  [
+                { fieldName: "ParameterName", fieldValue: this.paraName , opType: OperatorComparer.Contains },
+                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+        
+            ],
+            row: 25
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData(); 
     }
 
     toggleSidebar(name): void {

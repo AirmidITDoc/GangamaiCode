@@ -62,11 +62,8 @@ export class CasepaperService {
   }
     return this._httpClient1.PostData("OPDPrescriptionMedical/InsertSP", param);
   }
-  public SavePrescriptionTemplate(param,loader = true){ 
-    if (loader) {
-      this._loaderService.show();
-  }
-    return this._httpClient.post("InPatient/Insert-PrescriptionTemplate", param);
+  public SavePrescriptionTemplate(param){ 
+    return this._httpClient1.PostData("OPDPrescriptionMedical/OPTemplateInsert", param);
   }
   public getTemplate(query) {
     return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
