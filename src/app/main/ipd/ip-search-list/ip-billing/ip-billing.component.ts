@@ -60,7 +60,7 @@ export class IPBillingComponent implements OnInit {
   tableColumns = [
     'ServiceName',
     'Price'
-  ];  
+  ];
   PackageBillColumns = [
     'BDate',
     'PBillNo',
@@ -77,72 +77,74 @@ export class IPBillingComponent implements OnInit {
 
   opD_IPD_Id: any = "0"
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;  
+  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('actionButtonTemplatePrevlist') actionButtonTemplatePrevlist!: TemplateRef<any>;
   ngAfterViewInit() {
     // Assign the template to the column dynamically 
-    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;   
+    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     this.gridConfig1.columnsList.find(col => col.key === 'action1')!.template = this.actionButtonTemplatePrevlist;
-  } 
-  
-    allColumns = [
-      { heading: "Date", key: "bDate", sort: true, align: 'left', emptySign: 'NA', width: 110 },
-      { heading: "billNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 110 },
-      { heading: "Total Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-      { heading: "Disc Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-      { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-      { heading: "Bal Amt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-      { heading: "cashPayAmt", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-      { heading: "chequePayAmt", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-      { heading: "cardPayAmt", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-      { heading: "AdvUsedAmt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-      { heading: "Action", key: "action1", align: "right", width: 110, sticky: true, type: gridColumnTypes.template,
-        template: this.actionButtonTemplatePrevlist  // Assign ng-template to the column
-      }
-    ] 
-    AdvanceColumns=[
-      { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' , width: 200},
-      { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Advance Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA'},
-      { heading: "UsedAmt", key: "usedAmount", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA'},
-      { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' }, 
-      { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 200 }, 
-      { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "NEFT Pay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA' }, 
-      { heading: "PayTM Pay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Reason", key: "reason", sort: true, align: 'left', emptySign: 'NA' , width: 300} ,
-      { heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
-        template: this.actionButtonTemplate  // Assign ng-template to the column
-      }
+  }
+
+  allColumns = [
+    { heading: "Date", key: "bDate", sort: true, align: 'left', emptySign: 'NA', width: 110 },
+    { heading: "billNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 110 },
+    { heading: "Total Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+    { heading: "Disc Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+    { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+    { heading: "Bal Amt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+    { heading: "cashPayAmt", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+    { heading: "chequePayAmt", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+    { heading: "cardPayAmt", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+    { heading: "AdvUsedAmt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+    {
+      heading: "Action", key: "action1", align: "right", width: 110, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplatePrevlist  // Assign ng-template to the column
+    }
+  ]
+  AdvanceColumns = [
+    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Advance Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "UsedAmt", key: "usedAmount", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "NEFT Pay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "PayTM Pay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Reason", key: "reason", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    {
+      heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate  // Assign ng-template to the column
+    }
   ]
   gridConfig1: gridModel = {
     apiUrl: "IPBill/IPPreviousBillList",
-    columnsList:  this.allColumns,
+    columnsList: this.allColumns,
     sortField: "BillNo",
     sortOrder: 0,
-    filters: [ { fieldName: "IP_Id", fieldValue: String(this.opD_IPD_Id), opType: OperatorComparer.Equals },
-      { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }],
+    filters: [{ fieldName: "IP_Id", fieldValue: String(this.opD_IPD_Id), opType: OperatorComparer.Equals },
+    { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }],
     row: 10
   }
 
   gridConfig: gridModel = {
     apiUrl: "Advance/PatientWiseAdvanceList",
-    columnsList:this.AdvanceColumns ,
+    columnsList: this.AdvanceColumns,
     sortField: "AdvanceDetailID",
     sortOrder: 0,
     filters: [
-        { fieldName: "AdmissionID", fieldValue: String(this.opD_IPD_Id), opType: OperatorComparer.Equals },
-        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }  
+      { fieldName: "AdmissionID", fieldValue: String(this.opD_IPD_Id), opType: OperatorComparer.Equals },
+      { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
     ],
-    row: 25 
-} 
-  Ipbillform: FormGroup; 
+    row: 25
+  }
+  Ipbillform: FormGroup;
   isClasselected: boolean = false;
   isServiceNameSelected: boolean = false;
   isDoctorSelected: boolean = false;
@@ -174,10 +176,10 @@ export class IPBillingComponent implements OnInit {
   prevbilldatasource = new MatTableDataSource<Bill>();
   advancedatasource = new MatTableDataSource<any>();
   PackageDatasource = new MatTableDataSource
-  
-  showAutocomplete = false; 
-  private nextPage$ = new Subject(); 
-  vCashCounterID: any; 
+
+  showAutocomplete = false;
+  private nextPage$ = new Subject();
+  vCashCounterID: any;
 
   FinalAmountpay = 0;
   vServiceDisAmt: any;
@@ -187,12 +189,12 @@ export class IPBillingComponent implements OnInit {
   b_isRad = '';
   b_IsEditable = '';
   b_IsDocEditable = '';
-  dateTimeObj: any;  
-  PharmacyAmont: any = 0; 
+  dateTimeObj: any;
+  PharmacyAmont: any = 0;
   isExpanded: boolean = false;
-  ServiceName: any; 
+  ServiceName: any;
   interimArray: any = [];
- 
+
   discAmount: any;
   screenFromString = 'IP-billing';
   ChargesDoctorname: any;
@@ -255,27 +257,27 @@ export class IPBillingComponent implements OnInit {
 
   filteredOptionsselclass: Observable<string[]>;
   registerObj1: any;
-  public subscription: Array<Subscription> = []; 
+  public subscription: Array<Subscription> = [];
 
 
   public isUpdating = false;
 
   Serviceform: FormGroup;
 
-  SelectedAdvancelist:any=[];
+  SelectedAdvancelist: any = [];
 
 
-  vPrice:any = '0';
-  vQty:any;
-  vServiceTotalAmt:any;
-  vServiceNetAmt:any;
+  vPrice: any = '0';
+  vQty: any;
+  vServiceTotalAmt: any;
+  vServiceNetAmt: any;
   vServiceDiscPer: any;
   doctorName: any
-  doctorID:any;
-  serviceId:any; 
-  vAdvanceId:any=0;
-  TotalAdvanceAmt:any=0;
-  BillBalAmount:any=0;
+  doctorID: any;
+  serviceId: any;
+  vAdvanceId: any = 0;
+  TotalAdvanceAmt: any = 0;
+  BillBalAmount: any = 0;
 
   autocompleteModeCashcounter: string = "CashCounter";
   autocompleteModedeptdoc: string = "ConDoctor";
@@ -305,9 +307,9 @@ export class IPBillingComponent implements OnInit {
   ApiURL: any;
 
   ngOnInit(): void {
-    debugger 
+    debugger
     this.createserviceForm();
-    this.createBillForm(); 
+    this.createBillForm();
     if (this.data) {
       this.selectedAdvanceObj = this.data.Obj;
       console.log(this.selectedAdvanceObj)
@@ -316,13 +318,11 @@ export class IPBillingComponent implements OnInit {
       this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + 2 + "&ServiceName="
       this.getdata(this.selectedAdvanceObj.admissionId)
       this.getadvancelist(this.selectedAdvanceObj.admissionId)
-    }  
+    }
     this.getChargesList();
     this.getBillheaderList();
-    this.getPharmacyAmount(); 
+    this.getPharmacyAmount();
     this.getRequestChargelist(); 
-    this.getPrevBillList();
-    this.getAdvanceDetList();
 
 
     if (this.selectedAdvanceObj.IsDischarged) {
@@ -341,7 +341,6 @@ export class IPBillingComponent implements OnInit {
       //this.Ipbillform.get('CreditBill').disable();
       this.Ipbillform.get('CreditBill').setValue(false);
     }
-    this.setClassdata();
     this.setupFormListener();
   }
   private setupFormListener(): void {
@@ -349,7 +348,7 @@ export class IPBillingComponent implements OnInit {
     this.handleChange('price', () => this.calculateTotalCharge());
     this.handleChange('qty', () => this.calculateTotalCharge());
     this.handleChange('discPer', () => this.updateDiscountAmount());
-    this.handleChange('discAmount', () => this.updateDiscountPercentage());
+    this.handleChange('discAmount', () => this.updateDiscountdiscPer());
     // this.handleChange('totalDiscountPer', () => this.updateTotalDiscountAmt(), this.totalChargeForm);
     // this.handleChange('totalDiscountAmount', () => this.updateTotalDiscountPer(), this.totalChargeForm);
   }
@@ -367,90 +366,85 @@ export class IPBillingComponent implements OnInit {
     }, { emitEvent: false }); // Prevent infinite loop
 
     this.updateDiscountAmount();
-    this.updateDiscountPercentage();
+    this.updateDiscountdiscPer();
 
   }
-    // Trigger when discount percentage change
-    updateDiscountAmount(row: any = null): void {
-      debugger
-      if (this.isUpdating) return; // Stop recursion
-      this.isUpdating = true;
-  
-      const perControl = this.Serviceform.get("discPer");
-      if (!perControl.valid) {
-        this.Serviceform.get("discAmount").setValue(0);
-        this.Serviceform.get("discPer").setValue(0);
-        this.isUpdating = false;
-        this.toastr.error("Enter discount % between 0-100");
-        return;
-      }
-      let percentage = perControl.value;
-      let totalAmount = this.Serviceform.get("TotalAmt").value; 
-      let discountAmount = parseFloat((totalAmount * percentage / 100).toFixed(2));
-      let netAmount = parseFloat((totalAmount - discountAmount).toFixed(2));
-  
-      this.Serviceform.patchValue({
-        discAmount: discountAmount,
-        netAmount: netAmount
-      }, { emitEvent: false }); // Prevent infinite loop
-  
-      this.isUpdating = false; // Reset flag
+  // Trigger when discount discPer change
+  updateDiscountAmount(row: any = null): void { 
+    if (this.isUpdating) return; // Stop recursion
+    this.isUpdating = true;
+
+    const perControl = this.Serviceform.get("discPer");
+    if (!perControl.valid) {
+      this.Serviceform.get("discAmount").setValue(0);
+      this.Serviceform.get("discPer").setValue(0);
+      this.isUpdating = false;
+      this.toastr.error("Enter discount % between 0-100");
+      return;
     }
-  
-    // Trigger when discount amount change
-    updateDiscountPercentage(): void {
-      debugger
-      if (this.isUpdating) return;
-      this.isUpdating = true;
-  
-      let discountAmount = this.Serviceform.get("discAmount").value;
-      let totalAmount = this.Serviceform.get("TotalAmt").value;
-  
-      if (discountAmount < 0 || discountAmount > totalAmount ) {
-        this.Serviceform.get("discAmount").setValue(0);
-        this.Serviceform.get("discPer").setValue(0);
-        this.isUpdating = false;
-        this.toastr.error("Discount must be between 0 and the total amount.");
-        return;
-      } 
-  
-      let percent = Number(totalAmount ? ((discountAmount / totalAmount) * 100).toFixed(2) : "0.00");
-      let netAmount = Number((totalAmount - discountAmount).toFixed(2));
-      this.Serviceform.patchValue({
-        discPer: percent,
-        netAmount: netAmount
-      }, { emitEvent: false }); // Prevent infinite loop
-  
-      this.isUpdating = false; // Reset flag
-    }
-  handleChange(key: string, callback: () => void, form: FormGroup = this.Serviceform) {
-    this.subscription.push(form.get(key).valueChanges.subscribe(value => {
-      callback();
-    }));
+    let discPer = perControl.value;
+    let totalAmount = this.Serviceform.get("TotalAmt").value;
+    let discountAmount = parseFloat((totalAmount * discPer / 100).toFixed(2));
+    let netAmount = parseFloat((totalAmount - discountAmount).toFixed(2));
+
+    this.Serviceform.patchValue({
+      discAmount: discountAmount,
+      netAmount: netAmount
+    }, { emitEvent: false }); // Prevent infinite loop
+
+    this.isUpdating = false; // Reset flag
   }
+
+  // Trigger when discount amount change
+  updateDiscountdiscPer(): void {
+    debugger
+    if (this.isUpdating) return;
+    this.isUpdating = true;
+
+    let discountAmount = this.Serviceform.get("discAmount").value;
+    let totalAmount = this.Serviceform.get("TotalAmt").value;
+
+    if (discountAmount < 0 || discountAmount > totalAmount) {
+      this.Serviceform.get("discAmount").setValue(0);
+      this.Serviceform.get("discPer").setValue(0);
+      this.isUpdating = false;
+      this.toastr.error("Discount must be between 0 and the total amount.");
+      return;
+    }
+
+    let percent = Number(totalAmount ? ((discountAmount / totalAmount) * 100).toFixed(2) : "0.00");
+    let netAmount = Number((totalAmount - discountAmount).toFixed(2));
+    this.Serviceform.patchValue({
+      discPer: percent,
+      netAmount: netAmount
+    }, { emitEvent: false }); // Prevent infinite loop
+
+    this.isUpdating = false; // Reset flag
+  }
+ 
   getFixedDecimal(value: number) {
     return Number(value.toFixed(2));
   }
   // Create registered form group
   createserviceForm() {
-    this.Serviceform = this.formBuilder.group({ 
+    this.Serviceform = this.formBuilder.group({
       ChargeClass: ['', Validators.required],
       Date: [new Date()],
-      ServiceName: ['',Validators.required],
-      price: [0,Validators.required],
-      qty: [1,Validators.required],
-      TotalAmt: [0,Validators.required],
-      DoctorID: [''], 
+      ServiceName: ['', Validators.required],
+      price: [0, Validators.required],
+      qty: [1, Validators.required],
+      TotalAmt: [0, Validators.required],
+      DoctorID: [''],
       discPer: [0, [Validators.min(0), Validators.max(100)]],
-      discAmount: [0, [ Validators.min(0)]],
-      netAmount: [0, Validators.required]  
+      discAmount: [0, [Validators.min(0)]],
+      netAmount: [0, Validators.required]
     });
-  } 
+  }
   //service selected data
-  getSelectedserviceObj(obj) { 
-    console.log(obj) 
+  getSelectedserviceObj(obj) {
+    console.log(obj)
     this.ServiceName = obj.ServiceName;
-    this.vPrice = obj.classRate; 
+    this.vPrice = obj.classRate;
     this.vServiceTotalAmt = obj.Price;
     this.vServiceNetAmt = obj.Price;
     this.serviceId = obj.serviceId;
@@ -471,148 +465,212 @@ export class IPBillingComponent implements OnInit {
       this.isDoctor = false;
     }
   }
-  onScroll() {
-    //Note: This is called multiple times after the scroll has reached the 80% threshold position.
-    this.nextPage$.next(true);
+
+  //Doctor selected 
+  getdocdetail(event) {
+    this.doctorName = event.text
+    this.doctorID = event.value
   }
-  getOptionText(option) {
-    if (!option)
-      return '';
-    return option && option.ServiceName ? option.ServiceName : '';
+  //Class selected 
+  getSelectedClassObj(event) {
+    this.vClassName = event.text
+    this.vClassId = event.value
+    this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + event.value + "&ServiceName="
   }
-     //Doctor selected 
-     getdocdetail(event) {
-      this.doctorName = event.text
-      this.doctorID = event.value
-    }
-    //Class selected 
-    getSelectedClassObj(event) { 
-      this.vClassName = event.text
-      this.vClassId = event.value
-      this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId="+this.selectedAdvanceObj.tariffId+"&ClassId="+event.value+"&ServiceName="
-    }
-  
-    // Service Add 
-    onSaveAddCharges() {  
-      let doctorid = 0;
-      let doctorName = '';
-      if (this.isDoctor) {
-        if ((this.doctorID == '' || this.doctorID == null || this.doctorID == undefined)) {
-          this.toastr.warning('Please select Doctor', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-        }  
-        if (this.Serviceform.get("DoctorID").value)
-          doctorid = this.Serviceform.get("DoctorID").value.DoctorID; 
-       
-        if (this.Serviceform.get("DoctorID").value)
-          doctorName = this.Serviceform.get("DoctorID").value.DoctorName;
-      } 
-   
-      if(this.Serviceform.valid){ 
-          const formValue = this.Serviceform.value;
-          console.log("Form values:",formValue)
-          //CHecking Validation 
-          if ((formValue.ChargeClass == '' || formValue.ChargeClass == null || formValue.ChargeClass == undefined)) {
-            this.toastr.warning('Please select Ward', 'Warning !', {
-              toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-          } 
-          if ((formValue.ServiceName.serviceId == '' || formValue.ServiceName.serviceId == null || formValue.ServiceName.serviceId == undefined)) {
-            this.toastr.warning('Please select service', 'Warning !', {
-              toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-          } 
-          if ((formValue.price == '' || formValue.price == null || formValue.price == undefined || formValue.price == '0')) {
-            this.toastr.warning('Please enter price', 'Warning !', {
-              toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-          }
-          if ((formValue.qty == '' || formValue.qty == null || formValue.qty == undefined || formValue.qty == '0')) {
-            this.toastr.warning('Please enter qty', 'Warning !', {
-              toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-          }  
-         // Calculate total amount, discount amount, and net amount
-         const totalAmount = formValue.price * formValue.qty;
-         const discountAmount = (totalAmount * formValue.discPer) / 100;
-         const netAmount = totalAmount - discountAmount;  
-       
-        var m_data = {
-          "chargesId": 0,
-          "chargesDate": this.datePipe.transform(formValue.Date, "yyyy-MM-dd") || '1900-01-01',
-          "opdIpdType": 1,
-          "opdIpdId": this.opD_IPD_Id,
-          "serviceId": formValue.ServiceName.serviceId,
-          "price": formValue.price || 0,
-          "qty": formValue.qty || 0,
-          "totalAmt": totalAmount || 0,
-          "concessionPercentage": formValue.discPer || 0,
-          "concessionAmount":discountAmount || 0,
-          "netAmount": netAmount || 0,
-          "doctorId": doctorid, 
-          "docPercentage": 0,
-          "docAmt": 0,
-          "hospitalAmt":0,
-          "isGenerated": false,
-          "addedBy": this.accountService.currentUserValue.userId,
-          "isCancelled": false,
-          "isCancelledBy": 0,
-          "isCancelledDate": "1900-01-01",    
-          "isPathology": formValue.ServiceName.isPathology,
-          "isRadiology": formValue.ServiceName.isRadiology,
-          "isDoctorShareGenerated": 0,
-          "isInterimBillFlag": 0,
-          "isPackage": formValue.ServiceName.isPackage,
-          "isSelfOrCompanyService": 0,
-          "packageId": 0,
-          "chargesTime": this.datePipe.transform(formValue.Date, "yyyy-MM-dd") || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
-          "packageMainChargeId": 0,
-          "classId":  formValue.ChargeClass,     
-          "refundAmount": 0,
-          "cPrice": 0,
-          "cQty": 0,
-          "cTotalAmount": 0,
-          "isComServ": false,
-          "isPrintCompSer": false,
-          "serviceName": "",
-          "chPrice": 0,
-          "chQty": 0,
-          "chTotalAmount": 0,
-          "isBillableCharity": false,
-          "salesId": 0,
-          "billNo": 1,
-          "isHospMrk": 0
-        } 
-        console.log("Save JSON:",m_data);
-        this._IpSearchListService.InsertIPAddCharges(m_data).subscribe(response => {
-          console.log(response)
-          this.toastr.success(response.message);
-          this.getChargesList(); 
-        }, (error) => {
-          this.toastr.error(error.message);
+
+  // Service Add 
+  onSaveAddCharges() {
+    let doctorid = 0;
+    let doctorName = '';
+    if (this.isDoctor) {
+      if ((this.doctorID == '' || this.doctorID == null || this.doctorID == undefined)) {
+        this.toastr.warning('Please select Doctor', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
         });
-       
+        return;
       }
-      this.interimArray = [];  
-      this.isDoctor = false;
-      this.onClearServiceAddList(); 
-    } 
-    onClearServiceAddList() {
-      this.Serviceform.get('ServiceName').setValue("");
-      this.Serviceform.get('price').reset();
-      this.Serviceform.get('qty').reset('1');
-      this.Serviceform.get('TotalAmt').reset();
-      this.Serviceform.get('DoctorID').reset();
-      this.Serviceform.get('discPer').reset();
-      this.Serviceform.get('discAmount').reset();
-      this.Serviceform.get('netAmount').reset();
+      if (this.Serviceform.get("DoctorID").value)
+        doctorid = this.Serviceform.get("DoctorID").value.DoctorID;
+
+      if (this.Serviceform.get("DoctorID").value)
+        doctorName = this.Serviceform.get("DoctorID").value.DoctorName;
     }
+
+    if (this.Serviceform.valid) {
+      const formValue = this.Serviceform.value;
+      console.log("Form values:", formValue)
+      //CHecking Validation 
+      if ((formValue.ChargeClass == '' || formValue.ChargeClass == null || formValue.ChargeClass == undefined)) {
+        this.toastr.warning('Please select Ward', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      if ((formValue.ServiceName.serviceId == '' || formValue.ServiceName.serviceId == null || formValue.ServiceName.serviceId == undefined)) {
+        this.toastr.warning('Please select service', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      if ((formValue.price == '' || formValue.price == null || formValue.price == undefined || formValue.price == '0')) {
+        this.toastr.warning('Please enter price', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      if ((formValue.qty == '' || formValue.qty == null || formValue.qty == undefined || formValue.qty == '0')) {
+        this.toastr.warning('Please enter qty', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      // Calculate total amount, discount amount, and net amount
+      const totalAmount = formValue.price * formValue.qty;
+      const discountAmount = (totalAmount * formValue.discPer) / 100;
+      const netAmount = totalAmount - discountAmount;
+
+      var m_data = {
+        "chargesId": 0,
+        "chargesDate": this.datePipe.transform(formValue.Date, "yyyy-MM-dd") || '1900-01-01',
+        "opdIpdType": 1,
+        "opdIpdId": this.opD_IPD_Id,
+        "serviceId": formValue.ServiceName.serviceId,
+        "price": formValue.price || 0,
+        "qty": formValue.qty || 0,
+        "totalAmt": totalAmount || 0,
+        "concessiondiscPer": formValue.discPer || 0,
+        "concessionAmount": discountAmount || 0,
+        "netAmount": netAmount || 0,
+        "doctorId": doctorid,
+        "docdiscPer": 0,
+        "docAmt": 0,
+        "hospitalAmt": 0,
+        "isGenerated": false,
+        "addedBy": this.accountService.currentUserValue.userId,
+        "isCancelled": false,
+        "isCancelledBy": 0,
+        "isCancelledDate": "1900-01-01",
+        "isPathology": formValue.ServiceName.isPathology,
+        "isRadiology": formValue.ServiceName.isRadiology,
+        "isDoctorShareGenerated": 0,
+        "isInterimBillFlag": 0,
+        "isPackage": formValue.ServiceName.isPackage,
+        "isSelfOrCompanyService": 0,
+        "packageId": 0,
+        "chargesTime": this.datePipe.transform(formValue.Date, "yyyy-MM-dd") || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+        "packageMainChargeId": 0,
+        "classId": formValue.ChargeClass,
+        "refundAmount": 0,
+        "cPrice": 0,
+        "cQty": 0,
+        "cTotalAmount": 0,
+        "isComServ": false,
+        "isPrintCompSer": false,
+        "serviceName": "",
+        "chPrice": 0,
+        "chQty": 0,
+        "chTotalAmount": 0,
+        "isBillableCharity": false,
+        "salesId": 0,
+        "billNo": 1,
+        "isHospMrk": 0
+      }
+      console.log("Save JSON:", m_data);
+      this._IpSearchListService.InsertIPAddCharges(m_data).subscribe(response => {
+        console.log(response)
+        this.toastr.success(response.message);
+        this.getChargesList();
+      }, (error) => {
+        this.toastr.error(error.message);
+      });
+
+    }
+    this.interimArray = [];
+    this.isDoctor = false;
+    this.onClearServiceAddList();
+  }
+  onClearServiceAddList() {
+    this.Serviceform.get('ServiceName').setValue("");
+    this.Serviceform.get('price').reset();
+    this.Serviceform.get('qty').reset('1');
+    this.Serviceform.get('TotalAmt').reset();
+    this.Serviceform.get('DoctorID').reset();
+    this.Serviceform.get('discPer').reset();
+    this.Serviceform.get('discAmount').reset();
+    this.Serviceform.get('netAmount').reset();
+  }
+
+  getdata(opD_IPD_Id) {
+    this.gridConfig1 = {
+      apiUrl: "IPBill/IPPreviousBillList",
+      columnsList: this.allColumns,
+      sortField: "BillNo",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "IP_Id", fieldValue: String(opD_IPD_Id), opType: OperatorComparer.Equals },
+        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+      ],
+      row: 10
+    },
+      this.gridConfig = {
+        apiUrl: "Advance/PatientWiseAdvanceList",
+        columnsList: this.AdvanceColumns,
+        sortField: "AdvanceDetailID",
+        sortOrder: 0,
+        filters: [
+          { fieldName: "AdmissionID", fieldValue: String(opD_IPD_Id), opType: OperatorComparer.Equals },
+          { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+        ],
+        row: 25
+      }
+  }
+  //Advance list
+  getadvancelist(AdmissionId) {
+    if (AdmissionId > 0) {
+      var vdata = {
+        "first": 0,
+        "rows": 10,
+        "sortField": "AdmissionID",
+        "sortOrder": 0,
+        "filters": [
+          {
+            "fieldName": "AdmissionID",
+            "fieldValue": String(AdmissionId),
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "Start",
+            "fieldValue": "0",
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "Length",
+            "fieldValue": "10",
+            "opType": "Equals"
+          }
+        ],
+        "exportType": "JSON"
+      }
+      setTimeout(() => {
+        this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
+          this.SelectedAdvancelist = response.data;
+          if (this.SelectedAdvancelist.length > 0)
+            this.vAdvanceId = this.SelectedAdvancelist[0].advanceId
+          this.SelectedAdvancelist.forEach(element => {
+            this.TotalAdvanceAmt += element.advanceAmount
+          })
+          if (this.TotalAdvanceAmt < this.vNetBillAmount) {
+            this.BillBalAmount = this.vNetBillAmount - this.TotalAdvanceAmt
+          } else {
+            this.BillBalAmount = this.vNetBillAmount
+          }
+
+        });
+      }, 500);
+    }
+  }
   //Charge list 
   getChargesList() {
     this.chargeslist = [];
@@ -652,86 +710,27 @@ export class IPBillingComponent implements OnInit {
         this.isLoading = 'list-loaded';
       });
     this.chkdiscstatus();
-  }
+  } 
   //Table Total netAmt
+  TotalShowAmt:any=0;
+  DiscShowAmt:any=0;
   getNetAmtSum(element) {
-    let netAmt;
-    netAmt = element.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0);
-    this.vNetBillAmount = netAmt;
-    return netAmt;
-  }
+    let netAmt = element.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0);
+    this.TotalShowAmt = element.reduce((sum, { totalAmt }) => sum += +(totalAmt || 0), 0);
+    this.DiscShowAmt = element.reduce((sum, { concessionAmount }) => sum += +(concessionAmount || 0), 0);
  
-getdata(opD_IPD_Id){ 
-    this.gridConfig1 = {
-      apiUrl: "IPBill/IPPreviousBillList",
-      columnsList:  this.allColumns,
-      sortField: "BillNo",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "IP_Id", fieldValue: String(opD_IPD_Id), opType: OperatorComparer.Equals },
-        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-      ] ,
-      row: 10 
-  } ,
-  this.gridConfig = {
-    apiUrl: "Advance/PatientWiseAdvanceList",
-    columnsList:this.AdvanceColumns ,
-    sortField: "AdvanceDetailID",
-    sortOrder: 0,
-    filters: [
-        { fieldName: "AdmissionID", fieldValue: String(opD_IPD_Id), opType: OperatorComparer.Equals },
-        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }  
-    ],
-    row: 25 
-} 
-  } 
-//Advance list
-  getadvancelist(AdmissionId){
-    if (AdmissionId > 0) {
-      var vdata = {
-        "first": 0,
-        "rows": 10,
-        "sortField": "AdmissionID",
-        "sortOrder": 0,
-        "filters": [
-          {
-            "fieldName": "AdmissionID",
-            "fieldValue": String(AdmissionId),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "Start",
-            "fieldValue": "0",
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "Length",
-            "fieldValue": "10",
-            "opType": "Equals"
-          }
-        ],
-        "exportType": "JSON"
-      } 
-      setTimeout(() => {
-          this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
-              this.SelectedAdvancelist = response.data; 
-              if(this.SelectedAdvancelist.length > 0)
-                this.vAdvanceId = this.SelectedAdvancelist[0].advanceId
-              this.SelectedAdvancelist.forEach(element=>{
-                  this.TotalAdvanceAmt  += element.advanceAmount 
-              })
-              if(this.TotalAdvanceAmt < this.vNetBillAmount){
-                this.BillBalAmount = this.vNetBillAmount - this.TotalAdvanceAmt
-              }else{
-                this.BillBalAmount = this.vNetBillAmount
-              }
-          
-             });
-      }, 500);
-  } 
-  }
+    this.Ipbillform.patchValue({
+      FinalAmount:netAmt,
+      concessionAmt:this.DiscShowAmt
+    })
+
+    if (this.DiscShowAmt > 0) { 
+      this.ConcessionShow = true
+    } else { 
+      this.ConcessionShow = false
+    }
+    return netAmt;
+  }  
 
 
 
@@ -744,20 +743,14 @@ getdata(opD_IPD_Id){
 
 
 
-  setClassdata() {
-    const toSelectClass = this.ClassList.find(c => c.ClassId == this.vClassId);
-    this.Serviceform.get('ChargeClass').setValue(toSelectClass);
-    this.Serviceform.updateValueAndValidity();
-  }
-  public setFocus(nextElementId): void {
-    document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
-  }
 
 
+
+  
   createBillForm() {
     this.Ipbillform = this.formBuilder.group({
       TotalAmt: [0],
-      Percentage: [''],
+      discPer: [''],
       concessionAmt: [''],
       ConcessionId: [''],
       Remark: [''],
@@ -814,9 +807,9 @@ getdata(opD_IPD_Id){
       concessionId: [{}],
       DoctorID: [{}]
     }
-  } 
-  selectChangeConcession(event) { } 
- 
+  }
+  selectChangeConcession(event) { }
+
   OnDateChange() {
     // 
     // if (this.selectedAdvanceObj.AdmDateTime) {
@@ -835,40 +828,9 @@ getdata(opD_IPD_Id){
     //   Swal.fire('ok');
     // }
   }
- 
 
-  //Previouse bill list
-  getPrevBillList() {
-    var D_data = {
-      "IP_Id": this.selectedAdvanceObj.AdmissionID
-    }
-    setTimeout(() => {
-      this.sIsLoading = 'loading-data';
-      this._IpSearchListService.getpreviousbilldetail(D_data).subscribe(Visit => {
-        this.prevbilldatasource.data = Visit as Bill[];
-        // console.log(this.prevbilldatasource.data)
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-    }, 5);
-  }
-  //Advance list
-  getAdvanceDetList() {
-    var D_data = {
-      "AdmissionID": this.selectedAdvanceObj.AdmissionID
-    }
-    setTimeout(() => {
-      this.sIsLoading = 'loading-data';
-      this._IpSearchListService.getAdvancedetail(D_data).subscribe(Visit => {
-        this.advancedatasource.data = Visit as any[];
-        //console.log(this.advancedatasource.data)
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-    }, 5);
-  }
+ 
+ 
   //Pharamcy Amount 
   getPharmacyAmount() {
     let Query = "select isnull(Sum(BalanceAmount),0) as PhBillCredit from T_SalesHeader where OP_IP_Type=1 and OP_IP_ID=" + this.AdmissionId
@@ -946,11 +908,11 @@ getdata(opD_IPD_Id){
       "price": m.price,
       "qty": 1,
       "totalAmt": (m.price * 1),
-      "concessionPercentage": 0,
+      "concessiondiscPer": 0,
       "concessionAmount": 0,
       "netAmount": (m.price * 1),
       "doctorId": 0,
-      "docPercentage": 0,
+      "docdiscPer": 0,
       "docAmt": 0,
       "hospitalAmt": 0,
       "isGenerated": 0,
@@ -981,44 +943,12 @@ getdata(opD_IPD_Id){
     this.isLoading = '';
   }
 
- 
-  //TotalBill Amt
-  vTotalAmount: any = 0;
-  getTotalAmtSum(element) {
-    let totalAmt;
-    totalAmt = element.reduce((sum, { TotalAmt }) => sum += +(TotalAmt || 0), 0);
-    this.vTotalAmount = totalAmt;
-    this.CalculateAdminCharge();
-    this.chkdiscstatus();
-    return totalAmt;
-  }
-  //Total bill DiscAmt 
-  TotalServiceDiscPer: any = 0;
-  getDiscountSum(element) {
-    this.TotalServiceDiscPer = element.reduce((sum, { ConcessionPercentage }) => sum += +(ConcessionPercentage || 0), 0);
-    let ServiceDiscAmt = element.reduce((sum, { ConcessionAmount }) => sum += +(ConcessionAmount || 0), 0);
-    if (ServiceDiscAmt > 0) {
-      this.vFinalDiscountAmt = ServiceDiscAmt;
-      this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
-    } else {
-      this.Ipbillform.get('concessionAmt').clearValidators();
-      this.vFinalDiscountAmt = '';
-    }
-    return ServiceDiscAmt;
-  }
 
-  //Total Advance Amt
-  getAdvAmtSum(element) {
-    let AdvanceAmt;
-    AdvanceAmt = element.reduce((sum, { BalanceAmount }) => sum += +(BalanceAmount || 0), 0);
-    this.vAdvTotalAmount = AdvanceAmt;
-    if (this.vNetBillAmount < this.vAdvTotalAmount) {
-      this.vBalanceAmt = parseInt(this.vAdvTotalAmount) - this.vNetBillAmount;
-    }
-    return AdvanceAmt;
-  }
+
+  
   //Admin Charge Check Box On 
   isAdminDisabled: boolean = false;
+  TotalServiceDiscPer:any;
   AdminStatus(event) {
     if (event.checked == true) {
       this.isAdminDisabled = true;
@@ -1035,7 +965,7 @@ getdata(opD_IPD_Id){
       this.chkdiscstatus();
     }
   }
- 
+
   CalculateAdminCharge() {
     if (this.vAdminPer > 0 && this.vAdminPer < 100) {
       this.vAdminAmt = Math.round((parseFloat(this.vTotalAmount) * parseFloat(this.vAdminPer)) / 100).toFixed(2);
@@ -1045,8 +975,8 @@ getdata(opD_IPD_Id){
         let finalnetamt = Math.round(parseFloat(FinalTotalAmt) - parseFloat(this.vFinalDiscountAmt)).toFixed(2);
         this.Ipbillform.get('FinalAmount').setValue(finalnetamt);
       } else {
-        let Percentage = this.Ipbillform.get('Percentage').value || 0;
-        this.vFinalDiscountAmt = Math.round((parseFloat(FinalTotalAmt) * parseFloat(Percentage)) / 100).toFixed(2);
+        let discPer = this.Ipbillform.get('discPer').value || 0;
+        this.vFinalDiscountAmt = Math.round((parseFloat(FinalTotalAmt) * parseFloat(discPer)) / 100).toFixed(2);
         this.vNetBillAmount = Math.round(parseFloat(FinalTotalAmt) - parseFloat(this.vFinalDiscountAmt)).toFixed(2);
         this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
       }
@@ -1071,7 +1001,7 @@ getdata(opD_IPD_Id){
   // Total Bill Disc Per cal 
   CalFinalDisc() {
 
-    let BillDiscPer = this.Ipbillform.get('Percentage').value || 0;
+    let BillDiscPer = this.Ipbillform.get('discPer').value || 0;
 
     if (this.Ipbillform.get('AdminAmt').value > 0) {
       let FinalTotalAmt = ((parseFloat(this.vTotalAmount) + parseFloat(this.vAdminAmt))).toFixed(2);
@@ -1081,7 +1011,7 @@ getdata(opD_IPD_Id){
           this.toastr.warning('Please Enter Discount % less than 100 and Greater than 0.', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
-          this.Ipbillform.get('Percentage').reset();
+          this.Ipbillform.get('discPer').reset();
           this.vFinalDiscountAmt = '';
           this.vNetBillAmount = FinalTotalAmt;
           this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
@@ -1093,7 +1023,7 @@ getdata(opD_IPD_Id){
           this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
         }
       } else {
-        this.Ipbillform.get('Percentage').reset();
+        this.Ipbillform.get('discPer').reset();
         this.vFinalDiscountAmt = '';
         this.vNetBillAmount = FinalTotalAmt;
         this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
@@ -1108,7 +1038,7 @@ getdata(opD_IPD_Id){
         this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
         this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
       } else {
-        this.Ipbillform.get('Percentage').reset();
+        this.Ipbillform.get('discPer').reset();
         this.vFinalDiscountAmt = '';
         this.vNetBillAmount = this.vTotalAmount;
         this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
@@ -1118,7 +1048,7 @@ getdata(opD_IPD_Id){
         this.toastr.warning('Please Enter Discount % less than 100 and Greater than 0.', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
-        this.Ipbillform.get('Percentage').reset();
+        this.Ipbillform.get('discPer').reset();
         this.vFinalDiscountAmt = '';
         this.vNetBillAmount = this.vTotalAmount;
         this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
@@ -1129,6 +1059,7 @@ getdata(opD_IPD_Id){
 
   }
   //Total Bill DiscAMt cal
+  vTotalAmount:any;
   getDiscAmtCal() {
     let FinalDiscAmt = this.Ipbillform.get('concessionAmt').value || 0;
 
@@ -1144,13 +1075,13 @@ getdata(opD_IPD_Id){
           this.Ipbillform.get('concessionAmt').reset();
           this.vFinalDiscper = '';
           this.vNetBillAmount = FinalTotalAMt;
-          this.Ipbillform.get('Percentage').setValue(this.vFinalDiscper);
+          this.Ipbillform.get('discPer').setValue(this.vFinalDiscper);
           this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
         } else {
           this.vFinalDiscper = ((parseFloat(FinalDiscAmt) / parseFloat(FinalTotalAMt)) * 100).toFixed(2);
           this.vNetBillAmount = Math.round(parseFloat(FinalTotalAMt) - parseFloat(FinalDiscAmt)).toFixed(2);
           this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-          this.Ipbillform.get('Percentage').setValue(this.vFinalDiscper);
+          this.Ipbillform.get('discPer').setValue(this.vFinalDiscper);
         }
       } else {
         this.toastr.warning('Please Enter Discount amt less than Total and Greater than 0.', 'Warning !', {
@@ -1159,7 +1090,7 @@ getdata(opD_IPD_Id){
         this.Ipbillform.get('concessionAmt').reset();
         this.vFinalDiscper = '';
         this.vNetBillAmount = FinalTotalAMt;
-        this.Ipbillform.get('Percentage').setValue(this.vFinalDiscper);
+        this.Ipbillform.get('discPer').setValue(this.vFinalDiscper);
         this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
       }
 
@@ -1172,13 +1103,13 @@ getdata(opD_IPD_Id){
           this.Ipbillform.get('concessionAmt').reset();
           this.vFinalDiscper = '';
           this.vNetBillAmount = this.vTotalAmount;
-          this.Ipbillform.get('Percentage').setValue(this.vFinalDiscper);
+          this.Ipbillform.get('discPer').setValue(this.vFinalDiscper);
           this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
         } else {
           this.vFinalDiscper = ((parseFloat(FinalDiscAmt) / parseFloat(this.vTotalAmount)) * 100).toFixed(2);
           this.vNetBillAmount = Math.round(parseFloat(this.vTotalAmount) - parseFloat(FinalDiscAmt)).toFixed(2);
           this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-          this.Ipbillform.get('Percentage').setValue(this.vFinalDiscper);
+          this.Ipbillform.get('discPer').setValue(this.vFinalDiscper);
         }
       } else {
         this.toastr.warning('Please Enter Discount amt less than Total and Greater than 0.', 'Warning !', {
@@ -1187,7 +1118,7 @@ getdata(opD_IPD_Id){
         this.Ipbillform.get('concessionAmt').reset();
         this.vFinalDiscper = '';
         this.vNetBillAmount = this.vTotalAmount;
-        this.Ipbillform.get('Percentage').setValue(this.vFinalDiscper);
+        this.Ipbillform.get('discPer').setValue(this.vFinalDiscper);
         this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
       }
     }
@@ -1214,65 +1145,7 @@ getdata(opD_IPD_Id){
       this.vGenbillflag = false;
   }
 
-  //select cehckbox
-  tableElementChecked(event, element) {
-    console.log(event)
-    console.log(element)
-    if (event.checked) {
-      this.interimArray.push(element);
-      // console.log(this.interimArray)
-    } else if (this.interimArray.length > 0) {
-      let index = this.interimArray.indexOf(element);
-      if (index !== -1) {
-        this.interimArray.splice(index, 1);
-      }
-    }
-  }
-  //Intrim bill popup 
-  getInterimData() {
-    if (this.interimArray.length > 0) {
-      let m_data = {
-        AdmissionID: this.selectedAdvanceObj.AdmissionID,
-        BillNo: 0,
-        BillDate: this.dateTimeObj.date,
-        concessionReasonId: this.Ipbillform.get('ConcessionId').value || 0,
-        tariffId: this.selectedAdvanceObj.TariffId,
-        RemarkofBill: this.Ipbillform.get('Remark').value || '',
-        RegNo: this.selectedAdvanceObj.RegNo,
-        PatientName: this.selectedAdvanceObj.PatientName,
-        Doctorname: this.selectedAdvanceObj.Doctorname,
-        AdmDateTime: this.selectedAdvanceObj.AdmDateTime,
-        AgeYear: this.selectedAdvanceObj.AgeYear,
-        ClassId: this.selectedAdvanceObj.ClassId,
-        TariffName: this.selectedAdvanceObj.TariffName,
-        TariffId: this.selectedAdvanceObj.TariffId,
-        IsDischarged: this.selectedAdvanceObj.IsDischarged,
-        IPDNo: this.selectedAdvanceObj.IPDNo,
-        BedName: this.selectedAdvanceObj.BedName,
-        CompanyId: this.selectedAdvanceObj.CompanyId,
-        IsBillGenerated: this.selectedAdvanceObj.IsBillGenerated,
-        UnitId: this.selectedAdvanceObj.UnitId,
-        MobileNo: this.selectedAdvanceObj.MobileNo,
-        AdvTotalAmount: this.vAdvTotalAmount || 0
-      };
-      // console.log(m_data)
-      this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
-      console.log('this.interimArray==', this.interimArray, m_data);
-      this._matDialog.open(InterimBillComponent,
-        {
-          maxWidth: "85vw",
-          //maxHeight: "65vh",
-          width: '100%',
-          height: "500px",
-          data: this.interimArray
-        });
 
-    } else {
-      Swal.fire('Warring !', 'Please select check box ', 'warning');
-    }
-    this.getChargesList();
-    this.interimArray = [];
-  }
   deletecharges(contact) {
     Swal.fire({
       title: 'Do you want to Delete Charges',
@@ -1321,7 +1194,7 @@ getdata(opD_IPD_Id){
   }
   //Save
   onSave() {
-    if (this.Ipbillform.get('concessionAmt').value > 0 || this.Ipbillform.get('Percentage').value > 0) {
+    if (this.Ipbillform.get('concessionAmt').value > 0 || this.Ipbillform.get('discPer').value > 0) {
       if (!this.Ipbillform.get('ConcessionId').value.ConcessionId) {
         this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
@@ -1468,7 +1341,7 @@ getdata(opD_IPD_Id){
           this.dataSource.data.forEach((element) => {
             let BillDetailsInsertObj = {};
             BillDetailsInsertObj['BillNo'] = 0;
-            BillDetailsInsertObj['ChargesId'] = element.ChargesId;
+            BillDetailsInsertObj['ChargesId'] = element.chargesId;
             Billdetsarr.push(BillDetailsInsertObj);
           });
 
@@ -1553,7 +1426,7 @@ getdata(opD_IPD_Id){
         });
       }
     }
-     this.advanceDataStored.storage = [];
+    this.advanceDataStored.storage = [];
   }
   IPCreditBill() {
     if (this.Ipbillform.get('CreditBill').value) {
@@ -1592,7 +1465,7 @@ getdata(opD_IPD_Id){
       this.dataSource.data.forEach((element) => {
         let BillDetailsInsertObj = {};
         BillDetailsInsertObj['BillNo'] = 0;
-        BillDetailsInsertObj['ChargesId'] = element.ChargesId;
+        BillDetailsInsertObj['ChargesId'] = element.chargesId;
         billDetailscreditInsert.push(BillDetailsInsertObj);
       });
 
@@ -1654,7 +1527,7 @@ getdata(opD_IPD_Id){
     else {
       Swal.fire('check is a credit bill or not ')
     }
- 
+
     this.advanceDataStored.storage = [];
   }
   onSaveDraft() {
@@ -1692,7 +1565,7 @@ getdata(opD_IPD_Id){
       this.dataSource.data.forEach((element) => {
         let DraftBillDetailsInsertObj = {};
         DraftBillDetailsInsertObj['DRNo'] = 0;
-        DraftBillDetailsInsertObj['ChargesId'] = element.ChargesId;
+        DraftBillDetailsInsertObj['ChargesId'] = element.chargesId;
         DraftBilldetsarr.push(DraftBillDetailsInsertObj);
       });
 
@@ -1721,11 +1594,52 @@ getdata(opD_IPD_Id){
     }
     this._matDialog.closeAll();
   }
+  public setFocus(nextElementId): void {
+    document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
+  }
 
   onClose() {
     this.dialogRef.close({ result: "cancel" });
     this.advanceDataStored.storage = [];
   }
+
+
+  //select cehckbox
+  tableElementChecked(event, element) {
+    console.log(event)
+    console.log(element)
+    if (event.checked) {
+      this.interimArray.push(element);
+      console.log(this.interimArray)
+    } else if (this.interimArray.length > 0) {
+      let index = this.interimArray.indexOf(element);
+      if (index !== -1) {
+        this.interimArray.splice(index, 1);
+      }
+    }
+  }
+  //Intrim bill popup 
+  getInterimData() {
+    if (this.interimArray.length > 0) {
+      console.log('this.interimArray==', this.interimArray);
+      this._matDialog.open(InterimBillComponent,
+        {
+          maxWidth: "85vw",
+          width: '100%',
+          height: "75%",
+          data: {
+            PatientHeaderObj: this.selectedAdvanceObj,
+            Obj: this.interimArray
+          }
+        });
+    } else {
+      Swal.fire('Warring !', 'Please select check box ', 'warning');
+    }
+    this.getChargesList();
+    this.interimArray = [];
+  }
+
+
   chkprint: boolean = false;
   AdList: boolean = false;
   viewgetIPAdvanceReportPdf(contact) {
@@ -1840,8 +1754,8 @@ getdata(opD_IPD_Id){
         });
     });
   }
- 
- 
+
+
 
   @ViewChild('itemid') itemid: ElementRef;
   @ViewChild('doctorname') doctorname: ElementRef;
@@ -1870,7 +1784,7 @@ getdata(opD_IPD_Id){
       }
       else {
         this.disc.nativeElement.focus();
-      } 
+      }
     }
   }
   public onEnterdoctor(event): void {
@@ -1882,7 +1796,7 @@ getdata(opD_IPD_Id){
   public onEnterdiscper(event, value): void {
     if (event.which === 13) {
       this.discamt.nativeElement.focus();
- 
+
     }
   }
   public onEnterdiscamt(event): void {
@@ -1890,9 +1804,9 @@ getdata(opD_IPD_Id){
       this.Netamt.nativeElement.focus();
     }
   }
- 
+
   public onEnternetAmount(event): void {
-    if (event.which === 13) { 
+    if (event.which === 13) {
       this.addbutton.nativeElement.focus();
     }
   }
@@ -1912,7 +1826,7 @@ getdata(opD_IPD_Id){
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
     });
-  } 
+  }
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
@@ -1930,7 +1844,16 @@ getdata(opD_IPD_Id){
       event.preventDefault();
       return false;
     }
+  }
+  onScroll() {
+    //Note: This is called multiple times after the scroll has reached the 80% threshold position.
+    this.nextPage$.next(true);
   } 
+  handleChange(key: string, callback: () => void, form: FormGroup = this.Serviceform) {
+    this.subscription.push(form.get(key).valueChanges.subscribe(value => {
+      callback();
+    }));
+  }
 }
 
 export class Bill {

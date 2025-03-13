@@ -11,6 +11,9 @@ import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { DatePipe } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
+import { ToasterService } from 'app/main/shared/services/toaster.service';
+import { ToastrService } from 'ngx-toastr';
+import { timeStamp } from 'console';
 
 @Component({
   selector: 'app-op-payment',
@@ -92,6 +95,22 @@ export class OpPaymentComponent implements OnInit {
     return this.netPayAmt > ((this.paidAmt || 0) + Number(this.amount1));
   }
   GetBalanceAmt() { 
+    if(this.amount1 > this.netPayAmt){  
+      this.toastr.warning('Entered amount is greaterthan NetAmount!, Please check..', 'warning!', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      this.amount1  = 0;
+      this.balanceAmt = Number(this.netPayAmt || 0) - (Number(this.paidAmt || 0)); 
+      return 
+    } 
+    if(this.amount1 > (this.netPayAmt - this.paidAmt)){
+      this.toastr.warning('Entered amount is greaterthan balance amt!, Please check..', 'warning!', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      this.amount1  = 0;
+      this.balanceAmt = Number(this.netPayAmt || 0) - (Number(this.paidAmt || 0)); 
+      return 
+    }  
     this.balanceAmt = Number(this.netPayAmt || 0) - (Number(this.paidAmt || 0) + Number(this.amount1 || 0));
   }
   onAddPayment() {
@@ -105,8 +124,8 @@ export class OpPaymentComponent implements OnInit {
       Id: this.getNewId(),
       PaymentType: this.selectedPaymnet1, Amount: this.amount1,
       RefNo: this.patientDetailsFormGrp.get("referenceNo1")?.value ?? "",
-      BankId: this.patientDetailsFormGrp.get("bankName1").value?.BankId ?? 0,
-      BankName: this.patientDetailsFormGrp.get("bankName1").value?.BankName ?? "",
+      BankId:this.BankId,// this.patientDetailsFormGrp.get("bankName1").value?.BankId ?? 0,
+      BankName:this.BankNam,// this.patientDetailsFormGrp.get("bankName1").value?.BankName ?? "",
       RegDate: this.patientDetailsFormGrp.get("regDate1")?.value ?? ""
     });
     this.Payments.data = tmp;
@@ -154,6 +173,7 @@ export class OpPaymentComponent implements OnInit {
   Age:any;
   OPD_IPD_Id:any;
   TariffName:any;
+  autocompleteModebank: string = "Bank";
   constructor(
     private formBuilder: UntypedFormBuilder,
     private dialogRef: MatDialogRef<OpPaymentComponent>,
@@ -161,6 +181,7 @@ export class OpPaymentComponent implements OnInit {
     private opService: OPSearhlistService,
     private _loggedService: AuthenticationService,
     public datePipe: DatePipe,
+    public toastr: ToastrService,
     // private snackBarService: SnackBarService
   ) {
     this.nowDate = new Date();
@@ -292,8 +313,7 @@ export class OpPaymentComponent implements OnInit {
       this.PatientName = "SAS",//this.advanceData.PatientName;
         this.amount1 = parseInt(this.advanceData.NetAmount);
       this.Paymentobj['TransactionType'] = 4;
-    }
-    this.getBankNameList1();
+    } 
   }
   dateTimeObj: Date;
   getDateTime(dateTimeObj) {
@@ -312,29 +332,23 @@ export class OpPaymentComponent implements OnInit {
     });
   }
 
-  private _filterBank1(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.BankName ? value.BankName.toLowerCase() : value.toLowerCase();
-      return this.optionsBank1.filter(option => option.BankName.toLowerCase().includes(filterValue));
+ 
+ 
+  BankId=0
+  BankNam:any;
+    selectChangebank(event){
+  console.log(event)
+  this.BankId=event.value
+  this.BankNam=event.text
     }
-
-  }
-
-  getBankNameList1() {
-    this.opService.getBankMasterCombo().subscribe(data => {
-      this.BankNameList1 = data;
-      this.optionsBank1 = this.BankNameList1.slice();
-      this.filteredOptionsBank1 = this.patientDetailsFormGrp.get('bankName1').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterBank1(value) : this.BankNameList1.slice()),
-      );
-
-    });
-  }
-
-  getOptionTextBank1(option) {
-    return option && option.BankName ? option.BankName : '';
-  }
+  
+    getValidationMessages(){
+      return {
+        bankName1: [
+          { name: "required", Message: "bankName is required" }
+        ]     
+      };
+    }
   onClose() {
     this.dialogRef.close();
   }
@@ -375,7 +389,7 @@ export class OpPaymentComponent implements OnInit {
     if (this.balanceAmt != 0) {
       Swal.fire('Please select payment mode, Balance Amount is' + this.balanceAmt)
       return
-    }
+    } 
     if (this.amount1 != 0) {
       let balamt = this.netPayAmt - this.paidAmt
       Swal.fire('Please pay remaing amount, Balance Amount is ' + balamt)

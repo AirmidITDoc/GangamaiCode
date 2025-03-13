@@ -585,8 +585,7 @@ export class AdvanceDetailObj {
     DepartmentName: any;
     RefDocName: any;
     GenderName: any;
-    DocNameID: any;
-
+    DocNameID: any; 
     PolicyNo: any;
     MemberNo: any;
     ClaimNo: any;
@@ -610,10 +609,11 @@ export class AdvanceDetailObj {
     H_NetAmt: any;
     H_PaidAmt: any;
     H_BalAmt: any;
-    MobileNo: any;
+    mobileNo: any;
+    MobileNo:any;
     PatientAge: any;
     AdvTotalAmount: any;
-    IsInitinatedDischarge:any;
+    IsInitinatedDischarge:any; 
     /**
     * Constructor
     *
@@ -663,7 +663,7 @@ export class AdvanceDetailObj {
             this.RefDocName = AdvanceDetailObj.RefDocName || ''
             this.GenderName = AdvanceDetailObj.GenderName || ''
             this.DocNameID = AdvanceDetailObj.DocNameID | 0
-            this.MobileNo = AdvanceDetailObj.MobileNo || ''
+            this.mobileNo = AdvanceDetailObj.MobileNo || ''
             this.AdvTotalAmount = AdvanceDetailObj.AdvTotalAmount || 0
               this.IsInitinatedDischarge = AdvanceDetailObj.IsInitinatedDischarge || ''
         }
@@ -672,7 +672,8 @@ export class AdvanceDetailObj {
 
 
 export class ChargesList {
-    ChargesId: number;
+    ChargesId:any
+    chargesId: number;
     ServiceId: number;
     ServiceName: String;
     Price: number;
@@ -694,7 +695,7 @@ export class ChargesList {
     extMobileNo: any;
     ConcessionPercentage: any;
     constructor(ChargesList) {
-        this.ChargesId = ChargesList.ChargesId || '';
+        this.chargesId = ChargesList.chargesId || '';
         this.ServiceId = ChargesList.ServiceId || '';
         this.ServiceName = ChargesList.ServiceName || '';
         this.Price = ChargesList.Price || '';
@@ -905,3 +906,4 @@ export class Bedtransfer {
         }
     }
 }
+ 

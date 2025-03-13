@@ -69,7 +69,8 @@ export class IPRefundofAdvanceComponent implements OnInit {
     'AdvanceAmount',
     'UsedAmount',
     'BalanceAmount',
-    'RefundAmt',  
+    'RefundAmt',
+    'PreRefundAmt'  
   ];
   displayedColumns1 = [
     'RefundDate', 
@@ -277,11 +278,11 @@ export class IPRefundofAdvanceComponent implements OnInit {
         this.toastr.warning('Enter Refund Amount Less than Balance Amount ', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
-        element.refundAmount = ''
+        element.refundAmt = ''
         element.balanceAmount = element.netBallAmt ;
       }
       else if(RefundAmt == 0 || RefundAmt == '' || RefundAmt == undefined || RefundAmt == null){
-        element.RefundAmt = ''
+        element.refundAmt = ''
         element.balanceAmount = element.netBallAmt ;
       } 
 
@@ -292,7 +293,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
       this.getRefundSum();
   } 
   getRefundSum() {   
-    let totalRefAmt = this.chargeList.reduce((sum, { refundAmount }) => sum += +(refundAmount || 0), 0);
+    let totalRefAmt = this.chargeList.reduce((sum, { refundAmt }) => sum += +(refundAmt || 0), 0);
     let totalBalAmt = this.chargeList.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0);
  
     this.RefundOfAdvanceFormGroup.patchValue({
@@ -314,20 +315,14 @@ export class IPRefundofAdvanceComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    }
-    if(formValue.NewRefundAmount == '' || formValue.NewRefundAmount == 0 || formValue.NewRefundAmount == null || formValue.NewRefundAmount == undefined){
-      this.toastr.warning('Enter a Refund Amount', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    } 
     
     let IPRefundofAdvanceObj = {};
     IPRefundofAdvanceObj['refundDate'] = formattedDate;
     IPRefundofAdvanceObj['refundTime'] = formattedTime;
     IPRefundofAdvanceObj['billId'] =  0;
     IPRefundofAdvanceObj['advanceId'] = this.AdvanceId;
-    IPRefundofAdvanceObj['opdipdType'] = 1;
+    IPRefundofAdvanceObj['opdipdType'] = true;
     IPRefundofAdvanceObj['opdipdid'] = this.registerObj.admissionId || 0, 
     IPRefundofAdvanceObj['refundAmount'] = this.RefundOfAdvanceFormGroup.get('NewRefundAmount').value || 0; 
     IPRefundofAdvanceObj['remark'] = this.RefundOfAdvanceFormGroup.get("Remark").value;
@@ -349,7 +344,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
       advDetailRefund['advDetailId'] = element.advanceDetailID || 0;
       advDetailRefund['refundDate'] = formattedDate;
       advDetailRefund['refundTime'] = formattedTime;
-      advDetailRefund['advRefundAmt'] =element.refundAmount || 0;
+      advDetailRefund['advRefundAmt'] =element.refundAmt || 0;
       advDetailRefundObj.push(advDetailRefund)
     }); 
  
@@ -358,7 +353,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
       let adveDetailupdate = {}; 
       adveDetailupdate['advanceDetailID'] = element.advanceDetailID || 0;
       adveDetailupdate['balanceAmount'] = element.balanceAmount || 0;
-      adveDetailupdate['refundAmount'] = element.refundAmount || 0;
+      adveDetailupdate['refundAmount'] = element.refundAmt || 0;
       adveDetailupdateObj.push(adveDetailupdate)
     });  
 
@@ -396,9 +391,11 @@ export class IPRefundofAdvanceComponent implements OnInit {
         }; 
         console.log(submitData); 
         this._IpSearchListService.insertIPRefundOfAdvance(submitData).subscribe(response => { 
+          console.log(response)
           this.toastr.success(response.message);
           this.viewgetRefundofAdvanceReportPdf(response);
           this.getWhatsappsRefundAdvance(response, this.vMobileNo);
+          this.onClose()
           this._matDialog.closeAll();
         }, (error) => {
           this.toastr.error(error.message);
@@ -408,6 +405,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
 }
   onClose(){
     this._IpSearchListService.myRefundAdvanceForm.reset(); 
+    this.dsrefundlist.data = []
     this._matDialog.closeAll();
   }
   sIsLoading: string = '';
@@ -523,6 +521,7 @@ export class IPRefundofAdvance {
   Date: any;
   refundAmount:any;
   advanceDetailID:any; 
+  refundAmt:any;
 
 
   constructor(IPRefundofAdvanceObj) {
@@ -546,6 +545,7 @@ export class IPRefundofAdvance {
     this.Date = IPRefundofAdvanceObj.Date || ''; 
     this.refundAmount = IPRefundofAdvanceObj.refundAmount || 0;
     this.advanceDetailID = IPRefundofAdvanceObj.advanceDetailID || '0';
+    this.refundAmt = IPRefundofAdvanceObj.refundAmt || '0';
   }
 
 }

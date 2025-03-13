@@ -721,13 +721,13 @@ public getUMOCombo() {
       this._loaderService.show();
   } 
     return this._httpClient.post("InPatient/InsertIPDraftBill",e)
-  }
-  public InsertInterim (employee, loader = true) {
+  } 
+  public InsertInterim(employee, loader = true) {
     if (loader) {
       this._loaderService.show();
   } 
-    return this._httpClient.post("InPatient/IPInterimBillInsertWithCashCounter",employee)
-  }
+    return this._httpClient1.PostData("IPBill/IPInterimBillInsertWithCashCounter", employee)
+  } 
   public BillDiscountAfter(employee)
   {    
     return this._httpClient.post("InPatient/BillDiscountAfter",employee);

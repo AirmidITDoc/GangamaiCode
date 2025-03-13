@@ -364,7 +364,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc %
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.concessionPercentage}}</span>
+                                    <span> {{contact.concessiondiscPer}}</span>
                                 </mat-cell>
                             </ng-container>
                     
@@ -453,13 +453,11 @@
                                 </div>
                                 <div class="net-amt-box">
                                     <span class="net-amt-label">Total Amt : </span>
-                                    <span class="net-amt-value">{{getTotalAmtSum(dataSource.data) |
-                                        currency:'INR' }}</span>
+                                    <span class="net-amt-value">{{TotalShowAmt | currency:'INR' }}</span>
                                 </div>
                                 <div class="net-amt-box">
                                     <span class="net-amt-label">Disc Amt : </span>
-                                    <span class="net-amt-value">{{getDiscountSum(dataSource.data) |
-                                        currency:'INR'}}</span>
+                                    <span class="net-amt-value">{{DiscShowAmt | currency:'INR'}}</span>
                                 </div>
                     
                                 <div class="net-amt-box">
@@ -604,19 +602,7 @@
                                 [ngClass]="{'hide':!(advancedatasource!=null && advancedatasource.data.length==0)}">
                             </mat-footer-row>
                         </mat-table> -->
-                        <!-- <div class="net-amt-section mb-2 mt-16">
-                            <div class="net-amt gap-24" fxLayout="row" fxLayoutAlign="start center">
-                                <div class="net-amt-box">
-                                    <span class="net-amt-label">No of Items : </span>
-                                    <span class="net-amt-value">{{advancedatasource.data.length }}</span>
-                                </div>
-                                <div class="net-amt-box">
-                                    <span class="net-amt-label">Advance Amount : </span>
-                                    <span class="net-amt-value">{{getAdvAmtSum(advancedatasource.data) |
-                                        currency:'INR'}}</span>
-                                </div>
-                            </div>
-                        </div> -->
+                        
                     </mat-tab>
                     
                     <mat-tab label="Package Det.">
@@ -905,92 +891,83 @@
             </div>
 
             <form class="example-form px-12" [formGroup]="Ipbillform">
+                <div class="row row-container" fxLayout="column" class="gap-10" style="width: 100%;">
+            
+                    <div fxLayout="row" class="gap-6">
+                    
+                        <div fxFlex="6%" *ngIf="isAdminDisabled">
+                            <airmid-textbox label="Admin %" formControlName="AdminPer" [formGroup]="Ipbillform" [type]="'text'"
+                                [value]="vAdminPer" (keyup)="CalculateAdminCharge()" (keypress)="keyPressCharater($event)" min]="0"
+                                [max]="100">
+                            </airmid-textbox>
+                        </div>
+                    
+                        <div fxFlex="8%" *ngIf="isAdminDisabled">
+                            <airmid-textbox label="Admin Amount" formControlName="AdminAmt" [formGroup]="Ipbillform" [type]="'text'"
+                                [min]="0" (keypress)="keyPressCharater($event)" [value]="vAdminAmt">
+                            </airmid-textbox>
+                        </div>
+                    
+                        <div fxFlex="6%" *ngIf="!BillDiscperFlag">
+                            <airmid-textbox label="Disc %" formControlName="discPer" [formGroup]="Ipbillform" [type]="'text'" [min]="0"
+                                [max]="100" (keypress)="keyPressCharater($event)" (keyup)="CalFinalDisc()">
+                            </airmid-textbox>
+                        </div>
+                    
+                        <div fxFlex="8%">
+                            <airmid-textbox label="Disc Amount" formControlName="concessionAmt" [formGroup]="Ipbillform" [type]="'text'"
+                                [min]="0" (keypress)="keyPressCharater($event)" [readonly]="BillDiscperFlag" (keyup)="getDiscAmtCal()">
+                            </airmid-textbox>
+                        </div>
+                    
+                        <div *ngIf="ConcessionShow" fxFlex="15%">
+                            <airmid-dropdown label="Concession Reason" formControlName="ConcessionId" [formGroup]="Ipbillform"
+                                [validations]="getValidationMessages().ConcessionId" [mode]="autocompleteModeConcession"
+                                (selectionChange)="selectChangeConcession($event)">
+                            </airmid-dropdown>
+                        </div>
+                    
+                        <div fxFlex="10%">
+                            <airmid-textbox label="Net Amount" formControlName="FinalAmount" [formGroup]="Ipbillform" [type]="'text'"
+                                [readonly]="true">
+                            </airmid-textbox>
+                        </div>
+                    
+                        <div fxFlex="15%">
+                            <airmid-dropdown label="Select Cash Counter " formControlName="CashCounterID" [formGroup]="Ipbillform"
+                                [validations]="getValidationMessages().cashCounterId" [mode]="autocompleteModeCashcounter">
+                            </airmid-dropdown>
+                        </div>
+                    
+                        <div fxFlex>
+                            <airmid-textbox label="Remark" formControlName="Remark" [formGroup]="Ipbillform" [type]="'text'">
+                            </airmid-textbox>
+                        </div>
+                    
+                    </div>
 
-                <div class="example-form-container">
-                    <div class="footer-container" fxLayoutAlign="start center">
-
-                        <div class="row row-container" style="width: 100%;">
-
-                            <div class="amount-section" fxLayout="column" class="gap-12">
-                               
-                                <div fxLayout="row" class="gap-8"> 
-
-                                    <mat-form-field appearance="outline" fxFlex="6%" *ngIf="isAdminDisabled">
-                                        <mat-label>Admin %</mat-label>
-                                        <input matInput [(ngModel)]="vAdminPer" name="AdminPer"   formControlName="AdminPer"
-                                             (keypress)="keyPressCharater($event)" (keyup)="CalculateAdminCharge()">
-                                    </mat-form-field>
-
-                                    <mat-form-field appearance="outline" fxFlex="10%" *ngIf="isAdminDisabled">
-                                        <mat-label>Admin Amount</mat-label>
-                                        <input matInput [(ngModel)]="vAdminAmt" name="AdminAmt" readonly
-                                            formControlName="AdminAmt">
-                                    </mat-form-field>
-
-                                    <mat-form-field appearance="outline"  fxFlex="6%" *ngIf="BillDiscperFlag">
-                                        <mat-label>Disc %</mat-label>
-                                        <input matInput placeholder="Percentage" formControlName="Percentage"
-                                           [(ngModel)]="vFinalDiscper" autocomplete="off" #finaldisc onlyNumber
-                                            (keyup)="CalFinalDisc()"  (keypress)="keyPressCharater($event)">
-                                    </mat-form-field>
-
-                                    <mat-form-field appearance="outline" fxFlex="10%">
-                                        <mat-label>Disc Amount</mat-label>
-                                        <input matInput [(ngModel)]="vFinalDiscountAmt" name="concessionAmt"   
-                                            formControlName="concessionAmt" (keyup)="getDiscAmtCal()">
-                                    </mat-form-field> 
-
-                                    <div *ngIf="ConcessionShow">
-                                        <airmid-dropdown label="Concession Reason" fxFlex="15%"
-                                            formControlName="ConcessionId" [formGroup]="Ipbillform"
-                                            [validations]="getValidationMessages().ConcessionId"
-                                            [mode]="autocompleteModeConcession"
-                                            (selectionChange)="selectChangeConcession($event)">
-                                        </airmid-dropdown>
-                                    </div>
-
-                                    <mat-form-field appearance="outline" fxFlex="10%">
-                                        <mat-label>Net Amount</mat-label>
-                                        <input matInput [(ngModel)]="vNetBillAmount" formControlName="FinalAmount"
-                                            name="vNetBillAmount" readonly required>
-                                    </mat-form-field>  
- 
-                                    <airmid-dropdown label="Select Cash Counter " formControlName="CashCounterID" class="w-300"
-                                    [formGroup]="Ipbillform" [validations]="getValidationMessages().cashCounterId"
-                                    [mode]="autocompleteModeCashcounter">
-                                    </airmid-dropdown> 
-
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Remark</mat-label>
-                                        <input matInput name="Remark" formControlName="Remark">
-                                    </mat-form-field>
-
-                                </div>
-                                <div fxLayout="row"  fxLayoutAlign="space-between center">
-                                    <div class="action-content-left" fxLayout="row" class="gap-24"
-                                        fxLayoutAlign="start center">
-                                        <mat-checkbox formControlName="Admincheck" (checked)=true  (change)="AdminStatus($event)">
-                                            Admin 
-                                        </mat-checkbox>
-
-                                        <mat-checkbox formControlName="GenerateBill" (checked)=true>
-                                            Generate Bill
-                                        </mat-checkbox>
-                                        <mat-checkbox formControlName="CreditBill" (checked)=true>
-                                           Credit Bill
-                                        </mat-checkbox> 
-                                    </div>
-                                    <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center">
-                                        <div class="button-row-group">
-                                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                            <button class="btn btn-primary-outline" (click)="getInterimData()">Interim</button>
-                                            <button class="btn btn-primary" (click)="onSave()" [disabled]="Ipbillform.invalid">Save</button>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                        <div class="action-content-left" fxLayout="row" class="gap-24" fxLayoutAlign="start center">
+                            <mat-checkbox formControlName="Admincheck" (checked)=true (change)="AdminStatus($event)">
+                                Admin
+                            </mat-checkbox>
+            
+                            <mat-checkbox formControlName="GenerateBill" (checked)=true>
+                                Generate Bill
+                            </mat-checkbox>
+                            <mat-checkbox formControlName="CreditBill" (checked)=true>
+                                Credit Bill
+                            </mat-checkbox>
+                        </div>
+                        
+                        <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center">
+                            <div class="button-row-group">
+                                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                <button class="btn btn-primary-outline" (click)="getInterimData()">Interim</button>
+                                <button class="btn btn-primary" (click)="onSave()" [disabled]="Ipbillform.invalid">Save</button>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                 </div>
             </form>
         </div>
