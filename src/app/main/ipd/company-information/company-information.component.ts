@@ -11,6 +11,7 @@ import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
 import Swal from 'sweetalert2';
 import { AdmissionPersonlModel } from '../Admission/admission/admission.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-company-information',
@@ -26,10 +27,11 @@ export class CompanyInformationComponent implements OnInit {
   selectedAdvanceObj: AdmissionPersonlModel;
   registerObj: AdmissionPersonlModel;
   AdmissionID: any;
- 
+
   constructor(
     public _AdmissionService: AdmissionService,
     public datePipe: DatePipe,
+    public toastr: ToastrService,
     private router: Router,
     private dialogRef: MatDialogRef<CompanyInformationComponent>,
     private formBuilder: UntypedFormBuilder,
@@ -44,12 +46,13 @@ export class CompanyInformationComponent implements OnInit {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj);
-     
-      this.AdmissionID = this.selectedAdvanceObj.AdmissionID
-      
-    } }
 
-    registerObj1 =new CompanyDetails({});
+      this.AdmissionID = this.selectedAdvanceObj.AdmissionID
+
+    }
+  }
+
+  registerObj1 = new CompanyDetails({});
 
   ngOnInit(): void {
     this.companyFormGroup = this.createCompanyForm();
@@ -62,7 +65,7 @@ export class CompanyInformationComponent implements OnInit {
     //   console.log(this.registerObj1);
     // });
 
-    
+
     // }
     this.companyFormGroup = this.createCompanyForm();
   }
@@ -133,20 +136,14 @@ export class CompanyInformationComponent implements OnInit {
     }
     console.log(m_data)
 
-    // this._AdmissionService.CompanyUpdate(m_data).subscribe(response => {
-    //   if (response) {
-    //     Swal.fire('Congratulations !', 'Company Data Updated Successfully !', 'success').then((result) => {
-    //       if (result.isConfirmed) {
-    //         this._matDialog.closeAll();
-    //         this.getCompanydetailview(this.AdmissionID);
-    //       }
-    //     });
-    //   } else {
-    //     Swal.fire('Error !', 'Company Data  not Updated', 'error');
-    //   }
-    //   // this.isLoading = '';
+    this._AdmissionService.CompanyUpdate(m_data).subscribe(response => {
+      this.toastr.success(response.message);
+      // this.viewgetIPPayemntPdf(response)
+      // this._matDialog.closeAll();
 
-    // });
+    }, (error) => {
+      this.toastr.error(error.message);
+    });
   }
 
 
@@ -195,7 +192,7 @@ export class CompanyInformationComponent implements OnInit {
 export class CompanyDetails {
   PolicyNo: any;
   MemberNo: any;
-  
+
   AprovAmount
   CompDOD
   IsPharClearance
@@ -229,7 +226,7 @@ export class CompanyDetails {
   H_NetAmt: any;
   H_PaidAmt: any;
   H_BalAmt: any;
-  CompanyId:any;
+  CompanyId: any;
   /**
    * Constructor
    *
@@ -268,8 +265,8 @@ export class CompanyDetails {
       this.H_AdvAmt = CompanyDetails.H_AdvAmt || '';
       this.H_BillId = CompanyDetails.H_BillId || '';
       this.H_BillDate = CompanyDetails.H_BillDate || '';
-      this.H_BillNo = CompanyDetails. H_BillNo || '';
-      this.H_TotalAmt = CompanyDetails. H_TotalAmt || '';
+      this.H_BillNo = CompanyDetails.H_BillNo || '';
+      this.H_TotalAmt = CompanyDetails.H_TotalAmt || '';
       this.H_DiscAmt = CompanyDetails.H_DiscAmt || '';
       this.H_NetAmt = CompanyDetails.H_NetAmt || '';
       this.H_PaidAmt = CompanyDetails.H_PaidAmt || '';

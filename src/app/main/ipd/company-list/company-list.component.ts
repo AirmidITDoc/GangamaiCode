@@ -18,6 +18,9 @@ import { AdmissionPersonlModel } from '../Admission/admission/admission.componen
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { FormGroup } from '@angular/forms';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { AirmidTable1Component } from 'app/main/shared/componets/airmid-table1/airmid-table1.component';
 
 @Component({
   selector: 'app-company-list',
@@ -30,13 +33,19 @@ export class CompanyListComponent implements OnInit {
   myFilterform:FormGroup;
   fromDate ="01/01/1900"// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate ="01/01/1900"// this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
-
+  f_name:any = "" 
+  regNo:any="0"
+  l_name:any="" 
+  m_name:any="" 
+  IPDNo:any="" 
+   @ViewChild(AirmidTableComponent) grid: AirmidTable1Component;
   menuActions: Array<string> = [];
   constructor(
     public _CompanyListService: CompanyListService,
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     private _ActRoute: Router,
+     private commonService: PrintserviceService,
     public datePipe: DatePipe,
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored
@@ -57,85 +66,33 @@ export class CompanyListComponent implements OnInit {
       this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
   
     }
+
+    allcolumns=[
+      { heading: "PatientType", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:100},
+      { heading: "-", key: "isOpToIpconv", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:40 },
+      { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.template, width: 80},
+      { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
+      { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+      { heading: "Date", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
+      { heading: "DoctorName", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+      { heading: "RefDocName", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+      { heading: "IPDNo", key: "ipdno", sort: true, align: 'left', emptySign: 'NA'},
+      { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA'},
+      { heading: "WardName", key: "roomName", sort: true, align: 'left', emptySign: 'NA', type: 14 },
+      { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "ClassName", key: "className", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+      { heading: "RelativeName", key: "relativeName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 14 },
+      {
+        heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+        template: this.actionButtonTemplate  // Assign ng-template to the column
+      }
+
+    ];
   
     gridConfig: gridModel = {
       apiUrl: "Admission/AdmissionList",
-      columnsList: [
-        { heading: "PatientType", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100},
-        // { heading: "-", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 110 },
-        { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.template, width: 80},
-        { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
-        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-        { heading: "Date", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
-        { heading: "DoctorName", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "RefDocName", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "IPDNo", key: "ipdno", sort: true, align: 'left', emptySign: 'NA'},
-        { heading: "PatientType", key: "PatientType", sort: true, align: 'left', emptySign: 'NA'},
-        { heading: "WardName", key: "WardId", sort: true, align: 'left', emptySign: 'NA', type: 14 },
-        { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "ClassName", key: "className", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "RelativeName", key: "relativeName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 14 },
-        {
-          heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
-          template: this.actionButtonTemplate  // Assign ng-template to the column
-        }
-  
-        //   { heading: "RelatvieMobileNo", key: "relatvieMobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100, type:14 },
-        // {
-        //     heading: "Action", key: "action", align: "right", width: 400 ,sticky:true, type: gridColumnTypes.action, actions: [
-        //         {
-        //             action: gridActions.edit, callback: (data: any) => {
-        //                 this.EditRegistration(data);
-        //             }
-        //         },
-  
-        //         {
-        //             action: gridActions.edit, callback: (data: any) => {
-        //                 this.onbedTransfer(data);
-        //             }
-        //         },
-        //         {
-        //           action: gridActions.edit, callback: (data: any) => {
-        //               this.ondischarge(data);
-        //           }
-        //       },
-        //       {
-        //         action: gridActions.edit, callback: (data: any) => {
-        //             this.ondischargesummarydata(data);
-        //         }
-        //     },
-        //         {
-        //             action: gridActions.print, callback: (data: any) => {
-        //                 this.getAdmittedPatientCasepaperview(data);
-        //             }
-        //         },
-        //         {
-        //             action: gridActions.print , callback: (data: any) => {
-        //                 this.getAdmittedPatientCasepaperTempview(data);
-        //             }
-        //         },
-        //         {
-        //             action: gridActions.edit, callback: (data: any) => {
-        //                 this.getEditAdmission(data);
-        //             }
-        //         },
-        //         {
-        //           action: gridActions.edit, callback: (data: any) => {
-        //               this.NewMLc(data);
-        //           }
-        //       },
-        //         {
-        //             action: gridActions.delete, callback: (data: any) => {
-  
-        //                 // this.AppointmentCancle(data);
-  
-        //             }
-        //         }
-        //       ]
-        // } //Action 1-view, 2-Edit,3-delete
-      ],
-  
+      columnsList: this.allcolumns,
       sortField: "AdmissionId",
       sortOrder: 0,
       filters: [{ fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -181,8 +138,7 @@ export class CompanyListComponent implements OnInit {
       }
     }
    else{
-     // Swal.fire('Selected Patient is not company patient')
-
+    
       Swal.fire({
         title: 'Selected Patient is not company patient',
         text: "Please Select Compnay Patient!",
@@ -193,34 +149,79 @@ export class CompanyListComponent implements OnInit {
     }
   }
  
-  onClear() {
+
+  onChangeFirst() {
+          debugger
+          // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+          // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+          this.f_name = this.myFilterform.get('FirstName').value + "%"
+          this.l_name = this.myFilterform.get('LastName').value + "%"
+          this.regNo = this.myFilterform.get('RegNo').value || "0"
+          this.m_name = this.myFilterform.get('MiddleName').value + "%"
+          this.IPDNo = this.myFilterform.get('IPDNo').value || "0"
   
-    this._CompanyListService.myFilterform.reset();
-    this._CompanyListService.myFilterform.get("IsDischarge").setValue(0);
-    this._CompanyListService.myFilterform.get("FirstName").setValue('');
-    this._CompanyListService.myFilterform.get("MiddleName").setValue('');
-    this._CompanyListService.myFilterform.get("LastName").setValue('');
+          this.getfilterdata();
       }
-  IsDischarge: any;
-  onChangeIsactive(SiderOption) {
-    this.IsDischarge = SiderOption.checked;
-    if (SiderOption.checked == true) {
-      this._CompanyListService.myFilterform.get('IsDischarge').setValue(1);
-      this._CompanyListService.myFilterform.get('start').setValue((new Date()).toISOString());
-      this._CompanyListService.myFilterform.get('end').setValue((new Date()).toISOString());
-    }
-    else {
-      this._CompanyListService.myFilterform.get('IsDischarge').setValue(0);
-      this._CompanyListService.myFilterform.get('start').setValue(''),
-        this._CompanyListService.myFilterform.get('end').setValue('')
-    }
-  }
-  printDischargeslip(contact) {
   
+      getfilterdata() {
+          debugger
+          this.gridConfig = {
+              apiUrl: "Admission/AdmissionList",
+              columnsList: this.allcolumns,
+              sortField: "AdmissionId",
+              sortOrder: 0,
+              filters: [
+                  { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
+                  { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+                  { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+                  { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+                  { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                  { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                  { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
+                  { fieldName: "M_Name", fieldValue: this.m_name, opType: OperatorComparer.Equals },
+                  { fieldName: "IPNo", fieldValue: this.IPDNo, opType: OperatorComparer.Equals },
+                  { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+                  { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+              ],
+              row: 25
+          }
+          this.grid.gridConfig = this.gridConfig;
+          this.grid.bindGridData();
+      }
+
+
+      getAdmittedPatientCasepaperview(element) {
+    
+        console.log('Third action clicked for:', element);
+        this.commonService.Onprint("AdmissionId", element.admissionId, "IpCasepaperReport"); 
+      }
+    
+    
+      Clearfilter(event) {
+          console.log(event)
+          if (event == 'FirstName')
+              this.myFilterform.get('FirstName').setValue("")
+          else
+              if (event == 'LastName')
+                  this.myFilterform.get('LastName').setValue("")
+              else
+                  if (event == 'MiddleName')
+                      this.myFilterform.get('MiddleName').setValue("")
+          if (event == 'RegNo')
+              this.myFilterform.get('RegNo').setValue("")
+          if (event == 'IPDNo')
+              this.myFilterform.get('IPDNo').setValue("")
+  
+          this.onChangeFirst();
+      }
+  
+
+  getValidationdoctorMessages() {
+    return {
+      searchDoctorId: [
+        { name: "required", Message: "Doctor Name is required" }
+      ]
+    };
   }
 
-
-  printDischargesummary(contact) {
-
-  }
 }

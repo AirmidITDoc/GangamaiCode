@@ -39,7 +39,7 @@
 
                         <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No" [formGroup]="searchFormGroup" formControlName="RegId" *ngIf="Regflag" placeholderText="Search Reg No / Patient Name / Mobile No" ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
 
-                        <airmid-autocomplete class="w-350" label="Phone Appointment" [formGroup]="searchFormGroup" formControlName="PhoneRegId" *ngIf="IsPhoneAppflag" placeholderText="Search Reg No / Patient Name / Mobile No" ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObjphone($event)"></airmid-autocomplete>
+                        <airmid-autocomplete class="w-350" label="Phone Appointment" [formGroup]="searchFormGroup" formControlName="PhoneRegId" *ngIf="IsPhoneAppflag" placeholderText="Search Reg No / Patient Name / Mobile No" ApiUrl="PhoneAppointment2/GetPhoneList?Keyword=" (selectionChange)="getSelectedObjphone($event)"></airmid-autocomplete>
 
                         <airmid-dropdown class="w-350" label="Unit Name" formControlName="UnitId" [value]="UnitId" [formGroup]="searchFormGroup" [mode]="autocompleteModeunit"></airmid-dropdown>
                     </div>

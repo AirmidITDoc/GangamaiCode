@@ -215,8 +215,8 @@ export class DischargeSummaryComponent implements OnInit {
       dischargeDoctor3: 0,
       dischargeSummaryTime: "11:00:00 PM",
       doctorAssistantName: "",
-      claimNumber: "",
-      preOthNumber: "",
+      claimNumber: "0",
+      preOthNumber: "0",
       addedByDate: "2024-09-08",
       updatedByDate: "2024-09-08",
       surgeryProcDone: "",
@@ -400,8 +400,8 @@ export class DischargeSummaryComponent implements OnInit {
         this.vLifeStyle = this.RetrDischargeSumryList[0].lifeStyle
         this.vConditionofTimeDischarge = this.RetrDischargeSumryList[0].conditionAtTheTimeOfDischarge
         this.vDoctorAssistantName = this.RetrDischargeSumryList[0].doctorAssistantName
-        this.vClaimNumber = String(this.RetrDischargeSumryList[0].claimNumber)
-        this.vPreOthNumber = String(this.RetrDischargeSumryList[0].preOthNumber)
+        this.vClaimNumber = String(this.RetrDischargeSumryList[0].claimNumber) || "0"
+        this.vPreOthNumber = String(this.RetrDischargeSumryList[0].preOthNumber) || "0"
         this.vIsNormalDeath = this.RetrDischargeSumryList[0].isNormalOrDeath
         this.DischargesumForm.get("dischargeDoctor1").setValue(this.RetrDischargeSumryList[0].dischargeDoctor1)
         this.DischargesumForm.get("dischargeDoctor2").setValue(this.RetrDischargeSumryList[0].dischargeDoctor2)
@@ -484,8 +484,8 @@ export class DischargeSummaryComponent implements OnInit {
           dischargModeldata['dischargeDoctor3'] = this.DischargesumForm.get("dischargeDoctor3").value,
           dischargModeldata['dischargeSummaryTime'] = "11:00:00AM",
           dischargModeldata['doctorAssistantName'] = this.DischargesumForm.get("doctorAssistantName").value || '',
-          dischargModeldata['claimNumber'] = "0",//this.DischargesumForm.get("claimNumber").value || 0,
-          dischargModeldata['preOthNumber'] = this.DischargesumForm.get("preOthNumber").value || 0,
+          dischargModeldata['claimNumber'] = this.DischargesumForm.get("claimNumber").value || "0",
+          dischargModeldata['preOthNumber'] = this.DischargesumForm.get("preOthNumber").value || "0",
           dischargModeldata['surgeryProcDone'] = this.DischargesumForm.get("surgeryProcDone").value || '',
           dischargModeldata['icd10code'] = ''
           dischargModeldata['clinicalConditionOnAdmisssion'] = this.DischargesumForm.get("clinicalConditionOnAdmisssion").value || '',

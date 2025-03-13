@@ -150,7 +150,9 @@
                                                 formControlName="TemplateDesc"></angular-editor>
          -->
                                                 <airmid-editor label="Template Details" formControlName="TemplateDesc" [(value)]="vTemplateDesc" [formGroup]="discSummary"></airmid-editor>
-                                        </div>
+                                     
+                                     
+                                            </div>
                                         <div>
                                             <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <airmid-dropdown label="Doctor Name" formControlName="dischargeDoctor1"
@@ -190,7 +192,7 @@
                                                 <form [formGroup]="MedicineItemForm">
                                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                                         class="gap-8">
-                                                        <airmid-autocomplete lbl="Item" [formGroup]="MedicineItemForm"
+                                                        <!-- <airmid-autocomplete lbl="Item" [formGroup]="MedicineItemForm"
                                                             formControlName="ItemId" placeholderText="Enter Item Name"
                                                             fxFlex
                                                             ApiUrl="VisitDetail/GetServiceListwithTraiff?TariffId=1&ClassId=2&ServiceName="
@@ -203,7 +205,7 @@
                                                             [validations]="getValidationMessages().doseId"
                                                             (selectionChange)="getdose($event)"
                                                             [mode]="autocompleteModeDose">
-                                                        </airmid-dropdown>
+                                                        </airmid-dropdown> -->
 
                                                         <airmid-textbox label="Day" formControlName="Day" [value]="vDay"
                                                             [formGroup]="MedicineItemForm">

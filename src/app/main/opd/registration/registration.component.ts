@@ -35,9 +35,12 @@ export class RegistrationComponent implements OnInit {
     constructor(public _RegistrationService: RegistrationService, public _matDialog: MatDialog,
         public toastr: ToastrService, public datePipe: DatePipe) { }
 
-    fromDate =this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd") 
-    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd") 
-
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    f_name: any = ""
+    regNo: any = "0"
+    l_name: any = ""
+    mobileno: any = "%"
     ngOnInit(): void {
         this.myFilterform = this._RegistrationService.filterForm();
     }
@@ -49,37 +52,39 @@ export class RegistrationComponent implements OnInit {
         this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }
 
+    allcolumns = [
+        { heading: "Reg Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+        { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Age-Y", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+        { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Adddress", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        // { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', },
+        {
+            heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onEdit(data);
+                        this.grid.bindGridData();
+                    }
+                }
+            ]
+        }
+    ];
+
     gridConfig: gridModel = {
         apiUrl: "OutPatient/RegistrationList",
-        columnsList: [
-            { heading: "Reg Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
-            { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width:250 },
-            { heading: "Age-Y", key: "ageYear", sort: true, align: 'left', emptySign: 'NA',width:50 },
-            { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Adddress", key: "address", sort: true, align: 'left', emptySign: 'NA',width:150   },
-            // { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', },
-            {
-                heading: "Action", key: "action", align: "right",sticky:true, type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onEdit(data);
-                            this.grid.bindGridData();
-                        }
-                    }
-                    ]
-            }
-        ],
+        columnsList: this.allcolumns,
         sortField: "RegId",
         sortOrder: 0,
         filters: [
             { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue:this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
@@ -87,7 +92,7 @@ export class RegistrationComponent implements OnInit {
         ],
         row: 25
     }
-   
+
     onNewregistration(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
@@ -106,9 +111,9 @@ export class RegistrationComponent implements OnInit {
         });
     }
 
- 
+
     onEdit(row) {
-       console.log(row)
+        console.log(row)
         this._RegistrationService.populateForm(row);
 
         const dialogRef = this._matDialog.open(
@@ -117,8 +122,8 @@ export class RegistrationComponent implements OnInit {
                 maxWidth: "100vw",
                 maxHeight: '90%',
                 width: '95%',
-                data:row
-                
+                data: row
+
             }
         );
 
@@ -158,7 +163,55 @@ export class RegistrationComponent implements OnInit {
             this.confirmDialogRef = null;
         });
     }
-  
+
+
+
+    onChangeFirst() {
+        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+        this.f_name = this.myFilterform.get('FirstName').value + "%"
+        this.l_name = this.myFilterform.get('LastName').value + "%"
+        this.regNo = this.myFilterform.get('RegNo').value || "0"
+        this.mobileno = this.myFilterform.get('MobileNo').value || "%"
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        this.gridConfig = {
+            apiUrl: "OutPatient/RegistrationList",
+            columnsList: this.allcolumns,
+            sortField: "RegId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
+                { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+                { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                { fieldName: "MobileNo", fieldValue: this.mobileno, opType: OperatorComparer.Contains },
+                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+            ],
+            row: 25
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    }
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'FirstName')
+            this.myFilterform.get('FirstName').setValue("")
+        else
+            if (event == 'LastName')
+                this.myFilterform.get('LastName').setValue("")
+        if (event == 'RegNo')
+            this.myFilterform.get('RegNo').setValue("")
+        if (event == 'MobileNo')
+            this.myFilterform.get('MobileNo').setValue("")
+
+        this.onChangeFirst();
+    }
 
     getValidationMessages() {
         return {
@@ -168,7 +221,7 @@ export class RegistrationComponent implements OnInit {
                 { name: "pattern", Message: "only char allowed." }
             ],
             LastName: [
-              { name: "pattern", Message: "only char allowed." }
+                { name: "pattern", Message: "only char allowed." }
             ],
             RegNo: [],
             MobileNo: [
@@ -181,7 +234,7 @@ export class RegistrationComponent implements OnInit {
         }
     }
 
- 
+
 }
 
 

@@ -25,12 +25,11 @@
                     formEndControlName="enddate" [(fromValue)]="gridConfig.filters[3].fieldValue"
                     [(toValue)]="gridConfig.filters[4].fieldValue"></airmid-datepicker>
 
+                  
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
-                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="FirstName" [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                        <button matSuffix mat-icon-button aria-label="Clear"
-                            (click)="gridConfig.filters[0].fieldValue='%'">
+                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform" formControlName="FirstName" (input)="onChangeFirst()"/>
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
@@ -39,9 +38,9 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Last Name</mat-label>
                         <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="LastName" [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                            formControlName="LastName"  (input)="onChangeFirst()"/>
                         <button matSuffix mat-icon-button aria-label="Clear"
-                            (click)="gridConfig.filters[1].fieldValue='%'">
+                        (click)="Clearfilter('LastName')">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
@@ -49,9 +48,9 @@
                     <mat-form-field appearance="outline">
                         <mat-label>RegNo</mat-label>
                         <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="RegNo" [(ngModel)]="gridConfig.filters[2].fieldValue" />
+                            formControlName="RegNo"  (input)="onChangeFirst()"/>
                         <button matSuffix mat-icon-button aria-label="Clear"
-                            (click)="gridConfig.filters[2].fieldValue='0'">
+                        (click)="Clearfilter('RegNo')">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
@@ -59,9 +58,9 @@
                     <mat-form-field appearance="outline">
                         <mat-label>MobileNo</mat-label>
                         <input matInput placeholder="Search MobileNo" autocomplete="off" [formGroup]="myFilterform"  formControlName="MobileNo"
-                            [(ngModel)]="gridConfig.filters[5].fieldValue" [maxLength]="10" />
+                            [maxLength]="10" (input)="onChangeFirst()" />
                         <button matSuffix mat-icon-button aria-label="Clear"
-                            (click)="gridConfig.filters[5].fieldValue='%'">
+                        (click)="Clearfilter('MobileNo')">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>

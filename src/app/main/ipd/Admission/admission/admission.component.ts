@@ -119,8 +119,12 @@ export class AdmissionComponent implements OnInit {
 
   autocompleteModedeptdoc: string = "ConDoctor";
   optionsSearchDoc: any[] = [];
-
-
+  vOPIPId = 0;
+  f_name:any = "" 
+  regNo:any="0"
+  l_name:any="" 
+  m_name:any="" 
+  IPDNo:any="" 
   @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
   @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
   @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
@@ -135,9 +139,7 @@ export class AdmissionComponent implements OnInit {
 
   }
 
-  gridConfig: gridModel = {
-    apiUrl: "Admission/AdmissionList",
-    columnsList: [
+     allcolumns=[
       { heading: "PatientType", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:100},
       { heading: "-", key: "isOpToIpconv", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:40 },
       { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.template, width: 80},
@@ -158,8 +160,11 @@ export class AdmissionComponent implements OnInit {
         template: this.actionButtonTemplate  // Assign ng-template to the column
       }
 
-    ],
+    ];
 
+  gridConfig: gridModel = {
+    apiUrl: "Admission/AdmissionList",
+    columnsList: this.allcolumns,
     sortField: "AdmissionId",
     sortOrder: 0,
     filters: [{ fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -430,7 +435,60 @@ export class AdmissionComponent implements OnInit {
 
   }
 
+  onChangeFirst() {
+    debugger
+    // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+    // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+    this.f_name = this.myFilterform.get('FirstName').value + "%"
+    this.l_name = this.myFilterform.get('LastName').value + "%"
+    this.regNo = this.myFilterform.get('RegNo').value || "0"
+    this.m_name = this.myFilterform.get('MiddleName').value + "%"
+    this.IPDNo = this.myFilterform.get('IPDNo').value || "0"
 
+    this.getfilterdata();
+}
+
+getfilterdata(){
+    debugger
+    this.gridConfig = {
+      apiUrl: "Admission/AdmissionList",
+      columnsList: this.allcolumns,
+      sortField: "AdmissionId",
+        sortOrder: 0,
+        filters:  [
+          { fieldName: "F_Name", fieldValue:  this.f_name, opType: OperatorComparer.Contains },
+          { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+          { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+          { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+          { fieldName: "To_Dt", fieldValue:this.toDate, opType: OperatorComparer.Equals },
+          { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "M_Name", fieldValue:  this.m_name, opType: OperatorComparer.Equals },
+          { fieldName: "IPNo", fieldValue:  this.IPDNo, opType: OperatorComparer.Equals },
+          { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+            ],
+        row: 25
+    }
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData(); 
+}
+
+
+Clearfilter(event) {
+  console.log(event)
+  if (event == 'FirstName')
+      this.myFilterform.get('FirstName').setValue("")
+  else
+      if (event == 'LastName')
+          this.myFilterform.get('LastName').setValue("")
+  if (event == 'RegNo')
+      this.myFilterform.get('RegNo').setValue("")
+  if (event == 'IPDNo')
+      this.myFilterform.get('IPDNo').setValue("")
+
+  this.onChangeFirst();
+}
 
   getAdmittedPatientListview() {
     setTimeout(() => {

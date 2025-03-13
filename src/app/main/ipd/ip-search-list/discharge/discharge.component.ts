@@ -113,18 +113,18 @@ export class DischargeComponent implements OnInit {
 
         });
 
-        this._IpSearchListService.getAdmissionById(this.data.admissionId).subscribe((response) => {
-          this.registerObj1 = response;
-          if (this.registerObj1) {
-            this.registerObj1.phoneNo = this.registerObj1.phoneNo.trim()
-            this.registerObj1.mobileNo = this.registerObj1.mobileNo.trim()
-            this.registerObj1.admissionTime = this.datePipe.transform(this.registerObj1.admissionTime, 'hh:mm:ss a')
-            this.registerObj1.dischargeTime = this.datePipe.transform(this.registerObj1.dischargeTime, 'hh:mm:ss a')
+        // this._IpSearchListService.getAdmissionById(this.data.admissionId).subscribe((response) => {
+        //   this.registerObj1 = response;
+        //   if (this.registerObj1) {
+        //     this.registerObj1.phoneNo = this.registerObj1.phoneNo.trim()
+        //     this.registerObj1.mobileNo = this.registerObj1.mobileNo.trim()
+        //     this.registerObj1.admissionTime = this.datePipe.transform(this.registerObj1.admissionTime, 'hh:mm:ss a')
+        //     this.registerObj1.dischargeTime = this.datePipe.transform(this.registerObj1.dischargeTime, 'hh:mm:ss a')
 
-          }
-          console.log(this.registerObj1)
+        //   }
+        //   console.log(this.registerObj1)
 
-        });
+        // });
 
 
       }, 500);
@@ -208,6 +208,7 @@ export class DischargeComponent implements OnInit {
         "bedId": this.vBedId,
       }
     }
+    console.log(m_data)
 
     this._IpSearchListService.DichargeInsert(m_data).subscribe((response) => {
       this.toastr.success(response.message);
@@ -296,13 +297,14 @@ export class DischargeComponent implements OnInit {
     //   });
     //   return;
     // }
+    
     const dialogRef = this._matDialog.open(InitiateDischargeComponent,
       {
         maxWidth: "50vw",
         height: '72%',
         width: '100%',
         data: {
-          // Obj: this.data
+          Obj: this.data
         }
       });
     dialogRef.afterClosed().subscribe(result => {

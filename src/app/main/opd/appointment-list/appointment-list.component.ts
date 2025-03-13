@@ -71,7 +71,9 @@ export class AppointmentListComponent implements OnInit {
     RegId = 0
 
     vOPIPId = 0;
-
+    f_name:any = "" 
+    regNo:any="0"
+    l_name:any="" 
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
         private commonService: PrintserviceService,
         private advanceDataStored: AdvanceDataStored,
@@ -90,9 +92,7 @@ export class AppointmentListComponent implements OnInit {
         this.Appointdetail(this.gridConfig)
 
     }
-    f_name:any = "" 
-    regNo:any="0"
-    l_name:any="" 
+   
 
     allfilters = [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -197,6 +197,19 @@ getfilterdata(){
     this.grid.bindGridData(); 
 }
   
+
+Clearfilter(event) {
+    console.log(event)
+    if (event == 'FirstName')
+        this.myformSearch.get('FirstName').setValue("")
+    else
+        if (event == 'LastName')
+            this.myformSearch.get('LastName').setValue("")
+    if (event == 'RegNo')
+        this.myformSearch.get('RegNo').setValue("")
+   
+    this.onChangeFirst();
+  }
 
     ListView(value) {
         debugger

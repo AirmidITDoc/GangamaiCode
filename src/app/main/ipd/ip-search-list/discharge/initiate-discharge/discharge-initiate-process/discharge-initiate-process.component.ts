@@ -54,26 +54,17 @@ export class DischargeInitiateProcessComponent {
     this.InitiateForm = this.createInitiateForm()
     console.log(this.data)
     if (this.data) {
-      this.registerObj = this.data.Obj;
+      this.registerObj = this.data;
       console.log(this.registerObj)
     }
-    // this.getRtrvDepartmentlist();
-    // this.getDepartmentlist();
+  
   }
   createInitiateForm() {
     return this._formbuilder.group({
       DepartmentName: ['']
     });
   }
-  // getRtrvDepartmentlist() {
-  //   this._IpSearchListService.getRtrvDepartmentlist().subscribe(data => {
-  //     this.dsDepartmentlist.data = data as ApprovList[];
-  //     this.Chargelist= data as ApprovList[];
-  //     console.log(this.dsDepartmentlist.data)
-  //     this.dsDepartmentlist.sort = this.sort
-  //     this.dsDepartmentlist.paginator = this.paginator
-  //   });
-  // }
+  
   depatId=0;
   deptname=''
   onChangeDepartment(event){

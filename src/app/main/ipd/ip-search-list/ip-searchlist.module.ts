@@ -139,6 +139,7 @@ const routes: Routes = [
         MatStepperModule,
         MatTimepickerModule,
          AngularEditorModule,
+          
     ],
     providers: [
         IPSearchListService,
