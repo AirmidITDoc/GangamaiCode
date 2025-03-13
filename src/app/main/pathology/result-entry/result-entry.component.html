@@ -138,10 +138,8 @@
                                     </div>
                                 </ng-template>
 
-                                <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
-                                    <ng-container filters>
-
-                                    </ng-container>
+                                <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false"
+                                (onSelectRow)="getSelectedRow($event)">
                                 </airmid-table>
 
                             </div>

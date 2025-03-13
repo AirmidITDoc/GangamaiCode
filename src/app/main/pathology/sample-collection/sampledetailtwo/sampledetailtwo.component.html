@@ -138,36 +138,11 @@
                                     </td>
                                 </ng-container>
                                
-                                <ng-container matColumnDef="VADate">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Date
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                        <span> {{contact.VADate | date:'shortDate'}}</span>
-                                    </mat-cell>
-                                </ng-container>
-
-                                <!-- <ng-container matColumnDef="PathTestID" sticky>
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PathTestID
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        <span> {{contact.PathTestID}}</span>
-                                    </mat-cell>
-                                </ng-container> -->
-
                                 <ng-container matColumnDef="ServiceName" >
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-300">TestName
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-300">
                                         <span> {{contact.ServiceName}}</span>
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="IsSampleCollection">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                        Completed
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                        <span> {{contact.IsSampleCollection}}</span>
                                     </mat-cell>
                                 </ng-container>
 
@@ -179,28 +154,6 @@
                                         <span> {{contact.SampleCollectionTime }}</span>
                                     </mat-cell>
                                 </ng-container>
-
-                                <ng-container matColumnDef="PathReportID" sticky>
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>PathReportID
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                        <span> {{contact.PathReportID}}</span>
-                                    </mat-cell>
-                                </ng-container>
-
-
-                                <!-- <ng-container matColumnDef="action">
-                                    <mat-header-cell *matHeaderCellDef style="color: white;"> Action
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let row">
-                                        <button mat-icon-button (click)="onEdit(row)">
-                                            <mat-icon title="Edit Menu">launch</mat-icon>
-                                        </button>
-                                        <button mat-icon-button (click)="onDeactive(row.RegNoSearch)" color="warn">
-                                            <mat-icon>delete_outline</mat-icon>
-                                        </button>
-                                    </mat-cell>
-                                </ng-container> -->
 
                                 <ng-container matColumnDef="loading">
                                     <mat-footer-cell *matFooterCellDef colspan="6">

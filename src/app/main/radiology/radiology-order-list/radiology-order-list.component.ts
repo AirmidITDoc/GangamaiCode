@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -33,34 +33,36 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 export class RadiologyOrderListComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('actionsIPOP') actionsIPOP!: TemplateRef<any>;
+
+    fromDate = this._RadioloyOrderlistService.myformSearch.get("start").value || "";
+    toDate = this._RadioloyOrderlistService.myformSearch.get("end").value || "";
+    fromdate = this.fromDate ? this.datePipe.transform(this.fromDate, "yyyy-MM-dd") : "";
+    todate = this.toDate ? this.datePipe.transform(this.toDate, "yyyy-MM-dd") : "";
+
+    ngAfterViewInit() {
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsIPOP;
+    }
 
     gridConfig: gridModel = {
-        apiUrl: "PhoneAppointment2/PhoneAppList",
+        apiUrl: "RadiologyTest/RadiologyList",
         columnsList: [
-            { heading: "Code", key: "RadReportId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "-", key: "oPD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "-", key: "patientType", type: gridColumnTypes.status, align: "center", width: 50 },
+            { heading: "-", key: "isCompleted", type: gridColumnTypes.status, align: "center", width: 50 },
+            { heading: "RadDate", key: "radTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-            { heading: "RadTime", key: "radTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Visit_Adm_ID", key: "visit_Adm_ID", type: gridColumnTypes.status, align: "center", width: 50 },
-
-            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "GenderName", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "PatientType", key: "patientType", type: gridColumnTypes.status, align: "center", width: 50 },
-            { heading: "AgeYear", key: "ageYear", type: gridColumnTypes.status, align: "center", width: 50 },
-            { heading: "ConsultantDoctor", key: "consultantDoctor", type: gridColumnTypes.status, align: "center", width: 150 },
-            { heading: "VisitTime", key: "visitTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "RadTestID", key: "radTestID", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "TestName", key: "testName", type: gridColumnTypes.status, align: "center", width: 250 },
-            { heading: "OPD_IPD_Type", key: "oPD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "PBillNo", key: "pBillNo", type: gridColumnTypes.status, align: "center", width: 50 },
-            { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "OP_IP_Number", key: "oP_IP_Number", type: gridColumnTypes.status, align: "center", width: 50 },
-            { heading: "TestId", key: "testId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "ChargeId", key: "chargeId", type: gridColumnTypes.status, align: "center", width: 50 },
-            { heading: "CategoryName", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "OPD_IPD_ID", key: "oPD_IPD_ID", type: gridColumnTypes.status, align: "center", width: 50 },
-
-            { heading: "IsCompleted", key: "isCompleted", type: gridColumnTypes.status, align: "center", width: 50 },
-
+            { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "AgeYear", key: "ageYear", type: gridColumnTypes.status, align: "center", width: 150 },
+            { heading: "GenderName", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "TestName", key: "testName", type: gridColumnTypes.status, align: "center", width: 150 },
+            { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "RefDoctorName", key: "refdoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
@@ -82,20 +84,21 @@ export class RadiologyOrderListComponent implements OnInit {
         filters: [
             { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.Equals },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "30", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: "01/01/2021", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.todate, opType: OperatorComparer.Equals },
             { fieldName: "IsCompleted", fieldValue: "1", opType: OperatorComparer.Equals },
             { fieldName: "OP_IP_Type", fieldValue: "1", opType: OperatorComparer.Equals },
-            { fieldName: "CategoryId", fieldValue: "1", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
         ],
         row: 25
     }
+
     constructor(
         public _RadioloyOrderlistService: RadioloyOrderlistService,
         public _matDialog: MatDialog,
+        public datePipe: DatePipe,
         //private accountService: AuthenticationService,
         private _fuseSidebarService: FuseSidebarService,
         public toastr: ToastrService,
@@ -105,7 +108,86 @@ export class RadiologyOrderListComponent implements OnInit {
 
     }
 
+    searchRecords(data) {
+        debugger
+        let regno = this._RadioloyOrderlistService.myformSearch.get("RegNoSearch").value || 0;
+        let fromDate = this._RadioloyOrderlistService.myformSearch.get("start").value || "";
+        let toDate = this._RadioloyOrderlistService.myformSearch.get("end").value || "";
+        fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
+        toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
+        let patientType = this._RadioloyOrderlistService.myformSearch.get("PatientTypeSearch").value || "2";
+        let status = this._RadioloyOrderlistService.myformSearch.get("StatusSearch").value || "1";
+        // Update the filters dynamically
+        this.gridConfig = {
+            apiUrl: "RadiologyTest/RadiologyList",
+            columnsList: [
+                { heading: "-", key: "oPD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+                { heading: "-", key: "patientType", type: gridColumnTypes.status, align: "center", width: 50 },
+                { heading: "-", key: "isCompleted", type: gridColumnTypes.status, align: "center", width: 50 },
+                { heading: "RadDate", key: "radTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+                { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "AgeYear", key: "ageYear", type: gridColumnTypes.status, align: "center", width: 150 },
+                { heading: "GenderName", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "TestName", key: "testName", type: gridColumnTypes.status, align: "center", width: 150 },
+                { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "RefDoctorName", key: "refdoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                {
+                    heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                        {
+                            action: gridActions.edit, callback: (data: any) => {
+                                this.onSave(data);
+                            }
+                        }, {
+                            action: gridActions.delete, callback: (data: any) => {
+                                this._RadioloyOrderlistService.deactivateTheStatus(data.radReportId).subscribe((response: any) => {
+                                    this.toastr.success(response.message);
+                                    this.grid.bindGridData();
+                                });
+                            }
+                        }]
+                } //Action 1-view, 2-Edit,3-delete
+            ],
+            sortField: "RadReportId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.Equals },
+                { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Equals },
+                { fieldName: "Reg_No", fieldValue: regno, opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.todate, opType: OperatorComparer.Equals },
+                { fieldName: "IsCompleted", fieldValue: status, opType: OperatorComparer.Equals },
+                { fieldName: "OP_IP_Type", fieldValue: patientType, opType: OperatorComparer.Equals },
+                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+            ],
+            row: 25
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    }
+
     onSave(row: any = null) {
+
+        let that = this;
+        const dialogRef = this._matDialog.open(ResultEntryComponent,
+            {
+                // maxWidth: "90vw",
+                maxHeight: '95vh',
+                width: '100%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+
+    getView(row: any = null) {
 
         let that = this;
         const dialogRef = this._matDialog.open(RadiologyTemplateReportComponent,
@@ -120,6 +202,12 @@ export class RadiologyOrderListComponent implements OnInit {
                 that.grid.bindGridData();
             }
         });
+    }
+
+    onClear() {
+        this._RadioloyOrderlistService.myformSearch.get('RegNoSearch').setValue("0");
+        this._RadioloyOrderlistService.myformSearch.get('StatusSearch').setValue("0");
+        this._RadioloyOrderlistService.myformSearch.get('PatientTypeSearch').setValue("2");
     }
 }
 

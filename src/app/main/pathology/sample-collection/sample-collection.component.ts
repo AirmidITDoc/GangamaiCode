@@ -33,6 +33,8 @@ import { ToastrService } from 'ngx-toastr';
 export class SampleCollectionComponent implements OnInit {
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    @ViewChild('grid1') grid1: AirmidTableComponent;
+
     @ViewChild('iconlbl') iconlbl!: TemplateRef<any>;
     @ViewChild('iconcompanyName') iconcompanyName!: TemplateRef<any>;
     @ViewChild('iconisSampleCollection') iconisSampleCollection!: TemplateRef<any>;
@@ -87,38 +89,86 @@ export class SampleCollectionComponent implements OnInit {
         row: 25
     }
 
-    gridConfig1: gridModel = {
-        apiUrl: "Nursing/PrescriptionReturnList",
-        columnsList: [
-            { heading: "Completed", key: "completed", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "SampleNo", key: "sampleno", sort: true, align: 'left', emptySign: 'NA', width: 450 },
-            { heading: "TestName", key: "testName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "CollectionDate/Time", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        ],
-        sortField: "PresReId",
-        sortOrder: 0,
-        filters: [
-
-            { fieldName: "PresReId", fieldValue: "8", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
-    }
-
     constructor(public _SampleCollectionService: SampleCollectionService,
         public _matDialog: MatDialog,
         public datePipe: DatePipe,
         public toastr: ToastrService,) { }
 
     ngOnInit(): void {
-        
+
     }
 
-    getSelectedRow(row:any):void{
-        console.log("Selected row : ", row);
+    gridConfig1: gridModel = new gridModel();
+    isShowDetailTable: boolean = false;
+
+    getSelectedRow(row: any): void {
+        let billNo = row.billNo;
+        let inputDate = row.vaDate;
+        let parts = inputDate.split(' ')[0].split('-');
+        let date = `${parts[2]}-${parts[1]}-${parts[0]}`;
+        let opipType = row.lbl === 'OP' ? 0 : 1;
+
+        this.gridConfig1 = {
+            apiUrl: "PathlogySampleCollection/SampleCollectionTestList",
+            columnsList: [
+                { heading: "Completed", key: "completed", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+                { heading: "SampleNo", key: "sampleno", sort: true, align: 'left', emptySign: 'NA', width: 450 },
+                { heading: "TestName", key: "testName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "CollectionDate/Time", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            ],
+            sortField: "BillNo",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "BillNo", fieldValue: billNo, opType: OperatorComparer.Equals },
+                { fieldName: "BillDate", fieldValue: date, opType: OperatorComparer.Equals },
+                { fieldName: "OP_IP_Type", fieldValue: opipType, opType: OperatorComparer.Equals },
+            ],
+            row: 25
+        };
+
+        this.isShowDetailTable = true;
+
+        setTimeout(() => {
+            this.grid1.gridConfig = this.gridConfig1;
+            this.grid1.bindGridData();
+        });
     }
+
+    // gridConfig1: gridModel = new gridModel();
+    // isShowDetailTable: boolean = false;
+    // getSelectedRow(row:any):void{
+    //     debugger
+    //     console.log("Selected row : ", row);
+    //     let billNo=row.billNo //248785
+    //     // let date =row.vaDate //2025-03-13
+    //     let inputDate = row.vaDate; 
+    //     let parts = inputDate.split(' ')[0].split('-'); 
+    //     let date = `${parts[2]}-${parts[1]}-${parts[0]}`; 
+
+    //     let opipType = row.lbl === 'OP' ? 0 : 1;
+
+    //     this.gridConfig1={
+    //         apiUrl: "PathlogySampleCollection/SampleCollectionTestList",
+    //         columnsList: [
+    //             { heading: "Completed", key: "completed", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+    //             { heading: "SampleNo", key: "sampleno", sort: true, align: 'left', emptySign: 'NA', width: 450 },
+    //             { heading: "TestName", key: "testName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    //             { heading: "CollectionDate/Time", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    //         ],
+    //         sortField: "BillNo",
+    //         sortOrder: 0,
+    //         filters: [
+
+    //             { fieldName: "BillNo", fieldValue: billNo, opType: OperatorComparer.Equals },
+    //             { fieldName: "BillDate", fieldValue: date, opType: OperatorComparer.Equals },
+    //             { fieldName: "OP_IP_Type", fieldValue: opipType, opType: OperatorComparer.Equals },
+    //         ],
+    //         row: 25
+    //     }
+    //     this.isShowDetailTable = true;
+    //     this.grid1.gridConfig = this.gridConfig1;
+    //     this.grid1.bindGridData();
+    // }
 
     exportReportPdf() {
         // let actualData = [];
