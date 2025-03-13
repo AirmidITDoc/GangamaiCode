@@ -401,6 +401,7 @@ export class NewCasepaperComponent implements OnInit {
     this.MedicineItemForm = this._formBuilder.group({
       ItemId: '',
       DoseId: '',
+      DoseId1: '',
       Day: '',
       ItemGenericNameId: '',
       Instruction: '',
@@ -472,6 +473,7 @@ export class NewCasepaperComponent implements OnInit {
   vItemGN:any;
   vDayys:any;
   vInst:any;
+  vPrescriptionId:any;
   getPrescription(obj) {
     // debugger
     var m_data2 = {
@@ -703,7 +705,6 @@ getRtrvCheifComplaintList(obj) {
     this.vItemGenericName = row.text
   }
 
-  vGenericId:any;
   GenericNameEditable:boolean=false;
 
   editingIndex1: number | null = null;
@@ -716,28 +717,28 @@ getRtrvCheifComplaintList(obj) {
 
   OnSaveEditGeneric(contact){
     debugger
-    this.vGenericId=contact.genericId;
+    this.vPrescriptionId=contact.precriptionId;
     console.log(contact)
-    // if(!this.vGenericId){
-    //   var m_dataUpdate={
-    //     "itemGenericNameId": this.vItemGenericNameId,
-    //     "itemGenericName": this.vItemGenericName || '',
-    // }
-    // console.log("UpdateJson:", m_dataUpdate);
+    if(this.vPrescriptionId){
+      var m_dataUpdate={
+        "precriptionId": this.vPrescriptionId,
+        "genericId": this.vItemGenericNameId || '',
+    }
+    console.log("UpdateJson:", m_dataUpdate);
 
-    // this._CasepaperService.genericMasterSave(m_dataUpdate).subscribe(response =>{
-    //   if (response) {
-    //     this.toastr.success('Record Updated Successfully.', 'Updated !', {
-    //       toastClass: 'tostr-tost custom-toast-success',
-    //     });
-    //     this.onClose()
-    //   } else {
-    //     this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
-    //       toastClass: 'tostr-tost custom-toast-error',
-    //     });
-    //   }
-    // });
-    // }
+    this._CasepaperService.genericNameUpdate(m_dataUpdate).subscribe(response =>{
+      if (response) {
+        this.toastr.success('Record Updated Successfully.', 'Updated !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+        this.onClose()
+      } else {
+        this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    });
+    }
   }
 
   GenericdisableEditing(data){
@@ -767,6 +768,28 @@ editDose(index: number,data) {
 OnSaveEditDose(element: any) {
   console.log("Saving Dose:", element);
   this.editingIndex = null;
+  this.vPrescriptionId=element.precriptionId;
+  debugger
+    if(this.vPrescriptionId){
+      var m_dataUpdate={
+        "precriptionId": this.vPrescriptionId,
+        "doseId": this.doseId || '',
+    }
+    console.log("UpdateJson:", m_dataUpdate);
+
+    this._CasepaperService.doseNameUpdate(m_dataUpdate).subscribe(response =>{
+      if (response) {
+        this.toastr.success('Record Updated Successfully.', 'Updated !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+        this.onClose()
+      } else {
+        this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    });
+    }
 }
 
 DosedisableEditing(index: number) {

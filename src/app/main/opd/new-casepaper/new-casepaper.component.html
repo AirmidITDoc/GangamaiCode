@@ -223,16 +223,18 @@
                                                                     </airmid-dropdown>
                                                                 </div>
                                                                 <mat-chip-listbox #chipList>
-                                                                    <!-- <mat-chip *ngFor="let item of (addCheiflist.concat(caseFormGroup.value.mAssignChiefComplaint || []))">
-                                                                        {{ item.complaintDescr }} 
-                                                                        <mat-icon (click)="removeChiefComplaint(item)">close</mat-icon>
-                                                                      </mat-chip>                                                                       -->
-
                                                                     <mat-chip
                                                                         *ngFor="let item of caseFormGroup.value.mAssignChiefComplaint">
                                                                         {{ item.complaintDescr }} <mat-icon
                                                                             (click)="removeChiefComplaint(item)">close</mat-icon>
                                                                     </mat-chip>
+
+                                                                    <!-- <mat-chip
+                                                                        *ngFor="let item of addCheiflist">
+                                                                        {{ item.complaintDescr }}
+                                                                        <mat-icon (click)="removeChiefComplaint(item)">close</mat-icon>
+                                                                        </mat-chip> -->
+
                                                                 </mat-chip-listbox>
                                                             </div>
                                                         </form>
@@ -479,9 +481,8 @@
                                                         
                                                                 <div *ngIf="editingIndex === i" style="display: flex; align-items: center; gap: 5px;">
                                                                     <airmid-dropdown 
-                                                                        formControlName="DoseId"
+                                                                        formControlName="DoseId1"
                                                                         [formGroup]="MedicineItemForm"
-                                                                        [validations]="getValidationMessages().DoseId"
                                                                         [mode]="autocompleteModeDose"
                                                                         (selectionChange)="selectChangeDoseName($event)">
                                                                     </airmid-dropdown>

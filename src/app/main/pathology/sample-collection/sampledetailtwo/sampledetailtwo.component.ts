@@ -15,6 +15,7 @@ import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admissio
 import moment from 'moment';
 import { SelectionModel } from '@angular/cdk/collections';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
+import { debug } from 'console';
 
 @Component({
   selector: 'app-sampledetailtwo',
@@ -33,12 +34,8 @@ export class SampledetailtwoComponent implements OnInit {
   Currentdate: any;
   displayedColumns: string[] = [
     'select',
-    // 'VADate',
     'ServiceName',
-    // 'IsSampleCollection',
     'SampleCollectionTime',
-    //'PathReportID',
-    // 'action'
   ];
 
   selectedAdvanceObj: AdvanceDetailObj;
@@ -153,6 +150,7 @@ export class SampledetailtwoComponent implements OnInit {
     // }
 
     this.getSampledetailList();
+    this.getSampledetailList1(this.regObj);
   }
 
   toggleSidebar(name): void {
@@ -195,6 +193,60 @@ export class SampledetailtwoComponent implements OnInit {
     }
     console.log(m_data);
     this._SampleService.getSampleDetailsList(m_data).subscribe(Visit => {
+      this.dataSource.data = Visit as SampleList[];
+      console.log(this.dataSource.data)
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+      this.sIsLoading = '';
+    },
+      error => {
+        // this.sIsLoading = '';
+      });
+  }
+
+  getSampledetailList1(row) {
+debugger
+    let OPIP
+    if (row.lbl == "IP" || row.patientType == "IP") {
+      OPIP = 1;
+    }
+    else if (row.lbl == "OP" || row.patientType == "OP") {
+      OPIP = 0;
+    }
+
+    let inputDate = row.vaDate;
+    let parts = inputDate.split(' ')[0].split('-');
+    let date = `${parts[2]}-${parts[1]}-${parts[0]}`;
+
+    // let OPIP = row.lbl === 'OP' ? 0 : 1;
+
+    var m_data = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "BillNo",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "BillNo",
+          "fieldValue": String(row.billNo),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "BillDate",
+          "fieldValue": date,
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "OP_IP_Type",
+          "fieldValue": OPIP,
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON"
+    }
+
+    console.log(m_data);
+    this._SampleService.getSampleDetailsList1(m_data).subscribe(Visit => {
       this.dataSource.data = Visit as SampleList[];
       console.log(this.dataSource.data)
       this.dataSource.sort = this.sort;

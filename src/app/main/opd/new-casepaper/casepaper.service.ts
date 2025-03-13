@@ -60,7 +60,7 @@ export class CasepaperService {
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient1.PostData("OPDPrescriptionMedical/InsertSP", param);
+    return this._httpClient1.PostData("OPDPrescriptionMedical/PrescriptionInsertSP", param);
   }
   public SavePrescriptionTemplate(param){ 
     return this._httpClient1.PostData("OPDPrescriptionMedical/OPTemplateInsert", param);
@@ -210,9 +210,16 @@ public getRtrvTestService(employee) {
 public getRtrvCheifComplaintList1(employee) {
   return this._httpClient1.PostData("OPDPrescriptionMedical/GetDignosisList",employee);
 }
-public genericMasterSave(Param: any) {
-  if (Param.genericId) {
-      return this._httpClient1.PutData("GenericMaster/" + Param.genericId, Param);
+public genericNameUpdate(Param: any) {
+  debugger
+  if (Param.precriptionId) {
+      return this._httpClient1.PutData("OPDPrescriptionMedical/GenericEdit/" + Param.precriptionId, Param);
+  }
+}
+public doseNameUpdate(Param: any) {
+  debugger
+  if (Param.precriptionId) {
+      return this._httpClient1.PutData("OPDPrescriptionMedical/PrescriptionEdit/" + Param.precriptionId, Param);
   }
 }
 }

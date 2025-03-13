@@ -47,7 +47,7 @@ export class RadioloyOrderlistService {
         RadResultDr1: [''],
         RadResultDr2: [''],
         RadResultDr3: [''],
-        SuggestionNotes: [''],
+        suggestionNotes: [''],
         AdmVisitDoctorID: [''],
         RefDoctorID: [''],
         ResultEntry: [''],
