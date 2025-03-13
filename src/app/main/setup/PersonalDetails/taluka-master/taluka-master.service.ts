@@ -45,29 +45,4 @@ export class TalukaMasterService {
         return this._httpClient.DeleteData("TalukaMaster?Id=" + m_data.toString());
     }
 
-    // public getTalukaMasterList(param) {
-    //     return this._httpClient.post(
-    //         "Generic/GetByProc?procName=M_Rtrv_TalukaNameList_by_Name",
-    //         param
-    //     );
-    // }
-
-    // public getCityMasterCombo() {
-    //     return this._httpClient.post(
-    //         "Generic/GetByProc?procName=Retrieve_CityMasterForCombo",
-    //         {}
-    //     );
-    // }
-
-    // public talukaMasterInsert(param) {
-    //     return this._httpClient.post("PersonalDetails/TalukaSave", param);
-    // }
-
-    // public talukaMasterUpdate(param) {
-    //     return this._httpClient.post("PersonalDetails/TalukaUpdate", param);
-    // }
-
-    // populateForm(param) {
-    //     this.myForm.patchValue(param);
-    // }
 }

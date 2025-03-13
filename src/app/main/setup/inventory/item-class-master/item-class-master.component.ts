@@ -47,8 +47,7 @@ export class ItemClassMasterComponent implements OnInit {
         filters: [
             { fieldName: "itemClassName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(public _ItemClassMasterService: ItemClassMasterService, public _matDialog: MatDialog,

@@ -149,7 +149,7 @@ export class SupplierMasterService {
     }
 
     public SupplierMasterCancle(Id: any) {
-        debugger
+        
       return this._httpClient.DeleteData(`Supplier/SupplierDelete?Id=${Id}`);
     }
 }

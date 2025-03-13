@@ -46,8 +46,7 @@ export class TariffMasterComponent implements OnInit {
         filters: [
             { fieldName: "tariffName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(

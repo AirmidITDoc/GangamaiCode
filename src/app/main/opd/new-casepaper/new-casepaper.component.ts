@@ -207,7 +207,7 @@ export class NewCasepaperComponent implements OnInit {
   ) { console.log('Dialog Data:', data); }
 
   ngOnInit(): void {
-    // debugger
+    // 
     this.searchFormGroup = this.createSearchForm();
     this.caseFormGroup = this.createForm();
     this.MedicineItemform();
@@ -245,14 +245,14 @@ export class NewCasepaperComponent implements OnInit {
   }
 
   // removedignosis(item) {
-  //   debugger
+  //   
   //   let removedIndex = this.caseFormGroup.value.mAssignDiagnosis.findIndex(x => x.visitId == item.visitId);
   //   this.caseFormGroup.value.mAssignDiagnosis.splice(removedIndex, 1);
   //   this.ddlDiagnosis.SetSelection(this.caseFormGroup.value.mAssignDiagnosis.map(x => x.visitId));
   // }
 
   removedignosis(item) {
-    debugger
+    
     const updatedList = this.caseFormGroup.value.mAssignDiagnosis.filter(
       x => x.visitId == item.visitId
     );
@@ -261,7 +261,7 @@ export class NewCasepaperComponent implements OnInit {
   }
 
   removeChiefComplaint(item) {
-    debugger;
+    ;
     const updatedList = this.caseFormGroup.value.mAssignChiefComplaint.filter(
       x => x.complaintId !== item.complaintId
     );
@@ -271,7 +271,7 @@ export class NewCasepaperComponent implements OnInit {
   }
 
   removeExamination(item) {
-    debugger
+    
     const updatedList = this.caseFormGroup.value.mAssignExamination.filter(
       x => x.examinationId !== item.examinationId
     );
@@ -401,6 +401,7 @@ export class NewCasepaperComponent implements OnInit {
     this.MedicineItemForm = this._formBuilder.group({
       ItemId: '',
       DoseId: '',
+      DoseId1: '',
       Day: '',
       ItemGenericNameId: '',
       Instruction: '',
@@ -472,8 +473,9 @@ export class NewCasepaperComponent implements OnInit {
   vItemGN:any;
   vDayys:any;
   vInst:any;
+  vPrescriptionId:any;
   getPrescription(obj) {
-    // debugger
+    // 
     var m_data2 = {
       "first": 0,
       "rows": 10,
@@ -483,16 +485,6 @@ export class NewCasepaperComponent implements OnInit {
         {
           "fieldName": "VisitId",
           "fieldValue": String(obj.visitId),//"40773",	
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Start",
-          "fieldValue": "0",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Length",
-          "fieldValue": "10",
           "opType": "Equals"
         }
       ],
@@ -544,7 +536,7 @@ export class NewCasepaperComponent implements OnInit {
   nValue: any[] = []; 
 
 getRtrvCheifComplaintList(obj) { 
-  debugger;
+  ;
   this.addCheiflist = [];
   this.addDiagnolist = [];
   this.addExaminlist = [];
@@ -556,9 +548,7 @@ getRtrvCheifComplaintList(obj) {
     "sortField": "VisitId",
     "sortOrder": 0,
     "filters": [
-      { "fieldName": "VisitId", "fieldValue": String(obj.visitId), "opType": "Equals" },
-      { "fieldName": "Start", "fieldValue": "0", "opType": "Equals" },
-      { "fieldName": "Length", "fieldValue": "10", "opType": "Equals" }
+      { "fieldName": "VisitId", "fieldValue": String(obj.visitId), "opType": "Equals" }
     ],
     "exportType": "JSON"
   };
@@ -671,7 +661,7 @@ getRtrvCheifComplaintList(obj) {
   itemGeneric:any;
 
   selectChangeItemName(row) {
-    // debugger
+    // 
     console.log("Drug:", row)
     this.durgId = row.value
     this.durgName = row.text
@@ -703,7 +693,6 @@ getRtrvCheifComplaintList(obj) {
     this.vItemGenericName = row.text
   }
 
-  vGenericId:any;
   GenericNameEditable:boolean=false;
 
   editingIndex1: number | null = null;
@@ -715,33 +704,33 @@ getRtrvCheifComplaintList(obj) {
   }
 
   OnSaveEditGeneric(contact){
-    debugger
-    this.vGenericId=contact.genericId;
+    
+    this.vPrescriptionId=contact.precriptionId;
     console.log(contact)
-    // if(!this.vGenericId){
-    //   var m_dataUpdate={
-    //     "itemGenericNameId": this.vItemGenericNameId,
-    //     "itemGenericName": this.vItemGenericName || '',
-    // }
-    // console.log("UpdateJson:", m_dataUpdate);
+    if(this.vPrescriptionId){
+      var m_dataUpdate={
+        "precriptionId": this.vPrescriptionId,
+        "genericId": this.vItemGenericNameId || '',
+    }
+    console.log("UpdateJson:", m_dataUpdate);
 
-    // this._CasepaperService.genericMasterSave(m_dataUpdate).subscribe(response =>{
-    //   if (response) {
-    //     this.toastr.success('Record Updated Successfully.', 'Updated !', {
-    //       toastClass: 'tostr-tost custom-toast-success',
-    //     });
-    //     this.onClose()
-    //   } else {
-    //     this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
-    //       toastClass: 'tostr-tost custom-toast-error',
-    //     });
-    //   }
-    // });
-    // }
+    this._CasepaperService.genericNameUpdate(m_dataUpdate).subscribe(response =>{
+      if (response) {
+        this.toastr.success('Record Updated Successfully.', 'Updated !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+        this.onClose()
+      } else {
+        this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    });
+    }
   }
 
   GenericdisableEditing(data){
-    debugger
+    
   if (this.GenericoriginalValue !== null) {
     this.MedicineItemForm.get('ItemGenericNameId').setValue(this.GenericoriginalValue);
   }
@@ -758,7 +747,7 @@ editingIndex: number | null = null;
 originalValue: string | null = null;
 
 editDose(index: number,data) {
-  debugger
+  
   console.log(data)
   this.editingIndex = index;
   this.originalValue = data.doseName;
@@ -767,10 +756,32 @@ editDose(index: number,data) {
 OnSaveEditDose(element: any) {
   console.log("Saving Dose:", element);
   this.editingIndex = null;
+  this.vPrescriptionId=element.precriptionId;
+  
+    if(this.vPrescriptionId){
+      var m_dataUpdate={
+        "precriptionId": this.vPrescriptionId,
+        "doseId": this.doseId || '',
+    }
+    console.log("UpdateJson:", m_dataUpdate);
+
+    this._CasepaperService.doseNameUpdate(m_dataUpdate).subscribe(response =>{
+      if (response) {
+        this.toastr.success('Record Updated Successfully.', 'Updated !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+        this.onClose()
+      } else {
+        this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    });
+    }
 }
 
 DosedisableEditing(index: number) {
-  debugger
+  
   if (this.originalValue !== null) {
     // Restore old value
     this.MedicineItemForm.get('DoseId').setValue(this.originalValue);
@@ -798,7 +809,7 @@ DosedisableEditing(index: number) {
 
   RtrvTestServiceList: any = [];
   getRtrvTestService(obj) {
-    // debugger
+    // 
     var m_data2 = {
       "first": 0,
       "rows": 10,
@@ -808,16 +819,6 @@ DosedisableEditing(index: number) {
         {
           "fieldName": "VisitId",
           "fieldValue": String(obj.visitId),//"40773",	
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Start",
-          "fieldValue": "0",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Length",
-          "fieldValue": "10",
           "opType": "Equals"
         }
       ],
@@ -969,7 +970,7 @@ DosedisableEditing(index: number) {
   Day1: any = 0;
   Day2: any = 0;
   onAdd() {
-    debugger
+    
     if (!this.MedicineItemForm.get("ItemId")?.value) {
       this.toastr.warning('Please select a Item Name', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -1039,7 +1040,7 @@ DosedisableEditing(index: number) {
   }
 
   deleteTableRow(event, element) {
-    debugger
+    
     let index = this.Chargelist.indexOf(element);
     if (index >= 0) {
       this.Chargelist.splice(index, 1);
@@ -1052,7 +1053,7 @@ DosedisableEditing(index: number) {
   }
 
   onTemplDetAdd() {
-    // debugger
+    // 
     if ((this.vOPIPId == '' || this.vOPIPId == '0')) {
       this.toastr.warning('Please select Patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -1088,7 +1089,7 @@ DosedisableEditing(index: number) {
 
   }
   onSave() {
-    debugger
+    
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
@@ -1562,7 +1563,7 @@ DosedisableEditing(index: number) {
   displayedColumns: string[] = ['patientName', 'age', 'gender'];
 
   getnewVisistListDemo(obj) {
-    // debugger
+    // 
     var D_data = {
       "first": 0,
       "rows": 10,
@@ -1572,16 +1573,6 @@ DosedisableEditing(index: number) {
         {
           "fieldName": "RegID",
           "fieldValue": String(obj.regId),//"40773",	
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Start",
-          "fieldValue": "0",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Length",
-          "fieldValue": "10",
           "opType": "Equals"
         }
       ],
@@ -1596,7 +1587,7 @@ DosedisableEditing(index: number) {
   }
 
   extractUniqueDates() {
-    // debugger
+    // 
     const visitId = this.patients.map(patient => patient.visitId);
     this.uniqueDates = Array.from(new Set(visitId));
     // this.uniqueDates = Array.from(new Set(dates));
@@ -1607,7 +1598,7 @@ DosedisableEditing(index: number) {
   }
   //datewise visit info date
   getPatientsForDate(visitId: string) {
-    // debugger
+    // 
     const patientsForDate = this.patients.filter(patient => patient.visitId === visitId);
     return patientsForDate.length > 0 ? [patientsForDate[0]] : []; // 
   }
@@ -1651,7 +1642,7 @@ DosedisableEditing(index: number) {
       console.log(result)
 
       if (result) {
-        debugger;
+        ;
         this.dsCopyItemList.data = result;
         console.log("this.dsCopyItemList.data:", this.dsCopyItemList.data);
       

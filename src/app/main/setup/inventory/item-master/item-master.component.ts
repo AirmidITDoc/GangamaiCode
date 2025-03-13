@@ -55,11 +55,7 @@ export class ItemMasterComponent implements OnInit {
                     }, 
                     {
                         action: gridActions.delete, callback: (data: any) => {
-                            debugger
-                            let s={
-                                itemID:data.itemID
-                            }
-                            this._itemService.ItemMasterCancle(s).subscribe((response: any) => {
+                            this._itemService.ItemMasterCancle(data.itemID).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
@@ -72,11 +68,8 @@ export class ItemMasterComponent implements OnInit {
         sortOrder: 0,
         filters: [
             { fieldName: "itemName", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "StoreID", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "StoreID", fieldValue: "0", opType: OperatorComparer.Equals }
+        ]
     }
 
     constructor(

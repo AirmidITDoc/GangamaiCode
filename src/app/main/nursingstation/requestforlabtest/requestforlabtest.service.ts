@@ -17,7 +17,9 @@ export class RequestforlabtestService {
     public _httpClient:HttpClient,public _httpClient1:ApiCaller,
     private _FormBuilder:UntypedFormBuilder,
     private handler: HttpBackend
-  ) { this.mySearchForm = this.SearchFilterForm();}
+  ) { this.mySearchForm = this.SearchFilterForm();
+    this.myFormGroup = this.createBedForm();
+  }
 
   mySearchForm:FormGroup;
 
@@ -30,81 +32,113 @@ export class RequestforlabtestService {
 
   }
 
-  public getserviceList(param) {
-    return this._httpClient1.PostData("BillingService/BillingList",param);
-}
+  createBedForm(): FormGroup {
+        return this._FormBuilder.group({
+            requestId: [0],
+            reqDate: "2025-10-03",
+            reqTime: "10:45:00AM",
+            opIpId: [""],
+            opIpType: [""],
+            isAddedBy: [""],
+            isCancelled: true,
+            isCancelledBy: 0,
+            isCancelledDate: "2025-10-03",
+            isCancelledTime:"2025-10-03",
+            isType: [0],
+            isOnFileTest: true,
+            tDlabRequests: [
+                {
+                    reqDetId: [0],
+                    requestId: [""],
+                    serviceId: [""],
+                    price: [""],
+                    isStatus: true,
+                    addedBillingId: 0,
+                    addedByDate: "2025-10-03",
+                    addedByTime: "10:45:00AM",
+                    charId: 0,
+                    isTestCompted: true,
+                    isOnFileTest: true,
+                }
+            ]
+        });
+    }
 
-  // new dropdown
-public getRegistraionById(Id) {
-  return this._httpClient1.GetData("OutPatient/" + Id);
-}
-  public getPrintRequesttList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=rptLabRequestList",Param)
-  }
+    public getserviceList(param) {
+        return this._httpClient1.PostData("BillingService/BillingList",param);
+    }
 
-  public getRequesttList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_LabRequest_Nursing",Param)
-  }//Rtrv_LabRequest_Nursing
+    // new dropdown
+    public getRegistraionById(Id) {
+    return this._httpClient1.GetData("OutPatient/" + Id);
+    }
+    public getPrintRequesttList(Param){
+        return this._httpClient.post("Generic/GetByProc?procName=rptLabRequestList",Param)
+    }
 
-  public getRequestdetList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_NursingLabRequestDetails",Param)
-  }
-  
-  public getAdmittedPatientList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch", employee)
-  }
+    public getRequesttList(Param){
+        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_LabRequest_Nursing",Param)
+    }//Rtrv_LabRequest_Nursing
 
-  public getAdmittedpatientlist(id){
-    debugger
-    return this._httpClient1.GetData("Admission/" + id);
-  }
+    public getRequestdetList(Param){
+        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_NursingLabRequestDetails",Param)
+    }
+    
+    public getAdmittedPatientList(employee) {
+        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch", employee)
+    }
 
-  public getPatientVisitedListSearch(employee) {//m_Rtrv_PatientVisitedListSearch
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
-  }
-  
-  public getServiceListDetails(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathRadServiceList",Param);
-  }
+    public getAdmittedpatientlist(id){
+        
+        return this._httpClient1.GetData("Admission/" + id);
+    }
 
-  public getRegistrationList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientRegistrationList",Param);
-  }
+    public getPatientVisitedListSearch(employee) {//m_Rtrv_PatientVisitedListSearch
+        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
+    }
+    
+    public getServiceListDetails(Param){
+        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathRadServiceList",Param);
+    }
 
- public Canclerequest(query){
-  return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
- }
+    public getRegistrationList(Param){
+        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientRegistrationList",Param);
+    }
+
+    public Canclerequest(query){
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+    }
 
 
 
 
-  public sendPaymentDetails(emp){
-    return this._httpClient.post("PaymentGetway/OnlinePayment",emp);
-  }
+    public sendPaymentDetails(emp){
+        return this._httpClient.post("PaymentGetway/OnlinePayment",emp);
+    }
 
-  public getPaymentStatus(emp){
-    return this._httpClient.post("PaymentGetway/OnlinePaymentStatus",emp);
-  }
+    public getPaymentStatus(emp){
+        return this._httpClient.post("PaymentGetway/OnlinePaymentStatus",emp);
+    }
 
-  public cancelPayment(emp){
-    return this._httpClient.post("PaymentGetway/OnlinePaymentCancel",emp);
-  }
- 
-  public getLabrequestview(RequestId){
-    return this._httpClient.get("InPatient/view-IP-Labrequest?RequestId=" + RequestId);
-  }
+    public cancelPayment(emp){
+        return this._httpClient.post("PaymentGetway/OnlinePaymentCancel",emp);
+    }
+    
+    public getLabrequestview(RequestId){
+        return this._httpClient.get("InPatient/view-IP-Labrequest?RequestId=" + RequestId);
+    }
 
-  public deactivateTheStatus(m_data) {
-    return this._httpClient1.PostData("PhoneApp", m_data);
-  }
+    public deactivateTheStatus(m_data) {
+        return this._httpClient1.PostData("PhoneApp", m_data);
+    }
 
-  // demo list
-  public getAllList(param) {
-    return this._httpClient1.PostData("ParameterMaster/MPathParameterList",param);
-}
-public LabRequestSave(employee) {
-  return this._httpClient1.PostData("Nursing/NursingInsertLabRequest", employee);
-}
+    // demo list
+    public getAllList(param) {
+        return this._httpClient1.PostData("ParameterMaster/MPathParameterList",param);
+    }
+    public LabRequestSave(employee) {
+    return this._httpClient1.PostData("IPPrescription/LabRequestInsert", employee);
+    }
 }
 
 

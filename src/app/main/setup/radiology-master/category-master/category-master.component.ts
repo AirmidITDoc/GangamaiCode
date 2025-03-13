@@ -33,7 +33,8 @@ export class CategoryMasterComponent implements OnInit {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
-                    }, {
+                    }, 
+                    {
                         action: gridActions.delete, callback: (data: any) => {
                             this._categorymasterService.deactivateTheStatus(data.categoryId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
@@ -48,8 +49,7 @@ export class CategoryMasterComponent implements OnInit {
         filters: [
             { fieldName: "categoryName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
     constructor(
         public _categorymasterService: CategoryMasterService,

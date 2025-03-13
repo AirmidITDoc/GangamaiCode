@@ -76,12 +76,8 @@ export class NursingnoteComponent implements OnInit {
         filters: [
             { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals }
+        ]
     }
 
     gridConfig1: gridModel = {
@@ -112,12 +108,8 @@ export class NursingnoteComponent implements OnInit {
         filters: [
             { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals }
+        ]
     }
 
     gridConfig2: gridModel = {
@@ -151,12 +143,8 @@ export class NursingnoteComponent implements OnInit {
         filters: [
             { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals }
+        ]
     }
 
     gridConfig3: gridModel = {
@@ -193,12 +181,8 @@ export class NursingnoteComponent implements OnInit {
         filters: [
             { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals }
+        ]
     }
 
     onTemplate(row: any = null) {
@@ -244,16 +228,6 @@ export class NursingnoteComponent implements OnInit {
             {
               "fieldName": "RegId",
               "fieldValue": String(RegId),
-              "opType": "Equals"
-            },
-            {
-              "fieldName": "Start",
-              "fieldValue": "0",
-              "opType": "Equals"
-            },
-            {
-              "fieldName": "Length",
-              "fieldValue": "10",
               "opType": "Equals"
             }
           ],

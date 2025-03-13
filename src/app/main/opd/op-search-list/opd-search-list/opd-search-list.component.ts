@@ -216,7 +216,7 @@ getregdetails(obj){
       dialogRef.afterClosed().subscribe(result => {
         console.log(result)
         if (result.IsSubmitFlag == true) {
-debugger
+
           this.vpaidamt = result.PaidAmt;
           this.vbalanceamt = result.BalAmt
 
@@ -263,7 +263,7 @@ debugger
           "mode": "OPPaymentReceipt"
       }
 
-      debugger
+      
       console.log(param)
       this._BrowseOPDBillsService.getReportView(param).subscribe(res => {
           const matDialog = this._matDialog.open(PdfviewerComponent,

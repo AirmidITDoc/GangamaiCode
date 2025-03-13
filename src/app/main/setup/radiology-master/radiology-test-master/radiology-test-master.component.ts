@@ -39,22 +39,30 @@ export class RadiologyTestMasterComponent implements OnInit {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data) // EDIT Records
                         }
-                    }, {
+                    }, 
+                    // {
+                    //     action: gridActions.delete, callback: (data: any) => {
+                    //         this.onDeactive(data.testId); // DELETE Records
+                    //     }
+                    // },
+                    {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.onDeactive(data.testId); // DELETE Records
+                            this._radiologytestService.deactivateTheStatus(data.testId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
                         }
-                    }]
+                    },
+                ]
             } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "TestId",
         sortOrder: 0,
         filters: [
-            { fieldName: "ServiceName", fieldValue: "djfh", opType: OperatorComparer.Contains },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
-        ],
-        row:25
+            { fieldName: "ServiceName", fieldValue: "djfh", opType: OperatorComparer.Contains }
+        ]
     }
+    grid: any;
 
     constructor(
         public _radiologytestService: RadiologyTestMasterService,

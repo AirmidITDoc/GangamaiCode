@@ -70,11 +70,8 @@ Age=0;
         sortField: "BillNo",
         sortOrder: 0,
         filters: [
-            { fieldName: "RegId", fieldValue: String(this.RegId1), opType: OperatorComparer.Contains },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
-        ],
-        row: 25
+            { fieldName: "RegId", fieldValue: String(this.RegId1), opType: OperatorComparer.Contains }
+        ]
     }
 
     ngOnInit(): void {
@@ -84,7 +81,7 @@ Age=0;
     openPaymentpopup(contact) {
 
         console.log(contact)
-        debugger
+        
         let PatientName = contact.firstName +" "+ contact.lastName
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
@@ -186,7 +183,7 @@ Age=0;
 
 GetDetails(data) {
     console.log(data)
-    debugger
+    
     this.gridConfig = {
         apiUrl: "OPBill/OPBillListSettlementList",
         columnsList: [
@@ -209,11 +206,8 @@ GetDetails(data) {
         sortField: "BillNo",
         sortOrder: 0,
         filters: [
-            { fieldName: "RegId", fieldValue: String(this.RegId1), opType: OperatorComparer.Contains },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
-        ],
-        row: 25
+            { fieldName: "RegId", fieldValue: String(this.RegId1), opType: OperatorComparer.Contains }
+        ]
     }
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();

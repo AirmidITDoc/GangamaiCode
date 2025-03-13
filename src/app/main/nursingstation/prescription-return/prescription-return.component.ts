@@ -31,7 +31,7 @@ export class PrescriptionReturnComponent implements OnInit {
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
     gridConfig: gridModel = {
-        apiUrl: "Nursing/PrescriptionReturnList",
+        apiUrl: "IPPrescription/PrescriptionReturnList",
         columnsList: [            
             { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
@@ -56,16 +56,13 @@ export class PrescriptionReturnComponent implements OnInit {
             },//Action 1-view, 2-Edit,3-delete
             
         ],
-        sortField: "PresReId",
+        sortField: "RegNo",
         sortOrder: 0,
         filters: [
             { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "20", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "Reg_No", fieldValue: "1008", opType: OperatorComparer.Equals }
+        ]
     }
 
     constructor(public _PrescriptionReturnService: PrescriptionReturnService, public _matDialog: MatDialog,
@@ -78,23 +75,17 @@ export class PrescriptionReturnComponent implements OnInit {
     isShowDetailTable: boolean = false;
     GetDetails1(data){
         this.gridConfig1 = {
-            apiUrl: "Nursing/PrescriptionReturnList",
+            apiUrl: "IPPrescription/PrescriptionDetailList",
             columnsList: [
-                // { heading: "Code", key: "presReId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
                 { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA'},
+                { heading: "BatchNo", key: "medicalRecoredId", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA'},
             ],
-            sortField: "PresReId",
+            sortField: "IPMedID",
             sortOrder: 0,
             filters: [
-    
-                // { fieldName: "PresReId", fieldValue: "8", opType: OperatorComparer.Equals },
-                // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                // { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-                // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-            ],
-            row: 25
+                { fieldName: "IPMedID", fieldValue: "334", opType: OperatorComparer.Equals }
+            ]
         }
         this.isShowDetailTable = true;
         this.grid1.gridConfig = this.gridConfig1;

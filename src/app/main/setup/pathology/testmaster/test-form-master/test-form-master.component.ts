@@ -116,7 +116,7 @@ export class TestFormMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        debugger
+        
         this.testForm = this._TestmasterService.createPathtestForm();
         this.templatedetailsForm = this._TestmasterService.templatedetailsForm();
         this.testdetailsForm = this._TestmasterService.testdetailsForm();
@@ -218,7 +218,7 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     fetchTestlist(obj) {
-        debugger
+        
         var m_data =
         {
             "first": 0,
@@ -229,16 +229,6 @@ export class TestFormMasterComponent implements OnInit {
                 {
                     "fieldName": "TestId",
                     "fieldValue": String(obj.testId),
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "Start",
-                    "fieldValue": "0",
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "Length",
-                    "fieldValue": "10",
                     "opType": "Equals"
                 }
             ],
@@ -256,7 +246,7 @@ export class TestFormMasterComponent implements OnInit {
 
     // wroung api list used
     fetchSubTestlist(obj) {
-debugger
+
         var m_data =
         {
             "first": 0,
@@ -267,16 +257,6 @@ debugger
                 {
                     "fieldName": "TestId",
                     "fieldValue": String(obj.testId),
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "Start",
-                    "fieldValue": "0",
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "Length",
-                    "fieldValue": "10",
                     "opType": "Equals"
                 }
             ],
@@ -293,7 +273,7 @@ debugger
     }
 
     drop(event: CdkDragDrop<string[]>) {
-        debugger
+        
         this.DSTestList.data = [];
         this.ChargeList = this.dsTemparoryList.data;
         moveItemInArray(this.ChargeList, event.previousIndex, event.currentIndex);
@@ -301,7 +281,7 @@ debugger
     }
 
     fetchTemplate(obj) {
-debugger
+
         var m_data =  {
             "first": 0,
             "rows": 10,
@@ -311,16 +291,6 @@ debugger
                 {
                     "fieldName": "TestId",
                     "fieldValue": String(obj.testId),
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "Start",
-                    "fieldValue": "0",
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "Length",
-                    "fieldValue": "10",
                     "opType": "Equals"
                 }
             ],
@@ -336,7 +306,7 @@ debugger
     }
 
     onSubmit() {
-        debugger
+        
         const currentDate = new Date();
         const datePipe = new DatePipe('en-US');
         const formattedTime = datePipe.transform(currentDate, 'shortTime');
@@ -438,11 +408,8 @@ debugger
             sortField: "parameterId",
             sortOrder: 0,
             filters: [
-                { fieldName: "parameterName", fieldValue: parameter, opType: OperatorComparer.Contains },
-                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-            ],
-            row: 25
+                { fieldName: "parameterName", fieldValue: parameter, opType: OperatorComparer.Contains }
+            ]
         }
 
         console.log(param);
@@ -464,11 +431,8 @@ debugger
             sortField: "TestId",
             sortOrder: 0,
             filters: [
-                { fieldName: "TestId", fieldValue: "12", opType: OperatorComparer.Equals },
-                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-            ],
-            row: 25
+                { fieldName: "TestId", fieldValue: "12", opType: OperatorComparer.Equals }
+            ]
         }
 
         console.log(param);
@@ -486,7 +450,7 @@ debugger
     }
 
     onAdd(event) {
-        // debugger
+        // 
         console.log(event)
 
         if (this.testForm.get("IsSubTest").value) {
@@ -562,7 +526,7 @@ debugger
     }
         
     addParameter(row) {
-        // debugger;
+        // ;
 
         if (!row || !row.parameterId) {
             console.error("Invalid row data!");
@@ -594,7 +558,7 @@ debugger
     }
 
     addparameterdata(row) {
-        // debugger
+        // 
         console.log("Adding Parameter:", row);
 
         this.ChargeList = this.DSTestList.data || [];
@@ -617,7 +581,7 @@ debugger
     }
 
     addSubTest(row) {
-        debugger
+        
 
         if (!row || !row.parameterID) {
             console.error("Invalid row data!");
@@ -647,7 +611,7 @@ debugger
     }
 
     addsubtestdata(row) {
-        debugger
+        
         console.log("Adding Parameter:", row);
 
         this.ChargeList = this.DSTestList.data || [];

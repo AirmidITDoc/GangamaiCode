@@ -73,11 +73,8 @@ export class StockAdjustmentComponent implements OnInit {
         sortOrder: 0,
         filters: [
             { fieldName: "StoreId", fieldValue: "2", opType: OperatorComparer.Equals },
-            { fieldName: "ItemId", fieldValue: "14645", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "ItemId", fieldValue: "14645", opType: OperatorComparer.Equals }
+        ]
     }
 
     constructor(

@@ -76,12 +76,8 @@ export class DoctornoteComponent implements OnInit {
         filters: [
             { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals }
+        ]
     }
 
     gridConfig1: gridModel = {
@@ -118,12 +114,8 @@ export class DoctornoteComponent implements OnInit {
         filters: [
             { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals }
+        ]
     }
    
        onSave(row: any = null) {
@@ -271,16 +263,13 @@ export class DoctornoteComponent implements OnInit {
   }
 
   getDoctorNoteList() {
-    debugger
+    
     var param = {
         sortField: "DoctNoteId",
         sortOrder: 0,
         filters: [
-                  { fieldName: "AdmId", fieldValue: "119", opType: OperatorComparer.Equals },
-                  { fieldName: "Start", fieldValue: "", opType: OperatorComparer.Equals },
-                  { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-              ],
-                  row: 25
+                  { fieldName: "AdmId", fieldValue: "119", opType: OperatorComparer.Equals }
+              ]
     }
     this._NursingStationService.getdoctornoteList(param).subscribe(Menu => {
 
@@ -292,16 +281,13 @@ export class DoctornoteComponent implements OnInit {
 }
 
 getHandOverNotelist() {
-  debugger
+  
   var param = {
       sortField: "DocHandId",
       sortOrder: 0,
       filters: [
-                { fieldName: "AdmId", fieldValue: "3", opType: OperatorComparer.Equals },
-                { fieldName: "Start", fieldValue: "", opType: OperatorComparer.Equals },
-                { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-            ],
-                row: 25
+                { fieldName: "AdmId", fieldValue: "3", opType: OperatorComparer.Equals }
+            ]
   }
   this._NursingStationService.getpatientHandList(param).subscribe(Menu => {
 
@@ -313,37 +299,8 @@ getHandOverNotelist() {
 }
 
 
-//   gridConfig: gridModel = {
-//     apiUrl: "CanteenRequest/DoctorNoteList",
-//     columnsList: [
-//         { heading: "VDate", key: "vtDate", sort: true, align: 'left', emptySign: 'NA' },
-//         { heading: "Time", key: "tTime", sort: true, align: 'left', emptySign: 'NA' },
-//         { heading: "Note", key: "doctorsNotes", sort: true, align: 'left', emptySign: 'NA'},
-//         {
-//             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-//                 {
-//                     action: gridActions.edit, callback: (data: any) => {
-//                         this.onSave(data);
-//                     }
-//                 }, {
-//                     action: gridActions.print, callback: (data: any) => {
-                        
-//                     }
-//                 }]
-//         } //Action 1-view, 2-Edit,3-delete
-//     ],
-//     sortField: "DoctNoteId",
-//     sortOrder: 0,
-//     filters: [
-//         { fieldName: "AdmId", fieldValue: "119", opType: OperatorComparer.Equals },
-//         { fieldName: "Start", fieldValue: "", opType: OperatorComparer.Equals },
-//         { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-//     ],
-//     row: 25
-// }
-
 onEdit(row) {
-  debugger
+  
   console.log("data:", row)
   this.registerObj=row;
   var m_data = {
@@ -393,7 +350,7 @@ onEdit(row) {
   }
 
   onSubmit() {
-    debugger
+    
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
@@ -571,7 +528,7 @@ onEdit(row) {
   registerObj: any;
 
   getSelectedObj(obj) {
-    debugger
+    
     console.log(obj)
     this.RegOrPhoneflag = 'Entry from Registration';
     let todayDate = new Date();
@@ -580,9 +537,9 @@ onEdit(row) {
     this.PatientName = obj.PatientName;
     this.RegId = obj.value;
     this.VisitFlagDisp = true;
-    debugger
+    
     if ((this.RegId ?? 0) > 0) {
-      debugger
+      
       // console.log(this.data)
       setTimeout(() => {
         this._NursingStationService.getRegistraionById(this.RegId).subscribe((response) => {

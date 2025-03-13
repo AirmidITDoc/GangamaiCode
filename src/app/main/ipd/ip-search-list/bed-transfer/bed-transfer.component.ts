@@ -60,12 +60,12 @@ export class BedTransferComponent implements OnInit {
   ) {  }
 
   ngOnInit(): void {
-    debugger
+    
     this.Bedtransfer = this.bedsaveForm();
     if(this.data){
     this.registerObj1=this.data
     console.log("Data:",this.registerObj1);
-    debugger
+    
   this.AdmissionId=this.data.admissionId;
   this.Bedtransfer.get("toWardId").setValue(this.registerObj1.wardId)
   this.Bedtransfer.get("toBedId").setValue(this.registerObj1.bedId)
@@ -141,7 +141,7 @@ export class BedTransferComponent implements OnInit {
   } 
 
   selectChangeward(obj: any) {
-    debugger
+    
     console.log(obj)
     // this._IpSearchListService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
     //     this.ddlBed.options = data;

@@ -67,7 +67,7 @@ export class RadiologyTemplateFormComponent implements OnInit {
     }
 
     onSubmit() {
-            debugger
+            
         if(!this.templateForm.invalid)
         {
         

@@ -123,11 +123,8 @@ export class CancellationComponent implements OnInit {
       { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals }, //year from 2021 to 2025
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
       { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.StartsWith },
-      { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
-    ],
-    row: 10
+      { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.StartsWith }
+    ]
   }
 
   ipdGridConfig: gridModel = {
@@ -157,11 +154,8 @@ export class CancellationComponent implements OnInit {
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
       { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
       { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.StartsWith }, //13
-      { fieldName: "IsIntrimOrFinal", fieldValue: "2", opType: OperatorComparer.Equals },
-      { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
-    ],
-    row: 10
+      { fieldName: "IsIntrimOrFinal", fieldValue: "2", opType: OperatorComparer.Equals }
+    ]
   }
 
   // 2nd table
@@ -190,11 +184,8 @@ export class CancellationComponent implements OnInit {
       { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
       { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.StartsWith },
-      { fieldName: "Start", fieldValue: "", opType: OperatorComparer.Equals },
-      { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
-    ],
-    row: 25
+      { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.StartsWith }
+    ]
   }
   // 3rd table
 
@@ -219,11 +210,8 @@ export class CancellationComponent implements OnInit {
       { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
       { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "Start", fieldValue: "", opType: OperatorComparer.Equals },
-      { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
-    ],
-    row: 25
+      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
+    ]
   }
 
   // 4th table
@@ -250,11 +238,8 @@ export class CancellationComponent implements OnInit {
       { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
       { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "Start", fieldValue: "", opType: OperatorComparer.Equals },
-      { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
-    ],
-    row: 10
+      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
+    ]
   }
 
   onSave(row: any = null) {
@@ -320,7 +305,7 @@ export class CancellationComponent implements OnInit {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Cancel it!"
     }).then((result) => {
-      debugger
+      
       if (result.isConfirmed) {
           let SubmitDate = {
             "billNo":contact.billNo || 0
@@ -355,7 +340,7 @@ export class CancellationComponent implements OnInit {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Cancel it!"
     }).then((result) => {
-      debugger
+      
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
           let SubmitDate = {

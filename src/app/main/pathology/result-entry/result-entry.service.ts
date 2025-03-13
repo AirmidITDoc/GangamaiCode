@@ -68,6 +68,9 @@ export class ResultEntryService {
   public PathResultentryInsert(employee) {
     return this._httpClient1.PostData("Pathology/InsertResultEntry", employee);
   }
+  public PathResultentryDetailList(employee) {
+    return this._httpClient1.PostData("Pathology/PathologyTestList", employee);
+  }
 
   public getPathologyDoctorCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathologistDoctorMasterForCombo", {})

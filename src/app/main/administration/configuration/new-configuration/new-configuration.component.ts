@@ -315,7 +315,7 @@ export class NewConfigurationComponent implements OnInit {
       if (this.configFormGroup.get('PhoneNo').value)
         var ph = 1; else ph = 0;
   
-      debugger;
+      ;
       var m_data = {
         "configsettingupdate": {
           "ConfigId": this.configObj.ConfigId,// this._registerService.mySaveForm.get("RegId").value || 0,
@@ -892,7 +892,7 @@ export class NewConfigurationComponent implements OnInit {
     filteredOptionsDepartment: Observable<string[]>;
   
     onDepartmentSelected(event: MatAutocompleteSelectedEvent) {
-        debugger
+        
         const selectedDepartment = event.option.value;
         if (selectedDepartment) {
           this.OnChangePathDoctorList(selectedDepartment);
@@ -900,11 +900,11 @@ export class NewConfigurationComponent implements OnInit {
       }
   
     getOptionTextDepartment(option) {
-      debugger
+      
       return option && option.DepartmentName ? option.DepartmentName : '';
     }
     getPathDepartmentList() {
-      debugger
+      
       const DepControl = this.configFormGroup.get('DepartmentId');
       DepControl.setValue('');
       const templateControl = this.configFormGroup.get('DoctorId');
@@ -920,7 +920,7 @@ export class NewConfigurationComponent implements OnInit {
           map(value => value ? this._filterSearchDepartment(value) : this.PathDepartmentList.slice()),
         );
         if (this.data) {
-          debugger
+          
           const DValue = this.PathDepartmentList.filter(item => item.DepartmentId == this.configObj.PathDepartment);
           console.log("DepartmentId:", DValue)
           this.configFormGroup.get('DepartmentId').setValue(DValue[0]);
@@ -931,7 +931,7 @@ export class NewConfigurationComponent implements OnInit {
       });
     }
     private _filterSearchDepartment(value: any): string[] {
-      debugger
+      
       if (value) {
         const filterValue = value && value.DepartmentName ? value.DepartmentName.toLowerCase() : value.toLowerCase();
         return this.PathDepartmentList.filter(option => option.DepartmentName.toLowerCase().includes(filterValue));
@@ -948,17 +948,17 @@ export class NewConfigurationComponent implements OnInit {
     selectedDoctorOption: any;
   
     onDoctorSelect(option: any) {
-      debugger
+      
       console.log("selectedDoctorOption:", option)
     }
   
     getOptionTextDoctor(option) {
-      debugger
+      
       return option && option.Doctorname ? option.Doctorname : '';
     }
   
     // getPathDoctorList() {
-    //   debugger
+    //   
     //   this._AdministrationService.getPathologistDoctorCombo().subscribe(data => {
     //     this.PathDoctorList = data;
     //     this.optionsSearchDoctor = this.PathDoctorList.slice();
@@ -967,7 +967,7 @@ export class NewConfigurationComponent implements OnInit {
     //       map(value => value ? this._filterSearchDoctor(value) : this.PathDoctorList.slice()),
     //     );
     //     if (this.data) {
-    //       debugger
+    //       
     //       const DValue = this.PathDoctorList.filter(item => item.DoctorId == this.configObj.IsPathologistDr);
     //       console.log("DoctorId:", DValue)
     //       this.configFormGroup.get('DoctorId').setValue(DValue[0]);
@@ -978,7 +978,7 @@ export class NewConfigurationComponent implements OnInit {
     // }
   
     OnChangePathDoctorList(departmentObj) {
-      debugger
+      
       console.log(departmentObj)
   
       const templateControl = this.configFormGroup.get('DoctorId');
@@ -1003,7 +1003,7 @@ export class NewConfigurationComponent implements OnInit {
             map(value => value ? this._filterSearchDoctor(value) : this.PathDoctorList.slice()),
           );
           if (this.configObj) {
-            debugger
+            
             const dVaule = this.PathDoctorList.filter(item => item.DoctorId == this.configObj.IsPathologistDr)
             this.configFormGroup.get('DoctorId').setValue(dVaule[0])
           }
@@ -1012,7 +1012,7 @@ export class NewConfigurationComponent implements OnInit {
     }
   
     private _filterSearchDoctor(value: any): string[] {
-      debugger
+      
       if (value) {
         const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
         return this.PathDoctorList.filter(option => option.Doctorname.toLowerCase().includes(filterValue));

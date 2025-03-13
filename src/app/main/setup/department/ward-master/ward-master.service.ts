@@ -48,7 +48,7 @@ export class WardMasterService {
     }
     
     public roomMasterSave(Param: any) {
-        debugger
+        
         if (Param.roomId) {
             return this._httpClient.PutData("WardMaster/" + Param.roomId, Param);
         } else return this._httpClient.PostData("WardMaster", Param);

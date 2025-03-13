@@ -24,7 +24,7 @@ export class NewTallyComponent implements OnInit {
 
   
     ngOnInit(): void {
-        debugger
+        
     this.bankForm=this._TallyInterfaceService.createBankForm();
    
         if((this.data?.bankId??0) > 0)

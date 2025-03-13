@@ -35,7 +35,7 @@ export class NewManufactureComponent implements OnInit {
 
   
     onSubmit() {
-        debugger
+        
       if (!this.manufForm.invalid) 
         {
         this._ManufactureMasterService.manufactureMasterSave(this.manufForm.value).subscribe((response) => {

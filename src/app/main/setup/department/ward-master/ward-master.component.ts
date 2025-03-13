@@ -49,8 +49,7 @@ export class WardMasterComponent implements OnInit {
         filters: [
             { fieldName: "roomName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(public _wardService: WardMasterService, public _matDialog: MatDialog,

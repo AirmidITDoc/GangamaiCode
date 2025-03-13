@@ -176,7 +176,7 @@ export class DischargeSummaryTemplateComponent {
   }
 
   selectChangeItem(obj: any) {
-    debugger
+    
     console.log("Item:", obj);
     this.MedicineItemForm.get('ItemId').setValue(obj);
     // this.refdocId = obj.value
@@ -293,7 +293,7 @@ export class DischargeSummaryTemplateComponent {
   }
 
   deleteTableRow(event, element) {
-    debugger
+    
     let index = this.Chargeslist.indexOf(element);
     if (index >= 0) {
       this.Chargeslist.splice(index, 1);
@@ -322,16 +322,6 @@ export class DischargeSummaryTemplateComponent {
         {
           "fieldName": "AdmissionId",
           "fieldValue": "40773",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Start",
-          "fieldValue": "0",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Length",
-          "fieldValue": "10",
           "opType": "Equals"
         }
       ],
@@ -449,16 +439,6 @@ export class DischargeSummaryTemplateComponent {
           "fieldName": "AdmissionId",
           "fieldValue": String(AdmissionId),//"40773",	
           "opType": "Equals"
-        },
-        {
-          "fieldName": "Start",
-          "fieldValue": "0",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Length",
-          "fieldValue": "10",
-          "opType": "Equals"
         }
       ],
       "exportType": "JSON"
@@ -484,16 +464,6 @@ export class DischargeSummaryTemplateComponent {
           "fieldName": "AdmissionId",
           "fieldValue": String(AdmissionId),// "40622",	
           "opType": "Equals"
-        },
-        {
-          "fieldName": "Start",
-          "fieldValue": "0",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Length",
-          "fieldValue": "10",
-          "opType": "Equals"
         }
       ],
       "exportType": "JSON"
@@ -502,7 +472,7 @@ export class DischargeSummaryTemplateComponent {
     console.log(m_data2)
     this._IpSearchListService.getDischargeSummary(m_data2).subscribe((data) => {
       console.log(data);
-      debugger
+      
       this.RetrDischargeSumryList = data?.data as DischargeSummary;
       console.log(this.RetrDischargeSumryList);
       if (this.RetrDischargeSumryList.length != 0) {
@@ -543,7 +513,7 @@ export class DischargeSummaryTemplateComponent {
     });
   }
   getdischargeIdbyadmission() {
-    debugger
+    
     this._IpSearchListService.getDischargeId(this.data.admissionId).subscribe(data => {
       console.log(data)
 

@@ -204,13 +204,10 @@ gridConfig1: gridModel1 = {
   { fieldName: "From_Dt", fieldValue: "08/06/2022", opType: OperatorComparer.Contains },
   { fieldName: "To_Dt", fieldValue: "08/06/2025", opType: OperatorComparer.Equals },
   { fieldName: "IsVerify", fieldValue: "0", opType: OperatorComparer.Equals },
-  { fieldName: "Supplier_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-  { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-  { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
+  { fieldName: "Supplier_Id", fieldValue: "0", opType: OperatorComparer.Equals }
 
   ],
- mode:"PurchaseOrder",
- row:10
+ mode:"PurchaseOrder"
 
 }
 
@@ -294,16 +291,6 @@ gridConfig1: gridModel1 = {
 {
       "fieldName": "Supplier_Id",
       "fieldValue": "0",
-      "opType": "Equals"
-    },
-{
-      "fieldName": "Start",
-      "fieldValue": "0",
-      "opType": "Equals"
-    },
-{
-      "fieldName": "Length",
-      "fieldValue": "10",
       "opType": "Equals"
     }
   ],

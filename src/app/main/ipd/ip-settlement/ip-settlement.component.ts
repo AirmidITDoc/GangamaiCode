@@ -93,11 +93,8 @@ export class IPSettlementComponent implements OnInit {
         sortField: "BillNo",
         sortOrder: 0,
         filters: [
-            { fieldName: "RegId", fieldValue: String(this.RegId1), opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
-        ],
-        row: 25
+            { fieldName: "RegId", fieldValue: String(this.RegId1), opType: OperatorComparer.Equals }
+        ]
     }
 
     ngOnInit(): void {
@@ -140,7 +137,7 @@ export class IPSettlementComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
              let NeftNo="0"
             console.log(result.submitDataPay.ipPaymentInsert)
-            debugger
+            
             if(result.submitDataPay.ipPaymentInsert.NEFTNo =="undefined")
                 NeftNo="0"
             else
@@ -294,7 +291,7 @@ export class IPSettlementComponent implements OnInit {
     }
 
     GetDetails(data) {
-        debugger
+        
         this.gridConfig = {
             apiUrl: "IPBill/IPBillList",
             columnsList: [
@@ -319,11 +316,8 @@ export class IPSettlementComponent implements OnInit {
             sortField: "RegId",
             sortOrder: 0,
             filters: [
-                { fieldName: "RegId", fieldValue: String(this.RegId1), opType: OperatorComparer.Equals },
-                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
-            ],
-            row: 25
+                { fieldName: "RegId", fieldValue: String(this.RegId1), opType: OperatorComparer.Equals }
+            ]
         }
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();

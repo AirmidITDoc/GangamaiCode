@@ -2,12 +2,12 @@
     <div class="modal-header accent">
         <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
             <div fxLayout="row" fxLayoutAlign="start center">
-                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <!-- <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                     <mat-icon>menu</mat-icon>
                 </button>
                 <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                     style="color: white;">account_box
-                </mat-icon>
+                </mat-icon> -->
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
                     Request New Test
                 </span>
@@ -210,7 +210,6 @@
                                             Action</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" class="w-80">
                                             <button mat-icon-button color="warn" (click)="onSaveEntry(contact)">
-                                                <!-- (click)="onSaveEntry(contact)" -->
                                                 <mat-icon>add</mat-icon>
                                             </button>
                                         </mat-cell>
@@ -224,18 +223,13 @@
 
                                     <ng-container matColumnDef="noData">
                                         <mat-footer-cell *matFooterCellDef colspan="6">
-                                            <!-- <mat-spinner class="spinner" [diameter]="35" [color]="blue"></mat-spinner> -->
                                             <span>No Data Found</span>
                                         </mat-footer-cell>
                                     </ng-container>
-                                    <!-- [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}" -->
                                     <mat-header-row class="accent" *matHeaderRowDef="displayedServiceColumns; sticky: true">
                                     </mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: displayedServiceColumns;" (click)="onSaveEntry(contact)" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                    <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dsLabRequest2!=null}">
-                                    </mat-footer-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dsLabRequest2!=null && dsLabRequest2.data.length==0)}">
-                                    </mat-footer-row> -->
+                                   
                                 </mat-table>
                             </mat-card>
 

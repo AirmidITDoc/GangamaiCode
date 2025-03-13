@@ -48,8 +48,7 @@ export class ItemGenericMasterComponent implements OnInit {
         filters: [
             { fieldName: "GenericName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(public _ItemGenericMasterService: ItemGenericMasterService,

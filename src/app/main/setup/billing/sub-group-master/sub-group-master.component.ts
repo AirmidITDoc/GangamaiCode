@@ -47,8 +47,7 @@ export class SubGroupMasterComponent implements OnInit {
         filters: [
             { fieldName: "subGroupName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(public _subgroupService: SubGroupMasterService, public _matDialog: MatDialog,

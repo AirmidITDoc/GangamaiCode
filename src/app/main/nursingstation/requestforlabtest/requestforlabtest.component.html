@@ -28,7 +28,7 @@
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)">
+        <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)" :ShowButtons="false">
             <ng-container filters>
 
                 <airmid-datepicker [formGroup]="_RequestforlabtestService.mySearchForm" [isRangePicker]="true" 
@@ -54,7 +54,7 @@
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
     *ngIf="isShowDetailTable">
-        <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false">
+        <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false" :ShowButtons="false">
         </airmid-table>
     </div>
 </div>

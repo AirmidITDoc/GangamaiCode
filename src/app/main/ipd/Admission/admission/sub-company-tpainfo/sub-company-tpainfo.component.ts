@@ -88,7 +88,7 @@ createsubtpaForm() {
 
  onSubmit() {
     let data =this.SubcompanyFormGroup.value
-    debugger
+    
     data["companyName"]=this.CompanyName
     data["city"]=this.CityName
 

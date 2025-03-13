@@ -88,7 +88,7 @@ export class DischargeCancelComponent implements OnInit {
 }
  
 getSelectedObjAM(obj) {
-  debugger
+  
   if ((obj.regID ?? 0) > 0) {
     console.log("Admitted patient:",obj)
     this.vRegNo=obj.regNo
@@ -119,7 +119,7 @@ getSelectedObjAM(obj) {
 }
 
 getSelectedObjDC(obj) {
-  debugger
+  
   if ((obj.regId ?? 0) > 0) {
     console.log("Discharge patient:",obj)
     this.vRegNo=obj.regNo

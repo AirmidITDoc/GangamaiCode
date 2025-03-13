@@ -95,7 +95,7 @@ export class ResultEntryComponent implements OnInit {
     reportIdData: any = [];
     ServiceIdData: any = [];
 
-    searchregNo:any;
+    searchregNo: any;
 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -125,7 +125,7 @@ export class ResultEntryComponent implements OnInit {
 
     // fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     // toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    
+
     fromDate = this._SampleService.myformSearch.get("start").value || "";
     toDate = this._SampleService.myformSearch.get("end").value || "";
     fromdate = this.fromDate ? this.datePipe.transform(this.fromDate, "yyyy-MM-dd") : "";
@@ -138,10 +138,11 @@ export class ResultEntryComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "Pathology/PathologyPatientTestList",
         columnsList: [
-            { heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
+            {
+                heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
                 template: this.actionsIPOP, width: 5
             },
-            { heading: "Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA',type:9, width: 200},
+            { heading: "Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', type: 9, width: 200 },
             { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PatientName", key: "patientname", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
@@ -164,15 +165,12 @@ export class ResultEntryComponent implements OnInit {
             { fieldName: "From_Dt ", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt ", fieldValue: this.todate, opType: OperatorComparer.Equals },
             { fieldName: "IsCompleted", fieldValue: "1", opType: OperatorComparer.Equals },
-            { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "20", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals }
+        ]
     }
 
     gridConfig1: gridModel = {
-        apiUrl: "Nursing/PrescriptionReturnList",
+        apiUrl: "Pathology/PathologyTestList",
         columnsList: [
             { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -197,11 +195,8 @@ export class ResultEntryComponent implements OnInit {
 
             { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "20", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
+        ]
     }
 
     constructor(
@@ -220,10 +215,10 @@ export class ResultEntryComponent implements OnInit {
     ngOnInit(): void {
         this.getPatientsList();
     }
-    
+
     searchRecords(data) {
-        debugger
-            let regno = this._SampleService.myformSearch.get("RegNoSearch").value || 0;
+        
+        let regno = this._SampleService.myformSearch.get("RegNoSearch").value || 0;
         let fromDate = this._SampleService.myformSearch.get("start").value || "";
         let toDate = this._SampleService.myformSearch.get("end").value || "";
         fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
@@ -234,10 +229,11 @@ export class ResultEntryComponent implements OnInit {
         this.gridConfig = {
             apiUrl: "Pathology/PathologyPatientTestList",
             columnsList: [
-                { heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
+                {
+                    heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
                     template: this.actionsIPOP, width: 5
-                 },
-                { heading: "Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA',type:9, width: 200},
+                },
+                { heading: "Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', type: 9, width: 200 },
                 { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "PatientName", key: "patientname", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
@@ -253,56 +249,72 @@ export class ResultEntryComponent implements OnInit {
             sortField: "PresReId",
             sortOrder: 0,
             filters: [
-    
+
                 { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
                 { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
                 { fieldName: "Reg_No", fieldValue: regno, opType: OperatorComparer.Equals },
                 { fieldName: "From_Dt ", fieldValue: fromDate, opType: OperatorComparer.Equals }, //"2024-01-01"
                 { fieldName: "To_Dt ", fieldValue: toDate, opType: OperatorComparer.Equals }, //"2024-10-01"
                 { fieldName: "IsCompleted", fieldValue: status, opType: OperatorComparer.Equals },
-                { fieldName: "OP_IP_Type", fieldValue: patientType, opType: OperatorComparer.Equals },
-                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "Length", fieldValue: "20", opType: OperatorComparer.Equals }
-            ],
-            row: 25
+                { fieldName: "OP_IP_Type", fieldValue: patientType, opType: OperatorComparer.Equals }
+            ]
         }
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
     }
 
-    // searchRecords() {
-    //     debugger
-    //     console.log("Searching with filters:", this.gridConfig.filters);
+    getSelectedRow(row: any): void {
+        console.log("Selected row : ", row);
 
-    //     this.gridConfig.filters[2].fieldValue=this._SampleService.myformSearch.get("RegNoSearch").value + "%" || "%";
-    //     // this.gridConfig.filters[3].fieldValue=this.datePipe.transform(this._SampleService.myformSearch('start').value, "yyyy-MM-dd")
-    //     this.gridConfig.filters[4].fieldValue=this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    //     this.gridConfig.filters[5].fieldValue=this._SampleService.myformSearch.get("StatusSearch").value || "2";
-    //     this.gridConfig.filters[6].fieldValue=this._SampleService.myformSearch.get("PatientTypeSearch").value || "2";
+        this.getSampledetailList1(row);
+    }
 
-    //     // this.gridConfig.filters = this.gridConfig.filters.map(filter => {
-    //     //     if (filter.fieldName.trim() === "From_Dt") {
-    //     //         return { ...filter, fieldValue: fromDate }; // Update From_Dt
-    //     //     }
-    //     //     if (filter.fieldName.trim() === "To_Dt") {
-    //     //         return { ...filter, fieldValue: toDate }; // Update To_Dt
-    //     //     }
-    //     //     if (filter.fieldName === "Reg_No") {
-    //     //         return { ...filter, fieldValue: regno }; // Update Reg_No filter
-    //     //     }
-    //     //     if (filter.fieldName.trim() === "OP_IP_Type") {
-    //     //         return { ...filter, fieldValue: patientType }; // Update Patient Type
-    //     //     }
-    //     //     if (filter.fieldName.trim() === "IsCompleted") {
-    //     //         return { ...filter, fieldValue: status }; // Update Patient Type
-    //     //     }
-    //     //     return filter; // Keep other filters unchanged
-    //     // });
+      getSampledetailList1(row) {
+        
+        let inputDate = row.vaDate;
+        let parts = inputDate.split(' ')[0].split('-');
+        let date = `${parts[2]}-${parts[1]}-${parts[0]}`;
     
-    //     console.log("Searching with updated filters:", this.gridConfig.filters);
-    // }
+        let OPIP = row.patientType === 'OP' ? 0 : 1;
     
+        var m_data = {
+          "first": 0,
+          "rows": 10,
+          "sortField": "BillNo",
+          "sortOrder": 0,
+          "filters": [
+            {
+              "fieldName": "BillNo",
+              "fieldValue": String(row.billNo),
+              "opType": "Equals"
+            },
+            {
+              "fieldName": "OP_IP_Type",
+              "fieldValue": OPIP,
+              "opType": "Equals"
+            },
+            {
+              "fieldName": "From_Dt",
+              "fieldValue": date,
+              "opType": "Equals"
+            }
+          ],
+          "exportType": "JSON"
+        }
     
+        console.log(m_data);
+        this._SampleService.PathResultentryDetailList(m_data).subscribe(Visit => {
+          this.dataSource1.data = Visit as SampleList[];
+          console.log("ResultList:",this.dataSource.data)
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+          this.sIsLoading = '';
+        },
+          error => {
+            // this.sIsLoading = '';
+          });
+      }
+
     getDateTime(dateTimeObj) {
         this.dateTimeObj = dateTimeObj;
     }

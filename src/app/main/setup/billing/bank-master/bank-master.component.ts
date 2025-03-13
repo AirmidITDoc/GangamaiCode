@@ -47,8 +47,7 @@ export class BankMasterComponent implements OnInit {
         filters: [
             { fieldName: "BankName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(public _bankService: BankMasterService, public _matDialog: MatDialog,

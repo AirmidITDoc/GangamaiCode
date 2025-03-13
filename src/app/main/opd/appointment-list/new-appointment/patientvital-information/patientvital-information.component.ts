@@ -60,7 +60,7 @@ export class PatientvitalInformationComponent {
     if(this.data){
       console.log(this.data)
       this.VisitId=this.data.visitId
-            debugger
+            
       setTimeout(() => {
         this._OpAppointmentService.getVisitById(this.VisitId).subscribe(data => {
           this.patientDetail1 = data;

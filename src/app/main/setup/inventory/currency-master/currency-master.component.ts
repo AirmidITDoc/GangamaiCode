@@ -46,8 +46,7 @@ export class CurrencyMasterComponent implements OnInit {
         filters: [
             { fieldName: "currencyName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(public _CurrencymasterService: CurrencymasterService, public _matDialog: MatDialog,

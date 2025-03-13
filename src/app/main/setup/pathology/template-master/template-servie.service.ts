@@ -34,7 +34,7 @@ createTemplateForm(): FormGroup {
 }
 
 public templateMasterSave(Param: any) {
-  debugger
+  
   if (Param.templateId) {
       return this._httpClient.PutData("PathologyTemplate/" + Param.templateId, Param);
   } else return this._httpClient.PostData("PathologyTemplate", Param);

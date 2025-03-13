@@ -32,7 +32,7 @@ export class ServiceMasterComponent implements OnInit {
               this.gridConfig.columnsList.find(col => col.key === 'creditedtoDoctor')!.template = this.iconcreditedtoDoctor; 
               this.gridConfig.columnsList.find(col => col.key === 'isPathology')!.template = this.iconisPathology; 
               this.gridConfig.columnsList.find(col => col.key === 'isRadiology')!.template = this.iconisRadiology;
-              this.gridConfig.columnsList.find(col => col.key === 'iconisPackage')!.template = this.iconisPackage; 
+              this.gridConfig.columnsList.find(col => col.key === 'isPackage')!.template = this.iconisPackage; 
           }
           @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
           @ViewChild('iconcreditedtoDoctor') iconcreditedtoDoctor!: TemplateRef<any>;
@@ -43,23 +43,21 @@ export class ServiceMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "BillingService/BillingList",
         columnsList: [
-            { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Service Short Desc", key: "serviceShortDesc", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "ServiceShortDesc", key: "serviceShortDesc", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "GroupName", key: "groupName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "PrintOrder", key: "printOrder", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "EmergencyAmt", key: "emgAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "IsEditable", key: "isEditable", sort: true, type: gridColumnTypes.status, align: 'left', width: 100 },
             { heading: "CreditedToDoctor", key: "creditedtoDoctor", sort: true, align: 'left', width: 150, type: gridColumnTypes.template },
-            { heading: "IsPathology", key: "isPathology", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
-            { heading: "IsRadiology", key: "isRadiology", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
-            { heading: "IsPackage", key: "isPackage", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.template  },
+            { heading: "IsPathology", key: "isPathology", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
+            { heading: "IsRadiology", key: "isRadiology", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
+            { heading: "IsPackage", key: "isPackage", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template, 
+                template: this.iconisPackage  // Assign ng-template to the column
+             },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
-            // {
-                //     heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
-                //     template: this.actionButtonTemplate  // Assign ng-template to the column
-                // } 
             {
                 heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
                     {
@@ -68,8 +66,8 @@ export class ServiceMasterComponent implements OnInit {
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            debugger
-                            this._serviceMasterService.ServiceMasterCancle(data.serviceId).subscribe((response: any) => {
+                            
+                            this._serviceMasterService.deactivateTheStatus(data.serviceId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
@@ -82,11 +80,8 @@ export class ServiceMasterComponent implements OnInit {
         filters: [
             { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.StartsWith },
             { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
-            { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-        ],
-        row: 125
+            { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals }
+        ]
     }
 
     constructor(
@@ -103,7 +98,7 @@ export class ServiceMasterComponent implements OnInit {
 
     }
     // deleteService(serviceId: number) {
-    //     debugger
+    //     
     //     this._serviceMasterService.deactivateTheStatus(serviceId).subscribe(
     //         (response: any) => {
     //             this.toastr.success(response.message);
@@ -135,9 +130,7 @@ export class ServiceMasterComponent implements OnInit {
         this.groupId = String(obj);
         this.gridConfig.filters = [{ fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
-        { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals },
-        { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
-        { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
+        { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals }]
     }
 
     selectChangetariff(obj: any) {
@@ -145,9 +138,7 @@ export class ServiceMasterComponent implements OnInit {
         this.tariffId = String(obj)
         this.gridConfig.filters = [{ fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
-        { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals },
-        { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
-        { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
+        { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals }]
     }
 
     onSave(row: any = null) {
@@ -191,7 +182,7 @@ export class ServiceMasterComponent implements OnInit {
     }
     EditpackageComponent
 
-    onEdit(row: any = null) {
+    onPackageEdit(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 

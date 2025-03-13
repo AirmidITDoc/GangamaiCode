@@ -55,8 +55,7 @@ export class EditpackageComponent implements OnInit {
             { fieldName: "firstName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-        ],
-        row: 25
+        ]
     }
     
 

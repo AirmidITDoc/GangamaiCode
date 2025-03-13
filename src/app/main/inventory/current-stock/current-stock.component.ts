@@ -123,26 +123,9 @@ export class CurrentStockComponent implements OnInit {
         filters: [
             { fieldName: "LedgerDate", fieldValue: "2023/10/17", opType: OperatorComparer.Contains },
             { fieldName: "StoreId", fieldValue: "2", opType: OperatorComparer.Contains },
-            { fieldName: "ItemId", fieldValue: "580", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "ItemId", fieldValue: "580", opType: OperatorComparer.Equals }
+        ]
     }
-
-    // DAY WISE REPORT
-    //   displayedColumnsDayWise = [
-    //     'LedgerDate',
-    //     'ItemName',
-    //     'BatchNo',
-    //     'BatchExpDate',
-    //     'UnitMRP',
-    //     'PurUnitRate',
-    //     'LandedRate',
-    //     'ReceivedQty',
-    //     'IssueQty',
-    //     'BalanceQty',
-    //   ];
     displayedColumnsItemWise = [
         //  'action',
         'ItemName',

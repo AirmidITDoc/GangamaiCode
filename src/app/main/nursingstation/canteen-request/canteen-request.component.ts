@@ -60,11 +60,8 @@ export class CanteenRequestComponent implements OnInit {
         filters: [
             { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals }
+        ]
     }
 
     gridConfig1: gridModel = new gridModel();
@@ -72,7 +69,7 @@ export class CanteenRequestComponent implements OnInit {
     isShowDetailTable: boolean = false;
 
     GetDetails(data) {
-        debugger
+        
         this.gridConfig1 = {
         apiUrl: "Nursing/PrescriptionDetailList",
         columnsList: [
@@ -90,8 +87,7 @@ export class CanteenRequestComponent implements OnInit {
             // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             // { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
             // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
       }
         this.isShowDetailTable = true;
         this.grid1.gridConfig = this.gridConfig1;

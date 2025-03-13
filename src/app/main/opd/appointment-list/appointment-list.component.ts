@@ -101,9 +101,7 @@ export class AppointmentListComponent implements OnInit {
         { fieldName: "Doctor_Id", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals },
-        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+        { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals }
 
     ];
 
@@ -149,8 +147,7 @@ export class AppointmentListComponent implements OnInit {
         columnsList: this.allcolumns, 
         sortField: "VisitId",
         sortOrder: 0,
-        filters: this.allfilters,
-        row: 5
+        filters: this.allfilters
     }
 
     onChangeStartDate(value) {
@@ -173,7 +170,7 @@ export class AppointmentListComponent implements OnInit {
     }
 
 getfilterdata(){
-    debugger
+    
     this.gridConfig = {
         apiUrl: "VisitDetail/AppVisitList",
         columnsList:this.allcolumns , 
@@ -186,12 +183,9 @@ getfilterdata(){
             { fieldName: "Doctor_Id", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+            { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals }
     
-        ],
-        row: 25
+        ]
     }
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData(); 
@@ -212,7 +206,7 @@ Clearfilter(event) {
   }
 
     ListView(value) {
-        debugger
+        
         console.log(value)
          if(value.value!==0)
             this.DoctorId=value.value

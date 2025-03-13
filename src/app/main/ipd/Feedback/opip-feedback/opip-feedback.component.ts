@@ -154,7 +154,7 @@ fetchresult(event,flag){
   
   this.feedbackquest.forEach(element => {
   
-    debugger
+    
     if(flag==1)
     this.answer=" Excellent"
   else if(flag==2)
@@ -256,7 +256,7 @@ fetchresult(event,flag){
   }
 
   onChangePatientType(event) {
-    debugger
+    
     if (event.value == 'OP') {
       this.OP_IPType = 0;
       this.vSelectedOption = 'OP';
@@ -404,7 +404,7 @@ getOptionTextOPObj(option) {
 }
 
  onSubmit() {
-    debugger
+    
   //  if (this.RegId) {
  
      console.log(this.fetchlist)

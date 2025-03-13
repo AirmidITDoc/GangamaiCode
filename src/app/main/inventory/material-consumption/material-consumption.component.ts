@@ -63,11 +63,8 @@ export class MaterialConsumptionComponent implements OnInit {
         filters: [
             { fieldName: "ToStoreId", fieldValue: "2", opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: "01/01/2020", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "To_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals }
+        ]
     }
     datePipe: any;
     private _loggedService: any;

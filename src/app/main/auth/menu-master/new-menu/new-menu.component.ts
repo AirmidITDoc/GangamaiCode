@@ -28,7 +28,7 @@ export class NewMenuComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        debugger
+        
         this.menuForm = this._MenuMasterService.createMenuForm();
         console.log("EditData:", this.data)
         if ((this.data?.id ?? 0) > 0) {
@@ -50,7 +50,7 @@ export class NewMenuComponent implements OnInit {
     }
 
     onSubmit() {
-        debugger
+        
         this.saveflag = true;
 
         if (!this.menuForm.invalid) {

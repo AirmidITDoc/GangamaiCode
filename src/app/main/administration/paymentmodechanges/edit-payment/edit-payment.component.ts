@@ -82,7 +82,7 @@ export class EditPaymentComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
   ngOnInit(): void {
-    debugger
+    
     if (this.data) {
       this.registerObj = this.data.registerObj;
       console.log("EditData:",this.registerObj)
@@ -161,7 +161,7 @@ export class EditPaymentComponent implements OnInit {
   }
   
   Save(){
-    debugger
+    
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');

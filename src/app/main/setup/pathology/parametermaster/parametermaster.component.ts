@@ -64,9 +64,7 @@ export class ParametermasterComponent implements OnInit {
     ]
 
     allFilters=[
-        { fieldName: "ParameterName", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+        { fieldName: "ParameterName", fieldValue: "%", opType: OperatorComparer.Contains }
     ]
 
     gridConfig: gridModel = {
@@ -74,8 +72,7 @@ export class ParametermasterComponent implements OnInit {
         columnsList: this.allcolumns,
         sortField: "parameterId",
         sortOrder: 0,
-        filters: this.allFilters,
-        row: 25
+        filters: this.allFilters
     }
     constructor(
         public _ParameterService: ParametermasterService,
@@ -97,19 +94,16 @@ export class ParametermasterComponent implements OnInit {
     }
 
     getfilterdata(){
-        debugger
+        
         this.gridConfig = {
             apiUrl: "ParameterMaster/MPathParameterList",
             columnsList:this.allcolumns , 
             sortField: "parameterId",
             sortOrder: 0,
             filters:  [
-                { fieldName: "ParameterName", fieldValue: this.paraName , opType: OperatorComparer.Contains },
-                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+                { fieldName: "ParameterName", fieldValue: this.paraName , opType: OperatorComparer.Contains }
         
-            ],
-            row: 25
+            ]
         }
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData(); 
@@ -134,7 +128,7 @@ export class ParametermasterComponent implements OnInit {
     }
 
     onEdit(row) {
-        debugger
+        
         console.log(row)
 
         // wroung api used
@@ -148,16 +142,6 @@ export class ParametermasterComponent implements OnInit {
                     {
                         "fieldName": "ParameterId",
                         "fieldValue": String(row.parameterId),
-                        "opType": "Equals"
-                    },
-                    {
-                        "fieldName": "Start",
-                        "fieldValue": "0",
-                        "opType": "Equals"
-                    },
-                    {
-                        "fieldName": "Length",
-                        "fieldValue": "10",
                         "opType": "Equals"
                     }
                 ],
@@ -174,16 +158,6 @@ export class ParametermasterComponent implements OnInit {
                     {
                         "fieldName": "ParameterId",
                         "fieldValue": String(row.parameterId),
-                        "opType": "Equals"
-                    },
-                    {
-                        "fieldName": "Start",
-                        "fieldValue": "0",
-                        "opType": "Equals"
-                    },
-                    {
-                        "fieldName": "Length",
-                        "fieldValue": "10",
                         "opType": "Equals"
                     }
                 ],
@@ -283,7 +257,7 @@ export class ParametermasterComponent implements OnInit {
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, Change Status!'
         }).then((result) => {
-            debugger
+            
             if (result.isConfirmed) {
                 this._ParameterService.deactivateTheStatus(row.parameterId).subscribe(
                     (data) => {

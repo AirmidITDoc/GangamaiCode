@@ -45,7 +45,7 @@ export class PrePresciptionListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // debugger
+    // 
     if(this.data){
       this.RegId = this.data.Obj 
       console.log(this.data.Obj)
@@ -55,7 +55,7 @@ export class PrePresciptionListComponent implements OnInit {
   }
   
   getnewVisistListDemo(obj) {
-    // debugger
+    // 
     var D_data = {
       "first": 0,
       "rows": 10,
@@ -65,16 +65,6 @@ export class PrePresciptionListComponent implements OnInit {
         {
           "fieldName": "RegID",
           "fieldValue": String(this.RegId),//"40773",	
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Start",
-          "fieldValue": "0",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Length",
-          "fieldValue": "10",
           "opType": "Equals"
         }
       ],

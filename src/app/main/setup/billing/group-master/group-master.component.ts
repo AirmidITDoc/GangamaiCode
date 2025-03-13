@@ -47,8 +47,7 @@ export class GroupMasterComponent implements OnInit {
         filters: [
             { fieldName: "groupName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(public _GroupMasterService: GroupMasterService, public _matDialog: MatDialog,

@@ -58,7 +58,7 @@ export class AddformulaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // debugger
+    // 
     if (this.data) {
       console.log(this.data)
       this.registerObj = this.data.registerObj;
@@ -96,7 +96,7 @@ export class AddformulaComponent implements OnInit {
   }
 
   onSubmit() {
-// debugger
+// 
     if (!this._ParameterService.formulaform.invalid) {
 
         var mdata = {

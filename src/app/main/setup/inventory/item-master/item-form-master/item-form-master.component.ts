@@ -49,7 +49,7 @@ export class ItemFormMasterComponent implements OnInit {
 
     ngOnInit(): void {
         this.itemForm = this._itemService.createItemmasterForm();
-        debugger
+        
         if ((this.data?.itemID ?? 0) > 0) {
             this._itemService.getstoreById(this.data.itemID).subscribe((response) => {
                 this.registerObj = response;
@@ -136,7 +136,7 @@ export class ItemFormMasterComponent implements OnInit {
 
         if (!this.itemForm.invalid) {
             console.log("Item JSON :-", this.itemForm.value);
-            debugger
+            
             this._itemService.insertItemMaster(this.itemForm.value).subscribe((data) => {
                 this.toastr.success(data.message);
                 this.onClear(true);

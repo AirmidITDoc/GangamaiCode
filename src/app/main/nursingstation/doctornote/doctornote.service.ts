@@ -64,7 +64,7 @@ public getpatientHandList(param) {
     return this._httpClient.PostData("DoctorNote", employee)
   }
   public DoctorNoteUpdate(Param: any) {
-    debugger
+    
     if (Param.doctNoteId) {
         return this._httpClient.PutData("DoctorNote/" + Param.doctNoteId, Param);
     }

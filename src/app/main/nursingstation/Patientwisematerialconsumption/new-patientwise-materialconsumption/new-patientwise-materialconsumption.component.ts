@@ -105,11 +105,8 @@ export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
         sortField: "MaterialConsumptionId",
         sortOrder: 0,
         filters: [
-            { fieldName: "ToStoreId", fieldValue: "10009", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "ToStoreId", fieldValue: "10009", opType: OperatorComparer.Equals }
+        ]
     }
     grid: any;
     toDate: string;
@@ -191,7 +188,7 @@ export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
 
 
     getSelectedObjOP(obj) {
-        debugger
+        
         // if ((obj.regId ?? 0) > 0) {
         //     console.log("Visite Patient:",obj)
         //     this.vRegNo=obj.regNo
@@ -224,7 +221,7 @@ export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
     }
 
     getSelectedObjIP(obj) {
-        debugger
+        
         // if ((obj.regID ?? 0) > 0) {
         //     console.log("Admitted patient:",obj)
         //     this.vRegNo=obj.regNo

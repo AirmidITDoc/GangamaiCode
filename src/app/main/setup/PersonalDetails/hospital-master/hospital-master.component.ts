@@ -48,8 +48,7 @@ export class HospitalMasterComponent implements OnInit {
       filters: [
           { fieldName: "stateName", fieldValue: "", opType: OperatorComparer.Contains },
           { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-      ],
-      row:25
+      ]
   }
 
   constructor( public _HospitalService: HospitalService,

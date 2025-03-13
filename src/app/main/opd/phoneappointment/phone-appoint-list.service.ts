@@ -90,7 +90,7 @@ export class PhoneAppointListService {
 
 
     public phoneMasterCancle(Param: any) {
-        debugger
+        
       return this._httpClient.PostData("PhoneAppointment2/Cancel", Param);
       }
 

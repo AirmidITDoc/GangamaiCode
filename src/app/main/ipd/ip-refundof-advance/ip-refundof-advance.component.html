@@ -187,9 +187,17 @@
                                                 <mat-form-field floatLabel="never">
                                                     <input matInput placeholder="RefundAmt"
                                                         type="text"  (keypress)="keyPressCharater($event)"
-                                                        [(ngModel)]="element.refundAmount" required
-                                                        (ngModelChange)="getCellCalculation(element,element.refundAmount)">
+                                                        [(ngModel)]="element.refundAmt" required
+                                                        (ngModelChange)="getCellCalculation(element,element.refundAmt)">
                                                 </mat-form-field>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="PreRefundAmt">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Prev.RefundAmt
+                                            </mat-header-cell>
+                                            <mat-cell  *matCellDef="let element" fxShow.gt-sm> 
+                                                <span> {{element.refundAmount | currency:'INR'}}</span>
                                             </mat-cell>
                                         </ng-container>
                     

@@ -44,8 +44,7 @@ export class PatienttypeMasterComponent implements OnInit {
         filters: [
             { fieldName: "patientType", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(

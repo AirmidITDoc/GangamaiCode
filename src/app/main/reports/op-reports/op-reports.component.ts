@@ -154,7 +154,7 @@ export class OpReportsComponent implements OnInit {
     this.ReportID = el.value;
     this.ReportFormGroup.get("ReportName").setValue(this.ReportName)
 
-    debugger
+    
     if (this.ReportName == 'Registration Report') {
       this.FlagVisitSelected = false
       this.FlagPaymentIdSelected = false
@@ -575,7 +575,7 @@ export class OpReportsComponent implements OnInit {
 
 
   viewgetlistReportPdf(mode) {
-    debugger
+    
     setTimeout(() => {
 
       let param = {

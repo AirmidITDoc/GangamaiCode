@@ -86,10 +86,10 @@ export class StoreFormMasterComponent implements OnInit {
 
 
     onSubmit() {
-        debugger
+        
         // if (!this.storeForm.invalid) {
             console.log("StoreCategoryMaster Insert:", this.storeForm.value)
-            debugger
+            
             this._StoreMasterService.storeMasterSave(this.storeForm.value).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);

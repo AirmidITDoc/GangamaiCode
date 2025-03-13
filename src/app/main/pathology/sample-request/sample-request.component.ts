@@ -84,11 +84,13 @@ export class SampleRequestComponent implements OnInit {
 
   hasSelectedContacts: boolean;
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent; 
+  @ViewChild('grid1') grid1: AirmidTableComponent;
+
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   
       gridConfig: gridModel = {
-          apiUrl: "Pathology/LabOrRadRequestList",
+          apiUrl: "PathlogySampleCollection/LabOrRadRequestPatientList",
           columnsList: [            
             { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
@@ -104,32 +106,9 @@ export class SampleRequestComponent implements OnInit {
             { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "IsCompleted", fieldValue: "1", opType: OperatorComparer.Equals },
-            { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "100", opType: OperatorComparer.Equals }
-          ],
-          row: 25
+            { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals }
+          ]
       }
-      gridConfig1: gridModel = {
-          apiUrl: "Nursing/PrescriptionReturnList",
-          columnsList: [
-            { heading: "ReqDate", key: "date", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "ReqTime", key: "time", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "AddedBy", key: "AddedBy", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "BillingUser", key: "BillingUser", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "AddedByDate", key: "AddedByDate", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "IsStatus", key: "IsStatus", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "PBillNo", key: "PBillNo", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "IsPathology", key: "IsPathology", sort: true, align: 'left', emptySign: 'NA'},
-          ],
-          sortField: "PresReId",
-          sortOrder: 0,
-          filters: [
-          ],
-          row: 25
-      }
-
   constructor(
     private formBuilder: UntypedFormBuilder,
     private _httpClient: HttpClient,
@@ -143,43 +122,79 @@ export class SampleRequestComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getSampleLabOrRadRequestLists();
-
+    // this.getSampleLabOrRadRequestLists();
   }
 
-
   get f() { return this._PathologyService.myformSearch.controls; }
-
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
 
-  getSampleLabOrRadRequestLists() {
-  
-    console.log(this._PathologyService.myformSearch.get("StatusSearch").value)
-    
-    var m_data = {
+  gridConfig1: gridModel = new gridModel();
+  isShowDetailTable: boolean = false;
 
-      "FromDate": this.datePipe.transform(this._PathologyService.myformSearch.get("start").value, "MM-dd-yyyy"),
-      "ToDate": this.datePipe.transform(this._PathologyService.myformSearch.get("end").value, "MM-dd-yyyy"),
-      "Reg_No": this._PathologyService.myformSearch.get("Reg_No").value || 0,
-      "Istype": parseInt(this._PathologyService.myformSearch.get("Istype").value) || 1,
-      "IsCompleted": parseInt(this._PathologyService.myformSearch.get("StatusSearch").value) || 0,
+  getSelectedRow(row: any): void {
+      let billNo = row.billNo;
+      let inputDate = row.vaDate;
+      let parts = inputDate.split(' ')[0].split('-');
+      let date = `${parts[2]}-${parts[1]}-${parts[0]}`;
+      let opipType = row.lbl === 'OP' ? 0 : 1;
 
-    }
-    console.log(m_data);
-    this._PathologyService.getSampleLabOrRadRequestList(m_data).subscribe(Visit => {
-      this.dataSource.data = Visit as LabOrRadRequestList[];
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-      
-      this.click = false;
-    },
-      error => {
-        
+      this.gridConfig1 = {
+          apiUrl: "PathlogySampleCollection/LabOrRadRequestDetailList",
+          columnsList: [
+            { heading: "ReqDate", key: "date", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "ReqTime", key: "time", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "AddedBy", key: "AddedBy", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "BillingUser", key: "BillingUser", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "AddedByDate", key: "AddedByDate", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "IsStatus", key: "IsStatus", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "PBillNo", key: "PBillNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "IsPathology", key: "IsPathology", sort: true, align: 'left', emptySign: 'NA'},
+          ],
+          sortField: "RequestId",
+          sortOrder: 0,
+          filters: [
+              { fieldName: "RequestId", fieldValue: '1', opType: OperatorComparer.Equals },
+              { fieldName: "IsPathOrRad", fieldValue: '1', opType: OperatorComparer.Equals }
+          ]
+      };
+
+      this.isShowDetailTable = true;
+
+      setTimeout(() => {
+          this.grid1.gridConfig = this.gridConfig1;
+          this.grid1.bindGridData();
       });
   }
+
+  // getSampleLabOrRadRequestLists() {
+  
+  //   console.log(this._PathologyService.myformSearch.get("StatusSearch").value)
+    
+  //   var m_data = {
+
+  //     "FromDate": this.datePipe.transform(this._PathologyService.myformSearch.get("start").value, "MM-dd-yyyy"),
+  //     "ToDate": this.datePipe.transform(this._PathologyService.myformSearch.get("end").value, "MM-dd-yyyy"),
+  //     "Reg_No": this._PathologyService.myformSearch.get("Reg_No").value || 0,
+  //     "Istype": parseInt(this._PathologyService.myformSearch.get("Istype").value) || 1,
+  //     "IsCompleted": parseInt(this._PathologyService.myformSearch.get("StatusSearch").value) || 0,
+
+  //   }
+  //   console.log(m_data);
+  //   this._PathologyService.getSampleLabOrRadRequestList(m_data).subscribe(Visit => {
+  //     this.dataSource.data = Visit as LabOrRadRequestList[];
+  //     this.dataSource.sort = this.sort;
+  //     this.dataSource.paginator = this.paginator;
+      
+  //     this.click = false;
+  //   },
+  //     error => {
+        
+  //     });
+  // }
 
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
@@ -200,7 +215,7 @@ export class SampleRequestComponent implements OnInit {
       {
         this.sIsLoading = 'loading-data';
 
-        this.getSampleLabOrRadRequestLists();
+        // this.getSampleLabOrRadRequestLists();
       }
 
     }, 50);

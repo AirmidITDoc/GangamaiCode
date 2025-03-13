@@ -93,12 +93,12 @@ export class ServiceMasterService {
     
 
     public deactivateTheStatus(m_data) {
-        debugger
-        return this._httpClient.DeleteData("BillingService/ServiceCanceled?Id=" + m_data.toString());
+        
+        return this._httpClient.DeleteData("BillingService?Id=" + m_data.toString());
     }
 
     public ServiceMasterCancle(Id: any) {
-        debugger
+        
       return this._httpClient.DeleteData(`BillingService/ServicDelete?Id=${Id}`);
     }
 
@@ -126,5 +126,6 @@ export class ServiceMasterService {
         this.myform.get("CreditedtoDoctor").setValue(param.CreditedtoDoctor == "true" ? true : false);
         this.myform.get("IsEditable").setValue(param.IsEditable == "true" ? true : false);
         this.myform.get("IsEmergency").setValue(param.IsEmergency == "true" ? true : false);
+        this.myform.get("IsPackage").setValue(param.IsPackage == "true" ? true : false);
     }
 }

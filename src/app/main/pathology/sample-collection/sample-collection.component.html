@@ -149,20 +149,16 @@
             </airmid-table>
         </div>
 
-        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
+        *ngIf="isShowDetailTable">
             <div style="padding: 10px; height: 30px;">
                 <div fxLayout="row wrap" fxLayoutAlign="space-between center">
                     <div class="table-header-title" style="padding: 10px;">
-                        <span class="h3 font-weight-600">Tets Details</span>
+                        <span class="h3 font-weight-600">Test Details</span>
                     </div>
                 </div>
             </div>
-
-            <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false" :ShowButtons="false">
-                <ng-container filters>
-
-                </ng-container>
+            <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false">
             </airmid-table>
         </div>
     </div>

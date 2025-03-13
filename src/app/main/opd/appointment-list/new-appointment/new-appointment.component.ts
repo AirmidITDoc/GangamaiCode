@@ -202,7 +202,7 @@ export class NewAppointmentComponent implements OnInit {
 
     }
     OnViewReportPdf(element) {
-        debugger
+        
         console.log('Third action clicked for:', element);
         this.commonService.Onprint("VisitId", element, "AppointmentReceipt");
     }
@@ -210,7 +210,7 @@ export class NewAppointmentComponent implements OnInit {
 
 
     onChangePatient(value) {
-        debugger
+        
         var mode = "Company"
         if (value.text != "Self") {
             this._AppointmentlistService.getMaster(mode, 1);
@@ -382,7 +382,7 @@ getSelectedObjphone(obj) {
             "visit": this.VisitFormGroup.value
         };
         console.log(submitData);
-        debugger
+        
         this._AppointmentlistService.NewappointmentSave(submitData).subscribe((response) => {
             this.toastr.success(response.message);
             console.log(response)
@@ -461,7 +461,7 @@ getSelectedObjphone(obj) {
     }
 
     selectChangedepartment(obj: any) {
-        debugger
+        
         console.log(obj)
         this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
             this.ddlDoctor.options = data;

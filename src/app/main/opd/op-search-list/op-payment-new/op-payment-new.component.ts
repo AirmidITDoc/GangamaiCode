@@ -344,7 +344,7 @@ export class OpPaymentNewComponent implements OnInit {
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
    
-    debugger
+    
     this.onAddPayment();
     if (this.balanceAmt != 0) {
       Swal.fire('Please select payment mode, Balance Amount is' + this.balanceAmt)

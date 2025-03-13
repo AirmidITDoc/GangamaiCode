@@ -69,13 +69,13 @@ export class NUserComponent implements OnInit{
   }
     
     ngOnInit(): void {
-        debugger
+        
         this.myuserform = this._CreateUserService.createuserForm();
         this.myuserform.get("unitId").setValue("1")
         if((this.data?.userId??0) > 0)
         {
           this.myuserform.patchValue(this.data);
-          debugger
+          
             console.log("data:", this.data)
             this.regobj=this.data;
             this.isActive=this.regobj.isActive
@@ -172,7 +172,7 @@ export class NUserComponent implements OnInit{
     }
 
     onSubmit() {
-        debugger       
+               
         if (!this.myuserform.get("firstName")?.value) {
           this.toastr.warning('Please enter a First Name', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
@@ -297,7 +297,7 @@ export class NUserComponent implements OnInit{
 
     docflag: boolean = false;
     chkdoctor(event) {
-        // debugger
+        // 
         if (this.myuserform.get('isDoctorType').value  == true) {
         this.docflag = true  
         }else{

@@ -92,8 +92,7 @@ export class DoctorShareComponent implements OnInit {
       { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
       { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    ],
-    row: 25
+    ]
   }
 
   gridConfig1: gridModel = {
@@ -117,8 +116,7 @@ export class DoctorShareComponent implements OnInit {
       { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
       { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    ],
-    row: 25
+    ]
   }
   data: any;
 
@@ -158,7 +156,7 @@ export class DoctorShareComponent implements OnInit {
   }
 
   viewDocShareSummaryReport() {
-    debugger
+    
     this.sIsLoading = 'loading-data';
     let FromDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get("startdate").value, "MM-dd-yyyy") || "01/01/1900";
     let ToDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get("enddate").value, "MM-dd-yyyy") || "01/01/1900";
@@ -187,7 +185,7 @@ export class DoctorShareComponent implements OnInit {
     }, 100);
   }
   viewDocShareReport() {
-    debugger
+    
     this.sIsLoading = 'loading-data';
     let FromDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get("startdate").value, "MM-dd-yyyy") || "01/01/1900";
     let ToDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get("enddate").value, "MM-dd-yyyy") || "01/01/1900";

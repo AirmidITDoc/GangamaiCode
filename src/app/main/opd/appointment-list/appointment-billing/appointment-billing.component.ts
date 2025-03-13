@@ -289,7 +289,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       const totalAmount = formValue.price * formValue.qty;
       const discountAmount = (totalAmount * formValue.discountPer) / 100;
       const netAmount = totalAmount - discountAmount;
-      debugger
+      
      if(totalAmount > 0){
       const newRow = {
         ServiceId: formValue.serviceName.serviceId,
@@ -506,8 +506,6 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       "sortOrder": 0,
       "filters": [{ "fieldName": "ServiceName", "fieldValue": sname, "opType": "StartsWith" },
       { "fieldName": "TariffId", "fieldValue": "1", "opType": "Equals" }, { "fieldName": "GroupId", "fieldValue": "0", "opType": "Equals" },
-      { "fieldName": "Start", "fieldValue": "0", "opType": "Equals" },
-      { "fieldName": "Length", "fieldValue": "30", "opType": "Equals" }
       ],
       "exportType": "JSON"
     }
@@ -995,12 +993,12 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   }
 
   viewgetCreditOPBillReportPdf(element) {
-    debugger
+    
     console.log('Third action clicked for:', element);
     this.commonService.Onprint("BillNo", element, "OpBillReceipt");
   }
   viewgetOPBillReportPdf(element) {
-    debugger
+    
     console.log('Third action clicked for:', element);
     this.commonService.Onprint("BillNo", element, "OpBillReceipt");
   }

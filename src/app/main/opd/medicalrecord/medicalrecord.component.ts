@@ -95,9 +95,7 @@ export class MedicalrecordComponent implements OnInit {
     { fieldName: "Doctor_Id", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
     { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals },
-    { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+    { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals }
 
   ];
 
@@ -143,8 +141,7 @@ export class MedicalrecordComponent implements OnInit {
 
     sortField: "VisitId",
     sortOrder: 0,
-    filters: this.allfilters,
-    row: 25
+    filters: this.allfilters
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;

@@ -327,16 +327,6 @@ export class DischargeSummaryComponent implements OnInit {
           "fieldName": "AdmissionId",
           "fieldValue": String(AdmissionId),//"40773",	
           "opType": "Equals"
-        },
-        {
-          "fieldName": "Start",
-          "fieldValue": "0",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Length",
-          "fieldValue": "10",
-          "opType": "Equals"
         }
       ],
       "exportType": "JSON"
@@ -362,16 +352,6 @@ export class DischargeSummaryComponent implements OnInit {
           "fieldName": "AdmissionId",
           "fieldValue": String(AdmissionId),// "40622",	
           "opType": "Equals"
-        },
-        {
-          "fieldName": "Start",
-          "fieldValue": "0",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Length",
-          "fieldValue": "10",
-          "opType": "Equals"
         }
       ],
       "exportType": "JSON"
@@ -380,7 +360,7 @@ export class DischargeSummaryComponent implements OnInit {
     console.log(m_data2)
     this._IpSearchListService.getDischargeSummary(m_data2).subscribe((data) => {
       console.log(data);
-      debugger
+      
       this.RetrDischargeSumryList = data?.data as DischargeSummary;
       console.log(this.RetrDischargeSumryList);
       if (this.RetrDischargeSumryList.length != 0) {
@@ -421,7 +401,7 @@ export class DischargeSummaryComponent implements OnInit {
     });
   }
   getdischargeIdbyadmission() {
-    debugger
+    
     this._IpSearchListService.getDischargeId(this.data.admissionId).subscribe(data => {
       console.log(data)
       

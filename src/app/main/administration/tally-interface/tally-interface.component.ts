@@ -46,8 +46,7 @@ export class TallyInterfaceComponent implements OnInit {
         filters: [
             { fieldName: "BankName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(public _TallyInterfaceService: TallyInterfaceService,

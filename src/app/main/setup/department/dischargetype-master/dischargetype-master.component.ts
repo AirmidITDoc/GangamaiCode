@@ -46,8 +46,7 @@ export class DischargetypeMasterComponent implements OnInit {
         filters: [
             { fieldName: "dischargeTypeName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(

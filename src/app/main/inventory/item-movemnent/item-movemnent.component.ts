@@ -67,11 +67,8 @@ export class ItemMovemnentComponent implements OnInit {
             { fieldName: "ItemId", fieldValue: "580", opType: OperatorComparer.Equals },
             { fieldName: "FromStoreID", fieldValue: "2", opType: OperatorComparer.Equals },
             { fieldName: "ToStoreId", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "BatchNo", fieldValue: "G220720826", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "BatchNo", fieldValue: "G220720826", opType: OperatorComparer.Equals }
+        ]
     }
 
     constructor(

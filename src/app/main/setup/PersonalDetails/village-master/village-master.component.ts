@@ -47,8 +47,7 @@ export class VillageMasterComponent implements OnInit {
         filters: [
             { fieldName: "villageName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(
