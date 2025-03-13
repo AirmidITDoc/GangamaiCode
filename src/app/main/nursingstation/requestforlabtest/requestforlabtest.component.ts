@@ -35,7 +35,7 @@ export class RequestforlabtestComponent implements OnInit {
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
     gridConfig: gridModel = {
-        apiUrl: "Nursing/LabRequestList",
+        apiUrl: "IPPrescription/LabRadRequestList",
         columnsList: [
             { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:200},
@@ -103,17 +103,17 @@ export class RequestforlabtestComponent implements OnInit {
         debugger
 
         this.gridConfig1 = {
-            apiUrl: "Nursing/LabRequestDetailsList",
+            apiUrl: "IPPrescription/LabRadRequestDetailList",
             columnsList: [
-                { heading: "IsBillingStatus", key: "isBillingStatus", sort: true, align: 'left', emptySign: 'NA'},
+                { heading: "IsBillingStatus", key: "isStatus", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "IsTestStatus", key: "patientName", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "ReqDate", key: "reqDate", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "ReqTime", key: "reqTime", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "AddedBy", key: "addedby", sort: true, align: 'left', emptySign: 'NA'},
+                { heading: "AddedBy", key: "addedByName", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "Add Billing User", key: "billingUser", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "BillDateTime", key: "billdatetime", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "PBill No", key: "pBillno", sort: true, align: 'left', emptySign: 'NA'},
+                { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA'},
     
             ],
             sortField: "RequestId",
@@ -121,8 +121,7 @@ export class RequestforlabtestComponent implements OnInit {
             filters: [
                 { fieldName: "RequestId", fieldValue: "1", opType: OperatorComparer.Equals },
                 { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-                // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+                { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
             ],
             row: 25
         }

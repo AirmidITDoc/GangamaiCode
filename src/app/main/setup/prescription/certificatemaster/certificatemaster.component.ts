@@ -20,7 +20,7 @@ export class CertificatemasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
     gridConfig: gridModel = {
-        apiUrl: "RadiologyTemplate/List",
+        apiUrl: "BillingService/CertificateMasterList",
         columnsList: [
             { heading: "TemplateCode", key: "templateId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "TemplateName", key: "templateName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
@@ -28,33 +28,35 @@ export class CertificatemasterComponent implements OnInit {
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._CertificateserviceService.deactivateTheStatus(data.templateId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, 
+                {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._CertificateserviceService.deactivateTheStatus(data.templateId).subscribe((response: any) => {
+                            this.toastr.success(response.message);
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "TemplateName",
+        sortField: "CertificateId",
         sortOrder: 0,
         filters: [
-            { fieldName: "templateName", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            { fieldName: "CertificateName", fieldValue: "%", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
         ],
         row: 25
     }
+
     constructor(
         public _CertificateserviceService: CertificateserviceService,
         public _matDialog: MatDialog,
         public toastr: ToastrService,
-
     ) { }
 
     ngOnInit(): void { }

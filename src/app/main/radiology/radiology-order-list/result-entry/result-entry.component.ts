@@ -54,6 +54,7 @@ export class ResultEntryComponent implements OnInit {
   currentDate = new Date();
   ResultEntry: any;
   SuggestionNotes: any;
+  vsuggation:any;
   DoctorId: any;
   printTemplate: any;
   subscriptionArr: Subscription[] = [];
@@ -65,6 +66,7 @@ export class ResultEntryComponent implements OnInit {
  vTemplateName: any = 0;
  TemplateId: any = 0;
  
+ autocompleteModeTemplate: string = "TemplateMaster";
   
   private _onDestroy = new Subject<void>();
 
@@ -128,6 +130,10 @@ export class ResultEntryComponent implements OnInit {
 //   }); 
 // }   
 
+selectChangeTemplateName(row) {
+  console.log("Template:", row)
+}
+
 getUpdatetemplate() {
   
   var mdata={
@@ -175,9 +181,6 @@ getUpdatetemplate() {
   onBlur(e:any){
     this.vTemplateDesc=e.target.innerHTML;
   } 
-
-  
-
 
   onSubmit() {
     

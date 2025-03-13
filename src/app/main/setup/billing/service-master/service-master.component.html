@@ -13,8 +13,8 @@
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <button mat-raised-button (click)="onTariff()">+ New Tariff
             </button>
-            <button mat-raised-button (click)="onEdit()">+ OnEdit
-            </button>
+            <!-- <button mat-raised-button (click)="onPackageEdit()">+ OnEdit
+            </button> -->
             <button mat-raised-button (click)="onSave()">+ New Service
             </button>
         </div>
@@ -70,7 +70,7 @@
 
         <ng-template #iconisPackage let-element >
             <div>
-                <mat-icon *ngIf="element.isPackage == 1" matTooltip="IsPackage">
+                <mat-icon *ngIf="element.isPackage == 1" (click)="onPackageEdit(element)" matTooltip="IsPackage">
                     <img width="18px" height="14px" src="assets/images/logos/Package.png">
                 </mat-icon>
                 <mat-icon *ngIf="element.isPackage != 1"

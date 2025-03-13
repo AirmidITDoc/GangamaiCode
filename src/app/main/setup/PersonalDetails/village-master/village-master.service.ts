@@ -18,7 +18,7 @@ export class VillageMasterService {
 
     createVillageForm(): FormGroup {
         return this._formBuilder.group({
-            villageId: [""],
+            villageId: [0],
             villageName: [""],
             talukaName: [""],
             isActive:[true,[Validators.required]]

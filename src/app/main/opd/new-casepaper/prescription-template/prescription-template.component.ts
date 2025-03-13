@@ -95,46 +95,28 @@ chargelist:any=[];
     insert_TemplateHObj['isAddBy'] =  0;
     insert_TemplateHObj['isUpdatedBy'] = 0;
 
-      let insert_TemplateD = {
-      'presId' : 0,
-      'date' : formattedDate,
-      'classId' :1,
-      'genericId' :1,
-      'drugId' : 1,
-      'doseId' : 1 ,
-      'days' :1,
-      'instructionId' :1 ,
-      'qtyPerDay' : 1 ,
-      'totalQty' : 1,
-      'instruction' : 'string',
-      'remark' : 'string',
-      'isEnglishOrIsMarathi' :  true
-      }
-
-
-    // let insert_TemplateDObj = [];
-    // this.chargelist.forEach(element =>{
-    //   let insert_TemplateD = {};
-    //   insert_TemplateD['presId'] = 0;
-    //   insert_TemplateD['date'] = formattedDate;
-    //   insert_TemplateD['classId'] =   element.classID;
-    //   insert_TemplateD['genericId'] =  element.genericId;
-    //   insert_TemplateD['drugId'] =  element.drugId || 0;
-    //   insert_TemplateD['doseId'] = element.doseId || 0;
-    //   insert_TemplateD['days'] = element.days || 0;
-    //   insert_TemplateD['instructionId'] =  element.instructionId || 0;
-    //   insert_TemplateD['qtyPerDay'] = element.qtyPerDay || 0;
-    //   insert_TemplateD['totalQty'] =  (element.days * element.qtyPerDay) || 0
-    //   insert_TemplateD['instruction'] = element.instruction || '';
-    //   insert_TemplateD['remark'] = element.instruction || '';
-    //   insert_TemplateD['isEnglishOrIsMarathi'] =  true;
-    //   insert_TemplateDObj.push(insert_TemplateD)
-    // }); 
+    let insert_TemplateDObj = [];
+    this.chargelist.forEach(element =>{
+      let insert_TemplateD = {};
+      insert_TemplateD['presId'] = 0;
+      insert_TemplateD['date'] = formattedDate;
+      insert_TemplateD['classId'] =   element.classID;
+      insert_TemplateD['genericId'] =  element.genericId;
+      insert_TemplateD['drugId'] =  element.drugId || 0;
+      insert_TemplateD['doseId'] = element.doseId || 0;
+      insert_TemplateD['days'] = element.days || 0;
+      insert_TemplateD['instructionId'] =  element.instructionId || 0;
+      insert_TemplateD['qtyPerDay'] = element.qtyPerDay || 0;
+      insert_TemplateD['totalQty'] =  (element.days * element.qtyPerDay) || 0
+      insert_TemplateD['instruction'] = element.instruction || '';
+      insert_TemplateD['remark'] = element.instruction || '';
+      insert_TemplateD['isEnglishOrIsMarathi'] =  true;
+      insert_TemplateDObj.push(insert_TemplateD)
+    }); 
 
     let submitData ={
       "prescriptionOPTemplate":insert_TemplateHObj,
-      "presTemplate":insert_TemplateD
-      // "presTemplate":insert_TemplateDObj
+      "presTemplate":insert_TemplateDObj
     }
     console.log(submitData);
     this._CasepaperService.SavePrescriptionTemplate(submitData).subscribe(response =>{

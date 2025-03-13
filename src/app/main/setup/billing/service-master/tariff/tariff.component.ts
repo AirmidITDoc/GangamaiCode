@@ -15,6 +15,7 @@ export class TariffComponent implements OnInit {
     // isActive:boolean=true;
 
     autocompleteModegroupName:string = "Tariff";
+    autocompleteModeName: string = "Tariff";
 
     constructor(
         public _ServiceMasterService: ServiceMasterService,

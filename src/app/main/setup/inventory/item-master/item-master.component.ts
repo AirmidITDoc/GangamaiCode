@@ -55,11 +55,7 @@ export class ItemMasterComponent implements OnInit {
                     }, 
                     {
                         action: gridActions.delete, callback: (data: any) => {
-                            debugger
-                            let s={
-                                itemID:data.itemID
-                            }
-                            this._itemService.ItemMasterCancle(s).subscribe((response: any) => {
+                            this._itemService.ItemMasterCancle(data.itemID).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });

@@ -76,7 +76,9 @@ public getRegistraionById(Id) {
 
   public presciptionreturnSave(emp){
     // return this._httpClient.post("InPatient/InsertIPPrescriptionReturn",emp)
-    return this._httpClient1.PostData("Nursing/PrescriptionReturnInsert",emp)
+    // return this._httpClient1.PostData("Nursing/PrescriptionReturnInsert",emp)    
+    return this._httpClient1.PostData("IPPrescription/IPPrescReturnItemDetList",emp)
+
   }
 
   public presciptionreturnUpdate(emp){
