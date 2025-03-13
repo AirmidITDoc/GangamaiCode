@@ -291,49 +291,73 @@ export class NewRequestforlabComponent implements OnInit {
   }
 
   savebtn: boolean = false;
-  OnSave() {
-   
-    let submissionObj = {};
+    OnSave() 
+    {
+        if(!this.myFormGroup.invalid) 
+        {
+            console.log("LabRequest Insert:",this.myFormGroup.value)
     
-    if(this.vAdmissionID !=0 && this.dstable1.data.length!=0){
-    let ipPathOrRadiRequestLabRequestInsertArray = [];
-  this.dstable1.data.forEach((element) => {
-    console.log(element)
-      let ipPathOrRadiRequestLabRequestInsert = {};
-      ipPathOrRadiRequestLabRequestInsert['reqDetId'] = 0;
-      ipPathOrRadiRequestLabRequestInsert['requestId'] = 0;
-      ipPathOrRadiRequestLabRequestInsert['serviceId'] = element.ServiceId;
-      ipPathOrRadiRequestLabRequestInsert['price'] = element.Price;
-      ipPathOrRadiRequestLabRequestInsert['isStatus'] = false;
-      ipPathOrRadiRequestLabRequestInsert['IsOnFileTest'] = false;
-      ipPathOrRadiRequestLabRequestInsertArray.push(ipPathOrRadiRequestLabRequestInsert);
-    });
-
-    submissionObj = {
-      "requestId": 0,
-      "reqDate": this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
-      "reqTime": this.datePipe.transform(this.currentDate, 'shortTime'),
-      "opIpId":  this.vAdmissionID,
-      "opIpType": 1,
-      "isAddedBy": this._loggedService.currentUserValue.userId,
-      "isCancelled": false,
-      "isCancelledBy": 0,
-      "isCancelledDate":this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
-      "isCancelledTime":this.datePipe.transform(this.currentDate, 'shortTime'),
-      "isOnFileTest":false,// this.myFormGroup.get('IsOnFileTest').value || false,
-      'tDlabRequests': ipPathOrRadiRequestLabRequestInsertArray
-    }
-    console.log(submissionObj);
-    this._RequestforlabtestService.LabRequestSave(submissionObj).subscribe(response => {
-      console.log(response.message);
-      this.toastr.success(response);
-      this._matDialog.closeAll();
-            this.viewgetLabrequestReportPdf(response);
-          }, (error) => {
+            this._RequestforlabtestService.LabRequestSave(this.myFormGroup.value).subscribe((response) => {
+            this.toastr.success(response.message);
+            this.onClear(true);
+            }, (error) => {
             this.toastr.error(error.message);
-          });
+            });
         } 
-  }
+        else
+        {
+            this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+    
+    //     let submissionObj = {};
+        
+    //     if(this.vAdmissionID !=0 && this.dstable1.data.length!=0){
+    //     let ipPathOrRadiRequestLabRequestInsertArray = [];
+    //   this.dstable1.data.forEach((element) => {
+    //     console.log(element)
+    //       let ipPathOrRadiRequestLabRequestInsert = {};
+    //       ipPathOrRadiRequestLabRequestInsert['reqDetId'] = 0;
+    //       ipPathOrRadiRequestLabRequestInsert['requestId'] = 0;
+    //       ipPathOrRadiRequestLabRequestInsert['serviceId'] = element.ServiceId;
+    //       ipPathOrRadiRequestLabRequestInsert['price'] = element.Price;
+    //       ipPathOrRadiRequestLabRequestInsert['isStatus'] = false;
+    //       ipPathOrRadiRequestLabRequestInsert['IsOnFileTest'] = false;
+    //       ipPathOrRadiRequestLabRequestInsertArray.push(ipPathOrRadiRequestLabRequestInsert);
+    //     });
+
+    //     submissionObj = {
+    //       "requestId": 0,
+    //       "reqDate": this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+    //       "reqTime": this.datePipe.transform(this.currentDate, 'shortTime'),
+    //       "opIpId":  this.vAdmissionID,
+    //       "opIpType": 1,
+    //       "isAddedBy": this._loggedService.currentUserValue.userId,
+    //       "isCancelled": false,
+    //       "isCancelledBy": 0,
+    //       "isCancelledDate":this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+    //       "isCancelledTime":this.datePipe.transform(this.currentDate, 'shortTime'),
+    //       "isOnFileTest":false,// this.myFormGroup.get('IsOnFileTest').value || false,
+    //       'tDlabRequests': ipPathOrRadiRequestLabRequestInsertArray
+    //     }
+    //     console.log(submissionObj);
+    //     this._RequestforlabtestService.LabRequestSave(submissionObj).subscribe(response => {
+    //       console.log(response.message);
+    //       this.toastr.success(response);
+    //       this._matDialog.closeAll();
+    //             this.viewgetLabrequestReportPdf(response);
+    //           }, (error) => {
+    //             this.toastr.error(error.message);
+    //           });
+    //         } 
+    }
+
+    onClear(val: boolean) {
+        this.myFormGroup.reset();
+        this.dialogRef.close(val);
+    }
 }
 
 export class LabRequest {

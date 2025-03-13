@@ -66,7 +66,8 @@ export class RadiologyTestMasterService {
     populateForm(employee) {
         this.myform.patchValue(employee);
     }
+    
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("test?Id=" + m_data.toString());
+        return this._httpClient.DeleteData("RadiologyTest?Id=" + m_data.toString());
     }
 }

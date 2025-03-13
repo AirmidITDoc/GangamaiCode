@@ -39,11 +39,21 @@ export class RadiologyTestMasterComponent implements OnInit {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data) // EDIT Records
                         }
-                    }, {
+                    }, 
+                    // {
+                    //     action: gridActions.delete, callback: (data: any) => {
+                    //         this.onDeactive(data.testId); // DELETE Records
+                    //     }
+                    // },
+                    {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.onDeactive(data.testId); // DELETE Records
+                            this._radiologytestService.deactivateTheStatus(data.testId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
                         }
-                    }]
+                    },
+                ]
             } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "TestId",
@@ -55,6 +65,7 @@ export class RadiologyTestMasterComponent implements OnInit {
         ],
         row:25
     }
+    grid: any;
 
     constructor(
         public _radiologytestService: RadiologyTestMasterService,
