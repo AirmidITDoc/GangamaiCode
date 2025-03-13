@@ -59,8 +59,7 @@ export class StoreMasterComponent implements OnInit {
         filters: [
             { fieldName: "storeName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(public _StoreMasterService: StoreMasterService, public _matDialog: MatDialog,

@@ -82,11 +82,8 @@ export class SampleCollectionComponent implements OnInit {
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "IsCompleted", fieldValue: "1", opType: OperatorComparer.Equals },
-            { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "100", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals }
+        ]
     }
 
     constructor(public _SampleCollectionService: SampleCollectionService,
@@ -122,8 +119,7 @@ export class SampleCollectionComponent implements OnInit {
                 { fieldName: "BillNo", fieldValue: billNo, opType: OperatorComparer.Equals },
                 { fieldName: "BillDate", fieldValue: date, opType: OperatorComparer.Equals },
                 { fieldName: "OP_IP_Type", fieldValue: opipType, opType: OperatorComparer.Equals },
-            ],
-            row: 25
+            ]
         };
 
         this.isShowDetailTable = true;

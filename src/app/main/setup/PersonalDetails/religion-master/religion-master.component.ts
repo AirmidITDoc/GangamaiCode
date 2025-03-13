@@ -47,8 +47,7 @@ export class ReligionMasterComponent implements OnInit {
         filters: [
             { fieldName: "religionName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
     constructor(public _religionService: ReligionMasterService, public _matDialog: MatDialog,
         public toastr: ToastrService,) { }

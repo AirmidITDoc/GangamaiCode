@@ -105,11 +105,8 @@ export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
         sortField: "MaterialConsumptionId",
         sortOrder: 0,
         filters: [
-            { fieldName: "ToStoreId", fieldValue: "10009", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "ToStoreId", fieldValue: "10009", opType: OperatorComparer.Equals }
+        ]
     }
     grid: any;
     toDate: string;

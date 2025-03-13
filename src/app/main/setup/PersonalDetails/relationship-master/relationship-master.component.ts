@@ -47,8 +47,7 @@ export class RelationshipMasterComponent implements OnInit {
         filters: [
             { fieldName: "relationshipName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(public _relationshipService: RelationshipMasterService, public _matDialog: MatDialog,

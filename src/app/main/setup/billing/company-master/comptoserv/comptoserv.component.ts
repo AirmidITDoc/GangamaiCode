@@ -54,8 +54,7 @@ export class ComptoservComponent implements OnInit {
         filters: [
             { fieldName: "typeName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     gridConfig1: gridModel = {
@@ -85,8 +84,7 @@ export class ComptoservComponent implements OnInit {
         filters: [
             { fieldName: "typeName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     onSave(row: any = null) {

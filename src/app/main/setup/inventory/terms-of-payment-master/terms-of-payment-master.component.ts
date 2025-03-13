@@ -46,8 +46,7 @@ export class TermsOfPaymentMasterComponent implements OnInit {
         filters: [
             { fieldName: "termsOfPayment", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(public _TermsOfPaymentMasterService: TermsOfPaymentMasterService,

@@ -45,8 +45,7 @@ export class ModeOfPaymentMasterComponent implements OnInit {
             filters: [
                 { fieldName: "modeOfPayment", fieldValue: "", opType: OperatorComparer.Contains },
                 { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-            ],
-            row: 25
+            ]
         }
         
         constructor(public _ModeOfPaymentMasterService: ModeOfPaymentMasterService,public _matDialog: MatDialog,

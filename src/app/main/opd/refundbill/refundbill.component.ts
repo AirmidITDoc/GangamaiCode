@@ -231,16 +231,6 @@ patientDetail1 = new VisitMaster1({});
           "fieldName": "RegId",
           "fieldValue": String(RegId),
           "opType": "Equals"
-        },
-        {
-          "fieldName": "Start",
-          "fieldValue": "0",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Length",
-          "fieldValue": "10",
-          "opType": "Equals"
         }
       ],
       "exportType": "JSON"
@@ -273,16 +263,6 @@ patientDetail1 = new VisitMaster1({});
         {
           "fieldName": "BillNo",
           "fieldValue": String(row.billNo),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Start",
-          "fieldValue": "0",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Length",
-          "fieldValue": "10",
           "opType": "Equals"
         }
       ],

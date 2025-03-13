@@ -82,8 +82,7 @@ export class ReturnFromDepartmentComponent implements OnInit {
       { fieldName: "ToStoreId", fieldValue: "10003", opType: OperatorComparer.Equals },
       { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    ],
-    row: 25
+    ]
   }
 
   gridConfig1: gridModel = new gridModel();
@@ -110,8 +109,7 @@ export class ReturnFromDepartmentComponent implements OnInit {
         // { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         // { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         // { fieldName: "Status", fieldValue: "1", opType: OperatorComparer.Equals }
-      ],
-      row: 25
+      ]
     }
     this.isShowDetailTable = true;
     this.grid1.gridConfig = this.gridConfig1;

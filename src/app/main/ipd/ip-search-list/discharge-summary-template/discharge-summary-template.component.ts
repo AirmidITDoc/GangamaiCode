@@ -323,16 +323,6 @@ export class DischargeSummaryTemplateComponent {
           "fieldName": "AdmissionId",
           "fieldValue": "40773",
           "opType": "Equals"
-        },
-        {
-          "fieldName": "Start",
-          "fieldValue": "0",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Length",
-          "fieldValue": "10",
-          "opType": "Equals"
         }
       ],
       "exportType": "JSON"
@@ -449,16 +439,6 @@ export class DischargeSummaryTemplateComponent {
           "fieldName": "AdmissionId",
           "fieldValue": String(AdmissionId),//"40773",	
           "opType": "Equals"
-        },
-        {
-          "fieldName": "Start",
-          "fieldValue": "0",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Length",
-          "fieldValue": "10",
-          "opType": "Equals"
         }
       ],
       "exportType": "JSON"
@@ -483,16 +463,6 @@ export class DischargeSummaryTemplateComponent {
         {
           "fieldName": "AdmissionId",
           "fieldValue": String(AdmissionId),// "40622",	
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Start",
-          "fieldValue": "0",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Length",
-          "fieldValue": "10",
           "opType": "Equals"
         }
       ],

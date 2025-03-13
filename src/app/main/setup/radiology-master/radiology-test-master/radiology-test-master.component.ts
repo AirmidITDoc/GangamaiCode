@@ -59,11 +59,8 @@ export class RadiologyTestMasterComponent implements OnInit {
         sortField: "TestId",
         sortOrder: 0,
         filters: [
-            { fieldName: "ServiceName", fieldValue: "djfh", opType: OperatorComparer.Contains },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
-        ],
-        row:25
+            { fieldName: "ServiceName", fieldValue: "djfh", opType: OperatorComparer.Contains }
+        ]
     }
     grid: any;
 

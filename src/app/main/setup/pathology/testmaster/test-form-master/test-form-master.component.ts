@@ -230,16 +230,6 @@ export class TestFormMasterComponent implements OnInit {
                     "fieldName": "TestId",
                     "fieldValue": String(obj.testId),
                     "opType": "Equals"
-                },
-                {
-                    "fieldName": "Start",
-                    "fieldValue": "0",
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "Length",
-                    "fieldValue": "10",
-                    "opType": "Equals"
                 }
             ],
             "exportType": "JSON"
@@ -267,16 +257,6 @@ debugger
                 {
                     "fieldName": "TestId",
                     "fieldValue": String(obj.testId),
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "Start",
-                    "fieldValue": "0",
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "Length",
-                    "fieldValue": "10",
                     "opType": "Equals"
                 }
             ],
@@ -311,16 +291,6 @@ debugger
                 {
                     "fieldName": "TestId",
                     "fieldValue": String(obj.testId),
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "Start",
-                    "fieldValue": "0",
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "Length",
-                    "fieldValue": "10",
                     "opType": "Equals"
                 }
             ],
@@ -438,11 +408,8 @@ debugger
             sortField: "parameterId",
             sortOrder: 0,
             filters: [
-                { fieldName: "parameterName", fieldValue: parameter, opType: OperatorComparer.Contains },
-                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-            ],
-            row: 25
+                { fieldName: "parameterName", fieldValue: parameter, opType: OperatorComparer.Contains }
+            ]
         }
 
         console.log(param);
@@ -464,11 +431,8 @@ debugger
             sortField: "TestId",
             sortOrder: 0,
             filters: [
-                { fieldName: "TestId", fieldValue: "12", opType: OperatorComparer.Equals },
-                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-            ],
-            row: 25
+                { fieldName: "TestId", fieldValue: "12", opType: OperatorComparer.Equals }
+            ]
         }
 
         console.log(param);

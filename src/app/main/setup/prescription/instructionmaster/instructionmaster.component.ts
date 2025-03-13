@@ -49,8 +49,7 @@ export class InstructionmasterComponent implements OnInit {
         filters: [
             { fieldName: "instructionDescription", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     onSave(row: any = null) {

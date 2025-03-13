@@ -45,8 +45,7 @@ export class MaritalstatusMasterComponent implements OnInit {
         filters: [
             { fieldName: "maritalStatusName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(public _maritalService: MaritalstatusMasterService, public _matDialog: MatDialog,

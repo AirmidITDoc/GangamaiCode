@@ -46,8 +46,7 @@ export class TaxMasterComponent implements OnInit {
         filters: [
             { fieldName: "taxNature", fieldValue: "", opType: OperatorComparer.Equals },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals },
-        ],
-        row: 25
+        ]
     }
 
     constructor(

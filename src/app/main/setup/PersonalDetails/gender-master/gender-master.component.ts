@@ -47,8 +47,7 @@ export class GenderMasterComponent implements OnInit {
         filters: [
             { fieldName: "GenderName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
     autocompleteMode: string = "Gender";
     public autocompleteOptions: any[] = [

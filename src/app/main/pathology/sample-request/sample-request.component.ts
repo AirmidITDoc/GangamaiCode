@@ -106,32 +106,9 @@ export class SampleRequestComponent implements OnInit {
             { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "IsCompleted", fieldValue: "1", opType: OperatorComparer.Equals },
-            { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "100", opType: OperatorComparer.Equals }
-          ],
-          row: 25
+            { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals }
+          ]
       }
-      // gridConfig1: gridModel = {
-      //     apiUrl: "Nursing/PrescriptionReturnList",
-          // columnsList: [
-          //   { heading: "ReqDate", key: "date", sort: true, align: 'left', emptySign: 'NA'},
-          //   { heading: "ReqTime", key: "time", sort: true, align: 'left', emptySign: 'NA'},
-          //   { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA'},
-          //   { heading: "AddedBy", key: "AddedBy", sort: true, align: 'left', emptySign: 'NA'},
-          //   { heading: "BillingUser", key: "BillingUser", sort: true, align: 'left', emptySign: 'NA'},
-          //   { heading: "AddedByDate", key: "AddedByDate", sort: true, align: 'left', emptySign: 'NA'},
-          //   { heading: "IsStatus", key: "IsStatus", sort: true, align: 'left', emptySign: 'NA'},
-          //   { heading: "PBillNo", key: "PBillNo", sort: true, align: 'left', emptySign: 'NA'},
-          //   { heading: "IsPathology", key: "IsPathology", sort: true, align: 'left', emptySign: 'NA'},
-          // ],
-      //     sortField: "PresReId",
-      //     sortOrder: 0,
-      //     filters: [
-      //     ],
-      //     row: 25
-      // }
-
   constructor(
     private formBuilder: UntypedFormBuilder,
     private _httpClient: HttpClient,
@@ -181,11 +158,8 @@ export class SampleRequestComponent implements OnInit {
           sortOrder: 0,
           filters: [
               { fieldName: "RequestId", fieldValue: '1', opType: OperatorComparer.Equals },
-              { fieldName: "IsPathOrRad", fieldValue: '1', opType: OperatorComparer.Equals },
-              { fieldName: "Start", fieldValue: '0', opType: OperatorComparer.Equals },
-              { fieldName: "Length", fieldValue: '10', opType: OperatorComparer.Equals },
-          ],
-          row: 25
+              { fieldName: "IsPathOrRad", fieldValue: '1', opType: OperatorComparer.Equals }
+          ]
       };
 
       this.isShowDetailTable = true;

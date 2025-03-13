@@ -130,11 +130,8 @@ export class NewRequestforlabComponent implements OnInit {
         filters: [
           { fieldName: "ServiceName", fieldValue: ServiceName, opType: OperatorComparer.Contains },
           { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
-          { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals },
-          { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
-          { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-        ],
-        row: 125
+          { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals }
+        ]
       }
       this._RequestforlabtestService.getserviceList(param).subscribe(Menu => {
 

@@ -165,11 +165,8 @@ export class ResultEntryComponent implements OnInit {
             { fieldName: "From_Dt ", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt ", fieldValue: this.todate, opType: OperatorComparer.Equals },
             { fieldName: "IsCompleted", fieldValue: "1", opType: OperatorComparer.Equals },
-            { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "20", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals }
+        ]
     }
 
     gridConfig1: gridModel = {
@@ -198,11 +195,8 @@ export class ResultEntryComponent implements OnInit {
 
             { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "20", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
+        ]
     }
 
     constructor(
@@ -262,11 +256,8 @@ export class ResultEntryComponent implements OnInit {
                 { fieldName: "From_Dt ", fieldValue: fromDate, opType: OperatorComparer.Equals }, //"2024-01-01"
                 { fieldName: "To_Dt ", fieldValue: toDate, opType: OperatorComparer.Equals }, //"2024-10-01"
                 { fieldName: "IsCompleted", fieldValue: status, opType: OperatorComparer.Equals },
-                { fieldName: "OP_IP_Type", fieldValue: patientType, opType: OperatorComparer.Equals },
-                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "Length", fieldValue: "20", opType: OperatorComparer.Equals }
-            ],
-            row: 25
+                { fieldName: "OP_IP_Type", fieldValue: patientType, opType: OperatorComparer.Equals }
+            ]
         }
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();

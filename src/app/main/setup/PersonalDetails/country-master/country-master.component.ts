@@ -45,8 +45,7 @@ export class CountryMasterComponent implements OnInit {
         filters: [
             { fieldName: "countryName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(public _CountryService: CountryMasterService, public _matDialog: MatDialog,

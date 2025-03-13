@@ -146,11 +146,8 @@ export class CompanyListComponent implements OnInit {
       { fieldName: "To_Dt", fieldValue:this.toDate, opType: OperatorComparer.Equals },
       { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
       { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Equals },
-      { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-      ],
-      row: 25
+      { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals }
+      ]
   
     }
   

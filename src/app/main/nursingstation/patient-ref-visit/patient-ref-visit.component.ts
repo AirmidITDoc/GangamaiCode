@@ -71,34 +71,14 @@ export class PatientRefVisitComponent implements OnInit {
         filters: [
             { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals }
+        ]
     }
 
   msg:any;
   SearchName : string;
   screenFromString = 'OP-billing';
-//   displayedColumns: string[] = [
-//     'Adm_Vit_ID',
-//     'PatientName',
-//     'RegNoWithPrefix',
-//     'AgeYear',
-//     'IP_OP_Number',
-//     'Adm_DoctorName',
-//     'ClassName',
-//     'TariffName',
-//     'CompanyName',
-//     'IPNumber',
-//     // 'MobileNo',
-//     // 'AgeYear',
- 
-//     'action'
-//   ];
-
+  
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator:MatPaginator;
 

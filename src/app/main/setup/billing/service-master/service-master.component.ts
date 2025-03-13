@@ -80,11 +80,8 @@ export class ServiceMasterComponent implements OnInit {
         filters: [
             { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.StartsWith },
             { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
-            { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-        ],
-        row: 125
+            { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals }
+        ]
     }
 
     constructor(
@@ -133,9 +130,7 @@ export class ServiceMasterComponent implements OnInit {
         this.groupId = String(obj);
         this.gridConfig.filters = [{ fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
-        { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals },
-        { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
-        { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
+        { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals }]
     }
 
     selectChangetariff(obj: any) {
@@ -143,9 +138,7 @@ export class ServiceMasterComponent implements OnInit {
         this.tariffId = String(obj)
         this.gridConfig.filters = [{ fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
-        { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals },
-        { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
-        { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
+        { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals }]
     }
 
     onSave(row: any = null) {

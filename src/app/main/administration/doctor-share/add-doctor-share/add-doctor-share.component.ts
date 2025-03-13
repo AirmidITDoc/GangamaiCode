@@ -49,8 +49,7 @@ export class AddDoctorShareComponent implements OnInit {
                 { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
                 // { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
                 // { fieldName: "To_Dt", fieldValue:this.toDate, opType: OperatorComparer.Equals },
-            ],
-            row: 25
+            ]
         }
 
 

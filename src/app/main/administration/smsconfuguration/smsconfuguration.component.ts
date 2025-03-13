@@ -54,17 +54,8 @@ export class SMSConfugurationComponent implements OnInit {
         filters: [
             { fieldName: "talukaName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
-       
-        //    constructor(
-        //        public _SMSConfugurationService: SMSConfugurationService,
-        //        public toastr: ToastrService, public _matDialog: MatDialog
-        //    ) { }
-       
-        //    ngOnInit(): void { }
-       
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

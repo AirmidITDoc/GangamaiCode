@@ -486,16 +486,6 @@ export class NewCasepaperComponent implements OnInit {
           "fieldName": "VisitId",
           "fieldValue": String(obj.visitId),//"40773",	
           "opType": "Equals"
-        },
-        {
-          "fieldName": "Start",
-          "fieldValue": "0",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Length",
-          "fieldValue": "10",
-          "opType": "Equals"
         }
       ],
       "exportType": "JSON"
@@ -558,9 +548,7 @@ getRtrvCheifComplaintList(obj) {
     "sortField": "VisitId",
     "sortOrder": 0,
     "filters": [
-      { "fieldName": "VisitId", "fieldValue": String(obj.visitId), "opType": "Equals" },
-      { "fieldName": "Start", "fieldValue": "0", "opType": "Equals" },
-      { "fieldName": "Length", "fieldValue": "10", "opType": "Equals" }
+      { "fieldName": "VisitId", "fieldValue": String(obj.visitId), "opType": "Equals" }
     ],
     "exportType": "JSON"
   };
@@ -831,16 +819,6 @@ DosedisableEditing(index: number) {
         {
           "fieldName": "VisitId",
           "fieldValue": String(obj.visitId),//"40773",	
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Start",
-          "fieldValue": "0",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Length",
-          "fieldValue": "10",
           "opType": "Equals"
         }
       ],
@@ -1595,16 +1573,6 @@ DosedisableEditing(index: number) {
         {
           "fieldName": "RegID",
           "fieldValue": String(obj.regId),//"40773",	
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Start",
-          "fieldValue": "0",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Length",
-          "fieldValue": "10",
           "opType": "Equals"
         }
       ],

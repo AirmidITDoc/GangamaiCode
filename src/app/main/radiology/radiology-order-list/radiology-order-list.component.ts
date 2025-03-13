@@ -88,11 +88,8 @@ export class RadiologyOrderListComponent implements OnInit {
             { fieldName: "From_Dt", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.todate, opType: OperatorComparer.Equals },
             { fieldName: "IsCompleted", fieldValue: "1", opType: OperatorComparer.Equals },
-            { fieldName: "OP_IP_Type", fieldValue: "1", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "OP_IP_Type", fieldValue: "1", opType: OperatorComparer.Equals }
+        ]
     }
 
     constructor(
@@ -160,11 +157,8 @@ export class RadiologyOrderListComponent implements OnInit {
                 { fieldName: "From_Dt", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.todate, opType: OperatorComparer.Equals },
                 { fieldName: "IsCompleted", fieldValue: status, opType: OperatorComparer.Equals },
-                { fieldName: "OP_IP_Type", fieldValue: patientType, opType: OperatorComparer.Equals },
-                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-            ],
-            row: 25
+                { fieldName: "OP_IP_Type", fieldValue: patientType, opType: OperatorComparer.Equals }
+            ]
         }
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();

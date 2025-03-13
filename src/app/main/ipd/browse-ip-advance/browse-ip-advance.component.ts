@@ -74,11 +74,8 @@ export class BrowseIPAdvanceComponent implements OnInit {
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
                 { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
-            ],
-            row: 30
+                { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals }
+            ]
         }
     
         gridConfig1: gridModel = {
@@ -109,11 +106,8 @@ export class BrowseIPAdvanceComponent implements OnInit {
                 { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-                { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
-            ],
-            row: 25
+                { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
+            ]
         }
 
         onSave(row: any = null) {

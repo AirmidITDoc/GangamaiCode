@@ -76,11 +76,8 @@ export class MaterialConsumptionPatientwiseComponent implements OnInit {
             { fieldName: "ToStoreId", fieldValue: "10009", opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "StoreId", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "StoreId", fieldValue: "0", opType: OperatorComparer.Equals }
+        ]
     }
 
     selectChangedeptdoc(obj: any) {
@@ -128,8 +125,7 @@ export class MaterialConsumptionPatientwiseComponent implements OnInit {
             // { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             // { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
       }
         this.isShowDetailTable = true;
         this.grid1.gridConfig = this.gridConfig1;

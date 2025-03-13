@@ -53,8 +53,7 @@ export class MenuMasterComponent implements OnInit {
             // { fieldName: "Id", fieldValue: "217", opType: OperatorComparer.Equals },
             // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             // { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-        ],
-        row: 10
+        ]
     }
 
     constructor(

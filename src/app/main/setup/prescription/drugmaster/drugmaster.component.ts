@@ -64,8 +64,7 @@ export class DrugmasterComponent implements OnInit {
         filters: [
             { fieldName: "drugName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row:25
+        ]
     }
     constructor(public _drugService: DrugmasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}

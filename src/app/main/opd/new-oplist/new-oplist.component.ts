@@ -43,9 +43,7 @@ export class NewOPListComponent implements OnInit {
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
-        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+        { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals }
 
     ]
 
@@ -113,8 +111,7 @@ export class NewOPListComponent implements OnInit {
         ],
         sortField: "PbillNo",
         sortOrder: 0,
-        filters: this.allfilters,
-        row: 250
+        filters: this.allfilters
     }
 
     gridConfig1: gridModel = {
@@ -155,12 +152,9 @@ export class NewOPListComponent implements OnInit {
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Contains },
-            { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Contains },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+            { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Contains }
 
-        ],
-        row: 25
+        ]
     }
 
 
@@ -200,12 +194,8 @@ export class NewOPListComponent implements OnInit {
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
+        ]
     }
 
     constructor(public _OPListService: OPListService, public _matDialog: MatDialog,

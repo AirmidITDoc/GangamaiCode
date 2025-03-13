@@ -46,8 +46,7 @@ export class UnitmasterComponent implements OnInit {
         filters: [
             { fieldName: "unitName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(

@@ -46,8 +46,7 @@ export class UomMasterComponent implements OnInit {
         filters: [
             { fieldName: "unitofMeasurementName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(public _UomMasterService: UomMasterService, public _matDialog: MatDialog,

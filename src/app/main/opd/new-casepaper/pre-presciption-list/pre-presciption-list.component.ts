@@ -66,16 +66,6 @@ export class PrePresciptionListComponent implements OnInit {
           "fieldName": "RegID",
           "fieldValue": String(this.RegId),//"40773",	
           "opType": "Equals"
-        },
-        {
-          "fieldName": "Start",
-          "fieldValue": "0",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Length",
-          "fieldValue": "10",
-          "opType": "Equals"
         }
       ],
       "exportType": "JSON"

@@ -240,16 +240,6 @@ export class IPRefundofAdvanceComponent implements OnInit {
             "fieldName": "RegID",
             "fieldValue": String(this.registerObj.regId),
             "opType": "Equals"
-          },
-         {
-            "fieldName": "Start",
-            "fieldValue": "0",
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "Length",
-            "fieldValue": "10",
-            "opType": "Equals"
           }
         ],
         "exportType": "JSON" 

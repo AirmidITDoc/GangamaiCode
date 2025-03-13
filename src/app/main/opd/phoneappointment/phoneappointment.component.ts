@@ -99,12 +99,9 @@ export class PhoneappointmentComponent implements OnInit {
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals }
 
-        ],
-        row: 25
+        ]
     }
     constructor(
         public _PhoneAppointListService: PhoneAppointListService,

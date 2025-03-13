@@ -46,8 +46,7 @@ export class LocationMasterComponent implements OnInit {
         filters: [
             { fieldName: "locationName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(public _locationService: LocationMasterService, public _matDialog: MatDialog,

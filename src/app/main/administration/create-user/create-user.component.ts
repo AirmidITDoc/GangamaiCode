@@ -49,11 +49,8 @@ export class CreateUserComponent implements OnInit {
             sortField: "UserId",
             sortOrder: 0,
             filters: [
-                { fieldName: "UserName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-            ],
-            row: 10
+                { fieldName: "UserName", fieldValue: "%", opType: OperatorComparer.StartsWith }
+            ]
         }
     
         ngOnInit(): void { }

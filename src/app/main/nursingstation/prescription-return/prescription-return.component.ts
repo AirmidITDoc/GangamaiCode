@@ -61,11 +61,8 @@ export class PrescriptionReturnComponent implements OnInit {
         filters: [
             { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "1008", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "Reg_No", fieldValue: "1008", opType: OperatorComparer.Equals }
+        ]
     }
 
     constructor(public _PrescriptionReturnService: PrescriptionReturnService, public _matDialog: MatDialog,
@@ -87,11 +84,8 @@ export class PrescriptionReturnComponent implements OnInit {
             sortField: "IPMedID",
             sortOrder: 0,
             filters: [
-                { fieldName: "IPMedID", fieldValue: "334", opType: OperatorComparer.Equals },
-                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-            ],
-            row: 25
+                { fieldName: "IPMedID", fieldValue: "334", opType: OperatorComparer.Equals }
+            ]
         }
         this.isShowDetailTable = true;
         this.grid1.gridConfig = this.gridConfig1;

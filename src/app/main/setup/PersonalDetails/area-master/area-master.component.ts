@@ -47,8 +47,7 @@ export class AreaMasterComponent implements OnInit {
         filters: [
             { fieldName: "areaName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(

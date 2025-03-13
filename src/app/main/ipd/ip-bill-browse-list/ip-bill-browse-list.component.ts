@@ -64,9 +64,7 @@ export class IPBillBrowseListComponent implements OnInit {
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "IsIntrimOrFinal", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+        { fieldName: "IsIntrimOrFinal", fieldValue: "0", opType: OperatorComparer.Equals }
 
     ]
     ngAfterViewInit() {
@@ -134,9 +132,7 @@ export class IPBillBrowseListComponent implements OnInit {
         ],
         sortField: "RegNo",
         sortOrder: 0,
-        filters: this.allfilters,
-
-        row: 25
+        filters: this.allfilters
     }
 
     gridConfig1: gridModel = {
@@ -172,11 +168,8 @@ export class IPBillBrowseListComponent implements OnInit {
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Equals }
+        ]
     }
 
     gridConfig2: gridModel = {
@@ -203,11 +196,8 @@ export class IPBillBrowseListComponent implements OnInit {
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
+        ]
     }
 
     constructor(public _IPBrowseBillService: IPBrowseBillService,
@@ -299,9 +289,7 @@ export class IPBillBrowseListComponent implements OnInit {
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+            { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals }
             ]
         }
 
@@ -318,9 +306,7 @@ export class IPBillBrowseListComponent implements OnInit {
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
+            { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals }]
         }
     }
 

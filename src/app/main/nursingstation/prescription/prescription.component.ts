@@ -70,11 +70,8 @@ export class PrescriptionComponent implements OnInit {
         filters: [
             { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "20", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
+        ]
     }
     gridConfig1: gridModel = new gridModel();
 
@@ -112,8 +109,7 @@ export class PrescriptionComponent implements OnInit {
                 // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
                 // { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
                 // // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-            ],
-            row: 25
+            ]
         }
         this.isShowDetailTable = true;
         this.grid1.gridConfig = this.gridConfig1;
@@ -151,31 +147,10 @@ export class PrescriptionComponent implements OnInit {
         filters: [
             { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "20", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
+        ]
     }
-    // gridConfig4: gridModel = {
-    //     apiUrl: "Nursing/PrescriptionReturnList",
-    //     columnsList: [
-    //         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA'},
-    //         { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA'},
-    //         { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA'},
-    //     ],
-    //     sortField: "PresReId",
-    //     sortOrder: 0,
-    //     filters: [
-
-    //         // { fieldName: "PresReId", fieldValue: "8", opType: OperatorComparer.Equals },
-    //         // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-    //         // { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-    //         // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-    //     ],
-    //     row: 25
-    // }
-
+    
     gridConfig4: gridModel = new gridModel();
     isShowDetailTable1: boolean = false;
 
@@ -195,8 +170,7 @@ export class PrescriptionComponent implements OnInit {
                 // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
                 // { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
                 // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-            ],
-            row: 25
+            ]
         }
         this.isShowDetailTable1 = true;
         this.grid4.gridConfig = this.gridConfig4;

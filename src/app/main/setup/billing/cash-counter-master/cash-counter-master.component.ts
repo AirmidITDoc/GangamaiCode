@@ -49,8 +49,7 @@ export class CashCounterMasterComponent implements OnInit {
         filters: [
             { fieldName: "cashCounterName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(

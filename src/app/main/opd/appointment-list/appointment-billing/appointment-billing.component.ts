@@ -506,8 +506,6 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       "sortOrder": 0,
       "filters": [{ "fieldName": "ServiceName", "fieldValue": sname, "opType": "StartsWith" },
       { "fieldName": "TariffId", "fieldValue": "1", "opType": "Equals" }, { "fieldName": "GroupId", "fieldValue": "0", "opType": "Equals" },
-      { "fieldName": "Start", "fieldValue": "0", "opType": "Equals" },
-      { "fieldName": "Length", "fieldValue": "30", "opType": "Equals" }
       ],
       "exportType": "JSON"
     }

@@ -105,11 +105,8 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
       { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals }, //year from 2021 to 2025
       { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
       { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "SalesNo", fieldValue: "0", opType: OperatorComparer.StartsWith },
-      { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
-    ],
-    row: 25
+      { fieldName: "SalesNo", fieldValue: "0", opType: OperatorComparer.StartsWith }
+    ]
   }
 
   gridConfigIpPhy: gridModel = {
@@ -139,11 +136,8 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
       { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals }, //year from 2021 to 2025
       { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
       { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "SalesNo", fieldValue: "0", opType: OperatorComparer.StartsWith },
-      { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
-    ],
-    row: 25
+      { fieldName: "SalesNo", fieldValue: "0", opType: OperatorComparer.StartsWith }
+    ]
   }
 
   onSave(row: any = null) {

@@ -49,8 +49,7 @@ export class CategoryMasterComponent implements OnInit {
         filters: [
             { fieldName: "categoryName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
     constructor(
         public _categorymasterService: CategoryMasterService,

@@ -48,8 +48,7 @@ export class CreditReasonMasterComponent implements OnInit {
         filters: [
             { fieldName: "creditReason", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(

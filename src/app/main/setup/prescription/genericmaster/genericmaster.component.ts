@@ -47,8 +47,7 @@ export class GenericmasterComponent implements OnInit {
         filters: [
             { fieldName: "genericName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(public _GenericService: GenericmasterService, public _matDialog: MatDialog,

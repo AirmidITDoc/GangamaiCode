@@ -46,11 +46,8 @@ export class CertificatemasterComponent implements OnInit {
         sortField: "CertificateId",
         sortOrder: 0,
         filters: [
-            { fieldName: "CertificateName", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "CertificateName", fieldValue: "%", opType: OperatorComparer.Equals }
+        ]
     }
 
     constructor(

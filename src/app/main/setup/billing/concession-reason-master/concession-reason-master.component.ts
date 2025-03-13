@@ -48,8 +48,7 @@ export class ConcessionReasonMasterComponent implements OnInit {
         filters: [
             { fieldName: "concessionReason", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(

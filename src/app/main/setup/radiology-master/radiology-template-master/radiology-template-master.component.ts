@@ -53,8 +53,7 @@ export class RadiologyTemplateMasterComponent implements OnInit {
         filters: [
             { fieldName: "templateName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
     constructor(
         public _TemplateServieService: RadiologyTemplateMasterService,

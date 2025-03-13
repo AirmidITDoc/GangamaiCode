@@ -76,12 +76,8 @@ export class DoctornoteComponent implements OnInit {
         filters: [
             { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals }
+        ]
     }
 
     gridConfig1: gridModel = {
@@ -118,12 +114,8 @@ export class DoctornoteComponent implements OnInit {
         filters: [
             { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals }
+        ]
     }
    
        onSave(row: any = null) {
@@ -276,11 +268,8 @@ export class DoctornoteComponent implements OnInit {
         sortField: "DoctNoteId",
         sortOrder: 0,
         filters: [
-                  { fieldName: "AdmId", fieldValue: "119", opType: OperatorComparer.Equals },
-                  { fieldName: "Start", fieldValue: "", opType: OperatorComparer.Equals },
-                  { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-              ],
-                  row: 25
+                  { fieldName: "AdmId", fieldValue: "119", opType: OperatorComparer.Equals }
+              ]
     }
     this._NursingStationService.getdoctornoteList(param).subscribe(Menu => {
 
@@ -297,11 +286,8 @@ getHandOverNotelist() {
       sortField: "DocHandId",
       sortOrder: 0,
       filters: [
-                { fieldName: "AdmId", fieldValue: "3", opType: OperatorComparer.Equals },
-                { fieldName: "Start", fieldValue: "", opType: OperatorComparer.Equals },
-                { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-            ],
-                row: 25
+                { fieldName: "AdmId", fieldValue: "3", opType: OperatorComparer.Equals }
+            ]
   }
   this._NursingStationService.getpatientHandList(param).subscribe(Menu => {
 
@@ -312,35 +298,6 @@ getHandOverNotelist() {
   });
 }
 
-
-//   gridConfig: gridModel = {
-//     apiUrl: "CanteenRequest/DoctorNoteList",
-//     columnsList: [
-//         { heading: "VDate", key: "vtDate", sort: true, align: 'left', emptySign: 'NA' },
-//         { heading: "Time", key: "tTime", sort: true, align: 'left', emptySign: 'NA' },
-//         { heading: "Note", key: "doctorsNotes", sort: true, align: 'left', emptySign: 'NA'},
-//         {
-//             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-//                 {
-//                     action: gridActions.edit, callback: (data: any) => {
-//                         this.onSave(data);
-//                     }
-//                 }, {
-//                     action: gridActions.print, callback: (data: any) => {
-                        
-//                     }
-//                 }]
-//         } //Action 1-view, 2-Edit,3-delete
-//     ],
-//     sortField: "DoctNoteId",
-//     sortOrder: 0,
-//     filters: [
-//         { fieldName: "AdmId", fieldValue: "119", opType: OperatorComparer.Equals },
-//         { fieldName: "Start", fieldValue: "", opType: OperatorComparer.Equals },
-//         { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-//     ],
-//     row: 25
-// }
 
 onEdit(row) {
   debugger

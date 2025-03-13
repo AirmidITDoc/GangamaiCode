@@ -101,8 +101,7 @@ export class ConsentComponent implements OnInit {
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
       { fieldName: "patientName", fieldValue: "", opType: OperatorComparer.Contains },
       { fieldName: "uhid", fieldValue: "", opType: OperatorComparer.Contains },
-    ],
-    row: 25
+    ]
   }
 
   constructor(

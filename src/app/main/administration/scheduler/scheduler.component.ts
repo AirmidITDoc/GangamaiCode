@@ -46,8 +46,7 @@ export class SchdulerComponent implements OnInit {
             filters: [
                 { fieldName: "BankName", fieldValue: "", opType: OperatorComparer.Contains },
                 { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-            ],
-            row: 25
+            ]
         }
     
         constructor(public _SchdulerService: SchdulerService,

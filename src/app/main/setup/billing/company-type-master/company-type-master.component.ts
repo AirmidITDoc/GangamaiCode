@@ -49,8 +49,7 @@ export class CompanyTypeMasterComponent implements OnInit {
         filters: [
             { fieldName: "typeName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
     constructor(
         public _CompanyMasterService: CompanyTypeMasterService,

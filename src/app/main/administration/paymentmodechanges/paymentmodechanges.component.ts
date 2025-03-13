@@ -82,11 +82,8 @@ export class PaymentmodechangesComponent implements OnInit {
           { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
           { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
           { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals },
-          { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Equals },
-          { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-          { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
-        ],
-        row: 10
+          { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Equals }
+        ]
     }
 
     // IP Receipt
@@ -122,11 +119,8 @@ export class PaymentmodechangesComponent implements OnInit {
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "PBillNo", fieldValue: "1", opType: OperatorComparer.Equals },
-        { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
-      ],
-      row: 25
+        { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Equals }
+      ]
   }
 
   // IP Advance
@@ -162,11 +156,8 @@ export class PaymentmodechangesComponent implements OnInit {
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
       { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
       { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
-    ],
-    row: 25
+      { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Equals }
+    ]
 }
  
   sIsLoading: string = '';

@@ -50,8 +50,7 @@ export class PrefixMasterComponent implements OnInit {
         filters: [
             { fieldName: "PrefixName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+        ]
     }
 
     constructor(

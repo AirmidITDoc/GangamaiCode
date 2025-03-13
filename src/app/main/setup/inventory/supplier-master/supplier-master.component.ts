@@ -64,11 +64,8 @@ export class SupplierMasterComponent implements OnInit {
         sortOrder: 0,
         filters: [
             { fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "StoreID", fieldValue: "2", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "100", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "StoreID", fieldValue: "2", opType: OperatorComparer.Equals }
+        ]
     }
 
     constructor(public _supplierService: SupplierMasterService, public _matDialog: MatDialog,
@@ -115,9 +112,7 @@ export class SupplierMasterComponent implements OnInit {
         this.storeId = obj.value;
         this.gridConfig.filters = [
         { fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "StoreID", fieldValue: this.storeId, opType: OperatorComparer.Equals },
-        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "Length", fieldValue: "100", opType: OperatorComparer.Equals }
+        { fieldName: "StoreID", fieldValue: this.storeId, opType: OperatorComparer.Equals }
         ]
     }
 

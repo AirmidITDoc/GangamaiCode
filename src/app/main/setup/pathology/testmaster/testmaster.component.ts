@@ -70,11 +70,8 @@ export class TestmasterComponent implements OnInit {
     sortField: "TestId",
     sortOrder: 0,
     filters: [
-      { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-      { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-    ],
-    row: 25
+      { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.StartsWith }
+    ]
   }
 
   onSave(row: any = null) {

@@ -66,8 +66,7 @@ export class PrescriptionclassmasterComponent implements OnInit {
         filters: [
             { fieldName: "className", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row:25
+        ]
     }
     constructor(
         public _PrescriptionclassService: PrescriptionclassmasterService,public _matDialog: MatDialog,

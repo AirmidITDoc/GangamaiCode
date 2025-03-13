@@ -170,16 +170,6 @@ export class ServiceMasterFormComponent implements OnInit {
                     "fieldName": "ServiceId",
                     "fieldValue": String(serviceId),
                     "opType": "Equals"
-                },
-                {
-                    "fieldName": "Start",
-                    "fieldValue": "0",
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "Length",
-                    "fieldValue": "10",
-                    "opType": "Equals"
                 }
             ],
             "exportType": "JSON"

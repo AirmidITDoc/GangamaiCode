@@ -33,7 +33,7 @@ export class gridModel {
     sortField: string = "";
     sortOrder: number = 0;
     filters: gridFilter[] = [];
-    row: number = 25;
+    row?: number = 10;
 }
 
 export class gridModel1 {
@@ -43,7 +43,7 @@ export class gridModel1 {
     sortOrder: number = 0;
     searchFields: gridFilter[] = [];
     sortField: string = "";
-    row: number = 25;
+    row?: number = 25;
 }
 
 

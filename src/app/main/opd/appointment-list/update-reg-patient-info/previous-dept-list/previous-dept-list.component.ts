@@ -52,17 +52,7 @@ export class PreviousDeptListComponent {
           "fieldName": "RegId",
           "fieldValue": String(Obj.regId),//"140306",
           "opType": "Equals"
-        },
-        {
-             "fieldName": "Start",
-             "fieldValue": "0",
-             "opType": "Equals"
-           },
-        {
-             "fieldName": "Length",
-             "fieldValue": "10",
-             "opType": "Equals"
-           }
+        }
       ],
       "exportType": "JSON"
     }

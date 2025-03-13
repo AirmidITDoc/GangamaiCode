@@ -84,11 +84,8 @@ export class IPAdvanceComponent implements OnInit {
       sortField: "AdvanceDetailID",
       sortOrder: 0,
       filters: [
-          { fieldName: "AdmissionID", fieldValue: String(this.AdmissionId), opType: OperatorComparer.Equals },
-          { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-          { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }  
-      ],
-      row: 25 
+          { fieldName: "AdmissionID", fieldValue: String(this.AdmissionId), opType: OperatorComparer.Equals }
+      ]
   } 
 
  
@@ -143,16 +140,6 @@ TotalAdvRefAmt:any=0;
             {
               "fieldName": "AdmissionID",
               "fieldValue": String(this.AdmissionId),
-              "opType": "Equals"
-            },
-            {
-              "fieldName": "Start",
-              "fieldValue": "0",
-              "opType": "Equals"
-            },
-            {
-              "fieldName": "Length",
-              "fieldValue": "10",
               "opType": "Equals"
             }
           ],
@@ -433,11 +420,8 @@ TotalAdvRefAmt:any=0;
       sortField: "AdvanceDetailID",
       sortOrder: 0,
       filters: [
-          { fieldName: "AdmissionID", fieldValue: String(this.AdmissionId), opType: OperatorComparer.Equals },
-          { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-          { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }  
-      ],
-      row: 25 
+          { fieldName: "AdmissionID", fieldValue: String(this.AdmissionId), opType: OperatorComparer.Equals }
+      ]
   } 
   this.grid.gridConfig = this.gridConfig;
   this.grid.bindGridData(); 

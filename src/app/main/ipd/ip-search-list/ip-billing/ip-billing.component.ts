@@ -126,10 +126,7 @@ export class IPBillingComponent implements OnInit {
     columnsList: this.allColumns,
     sortField: "BillNo",
     sortOrder: 0,
-    filters: [{ fieldName: "IP_Id", fieldValue: String(this.opD_IPD_Id), opType: OperatorComparer.Equals },
-    { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }],
-    row: 10
+    filters: [{ fieldName: "IP_Id", fieldValue: String(this.opD_IPD_Id), opType: OperatorComparer.Equals }]
   }
 
   gridConfig: gridModel = {
@@ -138,11 +135,8 @@ export class IPBillingComponent implements OnInit {
     sortField: "AdvanceDetailID",
     sortOrder: 0,
     filters: [
-      { fieldName: "AdmissionID", fieldValue: String(this.opD_IPD_Id), opType: OperatorComparer.Equals },
-      { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-    ],
-    row: 25
+      { fieldName: "AdmissionID", fieldValue: String(this.opD_IPD_Id), opType: OperatorComparer.Equals }
+    ]
   }
   Ipbillform: FormGroup;
   isClasselected: boolean = false;
@@ -607,11 +601,8 @@ export class IPBillingComponent implements OnInit {
       sortField: "BillNo",
       sortOrder: 0,
       filters: [
-        { fieldName: "IP_Id", fieldValue: String(opD_IPD_Id), opType: OperatorComparer.Equals },
-        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-      ],
-      row: 10
+        { fieldName: "IP_Id", fieldValue: String(opD_IPD_Id), opType: OperatorComparer.Equals }
+      ]
     },
       this.gridConfig = {
         apiUrl: "Advance/PatientWiseAdvanceList",
@@ -619,11 +610,8 @@ export class IPBillingComponent implements OnInit {
         sortField: "AdvanceDetailID",
         sortOrder: 0,
         filters: [
-          { fieldName: "AdmissionID", fieldValue: String(opD_IPD_Id), opType: OperatorComparer.Equals },
-          { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-          { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+          { fieldName: "AdmissionID", fieldValue: String(opD_IPD_Id), opType: OperatorComparer.Equals }
+        ]
       }
   }
   //Advance list
@@ -638,16 +626,6 @@ export class IPBillingComponent implements OnInit {
           {
             "fieldName": "AdmissionID",
             "fieldValue": String(AdmissionId),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "Start",
-            "fieldValue": "0",
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "Length",
-            "fieldValue": "10",
             "opType": "Equals"
           }
         ],
@@ -684,16 +662,6 @@ export class IPBillingComponent implements OnInit {
         {
           "fieldName": "OPD_IPD_Id",
           "fieldValue": String(this.opD_IPD_Id),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Start",
-          "fieldValue": "0",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Length",
-          "fieldValue": "10",
           "opType": "Equals"
         }
       ],

@@ -68,11 +68,8 @@ export class ItemMasterComponent implements OnInit {
         sortOrder: 0,
         filters: [
             { fieldName: "itemName", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "StoreID", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+            { fieldName: "StoreID", fieldValue: "0", opType: OperatorComparer.Equals }
+        ]
     }
 
     constructor(
