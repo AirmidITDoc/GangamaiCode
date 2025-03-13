@@ -263,7 +263,7 @@ export class DoctornoteComponent implements OnInit {
   }
 
   getDoctorNoteList() {
-    debugger
+    
     var param = {
         sortField: "DoctNoteId",
         sortOrder: 0,
@@ -281,7 +281,7 @@ export class DoctornoteComponent implements OnInit {
 }
 
 getHandOverNotelist() {
-  debugger
+  
   var param = {
       sortField: "DocHandId",
       sortOrder: 0,
@@ -300,7 +300,7 @@ getHandOverNotelist() {
 
 
 onEdit(row) {
-  debugger
+  
   console.log("data:", row)
   this.registerObj=row;
   var m_data = {
@@ -350,7 +350,7 @@ onEdit(row) {
   }
 
   onSubmit() {
-    debugger
+    
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
@@ -528,7 +528,7 @@ onEdit(row) {
   registerObj: any;
 
   getSelectedObj(obj) {
-    debugger
+    
     console.log(obj)
     this.RegOrPhoneflag = 'Entry from Registration';
     let todayDate = new Date();
@@ -537,9 +537,9 @@ onEdit(row) {
     this.PatientName = obj.PatientName;
     this.RegId = obj.value;
     this.VisitFlagDisp = true;
-    debugger
+    
     if ((this.RegId ?? 0) > 0) {
-      debugger
+      
       // console.log(this.data)
       setTimeout(() => {
         this._NursingStationService.getRegistraionById(this.RegId).subscribe((response) => {

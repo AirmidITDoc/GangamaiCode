@@ -244,7 +244,7 @@ export class TestmasterService {
     }
 
     public getquerydata(data){
-        debugger
+        
         return this._httpClient.PostData("Generic/GetBySelectQuery?query="+data, {})
     }
 
@@ -292,7 +292,7 @@ export class TestmasterService {
     }
 
     public unitMasterUpdate(Param: any) {
-        debugger
+        
         if (Param.TestId) {
          return this._httpClient.PutData("PathTestMaster/Edit/" + Param.TestId, Param);
         }

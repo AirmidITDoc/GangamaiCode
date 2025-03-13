@@ -252,7 +252,7 @@ patientDetail1 = new VisitMaster1({});
   TRefundamt = 0;
 
   getservicedtailList(row) {
-    debugger
+    
     
     var m_data = {
       "first": 0,
@@ -330,7 +330,7 @@ patientDetail1 = new VisitMaster1({});
   }
 
   gettablecalculation(element, RefundAmt) {
-    debugger
+    
     console.log(element)
     if (RefundAmt > 0 && RefundAmt <= element.balAmt) {
       element.balanceAmount = ((element.balAmt) - (RefundAmt));
@@ -475,7 +475,7 @@ patientDetail1 = new VisitMaster1({});
         PatientHeaderObj['Age'] = this.AgeYear;
         PatientHeaderObj['NetPayAmount'] = Math.round(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
 
-        debugger
+        
 
         const dialogRef = this._matDialog.open(OpPaymentNewComponent,
           {
@@ -571,7 +571,7 @@ patientDetail1 = new VisitMaster1({});
 }
 
   getWhatsappshareRefundbill(el, vmono) {
-    debugger
+    
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": vmono || 0,
@@ -667,12 +667,12 @@ patientDetail1 = new VisitMaster1({});
   //
   refund: any = 0;
   onEdit(row) {
-    debugger
+    
     
     this.TotalRefundAmount = 0
     this.RefundBalAmount = 0
     console.log(row);
-    debugger
+    
     var datePipe = new DatePipe("en-US");
     this.BillNo = row.billNo;
     this.BillDate = datePipe.transform(row.BillDate, 'dd/MM/yyyy hh:mm a');

@@ -176,7 +176,7 @@ export class StoreMasterService {
 
     public storeMasterSave(Param: any) {
     if (Param.storeId) {
-            debugger
+            
             return this._httpClient.PutData("StoreMaster/"+ Param.storeId, Param);
         } else return this._httpClient.PostData("StoreMaster", Param);
     }

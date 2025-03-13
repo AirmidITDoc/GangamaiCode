@@ -116,7 +116,7 @@ export class TestFormMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        debugger
+        
         this.testForm = this._TestmasterService.createPathtestForm();
         this.templatedetailsForm = this._TestmasterService.templatedetailsForm();
         this.testdetailsForm = this._TestmasterService.testdetailsForm();
@@ -218,7 +218,7 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     fetchTestlist(obj) {
-        debugger
+        
         var m_data =
         {
             "first": 0,
@@ -246,7 +246,7 @@ export class TestFormMasterComponent implements OnInit {
 
     // wroung api list used
     fetchSubTestlist(obj) {
-debugger
+
         var m_data =
         {
             "first": 0,
@@ -273,7 +273,7 @@ debugger
     }
 
     drop(event: CdkDragDrop<string[]>) {
-        debugger
+        
         this.DSTestList.data = [];
         this.ChargeList = this.dsTemparoryList.data;
         moveItemInArray(this.ChargeList, event.previousIndex, event.currentIndex);
@@ -281,7 +281,7 @@ debugger
     }
 
     fetchTemplate(obj) {
-debugger
+
         var m_data =  {
             "first": 0,
             "rows": 10,
@@ -306,7 +306,7 @@ debugger
     }
 
     onSubmit() {
-        debugger
+        
         const currentDate = new Date();
         const datePipe = new DatePipe('en-US');
         const formattedTime = datePipe.transform(currentDate, 'shortTime');
@@ -450,7 +450,7 @@ debugger
     }
 
     onAdd(event) {
-        // debugger
+        // 
         console.log(event)
 
         if (this.testForm.get("IsSubTest").value) {
@@ -526,7 +526,7 @@ debugger
     }
         
     addParameter(row) {
-        // debugger;
+        // ;
 
         if (!row || !row.parameterId) {
             console.error("Invalid row data!");
@@ -558,7 +558,7 @@ debugger
     }
 
     addparameterdata(row) {
-        // debugger
+        // 
         console.log("Adding Parameter:", row);
 
         this.ChargeList = this.DSTestList.data || [];
@@ -581,7 +581,7 @@ debugger
     }
 
     addSubTest(row) {
-        debugger
+        
 
         if (!row || !row.parameterID) {
             console.error("Invalid row data!");
@@ -611,7 +611,7 @@ debugger
     }
 
     addsubtestdata(row) {
-        debugger
+        
         console.log("Adding Parameter:", row);
 
         this.ChargeList = this.DSTestList.data || [];

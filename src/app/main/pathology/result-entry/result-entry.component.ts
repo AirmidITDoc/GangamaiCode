@@ -217,7 +217,7 @@ export class ResultEntryComponent implements OnInit {
     }
 
     searchRecords(data) {
-        debugger
+        
         let regno = this._SampleService.myformSearch.get("RegNoSearch").value || 0;
         let fromDate = this._SampleService.myformSearch.get("start").value || "";
         let toDate = this._SampleService.myformSearch.get("end").value || "";
@@ -270,7 +270,7 @@ export class ResultEntryComponent implements OnInit {
     }
 
       getSampledetailList1(row) {
-    debugger    
+        
         let inputDate = row.vaDate;
         let parts = inputDate.split(' ')[0].split('-');
         let date = `${parts[2]}-${parts[1]}-${parts[0]}`;

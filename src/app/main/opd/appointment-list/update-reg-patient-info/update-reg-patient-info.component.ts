@@ -191,7 +191,7 @@ export class UpdateRegPatientInfoComponent {
   }
 
   OnViewReportPdf(element) {
-    debugger
+    
     console.log('Third action clicked for:', element);
     this.commonService.Onprint("VisitId", element, "AppointmentReceipt");
   }
@@ -199,7 +199,7 @@ export class UpdateRegPatientInfoComponent {
 
 
   onChangePatient(value) {
-    debugger
+    
     var mode = "Company"
     if (value.text == "Company") {
       this._AppointmentlistService.getMaster(mode, 1);
@@ -236,7 +236,7 @@ export class UpdateRegPatientInfoComponent {
   }
   PrevregisterObj: any;
   getLastDepartmetnNameList(row) {
-    debugger
+    
     const dialogRef = this._matDialog.open(PreviousDeptListComponent,
       {
         maxWidth: "45vw",
@@ -291,7 +291,7 @@ this.patientDetail1.doctorID=this.PrevregisterObj.consultantDocId
 
 
   selectChangedepartment(obj: any) {
-    debugger
+    
     console.log(obj)
     this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
       this.ddlDoctor.options = data;

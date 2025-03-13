@@ -97,7 +97,7 @@ export class ParameterFormMasterComponent implements OnInit {
         public toastr: ToastrService) { }
 
     ngOnInit(): void {
-        debugger
+        
         this.parameterForm = this._ParameterService.createParameterForm();
         this.numericForm = this._ParameterService.numericForm();
         this.descForm = this._ParameterService.descForm();
@@ -143,7 +143,7 @@ export class ParameterFormMasterComponent implements OnInit {
     }
 
     OnSave() {
-        debugger
+        
         if (this._ParameterService.myform.get("IsBold").value)
             var BoldValue = "B"
         else
@@ -161,7 +161,7 @@ export class ParameterFormMasterComponent implements OnInit {
 
             console.log('selected:', this.selectedItems)
             for (var val of this.selectedItems) {
-                debugger
+                
                 var data = {
                     descriptiveId: 0,
                     parameterId: 0, //this.descForm.get("paraId").value, 
@@ -275,7 +275,7 @@ export class ParameterFormMasterComponent implements OnInit {
     onAdd(event) {
 
         let isNewRowUnique = true;
-        debugger
+        
         const newRow: any = {
             sexId: this.numericForm.get('sexId').value || "",
             minAge: this.numericForm.get('minAge').value,
@@ -544,7 +544,7 @@ export class ParameterFormMasterComponent implements OnInit {
     }
 
     AddData(txt) {
-        debugger
+        
         // console.log(this.descForm.get("paraId").value)
         txt = this.descForm.get('paraId').value + this.descForm.get('defaultValue').value
 

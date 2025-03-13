@@ -74,7 +74,7 @@ chargelist:any=[];
   } 
   savebtn:boolean=false;
   onSave(){
-    debugger
+    
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');

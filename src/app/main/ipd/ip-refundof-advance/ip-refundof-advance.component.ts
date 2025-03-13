@@ -229,7 +229,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
  
 
   getRefundofAdvanceListRegIdwise() {
-    debugger
+    
     var m_data = { 
         "first": 0,
         "rows": 10,

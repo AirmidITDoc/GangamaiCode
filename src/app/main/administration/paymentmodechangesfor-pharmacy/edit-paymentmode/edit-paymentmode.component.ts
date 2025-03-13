@@ -158,7 +158,7 @@ export class EditPaymentmodeComponent implements OnInit {
   }
   
   Save(){
-    debugger
+    
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');

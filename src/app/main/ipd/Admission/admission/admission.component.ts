@@ -485,7 +485,7 @@ export class AdmissionComponent implements OnInit {
 
   getAdmittedPatientCasepaperview(element) {
     
-    debugger
+    
     console.log('Third action clicked for:', element);
     this.commonService.Onprint("AdmissionId", element.admissionId, "IpCasepaperReport"); 
   }

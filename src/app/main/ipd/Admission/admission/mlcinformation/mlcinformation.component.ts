@@ -102,7 +102,7 @@ phdatetime: any;
 
 
   getMlcdetail(AdmissionId){
-    debugger
+    
 
     // AdmissionId=114
     setTimeout(() => {

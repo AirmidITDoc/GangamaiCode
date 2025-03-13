@@ -88,7 +88,7 @@ export class ReturnFromDepartmentComponent implements OnInit {
   gridConfig1: gridModel = new gridModel();
   isShowDetailTable: boolean = false;
   GetDetails1(data) {
-    debugger
+    
     this.gridConfig1 = {
       apiUrl: "IssueToDepartment/IssueToDepttList",
       columnsList: [

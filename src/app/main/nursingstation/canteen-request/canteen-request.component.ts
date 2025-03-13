@@ -69,7 +69,7 @@ export class CanteenRequestComponent implements OnInit {
     isShowDetailTable: boolean = false;
 
     GetDetails(data) {
-        debugger
+        
         this.gridConfig1 = {
         apiUrl: "Nursing/PrescriptionDetailList",
         columnsList: [

@@ -93,7 +93,7 @@ export class CreateUserComponent implements OnInit {
         Password:string;
 
   PasswordView(contact) {
-    debugger
+    
     const today = new Date();
     const Currentyear = today.getFullYear()
     this.Password = ( contact.userLoginName + "@" + Currentyear)

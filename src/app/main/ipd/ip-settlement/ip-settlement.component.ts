@@ -137,7 +137,7 @@ export class IPSettlementComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
              let NeftNo="0"
             console.log(result.submitDataPay.ipPaymentInsert)
-            debugger
+            
             if(result.submitDataPay.ipPaymentInsert.NEFTNo =="undefined")
                 NeftNo="0"
             else
@@ -291,7 +291,7 @@ export class IPSettlementComponent implements OnInit {
     }
 
     GetDetails(data) {
-        debugger
+        
         this.gridConfig = {
             apiUrl: "IPBill/IPBillList",
             columnsList: [

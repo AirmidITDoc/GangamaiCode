@@ -48,7 +48,7 @@ export class TaxMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        debugger
+        
         return this._httpClient.DeleteData("TaxMaster?Id=" + m_data.toString());
     }
 }

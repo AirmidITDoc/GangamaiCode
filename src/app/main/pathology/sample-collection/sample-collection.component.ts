@@ -133,7 +133,7 @@ export class SampleCollectionComponent implements OnInit {
     // gridConfig1: gridModel = new gridModel();
     // isShowDetailTable: boolean = false;
     // getSelectedRow(row:any):void{
-    //     debugger
+    //     
     //     console.log("Selected row : ", row);
     //     let billNo=row.billNo //248785
     //     // let date =row.vaDate //2025-03-13

@@ -39,11 +39,11 @@ export class CancellationService {
     return this._httpClient.PostData("Generic/GetDataSetByProc?procName=m_Rtrv_BrowseOPDBill_Pagi", param) 
   }
   public OpCancelBill(param) {
-    debugger
+    
     return this._httpClient.PutData("BillCancellation/OPCancelBill", param) 
   }
   public IpCancelBill(param) {
-    debugger
+    
     return this._httpClient.PutData("BillCancellation/IPCancelBill", param) 
   }
   public getDateTimeChange(m_data) {

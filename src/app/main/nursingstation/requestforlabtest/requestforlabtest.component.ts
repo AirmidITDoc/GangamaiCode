@@ -73,7 +73,7 @@ export class RequestforlabtestComponent implements OnInit {
     getSelectedRow(row:any):void{
         console.log("Selected row : ", row);
         this.vRequestId=row.requestId
-        debugger
+        
 
         this.gridConfig1 = {
             apiUrl: "IPPrescription/LabRadRequestDetailList",

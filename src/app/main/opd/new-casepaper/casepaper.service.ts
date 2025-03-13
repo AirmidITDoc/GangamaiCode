@@ -173,7 +173,7 @@ public insertItemMaster(Param: any) {
 }
 
 public updateItemMaster1(Param: any) {
-  debugger
+  
   if (Param.itemId) {
       return this._httpClient1.PutData("ItemMaster/Edit/" + Param.itemId, Param);
   }
@@ -211,13 +211,13 @@ public getRtrvCheifComplaintList1(employee) {
   return this._httpClient1.PostData("OPDPrescriptionMedical/GetDignosisList",employee);
 }
 public genericNameUpdate(Param: any) {
-  debugger
+  
   if (Param.precriptionId) {
       return this._httpClient1.PutData("OPDPrescriptionMedical/GenericEdit/" + Param.precriptionId, Param);
   }
 }
 public doseNameUpdate(Param: any) {
-  debugger
+  
   if (Param.precriptionId) {
       return this._httpClient1.PutData("OPDPrescriptionMedical/PrescriptionEdit/" + Param.precriptionId, Param);
   }

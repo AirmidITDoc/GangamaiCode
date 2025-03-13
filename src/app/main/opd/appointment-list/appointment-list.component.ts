@@ -170,7 +170,7 @@ export class AppointmentListComponent implements OnInit {
     }
 
 getfilterdata(){
-    debugger
+    
     this.gridConfig = {
         apiUrl: "VisitDetail/AppVisitList",
         columnsList:this.allcolumns , 
@@ -193,7 +193,7 @@ getfilterdata(){
   
 
     ListView(value) {
-        debugger
+        
         console.log(value)
          if(value.value!==0)
             this.DoctorId=value.value

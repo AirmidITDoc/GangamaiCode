@@ -93,12 +93,12 @@ export class ServiceMasterService {
     
 
     public deactivateTheStatus(m_data) {
-        debugger
+        
         return this._httpClient.DeleteData("BillingService?Id=" + m_data.toString());
     }
 
     public ServiceMasterCancle(Id: any) {
-        debugger
+        
       return this._httpClient.DeleteData(`BillingService/ServicDelete?Id=${Id}`);
     }
 

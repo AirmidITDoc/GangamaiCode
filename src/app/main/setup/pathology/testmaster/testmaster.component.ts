@@ -101,7 +101,7 @@ export class TestmasterComponent implements OnInit {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, Change Status!'
     }).then((result) => {
-      debugger
+      
       if (result.isConfirmed) {
         this._TestService.deactivateTheStatus(row.testId).subscribe(
           (response) => {

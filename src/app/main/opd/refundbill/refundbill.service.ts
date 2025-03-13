@@ -83,7 +83,7 @@ export class RefundbillService {
 
     public getRefundofBillOPDList(employee) {
         console.log(employee)
-        debugger
+        
      return this._httpClient.PostData("RefundOfBill/OPBilllistforrefundList",employee);
 
     }

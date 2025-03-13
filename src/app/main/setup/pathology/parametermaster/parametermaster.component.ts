@@ -94,7 +94,7 @@ export class ParametermasterComponent implements OnInit {
     }
 
     getfilterdata(){
-        debugger
+        
         this.gridConfig = {
             apiUrl: "ParameterMaster/MPathParameterList",
             columnsList:this.allcolumns , 
@@ -128,7 +128,7 @@ export class ParametermasterComponent implements OnInit {
     }
 
     onEdit(row) {
-        debugger
+        
         console.log(row)
 
         // wroung api used
@@ -257,7 +257,7 @@ export class ParametermasterComponent implements OnInit {
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, Change Status!'
         }).then((result) => {
-            debugger
+            
             if (result.isConfirmed) {
                 this._ParameterService.deactivateTheStatus(row.parameterId).subscribe(
                     (data) => {

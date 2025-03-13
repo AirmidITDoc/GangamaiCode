@@ -33,7 +33,7 @@ export class PrintCallingComponent implements OnInit {
                 }
 
             console.log(param)
-            debugger
+            
             this._AppointmentlistService.getReportView(param).subscribe(res => {
                 const matDialog = this._matDialog.open(PdfviewerComponent,
                     {

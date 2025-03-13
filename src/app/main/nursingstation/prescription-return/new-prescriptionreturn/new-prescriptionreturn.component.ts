@@ -159,7 +159,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   }
 
   selectChangeItem(obj: any) {
-    debugger
+    
     console.log("Item:",obj);
     this.ItemId=obj.value;
     this.ItemSubform.get('ItemId').setValue(obj);
@@ -168,7 +168,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
 }
 
   getBatch() {
-    debugger
+    
     // this.qty.nativeElement.focus();    
     const dialogRef = this._matDialog.open(BatchpopupComponent,
       {
@@ -236,7 +236,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   }
 
   getSelectedObjOP(obj) {
-    debugger
+    
     if ((obj.regId ?? 0) > 0) {
       console.log("Visite Patient:",obj)
       this.vRegNo=obj.regNo
@@ -269,7 +269,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   }
 
   getSelectedObjIP(obj) {
-    debugger
+    
     if ((obj.regID ?? 0) > 0) {
       console.log("Admitted patient:",obj)
       this.vRegNo=obj.regNo
@@ -348,7 +348,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   selectedItem:any;
 
   onAdd() {
-    debugger
+    
 
     if ((this.ItemSubform.get('ItemId').value == '' || this.ItemSubform.get('ItemId').value == null || this.ItemSubform.get('ItemId').value == undefined)) {
       this.toastr.warning('Please select Item', 'Warning !', {
@@ -471,7 +471,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   }
 
   OnSavePrescriptionreturn() {
-    debugger
+    
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');

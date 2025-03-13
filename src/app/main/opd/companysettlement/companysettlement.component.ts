@@ -81,7 +81,7 @@ Age=0;
     openPaymentpopup(contact) {
 
         console.log(contact)
-        debugger
+        
         let PatientName = contact.firstName +" "+ contact.lastName
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
@@ -183,7 +183,7 @@ Age=0;
 
 GetDetails(data) {
     console.log(data)
-    debugger
+    
     this.gridConfig = {
         apiUrl: "OPBill/OPBillListSettlementList",
         columnsList: [

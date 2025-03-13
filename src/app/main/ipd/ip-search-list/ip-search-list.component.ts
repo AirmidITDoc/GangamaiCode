@@ -190,7 +190,7 @@ export class IPSearchListComponent implements OnInit {
 
    
     OngetRecord(element, m) {
-        debugger
+        
         console.log('Third action clicked for:', element);
         if (m == "Discharge") {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -419,7 +419,7 @@ export class IPSearchListComponent implements OnInit {
 
 
     onChangeStatus(event) {
-        debugger
+        
         console.log(event)
         if (event.value=="1")
             this.gridConfig.filters[6].fieldValue = "1"

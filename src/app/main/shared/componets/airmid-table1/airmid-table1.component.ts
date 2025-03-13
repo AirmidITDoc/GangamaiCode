@@ -67,7 +67,7 @@ export class AirmidTable1Component implements OnInit {
          };
          this._httpClient.PostData(this.gridConfig1.apiUrl, param1).subscribe((data: any) => {
              this.dataSource.data = data.data as [];
-             debugger
+             
              this.dataSource.sort = this.sort;
              this.resultsLength = data["recordsFiltered"];
          });

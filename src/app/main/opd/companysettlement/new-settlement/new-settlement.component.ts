@@ -195,7 +195,7 @@ export class NewSettlementComponent {
 
   ngOnInit(): void {
     this.patientDetailsFormGrp = this.createForm();
-    debugger
+    
     if (this.data.FromName == "SalesSETTLEMENT") {
       this.data = this.data.vPatientHeaderObj;
       this.advanceData = this.data.vPatientHeaderObj;
@@ -358,7 +358,7 @@ this.BankNam=event.text
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
     
-    debugger
+    
     this.onAddPayment();
     if (this.balanceAmt != 0) {
       Swal.fire('Please select payment mode, Balance Amount is' + this.balanceAmt)

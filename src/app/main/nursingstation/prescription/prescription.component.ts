@@ -77,7 +77,7 @@ export class PrescriptionComponent implements OnInit {
 
     isShowDetailTable: boolean = false;
     GetDetails1(data) {
-        debugger
+        
         this.gridConfig1 = {
             apiUrl: "Nursing/PrescriptionDetailList",
             columnsList: [

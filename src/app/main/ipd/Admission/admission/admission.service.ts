@@ -240,7 +240,7 @@ export class AdmissionService {
 
 
     public MlcInsert(Param: any) {
-        debugger
+        
             if (Param.mlcid) {
             return this._httpClient1.PutData("MlcInformation/" + Param.mlcid, Param);
         } else return this._httpClient1.PostData("MlcInformation", Param);

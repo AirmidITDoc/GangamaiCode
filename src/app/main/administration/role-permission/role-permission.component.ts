@@ -94,7 +94,7 @@ export class RolePermissionComponent implements OnInit {
     hasNestedChild = (_: number, nodeData: FileNode) => nodeData.children;
 
     ngOnInit(): void {
-        debugger
+        
         if (this.data) {
             this.roleId = this.data.roleId;
             this._RoleTemplateService.getPermissionList(this.data.roleId).subscribe((Menu) => {

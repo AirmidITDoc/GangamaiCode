@@ -213,7 +213,7 @@ export class NewcreateUserComponent implements OnInit{
         }
       
         getRoleNamelist1() {
-          // debugger
+          // 
           this._UserService.getRoleCombobox().subscribe(data => {
             this.RoleNameList = data;
             this.filteredOptionsRole = this.UserForm.get('RoleId').valueChanges.pipe(
@@ -344,7 +344,7 @@ export class NewcreateUserComponent implements OnInit{
        
         docflag: boolean = false;
         chkdoctor(event) {
-          // debugger
+          // 
           if (this.UserForm.get('IsDoctor').value  == true) {
             this.docflag = true  
           }else{
@@ -375,7 +375,7 @@ export class NewcreateUserComponent implements OnInit{
         mobileno:number= 0;
 
         Save() {
-      debugger 
+       
       
           if ((this.vFirstName == '' || this.vFirstName == null || this.vFirstName == undefined)) {
             this.toastr.warning('Please enter a FirstName', 'Warning !', {

@@ -50,7 +50,7 @@ export class SupplierMasterComponent implements OnInit {
                     }, 
                     {
                         action: gridActions.delete, callback: (data: any) => {
-                            debugger
+                            
                             this._supplierService.SupplierMasterCancle(data.supplierId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
@@ -108,7 +108,7 @@ export class SupplierMasterComponent implements OnInit {
     }
     storeId = "0";
     selectChangestoreName(obj: any) {
-        debugger
+        
         this.storeId = obj.value;
         this.gridConfig.filters = [
         { fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },

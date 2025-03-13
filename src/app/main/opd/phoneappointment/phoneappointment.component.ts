@@ -80,7 +80,7 @@ export class PhoneappointmentComponent implements OnInit {
 
             //         {
             //             action: gridActions.delete, callback: (data: any) => {
-            //                 debugger
+            //                 
             //                 let s={
             //                     phoneAppId:data.phoneAppId
             //                 }

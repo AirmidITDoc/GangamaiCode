@@ -301,7 +301,7 @@ export class IPBillingComponent implements OnInit {
   ApiURL: any;
 
   ngOnInit(): void {
-    debugger
+    
     this.createserviceForm();
     this.createBillForm();
     if (this.data) {
@@ -391,7 +391,7 @@ export class IPBillingComponent implements OnInit {
 
   // Trigger when discount amount change
   updateDiscountdiscPer(): void {
-    debugger
+    
     if (this.isUpdating) return;
     this.isUpdating = true;
 

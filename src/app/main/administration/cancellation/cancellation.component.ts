@@ -305,7 +305,7 @@ export class CancellationComponent implements OnInit {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Cancel it!"
     }).then((result) => {
-      debugger
+      
       if (result.isConfirmed) {
           let SubmitDate = {
             "billNo":contact.billNo || 0
@@ -340,7 +340,7 @@ export class CancellationComponent implements OnInit {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Cancel it!"
     }).then((result) => {
-      debugger
+      
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
           let SubmitDate = {

@@ -185,7 +185,7 @@ registerObj:any;
   // }
 
   onAdd() {
-    debugger
+    
     if (!this._IndentService.newIndentFrom.get('ItemName')?.value) {
       this.toastr.warning('Please select Item', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning',

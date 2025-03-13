@@ -48,7 +48,7 @@ export class PrescriptionclassmasterService {
 
     public prescriptionClassMasterSave(Param: any) {
         if (Param.classId) {
-            debugger
+            
             return this._httpClient.PutData("Priscriptionclass/" + Param.classId, Param);
         } else return this._httpClient.PostData("Priscriptionclass", Param);
     }

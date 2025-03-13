@@ -31,7 +31,7 @@ export class NewSubtapComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        debugger
+        
         this.subTpaForm=this._subTpaServiceMaster.createsubtpacompanyForm();
         if((this.data?.subCompanyId??0) > 0){
             console.log(this.data)

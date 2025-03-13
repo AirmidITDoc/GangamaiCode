@@ -136,7 +136,7 @@ export class NewAdmissionComponent implements OnInit {
   getSelectedObj(obj) {
     console.log(obj)
     // this.RegOrPhoneflag = 'Entry from Registration';
-    debugger
+    
     if ((obj.value ?? 0) > 0) {
 
       console.log(this.data)
@@ -289,7 +289,7 @@ export class NewAdmissionComponent implements OnInit {
 
 
   selectChangedepartment(obj: any) {
-    debugger
+    
     console.log(obj)
     this._AdmissionService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
       this.ddlDoctor.options = data;

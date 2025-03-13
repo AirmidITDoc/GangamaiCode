@@ -98,7 +98,7 @@ export class MaterialConsumptionPatientwiseComponent implements OnInit {
     isShowDetailTable: boolean = false;
 
     GetDetails(data) {
-        debugger
+        
         this.gridConfig1 = {
         apiUrl:"IPPrescription/PatietWiseMatetialList",
         columnsList: [

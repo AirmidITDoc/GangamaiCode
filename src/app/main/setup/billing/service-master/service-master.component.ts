@@ -66,7 +66,7 @@ export class ServiceMasterComponent implements OnInit {
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            debugger
+                            
                             this._serviceMasterService.deactivateTheStatus(data.serviceId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
@@ -98,7 +98,7 @@ export class ServiceMasterComponent implements OnInit {
 
     }
     // deleteService(serviceId: number) {
-    //     debugger
+    //     
     //     this._serviceMasterService.deactivateTheStatus(serviceId).subscribe(
     //         (response: any) => {
     //             this.toastr.success(response.message);

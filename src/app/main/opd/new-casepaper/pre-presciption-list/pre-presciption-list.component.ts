@@ -45,7 +45,7 @@ export class PrePresciptionListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // debugger
+    // 
     if(this.data){
       this.RegId = this.data.Obj 
       console.log(this.data.Obj)
@@ -55,7 +55,7 @@ export class PrePresciptionListComponent implements OnInit {
   }
   
   getnewVisistListDemo(obj) {
-    // debugger
+    // 
     var D_data = {
       "first": 0,
       "rows": 10,

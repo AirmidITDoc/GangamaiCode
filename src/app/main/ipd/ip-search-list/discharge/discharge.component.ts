@@ -143,7 +143,7 @@ export class DischargeComponent implements OnInit {
 
 
   getdischargeIdbyadmission() {
-    debugger
+    
     this._IpSearchListService.getDischargeId(this.data.admissionId).subscribe(data => {
       console.log(data)
 
@@ -193,7 +193,7 @@ export class DischargeComponent implements OnInit {
       dischargModeldata['addedBy'] = 1
     dischargModeldata['dischargeId'] = this.DischargeId
     dischargModeldata['admissionId'] = this.vAdmissionId
-    debugger
+    
     if (this.DischargeId == 0){
       dischargModeldata['admissionId'] = this.vAdmissionId
     var m_data = {

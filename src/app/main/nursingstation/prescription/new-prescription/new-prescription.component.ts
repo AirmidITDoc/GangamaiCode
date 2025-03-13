@@ -184,7 +184,7 @@ export class NewPrescriptionComponent implements OnInit {
   }
  
   getSelectedObjIP(obj) {
-    debugger
+    
     if ((obj.regID ?? 0) > 0) {
       console.log("Admitted patient:",obj)
       this.vRegNo=obj.regNo
@@ -269,7 +269,7 @@ export class NewPrescriptionComponent implements OnInit {
   // }
 
   selectChangeItem(obj: any) {
-    debugger
+    
     console.log("Item:",obj);
     this.ItemForm.get('ItemId').setValue(obj); 
     // this.refdocId = obj.value
@@ -357,7 +357,7 @@ export class NewPrescriptionComponent implements OnInit {
   }  
 
   onAdd() {
-    debugger
+    
     if (!this.ItemForm.get('ItemId')?.value) {
       this.toastr.warning('Please select Item', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning',

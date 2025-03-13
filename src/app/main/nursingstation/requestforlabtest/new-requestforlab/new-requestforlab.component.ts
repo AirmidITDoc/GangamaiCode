@@ -121,7 +121,7 @@ export class NewRequestforlabComponent implements OnInit {
   tariffId = "0";
   groupId = "0";
   getServiceList() {
-    debugger
+    
     let ServiceName = this.myFormGroup.get("ServiceId").value + "%" || '%';
     if (this.vRegNo) {
       var param = {
@@ -178,7 +178,7 @@ export class NewRequestforlabComponent implements OnInit {
   }
 
   getSelectedObjIP(obj) {
-    debugger
+    
     console.log(obj)
     if ((obj.regID ?? 0) > 0) {
       console.log("Admitted patient:", obj)
@@ -229,7 +229,7 @@ export class NewRequestforlabComponent implements OnInit {
   }
 
   onSaveEntry(row) {
-    debugger
+    
     this.isLoading = 'save';
     this.dstable1.data = [];
     if (this.chargeslist && this.chargeslist.length > 0) {
@@ -254,7 +254,7 @@ export class NewRequestforlabComponent implements OnInit {
   }
 
   addChargList(row) {
-    debugger
+    
     this.chargeslist.push(
       {
         ServiceId: row.serviceId,

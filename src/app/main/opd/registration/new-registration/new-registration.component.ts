@@ -78,7 +78,7 @@ export class NewRegistrationComponent implements OnInit {
         this.personalFormGroup = this._registerService.createPesonalForm1();
         this.personalFormGroup.markAllAsTouched();
         this.minDate = new Date();
-        debugger
+        
            if ((this.data?.regId?? 0) > 0) {
             setTimeout(() => {
                 this._registerService.getRegistraionById(this.data.regId).subscribe((response) => {
@@ -149,7 +149,7 @@ export class NewRegistrationComponent implements OnInit {
     }
 
     onChangecity(e) {
-        debugger
+        
         this.ddlState.SetSelection(e.stateId);
         console.log(this.ddlState)
          this.ddlCountry.SetSelection(this.personalFormGroup.get("StateId").value)

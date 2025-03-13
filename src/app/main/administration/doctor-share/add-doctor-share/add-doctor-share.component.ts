@@ -265,7 +265,7 @@ data: any;
       ServiceName:any;
       OnEdit(contact){
         console.log(contact)
-        debugger 
+         
         this.doctorShareId = contact.DoctorShareId; 
         this.ServiceName = contact.ServiceName; 
         this.getServiceListCombobox();

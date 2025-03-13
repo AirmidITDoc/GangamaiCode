@@ -106,7 +106,7 @@ export class RadiologyOrderListComponent implements OnInit {
     }
 
     searchRecords(data) {
-        debugger
+        
         let regno = this._RadioloyOrderlistService.myformSearch.get("RegNoSearch").value || 0;
         let fromDate = this._RadioloyOrderlistService.myformSearch.get("start").value || "";
         let toDate = this._RadioloyOrderlistService.myformSearch.get("end").value || "";

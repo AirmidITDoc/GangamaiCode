@@ -188,7 +188,7 @@ export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
 
 
     getSelectedObjOP(obj) {
-        debugger
+        
         // if ((obj.regId ?? 0) > 0) {
         //     console.log("Visite Patient:",obj)
         //     this.vRegNo=obj.regNo
@@ -221,7 +221,7 @@ export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
     }
 
     getSelectedObjIP(obj) {
-        debugger
+        
         // if ((obj.regID ?? 0) > 0) {
         //     console.log("Admitted patient:",obj)
         //     this.vRegNo=obj.regNo

@@ -89,7 +89,7 @@ export class RequestforlabtestService {
     }
 
     public getAdmittedpatientlist(id){
-        debugger
+        
         return this._httpClient1.GetData("Admission/" + id);
     }
 

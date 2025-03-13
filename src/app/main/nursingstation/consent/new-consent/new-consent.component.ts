@@ -129,7 +129,7 @@ export class NewConsentComponent {
   }
 
   getSelectedObjOP(obj) {
-    debugger
+    
     if ((obj.regId ?? 0) > 0) {
       console.log("Visite Patient:", obj)
       this.vRegNo = obj.regNo
@@ -162,7 +162,7 @@ export class NewConsentComponent {
   }
 
   getSelectedObjIP(obj) {
-    debugger
+    
     if ((obj.regID ?? 0) > 0) {
       console.log("Admitted patient:", obj)
       this.vRegNo = obj.regNo
@@ -212,7 +212,7 @@ export class NewConsentComponent {
   }
 
   selectChangedepartment(obj: any) {
-    debugger
+    
     console.log(obj)
     // template is dependent on department
     // this._ConsentService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
@@ -222,7 +222,7 @@ export class NewConsentComponent {
   }
 
   onTemplateSelect(option: any) {
-    debugger
+    
     console.log("selectedTemplateOption:", option)
     this.selectedTemplateOption = option.ConsentDesc;
 
@@ -234,7 +234,7 @@ export class NewConsentComponent {
 
   addTemplateDescription() {
     this.isButtonDisabled = false
-    debugger
+    
     if (this._ConsentService.myform.get('Department')?.value) {
       this.toastr.warning('Please select Department ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',

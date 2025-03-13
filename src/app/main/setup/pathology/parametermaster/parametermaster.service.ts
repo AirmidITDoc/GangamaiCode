@@ -117,7 +117,7 @@ export class ParametermasterService {
     }
     
     public formulaUpdate(Param: any) {
-        debugger
+        
         if (Param.parameterId) {
             return this._httpClient.PutData("ParameterMaster/EditFormula/" + Param.parameterId, Param);
         } 
@@ -169,7 +169,7 @@ export class ParametermasterService {
     }
 
     public update1ParameterMaster(Param: any) {
-        debugger
+        
         if (Param.parameterId) {
             return this._httpClient.PutData("ParameterMaster/Edit/" + Param.parameterId, Param);
         }        
@@ -192,7 +192,7 @@ export class ParametermasterService {
     }
 
     public getTableData(param,isNumericParameter){
-        debugger
+        
         this.is_numeric = isNumericParameter === 1;
 
         if(this.is_numeric) {
@@ -242,7 +242,7 @@ export class ParametermasterService {
     }
 
     populateForm(param) {
-        debugger
+        
         console.log("sfjhgfskjsfg",param)
         this.myform.patchValue(param);
         this.myform.get("isPrintDisSummary").setValue(param.IsPrintDisSummary == "false" ? false : true);

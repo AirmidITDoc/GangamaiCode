@@ -30,7 +30,7 @@ export class CompanyMasterListComponent implements OnInit {
     ) { }
    
     ngOnInit(): void {
-        debugger
+        
         this.companyForm = this._CompanyMasterService.createCompanymasterForm();
         if ((this.data?.companyId?? 0) > 0) {
 
@@ -48,7 +48,7 @@ export class CompanyMasterListComponent implements OnInit {
                     console.log(this.registerObj)
                     
                     if(response){
-                        debugger
+                        
  
                         this.companyForm.get("traiffId").setValue(this.registerObj.traiffId)
                         this.companyForm.get("companyId").setValue(this.registerObj.companyId)

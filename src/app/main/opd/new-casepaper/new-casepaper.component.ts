@@ -207,7 +207,7 @@ export class NewCasepaperComponent implements OnInit {
   ) { console.log('Dialog Data:', data); }
 
   ngOnInit(): void {
-    // debugger
+    // 
     this.searchFormGroup = this.createSearchForm();
     this.caseFormGroup = this.createForm();
     this.MedicineItemform();
@@ -245,14 +245,14 @@ export class NewCasepaperComponent implements OnInit {
   }
 
   // removedignosis(item) {
-  //   debugger
+  //   
   //   let removedIndex = this.caseFormGroup.value.mAssignDiagnosis.findIndex(x => x.visitId == item.visitId);
   //   this.caseFormGroup.value.mAssignDiagnosis.splice(removedIndex, 1);
   //   this.ddlDiagnosis.SetSelection(this.caseFormGroup.value.mAssignDiagnosis.map(x => x.visitId));
   // }
 
   removedignosis(item) {
-    debugger
+    
     const updatedList = this.caseFormGroup.value.mAssignDiagnosis.filter(
       x => x.visitId == item.visitId
     );
@@ -261,7 +261,7 @@ export class NewCasepaperComponent implements OnInit {
   }
 
   removeChiefComplaint(item) {
-    debugger;
+    ;
     const updatedList = this.caseFormGroup.value.mAssignChiefComplaint.filter(
       x => x.complaintId !== item.complaintId
     );
@@ -271,7 +271,7 @@ export class NewCasepaperComponent implements OnInit {
   }
 
   removeExamination(item) {
-    debugger
+    
     const updatedList = this.caseFormGroup.value.mAssignExamination.filter(
       x => x.examinationId !== item.examinationId
     );
@@ -475,7 +475,7 @@ export class NewCasepaperComponent implements OnInit {
   vInst:any;
   vPrescriptionId:any;
   getPrescription(obj) {
-    // debugger
+    // 
     var m_data2 = {
       "first": 0,
       "rows": 10,
@@ -536,7 +536,7 @@ export class NewCasepaperComponent implements OnInit {
   nValue: any[] = []; 
 
 getRtrvCheifComplaintList(obj) { 
-  debugger;
+  ;
   this.addCheiflist = [];
   this.addDiagnolist = [];
   this.addExaminlist = [];
@@ -661,7 +661,7 @@ getRtrvCheifComplaintList(obj) {
   itemGeneric:any;
 
   selectChangeItemName(row) {
-    // debugger
+    // 
     console.log("Drug:", row)
     this.durgId = row.value
     this.durgName = row.text
@@ -704,7 +704,7 @@ getRtrvCheifComplaintList(obj) {
   }
 
   OnSaveEditGeneric(contact){
-    debugger
+    
     this.vPrescriptionId=contact.precriptionId;
     console.log(contact)
     if(this.vPrescriptionId){
@@ -730,7 +730,7 @@ getRtrvCheifComplaintList(obj) {
   }
 
   GenericdisableEditing(data){
-    debugger
+    
   if (this.GenericoriginalValue !== null) {
     this.MedicineItemForm.get('ItemGenericNameId').setValue(this.GenericoriginalValue);
   }
@@ -747,7 +747,7 @@ editingIndex: number | null = null;
 originalValue: string | null = null;
 
 editDose(index: number,data) {
-  debugger
+  
   console.log(data)
   this.editingIndex = index;
   this.originalValue = data.doseName;
@@ -757,7 +757,7 @@ OnSaveEditDose(element: any) {
   console.log("Saving Dose:", element);
   this.editingIndex = null;
   this.vPrescriptionId=element.precriptionId;
-  debugger
+  
     if(this.vPrescriptionId){
       var m_dataUpdate={
         "precriptionId": this.vPrescriptionId,
@@ -781,7 +781,7 @@ OnSaveEditDose(element: any) {
 }
 
 DosedisableEditing(index: number) {
-  debugger
+  
   if (this.originalValue !== null) {
     // Restore old value
     this.MedicineItemForm.get('DoseId').setValue(this.originalValue);
@@ -809,7 +809,7 @@ DosedisableEditing(index: number) {
 
   RtrvTestServiceList: any = [];
   getRtrvTestService(obj) {
-    // debugger
+    // 
     var m_data2 = {
       "first": 0,
       "rows": 10,
@@ -970,7 +970,7 @@ DosedisableEditing(index: number) {
   Day1: any = 0;
   Day2: any = 0;
   onAdd() {
-    debugger
+    
     if (!this.MedicineItemForm.get("ItemId")?.value) {
       this.toastr.warning('Please select a Item Name', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -1040,7 +1040,7 @@ DosedisableEditing(index: number) {
   }
 
   deleteTableRow(event, element) {
-    debugger
+    
     let index = this.Chargelist.indexOf(element);
     if (index >= 0) {
       this.Chargelist.splice(index, 1);
@@ -1053,7 +1053,7 @@ DosedisableEditing(index: number) {
   }
 
   onTemplDetAdd() {
-    // debugger
+    // 
     if ((this.vOPIPId == '' || this.vOPIPId == '0')) {
       this.toastr.warning('Please select Patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -1089,7 +1089,7 @@ DosedisableEditing(index: number) {
 
   }
   onSave() {
-    debugger
+    
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
@@ -1563,7 +1563,7 @@ DosedisableEditing(index: number) {
   displayedColumns: string[] = ['patientName', 'age', 'gender'];
 
   getnewVisistListDemo(obj) {
-    // debugger
+    // 
     var D_data = {
       "first": 0,
       "rows": 10,
@@ -1587,7 +1587,7 @@ DosedisableEditing(index: number) {
   }
 
   extractUniqueDates() {
-    // debugger
+    // 
     const visitId = this.patients.map(patient => patient.visitId);
     this.uniqueDates = Array.from(new Set(visitId));
     // this.uniqueDates = Array.from(new Set(dates));
@@ -1598,7 +1598,7 @@ DosedisableEditing(index: number) {
   }
   //datewise visit info date
   getPatientsForDate(visitId: string) {
-    // debugger
+    // 
     const patientsForDate = this.patients.filter(patient => patient.visitId === visitId);
     return patientsForDate.length > 0 ? [patientsForDate[0]] : []; // 
   }
@@ -1642,7 +1642,7 @@ DosedisableEditing(index: number) {
       console.log(result)
 
       if (result) {
-        debugger;
+        ;
         this.dsCopyItemList.data = result;
         console.log("this.dsCopyItemList.data:", this.dsCopyItemList.data);
       

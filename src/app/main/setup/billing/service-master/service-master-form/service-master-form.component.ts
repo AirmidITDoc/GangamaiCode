@@ -95,7 +95,7 @@ export class ServiceMasterFormComponent implements OnInit {
     ];
 
     ngOnInit(): void {
-        debugger
+        
         this.serviceForm = this._serviceMasterService.createServicemasterForm();
        
         this.serviceForm = this._serviceMasterService.createServicemasterForm();
@@ -159,7 +159,7 @@ export class ServiceMasterFormComponent implements OnInit {
     }
 
     getClassList(serviceId) {
-        debugger
+        
         var param = {
             "first": 0,
             "rows": 20,
@@ -195,7 +195,7 @@ export class ServiceMasterFormComponent implements OnInit {
     }
 
     onSubmit() {
-        debugger
+        
         if (this.showEmg) {
             this.serviceForm.get('EmgAmt').setValidators([Validators.required, Validators.min(0)]);
             this.serviceForm.get('EmgPer').setValidators([Validators.required, Validators.min(0)]);
@@ -221,7 +221,7 @@ export class ServiceMasterFormComponent implements OnInit {
         let doctorId = 0;
         if (this.serviceForm.get("DoctorId").value)
             doctorId = this.serviceForm.get("DoctorId").value
-        debugger
+        
         if (this.serviceForm.get("ServiceId").value==0) {
             console.log(this.serviceForm.get("ServiceId").value);
             var data1 = [];
@@ -347,7 +347,7 @@ export class ServiceMasterFormComponent implements OnInit {
     }
 
     onEdit(row) {
-        debugger
+        
         this.isEditMode = true;
         var m_data = {
             "ServiceId": row.ServiceId,

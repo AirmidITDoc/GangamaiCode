@@ -266,7 +266,7 @@ public InsertOPBillingpayment(employee) {
     }
 
     public InsertVitalInfo(visitId,element){
-        debugger
+        
            return this._httpClient1.PutData("VisitDetail/EditVital/"+visitId,element);
     } 
     

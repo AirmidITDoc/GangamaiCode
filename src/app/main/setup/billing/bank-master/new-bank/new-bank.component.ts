@@ -27,7 +27,7 @@ export class NewBankComponent implements OnInit {
 
 
   ngOnInit(): void {
-    debugger
+    
     this.bankForm = this._BankMasterService.createBankForm();
 
     if ((this.data?.bankId ?? 0) > 0) {

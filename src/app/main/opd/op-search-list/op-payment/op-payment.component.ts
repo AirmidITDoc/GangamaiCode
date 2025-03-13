@@ -395,7 +395,7 @@ export class OpPaymentComponent implements OnInit {
       Swal.fire('Please pay remaing amount, Balance Amount is ' + balamt)
       return
     }
-    debugger
+    
     if (this.data.FromName == "OP-SETTLEMENT") {
       this.Paymentobj['PaymentId'] = '0';
       this.Paymentobj['billNo'] = 0;

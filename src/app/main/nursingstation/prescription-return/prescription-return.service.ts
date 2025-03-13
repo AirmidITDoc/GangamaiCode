@@ -87,7 +87,7 @@ public getRegistraionById(Id) {
   }
 
   public getAdmittedpatientlist(id){
-    debugger
+    
     return this._httpClient1.GetData("Admission/" + id);
   }
   public getVisitById(Id) {

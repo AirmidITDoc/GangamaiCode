@@ -72,7 +72,7 @@ export class UpdateradiologymasterComponent implements OnInit {
 
     
     ngOnInit(): void {
-        debugger
+        
         this.testForm=this._radiologytestService.createRadiologytestForm();
         this.AddParameterFrom = this._radiologytestService.createAddparaFrom();
         if((this.data?.testId??0) > 0) 
@@ -146,7 +146,7 @@ export class UpdateradiologymasterComponent implements OnInit {
     OnAdd(event) {
         this.DSTestList.data = [];
         this.ChargeList = this.dsTemparoryList.data;
-        debugger
+        
         this.ChargeList.push(
         {
             TemplateName: this.testForm.get('templateName').value,

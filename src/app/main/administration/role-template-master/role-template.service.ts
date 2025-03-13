@@ -52,7 +52,7 @@ export class RoleTemplateService {
     }
 
     public deactivateTheStatus(m_data) {
-        debugger
+        
         return this._httpClient.DeleteData("RoleMaster?Id=" + m_data.toString());
     }
     public savePermission(Param) {

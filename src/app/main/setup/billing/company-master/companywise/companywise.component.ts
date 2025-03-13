@@ -118,7 +118,7 @@ export class CompanywiseComponent {
       }
     
       getServiceListdata() {
-        // debugger  
+        //   
         if (this.vClassName == '' || this.vClassName == null || this.vClassName == undefined) {
           this.toastr.warning('Please Select class Name', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
@@ -204,7 +204,7 @@ export class CompanywiseComponent {
           });  
           return;
         }
-        debugger 
+         
        if(element.ServicePrice > 0 && element.ServiceQty > 0){ 
         element.TotalAmt = element.ServiceQty * element.ServicePrice || 0;
         element.DiscAmt = (element.ConcessionPercentage * element.TotalAmt) / 100  || 0;

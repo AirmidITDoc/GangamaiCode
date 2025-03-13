@@ -205,7 +205,7 @@ export class SampledetailtwoComponent implements OnInit {
   }
 
   getSampledetailList1(row) {
-debugger
+
     let OPIP
     if (row.lbl == "IP" || row.patientType == "IP") {
       OPIP = 1;
@@ -259,7 +259,7 @@ debugger
   }
 
   onSave() {
-    debugger
+    
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');

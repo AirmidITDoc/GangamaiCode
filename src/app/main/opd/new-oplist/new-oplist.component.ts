@@ -258,7 +258,7 @@ console.log(data)
 
     openPaymentpopup(contact) {
         console.log(contact)
-        debugger
+        
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
             PatientHeaderObj['RegNo'] = contact.regNo;

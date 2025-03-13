@@ -71,13 +71,13 @@ export class PaymentmodechangesforpharmacyService {
     // }
     
     public PaymentUpdate(employee) {
-      debugger
+      
       if(employee.PaymentId)
       return this._httpClient.PutData("Payment/Edit/" + employee.PaymentId, employee);
     }
 
     public PaymentPhyUpdate(employee) {
-      debugger
+      
       if(employee.PaymentId)
       return this._httpClient.PutData("paymentpharmacy/Edit/" + employee.PaymentId, employee);
     }

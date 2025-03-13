@@ -123,7 +123,7 @@ TotalAdvUsedAmt:any=0;
 TotalAdvaBalAmt:any=0;
 TotalAdvRefAmt:any=0;
   ngOnInit(): void { 
-    debugger
+    
     this.createAdvform(); 
     if(this.data){
       this.registerObj = this.data.Obj;
@@ -321,7 +321,7 @@ TotalAdvRefAmt:any=0;
   }
 
   keyPressCharater(event){
-    debugger
+    
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;

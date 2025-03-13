@@ -213,7 +213,7 @@ export class AddItemComponent {
   }
 
   removestore(item) {
-    debugger
+    
     let removedIndex = this.myform.value.mAssignItemToStores.findIndex(x => x.storeId == item.storeId);
     this.myform.value.mAssignItemToStores.splice(removedIndex, 1);
     this.ddlStore.SetSelection(this.myform.value.mAssignItemToStores.map(x => x.storeId));
@@ -230,7 +230,7 @@ export class AddItemComponent {
   name = ''
   selectedItems = [];
   selectChangeItemName(row) {
-    debugger
+    
     console.log("Drug:", row)
     this.itemId = row.value
     this.vItemName = row.text
@@ -343,7 +343,7 @@ export class AddItemComponent {
   }
 
   onSave() {
-    debugger
+    
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
@@ -392,7 +392,7 @@ export class AddItemComponent {
 
     //   if (!this.itemForm.invalid) {
     //     console.log("Item JSON :-", this.itemForm.value);
-    //     debugger
+    //     
     //     this._CasepaperService.insertItemMasterDemo(this.itemForm.value).subscribe((data) => {
     //         this.toastr.success(data.message);
     //         // this.onClear(true);
