@@ -57,7 +57,7 @@ export class RequestforlabtestComponent implements OnInit {
         filters: [
             { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "1008", opType: OperatorComparer.Equals }
+            { fieldName: "Reg_No", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     }
     
@@ -69,11 +69,10 @@ export class RequestforlabtestComponent implements OnInit {
 
     gridConfig1: gridModel = new gridModel();
     isShowDetailTable: boolean = false;
-    vRequestId:any;
+
     getSelectedRow(row:any):void{
         console.log("Selected row : ", row);
-        this.vRequestId=row.requestId
-        
+        let vRequestId=row.requestId        
 
         this.gridConfig1 = {
             apiUrl: "IPPrescription/LabRadRequestDetailList",
@@ -92,10 +91,11 @@ export class RequestforlabtestComponent implements OnInit {
             sortField: "RequestId",
             sortOrder: 0,
             filters: [
-                { fieldName: "RequestId", fieldValue: "1", opType: OperatorComparer.Equals }
+                { fieldName: "RequestId", fieldValue: String(vRequestId), opType: OperatorComparer.Equals }
             ]
         }
         this.isShowDetailTable = true;
+        
         this.grid1.gridConfig = this.gridConfig1;
         this.grid1.bindGridData();
     }

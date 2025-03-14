@@ -31,7 +31,7 @@ import { ToastrService } from 'ngx-toastr';
     animations: fuseAnimations
 })
 export class SampleCollectionComponent implements OnInit {
-
+    myformSearch:FormGroup;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
 
@@ -49,30 +49,37 @@ export class SampleCollectionComponent implements OnInit {
     hasSelectedContacts: boolean;
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    vOPIPId = 0;
+    f_name:any = "" 
+    regNo:any="0"
+    l_name:any="" 
 
+    status:any="1"
+    Ptype:any="2"
+    allcolumns=[
+        { heading: "-", key: "lbl", width: 30, sort: true, align: 'left', type: gridColumnTypes.template },
+        { heading: "-", key: "companyName", width: 30, sort: true, align: 'left', type: gridColumnTypes.template },
+        { heading: "-", key: "isSampleCollection", width: 50, sort: true, align: 'left', type: gridColumnTypes.template },
+        { heading: "Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
+        { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "CompanyName", key: "cm", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ];
     gridConfig: gridModel = {
         apiUrl: "PathlogySampleCollection/SampleCollectionPatientList",
-        columnsList: [
-            { heading: "-", key: "lbl", width: 30, sort: true, align: 'left', type: gridColumnTypes.template },
-            { heading: "-", key: "companyName", width: 30, sort: true, align: 'left', type: gridColumnTypes.template },
-            { heading: "-", key: "isSampleCollection", width: 50, sort: true, align: 'left', type: gridColumnTypes.template },
-            { heading: "Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
-            { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-            { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "CompanyName", key: "cm", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ],
+        columnsList: this.allcolumns,
         sortField: "RegNo",
         sortOrder: 0,
         filters: [
@@ -92,7 +99,7 @@ export class SampleCollectionComponent implements OnInit {
         public toastr: ToastrService,) { }
 
     ngOnInit(): void {
-
+this.myformSearch=this._SampleCollectionService.createSearchForm()
     }
 
     gridConfig1: gridModel = new gridModel();
@@ -116,9 +123,9 @@ export class SampleCollectionComponent implements OnInit {
             sortField: "BillNo",
             sortOrder: 0,
             filters: [
-                { fieldName: "BillNo", fieldValue: billNo, opType: OperatorComparer.Equals },
+                { fieldName: "BillNo", fieldValue: String(billNo), opType: OperatorComparer.Equals },
                 { fieldName: "BillDate", fieldValue: date, opType: OperatorComparer.Equals },
-                { fieldName: "OP_IP_Type", fieldValue: opipType, opType: OperatorComparer.Equals },
+                { fieldName: "OP_IP_Type", fieldValue: String(opipType), opType: OperatorComparer.Equals },
             ]
         };
 
@@ -166,33 +173,61 @@ export class SampleCollectionComponent implements OnInit {
     //     this.grid1.bindGridData();
     // }
 
+     onChangeFirst() {
+        debugger
+            this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
+            this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
+            this.f_name = this.myformSearch.get('FirstName').value + "%"
+            this.l_name = this.myformSearch.get('LastName').value + "%"
+            this.regNo = this.myformSearch.get('RegNo').value 
+            this.status = this.myformSearch.get('StatusSearch').value 
+            this.Ptype = this.myformSearch.get('PatientTypeSearch').value 
+
+            this.getfilterdata();
+        }
+    
+    getfilterdata(){
+        
+        this.gridConfig = {
+            apiUrl: "PathlogySampleCollection/SampleCollectionPatientList",
+            columnsList:this.allcolumns , 
+            sortField: "RegNo",
+            sortOrder: 0,
+            filters:  [
+                { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
+                { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+                { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },
+                { fieldName: "OP_IP_Type", fieldValue:  this.Ptype, opType: OperatorComparer.Equals }
+        
+            ]
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData(); 
+    }
+      
+    
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'FirstName')
+            this.myformSearch.get('FirstName').setValue("")
+        else
+            if (event == 'LastName')
+                this.myformSearch.get('LastName').setValue("")
+        if (event == 'RegNo')
+            this.myformSearch.get('RegNo').setValue("")
+       
+        this.onChangeFirst();
+      }
+
     exportReportPdf() {
-        // let actualData = [];
-        // this.dataSource.data.forEach(e => {
-        //   var tempObj = [];
-        //   tempObj.push(e.RegNo);
-        //   tempObj.push(e.PatientName);
-        //   tempObj.push(e.AdmDate);
-        //   tempObj.push(e.ReqDate);
-        //   tempObj.push(e.WardName);
-        //   tempObj.push(e.BedName);
-        //   tempObj.push(e.IsTestCompted);
-        //   tempObj.push(e.IsOnFileTest);
-
-        //   // tempObj.push(e.PathAmount);
-        //   actualData.push(tempObj);
-        // });
-        // let headers = [['RegNo','PatientName', 'AdmDate', 'ReqDate', 'WardName', 'BedName','IsTestCompted', 'IsOnFileTest' ]];
-        // this.reportDownloadService.exportPdfDownload(headers, actualData, 'Sample Request');
+    
     }
 
-    exportSamplerequstReportExcel() {
-        // this.sIsLoading == 'loading-data'
-        // let exportHeaders = ['ReqDate', 'ReqTime', 'ServiceName', 'AddedByName', 'IsStatus','PBillNo','IsPathology','IsRadiology','IsTestCompted'];
-        // this.reportDownloadService.getExportJsonData(this.dataSource1.data, exportHeaders, 'Sample Request Detail');
-        // this.dataSource1.data = [];
-        // this.sIsLoading = '';
-    }
+    
+    exportSamplerequstReportExcel(){}
 
     onSave(row: any = null) {
         let that = this;

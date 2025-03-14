@@ -82,13 +82,13 @@
 
             <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false" (onSelectRow)="getSelectedRow($event)">
                 <ng-container filters>
-
-                    <airmid-datepicker [formGroup]="_SampleCollectionService.myformSearch" [isRangePicker]="true"
+                    <form [formGroup]="myformSearch">
+                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
                         formStartControlName="start" formEndControlName="end"
                         [(fromValue)]="gridConfig.filters[3].fieldValue" [(toValue)]="gridConfig.filters[4].fieldValue">
                     </airmid-datepicker>
 
-                    <mat-form-field appearance="outline" fxFlex>
+                    <!-- <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Reg_No</mat-label>
                         <input matInput placeholder="Search Reg_No" autocomplete="off"
                             [(ngModel)]="gridConfig.filters[2].fieldValue" />
@@ -116,13 +116,36 @@
                             (click)="gridConfig.filters[1].fieldValue='%'">
                             <mat-icon>close</mat-icon>
                         </button>
+                    </mat-form-field> -->
+                  
+                    <mat-form-field appearance="outline">
+                        <mat-label>RegNo</mat-label>
+                        <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myformSearch" formControlName="RegNo" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>First Name</mat-label>
+                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myformSearch" formControlName="FirstName" (input)="onChangeFirst()"/>
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
                     </mat-form-field>
 
-                    <!-- <form [formGroup]="_SampleCollectionService.myformSearch"> -->
+                    <mat-form-field appearance="outline">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myformSearch" formControlName="LastName" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                  
                     <div fxLayout="column" fxLayoutAlign="start start">
                         <div fxFlex fxLayout="row">
-                            <mat-radio-group name="Istype" fxLayout="row" value="2"
-                                style="padding: 6px;" class="gap-4" [(ngModel)]="gridConfig.filters[6].fieldValue">
+                            <mat-radio-group name="Istype" fxLayout="row" value="2" [formGroup]="myformSearch" formControlName="PatientTypeSearch" (change)="onChangeFirst()"
+                                style="padding: 6px;" class="gap-4" >
                                 <mat-label>Type:</mat-label>
                                 <div fxLayout="row">
                                     <mat-radio-button value='2'>All</mat-radio-button>
@@ -133,8 +156,8 @@
                         </div>
 
                         <div fxFlex fxLayout="row">
-                            <mat-radio-group name="StatusSearch" fxLayout="row" value="1"
-                                style="padding: 6px;" class="gap-4" [(ngModel)]="gridConfig.filters[5].fieldValue">
+                            <mat-radio-group name="StatusSearch" fxLayout="row" value="1" [formGroup]="myformSearch" formControlName="StatusSearch" (change)="onChangeFirst()"
+                                style="padding: 6px;" class="gap-4">
                                 <mat-label>Status:</mat-label>
                                 <div fxLayout="row">
                                     <mat-radio-button value='0'>Pending</mat-radio-button>
@@ -143,7 +166,7 @@
                             </mat-radio-group>
                         </div>
                     </div>
-                    <!-- </form> -->
+                    </form>
 
                 </ng-container>
             </airmid-table>

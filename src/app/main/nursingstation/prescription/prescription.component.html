@@ -1,6 +1,6 @@
 <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
     dynamicTableHeight>
-    <mat-toolbar class="top-header accent">
+    <!-- <mat-toolbar class="top-header accent">
         <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
             <button mat-icon-button class="sidebar-toggle ">
                 <mat-icon>menu</mat-icon>
@@ -11,9 +11,9 @@
                 Prescription List
             </span>
         </div>
-    </mat-toolbar>
+    </mat-toolbar> -->
 
-    <mat-tab-group>
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
 
         <mat-tab label=" IP Browse Advance List">
             <ng-template mat-tab-label>
@@ -51,9 +51,9 @@
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Reg_No</mat-label>
                                 <input matInput placeholder="Search Reg_No" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[3].fieldValue" />
+                                    [(ngModel)]="gridConfig.filters[2].fieldValue" />
                                 <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[3].fieldValue=''">
+                                    (click)="gridConfig.filters[2].fieldValue=''">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>

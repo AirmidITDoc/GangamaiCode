@@ -2,9 +2,9 @@
     <!-- HEADER -->
     <div class="top-header">
         <div class="top-header-info">
-            <button mat-icon-button class="sidebar-toggle" fxHide.gt-sm (click)="toggleSidebar('app-main')">
+            <!-- <button mat-icon-button class="sidebar-toggle" fxHide.gt-sm (click)="toggleSidebar('app-main')">
                 <mat-icon>menu</mat-icon>
-            </button>
+            </button> -->
             <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
             </mat-icon>
             <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
@@ -14,7 +14,7 @@
     </div>
     <div class="layout-body p-12">
         <div class="layout-body-container center">
-            <form [formGroup]="_SampleService.myformSearch" class="mat-error-fix">
+            <form [formGroup]="myformSearch" class="mat-error-fix">
                 <div fxLayout="column">
                     <div class="layout-card-container" style="height: 80px;">
 
@@ -22,7 +22,7 @@
                             <div fxLayout="row wrap" fxFlex fxLayoutGap="12px 0px grid">
 
                                 <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="35%">
-                                    <airmid-datepicker [formGroup]="_SampleService.myformSearch" [isRangePicker]="true"
+                                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
                                         formStartControlName="start" formEndControlName="end"
                                         [(fromValue)]="gridConfig.filters[3].fieldValue"
                                         [(toValue)]="gridConfig.filters[4].fieldValue">
@@ -30,20 +30,17 @@
                                 </div>
 
                                 <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Reg_No</mat-label>
-                                        <input matInput placeholder="Search Reg_No" autocomplete="off"
-                                            formControlName="RegNoSearch"
-                                            [(ngModel)]="gridConfig.filters[2].fieldValue" />
-                                        <button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="gridConfig.filters[2].fieldValue='0'">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>RegNo</mat-label>
+                                        <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myformSearch" formControlName="RegNo" (input)="onChangeFirst()" />
+                                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>
                                 </div>
 
                                 <div fxFlex="16%" fxLayout="row">
-                                    <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch"
+                                    <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch" (change)="onChangeFirst()"
                                         fxLayout="column" value="2" class="gap-4"
                                         [(ngModel)]="gridConfig.filters[6].fieldValue">
                                         <mat-label><b>Patient Type:</b></mat-label>
@@ -56,7 +53,7 @@
                                 </div>
 
                                 <div fxFlex="20%" fxLayout="row">
-                                    <mat-radio-group name="StatusSearch" formControlName="StatusSearch"
+                                    <mat-radio-group name="StatusSearch" formControlName="StatusSearch"  (change)="onChangeFirst()"
                                         fxLayout="column" value="0" class="gap-4"
                                         [(ngModel)]="gridConfig.filters[5].fieldValue">
                                         <mat-label><b>Status:</b></mat-label>
@@ -376,7 +373,7 @@
             <div class="content-card">
                 <div fxLayout="column" class="gap-12">
                     <div class="layout-card-container">
-                        <form [formGroup]="_SampleService.myformSearch" fusePerfectScrollbar>
+                        <form [formGroup]="myformSearch" fusePerfectScrollbar>
                             <div fxLayout="row" fxLayoutAlign="start none" fxLayoutGap="4px">
 
                                 <mat-form-field appearance="outline" fxFlex="15%">
