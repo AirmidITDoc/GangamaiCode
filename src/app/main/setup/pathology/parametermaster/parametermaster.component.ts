@@ -85,9 +85,15 @@ export class ParametermasterComponent implements OnInit {
     ngOnInit(): void {
         this.searchFormGroup = this._ParameterService.createSearchForm();
     }
-    OnClearValues(){
-        this.searchFormGroup.get('ParameterNameSearch').setValue('%')
-    }
+
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'ParameterNameSearch')
+            this.searchFormGroup.get('ParameterNameSearch').setValue("")
+       
+        this.onChangeFirst();
+      }
+      
     onChangeFirst() {
         this.paraName = this.searchFormGroup.get('ParameterNameSearch').value + "%"
         this.getfilterdata();

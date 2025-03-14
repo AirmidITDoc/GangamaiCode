@@ -44,7 +44,7 @@ export class PrescriptionComponent implements OnInit {
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
     gridConfig: gridModel = {
-        apiUrl: "Nursing/PrescriptionWardList",
+        apiUrl: "IPPrescription/PrescriptionPatientList",
         columnsList: [
             { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
             // { heading: "Code", key: "presReId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
@@ -65,7 +65,7 @@ export class PrescriptionComponent implements OnInit {
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "PresReld",
+        sortField: "RegNo",
         sortOrder: 0,
         filters: [
             { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
@@ -77,9 +77,10 @@ export class PrescriptionComponent implements OnInit {
 
     isShowDetailTable: boolean = false;
     GetDetails1(data) {
+        console.log("detailList:",data)
         
         this.gridConfig1 = {
-            apiUrl: "Nursing/PrescriptionDetailList",
+            apiUrl: "IPPrescription/PrescriptionDetailList",
             columnsList: [
                 { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
@@ -89,21 +90,20 @@ export class PrescriptionComponent implements OnInit {
             sortField: "ipMedID",
             sortOrder: 0,
             filters: [
-                // //   { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
-                // { fieldName: "ipMedID", fieldValue: data.ipMedID.toString(), opType: OperatorComparer.Equals },
-                // //   { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-                // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                // { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-                // // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+                { fieldName: "ipMedID", fieldValue: data.ipMedID.toString(), opType: OperatorComparer.Equals },
+                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
             ]
         }
         this.isShowDetailTable = true;
-        this.grid1.gridConfig = this.gridConfig1;
-        this.grid1.bindGridData();
+        setTimeout(() => {
+            this.grid1.gridConfig = this.gridConfig1;
+            this.grid1.bindGridData();
+        });
     }
 
     gridConfig3: gridModel = {
-        apiUrl: "Nursing/PrescriptionReturnList",
+        apiUrl: "IPPrescription/PrescriptionReturnList",
         columnsList: [            
             { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},

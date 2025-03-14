@@ -15,6 +15,7 @@ import { DatePipe } from '@angular/common';
 import { AdmissionPersonlModel, RegInsert } from 'app/main/ipd/Admission/admission/admission.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { MedicineItemList } from 'app/main/ipd/ip-search-list/discharge-summary/discharge-summary.component';
+import { debug } from 'console';
 
 @Component({
   selector: 'app-new-prescription',
@@ -205,6 +206,8 @@ export class NewPrescriptionComponent implements OnInit {
       this.vTariffName=obj.tariffName
       this.vCompanyName=obj.companyName
       this.vDOA=obj.admissionDate
+      this.vAdmissionID=obj.admissionID
+      this.vClassId=obj.classId
       setTimeout(() => {
         this._PrescriptionService.getAdmittedpatientlist(obj.regID).subscribe((response) => {
           this.registerObj = response;        
@@ -395,7 +398,7 @@ export class NewPrescriptionComponent implements OnInit {
     // this.ItemForm.get('DoseId').reset('');
     this.ItemForm.get('Qty').reset('');
     this.ItemForm.get('Instruction').reset('');
-    this.itemid.nativeElement.focus(); 
+    // this.itemid.nativeElement.focus(); 
   }
 
   deleteTableRow(event, element) { 
@@ -472,24 +475,21 @@ export class NewPrescriptionComponent implements OnInit {
 
     }, 100);
   }
-
-
- 
   
   //api integrate
   OnSavePrescription() {
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
+    debugger
     if (( this.vRegNo== '' || this.vRegNo == null || this.vRegNo == undefined)) {
       this.toastr.warning('Please select patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    // if(!this.WardList.some(item => item.RoomName ===this.myForm.get('WardName').value.RoomName)){
-    //   this.toastr.warning('Please Select valid Ward Name', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
     if (!this.myForm.get('WardName')?.value) {
       this.toastr.warning('Please select Ward Name', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -499,22 +499,16 @@ export class NewPrescriptionComponent implements OnInit {
 
     this.isLoading = 'submit'; 
     let insertIP_Prescriptionarray = [];
-    let insertIP_MedicalRecordArray = {};  
 
-    insertIP_MedicalRecordArray['medicalRecoredId'] = 0;
-    insertIP_MedicalRecordArray['admissionId'] = this.vAdmissionID;
-    insertIP_MedicalRecordArray['roundVisitDate'] = this.dateTimeObj.date;
-    insertIP_MedicalRecordArray['roundVisitTime'] = this.dateTimeObj.time;
-    insertIP_MedicalRecordArray['inHouseFlag'] = 0;
- 
     this.dsItemList.data.forEach((element) => {
       let insertIP_Prescription = {};
-      insertIP_Prescription['ipMedID'] = 0;
-      insertIP_Prescription['oP_IP_ID'] = this.vAdmissionID;
-      insertIP_Prescription['opD_IPD_Type'] = 1;
-      insertIP_Prescription['pDate'] = this.dateTimeObj.date;
-      insertIP_Prescription['pTime'] = this.dateTimeObj.time;
-      insertIP_Prescription['classID'] = this.vClassId;
+      insertIP_Prescription['ippreId']=0;
+      insertIP_Prescription['ipmedId'] = 0;
+      insertIP_Prescription['opIpId'] = this.vAdmissionID;
+      insertIP_Prescription['opdIpdType'] = 1;
+      insertIP_Prescription['pdate'] = formattedDate;
+      insertIP_Prescription['ptime'] = formattedTime;
+      insertIP_Prescription['classId'] = this.vClassId;
       insertIP_Prescription['genericId'] = 1;
       insertIP_Prescription['drugId'] = element.ItemID;
       insertIP_Prescription['doseId'] = 0;
@@ -524,16 +518,20 @@ export class NewPrescriptionComponent implements OnInit {
       insertIP_Prescription['remark'] = element.Remark || '';
       insertIP_Prescription['isClosed'] = false;
       insertIP_Prescription['isAddBy'] = this._loggedService.currentUserValue.userId;
-      insertIP_Prescription['storeId'] =  this.myForm.get('StoreId').value.StoreId || 0;
-      insertIP_Prescription['wardID'] = this.WardId// this.myForm.get('WardName').value.RoomId || 0;
+      insertIP_Prescription['storeId'] =  this.myForm.get('StoreId').value || 0;
+      insertIP_Prescription['wardID'] = this.myForm.get('WardName').value || 0;
       insertIP_Prescriptionarray.push(insertIP_Prescription);
     });
 
     let submissionObj = {
-      "insertIP_MedicalRecord": insertIP_MedicalRecordArray,
-      "insertIP_Prescription": insertIP_Prescriptionarray 
-    };
- 
+      "medicalRecoredId": 0,
+      "admissionId": this.vAdmissionID,
+      "roundVisitDate": formattedDate,
+      "roundVisitTime": formattedTime,
+      "inHouseFlag": true,
+      "tIpPrescriptions":insertIP_Prescriptionarray
+    };  
+
     console.log(submissionObj);
 
     this._PrescriptionService.presciptionSave(submissionObj).subscribe(response => {

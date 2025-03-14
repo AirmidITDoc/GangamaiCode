@@ -409,8 +409,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
     
     this.ItemSubform.get('BatchNo').reset('');
     this.ItemSubform.get('Qty').reset('');
-    // this.ItemSubform.get('Remark').reset('');
-      this.itemid.nativeElement.focus();
+      // this.itemid.nativeElement.focus();
     this.add = false;
   }
 
@@ -435,16 +434,6 @@ export class NewPrescriptionreturnComponent implements OnInit {
   //   }
   // }
 
-  // getOptionText(option) {
-  //   // this.ItemId = option.ItemId;
-  //   if (!option) return '';
-  //   return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
-  // }
-
-  // getOptionTextReg(option) {
-  //   if (!option) return '';
-  //   return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
-  // }
   getSelectedObj(obj) {
     // 
     // this.registerObj = obj;
@@ -465,17 +454,22 @@ export class NewPrescriptionreturnComponent implements OnInit {
     this.RegId = obj.RegID;
     // console.log(this.registerObj)
     this.OP_IP_Id = this.registerObj.AdmissionID;
-
-
-    // this.getDraftorderList(obj);
   }
 
   OnSavePrescriptionreturn() {
-    
+    debugger
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
+    let opip_Type;
+    if (this.ItemSubform.get('PatientType').value == 'IP') {
+      opip_Type = 1;
+    }
+    else {
+      opip_Type = 0;
+    }
 
     if(!this.vPresReturnId && !this.vPresDetailsId){
 
@@ -496,9 +490,9 @@ export class NewPrescriptionreturnComponent implements OnInit {
         "presTime": formattedTime,
         "toStoreId": this._loggedService.currentUserValue.storeId || 0,
         "opIpId": this.OP_IP_Id || 1,
-        "opIpType": 1,
+        "opIpType": opip_Type,
         "addedby": this._loggedService.currentUserValue.userId,
-        "isdeleted": 0,
+        "isActive": 1,
         "isclosed": true,
         "tIpprescriptionReturnDs":tIpprescriptionReturnDs
       }

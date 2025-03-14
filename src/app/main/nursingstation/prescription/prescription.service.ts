@@ -76,7 +76,7 @@ public getRegistraionById(Id) {
     return this._httpClient1.GetData("Admission/" + id);
   }
   public presciptionSave(employee) {
-    return this._httpClient.post("InPatient/InsertIPPrescription", employee);
+    return this._httpClient1.PostData("IPPrescription/InsertPrescription", employee);
   }
    
   public getDoseList() {
