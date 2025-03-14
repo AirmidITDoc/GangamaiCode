@@ -343,8 +343,9 @@ export class IPBillingComponent implements OnInit {
     this.handleChange('qty', () => this.calculateTotalCharge());
     this.handleChange('discPer', () => this.updateDiscountAmount());
     this.handleChange('discAmount', () => this.updateDiscountdiscPer());
-    // this.handleChange('totalDiscountPer', () => this.updateTotalDiscountAmt(), this.totalChargeForm);
-    // this.handleChange('totalDiscountAmount', () => this.updateTotalDiscountPer(), this.totalChargeForm);
+    // this.handleChange('AdminPer', () => this.CalculateAdminCharge(), this.Ipbillform);
+    // this.handleChange('totaldiscPer', () => this.CalFinalDiscper(), this.Ipbillform);
+    // this.handleChange('totalconcessionAmt', () => this.getDiscAmtCal(), this.Ipbillform);
   }
 
   calculateTotalCharge(row: any = null): void {
@@ -387,8 +388,7 @@ export class IPBillingComponent implements OnInit {
     }, { emitEvent: false }); // Prevent infinite loop
 
     this.isUpdating = false; // Reset flag
-  }
-
+  } 
   // Trigger when discount amount change
   updateDiscountdiscPer(): void {
     
@@ -414,8 +414,7 @@ export class IPBillingComponent implements OnInit {
     }, { emitEvent: false }); // Prevent infinite loop
 
     this.isUpdating = false; // Reset flag
-  }
- 
+  } 
   getFixedDecimal(value: number) {
     return Number(value.toFixed(2));
   }
@@ -432,6 +431,21 @@ export class IPBillingComponent implements OnInit {
       discPer: [0, [Validators.min(0), Validators.max(100)]],
       discAmount: [0, [Validators.min(0)]],
       netAmount: [0, Validators.required]
+    });
+  }
+  createBillForm() {
+    this.Ipbillform = this.formBuilder.group({ 
+      AdminPer: ['', Validators.max(100)],
+      AdminAmt: [0,[Validators.min(0)]], 
+      totaldiscPer: [0,[Validators.min(0), Validators.max(100)]],
+      totalconcessionAmt:  [0,[Validators.min(0)]], 
+      ConcessionId: [''], 
+      FinalAmount: [0,Validators.required], 
+      CashCounterID: [4], 
+      Remark: [''],
+      Admincheck: [''],
+      GenerateBill: [1],
+      CreditBill: [''],
     });
   }
   //service selected data
@@ -458,8 +472,7 @@ export class IPBillingComponent implements OnInit {
       this.Serviceform.get('DoctorID').disable();
       this.isDoctor = false;
     }
-  }
-
+  } 
   //Doctor selected 
   getdocdetail(event) {
     this.doctorName = event.text
@@ -639,10 +652,11 @@ export class IPBillingComponent implements OnInit {
           this.SelectedAdvancelist.forEach(element => {
             this.TotalAdvanceAmt += element.advanceAmount
           })
-          if (this.TotalAdvanceAmt < this.vNetBillAmount) {
-            this.BillBalAmount = this.vNetBillAmount - this.TotalAdvanceAmt
+          let netAmt = this.Ipbillform.get('FinalAmount').value || 0
+          if (this.TotalAdvanceAmt < netAmt) {
+            this.BillBalAmount = netAmt - this.TotalAdvanceAmt
           } else {
-            this.BillBalAmount = this.vNetBillAmount
+            this.BillBalAmount = netAmt
           }
 
         });
@@ -673,67 +687,136 @@ export class IPBillingComponent implements OnInit {
       console.log(this.chargeslist)
       this.dataSource.data = this.chargeslist;
       this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
+      this.getNetAmtSum()
     },
       (error) => {
         this.isLoading = 'list-loaded';
       });
-    this.chkdiscstatus();
+  
   } 
   //Table Total netAmt
-  TotalShowAmt:any=0;
+  TotalShowAmt:any=0; 
   DiscShowAmt:any=0;
-  getNetAmtSum(element) {
-    let netAmt = element.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0);
-    this.TotalShowAmt = element.reduce((sum, { totalAmt }) => sum += +(totalAmt || 0), 0);
-    this.DiscShowAmt = element.reduce((sum, { concessionAmount }) => sum += +(concessionAmount || 0), 0);
- 
+  FinalNetAmt:any=0;
+  getNetAmtSum() {
+    this.FinalNetAmt = this.chargeslist.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0);
+    this.TotalShowAmt = this.chargeslist.reduce((sum, { totalAmt }) => sum += +(totalAmt || 0), 0);
+    this.DiscShowAmt = this.chargeslist.reduce((sum, { concessionAmount }) => sum += +(concessionAmount || 0), 0);
+  
     this.Ipbillform.patchValue({
-      FinalAmount:netAmt,
-      concessionAmt:this.DiscShowAmt
-    })
+      FinalAmount: this.FinalNetAmt,
+      totalconcessionAmt:this.DiscShowAmt
+    }, { emitEvent: false }); // Prevent infinite loop
 
     if (this.DiscShowAmt > 0) { 
       this.ConcessionShow = true
+      this.BillDiscperFlag = false;
     } else { 
       this.ConcessionShow = false
-    }
-    return netAmt;
+      this.BillDiscperFlag = true;
+    } 
   }  
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  //Admin calculation
+  AdminShowAmt:any;
+  CalculateAdminCharge() {  
+    debugger
+    const perControl = this.Ipbillform.get("AdminPer");
+    if (!perControl.valid || perControl.value == 0) {
+      this.Ipbillform.get("AdminAmt").setValue('');
+      this.Ipbillform.get("AdminPer").setValue(''); 
+      this.Ipbillform.get("FinalAmount").setValue(this.FinalNetAmt); 
+      this.toastr.error("Enter Admin % between 0-100");
+      this.CalFinalDiscper();
+      return;
+    }
+    let adminPer = perControl.value;
+    let totalAmount = this.TotalShowAmt;
+    let adminAmt = parseFloat((totalAmount * adminPer / 100).toFixed(2));
+    this.AdminShowAmt = adminAmt
+    let finalTotalAmt = parseFloat((totalAmount + adminAmt).toFixed(2));
+    let finalNetAmt = 0
+    let finalDiscAmt = 0
+    if(this.DiscShowAmt > 0 ){
+      finalDiscAmt = this.DiscShowAmt
+      finalNetAmt = parseFloat((finalTotalAmt - this.DiscShowAmt).toFixed(2));
+    }else{
+      this.CalFinalDiscper();
+      // let discPer = this.Ipbillform.get('totaldiscPer').value || 0;
+      // finalDiscAmt = parseFloat((totalAmount * discPer / 100).toFixed(2));
+      // finalNetAmt = parseFloat((totalAmount - finalDiscAmt).toFixed(2)); 
+    } 
+    this.Ipbillform.patchValue({
+      totalconcessionAmt: finalDiscAmt,
+      AdminAmt:adminAmt || 0,
+      FinalAmount: finalNetAmt,
+    }, { emitEvent: false }); // Prevent infinite loop
   
-  createBillForm() {
-    this.Ipbillform = this.formBuilder.group({
-      TotalAmt: [0],
-      discPer: [''],
-      concessionAmt: [''],
-      ConcessionId: [''],
-      Remark: [''],
-      GenerateBill: [1],
-      CreditBill: [''],
-      FinalAmount: 0,
-      CashCounterID: [''],
-      IpCash: [''],
-      Pharcash: [''],
-      ChargeClass: [''],
-      AdminPer: [''],
-      AdminAmt: [''],
-      Admincheck: [''],
-    });
   }
+  // Total Bill Disc Per cal 
+  CalFinalDiscper() {
+debugger
+    const perControl = this.Ipbillform.get("totaldiscPer");
+    if (!perControl.valid || perControl.value == 0 || perControl.value == '') {
+      this.Ipbillform.get("totaldiscPer").setValue('');
+      this.Ipbillform.get("totalconcessionAmt").setValue(''); 
+      this.toastr.error("Enter Discount % between 0-100"); 
+      return;
+    }
+
+    let discper = perControl.value;
+    let totalAmount = this.TotalShowAmt;
+    let AdminAmt = this.Ipbillform.get('AdminAmt').value || this.AdminShowAmt || 0;
+    let discountAmt = 0 
+    let finalNetAmt = 0  
+    let FinalTotalAmt 
+
+    if (AdminAmt > 0) { 
+       FinalTotalAmt = ((parseFloat(totalAmount) + parseFloat(AdminAmt))).toFixed(2);
+       discountAmt = parseFloat((FinalTotalAmt * discper / 100).toFixed(2));
+       finalNetAmt = parseFloat((FinalTotalAmt - discountAmt).toFixed(2)); 
+    } 
+    else {   
+      discountAmt = parseFloat((totalAmount * discper / 100).toFixed(2));
+      finalNetAmt = parseFloat((totalAmount - discountAmt).toFixed(2));  
+    }
+    this.Ipbillform.patchValue({
+      totalconcessionAmt: discountAmt, 
+      FinalAmount: finalNetAmt,
+    }, { emitEvent: false }); // Prevent infinite loop 
+  }
+
+   //Total Bill DiscAMt cal
+   vTotalAmount:any;
+   getDiscAmtCal() {
+    debugger
+    const perControl = this.Ipbillform.get("totalconcessionAmt");
+    let totalAmount = this.TotalShowAmt;
+    if (perControl.value == 0 || perControl.value == '' || perControl.value > totalAmount) {
+      this.Ipbillform.get("totaldiscPer").setValue(0);
+      this.Ipbillform.get("totalconcessionAmt").setValue(0); 
+      this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
+      this.toastr.error("Enter Discount amt between 0-100"); 
+      return;
+    }
+
+    let discAmt = perControl.value; 
+    let AdminAmt = this.Ipbillform.get('AdminAmt').value || this.AdminShowAmt || 0;
+    let discper = ''
+    let finalNetAmt = 0  
+    let FinalTotalAmt 
+
+    if (AdminAmt > 0) { 
+       FinalTotalAmt = (parseFloat(totalAmount + AdminAmt)).toFixed(2);
+       discper = ((FinalTotalAmt / discAmt) * 100).toFixed(2); 
+       finalNetAmt = parseFloat((FinalTotalAmt - discAmt).toFixed(2)); 
+    } 
+    else {   
+      discper = ((totalAmount / discAmt) * 100).toFixed(2); 
+      finalNetAmt = parseFloat((FinalTotalAmt - discAmt).toFixed(2));  
+    } 
+   } 
+
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
@@ -924,177 +1007,15 @@ export class IPBillingComponent implements OnInit {
       this.isAdminDisabled = false;
       this.Ipbillform.get('AdminPer').reset();
       this.Ipbillform.get('AdminAmt').reset();
-    }
-    if (parseInt(this.TotalServiceDiscPer) > 0) {
-      this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-    } else {
-      this.Ipbillform.get('FinalAmount').setValue(this.vTotalAmount);
-      this.CalFinalDisc();
-      this.chkdiscstatus();
-    }
+    } 
   }
 
-  CalculateAdminCharge() {
-    if (this.vAdminPer > 0 && this.vAdminPer < 100) {
-      this.vAdminAmt = Math.round((parseFloat(this.vTotalAmount) * parseFloat(this.vAdminPer)) / 100).toFixed(2);
-      let FinalTotalAmt = (parseFloat(this.vTotalAmount) + parseFloat(this.vAdminAmt)).toFixed(2);
 
-      if (parseInt(this.TotalServiceDiscPer) > 0) {
-        let finalnetamt = Math.round(parseFloat(FinalTotalAmt) - parseFloat(this.vFinalDiscountAmt)).toFixed(2);
-        this.Ipbillform.get('FinalAmount').setValue(finalnetamt);
-      } else {
-        let discPer = this.Ipbillform.get('discPer').value || 0;
-        this.vFinalDiscountAmt = Math.round((parseFloat(FinalTotalAmt) * parseFloat(discPer)) / 100).toFixed(2);
-        this.vNetBillAmount = Math.round(parseFloat(FinalTotalAmt) - parseFloat(this.vFinalDiscountAmt)).toFixed(2);
-        this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-      }
-    } else {
-      if (this.vAdminPer < 0 && this.vAdminPer > 100 || this.vAdminPer == 0 || this.vAdminPer == '') {
-        this.Ipbillform.get('AdminPer').reset();
-        this.Ipbillform.get('AdminAmt').reset();
-        this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-        this.CalFinalDisc();
-      }
-      if (this.vAdminPer > 100) {
-        this.toastr.warning('Please Enter Admin % less than 100 and Greater than 0.', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        this.Ipbillform.get('AdminPer').reset();
-        this.Ipbillform.get('AdminAmt').reset();
-        this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-        this.CalFinalDisc();
-      }
-    }
-  }
-  // Total Bill Disc Per cal 
-  CalFinalDisc() {
 
-    let BillDiscPer = this.Ipbillform.get('discPer').value || 0;
-
-    if (this.Ipbillform.get('AdminAmt').value > 0) {
-      let FinalTotalAmt = ((parseFloat(this.vTotalAmount) + parseFloat(this.vAdminAmt))).toFixed(2);
-
-      if (BillDiscPer > 0 && BillDiscPer < 100 || BillDiscPer > 100) {
-        if (BillDiscPer > 100) {
-          this.toastr.warning('Please Enter Discount % less than 100 and Greater than 0.', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          this.Ipbillform.get('discPer').reset();
-          this.vFinalDiscountAmt = '';
-          this.vNetBillAmount = FinalTotalAmt;
-          this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
-          this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-        } else {
-          this.vFinalDiscountAmt = Math.round((parseFloat(FinalTotalAmt) * parseFloat(BillDiscPer)) / 100).toFixed(2);
-          this.vNetBillAmount = Math.round(parseFloat(FinalTotalAmt) - parseFloat(this.vFinalDiscountAmt)).toFixed(2);
-          this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-          this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
-        }
-      } else {
-        this.Ipbillform.get('discPer').reset();
-        this.vFinalDiscountAmt = '';
-        this.vNetBillAmount = FinalTotalAmt;
-        this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
-        this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-        this.finaldisc.nativeElement.focus();
-      }
-      this.chkdiscstatus();
-    } else {
-      if (BillDiscPer > 0 && BillDiscPer < 100) {
-        this.vFinalDiscountAmt = Math.round((parseFloat(this.vTotalAmount) * parseFloat(BillDiscPer)) / 100).toFixed(2);
-        this.vNetBillAmount = Math.round(parseFloat(this.vTotalAmount) - parseFloat(this.vFinalDiscountAmt)).toFixed(2);
-        this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-        this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
-      } else {
-        this.Ipbillform.get('discPer').reset();
-        this.vFinalDiscountAmt = '';
-        this.vNetBillAmount = this.vTotalAmount;
-        this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
-        this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-      }
-      if (BillDiscPer > 100) {
-        this.toastr.warning('Please Enter Discount % less than 100 and Greater than 0.', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        this.Ipbillform.get('discPer').reset();
-        this.vFinalDiscountAmt = '';
-        this.vNetBillAmount = this.vTotalAmount;
-        this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
-        this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-      }
-      this.chkdiscstatus();
-    }
-
-  }
-  //Total Bill DiscAMt cal
-  vTotalAmount:any;
-  getDiscAmtCal() {
-    let FinalDiscAmt = this.Ipbillform.get('concessionAmt').value || 0;
-
-    if (this.Ipbillform.get('AdminAmt').value > 0) {
-
-      let FinalTotalAMt = ((parseFloat(this.vTotalAmount) + parseFloat(this.vAdminAmt))).toFixed(2);
-
-      if (FinalDiscAmt > 0 && parseFloat(FinalDiscAmt) < parseFloat(FinalTotalAMt) || parseFloat(FinalDiscAmt) > parseFloat(FinalTotalAMt)) {
-        if (parseFloat(FinalDiscAmt) > parseFloat(FinalTotalAMt)) {
-          this.toastr.warning('Please Enter Discount amt less than Total and Greater than 0.', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          this.Ipbillform.get('concessionAmt').reset();
-          this.vFinalDiscper = '';
-          this.vNetBillAmount = FinalTotalAMt;
-          this.Ipbillform.get('discPer').setValue(this.vFinalDiscper);
-          this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-        } else {
-          this.vFinalDiscper = ((parseFloat(FinalDiscAmt) / parseFloat(FinalTotalAMt)) * 100).toFixed(2);
-          this.vNetBillAmount = Math.round(parseFloat(FinalTotalAMt) - parseFloat(FinalDiscAmt)).toFixed(2);
-          this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-          this.Ipbillform.get('discPer').setValue(this.vFinalDiscper);
-        }
-      } else {
-        this.toastr.warning('Please Enter Discount amt less than Total and Greater than 0.', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        this.Ipbillform.get('concessionAmt').reset();
-        this.vFinalDiscper = '';
-        this.vNetBillAmount = FinalTotalAMt;
-        this.Ipbillform.get('discPer').setValue(this.vFinalDiscper);
-        this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-      }
-
-    } else {
-      if (FinalDiscAmt > 0 && parseFloat(FinalDiscAmt) < parseFloat(this.vTotalAmount) || parseFloat(FinalDiscAmt) > parseFloat(this.vTotalAmount)) {
-        if (parseFloat(FinalDiscAmt) > parseFloat(this.vTotalAmount)) {
-          this.toastr.warning('Please Enter Discount amt less than Total and Greater than 0.', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          this.Ipbillform.get('concessionAmt').reset();
-          this.vFinalDiscper = '';
-          this.vNetBillAmount = this.vTotalAmount;
-          this.Ipbillform.get('discPer').setValue(this.vFinalDiscper);
-          this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-        } else {
-          this.vFinalDiscper = ((parseFloat(FinalDiscAmt) / parseFloat(this.vTotalAmount)) * 100).toFixed(2);
-          this.vNetBillAmount = Math.round(parseFloat(this.vTotalAmount) - parseFloat(FinalDiscAmt)).toFixed(2);
-          this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-          this.Ipbillform.get('discPer').setValue(this.vFinalDiscper);
-        }
-      } else {
-        this.toastr.warning('Please Enter Discount amt less than Total and Greater than 0.', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        this.Ipbillform.get('concessionAmt').reset();
-        this.vFinalDiscper = '';
-        this.vNetBillAmount = this.vTotalAmount;
-        this.Ipbillform.get('discPer').setValue(this.vFinalDiscper);
-        this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-      }
-    }
-    this.chkdiscstatus();
-  }
+ 
 
   chkdiscstatus() {
-    let CheckDiscAmt = this.Ipbillform.get('concessionAmt').value || 0
+    let CheckDiscAmt = this.Ipbillform.get('totalconcessionAmt').value || 0
     if (this.vFinalDiscountAmt > 0 || CheckDiscAmt > 0) {
       this.ConcessionShow = true;
     } else {
@@ -1138,7 +1059,7 @@ export class IPBillingComponent implements OnInit {
             Swal.fire('Charges cancelled !', 'Charges cancelled Successfully!', 'success').then((result) => {
               this.getChargesList();
               this.CalculateAdminCharge();
-              this.CalFinalDisc();
+              this.CalFinalDiscper();
               this.chkdiscstatus()
             });
           } else {
@@ -1162,7 +1083,7 @@ export class IPBillingComponent implements OnInit {
   }
   //Save
   onSave() {
-    if (this.Ipbillform.get('concessionAmt').value > 0 || this.Ipbillform.get('discPer').value > 0) {
+    if (this.Ipbillform.get('totalconcessionAmt').value > 0 || this.Ipbillform.get('totaldiscPer').value > 0) {
       if (!this.Ipbillform.get('ConcessionId').value.ConcessionId) {
         this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
@@ -1280,7 +1201,7 @@ export class IPBillingComponent implements OnInit {
           InsertBillUpdateBillNoObj['BillNo'] = 0;
           InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,
             InsertBillUpdateBillNoObj['TotalAmt'] = this.vTotalAmount || 0;
-          InsertBillUpdateBillNoObj['ConcessionAmt'] = this.Ipbillform.get('concessionAmt').value || 0;
+          InsertBillUpdateBillNoObj['ConcessionAmt'] = this.Ipbillform.get('totalconcessionAmt').value || 0;
           InsertBillUpdateBillNoObj['NetPayableAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
           InsertBillUpdateBillNoObj['PaidAmt'] = this.paidamt,
             InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt,
@@ -1402,7 +1323,7 @@ export class IPBillingComponent implements OnInit {
       InsertBillUpdateBillNoObj['BillNo'] = 0;
       InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,
         InsertBillUpdateBillNoObj['totalAmt'] = this.vTotalAmount || 0;
-      InsertBillUpdateBillNoObj['ConcessionAmt'] = this.Ipbillform.get('concessionAmt').value || 0;
+      InsertBillUpdateBillNoObj['ConcessionAmt'] = this.Ipbillform.get('totalconcessionAmt').value || 0;
       InsertBillUpdateBillNoObj['NetPayableAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
       InsertBillUpdateBillNoObj['PaidAmt'] = 0;
       InsertBillUpdateBillNoObj['BalanceAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
@@ -1507,7 +1428,7 @@ export class IPBillingComponent implements OnInit {
       InsertDraftBillOb['drbNo'] = 0;
       InsertDraftBillOb['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,
         InsertDraftBillOb['TotalAmt'] = this.vTotalAmount || 0;
-      InsertDraftBillOb['ConcessionAmt'] = this.vDiscountAmount || this.Ipbillform.get('concessionAmt').value || 0;
+      InsertDraftBillOb['ConcessionAmt'] = this.vDiscountAmount || this.Ipbillform.get('totalconcessionAmt').value || 0;
       InsertDraftBillOb['NetPayableAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
       InsertDraftBillOb['PaidAmt'] = 0;
       InsertDraftBillOb['BalanceAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
@@ -1588,6 +1509,7 @@ export class IPBillingComponent implements OnInit {
   }
   //Intrim bill popup 
   getInterimData() {
+    debugger
     if (this.interimArray.length > 0) {
       console.log('this.interimArray==', this.interimArray);
       this._matDialog.open(InterimBillComponent,

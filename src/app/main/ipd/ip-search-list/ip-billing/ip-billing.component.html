@@ -236,7 +236,7 @@
                                                 <li>
                                                     <div class="list-item">
                                                         <span class="list-item-key">Bill Amount :</span>
-                                                        <span class="list-item-value"> {{getNetAmtSum(dataSource.data) |
+                                                        <span class="list-item-value"> {{Ipbillform.get('FinalAmount').value |
                                                             currency:'INR' }}</span>
                                                     </div>
                                                 </li>
@@ -457,13 +457,13 @@
                                 </div>
                                 <div class="net-amt-box">
                                     <span class="net-amt-label">Disc Amt : </span>
-                                    <span class="net-amt-value">{{DiscShowAmt | currency:'INR'}}</span>
+                                    <span class="net-amt-value">{{Ipbillform.get('totalconcessionAmt').value 
+                                        | currency:'INR'}}</span>
                                 </div>
                     
                                 <div class="net-amt-box">
                                     <span class="net-amt-label">Net Amt : </span>
-                    
-                                    <span class="net-amt-value">{{getNetAmtSum(dataSource.data) |
+                                    <span class="net-amt-value">{{Ipbillform.get('FinalAmount').value  |
                                         currency:'INR'}}</span>
                                 </div>
                             </div>
@@ -895,28 +895,29 @@
             
                     <div fxLayout="row" class="gap-6">
                     
-                        <div fxFlex="6%" *ngIf="isAdminDisabled">
+                        <div  fxFlex="6%" *ngIf="isAdminDisabled">
                             <airmid-textbox label="Admin %" formControlName="AdminPer" [formGroup]="Ipbillform" [type]="'text'"
-                                [value]="vAdminPer" (keyup)="CalculateAdminCharge()" (keypress)="keyPressCharater($event)" min]="0"
+                                [value]="vAdminPer"  (keypress)="keyPressCharater($event)" [min]="0"  (keyup)="CalculateAdminCharge()"
                                 [max]="100">
-                            </airmid-textbox>
-                        </div>
-                    
+                            </airmid-textbox> 
+                        </div> 
+
                         <div fxFlex="8%" *ngIf="isAdminDisabled">
                             <airmid-textbox label="Admin Amount" formControlName="AdminAmt" [formGroup]="Ipbillform" [type]="'text'"
-                                [min]="0" (keypress)="keyPressCharater($event)" [value]="vAdminAmt">
+                                [min]="0" (keypress)="keyPressCharater($event)" [readonly]="true" >
                             </airmid-textbox>
                         </div>
                     
-                        <div fxFlex="6%" *ngIf="!BillDiscperFlag">
-                            <airmid-textbox label="Disc %" formControlName="discPer" [formGroup]="Ipbillform" [type]="'text'" [min]="0"
-                                [max]="100" (keypress)="keyPressCharater($event)" (keyup)="CalFinalDisc()">
+                        <div fxFlex="6%" *ngIf="BillDiscperFlag">
+                            <airmid-textbox label="Disc %" formControlName="totaldiscPer" [formGroup]="Ipbillform" [type]="'text'" [min]="0"
+                                [max]="100" (keypress)="keyPressCharater($event)" (keyup)="CalFinalDiscper()">
                             </airmid-textbox>
                         </div>
                     
                         <div fxFlex="8%">
-                            <airmid-textbox label="Disc Amount" formControlName="concessionAmt" [formGroup]="Ipbillform" [type]="'text'"
-                                [min]="0" (keypress)="keyPressCharater($event)" [readonly]="BillDiscperFlag" (keyup)="getDiscAmtCal()">
+                            <airmid-textbox label="Disc Amount" formControlName="totalconcessionAmt" [formGroup]="Ipbillform" [type]="'text'"
+                                [min]="0" (keypress)="keyPressCharater($event)" [readonly]="!BillDiscperFlag"
+                                (keyup)="getDiscAmtCal()">
                             </airmid-textbox>
                         </div>
                     
