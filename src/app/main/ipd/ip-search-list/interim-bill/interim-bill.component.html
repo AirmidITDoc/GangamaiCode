@@ -214,11 +214,11 @@
                                         (keypress)="keyPressCharater($event)" [readonly]="DiscountFlag">
                                     </airmid-textbox>
                                 </div>
-
-                                <div *ngIf="ConShow" fxFlex="16%">
+<!-- *ngIf="ConShow" -->
+                                <div  fxFlex="16%">
                                     <airmid-dropdown label="Concession Reason" formControlName="ConcessionId"
                                         [formGroup]="InterimFormGroup"
-                                        [validations]="getValidationMessages().ConcessionId"
+                                        [validations]="getValidationMessages().concessionId"
                                         [mode]="autocompleteModeConcession"
                                         (selectionChange)="selectChangeConcession($event)">
                                     </airmid-dropdown>
@@ -234,8 +234,13 @@
                                 <div fxFlex="16%">
                                     <airmid-dropdown label="Cash Counter" formControlName="CashCounterID"
                                         [formGroup]="InterimFormGroup" [mode]="autocompleteModeCashCounter"
-                                        [validations]="getValidationMessages().CashCounterID">
+                                        [validations]="getValidationMessages().cashCounterId">
                                     </airmid-dropdown>
+
+                                    <!-- <airmid-dropdown label="Select Cash Counter " formControlName="CashCounterID" class="w-300"
+                                    [formGroup]="InterimFormGroup" [validations]="getValidationMessages().cashCounterId"
+                                    [mode]="autocompleteModeCashcounter" (selectionChange)="selectChangeConcession($event)">
+                                </airmid-dropdown> -->
                                 </div>
 
                                 <div fxFlex>

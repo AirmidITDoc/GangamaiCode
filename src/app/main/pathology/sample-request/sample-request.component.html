@@ -20,7 +20,7 @@
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
         
-            <div style="padding: 10px; height: 40px;">
+            <div style="padding: 10px; height: 40px; margin-bottom: 10px;">
                 <div fxLayout="row wrap" fxLayoutAlign="space-between center">
                     <div class="table-header-title" style="padding: 10px;">
                         <span class="h3 font-weight-600">Lab Or Rad Details</span>
@@ -42,25 +42,20 @@
                 </div>
             </div>
         
-            <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false">
+            <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false"
+            (onSelectRow)="getSelectedRow($event)">
                 <ng-container filters>
                     <form [formGroup]="myformSearch">
                     <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
-                        formStartControlName="start" formEndControlName="end" [(fromValue)]="gridConfig.filters[0].fieldValue"
+                        formStartControlName="start" formEndControlName="end"
+                         [(fromValue)]="gridConfig.filters[0].fieldValue"
                         [(toValue)]="gridConfig.filters[1].fieldValue">
                     </airmid-datepicker>
-        
-                    <!-- <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Reg_No</mat-label>
-                        <input matInput placeholder="Search Reg_No" autocomplete="off"
-                            [(ngModel)]="gridConfig.filters[2].fieldValue" />
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[2].fieldValue=''">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field> -->
+
                     <mat-form-field appearance="outline">
                         <mat-label>RegNo</mat-label>
-                        <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myformSearch" formControlName="RegNo" (input)="onChangeFirst()" />
+                        <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myformSearch"
+                         formControlName="RegNo" (input)="onChangeFirst()" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
                             <mat-icon>close</mat-icon>
                         </button>
@@ -69,7 +64,7 @@
                         <div fxLayout="column" fxLayoutAlign="start start">
                             <div fxFlex fxLayout="row">
                                 <mat-radio-group name="Istype" formControlName="Istype" fxLayout="row" value="1" 
-                                style="padding: 6px;" class="gap-4" >
+                                style="padding: 6px;" class="gap-4" (change)="onChangeFirst()">
                                     <mat-label>Type:</mat-label>
                                     <div fxLayout="row">
                                         <mat-radio-button value='1'>IP</mat-radio-button>
@@ -80,7 +75,7 @@
                             <!-- [(ngModel)]="gridConfig.filters[3].fieldValue" -->
                             <div fxFlex fxLayout="row">
                                 <mat-radio-group name="StatusSearch" formControlName="IsCompleted" fxLayout="row" value="0"
-                                    style="padding: 6px;" class="gap-4" (change)="onShow($event)" >
+                                    style="padding: 6px;" class="gap-4" (change)="onChangeFirst()" >
                                     <mat-label>Status:</mat-label>
                                     <div fxLayout="row">
                                         <mat-radio-button value='0'>Pending</mat-radio-button>
@@ -132,14 +127,8 @@
                 </div>
             </div>
 
-            <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false">
+            <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false" :ShowButtons="false">
             </airmid-table>
-
-            <!-- <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false" :ShowButtons="false">
-                <ng-container filters>
-
-                </ng-container>
-            </airmid-table> -->
         </div>
 
         <div class="layout-card-container" style="padding: 10px;" *ngIf="isShowDetailTable">

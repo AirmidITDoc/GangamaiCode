@@ -92,12 +92,12 @@ export class NewRequestforlabComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  vAdmissionID=0;
+  vAdmissionID = 0;
   date: Date;
 
 
   constructor(private _FormBuilder: UntypedFormBuilder,
-     public datePipe: DatePipe,
+    public datePipe: DatePipe,
     private dialogRef: MatDialogRef<NewRequestforlabComponent>,
     private _matDialog: MatDialog,
     public _RequestforlabtestService: RequestforlabtestService,
@@ -121,7 +121,7 @@ export class NewRequestforlabComponent implements OnInit {
   tariffId = "0";
   groupId = "0";
   getServiceList() {
-    
+
     let ServiceName = this.myFormGroup.get("ServiceId").value + "%" || '%';
     if (this.vRegNo) {
       var param = {
@@ -178,7 +178,7 @@ export class NewRequestforlabComponent implements OnInit {
   }
 
   getSelectedObjIP(obj) {
-    
+
     console.log(obj)
     if ((obj.regID ?? 0) > 0) {
       console.log("Admitted patient:", obj)
@@ -202,7 +202,7 @@ export class NewRequestforlabComponent implements OnInit {
       this.vTariffName = obj.tariffName
       this.vCompanyName = obj.companyName
       this.vDOA = obj.admissionDate
-    
+
     }
   }
 
@@ -212,7 +212,7 @@ export class NewRequestforlabComponent implements OnInit {
     // this.getSelectedObj(row);
   }
 
- 
+
   onChangeReg(event) {
     if (event.value == 'registration') {
       this.registerObj = new RegInsert({});
@@ -229,7 +229,7 @@ export class NewRequestforlabComponent implements OnInit {
   }
 
   onSaveEntry(row) {
-    
+
     this.isLoading = 'save';
     this.dstable1.data = [];
     if (this.chargeslist && this.chargeslist.length > 0) {
@@ -254,7 +254,7 @@ export class NewRequestforlabComponent implements OnInit {
   }
 
   addChargList(row) {
-    
+
     this.chargeslist.push(
       {
         ServiceId: row.serviceId,
@@ -288,73 +288,91 @@ export class NewRequestforlabComponent implements OnInit {
   }
 
   savebtn: boolean = false;
-    OnSave() 
-    {
-        if(!this.myFormGroup.invalid) 
-        {
-            console.log("LabRequest Insert:",this.myFormGroup.value)
-    
-            this._RequestforlabtestService.LabRequestSave(this.myFormGroup.value).subscribe((response) => {
-            this.toastr.success(response.message);
-            this.onClear(true);
-            }, (error) => {
-            this.toastr.error(error.message);
-            });
-        } 
-        else
-        {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
-    
-    //     let submissionObj = {};
-        
-    //     if(this.vAdmissionID !=0 && this.dstable1.data.length!=0){
-    //     let ipPathOrRadiRequestLabRequestInsertArray = [];
-    //   this.dstable1.data.forEach((element) => {
-    //     console.log(element)
-    //       let ipPathOrRadiRequestLabRequestInsert = {};
-    //       ipPathOrRadiRequestLabRequestInsert['reqDetId'] = 0;
-    //       ipPathOrRadiRequestLabRequestInsert['requestId'] = 0;
-    //       ipPathOrRadiRequestLabRequestInsert['serviceId'] = element.ServiceId;
-    //       ipPathOrRadiRequestLabRequestInsert['price'] = element.Price;
-    //       ipPathOrRadiRequestLabRequestInsert['isStatus'] = false;
-    //       ipPathOrRadiRequestLabRequestInsert['IsOnFileTest'] = false;
-    //       ipPathOrRadiRequestLabRequestInsertArray.push(ipPathOrRadiRequestLabRequestInsert);
+  OnSave() {
+    debugger
+    // if(!this.myFormGroup.invalid) 
+    // {
+    //     console.log("LabRequest Insert:",this.myFormGroup.value)
+
+    //     this._RequestforlabtestService.LabRequestSave(this.myFormGroup.value).subscribe((response) => {
+    //     this.toastr.success(response.message);
+    //     this.onClear(true);
+    //     }, (error) => {
+    //     this.toastr.error(error.message);
     //     });
-
-    //     submissionObj = {
-    //       "requestId": 0,
-    //       "reqDate": this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
-    //       "reqTime": this.datePipe.transform(this.currentDate, 'shortTime'),
-    //       "opIpId":  this.vAdmissionID,
-    //       "opIpType": 1,
-    //       "isAddedBy": this._loggedService.currentUserValue.userId,
-    //       "isCancelled": false,
-    //       "isCancelledBy": 0,
-    //       "isCancelledDate":this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
-    //       "isCancelledTime":this.datePipe.transform(this.currentDate, 'shortTime'),
-    //       "isOnFileTest":false,// this.myFormGroup.get('IsOnFileTest').value || false,
-    //       'tDlabRequests': ipPathOrRadiRequestLabRequestInsertArray
-    //     }
-    //     console.log(submissionObj);
-    //     this._RequestforlabtestService.LabRequestSave(submissionObj).subscribe(response => {
-    //       console.log(response.message);
-    //       this.toastr.success(response);
-    //       this._matDialog.closeAll();
-    //             this.viewgetLabrequestReportPdf(response);
-    //           }, (error) => {
-    //             this.toastr.error(error.message);
-    //           });
-    //         } 
+    // } 
+    // else
+    // {
+    //     this.toastr.warning('please check from is invalid', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    // }
+    if ((this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined)) {
+      this.toastr.warning('Please select patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((!this.dstable1.data.length)) {
+      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
     }
 
-    onClear(val: boolean) {
-        this.myFormGroup.reset();
-        this.dialogRef.close(val);
+    let submissionObj = {};
+
+    if (this.vAdmissionID != 0 && this.dstable1.data.length != 0) {
+      let ipPathOrRadiRequestLabRequestInsertArray = [];
+      this.dstable1.data.forEach((element) => {
+        console.log(element)
+        let ipPathOrRadiRequestLabRequestInsert = {};
+        ipPathOrRadiRequestLabRequestInsert['reqDetId'] = 0;
+        ipPathOrRadiRequestLabRequestInsert['requestId'] = 0;
+        ipPathOrRadiRequestLabRequestInsert['serviceId'] = element.ServiceId || 1;
+        ipPathOrRadiRequestLabRequestInsert['price'] = element.Price || 1;
+        ipPathOrRadiRequestLabRequestInsert['isStatus'] = true;
+        ipPathOrRadiRequestLabRequestInsert['addedBillingId'] = 0,
+        ipPathOrRadiRequestLabRequestInsert['addedByDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+        ipPathOrRadiRequestLabRequestInsert['addedByTime'] = this.datePipe.transform(this.currentDate, 'shortTime'),
+        ipPathOrRadiRequestLabRequestInsert['charId'] = 0,
+        ipPathOrRadiRequestLabRequestInsert['isTestCompted'] = true,
+        ipPathOrRadiRequestLabRequestInsert['IsOnFileTest'] = true;
+        ipPathOrRadiRequestLabRequestInsertArray.push(ipPathOrRadiRequestLabRequestInsert);
+      });
+
+      submissionObj = {
+        "requestId": 0,
+        "reqDate": this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+        "reqTime": this.datePipe.transform(this.currentDate, 'shortTime'),
+        "opIpId": this.vAdmissionID,
+        "opIpType": 1,
+        "isAddedBy": this._loggedService.currentUserValue.userId,
+        "isCancelled": false,
+        "isCancelledBy": 0,
+        "isCancelledDate": this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+        "isCancelledTime": this.datePipe.transform(this.currentDate, 'shortTime'),
+        "isType": 0,
+        "isOnFileTest": this.myFormGroup.get('IsOnFileTest').value || false,
+        'tDlabRequests': ipPathOrRadiRequestLabRequestInsertArray
+      }
+      console.log(submissionObj);
+      this._RequestforlabtestService.LabRequestSave(submissionObj).subscribe(response => {
+        console.log(response.message);
+        this.toastr.success(response);
+        this._matDialog.closeAll();
+        this.viewgetLabrequestReportPdf(response);
+      }, (error) => {
+        this.toastr.error(error.message);
+      });
     }
+  }
+
+  onClear(val: boolean) {
+    this.myFormGroup.reset();
+    this.dialogRef.close(val);
+  }
 }
 
 export class LabRequest {

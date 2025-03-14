@@ -123,9 +123,9 @@ this.myformSearch=this._SampleCollectionService.createSearchForm()
             sortField: "BillNo",
             sortOrder: 0,
             filters: [
-                { fieldName: "BillNo", fieldValue: billNo, opType: OperatorComparer.Equals },
+                { fieldName: "BillNo", fieldValue: String(billNo), opType: OperatorComparer.Equals },
                 { fieldName: "BillDate", fieldValue: date, opType: OperatorComparer.Equals },
-                { fieldName: "OP_IP_Type", fieldValue: opipType, opType: OperatorComparer.Equals },
+                { fieldName: "OP_IP_Type", fieldValue: String(opipType), opType: OperatorComparer.Equals },
             ]
         };
 

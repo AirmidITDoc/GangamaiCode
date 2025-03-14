@@ -75,11 +75,11 @@ export class InterimBillComponent implements OnInit {
     
   currentDate = new Date();
   autocompleteModeConcession: string = "Concession";
-  autocompleteModeCashCounter: string="CashCounter";
+  autocompleteModeCashCounter: string = "CashCounter";
 
   ngOnInit(): void {
     this.dataSource.data = []; 
-    this.InterimFormGroup = this.InterimForm();  
+     this.InterimFormGroup = this.InterimForm();  
     if (this.data) {
       console.log(this.data);
       this.dataSource.data  = this.data.Obj; 
@@ -90,13 +90,13 @@ export class InterimBillComponent implements OnInit {
   } 
   InterimForm(): FormGroup {
     return this.formBuilder.group({
-      NetpayAmount: [0 ,Validators.pattern("^[0-9]*$")],
-      ConcessionId: [''],
+      NetpayAmount: [0],
+      ConcessionId: '0',
       Remark: [''],
       TotalAmt: [0], 
-      CashCounterID:['4'],
-      discPer: [0, [Validators.min(0), Validators.max(100)]],
-      concessionAmt: [0, [Validators.min(0)]],
+      CashCounterID:[''],
+      discPer: [0],
+      concessionAmt: [0],
       paymode: ['cashpay'],
       UPINO: ['']
     });
@@ -120,11 +120,13 @@ export class InterimBillComponent implements OnInit {
       ],
       concessionAmt: [{ name: "pattern", Message: "only Number allowed." }],
       Remark: [{ name: "pattern", Message: "only charactors allowed." }],
-      concessionId: [{}],
-      CashCounterID: [{}], 
+      concessionId: [],
+      cashCounterId: [], 
     }
   } 
-  selectChangeConcession(event) { } 
+  selectChangeConcession(event) { 
+    console.log(event)
+  } 
  
   getNetAmtSum(element) { 
     let netAmt = element.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0).toFixed(2);

@@ -15,18 +15,6 @@
             </button>
         </div>
     </div>
-    <div class="info-badge-top border-bottom" style="margin-left: 18%;" fxLayout="row" fxLayoutAlign="space-between" flex>
-        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
-            <button type="button" mat-icon-button>
-                <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
-            </button>
-
-            <button type="button" mat-icon-button>
-                <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
-            </button>
-
-        </div>
-    </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
         <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)" :ShowButtons="false">
             <ng-container filters>
