@@ -85,7 +85,6 @@ export class PrescriptionComponent implements OnInit {
                 { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
-               
             ],
             sortField: "ipMedID",
             sortOrder: 0,
