@@ -65,7 +65,7 @@ export class AirmidTableComponent implements OnInit {
             sortOrder: this.sort?.direction ?? 'asc' == 'asc' ? 0 : -1, filters: this.gridConfig.filters,
             columns: [],
             first: (this.paginator?.pageIndex ?? 0),
-            rows: (this.paginator?.pageSize ?? this.gridConfig.row),
+            rows: (this.paginator?.pageSize ?? this.pageSize),
             exportType: gridResponseType.JSON
         };
         this._httpClient.PostData(this.gridConfig.apiUrl, param).subscribe((data: any) => {
