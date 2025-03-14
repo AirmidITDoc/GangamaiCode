@@ -66,6 +66,10 @@ fuse-sidebar {
             margin: 0;
         }
     }
+    &.sidebar-hidden{
+        margin-top: 0px;
+        border-radius: 0px 0px 4px 4px;
+    }
     @include themed() {
         background-color: t($bg-color);
         .sidebar-content {

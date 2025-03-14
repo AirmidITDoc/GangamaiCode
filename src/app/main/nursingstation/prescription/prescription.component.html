@@ -1,4 +1,4 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;"
     dynamicTableHeight>
     <!-- <mat-toolbar class="top-header accent">
         <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
@@ -64,10 +64,9 @@
 
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
                     *ngIf="isShowDetailTable">
-                    <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false">
+                    <airmid-table [gridConfig]="gridConfig" class="content" #grid1 [ShowFilter]="false" [ShowButtons]="false">
                     </airmid-table>
                 </div>
-
             </div>
 
         </mat-tab>
@@ -118,7 +117,7 @@
                 
                  <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
                     *ngIf="isShowDetailTable">
-                    <airmid-table [gridConfig]="gridConfig4" class="content" #grid4 :ShowFilter="false">
+                    <airmid-table [gridConfig]="gridConfig4" class="content" #grid4 [ShowFilter]="false" [ShowButtons]="false">
                     </airmid-table>
                 </div>
 
