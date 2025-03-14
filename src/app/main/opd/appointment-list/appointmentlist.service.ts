@@ -158,6 +158,7 @@ export class AppointmentlistService {
     public RregisteredappointmentSave(Param: any) {
 
         return this._httpClient1.PostData("VisitDetail/Update", Param);
+        debugger
     }
 
     public EditConDoctor(Param: any) {
@@ -219,6 +220,11 @@ export class AppointmentlistService {
     public getRegistraionById(Id) {
         return this._httpClient1.GetData("OutPatient/" + Id);
     }
+
+    public getPhoneappById(Id) {
+        return this._httpClient1.GetData("PhoneAppointment2/" + Id);
+    }
+
 
     
     public doctordepartmentData(Id) {

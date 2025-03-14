@@ -101,9 +101,9 @@ export class IPSearchListComponent implements OnInit {
             { fieldName: "To_Dt", fieldValue: "", opType: OperatorComparer.Equals },
             { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+            { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals }
+            // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            // { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
 
         ],
         row: 25
@@ -437,9 +437,9 @@ export class IPSearchListComponent implements OnInit {
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
                 { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
                 { fieldName: "M_Name", fieldValue: this.m_name, opType: OperatorComparer.Equals },
-                { fieldName: "IPNo", fieldValue: this.IPDNo, opType: OperatorComparer.Equals },
-                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+                { fieldName: "IPNo", fieldValue: this.IPDNo, opType: OperatorComparer.Equals }
+                // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+                // { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
             ],
             row: 25
         }

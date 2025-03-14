@@ -304,6 +304,8 @@ console.log(data)
                 console.log(data)
                 this._OPListService.InsertOPBillingsettlement(data).subscribe(response => {
                     this.toastr.success(response.message);
+                    this.grid.gridConfig = this.gridConfig;
+                      this.grid.bindGridData();
                     this.viewgetOPPayemntPdf(response);
                   
                 }, (error) => {
@@ -312,8 +314,7 @@ console.log(data)
 
             }
         });
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
+        
     }
 
     // getBilllistview(){

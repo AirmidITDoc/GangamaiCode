@@ -20,6 +20,7 @@ import { ImageViewComponent } from '../image-view/image-view.component';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { PatientvitalInformationComponent } from './patientvital-information/patientvital-information.component';
+import { values } from 'lodash';
 
 @Component({
     selector: 'app-new-appointment',
@@ -330,15 +331,24 @@ export class NewAppointmentComponent implements OnInit {
 
     }
 getSelectedObjphone(obj) {
-      this.PatientName = obj.PatientName;
+    debugger
+      this.PatientName = obj.text;
         this.RegId = obj.value;
-        this.VisitFlagDisp = true;
+         this.vPhoneAppId=obj.value;
+        this.VisitFlagDisp = false;
+        this.registerObj=obj;
+        console.log(obj)
         if ((this.RegId ?? 0) > 0) {
             setTimeout(() => {
-                this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
+                this._AppointmentlistService.getPhoneappById(this.RegId).subscribe((response) => {
                     this.registerObj = response;
                     console.log(this.registerObj)
-
+                    this.registerObj.religionId=0;
+                    this.registerObj.areaId=0
+                    this.registerObj.regId=0
+                    this.registerObj.phoneNo=''
+                    this.registerObj.aadharCardNo=''
+                    this.registerObj.mobileNo=this.registerObj.mobileNo.trim()
                 });}, 500);
         }
 
@@ -346,7 +356,7 @@ getSelectedObjphone(obj) {
 
     onSave() {
      
-        console.log("Personal", this.personalFormGroup.valid, "Visit", this.VisitFormGroup.valid)
+        console.log("Personal", this.personalFormGroup.value, "Visit", this.VisitFormGroup,values)
         if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
 
             if (this.isCompanySelected && this.VisitFormGroup.get('CompanyId').value == 0) {
@@ -376,6 +386,8 @@ getSelectedObjphone(obj) {
     OnsaveNewRegister() {
         this.personalFormGroup.get("RegId").setValue(0)
         this.VisitFormGroup.get("regId").setValue(0)
+if(this.vPhoneAppId)
+    this.VisitFormGroup.get("phoneAppId").setValue(this.vPhoneAppId)
 
         let submitData = {
             "registration": this.personalFormGroup.value,
@@ -385,8 +397,11 @@ getSelectedObjphone(obj) {
         
         this._AppointmentlistService.NewappointmentSave(submitData).subscribe((response) => {
             this.toastr.success(response.message);
-            console.log(response)
-            this.OnViewReportPdf(response.visitId)
+            let Res=response.message
+            let ID=Res.split('.')
+            let visitId=ID[1]
+
+            this.OnViewReportPdf(visitId)
             this.onClear(true);
             this._matDialog.closeAll();
         }, (error) => {
@@ -404,9 +419,16 @@ getSelectedObjphone(obj) {
         console.log(submitData);
 
         this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
+            
             this.toastr.success(response.message);
-            console.log(response)
-            this.OnViewReportPdf(response.visitId)
+            // console.log(response)
+            // console.log(response.message)
+           let Res=response.message
+            let ID=Res.split('.')
+            let visitId=ID[1]
+            // console.log(ID)
+           
+            this.OnViewReportPdf(visitId)
             this.onClear(true);
             this._matDialog.closeAll();
         }, (error) => {

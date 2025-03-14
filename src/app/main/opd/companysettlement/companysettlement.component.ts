@@ -143,7 +143,7 @@ Age=0;
 
 
     viewgetOPPayemntPdf(data){
-        
+       debugger
         this.commonService.Onprint("PaymentId",data.paymentId,"OPPaymentReceipt");
     }
     

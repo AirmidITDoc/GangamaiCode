@@ -69,7 +69,16 @@ phdatetime: any;
    
       this.AdmissionId = this.Personaldata.admissionId;
       console.log(this.Personaldata);
-    //  this.getMlcdetail(this.AdmissionId)
+   
+      if ((this.data?.admissionId?? 0) > 0) {
+        setTimeout(() => {
+            this._AdmissionService.getMLCById(this.data.admissionId).subscribe((response) => {
+                this.registerObj = response;
+                console.log(this.registerObj)
+                // this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
+               });
+        }, 500);
+    }
    
     }
     setInterval(() => {
