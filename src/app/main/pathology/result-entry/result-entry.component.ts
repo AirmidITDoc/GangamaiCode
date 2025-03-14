@@ -95,8 +95,13 @@ export class ResultEntryComponent implements OnInit {
     reportIdData: any = [];
     ServiceIdData: any = [];
 
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     searchregNo: any;
-
+    vOPIPId = 0;
+    f_name:any = "" 
+    regNo:any="0"
+    l_name:any="" 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -126,8 +131,7 @@ export class ResultEntryComponent implements OnInit {
     // fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     // toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
-    fromDate = this._SampleService.myformSearch.get("start").value || "";
-    toDate = this._SampleService.myformSearch.get("end").value || "";
+    
     fromdate = this.fromDate ? this.datePipe.transform(this.fromDate, "yyyy-MM-dd") : "";
     todate = this.toDate ? this.datePipe.transform(this.toDate, "yyyy-MM-dd") : "";
     ngAfterViewInit() {
@@ -135,26 +139,29 @@ export class ResultEntryComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsIPOP;
     }
 
+
+    allcolumns=  [
+        {
+            heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
+            template: this.actionsIPOP, width: 5
+        },
+        { heading: "Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', type: 9, width: 200 },
+        { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PatientName", key: "patientname", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
+        {
+            heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
+        }
+    ];
+
     gridConfig: gridModel = {
         apiUrl: "Pathology/PathologyPatientTestList",
-        columnsList: [
-            {
-                heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
-                template: this.actionsIPOP, width: 5
-            },
-            { heading: "Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', type: 9, width: 200 },
-            { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "PatientName", key: "patientname", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
-            {
-                heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
-                template: this.actionButtonTemplate  // Assign ng-template to the column
-            }
-        ],
+        columnsList:this.allcolumns,
         sortField: "PresReId",
         sortOrder: 0,
         filters: [
@@ -198,7 +205,7 @@ export class ResultEntryComponent implements OnInit {
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
         ]
     }
-
+   
     constructor(
         private formBuilder: UntypedFormBuilder,
         public _SampleService: ResultEntryService,
@@ -213,6 +220,9 @@ export class ResultEntryComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
+        this.myformSearch=this._SampleService.createSearchForm()
+        this.fromDate = this.myformSearch.get("start").value || "";
+        this.toDate = this.myformSearch.get("end").value || "";
         this.getPatientsList();
     }
 
@@ -319,11 +329,50 @@ export class ResultEntryComponent implements OnInit {
         this.dateTimeObj = dateTimeObj;
     }
 
-    // validation
-    get f() { return this._SampleService.myformSearch.controls; }
 
-    toggleSidebar(name): void {
-        this._fuseSidebarService.getSidebar(name).toggleOpen();
+    onChangeFirst() {
+        this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
+        this.f_name = this.myformSearch.get('FirstName').value + "%"
+        this.l_name = this.myformSearch.get('LastName').value + "%"
+        this.regNo = this.myformSearch.get('RegNo').value 
+        this.getfilterdata();
+    }
+    
+    getfilterdata(){
+    
+    this.gridConfig = {
+        apiUrl: "Pathology/PathologyPatientTestList",
+        columnsList:this.allcolumns,
+        sortField: "PresReId",
+        sortOrder: 0,
+        filters:  [
+            { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
+            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "IsCompleted", fieldValue: "1", opType: OperatorComparer.Equals },
+            { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals }
+    
+        ]
+    }
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData(); 
+    }
+    
+    
+    Clearfilter(event) {
+    console.log(event)
+    if (event == 'FirstName')
+        this.myformSearch.get('FirstName').setValue("")
+    else
+        if (event == 'LastName')
+            this.myformSearch.get('LastName').setValue("")
+    if (event == 'RegNo')
+        this.myformSearch.get('RegNo').setValue("")
+    
+    this.onChangeFirst();
     }
 
     exportSamplerequstReportExcel() {

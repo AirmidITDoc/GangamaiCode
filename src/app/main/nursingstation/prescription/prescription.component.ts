@@ -84,21 +84,7 @@ export class PrescriptionComponent implements OnInit {
                 { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
-                // {
-                //     heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
-                //         {
-                //             action: gridActions.edit, callback: (data: any) => {
-                //                 this.onSave(data);
-                //             }
-                //         }, {
-                //             action: gridActions.delete, callback: (data: any) => {
-                //                 this._PrescriptionService.deactivateTheStatus(data.ipMedID).subscribe((response: any) => {
-                //                     this.toastr.success(response.message);
-                //                     this.grid.bindGridData();
-                //                 });
-                //             }
-                //         }]
-                // } //Action 1-view, 2-Edit,3-delete
+               
             ],
             sortField: "ipMedID",
             sortOrder: 0,

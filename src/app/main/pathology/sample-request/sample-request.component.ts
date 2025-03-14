@@ -37,7 +37,12 @@ export class SampleRequestComponent implements OnInit {
   //isSampleCollection: boolean = true;
   RequestId:any=0;
   Ispathradio=0;
-
+  vOPIPId = 0;
+  f_name:any = "" 
+  regNo:any="0"
+  l_name:any="" 
+  Istype=1
+  IsCompleted=1
   setStep(index: number) {
     this.step = index;
   }
@@ -88,17 +93,17 @@ export class SampleRequestComponent implements OnInit {
 
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  
+  allcolumns= [            
+    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "Patient Name", key: "patientname", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "Adm Date", key: "admDate", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "IPMedID", key: "ipMedId", sort: true, align: 'left', emptySign: 'NA'},                 
+  ];
       gridConfig: gridModel = {
           apiUrl: "PathlogySampleCollection/LabOrRadRequestPatientList",
-          columnsList: [            
-            { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Patient Name", key: "patientname", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Adm Date", key: "admDate", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "IPMedID", key: "ipMedId", sort: true, align: 'left', emptySign: 'NA'},                 
-          ],
+          columnsList:this.allcolumns,
           sortField: "PresReId",
           sortOrder: 0,
           filters: [  
@@ -106,7 +111,7 @@ export class SampleRequestComponent implements OnInit {
             { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "IsCompleted", fieldValue: "1", opType: OperatorComparer.Equals },
-            { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals }
+            { fieldName: "Istype", fieldValue: "2", opType: OperatorComparer.Equals }
           ]
       }
   constructor(
@@ -122,14 +127,10 @@ export class SampleRequestComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.getSampleLabOrRadRequestLists();
+   this.myformSearch=this._PathologyService.createSampleRequstForm()
   }
 
-  get f() { return this._PathologyService.myformSearch.controls; }
 
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
 
   gridConfig1: gridModel = new gridModel();
   isShowDetailTable: boolean = false;
@@ -170,41 +171,48 @@ export class SampleRequestComponent implements OnInit {
       });
   }
 
-  // getSampleLabOrRadRequestLists() {
   
-  //   console.log(this._PathologyService.myformSearch.get("StatusSearch").value)
-    
-  //   var m_data = {
+  onChangeFirst() {
+    this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
+    this.f_name = this.myformSearch.get('FirstName').value + "%"
+    this.l_name = this.myformSearch.get('LastName').value + "%"
+    this.regNo = this.myformSearch.get('RegNo').value 
+    this.Istype = this.myformSearch.get('Istype').value
+    this.IsCompleted = this.myformSearch.get('IsCompleted').value 
 
-  //     "FromDate": this.datePipe.transform(this._PathologyService.myformSearch.get("start").value, "MM-dd-yyyy"),
-  //     "ToDate": this.datePipe.transform(this._PathologyService.myformSearch.get("end").value, "MM-dd-yyyy"),
-  //     "Reg_No": this._PathologyService.myformSearch.get("Reg_No").value || 0,
-  //     "Istype": parseInt(this._PathologyService.myformSearch.get("Istype").value) || 1,
-  //     "IsCompleted": parseInt(this._PathologyService.myformSearch.get("StatusSearch").value) || 0,
+    this.getfilterdata();
+}
 
-  //   }
-  //   console.log(m_data);
-  //   this._PathologyService.getSampleLabOrRadRequestList(m_data).subscribe(Visit => {
-  //     this.dataSource.data = Visit as LabOrRadRequestList[];
-  //     this.dataSource.sort = this.sort;
-  //     this.dataSource.paginator = this.paginator;
-      
-  //     this.click = false;
-  //   },
-  //     error => {
-        
-  //     });
-  // }
+getfilterdata(){
+debugger
+this.gridConfig = {
+  apiUrl: "PathlogySampleCollection/LabOrRadRequestPatientList",
+    columnsList:this.allcolumns , 
+    sortField: "PresReId",
+    sortOrder: 0,
+    filters:  [
+      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+      { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+      { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+      { fieldName: "IsCompleted", fieldValue: this.IsCompleted, opType: OperatorComparer.Equals },
+      { fieldName: "Istype", fieldValue: this.Istype, opType: OperatorComparer.Equals }
 
-  keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
-    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
-    }
-  }
+    ]
+}
+this.grid.gridConfig = this.gridConfig;
+this.grid.bindGridData(); 
+}
+
+
+Clearfilter(event) {
+console.log(event)
+
+if (event == 'RegNo')
+    this.myformSearch.get('RegNo').setValue("")
+
+this.onChangeFirst();
+}
   onClear(){}
 
   onShow(event: MouseEvent) {
@@ -290,60 +298,21 @@ onFilterChange(){
   }
 
   exportSamplerequstReportExcel(){
-    this.sIsLoading == 'loading-data'
-    let exportHeaders = ['RegNo', 'PatientName', 'AdmDate', 'ReqDate', 'WardName','BedName','IsTestCompted','IsOnFileTest'];
-    this.reportDownloadService.getExportJsonData(this.dataSource.data, exportHeaders, 'Sample Request');
-    this.dataSource.data = [];
-    this.sIsLoading = '';
+   
   }
 
   exportReportPdf() {
-    let actualData = [];
-    this.dataSource.data.forEach(e => {
-      var tempObj = [];
-      tempObj.push(e.RegNo);
-      tempObj.push(e.PatientName);
-      tempObj.push(e.AdmDate);
-      tempObj.push(e.ReqDate);
-      tempObj.push(e.WardName);
-      tempObj.push(e.BedName);
-      tempObj.push(e.IsTestCompted);
-      tempObj.push(e.IsOnFileTest);
-      
-      // tempObj.push(e.PathAmount);
-      actualData.push(tempObj);
-    });
-    let headers = [['RegNo','PatientName', 'AdmDate', 'ReqDate', 'WardName', 'BedName','IsTestCompted', 'IsOnFileTest' ]];
-    this.reportDownloadService.exportPdfDownload(headers, actualData, 'Sample Request');
+  
   }
 
 
   
     exportSamplerequstdetailReportExcel(){
-    this.sIsLoading == 'loading-data'
-    let exportHeaders = ['ReqDate', 'ReqTime', 'ServiceName', 'AddedByName', 'IsStatus','PBillNo','IsPathology','IsRadiology','IsTestCompted'];
-    this.reportDownloadService.getExportJsonData(this.dataSource1.data, exportHeaders, 'Sample Request Detail');
-    this.dataSource1.data = [];
-    this.sIsLoading = '';
+   
   }
 
   exportdetailReportPdf() {
-    let actualData = [];
-    this.dataSource1.data.forEach(e => {
-      var tempObj = [];
-      tempObj.push(e.ReqDate);
-      tempObj.push(e.ReqTime);
-      tempObj.push(e.ServiceName);
-      tempObj.push(e.AddedByName);
-      tempObj.push(e.IsStatus);
-      tempObj.push(e.PBillNo);
-      tempObj.push(e.IsPathology);
-      tempObj.push(e.IsRadiology);
-      // tempObj.push(e.IsTestCompted);
-      actualData.push(tempObj);
-    });
-    let headers = [['ReqDate','ReqTime', 'ServiceName','AddedByName',  'IsStatus', 'PBillNo','IsPathology', 'IsRadiology','IsTestCompted' ]];
-    this.reportDownloadService.exportPdfDownload(headers, actualData, 'Sample Request Detail');
+  
   }
 
 

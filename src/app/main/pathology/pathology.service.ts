@@ -66,17 +66,16 @@ export class PathologyService {
 
 
 
-  // createSampleRequstForm(): FormGroup {
-  //   return this._formBuilder.group({
+  createSampleRequstForm(): FormGroup {
+    return this._formBuilder.group({
 
-
-  //     Reg_No: [],
-  //     Istype: ['0'],
-  //     start: [new Date().toISOString()],
-  //     end: [new Date().toISOString()],
-  //     StatusSearch:
-  //   });
-  // }
+      RegNo: [],
+      Istype: ['0'],
+      start: [new Date().toISOString()],
+      end: [new Date().toISOString()],
+      IsCompleted:'1'
+    });
+  }
 
 
 

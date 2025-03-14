@@ -44,26 +44,32 @@
         
             <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false">
                 <ng-container filters>
-        
-                    <airmid-datepicker [formGroup]="_PathologyService.myformSearch" [isRangePicker]="true"
+                    <form [formGroup]="myformSearch">
+                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
                         formStartControlName="start" formEndControlName="end" [(fromValue)]="gridConfig.filters[0].fieldValue"
                         [(toValue)]="gridConfig.filters[1].fieldValue">
                     </airmid-datepicker>
         
-                    <mat-form-field appearance="outline" fxFlex>
+                    <!-- <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Reg_No</mat-label>
                         <input matInput placeholder="Search Reg_No" autocomplete="off"
                             [(ngModel)]="gridConfig.filters[2].fieldValue" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[2].fieldValue=''">
                             <mat-icon>close</mat-icon>
                         </button>
+                    </mat-form-field> -->
+                    <mat-form-field appearance="outline">
+                        <mat-label>RegNo</mat-label>
+                        <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myformSearch" formControlName="RegNo" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                            <mat-icon>close</mat-icon>
+                        </button>
                     </mat-form-field>
-    
-                    <form [formGroup]="_PathologyService.myformSearch">
+                    <!-- [(ngModel)]="gridConfig.filters[4].fieldValue" -->
                         <div fxLayout="column" fxLayoutAlign="start start">
                             <div fxFlex fxLayout="row">
                                 <mat-radio-group name="Istype" formControlName="Istype" fxLayout="row" value="1" 
-                                style="padding: 6px;" class="gap-4" [(ngModel)]="gridConfig.filters[4].fieldValue">
+                                style="padding: 6px;" class="gap-4" >
                                     <mat-label>Type:</mat-label>
                                     <div fxLayout="row">
                                         <mat-radio-button value='1'>IP</mat-radio-button>
@@ -71,10 +77,10 @@
                                     </div>
                                 </mat-radio-group>
                             </div>
-                    
+                            <!-- [(ngModel)]="gridConfig.filters[3].fieldValue" -->
                             <div fxFlex fxLayout="row">
-                                <mat-radio-group name="StatusSearch" formControlName="StatusSearch" fxLayout="row" value="0"
-                                    style="padding: 6px;" class="gap-4" (change)="onShow($event)" [(ngModel)]="gridConfig.filters[3].fieldValue">
+                                <mat-radio-group name="StatusSearch" formControlName="IsCompleted" fxLayout="row" value="0"
+                                    style="padding: 6px;" class="gap-4" (change)="onShow($event)" >
                                     <mat-label>Status:</mat-label>
                                     <div fxLayout="row">
                                         <mat-radio-button value='0'>Pending</mat-radio-button>
@@ -98,7 +104,7 @@
                         <span class="h3 font-weight-600">Nursing Pathology Radiology Details</span>
                     </div>
 
-                    <form [formGroup]="_PathologyService.myformSearch">
+                    <form [formGroup]="myformSearch">
                         <mat-radio-group name="IsPathOrRad" formControlName="IsPathOrRad"
                         (change)="onFilterChange()">
                         <mat-radio-button (click)="toggle(0)" [checked]="true"
@@ -182,7 +188,7 @@
                 </div>
                 <div class="sidebar-body">
                     <div class="sidebar-form">
-                        <form [formGroup]="_PathologyService.myformSearch" fusePerfectScrollbar>
+                        <form [formGroup]="myformSearch" fusePerfectScrollbar>
                             <div fxLayout="column" fxLayoutAlign="start none">
                               
                                 <mat-form-field appearance="outline">
@@ -371,7 +377,7 @@
                                         <div class="table-header-title">
                                             <span class="h3 font-weight-600">Nursing Pathology Radiology Details</span>
                                         </div>
-                                        <form [formGroup]="_PathologyService.myformSearch">
+                                        <form [formGroup]="myformSearch">
                                             <mat-radio-group name="IsPathOrRad" formControlName="IsPathOrRad"
                                             (change)="onFilterChange()">
                                             <mat-radio-button (click)="toggle(0)" [checked]="true"

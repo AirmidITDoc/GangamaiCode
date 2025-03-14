@@ -21,11 +21,11 @@ export class SampleCollectionService {
 
   createSearchForm(): FormGroup {
     return this._formBuilder.group({
-      RegNoSearch: [],
-      FirstNameSearch: ['', [
+      RegNo: [],
+      FirstName: ['', [
         Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
       ]],
-      LastNameSearch: ['', [
+      LastName: ['', [
       Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
       ]],
       // BillNo:[''],
