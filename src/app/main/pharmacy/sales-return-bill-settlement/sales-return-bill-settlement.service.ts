@@ -39,6 +39,9 @@ export class SalesReturnBillSettlementService {
       Validators.minLength(10),
       Validators.maxLength(10),]],
       PatientType: ['IP'], 
+      NetAmount:[0],
+      PaidAmount:[0],
+      BalanceAmount:[0]
     });
   }
   public getConcessionCombo()
@@ -77,5 +80,8 @@ export class SalesReturnBillSettlementService {
       this._loaderService.show();
   }
     return this._httpClient.post("InPatient/Update_PhBillDiscountAfter", emp);
+  }
+  public getDischargepatientlist(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientDischargedListSearch ", employee)
   }
 }

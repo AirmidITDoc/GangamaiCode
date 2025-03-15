@@ -54,6 +54,7 @@ export class CommonReportComponent implements OnInit {
   FlagServiceIdSelected: boolean = false;
   FlagDepartmentSelected: boolean = false;
   FlaOPIPTypeSelected: boolean = false;
+  FlagReportDetSelected: boolean = false;
   FlaCashcounterSelected: boolean = false;
   FlagGroupSelected: boolean = false;
   optionsUser: any[] = [];
@@ -138,6 +139,7 @@ export class CommonReportComponent implements OnInit {
       this.FlagVisitSelected = false;
       this.FlagPaymentIdSelected = false
       this.FlaOPIPTypeSelected = false;
+      this.FlagReportDetSelected = true;
       this.FlaCashcounterSelected = false;
       this.FlagGroupSelected = false;
     }
@@ -397,7 +399,12 @@ export class CommonReportComponent implements OnInit {
 
 debugger
     if (this.ReportName == 'Doctor Wise Patient Count Report') {
-      this.viewgetDocwisepatientcountReportPdf();
+      if(this._OPReportsService.userForm.get('ReportType').value == 1){
+        this.viewgetDocwisepatientcountReportPdf();
+      }else{
+        this.viewgetDocwisepatientcountDetailReportPdf();
+      }
+   
     }
     else if (this.ReportName == 'Reference Doctor Wise Patient Count Report') {
       this.viewgetRefDocwisepatientcountReportPdf();
@@ -1090,6 +1097,37 @@ debugger
             data: {
               base64: res["base64"] as string,
               title: "Doctor Wise Patient Count Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList = false;
+          this.sIsLoading = '';
+        });
+      });
+
+    }, 100);
+  }
+  viewgetDocwisepatientcountDetailReportPdf() {
+    debugger 
+    let DoctorID = 0;
+    if (this._OPReportsService.userForm.get('DoctorID').value)
+      DoctorID = this._OPReportsService.userForm.get('DoctorID').value.DoctorId 
+
+    setTimeout(() => {
+      this.AdList = true;
+      this._OPReportsService.getdocwisepatinetcountDetailsReport(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+        DoctorID
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Doctor Wise Patient Count Detail Viewer"
             }
           });
         dialogRef.afterClosed().subscribe(result => {

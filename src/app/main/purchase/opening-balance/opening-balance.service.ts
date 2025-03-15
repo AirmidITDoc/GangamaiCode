@@ -75,4 +75,10 @@ CreateStorForm() {
     }
     return this._httpClient.post("Inventory/OpeningTransactionSave", Param)
   }
+  public getopeningbalreportview(Storeid,From_Dt,To_Dt,loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
+    return this._httpClient.get("Inventory/view-OpeningBalanceList?Storeid="+Storeid+"&From_Dt="+From_Dt+"&To_Dt="+To_Dt);
+   }
 }

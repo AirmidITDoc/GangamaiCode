@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-opening-balance',
@@ -124,7 +125,35 @@ export class OpeningBalanceComponent {
       this.getOpeningBalList();
     });
     //this.getGRNLit();
-  }
+  } 
+    viewgetOpningBalReportPdf(row) {
+      console.log(row)
+      this.sIsLoading = 'loading-data';
+      setTimeout(() => {
+        
+     this._OpeningBalanceService.getopeningbalreportview(
+      row.PurchaseID,row.PurchaseID,row.PurchaseID
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '850px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Opening Transcation Viewer"
+            }
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            // this.AdList=false;
+            this.sIsLoading = ' ';
+          });
+         
+      });
+     
+      },100);
+    }
+  
 }
 export class OpeningBalanceList{
   No:number;

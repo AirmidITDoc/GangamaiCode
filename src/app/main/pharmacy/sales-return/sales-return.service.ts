@@ -78,7 +78,7 @@ export class SalesReturnService {
     if(loader){
       this._loaderService.show()
     }
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseSalesBill",Param);
+    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_BrowseSalesBill",Param);
   }
 
   public getLoggedStoreList(Param){

@@ -237,6 +237,12 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
   }
     return this._httpClient.get("CommanReport/view-DoctorWisePatientCountReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&DosctorID"+DosctorID);
   }
+  public getdocwisepatinetcountDetailsReport(FromDate,ToDate,DosctorID,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.get("CommanReport/view-ViewDoctorWisePatientCountReportDetails?FromDate=" + FromDate+"&ToDate="+ToDate+"&DosctorID"+DosctorID);
+  }
 
   
   public getRefdocwisepatientcountReport(FromDate,ToDate,loader = true){

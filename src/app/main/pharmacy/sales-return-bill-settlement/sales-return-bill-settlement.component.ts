@@ -159,12 +159,30 @@ export class SalesReturnBillSettlementComponent implements OnInit {
           }
         });
       }
+    }else{
+      var m_data = {
+        "Keyword": `${this._SelseSettelmentservice.ItemSubform.get('RegID').value}%`
+      }
+      if (this._SelseSettelmentservice.ItemSubform.get('RegID').value.length >= 1) {
+        this._SelseSettelmentservice.getDischargepatientlist(m_data).subscribe(resData => {
+          this.filteredOptions = resData;
+          console.log(resData) 
+          if (this.filteredOptions.length == 0) {
+            this.noOptionFound = true;
+          } else {
+            this.noOptionFound = false;
+          } 
+        });
+      } 
     }
   //  this.saleSelectedDatasource.data = [];
    this.PatientInformRest();
   } 
   getSelectedObjRegIP(obj) {
     console.log(obj)
+    this.vNetAmount = 0;
+    this.vBalanceAmount = 0;
+    this.vPaidAmount = 0;
     this.DoctorNamecheck = true;
     this.IPDNocheck = true;
     this.OPDNoCheck = false;
@@ -187,6 +205,9 @@ export class SalesReturnBillSettlementComponent implements OnInit {
 
   getSelectedObjOP(obj) {
     console.log(obj)
+    this.vNetAmount = 0;
+    this.vBalanceAmount = 0;
+    this.vPaidAmount = 0;
     this.OPDNoCheck = true;
     this.DoctorNamecheck = false;
     this.IPDNocheck = false;
@@ -202,12 +223,42 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     this.Age = obj.AgeYear 
     this.getIpSalesList();
   }
+  getSelectedObjRegDischarge(obj) {
+    console.log(obj)
+    this.vNetAmount = 0;
+    this.vBalanceAmount = 0;
+    this.vPaidAmount = 0;
+    this.DoctorNamecheck = true;
+    this.IPDNocheck = true;
+    this.OPDNoCheck = false;
+    this.registerObj = obj;
+    this.PatientName = obj.FirstName + ' ' + obj.LastName;
+    this.RegId = obj.RegID;
+    this.vAdmissionDate = obj.AdmissionDate;
+    this.OP_IP_Id = this.registerObj.AdmissionID;
+    this.IPDNo = obj.IPDNo;
+    this.RegNo =obj.RegNo;
+    this.DoctorName = obj.DoctorName;
+    this.TariffName =obj.TariffName
+    this.CompanyName = obj.CompanyName 
+    this.RoomName = obj.RoomName;
+    this.BedName = obj.BedName
+    this.GenderName = obj.GenderName
+    this.Age = obj.Age 
+    this.getIpSalesList();
+  }
   getOptionTextOp(option) {
     if (!option)
       return '';
     return option.FirstName + ' ' + option.MiddleName + ' ' + option.LastName; 
   }
   getOptionTextIP(option) {
+    if (!option)
+      return '';
+    return option.FirstName + ' ' + option.MiddleName + ' ' + option.LastName;
+
+  }
+  getOptionDischargeText(option) {
     if (!option)
       return '';
     return option.FirstName + ' ' + option.MiddleName + ' ' + option.LastName;
@@ -247,28 +298,39 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     }
   }
  
-  @ViewChild('doctorname') doctorname: ElementRef;
-  @ViewChild('mobileno') mobileno: ElementRef; 
-  @ViewChild('patientname') patientname: ElementRef;
-
-  public onEntermobileno(event): void {
-    if (event.which === 13) { 
-      this.patientname.nativeElement.focus();
+  vNetAmount:any = 0;
+  vBalanceAmount:any = 0;
+  vPaidAmount:any = 0;
+  SelectedList:any=[];
+  SelectedBilllist:any;
+  tableElementChecked(event, element) {  
+    this.SelectedBilllist  = element
+    if (event.checked) {
+      console.log(element) 
+      this.SelectedList.push(element)
+      this.vNetAmount += element.NetAmount
+      this.vPaidAmount += element.PaidAmountPayment
+      this.vBalanceAmount += element.BalanceAmount 
     }
-  }
-  public onEnterpatientname(event): void {
-    if (event.which === 13) {
-      // this.itemid.nativeElement.focus();
-      this.doctorname.nativeElement.focus();
+    else{
+      let index = this.SelectedList.indexOf(element);
+      if (index >= 0) {
+          this.SelectedList.splice(index, 1); 
+      } 
+      this.vNetAmount -= element.NetAmount
+      this.vPaidAmount -= element.PaidAmountPayment
+      this.vBalanceAmount -= element.BalanceAmount
     }
-  }
-  public onEnterDoctorname(event): void {
-    if (event.which === 13) {
-     // this.address.nativeElement.focus();
-    }
-  }
+    console.log(this.SelectedList) 
+  } 
    
   getIpSalesList() {  
+    if(this.OP_IP_Id == '' || this.OP_IP_Id == undefined || this.OP_IP_Id == null){
+      this.toastr.warning('please select patient','warning',{
+        toastClass: 'tostr-tost custom-toast-error',
+      }); 
+      return
+    }
     let OP_IP_Type
     if (this.vSelectedOption == 'OP') {
       OP_IP_Type = 0;
@@ -410,23 +472,23 @@ export class SalesReturnBillSettlementComponent implements OnInit {
   
   // }
 
-  OnPayment1(contact) {   
+  OnPayment1() {   
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-    console.log(contact)
+  
     let PatientHeaderObj = {}; 
     
     PatientHeaderObj['Date'] = formattedDate;
     PatientHeaderObj['PatientName'] = this.PatientName;
-    PatientHeaderObj['OPD_IPD_Id'] = contact.OP_IP_ID;
-    PatientHeaderObj['AdvanceAmount'] = Math.round(contact.BalanceAmount); 
-    PatientHeaderObj['NetPayAmount'] =Math.round(contact.BalanceAmount); 
-    PatientHeaderObj['BillNo'] = contact.SalesId;
+    PatientHeaderObj['OPD_IPD_Id'] = this.SelectedBilllist.OP_IP_ID;
+    PatientHeaderObj['AdvanceAmount'] = Math.round(this.vBalanceAmount); 
+    PatientHeaderObj['NetPayAmount'] =Math.round(this.vBalanceAmount); 
+    PatientHeaderObj['BillNo'] = this.SelectedBilllist.SalesId;
     PatientHeaderObj['IPDNo'] = this.IPDNo;
     PatientHeaderObj['RegNo'] = this.RegNo; 
-    PatientHeaderObj['OP_IP_Type'] = contact.OP_IP_Type; 
+    PatientHeaderObj['OP_IP_Type'] = this.SelectedBilllist.OP_IP_Type; 
     const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
       {
         maxWidth: "95vw",
@@ -442,7 +504,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
 
       if (result.IsSubmitFlag == true) {
         let updateBillobj = {};
-        updateBillobj['salesID'] = contact.SalesId;
+        updateBillobj['salesID'] = this.SelectedBilllist.SalesId;
         updateBillobj['salRefundAmt'] =0 ;
         updateBillobj['balanceAmount'] = result.BalAmt || 0 ;// result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
  
@@ -456,10 +518,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         if (result.submitDataAdvancePay.length > 0) {
           result.submitDataAdvancePay.forEach((element) => {
             let update_T_PHAdvanceDetailObj = {};
-              //extra 
-              //this.UsedAmt1 =  (parseInt(element.AdvanceAmount) - parseInt(element.BalanceAmount));
-              //UsedHeaderAmt += this.UsedAmt1
-              //
+
             update_T_PHAdvanceDetailObj['AdvanceDetailID'] = element.AdvanceDetailID;
             update_T_PHAdvanceDetailObj['UsedAmount'] = element.UsedAmount;
            this.UsedAmt1 = (parseInt(this.UsedAmt1) + parseInt(element.UsedAmount));
@@ -550,6 +609,26 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       this.getIpSalesList();
     });
   } 
+  @ViewChild('doctorname') doctorname: ElementRef;
+  @ViewChild('mobileno') mobileno: ElementRef; 
+  @ViewChild('patientname') patientname: ElementRef;
+
+  public onEntermobileno(event): void {
+    if (event.which === 13) { 
+      this.patientname.nativeElement.focus();
+    }
+  }
+  public onEnterpatientname(event): void {
+    if (event.which === 13) {
+      // this.itemid.nativeElement.focus();
+      this.doctorname.nativeElement.focus();
+    }
+  }
+  public onEnterDoctorname(event): void {
+    if (event.which === 13) {
+     // this.address.nativeElement.focus();
+    }
+  }
 }
   export class PaidItemList {
   

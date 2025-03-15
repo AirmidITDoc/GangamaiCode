@@ -78,7 +78,7 @@ export class IpSalesReturnComponent implements OnInit {
   vBedName:any;
   vAge:any;
   vGenderName:any;
- ;
+  vDischargePatientfalg:boolean=false;
  dsIpSaleItemList = new MatTableDataSource<IPSalesItemList>(); 
   dsIpRetrunItemList = new MatTableDataSource<IPSalesItemList>();
  
@@ -152,7 +152,26 @@ export class IpSalesReturnComponent implements OnInit {
     if (!option) return '';
     return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
   }
-
+  getDischargedSearchList() {
+    var m_data = {
+      "Keyword": `${this._IpSalesRetService.userFormGroup.get('RegID').value}%`
+    }
+    if (this._IpSalesRetService.userFormGroup.get('RegID').value.length >= 1) {
+      this._IpSalesRetService.getDischargepatientlist(m_data).subscribe(resData => {
+        this.filteredOptions = resData;
+        console.log(resData) 
+        if (this.filteredOptions.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        } 
+      });
+    } 
+  } 
+  getOptionDischargeText(option) {
+    if (!option) return '';
+    return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
+  } 
 
   getSelectedObj(obj){
     console.log(obj)
@@ -177,6 +196,17 @@ export class IpSalesReturnComponent implements OnInit {
 OnRadioChange(){
   this.dsIpSaleItemList.data = [];
   this.getItemNameList();
+}
+getDischargedList(event){
+  if(event.checked == true){
+    //this.patientInfoReset();
+    this.OnReset();
+    this.vDischargePatientfalg = true;
+  }else{
+    //this.patientInfoReset(); 
+    this.OnReset();
+    this.vDischargePatientfalg = false;
+  } 
 }
   getItemNameList() {
     if ((this.vRegID == '' || this.vRegID == null || this.vRegID == undefined)) {
@@ -723,6 +753,7 @@ getIpPrescriptinRetrunlist(){
     this._IpSalesRetService.userFormGroup.reset();
     this._IpSalesRetService.IPFinalform.reset();
     this.dsIpSaleItemList.data = [];
+    this.PatientListfilteredOptions = [];
     this.chargeslist = [];
     this.vRegNo = '';
     this.vPatientName = '';

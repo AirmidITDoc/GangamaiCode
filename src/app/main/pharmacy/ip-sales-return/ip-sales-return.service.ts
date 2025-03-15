@@ -38,7 +38,11 @@ export class IpSalesReturnService {
       ItemName:'',
       ReturnQty:'',
       TotalQty:'', 
+      IsDischarged: '', 
     });
+  }
+  public getDischargepatientlist(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientDischargedListSearch ", employee)
   }
   public getAdmittedpatientlist(employee){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
