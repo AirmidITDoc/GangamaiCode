@@ -69,6 +69,13 @@ public getRegistraionById(Id) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemNameBatchPOP_IPPresRet",Param)
   }
 
+  public getBatchList1(param: any) {
+    debugger
+    const apiUrl = `ItemMaster/GetItemListForSalesBatchPop?StoreId=${param.StoreId}&ItemId=${param.ItemId}`;
+    return this._httpClient1.GetData(apiUrl);
+  }
+  
+
   // public getItemlist(Param){
   //   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPDrugName",Param)
   // }

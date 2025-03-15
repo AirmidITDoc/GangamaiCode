@@ -232,8 +232,8 @@ export class AddItemComponent {
   selectChangeItemName(row) {
     
     console.log("Drug:", row)
-    this.itemId = row.value
-    this.vItemName = row.text
+    this.itemId = row.itemId
+    this.vItemName = row.itemName
 
     if ((this.itemId ?? 0) > 0) {
       // setTimeout(() => {

@@ -46,6 +46,8 @@ import { MatTreeModule } from '@angular/material/tree';
 import { PrescriptionTemplateComponent } from './prescription-template/prescription-template.component';
 import { PrePresciptionListComponent } from './pre-presciption-list/pre-presciption-list.component';
 import { AddItemComponent } from './add-item/add-item.component';
+// import { FocusNextDirective } from './directives/focus-next/focus-next.directive';
+import { FocusNextDirective } from 'app/main/shared/directives/focus-next/focus-next.directive';
 
 const routes: Routes = [
     {
@@ -58,7 +60,8 @@ const routes: Routes = [
         NewCasepaperComponent,
         PrescriptionTemplateComponent,
         PrePresciptionListComponent,
-        AddItemComponent
+        AddItemComponent,
+        FocusNextDirective
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -109,6 +112,9 @@ const routes: Routes = [
         CasepaperService,
         // NotificationServiceService ,
         DatePipe
-    ]
+    ],
+     exports: [
+            FocusNextDirective
+        ],
 })
 export class CasepaperModule { }

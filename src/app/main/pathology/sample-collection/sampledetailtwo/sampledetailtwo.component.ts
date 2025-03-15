@@ -205,13 +205,13 @@ export class SampledetailtwoComponent implements OnInit {
   }
 
   getSampledetailList1(row) {
-
-    let OPIP
+debugger
+    let OPIP: string;
     if (row.lbl == "IP" || row.patientType == "IP") {
-      OPIP = 1;
+      OPIP = "1";
     }
     else if (row.lbl == "OP" || row.patientType == "OP") {
-      OPIP = 0;
+      OPIP = "0";
     }
 
     let inputDate = row.vaDate;

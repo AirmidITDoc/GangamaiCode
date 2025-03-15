@@ -221,19 +221,20 @@
                                                                         [value]="regObj.mAssignChiefComplaint"
                                                                         (selectionChange)="selectChangeCheifComplaint($event)">
                                                                     </airmid-dropdown>
+                                                                    <!-- [appFocusNext]="isFocusEnabled" -->
                                                                 </div>
                                                                 <mat-chip-listbox #chipList>
-                                                                    <mat-chip
+                                                                    <!-- <mat-chip
                                                                         *ngFor="let item of caseFormGroup.value.mAssignChiefComplaint">
                                                                         {{ item.complaintDescr }} <mat-icon
                                                                             (click)="removeChiefComplaint(item)">close</mat-icon>
-                                                                    </mat-chip>
+                                                                    </mat-chip> -->
 
-                                                                    <!-- <mat-chip
+                                                                    <mat-chip
                                                                         *ngFor="let item of addCheiflist">
                                                                         {{ item.complaintDescr }}
                                                                         <mat-icon (click)="removeChiefComplaint(item)">close</mat-icon>
-                                                                        </mat-chip> -->
+                                                                        </mat-chip>
 
                                                                 </mat-chip-listbox>
                                                             </div>
@@ -254,7 +255,7 @@
                                                                 [formGroup]="caseFormGroup"
                                                                 [validations]="getValidationMessages().Diagnosis" #ddlDiagnosis
                                                                 [IsMultiPle]="true" 
-                                                                ValueField="visitId" 
+                                                                ValueField="id" 
                                                                 TextField="descriptionName"
                                                                 ApiUrl="OPDPrescriptionMedical/get-Dignosis" 
                                                                 [ReqFullObj]="true"
@@ -263,16 +264,16 @@
                                                             
                                                             </div>
                                                             <mat-chip-listbox #chipList>
-                                                                <mat-chip
+                                                                <!-- <mat-chip
                                                                     *ngFor="let item of caseFormGroup.value.mAssignDiagnosis">
                                                                     {{ item.descriptionName }} <mat-icon
                                                                         (click)="removedignosis(item)">close</mat-icon>
-                                                                </mat-chip>
+                                                                </mat-chip> -->
 
-                                                                <!-- <mat-chip *ngFor="let item of (addDiagnolist.concat(caseFormGroup.value.mAssignDiagnosis || []))">
+                                                                <mat-chip *ngFor="let item of addDiagnolist">
                                                                     {{ item.descriptionName }} 
                                                                     <mat-icon (click)="removedignosis(item)">close</mat-icon>
-                                                                  </mat-chip>  -->
+                                                                  </mat-chip> 
                                                             </mat-chip-listbox>
                                                         </div>
                                                     </form>
@@ -301,15 +302,15 @@
                                                             </airmid-dropdown>
                                                             </div>
                                                             <mat-chip-listbox #chipList>
-                                                                <mat-chip
+                                                                <!-- <mat-chip
                                                                     *ngFor="let item of caseFormGroup.value.mAssignExamination">
                                                                     {{ item.examinationDescr }} <mat-icon
                                                                         (click)="removeExamination(item)">close</mat-icon>
-                                                                </mat-chip>
-                                                                <!-- <mat-chip *ngFor="let item of (addExaminlist.concat(caseFormGroup.value.mAssignExamination || []))">
+                                                                </mat-chip> -->
+                                                                <mat-chip *ngFor="let item of addExaminlist">
                                                                     {{ item.examinationDescr }} 
                                                                     <mat-icon (click)="removeExamination(item)">close</mat-icon>
-                                                                  </mat-chip>                                                                    -->
+                                                                  </mat-chip>
                                                             </mat-chip-listbox>
                                                         </div>
                                                     </form>
@@ -350,12 +351,14 @@
                                                 <form [formGroup]="MedicineItemForm">
                                                     <div fxLayout="row" class="gap-8">
 
-                                                        <airmid-dropdown label="Drug Name" formControlName="ItemId"
-                                                            [formGroup]="MedicineItemForm"
-                                                            [validations]="getValidationMessages().ItemId"
-                                                            [mode]="autocompleteModeItem"
-                                                            (selectionChange)="selectChangeItemName($event)">
-                                                        </airmid-dropdown>
+                                                        <airmid-autocomplete label="Enter Drug Name" 
+                                                        [formGroup]="MedicineItemForm"
+                                                        formControlName="ItemId" 
+                                                        placeholderText="Enter Drug Name" fxFlex
+                                                        ApiUrl="ItemMaster/GetItemListForPrescription?StoreId=2&ItemName="
+                                                        (selectionChange)="selectChangeItemName($event)" 
+                                                        TextField="itemName" ValueField="ItemId">
+                                                        </airmid-autocomplete>
 
                                                         <airmid-dropdown label="Dose Name" formControlName="DoseId"
                                                             [formGroup]="MedicineItemForm"
@@ -558,11 +561,11 @@
                                             <hr>
                                             <div fxLayout="row">
                                                 <div fxFlex="40%">
-                                                    <airmid-dropdown 
+                                                    <!-- <airmid-dropdown 
                                                         label="Service List"
                                                         formControlName="mAssignService" 
                                                         [formGroup]="caseFormGroup"
-                                                        [validations]="getValidationMessages().Serviceid" #ddlService
+                                                        [validations]="getValidationMessages().serviceId" #ddlService
                                                         [IsMultiPle]="true" 
                                                         [value]="regObj.mAssignService"
                                                         ValueField="serviceId" 
@@ -570,7 +573,17 @@
                                                         ApiUrl="OPDPrescriptionMedical/get-Service" 
                                                         [ReqFullObj]="true"
                                                         (selectionChange)="selectChangeServiceName($event)">
-                                                    </airmid-dropdown>
+                                                    </airmid-dropdown> -->
+
+                                                    <airmid-autocomplete label="Enter Service Name" 
+                                                        [formGroup]="caseFormGroup"
+                                                        formControlName="serviceId" 
+                                                        placeholderText="Enter Service Name" fxFlex
+                                                        ApiUrl="BillingService/GetServiceListwithGroupWise?TariffId=1&ClassId=1&IsPathRad=1&ServiceName="
+                                                        (selectionChange)="selectChangeServiceName($event)" 
+                                                        TextField="serviceName" ValueField="serviceId">
+                                                        </airmid-autocomplete>
+
                                                 </div>
                                                 <mat-chip-listbox #chipList>
                                                     <mat-chip

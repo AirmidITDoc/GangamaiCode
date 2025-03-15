@@ -245,39 +245,72 @@ export class NewCasepaperComponent implements OnInit {
   }
 
   // removedignosis(item) {
-  //   
-  //   let removedIndex = this.caseFormGroup.value.mAssignDiagnosis.findIndex(x => x.visitId == item.visitId);
-  //   this.caseFormGroup.value.mAssignDiagnosis.splice(removedIndex, 1);
-  //   this.ddlDiagnosis.SetSelection(this.caseFormGroup.value.mAssignDiagnosis.map(x => x.visitId));
+  //   debugger
+  //   const updatedList = this.caseFormGroup.value.mAssignDiagnosis.filter(
+  //     x => x.id !== item.id
+  //   );
+  //  this.caseFormGroup.get('mAssignDiagnosis').setValue(updatedList);  
+  //   this.ddlDiagnosis.SetSelection(updatedList.map(x => x.visitId));
   // }
 
   removedignosis(item) {
-    
-    const updatedList = this.caseFormGroup.value.mAssignDiagnosis.filter(
-      x => x.visitId == item.visitId
+    // Filter the list by removing the selected item
+    const updatedList = this.addDiagnolist.filter(
+      x => x.id !== item.id
     );
-   this.caseFormGroup.get('mAssignDiagnosis').setValue(updatedList);  
-    this.ddlDiagnosis.SetSelection(updatedList.map(x => x.visitId));
+  
+    this.caseFormGroup.get('mAssignDiagnosis')?.setValue(updatedList);  
+  
+    this.ddlDiagnosis.SetSelection(updatedList.map(x => x.id));
+  
+    this.addDiagnolist = updatedList;
   }
+
+  // removeChiefComplaint(item) {
+  //   ;
+  //   const updatedList = this.caseFormGroup.value.mAssignChiefComplaint.filter(
+  //     x => x.complaintId !== item.complaintId
+  //   );
+  //  this.caseFormGroup.get('mAssignChiefComplaint').setValue(updatedList);  
+  //  this.ddlChiefComplaint.SetSelection(updatedList.map(x => x.complaintId));
+  // console.log("Updated Chief Complaint List:", updatedList);
+  // }
 
   removeChiefComplaint(item) {
-    ;
-    const updatedList = this.caseFormGroup.value.mAssignChiefComplaint.filter(
+    // Filter the list by removing the selected item
+    const updatedList = this.addCheiflist.filter(
       x => x.complaintId !== item.complaintId
     );
-   this.caseFormGroup.get('mAssignChiefComplaint').setValue(updatedList);  
-   this.ddlChiefComplaint.SetSelection(updatedList.map(x => x.complaintId));
-  console.log("Updated Chief Complaint List:", updatedList);
+  
+    this.caseFormGroup.get('mAssignChiefComplaint')?.setValue(updatedList);  
+  
+    this.ddlChiefComplaint.SetSelection(updatedList.map(x => x.complaintId));
+  
+    this.addCheiflist = updatedList;
   }
 
-  removeExamination(item) {
+  // removeExamination(item) {
     
-    const updatedList = this.caseFormGroup.value.mAssignExamination.filter(
+  //   const updatedList = this.caseFormGroup.value.mAssignExamination.filter(
+  //     x => x.examinationId !== item.examinationId
+  //   );
+  //  this.caseFormGroup.get('mAssignExamination').setValue(updatedList);  
+  //   this.ddlExamination.SetSelection(updatedList.map(x => x.examinationId));
+  // }
+
+  removeExamination(item) {
+    // Filter the list by removing the selected item
+    const updatedList = this.addExaminlist.filter(
       x => x.examinationId !== item.examinationId
     );
-   this.caseFormGroup.get('mAssignExamination').setValue(updatedList);  
+  
+    this.caseFormGroup.get('mAssignExamination')?.setValue(updatedList);  
+  
     this.ddlExamination.SetSelection(updatedList.map(x => x.examinationId));
+  
+    this.addExaminlist = updatedList;
   }
+  
 
   removeService(item) {
     let removedIndex = this.caseFormGroup.value.mAssignService.findIndex(x => x.serviceId == item.serviceId);
@@ -358,7 +391,7 @@ export class NewCasepaperComponent implements OnInit {
         // Validators.required,
       ]],
       ChiefComplaint: '',
-      Serviceid: '',
+      serviceId: '',
       Diagnosis: '',
       Examination: '',
       ExaminationControl: '',
@@ -391,7 +424,7 @@ export class NewCasepaperComponent implements OnInit {
       mAssignService: [
         {
           serviceId: 0,
-          serviceName: 0,
+          serviceName: '',
         }
       ]
     });
@@ -411,7 +444,7 @@ export class NewCasepaperComponent implements OnInit {
       start: [''],
       Remark: '',
       Days: '',
-      Serviceid: '',
+      serviceId: '',
       FollowupMonths: '',
       FollowupYears: '',
       dateStylebtn: ['Day'],
@@ -661,10 +694,10 @@ getRtrvCheifComplaintList(obj) {
   itemGeneric:any;
 
   selectChangeItemName(row) {
-    // 
-    console.log("Drug:", row)
-    this.durgId = row.value
-    this.durgName = row.text
+    debugger
+    console.log("itemData:", row)
+    this.durgId = row.itemId
+    this.durgName = row.itemName
 
     if ((this.durgId ?? 0) > 0) {
       setTimeout(() => {
@@ -795,17 +828,32 @@ DosedisableEditing(index: number) {
     this.templateName = row.text
   }
 
-  selectedItems = [];
-  selectChangeServiceName(row) {
-    console.log("Selected Services:", row);
+  // selectedItems = [];
+  // selectChangeServiceName(row) {
+  //   debugger
+  //   console.log("Selected Services:", row);
 
-    if (Array.isArray(row) && row.length > 0) {
-      this.selectedItems = row.map(item => ({ serviceId: item.serviceId })); // ✅ Store all serviceIds
-    } else {
-      this.selectedItems = [];
-    }
-    console.log("Updated selectedItems:", this.selectedItems);
-  }
+  //   if (Array.isArray(row) && row.length > 0) {
+  //     this.selectedItems = row.map(item => ({ serviceId: item.serviceId })); // ✅ Store all serviceIds
+  //   } else {
+  //     this.selectedItems = [];
+  //   }
+  //   console.log("Updated selectedItems:", this.selectedItems);
+  // }
+
+  // during single data from dd
+  selectedItems = [];
+
+selectChangeServiceName(row) {
+  console.log("Selected Services:", row);
+
+  const selectedData = Array.isArray(row) ? row : [row]; // Convert single data to array
+
+  this.selectedItems = selectedData.map(item => ({ serviceId: item.serviceId }));
+
+  console.log("Updated selectedItems:", this.selectedItems);
+}
+
 
   RtrvTestServiceList: any = [];
   getRtrvTestService(obj) {
@@ -847,98 +895,146 @@ DosedisableEditing(index: number) {
     console.log("DoctorName:", row)
   }
 
-   selectChangeCheifComplaint(row) {
+  //  selectChangeCheifComplaint(row) {
+  //   console.log("Chief Complaint:", row);
+  //   if (Array.isArray(row) && row.length > 0) {
+  //     this.addCheiflist = row.map(item => item.complaintDescr?.trim() || "");
+  //   } else {
+  //     this.addCheiflist = [];
+  //   }
+  //   console.log("Updated addCheiflist:", this.addCheiflist);
+    // this.isFocusEnabled = false;
+  // }
+
+  retrievedData1: any[] = [];
+  selectChangeCheifComplaint(row) {
     console.log("Chief Complaint:", row);
-    if (Array.isArray(row) && row.length > 0) {
-      this.addCheiflist = row.map(item => item.complaintDescr?.trim() || "");
-    } else {
-      this.addCheiflist = [];
+  
+    if (Array.isArray(row)) {
+      const newData = row.map(item => ({
+        complaintId: item.complaintId,
+        complaintDescr: item.complaintDescr?.trim() || ""
+      }));
+  
+      // If addCheiflist is empty, initialize with newData
+      if (!this.addCheiflist) {
+        this.addCheiflist = [...newData];
+      } else {
+        // Append new data to old data
+        this.addCheiflist = [...this.addCheiflist, ...newData];
+  
+        // Remove duplicates based on `complaintId`
+        this.addCheiflist = this.addCheiflist.filter(
+          (value, index, self) =>
+            index === self.findIndex(item => item.complaintId === value.complaintId)
+        );
+  
+        // Remove only deselected data, keep retrieved data
+        this.addCheiflist = this.addCheiflist.filter(item =>
+          row.some(selectedItem => selectedItem.complaintId === item.complaintId) ||
+          this.retrievedData1.some(retrievedItem => retrievedItem.complaintId === item.complaintId)
+        );
+      }
     }
     console.log("Updated addCheiflist:", this.addCheiflist);
   }
-
-  // selectChangeCheifComplaint(row) {
-  //   console.log("Chief Complaint:", row);
   
-  //   if (Array.isArray(row) && row.length > 0) {
-  //     row.forEach(item => {
-  //       let newComplaint = item.complaintDescr?.trim() || "";
-  
-  //       // Ensure that newComplaint is not an empty string and is not already in the list
-  //       if (newComplaint && !this.addCheiflist.some(existing => existing.complaintDescr === newComplaint)) {
-  //         this.addCheiflist.push({ complaintDescr: newComplaint });
-  //       }
-  //     });
-  //   }
-  
-  //   console.log("Updated addCheiflist:", this.addCheiflist);
-  // }
-  
-  selectChangeDiagnosis(row) {
-    console.log("Diagnosis:", row);
-    if (Array.isArray(row) && row.length > 0) {
-      this.addDiagnolist = row.map(item => item.descriptionName?.trim() || "");
-    } else {
-      this.addDiagnolist = [];
-    }
-    console.log("Updated addDiagnolist:", this.addDiagnolist);
-  }
-
   // selectChangeDiagnosis(row) {
   //   console.log("Diagnosis:", row);
-  
-  //   let existingSet = new Set(this.addDiagnolist.map(d => d.descriptionName.toLowerCase().trim()));
-  
   //   if (Array.isArray(row) && row.length > 0) {
-  //     row.forEach(item => {
-  //       let newDiagnosis = item.descriptionName?.trim() || "";
-        
-  //       if (newDiagnosis && !existingSet.has(newDiagnosis.toLowerCase())) {
-  //         this.addDiagnolist.push({ descriptionName: newDiagnosis });
-  //         existingSet.add(newDiagnosis.toLowerCase());
-  //       }
-  //     });
-  //   }  
+  //     this.addDiagnolist = row.map(item => item.descriptionName?.trim() || "");
+  //   } else {
+  //     this.addDiagnolist = [];
+  //   }
   //   console.log("Updated addDiagnolist:", this.addDiagnolist);
   // }
   
+  retrievedData2: any[] = [];
+  selectChangeDiagnosis(row) {
+    console.log("Diagnosis:", row);
+  
+    if (Array.isArray(row)) {
+      const newData = row.map(item => ({
+        id: item.id,
+        descriptionName: item.descriptionName?.trim() || ""
+      }));
+  
+      // If addDiagnolist is empty, initialize with newData
+      if (!this.addDiagnolist) {
+        this.addDiagnolist = [...newData];
+      } else {
+        // Append new data to old data
+        this.addDiagnolist = [...this.addDiagnolist, ...newData];
+  
+        // Remove duplicates based on `id`
+        this.addDiagnolist = this.addDiagnolist.filter(
+          (value, index, self) =>
+            index === self.findIndex(item => item.id === value.id)
+        );
+  
+        // Remove only deselected data, keep retrieved data
+        this.addDiagnolist = this.addDiagnolist.filter(item =>
+          row.some(selectedItem => selectedItem.id === item.id) ||
+          this.retrievedData2.some(retrievedItem => retrievedItem.id === item.id)
+        );
+      }
+    }
+    console.log("Updated addDiagnolist:", this.addDiagnolist);
+  }
+  
+// old one needed
+  // selectChangeExamination(row) {
+  //   console.log("Examination:", row);
+  //   if (Array.isArray(row) && row.length > 0) {
+  //     this.addExaminlist = row.map(item => item.examinationDescr?.trim() || "");
+  //   } else {
+  //     this.addExaminlist = [];
+  //   }
+  //   console.log("Updated addExaminlist:", this.addExaminlist);
+  // }
+
+  retrievedData: any[] = [];
 
   selectChangeExamination(row) {
     console.log("Examination:", row);
-    if (Array.isArray(row) && row.length > 0) {
-      this.addExaminlist = row.map(item => item.examinationDescr?.trim() || "");
-    } else {
-      this.addExaminlist = [];
+  
+    if (Array.isArray(row)) {
+      const newData = row.map(item => ({
+        examinationId: item.examinationId,
+        examinationDescr: item.examinationDescr?.trim() || ""
+      }));
+  
+      // If addExaminlist is empty, initialize with newData
+      if (!this.addExaminlist) {
+        this.addExaminlist = [...newData];
+      } else {
+        // Append new data to old data
+        this.addExaminlist = [...this.addExaminlist, ...newData];
+  
+        // Remove duplicates based on `examinationId`
+        this.addExaminlist = this.addExaminlist.filter(
+          (value, index, self) =>
+            index === self.findIndex(item => item.examinationId === value.examinationId)
+        );
+  
+        // Remove only deselected data, keep retrieved data
+        this.addExaminlist = this.addExaminlist.filter(item =>
+          row.some(selectedItem => selectedItem.examinationId === item.examinationId) ||
+          this.retrievedData.some(retrievedItem => retrievedItem.examinationId === item.examinationId)
+        );
+      }
     }
+  
     console.log("Updated addExaminlist:", this.addExaminlist);
-  }
-
-  // selectChangeExamination(row) {
-  //   console.log("Examination:", row);
+  }  
   
-  //   if (Array.isArray(row) && row.length > 0) {
-  //     let updatedList = [...this.addExaminlist];
   
-  //     row.forEach(item => {
-  //       let newExamination = item.examinationDescr?.trim() || "";
-  
-  //       if (newExamination && !updatedList.some(existing => existing.examinationDescr === newExamination)) {
-  //         updatedList.push({ examinationDescr: newExamination });
-  //       }
-  //     });
-  
-  //     this.addExaminlist = updatedList; // Assign new reference to trigger change detection
-  //   }
-  
-  //   console.log("Updated addExaminlist:", this.addExaminlist);
-  // } 
-
   getValidationMessages() {
     return {
       ItemId: [],
       DoseId: [],
       TemplateId: [],
-      Serviceid: [],
+      serviceId: [],
       DoctorID: [],
       Diagnosis: [],
       ChiefComplaint: [],
@@ -1098,7 +1194,7 @@ DosedisableEditing(index: number) {
     if (this.addCheiflist.length > 0) {
       this.addCheiflist.forEach(element => {
         this.AllTypeDescription.push({
-          descriptionName: element,
+          descriptionName: element.complaintDescr,
           descriptionType: "Complaint"
         });
       });
@@ -1107,7 +1203,7 @@ DosedisableEditing(index: number) {
     if (this.addDiagnolist.length > 0) {
       this.addDiagnolist.forEach(element => {
         this.AllTypeDescription.push({
-          descriptionName: element,
+          descriptionName: element.descriptionName,
           descriptionType: "Diagnosis"
         });
       });
@@ -1116,7 +1212,7 @@ DosedisableEditing(index: number) {
     if (this.addExaminlist.length > 0) {
       this.addExaminlist.forEach(element => {
         this.AllTypeDescription.push({
-          descriptionName: element,
+          descriptionName: element.examinationDescr,
           descriptionType: "Examination"
         });
       });

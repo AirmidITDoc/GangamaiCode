@@ -35,12 +35,12 @@
                                     </div>
                                      <div class="input-container gap-8" fxFlex>
 
-                                    <airmid-autocomplete lbl="RgId" 
+                                    <airmid-autocomplete lbl="RegId" 
                                         [formGroup]="myForm" formControlName="RegID" 
                                         placeholderText="IP-RegNo/FirstName/LastName" 
                                         ApiUrl="Admission/search-patient?Keyword=" 
                                         (selectionChange)="getSelectedObjIP($event)"
-                                        ValueField="admissionID" TextField="firstName">
+                                        ValueField="admissionID" TextField="formattedText">
                                     </airmid-autocomplete>
 
                                     </div>
@@ -165,7 +165,8 @@
                                     formControlName="StoreId" [formGroup]="myForm"
                                     [validations]="getValidationMessages().StoreId" 
                                     [value]="data?.StoreId" 
-                                    [mode]="autocompletestore">
+                                    [mode]="autocompletestore"
+                                    (selectionChange)="selectChangeStore($event)">
                                 </airmid-dropdown>
 
                                 <airmid-dropdown label="Ward Name" formControlName="WardName" [formGroup]="myForm"
@@ -185,37 +186,17 @@
                             <form [formGroup]="ItemForm">
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
                     
-                                    <airmid-dropdown label="Item Name" 
-                                    formControlName="ItemId" [formGroup]="ItemForm"
-                                    [validations]="getValidationMessages().ItemId" 
-                                    [value]="data?.ItemId" 
-                                    [mode]="autocompleteitem"
-                                    (selectionChange)="selectChangeItem($event)">
-                                </airmid-dropdown>
-                    
-                                    <!-- <mat-form-field appearance="outline" fxFlex="20%">
-                                        <mat-label>Dose Name</mat-label>
-                                        <input matAutocompletePosition="below" type="text" placeholder="Select Dose Name" matInput
-                                            formControlName="DoseId" [matAutocomplete]="autoMode" required #dosename
-                                            (keydown)="onEnterDose($event)">
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="ItemForm.get('DoseId').setValue(''); isDoseSelected = false;">close</mat-icon>
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="ItemForm.get('DoseId').setValue(''); isDoseSelected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #autoMode="matAutocomplete" [displayWith]="getOptionTextDose">
-                                            <mat-option *ngFor="let option of filteredOptionsDosename | async" [value]="option">
-                                                {{option.DoseName}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                    </mat-form-field> -->
-
-                                    <!-- <mat-form-field appearance="outline" fxFlex="8%">
-                                        <mat-label>Day</mat-label>
-                                        <input type="text" OnlyNumber [(ngModel)]="vDay" name="Day" (keydown)="onEnterqty($event)"
-                                            formControlName="Day" matInput required #qty (keypress)="keyPressAlphanumeric($event)">
-                                    </mat-form-field> -->
+                                <airmid-autocomplete label="Enter Item Name" 
+                                [formGroup]="ItemForm"
+                                formControlName="ItemId" 
+                                placeholderText="Enter Item Name" fxFlex
+                                [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + (vstoreId || '') + '&ItemName='"
+                                (selectionChange)="selectChangeItem($event)" 
+                                TextField="itemName" ValueField="ItemId">
+                                </airmid-autocomplete>
+                                <!-- 
+                                ApiUrl="ItemMaster/GetItemListForPrescription?StoreId=2&ItemName="
+                                 -->
 
                                     <mat-form-field appearance="outline" fxFlex="8%">
                                         <mat-label>Qty</mat-label>

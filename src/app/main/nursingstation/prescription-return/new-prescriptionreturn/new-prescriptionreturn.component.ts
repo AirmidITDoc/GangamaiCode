@@ -74,6 +74,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   vDOA:any;
   vSelectedOption: any = 'OP';
   vOPDNo:any;
+  vstoreId:any;
 
   constructor(public _PrescriptionReturnService: PrescriptionReturnService,
     private _fuseSidebarService: FuseSidebarService,
@@ -161,13 +162,13 @@ export class NewPrescriptionreturnComponent implements OnInit {
   selectChangeItem(obj: any) {
     
     console.log("Item:",obj);
-    this.ItemId=obj.value;
+    this.ItemId=obj.itemId;
     this.ItemSubform.get('ItemId').setValue(obj);
 
-    this.getBatch();
+    this.getBatch(obj);
 }
 
-  getBatch() {
+  getBatch(obj) {
     
     // this.qty.nativeElement.focus();    
     const dialogRef = this._matDialog.open(BatchpopupComponent,
@@ -177,11 +178,12 @@ export class NewPrescriptionreturnComponent implements OnInit {
         width: '800px',
         height: '380px',
         disableClose: true,
-        data: {
-          "ItemId": this.ItemId,// this._PrescriptionReturnService.PrecReturnSearchGroup.get('ItemId').value.ItemId,
-          "StoreId": this._PrescriptionReturnService.PrecReturnSearchGroup.get('StoreId').value.storeid,
-          "OP_IP_Id": this.OP_IP_Id
-        }        
+        data:obj
+        // data: {
+        //   "ItemId": this.ItemId,// this._PrescriptionReturnService.PrecReturnSearchGroup.get('ItemId').value.ItemId,
+        //   "StoreId": this._PrescriptionReturnService.PrecReturnSearchGroup.get('StoreId').value.storeid || 2,
+        //   "OP_IP_Id": this.OP_IP_Id
+        // }        
       });
       console.log(this.data)
     dialogRef.afterClosed().subscribe(result => {
@@ -434,18 +436,18 @@ export class NewPrescriptionreturnComponent implements OnInit {
   //   }
   // }
 
-  getSelectedObj(obj) {
-    // 
-    // this.registerObj = obj;
+  // getSelectedObj(obj) {
+  //   // 
+  //   // this.registerObj = obj;
 
-    this.ItemName = obj.ItemName;
-    this.ItemId = obj.ItemId;
-    this.BalanceQty = obj.BalQty;
-    // this.LandedRate = obj.LandedRate;
-    if (this.BalanceQty > 0) {
-      this.getBatch();
-    }
-  }
+  //   this.ItemName = obj.ItemName;
+  //   this.ItemId = obj.ItemId;
+  //   this.BalanceQty = obj.BalQty;
+  //   // this.LandedRate = obj.LandedRate;
+  //   if (this.BalanceQty > 0) {
+  //     this.getBatch(obj);
+  //   }
+  // }
 
   getSelectedObjReg(obj) {
 // 

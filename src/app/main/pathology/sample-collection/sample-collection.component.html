@@ -80,6 +80,17 @@
                 </div>
             </ng-template>
 
+            <ng-template #iconisCompeleted let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isCompleted == 'True'" matTooltip="IsCompleted">check_circle
+                    </mat-icon>
+                    
+                    <mat-icon *ngIf="element.isCompleted == 'False'" matTooltip="Not Completed">hourglass_empty
+                    </mat-icon>
+                    
+                </div>
+            </ng-template>
+
             <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false" (onSelectRow)="getSelectedRow($event)">
                 <ng-container filters>
                     <form [formGroup]="myformSearch">
@@ -174,7 +185,7 @@
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
         *ngIf="isShowDetailTable">
-            <div style="padding: 10px; height: 30px;">
+            <div style="padding: 10px; height: 30px; margin-bottom: 10px;">
                 <div fxLayout="row wrap" fxLayoutAlign="space-between center">
                     <div class="table-header-title" style="padding: 10px;">
                         <span class="h3 font-weight-600">Test Details</span>

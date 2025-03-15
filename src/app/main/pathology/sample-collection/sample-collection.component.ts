@@ -21,6 +21,7 @@ import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/conf
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from 'ngx-toastr';
+import { template } from 'lodash';
 
 
 @Component({
@@ -38,11 +39,13 @@ export class SampleCollectionComponent implements OnInit {
     @ViewChild('iconlbl') iconlbl!: TemplateRef<any>;
     @ViewChild('iconcompanyName') iconcompanyName!: TemplateRef<any>;
     @ViewChild('iconisSampleCollection') iconisSampleCollection!: TemplateRef<any>;
+    @ViewChild('iconisCompeleted') iconisCompeleted!: TemplateRef<any>;
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'lbl')!.template = this.iconlbl;
         this.gridConfig.columnsList.find(col => col.key === 'companyName')!.template = this.iconcompanyName;
         this.gridConfig.columnsList.find(col => col.key === 'isSampleCollection')!.template = this.iconisSampleCollection;
+        this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.iconisCompeleted;
         // this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     }
 
@@ -115,8 +118,9 @@ this.myformSearch=this._SampleCollectionService.createSearchForm()
         this.gridConfig1 = {
             apiUrl: "PathlogySampleCollection/SampleCollectionTestList",
             columnsList: [
-                { heading: "Completed", key: "completed", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-                { heading: "SampleNo", key: "sampleno", sort: true, align: 'left', emptySign: 'NA', width: 450 },
+                { heading: "Completed", key: "isCompleted", sort: true, align: 'left',type: gridColumnTypes.template, 
+                    template:this.iconisCompeleted, width: 50 },
+                { heading: "SampleNo", key: "sampleNo", sort: true, align: 'left', emptySign: 'NA', width: 450 },
                 { heading: "TestName", key: "testName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "CollectionDate/Time", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             ],

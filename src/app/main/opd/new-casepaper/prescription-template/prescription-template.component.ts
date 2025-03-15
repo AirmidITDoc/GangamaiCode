@@ -100,16 +100,16 @@ chargelist:any=[];
       let insert_TemplateD = {};
       insert_TemplateD['presId'] = 0;
       insert_TemplateD['date'] = formattedDate;
-      insert_TemplateD['classId'] =   element.classID;
-      insert_TemplateD['genericId'] =  element.genericId;
-      insert_TemplateD['drugId'] =  element.drugId || 0;
-      insert_TemplateD['doseId'] = element.doseId || 0;
-      insert_TemplateD['days'] = element.days || 0;
+      insert_TemplateD['classId'] =   element.classID || 0;
+      insert_TemplateD['genericId'] =  element.genericId || element.GenericId;
+      insert_TemplateD['drugId'] =  element.drugId || element.DrugId;
+      insert_TemplateD['doseId'] = element.doseId || element.DoseId;
+      insert_TemplateD['days'] = element.days || element.Days;
       insert_TemplateD['instructionId'] =  element.instructionId || 0;
-      insert_TemplateD['qtyPerDay'] = element.qtyPerDay || 0;
-      insert_TemplateD['totalQty'] =  (element.days * element.qtyPerDay) || 0
-      insert_TemplateD['instruction'] = element.instruction || '';
-      insert_TemplateD['remark'] = element.instruction || '';
+      insert_TemplateD['qtyPerDay'] = element.qtyPerDay || element.QtyPerDay;
+      insert_TemplateD['totalQty'] =  (element.days * element.qtyPerDay) || (element.Days * element.QtyPerDay)
+      insert_TemplateD['instruction'] = element.instruction || element.Instruction;
+      insert_TemplateD['remark'] = element.instruction || element.Instruction;
       insert_TemplateD['isEnglishOrIsMarathi'] =  true;
       insert_TemplateDObj.push(insert_TemplateD)
     }); 

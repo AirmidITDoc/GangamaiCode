@@ -25,10 +25,19 @@
 
                         <div fxLayout="column" fxFlex="100%">
 
-                            <airmid-dropdown label="Item Search" formControlName="SearchItemId" [formGroup]="myform"
+                            <!-- <airmid-dropdown label="Item Search" formControlName="SearchItemId" [formGroup]="myform"
                                 [validations]="getValidationMessages().SearchItemId" [mode]="autocompleteModeItem"
                                 (selectionChange)="selectChangeItemName($event)">
-                            </airmid-dropdown>
+                            </airmid-dropdown> -->
+
+                            <airmid-autocomplete label="Item Name" 
+                            [formGroup]="myform"
+                            formControlName="SearchItemId" 
+                            placeholderText="Search Item Name" fxFlex
+                            ApiUrl="ItemMaster/GetItemListForPrescription?StoreId=2&ItemName="
+                            (selectionChange)="selectChangeItemName($event)" 
+                            TextField="itemName" ValueField="SearchItemId">
+                            </airmid-autocomplete>
 
                             <mat-card style="padding: 5px;">
                                 <div class="item-title">

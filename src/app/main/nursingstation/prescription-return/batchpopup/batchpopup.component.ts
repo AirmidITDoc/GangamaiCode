@@ -28,17 +28,13 @@ export class BatchpopupComponent implements OnInit {
   dataSource = new MatTableDataSource<SalesList>();
   selectedRowIndex: number = 0;
   screenFromString = 'admission-form';
-
-  
+  registerObj:any;  
   
   constructor(
     private dialogRef: MatDialogRef<BatchpopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _PrescriptionReturnService:PrescriptionReturnService,
-  ) {
-    
-
-   }
+  ) {}
 
   // const ESCAPE_KEYCODE = 27;
 
@@ -47,9 +43,6 @@ export class BatchpopupComponent implements OnInit {
         this. close();
     }
 }
-
-
-
 
   close(){
     this.dialogRef.close();
@@ -60,7 +53,6 @@ export class BatchpopupComponent implements OnInit {
       this.selectedRowIndex = row.position;
       // console.log(this.selectedRowIndex);
     }
-   
   }
 
   arrowUpEvent(row: object, index: number) {
@@ -74,20 +66,26 @@ export class BatchpopupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getSalesData();
+    if(this.data){
+      this.registerObj = this.data;
+      console.log("PopUp data:", this.registerObj)
+    }
+    this.getSalesData(this.registerObj);
     setTimeout(() => {
       document.getElementById('ele-1').focus();
     }, 1000);
   }
  
-  getSalesData() {
+  getSalesData(obj) {
     this.isLoadingStr = 'loading';
     var reqData = {
-      "ItemId": this.data.ItemId,
-      "StoreId": this.data.StoreId,
-      "OP_IP_Id":this.data.OP_IP_Id
+      // "ItemId": this.data.ItemId,
+      // "StoreId": this.data.StoreId,
+      // "OP_IP_Id":this.data.OP_IP_Id
+      "ItemId": this.registerObj.itemId,
+      "StoreId": this.registerObj.StoreId || 2,
     }
-    this._PrescriptionReturnService.getBatchList(reqData).subscribe((res: any) => {
+    this._PrescriptionReturnService.getBatchList1(reqData).subscribe((res: any) => {
       if (res && res.length > 0) {
         res.forEach((element, index) => {
           element['position'] = index + 1;
