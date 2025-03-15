@@ -198,9 +198,9 @@ export class ItemMasterService {
         return this._httpClient.GetData("ItemMaster/" + Id);
     }
 
-    public ItemMasterCancle(Param: any) {
+    // public ItemMasterCancle(Param: any) {
         
-      return this._httpClient.PostData("ItemMaster/ItemCanceled", Param);
-    }
+    //   return this._httpClient.PostData("ItemMaster/ItemCanceled", Param);
+    // }
     
 }

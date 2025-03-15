@@ -17,6 +17,7 @@ import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/conf
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from 'ngx-toastr';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
     selector: 'app-requestforlabtest',
@@ -47,7 +48,7 @@ export class RequestforlabtestComponent implements OnInit {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.print, callback: (data: any) => {
-                            this.onSave(data);
+                            this.viewLabRequestPdf(data);
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -60,9 +61,13 @@ export class RequestforlabtestComponent implements OnInit {
             { fieldName: "Reg_No", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     }
+
+    viewLabRequestPdf(data) {
+        this.commonService.Onprint("RequestId", data.requestId, "NurLabRequestTest");
+    }
     
     constructor(public _RequestforlabtestService: RequestforlabtestService, public _matDialog: MatDialog,
-        public toastr: ToastrService,
+        public toastr: ToastrService, private commonService: PrintserviceService,
         public datePipe: DatePipe,) { }
     ngOnInit(): void {
     }

@@ -25,6 +25,7 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 
 @Component({
@@ -60,7 +61,7 @@ export class PrescriptionComponent implements OnInit {
                 actions: [
                     {
                         action: gridActions.print, callback: (data: any) => {
-                            // this.onSave(data);
+                            this.viewPrescriptionListPdf(data);
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -113,8 +114,8 @@ export class PrescriptionComponent implements OnInit {
             {
                 heading: "Action", key: "action",width: 50,align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
+                        action: gridActions.print, callback: (data: any) => {
+                            this.viewPrescriptionReturnPdf(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
@@ -163,9 +164,17 @@ export class PrescriptionComponent implements OnInit {
     }
 
     constructor(public _PrescriptionService: PrescriptionService, public _matDialog: MatDialog,
-        public toastr: ToastrService,
+        public toastr: ToastrService, private commonService: PrintserviceService,
         public datePipe: DatePipe,) { }
     ngOnInit(): void {
+    }
+
+    viewPrescriptionListPdf(data) {
+        this.commonService.Onprint("RequestId", data.requestId, "NurLabRequestTest");
+    }
+
+    viewPrescriptionReturnPdf(data) {
+        this.commonService.Onprint("RequestId", data.requestId, "NurLabRequestTest");
     }
 
     onSave(row: any = null) {
