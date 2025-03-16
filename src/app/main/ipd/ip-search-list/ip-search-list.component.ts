@@ -34,6 +34,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { STATUS } from 'angular-in-memory-web-api';
 import { MLCInformationComponent } from '../Admission/admission/mlcinformation/mlcinformation.component';
 import { DischargeSummaryTemplateComponent } from './discharge-summary-template/discharge-summary-template.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 
 @Component({
@@ -78,7 +79,7 @@ export class IPSearchListComponent implements OnInit {
         { heading: "RefDocName", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', type: 10, width: 250 },
         { heading: "Adv.Amount", key: "adv.amount", sort: true, align: 'left', emptySign: 'NA', type: 10 },
         // { heading: "PatientType", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.status, },
-        { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', type: 10, width: 250 },
+        { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', type: 10, width: 350 },
         {
             heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -116,6 +117,7 @@ export class IPSearchListComponent implements OnInit {
         public _matDialog: MatDialog,
         private _fuseSidebarService: FuseSidebarService,
         private _ActRoute: Router,
+         private commonService: PrintserviceService,
         public datePipe: DatePipe,
         public toastr: ToastrService,
         private advanceDataStored: AdvanceDataStored) { }
@@ -510,7 +512,10 @@ export class IPSearchListComponent implements OnInit {
     getfeedback(event) { }
     printDischargesummaryWithoutletterhead(event) { }
     printDischargesummary(event) { }
-    printDischargeslip(event) { }
+    printDischargeslip(data) {
+      this.commonService.Onprint("AdmId", data.admissionId, "IpDischargeReceipt");
+        
+     }
     getSelectedRow(row: any): void {
         console.log("Selected row : ", row);
     }

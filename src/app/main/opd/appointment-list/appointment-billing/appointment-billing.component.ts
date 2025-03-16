@@ -574,8 +574,10 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
 
   getSelectedObj(obj) {
+    console.log(obj)
+    debugger
     if ((obj.regId ?? 0) > 0) {
-      console.log(obj)
+     
       this.vOPIPId = obj.visitId
       this.RegNo = obj.visitId
 

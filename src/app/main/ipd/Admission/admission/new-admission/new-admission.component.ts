@@ -313,10 +313,7 @@ export class NewAdmissionComponent implements OnInit {
     // this.ddlCountry.SetSelection(e.stateId);
   }
 
-  // onChangecity(e) {
-  //   this.ddlState.SetSelection(e.cityId);
-  //   this.ddlCountry.SetSelection(e.stateId);
-  // }
+
 
   onChangecity(e) {
     console.log(e)

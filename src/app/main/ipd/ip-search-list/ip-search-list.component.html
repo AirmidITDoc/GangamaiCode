@@ -60,58 +60,7 @@
                 </div>
             </ng-template>
 
-            <!-- <ng-template #actionButtonTemplate let-element>
-                <div fxLayout="row" fxLayoutAlign="center center">
-
-                    <button mat-icon-button (click)="printDischargeslip(element)" *ngIf="element.isDischarged"
-                        matTooltip="Discharge Slip Print">
-                        <mat-icon>
-                            <img width="20px" height="6px" src="assets/images/logos/dischargesummary.jpeg"
-                                style="background:-moz-linear-gradient(00,9,22);">
-                        </mat-icon>
-                    </button>
-
-
-                    <button mat-icon-button (click)="printDischargesummary(element)" *ngIf="element.isDischarged"
-                        matTooltip="Discharge Summary Print">
-                        <mat-icon>
-                            <img width="20px" height="6px" src="assets/images/logos/discharge.jpeg"
-                                style="background-color: transparent;">
-                        </mat-icon>
-
-                    </button>
-
-                    <button mat-icon-button (click)="printDischargesummaryWithoutletterhead(element)"
-                        *ngIf="element.isDischarged" matTooltip="Discharge Summary Without LetterHead Print">
-                        <mat-icon>
-                            <img width="14px" height="4px" src="assets/images/logos/withoutLetterHead.png"
-                                style="background-color: transparent;">
-                        </mat-icon>
-                    </button>
-
-
-                    <button mat-icon-button (click)="getfeedback(element)" matTooltip="NewFeedback">
-                        <mat-icon style="color: black;">feedback</mat-icon>
-                    </button>
-
-                    <button mat-icon-button *ngIf="element.IsInitinatedDischarge=='1'" matTooltip="Discharge Initiated">
-                        <mat-icon>
-                            <img width="20px" height="6px" src="assets/images/logos/discharge_initiated.png"
-                                style="background:-moz-linear-gradient(00,9,22);">
-                        </mat-icon>
-                    </button>
-
-                    
-                    <mat-menu #moreMenu="matMenu">
-                        <ng-container *ngFor="let m of menuActions, let n of menuActions">
-                            <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
-                                <span>{{m}}</span>
-                            </button>
-                        </ng-container>
-                    </mat-menu>
-                </div>
-            </ng-template> -->
-
+          
             <ng-template #actionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
 

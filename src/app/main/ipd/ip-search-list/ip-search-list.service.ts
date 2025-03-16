@@ -1153,6 +1153,10 @@ public getDischargeSummary(employee) {
   return this._httpClient1.PostData("DischargeSummary/IPDischargeSummaryData",employee)
 }
 
+
+
+
+
 public getchkConfigInitiate(employee) {
   return this._httpClient1.PostData("DischargeSummary/IPDischargeSummaryData",employee)
 }
@@ -1164,6 +1168,12 @@ public getDischargeId(Id){
   return this._httpClient1.GetData("DischargeSummary/" + Id);
 }
 
+
+
+public gettemplateId(Id){
+  return this._httpClient1.GetData("ReportTemplate/" + Id);
+}
+
 public insertIPDDischargSummaryTemplate(employee)
 {    
   return this._httpClient1.PostData("DischargeSummary/DischargeTemplateInsert",employee);
@@ -1172,7 +1182,7 @@ public insertIPDDischargSummaryTemplate(employee)
 
 public UpdateIPDDischargSummaryTemplate(employee)
 {    
-  return this._httpClient1.PostData("DischargeSummary/DischargeTemplateUpdate",employee);
+  return this._httpClient1.PutData("DischargeSummary/DischargeTemplateUpdate",employee);
 }
 
 }

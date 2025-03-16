@@ -390,12 +390,12 @@
                                                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
 
 
-                                                                <airmid-dropdown label="Ref.Doctor Name"
+                                                                <!-- <airmid-dropdown label="Ref.Doctor Name"
                                                                     formControlName="dischargeDoctor3"
                                                                     [formGroup]="DischargesumForm"
                                                                     [validations]="getValidationMessages().dischargeDoctor3"
                                                                     [mode]="autocompleteModeRefDoctor">
-                                                                </airmid-dropdown>
+                                                                </airmid-dropdown> -->
                                                             </div>
 
                                                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
@@ -434,7 +434,7 @@
                                                             (selectionChange)="getSelectedserviceObj($event)"
                                                             TextField="serviceName"
                                                             ValueField="serviceId"></airmid-autocomplete>
-                                                      
+
                                                         <airmid-dropdown label="Dose Name" formControlName="DoseId"
                                                             [formGroup]="MedicineItemForm"
                                                             [validations]="getValidationMessages().DoseId"
@@ -458,7 +458,7 @@
                                                                     <span>Add</span>
                                                                 </button>
 
-                                                                
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -538,7 +538,15 @@
 
                                     </mat-card>
                                 </mat-tab>
-
+                                <mat-tab>
+                                    <airmid-dropdown label="Ref.Doctor Name" formControlName="dischargeDoctor3"
+                                        [formGroup]="DischargesumForm"
+                                        [validations]="getValidationMessages().dischargeDoctor3"
+                                        [mode]="autocompleteModeRefDoctor">
+                                    </airmid-dropdown>
+                                    <airmid-editor label="Template Details" formControlName="templateDesc"
+                                        [(value)]="vTemplateDesc" [formGroup]="DischargesumForm"></airmid-editor>
+                                </mat-tab>
                             </mat-tab-group>
                         </div>
                     </div>
@@ -553,9 +561,10 @@
                                     
                                 </mat-radio-group> -->
 
-                                <app-airmid-slider label="Normal/Death Summary"   formControlName="isNormalOrDeath" [formGroup]="DischargesumForm" [(ngModel)]="vIsNormalDeath" ></app-airmid-slider>
+                                <app-airmid-slider label="Normal/Death Summary" formControlName="isNormalOrDeath"
+                                    [formGroup]="DischargesumForm" [(ngModel)]="vIsNormalDeath"></app-airmid-slider>
                             </div>
-                           
+
                         </mat-card>
                     </form>
                 </div>

@@ -27,109 +27,112 @@ import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdo
 export class BedTransferComponent implements OnInit {
   Bedtransfer: FormGroup;
   dateTimeObj: any;
- 
+
   screenFromString = 'admission-form';
   currentDate = new Date();
-  
-  vWardId: any=0;
-  vBedId: any=0;
-  vClassId: any=0; 
-  AdmissionId=0
-  
+
+  vWardId: any = 0;
+  vBedId: any = 0;
+  vClassId: any = 0;
+  AdmissionId = 0
+
   menuActions: Array<string> = [];
   advanceAmount: any = 12345;
 
-   // New Api
-   autocompleteroom: string = "Room";
-   autocompleteclass: string = "Class";
-   autocompletebed: string = "Bed";
-    registerObj1 = new AdmissionPersonlModel({});
-     registerObj = new RegInsert({});
-     @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
-     
+  // New Api
+  autocompleteroom: string = "Room";
+  autocompleteclass: string = "Class";
+  autocompletebed: string = "Bed";
+  registerObj1 = new AdmissionPersonlModel({});
+  registerObj = new RegInsert({});
+  @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
+
 
   constructor(public _IpSearchListService: IPSearchListService,
     private accountService: AuthenticationService,
     public _matDialog: MatDialog,
-     public datePipe: DatePipe,
+    public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,
     public dialogRef: MatDialogRef<IPSearchListComponent>,
     private _formBuilder: UntypedFormBuilder
-  ) {  }
+  ) { }
 
   ngOnInit(): void {
-    
-    this.Bedtransfer = this.bedsaveForm();
-    if(this.data){
-    this.registerObj1=this.data
-    console.log("Data:",this.registerObj1);
-    
-  this.AdmissionId=this.data.admissionId;
-  this.Bedtransfer.get("toWardId").setValue(this.registerObj1.wardId)
-  this.Bedtransfer.get("toBedId").setValue(this.registerObj1.bedId)
-  this.Bedtransfer.get("toClassId").setValue(this.registerObj1.classId)
+    if (this.data) {
+      this.registerObj1 = this.data
+      console.log("Data:", this.registerObj1);
+      this.Bedtransfer = this.bedsaveForm();
+
+      this.AdmissionId = this.data.admissionId;
+      this.Bedtransfer.get("toWardId").setValue(this.registerObj1.wardId)
+      this.Bedtransfer.get("toBedId").setValue(this.registerObj1.bedId)
+      this.Bedtransfer.get("toClassId").setValue(this.registerObj1.classId)
     }
-   
+
     if ((this.data?.regId ?? 0) > 0) {
-     setTimeout(() => {
+      setTimeout(() => {
         this._IpSearchListService.getRegistraionById(this.data.regId).subscribe((response) => {
-          this.registerObj= response;
-          });
+          this.registerObj = response;
+        });
 
         this._IpSearchListService.getAdmissionById(this.data.admissionId).subscribe((response) => {
           this.registerObj1 = response;
-          if(this.registerObj1){
-            this.registerObj1.phoneNo=this.registerObj1.phoneNo.trim()
-            this.registerObj1.mobileNo=this.registerObj1.mobileNo.trim()
-        this.registerObj1.admissionTime=  this.datePipe.transform(this.registerObj1.admissionTime, 'hh:mm:ss a')
-          this.registerObj1.dischargeTime=  this.datePipe.transform(this.registerObj1.dischargeTime, 'hh:mm:ss a')
-        }
+          if (this.registerObj1) {
+            this.registerObj1.phoneNo = this.registerObj1.phoneNo.trim()
+            this.registerObj1.mobileNo = this.registerObj1.mobileNo.trim()
+            this.registerObj1.admissionTime = this.datePipe.transform(this.registerObj1.admissionTime, 'hh:mm:ss a')
+            this.registerObj1.dischargeTime = this.datePipe.transform(this.registerObj1.dischargeTime, 'hh:mm:ss a')
+          }
           console.log(this.registerObj1)
         });
-    }, 500);
+      }, 500);
     }
     // this.Bedtransfer = this.bedsaveForm();
   }
-  
-  
+
+
   bedsaveForm(): FormGroup {
     return this._formBuilder.group({
-    transferId: 0,
-    admissionId: this.registerObj1.admissionId,
-    fromDate:[(new Date()).toISOString()],
-    fromTime: [(new Date()).toISOString()],
-    fromWardId:this.registerObj1.wardId,
-    fromBedId: this.registerObj1.bedId,
-    fromClassId:this.registerObj1.classId,
-    toDate: [(new Date()).toISOString()],
-    toTime: [(new Date()).toISOString()],
-    toWardId: 0,
-    toBedId: 0,
-    toClassId: 0,
-    remark: "%",
-    addedBy: 1,
-    isCancelled: 0,
-    isCancelledBy: 0
+      transferId: 0,
+      admissionId: this.registerObj1.admissionId,
+      fromDate: [(new Date()).toISOString()],
+      fromTime: [(new Date()).toISOString()],
+      fromWardId: this.registerObj1.wardId,
+      fromBedId: this.registerObj1.bedId,
+      fromClassId: this.registerObj1.classId,
+      toDate: [(new Date()).toISOString()],
+      toTime: [(new Date()).toISOString()],
+      toWardId: 0,
+      toBedId: 0,
+      toClassId: 0,
+      remark: "%",
+      addedBy: 1,
+      isCancelled: 0,
+      isCancelledBy: 0
     });
   }
-  
- 
+
+
   onBedtransfer() {
-  var m_data = {
-      "bedTransfer":this.Bedtransfer.value,
-        "bedTofreed":{bedId: this.data.bedId},
-        "admssion": {
-          "admissionId": this.AdmissionId,
-          "bedId":this.vBedId,
-          "wardId": this.vWardId,
-          "classId":this.vClassId,
-        }
+    debugger
+    console.log(this.Bedtransfer.value)
+  
+    
+    var m_data = {
+      "bedTransfer": this.Bedtransfer.value,
+      "bedTofreed": { bedId: this.data.bedId },
+      "admssion": {
+        "admissionId": this.AdmissionId,
+        "bedId": this.Bedtransfer.get("toBedId").value,//this.vBedId,
+        "wardId": this.Bedtransfer.get("toWardId").value,// this.vWardId,
+        "classId": this.Bedtransfer.get("toClassId").value//this.vClassId,
       }
-      
+    }
+
     console.log(m_data);
-   
+
     this._IpSearchListService.BedtransferUpdate(m_data).subscribe((response) => {
       this.toastr.success(response.message);
       this._matDialog.closeAll()
@@ -138,39 +141,39 @@ export class BedTransferComponent implements OnInit {
       this.toastr.error(error.message);
     });
 
-  } 
+  }
 
   selectChangeward(obj: any) {
-    
+
     console.log(obj)
     // this._IpSearchListService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
     //     this.ddlBed.options = data;
     //     this.ddlBed.bindGridAutoComplete();
     // });
-}
+  }
 
   onClear(val: boolean) {
     this.Bedtransfer.reset();
-    
-   }
-  onClose() {
- this.dialogRef.close();
+
   }
-  
+  onClose() {
+    this.dialogRef.close();
+  }
+
   getValidationMessages() {
     return {
       toWardId: [
-            { name: "required", Message: "Room Name is required" }
-        ],
-        toBedId: [
-          { name: "required", Message: "Bed Name is required" }
+        { name: "required", Message: "Room Name is required" }
+      ],
+      toBedId: [
+        { name: "required", Message: "Bed Name is required" }
       ],
       ClassId: [
         { name: "required", Message: "Class Name is required" }
-    ]
+      ]
     };
   }
-  getDateTime(dateTimeObj) { 
+  getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
 

@@ -69,7 +69,7 @@ export class DischargeComponent implements OnInit {
   // New Api
   autocompletcondoc: string = "ConDoctor";
   autocompletedichargetype: string = "DichargeType";
-  autocompletemode: string = "Mode";
+  autocompletemode: string = "ModeOfDischarge";
 
   constructor(
     public _IpSearchListService: IPSearchListService,

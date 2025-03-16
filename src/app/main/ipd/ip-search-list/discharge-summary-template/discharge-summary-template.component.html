@@ -121,60 +121,10 @@
         <div class="modal-body-container">
 
             <div fxLayout="column" class="gap-12">
-                <form [formGroup]="discSummary">
+                <form [formGroup]="DischargesumForm">
                     <div class="modal-card-container">
                         <div class="mat-tab-container">
                             <mat-tab-group>
-                                <mat-tab label="FINAL DIAGNOSS">
-                                    <form [formGroup]="discSummary" style="border: blue;">
-                                        <div fxFlexFill fxLayout="row">
-        
-                                       
-                                            <!-- <airmid-dropdown label="Template Name" formControlName="TemplateId"
-                                            [formGroup]="discSummary" [validations]="getValidationMessages().TemplateId"
-                                            [mode]="autocompleteModetemplate">
-                                        </airmid-dropdown> -->
-        
-                                            <button (click)="onAddTemplate()" class="btn btn-primary btn-with-icon py-8"
-                                                style="margin-left: 10px;">
-                                                <span class="btn-icon">
-                                                    <mat-icon> add </mat-icon>
-                                                </span>
-                                            </button>
-        
-                                        </div>
-                                        <div fxLayoutGap="5px">
-        
-                                                <airmid-editor label="Template Details" formControlName="TemplateDesc" [(value)]="vTemplateDesc" [formGroup]="discSummary"></airmid-editor>
-                                     
-                                            </div>
-                                        <div>
-                                            <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-dropdown label="Doctor Name" formControlName="dischargeDoctor1"
-                                                    [formGroup]="discSummary"
-                                                    [validations]="getValidationMessages().dischargeDoctor1"
-                                                    [mode]="autocompleteModeDoctor">
-                                                </airmid-dropdown>
-                                            </div>
-                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-dropdown label="RMO.Doctor Name" formControlName="dischargeDoctor2"
-                                                    [formGroup]="discSummary"
-                                                    [validations]="getValidationMessages().dischargeDoctor2"
-                                                    [mode]="autocompleteModeRefDoctor">
-                                                </airmid-dropdown>
-                                            </div> -->
-        
-                                        </div>
-        
-                                        <div fxLayoutGap="5px">
-        
-                                           
-        
-                                        </div>
-                                    </form>
-                                </mat-tab>
-
-                                
 
                                 <mat-tab label="MEDICINE AT THE TIME OF DISCHARGE">
                                     <mat-card class="mat-tab-card-container">
@@ -187,24 +137,24 @@
                                                 <form [formGroup]="MedicineItemForm">
                                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                                         class="gap-8">
-                                                        <!-- <airmid-autocomplete lbl="Item" [formGroup]="MedicineItemForm"
+                                                        <airmid-autocomplete lbl="Item" [formGroup]="MedicineItemForm"
                                                             formControlName="ItemId" placeholderText="Enter Item Name"
                                                             fxFlex
                                                             ApiUrl="VisitDetail/GetServiceListwithTraiff?TariffId=1&ClassId=2&ServiceName="
                                                             (selectionChange)="getSelectedserviceObj($event)"
                                                             TextField="serviceName"
                                                             ValueField="serviceId"></airmid-autocomplete>
-                                                      
+
                                                         <airmid-dropdown label="Dose Name" formControlName="DoseId"
                                                             [formGroup]="MedicineItemForm"
-                                                            [validations]="getValidationMessages().doseId"
+                                                            [validations]="getValidationMessages().DoseId"
                                                             (selectionChange)="getdose($event)"
                                                             [mode]="autocompleteModeDose">
-                                                        </airmid-dropdown> -->
+                                                        </airmid-dropdown>
 
-                                                        <airmid-textbox label="Day" formControlName="Day" [value]="vDay"
+                                                        <!-- <airmid-textbox label="Day" formControlName="Day" [value]="vDay"
                                                             [formGroup]="MedicineItemForm">
-                                                        </airmid-textbox>
+                                                        </airmid-textbox> -->
 
                                                         <div class="input-add-button">
                                                             <div matTooltip="Select Itemname to enable this button!!"
@@ -218,7 +168,7 @@
                                                                     <span>Add</span>
                                                                 </button>
 
-                                                                
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -298,13 +248,63 @@
 
                                     </mat-card>
                                 </mat-tab>
+                                <mat-tab label="Template Detail">
 
+                                    <div  fxLayout="row" style="padding: 10px;">
+
+                                        <!-- <airmid-dropdown label="Template Name" formControlName="TemplateId"
+                                            [formGroup]="DischargesumForm" [mode]="autocompleteModetemplate">
+                                        </airmid-dropdown> -->
+
+                                        <airmid-dropdown label="Template" formControlName="TemplateId" [formGroup]="DischargesumForm"  fxFlex="50%"
+                                        [value]="TemplateId" ValueField="templateId" TextField="templateName" (selectionChange)="onChangetemp($event)" ApiUrl="ReportTemplate/get-Templates">
+                                        </airmid-dropdown>
+
+
+                                     
+                                        <div fxFlex="5%" fxFlex.xs="5%" fxFlex.sm="5%" style="margin-left: 20px;">
+                                            <div class="mt-2">
+                                                <button type="button" (click)="onAddTemplate($event)" class="btn btn-primary btn-with-icon py-8" [disabled]="!isItemIdSelected" fxFlex>
+                                                    <span class="btn-icon">
+                                                        <mat-icon> add </mat-icon>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div fxLayoutGap="5px">
+
+                                        <airmid-editor label="Template Details" formControlName="templateDesc"
+                                            [(value)]="vTemplateDesc" [formGroup]="DischargesumForm"></airmid-editor>
+
+                                    </div>
+                                    <div fxLayout="row wrap" fxLayoutGap="8px grid" style="padding: 10px;">
+                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="Doctor Name" formControlName="dischargeDoctor1"
+                                                [formGroup]="DischargesumForm"
+                                                [validations]="getValidationMessages().dischargeDoctor1"
+                                                [mode]="autocompleteModeDoctor">
+                                            </airmid-dropdown>
+                                        </div>
+                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="RMO.Doctor Name" formControlName="dischargeDoctor2"
+                                                [formGroup]="DischargesumForm"
+                                                [validations]="getValidationMessages().dischargeDoctor2"
+                                                [mode]="autocompleteModeRefDoctor">
+                                            </airmid-dropdown>
+                                        </div>
+
+                                    </div>
+
+
+                                </mat-tab>
                             </mat-tab-group>
                         </div>
                     </div>
                 </form>
                 <div class="modal-card-container">
-                    <form [formGroup]="discSummary">
+                    <form [formGroup]="DischargesumForm">
                         <mat-card>
                             <div fxLayout="row" style="margin-left: 1200px;">
                                 <!-- <mat-radio-group formcontrolName="isNormalOrDeath">
@@ -313,9 +313,10 @@
                                     
                                 </mat-radio-group> -->
 
-                                <app-airmid-slider label="Normal/Death Summary"   formControlName="isNormalOrDeath" [formGroup]="discSummary" [(ngModel)]="vIsNormalDeath" ></app-airmid-slider>
+                                <app-airmid-slider label="Normal/Death Summary" formControlName="isNormalOrDeath"
+                                    [formGroup]="DischargesumForm" [(ngModel)]="vIsNormalDeath"></app-airmid-slider>
                             </div>
-                           
+
                         </mat-card>
                     </form>
                 </div>

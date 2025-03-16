@@ -19,6 +19,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { element } from 'protractor';
 import { AdmissionPersonlModel, RegInsert } from '../../Admission/admission/admission.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
   selector: 'app-discharge-summary',
@@ -29,7 +30,21 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 })
 export class DischargeSummaryComponent implements OnInit {
   
-
+ editorConfig: AngularEditorConfig = {
+        editable: true,
+        spellcheck: true,
+        height: '24rem',
+        minHeight: '24rem',
+        translate: 'yes',
+        placeholder: 'Enter text here...',
+        enableToolbar: true,
+        showToolbar: true,
+      };
+    
+      onBlur(e: any) {
+        this.vTemplateDesc = e.target.innerHTML;
+        throw new Error('Method not implemented.');
+      }
   DischargesumForm: FormGroup;
   MedicineItemForm: FormGroup;
   submitted = false;
@@ -192,9 +207,10 @@ export class DischargeSummaryComponent implements OnInit {
       Instruction: '',
     });
   }
+  vTemplateDesc:any;
   showDischargeSummaryForm(): FormGroup {
     return this._formBuilder.group({
-
+      templateDesc:'',
       dischargeSummaryId: 0,
       admissionId: '',
       dischargeId: '',
