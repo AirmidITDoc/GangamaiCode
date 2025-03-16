@@ -23,6 +23,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
 import * as XLSX from 'xlsx';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
+import { NewGrnComponent } from './new-grn/new-grn.component';
 
 @Component({
     selector: 'app-good-receiptnote',
@@ -524,11 +525,11 @@ export class GoodReceiptnoteComponent implements OnInit {
     }
 
     newGRNEntry(chkNewGRN) {
-        const dialogRef = this._matDialog.open(UpdateGRNComponent,
+        const dialogRef = this._matDialog.open(NewGrnComponent,
             {
                 maxWidth: "100%",
-                height: '95%',
-                width: '95%',
+                height: '98%',
+                width: '98%',
                 data: {
                     chkNewGRN: chkNewGRN,
                     FullData: this.FullData

@@ -42,6 +42,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { NewGrnComponent } from './new-grn/new-grn.component';
 
 //import { MatGridListModule } from '@angular/material/grid-list';
 
@@ -59,7 +60,8 @@ const routes: Routes = [
         UpdateGRNComponent,
         PurchaseorderComponent,
         GrnemailComponent,
-        QrcodegeneratorComponent
+        QrcodegeneratorComponent,
+        NewGrnComponent
     ],
     imports: [
         CommonModule,

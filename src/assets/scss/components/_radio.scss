@@ -142,5 +142,10 @@ $radio-size: 1.2rem;
                 }
             }
         }
+        .mat-mdc-radio-button{
+            .mdc-radio{
+                --mdc-radio-state-layer-size: 30px;
+            }
+        }
     }
 }

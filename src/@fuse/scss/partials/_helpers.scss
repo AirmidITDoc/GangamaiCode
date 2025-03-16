@@ -173,6 +173,11 @@ $interval: 50;
         min-width: #{$i * $interval}px;
     }
 }
+@for $i from 1 through 100 {
+    .max-h-#{$i * $interval} {
+        max-height: #{$i * $interval}px;
+    }
+}
 
 @each $prop, $abbrev in (width: w) {
     @for $index from 0 through 50 {

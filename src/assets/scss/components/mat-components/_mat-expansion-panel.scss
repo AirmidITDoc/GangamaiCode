@@ -1,6 +1,8 @@
 .mat-typography {
     .mat-expansion-panel {
         .mat-expansion-panel-header {
+            --mat-expansion-header-collapsed-state-height: 42px;
+            --mat-expansion-header-expanded-state-height: 48px;
             font-family: inherit;
             .mat-expansion-panel-header-title {
                 @include font-size(14px);
