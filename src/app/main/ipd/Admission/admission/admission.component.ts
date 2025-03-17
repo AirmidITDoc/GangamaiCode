@@ -544,9 +544,6 @@ Clearfilter(event) {
 
 
   getAdmittedPatientCasepaperview(element) {
-    
-    
-    console.log('Third action clicked for:', element);
     this.commonService.Onprint("AdmissionId", element.admissionId, "IpCasepaperReport"); 
   }
 

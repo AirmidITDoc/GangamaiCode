@@ -61,13 +61,13 @@
                                                         <span class="patient-col-key">Patient Name
                                                         </span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{PatientName}}
+                                                        <span class="patient-col-value">{{patientDetail.formattedText}}
                                                         </span>
                                                     </div>
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Doctor Name</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{patientDetail?.doctorname}}</span>
+                                                        <span class="patient-col-value">{{patientDetail?.doctorName}}</span>
                                                     </div>
                                                 </div>
                                                 <div fxLayout="column" fxLayoutGap="6px">
@@ -81,7 +81,7 @@
                                                         <span class="patient-col-key">Age | Sex
                                                         </span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{patientDetail?.age}}</span>
+                                                        <span class="patient-col-value">{{patientDetail?.ageYear}}</span>
                                                     </div>
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Department</span>
@@ -106,7 +106,7 @@
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Ref-Doctor Name</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{patientDetail?.refDocName}}</span>
+                                                        <span class="patient-col-value">{{patientDetail?.refDoctorName}}</span>
                                                     </div>
                                                 </div>
                                             </div>

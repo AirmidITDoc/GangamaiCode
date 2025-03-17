@@ -1121,11 +1121,9 @@ public InsertIPLabReqCharges(employee) {
 }
 
 public SaveDischargeInitiate(employee) {
- if(employee.initateDiscId){
-  return this._httpClient1.PostData("DischargeSummary/InitiateDischargeInsert", employee)
- }else{
-  return this._httpClient1.PostData("DischargeSummary/InitiateDischargeUpdate", employee)
- }
+ 
+  return this._httpClient1.PostData("DischargeSummary/InitiateDischargeInsertsync", employee)
+ 
 }
 
 public UpdateDischargeInitiate(employee) {

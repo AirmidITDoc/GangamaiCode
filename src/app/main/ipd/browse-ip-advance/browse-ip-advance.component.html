@@ -21,7 +21,7 @@
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                     <ng-template #actionButtonTemplateone let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <button mat-icon-button matTooltip="IPD Advance" (click)="OnViewReportPdf(element,true)">
+                            <button mat-icon-button matTooltip="IPD Advance" (click)="OnAdvanceViewReportPdf(element,true)">
                                 <mat-icon> print</mat-icon>
                             </button>
                             <button mat-icon-button matTooltip="Send message On WhatsApp"
@@ -91,7 +91,7 @@
                 dynamicTableHeight>
                 <ng-template #actionButtonTemplateone let-element>
                     <div fxLayout="row" fxLayoutAlign="center center">
-                        <button mat-icon-button matTooltip="IPD Advance" (click)="OnViewReportPdf(element,true)">
+                        <button mat-icon-button matTooltip="IPD Advance" (click)="getAdvreturnview(element,true)">
                             <mat-icon> print</mat-icon>
                         </button>
                         <button mat-icon-button matTooltip="Send message On WhatsApp"
@@ -104,7 +104,7 @@
 
                     <ng-template #actionButtonTemplate let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <button mat-icon-button (click)="getPaymentreceiptview(element)"
+                            <button mat-icon-button (click)="getAdvreturnview(element)"
                                 matTooltip="IPD Return Advance Receipt">
                                 <mat-icon>print</mat-icon>
                             </button>

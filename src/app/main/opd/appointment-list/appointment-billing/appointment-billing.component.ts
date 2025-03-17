@@ -575,37 +575,36 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
   getSelectedObj(obj) {
     console.log(obj)
+    this.patientDetail=obj
     debugger
-    if ((obj.regId ?? 0) > 0) {
-     
+    // if ((obj.regId ?? 0) > 0) {
+    //  debugger
       this.vOPIPId = obj.visitId
-      this.RegNo = obj.visitId
+      this.RegId = obj.regI
 
-      setTimeout(() => {
-        this._AppointmentlistService.getRegistraionById(obj.regId).subscribe((response) => {
-          this.patientDetail = response;
-          this.savebtn = false
-          this.PatientName = this.patientDetail.firstName + " " + this.patientDetail.middleName + " " + this.patientDetail.lastName
-          console.log(this.patientDetail)
-        });
+      // setTimeout(() => {
+      //   this._AppointmentlistService.getRegistraionById(obj.regId).subscribe((response) => {
+      //     this.patientDetail = response;
+      //     this.savebtn = false
+      //     this.PatientName = this.patientDetail.firstName + " " + this.patientDetail.middleName + " " + this.patientDetail.lastName
+      //     console.log(this.patientDetail)
+      //   });
 
-      }, 500);
+      // }, 500);
 
-      setTimeout(() => {
-        this._AppointmentlistService.getVisitById(this.vOPIPId).subscribe(data => {
-          this.patientDetail1 = data;
-          console.log(data)
-          // console.log(this.patientDetail1)
-        });
-      }, 1000);
-    }
+    //   setTimeout(() => {
+    //     this._AppointmentlistService.getVisitById(this.vOPIPId).subscribe(data => {
+    //       this.patientDetail1 = data;
+    //       console.log(data)
+         
+    //     });
+    //   }, 1000);
+    // }
 
   }
   getValidationMessages() {
     return {
-      // serviceName: [
-      //   { name: "required", Message: "Service Name is required" },
-      // ],
+    
       CashCounterID: [
         { name: "required", Message: "First Name is required" },
 
@@ -663,6 +662,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
           this.BillSave();
       }
     })
+
+    this.searchForm.get("regId").setValue("")
+    this.PatientName=''
+    this.patientDetail=''
+    this.dsChargeList.data=[]
   }
 
 
@@ -752,7 +756,12 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     console.log(submitData);
     this._AppointmentlistService.InsertOPBillingCredit(submitData).subscribe(response => {
       this.toastrService.success(response.message);
-      this.viewgetCreditOPBillReportPdf(response.billNo)
+      
+      let Res=response.message
+      let ID=Res.split('.')
+      let Id=ID[1]
+
+      this.viewgetCreditOPBillReportPdf(Id)
       this._matDialog.closeAll();
     }, (error) => {
       this.toastrService.error(error.message);
@@ -892,8 +901,6 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             CompDiscAmt: Math.round(this.totalChargeForm.get('totalDiscountAmount').value) || 0,
             DiscComments: this.ConcessionReason,
             CashCounterId: this.searchForm.get('CashCounterID').value || 0,
-
-
             "addCharges": InsertAdddetArr,
             "billDetails": Billdetsarr,
             "Payments": this.Paymentdataobj// result.submitDataPay.ipPaymentInsert,
@@ -902,8 +909,13 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
           this._AppointmentlistService.InsertOPBilling(submitData).subscribe(response => {
             this.toastrService.success(response.message);
             console.log(response)
-            this.viewgetOPBillReportPdf(response.billNo)
-            this._matDialog.closeAll();
+
+            let Res=response.message
+            let ID=Res.split('.')
+            let Id=ID[1]
+
+            this.viewgetOPBillReportPdf(Id)
+           
           }, (error) => {
             this.toastrService.error(error.message);
           });
@@ -984,9 +996,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       this._AppointmentlistService.InsertOPBilling(submitData).subscribe(response => {
         this.toastrService.success(response.message);
         console.log(response);
-        this.viewgetOPBillReportPdf(response.billNo)
-          
-        this._matDialog.closeAll();
+        let Res=response.message
+        let ID=Res.split('.')
+        let Id=ID[1]
+        this.viewgetOPBillReportPdf(Id)
+       
       }, (error) => {
         this.toastrService.error(error.message);
       });

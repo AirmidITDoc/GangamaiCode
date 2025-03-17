@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
+import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 
 @Component({
   selector: 'app-discharge-initiate-process',
@@ -25,7 +26,7 @@ export class DischargeInitiateProcessComponent {
     'action'
   ]
 
-  registerObj: any;
+  registerObj = new AdmissionPersonlModel({});
   vDepartmentName: any;
   InitiateForm: FormGroup
   Chargelist: any = [];
@@ -52,16 +53,18 @@ export class DischargeInitiateProcessComponent {
 
   ngOnInit(): void {
     this.InitiateForm = this.createInitiateForm()
-    console.log(this.data)
+   
     if (this.data) {
-      this.registerObj = this.data;
-      console.log(this.registerObj)
+      this.registerObj = this.data.Obj;
+      console.log(this.registerObj )
+      console.log(this.registerObj.patientName)
     }
   
   }
   createInitiateForm() {
     return this._formbuilder.group({
-      DepartmentName: ['']
+      DepartmentName: [''],
+      patientName:['']
     });
   }
   
@@ -110,28 +113,28 @@ this.deptname=event.text
       return;
     }
 
-    // let saveDischargeInitiateParam = [];
-    // this.dsDepartmentlist.data.forEach(element => {
-    //   let saveDischargeInitiateParamObj = {
-    //     "admID": this.registerObj.AdmissionID || 0,
-    //     "departmentName": element.DepartmentName || '',
-    //     "departmentID": element.DepartmentID || 0,
-    //     "isApproved": 0,
-    //     "approvedBy": 0,
-    //     "approvedDatetime": "2024-12-19T08:01:44.541Z"
-    //   }
-    //   saveDischargeInitiateParam.push(saveDischargeInitiateParamObj)
-    // })
+    let saveDischargeInitiateParam = [];
+    this.dsDepartmentlist.data.forEach(element => {
+      let saveDischargeInitiateParamObj = {
+        "admID": this.registerObj.AdmissionID || 0,
+        "departmentName": element.DepartmentName || '',
+        "departmentID": element.DepartmentID || 0,
+        "isApproved": 0,
+        "approvedBy": 0,
+        "approvedDatetime": "2024-12-19T08:01:44.541Z"
+      }
+      saveDischargeInitiateParam.push(saveDischargeInitiateParamObj)
+    })
 
-    // let updateDischargeInitiateParam = {
-    //   "admID":this.registerObj.AdmissionID || 0,
-    //   "isInitinatedDischarge": 1
-    // }
+    let updateDischargeInitiateParam = {
+      "admID":this.registerObj.AdmissionID || 0,
+      "isInitinatedDischarge": 1
+    }
 
-    // let submitData = {
-    //   "saveDischargeInitiateParam": saveDischargeInitiateParam,
-    //   "updateDischargeInitiateParam":updateDischargeInitiateParam
-    // }
+    let submitData = {
+      "saveDischargeInitiateParam": saveDischargeInitiateParam,
+      "updateDischargeInitiateParam":updateDischargeInitiateParam
+    }
 
     var submitData1={
 "initateDiscId": 0,
@@ -144,9 +147,13 @@ this.deptname=event.text
   "isNoDues": true,
   "comments": "string"
     }
+
+    var data={
+      initiateDischarge:submitData1
+    }
     
-    console.log(submitData1)
-    this._IpSearchListService.SaveDischargeInitiate(submitData1).subscribe(response => {
+    console.log(data)
+    this._IpSearchListService.SaveDischargeInitiate(data).subscribe(response => {
       this.toastr.success(response);
       this.dialogRef.close();
       }, (error) => {

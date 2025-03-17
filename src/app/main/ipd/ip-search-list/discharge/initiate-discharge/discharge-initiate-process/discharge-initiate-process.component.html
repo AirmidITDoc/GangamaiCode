@@ -34,11 +34,12 @@
 
                             <form [formGroup]="InitiateForm">
 
-                                <mat-form-field appearance="outline" fxFlex>
+                                <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Patient Name</mat-label>
-                                    <input name="PatientName" matInput [(ngModel)]="registerObj.PatientName" readonly>
-                                </mat-form-field>
+                                    <input name="PatientName" matInput [(ngModel)]="registerObj.patientName" ormControlName="patientName"  readonly>
+                                </mat-form-field> -->
 
+                                <span style="font-size: medium;font-weight: bold;">Patient Name :-{{registerObj.patientName}}</span>
                                 <airmid-dropdown label="Store?Department Name" formControlName="DepartmentName"
                                     [formGroup]="InitiateForm" [mode]="autocompleteModeDepartment" (selectionChange)="onChangeDepartment($event)">
                                 </airmid-dropdown>

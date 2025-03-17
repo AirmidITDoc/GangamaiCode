@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { BrowseIpAdvanceService } from './browse-ip-advance.service';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { fuseAnimations } from '@fuse/animations';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
     selector: 'app-browse-ip-advance',
@@ -21,7 +22,8 @@ export class BrowseIPAdvanceComponent implements OnInit {
         public _BrowseIpAdvanceService: BrowseIpAdvanceService,
         public datePipe: DatePipe,
         public _matDialog: MatDialog,
-        public toastr: ToastrService
+        public toastr: ToastrService,
+          private commonService: PrintserviceService,
       ) { }
 
     ngOnInit(): void { }
@@ -41,7 +43,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
 
      @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
         gridConfig: gridModel = {
-            apiUrl: "Advance/AdvanceList",
+            apiUrl: "Advance/BrowseAdvanceList",
             columnsList: [
                 { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 6}, 
                 { heading: "AdvanceNo", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA'}, 
@@ -79,7 +81,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
         }
     
         gridConfig1: gridModel = {
-            apiUrl: "Advance/RefundOfAdvanceList",
+            apiUrl: "Advance/BrowseRefundOfAdvanceList",
             columnsList: [
                 { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Date", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6},
@@ -110,28 +112,20 @@ export class BrowseIPAdvanceComponent implements OnInit {
             ]
         }
 
-        onSave(row: any = null) {
-            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-            buttonElement.blur(); // Remove focus from the button
-    
-            let that = this;
-            // const dialogRef = this._matDialog.open( NewcreateUserComponent, 
-            //     {
-            //         maxHeight: '95vh',
-            //         width: '90%',
-            //         data: row
-            //     });
-            // dialogRef.afterClosed().subscribe(result => {
-            //     if (result) {
-            //         that.grid.bindGridData();
-            //     }
-            // });
-        }
+   
 
-        OnViewReportPdf(data) { }
+        OnAdvanceViewReportPdf(element) {
+            console.log(element)
+            this.commonService.Onprint("AdvanceDetailID", element.advanceDetailID, "IpAdvanceReceipt");
+         }
         
+
+         getAdvreturnview(element) {
+            console.log(element)
+            this.commonService.Onprint("RefundId", element.refundId, "IpAdvanceRefundReceipt");
+         }
         whatsappAppoitment(data) { }
-        getPaymentreceiptview(data) { }
+       
 }
 
 

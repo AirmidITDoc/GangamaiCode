@@ -127,8 +127,11 @@ Age=0;
                 this._CompanysettlementService.InsertOPBillingsettlement(data).subscribe(response => {
                     this.toastr.success(response.message);
                     this.GetDetails(this.RegId1)
-                   this.viewgetOPPayemntPdf(response);
-                //    this._matDialog.closeAll();
+
+                    let Res=response.message
+                    let ID=Res.split('.')
+                    let Id=ID[1]
+                     this.viewgetOPPayemntPdf(Id,true);
                   
                   }, (error) => {
                     this.toastr.error(error.message);
@@ -142,8 +145,11 @@ Age=0;
     }
 
 
-    viewgetOPPayemntPdf(data){
-       debugger
+    viewgetOPPayemntPdf(data,status){
+        debugger
+        if(status)
+         this.commonService.Onprint("PaymentId",data,"OPPaymentReceipt");
+        else
         this.commonService.Onprint("PaymentId",data.paymentId,"OPPaymentReceipt");
     }
     
