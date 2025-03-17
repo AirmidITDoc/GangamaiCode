@@ -78,7 +78,7 @@ export class ServiceMasterComponent implements OnInit {
         sortField: "ServiceId",
         sortOrder: 0,
         filters: [
-            { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+            { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Equals },
             { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
             { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals }
         ]

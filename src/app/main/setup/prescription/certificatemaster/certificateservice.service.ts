@@ -17,14 +17,14 @@ export class CertificateserviceService {
   
     createRadiologytemplateForm(): FormGroup {
     return this._formBuilder.group({
-            templateId:[0],
-            templateName:["",
+            certificateId:[0],
+            certificateName:["",
                     [
                     //  Validators.required, Validators.maxLength(50),
                     //  Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                     ]
                 ],
-            templateDesc:["", 
+            certificateDesc:["", 
             // Validators.required
             ],
             isActive:[true,
@@ -45,13 +45,13 @@ export class CertificateserviceService {
     }
    
     public templateMasterSave(Param: any) {
-        if (Param.templateId) {
-            return this._httpClient.PutData("RadiologyTemplate/" + Param.templateId, Param);
-        } else return this._httpClient.PostData("RadiologyTemplate", Param);
+        if (Param.certificateId) {
+            return this._httpClient.PutData("PrescriptionCertificateMaster/" + Param.certificateId, Param);
+        } else return this._httpClient.PostData("PrescriptionCertificateMaster", Param);
     }
  
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("RadiologyTemplate?Id=" + m_data.toString());
+        return this._httpClient.DeleteData("PrescriptionCertificateMaster?Id=" + m_data.toString());
     }
 
 }

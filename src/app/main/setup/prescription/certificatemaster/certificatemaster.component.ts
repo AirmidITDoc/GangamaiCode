@@ -20,11 +20,11 @@ export class CertificatemasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
     gridConfig: gridModel = {
-        apiUrl: "BillingService/CertificateMasterList",
+        apiUrl: "PrescriptionCertificateMaster/List",
         columnsList: [
-            { heading: "TemplateCode", key: "templateId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "TemplateName", key: "templateName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "TemplateDesc", key: "templateDesc", width: 300, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "TemplateCode", key: "certificateId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "TemplateName", key: "certificateName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "TemplateDesc", key: "certificateDesc", width: 300, sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [

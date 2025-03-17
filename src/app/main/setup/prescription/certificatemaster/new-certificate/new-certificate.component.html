@@ -22,26 +22,20 @@
                                 <div class="dialog-content-wrapper">
                                     <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
 
-                                        <input type="hidden" name="templateId" formControlName="templateId">
+                                        <input type="hidden" name="certificateId" formControlName="certificateId">
 
                                         <div fxLayout="row wrap" fxLayoutGap="12px grid">
                                             <div fxFlex>
                                                 <airmid-textbox 
                                                     label="TemplateName" 
-                                                    formControlName="templateName" 
-                                                    [value]="data?.templateName"
+                                                    formControlName="certificateName" 
+                                                    [value]="data?.certificateName"
                                                     [formGroup]="templateForm"
-                                                    [validations]="getValidationMessages().templateName"
+                                                    [validations]="getValidationMessages().certificateName"
                                                     [maxLength]="50">
                                                 </airmid-textbox>
 
-                                                <!-- <mat-label>Template Details</mat-label>
-                                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                                    style="height:300px;" [(ngModel)]="vTemplateDesc" required
-                                                    formControlName="templateDesc">
-                                                </angular-editor> -->
-                                                <airmid-editor label="Template Details" formControlName="templateDesc" [(value)]="vTemplateDesc" [formGroup]="templateForm"></airmid-editor>
-
+                                                <airmid-editor label="Template Details" formControlName="certificateDesc" [(value)]="vTemplateDesc" [formGroup]="templateForm"></airmid-editor>
 
                                             </div>
                                         </div>

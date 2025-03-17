@@ -72,7 +72,7 @@ export class NewCertificateComponent implements OnInit {
 
     getValidationMessages(){
         return{
-            templateName: [
+            certificateName: [
                 { name: "required", Message: "templateName Name is required" },
                 { name: "maxlength", Message: "templateName name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }

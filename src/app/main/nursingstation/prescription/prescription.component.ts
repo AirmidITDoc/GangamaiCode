@@ -78,6 +78,7 @@ export class PrescriptionComponent implements OnInit {
 
     isShowDetailTable: boolean = false;
     GetDetails1(data) {
+        debugger
         console.log("detailList:",data)
         
         this.gridConfig1 = {
@@ -91,8 +92,8 @@ export class PrescriptionComponent implements OnInit {
             sortOrder: 0,
             filters: [
                 { fieldName: "ipMedID", fieldValue: data.ipMedID.toString(), opType: OperatorComparer.Equals },
-                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+                // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+                // { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
             ]
         }
         this.isShowDetailTable = true;
