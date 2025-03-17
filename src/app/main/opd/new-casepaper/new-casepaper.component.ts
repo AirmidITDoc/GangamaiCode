@@ -33,6 +33,7 @@ import { DosemasterComponent } from 'app/main/setup/prescription/dosemaster/dose
 import { AddItemComponent } from './add-item/add-item.component';
 import { CityMasterComponent } from 'app/main/setup/PersonalDetails/city-master/city-master.component';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import { ServiceMaster } from 'app/main/setup/billing/service-master/service-master.component';
 
 interface Patient {
   PHeight: string;
@@ -104,7 +105,9 @@ export class NewCasepaperComponent implements OnInit {
   RegNo: any = 0;
   City: any;
   RegId: any;
-  registerObj = new AdmissionPersonlModel({});
+  registerObj1 = new AdmissionPersonlModel({});
+   registerObj = new CasepaperVisitDetails({});
+
   PatientName: any;
   MobileNo: any;
   VisitDate: any;
@@ -239,7 +242,7 @@ export class NewCasepaperComponent implements OnInit {
       this.vClassId = this.regObj.classId
       this.getPrescription(this.regObj);
       this.getnewVisistListDemo(this.regObj);
-      this.getRtrvTestService(this.regObj);  //retrive list
+      // this.getRtrvTestServiceList(this.regObj);  //retrive list
       this.getRtrvCheifComplaintList(this.regObj); // retrive list
     }
   }
@@ -421,12 +424,7 @@ export class NewCasepaperComponent implements OnInit {
         }
       ],
 
-      mAssignService: [
-        {
-          serviceId: 0,
-          serviceName: '',
-        }
-      ]
+      mAssignService: [""],
     });
   }
 
@@ -493,7 +491,7 @@ export class NewCasepaperComponent implements OnInit {
     this.getPrescription(obj);
     this.getnewVisistListDemo(obj);
     // this.getVitalInfo(obj);
-    this.getRtrvTestService(obj); // retrive list
+    // this.getRtrvTestServiceList(obj); // retrive list
     this.getRtrvCheifComplaintList(obj); // retrive list
   }
 
@@ -856,7 +854,7 @@ selectChangeServiceName(row) {
 
 
   RtrvTestServiceList: any = [];
-  getRtrvTestService(obj) {
+  getRtrvTestServiceList(obj) {
     // 
     var m_data2 = {
       "first": 0,
@@ -2011,7 +2009,6 @@ export class CasepaperVisitDetails {
   mAssignDiagnosis: any[];
   mAssignChiefComplaint: any[];
   mAssignExamination: any[];
-  mAssignService: any[];
   regNoWithPrefix: any;
   visitId: any;
   regId: any;
@@ -2040,6 +2037,8 @@ export class CasepaperVisitDetails {
   advice: any
   patientReferDocId: any
   drugName:any;
+  
+  MAssignService: ServiceDet[];
 
   constructor(casePaperDetails) {
     this.BP = casePaperDetails.BP || '';
@@ -2087,7 +2086,6 @@ export class CasepaperVisitDetails {
     this.mAssignDiagnosis = casePaperDetails.mAssignDiagnosis || [];
     this.mAssignChiefComplaint = casePaperDetails.mAssignChiefComplaint || [];
     this.mAssignExamination = casePaperDetails.mAssignExamination || [];
-    this.mAssignService = casePaperDetails.mAssignService || [];
     this.regNoWithPrefix = casePaperDetails.regNoWithPrefix || '';
     this.visitId = casePaperDetails.visitId || '';
     this.regId = casePaperDetails.regId || '';
@@ -2115,10 +2113,26 @@ export class CasepaperVisitDetails {
     this.followupDate = casePaperDetails.followupDate || '';
     this.advice = casePaperDetails.advice || '';
     this.patientReferDocId = casePaperDetails.patientReferDocId || '';
+      this.MAssignService = casePaperDetails.MAssignService;
   }
 
 
 }
+
+export class ServiceDet {
+    serviceId: any;
+    serviceName: any;
+
+    constructor(ServiceDet) {
+        {
+            this.serviceId = ServiceDet.serviceId || "";
+            this.serviceName = ServiceDet.serviceName || "";
+        }
+    }
+}
+
+
+
 export class MedicineItemList {
   ItemID: any;
   ItemId: any;

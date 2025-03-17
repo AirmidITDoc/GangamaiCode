@@ -575,19 +575,40 @@
                                                         (selectionChange)="selectChangeServiceName($event)">
                                                     </airmid-dropdown> -->
 
-                                                    <airmid-autocomplete label="Enter Service Name" 
+                                                     <!-- <airmid-dropdown label="Enter Service Name" 
                                                         [formGroup]="caseFormGroup"
-                                                        formControlName="serviceId" 
+                                                        formControlName="mAssignService"  #ddlService
                                                         placeholderText="Enter Service Name" fxFlex
                                                         ApiUrl="BillingService/GetServiceListwithGroupWise?TariffId=1&ClassId=1&IsPathRad=1&ServiceName="
                                                         (selectionChange)="selectChangeServiceName($event)" 
                                                         TextField="serviceName" ValueField="serviceId">
-                                                        </airmid-autocomplete>
+                                                        </airmid-dropdown>  -->
 
+                                                        <airmid-dropdown 
+                                                        label="Service"
+                                                        formControlName="mAssignService" 
+                                                        [formGroup]="caseFormGroup"
+                                                       #ddlService
+                                                        [IsMultiPle]="true" 
+                                                        ValueField="serviceId" 
+                                                        TextField="serviceName"
+                                                        ApiUrl="BillingService/GetServiceListwithGroupWise?TariffId=1&ClassId=1&IsPathRad=1&ServiceName=S" 
+                                                        [ReqFullObj]="true"
+                                                        (selectionChange)="selectChangeServiceName($event)">
+                                                    </airmid-dropdown>
+                                                   
+                             
                                                 </div>
-                                                <mat-chip-listbox #chipList>
+                                                <!-- <mat-chip-listbox #chipList>
                                                     <mat-chip
                                                         *ngFor="let item of caseFormGroup.value.mAssignService">
+                                                        {{ item.serviceName }} <mat-icon
+                                                            (click)="removeService(item)">close</mat-icon>
+                                                    </mat-chip>
+                                                </mat-chip-listbox> -->
+
+                                                <mat-chip-listbox #chipList>
+                                                    <mat-chip *ngFor="let item of caseFormGroup.value.mAssignService">
                                                         {{ item.serviceName }} <mat-icon
                                                             (click)="removeService(item)">close</mat-icon>
                                                     </mat-chip>
