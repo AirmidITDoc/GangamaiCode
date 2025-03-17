@@ -197,13 +197,13 @@ export class ParametermasterService {
 
         if(this.is_numeric) {
             return this._httpClient.PostData(
-                "MPathParaRangeWithAgeMaster/MPathParaRangeWithAgeMasterList",param
+                "ParameterMaster/MPathParaRangeWithAgeMasterList",param
                 // { parameterId: param }
             ); 
         }
         else{
         return this._httpClient.PostData(
-            "ParameterDescriptiveMaster/MParameterDescriptiveMasterList",param
+            "ParameterMaster/MParameterDescriptiveMasterList",param
             // { parameterId: param }
         ); 
     }

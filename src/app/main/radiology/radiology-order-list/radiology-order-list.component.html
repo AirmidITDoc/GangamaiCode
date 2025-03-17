@@ -12,118 +12,155 @@
             </div>
         </div>
 
-        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+        <!-- <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <button mat-raised-button (click)="onSave()">New Radiology Template
             </button>
-        </div>
+        </div> -->
     </div>
 
-<div class="layout-body p-12">
-    <div class="layout-body-container center">
-        <form [formGroup]="_RadioloyOrderlistService.myformSearch" class="mat-error-fix">
-            <div fxLayout="column">
-                <div class="layout-card-container" style="height: 80px;">
+    <div class="layout-body p-12">
+        <div class="layout-body-container center">
+            <form [formGroup]="_RadioloyOrderlistService.myformSearch" class="mat-error-fix">
+                <div fxLayout="column">
+                    <div class="layout-card-container" style="height: 80px;">
 
-                    <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="space-between start" class="gap-8">
-                        <div fxLayout="row wrap" fxFlex fxLayoutGap="12px 0px grid">
+                        <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="space-between start" class="gap-8">
+                            <div fxLayout="row wrap" fxFlex fxLayoutGap="12px 0px grid">
 
-                            <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="35%">
-                                <airmid-datepicker [formGroup]="_RadioloyOrderlistService.myformSearch"
-                                    [isRangePicker]="true" formStartControlName="start" formEndControlName="end"
-                                    [(fromValue)]="gridConfig.filters[3].fieldValue"
-                                    [(toValue)]="gridConfig.filters[4].fieldValue">
-                                </airmid-datepicker>
-                            </div>
+                                <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                    <airmid-datepicker [formGroup]="_RadioloyOrderlistService.myformSearch"
+                                        [isRangePicker]="true" formStartControlName="start" formEndControlName="end"
+                                        [(fromValue)]="gridConfig.filters[3].fieldValue"
+                                        [(toValue)]="gridConfig.filters[4].fieldValue">
+                                    </airmid-datepicker>
+                                </div>
 
-                            <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Reg_No</mat-label>
-                                    <input matInput placeholder="Search Reg_No" autocomplete="off"
-                                        formControlName="RegNoSearch" [(ngModel)]="gridConfig.filters[2].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[2].fieldValue='0'">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-                            </div>
+                                <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Reg_No</mat-label>
+                                        <input matInput placeholder="Search Reg_No" autocomplete="off"
+                                            formControlName="RegNoSearch"
+                                            [(ngModel)]="gridConfig.filters[2].fieldValue" />
+                                        <button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="gridConfig.filters[2].fieldValue=''">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+                                </div>
 
-                            <div fxFlex="16%" fxLayout="row">
-                                <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch"
-                                    fxLayout="column" value="2" class="gap-4"
-                                    [(ngModel)]="gridConfig.filters[6].fieldValue">
-                                    <mat-label><b>Patient Type:</b></mat-label>
-                                    <div fxLayout="row">
-                                        <mat-radio-button value='2'>All</mat-radio-button>
-                                        <mat-radio-button value='1'>IP</mat-radio-button>
-                                        <mat-radio-button value='0'>OP</mat-radio-button>
+                                <div fxFlex="16%" fxLayout="row">
+                                    <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch"
+                                        fxLayout="column" value="2" class="gap-4"
+                                        [(ngModel)]="gridConfig.filters[6].fieldValue">
+                                        <mat-label><b>Patient Type:</b></mat-label>
+                                        <div fxLayout="row">
+                                            <mat-radio-button value='2'>All</mat-radio-button>
+                                            <mat-radio-button value='1'>IP</mat-radio-button>
+                                            <mat-radio-button value='0'>OP</mat-radio-button>
+                                        </div>
+                                    </mat-radio-group>
+                                </div>
+
+                                <div fxFlex="20%" fxLayout="row">
+                                    <mat-radio-group name="StatusSearch" formControlName="StatusSearch"
+                                        fxLayout="column" value="0" class="gap-4"
+                                        [(ngModel)]="gridConfig.filters[5].fieldValue">
+                                        <mat-label><b>Status:</b></mat-label>
+                                        <div fxLayout="row">
+                                            <mat-radio-button value='0'>Pending</mat-radio-button>
+                                            <mat-radio-button value='1'>Completed</mat-radio-button>
+                                        </div>
+                                    </mat-radio-group>
+                                </div>
+
+                                <div class="action-button-container">
+                                    <div class="button-row-group">
+                                        <button class="btn btn-danger-outline btn-xs" (click)="onClear()">clear</button>
+                                        <button class="btn btn-primary btn-with-icon btn-xs"
+                                            (click)="searchRecords($event)">
+                                            <span>Search</span>
+                                            <span class="btn-icon">
+                                                <mat-icon>search</mat-icon>
+                                            </span>
+                                        </button>
+
                                     </div>
-                                </mat-radio-group>
-                            </div>
-
-                            <div fxFlex="20%" fxLayout="row">
-                                <mat-radio-group name="StatusSearch" formControlName="StatusSearch" fxLayout="column"
-                                    value="0" class="gap-4" [(ngModel)]="gridConfig.filters[5].fieldValue">
-                                    <mat-label><b>Status:</b></mat-label>
-                                    <div fxLayout="row">
-                                        <mat-radio-button value='0'>Pending</mat-radio-button>
-                                        <mat-radio-button value='1'>Completed</mat-radio-button>
-                                    </div>
-                                </mat-radio-group>
-                            </div>
-
-                            <div class="action-button-container">
-                                <div class="button-row-group">
-                                    <button class="btn btn-danger-outline btn-xs" (click)="onClear()">clear</button>
-                                    <button class="btn btn-primary btn-with-icon btn-xs"
-                                        (click)="searchRecords($event)">
-                                        <span>Search</span>
-                                        <span class="btn-icon">
-                                            <mat-icon>search</mat-icon>
-                                        </span>
-                                    </button>
-
                                 </div>
                             </div>
                         </div>
+
                     </div>
 
+                    <div class="layout-card-containr">
+                        <mat-card>
+                            <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                                <ng-template #actionButtonTemplate let-element>
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+
+                                        <button mat-icon-button matTooltip="Edit" (click)="onSave(element)">
+                                            <mat-icon title="Edit">edit</mat-icon>
+                                        </button>
+
+                                        <button mat-icon-button matTooltip="Print">
+                                            <mat-icon title="Print">print</mat-icon>
+                                        </button>
+
+                                        <button mat-icon-button matTooltip="Mail">
+                                            <mat-icon title="Mail">mail</mat-icon>
+                                        </button>
+
+                                        <button mat-icon-button matTooltip="Send message On WhatsApp">
+                                            <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                                        </button>
+
+                                    </div>
+                                </ng-template>
+
+                                <ng-template #actionsIPOP let-element>
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+
+                                        <mat-icon *ngIf="element.patientType=='OP'" title="OP"
+                                            class="pill orange s-16">circle</mat-icon>
+                                        <mat-icon *ngIf="element.patientType=='IP'" title="IP"
+                                            class="pill green s-16">circle</mat-icon>
+
+                                    </div>
+                                </ng-template>
+
+                                <ng-template #actionsCompleted let-element>
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+
+                                        <mat-icon matTooltip="IsCompleted" *ngIf="element.isCompleted==true"
+                                            class="active-icon green-500 s-16">check_circle</mat-icon>
+                                        <mat-icon matTooltip="Not Completed" *ngIf="element.isCompleted==false"
+                                            class="active-icon red-500 s-16">hourglass_empty</mat-icon>
+                                    </div>
+                                </ng-template>
+
+                                <ng-template #actionsType let-element>
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+
+                                        <mat-icon *ngIf="element.patientType =='Self'"
+                                            matTooltip="Patient Category Self">account_box
+                                        </mat-icon>
+                                        <mat-icon *ngIf="element.patientType !== 'Self'"
+                                            matTooltip="Patient Category Company">business
+                                        </mat-icon>
+                                    </div>
+                                </ng-template>
+
+                                <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
+                                </airmid-table>
+
+                            </div>
+                        </mat-card>
+
+                    </div>
                 </div>
-
-                <div class="layout-card-containr">
-                    <mat-card>
-                        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-
-                            <ng-template #actionButtonTemplate let-element>
-                                <div fxLayout="row" fxLayoutAlign="center center">
-
-                                    <button mat-icon-button matTooltip="Sample Collection" (click)="onSave(element)">
-                                        <mat-icon>description</mat-icon>
-                                    </button>
-                                </div>
-                            </ng-template>
-
-                            <ng-template #actionsIPOP let-element>
-                                <div fxLayout="row" fxLayoutAlign="center center">
-
-                                    <mat-icon *ngIf="element.patientType=='OP'" title="OP"
-                                        class="pill orange s-16">circle</mat-icon>
-                                    <mat-icon *ngIf="element.patientType=='IP'" title="IP"
-                                        class="pill green s-16">circle</mat-icon>
-
-                                </div>
-                            </ng-template>
-
-                            <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
-                            </airmid-table>
-
-                        </div>
-                    </mat-card>
-
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 
 </div>
 

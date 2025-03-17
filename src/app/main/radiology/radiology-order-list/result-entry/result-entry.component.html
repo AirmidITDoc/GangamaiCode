@@ -44,79 +44,78 @@
                                                 <span class="patient-col-key">UHID No
                                                 </span>
                                                 <span>:</span>
-                                                <!-- <span class="patient-col-value">{{selectedAdvanceObj.RegNo}}</span> -->
+                                                <span class="patient-col-value">{{RegNo}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Patient Name
                                                 </span>
                                                 <span>:</span>
-                                                <!-- <span class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span> -->
+                                                <span class="patient-col-value">{{PatientName}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Doctor Name</span>
                                                 <span>:</span>
-                                                <!-- <span class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span> -->
+                                                <span class="patient-col-value">{{Doctorname}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Department</span>
                                                 <span>:</span>
-                                                <!-- <span class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span> -->
+                                                <span class="patient-col-value">{{DepartmentName}}</span>
                                             </div>
                                         </div>
                                         <div fxLayout="column" fxLayoutGap="6px">
 
-                                            <!-- <div class="patient-col" *ngIf="selectedAdvanceObj.PatientType == 'IP'">
+                                            <!-- <div class="patient-col" *ngIf="PatientType == 'IP'">
                                                 <span class="patient-col-key">DOA | Time</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span>
+                                                <span class="patient-col-value">{{AdmDateTime}}</span>
                                             </div> -->
                                             <div class="patient-col">
                                                 <span class="patient-col-key">OPD/IPD No</span>
                                                 <span>:</span>
-                                                <!-- <span class="patient-col-value">{{selectedAdvanceObj.OP_IP_Number}} </span> -->
+                                                <span class="patient-col-value">{{vOPDIPdNo}} </span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Age | Sex
                                                 </span>
                                                 <span>:</span>
-
-                                                <!-- <span
-                                                class="patient-col-value">{{selectedAdvanceObj.AgeYear}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}}
-                                                D | {{selectedAdvanceObj.GenderName}}</span> -->
+                                                <span
+                                                class="patient-col-value">{{AgeYear}}Y|{{AgeMonth}}M|{{AgeDay}}
+                                                D | {{GenderName}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Ref-Doctor Name
                                                 </span>
                                                 <span>:</span>
-                                                <!-- <span class="patient-col-value">{{selectedAdvanceObj.RefDoctorName}}</span> -->
+                                                <span class="patient-col-value">{{RefDocName}}</span>
                                             </div>
 
                                         </div>
                                         <div fxLayout="column" fxLayoutGap="6px">
                                             <div class="patient-col">
-                                                <!-- *ngIf="selectedAdvanceObj.PatientType == 'IP'" -->
+                                                <!-- *ngIf="PatientType == 'IP'" -->
                                                 <span class="patient-col-key">Ward | Bed Name
                                                 </span>
                                                 <span>:</span>
-                                                <!-- <span class="patient-col-value">{{selectedAdvanceObj.RoomName}} | {{selectedAdvanceObj.BedName}}</span> -->
+                                                <span class="patient-col-value">{{WardName}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Patient Type
                                                 </span>
                                                 <span>:</span>
-                                                <!-- <span class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span> -->
+                                                <span class="patient-col-value">{{PatientType}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Tarrif Name
                                                 </span>
                                                 <span>:</span>
-                                                <!-- <span class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span> -->
+                                                <span class="patient-col-value">{{Tarrifname}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Company Name</span>
                                                 <span>:</span>
-                                                <!-- <span class="patient-col-value"
-                                                style="color: orange;">{{selectedAdvanceObj.CompanyName}}</span> -->
+                                                <span class="patient-col-value"
+                                                style="color: orange;">{{CompanyName}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -143,7 +142,7 @@
                             </airmid-dropdown>
 
                             <div>
-                                <button (click)="onAddTemplate()" class="btn btn-primary btn-with-icon py-8"
+                                <button (click)="onAddTemplate($event)" class="btn btn-primary btn-with-icon py-8"
                                     style="margin-left: 10px;">
                                     <span class="btn-icon">
                                         <mat-icon> add </mat-icon>
@@ -159,7 +158,7 @@
                         formControlName="ResultEntry"></angular-editor> -->
 
                             <airmid-editor label="Template Details" formControlName="ResultEntry"
-                                [(value)]="vTemplateDesc"
+                                [(value)]="vTemplateDesc" 
                                 [formGroup]="_radiologytemplateService.myform"></airmid-editor>
                         </div>
 

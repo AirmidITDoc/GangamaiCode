@@ -33,6 +33,7 @@ import { DosemasterComponent } from 'app/main/setup/prescription/dosemaster/dose
 import { AddItemComponent } from './add-item/add-item.component';
 import { CityMasterComponent } from 'app/main/setup/PersonalDetails/city-master/city-master.component';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import { ServiceMaster } from 'app/main/setup/billing/service-master/service-master.component';
 
 interface Patient {
   PHeight: string;
@@ -104,7 +105,9 @@ export class NewCasepaperComponent implements OnInit {
   RegNo: any = 0;
   City: any;
   RegId: any;
-  registerObj = new AdmissionPersonlModel({});
+  registerObj1 = new AdmissionPersonlModel({});
+   registerObj = new CasepaperVisitDetails({});
+
   PatientName: any;
   MobileNo: any;
   VisitDate: any;
@@ -239,7 +242,7 @@ export class NewCasepaperComponent implements OnInit {
       this.vClassId = this.regObj.classId
       this.getPrescription(this.regObj);
       this.getnewVisistListDemo(this.regObj);
-      this.getRtrvTestService(this.regObj);  //retrive list
+      this.getRtrvTestServiceList(this.regObj);  //retrive list
       this.getRtrvCheifComplaintList(this.regObj); // retrive list
     }
   }
@@ -398,35 +401,31 @@ export class NewCasepaperComponent implements OnInit {
       DiagnosisControl: '',
       CheifComplaintControl: '',
       
-      mAssignChiefComplaint: [
-        {
-          complaintDescr:0,
-          // descriptionType: 0,
-          complaintId:0,
-          // descriptionName:0
-        }
+      // mAssignChiefComplaint: [
+      //   {
+      //     complaintDescr:0,
+      //     // descriptionType: 0,
+      //     complaintId:0,
+      //     // descriptionName:0
+      //   }
+      // ],
+      mAssignChiefComplaint:[""],
+      mAssignDiagnosis: [""
+        // {
+        //   descriptionName: 0,
+        //   descriptionType: 0,
+        //   visitId:0
+        // }
       ],
-      mAssignDiagnosis: [
-        {
-          descriptionName: 0,
-          descriptionType: 0,
-          visitId:0
-        }
-      ],
-      mAssignExamination: [
-        {
-          examinationDescr: 0,
-          // descriptionType: 0,
-          examinationId:0
-        }
+      mAssignExamination: [""
+        // {
+        //   examinationDescr: 0,
+        //   // descriptionType: 0,
+        //   examinationId:0
+        // }
       ],
 
-      mAssignService: [
-        {
-          serviceId: 0,
-          serviceName: '',
-        }
-      ]
+      mAssignService: [""],
     });
   }
 
@@ -493,7 +492,7 @@ export class NewCasepaperComponent implements OnInit {
     this.getPrescription(obj);
     this.getnewVisistListDemo(obj);
     // this.getVitalInfo(obj);
-    this.getRtrvTestService(obj); // retrive list
+    this.getRtrvTestServiceList(obj); // retrive list
     this.getRtrvCheifComplaintList(obj); // retrive list
   }
 
@@ -563,13 +562,13 @@ export class NewCasepaperComponent implements OnInit {
   RtrvDescriptionList: any = [];
 
   HistoryList: any = [];
-  addCheiflist: any = [];
+  addCheiflist: any[] = [];
   addDiagnolist: any = [];
   addExaminlist: any = [];
   nValue: any[] = []; 
 
 getRtrvCheifComplaintList(obj) { 
-  ;
+  debugger
   this.addCheiflist = [];
   this.addDiagnolist = [];
   this.addExaminlist = [];
@@ -594,19 +593,21 @@ getRtrvCheifComplaintList(obj) {
       console.log("RtrvDescriptionList:", this.RtrvDescriptionList);
   
       // Process Chief Complaints
-      this.addCheiflist = []; 
-      let Cheifcomplaint = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Complaint');
-      if (Cheifcomplaint.length > 0) {
-      Cheifcomplaint.forEach(element=>{
+      // this.addCheiflist = []; 
+      let ChiefComplaint = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Complaint');
+      this.addCheiflist = [];
+      if (ChiefComplaint.length > 0) {
+      ChiefComplaint.forEach(element=>{
         this.addCheiflist.push(
           {
             complaintDescr:element.descriptionName,
-            complaintId:0
           }
         )
       })
+        // this.ddlChiefComplaint.SetSelection(this.addCheiflist);
+        this.caseFormGroup.get('mAssignChiefComplaint').setValue(this.addCheiflist);
         console.log("Chief Complaints:", this.addCheiflist);
-        this.ddlChiefComplaint.SetSelection(this.addCheiflist);
+        console.log("mAssignChiefComplaint:", this.caseFormGroup.get('mAssignChiefComplaint').value);
 
       } else {
         console.log("No Chief Complaints found");
@@ -618,15 +619,13 @@ getRtrvCheifComplaintList(obj) {
         Diagnosis.forEach(element=>{
           this.addDiagnolist.push(
             {
-              descriptionName:element.descriptionName,
-              descriptionType:element.descriptionType,
-              visitId:0
+              descriptionName:element.descriptionName
             }
           )
         })
         console.log("Diagnosis List:", this.addDiagnolist);
-        // this.caseFormGroup.get('mAssignDiagnosis').setValue(this.addDiagnolist);
-        this.ddlDiagnosis.SetSelection(this.addDiagnolist);
+        this.caseFormGroup.get('mAssignDiagnosis').setValue(this.addDiagnolist);
+        // this.ddlDiagnosis.SetSelection(this.addDiagnolist);
       } else {
         console.log("No Diagnosis found");
       }
@@ -637,15 +636,13 @@ getRtrvCheifComplaintList(obj) {
         Examination.forEach(element => {
          this.addExaminlist.push(
           {
-            examinationDescr: element.descriptionName,
-            // descriptionType: element.descriptionType,
-            examinationId:0
+            examinationDescr: element.descriptionName
           }
          )
         });
         console.log("Examination List:", this.addExaminlist);
-        // this.caseFormGroup.get('mAssignExamination').setValue(this.addExaminlist);
-        this.ddlExamination.SetSelection(this.addExaminlist);
+        this.caseFormGroup.get('mAssignExamination').setValue(this.addExaminlist);
+        // this.ddlExamination.SetSelection(this.addExaminlist);
       } else {
         console.log("No Examination found");
       }
@@ -694,7 +691,7 @@ getRtrvCheifComplaintList(obj) {
   itemGeneric:any;
 
   selectChangeItemName(row) {
-    debugger
+    // debugger
     console.log("itemData:", row)
     this.durgId = row.itemId
     this.durgName = row.itemName
@@ -828,20 +825,6 @@ DosedisableEditing(index: number) {
     this.templateName = row.text
   }
 
-  // selectedItems = [];
-  // selectChangeServiceName(row) {
-  //   debugger
-  //   console.log("Selected Services:", row);
-
-  //   if (Array.isArray(row) && row.length > 0) {
-  //     this.selectedItems = row.map(item => ({ serviceId: item.serviceId })); // ✅ Store all serviceIds
-  //   } else {
-  //     this.selectedItems = [];
-  //   }
-  //   console.log("Updated selectedItems:", this.selectedItems);
-  // }
-
-  // during single data from dd
   selectedItems = [];
 
 selectChangeServiceName(row) {
@@ -856,7 +839,7 @@ selectChangeServiceName(row) {
 
 
   RtrvTestServiceList: any = [];
-  getRtrvTestService(obj) {
+  getRtrvTestServiceList(obj) {
     // 
     var m_data2 = {
       "first": 0,
@@ -895,139 +878,41 @@ selectChangeServiceName(row) {
     console.log("DoctorName:", row)
   }
 
-  //  selectChangeCheifComplaint(row) {
-  //   console.log("Chief Complaint:", row);
-  //   if (Array.isArray(row) && row.length > 0) {
-  //     this.addCheiflist = row.map(item => item.complaintDescr?.trim() || "");
-  //   } else {
-  //     this.addCheiflist = [];
-  //   }
-  //   console.log("Updated addCheiflist:", this.addCheiflist);
-    // this.isFocusEnabled = false;
-  // }
-
-  retrievedData1: any[] = [];
   selectChangeCheifComplaint(row) {
-    console.log("Chief Complaint:", row);
+    console.log("Selected Services:", row);
   
-    if (Array.isArray(row)) {
-      const newData = row.map(item => ({
-        complaintId: item.complaintId,
-        complaintDescr: item.complaintDescr?.trim() || ""
-      }));
+    const selectedData = Array.isArray(row) ? row : [row]; // Convert single data to array
   
-      // If addCheiflist is empty, initialize with newData
-      if (!this.addCheiflist) {
-        this.addCheiflist = [...newData];
-      } else {
-        // Append new data to old data
-        this.addCheiflist = [...this.addCheiflist, ...newData];
+    this.addCheiflist = selectedData.map(item => ({ complaintDescr: item.complaintDescr }));
   
-        // Remove duplicates based on `complaintId`
-        this.addCheiflist = this.addCheiflist.filter(
-          (value, index, self) =>
-            index === self.findIndex(item => item.complaintId === value.complaintId)
-        );
-  
-        // Remove only deselected data, keep retrieved data
-        this.addCheiflist = this.addCheiflist.filter(item =>
-          row.some(selectedItem => selectedItem.complaintId === item.complaintId) ||
-          this.retrievedData1.some(retrievedItem => retrievedItem.complaintId === item.complaintId)
-        );
-      }
-    }
-    console.log("Updated addCheiflist:", this.addCheiflist);
-  }
-  
-  // selectChangeDiagnosis(row) {
-  //   console.log("Diagnosis:", row);
-  //   if (Array.isArray(row) && row.length > 0) {
-  //     this.addDiagnolist = row.map(item => item.descriptionName?.trim() || "");
-  //   } else {
-  //     this.addDiagnolist = [];
-  //   }
-  //   console.log("Updated addDiagnolist:", this.addDiagnolist);
-  // }
-  
-  retrievedData2: any[] = [];
-  selectChangeDiagnosis(row) {
-    console.log("Diagnosis:", row);
-  
-    if (Array.isArray(row)) {
-      const newData = row.map(item => ({
-        id: item.id,
-        descriptionName: item.descriptionName?.trim() || ""
-      }));
-  
-      // If addDiagnolist is empty, initialize with newData
-      if (!this.addDiagnolist) {
-        this.addDiagnolist = [...newData];
-      } else {
-        // Append new data to old data
-        this.addDiagnolist = [...this.addDiagnolist, ...newData];
-  
-        // Remove duplicates based on `id`
-        this.addDiagnolist = this.addDiagnolist.filter(
-          (value, index, self) =>
-            index === self.findIndex(item => item.id === value.id)
-        );
-  
-        // Remove only deselected data, keep retrieved data
-        this.addDiagnolist = this.addDiagnolist.filter(item =>
-          row.some(selectedItem => selectedItem.id === item.id) ||
-          this.retrievedData2.some(retrievedItem => retrievedItem.id === item.id)
-        );
-      }
-    }
-    console.log("Updated addDiagnolist:", this.addDiagnolist);
-  }
-  
-// old one needed
-  // selectChangeExamination(row) {
-  //   console.log("Examination:", row);
-  //   if (Array.isArray(row) && row.length > 0) {
-  //     this.addExaminlist = row.map(item => item.examinationDescr?.trim() || "");
-  //   } else {
-  //     this.addExaminlist = [];
-  //   }
-  //   console.log("Updated addExaminlist:", this.addExaminlist);
-  // }
+    // this.caseFormGroup.get('mAssignChiefComplaint').setValue([...this.addCheiflist]);
 
-  retrievedData: any[] = [];
+    console.log("Updated selectedItems:", this.addCheiflist);
+  }
+      
+  selectChangeDiagnosis(row) {
+    console.log("Selected Services:", row);
+  
+    const selectedData = Array.isArray(row) ? row : [row]; // Convert single data to array
+  
+    this.addDiagnolist = selectedData.map(item => ({ descriptionName: item.descriptionName }));
+
+    // this.caseFormGroup.get('mAssignDiagnosis').setValue([...this.addDiagnolist]);
+  
+    console.log("Updated selectedItems:", this.addDiagnolist);
+  }
 
   selectChangeExamination(row) {
-    console.log("Examination:", row);
+    console.log("Selected Services:", row);
   
-    if (Array.isArray(row)) {
-      const newData = row.map(item => ({
-        examinationId: item.examinationId,
-        examinationDescr: item.examinationDescr?.trim() || ""
-      }));
+    const selectedData = Array.isArray(row) ? row : [row]; // Convert single data to array
   
-      // If addExaminlist is empty, initialize with newData
-      if (!this.addExaminlist) {
-        this.addExaminlist = [...newData];
-      } else {
-        // Append new data to old data
-        this.addExaminlist = [...this.addExaminlist, ...newData];
+    this.addExaminlist = selectedData.map(item => ({ examinationDescr: item.examinationDescr }));
   
-        // Remove duplicates based on `examinationId`
-        this.addExaminlist = this.addExaminlist.filter(
-          (value, index, self) =>
-            index === self.findIndex(item => item.examinationId === value.examinationId)
-        );
-  
-        // Remove only deselected data, keep retrieved data
-        this.addExaminlist = this.addExaminlist.filter(item =>
-          row.some(selectedItem => selectedItem.examinationId === item.examinationId) ||
-          this.retrievedData.some(retrievedItem => retrievedItem.examinationId === item.examinationId)
-        );
-      }
-    }
-  
-    console.log("Updated addExaminlist:", this.addExaminlist);
-  }  
-  
+    // this.caseFormGroup.get('mAssignExamination').setValue([...this.addExaminlist]);
+
+    console.log("Updated selectedItems:", this.addExaminlist);
+  }
   
   getValidationMessages() {
     return {
@@ -1185,7 +1070,7 @@ selectChangeServiceName(row) {
 
   }
   onSave() {
-    
+    debugger
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
@@ -2011,7 +1896,6 @@ export class CasepaperVisitDetails {
   mAssignDiagnosis: any[];
   mAssignChiefComplaint: any[];
   mAssignExamination: any[];
-  mAssignService: any[];
   regNoWithPrefix: any;
   visitId: any;
   regId: any;
@@ -2040,6 +1924,8 @@ export class CasepaperVisitDetails {
   advice: any
   patientReferDocId: any
   drugName:any;
+  
+  MAssignService: ServiceDet[];
 
   constructor(casePaperDetails) {
     this.BP = casePaperDetails.BP || '';
@@ -2087,7 +1973,6 @@ export class CasepaperVisitDetails {
     this.mAssignDiagnosis = casePaperDetails.mAssignDiagnosis || [];
     this.mAssignChiefComplaint = casePaperDetails.mAssignChiefComplaint || [];
     this.mAssignExamination = casePaperDetails.mAssignExamination || [];
-    this.mAssignService = casePaperDetails.mAssignService || [];
     this.regNoWithPrefix = casePaperDetails.regNoWithPrefix || '';
     this.visitId = casePaperDetails.visitId || '';
     this.regId = casePaperDetails.regId || '';
@@ -2115,10 +2000,26 @@ export class CasepaperVisitDetails {
     this.followupDate = casePaperDetails.followupDate || '';
     this.advice = casePaperDetails.advice || '';
     this.patientReferDocId = casePaperDetails.patientReferDocId || '';
+      this.MAssignService = casePaperDetails.MAssignService;
   }
 
 
 }
+
+export class ServiceDet {
+    serviceId: any;
+    serviceName: any;
+
+    constructor(ServiceDet) {
+        {
+            this.serviceId = ServiceDet.serviceId || "";
+            this.serviceName = ServiceDet.serviceName || "";
+        }
+    }
+}
+
+
+
 export class MedicineItemList {
   ItemID: any;
   ItemId: any;

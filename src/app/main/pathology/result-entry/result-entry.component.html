@@ -32,8 +32,8 @@
                                 <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
                                     <mat-form-field appearance="outline">
                                         <mat-label>RegNo</mat-label>
-                                        <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myformSearch" formControlName="RegNo" (input)="onChangeFirst()" />
-                                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                                        <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myformSearch" formControlName="RegNoSearch" (input)="onChangeFirst()" />
+                                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNoSearch')">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>
@@ -68,7 +68,7 @@
                                     <div class="button-row-group">
                                         <button class="btn btn-danger-outline btn-xs" (click)="onClear()">clear</button>
                                         <button class="btn btn-primary btn-with-icon btn-xs"
-                                            >
+                                        (click)="searchRecords($event)" >
                                             <span>Search</span>
                                             <span class="btn-icon">
                                                 <mat-icon>search</mat-icon>
