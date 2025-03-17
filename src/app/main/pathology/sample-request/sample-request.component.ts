@@ -147,7 +147,7 @@ export class SampleRequestComponent implements OnInit {
           columnsList: [
             { heading: "ReqDate", key: "reqDate", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "ReqTime", key: "reqTime", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width:150},
+            { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width:200},
             { heading: "AddedBy", key: "addedByName", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "BillingUser", key: "billingUser", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "AddedByDate", key: "addedByDate", sort: true, align: 'left', emptySign: 'NA'},

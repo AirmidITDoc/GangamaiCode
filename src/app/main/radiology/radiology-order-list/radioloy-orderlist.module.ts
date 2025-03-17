@@ -19,7 +19,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatListModule } from '@angular/material/list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -93,6 +93,7 @@ const routes: Routes = [
         MatBadgeModule,
         MatSelectModule,
         MatAutocompleteModule,
+        MatTooltipModule,
         // NgxEditorModule ,
         // NgxEditorModule,
         AngularEditorModule,

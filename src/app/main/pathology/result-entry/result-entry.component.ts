@@ -228,13 +228,13 @@ export class ResultEntryComponent implements OnInit {
 
     searchRecords(data) {
         
-        let regno = this._SampleService.myformSearch.get("RegNoSearch").value || 0;
-        let fromDate = this._SampleService.myformSearch.get("start").value || "";
-        let toDate = this._SampleService.myformSearch.get("end").value || "";
+        let regno = this.myformSearch.get("RegNoSearch").value || "0";
+        let fromDate = this.myformSearch.get("start").value || "";
+        let toDate = this.myformSearch.get("end").value || "";
         fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
         toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
-        let patientType = this._SampleService.myformSearch.get("PatientTypeSearch").value || "2";
-        let status = this._SampleService.myformSearch.get("StatusSearch").value || "1";
+        let patientType = this.myformSearch.get("PatientTypeSearch").value || "2";
+        let status = this.myformSearch.get("StatusSearch").value || "1";
         // Update the filters dynamically
         this.gridConfig = {
             apiUrl: "Pathology/PathologyPatientTestList",
@@ -280,12 +280,12 @@ export class ResultEntryComponent implements OnInit {
     }
 
       getSampledetailList1(row) {
-        
+        debugger
         let inputDate = row.vaDate;
         let parts = inputDate.split(' ')[0].split('-');
         let date = `${parts[2]}-${parts[1]}-${parts[0]}`;
     
-        let OPIP = row.patientType === 'OP' ? 0 : 1;
+        let OPIP = row.patientType === 'OP' ? "0" : "1";
     
         var m_data = {
           "first": 0,
@@ -315,9 +315,9 @@ export class ResultEntryComponent implements OnInit {
         console.log(m_data);
         this._SampleService.PathResultentryDetailList(m_data).subscribe(Visit => {
           this.dataSource1.data = Visit as SampleList[];
-          console.log("ResultList:",this.dataSource.data)
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
+          console.log("ResultList:",this.dataSource1.data)
+          this.dataSource1.sort = this.sort;
+          this.dataSource1.paginator = this.paginator;
           this.sIsLoading = '';
         },
           error => {
@@ -369,8 +369,8 @@ export class ResultEntryComponent implements OnInit {
     else
         if (event == 'LastName')
             this.myformSearch.get('LastName').setValue("")
-    if (event == 'RegNo')
-        this.myformSearch.get('RegNo').setValue("")
+    if (event == 'RegNoSearch')
+        this.myformSearch.get('RegNoSearch').setValue("")
     
     this.onChangeFirst();
     }

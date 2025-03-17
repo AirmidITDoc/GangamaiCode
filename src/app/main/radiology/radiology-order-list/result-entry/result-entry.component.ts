@@ -25,7 +25,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
   animations: fuseAnimations
 })
 export class ResultEntryComponent implements OnInit {
- 
+
   editorConfig: AngularEditorConfig = {
     // color:true,
     editable: true,
@@ -36,7 +36,7 @@ export class ResultEntryComponent implements OnInit {
     placeholder: 'Enter text here...',
     enableToolbar: true,
     showToolbar: true,
-    
+
   };
   filteredrefdr: Observable<string[]>;
   optionsDoc1: any[] = [];
@@ -46,7 +46,7 @@ export class ResultEntryComponent implements OnInit {
   public height: number = 410;
   reportPrintObj: RadiologyPrint;
   regobj: RadiologyPatienInsert;
-  vTemplateDesc:any="";
+  vTemplateDesc: any = "";
   screenFromString = 'opd-casepaper';
   isresultdrSelected: boolean = false;
   templatelist: any = [];
@@ -54,20 +54,44 @@ export class ResultEntryComponent implements OnInit {
   currentDate = new Date();
   ResultEntry: any;
   SuggestionNotes: any;
-  vsuggation:any;
+  vsuggation: any;
   DoctorId: any;
   printTemplate: any;
   subscriptionArr: Subscription[] = [];
-  TemplateList:any=[];
+  TemplateList: any = [];
   optionsTemplate: any[] = [];
 
   isTemplateNameSelected: boolean = false;
- filteredOptionsisTemplate: Observable<string[]>;
- vTemplateName: any = 0;
- TemplateId: any = 0;
- 
- autocompleteModeTemplate: string = "TemplateMaster";
-  
+  filteredOptionsisTemplate: Observable<string[]>;
+  vTemplateName: any = 0;
+  TemplateId: any = 0;
+
+  regObj: any;
+  PatientName: any;
+  MobileNo: any;
+  DepartmentName: any;
+  AgeMonth: any;
+  AgeDay: any;
+  GenderName: any;
+  RefDocName: any;
+  WardName: any;
+  RegNo: any;
+  vOPIPId: any;
+  VisitId: any;
+  RegId: any;
+  Doctorname: any;
+  vOPDIPdNo: any;
+  AgeYear: any;
+  PatientType: any;
+  Tarrifname: any;
+  CompanyName: any;
+  vClassId: any;
+  Lbl: any;
+  DOA: any;
+  DOT: any;
+
+  autocompleteModeTemplate: string = "TemplateMaster";
+
   private _onDestroy = new Subject<void>();
 
   dataSource = new MatTableDataSource<RadiologyPatienInsert>();
@@ -96,66 +120,104 @@ export class ResultEntryComponent implements OnInit {
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,
     public dialogRef: MatDialogRef<ResultEntryComponent>,
-  ) { 
-   
+  ) {
+
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
-      this.TemplateId== this.selectedAdvanceObj.TemplateId;
-      console.log(this.selectedAdvanceObj )
+      this.TemplateId == this.selectedAdvanceObj.TemplateId;
+      console.log(this.selectedAdvanceObj)
     }
     this.getDoctorList()
     this.getTemplateList();
-   }
+  }
 
-  ngOnInit(): void { 
+  onBlur(e: any) {
+    this.vTemplateDesc = e.target.innerHTML;
+    throw new Error('Method not implemented.');
+  }
+
+  ngOnInit(): void {
     //this.getTemplateList(); 
     if (this.advanceDataStored.storage) {
-       this.getUpdatetemplate();  
-    }  
+      this.getUpdatetemplate();
+    }
+    if (this.data) {
+      this.regObj = this.data
+      console.log(this.regObj)
+      this.RegNo = this.regObj.regNo
+      this.vOPIPId = this.regObj.visitId
+      this.VisitId = this.regObj.visitId
+      this.RegId = this.regObj.regId
+      this.PatientName = this.regObj.patientName
+      this.Doctorname = this.regObj.doctorName
+      this.vOPDIPdNo = this.regObj.oP_IP_No
+      this.AgeYear = this.regObj.ageYear
+      this.AgeMonth = this.regObj.ageMonth
+      this.AgeDay = this.regObj.ageDay
+      this.GenderName = this.regObj.genderName
+      this.DepartmentName = this.regObj.departmentName
+      this.PatientType = this.regObj.patientType
+      this.Tarrifname = this.regObj.tariffName
+      this.CompanyName = this.regObj.companyName
+      this.RefDocName = this.regObj.refDocName
+      this.vClassId = this.regObj.classId
+      this.Lbl = this.regObj.lbl
+      this.DOA = this.regObj.doa
+      this.DOT = this.regObj.dot
+      this.WardName = this.regObj.wardName
+    }
+    // console.log("Form Value:", this._radiologytemplateService.myform.value);
   }
-  RefDoctorID:any;
-// getUpdatetemplate(){
-//   var m_data = {
-//     "RadReportId": this.selectedAdvanceObj.RadReportId, 
-//   }
-//   this._radiologytemplateService.getRtrvtemplate(m_data).subscribe(Visit => {
-//     this.regobj = Visit as RadiologyPatienInsert; 
-//     console.log(this.regobj); 
-//     this.vTemplateDesc = this.regobj[0].ResultEntry;
-//     this.SuggestionNotes = this.regobj[0].SuggestionNotes;
-//     this.DoctorId = this.regobj[0].RadResultDr1;
-//     this.RefDoctorID = this.regobj[0].RefDoctorID;
-//     console.log(this.RefDoctorID); 
-  
-//   }); 
-// }   
+  RefDoctorID: any;
+  // getUpdatetemplate(){
+  //   var m_data = {
+  //     "RadReportId": this.regObj.radReportId, 
+  //   }
+  //   this._radiologytemplateService.getRtrvtemplate(m_data).subscribe(Visit => {
+  //     this.regobj = Visit as RadiologyPatienInsert; 
+  //     console.log(this.regobj); 
+  //     this.vTemplateDesc = this.regobj[0].ResultEntry;
+  //     this.SuggestionNotes = this.regobj[0].SuggestionNotes;
+  //     this.DoctorId = this.regobj[0].RadResultDr1;
+  //     this.RefDoctorID = this.regobj[0].RefDoctorID;
+  //     console.log(this.RefDoctorID); 
 
-selectChangeTemplateName(row) {
-  console.log("Template:", row)
-}
+  //   }); 
+  // }   
 
-getUpdatetemplate() {
-  
-  var mdata={
-  "RadReportId": this.selectedAdvanceObj.RadReportId, 
+  Tempdesc:any;
+
+  selectChangeTemplateName(row) {
+    console.log("Template:", row)
+    this.Tempdesc=row.templateDescription
   }
 
-  this._radiologytemplateService.getRtrvtemplate(mdata).subscribe(data => {
+  onAddTemplate(e) {
+    this.vTemplateDesc=this.Tempdesc   
+  }
+
+  getUpdatetemplate() {
+
+    var mdata = {
+      "RadReportId": this.regObj.radReportId,
+    }
+
+    this._radiologytemplateService.getRtrvtemplate(mdata).subscribe(data => {
       this.TemplateList = data[0];
       this.vTemplateDesc = this.TemplateList.ResultEntry;
       this.SuggestionNotes = this.TemplateList.SuggestionNotes;
-      this.TemplateId= this.TemplateList.RadReportId;
+      this.TemplateId = this.TemplateList.RadReportId;
       this.DoctorId = this.TemplateList.RadResultDr1;
       this.RefDoctorID = this.TemplateList.RefDoctorID;
-      
-    //   if (this.data) {
-    //     const ddValue = this.TemplateList.filter(c => c.RadReportId== this.TemplateId);
-        this._radiologytemplateService.myform.get('TemplateName').setValue(this.TemplateId);
-        this._radiologytemplateService.myform.updateValueAndValidity();
-    //     return;
-    // }
-  });
-}
+
+      //   if (this.data) {
+      //     const ddValue = this.TemplateList.filter(c => c.RadReportId== this.TemplateId);
+      this._radiologytemplateService.myform.get('TemplateName').setValue(this.TemplateId);
+      this._radiologytemplateService.myform.updateValueAndValidity();
+      //     return;
+      // }
+    });
+  }
 
   getDoctorList() {
     this._radiologytemplateService.getdoctorCombo().subscribe(data => {
@@ -165,116 +227,79 @@ getUpdatetemplate() {
       this.filteredrefdr = this._radiologytemplateService.myform.get('DoctorId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterdoc1(value) : this.Doctorlist.slice()),
-      ); 
+      );
     });
-  } 
+  }
   private _filterdoc1(value: any): string[] {
     if (value) {
       const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
       return this.optionsDoc1.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
-    } 
-  } 
+    }
+  }
   getOptionTextRefdr(option) {
     return option && option.Doctorname ? option.Doctorname : '';
   }
 
-  onBlur(e:any){
-    this.vTemplateDesc=e.target.innerHTML;
-  } 
-
   onSubmit() {
-    
-    if ((this.vTemplateName == '' || this.vTemplateName == null || this.vTemplateName == undefined)) {
-      this.toastr.warning('Please select valid Template ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if(this._radiologytemplateService.myform.get("ResultEntry").value ==''){
-      this.toastr.warning('Please Enter Result Entry ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-  
-   
-      if (!this.selectedAdvanceObj.RadReportId) {
-        var m_data = {
-          insertRadiologyTemplateMaster: {
-            "RadReportID":0, 
-            "ReportDate": this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-            "ReportTime":this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
-            "IsCompleted":'true', 
-            "IsPrinted":'true', 
-            "RadResultDr1": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId ,
-            "RadResultDr2":0, 
-            "RadResultDr3":0, 
-            "SuggestionNotes": this._radiologytemplateService.myform.get("Suggatationnote").value || '',
-            "AdmVisitDoctorID":0, 
-            "RefDoctorID": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId || 1,
-            "ResultEntry": this._radiologytemplateService.myform.get("ResultEntry").value || '', 
-          }
-        }
-        console.log(m_data);
-        this._radiologytemplateService.insertRadiologyTemplateMaster(m_data).subscribe(data => {
-          this.msg = data;
-          if (data) {
-            Swal.fire('Congratulations !', 'Radiology Template Inserted Successfully !', 'success').then((result) => {
-              if (result.isConfirmed) {
-                this._radiologytemplateService.myform.get('TemplateDesc').reset();
-                this.dialogRef.close();
-                this.viewgetRadioloyTemplateReportPdf(data);
-              }
+    debugger
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
 
-            });
-          } else {
-            Swal.fire('Error !', 'Appoinment not saved', 'error');
-          }
-        });  
-       }
-       
-      else { 
-        var m_dataUpdate = {
-          radiologyReportHeaderUpdate: {
-            "RadReportID": this.selectedAdvanceObj.RadReportId || 0, 
-            "ReportDate": this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-            "ReportTime":this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
-            "IsCompleted": true, 
-            "IsPrinted": true, 
-            "RadResultDr1": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId || 0,
-            "RadResultDr2": 0, 
-            "RadResultDr3": 0, 
-            "SuggestionNotes": this._radiologytemplateService.myform.get("SuggestionNotes").value || '',
-            "AdmVisitDoctorID":  0, 
-            "RefDoctorID":  this._radiologytemplateService.myform.get("DoctorId").value.DoctorId || 1,
-            "ResultEntry": this._radiologytemplateService.myform.get("ResultEntry").value || '',
+    // if ((this.vTemplateName == '' || this.vTemplateName == null || this.vTemplateName == undefined)) {
+    //   this.toastr.warning('Please select valid Template ', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    // if(this._radiologytemplateService.myform.get("ResultEntry")?.value ==''){
+    //   this.toastr.warning('Please Enter Result Entry ', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
 
-          }
+    if (this.regObj.radReportId) {
+
+      var m_dataUpdate = {
+        "radReportId": this.regObj.radReportId || 0,
+        "reportDate": formattedDate,
+        "reportTime": formattedTime,
+        "isCompleted": true,
+        "isPrinted": true,
+        "radResultDr1": this._radiologytemplateService.myform.get("DoctorId").value || 0,
+        "radResultDr2": 0,
+        "radResultDr3": 0,
+        "suggestionNotes": this._radiologytemplateService.myform.get("suggestionNotes").value || '',
+        "admVisitDoctorId": 0,
+        "refDoctorId": this._radiologytemplateService.myform.get("DoctorId").value || 1,
+        "resultEntry": this._radiologytemplateService.myform.get("ResultEntry")?.value || 'abc',
+      }
+      console.log(m_dataUpdate);
+      this._radiologytemplateService.RadiologyUpdate(m_dataUpdate).subscribe(data => {
+
+        if (data) {
+          Swal.fire('Congratulations !', 'Radiology Template Updated Successfully !', 'success').then((result) => {
+            if (result.isConfirmed) {
+              this.dialogRef.close();
+              this._radiologytemplateService.myform.get('TemplateDesc').reset();
+              this.viewgetRadioloyTemplateReportPdf(this.regObj.radReportId);
+            }
+          });
+        } else {
+          Swal.fire('Error !', 'Appoinment not saved', 'error');
         }
-        console.log(m_dataUpdate);
-        this._radiologytemplateService.RadiologyUpdate(m_dataUpdate).subscribe(data => {
-         
-          if (data) {
-            Swal.fire('Congratulations !', 'Radiology Template Updated Successfully !', 'success').then((result) => {
-              if (result.isConfirmed) {
-                this.dialogRef.close();
-                this._radiologytemplateService.myform.get('TemplateDesc').reset();
-                this.viewgetRadioloyTemplateReportPdf(this.selectedAdvanceObj.RadReportId);
-              } 
-            });
-          } else {
-            Swal.fire('Error !', 'Appoinment not saved', 'error');
-          } 
-        });
-      } 
+      });
+    }
   }
 
- 
+
   viewgetRadioloyTemplateReportPdf(obj) {
     // 
     this._radiologytemplateService.getRadiologyTempReport(
-      obj,0
-      ).subscribe(res => {
+      obj, 0
+    ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {
           maxWidth: "85vw",
@@ -287,12 +312,12 @@ getUpdatetemplate() {
         });
     });
   }
-  
+
 
 
   getTemplateList() {
     // var mdata={
-    //     Id:this.selectedAdvanceObj.ServiceId
+    //     Id:this.regObj.ServiceId
 
     // }
     this._radiologytemplateService.getTemplateCombo().subscribe(data => {
@@ -314,23 +339,23 @@ getUpdatetemplate() {
     }
   }
 
-  
+
   getOptionTextTemplate(option) {
 
     return option && option.TemplateName ? option.TemplateName : '';
   }
 
   onEdit(row) {
-   
+
     this._radiologytemplateService.populateForm(row);
   }
 
-  onAddTemplate(){
- 
-    this.vTemplateDesc=this._radiologytemplateService.myform.get('TemplateName').value.TemplateDescInHTML || ''
- 
-  }
- 
+  // onAddTemplate() {
+
+  //   this.vTemplateDesc = this._radiologytemplateService.myform.get('TemplateName').value.TemplateDescInHTML || ''
+
+  // }
+
   onAdd() {
     this.onClear();
     // const dialogRef = this._matDialog.open(EditorComponent,

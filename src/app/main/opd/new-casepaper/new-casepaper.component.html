@@ -212,7 +212,7 @@
                                                                         label="ChiefComplaint"
                                                                         formControlName="mAssignChiefComplaint" 
                                                                         [formGroup]="caseFormGroup"
-                                                                        [validations]="getValidationMessages().ChiefComplaint" #ddlChiefComplaint
+                                                                        #ddlChiefComplaint
                                                                         [IsMultiPle]="true" 
                                                                         ValueField="complaintId" 
                                                                         TextField="complaintDescr"
@@ -224,18 +224,12 @@
                                                                     <!-- [appFocusNext]="isFocusEnabled" -->
                                                                 </div>
                                                                 <mat-chip-listbox #chipList>
-                                                                    <!-- <mat-chip
+                                                                    <mat-chip
                                                                         *ngFor="let item of caseFormGroup.value.mAssignChiefComplaint">
+                                                                        <!-- <mat-chip *ngFor="let item of caseFormGroup.get('mAssignChiefComplaint').value"> -->
                                                                         {{ item.complaintDescr }} <mat-icon
                                                                             (click)="removeChiefComplaint(item)">close</mat-icon>
-                                                                    </mat-chip> -->
-
-                                                                    <mat-chip
-                                                                        *ngFor="let item of addCheiflist">
-                                                                        {{ item.complaintDescr }}
-                                                                        <mat-icon (click)="removeChiefComplaint(item)">close</mat-icon>
-                                                                        </mat-chip>
-
+                                                                    </mat-chip>
                                                                 </mat-chip-listbox>
                                                             </div>
                                                         </form>
@@ -253,7 +247,7 @@
                                                                 label="Diagnosis"
                                                                 formControlName="mAssignDiagnosis" 
                                                                 [formGroup]="caseFormGroup"
-                                                                [validations]="getValidationMessages().Diagnosis" #ddlDiagnosis
+                                                                #ddlDiagnosis
                                                                 [IsMultiPle]="true" 
                                                                 ValueField="id" 
                                                                 TextField="descriptionName"
@@ -264,16 +258,11 @@
                                                             
                                                             </div>
                                                             <mat-chip-listbox #chipList>
-                                                                <!-- <mat-chip
-                                                                    *ngFor="let item of caseFormGroup.value.mAssignDiagnosis">
+                                                                <mat-chip *ngFor="let item of caseFormGroup.value.mAssignDiagnosis">
+                                                                    <!-- <mat-chip *ngFor="let item of caseFormGroup.get('mAssignDiagnosis').value"> -->
                                                                     {{ item.descriptionName }} <mat-icon
                                                                         (click)="removedignosis(item)">close</mat-icon>
-                                                                </mat-chip> -->
-
-                                                                <mat-chip *ngFor="let item of addDiagnolist">
-                                                                    {{ item.descriptionName }} 
-                                                                    <mat-icon (click)="removedignosis(item)">close</mat-icon>
-                                                                  </mat-chip> 
+                                                                </mat-chip>
                                                             </mat-chip-listbox>
                                                         </div>
                                                     </form>
@@ -291,7 +280,7 @@
                                                                 label="Examination"
                                                                 formControlName="mAssignExamination" 
                                                                 [formGroup]="caseFormGroup"
-                                                                [validations]="getValidationMessages().Examination" #ddlExamination
+                                                                #ddlExamination
                                                                 [IsMultiPle]="true" 
                                                                 [value]="regObj.mAssignExamination"
                                                                 ValueField="examinationId" 
@@ -302,15 +291,15 @@
                                                             </airmid-dropdown>
                                                             </div>
                                                             <mat-chip-listbox #chipList>
-                                                                <!-- <mat-chip
+                                                                <mat-chip
                                                                     *ngFor="let item of caseFormGroup.value.mAssignExamination">
                                                                     {{ item.examinationDescr }} <mat-icon
                                                                         (click)="removeExamination(item)">close</mat-icon>
-                                                                </mat-chip> -->
-                                                                <mat-chip *ngFor="let item of addExaminlist">
+                                                                </mat-chip>
+                                                                <!-- <mat-chip *ngFor="let item of addExaminlist">
                                                                     {{ item.examinationDescr }} 
                                                                     <mat-icon (click)="removeExamination(item)">close</mat-icon>
-                                                                  </mat-chip>
+                                                                  </mat-chip> -->
                                                             </mat-chip-listbox>
                                                         </div>
                                                     </form>

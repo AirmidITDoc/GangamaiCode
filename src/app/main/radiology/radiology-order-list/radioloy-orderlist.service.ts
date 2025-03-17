@@ -109,8 +109,11 @@ export class RadioloyOrderlistService {
       return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathologistDoctorMasterForCombo",{});
     }
 
-    public RadiologyUpdate(employee) {
-      return this._httpClient.post("Radiology/RadiologyTemplateResult", employee);
+    public RadiologyUpdate(Param:any) {
+      debugger
+      if(Param.radReportId){
+      return this._httpClient1.PutData("RadiologyTest/RadiologyUpdate/"+Param.radReportId, Param)
+      }
     }
     
     public insertRadiologyTemplateMaster(employee) {

@@ -247,7 +247,7 @@ debugger
 
     console.log(m_data);
     this._SampleService.getSampleDetailsList1(m_data).subscribe(Visit => {
-      this.dataSource.data = Visit as SampleList[];
+      this.dataSource.data = Visit.data as SampleList[];
       console.log(this.dataSource.data)
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
@@ -269,29 +269,42 @@ debugger
       return;
     }
 
+    // let updatesamcollection = [];
+
+    // this.selection.selected.forEach((element) => {
+    //   console.log(element);
+    //   let UpdateAddSampleDetailsObj = {
+    //     "pathReportId": element.pathReportID || 1,
+    //     "pathDate": formattedDate,
+    //     "pathTime": formattedTime,
+    //     "isSampleCollection": element.isSampleCollection || true,
+    //     "sampleNo": element.sampleNo || 0
+    //   }
+    //   // UpdateAddSampleDetailsObj['PathReportID'] = element.PathReportID,
+    //   //   UpdateAddSampleDetailsObj['SampleDateTime'] = this._SampleService.sampldetailform.get('SampleDateTime').value || '01/01/1900'
+    //   // UpdateAddSampleDetailsObj['IsSampleCollection'] = 1;// this.datePipe.transform(this._SampleService.sampldetailform.get('SampleDateTime').value, "MM-dd-yyyy"),//  
+    //   // UpdateAddSampleDetailsObj['No'] = element.SampleNo || 0;
+    //   updatesamcollection.push(UpdateAddSampleDetailsObj);
+    // });
+    // let submitData = {
+    //   updatesamcollection
+    // };
     let updatesamcollection = [];
 
-    this.selection.selected.forEach((element) => {
-      console.log(element);
-      let UpdateAddSampleDetailsObj = {
-        "pathReportId": element.PathReportID || 1,
-        "pathDate": formattedDate,
-        "pathTime": formattedTime,
-        "isSampleCollection": element.isSampleCollection || true,
-        "sampleNo": element.SampleNo || 0
-      }
-      // UpdateAddSampleDetailsObj['PathReportID'] = element.PathReportID,
-      //   UpdateAddSampleDetailsObj['SampleDateTime'] = this._SampleService.sampldetailform.get('SampleDateTime').value || '01/01/1900'
-      // UpdateAddSampleDetailsObj['IsSampleCollection'] = 1;// this.datePipe.transform(this._SampleService.sampldetailform.get('SampleDateTime').value, "MM-dd-yyyy"),//  
-      // UpdateAddSampleDetailsObj['No'] = element.SampleNo || 0;
-      updatesamcollection.push(UpdateAddSampleDetailsObj);
-    });
-    let submitData = {
-      updatesamcollection
-    };
-    // let submitData = {
-    //   "updatepathologysamplecollection": updatesamcollection
-    // };
+      this.selection.selected.forEach((element) => {
+        console.log(element);
+        let UpdateAddSampleDetailsObj = {
+          "PathReportId": element.pathReportID || 1,
+          "PathDate": formattedDate,
+          "PathTime": formattedTime,
+          "IsSampleCollection": String(element.isSampleCollection) === "True" ? true : false,
+          "SampleNo": String(element.sampleNo || 0)
+        }
+        updatesamcollection.push(UpdateAddSampleDetailsObj);
+      });
+
+      let submitData = updatesamcollection;
+
     console.log(submitData);
     this._SampleService.UpdateSampleCollection(submitData).subscribe(data => {
       this.msg = data;
@@ -351,6 +364,8 @@ export class SampleList {
   PathReportID: any;
   SampleNo: any;
   RegNo: any;
+  pathReportID:any;
+  sampleNo:any;
 
   constructor(SampleList) {
     this.VADate = SampleList.VADate || '';
@@ -363,5 +378,7 @@ export class SampleList {
     this.PathReportID = SampleList.PathReportID || 0;
     this.SampleNo = SampleList.SampleNo || 0;
     this.RegNo = SampleList.RegNo || 0;
+    this.pathReportID = SampleList.pathReportID || 0;
+    this.sampleNo = SampleList.sampleNo || 0;
   }
 }
