@@ -606,7 +606,38 @@ export class IPBillingComponent implements OnInit {
     this.Serviceform.get('discAmount').reset();
     this.Serviceform.get('netAmount').reset();
   }
+  deletecharges(contact) {
+    Swal.fire({  
+      title: 'Do you want to cancel the Service ',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Delete it!"
 
+    }).then((flag) => { 
+      if (flag.isConfirmed) {
+        let Chargescancle = {};
+        Chargescancle['chargesId'] = contact.chargesId;
+        Chargescancle['userId'] = this.accountService.currentUserValue.userId;
+
+        let submitData = {
+          "deleteCharges": Chargescancle
+        }; 
+        console.log(submitData);
+        this._IpSearchListService.AddchargesDelete(submitData).subscribe(response => {  
+          this.toastr.success(response.message);
+          this.getChargesList();
+          this.CalculateAdminCharge();
+          this.CalFinalDiscper(); 
+        }, (error) => {
+          this.toastr.error(error.message); 
+        });
+      }
+    });
+
+  }
   getdata(opD_IPD_Id) {
     this.gridConfig1 = {
       apiUrl: "IPBill/IPPreviousBillList",
@@ -669,7 +700,7 @@ export class IPBillingComponent implements OnInit {
     this.dataSource.data = [];
     var vdata = {
       "first": 0,
-      "rows": 10,
+      "rows": 100,
       "sortField": "ServiceId",
       "sortOrder": 0,
       "filters": [
@@ -714,113 +745,169 @@ export class IPBillingComponent implements OnInit {
     } else { 
       this.ConcessionShow = false
       this.BillDiscperFlag = true;
+      this.CalFinalDiscper()
     } 
-  }  
 
+    this.CalculateAdminCharge()
+  
+  }  
+  //Admin Charge Check Box On 
+  isAdminDisabled: boolean = false; 
+  AdminStatus(event) {
+    if (event.checked == true) {
+      this.isAdminDisabled = true;
+    } else {
+      this.isAdminDisabled = false;
+      this.Ipbillform.get('AdminPer').reset();
+      this.Ipbillform.get('AdminAmt').reset();
+    } 
+  } 
   //Admin calculation
   AdminShowAmt:any;
   CalculateAdminCharge() {  
-    debugger
+    // debugger
+    let finalNetAmt = 0
+    let finalDiscAmt = 0 
+    let discPer = this.Ipbillform.get('totaldiscPer').value || 0; 
     const perControl = this.Ipbillform.get("AdminPer");
-    if (!perControl.valid || perControl.value == 0) {
-      this.Ipbillform.get("AdminAmt").setValue('');
-      this.Ipbillform.get("AdminPer").setValue(''); 
-      this.Ipbillform.get("FinalAmount").setValue(this.FinalNetAmt); 
-      this.toastr.error("Enter Admin % between 0-100");
-      this.CalFinalDiscper();
-      return;
-    }
     let adminPer = perControl.value;
     let totalAmount = this.TotalShowAmt;
-    let adminAmt = parseFloat((totalAmount * adminPer / 100).toFixed(2));
-    this.AdminShowAmt = adminAmt
-    let finalTotalAmt = parseFloat((totalAmount + adminAmt).toFixed(2));
-    let finalNetAmt = 0
-    let finalDiscAmt = 0
+    let adminAmt = parseFloat((totalAmount * adminPer / 100).toFixed(2)); 
+    let finalTotalAmt = parseFloat((totalAmount + adminAmt).toFixed(2)); 
+
+    if (!perControl.valid || perControl.value == 0) {  
+      if(discPer > 0){ 
+        this.ConcessionShow = true
+        finalDiscAmt = parseFloat((totalAmount * discPer / 100).toFixed(2));
+        finalNetAmt = parseFloat((totalAmount - finalDiscAmt).toFixed(2)); 
+        }else{ 
+          finalDiscAmt = this.DiscShowAmt  
+          finalNetAmt =  this.FinalNetAmt
+        } 
+        this.Ipbillform.patchValue({
+          AdminPer:'',
+          AdminAmt: 0,
+          totalconcessionAmt: finalDiscAmt, 
+          FinalAmount: Math.round(finalNetAmt),
+        }, { emitEvent: false }); 
+      this.toastr.error("Enter Admin % between 0-100");  
+      return;
+    } 
     if(this.DiscShowAmt > 0 ){
+      this.ConcessionShow = true
       finalDiscAmt = this.DiscShowAmt
       finalNetAmt = parseFloat((finalTotalAmt - this.DiscShowAmt).toFixed(2));
-    }else{
-      this.CalFinalDiscper();
-      // let discPer = this.Ipbillform.get('totaldiscPer').value || 0;
-      // finalDiscAmt = parseFloat((totalAmount * discPer / 100).toFixed(2));
-      // finalNetAmt = parseFloat((totalAmount - finalDiscAmt).toFixed(2)); 
+    }else{ 
+      if(discPer > 0){ 
+      this.ConcessionShow = true
+      finalDiscAmt = parseFloat((finalTotalAmt * discPer / 100).toFixed(2));
+      finalNetAmt = parseFloat((finalTotalAmt - finalDiscAmt).toFixed(2));
+      }else{
+        finalNetAmt = finalTotalAmt
+      }
     } 
     this.Ipbillform.patchValue({
       totalconcessionAmt: finalDiscAmt,
       AdminAmt:adminAmt || 0,
-      FinalAmount: finalNetAmt,
+      FinalAmount: Math.round(finalNetAmt),
     }, { emitEvent: false }); // Prevent infinite loop
   
   }
   // Total Bill Disc Per cal 
   CalFinalDiscper() {
-debugger
+// debugger
+    let netAmount =  this.FinalNetAmt;
     const perControl = this.Ipbillform.get("totaldiscPer");
-    if (!perControl.valid || perControl.value == 0 || perControl.value == '') {
-      this.Ipbillform.get("totaldiscPer").setValue('');
-      this.Ipbillform.get("totalconcessionAmt").setValue(''); 
-      this.toastr.error("Enter Discount % between 0-100"); 
-      return;
-    }
-
     let discper = perControl.value;
     let totalAmount = this.TotalShowAmt;
-    let AdminAmt = this.Ipbillform.get('AdminAmt').value || this.AdminShowAmt || 0;
-    let discountAmt = 0 
-    let finalNetAmt = 0  
+    let AdminAmt = this.Ipbillform.get('AdminAmt').value || 0;
+    let discountAmt = 0;
+    let finalNetAmt  
     let FinalTotalAmt 
 
+    if (!perControl.valid || perControl.value == 0 || perControl.value == '') { 
+      if(AdminAmt > 0){  
+          finalNetAmt = ((parseFloat(totalAmount) + parseFloat(AdminAmt))).toFixed(2); 
+        }else{ 
+          finalNetAmt =  this.FinalNetAmt
+        } 
+        // if(this.DiscShowAmt > 0)
+        //   discountAmt = this.DiscShowAmt
+        // else
+        //   discountAmt = '' 
+        this.ConcessionShow = false
+        this.Ipbillform.patchValue({ 
+          totaldiscPer:'',
+          totalconcessionAmt:'',
+          FinalAmount: Math.round(finalNetAmt),
+        }, { emitEvent: false }); 
+      this.toastr.error("Enter Discount % between 0-100");  
+      return; 
+    } 
     if (AdminAmt > 0) { 
        FinalTotalAmt = ((parseFloat(totalAmount) + parseFloat(AdminAmt))).toFixed(2);
        discountAmt = parseFloat((FinalTotalAmt * discper / 100).toFixed(2));
        finalNetAmt = parseFloat((FinalTotalAmt - discountAmt).toFixed(2)); 
+       this.ConcessionShow = true
     } 
     else {   
       discountAmt = parseFloat((totalAmount * discper / 100).toFixed(2));
       finalNetAmt = parseFloat((totalAmount - discountAmt).toFixed(2));  
+      this.ConcessionShow = true
     }
     this.Ipbillform.patchValue({
       totalconcessionAmt: discountAmt, 
-      FinalAmount: finalNetAmt,
+      FinalAmount: Math.round(finalNetAmt),
     }, { emitEvent: false }); // Prevent infinite loop 
-  }
-
+  } 
    //Total Bill DiscAMt cal
    vTotalAmount:any;
    getDiscAmtCal() {
-    debugger
+    // debugger
     const perControl = this.Ipbillform.get("totalconcessionAmt");
-    let totalAmount = this.TotalShowAmt;
-    if (perControl.value == 0 || perControl.value == '' || perControl.value > totalAmount) {
-      this.Ipbillform.get("totaldiscPer").setValue(0);
-      this.Ipbillform.get("totalconcessionAmt").setValue(0); 
-      this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-      this.toastr.error("Enter Discount amt between 0-100"); 
-      return;
-    }
-
+    let netAmount =  this.FinalNetAmt;
+    let totalAmount = this.TotalShowAmt; 
     let discAmt = perControl.value; 
-    let AdminAmt = this.Ipbillform.get('AdminAmt').value || this.AdminShowAmt || 0;
+    let AdminAmt = this.Ipbillform.get('AdminAmt').value || 0;
     let discper = ''
-    let finalNetAmt = 0  
+    let finalNetAmt  
     let FinalTotalAmt 
-
+    
+    if (perControl.value == 0 || perControl.value == '' || perControl.value > totalAmount) { 
+      if(AdminAmt > 0){  
+        finalNetAmt = ((parseFloat(totalAmount) + parseFloat(AdminAmt))).toFixed(2); 
+      }else{ 
+        finalNetAmt =  this.FinalNetAmt
+      } 
+      this.ConcessionShow = false
+      this.Ipbillform.patchValue({  
+        totaldiscPer:'',
+        totalconcessionAmt:'',
+        FinalAmount: Math.round(finalNetAmt),
+      }, { emitEvent: false });
+      
+      this.toastr.error("Enter Discount amt between 0-100");  
+    return; 
+    } 
     if (AdminAmt > 0) { 
+      this.ConcessionShow = true
        FinalTotalAmt = (parseFloat(totalAmount + AdminAmt)).toFixed(2);
-       discper = ((FinalTotalAmt / discAmt) * 100).toFixed(2); 
+       discper = ((discAmt / FinalTotalAmt) * 100).toFixed(2); 
        finalNetAmt = parseFloat((FinalTotalAmt - discAmt).toFixed(2)); 
     } 
     else {   
-      discper = ((totalAmount / discAmt) * 100).toFixed(2); 
-      finalNetAmt = parseFloat((FinalTotalAmt - discAmt).toFixed(2));  
+      this.ConcessionShow = true
+      discper = ((discAmt / totalAmount) * 100).toFixed(2); 
+      finalNetAmt = parseFloat((totalAmount - discAmt).toFixed(2));  
     } 
-   } 
 
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-  }
-
+    this.Ipbillform.patchValue({
+      totaldiscPer:discper,
+      totalconcessionAmt: discAmt, 
+      FinalAmount:Math.round(finalNetAmt),
+    }, { emitEvent: false }); // Prevent infinite loop 
+   }  
+   
   getValidationMessages() {
     return {
       ChargeClass: [
@@ -861,24 +948,7 @@ debugger
   }
   selectChangeConcession(event) { }
 
-  OnDateChange() {
-    // 
-    // if (this.selectedAdvanceObj.AdmDateTime) {
-    //   const day = +this.selectedAdvanceObj.AdmDateTime.substring(0, 2);
-    //   const month = +this.selectedAdvanceObj.AdmDateTime.substring(3, 5);
-    //   const year = +this.selectedAdvanceObj.AdmDateTime.substring(6, 10);
 
-    //   this.vExpDate = `${year}/${this.pad(month)}/${day}`;
-    // }
-    // const serviceDate = this.datePipe.transform(this.Serviceform.get('Date').value,"yyyy-MM-dd 00:00:00.000") || 0;
-    // const AdmissionDate = this.datePipe.transform(this.selectedAdvanceObj.AdmDateTime,"yyyy-MM-dd 00:00:00.000") || 0;
-    // if(serviceDate > AdmissionDate){
-    //   Swal.fire('should not chnage');
-    // }
-    // else{
-    //   Swal.fire('ok');
-    // }
-  }
 
  
  
@@ -997,90 +1067,11 @@ debugger
 
 
   
-  //Admin Charge Check Box On 
-  isAdminDisabled: boolean = false;
-  TotalServiceDiscPer:any;
-  AdminStatus(event) {
-    if (event.checked == true) {
-      this.isAdminDisabled = true;
-    } else {
-      this.isAdminDisabled = false;
-      this.Ipbillform.get('AdminPer').reset();
-      this.Ipbillform.get('AdminAmt').reset();
-    } 
-  }
 
 
 
- 
+  
 
-  chkdiscstatus() {
-    let CheckDiscAmt = this.Ipbillform.get('totalconcessionAmt').value || 0
-    if (this.vFinalDiscountAmt > 0 || CheckDiscAmt > 0) {
-      this.ConcessionShow = true;
-    } else {
-      this.ConcessionShow = false;
-    }
-    if (parseFloat(this.TotalServiceDiscPer) > 0) {
-      this.BillDiscperFlag = false;
-    } else {
-      this.BillDiscperFlag = true;
-    }
-  }
-  generateBillchk($event) {
-    if ($event)
-      this.vGenbillflag = true;
-    if (!$event)
-      this.vGenbillflag = false;
-  }
-
-
-  deletecharges(contact) {
-    Swal.fire({
-      title: 'Do you want to Delete Charges',
-      // showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: 'OK',
-
-    }).then((flag) => {
-
-      if (flag.isConfirmed) {
-        let Chargescancle = {};
-        Chargescancle['ChargesId'] = contact.ChargesId;
-        Chargescancle['userId'] = this.accountService.currentUserValue.userId;
-
-        let submitData = {
-          "deleteCharges": Chargescancle
-        };
-
-        console.log(submitData);
-        this._IpSearchListService.Addchargescancle(submitData).subscribe(response => {
-          if (response) {
-            Swal.fire('Charges cancelled !', 'Charges cancelled Successfully!', 'success').then((result) => {
-              this.getChargesList();
-              this.CalculateAdminCharge();
-              this.CalFinalDiscper();
-              this.chkdiscstatus()
-            });
-          } else {
-            Swal.fire('Error !', 'Charges cancelled data not saved', 'error');
-          }
-          this.isLoading = '';
-        });
-      }
-    });
-
-  }
-  showAllFilter(event) {
-    console.log(event);
-    if (event.checked == true)
-      // this.isFilteredDateDisabled = event.value;
-      this.isFilteredDateDisabled = true;
-    if (event.checked == false) {
-      this.getChargesList();
-      this.isFilteredDateDisabled = false;
-    }
-  }
   //Save
   onSave() {
     if (this.Ipbillform.get('totalconcessionAmt').value > 0 || this.Ipbillform.get('totaldiscPer').value > 0) {
@@ -1645,7 +1636,43 @@ debugger
     });
   }
 
+  generateBillchk($event) {
+    if ($event)
+      this.vGenbillflag = true;
+    if (!$event)
+      this.vGenbillflag = false;
+  } 
+  showAllFilter(event) {
+    console.log(event);
+    if (event.checked == true)
+      // this.isFilteredDateDisabled = event.value;
+      this.isFilteredDateDisabled = true;
+    if (event.checked == false) {
+      this.getChargesList();
+      this.isFilteredDateDisabled = false;
+    }
+  }
+  OnDateChange() {
+    // 
+    // if (this.selectedAdvanceObj.AdmDateTime) {
+    //   const day = +this.selectedAdvanceObj.AdmDateTime.substring(0, 2);
+    //   const month = +this.selectedAdvanceObj.AdmDateTime.substring(3, 5);
+    //   const year = +this.selectedAdvanceObj.AdmDateTime.substring(6, 10);
 
+    //   this.vExpDate = `${year}/${this.pad(month)}/${day}`;
+    // }
+    // const serviceDate = this.datePipe.transform(this.Serviceform.get('Date').value,"yyyy-MM-dd 00:00:00.000") || 0;
+    // const AdmissionDate = this.datePipe.transform(this.selectedAdvanceObj.AdmDateTime,"yyyy-MM-dd 00:00:00.000") || 0;
+    // if(serviceDate > AdmissionDate){
+    //   Swal.fire('should not chnage');
+    // }
+    // else{
+    //   Swal.fire('ok');
+    // }
+  }
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
+  }
 
   @ViewChild('itemid') itemid: ElementRef;
   @ViewChild('doctorname') doctorname: ElementRef;
@@ -1699,9 +1726,7 @@ debugger
     if (event.which === 13) {
       this.addbutton.nativeElement.focus();
     }
-  }
-
-
+  }  
   getPreBilldet(contact) {
     //console.log(contact)
     const dialogRef = this._matDialog.open(PrebillDetailsComponent,

@@ -735,7 +735,12 @@ public getUMOCombo() {
   public getClassList(employee){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ClassName_Conditional",employee)
   }
-
+  public AddchargesDelete(m_data, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient1.PostData("IPBill/IPAddchargesdelete", m_data);
+  }  
   public deleteCharges(employee){
     return this._httpClient.post("Generic/GetByProc?procName=Delete_Addcharges",employee)
   }

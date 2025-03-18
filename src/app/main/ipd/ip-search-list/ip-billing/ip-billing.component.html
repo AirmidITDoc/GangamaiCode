@@ -457,7 +457,7 @@
                                 </div>
                                 <div class="net-amt-box">
                                     <span class="net-amt-label">Disc Amt : </span>
-                                    <span class="net-amt-value">{{Ipbillform.get('totalconcessionAmt').value 
+                                    <span class="net-amt-value">{{(Ipbillform.get('totalconcessionAmt').value || 0) 
                                         | currency:'INR'}}</span>
                                 </div>
                     
