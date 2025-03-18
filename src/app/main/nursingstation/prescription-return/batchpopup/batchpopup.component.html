@@ -24,37 +24,37 @@
                         <mat-table #table [dataSource]="dataSource" matSort [@animateStagger]="{value:'50'}"  (click)="onTableClick()">
                             <ng-container matColumnDef="BatchNo">
                                 <mat-header-cell *matHeaderCellDef> Batch No </mat-header-cell>
-                                <mat-cell *matCellDef="let element"><span> {{element.BatchNo}} </span></mat-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.batchNo}} </span></mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="BatchExpDate">
                                 <mat-header-cell *matHeaderCellDef> Exp Date </mat-header-cell>
-                                <mat-cell *matCellDef="let element"><span> {{element.BatchExpDate | date: 'MM/yyyy'}} </span></mat-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.batchExpDate | date: 'MM/yyyy'}} </span></mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="BalanceQty">
                                 <mat-header-cell *matHeaderCellDef> Bal Qty </mat-header-cell>
-                                <mat-cell *matCellDef="let element"><span> {{element.BalanceQty}} </span></mat-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.balanceQty}} </span></mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="MRP">
                                 <mat-header-cell *matHeaderCellDef> MRP </mat-header-cell>
-                                <mat-cell *matCellDef="let element"><span> {{element.UnitMRP}} </span></mat-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.unitMRP}} </span></mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="PurPrice">
                                 <mat-header-cell *matHeaderCellDef> Pur Price </mat-header-cell>
-                                <mat-cell *matCellDef="let element"><span> {{element.PurchaseRate}} </span></mat-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.purchaseRate}} </span></mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="ConversionFactor">
                                 <mat-header-cell *matHeaderCellDef> Packing </mat-header-cell>
-                                <mat-cell *matCellDef="let element"><span> {{element.ConversionFactor}} </span></mat-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.converFactor}} </span></mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="LandedRate">
                                 <mat-header-cell *matHeaderCellDef> LandedRate </mat-header-cell>
-                                <mat-cell *matCellDef="let element"><span> {{element.LandedRate}} </span></mat-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.landedRate}} </span></mat-cell>
                             </ng-container>
                             <ng-container matColumnDef="loading">
                                 <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">

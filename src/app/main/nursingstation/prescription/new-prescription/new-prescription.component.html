@@ -192,7 +192,7 @@
                                 placeholderText="Enter Item Name" fxFlex
                                 [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + (vstoreId || '') + '&ItemName='"
                                 (selectionChange)="selectChangeItem($event)" 
-                                TextField="itemName" ValueField="ItemId">
+                                TextField="formattedText" ValueField="ItemId">
                                 </airmid-autocomplete>
                                 <!-- 
                                 ApiUrl="ItemMaster/GetItemListForPrescription?StoreId=2&ItemName="

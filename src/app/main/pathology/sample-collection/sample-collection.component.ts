@@ -179,8 +179,8 @@ this.myformSearch=this._SampleCollectionService.createSearchForm()
 
      onChangeFirst() {
         debugger
-            this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
-            this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
+            this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
+            this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
             this.f_name = this.myformSearch.get('FirstName').value + "%"
             this.l_name = this.myformSearch.get('LastName').value + "%"
             this.regNo = this.myformSearch.get('RegNo').value 

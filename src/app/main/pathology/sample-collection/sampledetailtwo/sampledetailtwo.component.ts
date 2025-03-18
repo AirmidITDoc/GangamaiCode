@@ -303,7 +303,9 @@ debugger
         updatesamcollection.push(UpdateAddSampleDetailsObj);
       });
 
-      let submitData = updatesamcollection;
+      let submitData={
+        "pathlogySampleCollection":updatesamcollection
+      }
 
     console.log(submitData);
     this._SampleService.UpdateSampleCollection(submitData).subscribe(data => {

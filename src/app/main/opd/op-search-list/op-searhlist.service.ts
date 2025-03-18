@@ -525,6 +525,7 @@ export class OPSearhlistService {
     }
 
     getPaymentArr() {
+        //return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode=PaymentMode");
         return [
             { value: 'cash', viewValue: 'Cash' },
             { value: 'cheque', viewValue: 'Cheque' },
@@ -532,6 +533,9 @@ export class OPSearhlistService {
             { value: 'net banking', viewValue: 'Net Banking' },
             { value: 'card', viewValue: 'Card' }
         ];
+    }
+    getPaymentModes() {
+        return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode=PaymentMode");
     }
 
     // new Api?

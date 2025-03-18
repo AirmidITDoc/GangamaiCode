@@ -18,8 +18,8 @@
                 <div fxLayout="column">
                     <div class="layout-card-container" style="height: 80px;">
 
-                        <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="space-between start" class="gap-8">
-                            <div fxLayout="row wrap" fxFlex fxLayoutGap="12px 0px grid">
+                        <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-8">
+                            <div fxLayout="row wrap" fxFlex fxLayoutGap="14px 0px grid">
 
                                 <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="35%">
                                     <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
@@ -30,7 +30,7 @@
                                 </div>
 
                                 <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
-                                    <mat-form-field appearance="outline">
+                                    <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>RegNo</mat-label>
                                         <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myformSearch" formControlName="RegNoSearch" (input)="onChangeFirst()" />
                                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNoSearch')">
@@ -39,7 +39,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxFlex="16%" fxLayout="row">
+                                <div fxFlex="12%" fxLayout="row">
                                     <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch" (change)="onChangeFirst()"
                                         fxLayout="column" value="2" class="gap-4"
                                         [(ngModel)]="gridConfig.filters[6].fieldValue">
