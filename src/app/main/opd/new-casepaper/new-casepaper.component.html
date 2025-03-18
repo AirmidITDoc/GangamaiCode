@@ -221,12 +221,10 @@
                                                                         [value]="regObj.mAssignChiefComplaint"
                                                                         (selectionChange)="selectChangeCheifComplaint($event)">
                                                                     </airmid-dropdown>
-                                                                    <!-- [appFocusNext]="isFocusEnabled" -->
                                                                 </div>
                                                                 <mat-chip-listbox #chipList>
                                                                     <mat-chip
                                                                         *ngFor="let item of caseFormGroup.value.mAssignChiefComplaint">
-                                                                        <!-- <mat-chip *ngFor="let item of caseFormGroup.get('mAssignChiefComplaint').value"> -->
                                                                         {{ item.complaintDescr }} <mat-icon
                                                                             (click)="removeChiefComplaint(item)">close</mat-icon>
                                                                     </mat-chip>
@@ -259,7 +257,6 @@
                                                             </div>
                                                             <mat-chip-listbox #chipList>
                                                                 <mat-chip *ngFor="let item of caseFormGroup.value.mAssignDiagnosis">
-                                                                    <!-- <mat-chip *ngFor="let item of caseFormGroup.get('mAssignDiagnosis').value"> -->
                                                                     {{ item.descriptionName }} <mat-icon
                                                                         (click)="removedignosis(item)">close</mat-icon>
                                                                 </mat-chip>
@@ -296,10 +293,6 @@
                                                                     {{ item.examinationDescr }} <mat-icon
                                                                         (click)="removeExamination(item)">close</mat-icon>
                                                                 </mat-chip>
-                                                                <!-- <mat-chip *ngFor="let item of addExaminlist">
-                                                                    {{ item.examinationDescr }} 
-                                                                    <mat-icon (click)="removeExamination(item)">close</mat-icon>
-                                                                  </mat-chip> -->
                                                             </mat-chip-listbox>
                                                         </div>
                                                     </form>
@@ -346,13 +339,14 @@
                                                         placeholderText="Enter Drug Name" fxFlex
                                                         ApiUrl="ItemMaster/GetItemListForPrescription?StoreId=2&ItemName="
                                                         (selectionChange)="selectChangeItemName($event)" 
-                                                        TextField="itemName" ValueField="ItemId">
+                                                        TextField="formattedText" ValueField="ItemId">
                                                         </airmid-autocomplete>
 
                                                         <airmid-dropdown label="Dose Name" formControlName="DoseId"
                                                             [formGroup]="MedicineItemForm"
                                                             [validations]="getValidationMessages().DoseId"
                                                             [mode]="autocompleteModeDose"
+                                                            [(ngModel)]="vdoseName"
                                                             (selectionChange)="selectChangeDoseName($event)">
                                                         </airmid-dropdown>
 
@@ -550,28 +544,6 @@
                                             <hr>
                                             <div fxLayout="row">
                                                 <div fxFlex="40%">
-                                                    <!-- <airmid-dropdown 
-                                                        label="Service List"
-                                                        formControlName="mAssignService" 
-                                                        [formGroup]="caseFormGroup"
-                                                        [validations]="getValidationMessages().serviceId" #ddlService
-                                                        [IsMultiPle]="true" 
-                                                        [value]="regObj.mAssignService"
-                                                        ValueField="serviceId" 
-                                                        TextField="serviceName"
-                                                        ApiUrl="OPDPrescriptionMedical/get-Service" 
-                                                        [ReqFullObj]="true"
-                                                        (selectionChange)="selectChangeServiceName($event)">
-                                                    </airmid-dropdown> -->
-
-                                                     <!-- <airmid-dropdown label="Enter Service Name" 
-                                                        [formGroup]="caseFormGroup"
-                                                        formControlName="mAssignService"  #ddlService
-                                                        placeholderText="Enter Service Name" fxFlex
-                                                        ApiUrl="BillingService/GetServiceListwithGroupWise?TariffId=1&ClassId=1&IsPathRad=1&ServiceName="
-                                                        (selectionChange)="selectChangeServiceName($event)" 
-                                                        TextField="serviceName" ValueField="serviceId">
-                                                        </airmid-dropdown>  -->
 
                                                         <airmid-dropdown 
                                                         label="Service"
@@ -585,16 +557,8 @@
                                                         [ReqFullObj]="true"
                                                         (selectionChange)="selectChangeServiceName($event)">
                                                     </airmid-dropdown>
-                                                   
                              
                                                 </div>
-                                                <!-- <mat-chip-listbox #chipList>
-                                                    <mat-chip
-                                                        *ngFor="let item of caseFormGroup.value.mAssignService">
-                                                        {{ item.serviceName }} <mat-icon
-                                                            (click)="removeService(item)">close</mat-icon>
-                                                    </mat-chip>
-                                                </mat-chip-listbox> -->
 
                                                 <mat-chip-listbox #chipList>
                                                     <mat-chip *ngFor="let item of caseFormGroup.value.mAssignService">
@@ -721,6 +685,12 @@
                             <div class="center p-12">
                                 <div fxlayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
 
+                                    <div fxLayoutAlign="end">
+                                        <button mat-raised-button>
+                                            <mat-icon matTooltip="Email Menu">mail</mat-icon>Email
+                                        </button>
+                                    </div>
+
                                     <div *ngFor="let visitId of uniqueDates">
                                         <mat-card style="padding: 6px;">
                                             <div fxLayout="column" fxLayoutGap="6px">
@@ -734,11 +704,24 @@
                                                         <span style="font-weight: 900;color: blueviolet;">
                                                             Visit Information
                                                         </span>
-                                                        <div class="gap-8">
-                                                            <mat-icon (click)="viewgetOpprescriptionReportPdf()"
-                                                                matTooltip="Print">print</mat-icon>
-                                                            <img width="25" height="8px"
-                                                                src="assets/images/logos/WhatsApp.png">
+                                                        <div class="gap-12">
+                                                            <button mat-raised-button (click)="viewgetOpprescriptionReportPdf()"
+                                                                matTooltip="Print">
+                                                                <mat-icon>print</mat-icon>LetterHead
+                                                            </button>
+
+                                                            <button mat-raised-button (click)="viewgetOpprescriptionReportPdf()"
+                                                                matTooltip="Print">
+                                                                <mat-icon>print</mat-icon>Without LetterHead
+                                                            </button>
+
+                                                            <button mat-raised-button>
+                                                                <img width="25" height="8px"
+                                                                    src="assets/images/logos/WhatsApp.png"
+                                                                    (click)="getWhatsappshareSales()"
+                                                                    matTooltip="Send Prescription Details On WhatsApp">
+                                                            </button>
+
                                                         </div>
                                                     </div>
                                                     <hr>

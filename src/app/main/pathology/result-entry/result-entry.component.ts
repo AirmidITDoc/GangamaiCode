@@ -290,7 +290,7 @@ export class ResultEntryComponent implements OnInit {
         var m_data = {
           "first": 0,
           "rows": 10,
-          "sortField": "BillNo",
+          "sortField": "RegNo",
           "sortOrder": 0,
           "filters": [
             {

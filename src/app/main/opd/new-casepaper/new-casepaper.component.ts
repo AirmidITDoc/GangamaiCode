@@ -34,6 +34,7 @@ import { AddItemComponent } from './add-item/add-item.component';
 import { CityMasterComponent } from 'app/main/setup/PersonalDetails/city-master/city-master.component';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { ServiceMaster } from 'app/main/setup/billing/service-master/service-master.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 interface Patient {
   PHeight: string;
@@ -106,7 +107,7 @@ export class NewCasepaperComponent implements OnInit {
   City: any;
   RegId: any;
   registerObj1 = new AdmissionPersonlModel({});
-   registerObj = new CasepaperVisitDetails({});
+  registerObj = new CasepaperVisitDetails({});
 
   PatientName: any;
   MobileNo: any;
@@ -206,6 +207,7 @@ export class NewCasepaperComponent implements OnInit {
     public dialogRef: MatDialogRef<NewCasepaperComponent>,
     public _WhatsAppEmailService: WhatsAppEmailService,
     private configService: ConfigService,
+    private commonService: PrintserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { console.log('Dialog Data:', data); }
 
@@ -247,73 +249,52 @@ export class NewCasepaperComponent implements OnInit {
     }
   }
 
-  // removedignosis(item) {
-  //   debugger
-  //   const updatedList = this.caseFormGroup.value.mAssignDiagnosis.filter(
-  //     x => x.id !== item.id
-  //   );
-  //  this.caseFormGroup.get('mAssignDiagnosis').setValue(updatedList);  
-  //   this.ddlDiagnosis.SetSelection(updatedList.map(x => x.visitId));
-  // }
-
   removedignosis(item) {
-    // Filter the list by removing the selected item
-    const updatedList = this.addDiagnolist.filter(
-      x => x.id !== item.id
-    );
-  
-    this.caseFormGroup.get('mAssignDiagnosis')?.setValue(updatedList);  
-  
-    this.ddlDiagnosis.SetSelection(updatedList.map(x => x.id));
-  
-    this.addDiagnolist = updatedList;
+    let removedIndex = this.caseFormGroup.value.mAssignDiagnosis.findIndex(x => x.id == item.id);
+    this.caseFormGroup.value.mAssignDiagnosis.splice(removedIndex, 1);
+    this.ddlDiagnosis.SetSelection(this.caseFormGroup.value.mAssignDiagnosis.map(x => x.id));
   }
 
-  // removeChiefComplaint(item) {
-  //   ;
-  //   const updatedList = this.caseFormGroup.value.mAssignChiefComplaint.filter(
-  //     x => x.complaintId !== item.complaintId
-  //   );
-  //  this.caseFormGroup.get('mAssignChiefComplaint').setValue(updatedList);  
-  //  this.ddlChiefComplaint.SetSelection(updatedList.map(x => x.complaintId));
-  // console.log("Updated Chief Complaint List:", updatedList);
+  // removedignosis(item) {
+  //   const updatedList = this.addDiagnolist.filter(
+  //     x => x.id !== item.id
+  //   );  
+  //   this.caseFormGroup.get('mAssignDiagnosis')?.setValue(updatedList);    
+  //   this.ddlDiagnosis.SetSelection(updatedList.map(x => x.id));  
+  //   this.addDiagnolist = updatedList;
   // }
 
   removeChiefComplaint(item) {
-    // Filter the list by removing the selected item
-    const updatedList = this.addCheiflist.filter(
-      x => x.complaintId !== item.complaintId
-    );
-  
-    this.caseFormGroup.get('mAssignChiefComplaint')?.setValue(updatedList);  
-  
-    this.ddlChiefComplaint.SetSelection(updatedList.map(x => x.complaintId));
-  
-    this.addCheiflist = updatedList;
+    let removedIndex = this.caseFormGroup.value.mAssignChiefComplaint.findIndex(x => x.complaintId == item.complaintId);
+    this.caseFormGroup.value.mAssignChiefComplaint.splice(removedIndex, 1);
+    this.ddlChiefComplaint.SetSelection(this.caseFormGroup.value.mAssignChiefComplaint.map(x => x.complaintId));
   }
 
-  // removeExamination(item) {
-    
-  //   const updatedList = this.caseFormGroup.value.mAssignExamination.filter(
-  //     x => x.examinationId !== item.examinationId
+  // removeChiefComplaint(item) {
+  //   // Filter the list by removing the selected item
+  //   const updatedList = this.addCheiflist.filter(
+  //     x => x.complaintId !== item.complaintId
   //   );
-  //  this.caseFormGroup.get('mAssignExamination').setValue(updatedList);  
-  //   this.ddlExamination.SetSelection(updatedList.map(x => x.examinationId));
+  //   this.caseFormGroup.get('mAssignChiefComplaint')?.setValue(updatedList);    
+  //   this.ddlChiefComplaint.SetSelection(updatedList.map(x => x.complaintId));  
+  //   this.addCheiflist = updatedList;
   // }
 
   removeExamination(item) {
-    // Filter the list by removing the selected item
-    const updatedList = this.addExaminlist.filter(
-      x => x.examinationId !== item.examinationId
-    );
-  
-    this.caseFormGroup.get('mAssignExamination')?.setValue(updatedList);  
-  
-    this.ddlExamination.SetSelection(updatedList.map(x => x.examinationId));
-  
-    this.addExaminlist = updatedList;
+    let removedIndex = this.caseFormGroup.value.mAssignExamination.findIndex(x => x.examinationId == item.examinationId);
+    this.caseFormGroup.value.mAssignExamination.splice(removedIndex, 1);
+    this.ddlExamination.SetSelection(this.caseFormGroup.value.mAssignExamination.map(x => x.examinationId));
   }
-  
+
+  // removeExamination(item) {
+  //   const updatedList = this.addExaminlist.filter(
+  //     x => x.examinationId !== item.examinationId
+  //   );  
+  //   this.caseFormGroup.get('mAssignExamination')?.setValue(updatedList);    
+  //   this.ddlExamination.SetSelection(updatedList.map(x => x.examinationId));  
+  //   this.addExaminlist = updatedList;
+  // }
+
 
   removeService(item) {
     let removedIndex = this.caseFormGroup.value.mAssignService.findIndex(x => x.serviceId == item.serviceId);
@@ -400,30 +381,10 @@ export class NewCasepaperComponent implements OnInit {
       ExaminationControl: '',
       DiagnosisControl: '',
       CheifComplaintControl: '',
-      
-      // mAssignChiefComplaint: [
-      //   {
-      //     complaintDescr:0,
-      //     // descriptionType: 0,
-      //     complaintId:0,
-      //     // descriptionName:0
-      //   }
-      // ],
-      mAssignChiefComplaint:[""],
-      mAssignDiagnosis: [""
-        // {
-        //   descriptionName: 0,
-        //   descriptionType: 0,
-        //   visitId:0
-        // }
-      ],
-      mAssignExamination: [""
-        // {
-        //   examinationDescr: 0,
-        //   // descriptionType: 0,
-        //   examinationId:0
-        // }
-      ],
+
+      mAssignChiefComplaint: [""],
+      mAssignDiagnosis: [""],
+      mAssignExamination: [""],
 
       mAssignService: [""],
     });
@@ -500,12 +461,12 @@ export class NewCasepaperComponent implements OnInit {
   PrefollowUpDate: string;
 
   // tried
-  vDrugName:any;
-  vDoseName:any;
-  vItemGN:any;
-  vDayys:any;
-  vInst:any;
-  vPrescriptionId:any;
+  vDrugName: any;
+  vDoseName: any;
+  vItemGN: any;
+  vDayys: any;
+  vInst: any;
+  vPrescriptionId: any;
   getPrescription(obj) {
     // 
     var m_data2 = {
@@ -526,20 +487,20 @@ export class NewCasepaperComponent implements OnInit {
     this._CasepaperService.RtrvPreviousprescriptionDetailsdemo(m_data2).subscribe(Visit => {
       this.dsItemList.data = Visit?.data as MedicineItemList[];
       if (this.dsItemList.data)
-      
-      console.log("bbbbbbbb:", this.dsItemList.data);
+
+        console.log("bbbbbbbb:", this.dsItemList.data);
       this.Chargelist = this.dsItemList.data;
-      
+
       console.log("iiiiii:", this.Chargelist);
       if (this.dsItemList.data.length > 0) {
-          this.vHeight = this.dsItemList.data[0].pHeight;
-          this.vWeight = this.dsItemList.data[0].pWeight;
-          this.vBMI = this.dsItemList.data[0].bmi;
-          this.vSpO2 = this.dsItemList.data[0].spO2;
-          this.vTemp = this.dsItemList.data[0].temp;
-          this.vPulse = this.dsItemList.data[0].pulse;
-          this.vBSL = this.dsItemList.data[0].bsl;
-          this.vBP = this.dsItemList.data[0].bp;
+        this.vHeight = this.dsItemList.data[0].pHeight;
+        this.vWeight = this.dsItemList.data[0].pWeight;
+        this.vBMI = this.dsItemList.data[0].bmi;
+        this.vSpO2 = this.dsItemList.data[0].spO2;
+        this.vTemp = this.dsItemList.data[0].temp;
+        this.vPulse = this.dsItemList.data[0].pulse;
+        this.vBSL = this.dsItemList.data[0].bsl;
+        this.vBP = this.dsItemList.data[0].bp;
 
         this.vChiefComplaint = this.dsItemList.data[0].chiefComplaint;
         this.vDiagnosis = this.dsItemList.data[0].diagnosis;
@@ -548,122 +509,119 @@ export class NewCasepaperComponent implements OnInit {
         this.specificDate = new Date(this.PrefollowUpDate)
         this.MedicineItemForm.get('Remark').setValue(this.dsItemList.data[0].advice)
         this.RefDocName = this.dsItemList.data[0].doctorname
-        this.vDrugName=this.dsItemList.data[0].drugName
-        this.vDoseName=this.dsItemList.data[0].doseName
-        this.vItemGN=this.dsItemList.data[0].genericName
-        this.vDayys=this.dsItemList.data[0].days
-        this.vInst=this.dsItemList.data[0].instruction
+        this.vDrugName = this.dsItemList.data[0].drugName
+        this.vDoseName = this.dsItemList.data[0].doseName
+        this.vItemGN = this.dsItemList.data[0].genericName
+        this.vDayys = this.dsItemList.data[0].days
+        this.vInst = this.dsItemList.data[0].instruction
         this.MedicineItemForm.get("DoctorID").setValue(this.dsItemList.data[0].patientReferDocId)
       }
     });
 
   }
-  
+
   RtrvDescriptionList: any = [];
 
   HistoryList: any = [];
   addCheiflist: any[] = [];
   addDiagnolist: any = [];
   addExaminlist: any = [];
-  nValue: any[] = []; 
+  nValue: any[] = [];
 
-getRtrvCheifComplaintList(obj) { 
-  debugger
-  this.addCheiflist = [];
-  this.addDiagnolist = [];
-  this.addExaminlist = [];
-  this.AllTypeDescription = [];
+  getRtrvCheifComplaintList(obj) {
+    debugger
+    this.addCheiflist = [];
+    this.addDiagnolist = [];
+    this.addExaminlist = [];
+    this.AllTypeDescription = [];
 
-  const vdata = {
-    "first": 0,
-    "rows": 10,
-    "sortField": "VisitId",
-    "sortOrder": 0,
-    "filters": [
-      { "fieldName": "VisitId", "fieldValue": String(obj.visitId), "opType": "Equals" }
-    ],
-    "exportType": "JSON"
-  };
+    const vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "VisitId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "VisitId", "fieldValue": String(obj.visitId), "opType": "Equals" }
+      ],
+      "exportType": "JSON"
+    };
 
-  this._CasepaperService.getRtrvCheifComplaintList1(vdata).subscribe(response => {
-    console.log("three response:", response);
-  
-    if (response && Array.isArray(response.data)) {
-      this.RtrvDescriptionList = response.data;
-      console.log("RtrvDescriptionList:", this.RtrvDescriptionList);
-  
-      // Process Chief Complaints
-      // this.addCheiflist = []; 
-      let ChiefComplaint = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Complaint');
-      this.addCheiflist = [];
-      if (ChiefComplaint.length > 0) {
-      ChiefComplaint.forEach(element=>{
-        this.addCheiflist.push(
-          {
-            complaintDescr:element.descriptionName,
-          }
-        )
-      })
-        // this.ddlChiefComplaint.SetSelection(this.addCheiflist);
-        this.caseFormGroup.get('mAssignChiefComplaint').setValue(this.addCheiflist);
-        console.log("Chief Complaints:", this.addCheiflist);
-        console.log("mAssignChiefComplaint:", this.caseFormGroup.get('mAssignChiefComplaint').value);
+    this._CasepaperService.getRtrvCheifComplaintList1(vdata).subscribe(response => {
+      console.log("three response:", response);
 
+      if (response && Array.isArray(response.data)) {
+        this.RtrvDescriptionList = response.data;
+        console.log("RtrvDescriptionList:", this.RtrvDescriptionList);
+
+        // Process Chief Complaints
+        // this.addCheiflist = []; 
+        let ChiefComplaint = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Complaint');
+        this.addCheiflist = [];
+        if (ChiefComplaint.length > 0) {
+          ChiefComplaint.forEach(element => {
+            this.addCheiflist.push(
+              {
+                complaintDescr: element.descriptionName,
+              }
+            )
+          })
+          // this.ddlChiefComplaint.SetSelection(this.addCheiflist);
+          // this.caseFormGroup.get('mAssignChiefComplaint').setValue(this.addCheiflist);
+          setTimeout(() => {
+            this.caseFormGroup.get('mAssignChiefComplaint').setValue(this.addCheiflist);
+          }, 100);
+
+          console.log("Chief Complaints:", this.addCheiflist);
+
+        } else {
+          console.log("No Chief Complaints found");
+        }
+        console.log("demommmm:", this.caseFormGroup.get('mAssignChiefComplaint').value)
+        // Process Diagnosis
+        let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
+        if (Diagnosis.length > 0) {
+          Diagnosis.forEach(element => {
+            this.addDiagnolist.push(
+              {
+                descriptionName: element.descriptionName
+              }
+            )
+          })
+          console.log("Diagnosis List:", this.addDiagnolist);
+          setTimeout(() => {
+            this.caseFormGroup.get('mAssignDiagnosis').setValue(this.addDiagnolist);
+          }, 100)
+          // this.ddlDiagnosis.SetSelection(this.addDiagnolist);
+        } else {
+          console.log("No Diagnosis found");
+        }
+
+        // Process Examination
+        let Examination = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Examination');
+        if (Examination.length > 0) {
+          Examination.forEach(element => {
+            this.addExaminlist.push(
+              {
+                examinationDescr: element.descriptionName
+              }
+            )
+          });
+          console.log("Examination List:", this.addExaminlist);
+          // this.caseFormGroup.get('mAssignExamination').setValue(this.addExaminlist);
+          setTimeout(() => {
+            this.caseFormGroup.get('mAssignExamination').setValue(this.addExaminlist);
+          }, 100)
+          // this.ddlExamination.SetSelection(this.addExaminlist);
+        } else {
+          console.log("No Examination found");
+        }
       } else {
-        console.log("No Chief Complaints found");
+        console.error("Invalid response format:", response);
       }
-      console.log("demommmm:",this.caseFormGroup.get('mAssignChiefComplaint').value)
-      // Process Diagnosis
-      let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
-      if (Diagnosis.length > 0) {
-        Diagnosis.forEach(element=>{
-          this.addDiagnolist.push(
-            {
-              descriptionName:element.descriptionName
-            }
-          )
-        })
-        console.log("Diagnosis List:", this.addDiagnolist);
-        this.caseFormGroup.get('mAssignDiagnosis').setValue(this.addDiagnolist);
-        // this.ddlDiagnosis.SetSelection(this.addDiagnolist);
-      } else {
-        console.log("No Diagnosis found");
-      }
-  
-      // Process Examination
-      let Examination = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Examination');
-      if (Examination.length > 0) {
-        Examination.forEach(element => {
-         this.addExaminlist.push(
-          {
-            examinationDescr: element.descriptionName
-          }
-         )
-        });
-        console.log("Examination List:", this.addExaminlist);
-        this.caseFormGroup.get('mAssignExamination').setValue(this.addExaminlist);
-        // this.ddlExamination.SetSelection(this.addExaminlist);
-      } else {
-        console.log("No Examination found");
-      }
-    } else {
-      console.error("Invalid response format:", response);
-    }
-  }, error => {
-    console.error("Error fetching Chief Complaints:", error);
-  });
-  
-}
+    }, error => {
+      console.error("Error fetching Chief Complaints:", error);
+    });
 
-  vitalInfo: any;
-  getVitalInfo(obj) {
-    let query
-    query = "select * from visitdetails where visitid=" + obj.VisitId
-    //console.log(query)
-    // this._CasepaperService.getvitalInfo(query).subscribe(data=>{
-    // this.vitalInfo = data
-    //console.log(this.vitalInfo) 
-    // })               
   }
 
   getBMIcalculation() {
@@ -688,13 +646,16 @@ getRtrvCheifComplaintList(obj) {
   templateId = 0
   templateName = ""
   itemObjects: any;
-  itemGeneric:any;
+  itemGeneric: any;
+  vdoseName:any;
 
   selectChangeItemName(row) {
     // debugger
     console.log("itemData:", row)
     this.durgId = row.itemId
     this.durgName = row.itemName
+    this.vdoseName=row.doseName
+    this.vDay=row.doseDay
 
     if ((this.durgId ?? 0) > 0) {
       setTimeout(() => {
@@ -723,7 +684,7 @@ getRtrvCheifComplaintList(obj) {
     this.vItemGenericName = row.text
   }
 
-  GenericNameEditable:boolean=false;
+  GenericNameEditable: boolean = false;
 
   editingIndex1: number | null = null;
   GenericoriginalValue: string | null = null;
@@ -733,38 +694,38 @@ getRtrvCheifComplaintList(obj) {
     this.originalValue = data.genericName;
   }
 
-  OnSaveEditGeneric(contact){
-    
-    this.vPrescriptionId=contact.precriptionId;
+  OnSaveEditGeneric(contact) {
+
+    this.vPrescriptionId = contact.precriptionId;
     console.log(contact)
-    if(this.vPrescriptionId){
-      var m_dataUpdate={
+    if (this.vPrescriptionId) {
+      var m_dataUpdate = {
         "precriptionId": this.vPrescriptionId,
         "genericId": this.vItemGenericNameId || '',
-    }
-    console.log("UpdateJson:", m_dataUpdate);
-
-    this._CasepaperService.genericNameUpdate(m_dataUpdate).subscribe(response =>{
-      if (response) {
-        this.toastr.success('Record Updated Successfully.', 'Updated !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-        this.onClose()
-      } else {
-        this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
       }
-    });
+      console.log("UpdateJson:", m_dataUpdate);
+
+      this._CasepaperService.genericNameUpdate(m_dataUpdate).subscribe(response => {
+        if (response) {
+          this.toastr.success('Record Updated Successfully.', 'Updated !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this.onClose()
+        } else {
+          this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      });
     }
   }
 
-  GenericdisableEditing(data){
-    
-  if (this.GenericoriginalValue !== null) {
-    this.MedicineItemForm.get('ItemGenericNameId').setValue(this.GenericoriginalValue);
-  }
-  this.editingIndex1 = null;
+  GenericdisableEditing(data) {
+
+    if (this.GenericoriginalValue !== null) {
+      this.MedicineItemForm.get('ItemGenericNameId').setValue(this.GenericoriginalValue);
+    }
+    this.editingIndex1 = null;
   }
 
   selectChangeDoseName(row) {
@@ -773,51 +734,51 @@ getRtrvCheifComplaintList(obj) {
     this.doseName = row.text
   }
 
-editingIndex: number | null = null;
-originalValue: string | null = null;
+  editingIndex: number | null = null;
+  originalValue: string | null = null;
 
-editDose(index: number,data) {
-  
-  console.log(data)
-  this.editingIndex = index;
-  this.originalValue = data.doseName;
-}
+  editDose(index: number, data) {
 
-OnSaveEditDose(element: any) {
-  console.log("Saving Dose:", element);
-  this.editingIndex = null;
-  this.vPrescriptionId=element.precriptionId;
-  
-    if(this.vPrescriptionId){
-      var m_dataUpdate={
+    console.log(data)
+    this.editingIndex = index;
+    this.originalValue = data.doseName;
+  }
+
+  OnSaveEditDose(element: any) {
+    console.log("Saving Dose:", element);
+    this.editingIndex = null;
+    this.vPrescriptionId = element.precriptionId;
+
+    if (this.vPrescriptionId) {
+      var m_dataUpdate = {
         "precriptionId": this.vPrescriptionId,
         "doseId": this.doseId || '',
-    }
-    console.log("UpdateJson:", m_dataUpdate);
-
-    this._CasepaperService.doseNameUpdate(m_dataUpdate).subscribe(response =>{
-      if (response) {
-        this.toastr.success('Record Updated Successfully.', 'Updated !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-        this.onClose()
-      } else {
-        this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
       }
-    });
-    }
-}
+      console.log("UpdateJson:", m_dataUpdate);
 
-DosedisableEditing(index: number) {
-  
-  if (this.originalValue !== null) {
-    // Restore old value
-    this.MedicineItemForm.get('DoseId').setValue(this.originalValue);
+      this._CasepaperService.doseNameUpdate(m_dataUpdate).subscribe(response => {
+        if (response) {
+          this.toastr.success('Record Updated Successfully.', 'Updated !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this.onClose()
+        } else {
+          this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      });
+    }
   }
-  this.editingIndex = null;
-}
+
+  DosedisableEditing(index: number) {
+
+    if (this.originalValue !== null) {
+      // Restore old value
+      this.MedicineItemForm.get('DoseId').setValue(this.originalValue);
+    }
+    this.editingIndex = null;
+  }
 
   selectChangeTemplateName(row) {
     console.log("Template:", row)
@@ -827,15 +788,15 @@ DosedisableEditing(index: number) {
 
   selectedItems = [];
 
-selectChangeServiceName(row) {
-  console.log("Selected Services:", row);
+  selectChangeServiceName(row) {
+    console.log("Selected Services:", row);
 
-  const selectedData = Array.isArray(row) ? row : [row]; // Convert single data to array
+    const selectedData = Array.isArray(row) ? row : [row]; // Convert single data to array
 
-  this.selectedItems = selectedData.map(item => ({ serviceId: item.serviceId }));
+    this.selectedItems = selectedData.map(item => ({ serviceId: item.serviceId }));
 
-  console.log("Updated selectedItems:", this.selectedItems);
-}
+    console.log("Updated selectedItems:", this.selectedItems);
+  }
 
 
   RtrvTestServiceList: any = [];
@@ -858,7 +819,7 @@ selectChangeServiceName(row) {
     this._CasepaperService.getRtrvTestService(m_data2).subscribe(response => {
       console.log("Full response:", response);
       this.RtrvTestServiceList = response.data
-      console.log("Extracted data array::",this.RtrvTestServiceList)
+      console.log("Extracted data array::", this.RtrvTestServiceList)
       if (Array.isArray(this.RtrvTestServiceList) && this.RtrvTestServiceList.length > 0) {
         this.RtrvTestServiceList.forEach(element => {
           this.selectedItems.push({
@@ -880,40 +841,100 @@ selectChangeServiceName(row) {
 
   selectChangeCheifComplaint(row) {
     console.log("Selected Services:", row);
-  
-    const selectedData = Array.isArray(row) ? row : [row]; // Convert single data to array
-  
+    const selectedData = Array.isArray(row) ? row : [row];
     this.addCheiflist = selectedData.map(item => ({ complaintDescr: item.complaintDescr }));
-  
-    // this.caseFormGroup.get('mAssignChiefComplaint').setValue([...this.addCheiflist]);
-
     console.log("Updated selectedItems:", this.addCheiflist);
   }
-      
+
+  //   selectChangeCheifComplaint(row) {
+  //     debugger
+  //     console.log("Selected Services:", row);
+
+  //     if (!this.addCheiflist || !Array.isArray(this.addCheiflist)) {
+  //         this.addCheiflist = [];
+  //     }
+  //     const selectedData = Array.isArray(row) ? row : [row];
+
+  //     const newItems = selectedData.map(item => ({
+  //         complaintDescr: item.complaintDescr,
+  //     }));
+
+  //     if (newItems.length > 0) {
+  //         this.addCheiflist = [...this.addCheiflist, ...newItems];
+
+  //         this.addCheiflist = this.addCheiflist.filter((value, index, self) =>
+  //             index === self.findIndex(item => item.complaintDescr === value.complaintDescr)
+
+  //         );
+  //     }
+  //     console.log("Updated selectedItems:", this.addCheiflist);
+  //     this.caseFormGroup.get('mAssignChiefComplaint').setValue(this.addCheiflist);
+  // }
+
   selectChangeDiagnosis(row) {
     console.log("Selected Services:", row);
-  
-    const selectedData = Array.isArray(row) ? row : [row]; // Convert single data to array
-  
+    const selectedData = Array.isArray(row) ? row : [row];
     this.addDiagnolist = selectedData.map(item => ({ descriptionName: item.descriptionName }));
-
-    // this.caseFormGroup.get('mAssignDiagnosis').setValue([...this.addDiagnolist]);
-  
     console.log("Updated selectedItems:", this.addDiagnolist);
   }
 
+  //   selectChangeDiagnosis(row) {
+  //     debugger
+  //     console.log("Selected Services:", row);
+
+  //     if (!this.addDiagnolist || !Array.isArray(this.addDiagnolist)) {
+  //         this.addDiagnolist = [];
+  //     }
+  //     const selectedData = Array.isArray(row) ? row : [row];
+
+  //     const newItems = selectedData.map(item => ({
+  //         descriptionName: item.descriptionName,
+  //     }));
+
+  //     if (newItems.length > 0) {
+  //         this.addDiagnolist = [...this.addDiagnolist, ...newItems];
+
+  //         this.addDiagnolist = this.addDiagnolist.filter((value, index, self) =>
+  //             index === self.findIndex(item => item.descriptionName === value.descriptionName)
+
+  //         );
+  //     }
+  //     console.log("Updated selectedItems:", this.addDiagnolist);
+  //     this.caseFormGroup.get('mAssignDiagnosis').setValue(this.addDiagnolist);
+  // }
+
   selectChangeExamination(row) {
     console.log("Selected Services:", row);
-  
-    const selectedData = Array.isArray(row) ? row : [row]; // Convert single data to array
-  
+    const selectedData = Array.isArray(row) ? row : [row];
     this.addExaminlist = selectedData.map(item => ({ examinationDescr: item.examinationDescr }));
-  
-    // this.caseFormGroup.get('mAssignExamination').setValue([...this.addExaminlist]);
-
     console.log("Updated selectedItems:", this.addExaminlist);
   }
-  
+
+  //   selectChangeExamination(row) {
+  //     debugger
+  //     console.log("Selected Services:", row);
+
+  //     if (!this.addExaminlist || !Array.isArray(this.addExaminlist)) {
+  //         this.addExaminlist = [];
+  //     }
+  //     const selectedData = Array.isArray(row) ? row : [row];
+
+  //     const newItems = selectedData.map(item => ({
+  //         examinationDescr: item.examinationDescr,
+  //     }));
+
+  //     if (newItems.length > 0) {
+  //         this.addExaminlist = [...this.addExaminlist, ...newItems];
+
+  //         this.addExaminlist = this.addExaminlist.filter((value, index, self) =>
+  //             index === self.findIndex(item => item.examinationDescr === value.examinationDescr)
+
+  //         );
+  //     }
+  //     console.log("Updated selectedItems:", this.addExaminlist);
+  //     this.caseFormGroup.get('mAssignExamination').setValue(this.addExaminlist);
+  // }
+
   getValidationMessages() {
     return {
       ItemId: [],
@@ -951,7 +972,7 @@ selectChangeServiceName(row) {
   Day1: any = 0;
   Day2: any = 0;
   onAdd() {
-    
+
     if (!this.MedicineItemForm.get("ItemId")?.value) {
       this.toastr.warning('Please select a Item Name', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -976,7 +997,7 @@ selectChangeServiceName(row) {
 
     if (!Array.isArray(this.Chargelist)) {
       console.warn("Chargelist was not an array. Resetting...");
-      this.Chargelist = [...this.dsItemList.data]; 
+      this.Chargelist = [...this.dsItemList.data];
     }
 
     const iscekDuplicate = this.dsItemList.data.some(item => item.DrugId == this.durgId)
@@ -1021,7 +1042,7 @@ selectChangeServiceName(row) {
   }
 
   deleteTableRow(event, element) {
-    
+
     let index = this.Chargelist.indexOf(element);
     if (index >= 0) {
       this.Chargelist.splice(index, 1);
@@ -1069,6 +1090,7 @@ selectChangeServiceName(row) {
     this.MedicineItemForm.get('TemplateId').reset('');
 
   }
+
   onSave() {
     debugger
     const currentDate = new Date();
@@ -1110,18 +1132,18 @@ selectChangeServiceName(row) {
       });
       return;
     }
-    if (!this.caseFormGroup.get("Height")?.value) { 
+    if (!this.caseFormGroup.get("Height")?.value) {
       this.toastr.warning('Please Enter Height', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if (!this.caseFormGroup.get("Weight")?.value) { 
+    if (!this.caseFormGroup.get("Weight")?.value) {
       this.toastr.warning('Please Enter Weight', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    }        
+    }
     if (this.dsItemList.data.length == 0) {
       Swal.fire('Error !', 'Please add prescription', 'error');
       return
@@ -1265,9 +1287,9 @@ selectChangeServiceName(row) {
           if (result.isConfirmed) {
 
             if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
-              this.viewgetOpprescriptionReportwithheaderPdf();
+              this.OnViewReportPdf(this.VisitId)
             else
-              this.viewgetOpprescriptionReportwithoutheaderPdf();
+              this.OnViewReportPdf(this.VisitId)
             this.getWhatsappshareSales(this.vOPIPId, this.vMobileNo)
             this.onClear();
             this.onClose();
@@ -1279,6 +1301,13 @@ selectChangeServiceName(row) {
     });
 
   }
+
+  OnViewReportPdf(element) {
+    debugger
+    console.log('Third action clicked for:', element);
+    this.commonService.Onprint("VisitId", element, "AppointmentReceipt");
+  }
+
   onClose() {
     this.caseFormGroup.reset({ LangaugeRadio: ["true"] });
     // this.numericForm.reset();
@@ -1503,16 +1532,6 @@ selectChangeServiceName(row) {
     }
   }
 
-  // onEnterItem(event): void {
-  //   if (event.which === 13) {
-  //     this.dosename.nativeElement.focus();
-  //   }
-  // }
-  // public onEnterDose(event): void {
-  //   if (event.which === 13) {
-  //     this.Day.nativeElement.focus();
-  //   }
-  // }
   public onEnterqty(event): void {
     if (event.which === 13) {
       this.Instruction.nativeElement.focus();
@@ -1626,23 +1645,23 @@ selectChangeServiceName(row) {
         ;
         this.dsCopyItemList.data = result;
         console.log("this.dsCopyItemList.data:", this.dsCopyItemList.data);
-      
+
         if (!this.dsItemList.data) {
           this.dsItemList.data = [];
         }
-      
-        this.Chargelist = [...this.dsItemList.data]; 
-      
+
+        this.Chargelist = [...this.dsItemList.data];
+
         this.dsCopyItemList.data.forEach(element => {
           console.log("Checking for duplicate:", element.drugId);
-          
-          const chkitem = this.dsItemList.data.find(item => 
+
+          const chkitem = this.dsItemList.data.find(item =>
             item.DrugId === element.drugId || item.drugId === element.drugId
           );
-      
+
           console.log("this.dsItemList.data before insert:", this.dsItemList.data);
-      
-          if (!chkitem) { 
+
+          if (!chkitem) {
             const newItem = {
               PrecriptionId: element.precriptionId || 0,
               OPD_IPD_IP: element.opD_IPD_IP || '',
@@ -1673,10 +1692,10 @@ selectChangeServiceName(row) {
               DoseNameOption3: element.doseNameOption3,
               DaysOption3: element.daysOption3,
             };
-      
+
             this.Chargelist.push(newItem);
             this.dsItemList.data = [...this.Chargelist];
-      
+
             console.log("Updated this.dsItemList.data:", this.dsItemList.data);
           } else {
             console.warn("Duplicate DrugId found:", element.drugId);
@@ -1685,10 +1704,10 @@ selectChangeServiceName(row) {
             });
           }
         });
-      
+
         console.log("Final dsItemList.data:", this.dsItemList.data);
       }
-      
+
     });
   }
 
@@ -1923,8 +1942,8 @@ export class CasepaperVisitDetails {
   followupDate: any
   advice: any
   patientReferDocId: any
-  drugName:any;
-  
+  drugName: any;
+
   MAssignService: ServiceDet[];
 
   constructor(casePaperDetails) {
@@ -1993,29 +2012,29 @@ export class CasepaperVisitDetails {
     this.temp = casePaperDetails.temp || '';
     this.pulse = casePaperDetails.pulse || '';
     this.bsl = casePaperDetails.bsl || '';
-    this.bp = casePaperDetails.bp || '';    
+    this.bp = casePaperDetails.bp || '';
     this.chiefComplaint = casePaperDetails.chiefComplaint || '';
     this.diagnosis = casePaperDetails.diagnosis || '';
     this.examination = casePaperDetails.examination || '';
     this.followupDate = casePaperDetails.followupDate || '';
     this.advice = casePaperDetails.advice || '';
     this.patientReferDocId = casePaperDetails.patientReferDocId || '';
-      this.MAssignService = casePaperDetails.MAssignService;
+    this.MAssignService = casePaperDetails.MAssignService;
   }
 
 
 }
 
 export class ServiceDet {
-    serviceId: any;
-    serviceName: any;
+  serviceId: any;
+  serviceName: any;
 
-    constructor(ServiceDet) {
-        {
-            this.serviceId = ServiceDet.serviceId || "";
-            this.serviceName = ServiceDet.serviceName || "";
-        }
+  constructor(ServiceDet) {
+    {
+      this.serviceId = ServiceDet.serviceId || "";
+      this.serviceName = ServiceDet.serviceName || "";
     }
+  }
 }
 
 
@@ -2068,7 +2087,7 @@ export class MedicineItemList {
   FollowupDate: any;
   QtyPerDay: any;
   Presid: any;
-  mAssignItemToStores:[];
+  mAssignItemToStores: [];
   bmi: any;
   spO2: any;
   temp: any;
@@ -2082,31 +2101,31 @@ export class MedicineItemList {
   advice: any
   doctorname: any
   patientReferDocId: any
-  drugName:any;
-  doseName:any;
-  genericName:any;
-  days:any;
-  instruction:any;
-  storeId:any;
-  storeName:any;
-  precriptionId:any;
-  opD_IPD_IP:any;
-  classID:any;
-  className:any;
-  genericId:any;
-  drugId:any;
-  doseId:any;
-  instructionId:any;
-  instructionDescription:any;
-  remark:any;
-  totalQty:any;
-  qtyPerDay:any;
-  doseOption2:any;
-  doseNameOption2:any;
-  daysOption2:any;
-  doseOption3:any;
-  doseNameOption3:any;
-  daysOption3:any;
+  drugName: any;
+  doseName: any;
+  genericName: any;
+  days: any;
+  instruction: any;
+  storeId: any;
+  storeName: any;
+  precriptionId: any;
+  opD_IPD_IP: any;
+  classID: any;
+  className: any;
+  genericId: any;
+  drugId: any;
+  doseId: any;
+  instructionId: any;
+  instructionDescription: any;
+  remark: any;
+  totalQty: any;
+  qtyPerDay: any;
+  doseOption2: any;
+  doseNameOption2: any;
+  daysOption2: any;
+  doseOption3: any;
+  doseNameOption3: any;
+  daysOption3: any;
   /**
   * Constructor
   *
@@ -2170,24 +2189,24 @@ export class MedicineItemList {
       this.storeId = MedicineItemList.storeId || ''
       this.storeName = MedicineItemList.storeName || ''
       this.instruction = MedicineItemList.instruction || ''
-      this.precriptionId= MedicineItemList.precriptionId || ''
-      this.opD_IPD_IP= MedicineItemList.opD_IPD_IP || ''
-      this.classID= MedicineItemList.classID || ''
-      this.className= MedicineItemList.className || ''
-      this.genericId= MedicineItemList.genericId || ''
-      this.drugId= MedicineItemList.durgId || ''
-      this.doseId= MedicineItemList.doseId
-      this.instructionId= MedicineItemList.instructionId
-      this.instructionDescription= MedicineItemList.instructionDescription
-      this.remark= MedicineItemList.remark
-      this.totalQty= MedicineItemList.totalQty
-      this.qtyPerDay= MedicineItemList.qtyPerDay
-      this.doseOption2= MedicineItemList.doseOption2
-      this.doseNameOption2= MedicineItemList.doseNameOption2
-      this.daysOption2= MedicineItemList.daysOption2
-      this.doseOption3= MedicineItemList.doseOption3
-      this.doseNameOption3= MedicineItemList.doseNameOption3
-      this.daysOption3= MedicineItemList.daysOption3
+      this.precriptionId = MedicineItemList.precriptionId || ''
+      this.opD_IPD_IP = MedicineItemList.opD_IPD_IP || ''
+      this.classID = MedicineItemList.classID || ''
+      this.className = MedicineItemList.className || ''
+      this.genericId = MedicineItemList.genericId || ''
+      this.drugId = MedicineItemList.durgId || ''
+      this.doseId = MedicineItemList.doseId
+      this.instructionId = MedicineItemList.instructionId
+      this.instructionDescription = MedicineItemList.instructionDescription
+      this.remark = MedicineItemList.remark
+      this.totalQty = MedicineItemList.totalQty
+      this.qtyPerDay = MedicineItemList.qtyPerDay
+      this.doseOption2 = MedicineItemList.doseOption2
+      this.doseNameOption2 = MedicineItemList.doseNameOption2
+      this.daysOption2 = MedicineItemList.daysOption2
+      this.doseOption3 = MedicineItemList.doseOption3
+      this.doseNameOption3 = MedicineItemList.doseNameOption3
+      this.daysOption3 = MedicineItemList.daysOption3
     }
   }
 }
@@ -2197,10 +2216,10 @@ export class StoreDetail {
   // departmentName: any;
 
   constructor(StoreDetail) {
-      {
-          this.storeId = StoreDetail.storeId || "";
-          // this.departmentName = StoreDetail.departmentName || "";
-      }
+    {
+      this.storeId = StoreDetail.storeId || "";
+      // this.departmentName = StoreDetail.departmentName || "";
+    }
   }
 }
 
