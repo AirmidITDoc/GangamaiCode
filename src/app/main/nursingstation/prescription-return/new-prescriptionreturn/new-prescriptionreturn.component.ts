@@ -44,6 +44,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   Itemchargeslist: any = [];
   ItemName: any;
   ItemId: any;
+  itemName:any;
   BalanceQty: any;
   BatchNo: any = '';
   Qty: any;
@@ -163,6 +164,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
     
     console.log("Item:",obj);
     this.ItemId=obj.itemId;
+    this.itemName=obj.itemName
     this.ItemSubform.get('ItemId').setValue(obj);
 
     this.getBatch(obj);
@@ -188,11 +190,11 @@ export class NewPrescriptionreturnComponent implements OnInit {
       console.log(this.data)
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
-      this.BatchNo = result.BatchNo;
+      this.BatchNo = result.batchNo;
       // this.BatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
       // this.MRP = result.UnitMRP;
-      this.Qty = result.Qty;
-      this.BalanceQty = result.Qty;
+      this.Qty = result.balanceQty;
+      this.BalanceQty = result.balanceQty;
      
     });
   }
@@ -349,8 +351,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   
   selectedItem:any;
 
-  onAdd() {
-    
+  onAdd() {    
 
     if ((this.ItemSubform.get('ItemId').value == '' || this.ItemSubform.get('ItemId').value == null || this.ItemSubform.get('ItemId').value == undefined)) {
       this.toastr.warning('Please select Item', 'Warning !', {
@@ -358,18 +359,18 @@ export class NewPrescriptionreturnComponent implements OnInit {
       });
       return;
     }
-    // if ((this.BatchNo == '' || this.BatchNo == null || this.BatchNo == undefined)) {
-    //   this.toastr.warning('Please enter a BatchNo', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-    // if ((this.Qty == '' || this.Qty == null || this.Qty == undefined)) {
-    //   this.toastr.warning('Please enter a qty', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
+    if ((this.BatchNo == '' || this.BatchNo == null || this.BatchNo == undefined)) {
+      this.toastr.warning('Please enter a BatchNo', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.Qty == '' || this.Qty == null || this.Qty == undefined)) {
+      this.toastr.warning('Please enter a qty', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     this.selectedItem = this.ItemSubform.get('ItemId').value;
     // this.sIsLoading = 'save';
     // let Qty = this.ItemSubform.get('Qty').value
@@ -389,13 +390,13 @@ export class NewPrescriptionreturnComponent implements OnInit {
     //   // this.ItemSubform.reset();
       
     // }
-    const iscekDuplicate = this.saleSelectedDatasource.data.some(item => item.ItemID == this.selectedItem.value)
+    const iscekDuplicate = this.saleSelectedDatasource.data.some(item => item.ItemID == this.ItemId)
     if(!iscekDuplicate){
     this.saleSelectedDatasource.data = [];
     this.Chargelist.push(
       {
-        ItemID: this.selectedItem.value || 0,
-        ItemName: this.selectedItem.text || '',
+        ItemID: this.ItemId || 0,
+        ItemName: this.itemName || '',
         BatchNo: this.BatchNo || '' ,        
         Qty:  this.Qty,
       });

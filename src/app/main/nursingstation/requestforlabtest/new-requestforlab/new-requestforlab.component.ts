@@ -121,16 +121,16 @@ export class NewRequestforlabComponent implements OnInit {
   tariffId = "0";
   groupId = "0";
   getServiceList() {
-
-    let ServiceName = this.myFormGroup.get("ServiceId").value + "%" || '%';
+debugger
+    let ServiceName = this.myFormGroup.get("ServiceId").value + "%" || "%";
     if (this.vRegNo) {
       var param = {
         sortField: "ServiceId",
         sortOrder: 0,
         filters: [
-          { fieldName: "ServiceName", fieldValue: ServiceName, opType: OperatorComparer.Contains },
-          { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
-          { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals }
+            { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Equals },
+            { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
+            { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals }
         ]
       }
       this._RequestforlabtestService.getserviceList(param).subscribe(Menu => {

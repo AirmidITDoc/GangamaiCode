@@ -86,6 +86,7 @@ export class BatchpopupComponent implements OnInit {
       "StoreId": this.registerObj.StoreId || 2,
     }
     this._PrescriptionReturnService.getBatchList1(reqData).subscribe((res: any) => {
+      console.log("fffff:",res)
       if (res && res.length > 0) {
         res.forEach((element, index) => {
           element['position'] = index + 1;
@@ -115,8 +116,10 @@ export class BatchpopupComponent implements OnInit {
   }
 
   onTableClick() {
+    debugger
     let focusId = 'ele-'+this.selectedRowIndex;
     document.getElementById(focusId).focus();
+    console.log("focusId:",focusId)
   }
 
 }

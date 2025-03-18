@@ -240,19 +240,7 @@ export class NewPrescriptionComponent implements OnInit {
     this.vitemname = obj.itemName;
     this.ItemForm.get('ItemId').setValue(obj);
   }
-//   selectChangeItem(obj: any) {
-    
-//     if(this.storeId>0){
-//       console.log("Item:",obj);
-//       this.vitemId=obj.itemId;
-//       this.vitemname=obj.itemName;
-//       this.ItemForm.get('ItemId').setValue(obj); 
-//     }else{
-//       this.toastr.warning('Please select Store', 'Warning !', {
-//         toastClass: 'tostr-tost custom-toast-warning',
-//       }); 
-//     }
-// }
+
 
   // onAdd1() {
   //   if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
@@ -336,12 +324,13 @@ export class NewPrescriptionComponent implements OnInit {
 
   onAdd() {
     
-    if (!this.ItemForm.get('ItemId')?.value) {
+    if (!this.ItemForm.get('ItemId')?.value?.trim()) {
       this.toastr.warning('Please select Item', 'Warning!', {
-        toastClass: 'tostr-tost custom-toast-warning',
+          toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    }
+  }
+  
     if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
       this.toastr.warning('Please enter a qty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -461,6 +450,12 @@ export class NewPrescriptionComponent implements OnInit {
     debugger
     if (( this.vRegNo== '' || this.vRegNo == null || this.vRegNo == undefined)) {
       this.toastr.warning('Please select patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (!this.myForm.get('StoreId')?.value) {
+      this.toastr.warning('Please select Store Name', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;

@@ -210,20 +210,13 @@
                     <div class="modal-card-container">
                         <mat-card>
                             <div class="input-container gap-8" fxLayout="column" fxLayout.gt-xs="row">
-
-                                <!-- <airmid-dropdown label="Item Name" 
-                                    formControlName="ItemId" [formGroup]="ItemSubform"
-                                    [validations]="getValidationMessages().ItemId" 
-                                    [mode]="autocompleteitem"
-                                    (selectionChange)="selectChangeItem($event)">
-                                </airmid-dropdown> -->
                                 <airmid-autocomplete label="Enter Item Name" 
                                 [formGroup]="ItemSubform"
                                 formControlName="ItemId" 
                                 placeholderText="Enter Item Name" fxFlex
                                 [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + (vstoreId || '2') + '&ItemName='"
                                 (selectionChange)="selectChangeItem($event)" 
-                                TextField="itemName" ValueField="ItemId">
+                                TextField="formattedText" ValueField="ItemId">
                                 </airmid-autocomplete>
 
                                 <mat-form-field appearance="outline" fxFlex="1 1 auto">
