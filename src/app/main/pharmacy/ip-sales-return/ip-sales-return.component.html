@@ -68,7 +68,7 @@
                                     <mat-label>PatientName</mat-label>
                                     <input type="text" name="RegIDDischargeId" formControlName="RegID" matInput required
                                         placeholder="RegNo / First Name / Last Name / Mobile No" [matAutocomplete]="auto" #RegID
-                                        (input)="getDischargedSearchList()">
+                                        (input)="getDischargedSearchList()" [(ngModel)]="vRegID">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
                                             (click)="_IpSalesRetService.userFormGroup.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>

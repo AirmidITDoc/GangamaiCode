@@ -7,6 +7,7 @@ import { OpeningBalanceService } from '../opening-balance.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { element } from 'protractor';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-new-opening-balance',
@@ -275,6 +276,7 @@ vExpDate1:any='';
         this.toastr.success('Record Saved Successfully.', 'Saved !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
+        this.viewgetOpningBalReportPdf(response)
         this.OnReset();
         this._matDialog.closeAll();
         this.Savebtn = false;
@@ -299,6 +301,33 @@ vExpDate1:any='';
   onClose(){
     this._matDialog.closeAll();
   }
+    viewgetOpningBalReportPdf(row) {
+        console.log(row)
+        this.sIsLoading = 'loading-data';
+        setTimeout(() => {
+          
+       this._OpeningBalanceService.getopeningbalreportview(
+        row.StoreId,row.OpeningHId,
+        ).subscribe(res => {
+          const dialogRef = this._matDialog.open(PdfviewerComponent,
+            {
+              maxWidth: "95vw",
+              height: '850px',
+              width: '100%',
+              data: {
+                base64: res["base64"] as string,
+                title: "Opening Transcation Viewer"
+              }
+            });
+            dialogRef.afterClosed().subscribe(result => {
+              // this.AdList=false;
+              this.sIsLoading = ' ';
+            });
+           
+        });
+       
+        },100);
+      }
   @ViewChild('itemid') itemid: ElementRef;
   @ViewChild('BatchNo') BatchNo: ElementRef;
   @ViewChild('expdate') expdate: ElementRef;

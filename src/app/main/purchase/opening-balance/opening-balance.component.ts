@@ -132,7 +132,7 @@ export class OpeningBalanceComponent {
       setTimeout(() => {
         
      this._OpeningBalanceService.getopeningbalreportview(
-      row.PurchaseID,row.PurchaseID,row.PurchaseID
+      row.StoreId,row.OpeningHId
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {

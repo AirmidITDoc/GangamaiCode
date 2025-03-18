@@ -109,7 +109,7 @@
                                         <input type="text" name="RegIDDischargeId" formControlName="RegID" matInput
                                             required placeholder="RegNo / First Name / Last Name / Mobile No"
                                             [matAutocomplete]="autodischarge" #RegID
-                                            (input)="getDischargedSearchList()">
+                                            (input)="getSearchListIP()">
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close"
                                                 (click)="_SelseSettelmentservice.ItemSubform.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>

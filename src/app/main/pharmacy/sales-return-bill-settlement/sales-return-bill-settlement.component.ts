@@ -15,6 +15,7 @@ import { IpPaymentInsert, IPpaymentWithadvanceComponent } from 'app/main/ipd/ip-
 import { ToastrService } from 'ngx-toastr';
 import { DiscountAfterFinalBillComponent } from './discount-after-final-bill/discount-after-final-bill.component';
 import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-sales-return-bill-settlement',
@@ -200,6 +201,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     this.BedName = obj.BedName
     this.GenderName = obj.GenderName
     this.Age = obj.Age 
+    this.OP_IPType = 1;
     this.getIpSalesList();
   }
 
@@ -221,6 +223,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     this.TariffName = obj.TariffName;  
     this.GenderName = obj.GenderName
     this.Age = obj.AgeYear 
+    this.OP_IPType = 0;
     this.getIpSalesList();
   }
   getSelectedObjRegDischarge(obj) {
@@ -245,6 +248,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     this.BedName = obj.BedName
     this.GenderName = obj.GenderName
     this.Age = obj.Age 
+    this.OP_IPType = 1; 
     this.getIpSalesList();
   }
   getOptionTextOp(option) {
@@ -289,7 +293,16 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       this._SelseSettelmentservice.ItemSubform.get('MobileNo').updateValueAndValidity(); 
       this.PatientInformRest();
       this._SelseSettelmentservice.ItemSubform.get('RegID').setValue('');
-    } else {
+    } 
+    else if (event.value == 'Discharge') {
+      this.OP_IPType = 1;
+      this.RegId = ""; 
+      this._SelseSettelmentservice.ItemSubform.get('MobileNo').clearValidators(); 
+      this._SelseSettelmentservice.ItemSubform.get('MobileNo').updateValueAndValidity(); 
+      this.PatientInformRest();
+      this._SelseSettelmentservice.ItemSubform.get('RegID').setValue('');
+    } 
+    else {
       this._SelseSettelmentservice.ItemSubform.get('MobileNo').reset();
       this._SelseSettelmentservice.ItemSubform.get('MobileNo').setValidators([Validators.required]);
       this._SelseSettelmentservice.ItemSubform.get('MobileNo').enable(); 
@@ -335,7 +348,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     if (this.vSelectedOption == 'OP') {
       OP_IP_Type = 0;
     }
-    else if (this.vSelectedOption == 'IP') {
+    else if (this.vSelectedOption == 'IP' || this._SelseSettelmentservice.ItemSubform.get('PatientType').value == 'Discharge') {
       OP_IP_Type = 1;
     } else {
       OP_IP_Type = 2;
@@ -496,19 +509,24 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         width: '85%',
         data: {
           vPatientHeaderObj: PatientHeaderObj,
-          FromName: "IP-Pharma-SETTLEMENT"
+          FromName: "IP-Pharma-SETTLEMENT",
+          ArrayList : this.SelectedList
         }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log(result)
 
       if (result.IsSubmitFlag == true) {
-        let updateBillobj = {};
-        updateBillobj['salesID'] = this.SelectedBilllist.SalesId;
-        updateBillobj['salRefundAmt'] =0 ;
-        updateBillobj['balanceAmount'] = result.BalAmt || 0 ;// result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
- 
-
+        debugger
+        let updateBillobj = [] 
+        this.SelectedList.forEach(element=>{
+          // const registerBalAmt =result.BalAmt.filter(item=> item.SalesId == element.SalesId)  
+          let UpdatedbillBalNew = {};
+          UpdatedbillBalNew['salesID'] = element.SalesId;
+          UpdatedbillBalNew['salRefundAmt'] =0 ; 
+          UpdatedbillBalNew['balanceAmount'] = result.BalAmt.find(x => x.SalesId == element.SalesId)?.BalAmt ?? 0; 
+          updateBillobj.push(UpdatedbillBalNew)
+        }) 
         let UpdateAdvanceDetailarr1: IpPaymentInsert[] = []; 
     
          UpdateAdvanceDetailarr1 = result.submitDataAdvancePay; 
@@ -564,6 +582,10 @@ export class SalesReturnBillSettlementComponent implements OnInit {
             this.getIpSalesList(); 
             this.UsedAmt1 = 0;
             this.BalanceAm1 = 0;
+            this.SelectedList = [];
+            this.vBalanceAmount = 0;
+            this.vPaidAmount = 0;
+             this.vNetAmount = 0;
           }
           else { 
             this.toastr.error('Sales Credit Payment  not saved !', 'error', {

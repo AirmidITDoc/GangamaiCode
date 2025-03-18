@@ -14,6 +14,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { IpdAdvanceBrowseModel } from 'app/main/ipd/browse-ipadvance/browse-ipadvance.component';
 import { IPSettlementService } from 'app/main/ipd/ip-settlement/ip-settlement.service';
 import { ToastrService } from 'ngx-toastr';
+import { element } from 'protractor';
 
 @Component({
     selector: 'app-op-payment',
@@ -109,7 +110,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.setPaidAmount();
             this.GetBalanceAmt()
             return;
-        }
+        } 
         this.setPaidAmount();
         this.GetBalanceAmt();
     }
@@ -205,7 +206,7 @@ export class OpPaymentVimalComponent implements OnInit {
     Age: any;
     OPD_IPD_Id: any;
     TariffName: any;
-
+    MulPaySettleAmt: boolean =false;
     displayedColumns = [
         'Date',
         'AdvanceNo',
@@ -330,14 +331,15 @@ export class OpPaymentVimalComponent implements OnInit {
             this.selectedPaymnet1 = 'cash';
             this.Date = this.advanceData.Date; 
         }
-        //IP-Pharmacy-Settlemet
-        if (this.data.FromName == "IP-Pharma-SETTLEMENT") {
+        //IP-Pharmacy-Settlemet 
+        if (this.data.FromName == "IP-Pharma-SETTLEMENT") { 
             this.netPayAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
             this.amount1 = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
             this.paidAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
             this.PatientName = this.advanceData.PatientName;
             this.selectedPaymnet1 = 'cash';
             this.Date = this.advanceData.Date; 
+            // this.MulPaySettleAmt = true
         }
         //IP-Interim Bill
         if (this.data.FromName == "IP-IntrimBIll") {
@@ -409,6 +411,7 @@ export class OpPaymentVimalComponent implements OnInit {
     }
 
     Paymentobj = {}; 
+    RemainingAmt:any=[];
     onSubmit() { 
         // this.Paymentobj['BillNo'] = this.data.billNo;
         // this.Paymentobj['ReceiptNo'] = '';
@@ -531,41 +534,95 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['tdsAmount'] = 0; 
         }
         else if(this.data.FromName == "IP-Pharma-SETTLEMENT"){  
+            let PaymentMul = []; 
 
-            this.Paymentobj['BillNo'] = this.advanceData.BillNo;
-            this.Paymentobj['PaymentDate'] =  this.dateTimeObj.date; //this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-            this.Paymentobj['PaymentTime'] =  this.dateTimeObj.time; //this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-            this.Paymentobj['CashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
-            this.Paymentobj['ChequePayAmount'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.Amount ?? 0;
-            this.Paymentobj['ChequeNo'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.RefNo ?? 0;
-            this.Paymentobj['BankName'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.BankName ?? "";
-            this.Paymentobj['ChequeDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-            this.Paymentobj['CardPayAmount'] = this.Payments.data.find(x => x.PaymentType == "card")?.Amount ?? 0;
-            this.Paymentobj['CardNo'] = this.Payments.data.find(x => x.PaymentType == "card")?.RefNo ?? 0;
-            this.Paymentobj['CardBankName'] = this.Payments.data.find(x => x.PaymentType == "card")?.BankName ?? "";
-            this.Paymentobj['CardDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-            if(this.IsAdv){
-                this.Paymentobj['AdvanceUsedAmount'] = this.advanceUsedAmt || 0; 
-                this.Paymentobj['AdvanceId'] =   this.AdvanceId || 0; 
-            }else{
-                this.Paymentobj['AdvanceUsedAmount'] = 0;
-                this.Paymentobj['AdvanceId'] = 0;
-            } 
-            this.Paymentobj['TransactionType'] = 4;  
-            this.Paymentobj['Remark'] = '';
-            this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id || 0;
-            this.Paymentobj['IsCancelled'] = 0;
-            this.Paymentobj['IsCancelledBy'] = 0; 
-            this.Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-            this.Paymentobj['opD_IPD_Type'] =3;
-            this.Paymentobj['NEFTPayAmount'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.Amount ?? 0;
-            this.Paymentobj['NEFTNo'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.RefNo ?? 0;
-            this.Paymentobj['NEFTBankMaster'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.BankName ?? "";
-            this.Paymentobj['NEFTDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-            this.Paymentobj['PayTMAmount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
-            this.Paymentobj['PayTMTranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? 0;
-            this.Paymentobj['PayTMDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-            this.Paymentobj['paymentId'] = 0;
+            let PayCashAmt,PayChequeAmt,PayCardAmt,PayNeftAmt,PyaPytmAmt
+            let CashAmount =  this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
+            let ChequeAmt =  this.Payments.data.find(x => x.PaymentType == "cheque")?.Amount ?? 0;
+            let CardAmt =  this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
+            let NeftAmt =  this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
+            let PaytmAmt =  this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
+            
+            this.data.ArrayList.forEach(element=>{   
+                    if(CashAmount == this.netPayAmt){ 
+                       PayCashAmt = element.BalanceAmount
+                    }
+                    else if(ChequeAmt == this.netPayAmt){ 
+                        PayChequeAmt = element.BalanceAmount
+                    }
+                    else if(CardAmt == this.netPayAmt){ 
+                        PayCardAmt = element.BalanceAmount
+                    }
+                    else if(NeftAmt == this.netPayAmt){ 
+                       PayNeftAmt = element.BalanceAmount
+                    }
+                    else if(PaytmAmt == this.netPayAmt){ 
+                       PyaPytmAmt = element.BalanceAmount
+                    }
+                    else{ 
+                        if(CashAmount < this.netPayAmt){
+                            if(CashAmount > element.BalanceAmount){
+                                let Cashpay1= CashAmount + element.BalanceAmount
+                                PayCashAmt = Cashpay1 - CashAmount 
+                                CashAmount =CashAmount - PayCashAmt
+                                this.RemainingAmt.push( 
+                                    {
+                                        SalesId:element.SalesId,
+                                        BalAmt:Cashpay1
+                                    }
+                                )
+                            }else if(CashAmount <= element.BalanceAmount){
+                                let Cashpay1= element.BalanceAmount - CashAmount
+                                PayCashAmt = element.BalanceAmount - Cashpay1  
+                                CashAmount = CashAmount - PayCashAmt
+                                this.RemainingAmt.push( 
+                                    {
+                                        SalesId:element.SalesId,
+                                        BalAmt:Cashpay1
+                                    }
+                                )
+                            }   
+                        } 
+                    } 
+             
+                let MultiplePay = {} 
+                MultiplePay['BillNo'] = this.advanceData.BillNo;
+                MultiplePay['PaymentDate'] =  this.dateTimeObj.date; //this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+                MultiplePay['PaymentTime'] =  this.dateTimeObj.time; //this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+                MultiplePay['CashPayAmount'] = PayCashAmt || 0
+                MultiplePay['ChequePayAmount'] =PayChequeAmt || 0
+                MultiplePay['ChequeNo'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.RefNo ?? 0;
+                MultiplePay['BankName'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.BankName ?? "";
+                MultiplePay['ChequeDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+                MultiplePay['CardPayAmount'] = PayCardAmt || 0;
+                MultiplePay['CardNo'] = this.Payments.data.find(x => x.PaymentType == "card")?.RefNo ?? 0;
+                MultiplePay['CardBankName'] = this.Payments.data.find(x => x.PaymentType == "card")?.BankName ?? "";
+                MultiplePay['CardDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+                if(this.IsAdv){
+                    MultiplePay['AdvanceUsedAmount'] = this.advanceUsedAmt || 0; 
+                    MultiplePay['AdvanceId'] =   this.AdvanceId || 0; 
+                }else{
+                    MultiplePay['AdvanceUsedAmount'] = 0;
+                    MultiplePay['AdvanceId'] = 0;
+                } 
+                MultiplePay['TransactionType'] = 4;  
+                MultiplePay['Remark'] = '';
+                MultiplePay['AddBy'] = this._loggedService.currentUserValue.user.id || 0;
+                MultiplePay['IsCancelled'] = 0;
+                MultiplePay['IsCancelledBy'] = 0; 
+                MultiplePay['IsCancelledDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+                MultiplePay['opD_IPD_Type'] =3;
+                MultiplePay['NEFTPayAmount'] = PayNeftAmt || 0;
+                MultiplePay['NEFTNo'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.RefNo ?? 0;
+                MultiplePay['NEFTBankMaster'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.BankName ?? "";
+                MultiplePay['NEFTDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+                MultiplePay['PayTMAmount'] =PyaPytmAmt || 0;
+                MultiplePay['PayTMTranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? 0;
+                MultiplePay['PayTMDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+                MultiplePay['paymentId'] = 0;
+                PaymentMul.push(MultiplePay)
+            }) 
+            this.Paymentobj = PaymentMul
           }
         else if (this.data.FromName == "OP-RefundOfBill" || this.data.FromName == "IP-RefundOfBill" || this.data.FromName == "IP-RefundOfAdvance" || this.data.FromName == "IP-Advance") {
             this.Paymentobj['BillNo'] = this.advanceData.BillNo;
@@ -671,12 +728,17 @@ export class OpPaymentVimalComponent implements OnInit {
                 Advanceobj['RefundAmount'] = element.RefundAmount;
                 Advancesarr.push(Advanceobj);
             }); 
-
+            let BalAmt 
+            if(this.data.FromName == "IP-Pharma-SETTLEMENT"){
+                BalAmt = this.RemainingAmt
+            }else{
+                BalAmt = this.patientDetailsFormGrp.get('balanceAmountController').value
+            }
              IsSubmit = {
                 "submitDataPay": submitDataPay,
                 "submitDataAdvancePay": Advancesarr,
                 "PaidAmt":this.paidAmt, // this.patientDetailsFormGrp.get('paidAmountController').value,
-                "BalAmt": this.patientDetailsFormGrp.get('balanceAmountController').value,
+                "BalAmt": BalAmt,
                 "IsSubmitFlag": true,
             }
         }else{
