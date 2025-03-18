@@ -121,18 +121,34 @@ export class NewRequestforlabComponent implements OnInit {
   tariffId = "0";
   groupId = "0";
   getServiceList() {
-debugger
+    debugger
     let ServiceName = this.myFormGroup.get("ServiceId").value + "%" || "%";
     if (this.vRegNo) {
       var param = {
-        sortField: "ServiceId",
-        sortOrder: 0,
-        filters: [
-            { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
-            { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals }
-        ]
+        "first": 0,
+        "rows": 10,
+        "sortField": "ServiceId",
+        "sortOrder": 0,
+        "filters": [
+          {
+            "fieldName": "ServiceName",
+            "fieldValue": ServiceName,
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "TariffId",
+            "fieldValue": this.tariffId,
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "GroupId",
+            "fieldValue": this.groupId,
+            "opType": "Equals"
+          }
+        ],
+        "exportType": "JSON"
       }
+
       this._RequestforlabtestService.getserviceList(param).subscribe(Menu => {
 
         this.dsLabRequest2.data = Menu.data as LabRequest[];
@@ -202,8 +218,8 @@ debugger
       this.vTariffName = obj.tariffName
       this.vCompanyName = obj.companyName
       this.vDOA = obj.admissionDate
-
     }
+    this.getServiceList();
   }
 
   onEdit(row) {
@@ -290,6 +306,10 @@ debugger
   savebtn: boolean = false;
   OnSave() {
     debugger
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'hh:mm:ssa');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
     // if(!this.myFormGroup.invalid) 
     // {
     //     console.log("LabRequest Insert:",this.myFormGroup.value)
@@ -334,25 +354,25 @@ debugger
         ipPathOrRadiRequestLabRequestInsert['price'] = element.Price || 1;
         ipPathOrRadiRequestLabRequestInsert['isStatus'] = true;
         ipPathOrRadiRequestLabRequestInsert['addedBillingId'] = 0,
-        ipPathOrRadiRequestLabRequestInsert['addedByDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
-        ipPathOrRadiRequestLabRequestInsert['addedByTime'] = this.datePipe.transform(this.currentDate, 'shortTime'),
-        ipPathOrRadiRequestLabRequestInsert['charId'] = 0,
-        ipPathOrRadiRequestLabRequestInsert['isTestCompted'] = true,
-        ipPathOrRadiRequestLabRequestInsert['IsOnFileTest'] = true;
+          ipPathOrRadiRequestLabRequestInsert['addedByDate'] = formattedDate,
+          ipPathOrRadiRequestLabRequestInsert['addedByTime'] = formattedTime,
+          ipPathOrRadiRequestLabRequestInsert['charId'] = 0,
+          ipPathOrRadiRequestLabRequestInsert['isTestCompted'] = true,
+          ipPathOrRadiRequestLabRequestInsert['IsOnFileTest'] = true;
         ipPathOrRadiRequestLabRequestInsertArray.push(ipPathOrRadiRequestLabRequestInsert);
       });
 
       submissionObj = {
         "requestId": 0,
-        "reqDate": this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
-        "reqTime": this.datePipe.transform(this.currentDate, 'shortTime'),
+        "reqDate": formattedDate,
+        "reqTime":formattedTime,
         "opIpId": this.vAdmissionID,
         "opIpType": 1,
         "isAddedBy": this._loggedService.currentUserValue.userId,
         "isCancelled": false,
         "isCancelledBy": 0,
-        "isCancelledDate": this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
-        "isCancelledTime": this.datePipe.transform(this.currentDate, 'shortTime'),
+        "isCancelledDate": formattedDate,
+        "isCancelledTime": formattedTime,
         "isType": 0,
         "isOnFileTest": this.myFormGroup.get('IsOnFileTest').value || false,
         'tDlabRequests': ipPathOrRadiRequestLabRequestInsertArray
