@@ -285,6 +285,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       this._SelseSettelmentservice.ItemSubform.get('MobileNo').updateValueAndValidity(); 
       this.PatientInformRest();
       this._SelseSettelmentservice.ItemSubform.get('RegID').setValue('');
+      this.dsPaidItemList.data = [];
     }
     else if (event.value == 'IP') {
       this.OP_IPType = 1;
@@ -293,6 +294,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       this._SelseSettelmentservice.ItemSubform.get('MobileNo').updateValueAndValidity(); 
       this.PatientInformRest();
       this._SelseSettelmentservice.ItemSubform.get('RegID').setValue('');
+      this.dsPaidItemList.data = [];
     } 
     else if (event.value == 'Discharge') {
       this.OP_IPType = 1;
@@ -301,6 +303,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       this._SelseSettelmentservice.ItemSubform.get('MobileNo').updateValueAndValidity(); 
       this.PatientInformRest();
       this._SelseSettelmentservice.ItemSubform.get('RegID').setValue('');
+      this.dsPaidItemList.data = [];
     } 
     else {
       this._SelseSettelmentservice.ItemSubform.get('MobileNo').reset();
@@ -308,6 +311,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       this._SelseSettelmentservice.ItemSubform.get('MobileNo').enable(); 
       this._SelseSettelmentservice.ItemSubform.updateValueAndValidity(); 
       this.OP_IPType = 2; 
+      this.dsPaidItemList.data = [];
     }
   }
  
@@ -323,7 +327,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       this.SelectedList.push(element)
       this.vNetAmount += element.NetAmount
       this.vPaidAmount += element.PaidAmountPayment
-      this.vBalanceAmount += element.BalanceAmount 
+      this.vBalanceAmount += Math.round(element.BalanceAmount) 
     }
     else{
       let index = this.SelectedList.indexOf(element);

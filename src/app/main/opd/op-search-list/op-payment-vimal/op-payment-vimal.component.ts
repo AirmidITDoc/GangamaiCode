@@ -539,9 +539,9 @@ export class OpPaymentVimalComponent implements OnInit {
             let PayCashAmt,PayChequeAmt,PayCardAmt,PayNeftAmt,PyaPytmAmt
             let CashAmount =  this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
             let ChequeAmt =  this.Payments.data.find(x => x.PaymentType == "cheque")?.Amount ?? 0;
-            let CardAmt =  this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
-            let NeftAmt =  this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
-            let PaytmAmt =  this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
+            let CardAmt =  this.Payments.data.find(x => x.PaymentType == "card")?.Amount ?? 0;
+            let NeftAmt =  this.Payments.data.find(x => x.PaymentType == "net banking")?.Amount ?? 0;
+            let PaytmAmt =  this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
             
             this.data.ArrayList.forEach(element=>{   
                     if(CashAmount == this.netPayAmt){ 
@@ -560,7 +560,7 @@ export class OpPaymentVimalComponent implements OnInit {
                        PyaPytmAmt = element.BalanceAmount
                     }
                     else{ 
-                        if(CashAmount < this.netPayAmt){
+                        if(CashAmount < this.netPayAmt && CashAmount > 0){
                             if(CashAmount > element.BalanceAmount){
                                 let Cashpay1= CashAmount + element.BalanceAmount
                                 PayCashAmt = Cashpay1 - CashAmount 
@@ -575,6 +575,98 @@ export class OpPaymentVimalComponent implements OnInit {
                                 let Cashpay1= element.BalanceAmount - CashAmount
                                 PayCashAmt = element.BalanceAmount - Cashpay1  
                                 CashAmount = CashAmount - PayCashAmt
+                                this.RemainingAmt.push( 
+                                    {
+                                        SalesId:element.SalesId,
+                                        BalAmt:Cashpay1
+                                    }
+                                )
+                            }   
+                        } 
+                        if(ChequeAmt < this.netPayAmt && ChequeAmt > 0){
+                            if(ChequeAmt > element.BalanceAmount){
+                                let Cashpay1= ChequeAmt + element.BalanceAmount
+                                PayChequeAmt = Cashpay1 - ChequeAmt 
+                                ChequeAmt =ChequeAmt - PayChequeAmt
+                                this.RemainingAmt.push( 
+                                    {
+                                        SalesId:element.SalesId,
+                                        BalAmt:Cashpay1
+                                    }
+                                )
+                            }else if(ChequeAmt <= element.BalanceAmount){
+                                let Cashpay1= element.BalanceAmount - ChequeAmt
+                                PayChequeAmt = element.BalanceAmount - Cashpay1  
+                                ChequeAmt = ChequeAmt - PayChequeAmt
+                                this.RemainingAmt.push( 
+                                    {
+                                        SalesId:element.SalesId,
+                                        BalAmt:Cashpay1
+                                    }
+                                )
+                            }   
+                        } 
+                        if(CardAmt < this.netPayAmt && CardAmt > 0){
+                            if(CardAmt > element.BalanceAmount){
+                                let Cashpay1= CardAmt + element.BalanceAmount
+                                PayCardAmt = Cashpay1 - CardAmt 
+                                CardAmt =CardAmt - PayCardAmt
+                                this.RemainingAmt.push( 
+                                    {
+                                        SalesId:element.SalesId,
+                                        BalAmt:Cashpay1
+                                    }
+                                )
+                            }else if(CardAmt <= element.BalanceAmount){
+                                let Cashpay1= element.BalanceAmount - CardAmt
+                                PayCardAmt = element.BalanceAmount - Cashpay1  
+                                CardAmt = CardAmt - PayCardAmt
+                                this.RemainingAmt.push( 
+                                    {
+                                        SalesId:element.SalesId,
+                                        BalAmt:Cashpay1
+                                    }
+                                )
+                            }   
+                        } 
+                        if(NeftAmt < this.netPayAmt && NeftAmt > 0){
+                            if(NeftAmt > element.BalanceAmount){
+                                let Cashpay1= NeftAmt + element.BalanceAmount
+                                PayNeftAmt = Cashpay1 - NeftAmt 
+                                NeftAmt =NeftAmt - PayNeftAmt
+                                this.RemainingAmt.push( 
+                                    {
+                                        SalesId:element.SalesId,
+                                        BalAmt:Cashpay1
+                                    }
+                                )
+                            }else if(NeftAmt <= element.BalanceAmount){
+                                let Cashpay1= element.BalanceAmount - NeftAmt
+                                PayNeftAmt = element.BalanceAmount - Cashpay1  
+                                NeftAmt = NeftAmt - PayNeftAmt
+                                this.RemainingAmt.push( 
+                                    {
+                                        SalesId:element.SalesId,
+                                        BalAmt:Cashpay1
+                                    }
+                                )
+                            }   
+                        } 
+                        if(PaytmAmt < this.netPayAmt && PaytmAmt > 0){
+                            if(PaytmAmt > element.BalanceAmount){
+                                let Cashpay1= PaytmAmt + element.BalanceAmount
+                                PyaPytmAmt = Cashpay1 - PaytmAmt 
+                                PaytmAmt =PaytmAmt - PyaPytmAmt
+                                this.RemainingAmt.push( 
+                                    {
+                                        SalesId:element.SalesId,
+                                        BalAmt:Cashpay1
+                                    }
+                                )
+                            }else if(PaytmAmt <= element.BalanceAmount){
+                                let Cashpay1= element.BalanceAmount - PaytmAmt
+                                PyaPytmAmt = element.BalanceAmount - Cashpay1  
+                                PaytmAmt = PaytmAmt - PyaPytmAmt
                                 this.RemainingAmt.push( 
                                     {
                                         SalesId:element.SalesId,
