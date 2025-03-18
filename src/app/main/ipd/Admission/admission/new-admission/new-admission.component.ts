@@ -277,7 +277,10 @@ export class NewAdmissionComponent implements OnInit {
       this._AdmissionService.AdmissionRegisteredInsert(submitData).subscribe(response => {
         this.toastr.success(response.message);
         console.log(response)
-        this.getAdmittedPatientCasepaperview(response.admissionId);
+        let Res=response.message
+        let ID=Res.split('.')
+        let Id=ID[1]
+        this.getAdmittedPatientCasepaperview(Id);
         this.onClear();
         this._matDialog.closeAll();
       }, (error) => {

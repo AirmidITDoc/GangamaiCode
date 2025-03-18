@@ -53,6 +53,7 @@ export class IPSettlementComponent implements OnInit {
 
     constructor(public _IPSettlementService: IPSettlementService,
         private commonService: PrintserviceService,
+          private accountService: AuthenticationService,
         public _matDialog: MatDialog,
         public datePipe: DatePipe,
         public toastr: ToastrService, public formBuilder: UntypedFormBuilder,) { }
@@ -98,7 +99,7 @@ export class IPSettlementComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.searchFormGroup = this.createSearchForm();
+        // this.searchFormGroup = this.createSearchForm();
         this.myFormGroup = this.createSearchForm1();
     }
     openPaymentpopup(contact) {
@@ -163,7 +164,7 @@ export class IPSettlementComponent implements OnInit {
                 Paymentobj['RefundId'] = 0;
                 Paymentobj['TransactionType'] = 0;
                 Paymentobj['Remark'] = '';
-                Paymentobj['AddBy'] = 1;
+                Paymentobj['AddBy'] =this.accountService.currentUserValue.user.id,
                 Paymentobj['IsCancelled'] = false;
                 Paymentobj['IsCancelledBy'] = '0';
                 Paymentobj['IsCancelledDate'] = result.submitDataPay.ipPaymentInsert.IsCancelledDate
@@ -240,8 +241,7 @@ export class IPSettlementComponent implements OnInit {
                         this.toastr.success(response.message);
                         this.GetDetails(this.RegId1)
                        this.viewgetIPPayemntPdf(response)
-                        // this._matDialog.closeAll();
-                       
+                      
                     }, (error) => {
                         this.toastr.error(error.message);
                     });
@@ -258,12 +258,12 @@ export class IPSettlementComponent implements OnInit {
         this.commonService.Onprint("PaymentId", data.paymentId, "IpPaymentReceipt");
     }
 
-    createSearchForm() {
-        return this.formBuilder.group({
-            RegId: 0,
-            AppointmentDate: [(new Date()).toISOString()],
-        });
-    }
+    // createSearchForm() {
+    //     return this.formBuilder.group({
+    //         RegId: 0,
+    //         AppointmentDate: [(new Date()).toISOString()],
+    //     });
+    // }
     createSearchForm1() {
         return this.formBuilder.group({
             RegId: 0

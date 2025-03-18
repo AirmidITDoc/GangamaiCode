@@ -1,15 +1,17 @@
-<div class="modal-wrapper grid-container">
-    <!-- Modal header -->
+<div class="modal-wrapper grid-container discharge-summary-section">
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Template</span>
             </div>
             <div class="modal-header-right">
-                <div class="close-icon">
-                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
-                        <mat-icon>close</mat-icon>
-                    </button>
+                <div class="comman-date-container">
+                   
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -18,33 +20,50 @@
 
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
-            <form [formGroup]="templateForm">
-                <div fxLayout="column" fxLayoutGap="2px">
-                    <input type="hidden" name="templateId" formControlName="templateId" [(ngModel)]="TemplateId">
 
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Template Name</mat-label>
-                        <input matInput placeholder="Template Name" [(ngModel)]="vTemplateName" name="templateName" formControlName="templateName" required>
-                        <mat-error class="error" *ngIf="templateForm.get('templateName').invalid && templateForm.get('templateName').touched">
-                            TemplateName is required Enter only Alphabets
-                        </mat-error>
-                    </mat-form-field>
+            <div fxLayout="column" class="gap-12">
+               
+                    <form [formGroup]="templateForm">
+                    <div class="modal-card-container">
+                       
+                            <div fxLayout="row" style="padding: 10px;">
 
-                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-editor label="Template Details" formControlName="templateDesc" [(value)]="vTemplateDesc" [formGroup]="templateForm"></airmid-editor>
+                                <airmid-textbox label="Template Name" formControlName="templateName" [value]="vTemplateName" [formGroup]="templateForm" 
+                                (keyUp)="add()"  fxFlex="50%">
+                                </airmid-textbox>
+
+                              
+                            </div>
+                            <div fxLayoutGap="5px">
+
+                                <airmid-editor label="Template Details" formControlName="templateDesc"
+                                    [(value)]="vTemplateDesc" [formGroup]="templateForm"></airmid-editor>
+
+                            </div>
+
                     </div>
+                </form>
+                <div class="modal-card-container">
+                    <!-- <form [formGroup]="templateForm">
+                        <mat-card>
+                            <div fxLayout="row" style="margin-left: 1200px;">
+                                <mat-radio-button value='true' [checked]="true" name="IsDeleted" formControlName="IsDeleted">IsActive</mat-radio-button>
+                            </div>
+
+                        </mat-card>
+                    </form> -->
                 </div>
-            </form>
+            </div>
+
         </div>
     </div>
 
-
     <div class="modal-footer">
-        <div class="modal-footer-container">
-            <mat-radio-button value='true' [checked]="true" name="IsDeleted" formControlName="IsDeleted">IsActive</mat-radio-button>
+        <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
+                <button type="button" class="btn btn-primary" (click)="onSubmit()"> Save </button>
                 <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="templateForm.invalid">Save</button>
+
             </div>
         </div>
     </div>

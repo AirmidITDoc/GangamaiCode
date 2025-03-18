@@ -81,6 +81,7 @@ export class DischargeComponent implements OnInit {
     public toastr: ToastrService,
     public _ConfigService: ConfigService,
      private commonService: PrintserviceService,
+     private accountService: AuthenticationService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     setInterval(() => {
@@ -171,7 +172,7 @@ export class DischargeComponent implements OnInit {
 
       dischargeId: this.DischargeId,
       // admissionId: this.data.admissionId,
-      dischargeDate: "2029-09-07",
+      dischargeDate: "",
       dischargeTime: "",
       dischargeTypeId: 0,
       dischargedDocId: 0,
@@ -189,8 +190,8 @@ export class DischargeComponent implements OnInit {
       dischargModeldata['dischargeTime'] = this.dateTimeObj.time
     dischargModeldata['dischargeTypeId'] = this.DischargeForm.get("dischargedDocId").value || 0,
       dischargModeldata['dischargedDocId'] = this.DischargeForm.get("dischargeTypeId").value || 0,
-      dischargModeldata['dischargedRmoid'] = 1,//this.DischargeForm.get("dischargedRmoid").value || 0,
-      dischargModeldata['addedBy'] = 1
+      dischargModeldata['dischargedRmoid'] = this.DischargeForm.get("dischargedRmoid").value || 0,
+      dischargModeldata['addedBy'] = this.accountService.currentUserValue.userId,
     dischargModeldata['dischargeId'] = this.DischargeId
     dischargModeldata['admissionId'] = this.vAdmissionId
     
@@ -212,8 +213,10 @@ export class DischargeComponent implements OnInit {
 
     this._IpSearchListService.DichargeInsert(m_data).subscribe((response) => {
       this.toastr.success(response.message);
-      console.log(response)
-      this.viewgetDischargeSlipPdf(response.admissionId)
+      let Res=response.message
+            let ID=Res.split('.')
+            let Id=ID[1]
+      this.viewgetDischargeSlipPdf(Id)
       this._matDialog.closeAll();
     }, (error) => {
       this.toastr.error(error.message);
@@ -234,8 +237,10 @@ export class DischargeComponent implements OnInit {
   
         this._IpSearchListService.DichargeUpdate(m_data1).subscribe((response) => {
         this.toastr.success(response.message);
-        console.log(response)
-        this.viewgetDischargeSlipPdf(response.admissionId)
+        let Res=response.message
+        let ID=Res.split('.')
+        let Id=ID[1]
+        this.viewgetDischargeSlipPdf(Id)
         this._matDialog.closeAll();
       }, (error) => {
         this.toastr.error(error.message);
@@ -283,8 +288,8 @@ export class DischargeComponent implements OnInit {
       if(data){
         this.vApproved_Cnt = data[0]?.Approved_Cnt
         this.vDeptCount = data[0]?.DeptCount
-        console.log(this.vApproved_Cnt)
-        console.log(this.vDeptCount)
+        // console.log(this.vApproved_Cnt)
+        // console.log(this.vDeptCount)
       } 
     })
   }

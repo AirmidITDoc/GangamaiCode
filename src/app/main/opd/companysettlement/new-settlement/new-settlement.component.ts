@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { OPSearhlistService } from '../../op-search-list/op-searhlist.service';
 import { RegInsert } from '../../registration/registration.component';
 import { ToastrService } from 'ngx-toastr';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
   selector: 'app-new-settlement',
@@ -63,6 +64,7 @@ export class NewSettlementComponent {
     private dialogRef: MatDialogRef<NewSettlementComponent>,
      private opService: OPSearhlistService,
     @Inject(MAT_DIALOG_DATA) public data: any,
+      private accountService: AuthenticationService,
     private _CompanysettlementService: CompanysettlementService,
     public datePipe: DatePipe,
       public toastr: ToastrService,

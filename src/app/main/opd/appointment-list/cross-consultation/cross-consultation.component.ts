@@ -10,6 +10,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { OperatorComparer } from 'app/core/models/gridRequest';
 import { VisitMaster1 } from '../appointment-list.component';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 
 @Component({
@@ -37,6 +38,7 @@ export class CrossConsultationComponent implements OnInit {
   isdocSelected: boolean = false;
   regId=0;
   constructor(public _AppointmentlistService: AppointmentlistService, private formBuilder: UntypedFormBuilder,
+      private accountService: AuthenticationService,
     public dialogRef: MatDialogRef<CrossConsultationComponent>, public datePipe: DatePipe, @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog, public toastr: ToastrService
   ) {}
@@ -74,8 +76,8 @@ export class CrossConsultationComponent implements OnInit {
       refDocId: this.data.refDocId,
       tariffId: this.data.tariffId,
       companyId: this.data.companyId,
-      addedBy: 1,
-      updatedBy: 1,
+      addedBy:  this.accountService.currentUserValue.userId,
+      updatedBy: this.accountService.currentUserValue.userId,
       isCancelled: true,
       isCancelledBy: 0,
       isCancelledDate: new Date(),
@@ -100,8 +102,8 @@ export class CrossConsultationComponent implements OnInit {
     data.visitTime=this.datePipe.transform(this.crossconForm.get('visitTime').value,'yyyy-MM-ddTHH:mm')
     data.visitDate=this.datePipe.transform(this.crossconForm.get('visitTime').value,'yyyy-MM-dd')
     data.visitId=0;
-    data.addedBy=0;
-    data.updatedBy=0;
+    data.addedBy= this.accountService.currentUserValue.userId,
+    data.updatedBy= this.accountService.currentUserValue.userId,
     
   console.log(data);
  this._AppointmentlistService.crossconsultSave(data).subscribe((response) => {

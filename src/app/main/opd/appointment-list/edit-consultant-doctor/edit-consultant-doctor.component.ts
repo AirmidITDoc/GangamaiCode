@@ -43,13 +43,6 @@ export class EditConsultantDoctorComponent implements OnInit {
   ngOnInit(): void {
     this.ConsdrForm = this.createConsultatDrForm();
 
-    if (this.data) {
-     console.log(this.data)
-      // this.ConsdrForm.get("visitId").setValue(this.regobj.visitId)
-      // this.ConsdrForm.get("regId").setValue(this.regobj.regId)
-   
-    }
-
   }
 
   createConsultatDrForm() {

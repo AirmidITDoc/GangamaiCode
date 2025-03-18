@@ -370,7 +370,7 @@ Clearfilter(event) {
             maxWidth: "99vw",
             height: "98vh",
             width: "100%",
-            // data:row
+            data:row
 
         });
     }

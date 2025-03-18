@@ -312,9 +312,7 @@ export class DischargeSummaryTemplateComponent {
       console.log(m_data2)
       this._IpSearchListService.getDischargeSummary(m_data2).subscribe((data) => {
         console.log(data);
-        debugger
-      
-
+       
         this.RetrDischargeSumryList = data?.data as DischargeSummary;
         console.log(this.RetrDischargeSumryList);
         if (this.RetrDischargeSumryList.length != 0) {
@@ -402,14 +400,14 @@ export class DischargeSummaryTemplateComponent {
             Prescdiscgargemodel['instruction'] = "";
             Prescdiscgargemodel['remark'] = "";
             Prescdiscgargemodel['isEnglishOrIsMarathi'] = true;
-            Prescdiscgargemodel['storeId'] = 1;//this.accountService.currentUserValue.user.storeId || 0;
-            Prescdiscgargemodel['createdBy'] = 1;//this.accountService.currentUserValue.user.id,
+            Prescdiscgargemodel['storeId'] =1,// this.accountService.currentUserValue.user.storeId || 0;
+            Prescdiscgargemodel['createdBy'] = this.accountService.currentUserValue.userId,
             insertIPPrescriptionDischarge.push(Prescdiscgargemodel);
           });
   
           if (this.DischargeSummaryId == undefined) {
             dischargModeldata['admissionId'] = this.vAdmissionId || 0,
-              dischargModeldata['addedBy'] = 1
+              dischargModeldata['addedBy'] =this.accountService.currentUserValue.userId
   
             var data = {
               "discharge": dischargModeldata,
@@ -429,7 +427,7 @@ export class DischargeSummaryTemplateComponent {
   
           }
           else {
-            dischargModeldata['updatedBy'] = 1
+            dischargModeldata['updatedBy'] =this.accountService.currentUserValue.userId
             var data1 = {
               "discharge": dischargModeldata,
               "prescriptionTemplate": insertIPPrescriptionDischarge

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +14,8 @@ export class PhoneAppointListService {
     constructor(
         private _httpClient: ApiCaller,
         private _httpClient1: HttpClient,
-        private _formBuilder: UntypedFormBuilder
+        private _formBuilder: UntypedFormBuilder,
+          private accountService: AuthenticationService,
     ) {
        
         this.myFilterform = this.filterForm();
@@ -61,8 +63,8 @@ export class PhoneAppointListService {
             phAppTime: [""],
             departmentId: ['', Validators.required],
             doctorId:['', Validators.required],
-            addedBy: 1,
-            updatedBy: 1,
+            addedBy:this.accountService.currentUserValue.userId,
+            updatedBy: this.accountService.currentUserValue.userId,
             regNo: ["0"],
 
         });

@@ -66,16 +66,14 @@ phdatetime: any;
     this.MlcInfoFormGroup = this.createmlcForm();
     if (this.data) {
       this.Personaldata = this.data;
-   
       this.AdmissionId = this.Personaldata.admissionId;
-      console.log(this.Personaldata);
    
       if ((this.data?.admissionId?? 0) > 0) {
         setTimeout(() => {
             this._AdmissionService.getMLCById(this.data.admissionId).subscribe((response) => {
                 this.registerObj = response;
                 console.log(this.registerObj)
-                // this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
+              
                });
         }, 500);
     }
@@ -110,25 +108,26 @@ phdatetime: any;
   }
 
 
-  getMlcdetail(AdmissionId){
+  // getMlcdetail(AdmissionId){
     
-
-    // AdmissionId=114
-    setTimeout(() => {
-      this._AdmissionService.getMLCById(AdmissionId).subscribe((response) => {
-        if(response)
-          this.registerObj = response;
-          console.log(this.registerObj)
-      });
-  }, 500);
-  }
+  //   setTimeout(() => {
+  //     this._AdmissionService.getMLCById(AdmissionId).subscribe((response) => {
+  //       if(response)
+  //         this.registerObj = response;
+  //         console.log(this.registerObj)
+  //     });
+  // }, 500);
+  // }
 
   onSubmit() {
 console.log(this.MlcInfoFormGroup.value)
     this.MlcInfoFormGroup.get('reportingDate').setValue(this.datePipe.transform(this.MlcInfoFormGroup.get('reportingDate').value, 'yyyy-MM-dd'))
    this._AdmissionService.MlcInsert(this.MlcInfoFormGroup.value).subscribe((response) => {
         this.toastr.success(response.message);
-        this.getMLCdetailview(response.admissionId)
+        let Res=response.message
+        let ID=Res.split('.')
+        let Id=ID[1]
+        this.getMLCdetailview(Id)
         this._matDialog.closeAll();
         this.onClear();
       }, (error) => {

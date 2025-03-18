@@ -221,20 +221,20 @@ export class DischargeSummaryComponent implements OnInit {
       opertiveNotes: "",
       treatmentGiven: "",
       treatmentAdvisedAfterDischarge: "",
-      followupdate: "2024-09-08",
+      followupdate: "",
       remark: "",
-      dischargeSummaryDate: "2024-09-08",
-      opDate: "2024-09-08",
-      optime: "10:00:00 AM",
+      dischargeSummaryDate: "",
+      opDate: "",
+      optime: "",
       dischargeDoctor1: 0,
       dischargeDoctor2: 0,
       dischargeDoctor3: 0,
-      dischargeSummaryTime: "11:00:00 PM",
+      dischargeSummaryTime: "",
       doctorAssistantName: "",
       claimNumber: "0",
       preOthNumber: "0",
-      addedByDate: "2024-09-08",
-      updatedByDate: "2024-09-08",
+      addedByDate: "",
+      updatedByDate: "",
       surgeryProcDone: "",
       icd10code: "",
       clinicalConditionOnAdmisssion: "",
@@ -472,7 +472,7 @@ export class DischargeSummaryComponent implements OnInit {
           dischargModeldata['treatmentAdvisedAfterDischarge'] = this.DischargesumForm.get("treatmentAdvisedAfterDischarge").value || '',
           dischargModeldata['followupdate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
           dischargModeldata['remark'] = ''
-        dischargModeldata['dischargeSummaryDate'] = "2025-08-07",
+          dischargModeldata['dischargeSummaryDate'] = "2025-08-07",
           dischargModeldata['opDate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
           dischargModeldata['opTime'] = this.dateTimeObj.time,
           dischargModeldata['dischargeDoctor1'] = this.DischargesumForm.get("dischargeDoctor1").value,
@@ -512,14 +512,14 @@ export class DischargeSummaryComponent implements OnInit {
           Prescdiscgargemodel['instruction'] = "";
           Prescdiscgargemodel['remark'] = "";
           Prescdiscgargemodel['isEnglishOrIsMarathi'] = true;
-          Prescdiscgargemodel['storeId'] = 1;//this.accountService.currentUserValue.user.storeId || 0;
-          Prescdiscgargemodel['createdBy'] = 1;//this.accountService.currentUserValue.user.id,
+          Prescdiscgargemodel['storeId'] = 1,//this.accountService.currentUserValue.user.storeId || 0;
+          Prescdiscgargemodel['createdBy'] = this.accountService.currentUserValue.userId,
           insertIPPrescriptionDischarge.push(Prescdiscgargemodel);
         });
 
         if (this.DischargeSummaryId == undefined) {
           dischargModeldata['admissionId'] = this.vAdmissionId || 0,
-            dischargModeldata['addedBy'] = 1
+            dischargModeldata['addedBy'] = this.accountService.currentUserValue.userId
 
           var data = {
             "dischargModel": dischargModeldata,
@@ -539,7 +539,7 @@ export class DischargeSummaryComponent implements OnInit {
 
         }
         else {
-          dischargModeldata['updatedBy'] = 1
+          dischargModeldata['updatedBy'] = this.accountService.currentUserValue.userId
           var data1 = {
             "dischargModel": dischargModeldata,
             "prescriptionDischarge": insertIPPrescriptionDischarge

@@ -1183,6 +1183,14 @@ public UpdateIPDDischargSummaryTemplate(employee)
   return this._httpClient1.PutData("DischargeSummary/DischargeTemplateUpdate",employee);
 }
 
+
+
+public getbedbyRoom(deptId) {
+  return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId="+deptId)
+}
+
+
+
 }
 
 // Set NODE_OPTIONS="--max-old-space-size=8192"

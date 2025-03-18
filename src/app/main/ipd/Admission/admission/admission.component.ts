@@ -580,8 +580,7 @@ Clearfilter(event) {
 
   getMLCdetailview(element) {
 
-    console.log('Third action clicked for:', element);
-    this.commonService.Onprint("AdmissionID", 0, "IpMLCCasePaperPrint"); 
+    this.commonService.Onprint("AdmissionID", element.admissionId, "IpMLCCasePaperPrint");
   }
 
   EditRegistration(row) {
@@ -609,9 +608,7 @@ Clearfilter(event) {
 
     console.log(row)
     this._registrationService.populateFormpersonal(row);
-    // this.registerObj["RegId"] = row.RegID;
-    // this.registerObj["RegID"] = row.RegID;
-    const dialogRef = this._matDialog.open(EditAdmissionComponent,
+        const dialogRef = this._matDialog.open(EditAdmissionComponent,
       {
         maxWidth: "90vw",
         height: '650px',

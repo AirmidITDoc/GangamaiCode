@@ -163,7 +163,8 @@ patientDetail1 = new VisitMaster1({});
     public _WhatsAppEmailService: WhatsAppEmailService,
     private changeDetectorRefs: ChangeDetectorRef,
       private commonService: PrintserviceService,
-    private _formBuilder: FormBuilder
+        private accountService: AuthenticationService,
+    
   ) { }
 
   ngOnInit(): void {
@@ -178,7 +179,7 @@ patientDetail1 = new VisitMaster1({});
   }
 
   refundForm(): FormGroup {
-    return this._formBuilder.group({
+    return this.formBuilder.group({
       advanceAmt: [Validators.pattern("^[0-9]*$")],
       BillNo: [''],
       NetBillAmount: [Validators.pattern("^[0-9]*$")],
@@ -430,7 +431,7 @@ patientDetail1 = new VisitMaster1({});
           InsertRefundObj['refundAmount'] = parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
         InsertRefundObj['remark'] = this.RefundOfBillFormGroup.get('Remark').value;
         InsertRefundObj['transactionId'] = 2;
-        InsertRefundObj['addedBy'] = 1,//this.accountService.currentUserValue.user.id,
+        InsertRefundObj['addedBy'] = this.accountService.currentUserValue.userId,
           InsertRefundObj['isCancelled'] = 0;
         InsertRefundObj['isCancelledBy'] = 0;
         InsertRefundObj['isCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
@@ -448,7 +449,7 @@ patientDetail1 = new VisitMaster1({});
           InsertRefundDetailObj['refundAmount'] = element.RefundAmt || 0;
           InsertRefundDetailObj['doctorId'] =element.doctorId
           InsertRefundDetailObj['remark'] = this.RefundOfBillFormGroup.get('Remark').value || '';
-          InsertRefundDetailObj['addBy'] = 1,// this.accountService.currentUserValue.user.id,
+          InsertRefundDetailObj['addBy'] =  this.accountService.currentUserValue.userId,
             InsertRefundDetailObj['chargesId'] = element.chargesId
           RefundDetailarr.push(InsertRefundDetailObj);
         })
@@ -470,8 +471,6 @@ patientDetail1 = new VisitMaster1({});
         PatientHeaderObj['RegNo'] = this.RegNo;
         PatientHeaderObj['DoctorName'] = this.Doctorname;
         PatientHeaderObj['CompanyName'] = this.CompanyName;
-        //  PatientHeaderObj['DepartmentName'] = this.DepartmentName;
-        //  PatientHeaderObj['OPD_IPD_Id'] = this.vOPDNo;
         PatientHeaderObj['Age'] = this.AgeYear;
         PatientHeaderObj['NetPayAmount'] = Math.round(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
 
@@ -647,9 +646,7 @@ patientDetail1 = new VisitMaster1({});
     this.ChargeId = row.ChargeId;
 
     this.serselamttot = parseInt(row.NetAmount) + parseInt(this.serselamttot);
-    // console.log(this.RefundBalAmount);
-    // console.log(this.serselamttot);
-
+ 
     if (this.RefAmt1 >= this.serselamttot) {
       this.TotalRefundAmount = row.Price;
       this.RefundBalAmount = (parseInt(this.RefundBalAmount.toString()) - parseInt(this.TotalRefundAmount.toString()));

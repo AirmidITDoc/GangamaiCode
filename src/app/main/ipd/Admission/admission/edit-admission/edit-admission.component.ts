@@ -182,7 +182,10 @@ export class EditAdmissionComponent implements OnInit {
     this._AdmissionService.AdmissionUpdate(this.registerObj1.admissionId, submitData).subscribe(response => {
       this.toastr.success(response.message);
       this.onClear();
-      this.getAdmittedPatientCasepaperview(response.admissionId);
+      let Res=response.message
+      let ID=Res.split('.')
+      let Id=ID[1]
+      this.getAdmittedPatientCasepaperview(Id);
       this._matDialog.closeAll();
     }, (error) => {
       this.toastr.error(error.message);

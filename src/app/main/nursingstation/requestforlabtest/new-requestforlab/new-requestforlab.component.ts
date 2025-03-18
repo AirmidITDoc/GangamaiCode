@@ -133,12 +133,14 @@ debugger
             { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals }
         ]
       }
+
+      console.log(param)
       this._RequestforlabtestService.getserviceList(param).subscribe(Menu => {
 
         this.dsLabRequest2.data = Menu.data as LabRequest[];
         this.dsLabRequest2.sort = this.sort;
         this.dsLabRequest2.paginator = this.paginator;
-        console.log(this.dsLabRequest2.data)
+        // console.log(this.dsLabRequest2.data)
       });
     } else {
       if (!this.searchFormGroup.get('RegID')?.value && !this.vRegId) {

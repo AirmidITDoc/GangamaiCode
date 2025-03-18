@@ -191,7 +191,7 @@
                                 formControlName="ItemId" 
                                 placeholderText="Enter Item Name" fxFlex
                                 [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + (vstoreId || '') + '&ItemName='"
-                                (selectionChange)="selectChangeItem($event)" 
+                                (keyup)="selectChangeItem($event)" 
                                 TextField="formattedText" ValueField="ItemId">
                                 </airmid-autocomplete>
                                 <!-- 

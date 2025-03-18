@@ -115,12 +115,14 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isModal = !!this.dialogRef;
     console.log("DATA : ", this.advanceDataStored.storage);
-    // if (this.data) {
-
-    if (this.advanceDataStored.storage) {
+  
+    if (this.data) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       this.patientDetail = this.selectedAdvanceObj;
-      this.PatientName = this.patientDetail.patientName
+      // this.PatientName = this.patientDetail.patientName
+      this.patientDetail.formattedText=this.patientDetail.patientName
+      this.patientDetail.doctorName=this.patientDetail.doctorname
+      
       this.vOPIPId = this.patientDetail.visitId
       this.savebtn = false
       console.log("DATA : ", this.patientDetail);
@@ -289,7 +291,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       const totalAmount = formValue.price * formValue.qty;
       const discountAmount = (totalAmount * formValue.discountPer) / 100;
       const netAmount = totalAmount - discountAmount;
-      
+      debugger
      if(totalAmount > 0){
       const newRow = {
         ServiceId: formValue.serviceName.serviceId,
@@ -319,7 +321,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       this.chargeList.push(newCharge);
       this.dsChargeList.data = this.chargeList;
       this.calculateTotalAmount();
-
+console.log(this.chargeList)
+console.log( this.dsChargeList.data)
       // Reset form with initial values
       this.resetForm();
       this.chargeForm.get("qty").setValue(1);
@@ -538,7 +541,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       });
     } else {
       console.log(obj)
-
+debugger
       this.SrvcName1 = obj.serviceName;
       this.vPrice = obj.classRate;
       this.vQty = 1;
@@ -577,8 +580,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     console.log(obj)
     this.patientDetail=obj
     debugger
-    // if ((obj.regId ?? 0) > 0) {
-    //  debugger
+    
       this.vOPIPId = obj.visitId
       this.RegId = obj.regI
 
@@ -664,9 +666,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     })
 
     this.searchForm.get("regId").setValue("")
-    this.PatientName=''
-    this.patientDetail=''
-    this.dsChargeList.data=[]
+   
+    this.patientDetail=[]
+    
   }
 
 
@@ -788,6 +790,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   BillSave() {
     console.log(this.vOPIPId)
     let InsertAdddetArr = [];
+
+
     this.dsChargeList.data.forEach((element) => {
       console.log(element)
       let IsPathology, IsRadiology
@@ -1006,6 +1010,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       });
 
     }
+
+    this.dsChargeList.data=[]
+    this.totalChargeForm.reset();
+    this.dialogRef.close();
+    this.patientDetail =[];
   }
 
   viewgetCreditOPBillReportPdf(element) {
@@ -1052,6 +1061,8 @@ export class ChargesList {
   BillwiseTotalAmt: any;
   DoctorName: any;
   OpdIpdId: any;
+  serviceName: any;
+  
 
   constructor(ChargesList) {
     this.ChargesId = ChargesList.ChargesId || '';
@@ -1078,6 +1089,7 @@ export class ChargesList {
     this.IsPackage = ChargesList.IsPackage || 0;
     this.PacakgeServiceName = ChargesList.PacakgeServiceName || '';
     this.OpdIpdId = ChargesList.OpdIpdId || '';
+    this.serviceName=ChargesList.serviceName || ''
   }
 }
 

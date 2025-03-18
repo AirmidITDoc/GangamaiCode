@@ -20,6 +20,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { PatientvitalInformationComponent } from '../new-appointment/patientvital-information/patientvital-information.component';
 import { VisitMaster1 } from '../appointment-list.component';
 import { debug } from 'console';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
   selector: 'app-update-reg-patient-info',
@@ -45,26 +46,7 @@ export class UpdateRegPatientInfoComponent {
   VisitTime: String;
   registration: any;
   Patientnewold: any = 1;
-  // IsPathRad: any;
-  // PatientName: any = '';
-  // RegId: any = 0;
-  // OPIP: any = '';
-  // VisitId = 0;
-  // patienttype = 0
-  // UnitId = 1;
-  // Vtotalcount = 0;
-  // VNewcount = 0;
-  // VFollowupcount = 0;
-  // VBillcount = 0;
-  // VCrossConscount = 0;
 
-  // RegOrPhoneflag = '';
-  // vPhoneFlage = 0;
-  // vPhoneAppId: any;
-  // RegNo = 0;
-  // departmentId: any;
-  // DosctorId: any;
-  // DoctorId: any;
   vhealthCardNo: any;
   Healthcardflag: boolean = false;
   vDays: any = 0;
@@ -117,6 +99,7 @@ export class UpdateRegPatientInfoComponent {
     public datePipe: DatePipe,
     private formBuilder: UntypedFormBuilder,
     public matDialog: MatDialog,
+      private accountService: AuthenticationService,
     private commonService: PrintserviceService,
     public toastr: ToastrService, @Inject(MAT_DIALOG_DATA) public data: any
 
@@ -179,7 +162,10 @@ export class UpdateRegPatientInfoComponent {
 
     this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
       this.toastr.success(response.message);
-      this.OnViewReportPdf(response.visitId)
+      let Res=response.message
+      let ID=Res.split('.')
+      let visitId=ID[1]
+      this.OnViewReportPdf(visitId)
       this.onClear(true);
       this._matDialog.closeAll();
     }, (error) => {
@@ -254,11 +240,7 @@ export class UpdateRegPatientInfoComponent {
       
 this.VisitFormGroup.get("DepartmentId").setValue(this.PrevregisterObj.departmentId)
 this.patientDetail1.doctorID=this.PrevregisterObj.consultantDocId
-// this.VisitFormGroup.get("ConsultantDocId").setValue(this.PrevregisterObj.consultantDocId)
 
-// this.ddlDoctor.SetSelection(this.PrevregisterObj.consultantDocId)
-
-// this.selectChangedepartment(this.PrevregisterObj)
     });
   }
 

@@ -21,6 +21,7 @@ import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdo
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { PatientvitalInformationComponent } from './patientvital-information/patientvital-information.component';
 import { values } from 'lodash';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
     selector: 'app-new-appointment',
@@ -139,6 +140,7 @@ export class NewAppointmentComponent implements OnInit {
         public _WhatsAppEmailService: WhatsAppEmailService,
         public datePipe: DatePipe,
         private formBuilder: UntypedFormBuilder,
+          private accountService: AuthenticationService,
         public matDialog: MatDialog,
         private commonService: PrintserviceService,
         public toastr: ToastrService, @Inject(MAT_DIALOG_DATA) public data: any
@@ -421,9 +423,7 @@ if(this.vPhoneAppId)
         this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
             
             this.toastr.success(response.message);
-            // console.log(response)
-            // console.log(response.message)
-           let Res=response.message
+            let Res=response.message
             let ID=Res.split('.')
             let visitId=ID[1]
             // console.log(ID)

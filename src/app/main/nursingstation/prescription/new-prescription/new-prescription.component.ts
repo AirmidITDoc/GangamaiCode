@@ -149,7 +149,7 @@ export class NewPrescriptionComponent implements OnInit {
       RegId: '',
       PatientName: '',
       WardName: '',
-      StoreId: '',
+      StoreId: 0,
       RegID: [''],
       Op_ip_id: ['1'],
       AdmissionID: 0
@@ -218,7 +218,7 @@ export class NewPrescriptionComponent implements OnInit {
     }
   }
 
-  vstoreId:any;
+  vstoreId:any=0;
   selectChangeStore(obj:any){
     console.log("Store:",obj);
     this.vstoreId=obj.value
@@ -228,17 +228,18 @@ export class NewPrescriptionComponent implements OnInit {
   vitemname:any;
   selectChangeItem(obj: any) {
     debugger
-    if (!this.vstoreId) {
+    if (this.vstoreId==0) {
       this.toastr.warning('Please select Store', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return; // ✅ Stop execution if storeId is not selected
     }
-  
+  else if(this.vstoreId!=0){
     console.log("Item:", obj);
     this.vitemId = obj.itemId;
     this.vitemname = obj.itemName;
     this.ItemForm.get('ItemId').setValue(obj);
+  }
   }
 
 

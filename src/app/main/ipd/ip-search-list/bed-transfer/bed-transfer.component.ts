@@ -108,11 +108,22 @@ export class BedTransferComponent implements OnInit {
       toBedId: 0,
       toClassId: 0,
       remark: "%",
-      addedBy: 1,
+      addedBy:this.accountService.currentUserValue.userId,
       isCancelled: 0,
       isCancelledBy: 0
     });
   }
+
+
+  selectChangedepartment(obj: any) {
+        
+    console.log(obj)
+    this._IpSearchListService.getbedbyRoom(obj.value).subscribe((data: any) => {
+        this.ddlDoctor.options = data;
+        this.ddlDoctor.bindGridAutoComplete();
+    });
+}
+
 
 
   onBedtransfer() {

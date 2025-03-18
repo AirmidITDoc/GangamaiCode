@@ -97,9 +97,7 @@ export class NewRegistrationComponent implements OnInit {
     OnSubmit() {
         console.log(this.personalFormGroup.value)
         this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
-        // this.personalFormGroup.get('RegTime').setValue(this.datePipe.transform(this.personalFormGroup.get('RegTime').value, 'hh:mm:ss a'))
-     
-        
+       
         if (this.personalFormGroup.valid) {
             this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
                this.toastr.success(response.message);
@@ -138,12 +136,6 @@ export class NewRegistrationComponent implements OnInit {
     }
 
    
-
-    get f() {
-        return this.personalFormGroup.controls;
-    }
-  
-
     onChangestate(e) {
         this.ddlCountry.SetSelection(e.countryId);
     }
@@ -151,8 +143,7 @@ export class NewRegistrationComponent implements OnInit {
     onChangecity(e) {
         
         this.ddlState.SetSelection(e.stateId);
-        console.log(this.ddlState)
-         this.ddlCountry.SetSelection(this.personalFormGroup.get("StateId").value)
+        this.ddlCountry.SetSelection(this.personalFormGroup.get("StateId").value)
       
     }
 
@@ -165,13 +156,11 @@ export class NewRegistrationComponent implements OnInit {
                 { name: "pattern", Message: "only char allowed." }
             ],
             middleName: [
-                // { name: "required", Message: "Middle Name is required" },
-                // { name: "maxLength", Message: "Enter only upto 50 chars" },
+             
                 { name: "pattern", Message: "only char allowed." }
             ],
             lastName: [
                 { name: "required", Message: "Last Name is required" },
-                // { name: "maxLength", Message: "Enter only upto 50 chars" },
                 { name: "pattern", Message: "only char allowed." }
             ],
             address: [
@@ -211,7 +200,6 @@ export class NewRegistrationComponent implements OnInit {
             ],
             phoneNo: [
                 { name: "pattern", Message: "Only numbers allowed" },
-                // { name: "required", Message: "phoneNo No is required" },
                 { name: "minLength", Message: "10 digit required." },
                 { name: "maxLength", Message: "More than 10 digits not allowed." }
 

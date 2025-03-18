@@ -14,7 +14,7 @@ export class TemplateServieService {
     private _formBuilder: UntypedFormBuilder
   ) {
     this.myformSearch = this.createSearchForm();
-    this.myform = this.createTemplateForm();
+    // this.myform = this.createTemplateForm();
    }
 
    createSearchForm():FormGroup{
@@ -22,15 +22,6 @@ export class TemplateServieService {
       TemplateNameSearch: [""],
         IsDeletedSearch: ["2"],
     });
-}
-
-createTemplateForm(): FormGroup {
-  return this._formBuilder.group({
-      templateId: [0],
-      templateName: [""], 
-      templateDesc:[""],
-      templateDescInHtml:[""],
-  });
 }
 
 public templateMasterSave(Param: any) {

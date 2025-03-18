@@ -89,7 +89,8 @@ const routes: Routes = [
         MatAutocompleteModule,
         MatProgressSpinnerModule,
         SharedModule,
-        MatDialogModule
+        MatDialogModule,
+        AngularEditorModule,
          
     ],
     providers: [TemplateServieService, DatePipe]

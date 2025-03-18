@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
 
 @Injectable({
@@ -19,7 +20,7 @@ export class AdmissionService {
 
     counter = 0;
 
-    constructor(public _httpClient: HttpClient, public _httpClient1: ApiCaller,
+    constructor(public _httpClient: HttpClient, public _httpClient1: ApiCaller,  private accountService: AuthenticationService,
         public _formBuilder: UntypedFormBuilder, private _loaderService: LoaderService,
     ) {
         this.myFilterform = this.filterForm();
@@ -105,8 +106,8 @@ export class AdmissionService {
             CountryId:  [1, [Validators.required]],
             IsCharity: false,
             IsSeniorCitizen: false,
-            AddedBy: 1,
-            updatedBy: 1,
+            AddedBy: this.accountService.currentUserValue.userId,
+            updatedBy:this.accountService.currentUserValue.userId,
             RegDate: [(new Date()).toISOString()],
             RegTime: [(new Date()).toISOString()],
             Photo: [''],
@@ -145,7 +146,7 @@ export class AdmissionService {
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
             ]],
             RelationshipId: 0,
-            AddedBy: 1,
+            AddedBy:this.accountService.currentUserValue.userId,
             IsMlc: true,
             MotherName: "",
             AdmittedDoctor1: ['', [Validators.required]],

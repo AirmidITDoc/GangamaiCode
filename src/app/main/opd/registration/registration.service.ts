@@ -4,6 +4,7 @@ import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular
 import { RegInsert } from './registration.component';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Injectable({
     providedIn: 'root'
@@ -17,6 +18,7 @@ export class RegistrationService {
     constructor(
         public _httpClient: HttpClient, public _httpClient1: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
+         private accountService: AuthenticationService,
         private _loaderService: LoaderService
     ) {
         this.myFilterform = this.filterForm();
@@ -95,8 +97,8 @@ export class RegistrationService {
             CountryId:  [0, [Validators.required]],
             IsCharity: false,
             IsSeniorCitizen: false,
-            AddedBy: 1,
-            updatedBy: 1,
+            AddedBy:this.accountService.currentUserValue.userId,
+            updatedBy: this.accountService.currentUserValue.userId,
             RegDate: [(new Date()).toISOString()],
             RegTime: [(new Date()).toISOString()],
             Photo: [''],
@@ -135,10 +137,10 @@ export class RegistrationService {
     }
 
 
-    public getcityMaster(Id, version) {
+    // public getcityMaster(Id, version) {
 
-        return this._httpClient1.GetData("CityMaster?Id=" + Id + "&version=" + version);
-    }
+    //     return this._httpClient1.GetData("CityMaster?Id=" + Id + "&version=" + version);
+    // }
     public getNewRegistrationList(employee) {
         return this._httpClient1.PostData("OutPatient/RegistrationList", employee)
     }
@@ -151,16 +153,16 @@ export class RegistrationService {
         return this._httpClient1.GetData("OutPatient/" + Id);
     }
 
-    public getcitylist(version) {
-        return this._httpClient1.GetData("CityMaster/get-cities/" + "&version=" + version);
-    }
+    // public getcitylist(version) {
+    //     return this._httpClient1.GetData("CityMaster/get-cities/" + "&version=" + version);
+    // }
 
   
 
-    public getstateId(Id) {
+    // public getstateId(Id) {
 
-        return this._httpClient1.GetData("StateMaster/?Id=" + Id + "&version=" + 1);
-    }
+    //     return this._httpClient1.GetData("StateMaster/?Id=" + Id + "&version=" + 1);
+    // }
 
     public getPatientListView(mode) {
         return this._httpClient1.PostData("Report/NewViewReport", mode);
