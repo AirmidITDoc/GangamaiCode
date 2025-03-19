@@ -174,11 +174,20 @@ export class SalesHospitalComponent implements OnInit {
  
 
   patientDetailsFormGrp: FormGroup;
-  paymentArr1: any[] = this.opService.getPaymentArr();
-  paymentArr2: any[] = this.opService.getPaymentArr();
-  paymentArr3: any[] = this.opService.getPaymentArr();
-  paymentArr4: any[] = this.opService.getPaymentArr();
-  paymentArr5: any[] = this.opService.getPaymentArr();
+  paymentArr1: any[] = [];
+  paymentArr2: any[] = [];
+  paymentArr3: any[] = [];
+  paymentArr4: any[] = [];
+  paymentArr5: any[] = [];
+  BindPaymentTypes() {
+    this.opService.getPaymentModes().subscribe((data) => {
+        this.paymentArr1 = data;
+        this.paymentArr2 = data;
+        this.paymentArr3 = data;
+        this.paymentArr4 = data;
+        this.paymentArr5 = data;
+    });
+}
   paymentRowObj = {
     cash: false,
     cheque: false,
@@ -403,6 +412,7 @@ export class SalesHospitalComponent implements OnInit {
 
   ngOnInit(): void {
     // this.patientDetailsFormGrp = this.createForm();
+    this.BindPaymentTypes();
     this.gePharStoreList();
     this.getItemSubform();
     this.getConcessionReasonList();
@@ -557,132 +567,6 @@ export class SalesHospitalComponent implements OnInit {
   //   // if (paymentOption && paymentOption == 'upi') {
 
   //   // }
-  // }
-
-  // onPaymentChange(rowId: number, value: string) {
-  //   // 
-  //   switch (rowId) {
-  //     case 1:
-  //       this.paymentArr2 = this.opService.getPaymentArr();
-  //       let element = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet1);
-  //       this.paymentArr2.splice(element, 1);
-
-  //       this.paymentArr3 = this.opService.getPaymentArr();
-  //       let element1 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet1);
-  //       this.paymentArr3.splice(element1, 1);
-
-  //       this.paymentArr4 = this.opService.getPaymentArr();
-  //       let element2 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet1);
-  //       this.paymentArr4.splice(element2, 1);
-
-  //       this.paymentArr5 = this.opService.getPaymentArr();
-  //       let element3 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet1);
-  //       this.paymentArr5.splice(element3, 1);
-  //       break;
-
-  //     case 2:
-  //       this.paymentArr1 = this.opService.getPaymentArr();
-  //       let ele = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet2);
-  //       this.paymentArr1.splice(ele, 1);
-
-  //       this.paymentArr3 = this.opService.getPaymentArr();
-  //       let ele1 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet2);
-  //       this.paymentArr3.splice(ele1, 1);
-
-  //       this.paymentArr4 = this.opService.getPaymentArr();
-  //       let ele2 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet2);
-  //       this.paymentArr4.splice(ele2, 1);
-
-  //       this.paymentArr5 = this.opService.getPaymentArr();
-  //       let ele3 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet2);
-  //       this.paymentArr5.splice(ele3, 1);
-  //       this.setSecRowValidators(value);
-  //       this.patientDetailsFormGrp.updateValueAndValidity();
-  //       break;
-
-  //     case 3:
-  //       this.paymentArr1 = this.opService.getPaymentArr();
-  //       let elem = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet3);
-  //       this.paymentArr1.splice(elem, 1);
-
-  //       this.paymentArr2 = this.opService.getPaymentArr();
-  //       let elem1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet3);
-  //       this.paymentArr2.splice(elem1, 1);
-
-  //       this.paymentArr4 = this.opService.getPaymentArr();
-  //       let elem2 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet3);
-  //       this.paymentArr4.splice(elem2, 1);
-
-  //       this.paymentArr5 = this.opService.getPaymentArr();
-  //       let elem3 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet3);
-  //       this.paymentArr5.splice(elem3, 1);
-  //       this.setThirdRowValidators(value);
-  //       this.patientDetailsFormGrp.updateValueAndValidity();
-  //       break;
-
-  //     case 4:
-  //       this.paymentArr1 = this.opService.getPaymentArr();
-  //       let elemen = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet4);
-  //       this.paymentArr1.splice(elemen, 1);
-
-  //       this.paymentArr2 = this.opService.getPaymentArr();
-  //       let elemen1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet4);
-  //       this.paymentArr2.splice(elemen1, 1);
-
-  //       this.paymentArr3 = this.opService.getPaymentArr();
-  //       let elemen2 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet4);
-  //       this.paymentArr3.splice(elemen2, 1);
-
-  //       this.paymentArr5 = this.opService.getPaymentArr();
-  //       let elemen3 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet4);
-  //       this.paymentArr5.splice(elemen3, 1);
-  //       this.setFourthRowValidators(value);
-  //       this.patientDetailsFormGrp.updateValueAndValidity();
-  //       break;
-
-  //     case 5:
-  //       this.paymentArr1 = this.opService.getPaymentArr();
-  //       let elemnt = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet5);
-  //       this.paymentArr1.splice(elemnt, 1);
-
-  //       this.paymentArr2 = this.opService.getPaymentArr();
-  //       let elemnt1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet5);
-  //       this.paymentArr2.splice(elemnt1, 1);
-
-  //       this.paymentArr3 = this.opService.getPaymentArr();
-  //       let elemnt2 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet5);
-  //       this.paymentArr3.splice(elemnt2, 1);
-
-  //       this.paymentArr4 = this.opService.getPaymentArr();
-  //       let elemnt3 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet5);
-  //       this.paymentArr4.splice(elemnt3, 1);
-  //       this.setFifthRowValidators(value);
-  //       this.patientDetailsFormGrp.updateValueAndValidity();
-  //       break;
-
-  //     // case 6:
-  //     //   this.paymentArr1 = this.opService.getPaymentArr();
-  //     //   let elemnt = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet5);
-  //     //   this.paymentArr1.splice(elemnt, 1);
-
-  //     //   this.paymentArr2 = this.opService.getPaymentArr();
-  //     //   let elemnt1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet5);
-  //     //   this.paymentArr2.splice(elemnt1, 1);
-
-  //     //   this.paymentArr3 = this.opService.getPaymentArr();
-  //     //   let elemnt2 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet5);
-  //     //   this.paymentArr3.splice(elemnt2, 1);
-
-  //     //   this.paymentArr4 = this.opService.getPaymentArr();
-  //     //   let elemnt3 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet5);
-  //     //   this.paymentArr4.splice(elemnt3, 1);
-  //     //   this.setFifthRowValidators(value);
-  //     //   this.patientDetailsFormGrp.updateValueAndValidity();
-  //     //   break;
-
-  //     default:
-  //       break;
-  //   }
   // }
 
   // setPaymentOption() {

@@ -275,8 +275,7 @@
                                             <mat-header-row class="accent"
                                                 *matHeaderRowDef="selectedSaleDisplayedCol; sticky: true">
                                             </mat-header-row>
-                                            <mat-row *matRowDef="let contact; columns: selectedSaleDisplayedCol;"
-                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                            <mat-row *matRowDef="let contact; columns: selectedSaleDisplayedCol;"></mat-row>
                                         </mat-table>
                                     </div>
                                 </div>

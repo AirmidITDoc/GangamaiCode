@@ -27,16 +27,19 @@ export class OpPaymentComponent implements OnInit {
   currentDate = new Date();
   patientDetailsFormGrp: FormGroup;
   selectedPaymnet1: string = '';
-  paymentArr1: any[] = this.opService.getPaymentArr();
+  paymentArr1: any[] = [];
   BindPaymentTypes() {
-    let full = this.opService.getPaymentArr();
-    let final = [];
-    full.forEach((item) => {
-      if (!this.Payments.data.find(x => x.PaymentType == item.value)) {
-        final.push(item);
-      }
+    this.opService.getPaymentModes().subscribe((data) => {
+        this.paymentArr1 = data;
     });
-    this.paymentArr1 = final;
+    // let full = this.opService.getPaymentArr();
+    // let final = [];
+    // full.forEach((item) => {
+    //   if (!this.Payments.data.find(x => x.PaymentType == item.value)) {
+    //     final.push(item);
+    //   }
+    // });
+    // this.paymentArr1 = final;
   } 
 
   onChangePaymentType() { 
