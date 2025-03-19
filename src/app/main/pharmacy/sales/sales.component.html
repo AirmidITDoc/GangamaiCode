@@ -926,7 +926,7 @@
                                                                 required>
                                                                 <mat-option *ngFor="let ele of paymentArr1"
                                                                     [value]="ele.value">
-                                                                    {{ele.viewValue}}
+                                                                    {{ele.text}}
                                                                 </mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
@@ -980,7 +980,7 @@
                                                                 (selectionChange)="onPaymentChange(2, $event.value)">
                                                                 <mat-option *ngFor="let ele of paymentArr2"
                                                                     [value]="ele.value">
-                                                                    {{ele.viewValue}}
+                                                                    {{ele.text}}
                                                                 </mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
@@ -1074,7 +1074,7 @@
                                                                 (selectionChange)="onPaymentChange(3, $event.value)">
                                                                 <mat-option *ngFor="let ele of paymentArr3"
                                                                     [value]="ele.value">
-                                                                    {{ele.viewValue}}
+                                                                    {{ele.text}}
                                                                 </mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
@@ -1168,7 +1168,7 @@
                                                                 (selectionChange)="onPaymentChange(4, $event.value)">
                                                                 <mat-option *ngFor="let food of paymentArr4"
                                                                     [value]="food.value">
-                                                                    {{food.viewValue}}
+                                                                    {{food.text}}
                                                                 </mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
@@ -1256,7 +1256,7 @@
                                                                 (selectionChange)="onPaymentChange(5, $event.value)">
                                                                 <mat-option *ngFor="let ele of paymentArr5"
                                                                     [value]="ele.value">
-                                                                    {{ele.viewValue}}
+                                                                    {{ele.text}}
                                                                 </mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
