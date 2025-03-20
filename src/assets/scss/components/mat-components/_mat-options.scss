@@ -67,7 +67,7 @@ $mat-option-height:40px;
         }
         .mat-mdc-option{
             &.mdc-list-item{
-                font-size: 1rem;
+                font-size: 0.875rem;
                 min-height: $mat-option-height;
                 span{
                     @include line-clamp(1);

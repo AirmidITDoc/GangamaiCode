@@ -302,6 +302,11 @@ export class NewGrnComponent implements OnInit {
     vExpDate: string = '';
     dateTimeObj: any;
 
+    // Bind dropdown mode
+    dropdownMode = {
+        gstCalcType: "GstCalcType",
+        supplierMaster: "SupplierMaster"
+    }
     constructor(
         public _GRNList: GoodReceiptnoteService,
         public _matDialog: MatDialog,
@@ -362,7 +367,36 @@ export class NewGrnComponent implements OnInit {
         this.gePharStoreList();
         this.getGSTtypeList();
     }
+    getSelectedItem(event: any): void {
+        console.log({ event });
+    }
+    getValidationMessages() {
+        return {
+            supplierId: [
+                { name: "required", Message: "SupplierId is required" }
+            ],
+            invoiceNo: [
+                { name: "required", Message: "Invoice No is required" }
+            ],
+            gateEntryNo: [
+                { name: "required", Message: "Gate Entry No is required" }
+            ], 
+            mrp: [
+                { name: "required", Message: "MRP is required" }
+            ],
+            rate: [
+                { name: "required", Message: "Rate is required" }
+            ],
+            discPer1: [
+                { name: "required", Message: "Disc1 % is required" }
+            ],
+            discPer2: [
+                { name: "required", Message: "Disc2 % is required" }
+            ],
+                
 
+        };
+    }
     date = new FormControl(new Date());
     minDate = new Date();
     maxDate = new Date(2024, 4, 1);

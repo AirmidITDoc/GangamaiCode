@@ -66,7 +66,7 @@ export class AirmidDropDownComponent implements OnInit {
 
     get activeErrors(): string[] {
         try {
-            if (!this.formGroup || this.formGroup[this.formControlName] || !this.validations || this.validations.length <= 0) {
+            if (!this.formGroup || !this.formGroup.controls[this.formControlName] || !this.validations || this.validations.length <= 0) {
                 return [];
             }
             // Find active validation 
