@@ -275,12 +275,23 @@ export class ResultEntryComponent implements OnInit {
 
     getSelectedRow(row: any): void {
         console.log("Selected row : ", row);
+        this.reportPrintObj = row
+        this.reportPrintObj["DOA"] = row.vaTime
+
+        this.PatientName = row.patientName;
+        this.OPD_IPD = row.oP_IP_No
+        this.Age = row.AgeYear
+        this.PatientType = row.patientType
+        this.Mobileno = row.mobileNo
+        this.SBillNo = row.billNo;
+        this.SOPIPtype = row.OPD_IPD_Type;
+        this.SFromDate = this.datePipe.transform(row.PathDate, "yyyy-MM-dd ");
 
         this.getSampledetailList1(row);
     }
 
       getSampledetailList1(row) {
-        debugger
+        // debugger
         let inputDate = row.vaDate;
         let parts = inputDate.split(' ')[0].split('-');
         let date = `${parts[2]}-${parts[1]}-${parts[0]}`;
@@ -314,7 +325,7 @@ export class ResultEntryComponent implements OnInit {
     
         console.log(m_data);
         this._SampleService.PathResultentryDetailList(m_data).subscribe(Visit => {
-          this.dataSource1.data = Visit as SampleList[];
+          this.dataSource1.data = Visit.data as SampleList[];
           console.log("ResultList:",this.dataSource1.data)
           this.dataSource1.sort = this.sort;
           this.dataSource1.paginator = this.paginator;
@@ -329,13 +340,16 @@ export class ResultEntryComponent implements OnInit {
         this.dateTimeObj = dateTimeObj;
     }
 
-
+status:any="1"
+opipType:any="2";
     onChangeFirst() {
-        this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
-        this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
-        this.f_name = this.myformSearch.get('FirstName').value + "%"
-        this.l_name = this.myformSearch.get('LastName').value + "%"
-        this.regNo = this.myformSearch.get('RegNo').value 
+        this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
+        this.f_name = this.myformSearch.get('FirstNameSearch').value + "%"
+        this.l_name = this.myformSearch.get('LastNameSearch').value + "%"
+        this.status = this.myformSearch.get('StatusSearch').value
+        this.opipType = this.myformSearch.get('PatientTypeSearch').value
+        this.regNo = this.myformSearch.get('RegNoSearch').value || ""
         this.getfilterdata();
     }
     
@@ -349,11 +363,11 @@ export class ResultEntryComponent implements OnInit {
         filters:  [
             { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "IsCompleted", fieldValue: "1", opType: OperatorComparer.Equals },
-            { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals }
+            { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },
+            { fieldName: "OP_IP_Type", fieldValue: this.opipType, opType: OperatorComparer.Equals }
     
         ]
     }
@@ -396,6 +410,7 @@ export class ResultEntryComponent implements OnInit {
     }
 
     getPatientsList() {
+        debugger
         this.dataSource1.data = [];
         this.sIsLoading = 'loading-data';
         var m_data = {
@@ -436,42 +451,42 @@ export class ResultEntryComponent implements OnInit {
     }
 
     // for sampledetails tablemyformSearch
-    onEdit(m) {
+    // onEdit(m) {
 
-        m["Selected"] = true;
-        console.log(m)
-        this.reportPrintObj = m
-        this.reportPrintObj["DOA"] = m.VATime
+    //     m["Selected"] = true;
+    //     console.log(m)
+    //     this.reportPrintObj = m
+    //     this.reportPrintObj["DOA"] = m.VATime
 
-        this.PatientName = m.PatientName;
-        this.OPD_IPD = m.OP_IP_No
-        this.Age = m.AgeYear
-        this.PatientType = m.PatientType
-        this.Mobileno = m.MobileNo
-        this.SBillNo = m.BillNo;
-        this.SOPIPtype = m.OPD_IPD_Type;
-        this.SFromDate = this.datePipe.transform(m.PathDate, "yyyy-MM-dd ");
+    //     this.PatientName = m.PatientName;
+    //     this.OPD_IPD = m.OP_IP_No
+    //     this.Age = m.AgeYear
+    //     this.PatientType = m.PatientType
+    //     this.Mobileno = m.MobileNo
+    //     this.SBillNo = m.BillNo;
+    //     this.SOPIPtype = m.OPD_IPD_Type;
+    //     this.SFromDate = this.datePipe.transform(m.PathDate, "yyyy-MM-dd ");
 
-        var m_data = {
-            "BillNo": m.BillNo,
-            "OP_IP_Type": m.OPD_IPD_Type,
-            "From_Dt": this.datePipe.transform(m.PathDate, "yyyy-MM-dd"),
-        }
+    //     var m_data = {
+    //         "BillNo": m.BillNo,
+    //         "OP_IP_Type": m.OPD_IPD_Type,
+    //         "From_Dt": this.datePipe.transform(m.PathDate, "yyyy-MM-dd"),
+    //     }
 
-        this._SampleService.getSampleList(m_data).subscribe(Visit => {
-            this.dataSource1.data = Visit as SampleList[];
-            console.log(this.dataSource1.data);
+    //     this._SampleService.getSampleList(m_data).subscribe(Visit => {
+    //         this.dataSource1.data = Visit as SampleList[];
+    //         console.log(this.dataSource1.data);
 
-            this.dataSource1.sort = this.sort;
-            this.dataSource1.paginator = this.paginator;
-            this.sIsLoading = '';
-            this.click = false;
-        },
-            error => {
-                this.sIsLoading = '';
-            });
-        this.selection.clear();
-    }
+    //         this.dataSource1.sort = this.sort;
+    //         this.dataSource1.paginator = this.paginator;
+    //         this.sIsLoading = '';
+    //         this.click = false;
+    //     },
+    //         error => {
+    //             this.sIsLoading = '';
+    //         });
+    //     this.selection.clear();
+    // }
 
     SearchTest($event) {
         var m_data = {
@@ -523,10 +538,11 @@ export class ResultEntryComponent implements OnInit {
     }
     IsTemplateTest: any;
     chkresultentry(contact, flag) {
+        debugger
         if (flag)
-            this.IsTemplateTest = contact[0]["IsTemplateTest"]
+            this.IsTemplateTest = contact[0]["isTemplateTest"]
         else
-            this.IsTemplateTest = contact.IsTemplateTest
+            this.IsTemplateTest = contact.isTemplateTest
 
         console.log(contact)
         if (this.IsTemplateTest == 0) {
@@ -543,15 +559,19 @@ export class ResultEntryComponent implements OnInit {
 
                     this.selection.selected.forEach(element => {
                         console.log(element)
-                        data.push({ PathReportId: element["PathReportID"].toString(), ServiceId: element["ServiceId"].toString(), IsCompleted: element["IsCompleted"].toString() });
-                        this.printdata.push({ PathReportId: element["PathReportID"].toString() });
+                        data.push({ 
+                            PathReportId: element["pathReportId"].toString(),
+                             ServiceId: element["serviceId"].toString(), 
+                             IsCompleted: element["isCompleted"].toString() 
+                            });
+                        this.printdata.push({ PathReportId: element["pathReportId"].toString() });
                     });
 
                     console.log(this.printdata)
                     data.forEach((element) => {
-                        this.reportIdData.push(element.PathReportId)
-                        this.ServiceIdData.push(element.ServiceId)
-                        if (element.IsCompleted == "true")
+                        this.reportIdData.push(element.pathReportId)
+                        this.ServiceIdData.push(element.serviceId)
+                        if (element.isCompleted == "true")
                             this.Iscompleted = 1;
                     });
 
@@ -576,7 +596,7 @@ export class ResultEntryComponent implements OnInit {
 
             }
         }
-        else if (contact.IsTemplateTest == 1) {
+        else if (contact.isTemplateTest == 1) {
             this.advanceDataStored.storage = new SampleDetailObj(contact);
             const dialogRef = this._matDialog.open(ResultEntrytwoComponent,
                 {
@@ -594,34 +614,6 @@ export class ResultEntryComponent implements OnInit {
         this.getPatientsList()
         // this.selection.clear();
     }
-
-    // Reentryone() {
-    //     const dialogRef = this._matDialog.open(ResultEntryOneComponent,
-    //         {
-    //             maxWidth: "90%",
-    //             height: '95%',
-    //             width: '100%',
-    //         });
-
-
-    //     dialogRef.afterClosed().subscribe(result => {
-    //         console.log('Pathology Template  Saved ..', result);
-    //     });
-    // }
-
-    // Reentrytwo() {
-    //     const dialogRef = this._matDialog.open(ResultEntrytwoComponent,
-    //         {
-    //             maxWidth: "90%",
-    //             height: '95%',
-    //             width: '100%',
-    //         });
-
-
-    //     dialogRef.afterClosed().subscribe(result => {
-    //         console.log('Pathology Template  Saved ..', result);
-    //     });
-    // }
 
     Printresultentrywithheader() {
         console.log(this.selection.selected)
@@ -645,7 +637,7 @@ export class ResultEntryComponent implements OnInit {
 
     getWhatsappshareResult(contact) {
 
-        if (!contact.IsTemplateTest) {
+        if (!contact.isTemplateTest) {
             if (this.selection.selected.length == 0) {
                 this.toastr.warning('CheckBox Select !', 'Warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',
@@ -653,7 +645,7 @@ export class ResultEntryComponent implements OnInit {
                 return;
             }
         }
-        if (!contact.IsTemplateTest) {
+        if (!contact.isTemplateTest) {
             this.whatsappresultentry();
 
         }
@@ -693,6 +685,7 @@ export class ResultEntryComponent implements OnInit {
 
     OPIPID: any = 0;
     onresultentryshow(event, m) {
+        debugger
         this.OPIPID = m.OPD_IPD_ID
         this.advanceDataStored.storage = new SampleDetailObj(m);
         console.log(this.advanceDataStored.storage)
@@ -740,13 +733,13 @@ export class ResultEntryComponent implements OnInit {
                 });
             }
         });
-        this.onEdit(row);
+        // this.onEdit(row);
     }
 
     getPrint(contact) {
 
 
-        if (contact.IsTemplateTest)
+        if (contact.isTemplateTest)
             this.viewgetPathologyTemplateReportPdf(contact)
         else {
             // this.viewgetPathologyTestReportPdf(contact)

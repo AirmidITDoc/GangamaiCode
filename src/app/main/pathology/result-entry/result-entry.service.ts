@@ -80,13 +80,19 @@ export class ResultEntryService {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
   }
 
-  public getPathologyResultListforIP(query){
-    return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
+  // public getPathologyResultListforIP(query){
+  //   return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
 
+  // }
+  public getPathologyResultListforIP(param){
+    return this._httpClient1.PostData("Common",param)
   }
-  public getPathologyResultListforOP(query){
-    return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
+  // public getPathologyResultListforOP(query){
+  //   return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
+  // }
 
+  public getPathologyResultListforOP(param){
+    return this._httpClient1.PostData("Common",param)
   }
 
 

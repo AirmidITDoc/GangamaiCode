@@ -954,6 +954,10 @@ export class AdmissionPersonlModel {
   admissionTime:any;
   dischargeTime:any;
   patientTypeId:any;
+  genderId:any;
+  oP_IP_No:any;
+  doctorName:any;
+  genderName:any;
   /**
 * Constructor
 *
@@ -1140,7 +1144,10 @@ export class AdmissionPersonlModel {
       this.admissionId=AdmissionPersonl.admissionId ||0
       this.dischargeTime  =AdmissionPersonl.dischargeTime ||''
       this.patientTypeId =AdmissionPersonl.patientTypeId ||''
-
+      this.genderId =AdmissionPersonl.genderId ||''
+      this.oP_IP_No=AdmissionPersonl.oP_IP_No || ''
+      this.doctorName=AdmissionPersonl.doctorName || ''
+      this.genderName=AdmissionPersonl.genderName || ''
     }
   }
 }

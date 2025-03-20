@@ -306,7 +306,7 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     onSubmit() {
-        
+        debugger
         const currentDate = new Date();
         const datePipe = new DatePipe('en-US');
         const formattedTime = datePipe.transform(currentDate, 'shortTime');
@@ -326,9 +326,9 @@ export class TestFormMasterComponent implements OnInit {
             }));
             let mPathTestDetailMasters = this.DSTestList.data.map((row: any) => ({
                 "TestDetId": 0,
-                "TestId": 0,
+                "TestId": row.testId || 0,
                 "SubTestId": row.subTestID || 0,
-                "ParameterId": row.parameterId
+                "ParameterId": row.parameterID
             }));
 
             var mdata = {
@@ -343,7 +343,7 @@ export class TestFormMasterComponent implements OnInit {
                 "FootNote": this.testForm.get("FootNote").value || "",
                 "IsDeleted": Boolean(JSON.parse(this.testForm.get("isActive").value)), //true
                 "ServiceId": this.testForm.get("ServiceId").value || 15,
-                "IsTemplateTest": this._TestmasterService.is_templatetest,//this.testForm.get('IsTemplateTest').value,
+                "IsTemplateTest": this._TestmasterService.is_templatetest ? 1 : 0,//this.testForm.get('IsTemplateTest').value,
                 "TestTime": formattedTime,
                 "TestDate": formattedDate,//"2022-07-11",
                 "MPathTemplateDetails": mPathTemplateDetails,
@@ -365,7 +365,7 @@ export class TestFormMasterComponent implements OnInit {
             }));
             let mPathTestDetailMasters = this.DSTestList.data.map((row: any) => ({
                 "TestDetId": 0,
-                "TestId": row.testId,
+                "TestId": row.testId || 0,
                 "SubTestId": row.subTestID || 0,
                 "ParameterId": row.parameterID || row.parameterId
             }));
@@ -381,7 +381,7 @@ export class TestFormMasterComponent implements OnInit {
                 "FootNote": this.testForm.get("FootNote").value,
                 "IsDeleted": Boolean(JSON.parse(this.testForm.get("isActive").value)),
                 "ServiceId": this.testForm.get("ServiceId").value || 15,
-                "IsTemplateTest": this._TestmasterService.is_templatetest, //this.testForm.get('IsTemplateTest').value,
+                "IsTemplateTest": this._TestmasterService.is_templatetest ? 1 : 0, //this.testForm.get('IsTemplateTest').value,
                 "TestTime": formattedTime,
                 "TestDate": formattedDate,//"2022-07-11",
                 "MPathTemplateDetails": mPathTemplateDetails,
@@ -401,16 +401,22 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     getParameterList() {
-
         let parameter = this.testForm.get("ParameterNameSearch").value + "%" || '%';
+        var param={
 
-        var param = {
-            sortField: "parameterId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "parameterName", fieldValue: parameter, opType: OperatorComparer.Contains }
-            ]
-        }
+            "first": 0,          
+            "rows": 10,          
+            "sortField": "ParameterId",          
+            "sortOrder": 0,          
+            "filters": [          
+              {          
+                "fieldName": "ParameterName",          
+                "fieldValue": parameter,          
+                "opType": "StartsWith"          
+              }          
+            ],          
+            "exportType": "JSON"          
+          }
 
         console.log(param);
         this._TestmasterService.getParameterMasterList(param).subscribe(data => {
@@ -424,16 +430,21 @@ export class TestFormMasterComponent implements OnInit {
 
     // isSubtest checkbox list 
     getSubTestMasterList() {
-
-        let parameter = this.testForm.get("ParameterNameSearch").value + "%" || '%';
-
-        var param = {
-            sortField: "TestId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "TestId", fieldValue: "12", opType: OperatorComparer.Equals }
-            ]
-        }
+        // let parameter = this.testForm.get("ParameterNameSearch").value + "%" || '%';
+        var param={
+            "first": 0,
+            "rows": 10,
+            "sortField": "TestId",
+            "sortOrder": 0,
+            "filters": [
+              {
+                "fieldName": "TestId",
+                "fieldValue": "144",
+                "opType": "Equals"
+              }
+            ],
+            "exportType": "JSON"
+          }
 
         console.log(param);
         this._TestmasterService.getIsSubTestList(param).subscribe(data => {
@@ -622,7 +633,8 @@ export class TestFormMasterComponent implements OnInit {
             this.ChargeList.push({
                 parameterID: row.parameterID,
                 parameterName: row.parameterName,
-                subTestID: row.subTestID
+                subTestID: row.subTestID,
+                testId: row.testId
             });
 
             this.DSTestList.data = [...this.ChargeList];

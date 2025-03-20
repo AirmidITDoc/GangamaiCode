@@ -61,7 +61,7 @@ export class SampleCollectionService {
   }
 
   public UpdateSampleCollection(employee) {
-    return this._httpClient1.PostData("PathlogySampleCollection/PathlogySampleCollectionUpdate", employee);
+    return this._httpClient1.PutData("PathlogySampleCollection/PathlogySampleCollectionUpdate", employee);
   }
 
   public InsertLabDetail(employee){

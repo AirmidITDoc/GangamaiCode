@@ -90,7 +90,7 @@ export class ResultEntryComponent implements OnInit {
   DOA: any;
   DOT: any;
 
-  autocompleteModeTemplate: string = "TemplateMaster";
+  autocompleteModeTemplate: string = "RadioTemplate";
 
   private _onDestroy = new Subject<void>();
 

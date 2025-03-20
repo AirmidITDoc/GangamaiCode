@@ -59,16 +59,9 @@ export class ResultEntryOneComponent implements OnInit {
 
     configDoc: any;
     sIsLoading: string = '';
-    filteredresultdr: Observable<string[]>;
-    filteredpathdr: Observable<string[]>;
-    filteredrefdr: Observable<string[]>;
-    filteredresultdr3: Observable<string[]>;
-
-    optionsDoc1: any[] = [];
-    optionsDoc2: any[] = [];
-    optionsDoc3: any[] = [];
-    optionsDoc4: any[] = [];
+  
     currentDate: Date = new Date();
+    autocompleteModeDoctor: string = "ConDoctor";
 
     isresultdrSelected: boolean = false;
 
@@ -87,6 +80,7 @@ export class ResultEntryOneComponent implements OnInit {
     CheckAge: any;
     CheckAgemonth: any = 0
     CheckAgeday: any = 0
+    regObj:any;
 
     // MaxAge:any;
     @ViewChild(MatAccordion) accordion: MatAccordion;
@@ -106,21 +100,21 @@ export class ResultEntryOneComponent implements OnInit {
         private _fuseSidebarService: FuseSidebarService) {
 
         if (this.data) {
-
+            debugger
             this.selectedAdvanceObj2 = data.patientdata;
             console.log(this.selectedAdvanceObj2)
             this.OPIPID = this.selectedAdvanceObj2.OPD_IPD_ID;
             this.OP_IPType = this.selectedAdvanceObj2.OPD_IPD_Type;
-            this.SexId = this.selectedAdvanceObj2.GenderId;
-            if (this.selectedAdvanceObj2.AgeYear)
-                this.CheckAge = this.selectedAdvanceObj2.AgeYear.trim();
-            if (this.selectedAdvanceObj2.AgeMonth)
-                this.CheckAgemonth = this.selectedAdvanceObj2.AgeMonth.trim();
-            if (this.selectedAdvanceObj2.AgeDay)
-                this.CheckAgeday = this.selectedAdvanceObj2.AgeDay.trim();
+            this.SexId = this.selectedAdvanceObj2.genderId;
+            if (this.selectedAdvanceObj2.ageYear)
+                this.CheckAge = this.selectedAdvanceObj2.ageYear.trim();
+            if (this.selectedAdvanceObj2.ageMonth)
+                this.CheckAgemonth = this.selectedAdvanceObj2.ageMonth.trim();
+            if (this.selectedAdvanceObj2.ageDay)
+                this.CheckAgeday = this.selectedAdvanceObj2.ageDay.trim();
 
             this.reportIdData = [];
-
+            this.regObj=data.RIdData
             this.data.RIdData.forEach((element) => {
                 this.reportIdData.push(element.PathReportId)
                 this.ServiceIdData.push(element.ServiceId)
@@ -129,14 +123,14 @@ export class ResultEntryOneComponent implements OnInit {
             });
 
         }
-        this.getPathresultdoctorList();
+        // this.getPathresultdoctorList();
 
 
         if (this.Iscompleted == 1) {
             if (this.OP_IPType == 1)
-                this.getResultListIP();
+                this.getResultListIP(this.selectedAdvanceObj2,this.regObj);
             else
-                this.getResultListOP();
+                this.getResultListOP(this.selectedAdvanceObj2,this.regObj);
 
         } else {
             this.getResultList(this.selectedAdvanceObj2);
@@ -153,17 +147,10 @@ export class ResultEntryOneComponent implements OnInit {
             RefDoctorID: [0],
         });
 
-        this.filteredresultdr = this.otherForm.get('PathResultDoctorId').valueChanges.pipe(
-            startWith(''),
-            map(value => this._filterdoc3(value)),
-        );
-
-
         // setTimeout(function () {
         //     let element: HTMLElement = document.getElementById('auto_trigger') as HTMLElement;
         //     element.click();
         // }, 1000);
-
 
     }
 
@@ -318,12 +305,46 @@ export class ResultEntryOneComponent implements OnInit {
             });
     }
 
-
-
-
-    getResultListIP() {
-        this.sIsLoading = 'loading-data';
-        let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultUpdate_IPAgeWise where PathReportId in(" + this.reportIdData + ")"
+    getResultListIP(obj,rbj) {
+        debugger
+        // let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultUpdate_IPAgeWise where PathReportId in(" + this.reportIdData + ")"
+        var SelectQuery=
+        {        
+          "searchFields": [        
+            {
+              "fieldName": "OPIPId",        
+              "fieldValue": String(obj.opdIpdId),        
+              "opType": "Equals"
+            },
+            {        
+              "fieldName": "ServiceId ",        
+              "fieldValue": String(rbj.ServiceId),        
+              "opType": "Equals"        
+            },        
+            {        
+              "fieldName": "OPIPType",        
+              "fieldValue": String(obj.opD_IPD_Type),        
+              "opType": "Equals"        
+            },        
+            {        
+              "fieldName": "PathReportId",        
+              "fieldValue": String(rbj.PathReportId),        
+              "opType": "Equals"        
+            },        
+            {        
+              "fieldName": "SexId",        
+              "fieldValue": String(obj.genderId),        
+              "opType": "Equals"        
+            },        
+            {        
+              "fieldName": "MaxAge",        
+              "fieldValue": String(obj.ageYear),        
+              "opType": "Equals"        
+            }        
+          ],        
+          "mode": "PathologyResultEntryIP"        
+        }
+         
         console.log(SelectQuery);
         this._SampleService.getPathologyResultListforIP(SelectQuery).subscribe(Visit => {
             this.dataSource.data = Visit as Pthologyresult[];
@@ -337,13 +358,47 @@ export class ResultEntryOneComponent implements OnInit {
             error => {
                 this.sIsLoading = '';
             });
-
-
     }
 
-    getResultListOP() {
-        this.sIsLoading = 'loading-data';
-        let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultUpdate_OPAgeWise where PathReportId in(" + this.reportIdData + ")"
+    getResultListOP(obj,rbj) {
+        debugger
+        // let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultUpdate_OPAgeWise where PathReportId in(" + this.reportIdData + ")"
+        var SelectQuery=
+        {        
+          "searchFields": [        
+            {
+              "fieldName": "OPIPId",        
+              "fieldValue": String(obj.opdIpdId),        
+              "opType": "Equals"
+            },
+            {        
+              "fieldName": "ServiceId ",        
+              "fieldValue": String(rbj.ServiceId),        
+              "opType": "Equals"        
+            },        
+            {        
+              "fieldName": "OPIPType",        
+              "fieldValue": String(obj.opD_IPD_Type),        
+              "opType": "Equals"        
+            },        
+            {        
+              "fieldName": "PathReportId",        
+              "fieldValue": String(rbj.PathReportId),        
+              "opType": "Equals"        
+            },        
+            {        
+              "fieldName": "SexId",        
+              "fieldValue": String(obj.genderId),        
+              "opType": "Equals"        
+            },        
+            {        
+              "fieldName": "MaxAge",        
+              "fieldValue": String(obj.ageYear),        
+              "opType": "Equals"        
+            }        
+          ],        
+          "mode": "PathologyResultEntryIP"        
+        }
         console.log(SelectQuery)
         this._SampleService.getPathologyResultListforOP(SelectQuery).subscribe(Visit => {
             this.dataSource.data = Visit as Pthologyresult[];
@@ -354,7 +409,7 @@ export class ResultEntryOneComponent implements OnInit {
             this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
             this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
             console.log(this.PathResultDr1);
-            this.getPathresultDoctorList();
+            // this.getPathresultDoctorList();
         },
             error => {
                 this.sIsLoading = '';
@@ -362,6 +417,9 @@ export class ResultEntryOneComponent implements OnInit {
 
     }
 
+    onReload(){
+        this.getResultList(this.selectedAdvanceObj2);
+    }
 
     onUpload(){
        
@@ -451,9 +509,9 @@ export class ResultEntryOneComponent implements OnInit {
     
         }
     
-    getOptionTextresultdr(option) {
-        return option && option.Doctorname ? option.Doctorname : '';
-    }
+    // getOptionTextresultdr(option) {
+    //     return option && option.Doctorname ? option.Doctorname : '';
+    // }
     getOptionTextpath(option) {
         return option && option.Doctorname ? option.Doctorname : '';
     }
@@ -572,36 +630,36 @@ export class ResultEntryOneComponent implements OnInit {
         }
     }
 
-    getPathresultdoctorList() {
-        this._SampleService.getPathologyDoctorCombo().subscribe(data => {
-            this.PathologyDoctorList = data;
-            this.optionsDoc3 = this.PathologyDoctorList.slice();
-            this.filteredresultdr = this.otherForm.get('PathResultDoctorId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterdoc3(value) : this.PathologyDoctorList.slice()),
-            );
-        });
-    }
+    // getPathresultdoctorList() {
+    //     this._SampleService.getPathologyDoctorCombo().subscribe(data => {
+    //         this.PathologyDoctorList = data;
+    //         this.optionsDoc3 = this.PathologyDoctorList.slice();
+    //         this.filteredresultdr = this.otherForm.get('PathResultDoctorId').valueChanges.pipe(
+    //             startWith(''),
+    //             map(value => value ? this._filterdoc3(value) : this.PathologyDoctorList.slice()),
+    //         );
+    //     });
+    // }
 
-    getPathresultDoctorList() {
+    // getPathresultDoctorList() {
 
-        this._SampleService.getPathologyDoctorCombo().subscribe(data => {
-            this.PathologyDoctorList = data;
-            if (this.data) {
+    //     this._SampleService.getPathologyDoctorCombo().subscribe(data => {
+    //         this.PathologyDoctorList = data;
+    //         if (this.data) {
 
-                const ddValue = this.PathologyDoctorList.filter(c => c.DoctorId == this.PathResultDr1);
-                this.otherForm.get('PathResultDoctorId').setValue(ddValue[0]);
-                this.otherForm.updateValueAndValidity();
-                return;
-            }
-        });
-    }
-    private _filterdoc3(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
-            return this.PathologyDoctorList.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
-        }
-    }
+    //             const ddValue = this.PathologyDoctorList.filter(c => c.DoctorId == this.PathResultDr1);
+    //             this.otherForm.get('PathResultDoctorId').setValue(ddValue[0]);
+    //             this.otherForm.updateValueAndValidity();
+    //             return;
+    //         }
+    //     });
+    // }
+    // private _filterdoc3(value: any): string[] {
+    //     if (value) {
+    //         const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+    //         return this.PathologyDoctorList.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+    //     }
+    // }
 
     // // getDoctorList() {
     // //     this._SampleService.getDoctorMaster1Combo().subscribe(data => {

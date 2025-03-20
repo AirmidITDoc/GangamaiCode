@@ -199,7 +199,7 @@
                                             <mat-checkbox (click)="$event.stopPropagation()"
                                                 (change)="onresultentryshow($event,contact)"
                                                 (change)="$event ? selection.toggle(contact) : null"
-                                                *ngIf="contact.IsTemplateTest !='1' else noMLC"
+                                                *ngIf="contact.isTemplateTest !='1' else noMLC"
                                                 [checked]="selection.isSelected(contact)">
                                             </mat-checkbox>
                                             <ng-template #noMLC>
@@ -213,9 +213,9 @@
                                             class="w-90">IsTemplate</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" class="w-90">
 
-                                            <mat-icon *ngIf="contact.IsTemplateTest=='1'"
+                                            <mat-icon *ngIf="contact.isTemplateTest=='1'"
                                                 matTooltip="IsTemplateTest">assignment</mat-icon>
-                                            <mat-icon *ngIf="contact.IsTemplateTest !='1'" matTooltip="Result Entry">
+                                            <mat-icon *ngIf="contact.isTemplateTest !='1'" matTooltip="Result Entry">
                                                 <img width="30px" height="30px" src="assets/images/logos/pathology.png">
                                             </mat-icon>
 
@@ -227,7 +227,7 @@
                                             class="w-250">TestName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
-                                            <span> {{contact.ServiceName}}</span>
+                                            <span> {{contact.serviceName}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -237,9 +237,9 @@
                                             Completed
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-120">
-                                            <mat-icon *ngIf="contact.IsCompleted" matTooltip="IsCompleted"
+                                            <mat-icon *ngIf="contact.isCompleted" matTooltip="IsCompleted"
                                                 class="active-icon green-500 s-16">check_circle</mat-icon>
-                                            <mat-icon *ngIf="!contact.IsCompleted" matTooltip="Not Completed"
+                                            <mat-icon *ngIf="!contact.isCompleted" matTooltip="Not Completed"
                                                 class="active-icon red-500 s-16">hourglass_empty</mat-icon>
                                         </mat-cell>
                                     </ng-container>
@@ -249,7 +249,7 @@
                                             Sample Coll.Date/Time
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                            <span> {{contact.SampleCollectionTime | date:'dd/MM/yyyy, h:mm a'}}</span>
+                                            <span> {{contact.sampleCollectionTime | date:'dd/MM/yyyy, h:mm a'}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -258,7 +258,7 @@
                                             SampleNo
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                            <span> {{contact.SampleNo}}</span>
+                                            <span> {{contact.sampleNo}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -267,7 +267,7 @@
                                             CategoryName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                            <span> {{contact.CategoryName}}</span>
+                                            <span> {{contact.categoryName}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -276,13 +276,13 @@
                                             Action</mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
 
-                                            <mat-icon *ngIf="contact.IsTemplateTest == 1" title="IsTemplateTest">
+                                            <mat-icon *ngIf="contact.isTemplateTest == 1" title="IsTemplateTest">
                                                 <img width="15px" height="8px" src="assets/images/logos/radiology.png"
                                                     (click)="chkresultentry(contact,false)"
-                                                    *ngIf="contact.IsTemplateTest">
+                                                    *ngIf="contact.isTemplateTest">
 
                                             </mat-icon>
-                                            <mat-icon *ngIf="contact.IsTemplateTest != 1" title="IsTest">
+                                            <mat-icon *ngIf="contact.isTemplateTest != 1" title="IsTest">
                                                 <img width="15px" height="9px" src="assets/images/logos/pathology.png">
                                             </mat-icon>
 

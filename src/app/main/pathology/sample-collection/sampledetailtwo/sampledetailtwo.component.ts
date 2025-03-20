@@ -268,27 +268,6 @@ debugger
       Swal.fire('Error !', 'Please select sample data', 'error');
       return;
     }
-
-    // let updatesamcollection = [];
-
-    // this.selection.selected.forEach((element) => {
-    //   console.log(element);
-    //   let UpdateAddSampleDetailsObj = {
-    //     "pathReportId": element.pathReportID || 1,
-    //     "pathDate": formattedDate,
-    //     "pathTime": formattedTime,
-    //     "isSampleCollection": element.isSampleCollection || true,
-    //     "sampleNo": element.sampleNo || 0
-    //   }
-    //   // UpdateAddSampleDetailsObj['PathReportID'] = element.PathReportID,
-    //   //   UpdateAddSampleDetailsObj['SampleDateTime'] = this._SampleService.sampldetailform.get('SampleDateTime').value || '01/01/1900'
-    //   // UpdateAddSampleDetailsObj['IsSampleCollection'] = 1;// this.datePipe.transform(this._SampleService.sampldetailform.get('SampleDateTime').value, "MM-dd-yyyy"),//  
-    //   // UpdateAddSampleDetailsObj['No'] = element.SampleNo || 0;
-    //   updatesamcollection.push(UpdateAddSampleDetailsObj);
-    // });
-    // let submitData = {
-    //   updatesamcollection
-    // };
     let updatesamcollection = [];
 
       this.selection.selected.forEach((element) => {
