@@ -37,7 +37,7 @@ const appRoutes: Routes = [
     },
     {
         path: "refund",
-        loadChildren: () =>import("./Refund/ip-refund/ip-refund.module").then((m) => m.IPRefundModule),
+        loadChildren: () =>import("./ip-refundof-advance/ip-refundof-advance.module").then((m) => m.IpRefundofAdvanceModule),   
     },
     {
         path: "ipd-bill-browse-list",

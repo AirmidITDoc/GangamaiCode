@@ -300,6 +300,12 @@
                                                 <!-- <button mat-icon-button *ngIf="contact.BalanceAmt>0" matTooltip="Payment" (click)="addpayment(contact)">
                                                     <mat-icon>payment</mat-icon>
                                                 </button> -->
+
+                                                <button mat-icon-button class="material-icons" *ngIf="contact.BalanceAmt !=0 " matTooltip="Final Discount"
+                                                    (click)="getFinalDisc(contact)">
+                                                    <mat-icon> money </mat-icon>
+                                                </button>
+
                                                 <button mat-icon-button *ngIf="contact.BalanceAmt>0" matTooltip="Payment"
                                                     (click)="addpayment1(contact)">
                                                     <mat-icon>payment</mat-icon>

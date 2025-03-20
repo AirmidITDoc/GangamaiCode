@@ -50,6 +50,14 @@ export class OpPaymentVimalComponent implements OnInit {
             this.patientDetailsFormGrp.get('bankName1').clearValidators();
             this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
         }
+        else if (this.selectedPaymnet1 == 'tds') {
+            this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
+            this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
+            this.patientDetailsFormGrp.get('regDate1').clearValidators();
+            this.patientDetailsFormGrp.get('regDate1').updateValueAndValidity();
+            this.patientDetailsFormGrp.get('bankName1').clearValidators();
+            this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
+            }
         else {
             this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
             this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
@@ -62,6 +70,7 @@ export class OpPaymentVimalComponent implements OnInit {
             else if (this.selectedPaymnet1 == 'net banking') {
                 this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
             }
+         
             else {
                 this.patientDetailsFormGrp.get('bankName1').clearValidators();
                 this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
@@ -354,16 +363,17 @@ export class OpPaymentVimalComponent implements OnInit {
 
     ngOnInit(): void {
         this.patientDetailsFormGrp = this.createForm();
+       
         if (this.data.FromName == "SalesSETTLEMENT") {
             this.data = this.data.vPatientHeaderObj;
-            this.advanceData = this.data.vPatientHeaderObj;
-
+            this.advanceData = this.data.vPatientHeaderObj; 
             this.selectedPaymnet1 = this.paymentArr1[0].value;
             this.amount1 = this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
             this.PatientName = "SAS",//this.advanceData.PatientName;
-                this.amount1 = parseInt(this.advanceData.NetAmount);
+            this.amount1 = parseInt(this.advanceData.NetAmount);
             this.Paymentobj['TransactionType'] = 4;
         }
+        this.getAdvcanceDetails(false);
         this.getBankNameList1();
     }
     dateTimeObj: any;
@@ -447,36 +457,36 @@ export class OpPaymentVimalComponent implements OnInit {
                   return 
             } 
 
-            if(this.patientDetailsFormGrp.get('paymentType1').value){
-                if(this.patientDetailsFormGrp.get('paymentType1').value != "cash"){
+             if (this.patientDetailsFormGrp.get('paymentType1').value) {
+                 if (this.patientDetailsFormGrp.get('paymentType1').value != "cash" && this.patientDetailsFormGrp.get('paymentType1').value != "tds") {
 
-                    if(this.patientDetailsFormGrp.get('referenceNo1').value == undefined || this.patientDetailsFormGrp.get('referenceNo1').value == '0' || 
-                    this.patientDetailsFormGrp.get('referenceNo1').value == null || this.patientDetailsFormGrp.get('referenceNo1').value == ''){
-                        this.toastr.warning('Please enter Referance Number..', 'warning !', {
-                            toastClass: 'tostr-tost custom-toast-warning',
-                          });
-                          return 
-                    }  
-                    if(this.patientDetailsFormGrp.get('paymentType1').value != "upi"){
-                        if(this.patientDetailsFormGrp.get('bankName1').value == undefined || this.patientDetailsFormGrp.get('bankName1').value == null
-                        || this.patientDetailsFormGrp.get('bankName1').value == ''){
-                           this.toastr.warning('Please select bank name..', 'warning !', {
-                               toastClass: 'tostr-tost custom-toast-warning',
+                     if (this.patientDetailsFormGrp.get('referenceNo1').value == undefined || this.patientDetailsFormGrp.get('referenceNo1').value == '0' ||
+                         this.patientDetailsFormGrp.get('referenceNo1').value == null || this.patientDetailsFormGrp.get('referenceNo1').value == '') {
+                         this.toastr.warning('Please enter Referance Number..', 'warning !', {
+                             toastClass: 'tostr-tost custom-toast-warning',
+                         });
+                         return
+                     }
+                     if (this.patientDetailsFormGrp.get('paymentType1').value != "upi") {
+                         if (this.patientDetailsFormGrp.get('bankName1').value == undefined || this.patientDetailsFormGrp.get('bankName1').value == null
+                             || this.patientDetailsFormGrp.get('bankName1').value == '') {
+                             this.toastr.warning('Please select bank name..', 'warning !', {
+                                 toastClass: 'tostr-tost custom-toast-warning',
                              });
-                             return 
-                       }   
-                       if (this.patientDetailsFormGrp.get('bankName1').value) {
-                           if (!this.BankNameList1.some(item => item.BankId == this.patientDetailsFormGrp.get('bankName1').value.BankId)) {
-                               this.toastr.warning('Please select valid bank name..', 'warning !', {
-                                   toastClass: 'tostr-tost custom-toast-warning',
-                               });
-                               return
-                           }
-                       } 
-                    }
-                  
-                } 
-            }  
+                             return
+                         }
+                         if (this.patientDetailsFormGrp.get('bankName1').value) {
+                             if (!this.BankNameList1.some(item => item.BankId == this.patientDetailsFormGrp.get('bankName1').value.BankId)) {
+                                 this.toastr.warning('Please select valid bank name..', 'warning !', {
+                                     toastClass: 'tostr-tost custom-toast-warning',
+                                 });
+                                 return
+                             }
+                         }
+                     }
+
+                 }
+             }  
          }
         this.onAddPayment();
         // if (this.balanceAmt != 0) {
@@ -531,17 +541,18 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['PayTMAmount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
             this.Paymentobj['PayTMTranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? 0;
             this.Paymentobj['PayTMDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-            this.Paymentobj['tdsAmount'] = 0; 
+            this.Paymentobj['tdsAmount'] =  this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0;
         }
         else if(this.data.FromName == "IP-Pharma-SETTLEMENT"){  
             let PaymentMul = []; 
 
-            let PayCashAmt,PayChequeAmt,PayCardAmt,PayNeftAmt,PyaPytmAmt
+            let PayCashAmt,PayChequeAmt,PayCardAmt,PayNeftAmt,PyaPytmAmt,PyaTDSAmt
             let CashAmount =  this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
             let ChequeAmt =  this.Payments.data.find(x => x.PaymentType == "cheque")?.Amount ?? 0;
             let CardAmt =  this.Payments.data.find(x => x.PaymentType == "card")?.Amount ?? 0;
             let NeftAmt =  this.Payments.data.find(x => x.PaymentType == "net banking")?.Amount ?? 0;
             let PaytmAmt =  this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
+            let PayTds =  this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0;
             
             this.data.ArrayList.forEach(element=>{   
                     if(CashAmount == this.netPayAmt){ 
@@ -559,6 +570,9 @@ export class OpPaymentVimalComponent implements OnInit {
                     else if(PaytmAmt == this.netPayAmt){ 
                        PyaPytmAmt = element.BalanceAmount
                     }
+                    else if(PayTds == this.netPayAmt){ 
+                        PayTds = element.BalanceAmount
+                     }
                     else{ 
                         if(CashAmount < this.netPayAmt && CashAmount > 0){
                             if(CashAmount > element.BalanceAmount){
@@ -675,6 +689,29 @@ export class OpPaymentVimalComponent implements OnInit {
                                 )
                             }   
                         } 
+                        if(PayTds < this.netPayAmt && PayTds > 0){
+                            if(PayTds > element.BalanceAmount){
+                                let Cashpay1= PayTds + element.BalanceAmount
+                                PyaTDSAmt = Cashpay1 - PayTds 
+                                PayTds =PayTds - PyaTDSAmt
+                                this.RemainingAmt.push( 
+                                    {
+                                        SalesId:element.SalesId,
+                                        BalAmt:Cashpay1
+                                    }
+                                )
+                            }else if(PayTds <= element.BalanceAmount){
+                                let Cashpay1= element.BalanceAmount - PayTds
+                                PyaTDSAmt = element.BalanceAmount - Cashpay1  
+                                PayTds = PayTds - PyaTDSAmt
+                                this.RemainingAmt.push( 
+                                    {
+                                        SalesId:element.SalesId,
+                                        BalAmt:Cashpay1
+                                    }
+                                )
+                            }   
+                        } 
                     } 
              
                 let MultiplePay = {} 
@@ -711,7 +748,7 @@ export class OpPaymentVimalComponent implements OnInit {
                 MultiplePay['PayTMAmount'] =PyaPytmAmt || 0;
                 MultiplePay['PayTMTranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? 0;
                 MultiplePay['PayTMDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-                MultiplePay['paymentId'] = 0;
+                MultiplePay['paymentId'] = PyaTDSAmt || 0;
                 PaymentMul.push(MultiplePay)
             }) 
             this.Paymentobj = PaymentMul
@@ -757,7 +794,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['PayTMDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
             this.Paymentobj['PaidAmt'] = this.paidAmt;// this.patientDetailsFormGrp.get('paidAmountController').value +Number(this.amount1);
             this.Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
-            this.Paymentobj['tdsAmount'] = 0;  
+            this.Paymentobj['tdsAmount'] =  this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0; 
         }
         else if(this.data.FromName == "IP-IntrimBIll" || this.data.FromName == "IP-Bill"){ 
             this.Paymentobj['billNo'] = 0;
@@ -795,7 +832,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['PayTMAmount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
             this.Paymentobj['PayTMTranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? 0;
             this.Paymentobj['PayTMDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-             this.Paymentobj['tdsAmount'] = 0;   
+             this.Paymentobj['tdsAmount'] =  this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0; 
           } 
         console.log(JSON.stringify(this.Paymentobj));
 
@@ -870,7 +907,32 @@ export class OpPaymentVimalComponent implements OnInit {
             return false;
         }
     }
-
+    getAdvcanceDetails(isReset?: any) {
+        debugger
+        this.dataSource.data = [];
+        let Query
+        if (this.advanceData.FromName == "IP-Pharma-SETTLEMENT") {
+            Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from T_PHAdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
+        } else {
+            Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
+        }
+        this.ipSearchService.getAdvcanceDetailslist(Query).subscribe(data => {
+            this.dataSource.data = data as [];
+            console.log(data);
+            if (this.dataSource.data.length > 0) {
+                this.IsAdv = true
+                this.AdvanceId = this.dataSource.data[0].AdvanceId
+                console.log(this.dataSource.data)
+                this.calculateBalance();
+                this.SetAdvanceRow();
+                this.setPaidAmount();
+                this.GetBalanceAmt();
+            }
+        },
+            (error) => {
+            });
+    }
+    
     OnAdvAmt(e) {
         this.IsAdv = e.checked;
         if (this.IsAdv) {

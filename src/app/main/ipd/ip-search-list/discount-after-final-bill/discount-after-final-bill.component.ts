@@ -31,7 +31,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
   ConcessionReasonList:any=[];
   vFinalCompanyDiscAmt:any;
   CompanyName:any = '';
-  vAdminAmt:any;
+  vAdminAmt:any = 0; 
 
   constructor(
     public _matDialog: MatDialog,
@@ -46,14 +46,15 @@ export class DiscountAfterFinalBillComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.data){
+      debugger
       this.selectedAdvanceObj = this.data
       console.log(this.selectedAdvanceObj)
-      this.vDiscAmount = Math.round(this.selectedAdvanceObj.ConcessionAmt);
-      this.vTotalAmount =  Math.round(this.selectedAdvanceObj.TotalAmt + this.selectedAdvanceObj.SpeTaxAmt);
-      this.vFinalNetAmt =  Math.round(this.selectedAdvanceObj.NetPayableAmt)
-      this.vNetamount =  Math.round(this.selectedAdvanceObj.NetPayableAmt)
-      this.vFinalDiscAmt =  Math.round(this.selectedAdvanceObj.ConcessionAmt);
-      this.vAdminAmt = this.selectedAdvanceObj.SpeTaxAmt
+      this.vAdminAmt = this.selectedAdvanceObj?.SpeTaxAmt || 0;
+      this.vDiscAmount = Math.round(this.selectedAdvanceObj?.ConcessionAmt);
+      this.vTotalAmount =  Math.round(this.selectedAdvanceObj?.TotalAmt + this.vAdminAmt);
+      this.vFinalNetAmt =  Math.round(this.selectedAdvanceObj?.NetPayableAmt)
+      this.vNetamount =  Math.round(this.selectedAdvanceObj?.NetPayableAmt)
+      this.vFinalDiscAmt =  Math.round(this.selectedAdvanceObj?.ConcessionAmt); 
       this.CompanyName = this.selectedAdvanceObj.CompanyName || '';
       console.log(this.CompanyName)
     }
@@ -112,7 +113,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       else{
         this.vCompanyDiscAmt = ((parseFloat(this.vFinalNetAmt) * parseFloat(this.vCompanyDiscper)) / 100).toFixed(2) || 0;
         CompanyDiscAmt =   this.vCompanyDiscAmt;
-        this.vFinalCompanyDiscAmt = this.vCompanyDiscAmt
+        this.vFinalCompanyDiscAmt = Math.round(this.vCompanyDiscAmt)
       } 
     }
     else{

@@ -26,6 +26,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 import { IpPaymentwithAdvanceComponent } from '../ip-search-list/ip-paymentwith-advance/ip-paymentwith-advance.component';
 import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
+import { DiscountAfterFinalBillComponent } from '../ip-search-list/discount-after-final-bill/discount-after-final-bill.component';
 
 
 @Component({
@@ -527,6 +528,20 @@ export class IPSettlementComponent implements OnInit {
         this.dataSource1.data = [];
         this.clearpatientinfo();
     }
+    getFinalDisc(contact){
+        console.log(contact);
+        const dialogRef = this._matDialog.open(DiscountAfterFinalBillComponent,
+          {
+            maxWidth: "100%",
+            height: '76%',
+            width: '60%',
+            data: contact
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed - Insert Action', result);
+          this.getCreditBillDetails();
+        });
+      } 
 }
 export class CreditBilldetail {
 
