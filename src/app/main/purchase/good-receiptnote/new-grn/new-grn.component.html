@@ -55,25 +55,22 @@
                       [formGroup]="_GRNList.userFormGroup"
                       [validations]="getValidationMessages().supplierId"
                       [mode]="dropdownMode.supplierMaster"
+                      (selectionChange)="selectChangeSupplier($event)"
                     ></airmid-dropdown>
 
-                    <airmid-textbox fxFlex="10%" label="Contact Persion" formControlName="Contact" [(ngModel)]="vContact" [formGroup]="_GRNList.userFormGroup" [readonly]="true" [disabled]="true"></airmid-textbox>
+                    <airmid-textbox
+                      fxFlex="10%"
+                      label="Contact Persion"
+                      formControlName="Contact"
+                      [(ngModel)]="vContact"
+                      [formGroup]="_GRNList.userFormGroup"
+                      [readonly]="true"
+                      [disabled]="true"
+                    ></airmid-textbox>
 
                     <airmid-textbox fxFlex="10%" label="Mobile" formControlName="Mobile" [(ngModel)]="vMobile" [formGroup]="_GRNList.userFormGroup" [readonly]="true"></airmid-textbox>
 
-                    <mat-form-field appearance="outline" fxFlex="10%">
-                      <mat-label>InvoiceDate</mat-label>
-                      <input
-                        name="DateOfInvoice"
-                        matInput
-                        [matDatepicker]="picker11"
-                        formControlName="DateOfInvoice"
-                        [(ngModel)]="registerObj.InvDate"
-                        #DateOfInvoice
-                      />
-                      <mat-datepicker-toggle matSuffix [for]="picker11"></mat-datepicker-toggle>
-                      <mat-datepicker #picker11></mat-datepicker>
-                    </mat-form-field>
+                    <airmid-datepicker fxFlex="10%" [formGroup]="_GRNList.userFormGroup" formControlName="DateOfInvoice" [label]="'Invoice Date'" [(ngModel)]="registerObj.InvDate"></airmid-datepicker>
 
                     <airmid-textbox
                       fxFlex="10%"
@@ -95,19 +92,13 @@
                       [validations]="getValidationMessages().gateEntryNo"
                     ></airmid-textbox>
 
-                    <mat-form-field appearance="outline" fxFlex="10%">
-                      <mat-label>PaymentDueDate</mat-label>
-                      <input
-                        name="PaymentDate"
-                        matInput
-                        [matDatepicker]="picker10"
-                        formControlName="PaymentDate"
-                        [(ngModel)]="registerObj.PaymentDate"
-                        #paymentdate
-                      />
-                      <mat-datepicker-toggle matSuffix [for]="picker10"></mat-datepicker-toggle>
-                      <mat-datepicker #picker10></mat-datepicker>
-                    </mat-form-field>
+                    <airmid-datepicker
+                      fxFlex="10%"
+                      [formGroup]="_GRNList.userFormGroup"
+                      formControlName="PaymentDate"
+                      [label]="'Payment due date'"
+                      [(ngModel)]="registerObj.PaymentDate"
+                    ></airmid-datepicker>
 
                     <airmid-dropdown
                       fxFlex="10%"
@@ -154,7 +145,6 @@
                       formControlName="ConversionFactor"
                       [(ngModel)]="vConversionFactor"
                       [formGroup]="_GRNList.userFormGroup"
-                      placeholder="UOM"
                       [readonly]="!(vItemName && vItemName.ItemName)"
                       (keyup)="calculateTotalamt()"
                     ></airmid-textbox>
@@ -251,41 +241,13 @@
 
                     <airmid-textbox fxFlex="5%" label="GST" formControlName="GST" [(ngModel)]="vGST" [formGroup]="_GRNList.userFormGroup" type="number" [readonly]="true"></airmid-textbox>
 
-                    <airmid-textbox
-                      fxFlex="4%"
-                      label="CGST"
-                      formControlName="CGST"
-                      [(ngModel)]="vCGST"
-                      [formGroup]="_GRNList.userFormGroup"
-                      type="number"
-                      [readonly]="true"
-                      (keyup)="calculateDiscperAmount()"
-                    ></airmid-textbox>
+                    <airmid-textbox fxFlex="4%" label="CGST" formControlName="CGST" [(ngModel)]="vCGST" [formGroup]="_GRNList.userFormGroup" type="number" [readonly]="true"></airmid-textbox>
 
-                    <airmid-textbox
-                      fxFlex="4%"
-                      label="SGST"
-                      formControlName="SGST"
-                      [(ngModel)]="vSGST"
-                      [formGroup]="_GRNList.userFormGroup"
-                      type="number"
-                      [readonly]="true"
-                      (keyup)="calculateDiscperAmount()"
-                    ></airmid-textbox>
+                    <airmid-textbox fxFlex="4%" label="SGST" formControlName="SGST" [(ngModel)]="vSGST" [formGroup]="_GRNList.userFormGroup" type="number" [readonly]="true"></airmid-textbox>
 
-                    <airmid-textbox
-                      fxFlex="4%"
-                      label="IGST"
-                      formControlName="IGST"
-                      [(ngModel)]="vIGST"
-                      [formGroup]="_GRNList.userFormGroup"
-                      type="number"
-                      [readonly]="true"
-                      (keyup)="calculateDiscperAmount()"
-                    ></airmid-textbox>
+                    <airmid-textbox fxFlex="4%" label="IGST" formControlName="IGST" [(ngModel)]="vIGST" [formGroup]="_GRNList.userFormGroup" type="number" [readonly]="true"></airmid-textbox>
 
                     <airmid-textbox fxFlex="5%" label="Net Amount" formControlName="NetAmount" [(ngModel)]="vNetAmount" [formGroup]="_GRNList.userFormGroup" [readonly]="true"></airmid-textbox>
-
                     <div matTooltip="Select All Value to enable this button!!">
                       <button type="button" class="btn btn-primary btn-with-icon py-8" (click)="onAdd()" [disabled]="!vRate" #addbutton id="btnAdd">
                         <mat-icon>add</mat-icon>

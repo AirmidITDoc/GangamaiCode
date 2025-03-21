@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { GRNList, GrnItemList, ItemNameList } from '../good-receiptnote.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -26,6 +26,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ItemFormMasterComponent } from 'app/main/setup/inventory/item-master/item-form-master/item-form-master.component';
 import { SupplierFormMasterComponent } from 'app/main/setup/inventory/supplier-master/supplier-form-master/supplier-form-master.component';
 import { PODetailList, PurchaseorderComponent } from '../update-grn/purchaseorder/purchaseorder.component';
+import { GrnItemResponseType } from './types';
 
 // For development purpose
 const staticData: ItemNameList = {
@@ -141,7 +142,7 @@ const moment = _rollupMoment || _moment;
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
-export class NewGrnComponent implements OnInit {
+export class NewGrnComponent implements OnInit, OnDestroy {
     vsaveflag: boolean = true;
 
     displayedColumns2 = [
@@ -367,8 +368,16 @@ export class NewGrnComponent implements OnInit {
         this.gePharStoreList();
         this.getGSTtypeList();
     }
-    getSelectedItem(event: any): void {
-        console.log({ event });
+    getSelectedItem(item: GrnItemResponseType): void {
+        this._GRNList.userFormGroup.patchValue({
+            UOM: item.umoId,
+            ConversionFactor: item.converFactor,
+            Qty: item.balanceQty,
+            CGST: item.cgstPer,
+            SGST: item.sgstPer,
+            IGST: item.igstPer,
+            GST: item.cgstPer + item.sgstPer + item.igstPer
+        });
     }
     getValidationMessages() {
         return {
@@ -380,7 +389,7 @@ export class NewGrnComponent implements OnInit {
             ],
             gateEntryNo: [
                 { name: "required", Message: "Gate Entry No is required" }
-            ], 
+            ],
             mrp: [
                 { name: "required", Message: "MRP is required" }
             ],
@@ -393,9 +402,12 @@ export class NewGrnComponent implements OnInit {
             discPer2: [
                 { name: "required", Message: "Disc2 % is required" }
             ],
-                
+
 
         };
+    }
+    selectChangeSupplier(supplier: any): void {
+        console.log({ supplier });
     }
     date = new FormControl(new Date());
     minDate = new Date();
@@ -2548,6 +2560,10 @@ export class NewGrnComponent implements OnInit {
         });
     }
     msg: any;
+    resetForm() {
+        this._GRNList.userFormGroup.reset();
+        this.ItemReset();
+    }
     checkInvoice() {
         let Query = "select InvoiceNo from T_GRNHeader Where SupplierId=" + this.vcheckSupplierId + "and StoreId=" + this.accountService.currentUserValue.storeId;
         console.log(Query)
@@ -2566,6 +2582,10 @@ export class NewGrnComponent implements OnInit {
             }
         })
     }
+    ngOnDestroy(): void {
+        this.resetForm();
+    }
+
 }
 export class LastThreeItemList {
     ItemID: any;
