@@ -69,7 +69,7 @@ export class PaymentmodechangesforpharmacyService {
       return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseIPAdvPayPharReceipt",Param)
     }
     public getSalesNoList(Param){
-      return this._httpClient.post("Generic/GetByProc?procName=Rtrv_BrowsePharmacyPayReceipt",Param)
+      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_BrowsePharmacyPayReceipt",Param)
     }
 
     public getBankMasterCombo() {

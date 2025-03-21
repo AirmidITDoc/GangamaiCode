@@ -32,12 +32,13 @@ const appRoutes: Routes = [
     {
         path: "ip-refund-browse",
         loadChildren: () =>
-       // import("./Refund/ip-refund/ip-browse-refundof-bill/ip-browse-refundof-bill.module").then((m) => m.IPBrowseRefundofBillModule),
-         import("./ip-refundof-advance/ip-refundof-advance.module").then((m) => m.IpRefundofAdvanceModule),     
+            import("./ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule),  
+            //import("./ip-refundof-advance/ip-refundof-advance.module").then((m) => m.IpRefundofAdvanceModule),     
     },
     {
         path: "refund",
-        loadChildren: () =>import("./ip-refundof-advance/ip-refundof-advance.module").then((m) => m.IpRefundofAdvanceModule),   
+        loadChildren: () =>
+             import("./ip-refundof-advance/ip-refundof-advance.module").then((m) => m.IpRefundofAdvanceModule),   
     },
     {
         path: "ipd-bill-browse-list",
@@ -92,6 +93,11 @@ const appRoutes: Routes = [
             loadChildren: () =>
             import("./company-list/company-list.module").then((m) => m.CompanyListModule),
                
+        },
+        {
+            path: "iprefundbill",
+            loadChildren: () =>
+            import("./ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule), 
         },
 
 //     {

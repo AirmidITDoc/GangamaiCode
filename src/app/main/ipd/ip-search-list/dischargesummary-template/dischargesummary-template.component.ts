@@ -80,8 +80,8 @@ export class DischargesummaryTemplateComponent implements OnInit {
     // color:true,
     editable: true,
     spellcheck: true,
-    height: '20rem',
-    minHeight: '20rem',
+    height: '40rem',
+    minHeight: '40rem',
     translate: 'yes',
     placeholder: 'Enter text here...',
     enableToolbar: true,
@@ -146,12 +146,7 @@ export class DischargesummaryTemplateComponent implements OnInit {
     this.getDoctorList2();
     this.getDischargeSummaryData(this.registerObj)
     this.getdischargeIdbyadmission();
-   
-
-    this.filteredOptionstemplate = this.discSummary.get('TemplateId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filtertemp(value)),
-    );
+    
   }
 
   createdisctemplateForm(): FormGroup {
@@ -176,7 +171,7 @@ export class DischargesummaryTemplateComponent implements OnInit {
   }
   ;
   getTemplateList() {
-
+debugger
     this._IpSearchListService.gettemplateCombo().subscribe(data => {
       this.TemplateList = data;
       console.log(this.TemplateList)
@@ -185,17 +180,15 @@ export class DischargesummaryTemplateComponent implements OnInit {
         startWith(''),
         map(value => value ? this._filtertemp(value) : this.TemplateList.slice()),
       );
-      if (data) {
-
+      if (data) { 
         this.discSummary.get('TemplateId').setValue(this.TemplateList[0]);
         this.vTemplateDesc = this.TemplateList[0].TemplateDescription
-      }
-
-    });
-
+      } 
+    }); 
   }
 
   getDiscSummTemplateList(AdmissionId) {
+    debugger
     var data = {
       "AdmissionId": AdmissionId
     }
@@ -207,37 +200,24 @@ export class DischargesummaryTemplateComponent implements OnInit {
       //   startWith(''),
       //   map(value => value ? this._filtertemp1(value) : this.TemplateList.slice()),
       // );
-      if (data) {
-
+      if (data) { 
         this.discSummary.get('TemplateId').setValue(this.TemplateList[0]);
         this.vTemplateDesc = this.TemplateList[0].TemplateDescriptionHtml
-      }
-
-    });
-
-  }
-
-
-
+      } 
+    }); 
+  } 
   private _filtertemp(value: any): string[] {
     if (value) {
       const filterValue = value && value.TemplateName ? value.TemplateName.toLowerCase() : value.toLowerCase();
       return this.TemplateList.filter(option => option.TemplateName.toLowerCase().includes(filterValue));
-    }
-
-  }
-
-
-
+    } 
+  } 
   private _filtertemp1(value: any): string[] {
     if (value) {
       const filterValue = value && value.TemplateName ? value.TemplateName.toLowerCase() : value.toLowerCase();
       return this.optionstemplate.filter(option => option.TemplateName.toLowerCase().includes(filterValue));
-    }
-
-  }
-
-
+    } 
+  } 
   getOptionTexttemplate(option) {
     return option && option.TemplateName ? option.TemplateName : '';
   }
@@ -324,17 +304,13 @@ export class DischargesummaryTemplateComponent implements OnInit {
       }
     });
 
-  }
-
-
-
+  } 
   getOptionTextsDoctor1(option) {
     return option && option.DoctorName ? option.DoctorName : '';
   }
   getOptionTextsDoctor2(option) {
     return option && option.DoctorName ? option.DoctorName : '';
-  }
-
+  } 
   private _filterdoc1(value: any): string[] {
     if (value) {
       const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
@@ -359,9 +335,7 @@ export class DischargesummaryTemplateComponent implements OnInit {
         console.log(data[0])
       }
     });
-  }
-
-
+  } 
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
@@ -370,11 +344,8 @@ export class DischargesummaryTemplateComponent implements OnInit {
       event.preventDefault();
       return false;
     }
-  }
-
-
-  getPrescriptionList(el) {
-    
+  } 
+  getPrescriptionList(el) { 
     var m_data2 = {
       "AdmissionId": el.AdmissionID
     }
@@ -443,10 +414,7 @@ export class DischargesummaryTemplateComponent implements OnInit {
     this.MedicineItemForm.get('Day').reset('');
     this.MedicineItemForm.get('Instruction').reset('');
     this.itemid.nativeElement.focus();
-  }
-
-
-
+  } 
   deleteTableRow(event, element) {
 
     let index = this.Chargelist.indexOf(element);
@@ -509,16 +477,13 @@ export class DischargesummaryTemplateComponent implements OnInit {
   }
   RetrDischargeSumryList: any = [];
 
-  getDischargeSummaryData(el) {
-
+  getDischargeSummaryData(el) { 
     var m_data2 = {
       "AdmissionId": el.AdmissionID
-    }
-
+    } 
     this._IpSearchListService.getDischargeSummary(m_data2).subscribe((data) => {
       this.RetrDischargeSumryList = data as DischargeSummary;
-      console.log(this.RetrDischargeSumryList);
-
+      console.log(this.RetrDischargeSumryList); 
       if (this.RetrDischargeSumryList.length != 0) {
         this.DischargeSummaryId = this.RetrDischargeSumryList[0].DischargeSummaryId
         this.DocName1 = this.RetrDischargeSumryList[0].DischargeDoctor1
@@ -535,36 +500,18 @@ export class DischargesummaryTemplateComponent implements OnInit {
         else {
           this.vIsNormalDeath = false;
           this.discSummary.get("IsNormalOrDeath").setValue('false');
-        }
-
-     
-
-
+        } 
     });
-    // this.getRetevDropdownvalue();
-
+    // this.getRetevDropdownvalue(); 
   }
-
-  getTemplateDetails() {
-    debugger
-    if (this.DischargeSummaryId == 0)
-      this.getTemplateList();
-    else if (this.DischargeSummaryId != 0) {
-      this.getDiscSummTemplateList(this.vAdmissionId);
-
-    }
-
-  }
-
   getRetevDropdownvalue() {
     debugger
     if (this.DischargeSummaryId == 0)
       this.getTemplateList();
     else if (this.DischargeSummaryId != 0) {
-      this.getDiscSummTemplateList(this.vAdmissionId);
-
-    }
-
+      this.getDiscSummTemplateList(this.vAdmissionId); 
+      this.getTemplateList();
+    } 
     // if(this.DocName1 !=0){
     const ddValue1 = this.Doctor1List.filter(item => item.DoctorID == this.DocName1);
     console.log(ddValue1)
@@ -574,8 +521,7 @@ export class DischargesummaryTemplateComponent implements OnInit {
     const ddValue2 = this.Doctor2List.filter(item => item.DoctorID == this.DocName2);
     console.log(ddValue2)
     this.discSummary.get("DischargeDoctor2").setValue(ddValue2[0]);
-    // }
-
+    // } 
   }
 
   onSubmit() {
@@ -647,6 +593,7 @@ export class DischargesummaryTemplateComponent implements OnInit {
           this._IpSearchListService.insertIPDDischargSummarytemplate(SubmitData).subscribe(response => {
             //console.log(response);
             if (response) {
+              this.viewgetDischargesummaryTempPdf(this.vAdmissionId);
               this._matDialog.closeAll();
               this.toastr.success('Discharge Summary Template save Successfully !', 'Congratulations !', {
                 toastClass: 'tostr-tost custom-toast-success',
@@ -743,7 +690,7 @@ export class DischargesummaryTemplateComponent implements OnInit {
 
 
   viewgetDischargesummaryTempPdf(AdmId) {
-
+debugger
     this._IpSearchListService.getIpDischargesummaryTempReceipt(
       AdmId
     ).subscribe(res => {
@@ -763,7 +710,7 @@ export class DischargesummaryTemplateComponent implements OnInit {
     });
   }
   viewgetDischargesummaryPathologyReportPdf(AdmId) {
-
+debugger
     this._IpSearchListService.viewgetDischargesummaryPathologyReportPdf(
       AdmId
     ).subscribe(res => {

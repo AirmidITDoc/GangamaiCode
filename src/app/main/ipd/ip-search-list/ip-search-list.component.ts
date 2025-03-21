@@ -116,8 +116,9 @@ export class IPSearchListComponent implements OnInit {
     if (this._ActRoute.url == '/ipd/ipadvance') {
       this.menuActions.push('Advance');
       this.menuActions.push('Bed Transfer');
-    }
+    } 
     else if (this._ActRoute.url == '/ipd/discharge') {
+      debugger
       this.menuActions.push('Discharge');
      // this.menuActions.push('Discharge Summary');
       this.menuActions.push('Patient Feedback'); 
@@ -163,7 +164,12 @@ export class IPSearchListComponent implements OnInit {
       this.menuActions.push('Nursing Note');
 
     }
-
+    else if (this._ActRoute.url == '/ipd/iprefundbill') {
+      this.menuActions.push('Refund of Bill');
+    } 
+    else if (this._ActRoute.url == '/ipd/ip-refund-browse') {
+      this.menuActions.push('Refund of Advance');
+    } 
   }
   get f() { return this._IpSearchListService.myFilterform.controls; }
 
