@@ -561,6 +561,7 @@ export class NewCasepaperComponent implements OnInit {
           ChiefComplaint.forEach(element => {
             this.addCheiflist.push(
               {
+                complaintId:element.id,
                 complaintDescr: element.descriptionName,
               }
             )
@@ -583,6 +584,7 @@ export class NewCasepaperComponent implements OnInit {
           Diagnosis.forEach(element => {
             this.addDiagnolist.push(
               {
+                id:element.id,
                 descriptionName: element.descriptionName
               }
             )
@@ -602,6 +604,7 @@ export class NewCasepaperComponent implements OnInit {
           Examination.forEach(element => {
             this.addExaminlist.push(
               {
+                examinationId:element.id,
                 examinationDescr: element.descriptionName
               }
             )
@@ -842,7 +845,7 @@ export class NewCasepaperComponent implements OnInit {
   selectChangeCheifComplaint(row) {
     console.log("Selected Services:", row);
     const selectedData = Array.isArray(row) ? row : [row];
-    this.addCheiflist = selectedData.map(item => ({ complaintDescr: item.complaintDescr }));
+    this.addCheiflist = selectedData.map(item => ({ complaintId: item.complaintId }));
     console.log("Updated selectedItems:", this.addCheiflist);
   }
 
@@ -874,7 +877,7 @@ export class NewCasepaperComponent implements OnInit {
   selectChangeDiagnosis(row) {
     console.log("Selected Services:", row);
     const selectedData = Array.isArray(row) ? row : [row];
-    this.addDiagnolist = selectedData.map(item => ({ descriptionName: item.descriptionName }));
+    this.addDiagnolist = selectedData.map(item => ({ id: item.id }));
     console.log("Updated selectedItems:", this.addDiagnolist);
   }
 
@@ -906,7 +909,7 @@ export class NewCasepaperComponent implements OnInit {
   selectChangeExamination(row) {
     console.log("Selected Services:", row);
     const selectedData = Array.isArray(row) ? row : [row];
-    this.addExaminlist = selectedData.map(item => ({ examinationDescr: item.examinationDescr }));
+    this.addExaminlist = selectedData.map(item => ({ examinationId: item.examinationId }));
     console.log("Updated selectedItems:", this.addExaminlist);
   }
 
@@ -1055,7 +1058,7 @@ export class NewCasepaperComponent implements OnInit {
   }
 
   onTemplDetAdd() {
-    // 
+    debugger
     if ((this.vOPIPId == '' || this.vOPIPId == '0')) {
       this.toastr.warning('Please select Patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',

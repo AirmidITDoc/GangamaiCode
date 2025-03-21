@@ -31,7 +31,7 @@ export class PrescriptionReturnComponent implements OnInit {
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
     gridConfig: gridModel = {
-        apiUrl: "IPPrescription/PrescriptionReturnList",
+        apiUrl: "IPPrescription/IPPrescriptionReturnList",
         columnsList: [            
             { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},

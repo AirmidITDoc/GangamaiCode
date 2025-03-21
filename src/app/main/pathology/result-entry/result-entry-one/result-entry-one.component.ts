@@ -103,8 +103,8 @@ export class ResultEntryOneComponent implements OnInit {
             debugger
             this.selectedAdvanceObj2 = data.patientdata;
             console.log(this.selectedAdvanceObj2)
-            this.OPIPID = this.selectedAdvanceObj2.OPD_IPD_ID;
-            this.OP_IPType = this.selectedAdvanceObj2.OPD_IPD_Type;
+            this.OPIPID = this.selectedAdvanceObj2.opD_IPD_ID // this.selectedAdvanceObj2.OPD_IPD_ID;
+            this.OP_IPType = this.selectedAdvanceObj2.opD_IPD_Type;
             this.SexId = this.selectedAdvanceObj2.genderId;
             if (this.selectedAdvanceObj2.ageYear)
                 this.CheckAge = this.selectedAdvanceObj2.ageYear.trim();
@@ -313,12 +313,12 @@ export class ResultEntryOneComponent implements OnInit {
           "searchFields": [        
             {
               "fieldName": "OPIPId",        
-              "fieldValue": String(obj.opdIpdId),        
+              "fieldValue": String(obj.opD_IPD_ID),        
               "opType": "Equals"
             },
             {        
               "fieldName": "ServiceId ",        
-              "fieldValue": String(rbj.ServiceId),        
+              "fieldValue": String(rbj[0].ServiceId),        
               "opType": "Equals"        
             },        
             {        
@@ -328,7 +328,7 @@ export class ResultEntryOneComponent implements OnInit {
             },        
             {        
               "fieldName": "PathReportId",        
-              "fieldValue": String(rbj.PathReportId),        
+              "fieldValue": String(rbj[0].PathReportId),        
               "opType": "Equals"        
             },        
             {        
@@ -347,8 +347,9 @@ export class ResultEntryOneComponent implements OnInit {
          
         console.log(SelectQuery);
         this._SampleService.getPathologyResultListforIP(SelectQuery).subscribe(Visit => {
-            this.dataSource.data = Visit as Pthologyresult[];
+            this.dataSource.data = Visit.data as Pthologyresult[];
             //  this.Pthologyresult = Visit as Pthologyresult[];
+            console.log(this.dataSource.data)
             this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
             this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
             this.dataSource.sort = this.sort;
@@ -368,12 +369,12 @@ export class ResultEntryOneComponent implements OnInit {
           "searchFields": [        
             {
               "fieldName": "OPIPId",        
-              "fieldValue": String(obj.opdIpdId),        
+              "fieldValue": String(obj.opD_IPD_ID),        
               "opType": "Equals"
             },
             {        
               "fieldName": "ServiceId ",        
-              "fieldValue": String(rbj.ServiceId),        
+              "fieldValue": String(rbj[0].ServiceId),        
               "opType": "Equals"        
             },        
             {        
@@ -383,7 +384,7 @@ export class ResultEntryOneComponent implements OnInit {
             },        
             {        
               "fieldName": "PathReportId",        
-              "fieldValue": String(rbj.PathReportId),        
+              "fieldValue": String(rbj[0].PathReportId),        
               "opType": "Equals"        
             },        
             {        
@@ -401,7 +402,8 @@ export class ResultEntryOneComponent implements OnInit {
         }
         console.log(SelectQuery)
         this._SampleService.getPathologyResultListforOP(SelectQuery).subscribe(Visit => {
-            this.dataSource.data = Visit as Pthologyresult[];
+            this.dataSource.data = Visit.data as Pthologyresult[];
+            console.log(this.dataSource.data)
             // this.Pthologyresult = Visit as Pthologyresult[];
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;

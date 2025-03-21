@@ -47,7 +47,7 @@ export class MenuMasterComponent implements OnInit {
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "UpId",
+        sortField: "MenuId", //UpId
         sortOrder: 0,
         filters: [
             // { fieldName: "Id", fieldValue: "217", opType: OperatorComparer.Equals },

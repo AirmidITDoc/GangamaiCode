@@ -223,7 +223,7 @@ export class ResultEntryComponent implements OnInit {
         this.myformSearch=this._SampleService.createSearchForm()
         this.fromDate = this.myformSearch.get("start").value || "";
         this.toDate = this.myformSearch.get("end").value || "";
-        this.getPatientsList();
+        // this.getPatientsList();
     }
 
     searchRecords(data) {
@@ -292,6 +292,8 @@ export class ResultEntryComponent implements OnInit {
 
       getSampledetailList1(row) {
         // debugger
+        this.dataSource1.data = [];
+
         let inputDate = row.vaDate;
         let parts = inputDate.split(' ')[0].split('-');
         let date = `${parts[2]}-${parts[1]}-${parts[0]}`;
@@ -409,32 +411,32 @@ opipType:any="2";
         });
     }
 
-    getPatientsList() {
-        debugger
-        this.dataSource1.data = [];
-        this.sIsLoading = 'loading-data';
-        var m_data = {
-            "F_Name": (this._SampleService.myformSearch.get("FirstNameSearch").value).trim() + '%' || '%',
-            "L_Name": (this._SampleService.myformSearch.get("LastNameSearch").value).trim() + '%' || '%',
-            "Reg_No": (this._SampleService.myformSearch.get("RegNoSearch").value) || 0,
-            "From_Dt": this.datePipe.transform(this._SampleService.myformSearch.get("start").value, "yyyy-MM-dd ") || '01/01/1900',
-            "To_Dt": this.datePipe.transform(this._SampleService.myformSearch.get("end").value, "yyyy-MM-dd") || '01/01/1900',
-            "IsCompleted": parseInt(this._SampleService.myformSearch.get("StatusSearch").value) || 0,
-            "OP_IP_Type": parseInt(this._SampleService.myformSearch.get("PatientTypeSearch").value) || 0,
-        }
+    // getPatientsList() {
+    //     // debugger
+    //     this.dataSource1.data = [];
+    //     this.sIsLoading = 'loading-data';
+    //     var m_data = {
+    //         "F_Name": (this._SampleService.myformSearch.get("FirstNameSearch").value).trim() + '%' || '%',
+    //         "L_Name": (this._SampleService.myformSearch.get("LastNameSearch").value).trim() + '%' || '%',
+    //         "Reg_No": (this._SampleService.myformSearch.get("RegNoSearch").value) || 0,
+    //         "From_Dt": this.datePipe.transform(this._SampleService.myformSearch.get("start").value, "yyyy-MM-dd ") || '01/01/1900',
+    //         "To_Dt": this.datePipe.transform(this._SampleService.myformSearch.get("end").value, "yyyy-MM-dd") || '01/01/1900',
+    //         "IsCompleted": parseInt(this._SampleService.myformSearch.get("StatusSearch").value) || 0,
+    //         "OP_IP_Type": parseInt(this._SampleService.myformSearch.get("PatientTypeSearch").value) || 0,
+    //     }
 
-        this._SampleService.getPatientList(m_data).subscribe(Visit => {
-            this.dataSource.data = Visit as PatientList[];
-            this.dataSource.sort = this.sort;
-            this.dataSource.paginator = this.paginator;
-            this.sIsLoading = '';
-            this.click = false;
-            console.log(this.dataSource.data);
-        },
-            error => {
-                this.sIsLoading = '';
-            });
-    }
+    //     this._SampleService.getPatientList(m_data).subscribe(Visit => {
+    //         this.dataSource.data = Visit as PatientList[];
+    //         this.dataSource.sort = this.sort;
+    //         this.dataSource.paginator = this.paginator;
+    //         this.sIsLoading = '';
+    //         this.click = false;
+    //         console.log(this.dataSource.data);
+    //     },
+    //         error => {
+    //             this.sIsLoading = '';
+    //         });
+    // }
 
     keyPressAlphanumeric(event) {
         var inp = String.fromCharCode(event.keyCode);
@@ -450,50 +452,11 @@ opipType:any="2";
         this._SampleService.myformSearch.reset({ RegNoSearch: '', FirstNameSearch: '', LastNameSearch: '', PatientTypeSearch: '', StatusSearch: '' });
     }
 
-    // for sampledetails tablemyformSearch
-    // onEdit(m) {
-
-    //     m["Selected"] = true;
-    //     console.log(m)
-    //     this.reportPrintObj = m
-    //     this.reportPrintObj["DOA"] = m.VATime
-
-    //     this.PatientName = m.PatientName;
-    //     this.OPD_IPD = m.OP_IP_No
-    //     this.Age = m.AgeYear
-    //     this.PatientType = m.PatientType
-    //     this.Mobileno = m.MobileNo
-    //     this.SBillNo = m.BillNo;
-    //     this.SOPIPtype = m.OPD_IPD_Type;
-    //     this.SFromDate = this.datePipe.transform(m.PathDate, "yyyy-MM-dd ");
-
-    //     var m_data = {
-    //         "BillNo": m.BillNo,
-    //         "OP_IP_Type": m.OPD_IPD_Type,
-    //         "From_Dt": this.datePipe.transform(m.PathDate, "yyyy-MM-dd"),
-    //     }
-
-    //     this._SampleService.getSampleList(m_data).subscribe(Visit => {
-    //         this.dataSource1.data = Visit as SampleList[];
-    //         console.log(this.dataSource1.data);
-
-    //         this.dataSource1.sort = this.sort;
-    //         this.dataSource1.paginator = this.paginator;
-    //         this.sIsLoading = '';
-    //         this.click = false;
-    //     },
-    //         error => {
-    //             this.sIsLoading = '';
-    //         });
-    //     this.selection.clear();
-    // }
-
     SearchTest($event) {
         var m_data = {
             "BillNo": this.SBillNo,
             "OP_IP_Type": this.SOPIPtype,
             "IsCompleted": this._SampleService.myformSearch.get("TestStatusSearch").value || 0,
-
         }
 
         this._SampleService.getTestList(m_data).subscribe(Visit => {
@@ -611,7 +574,7 @@ opipType:any="2";
                 console.log('Pathology Template  Saved ..', result);
             });
         }
-        this.getPatientsList()
+        // this.getPatientsList()
         // this.selection.clear();
     }
 
@@ -686,11 +649,11 @@ opipType:any="2";
     OPIPID: any = 0;
     onresultentryshow(event, m) {
         debugger
-        this.OPIPID = m.OPD_IPD_ID
+        this.OPIPID = m.opD_IPD_ID //m.OPD_IPD_ID
         this.advanceDataStored.storage = new SampleDetailObj(m);
         console.log(this.advanceDataStored.storage)
         if (event.checked) {
-            if (m.PathTestServiceId == 0) {
+            if (m.pathTestID == 0) {
                 this.toastr.warning('This Test Not Created !', 'Warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',
                 });
@@ -887,7 +850,7 @@ opipType:any="2";
             {
                 this.sIsLoading = 'loading-data';
 
-                this.getPatientsList();
+                // this.getPatientsList();
             }
 
         }, 50);

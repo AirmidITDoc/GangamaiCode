@@ -149,7 +149,7 @@ export class NewPrescriptionComponent implements OnInit {
       RegId: '',
       PatientName: '',
       WardName: '',
-      StoreId: 0,
+      StoreId: 2,
       RegID: [''],
       Op_ip_id: ['1'],
       AdmissionID: 0
@@ -228,53 +228,19 @@ export class NewPrescriptionComponent implements OnInit {
   vitemname:any;
   selectChangeItem(obj: any) {
     debugger
-    if (this.vstoreId==0) {
-      this.toastr.warning('Please select Store', 'Warning!', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return; // ✅ Stop execution if storeId is not selected
-    }
-  else if(this.vstoreId!=0){
+  //   if (this.vstoreId==0) {
+  //     this.toastr.warning('Please select Store', 'Warning!', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     return;
+  //   }
+  // else if(this.vstoreId!=0){
     console.log("Item:", obj);
     this.vitemId = obj.itemId;
     this.vitemname = obj.itemName;
     this.ItemForm.get('ItemId').setValue(obj);
-  }
-  }
-
-
-  // onAdd1() {
-  //   if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
-  //     this.toastr.warning('Please enter a qty', 'Warning !', {
-  //       toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
-  //   }
-  //   const iscekDuplicate = this.dsPresList.data.some(item => item.ItemID == this.ItemId)
-  //   if(!iscekDuplicate){
-  //   this.dsPresList.data = [];
-  //   this.PresItemlist.push(
-  //     {
-  //       ItemID: this.ItemId,
-  //       ItemName: this.ItemName,
-  //       Qty: this.vQty,
-  //       Remark: this.vRemark || '' 
-  //     });
-  //   this.dsPresList.data = this.PresItemlist
-  //   console.log(this.dsPresList.data); 
-  //   }else{
-  //     this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
-  //       toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
-  //   }
-  //   this.ItemForm.get('ItemId').reset('');
-  //   this.ItemForm.get('Qty').reset('');
-  //   this.ItemForm.get('Instruction').reset('');
-  //   this.itemid.nativeElement.focus();
-  //   this.add = false;
-  //   console.log(this.dsiVisitList.data)
   // }
+  }
 
   doseList:any=[];
 
@@ -325,12 +291,19 @@ export class NewPrescriptionComponent implements OnInit {
 
   onAdd() {
     
-    if (!this.ItemForm.get('ItemId')?.value?.trim()) {
-      this.toastr.warning('Please select Item', 'Warning!', {
-          toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-  }
+  //   if (!this.ItemForm.get('ItemId')?.value?.trim()) {
+  //     this.toastr.warning('Please select Item', 'Warning!', {
+  //         toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     return;
+  // }
+
+  if (!this.ItemForm.get('ItemId')?.value) {
+    this.toastr.warning('Please select Item', 'Warning!', {
+        toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+}
   
     if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
       this.toastr.warning('Please enter a qty', 'Warning !', {

@@ -104,7 +104,7 @@ export class PrescriptionComponent implements OnInit {
     }
 
     gridConfig3: gridModel = {
-        apiUrl: "IPPrescription/PrescriptionReturnList",
+        apiUrl: "IPPrescription/IPPrescriptionReturnList",
         columnsList: [            
             { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},

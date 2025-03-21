@@ -958,6 +958,7 @@ export class AdmissionPersonlModel {
   oP_IP_No:any;
   doctorName:any;
   genderName:any;
+  opD_IPD_ID:any;
   /**
 * Constructor
 *
@@ -1148,6 +1149,7 @@ export class AdmissionPersonlModel {
       this.oP_IP_No=AdmissionPersonl.oP_IP_No || ''
       this.doctorName=AdmissionPersonl.doctorName || ''
       this.genderName=AdmissionPersonl.genderName || ''
+      this.opD_IPD_ID=AdmissionPersonl.opD_IPD_ID || ''
     }
   }
 }

@@ -274,8 +274,8 @@ debugger
         console.log(element);
         let UpdateAddSampleDetailsObj = {
           "PathReportId": element.pathReportID || 1,
-          "PathDate": formattedDate,
-          "PathTime": formattedTime,
+          "sampleCollectionTime": this._SampleService.sampldetailform.get('SampleDateTime').value || '01/01/1900', //formattedDate,
+          // "PathTime": formattedTime,
           "IsSampleCollection": String(element.isSampleCollection) === "True" ? true : false,
           "SampleNo": String(element.sampleNo || 0)
         }

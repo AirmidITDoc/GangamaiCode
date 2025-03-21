@@ -189,7 +189,7 @@ export class ResultEntryComponent implements OnInit {
 
   selectChangeTemplateName(row) {
     console.log("Template:", row)
-    this.Tempdesc=row.templateDescription
+    this.Tempdesc=row.text
   }
 
   onAddTemplate(e) {
