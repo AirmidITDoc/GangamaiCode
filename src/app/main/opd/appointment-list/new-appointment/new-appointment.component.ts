@@ -97,8 +97,8 @@ export class NewAppointmentComponent implements OnInit {
     vDays: any = 0;
     HealthCardExpDate: any;
     followUpDate: string;
-    
-   
+
+
     screenFromString = 'appointment';
     @ViewChild('attachments') attachment: any;
     @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
@@ -128,7 +128,7 @@ export class NewAppointmentComponent implements OnInit {
     autocompleteModedeptdoc: string = "ConDoctor";
     autocompleteModerefdoc: string = "RefDoctor";
     autocompleteModepurpose: string = "Purpose";
-    public imagePreview!:string;
+    public imagePreview!: string;
 
     constructor(
         public _AppointmentlistService: AppointmentlistService,
@@ -140,7 +140,7 @@ export class NewAppointmentComponent implements OnInit {
         public _WhatsAppEmailService: WhatsAppEmailService,
         public datePipe: DatePipe,
         private formBuilder: UntypedFormBuilder,
-          private accountService: AuthenticationService,
+        private accountService: AuthenticationService,
         public matDialog: MatDialog,
         private commonService: PrintserviceService,
         public toastr: ToastrService, @Inject(MAT_DIALOG_DATA) public data: any
@@ -156,7 +156,7 @@ export class NewAppointmentComponent implements OnInit {
         this.VisitFormGroup.markAllAsTouched();
 
         this.searchFormGroup = this.createSearchForm();
-       
+
     }
     createSearchForm() {
         return this.formBuilder.group({
@@ -205,7 +205,7 @@ export class NewAppointmentComponent implements OnInit {
 
     }
     OnViewReportPdf(element) {
-        
+
         console.log('Third action clicked for:', element);
         this.commonService.Onprint("VisitId", element, "AppointmentReceipt");
     }
@@ -213,7 +213,7 @@ export class NewAppointmentComponent implements OnInit {
 
 
     onChangePatient(value) {
-        
+
         var mode = "Company"
         if (value.text != "Self") {
             this._AppointmentlistService.getMaster(mode, 1);
@@ -317,7 +317,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     getSelectedObj(obj) {
-     this.PatientName = obj.PatientName;
+        this.PatientName = obj.PatientName;
         this.RegId = obj.value;
         this.VisitFlagDisp = true;
         if ((this.RegId ?? 0) > 0) {
@@ -332,33 +332,34 @@ export class NewAppointmentComponent implements OnInit {
         }
 
     }
-getSelectedObjphone(obj) {
-    debugger
-      this.PatientName = obj.text;
+    getSelectedObjphone(obj) {
+        debugger
+        this.PatientName = obj.text;
         this.RegId = obj.value;
-         this.vPhoneAppId=obj.value;
+        this.vPhoneAppId = obj.value;
         this.VisitFlagDisp = false;
-        this.registerObj=obj;
+        this.registerObj = obj;
         console.log(obj)
         if ((this.RegId ?? 0) > 0) {
             setTimeout(() => {
                 this._AppointmentlistService.getPhoneappById(this.RegId).subscribe((response) => {
                     this.registerObj = response;
                     console.log(this.registerObj)
-                    this.registerObj.religionId=0;
-                    this.registerObj.areaId=0
-                    this.registerObj.regId=0
-                    this.registerObj.phoneNo=''
-                    this.registerObj.aadharCardNo=''
-                    this.registerObj.mobileNo=this.registerObj.mobileNo.trim()
-                });}, 500);
+                    this.registerObj.religionId = 0;
+                    this.registerObj.areaId = 0
+                    this.registerObj.regId = 0
+                    this.registerObj.phoneNo = ''
+                    this.registerObj.aadharCardNo = ''
+                    this.registerObj.mobileNo = this.registerObj.mobileNo.trim()
+                });
+            }, 500);
         }
 
     }
 
     onSave() {
-     
-        console.log("Personal", this.personalFormGroup.value, "Visit", this.VisitFormGroup,values)
+
+        console.log("Personal", this.personalFormGroup.value, "Visit", this.VisitFormGroup, values)
         if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
 
             if (this.isCompanySelected && this.VisitFormGroup.get('CompanyId').value == 0) {
@@ -388,20 +389,20 @@ getSelectedObjphone(obj) {
     OnsaveNewRegister() {
         this.personalFormGroup.get("RegId").setValue(0)
         this.VisitFormGroup.get("regId").setValue(0)
-if(this.vPhoneAppId)
-    this.VisitFormGroup.get("phoneAppId").setValue(this.vPhoneAppId)
+        if (this.vPhoneAppId)
+            this.VisitFormGroup.get("phoneAppId").setValue(this.vPhoneAppId)
 
         let submitData = {
             "registration": this.personalFormGroup.value,
             "visit": this.VisitFormGroup.value
         };
         console.log(submitData);
-        
+
         this._AppointmentlistService.NewappointmentSave(submitData).subscribe((response) => {
             this.toastr.success(response.message);
-            let Res=response.message
-            let ID=Res.split('.')
-            let visitId=ID[1]
+            let Res = response.message
+            let ID = Res.split('.')
+            let visitId = ID[1]
 
             this.OnViewReportPdf(visitId)
             this.onClear(true);
@@ -421,13 +422,13 @@ if(this.vPhoneAppId)
         console.log(submitData);
 
         this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
-            
+
             this.toastr.success(response.message);
-            let Res=response.message
-            let ID=Res.split('.')
-            let visitId=ID[1]
+            let Res = response.message
+            let ID = Res.split('.')
+            let visitId = ID[1]
             // console.log(ID)
-           
+
             this.OnViewReportPdf(visitId)
             this.onClear(true);
             this._matDialog.closeAll();
@@ -456,19 +457,19 @@ if(this.vPhoneAppId)
         this.ddlGender.SetSelection(e.sexId);
     }
 
-  
+
 
     onChangecity(e) {
         console.log(e)
-        this.registerObj.stateId=e.stateId
-        this._AppointmentlistService.getstateId(e.stateId).subscribe((Response)=>{
+        this.registerObj.stateId = e.stateId
+        this._AppointmentlistService.getstateId(e.stateId).subscribe((Response) => {
             console.log(Response)
             this.ddlCountry.SetSelection(Response.countryId);
         });
 
-      }
+    }
 
-       onChangestate(e) {
+    onChangestate(e) {
         console.log(e)
         // this._AppointmentlistService.getstateId(e.stateId).subscribe((Response)=>{
         //     console.log(Response)
@@ -483,7 +484,7 @@ if(this.vPhoneAppId)
     }
 
     selectChangedepartment(obj: any) {
-        
+
         console.log(obj)
         this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
             this.ddlDoctor.options = data;

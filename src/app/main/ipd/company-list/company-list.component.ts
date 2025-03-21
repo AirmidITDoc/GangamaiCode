@@ -56,13 +56,13 @@ export class CompanyListComponent implements OnInit {
   
   
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
-    @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+    // @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   
     ngAfterViewInit() {
       // Assign the template to the column dynamically
       this.gridConfig.columnsList.find(col => col.key === 'patientTypeID')!.template = this.actionsTemplate;
-      this.gridConfig.columnsList.find(col => col.key === 'isMLC')!.template = this.actionsTemplate1;
+      // this.gridConfig.columnsList.find(col => col.key === 'isMLC')!.template = this.actionsTemplate1;
       this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
   
     }
@@ -85,7 +85,7 @@ export class CompanyListComponent implements OnInit {
       { heading: "RelativeName", key: "relativeName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 14 },
       {
         heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
-        template: this.actionButtonTemplate  // Assign ng-template to the column
+         // Assign ng-template to the column
       }
 
     ];

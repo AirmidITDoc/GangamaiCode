@@ -126,7 +126,7 @@ export class AppointmentListComponent implements OnInit {
         { heading: "", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-        { heading: "UHID", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
@@ -546,13 +546,13 @@ Clearfilter(event) {
             console.log(obj)
             this.vOPIPId = obj.visitId
 
-            setTimeout(() => {
-                this._AppointmentlistService.getRegistraionById(obj.regId).subscribe((response) => {
-                    this.patientDetail = response;
-                    console.log(this.patientDetail)
-                });
+            // setTimeout(() => {
+            //     this._AppointmentlistService.getRegistraionById(obj.regId).subscribe((response) => {
+            //         this.patientDetail = response;
+            //         console.log(this.patientDetail)
+            //     });
 
-            }, 500);
+            // }, 500);
 
             // setTimeout(() => {
             //     this._AppointmentlistService.getVisitById(this.vOPIPId).subscribe(data => {

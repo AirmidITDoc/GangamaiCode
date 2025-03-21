@@ -231,18 +231,22 @@ export class NewOPListComponent implements OnInit {
 
     getWhatsappshareBill(Id) { }
 
-    viewgetOPPayemntPdf(data) {
-
+    viewgetOPPayemntPdf(data,status) {
+        debugger
+        if(status==true)
+        this.commonService.Onprint("PaymentId", data, "OPPaymentReceipt");
+        else 
         this.commonService.Onprint("PaymentId", data.paymentId, "OPPaymentReceipt");
     }
     getWhatsappsharePaymentReceipt(Id, Mobile) { }
 
  
     viewgetOPRefundBillReportPdf(data) {
-console.log(data)
+
         this.commonService.Onprint("RefundId", data.refundId, "OPRefundReceipt");
     }
     getWhatsappshareRefundBill(Id) { }
+
 
 
     OngetRecord(element, m) {
@@ -261,7 +265,7 @@ console.log(data)
         
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
-            PatientHeaderObj['RegNo'] = contact.regNo;
+        PatientHeaderObj['RegNo'] = contact.regNo;
         PatientHeaderObj['PatientName'] = contact.patientName;
         PatientHeaderObj['OPD_IPD_Id'] = contact.opD_IPD_ID;
         PatientHeaderObj['Age'] = contact.patientAge;
@@ -283,10 +287,10 @@ console.log(data)
                 }
             });
         dialogRef.afterClosed().subscribe(result => {
-            console.log(result)
+            // console.log(result)
             if (result.IsSubmitFlag == true) {
                 let PaymentObj = result.submitDataPay.ipPaymentInsert
-                console.log(PaymentObj)
+                // console.log(PaymentObj)
                 this.vpaidamt = result.PaidAmt;
                 this.vbalanceamt = result.BalAmt
                 PaymentObj['BillNo'] = contact.billNo;
@@ -301,12 +305,16 @@ console.log(data)
                         "balanceAmt": result.submitDataPay.ipPaymentInsert.BalanceAmt
                     },
                 }
-                console.log(data)
+                // console.log(data)
                 this._OPListService.InsertOPBillingsettlement(data).subscribe(response => {
                     this.toastr.success(response.message);
                     this.grid.gridConfig = this.gridConfig;
                       this.grid.bindGridData();
-                    this.viewgetOPPayemntPdf(response);
+
+                    let Res=response.message
+                    let ID=Res.split('.')
+                    let Id=ID[1]
+                    this.viewgetOPPayemntPdf(Id,true);
                   
                 }, (error) => {
                     this.toastr.error(error.message);

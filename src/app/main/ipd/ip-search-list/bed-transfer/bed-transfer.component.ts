@@ -107,7 +107,7 @@ export class BedTransferComponent implements OnInit {
       toWardId: 0,
       toBedId: 0,
       toClassId: 0,
-      remark: "%",
+      remark: "",
       addedBy:this.accountService.currentUserValue.userId,
       isCancelled: 0,
       isCancelledBy: 0
@@ -125,15 +125,14 @@ export class BedTransferComponent implements OnInit {
 }
 
 
-
   onBedtransfer() {
-    debugger
-    console.log(this.Bedtransfer.value)
+    // debugger
+    // console.log(this.Bedtransfer.value)
   
-    
     var m_data = {
       "bedTransfer": this.Bedtransfer.value,
       "bedTofreed": { bedId: this.data.bedId },
+      "bedUpdate": { bedId: parseInt(this.Bedtransfer.get("toBedId").value)}, 
       "admssion": {
         "admissionId": this.AdmissionId,
         "bedId": this.Bedtransfer.get("toBedId").value,//this.vBedId,

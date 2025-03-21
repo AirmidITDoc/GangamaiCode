@@ -142,22 +142,22 @@
                                 <hr>
                                 <div fxLayout="row" fxLayoutGap="8px">
 
-                                    <airmid-dropdown label="Ward Name" formControlName="toWardId"
+                                    <airmid-dropdown label="Ward Name" formControlName="toWardId" fxFlex="25%"
                                         [formGroup]="Bedtransfer" [validations]="getValidationMessages().toWardId"
                                         [mode]="autocompleteroom">
                                     </airmid-dropdown>
 
-                                    <airmid-dropdown label="Bed Name" formControlName="toBedId"
+                                    <airmid-dropdown label="Bed Name" formControlName="toBedId" fxFlex="25%"
                                         [formGroup]="Bedtransfer" [validations]="getValidationMessages().toBedId"
                                         [mode]="autocompletebed">
                                     </airmid-dropdown>
 
-                                    <airmid-dropdown label="Class Name" formControlName="toClassId"
+                                    <airmid-dropdown label="Class Name" formControlName="toClassId" fxFlex="25%"
                                         [formGroup]="Bedtransfer" [validations]="getValidationMessages().ClassId"
                                         [mode]="autocompleteclass">
                                     </airmid-dropdown>
 
-                                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="40%">
+                                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="25%">
                                         <textarea name="Remark" matInput rows="1" cols="5" placeholder="Enter Remark"
                                             formControlName="remark">
                                     </textarea>

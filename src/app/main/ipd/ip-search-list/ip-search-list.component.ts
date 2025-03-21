@@ -81,7 +81,7 @@ export class IPSearchListComponent implements OnInit {
         // { heading: "PatientType", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.status, },
         { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', type: 10, width: 350 },
         {
-            heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,width:200,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
 

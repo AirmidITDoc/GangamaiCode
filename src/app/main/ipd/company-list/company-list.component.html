@@ -31,12 +31,12 @@
     <ng-template #actionsTemplate1 let-element>
         <div>
 
-            <button mat-icon-button *ngIf="element.isMLC==1; " matTooltip="IsMLC" (click)="NewMLc(element)">
+            <!-- <button mat-icon-button *ngIf="element.isMLC==1; " matTooltip="IsMLC" (click)="NewMLc(element)">
                 <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button *ngIf="element.isMLC==1;" matTooltip="Print MLC paper" (click)="getMLCdetailview(element.amissionId)">
                 <mat-icon>print</mat-icon>
-            </button>
+            </button> -->
             <!-- <ng-template #noMLC>
                 <span>--</span>
             </ng-template> -->
@@ -47,7 +47,7 @@
         <div fxLayout="row" fxLayoutAlign="center center">
 
 
-            <button mat-icon-button matTooltip="Edit Registration" (click)="EditRegistration(element)">
+            <!-- <button mat-icon-button matTooltip="Edit Registration" (click)="EditRegistration(element)">
                 <mat-icon>edit</mat-icon>
             </button>
 
@@ -58,11 +58,11 @@
 
             <button mat-icon-button matTooltip="Template Print" (click)="getAdmittedPatientCasepaperTempview(element,m)">
                 <mat-icon>print</mat-icon>
-            </button>
+            </button> -->
 
-            <button mat-icon-button matTooltip="Edit Admission" (click)="getEditAdmission(element)">
+            <!-- <button mat-icon-button matTooltip="Edit Admission" (click)="getEditAdmission(element)">
                 <mat-icon> account_circle</mat-icon>
-            </button>
+            </button> -->
 
             <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More" (click)="$event.stopPropagation();">
                 <mat-icon class="secondary-text">more_vert</mat-icon>

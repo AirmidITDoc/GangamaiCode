@@ -25,22 +25,19 @@ export class OpPaymentVimalComponent implements OnInit {
     currentDate = new Date();
     patientDetailsFormGrp: FormGroup;
     selectedPaymnet1: string = '';
-    paymentArr1: any[] = [];
+    paymentArr1: any[] = this.opService.getPaymentArr();
     IsAdv: boolean = false;
     autocompleteModebank: string = "Bank";
 
     BindPaymentTypes() {
-        this.opService.getPaymentModes().subscribe((data) => {
-            this.paymentArr1 = data;
+        let full = this.opService.getPaymentArr();
+        let final = [];
+        full.forEach((item) => {
+            if (!this.Payments.data.find(x => x.PaymentType == item.value)) {
+                final.push(item);
+            }
         });
-        // let full = this.opService.getPaymentArr();
-        // let final = [];
-        // full.forEach((item) => {
-        //     if (!this.Payments.data.find(x => x.PaymentType == item.value)) {
-        //         final.push(item);
-        //     }
-        // });
-        // this.paymentArr1 = final;
+        this.paymentArr1 = final;
     }
 
     onChangePaymentType() {

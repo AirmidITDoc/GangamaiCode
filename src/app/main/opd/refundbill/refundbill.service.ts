@@ -77,9 +77,9 @@ export class RefundbillService {
         return this._httpClient.GetData("OutPatient/" + Id);
     }
 
-    public getRegisteredList(employee) {
-        return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList", employee)
-    }
+    // public getRegisteredList(employee) {
+    //     return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList", employee)
+    // }
 
     public getRefundofBillOPDList(employee) {
         console.log(employee)
@@ -94,20 +94,14 @@ export class RefundbillService {
 
     public InsertOPRefundBilling(Param) {
       
-            return this._httpClient.PostData("RefundOfBill/OPRefundOFBill" ,Param);
+            return this._httpClient.PostData("RefundOfBill/OPRefundOfBILLInsert" ,Param);
       }
 
     getOprefundofbillview(RefundId) {
         return this._httpClient.GetData("OutPatient/view-OPRefundofBill?RefundId=" + RefundId)
     }
 
-    public getClassList(employee) {
-        return this._httpClient.PostData("Generic/GetByProc?procName=ps_rtrv_BillingClassName_1", employee)
-    }
-
-    public getserviceCombo() {
-        return this._httpClient.PostData("Generic/GetByProc?procName=ps_Retrieve_ServiceMasterForCombo", {})
-    }
+   
 
     // Get billing Service List 
     public getBillingServiceList(employee) {

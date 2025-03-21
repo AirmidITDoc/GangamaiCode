@@ -126,7 +126,7 @@
                                                 <mat-select formControlName="paymentType1" (selectionChange)="onChangePaymentType()"
                                                     [(ngModel)]="selectedPaymnet1" required>
                                                     <mat-option *ngFor="let ele of paymentArr1" [value]="ele.value">
-                                                        {{ele.text}}
+                                                        {{ele.viewValue}}
                                                     </mat-option>
                                                 </mat-select>
                                                 <div *ngIf="submitted && f.paymentType1.errors" class="invalid-feedback">
@@ -275,7 +275,8 @@
                                             <mat-header-row class="accent"
                                                 *matHeaderRowDef="selectedSaleDisplayedCol; sticky: true">
                                             </mat-header-row>
-                                            <mat-row *matRowDef="let contact; columns: selectedSaleDisplayedCol;"></mat-row>
+                                            <mat-row *matRowDef="let contact; columns: selectedSaleDisplayedCol;"
+                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                         </mat-table>
                                     </div>
                                 </div>

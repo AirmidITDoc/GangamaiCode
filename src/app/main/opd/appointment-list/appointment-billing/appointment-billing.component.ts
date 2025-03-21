@@ -321,8 +321,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       this.chargeList.push(newCharge);
       this.dsChargeList.data = this.chargeList;
       this.calculateTotalAmount();
-console.log(this.chargeList)
-console.log( this.dsChargeList.data)
+// console.log(this.chargeList)
+// console.log( this.dsChargeList.data)
       // Reset form with initial values
       this.resetForm();
       this.chargeForm.get("qty").setValue(1);
@@ -530,9 +530,10 @@ console.log( this.dsChargeList.data)
   }
 
   getSelectedserviceObj(obj) {
-    if (this.dataSource.data.length > 0) {
-      this.dataSource.data.forEach((element) => {
-        if (obj.serviceId == element.serviceId) {
+    debugger
+    if (this.dsChargeList.data.length > 0) {
+      this.dsChargeList.data.forEach((element) => {
+        if (obj.serviceId == element.ServiceId) {
           Swal.fire('Selected Item already added in the list ');
 
           // this.onClearServiceAddList();
@@ -541,7 +542,7 @@ console.log( this.dsChargeList.data)
       });
     } else {
       console.log(obj)
-debugger
+
       this.SrvcName1 = obj.serviceName;
       this.vPrice = obj.classRate;
       this.vQty = 1;
@@ -582,12 +583,15 @@ debugger
     debugger
     
       this.vOPIPId = obj.visitId
-      this.RegId = obj.regI
+
+      if(this.vOPIPId>0)
+        this.savebtn = false
+      // this.RegId = obj.regId
 
       // setTimeout(() => {
       //   this._AppointmentlistService.getRegistraionById(obj.regId).subscribe((response) => {
       //     this.patientDetail = response;
-      //     this.savebtn = false
+         
       //     this.PatientName = this.patientDetail.firstName + " " + this.patientDetail.middleName + " " + this.patientDetail.lastName
       //     console.log(this.patientDetail)
       //   });
@@ -768,6 +772,12 @@ debugger
     }, (error) => {
       this.toastrService.error(error.message);
     });
+
+    
+    this.dsChargeList.data=[]
+    this.totalChargeForm.reset();
+    this.dialogRef.close();
+    this.patientDetail =[];
   }
 
   CompanyId: any;

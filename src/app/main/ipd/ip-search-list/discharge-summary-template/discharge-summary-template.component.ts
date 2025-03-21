@@ -187,7 +187,8 @@ export class DischargeSummaryTemplateComponent {
       this.doseId = event.value
     }
     getSelectedserviceObj(obj) {
-      console.log(obj)
+      this.ItemId=obj.serviceId
+     console.log(obj)
   
     }
 
@@ -229,6 +230,13 @@ export class DischargeSummaryTemplateComponent {
   
     onAdd() {
   
+      if ((this.MedicineItemForm.get("ItemId").value=="" || this.MedicineItemForm.get("DoseId").value =="")) {
+        this.toastr.warning('Please select Item', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+
       const iscekDuplicate = this.dsItemList.data.some(item => item.itemID == this.ItemId)
       if (!iscekDuplicate) {
         this.dsItemList.data = [];
@@ -373,6 +381,7 @@ export class DischargeSummaryTemplateComponent {
           let dischargModeldata = {};
   
             dischargModeldata['dischargesummaryId'] = this.DischargeSummaryId || 0,
+            dischargModeldata['admissionId'] = this.vAdmissionId || 0,
             dischargModeldata['dischargeId'] = this.vDischargeId,
             dischargModeldata['followupdate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
             dischargModeldata['dischargeDoctor1'] = this.DischargesumForm.get("dischargeDoctor1").value,
@@ -406,7 +415,7 @@ export class DischargeSummaryTemplateComponent {
           });
   
           if (this.DischargeSummaryId == undefined) {
-            dischargModeldata['admissionId'] = this.vAdmissionId || 0,
+           
               dischargModeldata['addedBy'] =this.accountService.currentUserValue.userId
   
             var data = {

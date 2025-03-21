@@ -181,7 +181,7 @@ export class AdmissionService {
     }
 
     public AdmissionRegisteredInsert(employee) {
-        return this._httpClient1.PostData("Admission/AdmissionRegisteredInsertSP", employee);
+        return this._httpClient1.PostData("Admission/AdmissionRegInsertSP", employee);
     }
 
 

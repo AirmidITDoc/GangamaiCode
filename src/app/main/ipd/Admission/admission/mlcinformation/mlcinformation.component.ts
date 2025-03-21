@@ -71,8 +71,9 @@ phdatetime: any;
       if ((this.data?.admissionId?? 0) > 0) {
         setTimeout(() => {
             this._AdmissionService.getMLCById(this.data.admissionId).subscribe((response) => {
+              if(response.mlcid>0)
                 this.registerObj = response;
-                console.log(this.registerObj)
+               console.log(this.registerObj)
               
                });
         }, 500);
@@ -95,7 +96,7 @@ phdatetime: any;
 
       mlcid: 0,
       admissionId: 0,
-      mlcno: "%",
+      mlcno: "",
       reportingDate:  [(new Date()).toISOString()],
       reportingTime:[""],
       authorityName: "",
@@ -260,7 +261,7 @@ export class MlcDetail {
   constructor(MlcDetail) {
     {
       this.mlcid = MlcDetail.mlcid || 0;
-      this.admissionId = MlcDetail.admissionId || '';
+      this.admissionId = MlcDetail.admissionId || 0;
       this.mlcno = MlcDetail.mlcno || '';
       this.reportingDate = MlcDetail.reportingDate || '';
       this.reportingTime = MlcDetail.reportingTime || '';

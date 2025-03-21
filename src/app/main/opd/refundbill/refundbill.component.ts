@@ -429,7 +429,7 @@ patientDetail1 = new VisitMaster1({});
         InsertRefundObj['opdipdtype'] = 0;
         InsertRefundObj['opdipdid'] = this.vOPIPId,
           InsertRefundObj['refundAmount'] = parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
-        InsertRefundObj['remark'] = this.RefundOfBillFormGroup.get('Remark').value;
+        InsertRefundObj['remark'] = this.RefundOfBillFormGroup.get('Remark').value || "";
         InsertRefundObj['transactionId'] = 2;
         InsertRefundObj['addedBy'] = this.accountService.currentUserValue.userId,
           InsertRefundObj['isCancelled'] = 0;
@@ -613,11 +613,7 @@ patientDetail1 = new VisitMaster1({});
     }
     if (e.length == 0) { this.b_price = ''; this.b_totalAmount = '0'; this.b_netAmount = '0'; this.b_disAmount = '0'; this.b_isPath = ''; this.b_isRad = ''; this.b_IsEditable = '0'; }
   }
-  getServiceListCombo() {
-    this._RefundbillService.getserviceCombo().subscribe(data => {
-      this.serviceNameCmbList = data
-    });
-  }
+ 
 
   getServiceListCombobox() {
     let tempObj;

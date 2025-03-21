@@ -254,6 +254,7 @@ export class DischargeSummaryComponent implements OnInit {
     this.doseId = event.value
   }
   getSelectedserviceObj(obj) {
+    this.ItemId=obj.serviceId
     console.log(obj)
 
   }
@@ -293,6 +294,14 @@ export class DischargeSummaryComponent implements OnInit {
 
   onAdd() {
 
+      if ((this.MedicineItemForm.get("ItemId").value=="" || this.MedicineItemForm.get("DoseId").value =="")) {
+        this.toastr.warning('Please select Item', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+
+    debugger
     const iscekDuplicate = this.dsItemList.data.some(item => item.itemID == this.ItemId)
     if (!iscekDuplicate) {
       this.dsItemList.data = [];

@@ -255,7 +255,10 @@ export class NewAdmissionComponent implements OnInit {
       this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
         console.log(response)
         this.toastr.success(response.message);
-        this.getAdmittedPatientCasepaperview(response.admissionId);
+        let Res=response.message
+        let ID=Res.split('.')
+        let Id=ID[1]
+        this.getAdmittedPatientCasepaperview(Id);
         this.onClear();
         this._matDialog.closeAll();
        
