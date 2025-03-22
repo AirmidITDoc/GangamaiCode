@@ -109,6 +109,7 @@ this.myformSearch=this._SampleCollectionService.createSearchForm()
     isShowDetailTable: boolean = false;
 
     getSelectedRow(row: any): void {
+        console.log("selectedRow:",row)
         let billNo = row.billNo;
         let inputDate = row.vaDate;
         let parts = inputDate.split(' ')[0].split('-');
@@ -141,49 +142,13 @@ this.myformSearch=this._SampleCollectionService.createSearchForm()
         });
     }
 
-    // gridConfig1: gridModel = new gridModel();
-    // isShowDetailTable: boolean = false;
-    // getSelectedRow(row:any):void{
-    //     
-    //     console.log("Selected row : ", row);
-    //     let billNo=row.billNo //248785
-    //     // let date =row.vaDate //2025-03-13
-    //     let inputDate = row.vaDate; 
-    //     let parts = inputDate.split(' ')[0].split('-'); 
-    //     let date = `${parts[2]}-${parts[1]}-${parts[0]}`; 
-
-    //     let opipType = row.lbl === 'OP' ? 0 : 1;
-
-    //     this.gridConfig1={
-    //         apiUrl: "PathlogySampleCollection/SampleCollectionTestList",
-    //         columnsList: [
-    //             { heading: "Completed", key: "completed", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-    //             { heading: "SampleNo", key: "sampleno", sort: true, align: 'left', emptySign: 'NA', width: 450 },
-    //             { heading: "TestName", key: "testName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    //             { heading: "CollectionDate/Time", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    //         ],
-    //         sortField: "BillNo",
-    //         sortOrder: 0,
-    //         filters: [
-
-    //             { fieldName: "BillNo", fieldValue: billNo, opType: OperatorComparer.Equals },
-    //             { fieldName: "BillDate", fieldValue: date, opType: OperatorComparer.Equals },
-    //             { fieldName: "OP_IP_Type", fieldValue: opipType, opType: OperatorComparer.Equals },
-    //         ],
-    //         row: 25
-    //     }
-    //     this.isShowDetailTable = true;
-    //     this.grid1.gridConfig = this.gridConfig1;
-    //     this.grid1.bindGridData();
-    // }
-
      onChangeFirst() {
         debugger
             this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
             this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
             this.f_name = this.myformSearch.get('FirstName').value + "%"
             this.l_name = this.myformSearch.get('LastName').value + "%"
-            this.regNo = this.myformSearch.get('RegNo').value 
+            this.regNo = this.myformSearch.get('RegNo').value || ""
             this.status = this.myformSearch.get('StatusSearch').value 
             this.Ptype = this.myformSearch.get('PatientTypeSearch').value 
 
@@ -200,7 +165,7 @@ this.myformSearch=this._SampleCollectionService.createSearchForm()
             filters:  [
                 { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
                 { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-                { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
                 { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },

@@ -149,8 +149,7 @@
                                     <button mat-raised-button (click)="chkresultentry(selection.selected,true)">
                                         Result Entry
                                     </button>
-                                    <!-- <button mat-raised-button (click)="Reentryone()"> Reentry1 </button>
-                                      <button mat-raised-button (click)="Reentrytwo()"> Reentry2 </button> -->
+
                                     <button mat-raised-button (click)="Printresultentry()"
                                         *ngIf="selection.selected.length>0">
                                         Print Result
@@ -160,31 +159,6 @@
                                         Print With Header
                                     </button>
                                 </div>
-
-                                <!-- <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false" :ShowButtons="false">
-
-                                        <ng-container matColumnDef="select">
-                                            <th mat-header-cell *matHeaderCellDef>
-                                                <mat-checkbox (change)="$event ? masterToggle() : null" 
-                                                    [checked]="selection.hasValue()" 
-                                                    [indeterminate]="selection.hasValue() && !isAllSelected()">
-                                                </mat-checkbox>
-                                            </th>
-                                            <td mat-cell *matCellDef="let contact">
-                                                <mat-checkbox (click)="$event.stopPropagation()" (change)="onresultentryshow($event,contact)"
-                                                    (change)="$event ? selection.toggle(contact) : null" *ngIf="contact.IsTemplateTest !='1' else noMLC" 
-                                                    [checked]="selection.isSelected(contact)">
-                                                </mat-checkbox>
-                                                 <ng-template #noMLC>
-                                                    <span>----</span>
-                                                </ng-template>
-                                            </td>
-                                        </ng-container>
-
-                                        <ng-container filters>
-    
-                                        </ng-container>
-                                    </airmid-table> -->
 
                                 <mat-table class="mat-table-2 h-210" #table matSort [dataSource]="dataSource1"
                                     [@animateStagger]="{value:'50'}">
@@ -292,11 +266,11 @@
                                             </button>
 
                                             <button mat-icon-button (click)="getPrint(contact)" matTooltip="Print"
-                                                *ngIf="contact.IsCompleted">
+                                                *ngIf="contact.isCompleted">
                                                 <mat-icon>print</mat-icon>
                                             </button>
                                             <button mat-icon-button matTooltip="Send Result On WhatsApp"
-                                                *ngIf="contact.IsCompleted" (click)="getWhatsappshareResult(contact)">
+                                                *ngIf="contact.isCompleted" (click)="getWhatsappshareResult(contact)">
                                                 <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
                                             </button>
 
@@ -328,7 +302,7 @@
 
                                     <mat-row class="table1-row" #table1Row
                                         *matRowDef="let contact; columns: displayedColumns1;"
-                                        [ngClass]="contact.IsCompleted == '1' ? 'Pathtest-Completed-Status' : ''"
+                                        [ngClass]="contact.isCompleted == '1' ? 'Pathtest-Completed-Status' : ''"
                                         [@animate]="{value:'*',params:{y:'100%'}}">
                                     </mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"

@@ -959,6 +959,13 @@ export class AdmissionPersonlModel {
   doctorName:any;
   genderName:any;
   opD_IPD_ID:any;
+  pathReportId:any;
+adm_Visit_docId:any;
+visit_Adm_ID:any;
+pathTestID:any;
+sampleCollectionTime:any;
+isSampleCollection:any;
+isTemplateTest:any;
   /**
 * Constructor
 *
@@ -1150,6 +1157,13 @@ export class AdmissionPersonlModel {
       this.doctorName=AdmissionPersonl.doctorName || ''
       this.genderName=AdmissionPersonl.genderName || ''
       this.opD_IPD_ID=AdmissionPersonl.opD_IPD_ID || ''
+      this.pathReportId=AdmissionPersonl.pathReportId || ''
+      this.adm_Visit_docId=AdmissionPersonl.adm_Visit_docId || ''
+      this.visit_Adm_ID=AdmissionPersonl.visit_Adm_ID || ''
+      this.pathTestID=AdmissionPersonl.pathTestID || ''
+      this.sampleCollectionTime=AdmissionPersonl.sampleCollectionTime|| ''
+      this.isSampleCollection=AdmissionPersonl.isSampleCollection|| ''
+      this.isTemplateTest=AdmissionPersonl.isTemplateTest || ''
     }
   }
 }
