@@ -342,10 +342,7 @@ export class IPBillingComponent implements OnInit {
     this.handleChange('price', () => this.calculateTotalCharge());
     this.handleChange('qty', () => this.calculateTotalCharge());
     this.handleChange('discPer', () => this.updateDiscountAmount());
-    this.handleChange('discAmount', () => this.updateDiscountdiscPer());
-    // this.handleChange('AdminPer', () => this.CalculateAdminCharge(), this.Ipbillform);
-    // this.handleChange('totaldiscPer', () => this.CalFinalDiscper(), this.Ipbillform);
-    // this.handleChange('totalconcessionAmt', () => this.getDiscAmtCal(), this.Ipbillform);
+    this.handleChange('discAmount', () => this.updateDiscountdiscPer()); 
   }
 
   calculateTotalCharge(row: any = null): void {

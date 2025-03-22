@@ -6,21 +6,17 @@ import { MatTableDataSource } from '@angular/material/table';
 import { IPSearchListService } from '../ip-search-list.service';
 import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AdvanceDataStored } from '../../advance';
-import { IPAdvancePaymentComponent, IpPaymentInsert } from '../ip-advance-payment/ip-advance-payment.component';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog'; 
 import Swal from 'sweetalert2';
-import { fuseAnimations } from '@fuse/animations';
-import * as converter from 'number-to-words';
+import { fuseAnimations } from '@fuse/animations'; 
 import { PrintPreviewService } from 'app/main/shared/services/print-preview.service';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
-import { Cal_DiscAmount } from '../ip-billing/ip-billing.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component'; 
 import { ToastrService } from 'ngx-toastr';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { IPpaymentWithadvanceComponent } from '../../ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
 import { map, startWith } from 'rxjs/operators';
 import { ConfigService } from 'app/core/services/config.service';
+import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 
 @Component({
   selector: 'app-interim-bill',
@@ -43,14 +39,22 @@ export class InterimBillComponent implements OnInit {
     'ClassName', 
   ]; 
  
-
-  vTotalBillAmt: any = 0; 
-  vNetAmount: any = 0;
+ 
   vUPINO: any;
-  disamt: any;  
-  
+  selectedAdvanceObj: any;
+  ConShow: boolean = false;
+  DiscountFlag: boolean = false;
+  onlineflag: boolean = false;
+  interimArray: any = [];
+  isLoading: String = '';
+  InterimFormGroup: FormGroup;
+  concessionId:any = 0; 
+  currentDate = new Date();
+  autocompleteModeConcession: string = "Concession";
+  autocompleteModeCashCounter: string = "CashCounter";
 
   dataSource = new MatTableDataSource<ChargesList>(); 
+
   constructor(
     public _IpSearchListService: IPSearchListService,
     public _printpreview: PrintPreviewService,
@@ -63,48 +67,32 @@ export class InterimBillComponent implements OnInit {
     public _WhatsAppEmailService:WhatsAppEmailService,
     public _ConfigService : ConfigService,
     @Inject(MAT_DIALOG_DATA) public data: any) 
-    {}
-
-    selectedAdvanceObj:any; 
-    ConShow: boolean = false;
-    DiscountFlag: boolean = false;
-    onlineflag: boolean = false;
-    interimArray: any = [];
-    isLoading: String = ''; 
-    InterimFormGroup: FormGroup;
-    
-  currentDate = new Date();
-  autocompleteModeConcession: string = "Concession";
-  autocompleteModeCashCounter: string = "CashCounter";
-
+    {} 
   ngOnInit(): void {
     this.dataSource.data = []; 
      this.InterimFormGroup = this.InterimForm();  
     if (this.data) {
       console.log(this.data);
       this.dataSource.data  = this.data.Obj; 
-      this.getNetAmtSum(this.data.Obj)
+      this.interimArray = this.dataSource.data 
       this.selectedAdvanceObj = this.data.PatientHeaderObj;  
+      this.getNetAmtSum(); 
     } 
-    this.setupFormListener()
+ 
   } 
   InterimForm(): FormGroup {
     return this.formBuilder.group({
       NetpayAmount: [0],
-      ConcessionId: '0',
+      ConcessionId: [''],
       Remark: [''],
       TotalAmt: [0], 
-      CashCounterID:[''],
-      discPer: [0],
-      concessionAmt: [0],
+      CashCounterID:[4], 
       paymode: ['cashpay'],
-      UPINO: ['']
+      UPINO: [''],
+      discPer: [0,[Validators.min(0), Validators.max(100)]],
+      concessionAmt:[0,[Validators.min(0)]],
     });
-  }
-  private setupFormListener(): void { 
-    this.handleChange('discPer', () => this.calculateDiscPer());
-    this.handleChange('concessionAmt', () => this.calculateDiscamt()); 
-  }  
+  } 
   getValidationMessages() {
     return { 
       TotalAmt: [
@@ -124,14 +112,17 @@ export class InterimBillComponent implements OnInit {
       cashCounterId: [], 
     }
   } 
-  selectChangeConcession(event) { 
-    console.log(event)
+  selectChangeConcession(event) {  
+    this.concessionId = event.value
   } 
  
-  getNetAmtSum(element) { 
-    let netAmt = element.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0).toFixed(2);
-    let totalAmt = element.reduce((sum, { totalAmt }) => sum += +(totalAmt || 0), 0).toFixed(2);
-    let discountAmount = element.reduce((sum, { concessionAmount }) => sum += +(concessionAmount || 0), 0).toFixed(2);
+ 
+ 
+  FinalNetAmt:any=0;
+  getNetAmtSum() { 
+    this.FinalNetAmt =  this.interimArray.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0).toFixed(2);
+    let totalAmt =  this.interimArray.reduce((sum, { totalAmt }) => sum += +(totalAmt || 0), 0).toFixed(2);
+    let discountAmount =  this.interimArray.reduce((sum, { concessionAmount }) => sum += +(concessionAmount || 0), 0).toFixed(2);
     if(discountAmount > 0){
       this.ConShow = true;
       this.DiscountFlag = true;
@@ -142,41 +133,51 @@ export class InterimBillComponent implements OnInit {
     } 
     this.InterimFormGroup.patchValue({
       TotalAmt: totalAmt,
-      NetpayAmount: netAmt,
+      NetpayAmount:   this.FinalNetAmt,
       concessionAmt:discountAmount
     });
   }  
+  //Calculate Disc Amt
   calculateDiscPer() {  
     const perControl = this.InterimFormGroup.get("discPer");
-    if (!perControl.valid || perControl.value == 0) {
-      this.InterimFormGroup.get("concessionAmt").setValue(0);
-      this.InterimFormGroup.get("discPer").setValue(0); 
-      this.ConShow = false;
-      this.toastr.error("Enter discount % between 0-100");
-      return;
-    }
+    let  finalNetAmt = this.FinalNetAmt 
+    if (!perControl.valid || perControl.value == 0 || perControl.value == '') {  
+        this.ConShow = false 
+        this.InterimFormGroup.patchValue({ 
+          discPer:'',
+          concessionAmt:'',
+          NetpayAmount: Math.round(finalNetAmt),
+        }, { emitEvent: false }); 
+      this.toastr.error("Enter Discount % between 0-100");  
+      return; 
+    } 
     let percentage = perControl.value;
     let totalAmount = this.InterimFormGroup.get("TotalAmt").value; 
     let discountAmount = parseFloat((totalAmount * percentage / 100).toFixed(2));
-    let netAmount = parseFloat((totalAmount - discountAmount).toFixed(2));
+   finalNetAmt = parseFloat((totalAmount - discountAmount).toFixed(2));
     this.ConShow = true;
 
     this.InterimFormGroup.patchValue({ 
-      NetpayAmount: netAmount,
+      NetpayAmount: finalNetAmt,
       concessionAmt:discountAmount
     },{ emitEvent: false }); 
   } 
-  calculateDiscamt() {  
+  //Calculate Disc Per
+  calculateDiscamt() {   
     let discountAmount = this.InterimFormGroup.get("concessionAmt").value;
     let totalAmount = this.InterimFormGroup.get("TotalAmt").value;
-
-    if (discountAmount < 0 || discountAmount > totalAmount || discountAmount == 0) {
-      this.InterimFormGroup.get("concessionAmt").setValue(0);
-      this.InterimFormGroup.get("discPer").setValue(0); 
+    let  finalNetAmt = this.FinalNetAmt 
+    if (discountAmount < 0 || discountAmount == 0 || discountAmount == '' || parseFloat(discountAmount) > parseFloat(totalAmount)) { 
       this.ConShow = false;
+      this.InterimFormGroup.patchValue({ 
+        discPer:'',
+        concessionAmt:'',
+        NetpayAmount: Math.round(finalNetAmt),
+      }, { emitEvent: false }); 
       this.toastr.error("Discount must be between 0 and the total amount.");
       return;
-    } 
+    }  
+
     let percent = Number(totalAmount ? ((discountAmount / totalAmount) * 100).toFixed(2) : "0.00");
     let netAmount = Number((totalAmount - discountAmount).toFixed(2));
     this.ConShow = true;
@@ -184,32 +185,27 @@ export class InterimBillComponent implements OnInit {
       discPer: percent,
       NetpayAmount: netAmount
     }, { emitEvent: false }); // Prevent infinite loop 
-  }
-
-
+  } 
   onChangeReg(event) { 
     if (event.value == 'onlinepay') {
       this.onlineflag = true; 
       this.InterimFormGroup.get('UPINO').setValidators([Validators.required]);
-      this.InterimFormGroup.get('UPINO').enable();
-      this.InterimFormGroup.get('DoctorID').updateValueAndValidity();
+      this.InterimFormGroup.get('UPINO').enable(); 
     } else {
       this.onlineflag = false;
       this.InterimFormGroup.get('UPINO').reset();
       this.InterimFormGroup.get('UPINO').clearValidators();
       this.InterimFormGroup.get('UPINO').updateValueAndValidity();
     }
-  }
- 
+  } 
  
   onSave() {
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');  
-
-    const formvalue = this.InterimFormGroup.value
-
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');   
+ 
+debugger
     if (this.InterimFormGroup.get('discPer').value > 0 || this.InterimFormGroup.get('concessionAmt').value > 0) {
       if (!this.InterimFormGroup.get('ConcessionId').value) {
         this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
@@ -241,7 +237,7 @@ export class InterimBillComponent implements OnInit {
     billObj['addedBy'] = this.accountService.currentUserValue.userId || 0;
     billObj['totalAdvanceAmount'] = this.selectedAdvanceObj.AdvTotalAmount || 0;
     billObj['billTime'] =  formattedTime;
-    billObj['concessionReasonId'] = this.InterimFormGroup.get('ConcessionId').value.ConcessionId || 0,
+    billObj['concessionReasonId'] = this.concessionId || 0,
     billObj['isSettled'] = false;
     billObj['isPrinted'] = true;
     billObj['isFree'] = false;
@@ -249,13 +245,13 @@ export class InterimBillComponent implements OnInit {
     billObj['tariffId'] = this.selectedAdvanceObj.tariffId || 0,
     billObj['unitId'] = this.selectedAdvanceObj.unitId || 0;
     billObj['interimOrFinal'] = 1;
-    billObj['companyRefNo'] = 0;
+    billObj['companyRefNo'] = "";
     billObj['concessionAuthorizationName'] = 0;
     billObj['speTaxPer'] =   0;
     billObj['speTaxAmt'] =   0;
     billObj['discComments'] = this.InterimFormGroup.get('Remark').value || ''; 
     billObj['compDiscAmt'] = 0 ;
-    billObj['cashCounterId'] = this.InterimFormGroup.get('CashCounterID').value.CashCounterId || 0;
+    billObj['cashCounterId'] = this.InterimFormGroup.get('CashCounterID').value || 0;
 
     let billDetailObj = []; 
     this.dataSource.data.forEach((element) => {
@@ -265,19 +261,23 @@ export class InterimBillComponent implements OnInit {
       billDetailObj.push(billDetailObj1);
     });  
 
-    if (this.InterimFormGroup.get('paymode').value == 'cashpay') { 
+    if (this.InterimFormGroup.get('paymode').value != 'PayOption') { 
       let Paymentobj = {};  
       Paymentobj['billNo'] = 0;
       Paymentobj['receiptNo'] = "";
       Paymentobj['paymentDate'] =  formattedDate;
       Paymentobj['paymentTime'] =  formattedTime;
-      Paymentobj['cashPayAmount'] = this.InterimFormGroup.get('NetpayAmount').value || 0,
+      if(this.InterimFormGroup.get('paymode').value == 'cashpay'){
+        Paymentobj['cashPayAmount'] = this.InterimFormGroup.get('NetpayAmount').value || 0;
+      }else{
+        Paymentobj['cashPayAmount'] = 0;
+      } 
       Paymentobj['chequePayAmount'] = 0;
-      Paymentobj['chequeNo'] = 0;
+      Paymentobj['chequeNo'] = "";
       Paymentobj['bankName'] = "";
       Paymentobj['chequeDate'] =  formattedDate;
       Paymentobj['cardPayAmount'] = 0;
-      Paymentobj['cardNo'] = 0;
+      Paymentobj['cardNo'] = "";
       Paymentobj['cardBankName'] = "";
       Paymentobj['cardDate'] = formattedDate;
       Paymentobj['advanceUsedAmount'] = 0;
@@ -289,19 +289,24 @@ export class InterimBillComponent implements OnInit {
       Paymentobj['isCancelled'] = false;
       Paymentobj['isCancelledBy'] = 0;
       Paymentobj['isCancelledDate'] = '1990-01-01'
-      Paymentobj['CashCounterId'] = 0;
+      Paymentobj['CashCounterId'] =  this.InterimFormGroup.get('CashCounterID').value || 0;
       Paymentobj['neftpayAmount'] = 0;
-      Paymentobj['neftno'] = 0;
+      Paymentobj['neftno'] = "";
       Paymentobj['neftbankMaster'] = "";
       Paymentobj['neftdate'] = formattedDate;
-      Paymentobj['payTmamount'] = 0;
-      Paymentobj['payTmtranNo'] = 0;
+      if(this.InterimFormGroup.get('paymode').value == 'onlinepay'){
+        Paymentobj['payTmamount'] = this.InterimFormGroup.get('NetpayAmount').value || 0,
+        Paymentobj['payTmtranNo'] = this.InterimFormGroup.get('UPINO').value || 0;
+      }else{
+        Paymentobj['payTmamount'] = 0;
+        Paymentobj['payTmtranNo'] = "";
+      }  
       Paymentobj['payTmdate'] = formattedDate;
       Paymentobj['tdsAmount'] = 0;  
 
-      let submitData = { 
-        "ipBillling": billObj,
+      let submitData = {  
         "addChargeM": interimBillChargesobj,
+        "ipBillling": billObj,
         "billingDetails": billDetailObj,
         "payments": Paymentobj,
       };
@@ -315,90 +320,62 @@ export class InterimBillComponent implements OnInit {
         }, (error) => {
           this.toastr.error(error.message);
         }); 
-    }
-    else if (this.InterimFormGroup.get('paymode').value == 'onlinepay') { 
-      let Paymentobj = {};  
-      Paymentobj['billNo'] = 0;
-      Paymentobj['receiptNo'] = "";
-      Paymentobj['paymentDate'] =  formattedDate;
-      Paymentobj['paymentTime'] =  formattedTime;
-      Paymentobj['cashPayAmount'] = 0
-      Paymentobj['chequePayAmount'] = 0;
-      Paymentobj['chequeNo'] = 0;
-      Paymentobj['bankName'] = "";
-      Paymentobj['chequeDate'] =  formattedDate;
-      Paymentobj['cardPayAmount'] = 0;
-      Paymentobj['cardNo'] = 0;
-      Paymentobj['cardBankName'] = "";
-      Paymentobj['cardDate'] = formattedDate;
-      Paymentobj['advanceUsedAmount'] = 0;
-      Paymentobj['advanceId'] = 0;
-      Paymentobj['refundId'] = 0;
-      Paymentobj['transactionType'] = 0;
-      Paymentobj['remark'] = "Cashpayment";
-      Paymentobj['addBy'] = this.accountService.currentUserValue.userId,
-      Paymentobj['isCancelled'] = false;
-      Paymentobj['isCancelledBy'] = 0;
-      Paymentobj['isCancelledDate'] = '1990-01-01'
-      Paymentobj['CashCounterId'] = 0;
-      Paymentobj['neftpayAmount'] = 0;
-      Paymentobj['neftno'] = 0;
-      Paymentobj['neftbankMaster'] = "";
-      Paymentobj['neftdate'] = formattedDate;
-      Paymentobj['payTmamount'] = this.InterimFormGroup.get('NetpayAmount').value || 0,
-      Paymentobj['payTmtranNo'] = this.InterimFormGroup.get('UPINO').value || 0;
-      Paymentobj['payTmdate'] = formattedDate;
-      Paymentobj['tdsAmount'] = 0;  
- 
-      let submitData = {
-        "ipBillling": billObj,
-        "addChargeM": interimBillChargesobj,
-        "billingDetails": billDetailObj,
-        "ipIntremPaymentInsert": Paymentobj, 
-      };
-      console.log(submitData); 
-        this._IpSearchListService.InsertInterim(submitData).subscribe(response => {  
-          this.toastr.success(response.message);
-          this.viewgetInterimBillReportPdf(response);
-          this.getWhatsappshareIPInterimBill(response, this.selectedAdvanceObj.mobileNo);
-          this.onClose()
-          this._matDialog.closeAll();
-        }, (error) => {
-          this.toastr.error(error.message);
-        }); 
-    }
+    } 
     else if (this.InterimFormGroup.get('paymode').value == 'PayOption') {
+      // let PatientHeaderObj = {};
+      // PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.patientName;
+      // PatientHeaderObj['Date'] = formattedDate
+      // PatientHeaderObj['UHIDNO'] =this.selectedAdvanceObj.regNo;
+      // PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.doctorname;
+      // PatientHeaderObj['IPDNo'] = this.selectedAdvanceObj.ipdno ;  
+      // PatientHeaderObj['NetPayAmount'] = this.InterimFormGroup.get('NetpayAmount').value
+      // PatientHeaderObj['AdvanceAmount'] =  this.InterimFormGroup.get('NetpayAmount').value
+      // PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.admissionId;
+      // PatientHeaderObj['ComapanyId'] = this.selectedAdvanceObj.ompanyId;
+
       let PatientHeaderObj = {};
-      PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
-      PatientHeaderObj['Date'] = //this.dateTimeObj.date;
-      PatientHeaderObj['UHIDNO'] =this.selectedAdvanceObj.RegNo;
-      PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.Doctorname;
-      PatientHeaderObj['IPDNo'] = this.selectedAdvanceObj.IPDNo ; // this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
-      PatientHeaderObj['NetPayAmount'] = //this.netAmount;
-      PatientHeaderObj['AdvanceAmount'] =  //this.netAmount; 
-      PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
-      PatientHeaderObj['ComapanyId'] = this.selectedAdvanceObj.CompanyId;
- 
-      const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
+      PatientHeaderObj['Date'] = formattedDate
+      PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.patientName;
+      PatientHeaderObj['RegNo'] = this.selectedAdvanceObj.regNo;
+      PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.doctorname;
+      PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj.companyName;
+      PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj.departmentName;
+      PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.admissionId;
+      PatientHeaderObj['Age'] = this.selectedAdvanceObj.ageYear;
+      PatientHeaderObj['NetPayAmount'] = this.InterimFormGroup.get('NetpayAmount').value
+
+      // const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
+      //   {
+      //     maxWidth: "95vw",
+      //     height: '650px',
+      //     width: '85%',
+      //     data: {
+      //       advanceObj: PatientHeaderObj,
+      //       FromName: "IP-IntrimBIll"
+      //     }
+      //   });
+
+      const dialogRef = this._matDialog.open(OpPaymentComponent,
         {
-          maxWidth: "95vw",
+          maxWidth: "80vw",
           height: '650px',
-          width: '85%',
+          width: '80%',
           data: {
+            vPatientHeaderObj: PatientHeaderObj,
+            FromName: "IP-IntrimBIll",
             advanceObj: PatientHeaderObj,
-            FromName: "IP-IntrimBIll"
           }
         });
       dialogRef.afterClosed().subscribe(result => {
         console.log(result)
         let submitData = {
+          "addChargeM": interimBillChargesobj,
           "ipBillling": billObj,
-        "addChargeM": interimBillChargesobj,
-        "billingDetails": billDetailObj, 
-        "ipIntremPaymentInsert": result.submitDataPay.ipPaymentInsert,
+          "billingDetails": billDetailObj,
+          "payments": result.submitDataPay.ipPaymentInsert,
         };
         console.log(submitData)
-        this._IpSearchListService.InsertInterim(submitData).subscribe(response => {  
+        this._IpSearchListService.InsertInterim(submitData).subscribe(response => {
           this.toastr.success(response.message);
           this.viewgetInterimBillReportPdf(response);
           this.getWhatsappshareIPInterimBill(response, this.selectedAdvanceObj.mobileNo);
@@ -406,7 +383,7 @@ export class InterimBillComponent implements OnInit {
           this._matDialog.closeAll();
         }, (error) => {
           this.toastr.error(error.message);
-        }); 
+        });
       });
     }
     else {
@@ -414,9 +391,21 @@ export class InterimBillComponent implements OnInit {
     }
   }
   onClose() {
+    this.dataSource.data = [];
+    this.interimArray = [];
+    this.InterimFormGroup.reset({
+      NetpayAmount: [0],
+      ConcessionId: '0',
+      Remark: [''],
+      TotalAmt: [0], 
+      CashCounterID:[''],
+      discPer: [0],
+      concessionAmt: [0],
+      paymode: ['cashpay'],
+      UPINO: ['']
+    })
     this.dialogRef.close(); 
-  }
-  
+  } 
   getWhatsappshareIPInterimBill(el, vmono) {
     
     if(vmono !='' && vmono !="0"){
@@ -465,12 +454,7 @@ export class InterimBillComponent implements OnInit {
           }
         });
     });
-  } 
-
- 
-  public setFocus(nextElementId): void {
-    document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
-  } 
+  }  
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
@@ -489,12 +473,10 @@ export class InterimBillComponent implements OnInit {
       return false;
     }
   }
-  public subscription: Array<Subscription> = [];
-  handleChange(key: string, callback: () => void, form: FormGroup = this.InterimFormGroup) {
-    this.subscription.push(form.get(key).valueChanges.subscribe(value => {
-      callback();
-    }));
-  }
+ 
+  public setFocus(nextElementId): void {
+    document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
+  } 
 }
 
 export class interimBill {

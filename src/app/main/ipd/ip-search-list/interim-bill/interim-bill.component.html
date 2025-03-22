@@ -178,9 +178,9 @@
                                 </mat-footer-cell>
                             </ng-container>
 
-                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                            <mat-header-row class="accent min-width-1200" *matHeaderRowDef="displayedColumns; sticky: true">
                             </mat-header-row>
-                            <mat-row *matRowDef="let contact; columns: displayedColumns;"
+                            <mat-row *matRowDef="let contact; columns: displayedColumns;"      class="contact min-width-1200"
                                 [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                             <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}">
                             </mat-footer-row>
@@ -204,18 +204,20 @@
                                 <div fxFlex="6%" *ngIf="!DiscountFlag">
                                     <airmid-textbox label="Disc %" formControlName="discPer"
                                         [formGroup]="InterimFormGroup" [validations]="getValidationMessages().discPer"
-                                        [type]="'text'" [min]="0" [max]="100" (keypress)="keyPressCharater($event)">
+                                        [type]="'text'" [min]="0" [max]="100" (keypress)="keyPressCharater($event)"
+                                        (keyup)="calculateDiscPer()">
                                     </airmid-textbox>
                                 </div>
                                 <div fxFlex="8%">
                                     <airmid-textbox label="Disc Amount" formControlName="concessionAmt"
                                         [formGroup]="InterimFormGroup"
                                         [validations]="getValidationMessages().concessionAmt" [type]="'text'" [min]="0"
-                                        (keypress)="keyPressCharater($event)" [readonly]="DiscountFlag">
+                                        (keypress)="keyPressCharater($event)" [readonly]="DiscountFlag"
+                                        (keyup)="calculateDiscamt()">
                                     </airmid-textbox>
                                 </div>
 <!-- *ngIf="ConShow" -->
-                                <div  fxFlex="16%">
+                                <div  fxFlex="16%" *ngIf="ConShow" >
                                     <airmid-dropdown label="Concession Reason" formControlName="ConcessionId"
                                         [formGroup]="InterimFormGroup"
                                         [validations]="getValidationMessages().concessionId"
@@ -234,13 +236,8 @@
                                 <div fxFlex="16%">
                                     <airmid-dropdown label="Cash Counter" formControlName="CashCounterID"
                                         [formGroup]="InterimFormGroup" [mode]="autocompleteModeCashCounter"
-                                        [validations]="getValidationMessages().cashCounterId">
-                                    </airmid-dropdown>
-
-                                    <!-- <airmid-dropdown label="Select Cash Counter " formControlName="CashCounterID" class="w-300"
-                                    [formGroup]="InterimFormGroup" [validations]="getValidationMessages().cashCounterId"
-                                    [mode]="autocompleteModeCashcounter" (selectionChange)="selectChangeConcession($event)">
-                                </airmid-dropdown> -->
+                                        [validations]="getValidationMessages().cashCounterId" >
+                                    </airmid-dropdown> 
                                 </div>
 
                                 <div fxFlex>
@@ -251,7 +248,7 @@
                                 </div>
 
                             </div>
-
+                            <hr>
                             <div fxLayout="row" fxLayoutAlign="space-between center">
 
                                 <mat-radio-group aria-label="Select an option" formControlName="paymode" name="paymode"
@@ -273,7 +270,8 @@
                                     <mat-error class="error"
                                         *ngIf="InterimFormGroup.get('UPINO').invalid && InterimFormGroup.get('UPINO').touched">12
                                         digits upi number is required</mat-error>
-                                </mat-form-field>
+                                </mat-form-field> 
+                             
 
                                 <div class="next-div button-row-group" style="padding-right: 20px;">
                                     <button class="btn btn-danger-outline" (click)="onClose()">Close</button>

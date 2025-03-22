@@ -27,19 +27,19 @@ export class OpPaymentComponent implements OnInit {
   currentDate = new Date();
   patientDetailsFormGrp: FormGroup;
   selectedPaymnet1: string = '';
-  paymentArr1: any[] = [];
+  paymentArr1: any[] = this.opService.getPaymentArr();
   BindPaymentTypes() {
-    this.opService.getPaymentModes().subscribe((data) => {
-        this.paymentArr1 = data;
-    });
-    // let full = this.opService.getPaymentArr();
-    // let final = [];
-    // full.forEach((item) => {
-    //   if (!this.Payments.data.find(x => x.PaymentType == item.value)) {
-    //     final.push(item);
-    //   }
+    // this.opService.getPaymentModes().subscribe((data) => {
+    //     this.paymentArr1 = data;
     // });
-    // this.paymentArr1 = final;
+    let full = this.opService.getPaymentArr();
+    let final = [];
+    full.forEach((item) => {
+      if (!this.Payments.data.find(x => x.PaymentType == item.value)) {
+        final.push(item);
+      }
+    });
+    this.paymentArr1 = final;
   } 
 
   onChangePaymentType() { 
@@ -301,6 +301,21 @@ export class OpPaymentComponent implements OnInit {
       this.PatientName = this.advanceData.PatientName;
       this.Date = this.advanceData.Date;
       this.selectedPaymnet1 = 'cash'; 
+    }
+
+    else if (this.data.FromName == "IP-IntrimBIll") {
+      this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
+      this.amount1 = parseInt(this.advanceData.NetPayAmount) ;
+      this.PatientName = this.advanceData.PatientName;
+      this.RegNo = this.advanceData.RegNo;
+      this.DoctorName = this.advanceData.Doctorname;
+      this.CompanyName = this.advanceData.CompanyName;
+      this.Date = this.advanceData.Date;
+      this.Age = this.advanceData.Age;
+      this.OPD_IPD_Id = this.advanceData.OPD_IPD_Id;
+      this.DepartmentName = this.advanceData.DepartmentName;
+      // this.Paymentobj['TransactionType'] = 0;
+      this.selectedPaymnet1 = 'cash';
     }
   }
 
@@ -607,6 +622,43 @@ export class OpPaymentComponent implements OnInit {
         this.Paymentobj['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? "";
         this.Paymentobj['payTmdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
         this.Paymentobj['tdsAmount'] = 0; 
+    }
+    else if(this.data.FromName == "IP-IntrimBIll" ) {
+
+
+      this.Paymentobj['billNo'] = 0;
+      this.Paymentobj['receiptNo'] = "";
+      this.Paymentobj['paymentDate'] = formattedDate
+      this.Paymentobj['paymentTime'] = formattedTime
+      this.Paymentobj['cashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
+      this.Paymentobj['chequePayAmount'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.Amount ?? 0;
+      this.Paymentobj['chequeNo'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.RefNo ?? "";
+      this.Paymentobj['bankName'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.BankName ?? "";
+      this.Paymentobj['chequeDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+      this.Paymentobj['cardPayAmount'] = this.Payments.data.find(x => x.PaymentType == "card")?.Amount ?? 0;
+      this.Paymentobj['cardNo'] = this.Payments.data.find(x => x.PaymentType == "card")?.RefNo ?? "";
+      this.Paymentobj['cardBankName'] = this.Payments.data.find(x => x.PaymentType == "card")?.BankName ?? "";
+      this.Paymentobj['cardDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+      this.Paymentobj['advanceUsedAmount'] = 0;
+      this.Paymentobj['advanceId'] = 0;
+      this.Paymentobj['refundId'] = 0; 
+      this.Paymentobj['transactionType'] = 0;
+      this.Paymentobj['remark'] = " ";
+      this.Paymentobj['addBy'] = this._loggedService.currentUserValue.userId,
+      this.Paymentobj['isCancelled'] = false;
+      this.Paymentobj['isCancelledBy'] = 0;
+      this.Paymentobj['isCancelledDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+      // this.Paymentobj['CashCounterId'] = 0;
+      this.Paymentobj['neftpayAmount'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.Amount ?? 0;
+      this.Paymentobj['neftno'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.RefNo ?? "";
+      this.Paymentobj['neftbankMaster'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.BankName ?? "";
+      this.Paymentobj['neftdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+      this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
+      this.Paymentobj['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? "";
+      this.Paymentobj['payTmdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+      this.Paymentobj['tdsAmount'] = 0; 
+      
+      
     }
 
     console.log(JSON.stringify(this.Paymentobj));
