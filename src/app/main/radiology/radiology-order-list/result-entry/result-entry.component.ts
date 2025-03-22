@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { RadiologyPrint } from '../radiology-order-list.component';
 import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
@@ -15,6 +15,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { ToastrService } from 'ngx-toastr';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 // import { Editor } from 'ngx-editor';
 
 @Component({
@@ -93,6 +94,7 @@ export class ResultEntryComponent implements OnInit {
   autocompleteModeTemplate: string = "RadioTemplate";
 
   private _onDestroy = new Subject<void>();
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
   dataSource = new MatTableDataSource<RadiologyPatienInsert>();
 
@@ -127,19 +129,12 @@ export class ResultEntryComponent implements OnInit {
       this.TemplateId == this.selectedAdvanceObj.TemplateId;
       console.log(this.selectedAdvanceObj)
     }
-    this.getDoctorList()
-    this.getTemplateList();
-  }
-
-  onBlur(e: any) {
-    this.vTemplateDesc = e.target.innerHTML;
-    throw new Error('Method not implemented.');
   }
 
   ngOnInit(): void {
-    //this.getTemplateList(); 
+    this.getTemplateList(); 
     if (this.advanceDataStored.storage) {
-      this.getUpdatetemplate();
+      // this.getUpdatetemplate();
     }
     if (this.data) {
       this.regObj = this.data
@@ -166,78 +161,31 @@ export class ResultEntryComponent implements OnInit {
       this.DOT = this.regObj.dot
       this.WardName = this.regObj.wardName
     }
-    // console.log("Form Value:", this._radiologytemplateService.myform.value);
   }
-  RefDoctorID: any;
-  // getUpdatetemplate(){
-  //   var m_data = {
-  //     "RadReportId": this.regObj.radReportId, 
-  //   }
-  //   this._radiologytemplateService.getRtrvtemplate(m_data).subscribe(Visit => {
-  //     this.regobj = Visit as RadiologyPatienInsert; 
-  //     console.log(this.regobj); 
-  //     this.vTemplateDesc = this.regobj[0].ResultEntry;
-  //     this.SuggestionNotes = this.regobj[0].SuggestionNotes;
-  //     this.DoctorId = this.regobj[0].RadResultDr1;
-  //     this.RefDoctorID = this.regobj[0].RefDoctorID;
-  //     console.log(this.RefDoctorID); 
 
-  //   }); 
-  // }   
-
-  Tempdesc:any;
+  Tempdesc: any;
+  isSelected: boolean = false;
 
   selectChangeTemplateName(row) {
     console.log("Template:", row)
-    this.Tempdesc=row.text
+    this.Tempdesc = row.templateDesc
+    if (row.templateId)
+      this.isSelected = true
   }
 
   onAddTemplate(e) {
-    this.vTemplateDesc=this.Tempdesc   
+    this.vTemplateDesc = this.Tempdesc
   }
 
-  getUpdatetemplate() {
+    getTemplateList() {
+      if (this.data) {
+        this._radiologytemplateService.gettemplateId(this.TemplateId).subscribe(data => {
+          console.log(data)
+          this._radiologytemplateService.myform.get('TemplateName').setValue(data.templateId);
+        this.vTemplateDesc = data.Tempdesc
+        });
 
-    var mdata = {
-      "RadReportId": this.regObj.radReportId,
-    }
-
-    this._radiologytemplateService.getRtrvtemplate(mdata).subscribe(data => {
-      this.TemplateList = data[0];
-      this.vTemplateDesc = this.TemplateList.ResultEntry;
-      this.SuggestionNotes = this.TemplateList.SuggestionNotes;
-      this.TemplateId = this.TemplateList.RadReportId;
-      this.DoctorId = this.TemplateList.RadResultDr1;
-      this.RefDoctorID = this.TemplateList.RefDoctorID;
-
-      //   if (this.data) {
-      //     const ddValue = this.TemplateList.filter(c => c.RadReportId== this.TemplateId);
-      this._radiologytemplateService.myform.get('TemplateName').setValue(this.TemplateId);
-      this._radiologytemplateService.myform.updateValueAndValidity();
-      //     return;
-      // }
-    });
-  }
-
-  getDoctorList() {
-    this._radiologytemplateService.getdoctorCombo().subscribe(data => {
-      this.Doctorlist = data;
-      //console.log(this.Doctorlist); 
-      this.optionsDoc1 = this.Doctorlist.slice();
-      this.filteredrefdr = this._radiologytemplateService.myform.get('DoctorId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterdoc1(value) : this.Doctorlist.slice()),
-      );
-    });
-  }
-  private _filterdoc1(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
-      return this.optionsDoc1.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
-    }
-  }
-  getOptionTextRefdr(option) {
-    return option && option.Doctorname ? option.Doctorname : '';
+      }
   }
 
   onSubmit() {
@@ -247,18 +195,18 @@ export class ResultEntryComponent implements OnInit {
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
 
-    // if ((this.vTemplateName == '' || this.vTemplateName == null || this.vTemplateName == undefined)) {
-    //   this.toastr.warning('Please select valid Template ', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-    // if(this._radiologytemplateService.myform.get("ResultEntry")?.value ==''){
-    //   this.toastr.warning('Please Enter Result Entry ', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
+    if (this._radiologytemplateService.myform.get("TemplateName")?.value == '') {
+      this.toastr.warning('Please select valid Template ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this._radiologytemplateService.myform.get("ResultEntry")?.value == '') {
+      this.toastr.warning('Please Enter Result Entry ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
 
     if (this.regObj.radReportId) {
 
@@ -283,12 +231,13 @@ export class ResultEntryComponent implements OnInit {
           Swal.fire('Congratulations !', 'Radiology Template Updated Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this.dialogRef.close();
+              // this.grid.bindGridData();
               this._radiologytemplateService.myform.get('TemplateDesc').reset();
-              this.viewgetRadioloyTemplateReportPdf(this.regObj.radReportId);
+              // this.viewgetRadioloyTemplateReportPdf(this.regObj.radReportId);
             }
           });
         } else {
-          Swal.fire('Error !', 'Appoinment not saved', 'error');
+          Swal.fire('Error !', 'Radiology not saved', 'error');
         }
       });
     }
@@ -313,62 +262,9 @@ export class ResultEntryComponent implements OnInit {
     });
   }
 
-
-
-  getTemplateList() {
-    // var mdata={
-    //     Id:this.regObj.ServiceId
-
-    // }
-    this._radiologytemplateService.getTemplateCombo().subscribe(data => {
-      this.TemplateList = data;
-      this.optionsTemplate = this.TemplateList.slice();
-      this.filteredOptionsisTemplate = this._radiologytemplateService.myform.get('TemplateName').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterTemplate(value) : this.TemplateList.slice()),
-      );
-
-    });
-  }
-
-  private _filterTemplate(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.TemplateName ? value.TemplateName.toLowerCase() : value.toLowerCase();
-
-      return this.optionsTemplate.filter(option => option.TemplateName.toLowerCase().includes(filterValue));
-    }
-  }
-
-
-  getOptionTextTemplate(option) {
-
-    return option && option.TemplateName ? option.TemplateName : '';
-  }
-
   onEdit(row) {
 
     this._radiologytemplateService.populateForm(row);
-  }
-
-  // onAddTemplate() {
-
-  //   this.vTemplateDesc = this._radiologytemplateService.myform.get('TemplateName').value.TemplateDescInHTML || ''
-
-  // }
-
-  onAdd() {
-    this.onClear();
-    // const dialogRef = this._matDialog.open(EditorComponent,
-    //   {
-    //     maxWidth: "90vw",
-    //     maxHeight: "95vh",
-    //     width: '100%',
-    //     height: "95%"
-    //   });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed - Insert Action', result);
-    //   // this.getRadiologytemplateMasterList();
-    // });
   }
 
   dateTimeObj: any;

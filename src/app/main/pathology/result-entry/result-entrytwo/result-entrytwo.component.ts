@@ -62,6 +62,10 @@ export class ResultEntrytwoComponent implements OnInit {
   OP_IPType:any;
   PathResultDr1: any;
   vsuggation: any = '';
+
+  autocompleteModeDoctor: string = "ConDoctor";
+  autocompleteModeTemplate: string = "RadioTemplate";
+
   constructor(
     public _SampleService: ResultEntryService,
     private accountService: AuthenticationService,
@@ -79,13 +83,13 @@ export class ResultEntrytwoComponent implements OnInit {
       this.selectedAdvanceObj1 = this.data;
        
       console.log( this.selectedAdvanceObj1)
-      this.OP_IPType=this.selectedAdvanceObj1.OPD_IPD_Type
-      this.reportIdData =this.selectedAdvanceObj1.PathReportID
-      this.PathResultDr1=this.selectedAdvanceObj1.PathResultDr1
+      this.OP_IPType=this.selectedAdvanceObj1.patientType === 'OP' ? '0' : '1';
+      this.reportIdData =this.selectedAdvanceObj1.pathReportId
+      this.PathResultDr1=this.selectedAdvanceObj1.adm_Visit_docId //PathResultDr1 ask to sir
 
-      this.getTemplateList();
-      this.getPathresultdoctorList();
-      this.getPathresultDoctorList()
+      // this.getTemplateList();
+      // this.getPathresultdoctorList();
+      // this.getPathresultDoctorList()
       if (this.OP_IPType == 1)
         this.getTemplatedetailIP();
       else
@@ -104,14 +108,7 @@ export class ResultEntrytwoComponent implements OnInit {
     
     });
    
-        this.filteredOptionsisTemplate = this.otherForm.get('TemplateName').valueChanges.pipe(
-          startWith(''),
-          map(value => this._filterTemplate(value)),
-      );
-      
     }
-   
-
     
     @ViewChild('PathResultDoctorId') PathResultDoctorId: ElementRef;
    
@@ -120,8 +117,6 @@ export class ResultEntrytwoComponent implements OnInit {
             this.PathResultDoctorId.nativeElement.focus();
         }
     }
-
-
 
     getTemplatedetailIP() {
       this.sIsLoading = 'loading-data';
@@ -150,7 +145,7 @@ export class ResultEntrytwoComponent implements OnInit {
         // this.vsuggation = Visit[0]["SuggestionNote"];
         this.TemplateId=Visit[0]["PathTemplateId"];
         console.log( this.TemplateId)
-        this.getTemplatelist();
+        // this.getTemplatelist();
         }
       },
         error => {
@@ -158,67 +153,151 @@ export class ResultEntrytwoComponent implements OnInit {
         });
     }
 
+    VpathResultDr1=0
+    selectChangeDoctorName(row){
+      this.VpathResultDr1=row.value
+    }
+
+    // demo check
+    dataSource: any = { data: [] };
  
   onSubmit() {
-    if ((this.vPathResultDoctorId == '')) {
-      this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-  }
-    if ((this.vTemplateName == '' || this.vTemplateName == null || this.vTemplateName == undefined)) {
+    debugger
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
+
+    if (this.otherForm.get("TemplateName")?.value == '') {
       this.toastr.warning('Please select valid Template ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if(this.otherForm.get("ResultEntry").value ==''){
-      this.toastr.warning('Please Enter Result Entry ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
+    if (this.otherForm.get("PathResultDoctorId")?.value == '') {
+      this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    }
-  
-    let pathologyTemplateDeleteObj = {};
-    pathologyTemplateDeleteObj['pathReportId'] = this.selectedAdvanceObj1.PathReportID;
-    this.isLoading = 'submit';
+  }
+  if (this.otherForm.get("ResultEntry")?.value == '') {
+    this.toastr.warning('Please Enter Result Entry ', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+
+  let tPathologyReportDetails1 = [];
+  this.dataSource.data.forEach((element) => {
     
-    let pathologyTemplateInsertObj = {};
-        
-    pathologyTemplateInsertObj['PathReportId'] = this.selectedAdvanceObj1.PathReportID ;
-    pathologyTemplateInsertObj['PathTemplateId']= this.otherForm.get("TemplateName").value.TemplateId || 0;
-    pathologyTemplateInsertObj['PathTemplateDetailsResult']= this.vTemplateDesc,//this.otherForm.get("ResultEntry").value.trim(),
-    pathologyTemplateInsertObj['TemplateResultInHTML']=this.vTemplateDesc,// this.otherForm.get("ResultEntry").value.trim(),
-    pathologyTemplateInsertObj['TestId'] = this.selectedAdvanceObj1.PathTestID || 0;
-   
-    let pathologyTemplateUpdateObj = {};
-   
-    pathologyTemplateUpdateObj['PathReportID'] =this.selectedAdvanceObj1.PathReportID;
-    pathologyTemplateUpdateObj['ReportDate'] =this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-    pathologyTemplateUpdateObj['ReportTime'] =  this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
-    pathologyTemplateUpdateObj['IsCompleted'] = 1;
-    pathologyTemplateUpdateObj['IsPrinted'] = 1;
-    pathologyTemplateUpdateObj['PathResultDr1'] = this.otherForm.get('PathResultDoctorId').value.DoctorId || 0;
-    pathologyTemplateUpdateObj['PathResultDr3'] = 0;
-    pathologyTemplateUpdateObj['IsTemplateTest'] = 1;
-    pathologyTemplateUpdateObj['SuggestionNotes'] = this.otherForm.get('suggestionNotes').value || "";
-    pathologyTemplateUpdateObj['AdmVisitDoctorID'] = 0;
-    pathologyTemplateUpdateObj['RefDoctorID'] =  0;
-   
-    const pathologyTemplateDelete = new PthologyresulDelt(pathologyTemplateDeleteObj);
-    const pathologyTemplateUpdate = new PthologyresulUp(pathologyTemplateUpdateObj); 
+    let tPathologyReportDetails = {};
+    tPathologyReportDetails['pathReportDetId'] = element.PathReportId //element1.PathReportId;
+    tPathologyReportDetails['pathReportId'] = element.CategoryId || 0;
+    tPathologyReportDetails['categoryId'] = element.TestId || 0;
+    tPathologyReportDetails['testId'] = element.SubTestId || 0;
+    tPathologyReportDetails['subTestId'] = element.ParameterId || 0;
+    tPathologyReportDetails['parameterId'] = element.ResultValue || ' ';
+    tPathologyReportDetails['resultValue'] = element.UnitId || 1;
+    tPathologyReportDetails['unitId'] = element.NormalRange || '';
+    tPathologyReportDetails['normalRange'] = element.PrintOrder || 0;
+    tPathologyReportDetails['printOrder'] = element.PIsNumeric || 0;
+    tPathologyReportDetails['pisNumeric'] = element.CategoryName || '';
+    tPathologyReportDetails['categoryName'] = element.TestName || '';
+    tPathologyReportDetails['testName'] = element.SubTestName || '';
+    tPathologyReportDetails['subTestName'] = element.ParameterName || '';
+    tPathologyReportDetails['parameterName'] = element.UnitName || '';
+    tPathologyReportDetails['unitName'] = this.selectedAdvanceObj1.PatientName || '';
+    tPathologyReportDetails['patientName'] = this.selectedAdvanceObj1.RegNo;
+    tPathologyReportDetails['regNo'] = parseFloat(element.MinValue) || 0;
+    tPathologyReportDetails['sampleId'] = parseFloat(element.MaxValue) || 0;
+    tPathologyReportDetails['minValue'] = element.SampleID || '';
+    tPathologyReportDetails['maxValue'] = parseFloat(element.MinValue) || 0;
+    tPathologyReportDetails['paraBoldFlag'] = parseFloat(element.MaxValue) || 0;
+    tPathologyReportDetails['pathReport'] = element.SampleID || '';
 
-     let PatientHeaderObj = {};
+    tPathologyReportDetails['ParaBoldFlag'] = element.ParaBoldFlag || '';
 
-     PatientHeaderObj['ReportDate'] =this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-     PatientHeaderObj['ReportTime'] =  this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
-   
-          console.log('==============================  Advance Amount ===========');
-          let submitData = {
-            "deletePathologyReportTemplateDetails": pathologyTemplateDelete,
-            "insertPathologyReportTemplateDetails": pathologyTemplateInsertObj,
-            "updatePathTemplateReportHeader": pathologyTemplateUpdate
-          };
+    tPathologyReportDetails1.push(tPathologyReportDetails);
+});
+
+let tPathologyReportTemplateDetails1 = [];
+this.dataSource.data.forEach((element) => {
+  
+  let tPathologyReportTemplateDetails = {};
+  tPathologyReportTemplateDetails['pathReportDetId'] = element.PathReportId || 0 //element1.PathReportId;
+  tPathologyReportTemplateDetails['pathReportId'] = element.CategoryId || 0;
+  tPathologyReportTemplateDetails['categoryId'] = element.TestId || 0;
+  tPathologyReportTemplateDetails['testId'] = element.SubTestId || 0;
+  tPathologyReportTemplateDetails['subTestId'] = element.ParameterId || 0;
+  tPathologyReportTemplateDetails['parameterId'] = element.ResultValue || ' ';
+  tPathologyReportTemplateDetails['resultValue'] = element.UnitId || 1;
+
+  tPathologyReportTemplateDetails['ParaBoldFlag'] = element.ParaBoldFlag || '';
+
+  tPathologyReportTemplateDetails1.push(tPathologyReportTemplateDetails);
+});
+
+    let pathologyReportTemplate = {
+      "pathReportId": this.reportIdData,
+      "pathTemplateId": this.TemplateId || 0,
+      "pathTemplateDetailsResult": this.Tempdesc || "string",
+      "testId": this.selectedAdvanceObj1.pathTestID || 0,
+      "templateResultInHTML": this.Tempdesc || "string",
+      "pathReport": {
+          "pathReportId": this.reportIdData,
+          "pathDate": formattedDate,
+          "pathTime": formattedTime,
+          "opdIpdType": this.OP_IPType,
+          "opdIpdId": this.selectedAdvanceObj1.visit_Adm_ID,
+          "pathTestId": this.selectedAdvanceObj1.pathTestID,
+          "pathResultDr1": this.PathResultDr1 || 0,
+          "pathResultDr2": 0,
+          "pathResultDr3": 0,
+          "isCancelled": 0,
+          "isCancelledBy": 0,
+          "isCancelledDate": formattedDate,
+          "addedBy": 0,
+          "updatedBy": 0,
+          "chargeId": 0,
+          "isCompleted": true,
+          "isPrinted": true,
+          "reportDate": formattedDate,
+          "reportTime": formattedTime,
+          "sampleNo": "string",
+          "sampleCollectionTime": this.selectedAdvanceObj1.sampleCollectionTime, // formattedTime,
+          "isSampleCollection": this.selectedAdvanceObj1.isSampleCollection || true, //true,
+          "isTemplateTest": this.selectedAdvanceObj1.isTemplateTest || 0, 
+          "testType": true,
+          "suggestionNotes": "string",
+          "admVisitDoctorId": 0,
+          "refDoctorId": 0,
+          "isVerifySign": true,
+          "isVerifyid": 0,
+          "isVerifyedDate": formattedDate,
+          "tPathologyReportDetails": tPathologyReportDetails1,
+          "tPathologyReportTemplateDetails": tPathologyReportTemplateDetails1,
+        }
+    }
+    let pathologyReportHeader= {
+            "pathReportID": 0,
+            "reportDate": formattedDate,
+            "reportTime": formattedTime,
+            "isCompleted": true,
+            "isPrinted": true,
+            "pathResultDr1": 0,
+            "pathResultDr2": 0,
+            "pathResultDr3": 0,
+            "isTemplateTest": 0,
+            "suggestionNotes": "string",
+            "admVisitDoctorID": 0,
+            "refDoctorID": 0
+          }
+
+    console.log('==============================  Advance Amount ===========');
+    let submitData = {
+      "pathologyReportTemplate": pathologyReportTemplate,
+      "pathologyReportHeader": pathologyReportHeader
+    };
         console.log(submitData);
       
           this._SampleService.PathTemplateResultentryInsert(submitData).subscribe(response => {
@@ -236,10 +315,7 @@ export class ResultEntrytwoComponent implements OnInit {
             this.isLoading = '';
           });
         
-   // });
   }
-
-
   
   viewgetPathologyTemplateReportPdf(PathReportID) {
     
@@ -257,10 +333,6 @@ export class ResultEntrytwoComponent implements OnInit {
     });
   }
   
-
-  onBlur(e:any){
-    this.vTemplateDesc=e.target.innerHTML;
-  }
   onEdit(row) {
     var m_data = {
       "TemplateId": row.TemplateId,
@@ -288,97 +360,50 @@ export class ResultEntrytwoComponent implements OnInit {
     this.dialogRef.close();
   }
 
-
-  getTemplateList() {
-    var mdata={
-        Id:this.selectedAdvanceObj1.ServiceId
-        
-    }
-    this._SampleService.getTemplateCombo(mdata).subscribe(data => {
-      this.TemplateList = data;
-      this.optionsTemplate = this.TemplateList.slice();
-      this.filteredOptionsisTemplate = this.otherForm.get('TemplateName').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterTemplate(value) : this.TemplateList.slice()),
-      );
-
-    });
+  Tempdesc: any;
+  isSelected: boolean = false;
+  selectChangeTemplateName(row) {
+    console.log("Template:", row)
+    this.Tempdesc = row.templateDesc
+    this.TemplateId=row.templateId
+    if (row.templateId)
+      this.isSelected = true
   }
 
-  getTemplatelist() {
-    var mdata={
-      Id:this.selectedAdvanceObj1.ServiceId
-      
-  }
-    this._SampleService.getTemplateCombo(mdata).subscribe(data => {
-        this.TemplateList = data;
-        
-        if (this.data) {
-          const ddValue = this.TemplateList.filter(c => c.TemplateId == this.TemplateId);
-          this.otherForm.get('TemplateName').setValue(ddValue[0]);
-          this.otherForm.updateValueAndValidity();
-          return;
-      }
-    });
-}
-
-private _filtertemplate(value: any): string[] {
-  if (value) {
-      const filterValue = value && value.TemplateName ? value.TemplateName.toLowerCase() : value.toLowerCase();
-      return this.TemplateList.filter(option => option.TemplateName.toLowerCase().includes(filterValue));
-  }
-}
-
-  private _filterTemplate(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.TemplateName ? value.TemplateName.toLowerCase() : value.toLowerCase();
-
-      return this.optionsTemplate.filter(option => option.TemplateName.toLowerCase().includes(filterValue));
-    }
+  onAddTemplate() {
+    this.vTemplateDesc = this.Tempdesc
   }
 
-  
-  getOptionTextTemplate(option) {
+//   getPathresultdoctorList() {
+//     this._SampleService.getPathologyDoctorCombo().subscribe(data => {
+//         this.PathologyDoctorList = data;
+//         this.optionsDoc3 = this.PathologyDoctorList.slice();
+//         this.filteredresultdr = this.otherForm.get('PathResultDoctorId').valueChanges.pipe(
+//             startWith(''),
+//             map(value => value ? this._filterdoc3(value) : this.PathologyDoctorList.slice()),
+//         );
+//     });
+// }
 
-    return option && option.TemplateName ? option.TemplateName : '';
-  }
+// getPathresultDoctorList() {
 
-  onAddTemplate(){
- 
-    this.vTemplateDesc=this.otherForm.get('TemplateName').value.TemplateDescInHTML || ''
- 
-  }
-
-  getPathresultdoctorList() {
-    this._SampleService.getPathologyDoctorCombo().subscribe(data => {
-        this.PathologyDoctorList = data;
-        this.optionsDoc3 = this.PathologyDoctorList.slice();
-        this.filteredresultdr = this.otherForm.get('PathResultDoctorId').valueChanges.pipe(
-            startWith(''),
-            map(value => value ? this._filterdoc3(value) : this.PathologyDoctorList.slice()),
-        );
-    });
-}
-
-getPathresultDoctorList() {
-
-    this._SampleService.getPathologyDoctorCombo().subscribe(data => {
-        this.PathologyDoctorList = data;
-        if (this.data) {
+//     this._SampleService.getPathologyDoctorCombo().subscribe(data => {
+//         this.PathologyDoctorList = data;
+//         if (this.data) {
             
-            const ddValue = this.PathologyDoctorList.filter(c => c.DoctorId == this.PathResultDr1);
-            this.otherForm.get('PathResultDoctorId').setValue(ddValue[0]);
-            this.otherForm.updateValueAndValidity();
-            return;
-        }
-    });
-}
-private _filterdoc3(value: any): string[] {
-    if (value) {
-        const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
-        return this.PathologyDoctorList.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
-    }
-}
+//             const ddValue = this.PathologyDoctorList.filter(c => c.DoctorId == this.PathResultDr1);
+//             this.otherForm.get('PathResultDoctorId').setValue(ddValue[0]);
+//             this.otherForm.updateValueAndValidity();
+//             return;
+//         }
+//     });
+// }
+// private _filterdoc3(value: any): string[] {
+//     if (value) {
+//         const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+//         return this.PathologyDoctorList.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+//     }
+// }
 
 public onEnterPathResultDoctorId(event, value): void {
 
@@ -392,9 +417,9 @@ public onEnterPathResultDoctorId(event, value): void {
       } 
   }
 }
-getOptionTextresultdr(option) {
-  return option && option.Doctorname ? option.Doctorname : '';
-}
+// getOptionTextresultdr(option) {
+//   return option && option.Doctorname ? option.Doctorname : '';
+// }
 }
 
 

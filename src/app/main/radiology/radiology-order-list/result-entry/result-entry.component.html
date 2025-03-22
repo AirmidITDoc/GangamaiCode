@@ -136,14 +136,18 @@
                     <form [formGroup]="_radiologytemplateService.myform" style="border: blue; padding: 10px;">
                         <div fxFlexFill fxLayout="row">
 
-                            <airmid-dropdown label="Template Name" fxFlex="90%" formControlName="TemplateName"
-                                [formGroup]="_radiologytemplateService.myform" [mode]="autocompleteModeTemplate"
-                                (selectionChange)="selectChangeTemplateName($event)">
+                            <airmid-dropdown label="Template Name" 
+                                formControlName="TemplateName" 
+                                [formGroup]="_radiologytemplateService.myform"  fxFlex="50%"
+                                ValueField="templateId" 
+                                TextField="templateName"
+                                (selectionChange)="selectChangeTemplateName($event)" 
+                                ApiUrl="RadiologyTemplate/get-RdioTemplates">
                             </airmid-dropdown>
 
                             <div>
                                 <button (click)="onAddTemplate($event)" class="btn btn-primary btn-with-icon py-8"
-                                    style="margin-left: 10px;">
+                                    style="margin-left: 10px;" [disabled]="!isSelected">
                                     <span class="btn-icon">
                                         <mat-icon> add </mat-icon>
                                     </span>
@@ -153,10 +157,6 @@
                         </div>
 
                         <div>
-                            <!-- <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                        style="height:300px;" [(ngModel)]="vTemplateDesc" required
-                        formControlName="ResultEntry"></angular-editor> -->
-
                             <airmid-editor label="Template Details" formControlName="ResultEntry"
                                 [(value)]="vTemplateDesc" 
                                 [formGroup]="_radiologytemplateService.myform"></airmid-editor>

@@ -147,7 +147,7 @@ export class ResultEntryComponent implements OnInit {
         },
         { heading: "Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', type: 9, width: 200 },
         { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "PatientName", key: "patientname", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
         // { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -245,7 +245,7 @@ export class ResultEntryComponent implements OnInit {
                 },
                 { heading: "Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', type: 9, width: 200 },
                 { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "PatientName", key: "patientname", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
                 // { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -502,6 +502,9 @@ opipType:any="2";
     IsTemplateTest: any;
     chkresultentry(contact, flag) {
         debugger
+        this.printdata = [];
+        this.reportIdData = [];
+        this.ServiceIdData = [];
         if (flag)
             this.IsTemplateTest = contact[0]["isTemplateTest"]
         else
@@ -532,9 +535,10 @@ opipType:any="2";
 
                     console.log(this.printdata)
                     data.forEach((element) => {
-                        this.reportIdData.push(element.pathReportId)
-                        this.ServiceIdData.push(element.serviceId)
-                        if (element.isCompleted == "true")
+                        console.log('aaaaaa:',element)
+                        this.reportIdData.push(element.PathReportId)
+                        this.ServiceIdData.push(element.ServiceId)
+                        if (element.IsCompleted == "true")
                             this.Iscompleted = 1;
                     });
 
@@ -553,8 +557,6 @@ opipType:any="2";
                             this.SpinLoading = false;
                         }
                     });
-
-
                 }, 100);
 
             }
@@ -563,19 +565,15 @@ opipType:any="2";
             this.advanceDataStored.storage = new SampleDetailObj(contact);
             const dialogRef = this._matDialog.open(ResultEntrytwoComponent,
                 {
-                    maxWidth: "90%",
-                    height: '95%',
-                    width: '100%',
+                    maxHeight: '95vh',
+                    width: '90%',
                     data: contact,
                 });
-
 
             dialogRef.afterClosed().subscribe(result => {
                 console.log('Pathology Template  Saved ..', result);
             });
         }
-        // this.getPatientsList()
-        // this.selection.clear();
     }
 
     Printresultentrywithheader() {

@@ -115,6 +115,10 @@ export class RadioloyOrderlistService {
       return this._httpClient1.PutData("RadiologyTest/RadiologyUpdate/"+Param.radReportId, Param)
       }
     }
+
+    public gettemplateId(Id){
+      return this._httpClient1.GetData("RadiologyTemplate/" + Id);
+    }
     
     public insertRadiologyTemplateMaster(employee) {
       return this._httpClient.post("Radiology/RadiologyTemplateMasterSave", employee);

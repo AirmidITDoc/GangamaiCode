@@ -657,7 +657,7 @@ export class NewCasepaperComponent implements OnInit {
     console.log("itemData:", row)
     this.durgId = row.itemId
     this.durgName = row.itemName
-    this.vdoseName=row.doseName
+    // this.vdoseName=row.doseName
     this.vDay=row.doseDay
 
     if ((this.durgId ?? 0) > 0) {
@@ -845,7 +845,10 @@ export class NewCasepaperComponent implements OnInit {
   selectChangeCheifComplaint(row) {
     console.log("Selected Services:", row);
     const selectedData = Array.isArray(row) ? row : [row];
-    this.addCheiflist = selectedData.map(item => ({ complaintId: item.complaintId }));
+    this.addCheiflist = selectedData.map(item => ({ 
+      complaintId: item.complaintId,
+      complaintDescr:item.complaintDescr
+    }));
     console.log("Updated selectedItems:", this.addCheiflist);
   }
 
@@ -877,39 +880,20 @@ export class NewCasepaperComponent implements OnInit {
   selectChangeDiagnosis(row) {
     console.log("Selected Services:", row);
     const selectedData = Array.isArray(row) ? row : [row];
-    this.addDiagnolist = selectedData.map(item => ({ id: item.id }));
+    this.addDiagnolist = selectedData.map(item => ({ 
+      id: item.id,
+      descriptionName:item.descriptionName
+    }));
     console.log("Updated selectedItems:", this.addDiagnolist);
   }
-
-  //   selectChangeDiagnosis(row) {
-  //     debugger
-  //     console.log("Selected Services:", row);
-
-  //     if (!this.addDiagnolist || !Array.isArray(this.addDiagnolist)) {
-  //         this.addDiagnolist = [];
-  //     }
-  //     const selectedData = Array.isArray(row) ? row : [row];
-
-  //     const newItems = selectedData.map(item => ({
-  //         descriptionName: item.descriptionName,
-  //     }));
-
-  //     if (newItems.length > 0) {
-  //         this.addDiagnolist = [...this.addDiagnolist, ...newItems];
-
-  //         this.addDiagnolist = this.addDiagnolist.filter((value, index, self) =>
-  //             index === self.findIndex(item => item.descriptionName === value.descriptionName)
-
-  //         );
-  //     }
-  //     console.log("Updated selectedItems:", this.addDiagnolist);
-  //     this.caseFormGroup.get('mAssignDiagnosis').setValue(this.addDiagnolist);
-  // }
 
   selectChangeExamination(row) {
     console.log("Selected Services:", row);
     const selectedData = Array.isArray(row) ? row : [row];
-    this.addExaminlist = selectedData.map(item => ({ examinationId: item.examinationId }));
+    this.addExaminlist = selectedData.map(item => ({ 
+      examinationId: item.examinationId,
+      examinationDescr:item.examinationDescr
+     }));
     console.log("Updated selectedItems:", this.addExaminlist);
   }
 
@@ -1159,8 +1143,6 @@ export class NewCasepaperComponent implements OnInit {
       ReferDocNameID = this.ConsultantDocId
     }
 
-    // let insertOPDPrescriptionarray = [];
-    // this.dsItemList.data.forEach(element => {
     let insertOPDPrescription = {
       'opdIpdIp': this.vOPIPId,
       'opdIpdType': 0,
@@ -1199,9 +1181,6 @@ export class NewCasepaperComponent implements OnInit {
       'isAddBy': this._loggedService.currentUserValue.userId,
     }
 
-    // insertOPDPrescriptionarray.push(insertOPDPrescription);
-    // });
-
     // let insertOPDPrescriptionarray = [];
     // this.dsItemList.data.forEach(element => {
     //   let insertOPDPrescription = {};
@@ -1224,7 +1203,7 @@ export class NewCasepaperComponent implements OnInit {
     //   insertOPDPrescription['qtyPerDay'] = element.QtyPerDay || 0;
     //   insertOPDPrescription['totalQty'] = (element.QtyPerDay * element.Days) || 0;
     //   insertOPDPrescription['isClosed'] = true;
-    //   insertOPDPrescription['isEnglishOrIsMarathi'] = this.caseFormGroup.get('LangaugeRadio').value;
+    //   insertOPDPrescription['isEnglishOrIsMarathi'] = JSON.parse(this.caseFormGroup.get('LangaugeRadio').value), //this.caseFormGroup.get('LangaugeRadio').value;
     //   insertOPDPrescription['chiefComplaint'] = this.caseFormGroup.get('ChiefComplaint').value || '';
     //   insertOPDPrescription['diagnosis'] = this.caseFormGroup.get('Diagnosis').value || '';
     //   insertOPDPrescription['examination'] = this.caseFormGroup.get('Examination').value || '';

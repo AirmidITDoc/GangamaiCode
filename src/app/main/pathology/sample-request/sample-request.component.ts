@@ -180,7 +180,7 @@ export class SampleRequestComponent implements OnInit {
     this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
     // this.f_name = this.myformSearch.get('FirstName').value + "%"
     // this.l_name = this.myformSearch.get('LastName').value + "%"
-    this.regNo = this.myformSearch.get('RegNo').value 
+    this.regNo = this.myformSearch.get('RegNo').value || ""
     this.Istype = this.myformSearch.get('Istype').value
     this.IsCompleted = this.myformSearch.get('IsCompleted').value 
 
@@ -198,8 +198,8 @@ this.gridConfig = {
       { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "ToDate", fieldValue:this.toDate, opType: OperatorComparer.Equals },
       { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+      { fieldName: "Istype", fieldValue: this.Istype, opType: OperatorComparer.Equals },
       { fieldName: "IsCompleted", fieldValue: this.IsCompleted, opType: OperatorComparer.Equals },
-      { fieldName: "Istype", fieldValue: this.Istype, opType: OperatorComparer.Equals }
 
     ]
 }

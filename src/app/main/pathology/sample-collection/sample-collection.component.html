@@ -82,10 +82,10 @@
 
             <ng-template #iconisCompeleted let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isCompleted == 'True'" matTooltip="IsCompleted">check_circle
+                    <mat-icon *ngIf="element.isSampleCollection == 'True'" matTooltip="IsCompleted">check_circle
                     </mat-icon>
                     
-                    <mat-icon *ngIf="element.isCompleted == 'False'" matTooltip="Not Completed">hourglass_empty
+                    <mat-icon *ngIf="element.isSampleCollection == 'False'" matTooltip="Not Completed">hourglass_empty
                     </mat-icon>
                     
                 </div>
@@ -98,36 +98,6 @@
                         formStartControlName="start" formEndControlName="end"
                         [(fromValue)]="gridConfig.filters[3].fieldValue" [(toValue)]="gridConfig.filters[4].fieldValue">
                     </airmid-datepicker>
-
-                    <!-- <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Reg_No</mat-label>
-                        <input matInput placeholder="Search Reg_No" autocomplete="off"
-                            [(ngModel)]="gridConfig.filters[2].fieldValue" />
-                        <button matSuffix mat-icon-button aria-label="Clear"
-                            (click)="gridConfig.filters[2].fieldValue='0'">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>First Name</mat-label>
-                        <input matInput placeholder="Search First Name" autocomplete="off"
-                            [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                        <button matSuffix mat-icon-button aria-label="Clear"
-                            (click)="gridConfig.filters[0].fieldValue='%'">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Last Name</mat-label>
-                        <input matInput placeholder="Search Last Name" autocomplete="off"
-                            [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                        <button matSuffix mat-icon-button aria-label="Clear"
-                            (click)="gridConfig.filters[1].fieldValue='%'">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field> -->
                   
                     <mat-form-field appearance="outline">
                         <mat-label>RegNo</mat-label>

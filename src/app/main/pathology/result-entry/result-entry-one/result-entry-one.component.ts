@@ -120,6 +120,8 @@ export class ResultEntryOneComponent implements OnInit {
                 this.ServiceIdData.push(element.ServiceId)
                 if (element.IsCompleted == "true")
                     this.Iscompleted = 1;
+                else
+                    this.Iscompleted=0
             });
 
         }
