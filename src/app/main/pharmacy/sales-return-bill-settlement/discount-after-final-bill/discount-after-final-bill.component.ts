@@ -156,7 +156,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       "phBillDiscountAfterUpdate": {
         "salesId": this.registerObj.SalesId || 0,
         "netPayableAmt": this.MyFrom.get('NetAmount').value || 0,
-        "concessionAmt":this.MyFrom.get('DiscAmount2').value || 0, 
+        "DiscAmount":this.MyFrom.get('DiscAmount2').value || 0, 
         "balanceAmt": balanceAmount || 0,
         "concessionReasonId": this.MyFrom.get('ConcessionId').value.ConcessionId || 0
       }

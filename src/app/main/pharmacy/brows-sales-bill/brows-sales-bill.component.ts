@@ -27,6 +27,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { IPSearchListService } from 'app/main/ipd/ip-search-list/ip-search-list.service';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-brows-sales-bill',
@@ -595,10 +596,14 @@ export class BrowsSalesBillComponent implements OnInit {
       console.log(result)
 
       if (result.IsSubmitFlag == true) {
-        let updateBillobj = {};
-        updateBillobj['salesID'] = contact.SalesId;
-        updateBillobj['salRefundAmt'] =0 ;
-        updateBillobj['balanceAmount'] =result.submitDataPay.ipPaymentInsert.BalanceAmt;
+        let updateBillobj = [];  
+          let updateBillobj1 = {};
+          updateBillobj1['salesID'] = contact.SalesId;
+          updateBillobj1['salRefundAmt'] =0 ;
+          updateBillobj1['balanceAmount'] =result.submitDataPay.ipPaymentInsert.BalanceAmt;
+          updateBillobj.push(updateBillobj1)
+    
+     
   
         let UpdateAdvanceDetailarr = [];
         if (UpdateAdvanceDetailarr.length == 0) { 
@@ -614,8 +619,10 @@ export class BrowsSalesBillComponent implements OnInit {
           update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
           update_T_PHAdvanceHeaderObj['BalanceAmount'] = 0 
 
+          let selectedPayment  = [];
+          selectedPayment.push(result.submitDataPay.ipPaymentInsert)
         let Data = {
-          "salesPaymentSettlement":  result.submitDataPay.ipPaymentInsert, 
+          "salesPaymentSettlement": selectedPayment, 
           "update_Pharmacy_BillBalAmountSettlement": updateBillobj,
           "update_T_PHAdvanceDetailSettlement":UpdateAdvanceDetailarr,
           "update_T_PHAdvanceHeaderSettlement":update_T_PHAdvanceHeaderObj

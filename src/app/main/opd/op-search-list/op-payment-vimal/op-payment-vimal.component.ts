@@ -348,7 +348,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.PatientName = this.advanceData.PatientName;
             this.selectedPaymnet1 = 'cash';
             this.Date = this.advanceData.Date; 
-            // this.MulPaySettleAmt = true
+             this.MulPaySettleAmt = true
         }
         //IP-Interim Bill
         if (this.data.FromName == "IP-IntrimBIll") {
