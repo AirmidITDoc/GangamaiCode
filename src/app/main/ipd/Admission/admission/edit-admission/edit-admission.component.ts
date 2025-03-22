@@ -105,8 +105,7 @@ export class EditAdmissionComponent implements OnInit {
       setTimeout(() => {
         this._AdmissionService.getRegistraionById(this.data.regId).subscribe((response) => {
           this.registerObj = response;
-          // console.log(this.registerObj)
-
+        
         });
 
         this._AdmissionService.getAdmissionById(this.data.admissionId).subscribe((response) => {

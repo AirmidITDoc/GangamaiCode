@@ -114,8 +114,8 @@ export class AdmissionComponent implements OnInit {
   nowdate = new Date();
   firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
 
-  fromDate ="01/01/1900"// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  toDate ="01/01/1900"// this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+  fromDate ="1900-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
 
   autocompleteModedeptdoc: string = "ConDoctor";
   optionsSearchDoc: any[] = [];
@@ -176,12 +176,9 @@ export class AdmissionComponent implements OnInit {
     { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Equals },
     { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals }
-    // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-    // { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-    ]
+       ]
 
   }
-
 
   constructor(public _AdmissionService: AdmissionService,
     public _registrationService: RegistrationService,
@@ -201,7 +198,9 @@ export class AdmissionComponent implements OnInit {
 
     this.searchFormGroup = this.createSearchForm();
     this.myFilterform = this._AdmissionService.filterForm();
-   
+    this.fromDate ="1900-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+  
    // menu Button List
    this.menuActions.push("Bill");
    this.menuActions.push("Bed Transfer");
@@ -214,12 +213,12 @@ export class AdmissionComponent implements OnInit {
    
   }
 
-  onChangeStartDate(value) {
-    this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-  }
-  onChangeEndDate(value) {
-    this.gridConfig.filters[5].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-  }
+  // onChangeStartDate(value) {
+  //   this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+  // }
+  // onChangeEndDate(value) {
+  //   this.gridConfig.filters[5].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+  // }
 
 
   Admissiondetail(data) {
@@ -249,8 +248,6 @@ export class AdmissionComponent implements OnInit {
   onEdit(row) {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
-
-    console.log(row)
     this._AdmissionService.populateForm(row);
 
     const dialogRef = this._matDialog.open(
@@ -409,21 +406,17 @@ export class AdmissionComponent implements OnInit {
 
    
 
-  item1: any;
-  item2: any;
-  onClick(event: any) {
-    this.item1 = "";
-    event.stopPropagation();
-  }
-
+  // item1: any;
+  // item2: any;
+  // onClick(event: any) {
+  //   this.item1 = "";
+  //   event.stopPropagation();
+  // }
 
   onClose() {
-
     this.searchFormGroup.get('RegId').reset();
     this.searchFormGroup.get('RegId').disable();
-
-
-  }
+}
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -436,8 +429,8 @@ export class AdmissionComponent implements OnInit {
 
   onChangeFirst() {
     debugger
-    // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-    // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+    this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
     this.f_name = this.myFilterform.get('FirstName').value + "%"
     this.l_name = this.myFilterform.get('LastName').value + "%"
     this.regNo = this.myFilterform.get('RegNo').value || "0"
@@ -464,13 +457,13 @@ getfilterdata(){
           { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
           { fieldName: "M_Name", fieldValue:  this.m_name, opType: OperatorComparer.Equals },
           { fieldName: "IPNo", fieldValue:  this.IPDNo, opType: OperatorComparer.Equals }
-          // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-          // { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+        
             ],
         row: 25
     }
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData(); 
+    
 }
 
 
@@ -537,20 +530,13 @@ Clearfilter(event) {
 
     }, 100);
  
- 
-    // this.commonService.Onprint("AdmissionId", element.admissionId, "AdmissionList"); 
-  }
-
-
+   }
 
   getAdmittedPatientCasepaperview(element) {
     this.commonService.Onprint("AdmissionId", element.admissionId, "IpCasepaperReport"); 
   }
 
-
-
-  getAdmittedPatientCasepaperTempview(AdmissionId) {
-
+  getAdmittedPatientCasepaperTempview(element) { this.commonService.Onprint("AdmissionId", element.admissionId, "IpCasepaperReport"); 
   }
 
   onClear() {
@@ -641,8 +627,6 @@ Clearfilter(event) {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-
-
     });
   }
 
@@ -683,8 +667,6 @@ Clearfilter(event) {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-
-
     });
   }
 
@@ -730,15 +712,10 @@ Clearfilter(event) {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
 
-    });
-
-
-  }
-
+    });}
 
   onSave() {
-
-    const dialogRef = this._matDialog.open(NewAdmissionComponent,
+const dialogRef = this._matDialog.open(NewAdmissionComponent,
       {
         maxWidth: "95vw",
         width: '100%', 
@@ -752,8 +729,6 @@ Clearfilter(event) {
     this.grid.bindGridData();
   }
 }
-
-
 
 export class Bed {
   BedId: Number;

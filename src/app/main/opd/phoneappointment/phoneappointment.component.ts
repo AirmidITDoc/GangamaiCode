@@ -30,23 +30,24 @@ export class PhoneappointmentComponent implements OnInit {
 
     DoctorId = "0";
     autocompleteModedeptdoc: string = "ConDoctor";
-
+    f_name:any = "" 
+    l_name:any="" 
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
     @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
     @ViewChild('actionsflgBillNo') actionsflgBillNo!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
+    
+        allfilters = [
+            { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals }
 
-    ngAfterViewInit() {
-        // Assign the template to the column dynamically
-        this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.actionsTemplate;
-        this.gridConfig.columnsList.find(col => col.key === 'regNo')!.template1 = this.actionsTemplate1;
-        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        ];
 
-    }
-    gridConfig: gridModel = {
-        apiUrl: "PhoneAppointment2/PhoneAppList",
-        columnsList: [
+         allcolumns=[
             { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
             { heading: "-", key: "regNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
             { heading: "SeqNo", key: "seqNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -60,48 +61,21 @@ export class PhoneappointmentComponent implements OnInit {
                 heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplate  // Assign ng-template to the column
             }
-            // {
-            //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-            //         {
-            //             action: gridActions.edit, callback: (data: any) => {
-            //                 this.onSave(data);
-            //             }
-            //         },
-            //         {
-            //             action: gridActions.print, callback: (data: any) => {
-            //                 this.Appprint(data);
-            //             }
-            //         },
-            //         {
-            //             action: gridActions.whatsapp, callback: (data: any) => {
-            //                 this.whatsappAppoitment(data);
-            //             }
-            //         },
+            ]
+    
+    ngAfterViewInit() {
+        // Assign the template to the column dynamically
+        this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.actionsTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'regNo')!.template1 = this.actionsTemplate1;
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
-            //         {
-            //             action: gridActions.delete, callback: (data: any) => {
-            //                 
-            //                 let s={
-            //                     phoneAppId:data.phoneAppId
-            //                 }
-            //                 this._PhoneAppointListService.phoneMasterCancle(s).subscribe((response: any) => {
-            //                     this.toastr.success(response.message);
-            //                     this.grid.bindGridData();
-            //                 });
-            //             }
-            //         }]
-            // } //Action 1-view, 2-Edit,3-delete
-        ],
+    }
+    gridConfig: gridModel = {
+        apiUrl: "PhoneAppointment2/PhoneAppList",
+        columnsList: this.allcolumns,
         sortField: "phoneAppId",
         sortOrder: 0,
-        filters: [
-            { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals }
-
-        ]
+        filters: this.allfilters
     }
     constructor(
         public _PhoneAppointListService: PhoneAppointListService,
@@ -123,6 +97,49 @@ export class PhoneappointmentComponent implements OnInit {
     onChangeEndDate(value) {
         this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }
+
+
+    
+Clearfilter(event) {
+    console.log(event)
+    if (event == 'FirstName')
+        this.myFilterform.get('FirstName').setValue("")
+    else
+        if (event == 'LastName')
+            this.myFilterform.get('LastName').setValue("")
+        this.onChangeFirst();
+  }
+
+  onChangeFirst() {
+    this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+    this.f_name = this.myFilterform.get('FirstName').value + "%"
+    this.l_name = this.myFilterform.get('LastName').value + "%"
+   
+    this.getfilterdata();
+}
+
+
+getfilterdata(){
+    debugger
+    this.gridConfig = {
+        apiUrl: "PhoneAppointment2/PhoneAppList",
+        columnsList:this.allcolumns , 
+        sortField: "phoneAppId",
+        sortOrder: 0,
+        filters:  [
+            { fieldName: "F_Name", fieldValue:this.f_name, opType: OperatorComparer.Contains },
+            { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+            { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals }
+
+        ]
+    }
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData(); 
+}
+ 
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

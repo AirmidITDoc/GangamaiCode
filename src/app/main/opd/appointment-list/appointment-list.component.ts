@@ -245,19 +245,6 @@ Clearfilter(event) {
         });
     }
 
-    // showBilling(row) {
-    //     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    //     buttonElement.blur(); // Remove focus from the button
-
-    //     this.advanceDataStored.storage = new SearchInforObj1(row);
-    //     const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
-    //         maxWidth: "90vw",
-    //         maxHeight: "90vh",
-    //         width: "80%",
-    //         // data:row
-    //     });
-    // }
-
     OnEditRegistration(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

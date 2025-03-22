@@ -114,20 +114,7 @@ export class DischargeComponent implements OnInit {
 
         });
 
-        // this._IpSearchListService.getAdmissionById(this.data.admissionId).subscribe((response) => {
-        //   this.registerObj1 = response;
-        //   if (this.registerObj1) {
-        //     this.registerObj1.phoneNo = this.registerObj1.phoneNo.trim()
-        //     this.registerObj1.mobileNo = this.registerObj1.mobileNo.trim()
-        //     this.registerObj1.admissionTime = this.datePipe.transform(this.registerObj1.admissionTime, 'hh:mm:ss a')
-        //     this.registerObj1.dischargeTime = this.datePipe.transform(this.registerObj1.dischargeTime, 'hh:mm:ss a')
-
-        //   }
-        //   console.log(this.registerObj1)
-
-        // });
-
-
+      
       }, 500);
     }
 
@@ -176,8 +163,8 @@ export class DischargeComponent implements OnInit {
       dischargeTime: "",
       dischargeTypeId: 0,
       dischargedDocId: 0,
-      dischargedRmoid: 10,
-      addedBy: 1
+      dischargedRmoid: 0,
+      addedBy: 0
     });
   }
 

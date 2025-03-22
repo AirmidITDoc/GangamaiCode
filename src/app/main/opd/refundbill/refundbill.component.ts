@@ -415,7 +415,7 @@ patientDetail1 = new VisitMaster1({});
   onSave() {
 
 
-    if (!this.RefundOfBillFormGroup.invalid && this.vOPIPId !== 0) {
+    if (!this.RefundOfBillFormGroup.invalid && this.vOPIPId !== 0 && this.TotalRefundAmount!==0) {
 
       if (this.TotalRefundAmount <= this.RefundBalAmount) {
         let InsertRefundObj = {};
@@ -561,6 +561,9 @@ patientDetail1 = new VisitMaster1({});
         this.registerObj.ageYear=""
   this.registerObj.genderId=""
         
+    }
+    else{
+      Swal.fire("Please check Total Refund Amount!")
     }
   }
 

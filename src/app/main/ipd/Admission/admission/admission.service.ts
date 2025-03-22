@@ -43,8 +43,8 @@ export class AdmissionService {
             RoomName: '',
             PatientType: '',
             patientstatus: '',
-            fromDate:[''],// [(new Date()).toISOString()],
-            enddate: [''][(new Date()).toISOString()],
+            fromDate: [(new Date()).toISOString()],
+            enddate: [(new Date()).toISOString()],
 
         });
     }
@@ -122,7 +122,7 @@ export class AdmissionService {
             AdmissionDate: [(new Date()).toISOString()],
             AdmissionTime: [(new Date()).toISOString()],
             PatientTypeId: 1,
-            HospitalID: 1,
+            hospitalId: 1,
             DocNameId: ['', [Validators.required]],
             RefDocNameId: 0,
             DischargeDate: "1900-01-01",
@@ -147,7 +147,7 @@ export class AdmissionService {
             ]],
             RelationshipId: 0,
             AddedBy:this.accountService.currentUserValue.userId,
-            IsMlc: true,
+            IsMlc: [false],
             MotherName: "",
             AdmittedDoctor1: ['', [Validators.required]],
             AdmittedDoctor2: 0,
@@ -163,16 +163,14 @@ export class AdmissionService {
 
             wardId: [0, [Validators.required]],
             bedId: [0, [Validators.required]],
-            
-            unitId:1,
-
-            IsMLC: [false],
-            OPIPChange: [false],
-            IsCharity: [false],
-            IsSenior: [false],
-            Citizen: [false],
-            Emergancy: [false],
-            template: [false]
+            // unitId:1,
+            // IsMLC: [false],
+            // OPIPChange: [false],
+            // IsCharity: [false],
+            // IsSenior: [false],
+            // Citizen: [false],
+            // Emergancy: [false],
+            // template: [false]
         });
     }
    

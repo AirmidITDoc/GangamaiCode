@@ -53,7 +53,7 @@ export class IPSearchListComponent implements OnInit {
     @ViewChild('iconMlc') iconMlc!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     fromDate = ""// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    toDate = ""// this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+    toDate =  this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
     vOPIPId = 0;
     f_name: any = ""
     regNo: any = "0"
@@ -103,10 +103,7 @@ export class IPSearchListComponent implements OnInit {
             { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
-            // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            // { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-
-        ],
+                  ],
         row: 25
     }
 
@@ -291,7 +288,7 @@ export class IPSearchListComponent implements OnInit {
 
             this.advanceDataStored.storage = new AdvanceDetailObj(element);
             this._IpSearchListService.populateForm2(element);
-            // if (!contact.IsBillGenerated) {
+           
             const dialogRef = this._matDialog.open(CompanyInformationComponent,
                 {
                     maxWidth: "75vw",
@@ -342,9 +339,7 @@ export class IPSearchListComponent implements OnInit {
             });
         }
         else if (m == "Advance") {
-            //console.log(element);
-            this.advanceDataStored.storage = new AdvanceDetailObj(element);
-            // this._IpSearchListService.populateForm(element); 
+         this.advanceDataStored.storage = new AdvanceDetailObj(element);
             let Advflag: boolean = false;
             if (element.IsBillGenerated) {
                 Advflag = true;
@@ -367,7 +362,7 @@ export class IPSearchListComponent implements OnInit {
                     console.log('The dialog was closed - Insert Action', result);
                 });
             } else {
-                //Swal.fire("Bil Generatd !")
+               
                 Swal.fire({
                     title: 'Selected Patient Bill Is Already Generated',
                     icon: "warning",
@@ -411,9 +406,9 @@ export class IPSearchListComponent implements OnInit {
 
 
     onChangeFirst() {
-        debugger
-        // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-        // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+        
+        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
         this.f_name = this.myFilterform.get('FirstName').value + "%"
         this.l_name = this.myFilterform.get('LastName').value + "%"
         this.regNo = this.myFilterform.get('RegNo').value || "0"
@@ -424,7 +419,7 @@ export class IPSearchListComponent implements OnInit {
     }
 
     getfilterdata() {
-        debugger
+        
         this.gridConfig = {
             apiUrl: "Admission/AdmissionList",
             columnsList: this.allcolumns,
@@ -440,8 +435,7 @@ export class IPSearchListComponent implements OnInit {
                 { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
                 { fieldName: "M_Name", fieldValue: this.m_name, opType: OperatorComparer.Equals },
                 { fieldName: "IPNo", fieldValue: this.IPDNo, opType: OperatorComparer.Equals }
-                // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                // { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+               
             ],
             row: 25
         }

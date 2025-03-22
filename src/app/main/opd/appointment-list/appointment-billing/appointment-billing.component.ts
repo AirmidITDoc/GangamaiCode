@@ -69,6 +69,22 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   savebtn: boolean = true;
   screenFromString = 'Common-form';
 
+  //calculation
+  CompanyId: any;
+  netPaybleAmt1: any;
+  flagSubmit: boolean;
+  RegNo: any;
+  Doctorname: any;
+  CompanyName: any;
+  DepartmentName: any;
+  AgeYear: any;
+  balanceamt: number;
+  vMobileNo: any;
+  paidamt: any
+  Paymentdataobj: PaymentInsert[] = [];
+  ConcessionId = 0;
+  ConcessionReason = "";
+
   Consessionres: boolean = false;
   autocompleteModeCashcounter: string = "CashCounter";
   autocompleteModedeptdoc: string = "ConDoctor";
@@ -115,14 +131,14 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isModal = !!this.dialogRef;
     console.log("DATA : ", this.advanceDataStored.storage);
-  
+
     if (this.data) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       this.patientDetail = this.selectedAdvanceObj;
       // this.PatientName = this.patientDetail.patientName
-      this.patientDetail.formattedText=this.patientDetail.patientName
-      this.patientDetail.doctorName=this.patientDetail.doctorname
-      
+      this.patientDetail.formattedText = this.patientDetail.patientName
+      this.patientDetail.doctorName = this.patientDetail.doctorname
+
       this.vOPIPId = this.patientDetail.visitId
       this.savebtn = false
       console.log("DATA : ", this.patientDetail);
@@ -208,7 +224,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     let discountAmount = this.chargeForm.get("discountAmount").value;
     let totalAmount = this.chargeForm.get("totalAmount").value;
 
-    if (discountAmount < 0 || discountAmount > totalAmount ) {
+    if (discountAmount < 0 || discountAmount > totalAmount) {
       this.chargeForm.get("discountAmount").setValue(0);
       this.chargeForm.get("discountPer").setValue(0);
       this.isUpdating = false;
@@ -292,51 +308,51 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       const discountAmount = (totalAmount * formValue.discountPer) / 100;
       const netAmount = totalAmount - discountAmount;
       debugger
-     if(totalAmount > 0){
-      const newRow = {
-        ServiceId: formValue.serviceName.serviceId,
-        ServiceName: formValue.serviceName.serviceName,
-        Price: formValue.price,
-        Qty: formValue.qty,
-        TotalAmt: totalAmount,
-        DiscPer: formValue.discountPer || 0,
-        DiscAmt: discountAmount || 0,
-        NetAmount: netAmount,
-        DoctorName: this.doctorName || '-',
-        ClassName: this.className || '-',
-        ChargesAddedName: formValue.chargesAddedName || '-',
-        IsPathology: this.IsPathology,
-        IsRadiology: this.IsRadiology,
-        IsPackage: this.vIsPackage,
+      if (totalAmount > 0) {
+        const newRow = {
+          ServiceId: formValue.serviceName.serviceId,
+          ServiceName: formValue.serviceName.serviceName,
+          Price: formValue.price,
+          Qty: formValue.qty,
+          TotalAmt: totalAmount,
+          DiscPer: formValue.discountPer || 0,
+          DiscAmt: discountAmount || 0,
+          NetAmount: netAmount,
+          DoctorName: this.doctorName || '-',
+          ClassName: this.className || '-',
+          ChargesAddedName: formValue.chargesAddedName || '-',
+          IsPathology: this.IsPathology,
+          IsRadiology: this.IsRadiology,
+          IsPackage: this.vIsPackage,
 
-      };
+        };
 
-      if (!this.isDiscountApplied && discountAmount > 0) {
-        this.isDiscountApplied = true;
-        this.Consessionres = true
+        if (!this.isDiscountApplied && discountAmount > 0) {
+          this.isDiscountApplied = true;
+          this.Consessionres = true
+        }
+        const newCharge = new ChargesList(newRow);
+        newCharge.DiscAmt = newCharge.DiscAmt || 0;
+        newCharge.DiscPer = newCharge.DiscPer || 0;
+        this.chargeList.push(newCharge);
+        this.dsChargeList.data = this.chargeList;
+        this.calculateTotalAmount();
+        // console.log(this.chargeList)
+        // console.log( this.dsChargeList.data)
+        // Reset form with initial values
+        this.resetForm();
+        this.chargeForm.get("qty").setValue(1);
+
+        // Focus drop to "serviceName" control.
+
+        const serviceNameElement = document.querySelector(`[name='serviceName']`) as HTMLElement;
+        if (serviceNameElement) {
+          serviceNameElement.focus();
+        }
+      } else {
+        Swal.fire("Can't Enter Invalid Data !")
       }
-      const newCharge = new ChargesList(newRow);
-      newCharge.DiscAmt = newCharge.DiscAmt || 0;
-      newCharge.DiscPer = newCharge.DiscPer || 0;
-      this.chargeList.push(newCharge);
-      this.dsChargeList.data = this.chargeList;
-      this.calculateTotalAmount();
-// console.log(this.chargeList)
-// console.log( this.dsChargeList.data)
-      // Reset form with initial values
-      this.resetForm();
-      this.chargeForm.get("qty").setValue(1);
-
-      // Focus drop to "serviceName" control.
-
-      const serviceNameElement = document.querySelector(`[name='serviceName']`) as HTMLElement;
-      if (serviceNameElement) {
-        serviceNameElement.focus();
-      }
-    }else{
-      Swal.fire("Can't Enter Invalid Data !")
     }
-  }
   }
   deleteCharge(index: number) {
     this.chargeList.splice(index, 1);
@@ -360,8 +376,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
     this.totalChargeForm.patchValue({
       totalAmount: totalSum,
-      totalDiscountAmount: totalDiscount,
-      totalNetAmount: totalNet
+      totalDiscountAmount: Math.round(totalDiscount),
+      totalNetAmount: Math.round(totalNet)
     }, { emitEvent: false });
   }
   onPriceOrQtyChange(row: ChargesList = null): void {
@@ -439,8 +455,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       const discountAmount = (totalAmount * totalDiscountPer) / 100;
       const netAmount = totalAmount - discountAmount;
       this.totalChargeForm.patchValue({
-        totalDiscountAmount: discountAmount,
-        totalNetAmount: netAmount
+        totalDiscountAmount: Math.round(discountAmount),
+        totalNetAmount: Math.round(netAmount)
       }, { emitEvent: false });
     }
     this.isUpdating = false;
@@ -466,10 +482,12 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       const netAmount = totalChargeAmount - totalDiscountAmount;
       this.totalChargeForm.patchValue({
         totalDiscountPer: disountPer,
-        totalNetAmount: netAmount
+        totalNetAmount: netAmount.toFixed(2)
       }, { emitEvent: false });
     }
     this.isUpdating = false;
+
+
   }
   resetForm(): void {
     this.chargeForm.reset({
@@ -579,38 +597,15 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
   getSelectedObj(obj) {
     console.log(obj)
-    this.patientDetail=obj
-    debugger
-    
-      this.vOPIPId = obj.visitId
-
-      if(this.vOPIPId>0)
-        this.savebtn = false
-      // this.RegId = obj.regId
-
-      // setTimeout(() => {
-      //   this._AppointmentlistService.getRegistraionById(obj.regId).subscribe((response) => {
-      //     this.patientDetail = response;
-         
-      //     this.PatientName = this.patientDetail.firstName + " " + this.patientDetail.middleName + " " + this.patientDetail.lastName
-      //     console.log(this.patientDetail)
-      //   });
-
-      // }, 500);
-
-    //   setTimeout(() => {
-    //     this._AppointmentlistService.getVisitById(this.vOPIPId).subscribe(data => {
-    //       this.patientDetail1 = data;
-    //       console.log(data)
-         
-    //     });
-    //   }, 1000);
-    // }
+    this.patientDetail = obj
+    this.vOPIPId = obj.visitId
+    if (this.vOPIPId > 0)
+      this.savebtn = false
 
   }
   getValidationMessages() {
     return {
-    
+
       CashCounterID: [
         { name: "required", Message: "First Name is required" },
 
@@ -670,14 +665,14 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     })
 
     this.searchForm.get("regId").setValue("")
-   
+
     this.patientDetail=[]
-    
+
   }
 
 
   saveCreditbill() {
-
+    debugger
     let Billdetsarr = [];
     this.dsChargeList.data.forEach((element) => {
       let BillDetailsInsertObj = {};
@@ -731,8 +726,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       BillNo: 0,
       opdipdid: this.vOPIPId,
       TotalAmt: this.totalChargeForm.get('totalAmount').value || 0,
-      ConcessionAmt: parseFloat(this.totalChargeForm.get('totalDiscountAmount').value) || 0,
-      NetPayableAmt: this.totalChargeForm.get('totalNetAmount').value || 0,
+      ConcessionAmt: Math.round(this.totalChargeForm.get('totalDiscountAmount').value) || 0,
+      NetPayableAmt: Math.round(this.totalChargeForm.get('totalNetAmount').value) || 0,
       PaidAmt: 0,
       BalanceAmt: this.totalChargeForm.get('totalNetAmount').value,
       BillDate: this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
@@ -762,10 +757,10 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     console.log(submitData);
     this._AppointmentlistService.InsertOPBillingCredit(submitData).subscribe(response => {
       this.toastrService.success(response.message);
-      
-      let Res=response.message
-      let ID=Res.split('.')
-      let Id=ID[1]
+
+      let Res = response.message
+      let ID = Res.split('.')
+      let Id = ID[1]
 
       this.viewgetCreditOPBillReportPdf(Id)
       this._matDialog.closeAll();
@@ -773,35 +768,20 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       this.toastrService.error(error.message);
     });
 
-    
-    this.dsChargeList.data=[]
+
+    this.dsChargeList.data = []
     this.totalChargeForm.reset();
     this.dialogRef.close();
-    this.patientDetail =[];
+    this.patientDetail = [];
   }
 
-  CompanyId: any;
-  netPaybleAmt1: any;
-  flagSubmit: boolean;
-  RegNo: any;
-  Doctorname: any;
-  CompanyName: any;
-  DepartmentName: any;
-  AgeYear: any;
-  balanceamt: number;
-  vMobileNo: any;
-  paidamt: any
-  Paymentdataobj: PaymentInsert[] = [];
-  ConcessionId = 0;
-  ConcessionReason = "";
+
 
 
 
   BillSave() {
     console.log(this.vOPIPId)
     let InsertAdddetArr = [];
-
-
     this.dsChargeList.data.forEach((element) => {
       console.log(element)
       let IsPathology, IsRadiology
@@ -840,9 +820,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         InsertAddChargesObj['BillNo'] = 0,
         InsertAddChargesObj['chargesTime'] = this.datePipe.transform(this.currentDate, "HH:mm:ss"),
         InsertAddChargesObj['classId'] = this.vClassId,
-
-        console.log(InsertAddChargesObj)
-      InsertAdddetArr.push(InsertAddChargesObj);
+        InsertAdddetArr.push(InsertAddChargesObj);
     });
 
 
@@ -882,6 +860,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       dialogRef.afterClosed().subscribe(result => {
 
         this.flagSubmit = result.IsSubmitFlag
+        debugger
         if (this.flagSubmit == true) {
           this.Paymentdataobj = result.submitDataPay.ipPaymentInsert;
 
@@ -891,9 +870,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             BillNo: 0,
             opdipdid: this.vOPIPId,
             TotalAmt: this.totalChargeForm.get('totalAmount').value || 0,
-            ConcessionAmt: parseFloat(this.totalChargeForm.get('totalDiscountAmount').value) || 0,
-            NetPayableAmt: this.totalChargeForm.get('totalNetAmount').value || 0,
-            PaidAmt: this.totalChargeForm.get('totalNetAmount').value || 0,
+            ConcessionAmt: Math.round(this.totalChargeForm.get('totalDiscountAmount').value) || 0,
+            NetPayableAmt: Math.round(this.totalChargeForm.get('totalNetAmount').value) || 0,
+            PaidAmt: Math.round(this.totalChargeForm.get('totalNetAmount').value) || 0,
             BalanceAmt: 0,
             BillDate: this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
             OPDIPDType: 0,
@@ -924,18 +903,19 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             this.toastrService.success(response.message);
             console.log(response)
 
-            let Res=response.message
-            let ID=Res.split('.')
-            let Id=ID[1]
+            let Res = response.message
+            let ID = Res.split('.')
+            let Id = ID[1]
 
             this.viewgetOPBillReportPdf(Id)
-           
+
           }, (error) => {
             this.toastrService.error(error.message);
           });
 
         }
-        else
+
+        else if (this.flagSubmit == false)
           this.saveCreditbill();
       });
     }
@@ -977,9 +957,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         BillNo: 0,
         opdipdid: this.vOPIPId,
         TotalAmt: this.totalChargeForm.get('totalAmount').value || 0,
-        ConcessionAmt: parseFloat(this.totalChargeForm.get('totalDiscountAmount').value) || 0,
-        NetPayableAmt: this.totalChargeForm.get('totalNetAmount').value || 0,
-        PaidAmt: this.totalChargeForm.get('totalNetAmount').value || 0,
+        ConcessionAmt: Math.round(this.totalChargeForm.get('totalDiscountAmount').value) || 0,
+        NetPayableAmt: Math.round(this.totalChargeForm.get('totalNetAmount').value) || 0,
+        PaidAmt: Math.round(this.totalChargeForm.get('totalNetAmount').value) || 0,
         BalanceAmt: 0,// this.totalChargeForm.get('FinalNetAmt').value,
         BillDate: this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
         opdipdType: 0,
@@ -1010,30 +990,30 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       this._AppointmentlistService.InsertOPBilling(submitData).subscribe(response => {
         this.toastrService.success(response.message);
         console.log(response);
-        let Res=response.message
-        let ID=Res.split('.')
-        let Id=ID[1]
+        let Res = response.message
+        let ID = Res.split('.')
+        let Id = ID[1]
         this.viewgetOPBillReportPdf(Id)
-       
+
       }, (error) => {
         this.toastrService.error(error.message);
       });
 
     }
 
-    this.dsChargeList.data=[]
-    this.totalChargeForm.reset();
-    this.dialogRef.close();
-    this.patientDetail =[];
+    // this.dsChargeList.data=[]
+    // this.totalChargeForm.reset();
+    // this.dialogRef.close();
+    // this.patientDetail =[];
   }
 
   viewgetCreditOPBillReportPdf(element) {
-    
+
     console.log('Third action clicked for:', element);
     this.commonService.Onprint("BillNo", element, "OpBillReceipt");
   }
   viewgetOPBillReportPdf(element) {
-    
+
     console.log('Third action clicked for:', element);
     this.commonService.Onprint("BillNo", element, "OpBillReceipt");
   }
@@ -1072,7 +1052,7 @@ export class ChargesList {
   DoctorName: any;
   OpdIpdId: any;
   serviceName: any;
-  
+
 
   constructor(ChargesList) {
     this.ChargesId = ChargesList.ChargesId || '';
@@ -1099,7 +1079,7 @@ export class ChargesList {
     this.IsPackage = ChargesList.IsPackage || 0;
     this.PacakgeServiceName = ChargesList.PacakgeServiceName || '';
     this.OpdIpdId = ChargesList.OpdIpdId || '';
-    this.serviceName=ChargesList.serviceName || ''
+    this.serviceName = ChargesList.serviceName || ''
   }
 }
 
