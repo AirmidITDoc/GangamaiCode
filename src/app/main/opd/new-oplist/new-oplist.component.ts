@@ -115,7 +115,7 @@ export class NewOPListComponent implements OnInit {
     }
 
     gridConfig1: gridModel = {
-        apiUrl: "OPBill/OPPaymentList",
+        apiUrl: "OPBill/BrowseOPPaymentList",
         columnsList: [
             { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 130 },
             { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -159,7 +159,7 @@ export class NewOPListComponent implements OnInit {
 
 
     gridConfig2: gridModel = {
-        apiUrl: "OPBill/OPRefundList",
+        apiUrl: "OPBill/BrowseOPRefundList",
         columnsList: [
             { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
             { heading: "RefundNo", key: "refundNo", sort: true, align: 'left', emptySign: 'NA' },

@@ -40,7 +40,7 @@ export class AirmidTableComponent implements OnInit {
     @Input() ShowButtons: boolean = true;
     @Input() FullWidth: boolean = false;
     @Input() tableClasses: string = '';
-    pageSize: number = 10;
+    pageSize: number = 25;
     public selectedRow: any = null;
     public defaultColumnWidth = 120;
     ngOnInit(): void {

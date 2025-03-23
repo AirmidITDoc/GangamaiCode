@@ -74,6 +74,7 @@ export class NewAdmissionComponent implements OnInit {
   @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
   @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
 
+  @ViewChild('ddlClassName') ddlClassName: AirmidDropDownComponent;
 
   constructor(public _AdmissionService: AdmissionService,
     private accountService: AuthenticationService,
@@ -115,8 +116,8 @@ export class NewAdmissionComponent implements OnInit {
 
   autocompleteModehospital: string = "Hospital";
 
- ngOnInit(): void {
-   this.searchFormGroup = this.createSearchForm();
+  ngOnInit(): void {
+    this.searchFormGroup = this.createSearchForm();
     this.personalFormGroup.markAllAsTouched();
     this.admissionFormGroup.markAllAsTouched();
 
@@ -136,7 +137,7 @@ export class NewAdmissionComponent implements OnInit {
   getSelectedObj(obj) {
     console.log(obj)
     // this.RegOrPhoneflag = 'Entry from Registration';
-    
+
     if ((obj.value ?? 0) > 0) {
 
       console.log(this.data)
@@ -184,39 +185,39 @@ export class NewAdmissionComponent implements OnInit {
       // this.showtable = true;
     }
 
-   
+
   }
 
   onNewSave() {
-debugger
+    debugger
 
-console.log(this.personalFormGroup.value)
-console.log(this.admissionFormGroup.value)
-    if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid ){
+    console.log(this.personalFormGroup.value)
+    console.log(this.admissionFormGroup.value)
+    if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid) {
 
-    Swal.fire({
-      title: 'Do you want to Save the Admission ',
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Save!"
+      Swal.fire({
+        title: 'Do you want to Save the Admission ',
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Save!"
 
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        this.OnSaveAdmission();
-      }
-    })
-    }else{
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          this.OnSaveAdmission();
+        }
+      })
+    } else {
       Swal.fire("Enter Proper values..Form is Invalid")
     }
   }
 
 
   onChangePatient(value) {
-    
+
     var mode = "Company"
     if (value.text != "Self") {
       this._AdmissionService.getMaster(mode, 1);
@@ -240,13 +241,13 @@ console.log(this.admissionFormGroup.value)
     this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
     this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.admissionFormGroup.get('AdmissionDate').value, 'yyyy-MM-dd'))
 
-     if (this.isCompanySelected && this.admissionFormGroup.get('CompanyId').value == 0) {
+    if (this.isCompanySelected && this.admissionFormGroup.get('CompanyId').value == 0) {
       this.toastr.warning('Please select valid Company ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    
+
     if (this.searchFormGroup.get('regRadio').value == "registration" && this.AdmissionId == 0) {
 
       let submitData = {
@@ -258,13 +259,13 @@ console.log(this.admissionFormGroup.value)
       this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
         console.log(response)
         this.toastr.success(response.message);
-        let Res=response.message
-        let ID=Res.split('.')
-        let Id=ID[1]
+        let Res = response.message
+        let ID = Res.split('.')
+        let Id = ID[1]
         this.getAdmittedPatientCasepaperview(Id);
         this.onClear();
         this._matDialog.closeAll();
-       
+
       }, (error) => {
         this.toastr.error(error.message);
 
@@ -273,7 +274,7 @@ console.log(this.admissionFormGroup.value)
 
     }
     else {
-     
+
       let submitData = {
         "AdmissionReg": this.personalFormGroup.value,
         "ADMISSION": this.admissionFormGroup.value
@@ -283,9 +284,9 @@ console.log(this.admissionFormGroup.value)
       this._AdmissionService.AdmissionRegisteredInsert(submitData).subscribe(response => {
         this.toastr.success(response.message);
         console.log(response)
-        let Res=response.message
-        let ID=Res.split('.')
-        let Id=ID[1]
+        let Res = response.message
+        let ID = Res.split('.')
+        let Id = ID[1]
         this.getAdmittedPatientCasepaperview(Id);
         this.onClear();
         this._matDialog.closeAll();
@@ -298,16 +299,16 @@ console.log(this.admissionFormGroup.value)
 
 
   selectChangedepartment(obj: any) {
-    
+
     this._AdmissionService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
       this.ddlDoctor.options = data;
       this.ddlDoctor.bindGridAutoComplete();
     });
   }
- 
+
 
   getAdmittedPatientCasepaperview(AdmissionId) {
-       this.commonService.Onprint("AdmissionId", AdmissionId, "IpCasepaperReport");
+    this.commonService.Onprint("AdmissionId", AdmissionId, "IpCasepaperReport");
   }
 
   displayFn(user: any): string {
@@ -321,14 +322,17 @@ console.log(this.admissionFormGroup.value)
     // this.ddlCountry.SetSelection(e.stateId);
   }
 
-
+  onChangeWard(e) {
+    console.log(e)
+    this.ddlClassName.SetSelection(e.classId);
+  }
 
   onChangecity(e) {
     console.log(e)
-    this.registerObj.stateId=e.stateId
-    this._AdmissionService.getstateId(e.stateId).subscribe((Response)=>{
-        console.log(Response)
-        this.ddlCountry.SetSelection(Response.countryId);
+    this.registerObj.stateId = e.stateId
+    this._AdmissionService.getstateId(e.stateId).subscribe((Response) => {
+      console.log(Response)
+      this.ddlCountry.SetSelection(Response.countryId);
     });
 
   }
@@ -480,7 +484,7 @@ console.log(this.admissionFormGroup.value)
     this.personalFormGroup.get('CityId').reset();
   }
   onReset() {
-    
+
     this.personalFormGroup.get('RegId').reset();
     this.personalFormGroup.get('RegId').disable();
 
