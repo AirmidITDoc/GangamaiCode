@@ -220,7 +220,7 @@
                                         <div fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%" *ngIf="isDoctor">
                                             <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
                                                 [formGroup]="chargeForm"
-                                                [validations]="getValidationMessages().DoctorId"
+                                                [validations]="getValidationMessages().DoctorID"
                                                 [mode]="autocompleteModedeptdoc"
                                                 (selectionChange)="getdocdetail($event)">
                                             </airmid-dropdown>

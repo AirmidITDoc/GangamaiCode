@@ -325,6 +325,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
           NetAmount: netAmount,
           DoctorName: this.doctorName || '-',
           ClassName: this.className || '-',
+          DoctorId: formValue.DoctorID,
           ChargesAddedName: formValue.chargesAddedName || '-',
           IsPathology: this.IsPathology,
           IsRadiology: this.IsRadiology,
@@ -344,6 +345,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.calculateTotalAmount();
         // console.log(this.chargeList)
         // console.log( this.dsChargeList.data)
+
         // Reset form with initial values
         this.resetForm();
         this.chargeForm.get("qty").setValue(1);
@@ -362,6 +364,21 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         });
       }
     }
+  }
+
+  resetForm(): void {
+    this.chargeForm.reset({
+      serviceName: '',
+      price: 0,
+      qty: 0,
+      totalAmount: 0,
+      discountPer: 0,
+      discountAmount: 0,
+      netAmount: 0,
+      DoctorID: 0,
+      DoctorName: ''
+    });
+    this.doctorName = '';
   }
   deleteCharge(index: number) {
     this.chargeList.splice(index, 1);
@@ -498,17 +515,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
 
   }
-  resetForm(): void {
-    this.chargeForm.reset({
-      serviceName: '',
-      price: 0,
-      qty: 0,
-      totalAmount: 0,
-      discountPer: 0,
-      discountAmount: 0,
-      netAmount: 0
-    });
-  }
+
 
 
   onSubmit(): void {
@@ -571,7 +578,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         text: "Selected Service already available in the list",
         icon: "warning"
       });
+
       this.resetForm();
+      this.chargeForm.get("qty").setValue(1);
       const serviceNameElement = document.querySelector(`[name='serviceName']`) as HTMLElement;
       if (serviceNameElement) {
         serviceNameElement.focus();
