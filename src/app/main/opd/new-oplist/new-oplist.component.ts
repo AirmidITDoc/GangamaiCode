@@ -73,7 +73,7 @@ export class NewOPListComponent implements OnInit {
 
         apiUrl: "OPBill/BrowseOPDBillPagiList",
         columnsList: [
-            { heading: "Patient", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 70 },
+            { heading: "", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 70 },
             { heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
             { heading: "", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
             { heading: "", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },

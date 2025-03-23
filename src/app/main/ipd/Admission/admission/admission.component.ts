@@ -61,7 +61,7 @@ export class AdmissionComponent implements OnInit {
   selectedAdvanceObj: AdmissionPersonlModel;
   newRegSelected: any = 'registration';
 
- 
+
   hasSelectedContacts: boolean;
   SpinLoading: boolean = false;
   isLoadings = false;
@@ -104,7 +104,7 @@ export class AdmissionComponent implements OnInit {
 
 
   menuActions: Array<string> = [];
- 
+
   Regflag: boolean = false;
 
   // new Api
@@ -114,17 +114,17 @@ export class AdmissionComponent implements OnInit {
   nowdate = new Date();
   firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
 
-  fromDate ="1900-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
 
   autocompleteModedeptdoc: string = "ConDoctor";
   optionsSearchDoc: any[] = [];
   vOPIPId = 0;
-  f_name:any = "" 
-  regNo:any="0"
-  l_name:any="" 
-  m_name:any="" 
-  IPDNo:any="" 
+  f_name: any = ""
+  regNo: any = "0"
+  l_name: any = ""
+  m_name: any = ""
+  IPDNo: any = ""
   @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
   @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
   @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
@@ -139,28 +139,28 @@ export class AdmissionComponent implements OnInit {
 
   }
 
-     allcolumns=[
-      { heading: "PatientType", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:100},
-      { heading: "-", key: "isOpToIpconv", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:40 },
-      { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.template, width: 80},
-      { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
-      { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-      { heading: "Date", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
-      { heading: "DoctorName", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-      { heading: "RefDocName", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-      { heading: "IPDNo", key: "ipdno", sort: true, align: 'left', emptySign: 'NA'},
-      { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA'},
-      { heading: "WardName", key: "roomName", sort: true, align: 'left', emptySign: 'NA', type: 14 },
-      { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "ClassName", key: "className", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-      { heading: "RelativeName", key: "relativeName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 14 },
-      {
-        heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
-        template: this.actionButtonTemplate  // Assign ng-template to the column
-      }
+  allcolumns = [
+    { heading: "-", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+    { heading: "-", key: "isOpToIpconv", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+    { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 80 },
+    { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    { heading: "Date", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
+    { heading: "DoctorName", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "RefDocName", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "IPDNo", key: "ipdno", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "WardName", key: "roomName", sort: true, align: 'left', emptySign: 'NA', type: 14 },
+    { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "ClassName", key: "className", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "RelativeName", key: "relativeName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 14 },
+    {
+      heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate  // Assign ng-template to the column
+    }
 
-    ];
+  ];
 
   gridConfig: gridModel = {
     apiUrl: "Admission/AdmissionList",
@@ -172,11 +172,11 @@ export class AdmissionComponent implements OnInit {
     { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-    { fieldName: "To_Dt", fieldValue:this.toDate, opType: OperatorComparer.Equals },
+    { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
     { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Equals },
     { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals }
-       ]
+    ]
 
   }
 
@@ -191,26 +191,26 @@ export class AdmissionComponent implements OnInit {
     private reportDownloadService: ExcelDownloadService,
     private formBuilder: UntypedFormBuilder,
     public toastr: ToastrService,
-  private commonService: PrintserviceService,
-  ) {}
+    private commonService: PrintserviceService,
+  ) { }
 
   ngOnInit(): void {
 
     this.searchFormGroup = this.createSearchForm();
     this.myFilterform = this._AdmissionService.filterForm();
-    this.fromDate ="1900-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    this.fromDate = "1900-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
-  
-   // menu Button List
-   this.menuActions.push("Bill");
-   this.menuActions.push("Bed Transfer");
-   this.menuActions.push("Discharge");
-   this.menuActions.push("MLC Update");
-   this.menuActions.push("Sub TPA Company");
-   this.menuActions.push("Discharge SummarY");
-   this.menuActions.push("Refund Of Bill");
-   this.menuActions.push("Refund Of Advance");
-   
+
+    // menu Button List
+    this.menuActions.push("Bill");
+    this.menuActions.push("Bed Transfer");
+    this.menuActions.push("Discharge");
+    this.menuActions.push("MLC Update");
+    this.menuActions.push("Sub TPA Company");
+    this.menuActions.push("Discharge SummarY");
+    this.menuActions.push("Refund Of Bill");
+    this.menuActions.push("Refund Of Advance");
+
   }
 
   // onChangeStartDate(value) {
@@ -254,10 +254,10 @@ export class AdmissionComponent implements OnInit {
       NewRegistrationComponent,
       {
         maxWidth: "100vw",
-                maxHeight: '70%',
-                width: '95%',
+        maxHeight: '70%',
+        width: '95%',
         data: row
-       
+
       }
     );
 
@@ -267,7 +267,7 @@ export class AdmissionComponent implements OnInit {
     });
   }
 
- 
+
 
   getValidationdoctorMessages() {
     return {
@@ -290,81 +290,81 @@ export class AdmissionComponent implements OnInit {
     });
   }
 
- 
 
-   OngetRecord(element, m){
-        console.log('Third action clicked for:', element); 
-        if (m == "Bill") {
-            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-            buttonElement.blur(); // Remove focus from the button
-    
-            let that = this;
-            const dialogRef = this._matDialog.open(IPBillingComponent,
-                {
-                    maxWidth: "70vw",
-                    height: "410px",
-                    width: "70%",
-                    data: element
-                });
-            dialogRef.afterClosed().subscribe(result => {
-                if (result) {
-                    that.grid.bindGridData();
-                }
-            });
-        }
-        else if (m == "Bed Transfer") {
-            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-            buttonElement.blur(); // Remove focus from the button
 
-            let that = this;
-            const dialogRef = this._matDialog.open(BedTransferComponent,
-                {
-                    maxWidth: "70vw",
-                    height: "500px",
-                    width: "90%",
-                    data: element
-                });
-            dialogRef.afterClosed().subscribe(result => {
-                if (result) {
-                    that.grid.bindGridData();
-                }
-            });
-        }
-        else if (m == "Discharge") {
-          const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-          buttonElement.blur(); // Remove focus from the button
+  OngetRecord(element, m) {
+    console.log('Third action clicked for:', element);
+    if (m == "Bill") {
+      const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+      buttonElement.blur(); // Remove focus from the button
 
-          let that = this;
-          const dialogRef = this._matDialog.open(DischargeComponent,
-              {
-                maxWidth: "85vw",
-                height: '450px',
-                width: '100%',
-                  data: element
-              });
-          dialogRef.afterClosed().subscribe(result => {
-              if (result) {
-                  that.grid.bindGridData();
-              }
-          });
-      }
-      else if (m == "MLC Update") {
-        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-        buttonElement.blur(); // Remove focus from the button
-
-        let that = this;
-        const dialogRef = this._matDialog.open(MLCInformationComponent,
-            {
-              maxWidth: "85vw",
-              height: '450px',
-              width: '100%',
-                data: element
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
+      let that = this;
+      const dialogRef = this._matDialog.open(IPBillingComponent,
+        {
+          maxWidth: "70vw",
+          height: "410px",
+          width: "70%",
+          data: element
         });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          that.grid.bindGridData();
+        }
+      });
+    }
+    else if (m == "Bed Transfer") {
+      const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+      buttonElement.blur(); // Remove focus from the button
+
+      let that = this;
+      const dialogRef = this._matDialog.open(BedTransferComponent,
+        {
+          maxWidth: "70vw",
+          height: "500px",
+          width: "90%",
+          data: element
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          that.grid.bindGridData();
+        }
+      });
+    }
+    else if (m == "Discharge") {
+      const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+      buttonElement.blur(); // Remove focus from the button
+
+      let that = this;
+      const dialogRef = this._matDialog.open(DischargeComponent,
+        {
+          maxWidth: "85vw",
+          height: '450px',
+          width: '100%',
+          data: element
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          that.grid.bindGridData();
+        }
+      });
+    }
+    else if (m == "MLC Update") {
+      const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+      buttonElement.blur(); // Remove focus from the button
+
+      let that = this;
+      const dialogRef = this._matDialog.open(MLCInformationComponent,
+        {
+          maxWidth: "85vw",
+          height: '450px',
+          width: '100%',
+          data: element
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          that.grid.bindGridData();
+        }
+      });
     }
     else if (m == "Discharge Summary") {
       const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -372,39 +372,39 @@ export class AdmissionComponent implements OnInit {
 
       let that = this;
       const dialogRef = this._matDialog.open(DischargeSummaryComponent,
-          {
-              maxWidth: "70vw",
-              height: "390px",
-              width: "50%",
-              data: element
-          });
+        {
+          maxWidth: "70vw",
+          height: "390px",
+          width: "50%",
+          data: element
+        });
       dialogRef.afterClosed().subscribe(result => {
-          if (result) {
-              that.grid.bindGridData();
-          }
+        if (result) {
+          that.grid.bindGridData();
+        }
       });
-  }
-  else if (m == "Sub TPA Company") {
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
+    }
+    else if (m == "Sub TPA Company") {
+      const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+      buttonElement.blur(); // Remove focus from the button
 
-    let that = this;
-    const dialogRef = this._matDialog.open(SubCompanyTPAInfoComponent,
+      let that = this;
+      const dialogRef = this._matDialog.open(SubCompanyTPAInfoComponent,
         {
           maxWidth: "85vw",
           height: '450px',
           width: '100%',
-            data: element
+          data: element
         });
-    dialogRef.afterClosed().subscribe(result => {
+      dialogRef.afterClosed().subscribe(result => {
         if (result) {
-            that.grid.bindGridData();
+          that.grid.bindGridData();
         }
-    });
-}
+      });
     }
+  }
 
-   
+
 
   // item1: any;
   // item2: any;
@@ -416,7 +416,7 @@ export class AdmissionComponent implements OnInit {
   onClose() {
     this.searchFormGroup.get('RegId').reset();
     this.searchFormGroup.get('RegId').disable();
-}
+  }
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -438,49 +438,49 @@ export class AdmissionComponent implements OnInit {
     this.IPDNo = this.myFilterform.get('IPDNo').value || "0"
 
     this.getfilterdata();
-}
+  }
 
-getfilterdata(){
+  getfilterdata() {
     debugger
     this.gridConfig = {
       apiUrl: "Admission/AdmissionList",
       columnsList: this.allcolumns,
       sortField: "AdmissionId",
-        sortOrder: 0,
-        filters:  [
-          { fieldName: "F_Name", fieldValue:  this.f_name, opType: OperatorComparer.Contains },
-          { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
-          { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-          { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-          { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-          { fieldName: "To_Dt", fieldValue:this.toDate, opType: OperatorComparer.Equals },
-          { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
-          { fieldName: "M_Name", fieldValue:  this.m_name, opType: OperatorComparer.Equals },
-          { fieldName: "IPNo", fieldValue:  this.IPDNo, opType: OperatorComparer.Equals }
-        
-            ],
-        row: 25
+      sortOrder: 0,
+      filters: [
+        { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
+        { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+        { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+        { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+        { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "M_Name", fieldValue: this.m_name, opType: OperatorComparer.Equals },
+        { fieldName: "IPNo", fieldValue: this.IPDNo, opType: OperatorComparer.Equals }
+
+      ],
+      row: 25
     }
     this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData(); 
-    
-}
+    this.grid.bindGridData();
+
+  }
 
 
-Clearfilter(event) {
-  console.log(event)
-  if (event == 'FirstName')
+  Clearfilter(event) {
+    console.log(event)
+    if (event == 'FirstName')
       this.myFilterform.get('FirstName').setValue("")
-  else
+    else
       if (event == 'LastName')
-          this.myFilterform.get('LastName').setValue("")
-  if (event == 'RegNo')
+        this.myFilterform.get('LastName').setValue("")
+    if (event == 'RegNo')
       this.myFilterform.get('RegNo').setValue("")
-  if (event == 'IPDNo')
+    if (event == 'IPDNo')
       this.myFilterform.get('IPDNo').setValue("")
 
-  this.onChangeFirst();
-}
+    this.onChangeFirst();
+  }
 
   getAdmittedPatientListview() {
     setTimeout(() => {
@@ -529,14 +529,15 @@ Clearfilter(event) {
       });
 
     }, 100);
- 
-   }
 
-  getAdmittedPatientCasepaperview(element) {
-    this.commonService.Onprint("AdmissionId", element.admissionId, "IpCasepaperReport"); 
   }
 
-  getAdmittedPatientCasepaperTempview(element) { this.commonService.Onprint("AdmissionId", element.admissionId, "IpCasepaperReport"); 
+  getAdmittedPatientCasepaperview(element) {
+    this.commonService.Onprint("AdmissionId", element.admissionId, "IpCasepaperReport");
+  }
+
+  getAdmittedPatientCasepaperTempview(element) {
+    this.commonService.Onprint("AdmissionId", element.admissionId, "IpCasepaperReport");
   }
 
   onClear() {
@@ -582,7 +583,7 @@ Clearfilter(event) {
         height: '550px',
         width: '100%',
         data: row
-             });
+      });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
 
@@ -594,7 +595,7 @@ Clearfilter(event) {
 
     console.log(row)
     this._registrationService.populateFormpersonal(row);
-        const dialogRef = this._matDialog.open(EditAdmissionComponent,
+    const dialogRef = this._matDialog.open(EditAdmissionComponent,
       {
         maxWidth: "90vw",
         height: '650px',
@@ -712,13 +713,14 @@ Clearfilter(event) {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
 
-    });}
+    });
+  }
 
   onSave() {
-const dialogRef = this._matDialog.open(NewAdmissionComponent,
+    const dialogRef = this._matDialog.open(NewAdmissionComponent,
       {
         maxWidth: "95vw",
-        width: '100%', 
+        width: '100%',
         height: "98vh",
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -748,7 +750,7 @@ export class Bed {
 }
 
 export class AdmissionPersonlModel {
-  admissionId:any;
+  admissionId: any;
   AadharCardNo: any;
   Address: any;
   PrefixId: any;
@@ -826,7 +828,7 @@ export class AdmissionPersonlModel {
   BedName: any;
   bedName: any;
   IPDNo: any;
-  ipdno:any;
+  ipdno: any;
   TariffName: any;
   tariffName: any;
   DepartmentName: any;
@@ -926,21 +928,21 @@ export class AdmissionPersonlModel {
   regId: any;
   docNameId: any;
   mobileNo: any;
-  admissionTime:any;
-  dischargeTime:any;
-  patientTypeId:any;
-  genderId:any;
-  oP_IP_No:any;
-  doctorName:any;
-  genderName:any;
-  opD_IPD_ID:any;
-  pathReportId:any;
-adm_Visit_docId:any;
-visit_Adm_ID:any;
-pathTestID:any;
-sampleCollectionTime:any;
-isSampleCollection:any;
-isTemplateTest:any;
+  admissionTime: any;
+  dischargeTime: any;
+  patientTypeId: any;
+  genderId: any;
+  oP_IP_No: any;
+  doctorName: any;
+  genderName: any;
+  opD_IPD_ID: any;
+  pathReportId: any;
+  adm_Visit_docId: any;
+  visit_Adm_ID: any;
+  pathTestID: any;
+  sampleCollectionTime: any;
+  isSampleCollection: any;
+  isTemplateTest: any;
   /**
 * Constructor
 *
@@ -1019,7 +1021,7 @@ isTemplateTest:any;
       this.BedName = AdmissionPersonl.BedName || '';
       this.bedName = AdmissionPersonl.bedName || '';
       this.IPDNo = AdmissionPersonl.IPDNo || '';
-      this.ipdno= AdmissionPersonl.ipdno || '';
+      this.ipdno = AdmissionPersonl.ipdno || '';
       this.TariffName = AdmissionPersonl.TariffName || '';
       this.tariffName = AdmissionPersonl.tariffName || '';
       this.DepartmentName = AdmissionPersonl.DepartmentName || '';
@@ -1048,10 +1050,10 @@ isTemplateTest:any;
       this.ClassName = AdmissionPersonl.ClassName || ''
       this.IsBillGenerated = AdmissionPersonl.IsBillGenerated || 0
       this.RoomName = AdmissionPersonl.RoomName || ''
-        this.roomName = AdmissionPersonl.roomName || ''
+      this.roomName = AdmissionPersonl.roomName || ''
       this.Doctorname = AdmissionPersonl.Doctorname || ''
       this.DoctorName = AdmissionPersonl.DoctorName || ''
-         this.doctorname = AdmissionPersonl.doctorname || ''
+      this.doctorname = AdmissionPersonl.doctorname || ''
       this.AdmDateTime = AdmissionPersonl.AdmDateTime || ''
       this.TariffId = AdmissionPersonl.TariffId || 0;
       this.tariffId = AdmissionPersonl.tariffId || 0;
@@ -1124,21 +1126,21 @@ isTemplateTest:any;
       this.DocNameId = AdmissionPersonl.DocNameId || ''
       this.regId = AdmissionPersonl.regId || 0
       this.mobileNo = AdmissionPersonl.mobileNo || ''
-      this.admissionId=AdmissionPersonl.admissionId ||0
-      this.dischargeTime  =AdmissionPersonl.dischargeTime ||''
-      this.patientTypeId =AdmissionPersonl.patientTypeId ||''
-      this.genderId =AdmissionPersonl.genderId ||''
-      this.oP_IP_No=AdmissionPersonl.oP_IP_No || ''
-      this.doctorName=AdmissionPersonl.doctorName || ''
-      this.genderName=AdmissionPersonl.genderName || ''
-      this.opD_IPD_ID=AdmissionPersonl.opD_IPD_ID || ''
-      this.pathReportId=AdmissionPersonl.pathReportId || ''
-      this.adm_Visit_docId=AdmissionPersonl.adm_Visit_docId || ''
-      this.visit_Adm_ID=AdmissionPersonl.visit_Adm_ID || ''
-      this.pathTestID=AdmissionPersonl.pathTestID || ''
-      this.sampleCollectionTime=AdmissionPersonl.sampleCollectionTime|| ''
-      this.isSampleCollection=AdmissionPersonl.isSampleCollection|| ''
-      this.isTemplateTest=AdmissionPersonl.isTemplateTest || ''
+      this.admissionId = AdmissionPersonl.admissionId || 0
+      this.dischargeTime = AdmissionPersonl.dischargeTime || ''
+      this.patientTypeId = AdmissionPersonl.patientTypeId || ''
+      this.genderId = AdmissionPersonl.genderId || ''
+      this.oP_IP_No = AdmissionPersonl.oP_IP_No || ''
+      this.doctorName = AdmissionPersonl.doctorName || ''
+      this.genderName = AdmissionPersonl.genderName || ''
+      this.opD_IPD_ID = AdmissionPersonl.opD_IPD_ID || ''
+      this.pathReportId = AdmissionPersonl.pathReportId || ''
+      this.adm_Visit_docId = AdmissionPersonl.adm_Visit_docId || ''
+      this.visit_Adm_ID = AdmissionPersonl.visit_Adm_ID || ''
+      this.pathTestID = AdmissionPersonl.pathTestID || ''
+      this.sampleCollectionTime = AdmissionPersonl.sampleCollectionTime || ''
+      this.isSampleCollection = AdmissionPersonl.isSampleCollection || ''
+      this.isTemplateTest = AdmissionPersonl.isTemplateTest || ''
     }
   }
 }
