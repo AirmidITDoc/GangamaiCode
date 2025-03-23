@@ -188,7 +188,10 @@ export class NewAdmissionComponent implements OnInit {
   }
 
   onNewSave() {
+debugger
 
+console.log(this.personalFormGroup.value)
+console.log(this.admissionFormGroup.value)
     if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid ){
 
     Swal.fire({
@@ -207,7 +210,7 @@ export class NewAdmissionComponent implements OnInit {
       }
     })
     }else{
-      Swal.fire("Enter Peroepr values..orm Id Invalid")
+      Swal.fire("Enter Proper values..Form is Invalid")
     }
   }
 
@@ -296,7 +299,6 @@ export class NewAdmissionComponent implements OnInit {
 
   selectChangedepartment(obj: any) {
     
-    console.log(obj)
     this._AdmissionService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
       this.ddlDoctor.options = data;
       this.ddlDoctor.bindGridAutoComplete();

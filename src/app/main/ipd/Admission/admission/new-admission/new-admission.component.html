@@ -374,7 +374,7 @@
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox label="PhoneNo" formControlName="PhoneNo"
-                                            [value]="registerObj1.mobileNo" [formGroup]="admissionFormGroup"
+                                            [value]="registerObj1.phoneNo" [formGroup]="admissionFormGroup"
                                             [validations]="getValidationMessages().phoneNo" [maxLength]="10">
                                         </airmid-textbox>
                                     </div>
@@ -407,10 +407,22 @@
                             ISMLC
                         </mat-checkbox>
 
-                        <mat-checkbox aria-label="Op TO Ip Change" formControlName="OPIPChange"
+                        <mat-checkbox aria-label="Op TO Ip Change" formControlName="IsOpToIpconv"
                             style="margin-left:30px;">
                             OP TO IP Convert
                         </mat-checkbox>
+
+                      
+                    </div>
+                  
+                </div>
+            </form>
+
+            <form [formGroup]="personalFormGroup">
+
+                <div class="modal-footer-container">
+                    <div class="checkbox-container">
+                      
 
                         <mat-checkbox aria-label="Op TO Ip Change" formControlName="IsCharity"
                             style="margin-left:30px;">
@@ -423,7 +435,7 @@
                     </div>
                     <div class="modal-footer-buttons">
                         <button class="btn btn-danger-outline" (click)="onReset()">Reset</button>
-                        <button class="btn btn-primary" (click)="OnSaveAdmission()">Save </button>
+                        <button class="btn btn-primary" (click)="onNewSave()">Save </button>
                     </div>
                 </div>
             </form>

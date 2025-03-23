@@ -114,7 +114,7 @@ export class AdmissionComponent implements OnInit {
   nowdate = new Date();
   firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
 
-  fromDate ="1900-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  fromDate =""//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
 
   autocompleteModedeptdoc: string = "ConDoctor";
@@ -166,18 +166,18 @@ export class AdmissionComponent implements OnInit {
     apiUrl: "Admission/AdmissionList",
     columnsList: this.allcolumns,
     sortField: "AdmissionId",
-    sortOrder: 0,
+    sortOrder: 1,
     filters: [{ fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
     { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-    { fieldName: "To_Dt", fieldValue:this.toDate, opType: OperatorComparer.Equals },
+    { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.Equals },
+    { fieldName: "To_Dt", fieldValue:"", opType: OperatorComparer.Equals },
     { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Equals },
     { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals }
-       ]
-
+       ],
+       row: 25
   }
 
   constructor(public _AdmissionService: AdmissionService,
@@ -198,8 +198,8 @@ export class AdmissionComponent implements OnInit {
 
     this.searchFormGroup = this.createSearchForm();
     this.myFilterform = this._AdmissionService.filterForm();
-    this.fromDate ="1900-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    this.toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+    // this.fromDate ="1900-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    // this.toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
   
    // menu Button List
    this.menuActions.push("Bill");
@@ -446,7 +446,7 @@ getfilterdata(){
       apiUrl: "Admission/AdmissionList",
       columnsList: this.allcolumns,
       sortField: "AdmissionId",
-        sortOrder: 0,
+        sortOrder: 1,
         filters:  [
           { fieldName: "F_Name", fieldValue:  this.f_name, opType: OperatorComparer.Contains },
           { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },

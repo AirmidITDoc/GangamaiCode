@@ -92,7 +92,7 @@ export class IPSearchListComponent implements OnInit {
         apiUrl: "Admission/AdmissionList",
         columnsList: this.allcolumns,
         sortField: "AdmissionId",
-        sortOrder: 0,
+        sortOrder: 1,
         filters: [
             { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -134,7 +134,7 @@ export class IPSearchListComponent implements OnInit {
         else if (this._ActRoute.url == '/ipd/discharge') {
             this.menuActions.push('Discharge');
             this.menuActions.push('Discharge Summary Template');
-            this.menuActions.push('Patient Feedback');
+            // this.menuActions.push('Patient Feedback');
         }
         else if (this._ActRoute.url == '/ipd/dischargesummary') {
             this.menuActions.push('Discharge');

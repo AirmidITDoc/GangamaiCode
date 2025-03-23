@@ -43,8 +43,8 @@ export class AdmissionService {
             RoomName: '',
             PatientType: '',
             patientstatus: '',
-            fromDate: [(new Date()).toISOString()],
-            enddate: [(new Date()).toISOString()],
+            fromDate:[],// [(new Date()).toISOString()],
+            enddate:[],// [(new Date()).toISOString()],
 
         });
     }
@@ -140,7 +140,7 @@ export class AdmissionService {
                 Validators.maxLength(10),
                 Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
                 ]],
-            MobileNo: ['', [Validators.required,
+            MobileNo: ['', [
             Validators.minLength(10),
             Validators.maxLength(10),
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
@@ -149,7 +149,7 @@ export class AdmissionService {
             AddedBy:this.accountService.currentUserValue.userId,
             IsMlc: [false],
             MotherName: "",
-            AdmittedDoctor1: ['', [Validators.required]],
+            AdmittedDoctor1:0,// [0, [Validators.required]],
             AdmittedDoctor2: 0,
             RefByTypeId: 0,
             RefByName: 0,
@@ -157,7 +157,7 @@ export class AdmissionService {
             PolicyNo: "",
             AprovAmount: 0,
             compDOd: [(new Date()).toISOString()],
-            IsOpToIpconv: true,
+            IsOpToIpconv: false,
             RefDoctorDept: "",
             AdmissionType: 1,
 
