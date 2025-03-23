@@ -166,18 +166,18 @@ export class AdmissionComponent implements OnInit {
     apiUrl: "Admission/AdmissionList",
     columnsList: this.allcolumns,
     sortField: "AdmissionId",
-    sortOrder: 0,
+    sortOrder: 1,
     filters: [{ fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
     { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-    { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+    { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.Equals },
+    { fieldName: "To_Dt", fieldValue:"", opType: OperatorComparer.Equals },
     { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Equals },
     { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals }
-    ]
-
+       ],
+       row: 25
   }
 
   constructor(public _AdmissionService: AdmissionService,
@@ -198,19 +198,19 @@ export class AdmissionComponent implements OnInit {
 
     this.searchFormGroup = this.createSearchForm();
     this.myFilterform = this._AdmissionService.filterForm();
-    this.fromDate = "1900-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    this.toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
-
-    // menu Button List
-    this.menuActions.push("Bill");
-    this.menuActions.push("Bed Transfer");
-    this.menuActions.push("Discharge");
-    this.menuActions.push("MLC Update");
-    this.menuActions.push("Sub TPA Company");
-    this.menuActions.push("Discharge SummarY");
-    this.menuActions.push("Refund Of Bill");
-    this.menuActions.push("Refund Of Advance");
-
+    // this.fromDate ="1900-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    // this.toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+  
+   // menu Button List
+   this.menuActions.push("Bill");
+   this.menuActions.push("Bed Transfer");
+   this.menuActions.push("Discharge");
+   this.menuActions.push("MLC Update");
+   this.menuActions.push("Sub TPA Company");
+   this.menuActions.push("Discharge SummarY");
+   this.menuActions.push("Refund Of Bill");
+   this.menuActions.push("Refund Of Advance");
+   
   }
 
   // onChangeStartDate(value) {
@@ -446,20 +446,20 @@ export class AdmissionComponent implements OnInit {
       apiUrl: "Admission/AdmissionList",
       columnsList: this.allcolumns,
       sortField: "AdmissionId",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
-        { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
-        { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-        { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "M_Name", fieldValue: this.m_name, opType: OperatorComparer.Equals },
-        { fieldName: "IPNo", fieldValue: this.IPDNo, opType: OperatorComparer.Equals }
-
-      ],
-      row: 25
+        sortOrder: 1,
+        filters:  [
+          { fieldName: "F_Name", fieldValue:  this.f_name, opType: OperatorComparer.Contains },
+          { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+          { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+          { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+          { fieldName: "To_Dt", fieldValue:this.toDate, opType: OperatorComparer.Equals },
+          { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "M_Name", fieldValue:  this.m_name, opType: OperatorComparer.Equals },
+          { fieldName: "IPNo", fieldValue:  this.IPDNo, opType: OperatorComparer.Equals }
+        
+            ],
+        row: 25
     }
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
