@@ -29,6 +29,7 @@ import { BandwidthService } from './core/services/bandwidth.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
 import { LoaderModule } from './core/components/loader/loader.module';
+import { ApiCaller } from './core/services/apiCaller';
 
 @Component({
     selector: 'app',
@@ -84,6 +85,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private _translateService: TranslateService,
         private _platform: Platform,
         private http: HttpClient,
+        private _httpClient1: ApiCaller,
 
         private authService: AuthenticationService,
         private dialogRef: MatDialog,
@@ -250,11 +252,22 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     ConfigSettingParam() {
-        // this.http
-        //     .post(`Generic/GetByProc?procName=SS_ConfigSettingParam`, {}).subscribe(data => {
-        //         this.configSettingParam = data;
-        //         this.configService.setCongiParam(this.configSettingParam[0]);
-        //         console.log(this.configSettingParam);
-        //     });
+        var Params=
+        {        
+          "searchFields": [        
+            {
+              "fieldName": "ConfigId",        
+              "fieldValue": "1",        
+              "opType": "Equals"
+            }     
+          ],        
+          "mode": "SysConfig"        
+        }
+        this._httpClient1
+            .PostData("Common",Params).subscribe(data => {
+                this.configSettingParam = data;
+                this.configService.setCongiParam(this.configSettingParam[0]);
+                console.log(this.configSettingParam);
+            });
     }
 }

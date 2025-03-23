@@ -138,7 +138,6 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       // this.PatientName = this.patientDetail.patientName
       this.patientDetail.formattedText = this.patientDetail.patientName
       this.patientDetail.doctorName = this.patientDetail.doctorname
-
       this.vOPIPId = this.patientDetail.visitId
       this.savebtn = false
       console.log("DATA : ", this.patientDetail);
@@ -297,7 +296,13 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   }
   onAddCharges(): void {
 
-
+    const serviceNameValue = this.chargeForm.get('serviceName').value;
+    if (!serviceNameValue) {
+      this.toastrService.warning('Please select valid Service Name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     if (this.chargeForm.valid) {
 
       const formValue = this.chargeForm.value;
@@ -350,7 +355,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
           serviceNameElement.focus();
         }
       } else {
-        Swal.fire("Can't Enter Invalid Data !")
+        Swal.fire({
+          title: 'Message',
+          text: "Can't Enter Invalid Data !",
+          icon: "warning"
+        });
       }
     }
   }
@@ -516,51 +525,60 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
   }
 
-  //service list 
-  getServiceListCombobox() {
-    let sname = this.chargeForm.get('serviceName').value + '%' || '%'
-    var m_data = {
+  // //service list 
+  // getServiceListCombobox() {
+  //   let sname = this.chargeForm.get('serviceName').value + '%' || '%'
+  //   var m_data = {
 
-      "first": 0,
-      "rows": 100,
-      "sortField": "ServiceId",
-      "sortOrder": 0,
-      "filters": [{ "fieldName": "ServiceName", "fieldValue": sname, "opType": "StartsWith" },
-      { "fieldName": "TariffId", "fieldValue": "1", "opType": "Equals" }, { "fieldName": "GroupId", "fieldValue": "0", "opType": "Equals" },
-      ],
-      "exportType": "JSON"
-    }
+  //     "first": 0,
+  //     "rows": 100,
+  //     "sortField": "ServiceId",
+  //     "sortOrder": 0,
+  //     "filters": [{ "fieldName": "ServiceName", "fieldValue": sname, "opType": "StartsWith" },
+  //     { "fieldName": "TariffId", "fieldValue": "1", "opType": "Equals" }, 
+  //     { "fieldName": "GroupId", "fieldValue": "0", "opType": "Equals" },
+  //     ],
+  //     "exportType": "JSON"
+  //   }
 
-    console.log(m_data)
+  //   console.log(m_data)
 
-    this._AppointmentlistService.getBillingServiceList(m_data).subscribe(data => {
-      this.filteredOptionsService = data.data;
-      this.ServiceList = data.data;
-      console.log(data)
-      // if (this.filteredOptionsService.length == 0) {
-      //   this.noOptionFound = true;
-      // } else {
-      //   this.noOptionFound = false;
-      // }
-    });
+  //   this._AppointmentlistService.getBillingServiceList(m_data).subscribe(data => {
+  //     this.filteredOptionsService = data.data;
+  //     this.ServiceList = data.data;
+  //     console.log(data)
+  //     // if (this.filteredOptionsService.length == 0) {
+  //     //   this.noOptionFound = true;
+  //     // } else {
+  //     //   this.noOptionFound = false;
+  //     // }
+  //   });
 
 
+  // }
+
+  getApiUrl(): string {
+    const url = `VisitDetail/GetServiceListwithTraiff?TariffId=${this.patientDetail.tariffId}&ClassId=${this.patientDetail.classId}&ServiceName=`;
+    console.log('Generated API URL:', url);  // Add this line for debugging
+    return url;
   }
-
   getSelectedserviceObj(obj) {
-    debugger
-    if (this.dsChargeList.data.length > 0) {
-      this.dsChargeList.data.forEach((element) => {
-        if (obj.serviceId == element.ServiceId) {
-          Swal.fire('Selected Item already added in the list ');
-
-          // this.onClearServiceAddList();
-        }
-
+    const isItemAlreadyAdded = this.dsChargeList.data.some((element) => element.ServiceId === obj.serviceId);
+    if (isItemAlreadyAdded) {
+      // If the item is already added, show the alert
+      Swal.fire({
+        title: 'Message',
+        text: "Selected Service already available in the list",
+        icon: "warning"
       });
+      this.resetForm();
+      const serviceNameElement = document.querySelector(`[name='serviceName']`) as HTMLElement;
+      if (serviceNameElement) {
+        serviceNameElement.focus();
+      }
+      return;  // Exit the function early
     } else {
       console.log(obj)
-
       this.SrvcName1 = obj.serviceName;
       this.vPrice = obj.classRate;
       this.vQty = 1;
@@ -601,7 +619,6 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     this.vOPIPId = obj.visitId
     if (this.vOPIPId > 0)
       this.savebtn = false
-
   }
   getValidationMessages() {
     return {
@@ -665,14 +682,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     })
 
     this.searchForm.get("regId").setValue("")
-
-    this.patientDetail=[]
-
+    this.patientDetail = []
   }
 
 
   saveCreditbill() {
-    debugger
     let Billdetsarr = [];
     this.dsChargeList.data.forEach((element) => {
       let BillDetailsInsertObj = {};
@@ -757,11 +771,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     console.log(submitData);
     this._AppointmentlistService.InsertOPBillingCredit(submitData).subscribe(response => {
       this.toastrService.success(response.message);
-
       let Res = response.message
       let ID = Res.split('.')
       let Id = ID[1]
-
       this.viewgetCreditOPBillReportPdf(Id)
       this._matDialog.closeAll();
     }, (error) => {
@@ -908,7 +920,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             let Id = ID[1]
 
             this.viewgetOPBillReportPdf(Id)
-
+            this._matDialog.closeAll();
           }, (error) => {
             this.toastrService.error(error.message);
           });
@@ -994,7 +1006,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         let ID = Res.split('.')
         let Id = ID[1]
         this.viewgetOPBillReportPdf(Id)
-
+        this._matDialog.closeAll();
       }, (error) => {
         this.toastrService.error(error.message);
       });
@@ -1013,7 +1025,6 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     this.commonService.Onprint("BillNo", element, "OpBillReceipt");
   }
   viewgetOPBillReportPdf(element) {
-
     console.log('Third action clicked for:', element);
     this.commonService.Onprint("BillNo", element, "OpBillReceipt");
   }

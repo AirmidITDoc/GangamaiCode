@@ -9,12 +9,9 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 export class PrintserviceService {
 
   constructor( public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,) { }
-
-
      Onprint(field,Id,data) {
           setTimeout(() => {
               let param = {
-                  
                       "searchFields": [
                           {
                               "fieldName": field,

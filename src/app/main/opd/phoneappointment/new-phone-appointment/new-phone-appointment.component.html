@@ -21,9 +21,10 @@
         <div class="modal-body-container">
             <form [formGroup]="searchFormGroup">
                 <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
-                   <airmid-autocomplete lbl="Search Reg No / Patient Name / Mobile No"  [formGroup]="searchFormGroup" formControlName="RegId" fxFlex="50%"
-                    placeholderText="Search Reg No / Patient Name / Mobile No" ApiUrl="OutPatient/auto-complete?Keyword="
-                        (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
+                   <airmid-autocomplete label="Search UHID / Patient Name / Mobile No" 
+                   [formGroup]="searchFormGroup" formControlName="RegId" fxFlex="50%"
+                    placeholderText="Search UHID / Patient Name / Mobile No"  ApiUrl="OutPatient/auto-complete?Keyword="
+                    (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
 
                 </div>
             </form>
