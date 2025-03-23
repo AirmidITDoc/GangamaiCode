@@ -292,7 +292,7 @@
                         </button>
                     </div>
                 </div>
-                <mat-tab-group class="mat-tab-header-small"  >
+                <mat-tab-group class="mat-tab-header-small" mat-stretch-tabs="false" mat-align-tabs="start"><mat-icon>home</mat-icon>
 
                     <mat-tab label="Charges List">
                         <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" class="table1 mt-8"

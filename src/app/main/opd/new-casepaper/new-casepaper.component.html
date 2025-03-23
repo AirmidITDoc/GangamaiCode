@@ -138,99 +138,118 @@
                                                     <!-- Height -->
                                                     <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>Height</mat-label>
-                                                        <input matInput formControlName="Height" placeholder="Height in cm" [(ngModel)]="vHeight" required
-                                                            (keydown)="onEnterHeight($event)" OnlyNumber (keyup)="getBMIcalculation()" (keypress)="keyPressCharater($event)">
-                                                            <span matSuffix style="font-size: x-large;">|</span>
-                                                            <span matSuffix style="margin-right: 10px; font-size: x-large;">cm</span>
+                                                        <input matInput formControlName="Height"
+                                                            placeholder="Height in cm" [(ngModel)]="vHeight" required
+                                                            (keydown)="onEnterHeight($event)" OnlyNumber
+                                                            (keyup)="getBMIcalculation()"
+                                                            (keypress)="keyPressCharater($event)">
+                                                        <span matSuffix style="font-size: x-large;">|</span>
+                                                        <span matSuffix
+                                                            style="margin-right: 10px; font-size: x-large;">cm</span>
                                                     </mat-form-field>
-                                                
+
                                                     <!-- Weight -->
                                                     <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>Weight</mat-label>
-                                                        <input matInput formControlName="Weight" placeholder="Weight in Kg" [(ngModel)]="vWeight" required
-                                                            (keydown)="onEnterWeight($event)" OnlyNumber (keyup)="getBMIcalculation()" (keypress)="keyPressCharater($event)">
-                                                            <span matSuffix style="font-size: x-large;">|</span>
-                                                        <span matSuffix style="margin-right: 10px; font-size: x-large;">kg</span>
+                                                        <input matInput formControlName="Weight"
+                                                            placeholder="Weight in Kg" [(ngModel)]="vWeight" required
+                                                            (keydown)="onEnterWeight($event)" OnlyNumber
+                                                            (keyup)="getBMIcalculation()"
+                                                            (keypress)="keyPressCharater($event)">
+                                                        <span matSuffix style="font-size: x-large;">|</span>
+                                                        <span matSuffix
+                                                            style="margin-right: 10px; font-size: x-large;">kg</span>
                                                     </mat-form-field>
-                                                
+
                                                     <!-- BMI -->
                                                     <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>BMI</mat-label>
-                                                        <input matInput formControlName="BMI" placeholder="BMI" [(ngModel)]="vBMI" readonly>
+                                                        <input matInput formControlName="BMI" placeholder="BMI"
+                                                            [(ngModel)]="vBMI" readonly>
                                                     </mat-form-field>
-                                                
+
                                                     <!-- BSL -->
                                                     <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>BSL</mat-label>
-                                                        <input matInput formControlName="BSL" placeholder="BSL" [(ngModel)]="vBSL" (keydown)="onEnterBSL($event)" OnlyNumber (keypress)="keyPressCharater($event)">
+                                                        <input matInput formControlName="BSL" placeholder="BSL"
+                                                            [(ngModel)]="vBSL" (keydown)="onEnterBSL($event)" OnlyNumber
+                                                            (keypress)="keyPressCharater($event)">
                                                     </mat-form-field>
-                                                
+
                                                     <!-- SpO2 -->
                                                     <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>SpO2</mat-label>
-                                                        <input matInput formControlName="SpO2" placeholder="SpO2" [(ngModel)]="vSpO2" (keydown)="onEnterSpO2($event)" OnlyNumber (keypress)="keyPressCharater($event)">
+                                                        <input matInput formControlName="SpO2" placeholder="SpO2"
+                                                            [(ngModel)]="vSpO2" (keydown)="onEnterSpO2($event)"
+                                                            OnlyNumber (keypress)="keyPressCharater($event)">
                                                     </mat-form-field>
-                                                
+
                                                     <!-- Pulse -->
                                                     <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>Pulse</mat-label>
-                                                        <input matInput formControlName="Pulse" placeholder="Pulse" [(ngModel)]="vPulse" (keydown)="onEnterPulse($event)" OnlyNumber (keypress)="keyPressCharater($event)">
+                                                        <input matInput formControlName="Pulse" placeholder="Pulse"
+                                                            [(ngModel)]="vPulse" (keydown)="onEnterPulse($event)"
+                                                            OnlyNumber (keypress)="keyPressCharater($event)">
                                                         <span matSuffix style="font-size: x-large;">|</span>
-                                                        <span matSuffix style="margin-right: 10px; font-size: x-large;">bpm</span>
+                                                        <span matSuffix
+                                                            style="margin-right: 10px; font-size: x-large;">bpm</span>
                                                     </mat-form-field>
-                                                
+
                                                     <!-- BP -->
                                                     <mat-form-field appearance="outline" fxFlex="12%">
                                                         <mat-label>BP</mat-label>
-                                                        <input matInput formControlName="BP" placeholder="BP" [(ngModel)]="vBP" (keydown)="onEnterBP($event)" OnlyNumber (keypress)="keyPressOk($event)">
+                                                        <input matInput formControlName="BP" placeholder="BP"
+                                                            [(ngModel)]="vBP" (keydown)="onEnterBP($event)" OnlyNumber
+                                                            (keypress)="keyPressOk($event)">
                                                         <span matSuffix style="font-size: x-large;">|</span>
-                                                        <span matSuffix style="margin-right: 10px; font-size: x-large;">mmHg</span>
+                                                        <span matSuffix
+                                                            style="margin-right: 10px; font-size: x-large;">mmHg</span>
                                                     </mat-form-field>
-                                                
+
                                                     <!-- Temperature -->
                                                     <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>Temp</mat-label>
-                                                        <input matInput formControlName="Temp" placeholder="Temp" [(ngModel)]="vTemp" (keydown)="onEnterTemp($event)" OnlyNumber (keypress)="keyPressCharater($event)">
+                                                        <input matInput formControlName="Temp" placeholder="Temp"
+                                                            [(ngModel)]="vTemp" (keydown)="onEnterTemp($event)"
+                                                            OnlyNumber (keypress)="keyPressCharater($event)">
                                                         <span matSuffix style="font-size: x-large;">|</span>
                                                         <!-- <span matSuffix style="margin-right: 10px; font-size: x-large;">°F</span> -->
-                                                        <span matSuffix style="margin-right: 10px; font-size: x-large;">F</span>
+                                                        <span matSuffix
+                                                            style="margin-right: 10px; font-size: x-large;">F</span>
                                                     </mat-form-field>
                                                 </div>
-                                                
+
                                                 <div fxLayout="column">
 
-                                                        <form [formGroup]="caseFormGroup">
-                                                            <div class="investigation-title">
-                                                                <span style="font-weight: 700;">
-                                                                    Chief Complaint
-                                                                </span>
+                                                    <form [formGroup]="caseFormGroup">
+                                                        <div class="investigation-title">
+                                                            <span style="font-weight: 700;">
+                                                                Chief Complaint
+                                                            </span>
+                                                        </div>
+                                                        <hr>
+                                                        <div fxLayout="row">
+                                                            <div fxFlex="40%">
+                                                                <airmid-dropdown label="ChiefComplaint"
+                                                                    formControlName="mAssignChiefComplaint"
+                                                                    [formGroup]="caseFormGroup" #ddlChiefComplaint
+                                                                    [IsMultiPle]="true" ValueField="complaintId"
+                                                                    TextField="complaintDescr"
+                                                                    ApiUrl="OPDPrescriptionMedical/get-ChiefComplaint"
+                                                                    [ReqFullObj]="true"
+                                                                    [value]="regObj.mAssignChiefComplaint"
+                                                                    (selectionChange)="selectChangeCheifComplaint($event)">
+                                                                </airmid-dropdown>
                                                             </div>
-                                                            <hr>
-                                                            <div fxLayout="row">
-                                                                <div fxFlex="40%">
-                                                                    <airmid-dropdown 
-                                                                        label="ChiefComplaint"
-                                                                        formControlName="mAssignChiefComplaint" 
-                                                                        [formGroup]="caseFormGroup"
-                                                                        #ddlChiefComplaint
-                                                                        [IsMultiPle]="true" 
-                                                                        ValueField="complaintId" 
-                                                                        TextField="complaintDescr"
-                                                                        ApiUrl="OPDPrescriptionMedical/get-ChiefComplaint" 
-                                                                        [ReqFullObj]="true"
-                                                                        [value]="regObj.mAssignChiefComplaint"
-                                                                        (selectionChange)="selectChangeCheifComplaint($event)">
-                                                                    </airmid-dropdown>
-                                                                </div>
-                                                                <mat-chip-listbox #chipList>
-                                                                    <mat-chip
-                                                                        *ngFor="let item of caseFormGroup.value.mAssignChiefComplaint">
-                                                                        {{ item.complaintDescr }} <mat-icon
-                                                                            (click)="removeChiefComplaint(item)">close</mat-icon>
-                                                                    </mat-chip>
-                                                                </mat-chip-listbox>
-                                                            </div>
-                                                        </form>
+                                                            <mat-chip-listbox #chipList>
+                                                                <mat-chip
+                                                                    *ngFor="let item of caseFormGroup.value.mAssignChiefComplaint">
+                                                                    {{ item.complaintDescr }} <mat-icon
+                                                                        (click)="removeChiefComplaint(item)">close</mat-icon>
+                                                                </mat-chip>
+                                                            </mat-chip-listbox>
+                                                        </div>
+                                                    </form>
 
                                                     <form [formGroup]="caseFormGroup">
                                                         <div class="investigation-title">
@@ -241,22 +260,20 @@
                                                         <hr>
                                                         <div fxLayout="row">
                                                             <div fxFlex="40%">
-                                                                <airmid-dropdown 
-                                                                label="Diagnosis"
-                                                                formControlName="mAssignDiagnosis" 
-                                                                [formGroup]="caseFormGroup"
-                                                                #ddlDiagnosis
-                                                                [IsMultiPle]="true" 
-                                                                ValueField="id" 
-                                                                TextField="descriptionName"
-                                                                ApiUrl="OPDPrescriptionMedical/get-Dignosis" 
-                                                                [ReqFullObj]="true"
-                                                                (selectionChange)="selectChangeDiagnosis($event)">
-                                                            </airmid-dropdown>
-                                                            
+                                                                <airmid-dropdown label="Diagnosis"
+                                                                    formControlName="mAssignDiagnosis"
+                                                                    [formGroup]="caseFormGroup" #ddlDiagnosis
+                                                                    [IsMultiPle]="true" ValueField="id"
+                                                                    TextField="descriptionName"
+                                                                    ApiUrl="OPDPrescriptionMedical/get-Dignosis"
+                                                                    [ReqFullObj]="true"
+                                                                    (selectionChange)="selectChangeDiagnosis($event)">
+                                                                </airmid-dropdown>
+
                                                             </div>
                                                             <mat-chip-listbox #chipList>
-                                                                <mat-chip *ngFor="let item of caseFormGroup.value.mAssignDiagnosis">
+                                                                <mat-chip
+                                                                    *ngFor="let item of caseFormGroup.value.mAssignDiagnosis">
                                                                     {{ item.descriptionName }} <mat-icon
                                                                         (click)="removedignosis(item)">close</mat-icon>
                                                                 </mat-chip>
@@ -273,19 +290,17 @@
                                                         <hr>
                                                         <div fxLayout="row">
                                                             <div fxFlex="40%">
-                                                                <airmid-dropdown 
-                                                                label="Examination"
-                                                                formControlName="mAssignExamination" 
-                                                                [formGroup]="caseFormGroup"
-                                                                #ddlExamination
-                                                                [IsMultiPle]="true" 
-                                                                [value]="regObj.mAssignExamination"
-                                                                ValueField="examinationId" 
-                                                                TextField="examinationDescr"
-                                                                ApiUrl="OPDPrescriptionMedical/get-Examination" 
-                                                                [ReqFullObj]="true"
-                                                                (selectionChange)="selectChangeExamination($event)">
-                                                            </airmid-dropdown>
+                                                                <airmid-dropdown label="Examination"
+                                                                    formControlName="mAssignExamination"
+                                                                    [formGroup]="caseFormGroup" #ddlExamination
+                                                                    [IsMultiPle]="true"
+                                                                    [value]="regObj.mAssignExamination"
+                                                                    ValueField="examinationId"
+                                                                    TextField="examinationDescr"
+                                                                    ApiUrl="OPDPrescriptionMedical/get-Examination"
+                                                                    [ReqFullObj]="true"
+                                                                    (selectionChange)="selectChangeExamination($event)">
+                                                                </airmid-dropdown>
                                                             </div>
                                                             <mat-chip-listbox #chipList>
                                                                 <mat-chip
@@ -333,20 +348,18 @@
                                                 <form [formGroup]="MedicineItemForm">
                                                     <div fxLayout="row" class="gap-8">
 
-                                                        <airmid-autocomplete label="Enter Drug Name" 
-                                                        [formGroup]="MedicineItemForm"
-                                                        formControlName="ItemId" 
-                                                        placeholderText="Enter Drug Name" fxFlex
-                                                        ApiUrl="ItemMaster/GetItemListForPrescription?StoreId=2&ItemName="
-                                                        (selectionChange)="selectChangeItemName($event)" 
-                                                        TextField="formattedText" ValueField="ItemId">
+                                                        <airmid-autocomplete label="Enter Drug Name"
+                                                            [formGroup]="MedicineItemForm" formControlName="ItemId"
+                                                            placeholderText="Enter Drug Name" fxFlex
+                                                            ApiUrl="ItemMaster/GetItemListForPrescription?StoreId=2&ItemName="
+                                                            (selectionChange)="selectChangeItemName($event)"
+                                                            TextField="formattedText" ValueField="ItemId">
                                                         </airmid-autocomplete>
 
                                                         <airmid-dropdown label="Dose Name" formControlName="DoseId"
                                                             [formGroup]="MedicineItemForm"
                                                             [validations]="getValidationMessages().DoseId"
-                                                            [mode]="autocompleteModeDose"
-                                                            [(ngModel)]="vdoseName"
+                                                            [mode]="autocompleteModeDose" [(ngModel)]="vdoseName"
                                                             (selectionChange)="selectChangeDoseName($event)">
                                                         </airmid-dropdown>
 
@@ -407,128 +420,152 @@
                                                     <!-- <mat-table class="mat-table-1 h-230" matSort
                                                         [dataSource]="dsItemList" [@animateStagger]="{value:'50'}"
                                                         style="overflow: auto;"> -->
-
+                                                    <div class="airmid-table-container">
                                                         <mat-table matSort [dataSource]="dsItemList"
-                                                        [@animateStagger]="{value:'50'}" class="airmid-table mt-4 h-200">
+                                                            [@animateStagger]="{value:'50'}" class="airmid-table">
 
-                                                        <ng-container matColumnDef="ItemName">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                                fxShow.gt-sm>
-                                                                Drug Name</mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                <span> {{element.DrugName || vDrugName}}</span>
-                                                            </mat-cell>
-                                                        </ng-container>
+                                                            <ng-container matColumnDef="ItemName">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxHide fxShow.gt-sm>
+                                                                    Drug Name</mat-header-cell>
+                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                    <span> {{element.DrugName || vDrugName}}</span>
+                                                                </mat-cell>
+                                                            </ng-container>
 
-                                                        <ng-container matColumnDef="ItemGenericName">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-300">
-                                                                ItemGenericName
-                                                            </mat-header-cell>
-                                                        
-                                                            <mat-cell *matCellDef="let element; let in = index" fxHide fxShow.gt-sm class="w-350">
-                                                                <!-- Display text when not in edit mode -->
-                                                                <span *ngIf="editingIndex1 !== in">
-                                                                    {{ element.GenericName || vItemGN }}
-                                                                    <mat-icon (click)="editItem(in, element)" class="edit-icon">edit</mat-icon>
-                                                                </span>
-                                                        
-                                                                <!-- Show dropdown and save button when in edit mode -->
-                                                                <div *ngIf="editingIndex1 === in" style="display: flex; align-items: center; gap: 10px;">
-                                                                    <airmid-dropdown 
-                                                                        label="ItemGeneric Name" 
-                                                                        formControlName="ItemGenericNameId"
-                                                                        [formGroup]="MedicineItemForm"
-                                                                        [mode]="autocompleteModeItemGeneric"
-                                                                        (selectionChange)="selectChangeItemGenericName($event)">
-                                                                    </airmid-dropdown>
-                                                        
-                                                                    <button mat-icon-button (click)="OnSaveEditGeneric(element)" matTooltip="Save">
-                                                                        <mat-icon class="active-icon green-600 s-16">check</mat-icon>
-                                                                    </button>
+                                                            <ng-container matColumnDef="ItemGenericName">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxHide fxShow.gt-sm class="w-300">
+                                                                    ItemGenericName
+                                                                </mat-header-cell>
 
-                                                                    <button mat-icon-button (click)="GenericdisableEditing(element)" matTooltip="Close">
-                                                                        <mat-icon class="active-icon red-600 s-16">close</mat-icon>
-                                                                    </button>
-                                                                </div>
-                                                            </mat-cell>
-                                                        </ng-container>                                                        
+                                                                <mat-cell *matCellDef="let element; let in = index"
+                                                                    fxHide fxShow.gt-sm class="w-350">
+                                                                    <!-- Display text when not in edit mode -->
+                                                                    <span *ngIf="editingIndex1 !== in">
+                                                                        {{ element.GenericName || vItemGN }}
+                                                                        <mat-icon (click)="editItem(in, element)"
+                                                                            class="edit-icon">edit</mat-icon>
+                                                                    </span>
 
-                                                        <ng-container matColumnDef="DoseName">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-300">
-                                                                Dose Name
-                                                            </mat-header-cell>
-                                                        
-                                                            <mat-cell *matCellDef="let element; let i = index" fxHide fxShow.gt-sm class="w-300">
-                                                              
-                                                                <span *ngIf="editingIndex !== i">
-                                                                    {{ element.DoseName || vDoseName }}
-                                                                    <mat-icon (click)="editDose(i, element)" class="edit-icon">edit</mat-icon>
-                                                                </span>
-                                                        
-                                                                <div *ngIf="editingIndex === i" style="display: flex; align-items: center; gap: 5px;">
-                                                                    <airmid-dropdown 
-                                                                        formControlName="DoseId1"
-                                                                        [formGroup]="MedicineItemForm"
-                                                                        [mode]="autocompleteModeDose"
-                                                                        (selectionChange)="selectChangeDoseName($event)">
-                                                                    </airmid-dropdown>
-                                                        
-                                                                    <button mat-icon-button (click)="OnSaveEditDose(element)" matTooltip="Save">
-                                                                        <mat-icon class="active-icon green-600 s-16">check</mat-icon>
-                                                                    </button>
-                                                        
-                                                                    <button mat-icon-button (click)="DosedisableEditing(i)" matTooltip="Close">
-                                                                        <mat-icon class="active-icon red-600 s-16">close</mat-icon>
-                                                                    </button>
-                                                                </div>
-                                                            </mat-cell>
-                                                        </ng-container>
-                                                       
+                                                                    <!-- Show dropdown and save button when in edit mode -->
+                                                                    <div *ngIf="editingIndex1 === in"
+                                                                        style="display: flex; align-items: center; gap: 10px;">
+                                                                        <airmid-dropdown label="ItemGeneric Name"
+                                                                            formControlName="ItemGenericNameId"
+                                                                            [formGroup]="MedicineItemForm"
+                                                                            [mode]="autocompleteModeItemGeneric"
+                                                                            (selectionChange)="selectChangeItemGenericName($event)">
+                                                                        </airmid-dropdown>
 
-                                                        <ng-container matColumnDef="Days">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                                fxShow.gt-sm>Days</mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                <mat-form-field appearance="fill" floatLabel="never">
-                                                                    <input matInput [(ngModel)]="element.Days || vDayys"
-                                                                        type="number" OnlyNumber>
-                                                                </mat-form-field>
-                                                            </mat-cell>
-                                                        </ng-container>
+                                                                        <button mat-icon-button
+                                                                            (click)="OnSaveEditGeneric(element)"
+                                                                            matTooltip="Save">
+                                                                            <mat-icon
+                                                                                class="active-icon green-600 s-16">check</mat-icon>
+                                                                        </button>
 
-                                                        <ng-container matColumnDef="Remark">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                fxShow.gt-sm>Instruction
-                                                            </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                                <mat-form-field appearance="fill" floatLabel="never">
-                                                                    <input matInput [(ngModel)]="element.Instruction || vInst"
-                                                                        type="text">
-                                                                </mat-form-field>
-                                                            </mat-cell>
-                                                        </ng-container>
+                                                                        <button mat-icon-button
+                                                                            (click)="GenericdisableEditing(element)"
+                                                                            matTooltip="Close">
+                                                                            <mat-icon
+                                                                                class="active-icon red-600 s-16">close</mat-icon>
+                                                                        </button>
+                                                                    </div>
+                                                                </mat-cell>
+                                                            </ng-container>
 
-                                                        <ng-container matColumnDef="Action" stickyEnd>
-                                                            <mat-header-cell *matHeaderCellDef
-                                                                class="table-actions">Action
-                                                            </mat-header-cell>
-                                                            <mat-cell *matCellDef="let contact">
-                                                                <ng-container class="actions">
-                                                                    <mat-icon (click)="deleteTableRow($event ,contact)"
-                                                                        color="warn">
-                                                                        delete
-                                                                    </mat-icon>
-                                                                </ng-container>
-                                                            </mat-cell>
-                                                        </ng-container>
+                                                            <ng-container matColumnDef="DoseName">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxHide fxShow.gt-sm class="w-300">
+                                                                    Dose Name
+                                                                </mat-header-cell>
 
-                                                        <mat-header-row class="accent"
-                                                            *matHeaderRowDef="displayedItemColumn; sticky: true">
-                                                        </mat-header-row>
-                                                        <mat-row *matRowDef="let row; columns: displayedItemColumn;"
-                                                            class="element"
-                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                                    </mat-table>
+                                                                <mat-cell *matCellDef="let element; let i = index"
+                                                                    fxHide fxShow.gt-sm class="w-300">
+
+                                                                    <span *ngIf="editingIndex !== i">
+                                                                        {{ element.DoseName || vDoseName }}
+                                                                        <mat-icon (click)="editDose(i, element)"
+                                                                            class="edit-icon">edit</mat-icon>
+                                                                    </span>
+
+                                                                    <div *ngIf="editingIndex === i"
+                                                                        style="display: flex; align-items: center; gap: 5px;">
+                                                                        <airmid-dropdown formControlName="DoseId1"
+                                                                            [formGroup]="MedicineItemForm"
+                                                                            [mode]="autocompleteModeDose"
+                                                                            (selectionChange)="selectChangeDoseName($event)">
+                                                                        </airmid-dropdown>
+
+                                                                        <button mat-icon-button
+                                                                            (click)="OnSaveEditDose(element)"
+                                                                            matTooltip="Save">
+                                                                            <mat-icon
+                                                                                class="active-icon green-600 s-16">check</mat-icon>
+                                                                        </button>
+
+                                                                        <button mat-icon-button
+                                                                            (click)="DosedisableEditing(i)"
+                                                                            matTooltip="Close">
+                                                                            <mat-icon
+                                                                                class="active-icon red-600 s-16">close</mat-icon>
+                                                                        </button>
+                                                                    </div>
+                                                                </mat-cell>
+                                                            </ng-container>
+
+
+                                                            <ng-container matColumnDef="Days">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxHide fxShow.gt-sm>Days</mat-header-cell>
+                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                    <mat-form-field appearance="fill"
+                                                                        floatLabel="never">
+                                                                        <input matInput
+                                                                            [(ngModel)]="element.Days || vDayys"
+                                                                            type="number" OnlyNumber>
+                                                                    </mat-form-field>
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="Remark">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxShow.gt-sm>Instruction
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                                    <mat-form-field appearance="fill"
+                                                                        floatLabel="never">
+                                                                        <input matInput
+                                                                            [(ngModel)]="element.Instruction || vInst"
+                                                                            type="text">
+                                                                    </mat-form-field>
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="Action" stickyEnd>
+                                                                <mat-header-cell *matHeaderCellDef
+                                                                    class="table-actions">Action
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact">
+                                                                    <ng-container class="actions">
+                                                                        <mat-icon
+                                                                            (click)="deleteTableRow($event ,contact)"
+                                                                            color="warn">
+                                                                            delete
+                                                                        </mat-icon>
+                                                                    </ng-container>
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <mat-header-row class="accent"
+                                                                *matHeaderRowDef="displayedItemColumn; sticky: true">
+                                                            </mat-header-row>
+                                                            <mat-row *matRowDef="let row; columns: displayedItemColumn;"
+                                                                class="element"
+                                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                        </mat-table>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -545,19 +582,14 @@
                                             <div fxLayout="row">
                                                 <div fxFlex="40%">
 
-                                                        <airmid-dropdown 
-                                                        label="Service"
-                                                        formControlName="mAssignService" 
-                                                        [formGroup]="caseFormGroup"
-                                                       #ddlService
-                                                        [IsMultiPle]="true" 
-                                                        ValueField="serviceId" 
-                                                        TextField="serviceName"
-                                                        ApiUrl="BillingService/GetServiceListwithGroupWise?TariffId=1&ClassId=1&IsPathRad=1&ServiceName=S" 
+                                                    <airmid-dropdown label="Service" formControlName="mAssignService"
+                                                        [formGroup]="caseFormGroup" #ddlService [IsMultiPle]="true"
+                                                        ValueField="serviceId" TextField="serviceName"
+                                                        ApiUrl="BillingService/GetServiceListwithGroupWise?TariffId=1&ClassId=1&IsPathRad=1&ServiceName=S"
                                                         [ReqFullObj]="true"
                                                         (selectionChange)="selectChangeServiceName($event)">
                                                     </airmid-dropdown>
-                             
+
                                                 </div>
 
                                                 <mat-chip-listbox #chipList>
@@ -705,12 +737,14 @@
                                                             Visit Information
                                                         </span>
                                                         <div class="gap-12">
-                                                            <button mat-raised-button (click)="viewgetOpprescriptionReportPdf()"
+                                                            <button mat-raised-button
+                                                                (click)="viewgetOpprescriptionReportPdf()"
                                                                 matTooltip="Print">
                                                                 <mat-icon>print</mat-icon>LetterHead
                                                             </button>
 
-                                                            <button mat-raised-button (click)="viewgetOpprescriptionReportPdf()"
+                                                            <button mat-raised-button
+                                                                (click)="viewgetOpprescriptionReportPdf()"
                                                                 matTooltip="Print">
                                                                 <mat-icon>print</mat-icon>Without LetterHead
                                                             </button>

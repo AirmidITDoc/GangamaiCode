@@ -1,5 +1,5 @@
 .mat-typography {
-    .mat-mdc-tab-group {
+    ::ng-deep .mat-mdc-tab-group {
         font-family: inherit;
         .mat-tab-header {
             border-radius: 4px;
@@ -7,7 +7,7 @@
                 .mat-tab-labels {
                     .mat-tab-label {
                         font-family: inherit;
-                        height: 40px;
+                        height: 25px;
                         .mat-tab-label-content {
                             font-size: 1rem;
                             font-weight: bold;
@@ -28,7 +28,7 @@
             .mat-tab-label-container {
                 .mat-tab-labels {
                     .mat-tab-label {
-                        height: 35px;
+                        height: 25px;
                         .mat-tab-label-content {
                             font-size: 0.9rem;
                         }

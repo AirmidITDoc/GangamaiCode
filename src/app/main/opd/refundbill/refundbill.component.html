@@ -99,7 +99,8 @@
                         <!-- Table 1 -->
                         <div class="table-left" fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="70%">
                             <mat-card>
-                                <div class="table-wrapper">
+                                <div fxLayout="column" class="h-100-p">
+                                <div class="airmid-table-container">
                                     <mat-table class="h-200" matSort [dataSource]="dataSource3"
                                         [@animateStagger]="{value:'50'}">
 
@@ -181,6 +182,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                </div>
                             </mat-card>
                         </div>
                         <!-- Table 2 -->
@@ -252,9 +254,10 @@
                         <!-- Table 1 -->
                         <div class="table-main" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                             <mat-card>
-                                <div class="table-wrapper">
+                                <div fxLayout="column" class="h-100-p">
+                                <div class="airmid-table-container">
                                     <mat-table class="h-200" matSort [dataSource]="dataSource2"
-                                        [@animateStagger]="{value:'50'}">
+                                        [@animateStagger]="{value:'50'}" class="airmid-table">
 
 
                                         <ng-container matColumnDef="serviceName">
@@ -373,6 +376,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
                                 </div>
                             </mat-card>
                         </div>
