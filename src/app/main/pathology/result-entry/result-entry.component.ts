@@ -143,18 +143,18 @@ export class ResultEntryComponent implements OnInit {
     allcolumns=  [
         {
             heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
-            template: this.actionsIPOP, width: 5
+            template: this.actionsIPOP
         },
         { heading: "Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', type: 9, width: 200 },
         { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
         { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
         // { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
         {
-            heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
     ];
@@ -227,6 +227,7 @@ export class ResultEntryComponent implements OnInit {
     }
 
     searchRecords(data) {
+        this.dataSource1.data = [];
         
         let regno = this.myformSearch.get("RegNoSearch").value || "0";
         let fromDate = this.myformSearch.get("start").value || "";
@@ -241,18 +242,18 @@ export class ResultEntryComponent implements OnInit {
             columnsList: [
                 {
                     heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
-                    template: this.actionsIPOP, width: 5
+                    template: this.actionsIPOP
                 },
                 { heading: "Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', type: 9, width: 200 },
                 { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
                 { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
                 // { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
                 {
-                    heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+                    heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
                     template: this.actionButtonTemplate  // Assign ng-template to the column
                 }
             ],
@@ -345,6 +346,8 @@ export class ResultEntryComponent implements OnInit {
 status:any="1"
 opipType:any="2";
     onChangeFirst() {
+        this.dataSource1.data = [];
+
         this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
         this.f_name = this.myformSearch.get('FirstNameSearch').value + "%"

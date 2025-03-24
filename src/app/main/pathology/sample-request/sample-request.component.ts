@@ -35,14 +35,14 @@ export class SampleRequestComponent implements OnInit {
   dataArray = {};
   sIsLoading: string = '';
   //isSampleCollection: boolean = true;
-  RequestId:any=0;
-  Ispathradio=0;
+  RequestId: any = 0;
+  Ispathradio = 0;
   vOPIPId = 0;
-  f_name:any = "" 
-  regNo:any="0"
-  l_name:any="" 
-  Istype=1
-  IsCompleted=1
+  f_name: any = ""
+  regNo: any = "0"
+  l_name: any = ""
+  Istype = 1
+  IsCompleted = 1
   setStep(index: number) {
     this.step = index;
   }
@@ -64,7 +64,7 @@ export class SampleRequestComponent implements OnInit {
     'BedName',
     'IsTestCompted',
     'IsOnFileTest',
-  // 'action'
+    // 'action'
 
   ];
 
@@ -88,36 +88,34 @@ export class SampleRequestComponent implements OnInit {
   ];
 
   hasSelectedContacts: boolean;
-  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent; 
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('grid1') grid1: AirmidTableComponent;
 
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  allcolumns= [            
-    { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA',width:60},
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width:200},
-    { heading: "AdmDate", key: "admDate", sort: true, align: 'left', emptySign: 'NA'},
-    { heading: "ReqDate", key: "reqDate", sort: true, align: 'left', emptySign: 'NA', type:6},
-    { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA'},
-    { heading: "BedName", key: "bedName", sort: true, align: 'left', emptySign: 'NA'},
+  allcolumns = [
+    { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 60 },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "AdmDate", key: "admDate", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "ReqDate", key: "reqDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+    { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "BedName", key: "bedName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "IsTestCompted", key: "isTestCompted", type: gridColumnTypes.status, align: "center" },
-    { heading: "IsOnFileTest", key: "isOnFileTest", type: gridColumnTypes.status, align: "center" },            
+    { heading: "IsOnFileTest", key: "isOnFileTest", type: gridColumnTypes.status, align: "center" },
   ];
-      gridConfig: gridModel = {
-          apiUrl: "PathlogySampleCollection/LabOrRadRequestPatientList",
-          columnsList:this.allcolumns,
-          sortField: "RegNo",
-          sortOrder: 0,
-          filters: [  
-            { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Istype", fieldValue: "1", opType: OperatorComparer.Equals },
-            { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
-            // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            // { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-          ]
-      }
+  gridConfig: gridModel = {
+    apiUrl: "PathlogySampleCollection/LabOrRadRequestPatientList",
+    columnsList: this.allcolumns,
+    sortField: "RegNo",
+    sortOrder: 0,
+    filters: [
+      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+      { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "Istype", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "IsCompleted", fieldValue: "1", opType: OperatorComparer.Equals }
+    ]
+  }
   constructor(
     private formBuilder: UntypedFormBuilder,
     private _httpClient: HttpClient,
@@ -131,7 +129,7 @@ export class SampleRequestComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-   this.myformSearch=this._PathologyService.createSampleRequstForm()
+    this.myformSearch = this._PathologyService.createSampleRequstForm()
   }
 
   gridConfig1: gridModel = new gridModel();
@@ -139,89 +137,91 @@ export class SampleRequestComponent implements OnInit {
 
   getSelectedRow(row: any): void {
     debugger
-      let requestId = row.requestId;
-      let isPathOrRad = row.isType;
+    let requestId = row.requestId;
+    let isPathOrRad = row.isType;
 
-      this.gridConfig1 = {
-          apiUrl: "PathlogySampleCollection/LabOrRadRequestDetailList",
-          columnsList: [
-            { heading: "ReqDate", key: "reqDate", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "ReqTime", key: "reqTime", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width:200},
-            { heading: "AddedBy", key: "addedByName", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "BillingUser", key: "billingUser", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "AddedByDate", key: "addedByDate", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "IsStatus", key: "isStatus", type: gridColumnTypes.status, align: 'center'},
-            { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "IsPathology", key: "isPathology", type: gridColumnTypes.status, align: 'left'},
-            { heading: "IsRadiology", key: "isRadiology", type: gridColumnTypes.status, align: 'left'},
-            { heading: "IsTestCompted", key: "isTestCompted", type: gridColumnTypes.status, align: 'left'},
-          ],
-          sortField: "RequestId",
-          sortOrder: 0,
-          filters: [
-              { fieldName: "RequestId", fieldValue: String(requestId), opType: OperatorComparer.Equals },
-              { fieldName: "IsPathOrRad", fieldValue: String(isPathOrRad), opType: OperatorComparer.Equals }
-          ]
-      };
+    this.gridConfig1 = {
+      apiUrl: "PathlogySampleCollection/LabOrRadRequestDetailList",
+      columnsList: [
+        { heading: "ReqDate", key: "reqDate", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "ReqTime", key: "reqTime", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "AddedBy", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "BillingUser", key: "billingUser", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "AddedByDate", key: "addedByDate", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsStatus", key: "isStatus", type: gridColumnTypes.status, align: 'center' },
+        { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsPathology", key: "isPathology", type: gridColumnTypes.status, align: 'left' },
+        { heading: "IsRadiology", key: "isRadiology", type: gridColumnTypes.status, align: 'left' },
+        { heading: "IsTestCompted", key: "isTestCompted", type: gridColumnTypes.status, align: 'left' },
+      ],
+      sortField: "RequestId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "RequestId", fieldValue: String(requestId), opType: OperatorComparer.Equals },
+        { fieldName: "IsPathOrRad", fieldValue: String(isPathOrRad), opType: OperatorComparer.Equals }
+      ]
+    };
 
-      this.isShowDetailTable = true;
+    this.isShowDetailTable = true;
 
-      setTimeout(() => {
-          this.grid1.gridConfig = this.gridConfig1;
-          this.grid1.bindGridData();
-      });
+    setTimeout(() => {
+      this.grid1.gridConfig = this.gridConfig1;
+      this.grid1.bindGridData();
+    });
   }
 
-  
+
   onChangeFirst() {
     debugger
+    this.isShowDetailTable = false;
+
     this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
     // this.f_name = this.myformSearch.get('FirstName').value + "%"
     // this.l_name = this.myformSearch.get('LastName').value + "%"
     this.regNo = this.myformSearch.get('RegNo').value || ""
     this.Istype = this.myformSearch.get('Istype').value
-    this.IsCompleted = this.myformSearch.get('IsCompleted').value 
+    this.IsCompleted = this.myformSearch.get('IsCompleted').value
 
     this.getfilterdata();
-}
+  }
 
-getfilterdata(){
-debugger
-this.gridConfig = {
-  apiUrl: "PathlogySampleCollection/LabOrRadRequestPatientList",
-    columnsList:this.allcolumns , 
-    sortField: "RegNo",
-    sortOrder: 0,
-    filters:  [
-      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-      { fieldName: "ToDate", fieldValue:this.toDate, opType: OperatorComparer.Equals },
-      { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-      { fieldName: "Istype", fieldValue: this.Istype, opType: OperatorComparer.Equals },
-      { fieldName: "IsCompleted", fieldValue: this.IsCompleted, opType: OperatorComparer.Equals },
+  getfilterdata() {
+    debugger
+    this.gridConfig = {
+      apiUrl: "PathlogySampleCollection/LabOrRadRequestPatientList",
+      columnsList: this.allcolumns,
+      sortField: "RegNo",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+        { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+        { fieldName: "Istype", fieldValue: this.Istype, opType: OperatorComparer.Equals },
+        { fieldName: "IsCompleted", fieldValue: this.IsCompleted, opType: OperatorComparer.Equals },
 
-    ]
-}
-this.grid.gridConfig = this.gridConfig;
-this.grid.bindGridData(); 
-}
+      ]
+    }
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData();
+  }
 
 
-Clearfilter(event) {
-console.log(event)
+  Clearfilter(event) {
+    debugger
+    console.log(event)
 
-if (event == 'RegNo')
-    this.myformSearch.get('RegNo').setValue("")
+    if (event == "RegNo")
+      this.myformSearch.get("RegNo").setValue("")
 
-this.onChangeFirst();
-}
-  onClear(){}
+    this.onChangeFirst();
+  }
 
   onShow(event: MouseEvent) {
-    
+
     this.click = !this.click;
-   
+
     setTimeout(() => {
       {
         this.sIsLoading = 'loading-data';
@@ -238,45 +238,45 @@ this.onChangeFirst();
   onEdit(row, m) {
     console.log(m);
     this.sampledetaillist(row);
-    this.RequestId=m.RequestId
+    this.RequestId = m.RequestId
   }
 
   toggle(val: any) {
     if (val == "1") {
-        this.Ispathradio = 1;
+      this.Ispathradio = 1;
     } else if (val == "2") {
-        this.Ispathradio = 2;
+      this.Ispathradio = 2;
     }
     else {
-        this.Ispathradio = 3;
+      this.Ispathradio = 3;
 
     }
-}
-onFilterChange(){
-  var m_data = {
-
-    "RequestId": this.RequestId,
-    "IsPathOrRad":this.Ispathradio,// parseInt(this._PathologyService.myformSearch.get("IsPathOrRad").value) || 1
-
   }
-  setTimeout(() => {
-  
-    this._PathologyService.getSampleNursingPathRadReqDetList(m_data).subscribe(Visit => {
-      this.dataSource1.data = Visit as NursingPathRadRequestList[];
-      this.dataSource1.sort = this.sort;
-      this.dataSource1.paginator = this.paginator;
-      console.log(m_data);
-      this.sIsLoading = '';
-      this.click = false;
+  onFilterChange() {
+    var m_data = {
 
-    },
-      error => {
+      "RequestId": this.RequestId,
+      "IsPathOrRad": this.Ispathradio,// parseInt(this._PathologyService.myformSearch.get("IsPathOrRad").value) || 1
+
+    }
+    setTimeout(() => {
+
+      this._PathologyService.getSampleNursingPathRadReqDetList(m_data).subscribe(Visit => {
+        this.dataSource1.data = Visit as NursingPathRadRequestList[];
+        this.dataSource1.sort = this.sort;
+        this.dataSource1.paginator = this.paginator;
+        console.log(m_data);
         this.sIsLoading = '';
-      });
-  }, 50);
-}
-  sampledetaillist(m){
-    
+        this.click = false;
+
+      },
+        error => {
+          this.sIsLoading = '';
+        });
+    }, 50);
+  }
+  sampledetaillist(m) {
+
     var m_data = {
 
       "RequestId": this.RequestId,
@@ -284,7 +284,7 @@ onFilterChange(){
 
     }
     setTimeout(() => {
-    
+
       this._PathologyService.getSampleNursingPathRadReqDetList(m_data).subscribe(Visit => {
         this.dataSource1.data = Visit as NursingPathRadRequestList[];
         this.dataSource1.sort = this.sort;
@@ -300,117 +300,24 @@ onFilterChange(){
     }, 50);
   }
 
-  exportSamplerequstReportExcel(){
-   
+  exportSamplerequstReportExcel() {
+
   }
 
   exportReportPdf() {
-  
+
   }
 
+  exportSamplerequstdetailReportExcel() {
 
-  
-    exportSamplerequstdetailReportExcel(){
-   
   }
 
   exportdetailReportPdf() {
-  
+
   }
-
-
-
 
   private route: ActivatedRoute
   private router: Router
-  // onLABSave() {
-
-  //   // console.log(this.dataSource.data);
-  //   // console.log(this.dataSource1.data);
-
-  //   this.sIsLoading = 'submit';
-
-
-
-  //   let BillDetail = {};
-  //   BillDetail['emergencyFlag'] = "0",
-  //     BillDetail['billTotalAmount'] = " ";
-  //   BillDetail['advance'] = " ";
-  //   BillDetail['billDate'] = " ";
-  //   BillDetail['paymentType'] = " ";
-  //   BillDetail['referralName'] = " ";
-  //   BillDetail['otherReferral'] = " ";
-  //   BillDetail['sampleId'] = " ";
-  //   BillDetail['orderNumber'] = " ";
-  //   BillDetail['referralIdLH'] = " ";
-  //   BillDetail['organisationName'] = " ";
-  //   BillDetail['billConcession'] = "0",
-  //     BillDetail['additionalAmount'] = "0",
-  //     BillDetail['organizationIdLH'] = "440132",
-  //     BillDetail['comments'] = " ";
-
-  //   let testList = [];
-  //   this.dataSource1.data.forEach((element) => {
-  //     let testListInsertObj = {};
-  //     testListInsertObj['testCode'] = element.ServiceName;
-  //     testList.push(testListInsertObj);
-  //   });
-  //   BillDetail["testCode"] = testList;
-
-
-
-  //   let paymentListarr = [];
-  //   let paymentList = {};
-  //   paymentList['paymentType'] = "CREDIT",
-  //   paymentList['paymentAmount'] = " ";
-  //   paymentList['chequeNo'] = " ";
-  //   paymentList['issueBank'] = " ";
-  //   paymentListarr.push(paymentList);
-
-
-  //   BillDetail["paymentList"] = paymentListarr;
-
-  //   let submitData = {
-  //     "mobile": "",
-  //     "email": "",
-  //     "designation": "",
-  //     "fullName": this.dataSource.data[0].PatientName,
-  //     "age": "",
-  //     "gender": "",
-  //     "area": "",
-  //     "city": "",
-  //     "patientType": "IPD",
-  //     "labPatientId": "HISPATIENTID",
-  //     "pincode": " ",
-  //     "patientId": "",
-  //     "dob": "",
-  //     "passportNo": "",
-  //     "panNumber": "",
-  //     "aadharNumber": "",
-  //     "insuranceNo": "",
-  //     "nationalityethnicity": "",
-  //     "ethnicity": "",
-  //     "nationalIdentityNumber": "",
-  //     "workerCode": "w12",
-  //     "doctorCode": "",
-  //     "BillDetailarr": BillDetail
-  //     // "paymentListarr": paymentListarr,
-
-  //   };
-  //   console.log(submitData);
-  //   this._PathologyService.InsertLabDetail(submitData).subscribe(response => {
-  //     if (response) {
-  //       Swal.fire('Lab Detail Send Successfully !', 'success').then((result) => {
-  //       });
-  //     } else {
-  //       Swal.fire('Error !', 'Lab Detail  not Send', 'error');
-  //     }
-  //     this.sIsLoading = '';
-  //   });
-  // }
-
-
- 
 
 }
 
@@ -423,9 +330,9 @@ export class LabOrRadRequestList {
   IsOnFileTest: boolean;
   OP_IP_ID: any;
   AgeYear: any;
-  IsTestCompted:any;
-  BedName:any;
-  ReqDate:any;
+  IsTestCompted: any;
+  BedName: any;
+  ReqDate: any;
 
   constructor(LabOrRadRequestList) {
     this.RegNo = LabOrRadRequestList.RegNo;

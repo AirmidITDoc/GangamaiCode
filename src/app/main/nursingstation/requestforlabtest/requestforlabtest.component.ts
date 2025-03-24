@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { RequestforlabtestService } from './requestforlabtest.service';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
@@ -31,6 +31,13 @@ export class RequestforlabtestComponent implements OnInit {
     @ViewChild('grid1') grid1: AirmidTableComponent;
 
     hasSelectedContacts: boolean;
+    @ViewChild('isStatusIcon') isStatusIcon!: TemplateRef<any>;
+    @ViewChild('isTestCompletedIcon') isTestCompletedIcon!: TemplateRef<any>;
+
+    ngAfterViewInit() {
+        this.gridConfig.columnsList.find(col => col.key === 'isStatus')!.template = this.isStatusIcon;
+        this.gridConfig.columnsList.find(col => col.key === 'isTestCompleted')!.template = this.isTestCompletedIcon;
+    }
 
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -38,10 +45,10 @@ export class RequestforlabtestComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "IPPrescription/LabRadRequestList",
         columnsList: [
-            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:200},
-            { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "RequestType", key: "requestType", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "RequestType", key: "requestType", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsOnFileTest", key: "isOnFileTest", sort: true, align: 'left', emptySign: 'NA', width: 50 },
 
             {
@@ -65,7 +72,7 @@ export class RequestforlabtestComponent implements OnInit {
     viewLabRequestPdf(data) {
         this.commonService.Onprint("RequestId", data.requestId, "NurLabRequestTest");
     }
-    
+
     constructor(public _RequestforlabtestService: RequestforlabtestService, public _matDialog: MatDialog,
         public toastr: ToastrService, private commonService: PrintserviceService,
         public datePipe: DatePipe,) { }
@@ -75,23 +82,29 @@ export class RequestforlabtestComponent implements OnInit {
     gridConfig1: gridModel = new gridModel();
     isShowDetailTable: boolean = false;
 
-    getSelectedRow(row:any):void{
+    getSelectedRow(row: any): void {
         console.log("Selected row : ", row);
-        let vRequestId=row.requestId        
+        let vRequestId = row.requestId
 
         this.gridConfig1 = {
             apiUrl: "IPPrescription/LabRadRequestDetailList",
             columnsList: [
-                { heading: "IsBillingStatus", key: "isStatus", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "IsTestStatus", key: "patientName", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "ReqDate", key: "reqDate", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "ReqTime", key: "reqTime", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "AddedBy", key: "addedByName", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "Add Billing User", key: "billingUser", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "BillDateTime", key: "billdatetime", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA'},
-    
+                {
+                    heading: "IsBillingStatus", key: "isStatus", sort: true, align: 'left', type: gridColumnTypes.template,
+                    template: this.isStatusIcon, width: 50
+                },
+                {
+                    heading: "IsTestStatus", key: "isTestCompleted", sort: true, align: 'left', type: gridColumnTypes.template,
+                    template: this.isTestCompletedIcon, width: 50
+                },
+                { heading: "ReqDate", key: "reqDate", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "ReqTime", key: "reqTime", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "AddedBy", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Add Billing User", key: "billingUser", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "BillDateTime", key: "billdatetime", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+
             ],
             sortField: "RequestId",
             sortOrder: 0,
@@ -100,11 +113,14 @@ export class RequestforlabtestComponent implements OnInit {
             ]
         }
         this.isShowDetailTable = true;
-        
+
         this.grid1.gridConfig = this.gridConfig1;
         this.grid1.bindGridData();
     }
 
+    viewgetPathologyTemplateReportPdf() {
+
+    }
     onSave(row: any = null) {
         let that = this;
         const dialogRef = this._matDialog.open(NewRequestforlabComponent,

@@ -135,7 +135,7 @@ export class ResultEntryOneComponent implements OnInit {
                 this.getResultListOP(this.selectedAdvanceObj2,this.regObj);
 
         } else {
-            this.getResultList(this.selectedAdvanceObj2);
+            this.getResultList1(this.regObj);
         }
 
     }
@@ -185,9 +185,69 @@ export class ResultEntryOneComponent implements OnInit {
         });
         return Keys;
     }
+
+    // onResultUp(data) {
+    //     debugger
+    //     let items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
+    
+    //     for (let i = 0; i < items.length; i++) {
+    //         let formula = items[i].Formula;
+    //         let formulas = this.getShortNames(formula);
+    
+    //         formulas.forEach(e => {
+    //             let itm = this.dataSource.data.find(x => x.ParameterShortName?.toLowerCase().trim() === e.toLowerCase().trim());
+    
+    //             let valueToReplace = itm?.ResultValue !== undefined && itm?.ResultValue !== null ? itm.ResultValue : "0";
+    
+    //             formula = formula.replaceAll("{{" + e.trim() + "}}", valueToReplace);
+    
+    //             console.log("Matching for:", e.trim());
+    //             console.log("Matched item:", itm);
+    //             console.log("Replacing {{ " + e.trim() + " }} with:", valueToReplace);
+    //         });
+    
+    //         if (formula.includes('{{')) {
+    //             console.error("Formula still has unresolved placeholders:", formula);
+    //             items[i].ResultValue = "";
+    //         } else {
+    //             try {
+    //                 items[i].ResultValue = isNaN(eval(formula)) ? "" : eval(formula);
+    
+    //                 if (!isNaN(items[i].ResultValue)) {
+    //                     items[i].ResultValue = Math.round(items[i].ResultValue * 100) / 100;
+    //                 }
+    //             } catch (error) {
+    //                 console.error('Error evaluating formula:', formula, error);
+    //                 items[i].ResultValue = "";
+    //             }
+    //         }
+    //     }
+    
+    //     // Set flag for bold if the value is out of range
+    //     data.ParaBoldFlag = '';
+    //     if (data.PIsNumeric) {
+    //         let a = parseFloat(data.ResultValue);
+    //         let b = parseFloat(data.MinValue);
+    //         let c = parseFloat(data.MaxValue);
+    
+    //         if (b != null && c != null && a != null) {
+    //             if (a < b || a > c) {
+    //                 data.ParaBoldFlag = 'B'; // Set bold flag if value is out of range
+    //             }
+    //         }
+    //     }
+    // }    
+    
+    // isValidFormula(formula: string): boolean {
+    //     // Basic regex to allow only numbers, operators, and parentheses
+    //     const validFormulaPattern = /^[0-9+\-*/().\s]+$/;
+    //     return validFormulaPattern.test(formula.trim());
+    // }
+    
     onResultUp(data) {
-        
-        let items = this.dataSource.data.filter(x => (x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
+        debugger
+        // let items = this.dataSource.data.filter(x => (x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
+        let items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
         for (let i = 0; i < items.length; i++) {
             let formula = items[i].Formula;
             let formulas = this.getShortNames(formula);
@@ -202,7 +262,7 @@ export class ResultEntryOneComponent implements OnInit {
         }
 
         data.ParaBoldFlag = '';
-        if (data.ParaIsNumeric) {
+        if (data.PIsNumeric) {
 
             let a = parseFloat(data.ResultValue);
             let b = parseFloat(data.MinValue);
@@ -213,11 +273,9 @@ export class ResultEntryOneComponent implements OnInit {
                     data.ParaBoldFlag = 'B';
                 }
             }
-
         }
-
-
     }
+
     boldstatus = 0;
 
     editflag(contact) {
@@ -270,46 +328,54 @@ export class ResultEntryOneComponent implements OnInit {
         this.helpItems = this.helpFullItems.filter(option => option.ParameterValues.toLowerCase().indexOf(e.target.value) >= 0);
     }
 
-
-    getResultList(advanceData) {
-        this.sIsLoading = 'loading-data';
-
-        let SelectQuery
-
+    getResultList1(rbj) {
+        debugger
         if (this.OP_IPType == 0) {
-            if (this.selectedAdvanceObj2.AgeYear > 0)
-                SelectQuery = "Select * from m_lvwRtrv_PathologyResultOPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAge + " and MinAge < " + this.CheckAge + " AND AgeType='YEAR' "
-            else if (this.selectedAdvanceObj2.AgeMonth > 0)
-                 SelectQuery = "Select * from m_lvwRtrv_PathologyResultOPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgemonth + " and MinAge < " + this.CheckAgemonth +"AND AgeType='MONTH'"
-            else if (this.selectedAdvanceObj2.AgeDay > 0)
-                SelectQuery = "Select * from m_lvwRtrv_PathologyResultOPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgeday + " and MinAge < " + this.CheckAgeday + " AND AgeType='DAY' "
-        } else if (this.OP_IPType == 1) {
-            if (this.selectedAdvanceObj2.AgeYear > 0)
-                SelectQuery = "Select * from m_lvwRtrv_PathologyResultIPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAge + " and MinAge < " + this.CheckAge + " AND AgeType='YEAR' "
-            else if (this.selectedAdvanceObj2.AgeMonth > 0)
-                SelectQuery = "Select * from m_lvwRtrv_PathologyResultIPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgemonth + " and MinAge < " + this.CheckAgemonth + "AND AgeType='MONTH'"
-            else if (this.selectedAdvanceObj2.AgeDay > 0)
-                SelectQuery = "Select * from m_lvwRtrv_PathologyResultIPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgeday + " and MinAge < " + this.CheckAgeday + " AND AgeType='DAY' "
+            var param =  {
+                "searchFields": [          
+                  {          
+                    "fieldName": "PathReportId",          
+                    "fieldValue": "130388", //String(rbj[0].PathReportId),          
+                    "opType": "Equals"          
+                  }          
+                ],          
+                "mode": "PathologyResultEntryOPCompleted"          
+              }
         }
-
-
-
-        console.log(SelectQuery)
-        this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
+        else if(this.OP_IPType == 1){
+            var param =  {
+                "searchFields": [          
+                  {          
+                    "fieldName": "PathReportId",          
+                    "fieldValue": String(rbj[0].PathReportId),         
+                    "opType": "Equals"          
+                  }          
+                ],          
+                "mode": "PathologyResultEntryIPCompleted"          
+              }
+        }
+       
+        console.log(param)
+        this._SampleService.getPathologyResultListforOP(param).subscribe(Visit => {
             this.dataSource.data = Visit as Pthologyresult[];
+            console.log(this.dataSource.data)
+            // this.Pthologyresult = Visit as Pthologyresult[];
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
-            this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
             this.sIsLoading = '';
+            this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
+            this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
+            console.log(this.PathResultDr1);
+            // this.getPathresultDoctorList();
         },
             error => {
                 this.sIsLoading = '';
             });
+
     }
 
     getResultListIP(obj,rbj) {
         debugger
-        // let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultUpdate_IPAgeWise where PathReportId in(" + this.reportIdData + ")"
         var SelectQuery=
         {        
           "searchFields": [        
@@ -349,7 +415,7 @@ export class ResultEntryOneComponent implements OnInit {
          
         console.log(SelectQuery);
         this._SampleService.getPathologyResultListforIP(SelectQuery).subscribe(Visit => {
-            this.dataSource.data = Visit.data as Pthologyresult[];
+            this.dataSource.data = Visit as Pthologyresult[];
             //  this.Pthologyresult = Visit as Pthologyresult[];
             console.log(this.dataSource.data)
             this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
@@ -365,7 +431,6 @@ export class ResultEntryOneComponent implements OnInit {
 
     getResultListOP(obj,rbj) {
         debugger
-        // let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultUpdate_OPAgeWise where PathReportId in(" + this.reportIdData + ")"
         var SelectQuery=
         {        
           "searchFields": [        
@@ -404,7 +469,7 @@ export class ResultEntryOneComponent implements OnInit {
         }
         console.log(SelectQuery)
         this._SampleService.getPathologyResultListforOP(SelectQuery).subscribe(Visit => {
-            this.dataSource.data = Visit.data as Pthologyresult[];
+            this.dataSource.data = Visit as Pthologyresult[];
             console.log(this.dataSource.data)
             // this.Pthologyresult = Visit as Pthologyresult[];
             this.dataSource.sort = this.sort;
@@ -421,12 +486,15 @@ export class ResultEntryOneComponent implements OnInit {
 
     }
 
+    selectChangeDoctor(row){
+        this.vPathResultDoctorId=row.value;
+    }
     onReload(){
-        this.getResultList(this.selectedAdvanceObj2);
+        this.getResultList1(this.selectedAdvanceObj2);
     }
 
     onUpload(){
-       
+       debugger
             if ((this.vPathResultDoctorId == '')) {
                 this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',
@@ -434,7 +502,6 @@ export class ResultEntryOneComponent implements OnInit {
                 return;
             }
     
-            this.isLoading = 'submit';
             let PathInsertArry = [];
             // let pathologyDeleteObjarray = [];
             let pathologyUpdateReportObjarray = [];
@@ -479,16 +546,16 @@ export class ResultEntryOneComponent implements OnInit {
     
                 pathologyUpdateReportObj['PathReportID'] = element.PathReportId// element1.PathReportId;
                 pathologyUpdateReportObj['ReportDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-                    pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
-                    pathologyUpdateReportObj['IsCompleted'] = true;
+                pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
+                pathologyUpdateReportObj['IsCompleted'] = true;
                 pathologyUpdateReportObj['IsPrinted'] = true;
-                pathologyUpdateReportObj['PathResultDr1'] = this.otherForm.get('PathResultDoctorId').value.DoctorId || 0;
+                pathologyUpdateReportObj['PathResultDr1'] = this.otherForm.get('PathResultDoctorId').value || 0;
                 pathologyUpdateReportObj['PathResultDr2'] = 0; //this.otherForm.get('DoctorId').value.DoctorId || 0;
                 pathologyUpdateReportObj['PathResultDr3'] = 0;
                 pathologyUpdateReportObj['IsTemplateTest'] = 0;
                 pathologyUpdateReportObj['SuggestionNotes'] = this.otherForm.get('suggestionNotes').value || "";
                 pathologyUpdateReportObj['AdmVisitDoctorID'] = 0; //this.otherForm.get('AdmDoctorID').value.DoctorID || 0;
-                pathologyUpdateReportObj['RefDoctorID'] = this.otherForm.get('RefDoctorID').value.DoctorID || 0;
+                pathologyUpdateReportObj['RefDoctorID'] = this.otherForm.get('RefDoctorID').value || 0;
     
                 pathologyUpdateReportObjarray.push(pathologyUpdateReportObj);
             });
@@ -535,7 +602,6 @@ export class ResultEntryOneComponent implements OnInit {
             return;
         }
 
-        this.isLoading = 'submit';
         let PathInsertArry = [];
         let pathologyUpdateReportObjarray = [];
 
@@ -560,11 +626,10 @@ export class ResultEntryOneComponent implements OnInit {
             pathologyResult['unitName'] = element.UnitName || '';
             pathologyResult['patientName'] = this.selectedAdvanceObj2.PatientName || '';
             pathologyResult['regNo'] = this.selectedAdvanceObj2.RegNo;
+            pathologyResult['sampleId'] = element.SampleID || '';
+            pathologyResult['paraBoldFlag'] = element.ParaBoldFlag || '';
             pathologyResult['minValue'] = parseFloat(element.MinValue) || 0;
             pathologyResult['maxValue'] = parseFloat(element.MaxValue) || 0;
-            pathologyResult['sampleId'] = element.SampleID || '';
-
-            pathologyResult['paraBoldFlag'] = element.ParaBoldFlag || '';
 
             PathInsertArry.push(pathologyResult);
         });
@@ -574,16 +639,16 @@ export class ResultEntryOneComponent implements OnInit {
 
             pathologyReport['pathReportId'] = element.PathReportId// element1.PathReportId;
             pathologyReport['reportDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-                pathologyReport['reportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
-                pathologyReport['isCompleted'] = true;
+            pathologyReport['reportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
+            pathologyReport['isCompleted'] = true;
             pathologyReport['isPrinted'] = true;
-            pathologyReport['pathResultDr1'] = this.otherForm.get('PathResultDoctorId').value.DoctorId || 0;
+            pathologyReport['pathResultDr1'] = this.otherForm.get('PathResultDoctorId').value || 0;
             pathologyReport['pathResultDr2'] = 0; //this.otherForm.get('DoctorId').value.DoctorId || 0;
             pathologyReport['pathResultDr3'] = 0;
             pathologyReport['isTemplateTest'] = 0;
             pathologyReport['suggestionNotes'] = this.otherForm.get('suggestionNotes').value || "";
             pathologyReport['admVisitDoctorId'] = 0; //this.otherForm.get('AdmDoctorID').value.DoctorID || 0;
-            pathologyReport['refDoctorId'] = this.otherForm.get('RefDoctorID').value.DoctorID || 0;
+            pathologyReport['refDoctorId'] = this.otherForm.get('RefDoctorID').value || 0;
 
             pathologyUpdateReportObjarray.push(pathologyReport);
         });
