@@ -32,69 +32,69 @@
                                     <span class="h2">Patient Information</span>
                                 </div>
                                 <div class="patient-info-box my-8">
-                                    <div class="patient-info-row row-gap-" fxLayout="row wrap"
-                                        fxLayoutAlign="space-between">
-                                        <!-- <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                            <span class="patient-col-key ">UHID No</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.RegNo}}</span>
-                                        </div> -->
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                            <span class="patient-col-key ">Patient Name</span>
-                                            <span>:</span>
-                                            <span
-                                                class="patient-col-value">{{advanceData.RegNo}}-{{advanceData.PatientName}}</span>
+                                    <div class="patient-info-row row-gap-" fxLayout="row" fxLayoutAlign="space-between">
+                                    
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            <div class="patient-col gap-3">
+                                                <span class="patient-col-key ">Patient Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{advanceData.RegNo}}-{{advanceData.PatientName}}</span>
+                                            </div>
+                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%" *ngIf="advanceData.DoctorName">
+                                                <span class="patient-col-key ">Doctor Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{advanceData.DoctorName}}</span>
+                                            </div>
+                                    
+                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%" *ngIf="advanceData.DepartmentName">
+                                                <span class="patient-col-key ">Department Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{advanceData.DepartmentName}}</span>
+                                            </div>
+                                    
+                                        </div> 
+                                   
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%">
+                                                <span class="patient-col-key ">BillNo </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{advanceData.BillNo}}</span>
+                                            </div>
+                                            <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%" *ngIf="advanceData.BillTime">
+                                                <span class="patient-col-key">BillDate </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{Date}}</span>
+                                            </div>
+                                    
+                                            <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%" style="color: blue;font-weight: bold;">
+                                                <span class="patient-col-key">Net Amount</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{advanceData.NetPayAmount | currency:"INR":"symbol"}}</span>
+                                            </div>
                                         </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%"
-                                            *ngIf="advanceData.Age">
-                                            <span class="patient-col-key ">Age</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.Age}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                            <span class="patient-col-key ">OPD | IPD No </span>
-                                            <span>:</span>
-                                            <span class="patient-col-value" *ngIf="advanceData.IPDNo">
-                                                {{advanceData.IPDNo}}</span>
-                                            <span class="patient-col-value" *ngIf="advanceData.OPDNo">
-                                                {{advanceData.OPDNo}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%"
-                                            *ngIf="advanceData.DoctorName">
-                                            <span class="patient-col-key ">Doctor Name</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.DoctorName}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%"
-                                            *ngIf="advanceData.DepartmentName">
-                                            <span class="patient-col-key ">Department Name</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.DepartmentName}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%"
-                                            *ngIf="advanceData.CompanyName">
-                                            <span class="patient-col-key ">Company Name</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.CompanyName}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%">
-                                            <span class="patient-col-key ">BillNo </span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.BillNo}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%"
-                                            *ngIf="advanceData.BillTime">
-                                            <span class="patient-col-key">BillDate </span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.BillTime |
-                                                date:'dd/MM/YYYY'}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%"
-                                            style="color: blue;font-weight: bold;">
-                                            <span class="patient-col-key">Net Amount</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.NetPayAmount | currency:"INR":"symbol"}}</span>
-                                        </div>
+                                    
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%" *ngIf="advanceData.Age">
+                                                <span class="patient-col-key ">Age</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{advanceData.Age}}</span>
+                                            </div>
+                                    
+                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                <span class="patient-col-key ">OPD | IPD No </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value" *ngIf="advanceData.IPDNo">
+                                                    {{advanceData.IPDNo}}</span>
+                                                <span class="patient-col-value" *ngIf="advanceData.OPDNo">
+                                                    {{advanceData.OPDNo}}</span>
+                                            </div>
+
+                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%" *ngIf="advanceData.CompanyName">
+                                                <span class="patient-col-key ">Company Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{advanceData.CompanyName}}</span>
+                                            </div> 
+                                        </div>  
                                     </div>
                                 </div>
                             </div>
@@ -114,14 +114,7 @@
                                             <span class="patient-col-value gap-4" fxLayout="row">
                                                 {{netPayAmt | currency:"INR":"symbol"}}
                                             </span>
-                                        </div>
-                                        <!-- <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                            <span class="patient-col-key">Net Amount</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value gap-4" fxLayout="row">
-                                                ₹ {{netPayAmt}}
-                                            </span>
-                                        </div> -->
+                                        </div> 
                                         <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
                                             <span class="patient-col-key">Bill Date</span>
                                             <span>:</span>
@@ -129,8 +122,8 @@
                                                 {{Date}}
                                             </span>
                                         </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                            <mat-checkbox fxFlex="12" class="pr-4" [checked]="IsAdv" [(ngModel)]="IsAdv"
+                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="35%">
+                                            <mat-checkbox fxFlex="25%"  [checked]="IsAdv" [(ngModel)]="IsAdv"
                                                 (change)="OnAdvAmt($event)">Advance Amount?</mat-checkbox>
                                         </div>
 
@@ -146,34 +139,35 @@
                                 <ng-container matColumnDef="Date">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.Date}}
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.date | date:'dd/MM/YYYY'}}
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="AdvanceNo">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                        Advance No </mat-header-cell>
+                                        Advance Id </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        {{element.AdvanceId}} </mat-cell>
+                                        {{element.advanceId}} </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="AdvanceAmount">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                         Advance Amount </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        {{element.AdvanceAmount | currency:'INR'}} </mat-cell>
+                                        {{element.advanceAmount | currency:'INR'}} </mat-cell>
                                 </ng-container>
+
                                 <ng-container matColumnDef="UsedAmount">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                         Used Amount </mat-header-cell>
                                     <mat-cell *matCellDef="let element; let i = index" fxHide fxShow.gt-sm>
                                         <!-- {{element.UsedAmount | currency:'INR'}} -->
                                         <!-- [readonly]="element.BalanceAmount == 0" -->
-                                        <mat-form-field appearance="legacy">
-                                            <input matInput type="text" OnlyNumber [(ngModel)]="element.UsedAmount"
-                                                [value]="element.UsedAmount" (keyup)="onKeyAdv(element,$event)"
+                                        <mat-form-field appearance="fill">
+                                            <input matInput type="text" OnlyNumber [(ngModel)]="element.usedAmount"
+                                                [value]="element.usedAmount" (keyup)="onKeyAdv(element,$event)"
                                                  (keypress)="keyPressAlphanumeric($event)"
-                                                [disabled]="element.RefundAmount == element.AdvanceAmount">
+                                                [disabled]="element.refundAmount == element.advanceAmount">
                                         </mat-form-field>
                                     </mat-cell>
                                 </ng-container> 
@@ -182,13 +176,14 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                         Balance Amount </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        {{element.BalanceAmount | currency:'INR'}} </mat-cell>
-                                </ng-container>
+                                        {{element.balanceAmount | currency:'INR'}} </mat-cell>
+                                </ng-container> 
+
                                 <ng-container matColumnDef="RefundAmount">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                         Refund Amount </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        {{element.RefundAmount | currency:'INR'}} </mat-cell>
+                                        {{element.refundAmount | currency:'INR'}} </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="loading">
@@ -249,10 +244,10 @@
                                                 </div>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" fxFlex>
+                                            <mat-form-field appearance="outline" fxFlex >
                                                 <mat-label>Amount</mat-label>
                                                 <input matInput formControlName="amount1" (keyup)="GetAmt()"
-                                                    [(ngModel)]="amount1" required
+                                                    [(ngModel)]="amount1" required  [readonly]="MulPaySettleAmt"
                                                     (keypress)="keyPressAlphanumeric($event)">
                                                 <div *ngIf="submitted && f.amount1.errors" class="invalid-feedback">
                                                     <div *ngIf="f.amount1.errors.required">Amount is required</div>
@@ -262,7 +257,7 @@
                                                 </div>
                                             </mat-form-field>
 
-                                            <ng-container *ngIf="selectedPaymnet1 != 'cash'">
+                                            <ng-container *ngIf="selectedPaymnet1 != 'cash' && selectedPaymnet1 != 'tds'">
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Reference Number</mat-label>
                                                     <input matInput formControlName="referenceNo1"
@@ -278,7 +273,7 @@
                                                     </div>
                                                 </mat-form-field>
 
-                                                <!-- <mat-form-field appearance="outline" fxFlex
+                                                <mat-form-field appearance="outline" fxFlex
                                                     *ngIf="selectedPaymnet1 !='upi'">
                                                     <mat-label>Bank Name</mat-label>
                                                     <input matAutocompletePosition="below" type="text"
@@ -302,16 +297,8 @@
                                                         class="invalid-feedback">
                                                         <div *ngIf="f.bankName1.errors.required">Bank is required</div>
                                                     </div>
-                                                </mat-form-field> -->
+                                                </mat-form-field>
 
-
-                                                <airmid-dropdown label="Bank Name" formControlName="bankName1"
-                                                [formGroup]="patientDetailsFormGrp"
-                                                [validations]="getValidationMessages().bankName1" (selectionChange)="selectChangebank($event)"
-                                                [mode]="autocompleteModebank">
-                                            </airmid-dropdown>
-
-                                            
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Registration Date</mat-label>
                                                     <input matInput [matDatepicker]="datepickerReg"
@@ -441,7 +428,7 @@
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button class="btn btn-danger-outline " (click)="onClose1()">Close</button>
-                <button class="btn btn-primary" [disabled]="balanceAmt!=0" (click)="onSubmit()">Save</button>
+                <button class="btn btn-primary"  (click)="onSubmit()">Save</button>
             </div>
         </div>
     </div>

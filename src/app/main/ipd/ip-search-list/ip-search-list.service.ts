@@ -704,7 +704,7 @@ public getUMOCombo() {
     if (loader) {
       this._loaderService.show();
   } 
-    return this._httpClient.post("InPatient/IPBillingInsertCashCounter",employee)
+    return this._httpClient1.PostData("IPBill/IPBilllwithCashCounterInsert",employee)
   }
   // public InsertIPBillingCredit(employee)
   // {
@@ -714,13 +714,13 @@ public getUMOCombo() {
     if (loader) {
       this._loaderService.show();
   } 
-    return this._httpClient.post("InPatient/IPBillingCreditInsertCashCounter",employee)
+    return this._httpClient1.PostData("IPBill/IPBilllCreditInsert",employee)
   }
   public InsertIPDraftBilling(e, loader = true) {
     if (loader) {
       this._loaderService.show();
   } 
-    return this._httpClient.post("InPatient/InsertIPDraftBill",e)
+    return this._httpClient1.PostData("IPBill/InsertIPDraftBill",e)
   } 
   public InsertInterim(employee, loader = true) {
     if (loader) {

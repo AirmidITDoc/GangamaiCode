@@ -39,7 +39,7 @@
                             </div> 
                             <div fxFlex="100%">
                                 <airmid-dropdown label="Class Name" formControlName="ChargeClass"
-                                [value]="registerObj1?.ChargeClass" [formGroup]="Serviceform"
+                                 [formGroup]="Serviceform"
                                 [validations]="getValidationMessages().ChargeClass"
                                 [mode]="autocompleteModeClass"  (selectionChange)="getSelectedClassObj($event)">
                                 </airmid-dropdown> 
@@ -924,7 +924,7 @@
                         <div *ngIf="ConcessionShow" fxFlex="15%">
                             <airmid-dropdown label="Concession Reason" formControlName="ConcessionId" [formGroup]="Ipbillform"
                                 [validations]="getValidationMessages().ConcessionId" [mode]="autocompleteModeConcession"
-                                (selectionChange)="selectChangeConcession($event)">
+                             >
                             </airmid-dropdown>
                         </div>
                     

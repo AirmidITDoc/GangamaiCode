@@ -169,7 +169,8 @@ export class IpdAdvanceBrowseModel {
     PaymentDate: any;
     AdvanceUsedAmount: number;
       Remark:any;
-      
+      usedAmount:any;
+      balanceAmount:any;
     /**
   * Constructor
   *
@@ -194,7 +195,8 @@ export class IpdAdvanceBrowseModel {
             this.AdvanceId = IpdAdvanceBrowseModel.AdvanceId || 0;
             this.AdvanceDetailID = IpdAdvanceBrowseModel.AdvanceDetailID || 0;
             this.IPDNo = IpdAdvanceBrowseModel.IPDNo || 0;
-  
+            this.balanceAmount = IpdAdvanceBrowseModel.balanceAmount || 0;
+            this.usedAmount = IpdAdvanceBrowseModel.usedAmount || 0;
             this.HospitalName=IpdAdvanceBrowseModel.HospitalName || '';
             this.HospAddress = IpdAdvanceBrowseModel.HospAddress || '';
             this.Phone = IpdAdvanceBrowseModel.Phone || 0;
