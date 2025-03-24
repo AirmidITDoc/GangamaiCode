@@ -39,7 +39,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxFlex="12%" fxLayout="row">
+                                <div fxFlex="16%" fxLayout="row">
                                     <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch" (change)="onChangeFirst()"
                                         fxLayout="column" value="2" class="gap-4"
                                         [(ngModel)]="gridConfig.filters[6].fieldValue">
@@ -162,14 +162,14 @@
 
                                 <mat-table class="mat-table-2 h-210" #table matSort [dataSource]="dataSource1"
                                     [@animateStagger]="{value:'50'}">
-                                    <ng-container matColumnDef="select">
+                                    <ng-container matColumnDef="select" class="w-100">
                                         <th mat-header-cell *matHeaderCellDef>
                                             <mat-checkbox (change)="$event ? masterToggle() : null"
                                                 [checked]="selection.hasValue()"
                                                 [indeterminate]="selection.hasValue() && !isAllSelected()">
                                             </mat-checkbox>
                                         </th>
-                                        <td mat-cell *matCellDef="let contact">
+                                        <td mat-cell *matCellDef="let contact" class="w-100">
                                             <mat-checkbox (click)="$event.stopPropagation()"
                                                 (change)="onresultentryshow($event,contact)"
                                                 (change)="$event ? selection.toggle(contact) : null"
@@ -184,7 +184,7 @@
 
                                     <ng-container matColumnDef="IsTemplateTest">
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                            class="w-90">IsTemplate</mat-header-cell>
+                                            class="w-100">IsTemplate</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" class="w-90">
 
                                             <mat-icon *ngIf="contact.isTemplateTest=='1'"

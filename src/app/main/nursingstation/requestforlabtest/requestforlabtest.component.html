@@ -42,6 +42,35 @@
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
     *ngIf="isShowDetailTable">
+
+    <ng-template #isStatusIcon let-element>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <mat-icon *ngIf="element.isStatus == true" matTooltip="Bill Generated" 
+            class="active-icon green-500 s-16">
+                check_circle
+            </mat-icon>
+            
+            <mat-icon *ngIf="element.isStatus == false" matTooltip="Bill Not Generated" 
+            class="active-icon red-500 s-16">
+                hourglass_empty
+            </mat-icon>
+            
+        </div>
+    </ng-template>
+
+    <ng-template #isTestCompletedIcon let-element>
+        <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon *ngIf="element.isTestCompleted == 1" matTooltip="Lab Report Ready" >
+                    remove_red_eye
+                </mat-icon>
+                
+                <mat-icon *ngIf="element.isTestCompleted == 0" matTooltip="Result Entry Not Completed"
+                 class="active-icon red-500 s-16">
+                    hourglass_empty
+                </mat-icon>
+        </div>
+    </ng-template>
+
         <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false" :ShowButtons="false">
         </airmid-table>
     </div>

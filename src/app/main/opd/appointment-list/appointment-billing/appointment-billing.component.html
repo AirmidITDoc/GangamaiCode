@@ -188,7 +188,7 @@
                                                 formControlName="serviceName" 
                                                 placeholderText="Enter Service Name"
                                                 fxFlex
-                                                ApiUrl="VisitDetail/GetServiceListwithTraiff?TariffId=1&ClassId=2&ServiceName="
+                                                [ApiUrl]="'VisitDetail/GetServiceListwithTraiff?TariffId='+patientDetail.classId+'&ClassId='+patientDetail.tariffId+'&ServiceName='"
                                                 (selectionChange)="getSelectedserviceObj($event)"
                                                 TextField="formattedText" 
                                                 ValueField="serviceId"></airmid-autocomplete>
