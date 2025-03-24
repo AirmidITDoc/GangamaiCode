@@ -46,20 +46,24 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 })
 export class IPSearchListComponent implements OnInit {
     myFilterform: FormGroup;
-    autocompleteModedeptdoc: string = "ConDoctor";
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    @ViewChild('iconPatientCategory') iconPatientCategory!: TemplateRef<any>;
-    @ViewChild('iconBillCancle') iconBillCancle!: TemplateRef<any>;
-    @ViewChild('iconMlc') iconMlc!: TemplateRef<any>;
-    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-    fromDate = ""// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    toDate =  this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
     vOPIPId = 0;
     f_name: any = ""
     regNo: any = "0"
     l_name: any = ""
     m_name: any = ""
     IPDNo: any = ""
+    status="0"
+    fromDate = ""// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate =  this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+   
+    dataSource1 = new MatTableDataSource<AdvanceDetailObj>();
+    autocompleteModedeptdoc: string = "ConDoctor";
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    @ViewChild('iconPatientCategory') iconPatientCategory!: TemplateRef<any>;
+    @ViewChild('iconBillCancle') iconBillCancle!: TemplateRef<any>;
+    @ViewChild('iconMlc') iconMlc!: TemplateRef<any>;
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.iconPatientCategory;
         this.gridConfig.columnsList.find(col => col.key === 'isBillGenerated')!.template = this.iconBillCancle;
@@ -78,7 +82,6 @@ export class IPSearchListComponent implements OnInit {
         { heading: "Doctorname", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "RefDocName", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Adv.Amount", key: "adv.amount", sort: true, align: 'left', emptySign: 'NA', type: 10 },
-        // { heading: "PatientType", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.status, },
         { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', type: 10, width: 350 },
         {
             heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,width:200,
@@ -100,7 +103,7 @@ export class IPSearchListComponent implements OnInit {
             { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: "", opType: OperatorComparer.Equals },
-            { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
             { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
                   ],
@@ -121,12 +124,7 @@ export class IPSearchListComponent implements OnInit {
 
     ngOnInit(): void {
         this.myFilterform = this._IpSearchListService.filterForm();
-        // this.myFilterform.get("fromDate").reset();
-        // this.myFilterform.get("enddate").reset();
-        // this.myFilterform.get("fromDate").setValue("");
-        // this.myFilterform.get("enddate").setValue("");
-
-
+      
         if (this._ActRoute.url == '/ipd/ipadvance') {
             this.menuActions.push('Advance');
             this.menuActions.push('Bed Transfer');
@@ -188,9 +186,9 @@ export class IPSearchListComponent implements OnInit {
                     data: element
                 });
             dialogRef.afterClosed().subscribe(result => {
-                if (result) {
-                    that.grid.bindGridData();
-                }
+                   this.status="1"
+                   this.onChangeFirst();
+                
             });
         }
         else if (m == "Discharge Summary") {
@@ -373,9 +371,13 @@ export class IPSearchListComponent implements OnInit {
                 })
             }
         }
+
+
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
     }
 
-    dataSource1 = new MatTableDataSource<AdvanceDetailObj>();
+    
 
     getValidationdoctorMessages() {
         return {
@@ -407,8 +409,8 @@ export class IPSearchListComponent implements OnInit {
 
     onChangeFirst() {
         
-        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+        // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+        // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
         this.f_name = this.myFilterform.get('FirstName').value + "%"
         this.l_name = this.myFilterform.get('LastName').value + "%"
         this.regNo = this.myFilterform.get('RegNo').value || "0"
@@ -432,7 +434,7 @@ export class IPSearchListComponent implements OnInit {
                 { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-                { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
                 { fieldName: "M_Name", fieldValue: this.m_name, opType: OperatorComparer.Equals },
                 { fieldName: "IPNo", fieldValue: this.IPDNo, opType: OperatorComparer.Equals }
                
@@ -464,10 +466,15 @@ export class IPSearchListComponent implements OnInit {
         debugger
         console.log(event)
         if (event.value == "1")
-            this.gridConfig.filters[6].fieldValue = "1"
+            this.status="0"
+            // this.gridConfig.filters[6].fieldValue = "1"
         else if (event.value == "0")
-            this.gridConfig.filters[6].fieldValue = "0"
+            this.status="1"
+            // this.gridConfig.filters[6].fieldValue = "0"
 
+
+        console.log(this.gridConfig)
+        this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
     }
 

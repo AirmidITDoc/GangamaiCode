@@ -112,13 +112,6 @@ export class RegistrationService {
         // this.createPesonalForm1();
     }
 
-
-    public getRegistrationList(employee) {
-        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RegistrationList", employee)
-    }
-
-
-
     public RegstrationtSaveData(Param: any) {
 
         if (Param.RegId) {
@@ -127,20 +120,11 @@ export class RegistrationService {
     }
 
 
-
     public deactivateTheStatus(m_data) {
         return this._httpClient1.PostData("OutPatient/RegistrationInsert", m_data);
     }
 
-    public getMaster(mode, Id) {
-        return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode=" + mode + "&Id=" + Id);
-    }
-
-
-    // public getcityMaster(Id, version) {
-
-    //     return this._httpClient1.GetData("CityMaster?Id=" + Id + "&version=" + version);
-    // }
+   
     public getNewRegistrationList(employee) {
         return this._httpClient1.PostData("OutPatient/RegistrationList", employee)
     }
@@ -153,17 +137,7 @@ export class RegistrationService {
         return this._httpClient1.GetData("OutPatient/" + Id);
     }
 
-    // public getcitylist(version) {
-    //     return this._httpClient1.GetData("CityMaster/get-cities/" + "&version=" + version);
-    // }
-
-  
-
-    // public getstateId(Id) {
-
-    //     return this._httpClient1.GetData("StateMaster/?Id=" + Id + "&version=" + 1);
-    // }
-
+    
     public getPatientListView(mode) {
         return this._httpClient1.PostData("Report/NewViewReport", mode);
 

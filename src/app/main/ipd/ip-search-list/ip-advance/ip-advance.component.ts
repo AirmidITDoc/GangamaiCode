@@ -282,9 +282,13 @@ TotalAdvRefAmt:any=0;
         };
         console.log(submitData);
         this._IpSearchListService.InsertAdvanceHeader(submitData).subscribe(response => {
-          console.log(response)
+          // console.log(response)
           this.toastr.success(response.message);
-          this.viewgetAdvanceReceiptReportPdf(response);
+
+          let Res = response.message
+          let ID = Res.split('.')
+          let Id = ID[1]
+          this.viewgetAdvanceReceiptReportPdf(Id);
           this.getWhatsappsAdvance(response, this.vMobileNo);
           this._matDialog.closeAll();
         }, (error) => {
@@ -332,7 +336,7 @@ TotalAdvRefAmt:any=0;
   } 
   viewgetAdvanceReceiptReportPdf(data) {
    
-    this.commonService.Onprint("AdvanceDetailID", data.advanceDetailID, "IpAdvanceReceipt");
+    this.commonService.Onprint("AdvanceDetailID", data, "IpAdvanceReceipt");
   }
 
   getWhatsappsAdvance(el, vmono) { 

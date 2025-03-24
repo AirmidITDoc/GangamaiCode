@@ -44,7 +44,7 @@
                                     <div class="select-container" fxLayout="row" fxLayout.lt-sm="column" class="gap-8">
 
                                         <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No" [formGroup]="searchFormGroup"
-                                            formControlName="RegId" *ngIf="Regflag" fxFlex
+                                            formControlName="RegId" *ngIf="Regflag" class="w-350"
                                             placeholderText="Enter Patient Name"
                                             ApiUrl="OutPatient/auto-complete?Keyword="
                                             (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
@@ -130,27 +130,14 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <!-- <airmid-dropdown label="City" formControlName="CityId"
-                                            [formGroup]="personalFormGroup" [value]="registerObj?.cityId"
-                                            [validations]="getValidationMessages().cityId" ValueField="cityId"
-                                            TextField="cityName" (selectionChange)="onChangecity($event)"
-                                            ApiUrl="CityMaster/get-cities"> </airmid-dropdown> -->
-
-
-                                            <airmid-dropdown label="City" formControlName="CityId" [formGroup]="personalFormGroup" 
+                                                                                   <airmid-dropdown label="City" formControlName="CityId" [formGroup]="personalFormGroup" 
                                             [value]="registerObj?.cityId" [validations]="getValidationMessages().cityId" 
                                             ValueField="cityId" TextField="cityName" (selectionChange)="onChangecity($event)" ApiUrl="CityMaster/get-cities">
                                             </airmid-dropdown>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <!-- <airmid-dropdown label="State" formControlName="StateId"
-                                            [value]="registerObj?.stateId" [formGroup]="personalFormGroup"
-                                            [disabled]="true" [validations]="getValidationMessages().stateId" #ddlState
-                                            [mode]="autocompleteModestate"> </airmid-dropdown> -->
-
-
-                                            
+                                                                                
                                         <airmid-dropdown label="StateId" formControlName="StateId" [formGroup]="personalFormGroup"
                                         [value]="registerObj?.stateId" [validations]="getValidationMessages().stateId"
                                          ValueField="stateId" TextField="stateName" (selectionChange)="onChangestate($event)"
@@ -315,8 +302,7 @@
                                         [validations]="getValidationMessages().wardId"
                                         ValueField="roomId" TextField="roomName" 
                                         (selectionChange)="onChangeWard($event)"
-                                        ApiUrl="WardMaster/get-WardClass" #ddlWard
-                                        >
+                                        ApiUrl="WardMaster/get-WardClass" #ddlWard>
                                     </airmid-dropdown>
                                     </div>
 
@@ -349,7 +335,7 @@
                     </form>
                 </div>
 
-                <!-- Other Details -->
+               
                 <div class="detail-container">
                     <form [formGroup]="admissionFormGroup">
                         <mat-card>
@@ -397,7 +383,7 @@
         </div>
     </div>
 
-    <!-- Modal footer -->
+   
     <div class="modal-footer">
         <div class="footer-navigation-container">
             <form [formGroup]="admissionFormGroup">
@@ -419,8 +405,9 @@
                         </mat-checkbox>
                     </div>
                     <div class="modal-footer-buttons">
-                        <button class="btn btn-danger-outline" (click)="onReset()">Reset</button>
+                      
                         <button class="btn btn-primary" (click)="onNewSave()">Save </button>
+                        <button class="btn btn-danger-outline" (click)="onReset()">Reset</button>
                     </div>
                 </div>
             </form>

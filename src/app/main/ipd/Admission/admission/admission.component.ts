@@ -125,6 +125,27 @@ export class AdmissionComponent implements OnInit {
   l_name: any = ""
   m_name: any = ""
   IPDNo: any = ""
+
+  ngOnInit(): void {
+
+    this.searchFormGroup = this.createSearchForm();
+    this.myFilterform = this._AdmissionService.filterForm();
+    // this.fromDate ="1900-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    // this.toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+  
+   // menu Button List
+   this.menuActions.push("Bill");
+   this.menuActions.push("Bed Transfer");
+   this.menuActions.push("Discharge");
+   this.menuActions.push("MLC Update");
+   this.menuActions.push("Sub TPA Company");
+   this.menuActions.push("Discharge SummarY");
+   this.menuActions.push("Refund Of Bill");
+   this.menuActions.push("Refund Of Advance");
+   
+  }
+
+
   @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
   @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
   @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
@@ -194,33 +215,7 @@ export class AdmissionComponent implements OnInit {
     private commonService: PrintserviceService,
   ) { }
 
-  ngOnInit(): void {
-
-    this.searchFormGroup = this.createSearchForm();
-    this.myFilterform = this._AdmissionService.filterForm();
-    // this.fromDate ="1900-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    // this.toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
-  
-   // menu Button List
-   this.menuActions.push("Bill");
-   this.menuActions.push("Bed Transfer");
-   this.menuActions.push("Discharge");
-   this.menuActions.push("MLC Update");
-   this.menuActions.push("Sub TPA Company");
-   this.menuActions.push("Discharge SummarY");
-   this.menuActions.push("Refund Of Bill");
-   this.menuActions.push("Refund Of Advance");
-   
-  }
-
-  // onChangeStartDate(value) {
-  //   this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-  // }
-  // onChangeEndDate(value) {
-  //   this.gridConfig.filters[5].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-  // }
-
-
+ 
   Admissiondetail(data) {
     this.Vtotalcount = 0;
     this.VNewcount = 0;
@@ -250,24 +245,24 @@ export class AdmissionComponent implements OnInit {
     buttonElement.blur(); // Remove focus from the button
     this._AdmissionService.populateForm(row);
 
-    const dialogRef = this._matDialog.open(
-      NewRegistrationComponent,
+    const dialogRef = this._matDialog.open(NewRegistrationComponent,
       {
         maxWidth: "100vw",
         maxHeight: '70%',
         width: '95%',
         data: row
 
-      }
-    );
+      });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log("The dialog was closed - Insert Action", result);
 
     });
+
+    // console.log(this.gridConfig)
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData();
   }
-
-
 
   getValidationdoctorMessages() {
     return {
@@ -290,10 +285,8 @@ export class AdmissionComponent implements OnInit {
     });
   }
 
-
-
   OngetRecord(element, m) {
-    console.log('Third action clicked for:', element);
+    
     if (m == "Bill") {
       const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
       buttonElement.blur(); // Remove focus from the button
@@ -406,13 +399,6 @@ export class AdmissionComponent implements OnInit {
 
 
 
-  // item1: any;
-  // item2: any;
-  // onClick(event: any) {
-  //   this.item1 = "";
-  //   event.stopPropagation();
-  // }
-
   onClose() {
     this.searchFormGroup.get('RegId').reset();
     this.searchFormGroup.get('RegId').disable();
@@ -423,14 +409,10 @@ export class AdmissionComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-  ngOnDestroy() {
-
-  }
-
   onChangeFirst() {
-    debugger
-    this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-    this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+    
+    // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+    // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
     this.f_name = this.myFilterform.get('FirstName').value + "%"
     this.l_name = this.myFilterform.get('LastName').value + "%"
     this.regNo = this.myFilterform.get('RegNo').value || "0"
@@ -441,12 +423,12 @@ export class AdmissionComponent implements OnInit {
   }
 
   getfilterdata() {
-    debugger
+  
     this.gridConfig = {
       apiUrl: "Admission/AdmissionList",
       columnsList: this.allcolumns,
       sortField: "AdmissionId",
-        sortOrder: 1,
+        sortOrder: 0,
         filters:  [
           { fieldName: "F_Name", fieldValue:  this.f_name, opType: OperatorComparer.Contains },
           { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
@@ -461,6 +443,7 @@ export class AdmissionComponent implements OnInit {
             ],
         row: 25
     }
+    console.log(this.gridConfig)
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
 
@@ -483,52 +466,50 @@ export class AdmissionComponent implements OnInit {
   }
 
   getAdmittedPatientListview() {
-    setTimeout(() => {
+    // setTimeout(() => {
 
-      let param = {
+    //   let param = {
 
-        "searchFields": [
-          {
-            "fieldName": "DoctorId",
-            "fieldValue": "4",
-            "opType": "13"
-          },
-          {
-            "fieldName": "WardId",
-            "fieldValue": "4",
-            "opType": "13"
-          },
-          {
-            "fieldName": "CompanyId",
-            "fieldValue": "0",
-            "opType": "13"
-          }
+    //     "searchFields": [
+    //       {
+    //         "fieldName": "DoctorId",
+    //         "fieldValue": "4",
+    //         "opType": "13"
+    //       },
+    //       {
+    //         "fieldName": "WardId",
+    //         "fieldValue": "4",
+    //         "opType": "13"
+    //       },
+    //       {
+    //         "fieldName": "CompanyId",
+    //         "fieldValue": "0",
+    //         "opType": "13"
+    //       }
 
-        ],
-        "mode": "AdmissionList"
-      }
+    //     ],
+    //     "mode": "AdmissionList"
+    //   }
 
-      console.log(param)
-      this._AdmissionService.getReportView(param).subscribe(res => {
-        const matDialog = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "IP Admission List  Viewer"
+    //   console.log(param)
+    //   this._AdmissionService.getReportView(param).subscribe(res => {
+    //     const matDialog = this._matDialog.open(PdfviewerComponent,
+    //       {
+    //         maxWidth: "85vw",
+    //         height: '750px',
+    //         width: '100%',
+    //         data: {
+    //           base64: res["base64"] as string,
+    //           title: "IP Admission List  Viewer"
 
-            }
+    //         }});
 
-          });
+    //     matDialog.afterClosed().subscribe(result => {
 
-        matDialog.afterClosed().subscribe(result => {
+    //     });
+    //   });
 
-        });
-      });
-
-    }, 100);
+    // }, 100);
 
   }
 
@@ -539,16 +520,6 @@ export class AdmissionComponent implements OnInit {
   getAdmittedPatientCasepaperTempview(element) {
     this.commonService.Onprint("AdmissionId", element.admissionId, "IpCasepaperReport");
   }
-
-  onClear() {
-    this._AdmissionService.myFilterform.reset(
-      {
-        start: [],
-        end: []
-      }
-    );
-  }
-
 
   NewMLc(contact) {
 
@@ -586,9 +557,12 @@ export class AdmissionComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-
-
     });
+   
+    // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+    // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+    // this.onChangeFirst() 
+    this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
   }
   getEditAdmission(row) {
@@ -598,7 +572,7 @@ export class AdmissionComponent implements OnInit {
     const dialogRef = this._matDialog.open(EditAdmissionComponent,
       {
         maxWidth: "90vw",
-        height: '650px',
+        height: '730px',
         width: '100%',
         data: row
 
@@ -607,6 +581,7 @@ export class AdmissionComponent implements OnInit {
       console.log('The dialog was closed - Insert Action', result);
 
     });
+    this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
   }
 
@@ -725,10 +700,15 @@ export class AdmissionComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+      
+      this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+      this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
 
+      this.onChangeFirst() 
+      console.log(this.gridConfig)
+      this.grid.bindGridData();
     });
-
-    this.grid.bindGridData();
+   
   }
 }
 
@@ -1129,6 +1109,7 @@ export class AdmissionPersonlModel {
       this.admissionId = AdmissionPersonl.admissionId || 0
       this.dischargeTime = AdmissionPersonl.dischargeTime || ''
       this.patientTypeId = AdmissionPersonl.patientTypeId || ''
+      
       this.genderId = AdmissionPersonl.genderId || ''
       this.oP_IP_No = AdmissionPersonl.oP_IP_No || ''
       this.doctorName = AdmissionPersonl.doctorName || ''

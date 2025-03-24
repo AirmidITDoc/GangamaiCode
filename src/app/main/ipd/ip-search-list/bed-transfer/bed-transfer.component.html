@@ -144,17 +144,21 @@
 
                                     <airmid-dropdown label="Ward Name" formControlName="toWardId" fxFlex="25%"
                                         [formGroup]="Bedtransfer" [validations]="getValidationMessages().toWardId"
-                                        [mode]="autocompleteroom">
+                                        ValueField="roomId" TextField="roomName"
+                                        (selectionChange)="onChangeWard($event)" ApiUrl="WardMaster/get-WardClass"
+                                        #ddlWard>
                                     </airmid-dropdown>
+
 
                                     <airmid-dropdown label="Bed Name" formControlName="toBedId" fxFlex="25%"
                                         [formGroup]="Bedtransfer" [validations]="getValidationMessages().toBedId"
                                         [mode]="autocompletebed">
                                     </airmid-dropdown>
 
+                                   
                                     <airmid-dropdown label="Class Name" formControlName="toClassId" fxFlex="25%"
                                         [formGroup]="Bedtransfer" [validations]="getValidationMessages().ClassId"
-                                        [mode]="autocompleteclass">
+                                        [mode]="autocompleteclass" [disabled]="true" #ddlClassName>
                                     </airmid-dropdown>
 
                                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="25%">

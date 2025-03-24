@@ -95,6 +95,13 @@
                         <mat-icon style="color: black;">feedback</mat-icon>
                     </button>
 
+<!-- 
+                    <button mat-icon-button *ngIf="contact.isInitinatedDischarge=='1'" matTooltip="Discharge Initiated">
+                        <mat-icon>
+                            <img width="20px" height="6px" src="assets/images/logos/discharge_initiated.png"
+                                style="background:-moz-linear-gradient(00,9,22);">
+                        </mat-icon>
+                    </button> -->
 
                     <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
                         (click)="$event.stopPropagation();">

@@ -2,7 +2,7 @@ import { Component, EventEmitter, Inject, OnInit, Output, ViewChild, ViewEncapsu
 import { fuseAnimations } from '@fuse/animations';
 import { AdvanceDetailObj, Discharge, IPSearchListComponent } from '../ip-search-list.component';
 import { MatPaginator } from '@angular/material/paginator';
-import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
@@ -31,11 +31,10 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 export class DischargeComponent implements OnInit {
 
 
-  isLoading: string = '';
   DischargeForm: FormGroup;
   currentDate = new Date();
-  // screenFromString = 'discharge';
-  screenFromString = 'OP-billing';
+  screenFromString = 'discharge';
+  // screenFromString = 'OP-billing';
   selectedAdvanceObj: AdvanceDetailObj;
   DischargeId: any = 0;
   Today: Date = new Date();
@@ -80,8 +79,8 @@ export class DischargeComponent implements OnInit {
     public dialogRef: MatDialogRef<DischargeComponent>,
     public toastr: ToastrService,
     public _ConfigService: ConfigService,
-     private commonService: PrintserviceService,
-     private accountService: AuthenticationService,
+    private commonService: PrintserviceService,
+    private accountService: AuthenticationService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     setInterval(() => {
@@ -98,6 +97,9 @@ export class DischargeComponent implements OnInit {
 
   ngOnInit(): void {
     this.DischargeForm = this.DischargesaveForm();
+    this.DischargeForm.markAllAsTouched();
+
+    
     console.log(this.data)
     if (this.data) {
       this.vAdmissionId = this.data.admissionId;
@@ -114,7 +116,7 @@ export class DischargeComponent implements OnInit {
 
         });
 
-      
+
       }, 500);
     }
 
@@ -131,7 +133,7 @@ export class DischargeComponent implements OnInit {
 
 
   getdischargeIdbyadmission() {
-    
+    debugger
     this._IpSearchListService.getDischargeId(this.data.admissionId).subscribe(data => {
       console.log(data)
 
@@ -161,8 +163,8 @@ export class DischargeComponent implements OnInit {
       // admissionId: this.data.admissionId,
       dischargeDate: "",
       dischargeTime: "",
-      dischargeTypeId: 0,
-      dischargedDocId: 0,
+      dischargeTypeId: ['',Validators.required],
+      dischargedDocId:['',Validators.required],
       dischargedRmoid: 0,
       addedBy: 0
     });
@@ -170,76 +172,78 @@ export class DischargeComponent implements OnInit {
 
   onDischarge() {
     console.log(this.DischargeForm.value)
+    if (!this.DischargeForm.invalid) {
+      let dischargModeldata = {};
 
-    let dischargModeldata = {};
+        dischargModeldata['dischargeDate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
+        dischargModeldata['dischargeTime'] = this.dateTimeObj.time
+        dischargModeldata['dischargeTypeId'] = this.DischargeForm.get("dischargedDocId").value || 0,
+        dischargModeldata['dischargedDocId'] = this.DischargeForm.get("dischargeTypeId").value || 0,
+        dischargModeldata['dischargedRmoid'] = this.DischargeForm.get("dischargedRmoid").value || 0,
+        dischargModeldata['addedBy'] = this.accountService.currentUserValue.userId,
+        dischargModeldata['dischargeId'] = this.DischargeId
+        dischargModeldata['admissionId'] = this.vAdmissionId
 
-    dischargModeldata['dischargeDate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
-      dischargModeldata['dischargeTime'] = this.dateTimeObj.time
-    dischargModeldata['dischargeTypeId'] = this.DischargeForm.get("dischargedDocId").value || 0,
-      dischargModeldata['dischargedDocId'] = this.DischargeForm.get("dischargeTypeId").value || 0,
-      dischargModeldata['dischargedRmoid'] = this.DischargeForm.get("dischargedRmoid").value || 0,
-      dischargModeldata['addedBy'] = this.accountService.currentUserValue.userId,
-    dischargModeldata['dischargeId'] = this.DischargeId
-    dischargModeldata['admissionId'] = this.vAdmissionId
-    
-    if (this.DischargeId == 0){
-      dischargModeldata['admissionId'] = this.vAdmissionId
-    var m_data = {
-      "discharge": dischargModeldata,
-      "admission": {
-        "admissionId": this.vAdmissionId,
-        "isDischarged": 1,
-        "dischargeDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-        "dischargeTime": this.dateTimeObj.time
-      },
-      "bed": {
-        "bedId": this.vBedId,
-      }
-    }
-    console.log(m_data)
-
-    this._IpSearchListService.DichargeInsert(m_data).subscribe((response) => {
-      this.toastr.success(response.message);
-      let Res=response.message
-            let ID=Res.split('.')
-            let Id=ID[1]
-      this.viewgetDischargeSlipPdf(Id)
-      this._matDialog.closeAll();
-    }, (error) => {
-      this.toastr.error(error.message);
-    });
-  }else if (this.DischargeId != 0){
-      dischargModeldata['modeOfDischargeId'] = 1
-      dischargModeldata['modifiedBy'] = 1
-
-      var m_data1 = {
-        "discharge": dischargModeldata,
-        "admission": {
-          "admissionId": this.vAdmissionId,
-          "isDischarged": 1,
-          "dischargeDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-          "dischargeTime": this.dateTimeObj.time
+      if (this.DischargeId == 0) {
+        dischargModeldata['admissionId'] = this.vAdmissionId
+        var m_data = {
+          "discharge": dischargModeldata,
+          "admission": {
+            "admissionId": this.vAdmissionId,
+            "isDischarged": 1,
+            "dischargeDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+            "dischargeTime": this.dateTimeObj.time
+          },
+          "bed": {
+            "bedId": this.vBedId,
+          }
         }
-      }
-  
-        this._IpSearchListService.DichargeUpdate(m_data1).subscribe((response) => {
-        this.toastr.success(response.message);
-        let Res=response.message
-        let ID=Res.split('.')
-        let Id=ID[1]
-        this.viewgetDischargeSlipPdf(Id)
-        this._matDialog.closeAll();
-      }, (error) => {
-        this.toastr.error(error.message);
-      });
-    }
-    this.DischargeForm.reset();
-  }
+        console.log(m_data)
 
+        this._IpSearchListService.DichargeInsert(m_data).subscribe((response) => {
+          this.toastr.success(response.message);
+          let Res = response.message
+          let ID = Res.split('.')
+          let Id = ID[1]
+          this.viewgetDischargeSlipPdf(Id)
+          this._matDialog.closeAll();
+        }, (error) => {
+          this.toastr.error(error.message);
+        });
+      } else if (this.DischargeId != 0) {
+        dischargModeldata['modeOfDischargeId'] = 1
+        dischargModeldata['modifiedBy'] = 1
+
+        var m_data1 = {
+          "discharge": dischargModeldata,
+          "admission": {
+            "admissionId": this.vAdmissionId,
+            "isDischarged": 1,
+            "dischargeDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+            "dischargeTime": this.dateTimeObj.time
+          }
+        }
+
+        this._IpSearchListService.DichargeUpdate(m_data1).subscribe((response) => {
+          this.toastr.success(response.message);
+          let Res = response.message
+          let ID = Res.split('.')
+          let Id = ID[1]
+          this.viewgetDischargeSlipPdf(Id)
+          this._matDialog.closeAll();
+        }, (error) => {
+          this.toastr.error(error.message);
+        });
+      }
+      this.DischargeForm.reset();
+    } else {
+      Swal.fire("Form Is Invalid ...")
+    }
+  }
   viewgetDischargeSlipPdf(data) {
 
     this.commonService.Onprint("AdmId", data, "IpDischargeReceipt");
-}
+  }
   getValidationMessages() {
     return {
       dischargeTypeId: [
@@ -264,21 +268,20 @@ export class DischargeComponent implements OnInit {
 
   }
 
-  vApproved_Cnt:any;
-  vDeptCount:any;
+  vApproved_Cnt: any;
+  vDeptCount: any;
   getchkConfigInitiate() {
-   var data={
+    //  var data={
 
-   }
-    this._IpSearchListService.getchkConfigInitiate(data).subscribe((data) => {
-      console.log(data)
-      if(data){
-        this.vApproved_Cnt = data[0]?.Approved_Cnt
-        this.vDeptCount = data[0]?.DeptCount
-        // console.log(this.vApproved_Cnt)
-        // console.log(this.vDeptCount)
-      } 
-    })
+    //  }
+    //   this._IpSearchListService.getchkConfigInitiate(data).subscribe((data) => {
+    //     console.log(data)
+    //     if(data){
+    //       this.vApproved_Cnt = data[0]?.Approved_Cnt
+    //       this.vDeptCount = data[0]?.DeptCount
+
+    //     } 
+    //   })
   }
 
 
@@ -289,7 +292,7 @@ export class DischargeComponent implements OnInit {
     //   });
     //   return;
     // }
-    
+
     const dialogRef = this._matDialog.open(InitiateDischargeComponent,
       {
         maxWidth: "50vw",

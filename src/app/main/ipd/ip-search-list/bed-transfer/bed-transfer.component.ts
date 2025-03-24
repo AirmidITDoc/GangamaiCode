@@ -26,10 +26,10 @@ import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdo
 })
 export class BedTransferComponent implements OnInit {
   Bedtransfer: FormGroup;
-  dateTimeObj: any;
-
+  
   screenFromString = 'admission-form';
   currentDate = new Date();
+  dateTimeObj: any;
 
   vWardId: any = 0;
   vBedId: any = 0;
@@ -37,7 +37,7 @@ export class BedTransferComponent implements OnInit {
   AdmissionId = 0
 
   menuActions: Array<string> = [];
-  advanceAmount: any = 12345;
+  advanceAmount: any = 0;
 
   // New Api
   autocompleteroom: string = "Room";
@@ -46,6 +46,7 @@ export class BedTransferComponent implements OnInit {
   registerObj1 = new AdmissionPersonlModel({});
   registerObj = new RegInsert({});
   @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
+@ViewChild('ddlClassName') ddlClassName: AirmidDropDownComponent;
 
 
   constructor(public _IpSearchListService: IPSearchListService,
@@ -89,9 +90,12 @@ export class BedTransferComponent implements OnInit {
         });
       }, 500);
     }
-    // this.Bedtransfer = this.bedsaveForm();
+   
   }
-
+  onChangeWard(e) {
+    this.ddlClassName.SetSelection(e.classId);
+    }
+  
 
   bedsaveForm(): FormGroup {
     return this._formBuilder.group({

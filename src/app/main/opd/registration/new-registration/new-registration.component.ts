@@ -42,8 +42,7 @@ export class NewRegistrationComponent implements OnInit {
     matDialogRef: any;
     RegID: number = 0;
    
-      
-    // New Api
+    
     autocompleteModegender: string = "Gender";
     autocompleteModearea: string = "Area";
     autocompleteModecity: string = "City";
@@ -63,9 +62,7 @@ export class NewRegistrationComponent implements OnInit {
         public dialogRef: MatDialogRef<NewRegistrationComponent>,
         public datePipe: DatePipe,
         private readonly changeDetectorRef: ChangeDetectorRef
-    ) {
-
-    }
+    ) {}
 
     ngAfterViewChecked(): void {
         this.changeDetectorRef.detectChanges();
@@ -88,10 +85,7 @@ export class NewRegistrationComponent implements OnInit {
                    });
             }, 500);
         }
-        // else {
-        //     this.personalFormGroup.reset();
-
-        // }
+      
     }
  
     OnSubmit() {

@@ -38,27 +38,19 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 export class EditAdmissionComponent implements OnInit {
   personalFormGroup: FormGroup;
   admissionFormGroup: FormGroup;
-  options = [];
-  msg: any = [];
-  optionRegSearch: any[] = [];
-  subscriptionArr: Subscription[] = [];
-
   patienttype: any;
-  saveflag: boolean = false;
+
   isCompanySelected: boolean = false;
   Regflag: boolean = false;
   showtable: boolean = false;
   Regdisplay: boolean = false;
-  isAlive = false;
-  savedValue: number = null;
-  submitted = false;
-  isLinear = true;
   noOptionFound: boolean = false;
   isRegSearchDisabled: boolean = true;
 
   reportPrintObj: AdmissionPersonlModel;
   printTemplate: any;
   registerObj1 = new AdmissionPersonlModel({});
+  registerObj2 = new AdmissionPersonlModel({});
   registerObj = new RegInsert({});
   bedObj = new Bed({});
   newRegSelected: any = 'registration';
@@ -79,7 +71,7 @@ export class EditAdmissionComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private router: Router,
     public toastr: ToastrService,
-     private commonService: PrintserviceService,
+    private commonService: PrintserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     dialogRef.disableClose = true;
@@ -97,43 +89,42 @@ export class EditAdmissionComponent implements OnInit {
   autocompleteModeSubCompany: string = "SubCompany";
 
   ngOnInit(): void {
-    this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
+    this.admissionFormGroup = this._AdmissionService.createEditAdmissionForm();
+    this.admissionFormGroup.markAllAsTouched();
 
     console.log(this.data)
-    if ((this.data?.regId ?? 0) > 0) {
+    // this.registerObj1 = this.data
 
+    
+
+    if ((this.data?.regId ?? 0) > 0) {
       setTimeout(() => {
         this._AdmissionService.getRegistraionById(this.data.regId).subscribe((response) => {
           this.registerObj = response;
-        
+
         });
 
         this._AdmissionService.getAdmissionById(this.data.admissionId).subscribe((response) => {
           this.registerObj1 = response;
-          console.log(response)
+          // console.log(response)
           if (this.registerObj1) {
             this.registerObj1.phoneNo = this.registerObj1.phoneNo.trim()
             this.registerObj1.mobileNo = this.registerObj1.mobileNo.trim()
-            if(this.registerObj1.patientTypeId==2){
-              this.isCompanySelected=true
+            if (this.registerObj1.patientTypeID !== 1) {
+              this.isCompanySelected = true
               this.admissionFormGroup.get("DepartmentId").setValue(this.registerObj1.departmentId
               )
               this.admissionFormGroup.get("CompanyId").setValue(this.registerObj1.companyId)
             }
           }
-          console.log(this.registerObj1)
 
         });
-
-
       }, 500);
     }
-   
+
   }
 
   selectChangedepartment(obj: any) {
-
-    console.log(obj)
     this._AdmissionService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
       this.ddlDoctor.options = data;
       this.ddlDoctor.bindGridAutoComplete();
@@ -157,7 +148,7 @@ export class EditAdmissionComponent implements OnInit {
       this.admissionFormGroup.get('SubCompanyId').updateValueAndValidity();
       this.patienttype = 1;
     }
-}
+  }
 
 
   OnSaveAdmission() {
@@ -170,34 +161,34 @@ export class EditAdmissionComponent implements OnInit {
       });
       return;
     }
-    // if (!this.admissionFormGroup.invalid) {
-    console.log(this.registerObj)
-    let submitData = {
-      "AdmissionReg": this.registerObj,// this.personalFormGroup.value,
-      "ADMISSION": this.admissionFormGroup.value
-    };
-    console.log(submitData);
+    if (!this.admissionFormGroup.invalid) {
+      console.log(this.registerObj)
+      let submitData = {
+        "AdmissionReg": this.registerObj,// this.personalFormGroup.value,
+        "ADMISSION": this.admissionFormGroup.value
+      };
+      console.log(submitData);
 
-    this._AdmissionService.AdmissionUpdate(this.registerObj1.admissionId, submitData).subscribe(response => {
-      this.toastr.success(response.message);
-      this.onClear();
-      let Res=response.message
-      let ID=Res.split('.')
-      let Id=ID[1]
-      this.getAdmittedPatientCasepaperview(Id);
-      this._matDialog.closeAll();
-    }, (error) => {
-      this.toastr.error(error.message);
+      this._AdmissionService.AdmissionUpdate(this.registerObj1.admissionId, submitData).subscribe(response => {
+        this.toastr.success(response.message);
+        this.onClear();
+        let Res = response.message
+        let ID = Res.split('.')
+        let Id = ID[1]
+        this.getAdmittedPatientCasepaperview(Id);
+        this._matDialog.closeAll();
+      }, (error) => {
+        this.toastr.error(error.message);
 
-    });
-    // }else{
-    //   Swal.fire("Enter All values ...Form Is Invalid")
-    // }
+      });
+    } else {
+      Swal.fire("Enter All values ...Form Is Invalid")
+    }
 
   }
   getAdmittedPatientCasepaperview(AdmissionId) {
     this.commonService.Onprint("AdmissionId", AdmissionId, "IpCasepaperReport");
-}
+  }
 
   getValidationMessages() {
     return {

@@ -30,31 +30,28 @@ export class NewAdmissionComponent implements OnInit {
 
   personalFormGroup: FormGroup;
   admissionFormGroup: FormGroup;
-  wardFormGroup: FormGroup;
-  otherFormGroup: FormGroup;
+
   searchFormGroup: FormGroup;
 
 
-  options = [];
-  msg: any = [];
-  optionRegSearch: any[] = [];
-  subscriptionArr: Subscription[] = [];
+  // options = [];
+  // subscriptionArr: Subscription[] = [];
 
-  matDialogRef: any;
+  // matDialogRef: any;
   patienttype: any;
   AdmissionId: any = 0;
   isCompanySelected: boolean = false;
   Regflag: boolean = false;
   Regdisplay: boolean = false;
-  isAlive = false;
-  savedValue: number = null;
-  submitted = false;
-  isLinear = true;
+  // isAlive = false;
+  // savedValue: number = null;
+  // submitted = false;
+  // isLinear = true;
   noOptionFound: boolean = false;
   isRegSearchDisabled: boolean = true;
   registredflag: boolean = true;
 
-  printTemplate: any;
+  // printTemplate: any;
   selectedAdvanceObj: AdvanceDetailObj;
   newRegSelected: any = 'registration';
   filteredOptionsRegSearch: Observable<string[]>;
@@ -63,7 +60,7 @@ export class NewAdmissionComponent implements OnInit {
 
   currentDate = new Date();
   public now: Date = new Date();
-  isLoading: string = '';
+  // isLoading: string = '';
   screenFromString = 'admission-form';
 
   @Input() panelWidth: string | number;
@@ -154,8 +151,7 @@ export class NewAdmissionComponent implements OnInit {
   }
 
   chkHealthcard(e) { }
-  ///New Admission 
-  //Radio btn
+
   onChangeReg(event) {
     if (event.value == 'registration') {
       this.Regflag = false;
@@ -167,32 +163,22 @@ export class NewAdmissionComponent implements OnInit {
 
       this.personalFormGroup = this._AdmissionService.createPesonalForm();
       this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
-
       this.Regdisplay = false;
-      // this.showtable = false;
-
+     
     } else {
       this.Regdisplay = true;
       this.Regflag = true;
       this.searchFormGroup.get('RegId').enable();
-      // this.isRegSearchDisabled = false;
-
       this.personalFormGroup = this._AdmissionService.createPesonalForm();
       this.personalFormGroup.markAllAsTouched();
       this.admissionFormGroup.markAllAsTouched();
-
-
-      // this.showtable = true;
     }
 
 
   }
 
   onNewSave() {
-    debugger
-
-    console.log(this.personalFormGroup.value)
-    console.log(this.admissionFormGroup.value)
+   
     if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid) {
 
       Swal.fire({
@@ -323,13 +309,11 @@ export class NewAdmissionComponent implements OnInit {
   }
 
   onChangeWard(e) {
-    console.log(e)
-    this.ddlClassName.SetSelection(e.classId);
+  this.ddlClassName.SetSelection(e.classId);
   }
 
   onChangecity(e) {
-    console.log(e)
-    this.registerObj.stateId = e.stateId
+   this.registerObj.stateId = e.stateId
     this._AdmissionService.getstateId(e.stateId).subscribe((Response) => {
       console.log(Response)
       this.ddlCountry.SetSelection(Response.countryId);
@@ -351,13 +335,10 @@ export class NewAdmissionComponent implements OnInit {
         { name: "pattern", Message: "only char allowed." }
       ],
       middleName: [
-        // { name: "required", Message: "Middle Name is required" },
-        // { name: "maxLength", Message: "Enter only upto 50 chars" },
         { name: "pattern", Message: "only char allowed." }
       ],
       lastName: [
         { name: "required", Message: "Last Name is required" },
-        // { name: "maxLength", Message: "Enter only upto 50 chars" },
         { name: "pattern", Message: "only char allowed." }
       ],
       address: [
@@ -509,8 +490,6 @@ export class NewAdmissionComponent implements OnInit {
 
 
   }
-
-
 
 
 }

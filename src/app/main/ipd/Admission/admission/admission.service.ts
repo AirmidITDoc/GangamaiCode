@@ -11,30 +11,34 @@ import { RegInsert } from 'app/main/opd/registration/registration.component';
 })
 export class AdmissionService {
 
+    myFilterform: FormGroup;
+    mySaveForm: FormGroup;
     populateFormpersonal(registerObj: RegInsert) {
         throw new Error('Method not implemented.');
     }
 
-    myFilterform: FormGroup;
-    mySaveForm: FormGroup;
-
-    counter = 0;
-
     constructor(public _httpClient: HttpClient, public _httpClient1: ApiCaller,  private accountService: AuthenticationService,
         public _formBuilder: UntypedFormBuilder, private _loaderService: LoaderService,
-    ) {
-        this.myFilterform = this.filterForm();
-        // this.mySaveForm = this.saveForm();
-    }
+    ) {this.myFilterform = this.filterForm();}
 
     filterForm(): FormGroup {
         return this._formBuilder.group({
             RegNo: '',
             IPDNo: '',
-            FirstName: '',
-            MiddleName: '',
-            LastName: '',
-            MobileNo: '',
+            FirstName: ['', [
+                Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+           ]],
+            MiddleName:  ['', [
+                Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+           ]],
+            LastName:  ['', [
+                Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+           ]],
+            MobileNo:  ['', [
+                Validators.minLength(10),
+                Validators.maxLength(10),
+                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                ]],
             searchDoctorId: 0,
             DoctorId: '0',
             DoctorID: '0',
@@ -70,17 +74,11 @@ export class AdmissionService {
             DateOfBirth: [(new Date()).toISOString()],
             Age: ['0'],
             AgeYear: ['0', [
-                // Validators.required,
-                Validators.maxLength(3),
-                // Validators.pattern("^[0-9]*$")
-            ]
+               Validators.maxLength(3),
+               ]
             ],
-            AgeMonth: ['0', [
-                // Validators.pattern("^[0-9]*$")
-            ]],
-            AgeDay: ['0', [
-                // Validators.pattern("^[0-9]*$")
-            ]],
+            AgeMonth: ['0'],
+            AgeDay: ['0'],
             PhoneNo: ['', [Validators.minLength(10),
             Validators.maxLength(10),
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
@@ -122,7 +120,7 @@ export class AdmissionService {
             AdmissionDate: [(new Date()).toISOString()],
             AdmissionTime: [(new Date()).toISOString()],
             PatientTypeId: 1,
-            hospitalId: 1,
+            hospitalId: 0,
             DocNameId: ['', [Validators.required]],
             RefDocNameId: 0,
             DischargeDate: "1900-01-01",
@@ -131,7 +129,10 @@ export class AdmissionService {
             IsBillGenerated: 0,
             CompanyId: 0,
             TariffId: [1, [Validators.required]],
-            ClassId: [1, [Validators.required]],
+            ClassId: ['', [Validators.required]],
+            wardId: ['', [Validators.required]],
+            bedId: ['', [Validators.required]],
+
             DepartmentId: ['', [Validators.required]],
             RelativeName: "",
             RelativeAddress: "",
@@ -160,9 +161,7 @@ export class AdmissionService {
             IsOpToIpconv: false,
             RefDoctorDept: "",
             AdmissionType: 1,
-
-            wardId: [0, [Validators.required]],
-            bedId: [0, [Validators.required]],
+          
             // unitId:1,
             // IsMLC: [false],
             // OPIPChange: [false],
@@ -174,6 +173,58 @@ export class AdmissionService {
         });
     }
    
+    createEditAdmissionForm() {
+        return this._formBuilder.group({
+            AdmissionId: 0,
+            RegId: 0,
+            AdmissionDate: [(new Date()).toISOString()],
+            AdmissionTime: [(new Date()).toISOString()],
+            PatientTypeId: 1,
+            hospitalId: 0,
+            DocNameId: ['', [Validators.required]],
+            RefDocNameId: 0,
+            DischargeDate: "1900-01-01",
+            DischargeTime: "1900-01-01T11:24:02.655Z",
+            IsDischarged: 0,
+            IsBillGenerated: 0,
+            CompanyId: 0,
+            TariffId: [1, [Validators.required]],
+            ClassId: [0],
+            wardId: [0],
+            bedId: [0],
+
+            DepartmentId: ['', [Validators.required]],
+            RelativeName: "",
+            RelativeAddress: "",
+            PhoneNo: ['', [Validators.required,
+                Validators.minLength(10),
+                Validators.maxLength(10),
+                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                ]],
+            MobileNo: ['', [
+            Validators.minLength(10),
+            Validators.maxLength(10),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            ]],
+            RelationshipId: 0,
+            AddedBy:this.accountService.currentUserValue.userId,
+            IsMlc: [false],
+            MotherName: "",
+            AdmittedDoctor1:0,
+            AdmittedDoctor2: 0,
+            RefByTypeId: 0,
+            RefByName: 0,
+            SubTpaComId: 0,
+            PolicyNo: "",
+            AprovAmount: 0,
+            compDOd: [(new Date()).toISOString()],
+            IsOpToIpconv: false,
+            RefDoctorDept: "",
+            AdmissionType: 1,
+          
+       
+        });
+    }
     public AdmissionNewInsert(employee) {
         return this._httpClient1.PostData("Admission/AdmissionInsertSP", employee);
     }
@@ -206,11 +257,11 @@ export class AdmissionService {
     }
 
 
-    public InsertNewAdmission(Param: any) {
-        if (Param.admissionId) {
-            return this._httpClient1.PutData("Admission/AdmissionInsertSP" + Param.admissionId, Param);
-        } else return this._httpClient1.PostData("Admission/AdmissionInsertSP", Param);
-    }
+    // public InsertNewAdmission(Param: any) {
+    //     if (Param.admissionId) {
+    //         return this._httpClient1.PutData("Admission/AdmissionInsertSP" + Param.admissionId, Param);
+    //     } else return this._httpClient1.PostData("Admission/AdmissionInsertSP", Param);
+    // }
 
 
     public getAdmittedPatientListNew(employee) {
@@ -218,29 +269,11 @@ export class AdmissionService {
     }
 
 
-    public getRegistraionById(Id) {
-        return this._httpClient1.GetData("OutPatient/" + Id);
-    }
-
-    public getAdmissionById(Id) {
-        return this._httpClient1.GetData("Admission/" + Id);
-    }
-
-    public getRegistrations(keyword) {
-        return this._httpClient1.GetData("OutPatient/auto-complete?Keyword=" + keyword);
-    }
-    public getAdmittedPatientCasepaaperView(Param) {
-        return this._httpClient1.PostData("Report/ViewReport", Param);
-    }
-
-    public getReportView(Param) {
-        return this._httpClient1.PostData("Report/ViewReport", Param);
-    }
-
+   
+   
 
     public MlcInsert(Param: any) {
-        
-            if (Param.mlcid) {
+        if (Param.mlcid) {
             return this._httpClient1.PutData("MlcInformation/" + Param.mlcid, Param);
         } else return this._httpClient1.PostData("MlcInformation", Param);
     }
@@ -265,6 +298,17 @@ export class AdmissionService {
         return this._httpClient1.GetData("StateMaster/" + Id);
     }
 
+    public getRegistraionById(Id) {
+        return this._httpClient1.GetData("OutPatient/" + Id);
+    }
+
+    public getAdmissionById(Id) {
+        return this._httpClient1.GetData("Admission/" + Id);
+    }
+
+    public getRegistrations(keyword) {
+        return this._httpClient1.GetData("OutPatient/auto-complete?Keyword=" + keyword);
+    }
 
     public CompanyUpdate(param) {
         return this._httpClient1.PostData("VisitDetail/DeptDoctorList",param)

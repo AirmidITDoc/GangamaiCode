@@ -119,8 +119,8 @@ export class DischargeSummaryTemplateComponent {
         this.registerObj = this.data;
         this.vAdmissionId = this.data.admissionId;
   
-        this.getDischargeSummaryData(this.data.admissionId)
-        this.getPrescription(this.data.admissionId)
+        this.getDischargeSummaryData( this.vAdmissionId)
+        this.getPrescription(this.vAdmissionId)
   
       }
   

@@ -29,18 +29,18 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 export class RegistrationComponent implements OnInit {
     myFilterform: FormGroup;
 
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-
-    constructor(public _RegistrationService: RegistrationService, public _matDialog: MatDialog,
-        public toastr: ToastrService, public datePipe: DatePipe) { }
-
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     f_name: any = ""
     regNo: any = "0"
     l_name: any = ""
     mobileno: any = "%"
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+
+    constructor(public _RegistrationService: RegistrationService, public _matDialog: MatDialog,
+        public toastr: ToastrService, public datePipe: DatePipe) { }
+
     ngOnInit(): void {
         this.myFilterform = this._RegistrationService.filterForm();
     }
@@ -61,7 +61,6 @@ export class RegistrationComponent implements OnInit {
         { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Adddress", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        // { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', },
         {
             heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.action, actions: [
                 {
@@ -86,9 +85,7 @@ export class RegistrationComponent implements OnInit {
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains }
-            // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            // { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-
+           
         ]
     }
 
@@ -112,7 +109,7 @@ export class RegistrationComponent implements OnInit {
 
 
     onEdit(row) {
-        console.log(row)
+       
         this._RegistrationService.populateForm(row);
 
         const dialogRef = this._matDialog.open(
@@ -189,8 +186,7 @@ export class RegistrationComponent implements OnInit {
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
                 { fieldName: "MobileNo", fieldValue: this.mobileno, opType: OperatorComparer.Contains }
-                // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                // { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+             
             ],
             row: 25
         }
