@@ -69,17 +69,17 @@ export class GoodReceiptnoteService {
     return this._formBuilder.group({
       PurchaseId: [''],
       poBalQty: [''],
-      ItemName: [''],
+      ItemName: ['', [Validators.required]],
       UOM: [''],
       HSNCode: [''],
-      BatchNo: [''],
+      BatchNo: ['', [Validators.required]],
       ConversionFactor: [''],
-      Qty: [''],
-      ExpDatess: [''],
-      MRP: [''],
+      Qty: ['', [Validators.required, Validators.min(1)]],
+      ExpDate: ['', [Validators.required]],
+      MRP: ['', [Validators.required]],
       FreeQty: [''],
-      Rate: [''],
-      TotalAmount: [''],
+      Rate: ['', [Validators.required]],
+      TotalAmount: ['',],
       Disc: [''],
       Disc2: [''],
       DisAmount: [''],
@@ -182,29 +182,29 @@ export class GoodReceiptnoteService {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemName_GRN", Param);
   }
 
-  public GRNSave(Param,loader = true){ 
+  public GRNSave(Param, loader = true) {
     if (loader) {
       this._loaderService.show();
-  }
+    }
     return this._httpClient.post("Pharmacy/InsertGRNDirect", Param);
   }
-  public POtoGRNSave(Param,loader = true){ 
+  public POtoGRNSave(Param, loader = true) {
     if (loader) {
       this._loaderService.show();
-  }
+    }
     return this._httpClient.post("Pharmacy/InsertGRNPurchase", Param);
   }
-  public POtoGRNUpated(Param,loader = true){ 
+  public POtoGRNUpated(Param, loader = true) {
     if (loader) {
       this._loaderService.show();
-  }
+    }
     return this._httpClient.post("Pharmacy/UpdateGRNPurchase", Param);
   }
 
-  public GRNEdit(Param,loader = true){ 
+  public GRNEdit(Param, loader = true) {
     if (loader) {
       this._loaderService.show();
-  }
+    }
     return this._httpClient.post("Pharmacy/updateGRN", Param);
   }
 
@@ -214,7 +214,7 @@ export class GoodReceiptnoteService {
   public getPrintGRNList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=rptPrintGRN", Param);
   }
-  public getVerifyGRN(Param){ 
+  public getVerifyGRN(Param) {
     return this._httpClient.post("Pharmacy/VerifyGRN", Param)
   }
   public getGRNreportview(GRNID) {
@@ -227,6 +227,6 @@ export class GoodReceiptnoteService {
     return this._httpClient.get("Pharmacy/view-GRNReport?GRNID=" + GRNID);
   }
   public getCheckInvoiceNo(data) {
-    return this._httpClient.post("Generic/GetBySelectQuery?query="+data,  {});
+    return this._httpClient.post("Generic/GetBySelectQuery?query=" + data, {});
   }
 }

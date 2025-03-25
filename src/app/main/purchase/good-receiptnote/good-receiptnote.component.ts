@@ -791,6 +791,7 @@ export class ItemNameList {
     Disc: number;
     DisAmount: number;
     GSTNo: number;
+    GST: number;
     GSTAmount: number;
     CGST: number;
     CGSTAmount: number;
@@ -902,6 +903,7 @@ export class ItemNameList {
             this.DiscPer2 = ItemNameList.DiscPer2 || 0;
             this.DiscAmt2 = ItemNameList.DiscAmt2 || 0;
             this.GSTNo = ItemNameList.GSTNo || 0;
+            this.GST = ItemNameList.GST || 0;
             this.GSTAmount = ItemNameList.GSTAmount || 0;
             this.CGST = ItemNameList.CGST || 0;
             this.CGSTAmount = ItemNameList.CGSTAmount || 0;
