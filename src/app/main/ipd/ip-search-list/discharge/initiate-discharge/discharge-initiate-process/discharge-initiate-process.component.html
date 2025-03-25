@@ -40,15 +40,15 @@
                                 </mat-form-field> -->
 
                                 <span style="font-size: medium;font-weight: bold;">Patient Name :-{{registerObj.patientName}}</span>
-                                <airmid-dropdown label="Store?Department Name" formControlName="DepartmentName"
+                                
+                                
+                                <div>
+                                    <airmid-dropdown label="Store?Department Name" formControlName="DepartmentName" fxFlex="70%"
                                     [formGroup]="InitiateForm" [mode]="autocompleteModeDepartment" (selectionChange)="onChangeDepartment($event)">
                                 </airmid-dropdown>
 
-                                
-                                <div matTooltip="Enter all data to enable this button!!" [matTooltipPosition]="'above'"
-                                    style="padding: 8px 20px 0px 20px;">
                                     <button (click)="onAddDepartment()" class="btn btn-primary btn-with-icon py-8"
-                                        #addbutton>
+                                        #addbutton style="margin-left: 10px;">
                                         <span class="btn-icon">
                                             <mat-icon> add </mat-icon>
                                         </span>

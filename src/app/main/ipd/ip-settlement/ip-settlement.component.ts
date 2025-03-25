@@ -240,7 +240,7 @@ export class IPSettlementComponent implements OnInit {
                     this._IPSettlementService.InsertIPSettlementPayment(submitData).subscribe(response => {
                         this.toastr.success(response.message);
                         this.GetDetails(this.RegId1)
-                       this.viewgetIPPayemntPdf(response)
+                       this.viewgetIPPayemntPdf(response.data)
                         // this._matDialog.closeAll();
                        
                     }, (error) => {

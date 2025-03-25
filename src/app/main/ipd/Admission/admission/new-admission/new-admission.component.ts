@@ -243,12 +243,12 @@ export class NewAdmissionComponent implements OnInit {
       console.log(submitData);
 
       this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
-        console.log(response)
+      
         this.toastr.success(response.message);
-        let Res = response.message
-        let ID = Res.split('.')
-        let Id = ID[1]
-        this.getAdmittedPatientCasepaperview(Id);
+        // let Res = response.message
+        // let ID = Res.split('.')
+        // let Id = ID[1]
+        this.getAdmittedPatientCasepaperview(response.data);
         this.onClear();
         this._matDialog.closeAll();
 
@@ -270,10 +270,10 @@ export class NewAdmissionComponent implements OnInit {
       this._AdmissionService.AdmissionRegisteredInsert(submitData).subscribe(response => {
         this.toastr.success(response.message);
         console.log(response)
-        let Res = response.message
-        let ID = Res.split('.')
-        let Id = ID[1]
-        this.getAdmittedPatientCasepaperview(Id);
+        // let Res = response.message
+        // let ID = Res.split('.')
+        // let Id = ID[1]
+        this.getAdmittedPatientCasepaperview(response.data);
         this.onClear();
         this._matDialog.closeAll();
       }, (error) => {

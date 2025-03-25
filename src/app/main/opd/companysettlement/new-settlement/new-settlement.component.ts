@@ -199,9 +199,6 @@ export class NewSettlementComponent {
     if (this.data.FromName == "SalesSETTLEMENT") {
       this.data = this.data.vPatientHeaderObj;
       this.advanceData = this.data.vPatientHeaderObj;
-console.log( this.data.vPatientHeaderObj)
-
-
 
       this.selectedPaymnet1 = this.paymentArr1[0].value;
       this.amount1 = this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;

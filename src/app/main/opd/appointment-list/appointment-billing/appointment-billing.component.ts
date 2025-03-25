@@ -780,10 +780,10 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     console.log(submitData);
     this._AppointmentlistService.InsertOPBillingCredit(submitData).subscribe(response => {
       this.toastrService.success(response.message);
-      let Res = response.message
-      let ID = Res.split('.')
-      let Id = ID[1]
-      this.viewgetCreditOPBillReportPdf(Id)
+      // let Res = response.message
+      // let ID = Res.split('.')
+      // let Id = ID[1]
+      this.viewgetCreditOPBillReportPdf(response.data)
       this._matDialog.closeAll();
     }, (error) => {
       this.toastrService.error(error.message);
@@ -924,11 +924,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             this.toastrService.success(response.message);
             console.log(response)
 
-            let Res = response.message
-            let ID = Res.split('.')
-            let Id = ID[1]
+            // let Res = response.message
+            // let ID = Res.split('.')
+            // let Id = ID[1]
 
-            this.viewgetOPBillReportPdf(Id)
+            this.viewgetOPBillReportPdf(response.data)
             this._matDialog.closeAll();
           }, (error) => {
             this.toastrService.error(error.message);
@@ -1011,10 +1011,10 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       this._AppointmentlistService.InsertOPBilling(submitData).subscribe(response => {
         this.toastrService.success(response.message);
         console.log(response);
-        let Res = response.message
-        let ID = Res.split('.')
-        let Id = ID[1]
-        this.viewgetOPBillReportPdf(Id)
+        // let Res = response.message
+        // let ID = Res.split('.')
+        // let Id = ID[1]
+        this.viewgetOPBillReportPdf(response.data)
         this._matDialog.closeAll();
       }, (error) => {
         this.toastrService.error(error.message);

@@ -112,10 +112,10 @@ console.log(this.MlcInfoFormGroup.value)
     this.MlcInfoFormGroup.get('reportingDate').setValue(this.datePipe.transform(this.MlcInfoFormGroup.get('reportingDate').value, 'yyyy-MM-dd'))
    this._AdmissionService.MlcInsert(this.MlcInfoFormGroup.value).subscribe((response) => {
         this.toastr.success(response.message);
-        let Res=response.message
-        let ID=Res.split('.')
-        let Id=ID[1]
-        this.getMLCdetailview(Id)
+        // let Res=response.message
+        // let ID=Res.split('.')
+        // let Id=ID[1]
+        this.getMLCdetailview(response.data)
         this._matDialog.closeAll();
         this.onClear();
       }, (error) => {

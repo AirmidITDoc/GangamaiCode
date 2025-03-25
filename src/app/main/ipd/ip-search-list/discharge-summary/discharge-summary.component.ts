@@ -245,7 +245,7 @@ export class DischargeSummaryComponent implements OnInit {
       warningSymptoms: "",
       pathology:"",
       radiology: "",
-      isNormalOrDeath:  ['1']
+      isNormalOrDeath: [0]
     });
   }
 
@@ -429,10 +429,12 @@ export class DischargeSummaryComponent implements OnInit {
     
     this._IpSearchListService.getDischargeId(this.data.admissionId).subscribe(data => {
       console.log(data)
-      
+      if(data.statusCode!==404){
+          
       if (data.dischargeId)
         this.vDischargeId = data.dischargeId
       else this.vDischargeId = 0
+}
     });
   }
 
@@ -538,7 +540,7 @@ export class DischargeSummaryComponent implements OnInit {
           setTimeout(() => {
             this._IpSearchListService.insertIPDDischargSummary(data).subscribe(response => {
               this.toastr.success(response.message);
-              // this.viewgetDischargesummaryPdf(response.admissionId)
+              // this.viewgetDischargesummaryPdf(response.data)
               this._matDialog.closeAll();
             }, (error) => {
               this.toastr.error(error.message);
@@ -557,8 +559,8 @@ export class DischargeSummaryComponent implements OnInit {
          
           setTimeout(() => {
             this._IpSearchListService.updateIPDDischargSummary(data1).subscribe(response => {
-              this.toastr.success(response.message);
-              // this.viewgetDischargesummaryPdf(response.admissionId)
+              this.toastr.success(response);
+              // this.viewgetDischargesummaryPdf(response.data)
               this._matDialog.closeAll();
             }, (error) => {
               this.toastr.error(error.message);

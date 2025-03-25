@@ -197,20 +197,13 @@ export class NewAppointmentComponent implements OnInit {
             this.Regflag = true;
             this.IsPhoneAppflag = false;
             this.isRegSearchDisabled = true;
-
-
-
-        }
+}
 
 
     }
     OnViewReportPdf(element) {
-
-        console.log('Third action clicked for:', element);
         this.commonService.Onprint("VisitId", element, "AppointmentReceipt");
     }
-
-
 
     onChangePatient(value) {
 
@@ -382,7 +375,7 @@ export class NewAppointmentComponent implements OnInit {
             }
 
         } else {
-            Swal.fire("Enter Proper Form Invalid chk....")
+            Swal.fire("Enter Proper Data Form Invalid chk....")
         }
     }
 
@@ -400,18 +393,15 @@ export class NewAppointmentComponent implements OnInit {
 
         this._AppointmentlistService.NewappointmentSave(submitData).subscribe((response) => {
             this.toastr.success(response.message);
-            let Res = response.message
-            let ID = Res.split('.')
-            let visitId = ID[1]
-
-            this.OnViewReportPdf(visitId)
+            debugger
+            this.OnViewReportPdf(response.data)
             this.onClear(true);
             this._matDialog.closeAll();
         }, (error) => {
             this.toastr.error(error.message);
         });
     }
-    // }
+
     onSaveRegistered() {
         this.VisitFormGroup.get("regId").setValue(this.registerObj.regId)
         this.VisitFormGroup.get("patientOldNew").setValue(2)
@@ -422,14 +412,10 @@ export class NewAppointmentComponent implements OnInit {
         console.log(submitData);
 
         this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
-
+ 
             this.toastr.success(response.message);
-            let Res = response.message
-            let ID = Res.split('.')
-            let visitId = ID[1]
-            // console.log(ID)
-
-            this.OnViewReportPdf(visitId)
+            this.OnViewReportPdf(response.data)
+            this.OnViewReportPdf(response.data)
             this.onClear(true);
             this._matDialog.closeAll();
         }, (error) => {
@@ -456,9 +442,6 @@ export class NewAppointmentComponent implements OnInit {
     onChangePrefix(e) {
         this.ddlGender.SetSelection(e.sexId);
     }
-
-
-
     onChangecity(e) {
         console.log(e)
         this.registerObj.stateId = e.stateId
@@ -470,12 +453,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onChangestate(e) {
-        console.log(e)
-        // this._AppointmentlistService.getstateId(e.stateId).subscribe((Response)=>{
-        //     console.log(Response)
-        //     this.ddlCountry.SetSelection(Response.countryId);
-        // });
-    }
+       }
     getVisitRecord(row) {
         this.departmentId = row.DepartmentId;
         this.DosctorId = row.DoctorId;

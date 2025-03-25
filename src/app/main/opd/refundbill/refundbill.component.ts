@@ -299,15 +299,6 @@ patientDetail1 = new VisitMaster1({});
     }
 
     this.getRefundofBillOPDListByReg(obj.value);
-
-    // setTimeout(() => {
-
-    //   this._RefundbillService.getVisitById(this.vOPIPId).subscribe(data => {
-    //     this.patientDetail1 = data;
-    //     console.log(data)
-    //     console.log(this.patientDetail1)
-    //   });
-    // }, 1000);
   }
 
 
@@ -533,7 +524,7 @@ patientDetail1 = new VisitMaster1({});
           console.log(submitData)
           this._RefundbillService.InsertOPRefundBilling(submitData).subscribe(response => {
             this.toastrService.success(response.message);
-            this.viewgetOPRefundBillReportPdf(response.refundId)
+            this.viewgetOPRefundBillReportPdf(response.data)
           }, (error) => {
             this.toastrService.error(error.message);
           });

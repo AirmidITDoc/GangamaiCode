@@ -555,14 +555,24 @@
                     <form [formGroup]="DischargesumForm">
                         <mat-card>
                             <div fxLayout="row" style="margin-left: 1000px;">
-                                <mat-radio-group formcontrolName="isNormalOrDeath">
+                                <!-- <mat-radio-group formcontrolName="isNormalOrDeath">
                                     <mat-radio-button  value="1">Normal</mat-radio-button>
                                     <mat-radio-button value="0">Death Summary</mat-radio-button>
                                     
-                                </mat-radio-group>
+                                </mat-radio-group> -->
 
-                                <!-- <app-airmid-slider label="Normal/Death Summary" formControlName="isNormalOrDeath"
-                                    [formGroup]="DischargesumForm" [(ngModel)]="vIsNormalDeath"></app-airmid-slider> -->
+                                <app-airmid-slider label="Normal/Death Summary" formControlName="isNormalOrDeath"
+                                    [formGroup]="DischargesumForm" [(ngModel)]="vIsNormalDeath"></app-airmid-slider>
+
+                                    <div class="modal-footer">
+                                        <div class="footer-navigation-container">
+                                            <div class="modal-footer-buttons">
+                                                <button type="button" class="btn btn-primary" (click)="OnSave()" [disabled]="saveflag"> Save </button>
+                                                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                
+                                            </div>
+                                        </div>
+                                    </div>
                             </div>
 
                         </mat-card>
@@ -573,13 +583,5 @@
         </div>
     </div>
 
-    <div class="modal-footer">
-        <div class="footer-navigation-container">
-            <div class="modal-footer-buttons">
-                <button type="button" class="btn btn-primary" (click)="OnSave()" [disabled]="saveflag"> Save </button>
-                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-
-            </div>
-        </div>
-    </div>
+    
 </div>

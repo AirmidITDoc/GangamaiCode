@@ -98,9 +98,7 @@ export class DischargeComponent implements OnInit {
   ngOnInit(): void {
     this.DischargeForm = this.DischargesaveForm();
     this.DischargeForm.markAllAsTouched();
-
-    
-    console.log(this.data)
+console.log(this.data)
     if (this.data) {
       this.vAdmissionId = this.data.admissionId;
       this.vBedId = this.data.bedId
@@ -115,25 +113,23 @@ export class DischargeComponent implements OnInit {
           console.log(this.registerObj)
 
         });
-
-
       }, 500);
     }
 
 
 
-    // if(this._ConfigService.configParams.IsDischargeInitiateflow == 1){
-    //   this.ChkConfigInitiate = false
-    // }else{
-    //   this.ChkConfigInitiate = true
-    // }
+    if(this._ConfigService.configParams.IsDischargeInitiateflow == 1){
+      this.ChkConfigInitiate = false
+    }else{
+      this.ChkConfigInitiate = true
+    }
 
     this.getchkConfigInitiate();
   }
 
 
   getdischargeIdbyadmission() {
-    debugger
+    
     this._IpSearchListService.getDischargeId(this.data.admissionId).subscribe(data => {
       console.log(data)
 
@@ -148,7 +144,7 @@ export class DischargeComponent implements OnInit {
 
         this.DischargeForm.get("dischargedDocId").setValue(data.dischargedDocId)
         this.DischargeForm.get("dischargeTypeId").setValue(data.dischargeTypeId)
-        this.DischargeForm.get("dischargedRmoid").setValue(data.dischargedRmoid)
+        this.DischargeForm.get("dischargedRmoid").setValue(data?.dischargedRmoid)
 
       }
 
@@ -202,10 +198,10 @@ export class DischargeComponent implements OnInit {
 
         this._IpSearchListService.DichargeInsert(m_data).subscribe((response) => {
           this.toastr.success(response.message);
-          let Res = response.message
-          let ID = Res.split('.')
-          let Id = ID[1]
-          this.viewgetDischargeSlipPdf(Id)
+          // let Res = response.message
+          // let ID = Res.split('.')
+          // let Id = ID[1]
+          this.viewgetDischargeSlipPdf(response.data)
           this._matDialog.closeAll();
         }, (error) => {
           this.toastr.error(error.message);
@@ -223,13 +219,13 @@ export class DischargeComponent implements OnInit {
             "dischargeTime": this.dateTimeObj.time
           }
         }
-
+        console.log(m_data1)
         this._IpSearchListService.DichargeUpdate(m_data1).subscribe((response) => {
           this.toastr.success(response.message);
-          let Res = response.message
-          let ID = Res.split('.')
-          let Id = ID[1]
-          this.viewgetDischargeSlipPdf(Id)
+          // let Res = response.message
+          // let ID = Res.split('.')
+          // let Id = ID[1]
+          this.viewgetDischargeSlipPdf(response.data)
           this._matDialog.closeAll();
         }, (error) => {
           this.toastr.error(error.message);
@@ -247,13 +243,13 @@ export class DischargeComponent implements OnInit {
   getValidationMessages() {
     return {
       dischargeTypeId: [
-        { name: "required", Message: "dischargeType Name is required" }
+        { name: "required", Message: "DischargeType Name is required" }
       ],
       dischargedDocId: [
         { name: "required", Message: "Doctor Name is required" }
       ],
       dischargedRmoid: [
-        { name: "required", Message: "Mode Name is required" }
+        // { name: "required", Message: "Mode Name is required" }
       ]
     };
   }

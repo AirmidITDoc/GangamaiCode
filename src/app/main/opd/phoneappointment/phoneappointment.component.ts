@@ -186,10 +186,10 @@ getfilterdata(){
         }).then((flag) => {
             if (flag.isConfirmed) {
 
-                let s = {
-                    phoneAppId: data.phoneAppId
-                }
-                this._PhoneAppointListService.phoneMasterCancle(s).subscribe((response: any) => {
+                // let s = {
+                //     phoneAppId: data.phoneAppId
+                // }
+                this._PhoneAppointListService.phoneMasterCancle(data.phoneAppId).subscribe((response: any) => {
                     this.toastr.success(response.message);
                     this.grid.bindGridData();
                 });

@@ -319,7 +319,6 @@ export class DischargeSummaryTemplateComponent {
   
       console.log(m_data2)
       this._IpSearchListService.getDischargeSummary(m_data2).subscribe((data) => {
-        console.log(data);
        
         this.RetrDischargeSumryList = data?.data as DischargeSummary;
         console.log(this.RetrDischargeSumryList);
@@ -426,7 +425,7 @@ export class DischargeSummaryTemplateComponent {
             setTimeout(() => {
               this._IpSearchListService.insertIPDDischargSummaryTemplate(data).subscribe(response => {
                 this.toastr.success(response.message);
-                // this.viewgetDischargesummaryPdf(response.admissionId)
+                this.viewgetDischargesummaryPdf(response.data)
                 this._matDialog.closeAll();
               }, (error) => {
                 this.toastr.error(error.message);
@@ -446,7 +445,7 @@ export class DischargeSummaryTemplateComponent {
             setTimeout(() => {
               this._IpSearchListService.UpdateIPDDischargSummaryTemplate(data1).subscribe(response => {
                 this.toastr.success(response.message);
-                // this.viewgetDischargesummaryPdf(response.admissionId)
+                this.viewgetDischargesummaryPdf(response.data)
                 this._matDialog.closeAll();
               }, (error) => {
                 this.toastr.error(error.message);

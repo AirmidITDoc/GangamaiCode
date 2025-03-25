@@ -128,10 +128,10 @@ Age=0;
                     this.toastr.success(response.message);
                     this.GetDetails(this.RegId1)
 
-                    let Res=response.message
-                    let ID=Res.split('.')
-                    let Id=ID[1]
-                     this.viewgetOPPayemntPdf(Id,true);
+                    // let Res=response.message
+                    // let ID=Res.split('.')
+                    // let Id=ID[1]
+                     this.viewgetOPPayemntPdf(response.data,true);
                   
                   }, (error) => {
                     this.toastr.error(error.message);

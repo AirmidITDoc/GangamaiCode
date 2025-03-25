@@ -284,11 +284,7 @@ TotalAdvRefAmt:any=0;
         this._IpSearchListService.InsertAdvanceHeader(submitData).subscribe(response => {
           // console.log(response)
           this.toastr.success(response.message);
-
-          let Res = response.message
-          let ID = Res.split('.')
-          let Id = ID[1]
-          this.viewgetAdvanceReceiptReportPdf(Id);
+          this.viewgetAdvanceReceiptReportPdf(response.data);
           this.getWhatsappsAdvance(response, this.vMobileNo);
           this._matDialog.closeAll();
         }, (error) => {

@@ -93,7 +93,9 @@ export class PhoneAppointListService {
 
     public phoneMasterCancle(Param: any) {
         
-      return this._httpClient.PostData("PhoneAppointment2/Cancel", Param);
+    //   return this._httpClient.PostData("PhoneAppointment2/Cancel", Param);
+
+      return this._httpClient.DeleteData("PhoneAppointment2/Cancel?Id=" + Param.toString());
       }
 
     public getMaster(mode, Id) {

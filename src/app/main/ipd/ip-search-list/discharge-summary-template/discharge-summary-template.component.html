@@ -250,21 +250,22 @@
                                 </mat-tab>
                                 <mat-tab label="Template Detail">
 
-                                    <div  fxLayout="row" style="padding: 10px;">
+                                    <div fxLayout="row" style="padding: 10px;">
 
-                                        <!-- <airmid-dropdown label="Template Name" formControlName="TemplateId"
-                                            [formGroup]="DischargesumForm" [mode]="autocompleteModetemplate">
-                                        </airmid-dropdown> -->
-
-                                        <airmid-dropdown label="Template" formControlName="TemplateId" [formGroup]="DischargesumForm"  fxFlex="50%"
-                                        [value]="TemplateId" ValueField="templateId" TextField="templateName" (selectionChange)="onChangetemp($event)" ApiUrl="ReportTemplate/get-Templates">
+                                        <airmid-dropdown label="Template" formControlName="TemplateId"
+                                            [formGroup]="DischargesumForm" fxFlex="50%" [value]="TemplateId"
+                                            ValueField="templateId" TextField="templateName"
+                                            (selectionChange)="onChangetemp($event)"
+                                            ApiUrl="ReportTemplate/get-Templates">
                                         </airmid-dropdown>
 
 
-                                     
+
                                         <div fxFlex="5%" fxFlex.xs="5%" fxFlex.sm="5%" style="margin-left: 20px;">
                                             <div class="mt-2">
-                                                <button type="button" (click)="onAddTemplate($event)" class="btn btn-primary btn-with-icon py-8" [disabled]="!isItemIdSelected" fxFlex>
+                                                <button type="button" (click)="onAddTemplate($event)"
+                                                    class="btn btn-primary btn-with-icon py-8"
+                                                    [disabled]="!isItemIdSelected" fxFlex>
                                                     <span class="btn-icon">
                                                         <mat-icon> add </mat-icon>
                                                     </span>
@@ -315,6 +316,18 @@
 
                                 <app-airmid-slider label="Normal/Death Summary" formControlName="isNormalOrDeath"
                                     [formGroup]="DischargesumForm" [(ngModel)]="vIsNormalDeath"></app-airmid-slider>
+
+                                <div class="modal-footer">
+                                    <div class="footer-navigation-container">
+                                        <div class="modal-footer-buttons">
+                                            <button type="button" class="btn btn-primary" (click)="OnSave()"
+                                                [disabled]="saveflag"> Save </button>
+                                            <button type="button" class="btn btn-danger-outline"
+                                                (click)="onClose()">Close</button>
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                         </mat-card>
@@ -325,13 +338,5 @@
         </div>
     </div>
 
-    <div class="modal-footer">
-        <div class="footer-navigation-container">
-            <div class="modal-footer-buttons">
-                <button type="button" class="btn btn-primary" (click)="OnSave()" [disabled]="saveflag"> Save </button>
-                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
 
-            </div>
-        </div>
-    </div>
 </div>

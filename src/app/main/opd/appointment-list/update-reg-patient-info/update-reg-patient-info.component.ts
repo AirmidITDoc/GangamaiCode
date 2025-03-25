@@ -114,22 +114,12 @@ export class UpdateRegPatientInfoComponent {
     this.VisitFormGroup.markAllAsTouched();
 
      console.log(this.data)
-      if ((this.data.regId ?? 0) > 0) {
+      if ((this.data.value?? 0) > 0) {
       setTimeout(() => {
-          this._AppointmentlistService.getRegistraionById(this.data.regId).subscribe((response) => {
+          this._AppointmentlistService.getRegistraionById(this.data.value).subscribe((response) => {
             this.registerObj = response;
            console.log(this.registerObj)
           });}, 500);
-
-        // setTimeout(() => {
-
-        //   this._AppointmentlistService.getVisitById(this.data.visitId).subscribe(data => {
-        //     this.patientDetail1 = data;
-        //     console.log(data)
-        //     console.log(this.patientDetail1)
-        //   });
-        // }, 1000);
-      
       }
       this.getLastDepartmetnNameList(this.registerObj)
 
@@ -162,10 +152,8 @@ export class UpdateRegPatientInfoComponent {
 
     this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
       this.toastr.success(response.message);
-      let Res=response.message
-      let ID=Res.split('.')
-      let visitId=ID[1]
-      this.OnViewReportPdf(visitId)
+     
+      this.OnViewReportPdf(response.data)
       this.onClear(true);
       this._matDialog.closeAll();
     }, (error) => {
