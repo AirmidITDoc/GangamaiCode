@@ -50,37 +50,35 @@ export class IPAdvanceComponent implements OnInit {
   AdmissionId:any=0; 
   autocompleteModeCashCounter: string="CashCounter";
  
-      @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>; 
-     
-    
+      @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;  
       ngAfterViewInit() {
         // Assign the template to the column dynamically 
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;  
       }
  
-
+ AllColumns= [
+  { heading: "Advance Date", key: "date", sort: true, align: 'left', emptySign: 'NA' , width: 200,type: 9 },
+  { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA',width: 120 },
+  { heading: "Advance Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA',width: 160},
+  { heading: "Used Amt", key: "usedAmount", sort: true, align: 'left', emptySign: 'NA',width: 160 },
+  { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA',width: 160},
+  { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA',width: 160 }, 
+  { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA',width: 230 },
+  { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 200 , type: 9 }, 
+  { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA',width: 180 },
+  { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA',width: 180 },
+  { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA',width: 180 },
+  { heading: "NEFT Pay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA',width: 180 }, 
+  { heading: "PayTM Pay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA',width: 180 },
+  { heading: "Reason", key: "reason", sort: true, align: 'left', emptySign: 'NA' , width: 250} ,
+  { heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
+    template: this.actionButtonTemplate  // Assign ng-template to the column
+  }
+]
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   gridConfig: gridModel = {
       apiUrl: "Advance/PatientWiseAdvanceList",
-      columnsList: [
-          { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' , width: 200},
-          { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Advance Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA'},
-          { heading: "UsedAmt", key: "usedAmount", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA'},
-          { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' }, 
-          { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 200 }, 
-          { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "NEFT Pay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA' }, 
-          { heading: "PayTM Pay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Reason", key: "reason", sort: true, align: 'left', emptySign: 'NA' , width: 300} ,
-          { heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
-            template: this.actionButtonTemplate  // Assign ng-template to the column
-          }
-      ],
+      columnsList:this.AllColumns,
       sortField: "AdvanceDetailID",
       sortOrder: 0,
       filters: [
@@ -89,22 +87,18 @@ export class IPAdvanceComponent implements OnInit {
   } 
 
  
-  advanceAmount: any;
-  isLoadingStr: string = '';
-  AdvFormGroup: FormGroup;
-  isLoading: string = '';
-  selectedAdvanceObj:any=[];
+  
+  AdvFormGroup: FormGroup; 
+  selectedAdvanceObj: any = [];
   screenFromString = 'advance';
-  dateTimeObj: any;
-  TotalAdvamt: any;
-  Advavilableamt: any;
-  vAdvanceId: any;    
-  PatientHeaderObj: any;
-  vMobileNo:any;
-  isCashCounterSelected:boolean=false;
-  filteredOptionsCashCounter:Observable<string[]>;
-  registerObj:any; 
-  vAdvanceDetId:any;
+  dateTimeObj: any;  
+  vAdvanceId: any; 
+  vMobileNo: any;  
+  registerObj: any; 
+  TotalAdvanceAmt: any = 0;
+  TotalAdvUsedAmt: any = 0;
+  TotalAdvaBalAmt: any = 0;
+  TotalAdvRefAmt: any = 0;
 
   constructor(public _IpSearchListService: IPSearchListService,
     public _opappointmentService: OPSearhlistService,
@@ -118,10 +112,7 @@ export class IPAdvanceComponent implements OnInit {
     public toastr: ToastrService,
     private formBuilder: UntypedFormBuilder) 
     { }
-TotalAdvanceAmt:any=0;
-TotalAdvUsedAmt:any=0;
-TotalAdvaBalAmt:any=0;
-TotalAdvRefAmt:any=0;
+
   ngOnInit(): void { 
     
     this.createAdvform(); 
@@ -149,8 +140,7 @@ TotalAdvRefAmt:any=0;
         setTimeout(() => {
             this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
                 this.selectedAdvanceObj = response.data; 
-                console.log(this.selectedAdvanceObj) 
-                console.log(this.vAdvanceId) 
+                console.log(this.selectedAdvanceObj)  
                 if(this.selectedAdvanceObj.length > 0)
                   this.vAdvanceId = this.selectedAdvanceObj[0].advanceId
                 this.selectedAdvanceObj.forEach(element=>{
@@ -163,9 +153,7 @@ TotalAdvRefAmt:any=0;
         }, 500);
     } 
     this.getdata(this.AdmissionId);
-    } 
-
-   
+    }  
 }
   createAdvform(){
     this.AdvFormGroup = this.formBuilder.group({ 
@@ -185,9 +173,7 @@ TotalAdvRefAmt:any=0;
         { name: "required", Message: "Advance Amount is required" }
       ]
     };
-  } 
-
-  
+  }  
   onSave() {
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
@@ -250,9 +236,9 @@ TotalAdvRefAmt:any=0;
 
     let PatientHeaderObj = {};
     PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '1900-01-01',
-      PatientHeaderObj['PatientName'] = this.registerObj.patientName;
+    PatientHeaderObj['PatientName'] = this.registerObj.patientName;
     PatientHeaderObj['RegNo'] = this.registerObj.regNo,
-      PatientHeaderObj['DoctorName'] = this.registerObj.doctorname;
+    PatientHeaderObj['DoctorName'] = this.registerObj.doctorname;
     PatientHeaderObj['CompanyName'] = this.registerObj.companyName;
     PatientHeaderObj['DepartmentName'] = this.registerObj.departmentName;
     PatientHeaderObj['OPD_IPD_Id'] = this.registerObj.ipdno;
@@ -282,12 +268,12 @@ TotalAdvRefAmt:any=0;
         };
         console.log(submitData);
         this._IpSearchListService.InsertAdvanceHeader(submitData).subscribe(response => {
-          // console.log(response)
+           console.log(response)
           this.toastr.success(response.message);
-
+          this.grid.bindGridData();
           let Res = response.message
           let ID = Res.split('.')
-          let Id = ID[1]
+          let Id = ID[1] 
           this.viewgetAdvanceReceiptReportPdf(Id);
           this.getWhatsappsAdvance(response, this.vMobileNo);
           this._matDialog.closeAll();
@@ -303,7 +289,7 @@ TotalAdvRefAmt:any=0;
         };
         console.log(submitData);
         this._IpSearchListService.UpdateAdvanceHeader(submitData).subscribe(response => {
-          console.log(response)
+          console.log(response) 
           this.toastr.success(response.message);
           this.viewgetAdvanceReceiptReportPdf(response);
           this.getWhatsappsAdvance(response, this.vMobileNo);
@@ -324,8 +310,7 @@ TotalAdvRefAmt:any=0;
     this.dateTimeObj = dateTimeObj;
   }
 
-  keyPressCharater(event){
-    
+  keyPressCharater(event){ 
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
@@ -335,7 +320,7 @@ TotalAdvRefAmt:any=0;
     }
   } 
   viewgetAdvanceReceiptReportPdf(data) {
-   
+   console.log(data)
     this.commonService.Onprint("AdvanceDetailID", data, "IpAdvanceReceipt");
   }
 
@@ -397,39 +382,17 @@ TotalAdvRefAmt:any=0;
     this.dialogRef.close();
   } 
 
-  getdata(data){
-   // console.log(data)
+  getdata(data) { 
     this.gridConfig = {
       apiUrl: "Advance/PatientWiseAdvanceList",
-      columnsList: [
-          { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "AdvanceNo", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "AdvanceAmt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-          { heading: "UsedAmt", key: "usedAmount", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "BalanceAmt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-          { heading: "RefundAmt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' }, 
-          { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-          { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 250 }, 
-          { heading: "CashPayAmt", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "ChequePayAmt", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "CardPayAmt", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-          { heading: "NeftPayAmt", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 250 }, 
-          { heading: "PayTMAmt", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Reason", key: "reason", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-          { heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
-            template: this.actionButtonTemplate  // Assign ng-template to the column
-          }
-      
-      ],
+      columnsList: this.AllColumns,
       sortField: "AdvanceDetailID",
       sortOrder: 0,
       filters: [
-          { fieldName: "AdmissionID", fieldValue: String(this.AdmissionId), opType: OperatorComparer.Equals }
+        { fieldName: "AdmissionID", fieldValue: String(this.AdmissionId), opType: OperatorComparer.Equals }
       ]
-  } 
-  this.grid.gridConfig = this.gridConfig;
-  this.grid.bindGridData(); 
-  } 
+    }
+  }
 } 
 export class AdvanceHeader {
   AdvanceId: number;
