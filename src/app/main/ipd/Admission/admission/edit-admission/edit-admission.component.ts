@@ -200,11 +200,11 @@ export class EditAdmissionComponent implements OnInit {
         { name: "required", Message: "AdmittedDoctor2 is required" }
       ],
       RefDocNameId: [
-        { name: "pattern", Message: "RefDocNameId allowed" },
+        { name: "pattern", Message: "Ref.DocName allowed" },
 
       ],
       CompanyId: [
-        { name: "pattern", Message: "CompanyId Only numbers allowed" },
+        { name: "pattern", Message: "Company Only numbers allowed" },
 
       ],
       SubTpaComId: [
@@ -218,28 +218,28 @@ export class EditAdmissionComponent implements OnInit {
       ],
 
       RelationshipId: [
-        { name: "required", Message: "RelationshipId is required" }
+        { name: "required", Message: "Relationship is required" }
       ],
       DepartmentId: [
-        { name: "required", Message: "DepartmentId is required" }
+        { name: "required", Message: "Department is required" }
       ],
       DocNameId: [
-        { name: "required", Message: "DocNameId Name is required" }
+        { name: "required", Message: "DocName Name is required" }
       ],
       TariffId: [
-        { name: "required", Message: "TariffId Name is required" }
+        { name: "required", Message: "Tariff Name is required" }
       ],
       PatientTypeId: [
-        { name: "required", Message: "PatientTypeId Name is required" }
+        { name: "required", Message: "PatientType Name is required" }
       ],
       HospitalId: [
-        { name: "required", Message: "HospitalId Name is required" }
+        { name: "required", Message: "Hospital Name is required" }
       ],
       phoneNo: [
-        { name: "required", Message: "RelatvieMobileNo Name is required" }
+        { name: "required", Message: "Relatvie MobileNo  is required" }
       ],
       docNameId: [
-        { name: "required", Message: "RelatvieMobileNo Name is required" }
+        { name: "required", Message: "Doctor Name is required" }
       ],
     };
   }

@@ -586,10 +586,10 @@ export class NewAppointmentComponent implements OnInit {
                 { name: "required", Message: "SubCompany Name is required" }
             ],
             bedId: [
-                { name: "required", Message: "bedId Name is required" }
+                { name: "required", Message: "Bed Name is required" }
             ],
             wardId: [
-                { name: "required", Message: "wardId Name is required" }
+                { name: "required", Message: "Ward Name is required" }
             ],
 
 

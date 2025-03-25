@@ -399,24 +399,24 @@ export class NewAdmissionComponent implements OnInit {
         { name: "required", Message: "AdmittedDoctor2 is required" }
       ],
       RefDocNameId: [
-        { name: "pattern", Message: "RefDocNameId allowed" },
+        { name: "pattern", Message: "Ref.DoctorName allowed" },
 
       ],
       CompanyId: [
-        { name: "pattern", Message: "CompanyId Only numbers allowed" },
+        { name: "pattern", Message: "Company Only numbers allowed" },
 
       ],
       SubTpaComId: [
         { name: "pattern", Message: "Only numbers allowed" },
       ],
       bedId: [
-        { name: "required", Message: "Bedid is required" }
+        { name: "required", Message: "Bed is required" }
       ],
       wardId: [
-        { name: "required", Message: "wardId is required" }
+        { name: "required", Message: "ward is required" }
       ],
       ClassId: [
-        { name: "required", Message: "ClassId is required" }
+        { name: "required", Message: "Class Name is required" }
       ],
       RelativeName: [
         { name: "required", Message: "RelativeName is required" }
@@ -426,28 +426,28 @@ export class NewAdmissionComponent implements OnInit {
       ],
 
       RelationshipId: [
-        { name: "required", Message: "RelationshipId is required" }
+        { name: "required", Message: "Relationship is required" }
       ],
       DepartmentId: [
-        { name: "required", Message: "DepartmentId is required" }
+        { name: "required", Message: "Department is required" }
       ],
       DocNameId: [
-        { name: "required", Message: "DocNameId Name is required" }
+        { name: "required", Message: "DoctorName Name is required" }
       ],
       TariffId: [
-        { name: "required", Message: "TariffId Name is required" }
+        { name: "required", Message: "Tariff Name is required" }
       ],
       PatientTypeId: [
-        { name: "required", Message: "PatientTypeId Name is required" }
+        { name: "required", Message: "PatientType Name is required" }
       ],
       HospitalId: [
-        { name: "required", Message: "HospitalId Name is required" }
+        { name: "required", Message: "Hospital Name is required" }
       ],
       RphoneNo: [
         { name: "required", Message: "RelatvieMobileNo Name is required" }
       ],
       docNameId: [
-        { name: "required", Message: "RelatvieMobileNo Name is required" }
+        { name: "required", Message: "Doctor Name is required" }
       ],
     };
   }
