@@ -218,7 +218,7 @@ export class NewPrescriptionComponent implements OnInit {
     }
   }
 
-  vstoreId:any=0;
+  vstoreId:any='';
   selectChangeStore(obj:any){
     console.log("Store:",obj);
     this.vstoreId=obj.value
@@ -290,13 +290,6 @@ export class NewPrescriptionComponent implements OnInit {
   }  
 
   onAdd() {
-    
-  //   if (!this.ItemForm.get('ItemId')?.value?.trim()) {
-  //     this.toastr.warning('Please select Item', 'Warning!', {
-  //         toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
-  // }
 
   if (!this.ItemForm.get('ItemId')?.value) {
     this.toastr.warning('Please select Item', 'Warning!', {
@@ -428,12 +421,21 @@ export class NewPrescriptionComponent implements OnInit {
       });
       return;
     }
-    if (!this.myForm.get('StoreId')?.value) {
-      this.toastr.warning('Please select Store Name', 'Warning!', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    // if (!this.myForm.get('StoreId')?.value) {
+    //   this.toastr.warning('Please select Store Name', 'Warning!', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    let storeId = this.myForm.get('StoreId')?.value;
+
+    if (!storeId || storeId === 0 || storeId === "0") {
+        this.toastr.warning('Please select Store Name', 'Warning!', {
+            toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+    }    
+  
     if (!this.myForm.get('WardName')?.value) {
       this.toastr.warning('Please select Ward Name', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning',

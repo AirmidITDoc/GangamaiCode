@@ -121,8 +121,8 @@ this.myformSearch=this._SampleCollectionService.createSearchForm()
             columnsList: [
                 { heading: "Completed", key: "isCompleted", sort: true, align: 'left',type: gridColumnTypes.template, 
                     template:this.iconisCompeleted, width: 50 },
-                { heading: "SampleNo", key: "sampleNo", sort: true, align: 'left', emptySign: 'NA', width: 450 },
-                { heading: "TestName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "SampleNo", key: "sampleNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "TestName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
                 { heading: "CollectionDate/Time", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             ],
             sortField: "BillNo",

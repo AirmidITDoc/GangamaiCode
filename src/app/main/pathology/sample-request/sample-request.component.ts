@@ -138,7 +138,7 @@ export class SampleRequestComponent implements OnInit {
   getSelectedRow(row: any): void {
     debugger
     let requestId = row.requestId;
-    let isPathOrRad = row.isType;
+    let isPathOrRad = this.myformSearch.get('IsPathOrRad').value;
 
     this.gridConfig1 = {
       apiUrl: "PathlogySampleCollection/LabOrRadRequestDetailList",
@@ -148,7 +148,7 @@ export class SampleRequestComponent implements OnInit {
         { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "AddedBy", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "BillingUser", key: "billingUser", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "AddedByDate", key: "addedByDate", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "AddedByDate", key: "addedByDate", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "IsStatus", key: "isStatus", type: gridColumnTypes.status, align: 'center' },
         { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "IsPathology", key: "isPathology", type: gridColumnTypes.status, align: 'left' },

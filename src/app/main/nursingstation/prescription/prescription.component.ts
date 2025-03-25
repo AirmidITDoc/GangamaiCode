@@ -47,17 +47,14 @@ export class PrescriptionComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "IPPrescription/PrescriptionPatientList",
         columnsList: [
-            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "Code", key: "presReId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:200 },
             { heading: "Vst_Adm_Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Pres_DateTime", key: "date", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "OP_IP_Id", key: "oP_IP_Id", sort: true, align: 'left', emptySign: 'NA', width: 80 },
             { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "oP_IP_Type", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
             {
-                heading: "Action", key: "action", width: 50, align: "right", type: gridColumnTypes.action,
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,
                 actions: [
                     {
                         action: gridActions.print, callback: (data: any) => {
@@ -71,7 +68,7 @@ export class PrescriptionComponent implements OnInit {
         filters: [
             { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
+            { fieldName: "Reg_No", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     }
     gridConfig1: gridModel = new gridModel();
@@ -134,7 +131,7 @@ export class PrescriptionComponent implements OnInit {
         filters: [
             { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
+            { fieldName: "Reg_No", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     }
     

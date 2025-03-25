@@ -73,7 +73,8 @@ export class PathologyService {
       Istype: ['0'],
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
-      IsCompleted:'1'
+      IsCompleted:'1',
+      IsPathOrRad: ['1'],
     });
   }
 
