@@ -65,7 +65,7 @@ export class RequestforlabtestService {
     }
 
     public getserviceList(param) {
-        return this._httpClient1.PostData("BillingService/BillingList",param);
+        return this._httpClient1.PostData("PathlogySampleCollection/PathRadServiceList",param);
     }
 
     // new dropdown

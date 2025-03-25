@@ -118,13 +118,13 @@ export class NewRequestforlabComponent implements OnInit {
     this.searchFormGroup = this.createSearchForm();
     this.myFormGroup = this.createMyForm();
   }
-  tariffId = "0";
-  groupId = "0";
+ 
   getServiceList() {
     debugger
     let ServiceName = this.myFormGroup.get("ServiceId").value + "%" || "%";
+    let IsPathRad = this.myFormGroup.get("IsPathRad").value || "3"
     if (this.vRegNo) {
-      var param = {
+      var param ={
         "first": 0,
         "rows": 10,
         "sortField": "ServiceId",
@@ -137,24 +137,30 @@ export class NewRequestforlabComponent implements OnInit {
           },
           {
             "fieldName": "TariffId",
-            "fieldValue": this.tariffId,
+            "fieldValue": String(this.vTariffId),
             "opType": "Equals"
           },
           {
-            "fieldName": "GroupId",
-            "fieldValue": this.groupId,
+            "fieldName": "IsPathRad",
+            "fieldValue": IsPathRad,
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "ClassId",
+            "fieldValue": String(this.vClassId),
             "opType": "Equals"
           }
         ],
         "exportType": "JSON"
       }
-
+      console.log(param)
+      
       this._RequestforlabtestService.getserviceList(param).subscribe(Menu => {
 
         this.dsLabRequest2.data = Menu.data as LabRequest[];
         this.dsLabRequest2.sort = this.sort;
         this.dsLabRequest2.paginator = this.paginator;
-        // console.log(this.dsLabRequest2.data)
+        console.log(this.dsLabRequest2.data)
       });
     } else {
       if (!this.searchFormGroup.get('RegID')?.value && !this.vRegId) {
@@ -218,6 +224,8 @@ export class NewRequestforlabComponent implements OnInit {
       this.vTariffName = obj.tariffName
       this.vCompanyName = obj.companyName
       this.vDOA = obj.admissionDate
+      this.vTariffId=obj.tariffId
+      this.vClassId=obj.classId
     }
     this.getServiceList();
   }

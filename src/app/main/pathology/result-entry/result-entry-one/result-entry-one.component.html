@@ -123,10 +123,11 @@
                 </div>
                 <div fxFlex.gt-sm="100%" fxFlex>
                     <div fxlayout="row">
-                        <div fxFlex.gt-sm="100%" fxFlex style="width: 100%;overflow:auto;">
+                        <div fxFlex.gt-sm="100%" fxFlex style="width: 100%;overflow:auto; "
+                        class="airmid-table-container">
 
                             <mat-card style="padding: 6px;">
-                                <mat-table matSort [dataSource]="dataSource" class="h-260"
+                                <mat-table matSort [dataSource]="dataSource" class="airmid-table h-260" 
                                     [@animateStagger]="{value:'50'}">
 
                                     <ng-container matColumnDef="TestName" sticky>
@@ -148,23 +149,23 @@
                                             {{contact.ParameterName}}
                                         </mat-cell>
                                     </ng-container>
-                                    <!-- *ngIf="contact.ParaIsNumeric ==0 then 
-                                            "[ngClass]="{'Result-Formula': contact.Formula !=null}" else  [ngClass]="{'Help-Value': contact.ParaIsNumeric ==0}"-->
-
-                                    <!-- [disabled]="contact.Formula" -->
+                                
                                     <ng-container matColumnDef="ResultValue" style="width:100%;font-weight: bold;">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header class="border-right">
                                             Result
                                         </mat-header-cell>
+
                                         <mat-cell *matCellDef="let contact" class="border-right">
+
                                             <mat-form-field appearance="fill" *ngIf="!contact.IsHelpShown"
-                                                style="width: 100%;"
-                                                [ngClass]="{'Result-Formula': contact.Formula !=' '}">
+                                                style="width: 100%;">
+                                                <!-- [ngClass]="{'Result-Formula': contact.Formula !=' '}" -->
                                                 
                                                 <input matInput autocomplete="off" (keyup)="onResultUp(contact)"
                                                     (keydown.F2)="onKeydown($event,contact)" matTooltip="Use Help Value"
                                                     [(ngModel)]="contact.ResultValue">
                                             </mat-form-field>
+
                                             <mat-form-field appearance="fill" *ngIf="contact.IsHelpShown"
                                                 style="width: 100%;">
                                                 <input type="text" matInput id="helpText_{{contact.ParameterId}}"
@@ -177,13 +178,13 @@
                                                     </mat-option>
                                                 </mat-autocomplete>
                                             </mat-form-field>
-                                            <!-- (click)="AddData(txt.value)" -->
-                                            <!-- <button [matMenuTriggerFor]="addMenu" #languageMenuTrigger="matMenuTrigger"
-                                                style="visibility: hidden;"></button> -->
+
                                             <mat-icon class="Help-Value" *ngIf=" contact.PIsNumeric ==0"
                                                 matTooltip="Use Help Value"
-                                                style="width: 10px;height: 10px;">circle</mat-icon>
-                                            <!-- <img width="20px;" height="20px;" src="assets/images/logos/help.jpeg" *ngIf=" contact.ParaIsNumeric ==0"  matTooltip="Use Help Value"> -->
+                                                style="width: 10px;height: 10px;">
+                                                circle
+                                            </mat-icon>
+                                           
                                         </mat-cell>
                                     </ng-container>
 

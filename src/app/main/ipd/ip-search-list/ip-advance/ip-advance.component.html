@@ -62,7 +62,7 @@
                                         <div class="patient-col">
                                             <span class="patient-col-key">DOA | Time</span>
                                             <span>:</span>
-                                            <span class="patient-col-value">{{registerObj?.admissionDate}}</span>
+                                            <span class="patient-col-value">{{registerObj?.admissionDate | date:'dd/MM/yyyy'}}</span>
                                         </div>
                                         <div class="patient-col">
                                             <span class="patient-col-key">IPD No</span>
@@ -107,7 +107,7 @@
                                         <div class="patient-col">
                                             <span class="patient-col-key">Company Name</span>
                                             <span>:</span>
-                                            <span class="patient-col-value" style="color: orange;">{{registerObj?.companyName}}</span>
+                                            <span class="companyName" style="color: orange;" >{{registerObj?.companyName}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -169,31 +169,31 @@
                     <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
                     </airmid-table>
                 </div>
-            </div>
-            <div class="modal-card-container">
-                <form [formGroup]="AdvFormGroup" class="mat-error-fix">
-                    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="start">
-    
-                        <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox label="Advance Amount" formControlName="advanceAmt" [formGroup]="AdvFormGroup" [validations]="getValidationMessages().advanceAmt" [maxLength]="12" (keypress)="keyPressCharater($event)">
-                            </airmid-textbox>
-                        </div>
-    
-                        <div fxFlex="43%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox label="Reason Of Advacne" formControlName="comment" [formGroup]="AdvFormGroup" [maxLength]="50">
-                            </airmid-textbox>
-                        </div>
-    
-                        <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-dropdown label="Cash Counter" formControlName="CashCounterID" [formGroup]="AdvFormGroup" [mode]="autocompleteModeCashCounter" [validations]="getValidationMessages().CashCounterID">
-                            </airmid-dropdown>
-                        </div>
-                    </div>
-                </form>
-            </div>
+            </div> 
         </div>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer" fxLayout="column" >
+        <div class="modal-card-container">
+            <form [formGroup]="AdvFormGroup" class="mat-error-fix">
+                <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="start">
+
+                    <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Advance Amount" formControlName="advanceAmt" [formGroup]="AdvFormGroup" [validations]="getValidationMessages().advanceAmt" [maxLength]="12" (keypress)="keyPressCharater($event)">
+                        </airmid-textbox>
+                    </div>
+
+                    <div fxFlex="43%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Reason Of Advacne" formControlName="comment" [formGroup]="AdvFormGroup" [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+
+                    <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="Cash Counter" formControlName="CashCounterID" [formGroup]="AdvFormGroup" [mode]="autocompleteModeCashCounter" [validations]="getValidationMessages().CashCounterID">
+                        </airmid-dropdown>
+                    </div>
+                </div>
+            </form>
+        </div>
         <div class="modal-footer-buttons">
             <button class="btn btn-primary" (click)="getStatementPrint()">Statement</button>
             <button class="btn btn-danger-outline" (click)="onClose()">Close</button>

@@ -332,7 +332,7 @@ export class ResultEntryComponent implements OnInit {
           console.log("ResultList:",this.dataSource1.data)
           this.dataSource1.sort = this.sort;
           this.dataSource1.paginator = this.paginator;
-          this.sIsLoading = '';
+
         },
           error => {
             // this.sIsLoading = '';
@@ -502,12 +502,14 @@ opipType:any="2";
 
         return numSelected === numRows;
     }
+    
     IsTemplateTest: any;
     chkresultentry(contact, flag) {
         debugger
         this.printdata = [];
         this.reportIdData = [];
         this.ServiceIdData = [];
+        
         if (flag)
             this.IsTemplateTest = contact[0]["isTemplateTest"]
         else
@@ -577,6 +579,8 @@ opipType:any="2";
                 console.log('Pathology Template  Saved ..', result);
             });
         }
+
+        this.selection.clear(); // Clears all selected items
     }
 
     Printresultentrywithheader() {

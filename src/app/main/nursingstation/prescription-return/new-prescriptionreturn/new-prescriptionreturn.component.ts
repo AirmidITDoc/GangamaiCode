@@ -474,6 +474,19 @@ export class NewPrescriptionreturnComponent implements OnInit {
       opip_Type = 0;
     }
 
+    if (( this.vRegNo== '' || this.vRegNo == null || this.vRegNo == undefined)) {
+      this.toastr.warning('Please select patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (!this.ItemSubform.get('ItemId')?.value) {
+      this.toastr.warning('Please select Item Name', 'Warning!', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+
     if(!this.vPresReturnId && !this.vPresDetailsId){
 
       let tIpprescriptionReturnDs = this.saleSelectedDatasource.data.map((row: any) => ({
