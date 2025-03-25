@@ -32,7 +32,7 @@
             <div class="content-card" style="border-radius:4px;">
                 <div class="nav material" fxLayoutGap="8px">
                     <div fxLayout="column" fxLayoutAlign="start none" fxLayoutGap="8px">
-                        <form [formGroup]="searchFormGroup">
+                        <!-- <form [formGroup]="searchFormGroup">
                             <div fxLayout="row" fxLayoutGap="10px">
                                 <airmid-autocomplete class="w-500" label="Patient Search" [formGroup]="searchFormGroup"
                                     formControlName="RegId" placeholderText="Search Reg No / Patient Name / Mobile No"
@@ -44,9 +44,9 @@
                                     [mode]="autocompleteModeCashcounter">
                                 </airmid-dropdown>
                             </div>
-                        </form>
+                        </form> -->
                     
-                        <div fxlayout="row">
+                     
                             <mat-card style="padding: 5px;">
                                 <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                                     <div class="patient-info-container">
@@ -85,7 +85,7 @@
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">DOA | Time</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{registerObj?.admissionDate}}</span>
+                                                        <span class="patient-col-value">{{registerObj?.admissionDate | date:'dd/MM/yyyy'}}</span>
                                                     </div>
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">IPD No</span>
@@ -131,8 +131,7 @@
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Company Name</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value"
-                                                            style="color: orange;">{{registerObj?.companyName}}</span>
+                                                        <span class="companyName" style="color: orange;" >{{registerObj?.companyName}}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -140,14 +139,12 @@
                                     </div>
                                 </div>
                             </mat-card>
-                        </div>
+                     
                     
                         <div fxLayout.gt-md="row" fxLayout="column" fxLayoutGap="12px">
-                            <div fxFlex.gt-md="70%" fxFlex.md="50%" fxFlex.lt-md="100%">
-                                <mat-card class="h-100-p">
+                            <div fxFlex.gt-md="100%" fxFlex.md="50%" fxFlex.lt-md="100%"> 
                                     <mat-table matSort class="table1" [dataSource]="dsrefundlist" [@animateStagger]="{value:'50'}"
-                                        class="h-400">
-                    
+                                    tableClasses="h-500"> 
                                         <ng-container matColumnDef="Date">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-130">Date
                                             </mat-header-cell>
@@ -181,20 +178,19 @@
                                         </ng-container>
                     
                                         <ng-container matColumnDef="RefundAmt">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">RefundAmt
+                                            <mat-header-cell *matHeaderCellDef>Refund Amt
                                             </mat-header-cell>
-                                            <mat-cell class="w-160" *matCellDef="let element" fxShow.gt-sm> 
-                                                <mat-form-field floatLabel="never">
-                                                    <input matInput placeholder="RefundAmt"
-                                                        type="text"  (keypress)="keyPressCharater($event)"
-                                                        [(ngModel)]="element.refundAmt" required
+                                            <mat-cell *matCellDef="let element">
+                                                <mat-form-field  appearance="fill">
+                                                    <input matInput placeholder="RefundAmt" type="text" 
+                                                        [(ngModel)]="element.refundAmt" (keypress)="keyPressCharater($event)"
                                                         (ngModelChange)="getCellCalculation(element,element.refundAmt)">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="PreRefundAmt">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Prev.RefundAmt
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Prev.Refund Amt
                                             </mat-header-cell>
                                             <mat-cell  *matCellDef="let element" fxShow.gt-sm> 
                                                 <span> {{element.refundAmount | currency:'INR'}}</span>
@@ -225,13 +221,11 @@
                                         <mat-footer-row *matFooterRowDef="['noData']"
                                             [ngClass]="{'hide':!(dsrefundlist!=null && dsrefundlist.data.length==0)}">
                                         </mat-footer-row>
-                                    </mat-table> 
-                                </mat-card>
+                                    </mat-table>  
                             </div>
                     
-                            <div fxFlex.gt-md="29%" fxFlex.md="50%" fxFlex.lt-md="100%">
-                                <mat-card class="h-100-p" fxLayout="column" fxLayoutAlign="space-between">
-                                    <mat-table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}" class="h-400">
+                            <!-- <div fxFlex.gt-md="29%" fxFlex.md="50%" fxFlex.lt-md="100%"> 
+                                    <mat-table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}"  tableClasses="h-500">
                     
                                         <ng-container matColumnDef="RefundDate">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
@@ -258,7 +252,7 @@
                     
                                         <ng-container matColumnDef="noData">
                                             <mat-footer-cell *matFooterCellDef colspan="6">
-                                                <!-- no data found... -->
+                                             
                                                 <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
                                                 </mat-spinner>
                                                 <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
@@ -274,36 +268,9 @@
                                         <mat-footer-row *matFooterRowDef="['noData']"
                                             [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
                                         </mat-footer-row>
-                                    </mat-table> 
-                                </mat-card>
-                            </div>
+                                    </mat-table>  
+                            </div> -->
                         </div> 
-                    
-                        <form [formGroup]="RefundOfAdvanceFormGroup">
-                            <div fxLayout="row" fxLayoutGap="6px"> 
-                    
-                                <div fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="Reason Of Refund Of Advacne" formControlName="Remark"
-                                        [formGroup]="RefundOfAdvanceFormGroup" [maxLength]="50">
-                                    </airmid-textbox>
-                                </div>
-                    
-                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="Refund Amount" formControlName="NewRefundAmount"
-                                        [formGroup]="RefundOfAdvanceFormGroup" [validations]="getValidationMessages().NewRefundAmount"
-                                        [maxLength]="12" [readonly]="true"  >
-                                    </airmid-textbox>
-                                </div>
-                    
-                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="Total Balance Amount" formControlName="BalanceAdvance"
-                                        [formGroup]="RefundOfAdvanceFormGroup" [validations]="getValidationMessages().BalanceAdvance"
-                                        [maxLength]="12" [readonly]="true"  >
-                                    </airmid-textbox>
-                                </div> 
-                            </div>
-                        </form>
-                    
                     </div>
                 </div>
             </div>
@@ -311,11 +278,40 @@
     </div>
 
       <!--End of Middle Data-->
-      <div class="modal-footer">
-        <div class="footer-navigation-container">
+    <div class="modal-footer">
+        <div class="modal-footer-container" fxLayout="column">
+            <form [formGroup]="RefundOfAdvanceFormGroup">
+                <div fxLayout="row" fxLayoutGap="6px">
+    
+                    <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Total Balance Amount" formControlName="BalanceAdvance"
+                            [formGroup]="RefundOfAdvanceFormGroup" [validations]="getValidationMessages().BalanceAdvance"
+                            [maxLength]="12" [readonly]="true">
+                        </airmid-textbox>
+                    </div>
+    
+                    <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Refund Amount" formControlName="NewRefundAmount"
+                            [formGroup]="RefundOfAdvanceFormGroup" [validations]="getValidationMessages().NewRefundAmount"
+                            [maxLength]="12" [readonly]="true">
+                        </airmid-textbox>
+                    </div>
+    
+                    <airmid-dropdown label="Select Cash Counter " formControlName="CashCounterID" class="w-300"
+                        [formGroup]="RefundOfAdvanceFormGroup" [validations]="getValidationMessages().cashCounterId"
+                        [mode]="autocompleteModeCashcounter">
+                    </airmid-dropdown>
+    
+                    <div fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Reason Of Refund Of Advacne" formControlName="Remark"
+                            [formGroup]="RefundOfAdvanceFormGroup" [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+                </div>
+            </form>
             <div class="modal-footer-buttons">
-                <button class="btn btn-danger-outline" id="btncancel" (click)="onClose()">Cancel</button> 
-                <button class="btn btn-primary" (click)="onSave()" >Save</button>
+                <button class="btn btn-danger-outline" id="btncancel" (click)="onClose()">Cancel</button>
+                <button class="btn btn-primary" (click)="onSave()">Save</button>
             </div>
         </div>
     </div>

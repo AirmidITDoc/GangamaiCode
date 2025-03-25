@@ -30,40 +30,6 @@ import { map, startWith } from 'rxjs/operators';
   animations: fuseAnimations
 })
 export class IPRefundofAdvanceComponent implements OnInit {
-
- 
-  screenFromString = 'refund-of-advance';
-  RefundOfAdvanceFormGroup: FormGroup;
-  dateTimeObj: any;
-  BillNo: number;
-  NetBillAmount: number;
-  TotalRefundAmount: number;
-  RefundBalAmount: number;
-  BillDate: Date;
-  RefundAmount: number;
-  AdvanceAmount: number;
-
-
-  NewRefundAmount: number = 0;
-  TotRefundAmount: number = 0;
-  TotRefundAmt: number = 0;
-  BalanceAmount: number = 0;
-  Remark: string;
-  isLoading: string = '';
-  isLoadingStr: string = '';
-  AdmissionId: number; 
-
-  advDetailId: any;
-  AdvanceDetailID: any; 
-  vOPIPId: any;
-  vRegId: any;
-  Age:any;
-  vMobileNo:any;
-
-
-  printTemplate: any;
-  reportPrintObj: BrowseIpdreturnadvanceReceipt;
-  subscriptionArr: Subscription[] = [];
   displayedColumns = [
     'Date',
     'AdvanceAmount',
@@ -76,22 +42,18 @@ export class IPRefundofAdvanceComponent implements OnInit {
     'RefundDate', 
     'RefundAmount', 
   ];
-  dataSource = new MatTableDataSource<IPRefundofAdvance>();
-
-  dsrefundlist = new MatTableDataSource<IPRefundofAdvance>();
-
-
+ 
   
-  dataSource1 = new MatTableDataSource<IPRefundofAdvance>();
-
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @Input() dataArray: any;
-  currentDate = new Date();
-  selectedAdvanceObj: AdvanceDetailObj;
+  screenFromString = 'advance';
+  RefundOfAdvanceFormGroup: FormGroup;
+  dateTimeObj: any;   
+  isLoadingStr: string = ''; 
+  vOPIPId: any;
+  vRegId: any;
+  Age:any;
+  vMobileNo:any;
+  currentDate = new Date(); 
   searchFormGroup: FormGroup;
-  City: any;
   CompanyName: any;
   Tarrifname: any;
   Doctorname: any; 
@@ -100,24 +62,8 @@ export class IPRefundofAdvanceComponent implements OnInit {
   vClassId: any = 0;
   RegNo: any = 0;
   PatientName: any = "";
-  RegId: any = 0;
-  noOptionFound: boolean = false;
-  PatientListfilteredOptions: any;
-  isRegIdSelected: boolean = false;
+  RegId: any = 0; 
   registerObj:any;
-
-  constructor(public _IpSearchListService: IPSearchListService,
-    public _matDialog: MatDialog,
-    private _ActRoute: Router,
-    public datePipe: DatePipe,
-    @Inject(MAT_DIALOG_DATA) public data: any, 
-    private dialogRef: MatDialogRef<IPRefundofAdvanceComponent>,
-    private accountService: AuthenticationService,
-    private advanceDataStored: AdvanceDataStored,
-    public toastr: ToastrService, 
-    public _WhatsAppEmailService:WhatsAppEmailService, 
-    private formBuilder: UntypedFormBuilder,) 
-    {}
   DepartmentName:any;
   AgeMonth:any;
   AgeDay:any;
@@ -127,11 +73,30 @@ export class IPRefundofAdvanceComponent implements OnInit {
   BedName:any;
   PatientType:any;
   DOA:any;
-  IPDNo:any;
-  autocompleteModeCashcounter: string = "CashCounter";
+  IPDNo:any; 
   AdvanceId: any; 
   UsedAmount: number = 0;
-  BalanceAdvance: number = 0;
+  BalanceAdvance: number = 0; 
+ 
+  autocompleteModeCashcounter: string = "CashCounter";
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  dsrefundlist = new MatTableDataSource<IPRefundofAdvance>(); 
+  dataSource1 = new MatTableDataSource<IPRefundofAdvance>(); 
+  
+
+  constructor(public _IpSearchListService: IPSearchListService,
+    public _matDialog: MatDialog, 
+    public datePipe: DatePipe,
+    @Inject(MAT_DIALOG_DATA) public data: any, 
+    private dialogRef: MatDialogRef<IPRefundofAdvanceComponent>,
+    private accountService: AuthenticationService,
+    private advanceDataStored: AdvanceDataStored,
+    public toastr: ToastrService, 
+    public _WhatsAppEmailService:WhatsAppEmailService, 
+    private formBuilder: UntypedFormBuilder,) 
+    {} 
 
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
@@ -155,6 +120,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
       BalanceAdvance: [0], 
       NewRefundAmount: [0,Validators.required],
       Remark: [''],
+      CashCounterID:['8']
     });
   } 
  
@@ -197,8 +163,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
      }
  
   getSelectedObj1(obj) {
-    console.log(obj)
-    this.dataSource.data = [];
+    console.log(obj) 
     this.registerObj = obj; 
     this.vClassId = obj.classId 
     this.Age=obj.Age; 
@@ -223,10 +188,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     this.IPDNo = obj.IPDNo 
     //this.getPreviousRefList(obj);
     this.getRefundofAdvanceListRegIdwise();
-  }
-
- 
- 
+  } 
 
   getRefundofAdvanceListRegIdwise() {
     
@@ -290,15 +252,13 @@ export class IPRefundofAdvanceComponent implements OnInit {
       NewRefundAmount: totalRefAmt,
       BalanceAdvance: totalBalAmt 
     }) 
-  }
-
- 
+  } 
   onSave() {
-       const currentDate = new Date();
+        const currentDate = new Date();
         const datePipe = new DatePipe('en-US');
         const formattedTime = datePipe.transform(currentDate, 'shortTime');
         const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');  
-    const formValue = this.RefundOfAdvanceFormGroup.value;
+        const formValue = this.RefundOfAdvanceFormGroup.value;
 
     if(formValue.NewRefundAmount == '' || formValue.NewRefundAmount == 0 || formValue.NewRefundAmount == null || formValue.NewRefundAmount == undefined){
       this.toastr.warning('Enter a Refund Amount', 'Warning !', {

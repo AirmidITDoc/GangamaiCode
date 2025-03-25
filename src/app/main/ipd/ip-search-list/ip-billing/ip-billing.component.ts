@@ -529,7 +529,7 @@ export class IPBillingComponent implements OnInit {
       if (flag.isConfirmed) {
         let Chargescancle = {};
         Chargescancle['chargesId'] = contact.chargesId;
-        Chargescancle['userId'] = this.accountService.currentUserValue.userId;
+        Chargescancle['isCancelledBy'] = this.accountService.currentUserValue.userId;
 
         let submitData = {
           "deleteCharges": Chargescancle
@@ -699,7 +699,7 @@ export class IPBillingComponent implements OnInit {
           totalconcessionAmt: finalDiscAmt, 
           FinalAmount: Math.round(finalNetAmt),
         }, { emitEvent: false }); 
-      this.toastr.error("Enter Admin % between 0-100");  
+     // this.toastr.error("Enter Admin % between 0-100");  
       return;
     } 
     if(this.DiscShowAmt > 0 ){
@@ -750,7 +750,7 @@ export class IPBillingComponent implements OnInit {
           totalconcessionAmt:'',
           FinalAmount: Math.round(finalNetAmt),
         }, { emitEvent: false }); 
-      this.toastr.error("Enter Discount % between 0-100");  
+      //this.toastr.error("Enter Discount % between 0-100");  
       return; 
     } 
     if (AdminAmt > 0) { 
@@ -1149,53 +1149,15 @@ export class IPBillingComponent implements OnInit {
       advancesHeaderupdate['advanceUsedAmount'] = 0,
       advancesHeaderupdate['balanceAmount'] = 0 
      
-      let addChargessupdate = {};
-      addChargessupdate['chargesID'] = 0; 
-
-      let Paymentobj = {};  
-      Paymentobj['billNo'] = 0;
-      Paymentobj['receiptNo'] = "";
-      Paymentobj['paymentDate'] =  this.datePipe.transform( this.dateTimeObj.date,'yyyy-MM-dd') || '1999-01-01';;
-      Paymentobj['paymentTime'] =  this.dateTimeObj.time; 
-      Paymentobj['cashPayAmount'] = 0; 
-      Paymentobj['chequePayAmount'] = 0;
-      Paymentobj['chequeNo'] = "";
-      Paymentobj['bankName'] = "";
-      Paymentobj['chequeDate'] =  this.datePipe.transform( this.dateTimeObj.date,'yyyy-MM-dd') || '1999-01-01';;
-      Paymentobj['cardPayAmount'] = 0;
-      Paymentobj['cardNo'] = "";
-      Paymentobj['cardBankName'] = "";
-      Paymentobj['cardDate'] = this.datePipe.transform( this.dateTimeObj.date,'yyyy-MM-dd') || '1999-01-01';;
-      Paymentobj['advanceUsedAmount'] = 0;
-      Paymentobj['advanceId'] = 0;
-      Paymentobj['refundId'] = 0;
-      Paymentobj['transactionType'] = 0;
-      Paymentobj['remark'] = "Cashpayment";
-      Paymentobj['addBy'] = this.accountService.currentUserValue.userId,
-      Paymentobj['isCancelled'] = false;
-      Paymentobj['isCancelledBy'] = 0;
-      Paymentobj['isCancelledDate'] = '1990-01-01'
-      Paymentobj['CashCounterId'] =  this.Ipbillform.get('CashCounterID').value || 0;
-      Paymentobj['neftpayAmount'] = 0;
-      Paymentobj['neftno'] = "";
-      Paymentobj['neftbankMaster'] = "";
-      Paymentobj['neftdate'] = this.datePipe.transform( this.dateTimeObj.date,'yyyy-MM-dd') || '1999-01-01';; 
-      Paymentobj['payTmamount'] = 0;
-      Paymentobj['payTmtranNo'] = ""; 
-      Paymentobj['payTmdate'] = this.datePipe.transform( this.dateTimeObj.date,'yyyy-MM-dd') || '1999-01-01';;
-      Paymentobj['tdsAmount'] = 0;  
-
+     
       let submitData = {
         "bill": InsertBillUpdateBillNoObj,
         "billDetail": billDetailscreditInsert,
         "addCharge": addChargeObj,
-        "addmission": addmissionObj,
-        "payment":Paymentobj,
+        "addmission": addmissionObj, 
         "bills": billsObj,
         "advancesupdate": advancesupdate,
-        "advancesHeaderupdate": advancesHeaderupdate,
-        "addChargessupdate":addChargessupdate,
-       
+        "advancesHeaderupdate": advancesHeaderupdate 
       };
       console.log(submitData);
       this._IpSearchListService.InsertIPBillingCredit(submitData).subscribe(response => {

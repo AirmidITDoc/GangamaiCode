@@ -644,10 +644,16 @@ public getUMOCombo() {
   //   }
 
    
-  public InsertAdvanceHeader(employee) {
+  public InsertAdvanceHeader(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
     return this._httpClient1.PostData("Advance/InsertSP", employee)
   } 
-  public UpdateAdvanceHeader(employee){
+  public UpdateAdvanceHeader(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
   return this._httpClient1.PostData("Advance/Edit",employee)  
   }
  
@@ -739,7 +745,7 @@ public getUMOCombo() {
     if (loader) {
       this._loaderService.show();
   } 
-    return this._httpClient1.PostData("IPBill/IPAddchargesdelete", m_data);
+    return this._httpClient1.DeleteData("IPBill/IPAddchargesdelete" + m_data);
   }  
   public deleteCharges(employee){
     return this._httpClient.post("Generic/GetByProc?procName=Delete_Addcharges",employee)
