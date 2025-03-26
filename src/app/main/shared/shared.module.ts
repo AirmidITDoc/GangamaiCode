@@ -55,11 +55,12 @@ import { Error404Component } from './APIerrorpages/error-404/error-404.component
 import { Error500Component } from './APIerrorpages/error-500/error-500.component';
 import { FocusNextDirective } from './directives/focus-next/focus-next.directive';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { AirmidTimePickerComponent } from './componets/airmid-time-picker/airmid-time-picker.component';
 
 
 @NgModule({
     declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-        AirmidTable1Component, AirmidTextbox1Component, AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective],
+        AirmidTable1Component, AirmidTextbox1Component, AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent],
     imports: [
         CommonModule,
         MatFormFieldModule,
@@ -114,7 +115,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
         Error401Component,
         Error403Component,
         Error404Component,
-        FocusNextDirective
+        FocusNextDirective,
+        AirmidTimePickerComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
