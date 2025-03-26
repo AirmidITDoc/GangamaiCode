@@ -197,7 +197,7 @@ export class NewAppointmentComponent implements OnInit {
             this.Regflag = true;
             this.IsPhoneAppflag = false;
             this.isRegSearchDisabled = true;
-}
+        }
 
 
     }
@@ -351,7 +351,6 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onSave() {
-
         console.log("Personal", this.personalFormGroup.value, "Visit", this.VisitFormGroup, values)
         if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
 
@@ -375,7 +374,37 @@ export class NewAppointmentComponent implements OnInit {
             }
 
         } else {
-            Swal.fire("Enter Proper Data Form Invalid chk....")
+            let invalidFields = [];
+
+            // Check personalFormGroup
+            if (this.personalFormGroup.invalid) {
+                for (const controlName in this.personalFormGroup.controls) {
+                    if (this.personalFormGroup.controls[controlName].invalid) {
+                        invalidFields.push(`Personal Form: ${controlName}`);
+                    }
+                }
+            }
+
+            // Check VisitFormGroup
+            if (this.VisitFormGroup.invalid) {
+                for (const controlName in this.VisitFormGroup.controls) {
+                    if (this.VisitFormGroup.controls[controlName].invalid) {
+                        invalidFields.push(`Visit Form: ${controlName}`);
+                    }
+                }
+            }
+
+            // Show a toast for each invalid field
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
+            // if (invalidFields.length > 0) {
+            //     Swal.fire('The following fields are invalid in the personal form: ' + invalidFields.join(', ') + '. Please check them and try again.');
+            // }
         }
     }
 
@@ -412,7 +441,7 @@ export class NewAppointmentComponent implements OnInit {
         console.log(submitData);
 
         this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
- 
+
             this.toastr.success(response.message);
             this.OnViewReportPdf(response.data)
             this.OnViewReportPdf(response.data)
@@ -442,6 +471,7 @@ export class NewAppointmentComponent implements OnInit {
     onChangePrefix(e) {
         this.ddlGender.SetSelection(e.sexId);
     }
+    
     onChangecity(e) {
         console.log(e)
         this.registerObj.stateId = e.stateId
@@ -453,7 +483,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onChangestate(e) {
-       }
+    }
     getVisitRecord(row) {
         this.departmentId = row.DepartmentId;
         this.DosctorId = row.DoctorId;
