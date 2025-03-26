@@ -510,7 +510,7 @@ debugger
       this.getTemplateList();
     else if (this.DischargeSummaryId != 0) {
       this.getDiscSummTemplateList(this.vAdmissionId); 
-      this.getTemplateList();
+      //this.getTemplateList();
     } 
     // if(this.DocName1 !=0){
     const ddValue1 = this.Doctor1List.filter(item => item.DoctorID == this.DocName1);
