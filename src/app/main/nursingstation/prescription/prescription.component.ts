@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { PrescriptionService } from './prescription.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -40,6 +40,12 @@ export class PrescriptionComponent implements OnInit {
     @ViewChild('grid1') grid1: AirmidTableComponent;
     @ViewChild('grid2') grid2: AirmidTableComponent;
     @ViewChild('grid4') grid4: AirmidTableComponent;
+     @ViewChild('iconisClosed') iconisClosed!: TemplateRef<any>;
+    
+        ngAfterViewInit() {
+            this.gridConfig.columnsList.find(col => col.key === 'isClosed')!.template = this.iconisClosed;
+        }
+
     hasSelectedContacts: boolean;
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -49,8 +55,8 @@ export class PrescriptionComponent implements OnInit {
         columnsList: [
             { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:200 },
-            { heading: "Vst_Adm_Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Pres_DateTime", key: "date", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Visite_Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "DateTime", key: "date", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
             {
@@ -81,7 +87,9 @@ export class PrescriptionComponent implements OnInit {
         this.gridConfig1 = {
             apiUrl: "IPPrescription/PrescriptionDetailList",
             columnsList: [
-                { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA' },
+                // { heading: "Status", key: "isClosed", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Status", key: "isClosed", sort: true, align: 'left',type: gridColumnTypes.template, 
+                    template:this.iconisClosed, width: 50 },
                 { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
             ],
@@ -89,8 +97,6 @@ export class PrescriptionComponent implements OnInit {
             sortOrder: 0,
             filters: [
                 { fieldName: "ipMedID", fieldValue: data.ipMedID.toString(), opType: OperatorComparer.Equals },
-                // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                // { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
             ]
         }
         this.isShowDetailTable = true;
@@ -179,15 +185,15 @@ export class PrescriptionComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(NewPrescriptionComponent,
             {
-                maxWidth: "80vw",
-                height: '85%',
+                maxHeight: '85vh',
                 width: '100%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
+                this.grid.bindGridData();
+                // if (result) {
+            //     that.grid.bindGridData();
+            // }
         });
     }
 
@@ -195,15 +201,15 @@ export class PrescriptionComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(NewPrescriptionreturnComponent,
             {
-                maxWidth: "75vw",
-                height: '75%',
+                // maxWidth: "75vw",
+                maxHeight: '75vh',
                 width: '70%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
+            // if (result) {
+                this.grid.bindGridData();
+            // }
         });
     }
 

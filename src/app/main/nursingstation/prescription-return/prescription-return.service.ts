@@ -70,7 +70,6 @@ public getRegistraionById(Id) {
   }
 
   public getBatchList1(param: any) {
-    debugger
     const apiUrl = `ItemMaster/GetItemListForSalesBatchPop?StoreId=${param.StoreId}&ItemId=${param.ItemId}`;
     return this._httpClient1.GetData(apiUrl);
   }

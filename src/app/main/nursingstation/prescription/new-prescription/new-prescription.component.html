@@ -165,13 +165,14 @@
                                     formControlName="StoreId" [formGroup]="myForm"
                                     [validations]="getValidationMessages().StoreId" 
                                     [value]="data?.StoreId" 
+                                    fxFlex="50%"
                                     [mode]="autocompletestore"
                                     (selectionChange)="selectChangeStore($event)">
                                 </airmid-dropdown>
 
                                 <airmid-dropdown label="Ward Name" formControlName="WardName" [formGroup]="myForm"
                                     [validations]="getValidationMessages().WardName" 
-                                    [value]="data?.WardName" 
+                                    [value]="data?.WardName" fxFlex="50%"
                                     [mode]="autocompleteward">
                                 </airmid-dropdown>
 
@@ -187,16 +188,14 @@
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
                     
                                 <airmid-autocomplete label="Enter Item Name" 
-                                [formGroup]="ItemForm"
+                                [formGroup]="ItemForm" required
                                 formControlName="ItemId" 
                                 placeholderText="Enter Item Name" fxFlex
-                                [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + (vstoreId || '') + '&ItemName='"
+                                [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + vstoreId + '&ItemName='"
                                 (selectionChange)="selectChangeItem($event)" 
-                                TextField="formattedText" ValueField="ItemId">
+                                TextField="formattedText" ValueField="ItemId"
+                                [validations]="getValidationMessages().ItemId" >
                                 </airmid-autocomplete>
-                                <!-- 
-                                ApiUrl="ItemMaster/GetItemListForPrescription?StoreId=2&ItemName="
-                                 -->
 
                                     <mat-form-field appearance="outline" fxFlex="8%">
                                         <mat-label>Qty</mat-label>
@@ -243,15 +242,6 @@
                                                         <span> {{element.ItemName}}</span>
                                                     </mat-cell>
                                                 </ng-container>
-
-                                                <!-- <ng-container matColumnDef="DoseName">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                        fxShow.gt-sm>
-                                                        Dose Name</mat-header-cell>
-                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                        <span> {{element.DoseName}}</span>
-                                                    </mat-cell>
-                                                </ng-container> -->
 
                                                 <ng-container matColumnDef="Qty">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
@@ -342,8 +332,10 @@
             <div class="footer-navigation-container">
                 <div class="modal-footer-buttons">
                     <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                    <button class="btn btn-primary" (click)="OnSavePrescription()"
-                        [disabled]="myForm.invalid || dsItemList.data.length == 0">Save</button>
+                    <button class="btn btn-primary" (click)="OnSavePrescription()">
+                        Save
+                    </button>
+                    <!-- [disabled]="myForm.invalid || dsItemList.data.length == 0" -->
                 </div>
             </div>
         </div>

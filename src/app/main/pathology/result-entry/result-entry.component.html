@@ -162,14 +162,14 @@
 
                                 <mat-table class="mat-table-2 h-210" #table matSort [dataSource]="dataSource1"
                                     [@animateStagger]="{value:'50'}">
-                                    <ng-container matColumnDef="select" class="w-100">
-                                        <th mat-header-cell *matHeaderCellDef>
+                                    <ng-container matColumnDef="select">
+                                        <th mat-header-cell *matHeaderCellDef >
                                             <mat-checkbox (change)="$event ? masterToggle() : null"
                                                 [checked]="selection.hasValue()"
                                                 [indeterminate]="selection.hasValue() && !isAllSelected()">
                                             </mat-checkbox>
                                         </th>
-                                        <td mat-cell *matCellDef="let contact" class="w-100">
+                                        <td mat-cell *matCellDef="let contact" class="w-90">
                                             <mat-checkbox (click)="$event.stopPropagation()"
                                                 (change)="onresultentryshow($event,contact)"
                                                 (change)="$event ? selection.toggle(contact) : null"
