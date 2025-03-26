@@ -40,13 +40,14 @@ export class SampleCollectionComponent implements OnInit {
     @ViewChild('iconcompanyName') iconcompanyName!: TemplateRef<any>;
     @ViewChild('iconisSampleCollection') iconisSampleCollection!: TemplateRef<any>;
     @ViewChild('iconisCompeleted') iconisCompeleted!: TemplateRef<any>;
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'lbl')!.template = this.iconlbl;
         this.gridConfig.columnsList.find(col => col.key === 'companyName')!.template = this.iconcompanyName;
         this.gridConfig.columnsList.find(col => col.key === 'isSampleCollection')!.template = this.iconisSampleCollection;
         this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.iconisCompeleted;
-        // this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     }
 
     hasSelectedContacts: boolean;
@@ -79,6 +80,10 @@ export class SampleCollectionComponent implements OnInit {
                     }
                 }]
         } //Action 1-view, 2-Edit,3-delete
+        // {
+        //     heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+        //     template: this.actionButtonTemplate  // Assign ng-template to the column
+        // } 
     ];
     gridConfig: gridModel = {
         apiUrl: "PathlogySampleCollection/SampleCollectionPatientList",
@@ -209,9 +214,9 @@ this.myformSearch=this._SampleCollectionService.createSearchForm()
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
+            // if (result) {
+                this.grid.bindGridData();
+            // }
         });
     }
 

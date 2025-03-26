@@ -25,6 +25,18 @@
                     <div class="table-header-title" style="padding: 10px;">
                         <span class="h3 font-weight-600">Lab Or Rad Details</span>
                     </div>
+
+                    <form [formGroup]="myformSearch">
+                        <mat-radio-group name="IsPathOrRad" formControlName="IsPathOrRad"
+                        (change)="onFilterChange()">
+                        <mat-radio-button (click)="toggle(0)" [checked]="true"
+                            value="3">All</mat-radio-button>
+                        <mat-radio-button mat-fab value="1"
+                            (click)="toggle(1)">IsPathology</mat-radio-button>
+                        <mat-radio-button (click)="toggle(2)" value="2">IsRadiology</mat-radio-button>
+                      </mat-radio-group>
+                    </form>
+
                     <div class="table-header-right">
                         <div class="export-buttons">
                             <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
@@ -93,13 +105,13 @@
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
         *ngIf="isShowDetailTable">
 
-            <div style="padding: 10px; height: 50px;">
-                <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-                    <div class="table-header-title" style="padding: 10px;">
+            <!-- <div style="padding: 10px; height: 50px;">
+                <div fxLayout="row wrap" fxLayoutAlign="space-between center"> -->
+                    <!-- <div class="table-header-title" style="padding: 10px;">
                         <span class="h3 font-weight-600">Nursing Pathology Radiology Details</span>
-                    </div>
+                    </div> -->
 
-                    <form [formGroup]="myformSearch">
+                    <!-- <form [formGroup]="myformSearch">
                         <mat-radio-group name="IsPathOrRad" formControlName="IsPathOrRad"
                         (change)="onFilterChange()">
                         <mat-radio-button (click)="toggle(0)" [checked]="true"
@@ -108,9 +120,9 @@
                             (click)="toggle(1)">IsPathology</mat-radio-button>
                         <mat-radio-button (click)="toggle(2)" value="2">IsRadiology</mat-radio-button>
                       </mat-radio-group>
-                    </form>
+                    </form> -->
 
-                    <div class="table-header-right">
+                    <!-- <div class="table-header-right">
                         <div class="export-buttons">
                             <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
                                 <button mat-icon-button (click)="exportReportPdf()" [disabled]="! (dataSource.data.length > 0)">
@@ -123,9 +135,9 @@
                                 </button>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
+                    </div> -->
+                <!-- </div>
+            </div> -->
 
             <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false" :ShowButtons="false">
             </airmid-table>

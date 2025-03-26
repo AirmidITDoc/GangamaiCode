@@ -64,6 +64,21 @@
 
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
                     *ngIf="isShowDetailTable">
+
+                    <ng-template #iconisClosed let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+        
+                            <mat-icon *ngIf="element.isClosed == 'false'" matTooltip="Pending"
+                            class="active-icon red-500 s-16">hourglass_empty
+                            </mat-icon>
+                            
+                            <mat-icon *ngIf="element.isClosed == 'True'" matTooltip="Accepted"
+                            class="active-icon green-500 s-16">check_circle
+                            </mat-icon>
+                            
+                        </div>
+                    </ng-template>
+
                     <airmid-table [gridConfig]="gridConfig" class="content" #grid1 [ShowFilter]="false" [ShowButtons]="false">
                     </airmid-table>
                 </div>

@@ -132,7 +132,7 @@ export class ResultEntryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getTemplateList(); 
+    // this.getTemplateList(); 
     if (this.advanceDataStored.storage) {
       // this.getUpdatetemplate();
     }
@@ -177,16 +177,16 @@ export class ResultEntryComponent implements OnInit {
     this.vTemplateDesc = this.Tempdesc
   }
 
-    getTemplateList() {
-      if (this.data) {
-        this._radiologytemplateService.gettemplateId(this.TemplateId).subscribe(data => {
-          console.log(data)
-          this._radiologytemplateService.myform.get('TemplateName').setValue(data.templateId);
-        this.vTemplateDesc = data.Tempdesc
-        });
+  //   getTemplateList() {
+  //     if (this.data) {
+  //       this._radiologytemplateService.gettemplateId(this.TemplateId).subscribe(data => {
+  //         console.log(data)
+  //         this._radiologytemplateService.myform.get('TemplateName').setValue(data.templateId);
+  //       this.vTemplateDesc = data.Tempdesc
+  //       });
 
-      }
-  }
+  //     }
+  // }
 
   onSubmit() {
     debugger

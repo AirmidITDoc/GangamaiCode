@@ -91,6 +91,16 @@
                 </div>
             </ng-template>
 
+            <ng-template #actionButtonTemplate let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+    
+                    <button mat-icon-button matTooltip="Edit" (click)="onSave(element)"
+                    *ngIf="!element.isSampleCollection">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </div>
+            </ng-template>
+
             <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false" (onSelectRow)="getSelectedRow($event)">
                 <ng-container filters>
                     <form [formGroup]="myformSearch">
@@ -106,6 +116,7 @@
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
+
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
                         <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myformSearch" formControlName="FirstName" (input)="onChangeFirst()"/>
@@ -121,7 +132,6 @@
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
-
                   
                     <div fxLayout="column" fxLayoutAlign="start start">
                         <div fxFlex fxLayout="row">
@@ -155,13 +165,13 @@
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
         *ngIf="isShowDetailTable">
-            <div style="padding: 10px; height: 30px; margin-bottom: 10px;">
+            <!-- <div style="padding: 10px; height: 30px; margin-bottom: 10px;">
                 <div fxLayout="row wrap" fxLayoutAlign="space-between center">
                     <div class="table-header-title" style="padding: 10px;">
                         <span class="h3 font-weight-600">Test Details</span>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false">
             </airmid-table>
         </div>

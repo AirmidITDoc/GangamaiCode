@@ -148,27 +148,21 @@ export class NewPrescriptionComponent implements OnInit {
     return this._FormBuilder.group({
       RegId: '',
       PatientName: '',
-      WardName: '',
-      StoreId: 2,
-      RegID: [''],
+      WardName: ['', Validators.required],
+      StoreId: ['', Validators.required],
+      RegID: ['', Validators.required],
       Op_ip_id: ['1'],
       AdmissionID: 0
-
     })
   }
 
   createItemForm() {
     return this._FormBuilder.group({
-      ItemId: '',
+      ItemId: ['', Validators.required],
       ItemName: '',
       DoseId:'',
-      Day: ['', [
-        Validators.required,
-        Validators.pattern("^[0-9]*$")]],
-        Instruction: ['', [
-        Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-      ]],
-      Qty:['']
+      Day: [''],
+      Qty:['',Validators.required]
     })
   }
 
@@ -208,13 +202,13 @@ export class NewPrescriptionComponent implements OnInit {
       this.vDOA=obj.admissionDate
       this.vAdmissionID=obj.admissionID
       this.vClassId=obj.classId
-      setTimeout(() => {
-        this._PrescriptionService.getAdmittedpatientlist(obj.regID).subscribe((response) => {
-          this.registerObj = response;        
-          console.log(this.registerObj)
-        });
+      // setTimeout(() => {
+      //   this._PrescriptionService.getAdmittedpatientlist(obj.regID).subscribe((response) => {
+      //     this.registerObj = response;        
+      //     console.log(this.registerObj)
+      //   });
   
-      }, 500);
+      // }, 500);
     }
   }
 
@@ -269,7 +263,10 @@ export class NewPrescriptionComponent implements OnInit {
       ],
       ItemId:[
         { name: "required", Message: "Item Name is required" }
-      ]
+      ],
+      Qty:[
+        { name: "required", Message: "Qty is required" }
+      ],
     };
   }
   onEdit(row) {
@@ -290,46 +287,47 @@ export class NewPrescriptionComponent implements OnInit {
   }  
 
   onAdd() {
+   
+    if (!this.ItemForm.invalid) {
+      const iscekDuplicate = this.dsItemList.data.some(item => item.ItemID == this.vitemId)
+      if (!iscekDuplicate) {
+        this.dsItemList.data = [];
+        this.Chargelist.push(
+          {
+            ItemID: this.vitemId || 0,
+            ItemName: this.vitemname || '',
+            Qty: this.vQty,
+            Remark: this.vInstruction || ''
+          });
+        this.dsItemList.data = this.Chargelist
+        //console.log(this.dsItemList.data); 
 
-  if (!this.ItemForm.get('ItemId')?.value) {
-    this.toastr.warning('Please select Item', 'Warning!', {
-        toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-}
-  
-    if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
-      this.toastr.warning('Please enter a qty', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    // const selectedItem = this.ItemForm.get('ItemId').itemId;
-    const iscekDuplicate = this.dsItemList.data.some(item => item.ItemID == this.vitemId)
-    if(!iscekDuplicate){
-    this.dsItemList.data = [];
-    this.Chargelist.push(
-      {
-        ItemID: this.vitemId || 0,
-        ItemName: this.vitemname || '',
-        // DoseName: this.ItemForm.get('DoseId').value.DoseName || '',
-        // DoseId: this.ItemForm.get('DoseId').value.DoseId || '',
-        Qty:  this.vQty,
-        Remark: this.vInstruction || '' 
-      });
-    this.dsItemList.data = this.Chargelist
-    //console.log(this.dsItemList.data); 
-    }else{
-      this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    this.ItemForm.get('ItemId').reset('');
-    // this.ItemForm.get('DoseId').reset('');
+        this.ItemForm.get('ItemId').reset('');
     this.ItemForm.get('Qty').reset('');
     this.ItemForm.get('Instruction').reset('');
-    // this.itemid.nativeElement.focus(); 
+      } else {
+        this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    } else {
+      let invalidFields = [];
+      if (this.ItemForm.invalid) {
+        for (const controlName in this.ItemForm.controls) {
+          if (this.ItemForm.controls[controlName].invalid) {
+            invalidFields.push(`Item Form: ${controlName}`);
+          }
+        }
+      }
+
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+            this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+            );
+        });
+    }
+    }
   }
 
   deleteTableRow(event, element) { 
@@ -348,15 +346,12 @@ export class NewPrescriptionComponent implements OnInit {
   @ViewChild('remark') remark: ElementRef; 
   @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement; 
   @ViewChild('qty') qty: ElementRef;
-  
-
 
   public onEnterqty(event): void { 
     if (event.which === 13) {
       this.remark.nativeElement.focus(); 
     }
   }
-
 
   onEnterItem(event): void {
     if (event.which === 13) {
@@ -376,8 +371,6 @@ export class NewPrescriptionComponent implements OnInit {
       this.add = true; 
     } 
   }
-
-
 
   viewgetIpprescriptionReportPdf(OP_IP_ID) {
     setTimeout(() => {
@@ -407,44 +400,17 @@ export class NewPrescriptionComponent implements OnInit {
     }, 100);
   }
   
-  //api integrate
   OnSavePrescription() {
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'shortTime');
+    // const formattedTime = datePipe.transform(currentDate, 'shortTime');
+    const formattedTime = datePipe.transform(currentDate, 'dd-MM-yyyy hh:mm:ss a');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
     debugger
-    if (( this.vRegNo== '' || this.vRegNo == null || this.vRegNo == undefined)) {
-      this.toastr.warning('Please select patient', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    // if (!this.myForm.get('StoreId')?.value) {
-    //   this.toastr.warning('Please select Store Name', 'Warning!', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-    let storeId = this.myForm.get('StoreId')?.value;
 
-    if (!storeId || storeId === 0 || storeId === "0") {
-        this.toastr.warning('Please select Store Name', 'Warning!', {
-            toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-    }    
-  
-    if (!this.myForm.get('WardName')?.value) {
-      this.toastr.warning('Please select Ward Name', 'Warning!', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-
-    this.isLoading = 'submit'; 
-    let insertIP_Prescriptionarray = [];
+    if(!this.myForm.invalid && this.dsItemList.data.length > 0){
+      let insertIP_Prescriptionarray = [];
 
     this.dsItemList.data.forEach((element) => {
       let insertIP_Prescription = {};
@@ -498,7 +464,32 @@ export class NewPrescriptionComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-error',
       });
     });
+
+    } else {
+      let invalidFields = [];
+
+      if (this.dsItemList.data.length === 0) {
+        invalidFields.push('No data in the item list!');
+    }
+
+      if (this.myForm.invalid) {
+        for (const controlName in this.myForm.controls) {
+          if (this.myForm.controls[controlName].invalid) {
+            invalidFields.push(`My Form: ${controlName}`);
+          }
+        }
+      }
+            
+      // Show a toast for each invalid field
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+            this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+            );
+        });
+    }
+    }
   }
+
   onClose() {
     this.ref.close();
   }

@@ -168,9 +168,9 @@ export class RadiologyOrderListComponent implements OnInit {
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
+            // if (result) {
+                this.grid.bindGridData();
+            // }
         });
     }
 
@@ -185,9 +185,9 @@ export class RadiologyOrderListComponent implements OnInit {
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
+            // if (result) {
+                this.grid.bindGridData();
+            // }
         });
     }
 

@@ -25,10 +25,10 @@
     <!-- CONTENT -->
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
-            <form [formGroup]="ItemSubform">
                 <div fxLayout="column" class="gap-12">
                     <div class="modal-card-container">
                         <mat-card>
+                            <form [formGroup]="MyForm">
                             <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center center">
                                 <div class="radio-container">
                                     <mat-radio-group aria-label="Select an option" formControlName="PatientType"
@@ -43,8 +43,8 @@
                                 <div class="input-container gap-8" fxFlex="80%">
 
                                     <airmid-autocomplete lbl="RgId" 
-                                    *ngIf="ItemSubform.get('PatientType').value == 'OP'"
-                                        [formGroup]="ItemSubform" formControlName="RegID" 
+                                    *ngIf="MyForm.get('PatientType').value == 'OP'"
+                                        [formGroup]="MyForm" formControlName="RegID" 
                                         placeholderText="OP-RegNo/FirstName/LastName"
                                          ApiUrl="VisitDetail/search-patient?Keyword=" 
                                         (selectionChange)="getSelectedObjOP($event)"
@@ -52,8 +52,8 @@
                                     </airmid-autocomplete>
 
                                     <airmid-autocomplete lbl="RgId" 
-                                    *ngIf="ItemSubform.get('PatientType').value == 'IP'"
-                                        [formGroup]="ItemSubform" formControlName="RegID" 
+                                    *ngIf="MyForm.get('PatientType').value == 'IP'"
+                                        [formGroup]="MyForm" formControlName="RegID" 
                                         placeholderText="IP-RegNo/FirstName/LastName" 
                                         ApiUrl="Admission/search-patient?Keyword=" 
                                         (selectionChange)="getSelectedObjIP($event)"
@@ -99,6 +99,7 @@
                                     </mat-form-field> -->
                                 </div>
                             </div>
+                        </form>
                         </mat-card>
                     </div>
 
@@ -207,6 +208,7 @@
                         </div>
                     </div>
                     
+                    <form [formGroup]="ItemSubform">
                     <div class="modal-card-container">
                         <mat-card>
                             <div class="input-container gap-8" fxLayout="column" fxLayout.gt-xs="row">
@@ -248,6 +250,10 @@
                             </div>
                         </mat-card>
                     </div>
+                    </form>
+
+            <form [formGroup]="ItemSubform">
+
                     <div class="modal-card-container">
                         <mat-card>
                             <mat-table #table matSort [dataSource]="saleSelectedDatasource"
@@ -341,8 +347,10 @@
                             </div>
                         </mat-card>
                     </div>
-                </div>
+
             </form>
+                </div>
+            
         </div>
     </div>
     <!-- Middle content end -->
