@@ -8,6 +8,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 
 @Component({
   selector: 'app-prebill-details',
@@ -17,25 +19,30 @@ import { MatPaginator } from '@angular/material/paginator';
   animations: fuseAnimations
 })
 export class PrebillDetailsComponent implements OnInit {
-
-  PrevBillColumns = [
-    'BillNo',
-    'ServiceName',
-    'Qty',
-    'Price',
-    'TotalAmt',
-    'ConcessionAmount',
-    'NetAmount',
-    'AddDoctorName'
-  ];
-
-  isLoadingStr: string = '';
-  registerObj:any;
-
-  dsPrebilldetList = new MatTableDataSource<PreDetailsList>();
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
+  BillNo :any ='0'
+   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+   PrevColumnList=[
+    { heading: "Bill No", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 110 },
+    { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+    { heading: "Total Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', width: 140 },
+    { heading: "Disc Amt", key: "concessionAmount", sort: true, align: 'left', emptySign: 'NA', width: 110 },
+    { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 140 },
+    { heading: "Add Doctor Name", key: "addDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 }, 
+  ] 
+  gridConfig: gridModel = {
+    apiUrl: "IPBill/PreviousBillList", 
+    columnsList: this.PrevColumnList,
+    sortField: "BillNo",
+    sortOrder: 0,
+    filters: [
+      { fieldName: "BillNo", fieldValue: String(this.BillNo), opType:OperatorComparer.Equals }
+    ],
+    row: 10
+  }
+ 
+  registerObj:any;  
   
   constructor(
     public _IpSearchListService: IPSearchListService,
@@ -43,28 +50,27 @@ export class PrebillDetailsComponent implements OnInit {
     public datePipe: DatePipe,
     public toastr: ToastrService,
     public dialogRef: MatDialogRef<PrebillDetailsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private accountService: AuthenticationService,
+    @Inject(MAT_DIALOG_DATA) public data: any, 
   ) { }
 
   ngOnInit(): void {
-    if(this.data.Obj){
+    if(this.data){
       this.registerObj = this.data.Obj;
       console.log(this.registerObj)
-      this.getBillDetList(this.registerObj);
+      this.BillNo = this.registerObj.billNo
+      this.getprelistData(this.BillNo);
     }
-  }
-  getBillDetList(el){
-    var vdata={
-      'BillNo': el.BillNo
+  }  
+  getprelistData(BillNo){
+    this.gridConfig = {
+      apiUrl: "IPBill/PreviousBillList", 
+      columnsList: this.PrevColumnList,
+      sortField: "BillNo",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "BillNo", fieldValue: String(1), opType:OperatorComparer.Equals }
+      ]
     }
-    console.log(vdata)
-    this._IpSearchListService.getPreBillDetList(vdata).subscribe(data =>{
-      this.dsPrebilldetList.data = data as PreDetailsList[];
-      this.dsPrebilldetList.sort = this.sort;
-      this.dsPrebilldetList.paginator = this.paginator;
-      console.log(this.dsPrebilldetList.data)
-    })
   }
   onClose(){
     this.dialogRef.close();

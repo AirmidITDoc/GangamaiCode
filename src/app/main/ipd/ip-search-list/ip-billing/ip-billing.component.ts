@@ -71,11 +71,11 @@ export class IPBillingComponent implements OnInit {
   opD_IPD_Id: any = "0"
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-  @ViewChild('actionButtonTemplatePrevlist') actionButtonTemplatePrevlist!: TemplateRef<any>;
+  @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
   ngAfterViewInit() {
     // Assign the template to the column dynamically 
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-    this.gridConfig1.columnsList.find(col => col.key === 'action1')!.template = this.actionButtonTemplatePrevlist;
+    this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
   }
 
   allColumns = [
@@ -89,9 +89,8 @@ export class IPBillingComponent implements OnInit {
     { heading: "chequePayAmt", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', width: 130 },
     { heading: "cardPayAmt", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 130 },
     { heading: "AdvUsedAmt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-    {
-      heading: "Action", key: "action1", align: "right", width: 110, sticky: true, type: gridColumnTypes.template,
-      template: this.actionButtonTemplatePrevlist  // Assign ng-template to the column
+    { heading: "Action", key: "action", align: "right", width: 110, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate1  // Assign ng-template to the column
     }
   ]
   AdvanceColumns = [
@@ -109,8 +108,7 @@ export class IPBillingComponent implements OnInit {
     { heading: "NEFT Pay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "PayTM Pay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Reason", key: "reason", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-    {
-      heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
+    {  heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
     }
   ]
@@ -984,8 +982,8 @@ export class IPBillingComponent implements OnInit {
           InsertBillUpdateBillNoObj['totalAmt'] = this.TotalShowAmt || 0;
           InsertBillUpdateBillNoObj['concessionAmt'] = this.Ipbillform.get('totalconcessionAmt').value || 0;
           InsertBillUpdateBillNoObj['netPayableAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
-          InsertBillUpdateBillNoObj['paidAmt'] = 0;
-          InsertBillUpdateBillNoObj['balanceAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
+          InsertBillUpdateBillNoObj['paidAmt'] = this.paidamt || 0;
+          InsertBillUpdateBillNoObj['balanceAmt'] = this.balanceamt  || 0;
           InsertBillUpdateBillNoObj['billDate'] = this.datePipe.transform( this.dateTimeObj.date,'yyyy-MM-dd') || '1999-01-01';
           InsertBillUpdateBillNoObj['opdipdType'] = 1;
           InsertBillUpdateBillNoObj['addedBy'] = this.accountService.currentUserValue.userId,
