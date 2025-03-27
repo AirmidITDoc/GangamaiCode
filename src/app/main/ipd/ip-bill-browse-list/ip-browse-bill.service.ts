@@ -157,7 +157,7 @@ public getRefundofbillview(RefundId){
   return this._httpClient.get("InPatient/view-IP-ReturnOfBillReceipt?RefundId=" + RefundId);
 }
 
-// new Api?
+
 public deactivateTheStatus(m_data) {
   return this._httpClient1.PostData("VisitDetail", m_data);
 }
@@ -166,9 +166,15 @@ public deactivateTheStatuspayment(m_data) {
   return this._httpClient1.PostData("VisitDetail", m_data);
 }
 
-// newApi
 
 public getReportView(Param) {
   return this._httpClient1.PostData("Report/ViewReport", Param);
 }
+
+
+public InsertIPSettlementPayment (employee){
+ 
+  return this._httpClient1.PostData("IPBill/PaymentSettelment", employee)
+}
+
 }

@@ -425,8 +425,7 @@ export class NewAppointmentComponent implements OnInit {
 
         this._AppointmentlistService.NewappointmentSave(submitData).subscribe((response) => {
             this.toastr.success(response.message);
-            debugger
-            this.OnViewReportPdf(response.data)
+            this.OnViewReportPdf(response)
             this.onClear(true);
             this._matDialog.closeAll();
         }, (error) => {

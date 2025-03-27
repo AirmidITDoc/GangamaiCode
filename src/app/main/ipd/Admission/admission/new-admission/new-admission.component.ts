@@ -271,7 +271,7 @@ if (invalidFields.length > 0) {
         // let Res = response.message
         // let ID = Res.split('.')
         // let Id = ID[1]
-        this.getAdmittedPatientCasepaperview(response.data);
+        this.getAdmittedPatientCasepaperview(response);
         this.onClear();
         this._matDialog.closeAll();
 
@@ -296,7 +296,7 @@ if (invalidFields.length > 0) {
         // let Res = response.message
         // let ID = Res.split('.')
         // let Id = ID[1]
-        this.getAdmittedPatientCasepaperview(response.data);
+        this.getAdmittedPatientCasepaperview(response);
         this.onClear();
         this._matDialog.closeAll();
       }, (error) => {

@@ -206,7 +206,7 @@ export class DischargeComponent implements OnInit {
 
         this._IpSearchListService.DichargeInsert(m_data).subscribe((response) => {
           this.toastr.success(response.message);
-          this.viewgetDischargeSlipPdf(response.data)
+          this.viewgetDischargeSlipPdf(response)
           this._matDialog.closeAll();
         }, (error) => {
           this.toastr.error(error.message);
@@ -228,7 +228,7 @@ export class DischargeComponent implements OnInit {
         
         this._IpSearchListService.DichargeUpdate(m_data1).subscribe((response) => {
           this.toastr.success(response.message);
-          this.viewgetDischargeSlipPdf(response.data)
+          this.viewgetDischargeSlipPdf(response)
           this._matDialog.closeAll();
         }, (error) => {
           this.toastr.error(error.message);

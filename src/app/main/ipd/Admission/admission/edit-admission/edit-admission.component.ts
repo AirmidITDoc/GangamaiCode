@@ -175,7 +175,7 @@ export class EditAdmissionComponent implements OnInit {
         // let Res = response.message
         // let ID = Res.split('.')
         // let Id = ID[1]
-        this.getAdmittedPatientCasepaperview(response.data);
+        this.getAdmittedPatientCasepaperview(response);
         this._matDialog.closeAll();
       }, (error) => {
         this.toastr.error(error.message);

@@ -49,8 +49,7 @@ export class IPSettlementComponent implements OnInit {
     vpaidamt: any = 0;
     vbalanceamt: any = 0;
     FinalAmt = 0;
-    // @ViewChild('grid1') grid1: AirmidTableComponent;
-
+   
     constructor(public _IPSettlementService: IPSettlementService,
         private commonService: PrintserviceService,
           private accountService: AuthenticationService,

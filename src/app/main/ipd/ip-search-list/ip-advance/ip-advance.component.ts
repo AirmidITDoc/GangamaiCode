@@ -271,10 +271,7 @@ export class IPAdvanceComponent implements OnInit {
            console.log(response)
           this.toastr.success(response.message);
           this.grid.bindGridData();
-          // let Res = response.message
-          // let ID = Res.split('.')
-          // let Id = ID[1] 
-          this.viewgetAdvanceReceiptReportPdf(response.data);
+         this.viewgetAdvanceReceiptReportPdf(response);
           this.getWhatsappsAdvance(response, this.vMobileNo);
           this._matDialog.closeAll();
         }, (error) => {

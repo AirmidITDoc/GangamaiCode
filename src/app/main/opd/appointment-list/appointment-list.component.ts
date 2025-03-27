@@ -274,9 +274,9 @@ Clearfilter(event) {
             let that = this;
             const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
                 {
-                    maxWidth: "70vw",
-                    height: "390px",
-                    width: "50%",
+                    maxWidth: "90vw",
+                    height: "430px",
+                    width: "70%",
                     data: element
                 });
             dialogRef.afterClosed().subscribe(result => {
@@ -431,78 +431,7 @@ Clearfilter(event) {
         }
 
     }
-    EditConsultdr(row) {
-        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-        buttonElement.blur(); // Remove focus from the button
-
-        let that = this;
-        const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
-            {
-                maxWidth: "55vw",
-                maxHeight: '80%',
-                width: '80%',
-                data: row
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
-        });
-    }
-
-    Editrefrancedr(row) {
-        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-        buttonElement.blur(); // Remove focus from the button
-
-        let that = this;
-        const dialogRef = this._matDialog.open(EditRefranceDoctorComponent,
-            {
-                maxWidth: "55vw",
-                height: '95%',
-                width: '80%',
-                data: row
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
-        });
-    }
-
-    Editcrossconsult(row) {
-        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-        buttonElement.blur(); // Remove focus from the button
-
-        let that = this;
-        const dialogRef = this._matDialog.open(CrossConsultationComponent,
-            {
-                maxWidth: "65vw",
-                height: '50%',
-                width: '80%',
-                data: row
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
-        });
-    }
-
-    // EditOpBill(row) {
-    //     let that = this;
-    //     const dialogRef = this._matDialog.open(OPBillingComponent,
-    //         {
-    //             maxWidth: "99vw",
-    //             height: '95%',
-    //             width: '90%',
-    //             data: row
-    //         });
-    //     dialogRef.afterClosed().subscribe(result => {
-    //         if (result) {
-    //             that.grid.bindGridData();
-    //         }
-    //     });
-    // }
+ 
     AppointmentCancle(contact) {
         Swal.fire({
             title: 'Do you want to Cancle Appointment',

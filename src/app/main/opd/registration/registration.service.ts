@@ -36,7 +36,7 @@ export class RegistrationService {
             ]],
             fromDate: [(new Date()).toISOString()],
             enddate: [(new Date()).toISOString()],
-            MobileNo:['', [Validators.required,
+            MobileNo:['', [
                 Validators.minLength(10),
                 Validators.maxLength(10),
                 Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
@@ -51,14 +51,14 @@ export class RegistrationService {
             PrefixId: ['', [Validators.required]],
             FirstName: ['', [
                 Validators.required,
-                Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+               Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
             ]],
             MiddleName: ['', [
-                Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+               Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
             ]],
             LastName: ['', [
                 Validators.required,
-                Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
+                Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
             ]],
             GenderId: new FormControl('', [Validators.required]),
             Address: '',
@@ -81,7 +81,7 @@ export class RegistrationService {
             Validators.maxLength(10),
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
             ]],
-            aadharCardNo: ['', [Validators.required,
+            aadharCardNo: ['', [
             Validators.minLength(12),
             Validators.maxLength(12),
             Validators.pattern("^[0-9]*$")
