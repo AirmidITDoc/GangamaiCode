@@ -1,0 +1,31 @@
+<mat-form-field fxFlex [appearance]="appearance" [style.width.%]="width">
+  <mat-label>{{ label }}</mat-label>
+  <input
+    matTimepicker
+    #t="matTimepicker"
+    [mode]="mode"
+    [disabled]="isDisabled"
+    [(ngModel)]="timeValue"
+    (timeChange)="onTimeSelected($event)"
+    (focus)="onFocus($event)"
+    (keyup)="onKeyUp($event)"
+    (keydown)="onKeyDown($event)"
+    (click)="onClick($event)"
+    (input)="onInput($event)"
+    [readonly]="readonly"
+    [disableDialogOpenOnClick]="isDisabled"
+    [minDate]="minDate"
+    [maxDate]="maxDate"
+  />
+  <mat-icon matSuffix (click)="!isDisabled ? t.showDialog() : null">access_time</mat-icon>
+</mat-form-field>
+
+<!-- Example Usage -->
+
+<!-- <airmid-time-picker
+   formControlName="formControllName"
+   label="labelName"
+   [mode]="'12h'"
+   [(ngModel)]="timeValue"
+   [isDisabled]="false">
+ </airmid-time-picker> -->
