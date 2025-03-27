@@ -44,7 +44,8 @@ export class ApiCaller {
     PostData(url: string, data: any) {
         return (this._httpClient.post<any>(`${this.config.apiBaseUrl}${url}`, data).pipe(map((data: apiResponse) => {
             if (data.statusCode == 200) {
-                this.toastr.success(data.message, 'success !', { toastClass: 'tostr-tost custom-toast-success', });
+                if (data.message)
+                    this.toastr.success(data.message, 'success !', { toastClass: 'tostr-tost custom-toast-success', });
                 return data?.data || data;
             }
             else {
@@ -59,7 +60,8 @@ export class ApiCaller {
     PutData(url: string, data: any) {
         return (this._httpClient.put<any>(`${this.config.apiBaseUrl}${url}`, data).pipe(map((data: apiResponse) => {
             if (data.statusCode == 200) {
-                this.toastr.success(data.message, 'success !', { toastClass: 'tostr-tost custom-toast-success', });
+                if (data.message)
+                    this.toastr.success(data.message, 'success !', { toastClass: 'tostr-tost custom-toast-success', });
                 return data?.data || data;
             }
             else {
@@ -73,7 +75,8 @@ export class ApiCaller {
     DeleteData(url: string) {
         return (this._httpClient.delete<any>(`${this.config.apiBaseUrl}${url}`).pipe(map((data: apiResponse) => {
             if (data.statusCode == 200) {
-                this.toastr.success(data.message, 'success !', { toastClass: 'tostr-tost custom-toast-success', });
+                if (data.message)
+                    this.toastr.success(data.message, 'success !', { toastClass: 'tostr-tost custom-toast-success', });
                 return data?.data || data;
             }
             else {
