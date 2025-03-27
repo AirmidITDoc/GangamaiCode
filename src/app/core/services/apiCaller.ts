@@ -38,22 +38,6 @@ export class ApiCaller {
                 return of(null);  // Return an empty observable to continue without crashing
             }));
     }
-
-    // PostData(url: string, data: any) {
-    //     return this._httpClient.post<any>(`${this.ApiUrl}${url}`, data).pipe(map((response: apiResponse) => {
-    //             // Check if the response status is 200 (OK)
-    //             if (response && response.statusCode === 200) {
-    //                 return response;  // Return the entire response object
-    //             } else {
-    //                 // If status is not 200, show an error toast
-    //                 this.toastr.error(response.message, 'Error !', {
-    //                     toastClass: 'tostr-tost custom-toast-error',
-    //                 });
-    //                 return of(null); // Avoid returning invalid data
-    //             }
-    //         })
-    //     );
-    // }
     
     PostData(url: string, data: any) {
         return (this._httpClient.post<any>(`${this.ApiUrl}${url}`, data).pipe(map((data: apiResponse) => {
