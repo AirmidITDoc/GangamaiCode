@@ -148,7 +148,7 @@ export class IPBillingComponent implements OnInit {
   PharmacyAmont: any = 0; 
   ServiceName: any;
   interimArray: any = [];
-  screenFromString = 'IP-billing'; 
+  screenFromString = 'Common-form';
   isLoadingStr: string = ''; 
   paidamt: any;
   balanceamt: any; 
@@ -254,7 +254,12 @@ export class IPBillingComponent implements OnInit {
     this.handleChange('discPer', () => this.updateDiscountAmount());
     this.handleChange('discAmount', () => this.updateDiscountdiscPer()); 
   }
+ 
+  isOpen: boolean = false; // Sidebar starts open
 
+  toggleSidebar(obj) { 
+    this.isOpen = !this.isOpen; 
+  }
   calculateTotalCharge(row: any = null): void {
     let qty = +this.Serviceform.get("qty").value;
     let price = +this.Serviceform.get("price").value;
@@ -396,6 +401,9 @@ export class IPBillingComponent implements OnInit {
   onSaveAddCharges() {
     let doctorid = 0;
     let doctorName = '';
+
+    let invalidFields = [];
+
     if (this.isDoctor) {
       if ((this.doctorID == '' || this.doctorID == null || this.doctorID == undefined)) {
         this.toastr.warning('Please select Doctor', 'Warning !', {
@@ -412,32 +420,23 @@ export class IPBillingComponent implements OnInit {
 
     if (this.Serviceform.valid) {
       const formValue = this.Serviceform.value;
-      console.log("Form values:", formValue)
-      //CHecking Validation 
-      if ((formValue.ChargeClass == '' || formValue.ChargeClass == null || formValue.ChargeClass == undefined)) {
-        this.toastr.warning('Please select Ward', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
+      // console.log("Form values:", formValue) 
+      // Check VisitFormGroup
+      if (this.Serviceform.invalid) {
+        for (const controlName in this.Serviceform.controls) {
+          if (this.Serviceform.controls[controlName].invalid) {
+            invalidFields.push(`Service Form: ${controlName}`);
+          }
+        }
       }
-      if ((formValue.ServiceName.serviceId == '' || formValue.ServiceName.serviceId == null || formValue.ServiceName.serviceId == undefined)) {
-        this.toastr.warning('Please select service', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
+      // Show a toast for each invalid field
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
         });
-        return;
-      }
-      if ((formValue.price == '' || formValue.price == null || formValue.price == undefined || formValue.price == '0')) {
-        this.toastr.warning('Please enter price', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-      if ((formValue.qty == '' || formValue.qty == null || formValue.qty == undefined || formValue.qty == '0')) {
-        this.toastr.warning('Please enter qty', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
+      } 
+
       // Calculate total amount, discount amount, and net amount
       const totalAmount = formValue.price * formValue.qty;
       const discountAmount = (totalAmount * formValue.discPer) / 100;
@@ -870,14 +869,12 @@ export class IPBillingComponent implements OnInit {
         return;
       }
     }
-
     if (!this.Ipbillform.get('CashCounterID').value) {
       this.toastr.warning('Please select Cash Counter.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-  
 
     if (this.dataSource.data.length > 0) {
       if (this.Ipbillform.get('GenerateBill').value) {
