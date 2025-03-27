@@ -47,7 +47,7 @@ export class DischargeSummaryComponent implements OnInit {
       }
   DischargesumForm: FormGroup;
   MedicineItemForm: FormGroup;
-  submitted = false;
+ 
   msg: any;
   Id: any;
   a: any;
@@ -61,9 +61,15 @@ export class DischargeSummaryComponent implements OnInit {
   filteredOptionsItem: any;
   noOptionFound: any;
   ItemId: any;
-  isDoseSelected: boolean = false;
   vDay: any;
   vInstruction: any;
+
+  isDoseSelected: boolean = false;
+  ClinicalFInding: any;
+  Istemplate = false;
+  saveflag: boolean = false
+  submitted = false;
+
   displayedColumns: string[] = [
     'itemName',
     'doseName',
@@ -78,9 +84,7 @@ export class DischargeSummaryComponent implements OnInit {
   selectedAdvanceObj: AdvanceDetailObj;
   registerObj = new DischargeSummary({});
 
-
-
-  menuActions: Array<string> = [];
+  
   vAdmissionId: any = 0;
   vDischargeId: any = 0;
   RetrDischargeSumryList: any = [];
@@ -117,7 +121,7 @@ export class DischargeSummaryComponent implements OnInit {
   DocName3 = 0
   IsDeath: any;
   vIsNormalDeath = 1;
-  bp: any = 1000;
+  bp: any = 0;
   lngAdmId: any = [];
 
   registerObj1 = new AdmissionPersonlModel({});
@@ -131,8 +135,6 @@ export class DischargeSummaryComponent implements OnInit {
   autocompleteitem: string = "Item";
   autocompletetemplate: string = "DischargeTemplate";
   
-
-
   dsItemList = new MatTableDataSource<MedicineItemList>();
 
   constructor(public _IpSearchListService: IPSearchListService,
@@ -182,9 +184,7 @@ export class DischargeSummaryComponent implements OnInit {
           console.log(this.registerObj1)
 
         });
-
-
-      }, 500);
+}, 500);
     }
 
     this.getdischargeIdbyadmission();
@@ -245,7 +245,7 @@ export class DischargeSummaryComponent implements OnInit {
       warningSymptoms: "",
       pathology:"",
       radiology: "",
-      isNormalOrDeath: [0]
+      isNormalOrDeath: ["1"]
     });
   }
 
@@ -301,7 +301,6 @@ export class DischargeSummaryComponent implements OnInit {
         return;
       }
 
-    debugger
     const iscekDuplicate = this.dsItemList.data.some(item => item.itemID == this.ItemId)
     if (!iscekDuplicate) {
       this.dsItemList.data = [];
@@ -309,8 +308,8 @@ export class DischargeSummaryComponent implements OnInit {
         {
           itemID: this.MedicineItemForm.get('ItemId').value.serviceId || 0,
           itemName: this.MedicineItemForm.get('ItemId').value.serviceName || '',
-          doseName: this.doseName1,//this.MedicineItemForm.get('DoseId').value || '',
-          doseId: this.doseId,// this.MedicineItemForm.get('DoseId').value || 0,
+          doseName: this.doseName1,
+          doseId: this.doseId,
           days: this.MedicineItemForm.get('Day').value || 0,
           instruction: this.vInstruction || ''
         });
@@ -439,18 +438,6 @@ export class DischargeSummaryComponent implements OnInit {
   }
 
 
-  ClinicalFInding: any;
-  Istemplate = false;
-
-  
-  chkTemplate(event) {
-    if (event.checked)
-      this.Istemplate = true
-    else
-      this.Istemplate = true
-  }
-
-  saveflag: boolean = false
   OnSave() {
     Swal.fire({
       title: 'Do you want to Save the Discharge Summary ',
@@ -540,7 +527,7 @@ export class DischargeSummaryComponent implements OnInit {
           setTimeout(() => {
             this._IpSearchListService.insertIPDDischargSummary(data).subscribe(response => {
               this.toastr.success(response.message);
-              // this.viewgetDischargesummaryPdf(response.data)
+              this.viewgetDischargesummaryPdf(response.data)
               this._matDialog.closeAll();
             }, (error) => {
               this.toastr.error(error.message);
@@ -560,7 +547,7 @@ export class DischargeSummaryComponent implements OnInit {
           setTimeout(() => {
             this._IpSearchListService.updateIPDDischargSummary(data1).subscribe(response => {
               this.toastr.success(response);
-              // this.viewgetDischargesummaryPdf(response.data)
+              this.viewgetDischargesummaryPdf(response.data)
               this._matDialog.closeAll();
             }, (error) => {
               this.toastr.error(error.message);

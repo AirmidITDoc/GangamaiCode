@@ -99,8 +99,23 @@ export class NewRegistrationComponent implements OnInit {
             }, (error) => {
                 this.toastr.error(error.message);
             });
-        } else {
-            this.toastr.warning("Enter * all data...Form Is Invalid !...");
+        }  else {
+            let invalidFields = [];
+      
+        if (this.personalFormGroup.invalid) {
+                for (const controlName in this.personalFormGroup.controls) {
+                    if (this.personalFormGroup.controls[controlName].invalid) {
+                        invalidFields.push(`Registartion Form: ${controlName}`);
+                    }
+                }
+            }
+      if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+      
         }
     }
 

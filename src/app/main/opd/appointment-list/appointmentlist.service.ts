@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +15,7 @@ export class AppointmentlistService {
     VisitFormGroup: FormGroup;
 
     constructor(public _httpClient1: ApiCaller, private _formBuilder: UntypedFormBuilder, private _loaderService: LoaderService,
-        public _httpClient: HttpClient,
+        public _httpClient: HttpClient,  private accountService: AuthenticationService
     ) {
         this.myformSearch = this.filterForm();
         // this.myCrossConsulteForm = this.createConsultatDrForm();
@@ -102,8 +103,8 @@ export class AppointmentlistService {
                 CountryId:  [0, [Validators.required]],
                 IsCharity: false,
                 IsSeniorCitizen: false,
-                AddedBy: 1,
-                updatedBy: 1,
+                AddedBy:this.accountService.currentUserValue.userId,
+                updatedBy: this.accountService.currentUserValue.userId,
                 RegDate: [(new Date()).toISOString()],
                 RegTime: [(new Date()).toISOString()],
                 Photo: [''],

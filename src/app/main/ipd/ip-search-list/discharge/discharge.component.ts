@@ -34,12 +34,9 @@ export class DischargeComponent implements OnInit {
   DischargeForm: FormGroup;
   currentDate = new Date();
   screenFromString = 'discharge';
-  // screenFromString = 'OP-billing';
-  selectedAdvanceObj: AdvanceDetailObj;
+
   DischargeId: any = 0;
-  Today: Date = new Date();
-
-
+  
   RtrvDischargeList: any = [];
   vComments: any;
   IsCancelled: any;
@@ -49,14 +46,14 @@ export class DischargeComponent implements OnInit {
   vDoctorId: any = 0;
   vDescType: any = 0;
   vBedId = 0;
-
+  ChkConfigInitiate: boolean = false;
   isTimeChanged: boolean = false;
   dateTimeString: any;
   timeflag = 0
   public now: Date = new Date();
   minDate: Date;
-  ChkConfigInitiate: boolean = false;
-
+  Today: Date = new Date();
+  selectedAdvanceObj: AdvanceDetailObj;
   registerObj1 = new AdmissionPersonlModel({});
   registerObj = new RegInsert({});
 
@@ -64,8 +61,6 @@ export class DischargeComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-
-  // New Api
   autocompletcondoc: string = "ConDoctor";
   autocompletedichargetype: string = "DichargeType";
   autocompletemode: string = "ModeOfDischarge";
@@ -93,12 +88,17 @@ export class DischargeComponent implements OnInit {
       }
     }, 1);
 
+    if (this.advanceDataStored.storage) {
+      this.selectedAdvanceObj = this.advanceDataStored.storage;
+      console.log(this.selectedAdvanceObj);
+
+    }
   }
 
   ngOnInit(): void {
     this.DischargeForm = this.DischargesaveForm();
     this.DischargeForm.markAllAsTouched();
-console.log(this.data)
+    console.log(this.data)
     if (this.data) {
       this.vAdmissionId = this.data.admissionId;
       this.vBedId = this.data.bedId
@@ -106,7 +106,6 @@ console.log(this.data)
     }
 
     if ((this.data?.regId ?? 0) > 0) {
-
       setTimeout(() => {
         this._IpSearchListService.getRegistraionById(this.data.regId).subscribe((response) => {
           this.registerObj = response;
@@ -116,23 +115,21 @@ console.log(this.data)
       }, 500);
     }
 
+    console.log(this._ConfigService.configParams.IsDischargeInitiateflow)
 
-
-    if(this._ConfigService.configParams.IsDischargeInitiateflow == 1){
+    if (this._ConfigService.configParams.IsDischargeInitiateflow == 1)
       this.ChkConfigInitiate = false
-    }else{
+    else
       this.ChkConfigInitiate = true
-    }
 
     this.getchkConfigInitiate();
   }
 
 
   getdischargeIdbyadmission() {
-    
-    this._IpSearchListService.getDischargeId(this.data.admissionId).subscribe(data => {
-      console.log(data)
 
+    this._IpSearchListService.getDischargeId(this.data.admissionId).subscribe(data => {
+      
       if (data) {
         this.IsCancelled = data.isCancelled || 0
         // if (this.IsCancelled == '1') {
@@ -140,14 +137,12 @@ console.log(this.data)
         // } else {
         this.DischargeId = data.dischargeId || 0
         // }
-
-
         this.DischargeForm.get("dischargedDocId").setValue(data.dischargedDocId)
         this.DischargeForm.get("dischargeTypeId").setValue(data.dischargeTypeId)
         this.DischargeForm.get("dischargedRmoid").setValue(data?.dischargedRmoid)
 
       }
-
+    
     });
   }
 
@@ -157,33 +152,46 @@ console.log(this.data)
 
       dischargeId: this.DischargeId,
       // admissionId: this.data.admissionId,
-      dischargeDate: "",
-      dischargeTime: "",
-      dischargeTypeId: ['',Validators.required],
-      dischargedDocId:['',Validators.required],
+      dischargeDate:  [(new Date()).toISOString()],
+      dischargeTime:  [(new Date()).toISOString()],
+      dischargeTypeId: ['', Validators.required],
+      dischargedDocId: ['', Validators.required],
       dischargedRmoid: 0,
-      addedBy: 0
+      modeOfDischargeId:0,
+      addedBy:this.accountService.currentUserValue.userId,
+      modifiedBy:this.accountService.currentUserValue.userId,
     });
   }
 
   onDischarge() {
     console.log(this.DischargeForm.value)
+
+    if(this.ChkConfigInitiate == false){
+      if(this.vDeptCount < 0 || this.vDeptCount == '' || this.vDeptCount == undefined){
+        this.toastr.warning('Please be informed that your initiate discharge to department', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+      return;
+      } 
+    }
+
+
     if (!this.DischargeForm.invalid) {
       let dischargModeldata = {};
-
-        dischargModeldata['dischargeDate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
-        dischargModeldata['dischargeTime'] = this.dateTimeObj.time
-        dischargModeldata['dischargeTypeId'] = this.DischargeForm.get("dischargedDocId").value || 0,
+      dischargModeldata['dischargeDate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
+      dischargModeldata['dischargeTime'] = this.dateTimeObj.time
+      dischargModeldata['dischargeTypeId'] = this.DischargeForm.get("dischargedDocId").value || 0,
         dischargModeldata['dischargedDocId'] = this.DischargeForm.get("dischargeTypeId").value || 0,
         dischargModeldata['dischargedRmoid'] = this.DischargeForm.get("dischargedRmoid").value || 0,
         dischargModeldata['addedBy'] = this.accountService.currentUserValue.userId,
         dischargModeldata['dischargeId'] = this.DischargeId
-        dischargModeldata['admissionId'] = this.vAdmissionId
+        dischargModeldata['modeOfDischargeId'] = 1
+      dischargModeldata['admissionId'] = this.vAdmissionId
 
       if (this.DischargeId == 0) {
-        dischargModeldata['admissionId'] = this.vAdmissionId
+        // dischargModeldata['admissionId'] = this.vAdmissionId
         var m_data = {
-          "discharge": dischargModeldata,
+          "discharge":dischargModeldata,// this.DischargeForm.value,
           "admission": {
             "admissionId": this.vAdmissionId,
             "isDischarged": 1,
@@ -198,20 +206,17 @@ console.log(this.data)
 
         this._IpSearchListService.DichargeInsert(m_data).subscribe((response) => {
           this.toastr.success(response.message);
-          // let Res = response.message
-          // let ID = Res.split('.')
-          // let Id = ID[1]
           this.viewgetDischargeSlipPdf(response.data)
           this._matDialog.closeAll();
         }, (error) => {
           this.toastr.error(error.message);
         });
       } else if (this.DischargeId != 0) {
-        dischargModeldata['modeOfDischargeId'] = 1
+      
         dischargModeldata['modifiedBy'] = 1
-
+        console.log(this.DischargeForm.value)
         var m_data1 = {
-          "discharge": dischargModeldata,
+          "discharge":dischargModeldata,// this.DischargeForm.value,
           "admission": {
             "admissionId": this.vAdmissionId,
             "isDischarged": 1,
@@ -220,11 +225,9 @@ console.log(this.data)
           }
         }
         console.log(m_data1)
+        
         this._IpSearchListService.DichargeUpdate(m_data1).subscribe((response) => {
           this.toastr.success(response.message);
-          // let Res = response.message
-          // let ID = Res.split('.')
-          // let Id = ID[1]
           this.viewgetDischargeSlipPdf(response.data)
           this._matDialog.closeAll();
         }, (error) => {
@@ -233,7 +236,22 @@ console.log(this.data)
       }
       this.DischargeForm.reset();
     } else {
-      Swal.fire("Form Is Invalid ...")
+      let invalidFields = [];
+
+      if (this.DischargeForm.invalid) {
+        for (const controlName in this.DischargeForm.controls) {
+          if (this.DischargeForm.controls[controlName].invalid) {
+            invalidFields.push(`Discharge Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+
     }
   }
   viewgetDischargeSlipPdf(data) {
@@ -248,7 +266,7 @@ console.log(this.data)
       dischargedDocId: [
         { name: "required", Message: "Doctor Name is required" }
       ],
-      dischargedRmoid: [
+      modeOfDischargeId: [
         // { name: "required", Message: "Mode Name is required" }
       ]
     };
@@ -257,11 +275,6 @@ console.log(this.data)
   onClose() {
     this.DischargeForm.reset();
     this.dialogRef.close();
-  }
-
-  onClear(val: boolean) {
-    // this.personalform.reset();
-
   }
 
   vApproved_Cnt: any;
@@ -282,12 +295,12 @@ console.log(this.data)
 
 
   DischargeInitiate() {
-    // if(this.selectedAdvanceObj.IsInitinatedDischarge == '1'){
-    //   this.toastr.warning('selected patient already Initiated ', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
+    if (this.selectedAdvanceObj.IsInitinatedDischarge == '1') {
+      this.toastr.warning('selected patient already Initiated ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
 
     const dialogRef = this._matDialog.open(InitiateDischargeComponent,
       {

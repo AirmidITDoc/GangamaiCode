@@ -79,6 +79,7 @@ export class NewAppointmentComponent implements OnInit {
     VisitId = 0;
     patienttype = 0
     UnitId = 1;
+    ClassId = 1;
     Vtotalcount = 0;
     VNewcount = 0;
     VFollowupcount = 0;
@@ -128,6 +129,8 @@ export class NewAppointmentComponent implements OnInit {
     autocompleteModedeptdoc: string = "ConDoctor";
     autocompleteModerefdoc: string = "RefDoctor";
     autocompleteModepurpose: string = "Purpose";
+    autocompleteModeClass: string = "Class";
+
     public imagePreview!: string;
 
     constructor(

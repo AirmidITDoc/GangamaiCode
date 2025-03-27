@@ -55,7 +55,7 @@ export class DischargeSummaryTemplateComponent {
     doseName1 = ""
     DocName3 = 0
     IsDeath: any;
-    vIsNormalDeath = 1;
+    vIsNormalDeath = '1';
     bp: any = 1000;
     TemplateId=0;
     autocompleteModetemplate: string = "DischargeTemplate";
@@ -144,9 +144,7 @@ export class DischargeSummaryTemplateComponent {
             console.log(this.registerObj1)
   
           });
-  
-  
-        }, 500);
+      }, 500);
       }
   
       this.getdischargeIdbyadmission();
@@ -171,14 +169,12 @@ export class DischargeSummaryTemplateComponent {
         dischargeSummaryId: 0,
         admissionId: '',
         dischargeId: '',
-       
         dischargeDoctor1: 0,
         dischargeDoctor2: 0,
         dischargeDoctor3: 0,
         dischargeSummaryTime: "11:00:00 PM",
         doctorAssistantName: "",
-      
-        isNormalOrDeath:  ['1']
+        isNormalOrDeath:'1',
       });
     }
   
@@ -191,10 +187,7 @@ export class DischargeSummaryTemplateComponent {
      console.log(obj)
   
     }
-
-    
-
-  
+   
     @ViewChild('dosename') dosename: ElementRef;
     @ViewChild('Day') Day: ElementRef;
     @ViewChild('Instruction') Instruction: ElementRef;
@@ -225,8 +218,7 @@ export class DischargeSummaryTemplateComponent {
     getDateTime(dateTimeObj) {
       this.dateTimeObj = dateTimeObj;
     }
-  
-  
+   
   
     onAdd() {
   
@@ -296,7 +288,7 @@ export class DischargeSummaryTemplateComponent {
         this.dsItemList.data = data?.data as MedicineItemList[];
         if (this.dsItemList.data)
           this.Chargeslist = data.data as MedicineItemList[];
-        console.log(this.dsItemList.data);
+        // console.log(this.dsItemList.data);
       });
     }
   
@@ -373,9 +365,9 @@ export class DischargeSummaryTemplateComponent {
         if (result.isConfirmed) {
           this.saveflag = true
           if(this.DischargesumForm.get("isNormalOrDeath").value==false)
-            this.vIsNormalDeath=0
+            this.vIsNormalDeath="0"
           if(this.DischargesumForm.get("isNormalOrDeath").value==true)
-            this.vIsNormalDeath=1
+            this.vIsNormalDeath="1"
   
           let dischargModeldata = {};
   
@@ -414,8 +406,7 @@ export class DischargeSummaryTemplateComponent {
           });
   
           if (this.DischargeSummaryId == undefined) {
-           
-              dischargModeldata['addedBy'] =this.accountService.currentUserValue.userId
+           dischargModeldata['addedBy'] =this.accountService.currentUserValue.userId
   
             var data = {
               "discharge": dischargModeldata,

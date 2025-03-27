@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class CompanysettlementService {
     myformSearch: FormGroup;
     myform: FormGroup;
 
-    constructor(private _httpClient: ApiCaller,
+    constructor(private _httpClient: ApiCaller,private accountService: AuthenticationService,
     private _formBuilder: UntypedFormBuilder) 
     {
         this.myformSearch = this.createSearchForm();
@@ -39,7 +40,7 @@ export class CompanysettlementService {
             transactionType: 0,
             advanceId: 0,
             refundId: 0,
-            addedBy: 1,
+            addedBy: this.accountService.currentUserValue.userId,
             cashCounterId: [""],
             paymentBillNo: [""],
             companyId: [""],

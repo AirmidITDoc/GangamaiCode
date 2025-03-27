@@ -161,9 +161,9 @@
                                         [mode]="autocompletedichargetype">
                                     </airmid-dropdown>
 
-                                    <airmid-dropdown label="Mode" formControlName="dischargedRmoid"
+                                    <airmid-dropdown label="Mode" formControlName="modeOfDischargeId"
                                         [formGroup]="DischargeForm" fxFlex
-                                        [validations]="getValidationMessages().dischargedRmoid"
+                                        [validations]="getValidationMessages().modeOfDischargeId"
                                         [mode]="autocompletemode">
                                     </airmid-dropdown>
 
@@ -184,7 +184,7 @@
                 <!-- [disabled]="ChkConfigInitiate" -->
                 <div fxLayout="row" fxLayoutAlign="space-between">
                     <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
-                        <button mat-raised-button (click)="DischargeInitiate()" >
+                        <button mat-raised-button (click)="DischargeInitiate()" [disabled]="ChkConfigInitiate" >
                             Initiate Discharge
                         </button>
                     </div>

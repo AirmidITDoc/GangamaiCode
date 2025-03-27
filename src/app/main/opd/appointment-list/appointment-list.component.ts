@@ -439,7 +439,7 @@ Clearfilter(event) {
         const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
             {
                 maxWidth: "55vw",
-                height: '45%',
+                maxHeight: '80%',
                 width: '80%',
                 data: row
             });
@@ -458,7 +458,7 @@ Clearfilter(event) {
         const dialogRef = this._matDialog.open(EditRefranceDoctorComponent,
             {
                 maxWidth: "55vw",
-                height: '45%',
+                height: '95%',
                 width: '80%',
                 data: row
             });

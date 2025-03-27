@@ -112,7 +112,7 @@ export class RefundbillComponent implements OnInit {
   vFinalrefundbamt = 0;
   RegNo: any;
   vMobileNo: any;
-patientDetail1 = new VisitMaster1({});
+  patientDetail1 = new VisitMaster1({});
   Paymentdataobj: PaymentInsert[] = [];
   public isModal = false;
 
@@ -162,9 +162,9 @@ patientDetail1 = new VisitMaster1({});
     public toastr: ToastrService,
     public _WhatsAppEmailService: WhatsAppEmailService,
     private changeDetectorRefs: ChangeDetectorRef,
-      private commonService: PrintserviceService,
-        private accountService: AuthenticationService,
-    
+    private commonService: PrintserviceService,
+    private accountService: AuthenticationService,
+
   ) { }
 
   ngOnInit(): void {
@@ -253,8 +253,8 @@ patientDetail1 = new VisitMaster1({});
   TRefundamt = 0;
 
   getservicedtailList(row) {
-    
-    
+
+
     var m_data = {
       "first": 0,
       "rows": 10,
@@ -271,7 +271,7 @@ patientDetail1 = new VisitMaster1({});
     }
 
     console.log(m_data)
-   
+
     this._RefundbillService.getRefundofBillServiceList(m_data).subscribe(Visit => {
       this.dataSource2.data = Visit.data as InsertRefundDetail[];
       this.dataSource2.sort = this.sort;
@@ -285,12 +285,12 @@ patientDetail1 = new VisitMaster1({});
   getSelectedObj(obj) {
     if ((obj.value ?? 0) > 0) {
       console.log(obj)
-    setTimeout(() => {
+      setTimeout(() => {
         this._RefundbillService.getRegistraionById(obj.value).subscribe((response) => {
           this.registerObj = response;
           this.RegId = this.registerObj.regId
-          this.RegNo=this.registerObj.regNo
-          this.PatientName=this.registerObj.firstName +" "+ this.registerObj.middleName+ " " +this.registerObj.lastName
+          this.RegNo = this.registerObj.regNo
+          this.PatientName = this.registerObj.firstName + " " + this.registerObj.middleName + " " + this.registerObj.lastName
           console.log(response)
 
         });
@@ -299,30 +299,12 @@ patientDetail1 = new VisitMaster1({});
     }
 
     this.getRefundofBillOPDListByReg(obj.value);
+
   }
 
-
-  keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
-    if (/[a-zA-Z0-9]/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
-    }
-  }
-  keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
-    if (/^\d*\.?\d*$/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
-    }
-  }
 
   gettablecalculation(element, RefundAmt) {
-    
+
     console.log(element)
     if (RefundAmt > 0 && RefundAmt <= element.balAmt) {
       element.balanceAmount = ((element.balAmt) - (RefundAmt));
@@ -404,9 +386,7 @@ patientDetail1 = new VisitMaster1({});
   }
 
   onSave() {
-
-
-    if (!this.RefundOfBillFormGroup.invalid && this.vOPIPId !== 0 && this.TotalRefundAmount!==0) {
+if (this.vOPIPId !== 0 && this.TotalRefundAmount !== "0.00") {
 
       if (this.TotalRefundAmount <= this.RefundBalAmount) {
         let InsertRefundObj = {};
@@ -435,12 +415,12 @@ patientDetail1 = new VisitMaster1({});
           let InsertRefundDetailObj = {};
           console.log(element)
           InsertRefundDetailObj['refundId'] = 0;
-          InsertRefundDetailObj['serviceId'] =element.ServiceId || 0;
+          InsertRefundDetailObj['serviceId'] = element.ServiceId || 0;
           InsertRefundDetailObj['serviceAmount'] = element.NetAmount || 0;
           InsertRefundDetailObj['refundAmount'] = element.RefundAmt || 0;
-          InsertRefundDetailObj['doctorId'] =element.doctorId
+          InsertRefundDetailObj['doctorId'] = element.doctorId
           InsertRefundDetailObj['remark'] = this.RefundOfBillFormGroup.get('Remark').value || '';
-          InsertRefundDetailObj['addBy'] =  this.accountService.currentUserValue.userId,
+          InsertRefundDetailObj['addBy'] = this.accountService.currentUserValue.userId,
             InsertRefundDetailObj['chargesId'] = element.chargesId
           RefundDetailarr.push(InsertRefundDetailObj);
         })
@@ -465,7 +445,7 @@ patientDetail1 = new VisitMaster1({});
         PatientHeaderObj['Age'] = this.AgeYear;
         PatientHeaderObj['NetPayAmount'] = Math.round(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
 
-        
+
 
         const dialogRef = this._matDialog.open(OpPaymentNewComponent,
           {
@@ -479,52 +459,52 @@ patientDetail1 = new VisitMaster1({});
             }
           });
 
-       dialogRef.afterClosed().subscribe(result => {
+        dialogRef.afterClosed().subscribe(result => {
           this.Paymentdataobj = result.submitDataPay.ipPaymentInsert;
-          console.log( this.Paymentdataobj)
+          console.log(this.Paymentdataobj)
           let Paymentobj = {};
-          Paymentobj['billNo']=0,
-           Paymentobj['receiptNo']= "",
-           Paymentobj['paymentDate']= result.submitDataPay.ipPaymentInsert.PaymentDate,
-          Paymentobj['paymentTime']= result.submitDataPay.ipPaymentInsert.PaymentTime,
-           Paymentobj['cashPayAmount']= result.submitDataPay.ipPaymentInsert.CashPayAmount,
-          Paymentobj['chequePayAmount']=result.submitDataPay.ipPaymentInsert.ChequePayAmount,
-          Paymentobj['chequeNo']= result.submitDataPay.ipPaymentInsert.ChequeNo,
-          Paymentobj['bankName']= result.submitDataPay.ipPaymentInsert.BankName,
-          Paymentobj['chequeDate']= result.submitDataPay.ipPaymentInsert.ChequeDate,
-          Paymentobj['cardPayAmount']=result.submitDataPay.ipPaymentInsert.CardPayAmount,
-          Paymentobj['cardNo']=result.submitDataPay.ipPaymentInsert.CardNo,
-          Paymentobj['cardBankName']= result.submitDataPay.ipPaymentInsert.CardBankName,
-          Paymentobj['cardDate']= result.submitDataPay.ipPaymentInsert.CardDate,
-          Paymentobj['advanceUsedAmount']=result.submitDataPay.ipPaymentInsert.AdvanceUsedAmount,
-          Paymentobj['advanceId']=result.submitDataPay.ipPaymentInsert.AdvanceId,
-          Paymentobj['refundId']=0,
-          Paymentobj['transactionType']= result.submitDataPay.ipPaymentInsert.TransactionType,
-          Paymentobj['remark']= result.submitDataPay.ipPaymentInsert.Remark,
-          Paymentobj['addBy']=result.submitDataPay.ipPaymentInsert.AddBy,
-           Paymentobj['isCancelled']= false,
-           Paymentobj['isCancelledBy']= result.submitDataPay.ipPaymentInsert.IsCancelledBy,
-          Paymentobj['isCancelledDate']= result.submitDataPay.ipPaymentInsert.IsCancelledDate,
-          Paymentobj['neftpayAmount']= result.submitDataPay.ipPaymentInsert.NEFTPayAmount,
-           Paymentobj['neftno']= result.submitDataPay.ipPaymentInsert.NEFTNo,
-           Paymentobj['neftbankMaster']= result.submitDataPay.ipPaymentInsert.NEFTBankMaster,
-           Paymentobj['neftdate']=result.submitDataPay.ipPaymentInsert.NEFTDate,
-           Paymentobj['payTmamount']= result.submitDataPay.ipPaymentInsert.PayTMAmount,
-           Paymentobj['payTmtranNo']= result.submitDataPay.ipPaymentInsert.PayTMTranNo,
-           Paymentobj['payTmdate']= result.submitDataPay.ipPaymentInsert.PayTMDate,
-           Paymentobj['tdsamount']= result.submitDataPay.ipPaymentInsert.tdsAmount
+          Paymentobj['billNo'] = 0,
+            Paymentobj['receiptNo'] = "",
+            Paymentobj['paymentDate'] = result.submitDataPay.ipPaymentInsert.PaymentDate,
+            Paymentobj['paymentTime'] = result.submitDataPay.ipPaymentInsert.PaymentTime,
+            Paymentobj['cashPayAmount'] = result.submitDataPay.ipPaymentInsert.CashPayAmount,
+            Paymentobj['chequePayAmount'] = result.submitDataPay.ipPaymentInsert.ChequePayAmount,
+            Paymentobj['chequeNo'] = result.submitDataPay.ipPaymentInsert.ChequeNo,
+            Paymentobj['bankName'] = result.submitDataPay.ipPaymentInsert.BankName,
+            Paymentobj['chequeDate'] = result.submitDataPay.ipPaymentInsert.ChequeDate,
+            Paymentobj['cardPayAmount'] = result.submitDataPay.ipPaymentInsert.CardPayAmount,
+            Paymentobj['cardNo'] = result.submitDataPay.ipPaymentInsert.CardNo,
+            Paymentobj['cardBankName'] = result.submitDataPay.ipPaymentInsert.CardBankName,
+            Paymentobj['cardDate'] = result.submitDataPay.ipPaymentInsert.CardDate,
+            Paymentobj['advanceUsedAmount'] = result.submitDataPay.ipPaymentInsert.AdvanceUsedAmount,
+            Paymentobj['advanceId'] = result.submitDataPay.ipPaymentInsert.AdvanceId,
+            Paymentobj['refundId'] = 0,
+            Paymentobj['transactionType'] = result.submitDataPay.ipPaymentInsert.TransactionType,
+            Paymentobj['remark'] = result.submitDataPay.ipPaymentInsert.Remark,
+            Paymentobj['addBy'] = result.submitDataPay.ipPaymentInsert.AddBy,
+            Paymentobj['isCancelled'] = false,
+            Paymentobj['isCancelledBy'] = result.submitDataPay.ipPaymentInsert.IsCancelledBy,
+            Paymentobj['isCancelledDate'] = result.submitDataPay.ipPaymentInsert.IsCancelledDate,
+            Paymentobj['neftpayAmount'] = result.submitDataPay.ipPaymentInsert.NEFTPayAmount,
+            Paymentobj['neftno'] = result.submitDataPay.ipPaymentInsert.NEFTNo,
+            Paymentobj['neftbankMaster'] = result.submitDataPay.ipPaymentInsert.NEFTBankMaster,
+            Paymentobj['neftdate'] = result.submitDataPay.ipPaymentInsert.NEFTDate,
+            Paymentobj['payTmamount'] = result.submitDataPay.ipPaymentInsert.PayTMAmount,
+            Paymentobj['payTmtranNo'] = result.submitDataPay.ipPaymentInsert.PayTMTranNo,
+            Paymentobj['payTmdate'] = result.submitDataPay.ipPaymentInsert.PayTMDate,
+            Paymentobj['tdsamount'] = result.submitDataPay.ipPaymentInsert.tdsAmount
           // console.log('============================== Return Adv ===========');
           let submitData = {
             "refund": InsertRefundObj,
             "tRefundDetails": RefundDetailarr,
             "addCharges": AddchargesRefundAmountarr,
-            "payment":Paymentobj,// result.submitDataPay.ipPaymentInsert
+            "payment": Paymentobj,// result.submitDataPay.ipPaymentInsert
           };
 
           console.log(submitData)
           this._RefundbillService.InsertOPRefundBilling(submitData).subscribe(response => {
             this.toastrService.success(response.message);
-            this.viewgetOPRefundBillReportPdf(response.data)
+            this.viewgetOPRefundBillReportPdf(response.refundId)
           }, (error) => {
             this.toastrService.error(error.message);
           });
@@ -534,37 +514,38 @@ patientDetail1 = new VisitMaster1({});
       else {
         Swal.fire("Refund Amount is More than RefundBalance")
       }
+}
+    else {
+      Swal.fire("Please Add Refund Amount!")
+    }
 
-      this.dataSource.data = [];
-      this.dataSource1.data = [];
-      this.dataSource2.data = [];
-      this.dataSource3.data = [];
-      this.RefundOfBillFormGroup.reset();
-      this.searchFormGroup.get('RegId').setValue("");
-      // this.PatientName = '';
-      // this.AgeYear = '';
-      this.TotalRefundAmount = 0;
-      this.RefundBalAmount = 0;
-      this.RegNo = '';
-      this.registerObj.regId=0
-       this.registerObj.firstName=""
-        this.registerObj.lastName=""
-        this.registerObj.ageYear=""
-  this.registerObj.genderId=""
-        
-    }
-    else{
-      Swal.fire("Please check Total Refund Amount!")
-    }
+    this.cleardata();
+  }
+
+  cleardata() {
+    this.dataSource.data = [];
+    this.dataSource1.data = [];
+    this.dataSource2.data = [];
+    this.dataSource3.data = [];
+    this.RefundOfBillFormGroup.reset();
+    this.searchFormGroup.get('RegId').setValue("");
+    this.TotalRefundAmount = 0;
+    this.RefundBalAmount = 0;
+    this.RegNo = '';
+    this.registerObj.regId = 0
+    this.registerObj.firstName = ""
+    this.registerObj.lastName = ""
+    this.registerObj.ageYear = ""
+    this.registerObj.genderId = ""
   }
 
   viewgetOPRefundBillReportPdf(data) {
 
     this.commonService.Onprint("RefundId", data, "OPRefundReceipt");
-}
+  }
 
   getWhatsappshareRefundbill(el, vmono) {
-    
+
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": vmono || 0,
@@ -594,20 +575,36 @@ patientDetail1 = new VisitMaster1({});
     });
   }
 
-  onClose() {
+  onClose() { this._matDialog.closeAll(); }
 
-    this._matDialog.closeAll();
-  }
- 
-  updatedVal(e) {
-    if (e && e.length >= 2) {
-      this.showAutocomplete = true;
+  // updatedVal(e) {
+  //   if (e && e.length >= 2) {
+  //     this.showAutocomplete = true;
+  //   } else {
+  //     this.showAutocomplete = false;
+  //   }
+  //   if (e.length == 0) { this.b_price = ''; this.b_totalAmount = '0'; this.b_netAmount = '0'; this.b_disAmount = '0'; this.b_isPath = ''; this.b_isRad = ''; this.b_IsEditable = '0'; }
+  // }
+
+
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp)) {
+      return true;
     } else {
-      this.showAutocomplete = false;
+      event.preventDefault();
+      return false;
     }
-    if (e.length == 0) { this.b_price = ''; this.b_totalAmount = '0'; this.b_netAmount = '0'; this.b_disAmount = '0'; this.b_isPath = ''; this.b_isRad = ''; this.b_IsEditable = '0'; }
   }
- 
+  keyPressCharater(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
 
   getServiceListCombobox() {
     let tempObj;
@@ -626,7 +623,6 @@ patientDetail1 = new VisitMaster1({});
 
   Serviceselect(row, event) {
 
-    // console.log(row);
     this.RefAmt = this.RefundBalAmount;
 
     this.TotalRefundAmount = 0;
@@ -636,7 +632,7 @@ patientDetail1 = new VisitMaster1({});
     this.ChargeId = row.ChargeId;
 
     this.serselamttot = parseInt(row.NetAmount) + parseInt(this.serselamttot);
- 
+
     if (this.RefAmt1 >= this.serselamttot) {
       this.TotalRefundAmount = row.Price;
       this.RefundBalAmount = (parseInt(this.RefundBalAmount.toString()) - parseInt(this.TotalRefundAmount.toString()));
@@ -654,12 +650,10 @@ patientDetail1 = new VisitMaster1({});
   //
   refund: any = 0;
   onEdit(row) {
-    
-    
     this.TotalRefundAmount = 0
     this.RefundBalAmount = 0
     console.log(row);
-    
+
     var datePipe = new DatePipe("en-US");
     this.BillNo = row.billNo;
     this.BillDate = datePipe.transform(row.BillDate, 'dd/MM/yyyy hh:mm a');
@@ -676,7 +670,7 @@ patientDetail1 = new VisitMaster1({});
       this.getservicedtailList(row);
 
       this.RefAmt1 = this.RefundBalAmount;
-     
+
     } else {
       Swal.fire("Already Refund")
       this.refund = 1;
@@ -696,8 +690,6 @@ patientDetail1 = new VisitMaster1({});
     this.vFinalrefundbamt = this.RefundBalAmount
 
   }
-
-
 
 }
 
@@ -768,7 +760,7 @@ export class InsertRefundDetail {
   refundAmt: any;
   balanceAmount: any;
   refAmount: any;
-  RefundAmt:any;
+  RefundAmt: any;
 
   constructor(InsertRefundDetailObj) {
     {

@@ -196,9 +196,32 @@ export class NewAdmissionComponent implements OnInit {
           this.OnSaveAdmission();
         }
       })
-    } else {
-      Swal.fire("Enter Proper values..Form is Invalid")
-    }
+    } 
+     else {
+      let invalidFields = [];
+
+      if (this.personalFormGroup.invalid) {
+          for (const controlName in this.personalFormGroup.controls) {
+              if (this.personalFormGroup.controls[controlName].invalid) {
+                  invalidFields.push(`Personal Form: ${controlName}`);
+              }
+          }
+      }
+  if (this.admissionFormGroup.invalid) {
+          for (const controlName in this.admissionFormGroup.controls) {
+              if (this.admissionFormGroup.controls[controlName].invalid) {
+                  invalidFields.push(`Admission Form: ${controlName}`);
+              }
+          }
+      }
+if (invalidFields.length > 0) {
+          invalidFields.forEach(field => {
+              this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+              );
+          });
+      }
+
+  }
   }
 
 

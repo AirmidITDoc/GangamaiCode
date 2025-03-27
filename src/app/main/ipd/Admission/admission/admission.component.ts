@@ -161,7 +161,7 @@ export class AdmissionComponent implements OnInit {
   }
 
   allcolumns = [
-    { heading: "-", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+    { heading: "-", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
     { heading: "-", key: "isOpToIpconv", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
     { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 80 },
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -423,7 +423,7 @@ export class AdmissionComponent implements OnInit {
   }
 
   getfilterdata() {
-  
+  debugger
     this.gridConfig = {
       apiUrl: "Admission/AdmissionList",
       columnsList: this.allcolumns,
@@ -572,7 +572,7 @@ export class AdmissionComponent implements OnInit {
     const dialogRef = this._matDialog.open(EditAdmissionComponent,
       {
         maxWidth: "90vw",
-        height: '730px',
+        height: '750px',
         width: '100%',
         data: row
 

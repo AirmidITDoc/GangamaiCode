@@ -70,8 +70,8 @@ export class TestingTableComponent  implements OnInit{
     }
     console.log(mdat)
     this._MenuService.getNewMenuMasterList(mdat).subscribe(Menu => {
-      console.log(Menu.data);
-       this.dataSource1.data = Menu.data as MenuMaster[];
+      console.log(Menu.data.data);
+       this.dataSource1.data = Menu.data.data as MenuMaster[];
      
        console.log(this.dataSource1.data);
      })

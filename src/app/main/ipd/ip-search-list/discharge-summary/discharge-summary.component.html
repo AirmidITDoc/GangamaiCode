@@ -555,14 +555,14 @@
                     <form [formGroup]="DischargesumForm">
                         <mat-card>
                             <div fxLayout="row" style="margin-left: 1000px;">
-                                <!-- <mat-radio-group formcontrolName="isNormalOrDeath">
-                                    <mat-radio-button  value="1">Normal</mat-radio-button>
-                                    <mat-radio-button value="0">Death Summary</mat-radio-button>
-                                    
-                                </mat-radio-group> -->
+                                <mat-radio-group  [formGroup]="DischargesumForm" formControlName="isNormalOrDeath"
+                                fxLayoutAlign="center center" style="margin-left: 1100px;">
+                                <mat-radio-button mat-fab value="1">Normal</mat-radio-button>
+                                <mat-radio-button mat-fab value="0">Death Summary</mat-radio-button>
+                            </mat-radio-group>
 
-                                <app-airmid-slider label="Normal/Death Summary" formControlName="isNormalOrDeath"
-                                    [formGroup]="DischargesumForm" [(ngModel)]="vIsNormalDeath"></app-airmid-slider>
+                                <!-- <app-airmid-slider label="Normal/Death Summary" formControlName="isNormalOrDeath"
+                                    [formGroup]="DischargesumForm" [(ngModel)]="vIsNormalDeath"></app-airmid-slider> -->
 
                                     <div class="modal-footer">
                                         <div class="footer-navigation-container">

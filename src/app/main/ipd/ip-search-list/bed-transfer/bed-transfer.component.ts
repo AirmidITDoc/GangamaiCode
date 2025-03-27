@@ -39,14 +39,13 @@ export class BedTransferComponent implements OnInit {
   menuActions: Array<string> = [];
   advanceAmount: any = 0;
 
-  // New Api
   autocompleteroom: string = "Room";
   autocompleteclass: string = "Class";
   autocompletebed: string = "Bed";
   registerObj1 = new AdmissionPersonlModel({});
   registerObj = new RegInsert({});
   @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
-@ViewChild('ddlClassName') ddlClassName: AirmidDropDownComponent;
+  @ViewChild('ddlClassName') ddlClassName: AirmidDropDownComponent;
 
 
   constructor(public _IpSearchListService: IPSearchListService,
@@ -108,9 +107,9 @@ export class BedTransferComponent implements OnInit {
       fromClassId: this.registerObj1.classId,
       toDate: [(new Date()).toISOString()],
       toTime: [(new Date()).toISOString()],
-      toWardId: 0,
-      toBedId: 0,
-      toClassId: 0,
+      toWardId: ['', Validators.required],
+      toBedId: ['', Validators.required],
+      toClassId:['', Validators.required],
       remark: "",
       addedBy:this.accountService.currentUserValue.userId,
       isCancelled: 0,
@@ -120,9 +119,7 @@ export class BedTransferComponent implements OnInit {
 
 
   selectChangedepartment(obj: any) {
-        
-    console.log(obj)
-    this._IpSearchListService.getbedbyRoom(obj.value).subscribe((data: any) => {
+   this._IpSearchListService.getbedbyRoom(obj.value).subscribe((data: any) => {
         this.ddlDoctor.options = data;
         this.ddlDoctor.bindGridAutoComplete();
     });
@@ -130,9 +127,8 @@ export class BedTransferComponent implements OnInit {
 
 
   onBedtransfer() {
-    // debugger
-    // console.log(this.Bedtransfer.value)
-  
+   console.log(this.Bedtransfer.value)
+  if(!this.Bedtransfer.invalid){
     var m_data = {
       "bedTransfer": this.Bedtransfer.value,
       "bedTofreed": { bedId: this.data.bedId },
@@ -154,16 +150,25 @@ export class BedTransferComponent implements OnInit {
     }, (error) => {
       this.toastr.error(error.message);
     });
+  }
+  else {
+    let invalidFields = [];
+
+    if (this.Bedtransfer.invalid) {
+      for (const controlName in this.Bedtransfer.controls) {
+        if (this.Bedtransfer.controls[controlName].invalid) {
+          invalidFields.push(`Bed Transfer Form: ${controlName}`);
+        }
+      }
+    }
+    if (invalidFields.length > 0) {
+      invalidFields.forEach(field => {
+        this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+        );
+      });
+    }
 
   }
-
-  selectChangeward(obj: any) {
-
-    console.log(obj)
-    // this._IpSearchListService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
-    //     this.ddlBed.options = data;
-    //     this.ddlBed.bindGridAutoComplete();
-    // });
   }
 
   onClear(val: boolean) {

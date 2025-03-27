@@ -95,7 +95,7 @@ export class EditAdmissionComponent implements OnInit {
     console.log(this.data)
     // this.registerObj1 = this.data
 
-    
+
 
     if ((this.data?.regId ?? 0) > 0) {
       setTimeout(() => {
@@ -106,11 +106,11 @@ export class EditAdmissionComponent implements OnInit {
 
         this._AdmissionService.getAdmissionById(this.data.admissionId).subscribe((response) => {
           this.registerObj1 = response;
-          // console.log(response)
+          console.log(response)
           if (this.registerObj1) {
             this.registerObj1.phoneNo = this.registerObj1.phoneNo.trim()
             this.registerObj1.mobileNo = this.registerObj1.mobileNo.trim()
-            if (this.registerObj1.patientTypeID !== 1) {
+            if (this.registerObj1.patientTypeId !== 1) {
               this.isCompanySelected = true
               this.admissionFormGroup.get("DepartmentId").setValue(this.registerObj1.departmentId
               )
@@ -181,9 +181,24 @@ export class EditAdmissionComponent implements OnInit {
         this.toastr.error(error.message);
 
       });
-    } else {
-      Swal.fire("Enter All values ...Form Is Invalid")
-    }
+    }  else {
+      let invalidFields = [];
+
+  if (this.admissionFormGroup.invalid) {
+          for (const controlName in this.admissionFormGroup.controls) {
+              if (this.admissionFormGroup.controls[controlName].invalid) {
+                  invalidFields.push(`Admission Form: ${controlName}`);
+              }
+          }
+      }
+if (invalidFields.length > 0) {
+          invalidFields.forEach(field => {
+              this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+              );
+          });
+      }
+
+  }
 
   }
   getAdmittedPatientCasepaperview(AdmissionId) {

@@ -157,9 +157,24 @@ phdatetime: any;
       }, (error) => {
         this.toastr.error(error.message);
       });
-    } else {
-      Swal.fire("Enter Proper Data ...Form is Invalid !.......")
-    }
+    }  else {
+      let invalidFields = [];
+
+  if (this.phoneappForm.invalid) {
+          for (const controlName in this.phoneappForm.controls) {
+              if (this.phoneappForm.controls[controlName].invalid) {
+                  invalidFields.push(`phoneapp Form: ${controlName}`);
+              }
+          }
+      }
+if (invalidFields.length > 0) {
+          invalidFields.forEach(field => {
+              this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+              );
+          });
+      }
+
+  }
   }
 
   

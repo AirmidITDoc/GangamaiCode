@@ -109,21 +109,34 @@ export class MLCInformationComponent implements OnInit {
 
   onSubmit() {
 console.log(this.MlcInfoFormGroup.value)
-    this.MlcInfoFormGroup.get('reportingDate').setValue(this.datePipe.transform(this.MlcInfoFormGroup.get('reportingDate').value, 'yyyy-MM-dd'))
-   this._AdmissionService.MlcInsert(this.MlcInfoFormGroup.value).subscribe((response) => {
+this.MlcInfoFormGroup.get('reportingDate').setValue(this.datePipe.transform(this.MlcInfoFormGroup.get('reportingDate').value, 'yyyy-MM-dd'))
+if(!this.MlcInfoFormGroup.invalid){
+    this._AdmissionService.MlcInsert(this.MlcInfoFormGroup.value).subscribe((response) => {
         this.toastr.success(response.message);
-        // let Res=response.message
-        // let ID=Res.split('.')
-        // let Id=ID[1]
-        this.getMLCdetailview(response.data)
+      this.getMLCdetailview(response.data)
         this._matDialog.closeAll();
         this.onClear();
       }, (error) => {
         this.toastr.error(error.message);
       });
-
+    }else {
+      let invalidFields = [];
+  
+      if (this.MlcInfoFormGroup.invalid) {
+        for (const controlName in this.MlcInfoFormGroup.controls) {
+          if (this.MlcInfoFormGroup.controls[controlName].invalid) {
+            invalidFields.push(`MlcInfo Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
   }
-
+  }
   getValidationMessages() {
     return {
       mlcno: [
@@ -142,46 +155,6 @@ console.log(this.MlcInfoFormGroup.value)
   }
   getMLCdetailview(AdmissionId=10){
     this.commonService.Onprint("AdmissionID", AdmissionId, "IpMLCCasePaperPrint");
-  }
-
-  getMLCdetailview1(Id) {
-  //   setTimeout(() => {
-  //     let param = {
-  //         "searchFields": [
-  //             {
-  //                 "fieldName": "FromDate",
-  //                 "fieldValue": "12-12-2024",//this.datePipe.transform(this.fromDate,"dd-MM-yyyy"),//"10-01-2024",
-  //                 "opType": "13"
-  //             },
-  //             {
-  //                 "fieldName": "ToDate",
-  //                 "fieldValue": "12-12-2025",//this.datePipe.transform(this.toDate,"dd-MM-yyyy"),//"12-12-2024",
-  //                 "opType": "13"
-  //             }
-  //         ],
-  //         "mode": "RegistrationReport"
-  //     }
-  //     console.log(param)
-  //     this._AdmissionService.getReportView(param).subscribe(res => {
-  //         const matDialog = this._matDialog.open(PdfviewerComponent,
-  //             {
-  //                 maxWidth: "85vw",
-  //                 height: '750px',
-  //                 width: '100%',
-  //                 data: {
-  //                     base64: res["base64"] as string,
-  //                     title: "MLC Detail  Viewer"
-
-  //                 }
-
-  //             });
-
-  //         matDialog.afterClosed().subscribe(result => {
-
-  //         });
-  //     });
-
-  // }, 100);
   }
 
 

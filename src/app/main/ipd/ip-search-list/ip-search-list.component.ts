@@ -35,6 +35,7 @@ import { STATUS } from 'angular-in-memory-web-api';
 import { MLCInformationComponent } from '../Admission/admission/mlcinformation/mlcinformation.component';
 import { DischargeSummaryTemplateComponent } from './discharge-summary-template/discharge-summary-template.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { element } from 'protractor';
 
 
 @Component({
@@ -53,8 +54,14 @@ export class IPSearchListComponent implements OnInit {
     m_name: any = ""
     IPDNo: any = ""
     status="0"
-    fromDate = ""// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    toDate =  this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+    // fromDate = ""// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    // toDate =  this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+
+
+    
+  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+
    
     dataSource1 = new MatTableDataSource<AdvanceDetailObj>();
     autocompleteModedeptdoc: string = "ConDoctor";
@@ -176,8 +183,7 @@ export class IPSearchListComponent implements OnInit {
         if (m == "Discharge") {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
-
-            let that = this;
+            this.advanceDataStored.storage = new AdvanceDetailObj(element);
             const dialogRef = this._matDialog.open(DischargeComponent,
                 {
                     maxWidth: "85vw",
@@ -520,8 +526,12 @@ export class IPSearchListComponent implements OnInit {
     getSelectedRow(row: any): void {
         console.log("Selected row : ", row);
     }
-}
 
+    
+getMLCdetailview(element){
+    this.commonService.Onprint("AdmissionID", element, "IpMLCCasePaperPrint");
+}
+}
 
 
 export class Bed {
