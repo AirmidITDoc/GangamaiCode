@@ -31,21 +31,28 @@ export class NewOPListComponent implements OnInit {
     myFilterrefundform: FormGroup;
     menuActions: Array<string> = [];
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    @ViewChild(AirmidTableComponent) grid1: AirmidTableComponent;
+    @ViewChild(AirmidTableComponent) grid2: AirmidTableComponent;
     hasSelectedContacts: boolean;
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     vMobileNo: any;
     vbalanceamt: any;
     vpaidamt: any;
-    allfilters = [
-        { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals }
+    vOPIPId = 0;
+    f_name:any = "" 
+    regNo:any="0"
+    l_name:any="" 
+    DoctorId=0
+    PBillNo:any="%" 
 
-    ]
+    pf_name:any = "" 
+    pregNo:any="0"
+    pl_name:any="" 
+    precptNo="0"
+    pPBillNo:any="%" 
+    pfromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    ptoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
     @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
     @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
@@ -54,6 +61,93 @@ export class NewOPListComponent implements OnInit {
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate2') actionButtonTemplate2!: TemplateRef<any>;
+    allOBillfilters = [
+        { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+        { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals }
+
+    ];
+     allOPbillcolumns= [
+        { heading: "", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 70 },
+        { heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+        { heading: "", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+        { heading: "", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+        { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Total Amount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Disc Amount", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Net Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Cash Pay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Card Pay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Adv Used Pay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Online Pay", key: "onlinePay", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PayCount", key: "payCount", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Age", key: "patientAge", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+        { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+        { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Ref DoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        {
+            heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate
+        }  // Assign ng-template to the column
+       
+    ];
+
+   
+    allOPpaymentfilters = [
+        { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+        { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Contains },
+        { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Contains }
+
+    ];
+     allOPpaymentcolumns= [
+        { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 130 },
+        { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Bill Amount", key: "neftpayAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "CashPay", key: "cashPayAmount", sort: true, align: "center" },
+        { heading: "ChequePay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "CardPay", key: "cardPayAmount", sort: true, align: "center" },
+        { heading: "AdvUsedPay", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center" },
+        { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Ref DoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "CompanyName", key: "companyName", sort: true, align: "center", width: 200 },
+        { heading: "UserName", key: "userName", sort: true, align: "center", width: 200 },
+        {
+            heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate1
+        },  
+      
+       
+    ];
+
 
     ngAfterViewInit() {
         // Assign the template to the column dynamically
@@ -72,89 +166,18 @@ export class NewOPListComponent implements OnInit {
     gridConfig: gridModel = {
 
         apiUrl: "OPBill/BrowseOPDBillPagiList",
-        columnsList: [
-            { heading: "", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 70 },
-            { heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-            { heading: "", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-            { heading: "", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-            { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
-            { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-            { heading: "Total Amount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Disc Amount", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Net Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Cash Pay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Card Pay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Adv Used Pay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Online Pay", key: "onlinePay", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "PayCount", key: "payCount", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Age", key: "patientAge", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
-            { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Ref DoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            {
-                heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
-                template: this.actionButtonTemplate
-            }  // Assign ng-template to the column
-           
-        ],
+        columnsList:this.allOPbillcolumns,
         sortField: "PbillNo",
         sortOrder: 0,
-        filters: this.allfilters
+        filters: this.allOBillfilters   
     }
 
     gridConfig1: gridModel = {
         apiUrl: "OPBill/BrowseOPPaymentList",
-        columnsList: [
-            { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 130 },
-            { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-            { heading: "Bill Amount", key: "neftpayAmount", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "CashPay", key: "cashPayAmount", sort: true, align: "center" },
-            { heading: "ChequePay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "CardPay", key: "cardPayAmount", sort: true, align: "center" },
-            { heading: "AdvUsedPay", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center" },
-            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Ref DoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "CompanyName", key: "companyName", sort: true, align: "center", width: 200 },
-            { heading: "UserName", key: "userName", sort: true, align: "center", width: 200 },
-            {
-                heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
-                template: this.actionButtonTemplate1
-            },  // Assign ng-template to the column
-          
-        ],
+        columnsList:this.allOPpaymentcolumns,
         sortField: "RegNo",
         sortOrder: 0,
-        filters: [
-            { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Contains },
-            { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Contains }
-
-        ]
+        filters: this.allOPpaymentfilters
     }
 
 
@@ -177,11 +200,7 @@ export class NewOPListComponent implements OnInit {
             { heading: "PatientType", key: "patientType", sort: true, align: "center" },
             { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "CompanyName", key: "companyName", sort: true, align: "center", width: 200 },
-            // { heading: "ChequePay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "CardPay", key: "cardPayAmount", sort: true, align: "center" },
-            // { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center" },
-            {
+           {
                 heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplate2
             },
@@ -212,18 +231,7 @@ export class NewOPListComponent implements OnInit {
         this.menuActions.push("Bill Print-Package Info");
     }
 
-    onSave(row: any = null) {
-    }
-
-
-    onChangeStartDate(value) {
-        this.gridConfig.filters[2].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-    }
-    onChangeEndDate(value) {
-        this.gridConfig.filters[3].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-    }
-
-
+     
     viewgetOPBillReportPdf(element) {
        this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
     }
@@ -246,7 +254,6 @@ export class NewOPListComponent implements OnInit {
         this.commonService.Onprint("RefundId", data.refundId, "OPRefundReceipt");
     }
     getWhatsappshareRefundBill(Id) { }
-
 
 
     OngetRecord(element, m) {
@@ -287,10 +294,8 @@ export class NewOPListComponent implements OnInit {
                 }
             });
         dialogRef.afterClosed().subscribe(result => {
-            // console.log(result)
             if (result.IsSubmitFlag == true) {
                 let PaymentObj = result.submitDataPay.ipPaymentInsert
-                // console.log(PaymentObj)
                 this.vpaidamt = result.PaidAmt;
                 this.vbalanceamt = result.BalAmt
                 PaymentObj['BillNo'] = contact.billNo;
@@ -299,13 +304,13 @@ export class NewOPListComponent implements OnInit {
                 updateBillobj['balanceAmt'] = result.submitDataPay.ipPaymentInsert.BalanceAmt;
 
                 let data = {
-                    opCreditPayment: PaymentObj,//result.submitDataPay.ipPaymentInsert,
+                    opCreditPayment: PaymentObj,
                     "billUpdate": {
                         "billNo": contact.billNo,
                         "balanceAmt": result.submitDataPay.ipPaymentInsert.BalanceAmt
                     },
                 }
-                // console.log(data)
+              
                 this._OPListService.InsertOPBillingsettlement(data).subscribe(response => {
                     this.toastr.success(response.message);
                     this.grid.gridConfig = this.gridConfig;
@@ -325,47 +330,101 @@ export class NewOPListComponent implements OnInit {
         
     }
 
-    // getBilllistview(){
-    //     let param={
+  onChangeOPBill() {
+         this.fromDate = this.datePipe.transform(this.myFilterbillform.get('fromDate').value, "yyyy-MM-dd")
+         this.toDate = this.datePipe.transform(this.myFilterbillform.get('enddate').value, "yyyy-MM-dd")
+         this.f_name = this.myFilterbillform.get('FirstName').value + "%"
+         this.l_name = this.myFilterbillform.get('LastName').value + "%"
+         this.regNo = this.myFilterbillform.get('RegNo').value || "0"
+         this.PBillNo = this.myFilterbillform.get('PBillNo').value || "%"
+         this.getfilterdataOpBill();
+     }
+ 
+ getfilterdataOpBill(){
+     
+     this.gridConfig = {
+        apiUrl: "OPBill/BrowseOPDBillPagiList",
+        columnsList:this.allOPbillcolumns,
+        sortField: "PbillNo",
+        sortOrder: 0,
+         filters:  [{ fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
+         { fieldName: "L_Name", fieldValue:this.l_name, opType: OperatorComparer.Contains },
+         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+         { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+         { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals }
+         ]
+     }
+     this.grid.gridConfig = this.gridConfig;
+     this.grid.bindGridData(); 
+ }
+   
+ 
+ ClearfilterOPbill(event) {
+     console.log(event)
+     if (event == 'FirstName')
+         this.myFilterbillform.get('FirstName').setValue("")
+     else
+         if (event == 'LastName')
+             this.myFilterbillform.get('LastName').setValue("")
+     if (event == 'RegNo')
+         this.myFilterbillform.get('RegNo').setValue("")
+     if (event == 'PBillNo')
+        this.myFilterbillform.get('PBillNo').setValue("")
+     if (event == 'PBillNo')
+        this.myFilterbillform.get('PBillNo').setValue("")
+   
+     this.onChangeOPPayment();
+   }
 
-    //         "searchFields": [
-    //               {
-    //                 "fieldName": "FromDate",
-    //                 "fieldValue": "10-01-2024",
-    //                 "opType": "13"
-    //               },
-    //           {
-    //                 "fieldName": "ToDate",
-    //                 "fieldValue": "12-12-2024",
-    //                 "opType": "13"
-    //               }
-    //             ],
-    //             "mode": "OPDailyCollectionReport"
-    //           }
-    //     console.log(param)
-    //      setTimeout(() => {
 
-    //                 this._OPListService.getBilllistReport(param
-    //                 ).subscribe(res => {
-    //                     const dialogRef = this._matDialog.open(PdfviewerComponent,
-    //                         {
-    //                             maxWidth: "85vw",
-    //                             height: '750px',
-    //                             width: '100%',
-    //                             data: {
-    //                                 base64: res["base64"] as string,
-    //                                 title: "OP Bill  Viewer"
-    //                             }
-    //                         });
-    //                     dialogRef.afterClosed().subscribe(result => {
+   onChangeOPPayment() {
+    this.pfromDate = this.datePipe.transform(this.myFilterpayform.get('fromDate').value, "yyyy-MM-dd")
+    this.ptoDate = this.datePipe.transform(this.myFilterpayform.get('enddate').value, "yyyy-MM-dd")
+    this.pf_name = this.myFilterpayform.get('FirstName').value + "%"
+    this.pl_name = this.myFilterpayform.get('LastName').value + "%"
+    this.pregNo = this.myFilterpayform.get('RegNo').value || "0"
+    this.pPBillNo = this.myFilterpayform.get('PBillNo').value || "%"
+    this.getfilterdataOpBill();
+}
 
-    //                     });
-    //                 });
+getfilterdataOpPayment(){
 
-    //             }, 100);
+this.gridConfig1 = {
+   apiUrl: "OPBill/BrowseOPPaymentList",
+   columnsList:this.allOPpaymentcolumns,
+   sortField: "RegNo",
+   sortOrder: 0,
+    filters:  [{ fieldName: "F_Name", fieldValue: this.pf_name, opType: OperatorComparer.Contains },
+    { fieldName: "L_Name", fieldValue:this.pl_name, opType: OperatorComparer.Contains },
+    { fieldName: "From_Dt", fieldValue: this.pfromDate, opType: OperatorComparer.Equals },
+    { fieldName: "To_Dt", fieldValue: this.ptoDate, opType: OperatorComparer.Equals },
+    { fieldName: "Reg_No", fieldValue: this.pregNo, opType: OperatorComparer.Equals },
+    { fieldName: "PBillNo", fieldValue: this.pPBillNo, opType: OperatorComparer.Equals },
+    { fieldName: "ReceiptNo", fieldValue: this.precptNo, opType: OperatorComparer.Contains }
+       ]
+}
+this.grid1.gridConfig = this.gridConfig1;
+this.grid1.bindGridData(); 
+}
 
-    //             this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceipt"); 
-    // }
+
+ClearfilterOPpayment(event) {
+console.log(event)
+if (event == 'FirstName')
+    this.myFilterbillform.get('FirstName').setValue("")
+else
+    if (event == 'LastName')
+        this.myFilterbillform.get('LastName').setValue("")
+if (event == 'RegNo')
+    this.myFilterbillform.get('RegNo').setValue("")
+if (event == 'PBillNo')
+   this.myFilterbillform.get('PBillNo').setValue("")
+if (event == 'ReceiptNo')
+    this.myFilterbillform.get('ReceiptNo').setValue("")
+ 
+this.onChangeOPBill();
+}
 
 
     Onemail(data) { }
