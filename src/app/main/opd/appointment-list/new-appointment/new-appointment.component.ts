@@ -424,9 +424,9 @@ export class NewAppointmentComponent implements OnInit {
         console.log(submitData);
 
         this._AppointmentlistService.NewappointmentSave(submitData).subscribe((response) => {
-            this.toastr.success(response.message);
-            debugger
-            this.OnViewReportPdf(response.data)
+            // this.toastr.success(response.message);
+            // debugger
+            this.OnViewReportPdf(response)
             this.onClear(true);
             this._matDialog.closeAll();
         }, (error) => {
@@ -444,14 +444,12 @@ export class NewAppointmentComponent implements OnInit {
         console.log(submitData);
 
         this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
-
-            this.toastr.success(response.message);
-            this.OnViewReportPdf(response.data)
-            this.OnViewReportPdf(response.data)
-            this.onClear(true);
-            this._matDialog.closeAll();
-        }, (error) => {
-            this.toastr.error(error.message);
+            // this.toastr.success(response.message);
+            if (response) {
+                this.OnViewReportPdf(response)
+                this.onClear(true);
+                this._matDialog.closeAll();
+            }
         });
 
 
@@ -474,7 +472,7 @@ export class NewAppointmentComponent implements OnInit {
     onChangePrefix(e) {
         this.ddlGender.SetSelection(e.sexId);
     }
-    
+
     onChangecity(e) {
         console.log(e)
         this.registerObj.stateId = e.stateId
