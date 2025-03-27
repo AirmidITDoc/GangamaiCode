@@ -83,6 +83,7 @@ export class RequestforlabtestComponent implements OnInit {
     isShowDetailTable: boolean = false;
 
     getSelectedRow(row: any): void {
+        debugger
         console.log("Selected row : ", row);
         let vRequestId = row.requestId
 
@@ -114,8 +115,10 @@ export class RequestforlabtestComponent implements OnInit {
         }
         this.isShowDetailTable = true;
 
-        this.grid1.gridConfig = this.gridConfig1;
-        this.grid1.bindGridData();
+        setTimeout(() => {
+            this.grid1.gridConfig = this.gridConfig1;
+            this.grid1.bindGridData();
+        });
     }
 
     viewgetPathologyTemplateReportPdf() {

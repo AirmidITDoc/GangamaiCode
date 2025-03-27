@@ -120,7 +120,7 @@ export class NewRequestforlabComponent implements OnInit {
   }
  
   getServiceList() {
-    debugger
+    // debugger
     let ServiceName = this.myFormGroup.get("ServiceId").value + "%" || "%";
     let IsPathRad = this.myFormGroup.get("IsPathRad").value || "3"
     if (this.vRegNo) {
@@ -366,7 +366,7 @@ export class NewRequestforlabComponent implements OnInit {
           ipPathOrRadiRequestLabRequestInsert['addedByTime'] = formattedTime,
           ipPathOrRadiRequestLabRequestInsert['charId'] = 0,
           ipPathOrRadiRequestLabRequestInsert['isTestCompted'] = true,
-          ipPathOrRadiRequestLabRequestInsert['IsOnFileTest'] = true;
+          ipPathOrRadiRequestLabRequestInsert['IsOnFileTest'] = this.myFormGroup.get('IsOnFileTest').value || false;
         ipPathOrRadiRequestLabRequestInsertArray.push(ipPathOrRadiRequestLabRequestInsert);
       });
 

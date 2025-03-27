@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } f
 import { PrescriptionReturnService } from '../prescription-return.service';
 import { DatePipe } from '@angular/common';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { BatchpopupComponent } from '../batchpopup/batchpopup.component';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -110,7 +110,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
 
   getItemSubform() {
     this.ItemSubform = this._formBuilder.group({
-      ItemId: ['', Validators.required],
+      ItemId: ['',[Validators.required, this.validateSelectedItem.bind(this)]],
       ItemName:'',
       BatchNo: ['', Validators.required],
       Qty: ['', Validators.required],
@@ -138,8 +138,21 @@ export class NewPrescriptionreturnComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
+  validateSelectedItem(control: AbstractControl): { [key: string]: any } | null {
+      if (control.value && typeof control.value !== 'object') {
+        return { invalidItem: true };
+      }
+      return null;
+    }
+
   selectChangeItem(obj: any) {
     
+    if (!obj || typeof obj !== 'object') {
+      this.toastr.error('Invalid item selection. Please choose a valid item from the list.', 'Error!');
+      this.ItemSubform.get('ItemId').setErrors({ invalidItem: true });
+      return;
+    }
+
     console.log("Item:",obj);
     this.ItemId=obj.itemId;
     this.itemName=obj.itemName
