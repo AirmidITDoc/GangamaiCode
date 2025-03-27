@@ -17,7 +17,6 @@ export class ApiCaller {
             map((data: apiResponse) => {
                 if (data.statusCode == 200) {
                     return data.data;
-
                 }
                 else {
                     this.toastr.error(data.message, 'Error !', {
@@ -40,9 +39,26 @@ export class ApiCaller {
             }));
     }
 
+    // PostData(url: string, data: any) {
+    //     return this._httpClient.post<any>(`${this.ApiUrl}${url}`, data).pipe(map((response: apiResponse) => {
+    //             // Check if the response status is 200 (OK)
+    //             if (response && response.statusCode === 200) {
+    //                 return response;  // Return the entire response object
+    //             } else {
+    //                 // If status is not 200, show an error toast
+    //                 this.toastr.error(response.message, 'Error !', {
+    //                     toastClass: 'tostr-tost custom-toast-error',
+    //                 });
+    //                 return of(null); // Avoid returning invalid data
+    //             }
+    //         })
+    //     );
+    // }
+    
     PostData(url: string, data: any) {
         return (this._httpClient.post<any>(`${this.ApiUrl}${url}`, data).pipe(map((data: apiResponse) => {
             if (data.statusCode == 200) {
+                this.toastr.success(data.message, 'success !', {toastClass: 'tostr-tost custom-toast-success',});
                 return data?.data || data;
             }
             else {
@@ -57,6 +73,7 @@ export class ApiCaller {
     PutData(url: string, data: any) {
         return (this._httpClient.put<any>(`${this.ApiUrl}${url}`, data).pipe(map((data: apiResponse) => {
             if (data.statusCode == 200) {
+                this.toastr.success(data.message, 'success !', {toastClass: 'tostr-tost custom-toast-success',});
                 return data?.data || data;
             }
             else {
@@ -70,8 +87,8 @@ export class ApiCaller {
     DeleteData(url: string) {
         return (this._httpClient.delete<any>(`${this.ApiUrl}${url}`).pipe(map((data: apiResponse) => {
             if (data.statusCode == 200) {
+                this.toastr.success(data.message, 'success !', {toastClass: 'tostr-tost custom-toast-success',});
                 return data?.data || data;
-
             }
             else {
                 this.toastr.error(data.message, 'Error !', {
