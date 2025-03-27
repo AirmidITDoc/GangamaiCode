@@ -6,14 +6,16 @@ import { apiResponse } from "../models/apiResponse";
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment';
 import { Router } from "@angular/router";
+import { AppConfigService } from "./api-config.service";
 
 @Injectable({ providedIn: "root" })
 export class ApiCaller {
-    ApiUrl = environment.API_BASE_PATH;
-    constructor(public _httpClient: HttpClient, public toastr: ToastrService, private router: Router) {
+    //ApiUrl = environment.API_BASE_PATH;
+    constructor(public _httpClient: HttpClient, public toastr: ToastrService, private router: Router, private config: AppConfigService
+    ) {
     }
     GetData(url: string): Observable<any> {
-        return this._httpClient.get(`${this.ApiUrl}${url}`).pipe(
+        return this._httpClient.get(`${this.config.apiBaseUrl}${url}`).pipe(
             map((data: apiResponse) => {
                 if (data.statusCode == 200) {
                     return data.data;
@@ -38,11 +40,12 @@ export class ApiCaller {
                 return of(null);  // Return an empty observable to continue without crashing
             }));
     }
-    
+
     PostData(url: string, data: any) {
-        return (this._httpClient.post<any>(`${this.ApiUrl}${url}`, data).pipe(map((data: apiResponse) => {
+        return (this._httpClient.post<any>(`${this.config.apiBaseUrl}${url}`, data).pipe(map((data: apiResponse) => {
             if (data.statusCode == 200) {
-                this.toastr.success(data.message, 'success !', {toastClass: 'tostr-tost custom-toast-success',});
+                if (data.message)
+                    this.toastr.success(data.message, 'success !', { toastClass: 'tostr-tost custom-toast-success', });
                 return data?.data || data;
             }
             else {
@@ -55,9 +58,10 @@ export class ApiCaller {
     }
 
     PutData(url: string, data: any) {
-        return (this._httpClient.put<any>(`${this.ApiUrl}${url}`, data).pipe(map((data: apiResponse) => {
+        return (this._httpClient.put<any>(`${this.config.apiBaseUrl}${url}`, data).pipe(map((data: apiResponse) => {
             if (data.statusCode == 200) {
-                this.toastr.success(data.message, 'success !', {toastClass: 'tostr-tost custom-toast-success',});
+                if (data.message)
+                    this.toastr.success(data.message, 'success !', { toastClass: 'tostr-tost custom-toast-success', });
                 return data?.data || data;
             }
             else {
@@ -69,9 +73,10 @@ export class ApiCaller {
     }
 
     DeleteData(url: string) {
-        return (this._httpClient.delete<any>(`${this.ApiUrl}${url}`).pipe(map((data: apiResponse) => {
+        return (this._httpClient.delete<any>(`${this.config.apiBaseUrl}${url}`).pipe(map((data: apiResponse) => {
             if (data.statusCode == 200) {
-                this.toastr.success(data.message, 'success !', {toastClass: 'tostr-tost custom-toast-success',});
+                if (data.message)
+                    this.toastr.success(data.message, 'success !', { toastClass: 'tostr-tost custom-toast-success', });
                 return data?.data || data;
             }
             else {

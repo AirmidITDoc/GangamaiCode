@@ -244,7 +244,7 @@ export class ResultEntryComponent implements OnInit {
                     heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
                     template: this.actionsIPOP
                 },
-                { heading: "Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', type: 9, width: 200 },
+                { heading: "Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
                 { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
                 { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
@@ -509,7 +509,7 @@ opipType:any="2";
         this.printdata = [];
         this.reportIdData = [];
         this.ServiceIdData = [];
-        
+
         if (flag)
             this.IsTemplateTest = contact[0]["isTemplateTest"]
         else
@@ -581,6 +581,7 @@ opipType:any="2";
         }
 
         this.selection.clear(); // Clears all selected items
+        this.dataSource1.data = [];
     }
 
     Printresultentrywithheader() {
@@ -666,7 +667,21 @@ opipType:any="2";
             }
 
         }
-    }
+
+        if (!m || typeof m !== 'object' || !('isTemplateTest' in m) || m.isTemplateTest == null) {
+            // this.dataSource1.data = [];
+            // this.selection.clear();
+            // setTimeout(() => {
+            //     this.selection.clear();
+            //     console.log('Selection cleared after timeout.');
+            // }, 0);
+            this.toastr.warning('This Test Not Created!', 'Warning!', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            console.log('isTemplateTest not found or null, dataSource1 cleared.');
+            return;
+        }
+    }    
 
     Cancleresult(row) {
 

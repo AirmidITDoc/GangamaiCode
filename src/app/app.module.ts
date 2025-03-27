@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -43,11 +43,11 @@ import { LayoutModule } from './layout/layout.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
-import {  MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { Error404Component } from './main/shared/APIerrorpages/error-404/error-404.component';
 import { Error401Component } from './main/shared/APIerrorpages/error-401/error-401.component';
 import { Error403Component } from './main/shared/APIerrorpages/error-403/error-403.component';
-
+import { AppConfigService } from './core/services/api-config.service';
 const appRoutes: Routes = [
     {
         path: "auth",
@@ -155,19 +155,19 @@ const appRoutes: Routes = [
     {
         path: '',
         redirectTo: 'auth/login',
-        pathMatch:'full'
+        pathMatch: 'full'
     },
     {
         path: 'unauthorize',
-        component:Error401Component
+        component: Error401Component
     },
     {
         path: 'forbidden',
-        component:Error403Component
+        component: Error403Component
     },
     {
         path: '**',
-        component:Error404Component
+        component: Error404Component
     },
 
 ];
@@ -183,6 +183,10 @@ export const PICK_FORMATS = {
         monthYearA11yLabel: { year: 'numeric', month: 'long' }
     }
 };
+export function initializeApp(appConfig: AppConfigService) {
+    return () => appConfig.loadConfig();
+}
+
 
 class PickDateAdapter extends NativeDateAdapter {
     format(date: Date, displayFormat: Object): string {
@@ -199,7 +203,7 @@ class PickDateAdapter extends NativeDateAdapter {
         AppComponent,
         PdfviewerComponent,
         InternetConnectionComponent,
-        
+
     ],
     imports: [
         SharedModule,
@@ -239,7 +243,12 @@ class PickDateAdapter extends NativeDateAdapter {
         LoaderModule
     ],
     providers: [
-
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initializeApp,
+            deps: [AppConfigService],
+            multi: true
+        },
         BandwidthService,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         // { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true },

@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { PrescriptionService } from '../prescription.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -158,11 +158,12 @@ export class NewPrescriptionComponent implements OnInit {
 
   createItemForm() {
     return this._FormBuilder.group({
-      ItemId: ['', Validators.required],
+      ItemId: ['', [Validators.required, this.validateSelectedItem.bind(this)]],
       ItemName: '',
       DoseId:'',
       Day: [''],
-      Qty:['',Validators.required]
+      Qty:['',Validators.required],
+      Instruction:['']
     })
   }
 
@@ -220,6 +221,14 @@ export class NewPrescriptionComponent implements OnInit {
 
   vitemId:any;
   vitemname:any;
+
+  validateSelectedItem(control: AbstractControl): { [key: string]: any } | null {
+    if (control.value && typeof control.value !== 'object') {
+      return { invalidItem: true };
+    }
+    return null;
+  }
+  
   selectChangeItem(obj: any) {
     debugger
   //   if (this.vstoreId==0) {
@@ -229,6 +238,12 @@ export class NewPrescriptionComponent implements OnInit {
   //     return;
   //   }
   // else if(this.vstoreId!=0){
+
+  if (!obj || typeof obj !== 'object') {
+    this.toastr.error('Invalid item selection. Please choose a valid item from the list.', 'Error!');
+    this.ItemForm.get('ItemId').setErrors({ invalidItem: true });
+    return;
+  }
     console.log("Item:", obj);
     this.vitemId = obj.itemId;
     this.vitemname = obj.itemName;
@@ -297,7 +312,7 @@ export class NewPrescriptionComponent implements OnInit {
             ItemID: this.vitemId || 0,
             ItemName: this.vitemname || '',
             Qty: this.vQty,
-            Remark: this.vInstruction || ''
+            Remark: this.ItemForm.get('Instruction').value || ''
           });
         this.dsItemList.data = this.Chargelist
         //console.log(this.dsItemList.data); 
