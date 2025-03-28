@@ -51,24 +51,32 @@ import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-
 export class IPBillBrowseListComponent implements OnInit {
     myFilterform: FormGroup;
     myFilterFormIPBrowsePayment: FormGroup;
+    myFilterFormIPBrowseRefund: FormGroup;
     menuActions: Array<string> = [];
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     hasSelectedContacts: boolean;
-
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    f_name: any = ""
+    regNo: any = "0"
+    l_name: any = ""
+    PBillNo: any = "%"
+    IsIntrimOrFinal:any="0"
 
+    pfromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    ptoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    pf_name:any="%"
+    pl_name:any="%"
+    pregNo:any="0"
+    pPBillNo:any="%"
+    pReceiptNo:any="0"
 
-    allfilters = [
-        { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "IsIntrimOrFinal", fieldValue: "0", opType: OperatorComparer.Equals }
+    rfromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    rtoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    rf_name:any="%"
+    rl_name:any="%"
+    rregNo:any="0"
 
-    ]
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIP;
         this.gridConfig.columnsList.find(col => col.key === 'patientTypeId')!.template = this.patientTypetemp;
@@ -91,115 +99,133 @@ export class IPBillBrowseListComponent implements OnInit {
 
     @ViewChild('actionButtonTemplateIPRefund') actionButtonTemplateIPRefund!: TemplateRef<any>;
 
+    allfilters = [
+        { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+        { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "IsIntrimOrFinal", fieldValue: "0", opType: OperatorComparer.Equals }
+    ]
+
+    allIPBillListColumns=[
+        { heading: "", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+        { heading: "", key: "interimOrFinal", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+        { heading: "", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+        { heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+        { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
+        { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Age", key: "age", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Mobile", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
+        { heading: "DOD", key: "dischargeDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
+        { heading: "IPDNO", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA',width:200 },
+        { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "DiscAmount", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "CompanyDiscAmt", key: "compDiscAmt", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "NetAmount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "BalanceAmt", key: "bAmt", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "CashPay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "CardPay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "NEFTPay", key: "neftPay", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "AdvUSedAmount", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PayCount", key: "paycount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "RefundAmout", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "CashcounterName", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+        {
+            heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplateIP  // Assign ng-template to the column
+        }
+    ]
+
     gridConfig: gridModel = {
         apiUrl: "Billing/BrowseIPBillList",
-        columnsList: [
-            { heading: "", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-            { heading: "", key: "interimOrFinal", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-            { heading: "", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-            { heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-
-            { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
-            { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-            { heading: "Age", key: "age", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Mobile", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
-            { heading: "DOD", key: "dischargeDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
-            { heading: "IPDNO", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA',width:200 },
-            { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "DiscAmount", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "CompanyDiscAmt", key: "compDiscAmt", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "NetAmount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "BalanceAmt", key: "bAmt", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "CashPay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "CardPay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "NEFTPay", key: "neftPay", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "AdvUSedAmount", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "PayCount", key: "paycount", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "RefundAmout", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "CashcounterName", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
-            {
-                heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
-                template: this.actionButtonTemplateIP  // Assign ng-template to the column
-            }
-        ],
+        columnsList: this.allIPBillListColumns,
         sortField: "RegNo",
         sortOrder: 0,
         filters: this.allfilters
     }
 
+    allIpPaymentFilter=[
+        { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+        { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
+        { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Equals }
+    ]
+
+    allIpPaymentListColumns=[
+        { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "TotalAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "BalAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', type: 9 },
+        { heading: "CashPay", key: "cashPay", sort: true, align: "center" },
+        { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "CardPay", key: "cardPay", sort: true, align: "center" },
+        { heading: "AdvanceUsed", key: "advused", sort: true, align: "center" },
+        { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "NEFTPayAmt", key: "nEFTPayAmount", sort: true, align: "center", emptySign: 'NA' },
+        { heading: "PayTMAmt", key: "payTmPay", sort: true, align: "center", emptySign: 'NA' },
+        { heading: "Remark ", key: "remark0", sort: true, align: "center", emptySign: 'NA' },
+        { heading: "User Name", key: "userName", sort: true, align: "center", emptySign: 'NA' },
+        {
+            heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplatepayment  // Assign ng-template to the column
+        }
+    ]
+
     gridConfig1: gridModel = {
         apiUrl: "Billing/BrowseIPPaymentList",
-        columnsList: [
-
-            { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-            { heading: "TotalAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "BalAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', type: 9 },
-            { heading: "CashPay", key: "cashPay", sort: true, align: "center" },
-            { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "CardPay", key: "cardPay", sort: true, align: "center" },
-            { heading: "AdvanceUsed", key: "advused", sort: true, align: "center" },
-            { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "NEFTPayAmt", key: "nEFTPayAmount", sort: true, align: "center", emptySign: 'NA' },
-            { heading: "PayTMAmt", key: "payTmPay", sort: true, align: "center", emptySign: 'NA' },
-            { heading: "Remark ", key: "remark0", sort: true, align: "center", emptySign: 'NA' },
-            { heading: "User Name", key: "userName", sort: true, align: "center", emptySign: 'NA' },
-            {
-                heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
-                template: this.actionButtonTemplatepayment  // Assign ng-template to the column
-            }
-        ],
+        columnsList: this.allIpPaymentListColumns,
         sortField: "RegNo",
         sortOrder: 0,
-        filters: [
-            { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Equals }
-        ]
+        filters: this.allIpPaymentFilter
     }
+
+    allIpRefundFilters=[
+        { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+        { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
+    ]
+
+    allIpRefundListColumns= [
+        { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
+        { heading: "UHID", key: "uhidNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "RefundAmount", key: "refundId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "CashPay", key: "cashPay", sort: true, align: "center" },
+        { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "CardPay", key: "cardPay", sort: true, align: "center" },
+        { heading: "Remark", key: "remark", sort: true, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplateIPRefund  // Assign ng-template to the column
+        }//Action 1-view, 2-Edit,3-delete
+    ]
 
     gridConfig2: gridModel = {
         apiUrl: "Billing/BrowseIPRefundlist",
-        columnsList: [
-            { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
-            { heading: "UHID", key: "uhidNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-            { heading: "RefundAmount", key: "refundId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "CashPay", key: "cashPay", sort: true, align: "center" },
-            { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "CardPay", key: "cardPay", sort: true, align: "center" },
-            { heading: "Remark", key: "remark", sort: true, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
-                template: this.actionButtonTemplateIPRefund  // Assign ng-template to the column
-            }//Action 1-view, 2-Edit,3-delete
-        ],
+        columnsList:this.allIpRefundListColumns,
         sortField: "RegNo",
         sortOrder: 0,
-        filters: [
-            { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
-        ]
+        filters: this.allIpRefundFilters
     }
 
     constructor(public _IPBrowseBillService: IPBrowseBillService,
@@ -211,6 +237,7 @@ export class IPBillBrowseListComponent implements OnInit {
     ngOnInit(): void {
         this.myFilterform = this._IPBrowseBillService.filterForm_IpdBrowse();
         this.myFilterFormIPBrowsePayment = this._IPBrowseBillService.filterForm_IpdpaymentBrowse()
+        this.myFilterFormIPBrowseRefund=this._IPBrowseBillService.filterForm_IpdrefundBrowse()
 
         if (this._ActRoute.url == '/ipd/ipd-bill-browse-list') {
             this.menuActions.push('Print Final Bill Groupwise');
@@ -219,7 +246,134 @@ export class IPBillBrowseListComponent implements OnInit {
             this.menuActions.push('Print IP Final Bill');
             // this.menuActions.push('Print FinalBill WardWise');
         }
+    }
 
+    onChangeIPBill() {
+        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+        this.f_name = this.myFilterform.get('FirstName').value + "%"
+        this.l_name = this.myFilterform.get('LastName').value + "%"
+        this.regNo = this.myFilterform.get('RegNo').value || "0"
+        this.PBillNo = this.myFilterform.get('PBillNo').value || "%"
+        this.IsIntrimOrFinal = this.myFilterform.get('IsInterimOrFinal').value
+        this.getfilterdataIPBill();
+    }
+
+    getfilterdataIPBill() {
+        this.gridConfig = {
+            apiUrl: "Billing/BrowseIPBillList",
+            columnsList: this.allIPBillListColumns,
+            sortField: "RegNo",
+            sortOrder: 0,
+            filters: [{ fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
+            { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+            { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals },
+            { fieldName: "IsIntrimOrFinal", fieldValue: this.IsIntrimOrFinal, opType: OperatorComparer.Equals }
+            ]
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    }
+
+    ClearfilterIPbill(event) {
+        console.log(event)
+        if (event == 'FirstName')
+            this.myFilterform.get('FirstName').setValue("")
+        else
+            if (event == 'LastName')
+                this.myFilterform.get('LastName').setValue("")
+        if (event == 'RegNo')
+            this.myFilterform.get('RegNo').setValue("")
+        if (event == 'PBillNo')
+            this.myFilterform.get('PBillNo').setValue("")
+        this.onChangeIPBill();
+    }
+
+    onChangeIPPayment() {
+        this.pfromDate = this.datePipe.transform(this.myFilterFormIPBrowsePayment.get('fromDate').value, "yyyy-MM-dd")
+        this.ptoDate = this.datePipe.transform(this.myFilterFormIPBrowsePayment.get('enddate').value, "yyyy-MM-dd")
+        this.pf_name = this.myFilterFormIPBrowsePayment.get('FirstName').value + "%"
+        this.pl_name = this.myFilterFormIPBrowsePayment.get('LastName').value + "%"
+        this.pregNo = this.myFilterFormIPBrowsePayment.get('RegNo').value || "0"
+        this.pPBillNo = this.myFilterFormIPBrowsePayment.get('PBillNo').value || "%"
+        this.pReceiptNo = this.myFilterFormIPBrowsePayment.get('ReceiptNo').value || "0"
+        this.getfilterdataIPPayment();
+    }
+
+    getfilterdataIPPayment() {
+        this.gridConfig1 = {
+            apiUrl: "Billing/BrowseIPPaymentList",
+            columnsList: this.allIpPaymentListColumns,
+            sortField: "RegNo",
+            sortOrder: 0,
+            filters: [{ fieldName: "F_Name", fieldValue: this.pf_name, opType: OperatorComparer.Contains },
+            { fieldName: "L_Name", fieldValue: this.pl_name, opType: OperatorComparer.Contains },
+            { fieldName: "From_Dt", fieldValue: this.pfromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.ptoDate, opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: this.pregNo, opType: OperatorComparer.Equals },
+            { fieldName: "PBillNo", fieldValue: this.pPBillNo, opType: OperatorComparer.Equals },
+            { fieldName: "ReceiptNo", fieldValue: this.pReceiptNo, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid1.gridConfig = this.gridConfig1;
+        // this.grid1.bindGridData();
+    }
+
+    ClearfilterIPpayment(event) {
+        console.log(event)
+        if (event == 'FirstName')
+            this.myFilterFormIPBrowsePayment.get('FirstName').setValue("")
+        else
+            if (event == 'LastName')
+                this.myFilterFormIPBrowsePayment.get('LastName').setValue("")
+        if (event == 'RegNo')
+            this.myFilterFormIPBrowsePayment.get('RegNo').setValue("")
+        if (event == 'PBillNo')
+            this.myFilterFormIPBrowsePayment.get('PBillNo').setValue("")
+        if (event == 'ReceiptNo')
+            this.myFilterFormIPBrowsePayment.get('ReceiptNo').setValue("")
+        this.onChangeIPPayment();
+    }
+
+    onChangeIPRefund() {
+        this.rfromDate = this.datePipe.transform(this.myFilterFormIPBrowseRefund.get('fromDate').value, "yyyy-MM-dd")
+        this.rtoDate = this.datePipe.transform(this.myFilterFormIPBrowseRefund.get('enddate').value, "yyyy-MM-dd")
+        this.rf_name = this.myFilterFormIPBrowseRefund.get('FirstName').value + "%"
+        this.rl_name = this.myFilterFormIPBrowseRefund.get('LastName').value + "%"
+        this.rregNo = this.myFilterFormIPBrowseRefund.get('RegNo').value || "0"
+        this.getfilterdataIPRefund();
+    }
+
+    getfilterdataIPRefund() {
+        this.gridConfig2 = {
+            apiUrl: "Billing/BrowseIPRefundlist",
+            columnsList: this.allIpRefundListColumns,
+            sortField: "RegNo",
+            sortOrder: 0,
+            filters: [{ fieldName: "F_Name", fieldValue: this.rf_name, opType: OperatorComparer.Contains },
+            { fieldName: "L_Name", fieldValue: this.rl_name, opType: OperatorComparer.Contains },
+            { fieldName: "From_Dt", fieldValue: this.rfromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.rtoDate, opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: this.rregNo, opType: OperatorComparer.Equals },
+            ]
+        }
+        // this.grid2.gridConfig = this.gridConfig2;
+        // this.grid2.bindGridData();
+    }
+
+    ClearfilterIPRefund(event) {
+        console.log(event)
+        if (event == 'FirstName')
+            this.myFilterFormIPBrowseRefund.get('FirstName').setValue("")
+        else
+            if (event == 'LastName')
+                this.myFilterFormIPBrowseRefund.get('LastName').setValue("")
+        if (event == 'RegNo')
+            this.myFilterFormIPBrowseRefund.get('RegNo').setValue("")
+        this.onChangeIPRefund();
     }
 
     onSave(row: any = null) {
