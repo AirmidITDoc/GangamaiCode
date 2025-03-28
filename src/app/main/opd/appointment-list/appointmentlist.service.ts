@@ -45,11 +45,6 @@ export class AppointmentlistService {
         });
     }
 
-
- 
-
-  
-   
     createPesonalForm() {
         return this._formBuilder.group({
                 RegId: [0],
@@ -87,7 +82,7 @@ export class AppointmentlistService {
                 Validators.maxLength(10),
                 Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
                 ]],
-                aadharCardNo: ['', [Validators.required,
+                aadharCardNo: ['', [
                 Validators.minLength(12),
                 Validators.maxLength(12),
                 Validators.pattern("^[0-9]*$")

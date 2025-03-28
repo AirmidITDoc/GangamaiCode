@@ -504,22 +504,24 @@ if (this.vOPIPId !== 0 && this.TotalRefundAmount !== "0.00") {
           console.log(submitData)
           this._RefundbillService.InsertOPRefundBilling(submitData).subscribe(response => {
             this.toastrService.success(response.message);
-            this.viewgetOPRefundBillReportPdf(response.refundId)
+            this.viewgetOPRefundBillReportPdf(response)
           }, (error) => {
             this.toastrService.error(error.message);
           });
 
         });
+        
       }
       else {
         Swal.fire("Refund Amount is More than RefundBalance")
       }
+      this.cleardata();
 }
     else {
       Swal.fire("Please Add Refund Amount!")
     }
 
-    this.cleardata();
+    
   }
 
   cleardata() {

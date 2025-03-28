@@ -88,7 +88,7 @@ export class AdmissionService {
             Validators.maxLength(10),
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
             ]],
-            aadharCardNo: ['', [Validators.required,
+            aadharCardNo: ['', [
             Validators.minLength(12),
             Validators.maxLength(12),
             Validators.pattern("^[0-9]*$")
@@ -267,10 +267,6 @@ export class AdmissionService {
     public getAdmittedPatientListNew(employee) {
         return this._httpClient1.PostData("Admission/AdmissionList", employee)
     }
-
-
-   
-   
 
     public MlcInsert(Param: any) {
         if (Param.mlcid) {

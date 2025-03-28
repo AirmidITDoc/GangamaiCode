@@ -54,11 +54,7 @@ export class IPSearchListComponent implements OnInit {
     m_name: any = ""
     IPDNo: any = ""
     status="0"
-    // fromDate = ""// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    // toDate =  this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
-
-
-    
+        
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
 

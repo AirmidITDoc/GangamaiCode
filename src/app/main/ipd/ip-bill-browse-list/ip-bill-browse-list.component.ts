@@ -38,6 +38,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { IPAdvanceComponent } from '../ip-search-list/ip-advance/ip-advance.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { NewSettlementComponent } from 'app/main/opd/companysettlement/new-settlement/new-settlement.component';
+import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
 
 @Component({
     selector: 'app-ip-bill-browse-list',
@@ -203,6 +205,7 @@ export class IPBillBrowseListComponent implements OnInit {
     constructor(public _IPBrowseBillService: IPBrowseBillService,
         private commonService: PrintserviceService,
         public _matDialog: MatDialog, private _ActRoute: Router,
+         private accountService: AuthenticationService,
         public toastr: ToastrService, public datePipe: DatePipe) { }
 
     ngOnInit(): void {
@@ -315,38 +318,155 @@ export class IPBillBrowseListComponent implements OnInit {
 
         console.log(contact)
         let PatientHeaderObj = {};
-
-        PatientHeaderObj['Date'] = contact.BillDate;
-        PatientHeaderObj['PatientName'] = contact.PatientName;
+        PatientHeaderObj['Date'] = contact.billDate;
+        PatientHeaderObj['PatientName'] = contact.patientName;
+        PatientHeaderObj['AdvanceAmount'] = contact.advUsedPay;
+        PatientHeaderObj['NetPayAmount'] = contact.netPayableAmt;
+        PatientHeaderObj['BillNo'] = contact.billNo;
         PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
-        PatientHeaderObj['MobileNo'] = contact.MobileNo;
-        PatientHeaderObj['PatientAge'] = contact.PatientAge;
-        PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
-        PatientHeaderObj['BillId'] = contact.BillNo;
-        PatientHeaderObj['CompanyName'] = contact.CompanyName;
-        PatientHeaderObj['RegNo'] = contact.RegNo;
-        PatientHeaderObj['RegId'] = contact.RegId;
-        // this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+        PatientHeaderObj['IPDNo'] = contact.opD_IPD_ID;
+        PatientHeaderObj['RegNo'] = contact.regNo;
+
+
 
         console.log(PatientHeaderObj)
 
+         const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+                  {
+                      maxWidth: "95vw",
+                      height: '750px',
+                      width: '85%',
+      
+                      data: {
+                          vPatientHeaderObj: PatientHeaderObj,
+                          FromName: "IP-SETTLEMENT",
+                          advanceObj: PatientHeaderObj,
+                      }
+                  });
+      
+      
+              dialogRef.afterClosed().subscribe(result => {
+                   let NeftNo="0"
+                  console.log(result.submitDataPay.ipPaymentInsert)
+                  
+                  if(result.submitDataPay.ipPaymentInsert.NEFTNo =="undefined")
+                      NeftNo="0"
+                  else
+                  NeftNo=result.submitDataPay.ipPaymentInsert.NEFTNo
+                  if (result.IsSubmitFlag) {
+                      let Paymentobj = {};
+      
+                      Paymentobj['PaymentId'] = '0';
+                      Paymentobj['billNo'] = contact.billNo;
+                      Paymentobj['PaymentDate'] = result.submitDataPay.ipPaymentInsert.PaymentDate;
+                      Paymentobj['PaymentTime'] = result.submitDataPay.ipPaymentInsert.PaymentTime; //this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+                      Paymentobj['CashPayAmount'] = result.submitDataPay.ipPaymentInsert.CashPayAmount ?? 0;
+                      Paymentobj['ChequePayAmount'] = result.submitDataPay.ipPaymentInsert.ChequePayAmount ?? 0;
+                      Paymentobj['ChequeNo'] = String(result.submitDataPay.ipPaymentInsert.ChequeNo) ?? "0";
+                      Paymentobj['BankName'] = result.submitDataPay.ipPaymentInsert.BankName ?? "";
+                      Paymentobj['ChequeDate'] = result.submitDataPay.ipPaymentInsert.ChequeDate;
+                      Paymentobj['CardPayAmount'] = result.submitDataPay.ipPaymentInsert.CardPayAmount
+                      Paymentobj['CardNo'] = result.submitDataPay.ipPaymentInsert.CardNo;
+                      Paymentobj['CardBankName'] = result.submitDataPay.ipPaymentInsert.CardBankName
+                      Paymentobj['CardDate'] = result.submitDataPay.ipPaymentInsert.CardDate
+                      Paymentobj['AdvanceUsedAmount'] = result.submitDataPay.ipPaymentInsert.AdvanceUsedAmount
+                      Paymentobj['AdvanceId'] = result.submitDataPay.ipPaymentInsert.AdvanceId
+                      Paymentobj['RefundId'] = 0;
+                      Paymentobj['TransactionType'] = 0;
+                      Paymentobj['Remark'] = '';
+                      Paymentobj['AddBy'] =this.accountService.currentUserValue.userId,
+                      Paymentobj['IsCancelled'] = false;
+                      Paymentobj['IsCancelledBy'] = '0';
+                      Paymentobj['IsCancelledDate'] = result.submitDataPay.ipPaymentInsert.IsCancelledDate
+                      Paymentobj['opdipdType'] = 1;
+                      Paymentobj['neftpayAmount'] = result.submitDataPay.ipPaymentInsert.NEFTPayAmount
+                      Paymentobj['neftno'] =NeftNo;
+                      Paymentobj['neftbankMaster'] = result.submitDataPay.ipPaymentInsert.NEFTBankMaster
+                      Paymentobj['neftdate'] = result.submitDataPay.ipPaymentInsert.NEFTDate
+                      Paymentobj['payTmamount'] = result.submitDataPay.ipPaymentInsert.PayTMAmount
+                      Paymentobj['payTmtranNo'] = "0",//result.submitDataPay.ipPaymentInsert.PayTMTranNo || 0
+                          Paymentobj['payTmdate'] = result.submitDataPay.ipPaymentInsert.PayTMDate
+                      Paymentobj['tdsAmount'] = result.submitDataPay.ipPaymentInsert.tdsAmount
+      
+                      let BillUpdateObj = {};
+      
+                      BillUpdateObj['billNo'] = contact.billNo;
+                      BillUpdateObj['balanceAmt'] = result.BalAmt;
+      
+                      console.log("Procced with Payment Option");
+                      let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
+      
+                      if (result.IsSubmitFlag) {
+                          console.log(result);
+                          result.submitDataPay.ipPaymentInsert.TransactionType = 0;
+                          UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
+                          console.log(UpdateAdvanceDetailarr1);
+      
+                          let UpdateAdvanceDetailarr = [];
+                          let BalanceAmt = 0;
+                          let UsedAmt = 0;
+                          if (result.submitDataAdvancePay.length > 0) {
+                              result.submitDataAdvancePay.forEach((element) => {
+                                  let UpdateAdvanceDetailObj = {};
+                                  UpdateAdvanceDetailObj['advanceDetailID'] = element.AdvanceDetailID;
+                                  UpdateAdvanceDetailObj['usedAmount'] = element.UsedAmount;
+                                  UsedAmt += element.UsedAmount;
+                                  UpdateAdvanceDetailObj['balanceAmount'] = element.BalanceAmount;
+                                  BalanceAmt += element.BalanceAmount;
+                                  UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
+                              });
+                          }
+                          else {
+                              let UpdateAdvanceDetailObj = {};
+                              UpdateAdvanceDetailObj['advanceDetailID'] = 0,
+                                  UpdateAdvanceDetailObj['usedAmount'] = 0,
+                                  UpdateAdvanceDetailObj['balanceAmount'] = 0,
+                                  UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
+                          }
+      
+      
+                          let UpdateAdvanceHeaderObj = {};
+                          if (result.submitDataAdvancePay.length > 0) {
+                              UpdateAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceId'],
+                                  UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = UsedAmt,
+                                  UpdateAdvanceHeaderObj['BalanceAmount'] = BalanceAmt
+                          }
+                          else {
+                              UpdateAdvanceHeaderObj['advanceId'] = 0,
+                                  UpdateAdvanceHeaderObj['advanceUsedAmount'] = 0,
+                                  UpdateAdvanceHeaderObj['balanceAmount'] = 0
+                          }
+      
+                          let submitData = {
+                              "payment":Paymentobj,// result.submitDataPay.ipPaymentInsert,
+                              "billupdate": BillUpdateObj,
+                              "advanceDetailupdate": UpdateAdvanceDetailarr,
+                              "advanceHeaderupdate": UpdateAdvanceHeaderObj 
+                          };
+                          let data={
+                              submitDataPay:submitData
+                          }
+                          console.log(submitData);
+                          this._IPBrowseBillService.InsertIPSettlementPayment(submitData).subscribe(response => {
+                              this.toastr.success(response.message);
+                            
+                             this.viewgetIPPayemntPdf(response.data)
+                              // this._matDialog.closeAll();
+                             
+                          }, (error) => {
+                              this.toastr.error(error.message);
+                          });
+                         
+                      }
+      
+                  }
+              });
 
-        const dialogRef = this._matDialog.open(IPSettlementComponent,
-            {
-                maxWidth: "95vw",
-                height: '740px',
-                width: '100%',
-                data: {
+    }
 
-                    registerObj: contact,
-                    FromName: "IP-Bill"
-                }
-            });
-
-        dialogRef.afterClosed().subscribe(result => {
-
-        });
-
+    viewgetIPPayemntPdf(data) {
+        
+        this.commonService.Onprint("PaymentId", data.paymentId, "IpPaymentReceipt");
     }
 
     getFinalBillview(billNo) {

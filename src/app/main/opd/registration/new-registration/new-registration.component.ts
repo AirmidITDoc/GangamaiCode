@@ -41,7 +41,7 @@ export class NewRegistrationComponent implements OnInit {
     AgeDay: any;
     matDialogRef: any;
     RegID: number = 0;
-   
+    isSaving: boolean = false;
     
     autocompleteModegender: string = "Gender";
     autocompleteModearea: string = "Area";
@@ -93,11 +93,14 @@ export class NewRegistrationComponent implements OnInit {
         this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
        
         if (this.personalFormGroup.valid) {
+            this.isSaving = true;
             this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
                this.toastr.success(response.message);
                 this.onClear(true);
+                this.isSaving = false;
             }, (error) => {
                 this.toastr.error(error.message);
+                this.isSaving = false;
             });
         }  else {
             let invalidFields = [];

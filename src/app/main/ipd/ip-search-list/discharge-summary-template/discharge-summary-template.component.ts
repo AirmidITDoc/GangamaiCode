@@ -416,7 +416,7 @@ export class DischargeSummaryTemplateComponent {
             setTimeout(() => {
               this._IpSearchListService.insertIPDDischargSummaryTemplate(data).subscribe(response => {
                 this.toastr.success(response.message);
-                this.viewgetDischargesummaryPdf(response.data)
+                this.viewgetDischargesummaryPdf(response)
                 this._matDialog.closeAll();
               }, (error) => {
                 this.toastr.error(error.message);
@@ -436,7 +436,7 @@ export class DischargeSummaryTemplateComponent {
             setTimeout(() => {
               this._IpSearchListService.UpdateIPDDischargSummaryTemplate(data1).subscribe(response => {
                 this.toastr.success(response.message);
-                this.viewgetDischargesummaryPdf(response.data)
+                this.viewgetDischargesummaryPdf(response)
                 this._matDialog.closeAll();
               }, (error) => {
                 this.toastr.error(error.message);

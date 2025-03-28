@@ -113,7 +113,7 @@ this.MlcInfoFormGroup.get('reportingDate').setValue(this.datePipe.transform(this
 if(!this.MlcInfoFormGroup.invalid){
     this._AdmissionService.MlcInsert(this.MlcInfoFormGroup.value).subscribe((response) => {
         this.toastr.success(response.message);
-      this.getMLCdetailview(response.data)
+      this.getMLCdetailview(response)
         this._matDialog.closeAll();
         this.onClear();
       }, (error) => {

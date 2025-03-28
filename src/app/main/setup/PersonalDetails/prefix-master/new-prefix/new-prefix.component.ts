@@ -17,6 +17,7 @@ export class NewPrefixComponent implements OnInit {
     prefixForm: FormGroup;
     isActive: boolean = true;
     autocompleteModegender: string = "Gender";
+    isSaving : boolean = false;
 
     constructor(
         public _PrefixMasterService: PrefixMasterService,
@@ -38,11 +39,14 @@ export class NewPrefixComponent implements OnInit {
 
     onSubmit() {
         if (!this.prefixForm.invalid) {
+            this.isSaving  = true;
             this._PrefixMasterService.prefixMasterSave(this.prefixForm.value).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);
+                this.isSaving  = false;
             }, (error) => {
                 this.toastr.error(error.message);
+                this.isSaving  = false;
             });
         }
         else {

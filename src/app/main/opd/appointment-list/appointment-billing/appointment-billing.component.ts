@@ -297,7 +297,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   onAddCharges(): void {
 
     const serviceNameValue = this.chargeForm.get('serviceName').value;
-    if (!serviceNameValue) {
+    if (!serviceNameValue || this.serviceSelct==false) {
       this.toastrService.warning('Please select valid Service Name', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -343,16 +343,10 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.chargeList.push(newCharge);
         this.dsChargeList.data = this.chargeList;
         this.calculateTotalAmount();
-        // console.log(this.chargeList)
-        // console.log( this.dsChargeList.data)
-
-        // Reset form with initial values
+        this.serviceSelct=false
         this.resetForm();
         this.chargeForm.get("qty").setValue(1);
-
-        // Focus drop to "serviceName" control.
-
-        const serviceNameElement = document.querySelector(`[name='serviceName']`) as HTMLElement;
+       const serviceNameElement = document.querySelector(`[name='serviceName']`) as HTMLElement;
         if (serviceNameElement) {
           serviceNameElement.focus();
         }
@@ -532,44 +526,15 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
   }
 
-  // //service list 
-  // getServiceListCombobox() {
-  //   let sname = this.chargeForm.get('serviceName').value + '%' || '%'
-  //   var m_data = {
-
-  //     "first": 0,
-  //     "rows": 100,
-  //     "sortField": "ServiceId",
-  //     "sortOrder": 0,
-  //     "filters": [{ "fieldName": "ServiceName", "fieldValue": sname, "opType": "StartsWith" },
-  //     { "fieldName": "TariffId", "fieldValue": "1", "opType": "Equals" }, 
-  //     { "fieldName": "GroupId", "fieldValue": "0", "opType": "Equals" },
-  //     ],
-  //     "exportType": "JSON"
-  //   }
-
-  //   console.log(m_data)
-
-  //   this._AppointmentlistService.getBillingServiceList(m_data).subscribe(data => {
-  //     this.filteredOptionsService = data.data;
-  //     this.ServiceList = data.data;
-  //     console.log(data)
-  //     // if (this.filteredOptionsService.length == 0) {
-  //     //   this.noOptionFound = true;
-  //     // } else {
-  //     //   this.noOptionFound = false;
-  //     // }
-  //   });
-
-
-  // }
-
   getApiUrl(): string {
     const url = `VisitDetail/GetServiceListwithTraiff?TariffId=${this.patientDetail.tariffId}&ClassId=${this.patientDetail.classId}&ServiceName=`;
     console.log('Generated API URL:', url);  // Add this line for debugging
     return url;
   }
+  serviceSelct=false
+
   getSelectedserviceObj(obj) {
+    
     const isItemAlreadyAdded = this.dsChargeList.data.some((element) => element.ServiceId === obj.serviceId);
     if (isItemAlreadyAdded) {
       // If the item is already added, show the alert
@@ -611,6 +576,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.chargeForm.get('DoctorID').updateValueAndValidity();
         this.chargeForm.get('DoctorID').disable();
       }
+
+      this.serviceSelct=true
     }
 
 
@@ -783,8 +750,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       // let Res = response.message
       // let ID = Res.split('.')
       // let Id = ID[1]
-      this.viewgetCreditOPBillReportPdf(response.data)
-      this._matDialog.closeAll();
+      this.viewgetCreditOPBillReportPdf(response)
+      this.dialogRef.close();
     }, (error) => {
       this.toastrService.error(error.message);
     });
@@ -922,14 +889,14 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
           console.log(submitData);
           this._AppointmentlistService.InsertOPBilling(submitData).subscribe(response => {
             this.toastrService.success(response.message);
-            console.log(response)
+            // console.log(response)
 
             // let Res = response.message
             // let ID = Res.split('.')
             // let Id = ID[1]
 
-            this.viewgetOPBillReportPdf(response.data)
-            this._matDialog.closeAll();
+            this.viewgetOPBillReportPdf(response)
+            this.dialogRef.close();
           }, (error) => {
             this.toastrService.error(error.message);
           });
@@ -1010,12 +977,12 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       console.log(submitData);
       this._AppointmentlistService.InsertOPBilling(submitData).subscribe(response => {
         this.toastrService.success(response.message);
-        console.log(response);
+        // console.log(response);
         // let Res = response.message
         // let ID = Res.split('.')
         // let Id = ID[1]
-        this.viewgetOPBillReportPdf(response.data)
-        this._matDialog.closeAll();
+        this.viewgetOPBillReportPdf(response)
+        this.dialogRef.close();
       }, (error) => {
         this.toastrService.error(error.message);
       });

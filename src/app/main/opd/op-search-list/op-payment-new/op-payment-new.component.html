@@ -155,32 +155,7 @@
                                                     </div>
                                                 </mat-form-field>
 
-                                                <!-- <mat-form-field appearance="outline" fxFlex
-                                                    *ngIf="selectedPaymnet1 !='upi'">
-                                                    <mat-label>Bank Name</mat-label>
-                                                    <input matAutocompletePosition="below" type="text"
-                                                        placeholder="Select BankName" matInput
-                                                        formControlName="bankName1" [matAutocomplete]="autoBank1"
-                                                        required>
-                                                    <span matSuffix style="display: flex;">
-                                                        <mat-icon class="mat-icon-close"
-                                                            (click)="patientDetailsFormGrp.get('bankName1').setValue(''); isBank1elected = false;">close</mat-icon>
-                                                        <mat-icon class="mat-icon-close"
-                                                            (click)="patientDetailsFormGrp.get('bankName1').setValue(''); isBank1elected = false;">search</mat-icon>
-                                                    </span>
-                                                    <mat-autocomplete #autoBank1="matAutocomplete"
-                                                        [displayWith]="getOptionTextBank1">
-                                                        <mat-option *ngFor="let option of filteredOptionsBank1 | async"
-                                                            [value]="option">
-                                                            {{option.BankName}}
-                                                        </mat-option>
-                                                    </mat-autocomplete>
-                                                    <div *ngIf="submitted && f.bankName1.errors" class="invalid-feedback">
-                                                        <div *ngIf="f.bankName1.errors.required">Bank is required</div>
-                                                    </div>
-                                                </mat-form-field> -->
-
-
+                                           
                                                 <airmid-dropdown label="Bank Name" formControlName="bankName1"
                                                 [formGroup]="patientDetailsFormGrp"
                                                 [validations]="getValidationMessages().bankName1" (selectionChange)="selectChangebank($event)"

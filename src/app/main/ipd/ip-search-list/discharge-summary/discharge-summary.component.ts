@@ -527,7 +527,7 @@ export class DischargeSummaryComponent implements OnInit {
           setTimeout(() => {
             this._IpSearchListService.insertIPDDischargSummary(data).subscribe(response => {
               this.toastr.success(response.message);
-              this.viewgetDischargesummaryPdf(response.data)
+              this.viewgetDischargesummaryPdf(response)
               this._matDialog.closeAll();
             }, (error) => {
               this.toastr.error(error.message);
@@ -547,7 +547,7 @@ export class DischargeSummaryComponent implements OnInit {
           setTimeout(() => {
             this._IpSearchListService.updateIPDDischargSummary(data1).subscribe(response => {
               this.toastr.success(response);
-              this.viewgetDischargesummaryPdf(response.data)
+              this.viewgetDischargesummaryPdf(response)
               this._matDialog.closeAll();
             }, (error) => {
               this.toastr.error(error.message);

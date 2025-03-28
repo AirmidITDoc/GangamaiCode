@@ -140,8 +140,8 @@
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
               
-                <button type="button" class="btn btn-primary" (click)="OnSubmit()">Save</button>
                 <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="OnSubmit()" [disabled]="isSaving">Save</button>
             </div>
         </div>
     </div>
