@@ -654,7 +654,7 @@ public getUMOCombo() {
     if (loader) {
       this._loaderService.show();
   } 
-  return this._httpClient1.PostData("Advance/Edit",employee)  
+  return this._httpClient1.PutData("Advance/Edit",employee)  
   }
  
   public AdvanceHeaderlist(Id) {
@@ -856,10 +856,13 @@ public getUMOCombo() {
   public getserviceCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=ps_Retrieve_ServiceMasterForCombo", {})
   }
-
-  public InsertIPRefundBilling(employee) {
-    return this._httpClient.post("InPatient/InsertIPRefundofBill", employee)
-  }
+ 
+  public InsertIPRefundBilling(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient1.PostData("RefundOfBill/OPRefundOfBILLInsert", employee)
+  } 
   public getAdvcanceDetails(query) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
   }
