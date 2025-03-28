@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class BrowseIpAdvanceService {
     UserFormGroup: FormGroup;
+    AdvanceOfRefund:FormGroup
     MyForm: FormGroup;
 
     constructor(
         public _formBuilder: UntypedFormBuilder,
-        public _httpClient: ApiCaller)
-    { this.UserFormGroup = this.createUserFormGroup() }
+        public _httpClient: ApiCaller) { this.UserFormGroup = this.createUserFormGroup() 
+            this.AdvanceOfRefund=this.createAdvacneofRefundForm()
+        }
 
     /**
      * 
@@ -60,9 +62,30 @@ export class BrowseIpAdvanceService {
 
     createUserFormGroup() {
         return this._formBuilder.group({
-            startdate: [(new Date()).toISOString()],
+            FirstName: ['', [
+                Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+            ]],
+            LastName: ['', [
+                Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+            ]],
+            PBillNo: '',
+            RegNo: '',
+            fromDate: [(new Date()).toISOString()],
             enddate: [(new Date()).toISOString()],
+        })
+    }
 
+    createAdvacneofRefundForm() {
+        return this._formBuilder.group({
+            FirstName: ['', [
+                Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+            ]],
+            LastName: ['', [
+                Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+            ]],
+            RegNo: '',
+            fromDate: [(new Date()).toISOString()],
+            enddate: [(new Date()).toISOString()],
         })
     }
 

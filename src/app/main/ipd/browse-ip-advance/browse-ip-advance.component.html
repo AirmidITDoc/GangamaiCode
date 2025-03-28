@@ -1,6 +1,6 @@
 <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
     dynamicTableHeight>
-<!-- 
+    <!-- 
     <mat-toolbar class="top-header accent">
         <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
@@ -21,7 +21,8 @@
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                     <ng-template #actionButtonTemplateone let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <button mat-icon-button matTooltip="IPD Advance" (click)="OnAdvanceViewReportPdf(element,true)">
+                            <button mat-icon-button matTooltip="IPD Advance"
+                                (click)="OnAdvanceViewReportPdf(element,true)">
                                 <mat-icon> print</mat-icon>
                             </button>
                             <button mat-icon-button matTooltip="Send message On WhatsApp"
@@ -33,12 +34,13 @@
 
                     <airmid-table [gridConfig]="gridConfig" class="content">
                         <ng-container filters>
-                                <airmid-datepicker [formGroup]="_BrowseIpAdvanceService.UserFormGroup" [isRangePicker]="true"
-                                    formStartControlName="startdate" formEndControlName="enddate"
+                            <form [formGroup]="_BrowseIpAdvanceService.UserFormGroup">
+                                <airmid-datepicker [formGroup]="_BrowseIpAdvanceService.UserFormGroup"
+                                    [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate"
                                     [(fromValue)]="gridConfig.filters[2].fieldValue"
                                     [(toValue)]="gridConfig.filters[3].fieldValue"></airmid-datepicker>
 
-                                <mat-form-field appearance="outline" fxFlex>
+                                <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Advance No</mat-label>
                                     <input matInput placeholder="Search Advance No" autocomplete="off"
                                         [(ngModel)]="gridConfig.filters[5].fieldValue" />
@@ -46,9 +48,20 @@
                                         (click)="gridConfig.filters[5].fieldValue='0'">
                                         <mat-icon>close</mat-icon>
                                     </button>
+                                </mat-form-field> -->
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Advance No</mat-label>
+                                    <input matInput placeholder="Search Advance No" autocomplete="off"
+                                        [formGroup]="_BrowseIpAdvanceService.UserFormGroup" formControlName="PBillNo"
+                                        (input)="onChangeAdvance()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterAdvance('PBillNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex>
+                                <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Registration No</mat-label>
                                     <input matInput placeholder="Search Registration No" autocomplete="off"
                                         [(ngModel)]="gridConfig.filters[4].fieldValue" />
@@ -56,9 +69,42 @@
                                         (click)="gridConfig.filters[4].fieldValue='0'">
                                         <mat-icon>close</mat-icon>
                                     </button>
+                                </mat-form-field> -->
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>RegNo</mat-label>
+                                    <input matInput placeholder="Search RegNo" autocomplete="off"
+                                        [formGroup]="_BrowseIpAdvanceService.UserFormGroup" formControlName="RegNo"
+                                        (input)="onChangeAdvance()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterAdvance('RegNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput placeholder="Search First Name" autocomplete="off"
+                                        [formGroup]="_BrowseIpAdvanceService.UserFormGroup" formControlName="FirstName"
+                                        (input)="onChangeAdvance()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterAdvance('FirstName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput placeholder="Search Last Name" autocomplete="off"
+                                        [formGroup]="_BrowseIpAdvanceService.UserFormGroup" formControlName="LastName"
+                                        (input)="onChangeAdvance()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterAdvance('LastName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>First Name</mat-label>
                                     <input matInput placeholder="Search First Name" autocomplete="off"
                                         [(ngModel)]="gridConfig.filters[0].fieldValue" />
@@ -76,8 +122,8 @@
                                         (click)="gridConfig.filters[1].fieldValue='%'">
                                         <mat-icon>close</mat-icon>
                                     </button>
-                                </mat-form-field>
-                            <!-- </form> -->
+                                </mat-form-field> -->
+                            </form>
                         </ng-container>
                     </airmid-table>
                 </div>
@@ -118,13 +164,47 @@
 
                     <airmid-table [gridConfig]="gridConfig1" class="content">
                         <ng-container filters>
-
-                            <airmid-datepicker [formGroup]="_BrowseIpAdvanceService.UserFormGroup" [isRangePicker]="true"
-                                    formStartControlName="startdate" formEndControlName="enddate"
+                            <form [formGroup]="_BrowseIpAdvanceService.AdvanceOfRefund">
+                                <airmid-datepicker [formGroup]="_BrowseIpAdvanceService.AdvanceOfRefund"
+                                    [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate"
                                     [(fromValue)]="gridConfig1.filters[2].fieldValue"
                                     [(toValue)]="gridConfig1.filters[3].fieldValue"></airmid-datepicker>
 
-                            <mat-form-field appearance="outline" fxFlex>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>RegNo</mat-label>
+                                    <input matInput placeholder="Search RegNo" autocomplete="off"
+                                        [formGroup]="_BrowseIpAdvanceService.AdvanceOfRefund" formControlName="RegNo"
+                                        (input)="onChangeAdvanceOfRefund()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterAdvanceOfRefund('RegNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput placeholder="Search First Name" autocomplete="off"
+                                        [formGroup]="_BrowseIpAdvanceService.AdvanceOfRefund"
+                                        formControlName="FirstName" (input)="onChangeAdvanceOfRefund()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterAdvanceOfRefund('FirstName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput placeholder="Search Last Name" autocomplete="off"
+                                        [formGroup]="_BrowseIpAdvanceService.AdvanceOfRefund" formControlName="LastName"
+                                        (input)="onChangeAdvanceOfRefund()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterAdvanceOfRefund('LastName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <!-- <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Registration No</mat-label>
                                 <input matInput placeholder="Search Registration No" autocomplete="off"
                                     [(ngModel)]="gridConfig1.filters[4].fieldValue" />
@@ -152,8 +232,8 @@
                                     (click)="gridConfig1.filters[1].fieldValue='%'">
                                     <mat-icon>close</mat-icon>
                                 </button>
-                            </mat-form-field>
-
+                            </mat-form-field>                             -->
+                            </form>
                         </ng-container>
                     </airmid-table>
                 </div>
