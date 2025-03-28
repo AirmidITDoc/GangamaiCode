@@ -67,9 +67,11 @@ export class NewOPListComponent implements OnInit {
     @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
     @ViewChild('actionsTemplate3') actionsTemplate3!: TemplateRef<any>;
     @ViewChild('actionsTemplate4') actionsTemplate4!: TemplateRef<any>;
+
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate2') actionButtonTemplate2!: TemplateRef<any>;
+
     allOBillfilters = [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -80,26 +82,26 @@ export class NewOPListComponent implements OnInit {
 
     ];
     allOPbillcolumns = [
-        { heading: "", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 70 },
+        { heading: "", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 35 },
         { heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-        { heading: "", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-        { heading: "", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+        { heading: "", key: "refundAmount1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+        { heading: "", key: "balanceAmt1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
-        { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Total Amount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Disc Amount", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Net Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA' },
-        // { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Cash Pay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Card Pay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Adv Used Pay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Online Pay", key: "onlinePay", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PayCount", key: "payCount", sort: true, align: 'left', emptySign: 'NA' },
-        // { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Age", key: "patientAge", sort: true, align: 'left', emptySign: 'NA', width: 50 },
         { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -191,8 +193,8 @@ export class NewOPListComponent implements OnInit {
         // Assign the template to the column dynamically
         this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsTemplate1;
         this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.actionsTemplate2;
-        this.gridConfig.columnsList.find(col => col.key === 'refundAmount')!.template = this.actionsTemplate3;
-        this.gridConfig.columnsList.find(col => col.key === 'balanceAmt')!.template = this.actionsTemplate4;
+        this.gridConfig.columnsList.find(col => col.key === 'refundAmount1')!.template = this.actionsTemplate3;
+        this.gridConfig.columnsList.find(col => col.key === 'balanceAmt1')!.template = this.actionsTemplate4;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
         this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
@@ -264,6 +266,10 @@ export class NewOPListComponent implements OnInit {
         this.commonService.Onprint("RefundId", data.refundId, "OPRefundReceipt");
     }
     getWhatsappshareRefundBill(Id) { }
+
+    OnPrint(element) {
+        this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
+    }
 
 
     OngetRecord(element, m) {
@@ -343,31 +349,31 @@ export class NewOPListComponent implements OnInit {
     onTabChange(event: MatTabChangeEvent) {
         console.log('Selected Tab Index:', event.index);
         console.log('Selected Tab Label:', event.tab.textLabel);
-    
+
         // Add custom logic here
         if (event.index === 1) {
-            this.grid.gridConfig=this.gridConfig
-          console.log('Tab 1 is selected');
+            this.grid.gridConfig = this.gridConfig
+            console.log('Tab 1 is selected');
             this.grid.bindGridData();
 
-        //   this.myFilterpayform.reset();
-        //   this.myFilterrefundform.reset();          
+            //   this.myFilterpayform.reset();
+            //   this.myFilterrefundform.reset();          
         }
         if (event.index === 2) {
-            this.grid.gridConfig=this.gridConfig1
-          console.log('Tab 2 is selected');
+            this.grid.gridConfig = this.gridConfig1
+            console.log('Tab 2 is selected');
             this.grid.bindGridData();
             //   this.myFilterbillform.reset();
-        //   this.myFilterrefundform.reset();
+            //   this.myFilterrefundform.reset();
         }
         if (event.index === 3) {
-            this.grid.gridConfig=this.gridConfig2
-          console.log('Tab 3 is selected');
+            this.grid.gridConfig = this.gridConfig2
+            console.log('Tab 3 is selected');
             this.grid.bindGridData();
             //   this.myFilterbillform.reset();
-        //   this.myFilterpayform.reset();
+            //   this.myFilterpayform.reset();
         }
-      }
+    }
 
     onChangeOPBill() {
         this.fromDate = this.datePipe.transform(this.myFilterbillform.get('fromDate').value, "yyyy-MM-dd")
@@ -481,11 +487,11 @@ export class NewOPListComponent implements OnInit {
             sortField: "RefundId",
             sortOrder: 0,
             filters: [
-            { fieldName: "F_Name", fieldValue: this.rf_name, opType: OperatorComparer.Contains },
-            { fieldName: "L_Name", fieldValue: this.rl_name, opType: OperatorComparer.Contains },
-            { fieldName: "From_Dt", fieldValue: this.rfromDate, opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: this.rtoDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: this.rregNo, opType: OperatorComparer.Equals }
+                { fieldName: "F_Name", fieldValue: this.rf_name, opType: OperatorComparer.Contains },
+                { fieldName: "L_Name", fieldValue: this.rl_name, opType: OperatorComparer.Contains },
+                { fieldName: "From_Dt", fieldValue: this.rfromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.rtoDate, opType: OperatorComparer.Equals },
+                { fieldName: "Reg_No", fieldValue: this.rregNo, opType: OperatorComparer.Equals }
             ]
         }
         // this.grid2.gridConfig = this.gridConfig2;
