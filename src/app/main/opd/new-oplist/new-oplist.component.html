@@ -28,10 +28,13 @@
     </ng-template>
     <ng-template #actionsTemplate4 let-element>
         <div>
-            <!-- <button mat-icon-button   matTooltip="Settlement">
-                <mat-icon *ngIf="element.balanceAmt !=0 " matTooltip="Settlement"
-                    (click)="openPaymentpopup(element)">receipt</mat-icon>
-            </button> -->
+            <!-- <mat-icon title="Bill Cancelled" *ngIf="element.isCancelled==1" [disabled]="element.disabled"
+                class="disabled-icon">
+                close</mat-icon>
+
+            <mat-icon title="Refund" *ngIf="!element.refundAmount==0" [disabled]="element.disabled"
+                class="disabled-icon">
+                redo</mat-icon> -->
 
             <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement"
                 *ngIf="element.balanceAmt!='0'">
@@ -45,21 +48,21 @@
     <ng-template #actionButtonTemplate let-element>
         <div fxLayout="row" fxLayoutAlign="center center">
 
+            <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">
+                <mat-icon>print</mat-icon>
+            </button>
+
             <button mat-icon-button matTooltip="EMail" (click)="Onemail(element)">
                 <mat-icon>email</mat-icon>
             </button>
+
             <button *ngIf="true" mat-icon-button matTooltip="Message" (click)="Onmessage(element,m)">
                 <mat-icon>message</mat-icon>
             </button>
+
             <button mat-icon-button matTooltip="Send message On WhatsApp" (click)="getWhatsappshareBill(element)">
                 <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
             </button>
-            <!-- <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement" *ngIf="element.balanceAmt!='0'">
-                <mat-icon title="Settlement" *ngIf="element.balanceAmt!=0" 
-                    class="disabled-icon">receipt</mat-icon>
-                    <mat-icon title="paid" *ngIf="element.balanceAmt==0" [disabled]="element.disabled"
-                    class="disabled-icon">payment</mat-icon>
-            </button> -->
 
             <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
                 (click)="$event.stopPropagation();">
@@ -74,7 +77,7 @@
             </mat-menu>
         </div>
     </ng-template>
-    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" >
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
         <!-- (selectedTabChange)="onTabChange($event)" -->
         <mat-tab label="OP Browse Bill List">
             <div fusePerfectScrollbar
@@ -115,8 +118,10 @@
                                 <mat-form-field appearance="outline">
                                     <mat-label>First Name</mat-label>
                                     <input matInput placeholder="Search First Name" autocomplete="off"
-                                        [formGroup]="myFilterbillform" formControlName="FirstName" (input)="onChangeOPBill()" />
-                                    <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterOPbill('FirstName')">
+                                        [formGroup]="myFilterbillform" formControlName="FirstName"
+                                        (input)="onChangeOPBill()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterOPbill('FirstName')">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -136,8 +141,10 @@
                                 <mat-form-field appearance="outline">
                                     <mat-label>Last Name</mat-label>
                                     <input matInput placeholder="Search Last Name" autocomplete="off"
-                                        [formGroup]="myFilterbillform" formControlName="LastName" (input)="onChangeOPBill()" />
-                                    <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterOPbill('LastName')">
+                                        [formGroup]="myFilterbillform" formControlName="LastName"
+                                        (input)="onChangeOPBill()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterOPbill('LastName')">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -157,8 +164,10 @@
                                 <mat-form-field appearance="outline">
                                     <mat-label>PBillNo</mat-label>
                                     <input matInput placeholder="Search PBillNo" autocomplete="off"
-                                        [formGroup]="myFilterbillform" formControlName="PBillNo" (input)="onChangeOPBill()" />
-                                    <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterOPbill('PBillNo')">
+                                        [formGroup]="myFilterbillform" formControlName="PBillNo"
+                                        (input)="onChangeOPBill()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterOPbill('PBillNo')">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -178,8 +187,10 @@
                                 <mat-form-field appearance="outline">
                                     <mat-label>RegNo</mat-label>
                                     <input matInput placeholder="Search RegNo" autocomplete="off"
-                                        [formGroup]="myFilterbillform" formControlName="RegNo" (input)="onChangeOPBill()" />
-                                    <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterOPbill('RegNo')">
+                                        [formGroup]="myFilterbillform" formControlName="RegNo"
+                                        (input)="onChangeOPBill()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterOPbill('RegNo')">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -228,7 +239,7 @@
 
                             <form [formGroup]="myFilterpayform">
 
-                            <airmid-datepicker [formGroup]="myFilterpayform" [isRangePicker]="true"
+                                <airmid-datepicker [formGroup]="myFilterpayform" [isRangePicker]="true"
                                     formStartControlName="fromDate" formEndControlName="enddate"
                                     [(fromValue)]="gridConfig1.filters[2].fieldValue"
                                     [(toValue)]="gridConfig1.filters[3].fieldValue"></airmid-datepicker>
@@ -236,8 +247,10 @@
                                 <mat-form-field appearance="outline">
                                     <mat-label>First Name</mat-label>
                                     <input matInput placeholder="Search First Name" autocomplete="off"
-                                        [formGroup]="myFilterpayform" formControlName="FirstName" (input)="onChangeOPPayment()" />
-                                    <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterOPpayment('FirstName')">
+                                        [formGroup]="myFilterpayform" formControlName="FirstName"
+                                        (input)="onChangeOPPayment()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterOPpayment('FirstName')">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -245,17 +258,21 @@
                                 <mat-form-field appearance="outline">
                                     <mat-label>Last Name</mat-label>
                                     <input matInput placeholder="Search Last Name" autocomplete="off"
-                                        [formGroup]="myFilterpayform" formControlName="LastName" (input)="onChangeOPPayment()" />
-                                    <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterOPpayment('LastName')">
+                                        [formGroup]="myFilterpayform" formControlName="LastName"
+                                        (input)="onChangeOPPayment()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterOPpayment('LastName')">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
 
-                              <mat-form-field appearance="outline">
+                                <mat-form-field appearance="outline">
                                     <mat-label>RegNo</mat-label>
                                     <input matInput placeholder="Search RegNo" autocomplete="off"
-                                        [formGroup]="myFilterpayform" formControlName="RegNo" (input)="onChangeOPPayment()" />
-                                    <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterOPpayment('RegNo')">
+                                        [formGroup]="myFilterpayform" formControlName="RegNo"
+                                        (input)="onChangeOPPayment()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterOPpayment('RegNo')">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -263,18 +280,22 @@
                                 <mat-form-field appearance="outline">
                                     <mat-label>PBillNo</mat-label>
                                     <input matInput placeholder="Search PBillNo" autocomplete="off"
-                                        [formGroup]="myFilterpayform" formControlName="PBillNo" (input)="onChangeOPPayment()" />
-                                    <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterOPpayment('PBillNo')">
+                                        [formGroup]="myFilterpayform" formControlName="PBillNo"
+                                        (input)="onChangeOPPayment()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterOPpayment('PBillNo')">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
 
-                            
+
                                 <mat-form-field appearance="outline">
                                     <mat-label>ReceiptNo</mat-label>
                                     <input matInput placeholder="Search ReceiptNo" autocomplete="off"
-                                        [formGroup]="myFilterpayform" formControlName="ReceiptNo" (input)="onChangeOPPayment()" />
-                                    <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterOPpayment('ReceiptNo')">
+                                        [formGroup]="myFilterpayform" formControlName="ReceiptNo"
+                                        (input)="onChangeOPPayment()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterOPpayment('ReceiptNo')">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -326,34 +347,40 @@
                                     formStartControlName="fromDate" formEndControlName="enddate"
                                     [(fromValue)]="gridConfig2.filters[2].fieldValue"
                                     [(toValue)]="gridConfig2.filters[3].fieldValue"></airmid-datepicker>
-                                    <mat-form-field appearance="outline">
-                                        <mat-label>First Name</mat-label>
-                                        <input matInput placeholder="Search First Name" autocomplete="off"
-                                            [formGroup]="myFilterrefundform" formControlName="FirstName" (input)="onChangeOPRefund()" />
-                                        <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterOPRefund('FirstName')">
-                                            <mat-icon>close</mat-icon>
-                                        </button>
-                                    </mat-form-field>
-    
-    
-                                    <mat-form-field appearance="outline">
-                                        <mat-label>Last Name</mat-label>
-                                        <input matInput placeholder="Search Last Name" autocomplete="off"
-                                            [formGroup]="myFilterrefundform" formControlName="LastName" (input)="onChangeOPRefund()" />
-                                        <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterOPRefund('LastName')">
-                                            <mat-icon>close</mat-icon>
-                                        </button>
-                                    </mat-form-field>
-    
-    
-                                  <mat-form-field appearance="outline">
-                                        <mat-label>RegNo</mat-label>
-                                        <input matInput placeholder="Search RegNo" autocomplete="off"
-                                            [formGroup]="myFilterrefundform" formControlName="RegNo" (input)="onChangeOPRefund()" />
-                                        <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterOPRefund('RegNo')">
-                                            <mat-icon>close</mat-icon>
-                                        </button>
-                                    </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput placeholder="Search First Name" autocomplete="off"
+                                        [formGroup]="myFilterrefundform" formControlName="FirstName"
+                                        (input)="onChangeOPRefund()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterOPRefund('FirstName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput placeholder="Search Last Name" autocomplete="off"
+                                        [formGroup]="myFilterrefundform" formControlName="LastName"
+                                        (input)="onChangeOPRefund()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterOPRefund('LastName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>RegNo</mat-label>
+                                    <input matInput placeholder="Search RegNo" autocomplete="off"
+                                        [formGroup]="myFilterrefundform" formControlName="RegNo"
+                                        (input)="onChangeOPRefund()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterOPRefund('RegNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
 
                             </form>
                         </ng-container>
