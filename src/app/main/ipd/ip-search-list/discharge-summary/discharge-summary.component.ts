@@ -56,6 +56,8 @@ export class DischargeSummaryComponent implements OnInit {
   isLoading: string = '';
   Chargeslist: any = [];
   DischargeSList = new DischargeSummary({});
+  rtrvDischargeSList = new DischargeSummary({});
+  
   screenFromString = 'discharge-summary';
   dateTimeObj: any;
   filteredOptionsItem: any;
@@ -74,7 +76,6 @@ export class DischargeSummaryComponent implements OnInit {
     'itemName',
     'doseName',
     'day',
-    //  'Remark',
     'Action'
   ]
 
@@ -120,14 +121,12 @@ export class DischargeSummaryComponent implements OnInit {
   doseName1 = ""
   DocName3 = 0
   IsDeath: any;
-  vIsNormalDeath = 1;
+  vIsNormalDeath = "1";
   bp: any = 0;
   lngAdmId: any = [];
 
   registerObj1 = new AdmissionPersonlModel({});
   @ViewChild('itemid') itemid: ElementRef;
-
-
 
   autocompleteModeDose: string = "DoseMaster";
   autocompleteModeRefDoctor: string = "RefDoctor";
@@ -188,14 +187,7 @@ export class DischargeSummaryComponent implements OnInit {
     }
 
     this.getdischargeIdbyadmission();
-
-    // if (this.vIsNormalDeath == True) {
-    //   this.IsDeath = 1;
-    // } else {
-    //   this.IsDeath = 0;
-    // }
-
-  }
+}
 
   
   isItemIdSelected: boolean = false;
@@ -210,10 +202,10 @@ export class DischargeSummaryComponent implements OnInit {
   vTemplateDesc:any;
   showDischargeSummaryForm(): FormGroup {
     return this._formBuilder.group({
-      templateDesc:'',
+      // templateDesc:'',
       dischargeSummaryId: 0,
-      admissionId: '',
-      dischargeId: '',
+      admissionId: this.vAdmissionId,
+      dischargeId: 0,
       history: "",
       diagnosis: "",
       investigation: "",
@@ -221,20 +213,20 @@ export class DischargeSummaryComponent implements OnInit {
       opertiveNotes: "",
       treatmentGiven: "",
       treatmentAdvisedAfterDischarge: "",
-      followupdate: "",
+      followupdate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
       remark: "",
-      dischargeSummaryDate: "",
-      opDate: "",
-      optime: "",
+      dischargeSummaryDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+      opDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+      optime: this.datePipe.transform(new Date(), 'hh:mm:ss a'),
       dischargeDoctor1: 0,
       dischargeDoctor2: 0,
       dischargeDoctor3: 0,
-      dischargeSummaryTime: "",
+      dischargeSummaryTime:this.datePipe.transform(new Date(), 'hh:mm:ss a'),
       doctorAssistantName: "",
       claimNumber: "0",
       preOthNumber: "0",
-      addedByDate: "",
-      updatedByDate: "",
+      addedBy:this.accountService.currentUserValue.userId,
+      updatedBy:this.accountService.currentUserValue.userId,
       surgeryProcDone: "",
       icd10code: "",
       clinicalConditionOnAdmisssion: "",
@@ -289,8 +281,6 @@ export class DischargeSummaryComponent implements OnInit {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-
-
 
   onAdd() {
 
@@ -349,7 +339,7 @@ export class DischargeSummaryComponent implements OnInit {
       "filters": [
         {
           "fieldName": "AdmissionId",
-          "fieldValue": String(AdmissionId),//"40773",	
+          "fieldValue": String(AdmissionId),
           "opType": "Equals"
         }
       ],
@@ -374,7 +364,7 @@ export class DischargeSummaryComponent implements OnInit {
       "filters": [
         {
           "fieldName": "AdmissionId",
-          "fieldValue": String(AdmissionId),// "40622",	
+          "fieldValue": String(AdmissionId),
           "opType": "Equals"
         }
       ],
@@ -383,11 +373,13 @@ export class DischargeSummaryComponent implements OnInit {
 
     console.log(m_data2)
     this._IpSearchListService.getDischargeSummary(m_data2).subscribe((data) => {
-      console.log(data);
-      
+     
       this.RetrDischargeSumryList = data?.data as DischargeSummary;
       console.log(this.RetrDischargeSumryList);
+
+      this.rtrvDischargeSList=this.RetrDischargeSumryList[0]
       if (this.RetrDischargeSumryList.length != 0) {
+        this.rtrvDischargeSList=this.RetrDischargeSumryList[0]
         this.DischargeSummaryId = this.RetrDischargeSumryList[0].dischargeSummaryId || 0
         this.vDiagnosis = this.RetrDischargeSumryList[0].diagnosis
         this.vhistory = this.RetrDischargeSumryList[0].history
@@ -411,18 +403,12 @@ export class DischargeSummaryComponent implements OnInit {
         this.DischargesumForm.get("dischargeDoctor2").setValue(this.RetrDischargeSumryList[0].dischargeDoctor2)
         this.DischargesumForm.get("dischargeDoctor3").setValue(this.RetrDischargeSumryList[0].dischargeDoctor3)
 
-
-      }
-
-      // if (this.IsNormalDeath == 1) {
-      //   this.vIsNormalDeath = 1;
-      //   this.DischargesumForm.get("isNormalOrDeath").setValue('1');
-      // }
-      // else {
-      //   this.vIsNormalDeath = 0;
-      //   this.DischargesumForm.get("isNormalOrDeath").setValue('0');
-      // }
-    });
+        if(this.RetrDischargeSumryList[0].isNormalOrDeath==0)
+          this.vIsNormalDeath="0"
+        else
+          this.vIsNormalDeath="1"
+  }
+  });
   }
   getdischargeIdbyadmission() {
     
@@ -449,13 +435,13 @@ export class DischargeSummaryComponent implements OnInit {
       confirmButtonText: "Yes, Save!"
 
     }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
+     
       if (result.isConfirmed) {
 
         if(this.DischargesumForm.get("isNormalOrDeath").value==false)
-          this.vIsNormalDeath=0
+          this.vIsNormalDeath="0"
         if(this.DischargesumForm.get("isNormalOrDeath").value==true)
-          this.vIsNormalDeath=1
+          this.vIsNormalDeath="1"
 
         let dischargModeldata = {};
 
@@ -491,6 +477,7 @@ export class DischargeSummaryComponent implements OnInit {
           dischargModeldata['radiology'] = this.DischargesumForm.get("radiology").value || '',
           dischargModeldata['isNormalOrDeath'] =this.vIsNormalDeath// this.DischargesumForm.get("isNormalOrDeath").value
 
+console.log(this.DischargesumForm.value)
 
         let insertIPPrescriptionDischarge = [];
         this.dsItemList.data.forEach(element => {
@@ -516,11 +503,14 @@ export class DischargeSummaryComponent implements OnInit {
         });
 
         if (this.DischargeSummaryId == undefined) {
-          dischargModeldata['admissionId'] = this.vAdmissionId || 0,
+          this.DischargesumForm.get("admissionId").setValue(this.vAdmissionId)
+          // this.DischargesumForm.get("addedBy").setValue(1)
+
+          dischargModeldata['admissionId'] =this.vAdmissionId
             dischargModeldata['addedBy'] = this.accountService.currentUserValue.userId
 
           var data = {
-            "dischargModel": dischargModeldata,
+            "dischargModel":dischargModeldata,// this.DischargesumForm.value,
             "prescriptionDischarge": insertIPPrescriptionDischarge
           }
           console.log(data);
@@ -538,8 +528,12 @@ export class DischargeSummaryComponent implements OnInit {
         }
         else {
           dischargModeldata['updatedBy'] = this.accountService.currentUserValue.userId
+
+          // this.DischargesumForm.get("updatedBy").setValue(this.accountService.currentUserValue.userId)
+
+
           var data1 = {
-            "dischargModel": dischargModeldata,
+            "dischargModel":dischargModeldata,//  this.DischargesumForm.value,
             "prescriptionDischarge": insertIPPrescriptionDischarge
           }
           console.log(data1);

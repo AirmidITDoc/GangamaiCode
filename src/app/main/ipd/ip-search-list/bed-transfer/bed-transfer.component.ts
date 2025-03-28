@@ -146,7 +146,7 @@ export class BedTransferComponent implements OnInit {
     this._IpSearchListService.BedtransferUpdate(m_data).subscribe((response) => {
       this.toastr.success(response.message);
       this._matDialog.closeAll()
-      this.onClear(true);
+      // this.onClear(true);
     }, (error) => {
       this.toastr.error(error.message);
     });

@@ -189,7 +189,6 @@ export class DischargeComponent implements OnInit {
       dischargModeldata['admissionId'] = this.vAdmissionId
 
       if (this.DischargeId == 0) {
-        // dischargModeldata['admissionId'] = this.vAdmissionId
         var m_data = {
           "discharge":dischargModeldata,// this.DischargeForm.value,
           "admission": {

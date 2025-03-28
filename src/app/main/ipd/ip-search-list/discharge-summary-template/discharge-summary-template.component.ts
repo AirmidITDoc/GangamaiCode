@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, Input, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AdvanceDetailObj } from '../ip-search-list.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -16,11 +16,14 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { M } from '@angular/cdk/keycodes';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-discharge-summary-template',
   templateUrl: './discharge-summary-template.component.html',
-  styleUrls: ['./discharge-summary-template.component.scss']
+  styleUrls: ['./discharge-summary-template.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations
 })
 export class DischargeSummaryTemplateComponent {
   
@@ -135,14 +138,14 @@ export class DischargeSummaryTemplateComponent {
   
           this._IpSearchListService.getAdmissionById(this.data.admissionId).subscribe((response) => {
             this.registerObj1 = response;
+            console.log(this.registerObj1)
             if (this.registerObj1) {
               this.registerObj1.phoneNo = this.registerObj1.phoneNo.trim()
               this.registerObj1.mobileNo = this.registerObj1.mobileNo.trim()
-              this.registerObj1.admissionTime = this.datePipe.transform(this.registerObj1.admissionTime, 'hh:mm:ss a')
-              this.registerObj1.dischargeTime = this.datePipe.transform(this.registerObj1.dischargeTime, 'hh:mm:ss a')
+              // this.registerObj1.admissionTime = this.datePipe.transform(this.registerObj1.admissionTime, 'hh:mm:ss a')
+              // this.registerObj1.dischargeTime = this.datePipe.transform(this.registerObj1.dischargeTime, 'hh:mm:ss a')
             }
-            console.log(this.registerObj1)
-  
+            
           });
       }, 500);
       }
@@ -167,12 +170,12 @@ export class DischargeSummaryTemplateComponent {
         TemplateId:0,
         templateDesc:'',
         dischargeSummaryId: 0,
-        admissionId: '',
-        dischargeId: '',
+        admissionId:0,// this.vAdmissionId,
+        dischargeId: 0,
         dischargeDoctor1: 0,
         dischargeDoctor2: 0,
         dischargeDoctor3: 0,
-        dischargeSummaryTime: "11:00:00 PM",
+        dischargeSummaryTime: [(new Date()).toISOString()],
         doctorAssistantName: "",
         isNormalOrDeath:'1',
       });
@@ -322,10 +325,14 @@ export class DischargeSummaryTemplateComponent {
           this.DischargesumForm.get("dischargeDoctor1").setValue(this.RetrDischargeSumryList[0].dischargeDoctor1)
           this.DischargesumForm.get("dischargeDoctor2").setValue(this.RetrDischargeSumryList[0].dischargeDoctor2)
           this.DischargesumForm.get("dischargeDoctor3").setValue(this.RetrDischargeSumryList[0].dischargeDoctor3)
+
+          if(this.RetrDischargeSumryList[0].isNormalOrDeath==0)
+            this.vIsNormalDeath='0'
+          else
+            this.vIsNormalDeath='1'
   }
        });
-      //  this.getTemplateList() 
-
+      
     }
 
     getTemplateList() {
@@ -407,9 +414,9 @@ export class DischargeSummaryTemplateComponent {
   
           if (this.DischargeSummaryId == undefined) {
            dischargModeldata['addedBy'] =this.accountService.currentUserValue.userId
-  
+            //  console.log(this.DischargesumForm.value)
             var data = {
-              "discharge": dischargModeldata,
+              "discharge":dischargModeldata,
               "prescriptionTemplate": insertIPPrescriptionDischarge
             }
             console.log(data);

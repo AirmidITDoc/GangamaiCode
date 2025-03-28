@@ -559,10 +559,11 @@ export class AdmissionComponent implements OnInit {
       console.log('The dialog was closed - Insert Action', result);
     });
    
-    // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-    // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
-    // this.onChangeFirst() 
-    this.grid.gridConfig = this.gridConfig;
+    this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+
+    this.onChangeFirst() 
+    console.log(this.gridConfig)
     this.grid.bindGridData();
   }
   getEditAdmission(row) {
@@ -581,7 +582,10 @@ export class AdmissionComponent implements OnInit {
       console.log('The dialog was closed - Insert Action', result);
 
     });
-    this.grid.gridConfig = this.gridConfig;
+    this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+
+    this.onChangeFirst() 
     this.grid.bindGridData();
   }
 

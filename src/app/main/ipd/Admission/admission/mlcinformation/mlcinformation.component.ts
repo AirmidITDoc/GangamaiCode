@@ -115,7 +115,7 @@ if(!this.MlcInfoFormGroup.invalid){
         this.toastr.success(response.message);
       this.getMLCdetailview(response)
         this._matDialog.closeAll();
-        this.onClear();
+        // this.onClear();
       }, (error) => {
         this.toastr.error(error.message);
       });

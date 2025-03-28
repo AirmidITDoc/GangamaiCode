@@ -249,6 +249,7 @@ export class IPBillBrowseListComponent implements OnInit {
     }
 
     onChangeIPBill() {
+        debugger
         this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
         this.f_name = this.myFilterform.get('FirstName').value + "%"
@@ -480,10 +481,7 @@ export class IPBillBrowseListComponent implements OnInit {
         PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
         PatientHeaderObj['IPDNo'] = contact.opD_IPD_ID;
         PatientHeaderObj['RegNo'] = contact.regNo;
-
-
-
-        console.log(PatientHeaderObj)
+    console.log(PatientHeaderObj)
 
          const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
                   {
@@ -501,12 +499,12 @@ export class IPBillBrowseListComponent implements OnInit {
       
               dialogRef.afterClosed().subscribe(result => {
                    let NeftNo="0"
-                  console.log(result.submitDataPay.ipPaymentInsert)
+                //   console.log(result.submitDataPay.ipPaymentInsert)
                   
                   if(result.submitDataPay.ipPaymentInsert.NEFTNo =="undefined")
                       NeftNo="0"
                   else
-                  NeftNo=result.submitDataPay.ipPaymentInsert.NEFTNo
+                  NeftNo=String(result.submitDataPay.ipPaymentInsert.NEFTNo)
                   if (result.IsSubmitFlag) {
                       let Paymentobj = {};
       
@@ -520,7 +518,7 @@ export class IPBillBrowseListComponent implements OnInit {
                       Paymentobj['BankName'] = result.submitDataPay.ipPaymentInsert.BankName ?? "";
                       Paymentobj['ChequeDate'] = result.submitDataPay.ipPaymentInsert.ChequeDate;
                       Paymentobj['CardPayAmount'] = result.submitDataPay.ipPaymentInsert.CardPayAmount
-                      Paymentobj['CardNo'] = result.submitDataPay.ipPaymentInsert.CardNo;
+                      Paymentobj['CardNo'] = String(result.submitDataPay.ipPaymentInsert.CardNo);
                       Paymentobj['CardBankName'] = result.submitDataPay.ipPaymentInsert.CardBankName
                       Paymentobj['CardDate'] = result.submitDataPay.ipPaymentInsert.CardDate
                       Paymentobj['AdvanceUsedAmount'] = result.submitDataPay.ipPaymentInsert.AdvanceUsedAmount
@@ -603,24 +601,22 @@ export class IPBillBrowseListComponent implements OnInit {
                           console.log(submitData);
                           this._IPBrowseBillService.InsertIPSettlementPayment(submitData).subscribe(response => {
                               this.toastr.success(response.message);
-                            
-                             this.viewgetIPPayemntPdf(response.data)
-                              // this._matDialog.closeAll();
-                             
+                                this.viewgetIPPayemntPdf(response)
+                                debugger
+                                this.onChangeIPBill()
                           }, (error) => {
                               this.toastr.error(error.message);
                           });
-                         
-                      }
+                         }
       
                   }
               });
-
+            
     }
 
     viewgetIPPayemntPdf(data) {
         
-        this.commonService.Onprint("PaymentId", data.paymentId, "IpPaymentReceipt");
+        this.commonService.Onprint("PaymentId", data, "IpPaymentReceipt");
     }
 
     getFinalBillview(billNo) {

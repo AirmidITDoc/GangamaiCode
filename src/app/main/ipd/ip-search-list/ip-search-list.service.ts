@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -26,6 +27,7 @@ export class IPSearchListService {
 
 constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
     private _formBuilder: UntypedFormBuilder,
+    //  public datePipe: DatePipe,
     private _loaderService: LoaderService,
     ) {
       this.myFilterform=this.filterForm();
@@ -37,7 +39,7 @@ constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
       this.myRefundBillForm=this.refundBillForm();
       this.myRefundAdvanceForm=this.refundAdvanceForm();
       this.RefundOfBillFormGroup=this.OPrefundForm();
-      this.myShowDischargeSummaryForm = this.showDischargeSummaryForm();
+      // this.myShowDischargeSummaryForm = this.showDischargeSummaryForm();
      }
 
   filterForm(): FormGroup {
@@ -173,62 +175,62 @@ constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
     })
   }
 
-  showDischargeSummaryForm(): FormGroup {
-    return this._formBuilder.group({
-      AdmissionId:'',
-      RegNo: '',
-      IPDNo: '',
-      FirstName: '',
-      PatientName: '',
-      MobileNo: '', 
-      DOA:'',
-      DOT:'',
-      BedNo:'',
-      DoctorId: '0',
-      DoctorID:'',
-      DoctorName: '',
-      WardId: '0',
-      RoomName: '',
-      // DischargesummaryId :'',
-      DischargeSummaryId:'', 
-      DischargeId :'',
-	    History :'',
-      Diagnosis :'',
-      Investigation :'',
-      ClinicalFinding:'',
-      OpertiveNotes:'',
-      TreatmentGiven:'',
-      TreatmentAdvisedAfterDischarge:'',
-	    Followupdate:'',
-	    Remark:'',
-	    DischargeSummaryDate:'',
-	    OPDate :'',
-	    OPTime :'',
-	    DischargeDoctor1 :'',
-	    DischargeDoctor2 :'',
-	    DischargeDoctor3 :'',
-	    DischargeSummaryTime :'',
-	    DoctorAssistantName :'',
-	    ClaimNumber :'',
-	    PreOthNumber:'',
-      AddedBy :'',
-	    AddedByDate :'',
-	    SurgeryProcDone :'',
-	    ICD10CODE :'',
-	    ClinicalConditionOnAdmisssion:'',
-	    OtherConDrOpinions:'',
-	    ConditionAtTheTimeOfDischarge :'',
-	    PainManagementTechnique	:'',
-	    LifeStyle :'',
-	    WarningSymptoms	:'',
-	    Radiology :'',
-	    IsNormalOrDeath :'',
-      DoctorName1: '',
+  // showDischargeSummaryForm(): FormGroup {
+  //   return this._formBuilder.group({
+  //     AdmissionId:'',
+  //     RegNo: '',
+  //     IPDNo: '',
+  //     FirstName: '',
+  //     PatientName: '',
+  //     MobileNo: '', 
+  //     DOA:'',
+  //     DOT:'',
+  //     BedNo:'',
+  //     DoctorId: '0',
+  //     DoctorID:'',
+  //     DoctorName: '',
+  //     WardId: '0',
+  //     RoomName: '',
+  //     // DischargesummaryId :'',
+  //     DischargeSummaryId:'', 
+  //     DischargeId :'',
+	//     History :'',
+  //     Diagnosis :'',
+  //     Investigation :'',
+  //     ClinicalFinding:'',
+  //     OpertiveNotes:'',
+  //     TreatmentGiven:'',
+  //     TreatmentAdvisedAfterDischarge:'',
+	//     Followupdate:this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+	//     Remark:'',
+	//     DischargeSummaryDate:'',
+	//     OPDate :(this.datePipe.transform(new Date(), 'yyyy-MM-dd')),
+	//     OPTime :[(new Date()).toISOString()],
+	//     DischargeDoctor1 :'',
+	//     DischargeDoctor2 :'',
+	//     DischargeDoctor3 :'',
+	//     DischargeSummaryTime :'',
+	//     DoctorAssistantName :'',
+	//     ClaimNumber :'',
+	//     PreOthNumber:'',
+  //     AddedBy :'',
+	//     AddedByDate :(this.datePipe.transform(new Date(), 'yyyy-MM-dd')),
+	//     SurgeryProcDone :(this.datePipe.transform(new Date(), 'yyyy-MM-dd')),
+	//     ICD10CODE :'',
+	//     ClinicalConditionOnAdmisssion:'',
+	//     OtherConDrOpinions:'',
+	//     ConditionAtTheTimeOfDischarge :'',
+	//     PainManagementTechnique	:'',
+	//     LifeStyle :'',
+	//     WarningSymptoms	:'',
+	//     Radiology :'',
+	//     IsNormalOrDeath :'',
+  //     DoctorName1: '',
     
-      DoctorIdOne: '',
-      DoctorIdTwo: ''
-    });
-  }
+  //     DoctorIdOne: '',
+  //     DoctorIdTwo: ''
+  //   });
+  // }
 
  refundBillForm(): FormGroup {
     return this._formBuilder.group({

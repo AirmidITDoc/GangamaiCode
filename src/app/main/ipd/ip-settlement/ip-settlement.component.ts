@@ -136,12 +136,12 @@ export class IPSettlementComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(result => {
              let NeftNo="0"
-            console.log(result.submitDataPay.ipPaymentInsert)
+            // console.log(result.submitDataPay.ipPaymentInsert)
             
             if(result.submitDataPay.ipPaymentInsert.NEFTNo =="undefined")
                 NeftNo="0"
             else
-            NeftNo=result.submitDataPay.ipPaymentInsert.NEFTNo
+            NeftNo=String(result.submitDataPay.ipPaymentInsert.NEFTNo)
             if (result.IsSubmitFlag) {
                 let Paymentobj = {};
 
@@ -155,7 +155,7 @@ export class IPSettlementComponent implements OnInit {
                 Paymentobj['BankName'] = result.submitDataPay.ipPaymentInsert.BankName ?? "";
                 Paymentobj['ChequeDate'] = result.submitDataPay.ipPaymentInsert.ChequeDate;
                 Paymentobj['CardPayAmount'] = result.submitDataPay.ipPaymentInsert.CardPayAmount
-                Paymentobj['CardNo'] = result.submitDataPay.ipPaymentInsert.CardNo;
+                Paymentobj['CardNo'] = String(result.submitDataPay.ipPaymentInsert.CardNo);
                 Paymentobj['CardBankName'] = result.submitDataPay.ipPaymentInsert.CardBankName
                 Paymentobj['CardDate'] = result.submitDataPay.ipPaymentInsert.CardDate
                 Paymentobj['AdvanceUsedAmount'] = result.submitDataPay.ipPaymentInsert.AdvanceUsedAmount
@@ -169,7 +169,7 @@ export class IPSettlementComponent implements OnInit {
                 Paymentobj['IsCancelledDate'] = result.submitDataPay.ipPaymentInsert.IsCancelledDate
                 Paymentobj['opdipdType'] = 1;
                 Paymentobj['neftpayAmount'] = result.submitDataPay.ipPaymentInsert.NEFTPayAmount
-                Paymentobj['neftno'] =NeftNo;
+                Paymentobj['neftno'] = NeftNo;
                 Paymentobj['neftbankMaster'] = result.submitDataPay.ipPaymentInsert.NEFTBankMaster
                 Paymentobj['neftdate'] = result.submitDataPay.ipPaymentInsert.NEFTDate
                 Paymentobj['payTmamount'] = result.submitDataPay.ipPaymentInsert.PayTMAmount
@@ -239,9 +239,8 @@ export class IPSettlementComponent implements OnInit {
                     this._IPSettlementService.InsertIPSettlementPayment(submitData).subscribe(response => {
                         this.toastr.success(response.message);
                         this.GetDetails(this.RegId1)
-                       this.viewgetIPPayemntPdf(response.data)
-                        // this._matDialog.closeAll();
-                       
+                       this.viewgetIPPayemntPdf(response)
+                        
                     }, (error) => {
                         this.toastr.error(error.message);
                     });
@@ -253,9 +252,9 @@ export class IPSettlementComponent implements OnInit {
         this.searchFormGroup.get('RegId').setValue('')
     }
 
-    viewgetIPPayemntPdf(data) {
+    viewgetIPPayemntPdf(paymentId) {
         
-        this.commonService.Onprint("PaymentId", data.paymentId, "IpPaymentReceipt");
+        this.commonService.Onprint("PaymentId", paymentId, "IpPaymentReceipt");
     }
 
     createSearchForm() {

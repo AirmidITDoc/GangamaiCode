@@ -33,10 +33,10 @@ export class OpPaymentNewComponent implements OnInit {
     });
     this.paymentArr1 = final;
   } 
-
+paystatus=true;
   onChangePaymentType() { 
-    if (this.selectedPaymnet1 == 'cash') {
-      this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
+    if (this.selectedPaymnet1 == 'cash' || this.selectedPaymnet1 == 'upi') {
+     this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
       this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
       this.patientDetailsFormGrp.get('regDate1').clearValidators();
       this.patientDetailsFormGrp.get('regDate1').updateValueAndValidity();
@@ -59,6 +59,7 @@ export class OpPaymentNewComponent implements OnInit {
         this.patientDetailsFormGrp.get('bankName1').clearValidators();
         this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
       }
+     
     }
   }
   Payments = new MatTableDataSource<PaymentList>();

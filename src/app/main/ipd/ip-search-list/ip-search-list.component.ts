@@ -36,6 +36,7 @@ import { MLCInformationComponent } from '../Admission/admission/mlcinformation/m
 import { DischargeSummaryTemplateComponent } from './discharge-summary-template/discharge-summary-template.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { element } from 'protractor';
+import { ConfigService } from 'app/core/services/config.service';
 
 
 @Component({
@@ -122,6 +123,7 @@ export class IPSearchListComponent implements OnInit {
         private _ActRoute: Router,
          private commonService: PrintserviceService,
         public datePipe: DatePipe,
+        private _configue:ConfigService,
         public toastr: ToastrService,
         private advanceDataStored: AdvanceDataStored) { }
 
@@ -133,13 +135,19 @@ export class IPSearchListComponent implements OnInit {
             this.menuActions.push('Bed Transfer');
         }
         else if (this._ActRoute.url == '/ipd/discharge') {
-            this.menuActions.push('Discharge');
-            this.menuActions.push('Discharge Summary Template');
-            // this.menuActions.push('Patient Feedback');
+            // if(this._configue.configParams.IsDischargeTemplate)
+                this.menuActions.push('Discharge Summary Template');
+            //   else
+                this.menuActions.push('Discharge Summary');
+              
         }
         else if (this._ActRoute.url == '/ipd/dischargesummary') {
-            this.menuActions.push('Discharge');
-            this.menuActions.push('Discharge Summary');
+            this.menuActions.push('Discharge'); 
+            // if(this._configue.configParams.IsDischargeTemplate)
+              this.menuActions.push('Discharge Summary Template');
+            // else
+              this.menuActions.push('Discharge Summary');
+            
         }
         else if (this._ActRoute.url == '/ipd/refund/iprefundofadvance' || this._ActRoute.url == '/ipd/refund/iprefundofbill') {
 
@@ -374,7 +382,7 @@ export class IPSearchListComponent implements OnInit {
             }
         }
 
-
+      
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
     }
@@ -445,6 +453,8 @@ export class IPSearchListComponent implements OnInit {
         }
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
+
+        
     }
     Clearfilter(event) {
         console.log(event)
@@ -469,12 +479,9 @@ export class IPSearchListComponent implements OnInit {
         console.log(event)
         if (event.value == "1")
             this.status="0"
-            // this.gridConfig.filters[6].fieldValue = "1"
-        else if (event.value == "0")
+            else if (event.value == "0")
             this.status="1"
-            // this.gridConfig.filters[6].fieldValue = "0"
-
-
+            
         console.log(this.gridConfig)
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();

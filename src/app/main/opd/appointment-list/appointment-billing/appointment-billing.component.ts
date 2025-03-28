@@ -84,7 +84,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   Paymentdataobj: PaymentInsert[] = [];
   ConcessionId = 0;
   ConcessionReason = "";
-
+  Regstatus: boolean = true;
   Consessionres: boolean = false;
   autocompleteModeCashcounter: string = "CashCounter";
   autocompleteModedeptdoc: string = "ConDoctor";
@@ -506,11 +506,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       }, { emitEvent: false });
     }
     this.isUpdating = false;
-
-
   }
-
-
 
   onSubmit(): void {
     if (this.totalChargeForm.valid && this.chargeList.length > 0) {
@@ -518,8 +514,6 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       // Pending task
     }
   }
-
-
   ngOnDestroy(): void {
     if (this.subscription.length > 0) {
       this.subscription.forEach(s => s.unsubscribe());
@@ -534,7 +528,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   serviceSelct=false
 
   getSelectedserviceObj(obj) {
-    
+    debugger
     const isItemAlreadyAdded = this.dsChargeList.data.some((element) => element.ServiceId === obj.serviceId);
     if (isItemAlreadyAdded) {
       // If the item is already added, show the alert
@@ -552,6 +546,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       }
       return;  // Exit the function early
     } else {
+      
       console.log(obj)
       this.SrvcName1 = obj.serviceName;
       this.vPrice = obj.classRate;
@@ -579,26 +574,18 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
       this.serviceSelct=true
     }
+}
 
-
-  }
-
-  getOptionText(option) {
-
-    return option && option.serviceName ? option.serviceName : '';
-  }
-
-
-  getSelectedObj(obj) {
+   getSelectedObj(obj) {
     console.log(obj)
     this.patientDetail = obj
     this.vOPIPId = obj.visitId
     if (this.vOPIPId > 0)
       this.savebtn = false
+    this.Regstatus=false
   }
   getValidationMessages() {
     return {
-
       CashCounterID: [
         { name: "required", Message: "First Name is required" },
 
@@ -747,11 +734,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     console.log(submitData);
     this._AppointmentlistService.InsertOPBillingCredit(submitData).subscribe(response => {
       this.toastrService.success(response.message);
-      // let Res = response.message
-      // let ID = Res.split('.')
-      // let Id = ID[1]
-      this.viewgetCreditOPBillReportPdf(response)
-      this.dialogRef.close();
+     this.viewgetCreditOPBillReportPdf(response)
+     this._matDialog.closeAll();
     }, (error) => {
       this.toastrService.error(error.message);
     });
@@ -762,9 +746,6 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
     this.patientDetail = [];
   }
-
-
-
 
 
   BillSave() {
@@ -896,7 +877,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             // let Id = ID[1]
 
             this.viewgetOPBillReportPdf(response)
-            this.dialogRef.close();
+            this.totalChargeForm.reset();
+            this._matDialog.closeAll();
           }, (error) => {
             this.toastrService.error(error.message);
           });
@@ -977,22 +959,25 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       console.log(submitData);
       this._AppointmentlistService.InsertOPBilling(submitData).subscribe(response => {
         this.toastrService.success(response.message);
-        // console.log(response);
-        // let Res = response.message
-        // let ID = Res.split('.')
-        // let Id = ID[1]
+        
         this.viewgetOPBillReportPdf(response)
-        this.dialogRef.close();
+        this.totalChargeForm.reset();
+        this._matDialog.closeAll();
+
       }, (error) => {
         this.toastrService.error(error.message);
       });
-
+      this.chargeForm.updateValueAndValidity();
     }
 
-    // this.dsChargeList.data=[]
-    // this.totalChargeForm.reset();
+    this.dsChargeList.data=[]
+    
     // this.dialogRef.close();
-    // this.patientDetail =[];
+    this.patientDetail =[];
+
+    this.patientDetail.tariffId=1;
+    this.patientDetail.ClassId=1;
+    
   }
 
   viewgetCreditOPBillReportPdf(element) {

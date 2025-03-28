@@ -138,65 +138,18 @@
                                 <form [formGroup]="chargeForm">
                                     <div fxLayout="row" fxLayoutGap="5px">
 
-                                        <!-- Autocomplete Dropdown binding is pending... -->
-                                        <div>
-                                            <!-- <mat-form-field appearance="outline" #myInput style="width: 400px;">
-                                                <input type="text" name="serviceName" formControlName="serviceName"
-                                                    #Servicename placeholder="Service Name" matInput
-                                                    [matAutocomplete]="auto" (input)="getServiceListCombobox()" required
-                                                    id="myInput">
-                                                <span matSuffix style="display: flex;">
-                                                    <mat-icon class="mat-icon-close"
-                                                        (click)="chargeForm.get('serviceName').setValue(''); isServiceSelected = false;">close</mat-icon>
-                                                    <mat-icon class="mat-icon-close"
-                                                        (click)="chargeForm.get('serviceName').setValue(''); isServiceSelected = false;">search</mat-icon>
-                                                </span>
-                                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
-                                                    showPanel="true" (optionsScroll)="onScroll()"
-                                                    (optionSelected)='getSelectedserviceObj($event.option.value)'
-                                                    style="width: 400px;">
-    
-                                                    <mat-option *ngFor="let option of filteredOptionsService"
-                                                        [value]="option" style="width: 400px;">
-                                                        {{option.serviceName}} | {{option.price}} | {{option.ServiceId}}
-                                                        <span fxLayoutGap="4px">
-                                                            <mat-icon *ngIf="option.creditedtoDoctor == true"
-                                                                matTooltip="IsDoctor">
-                                                                <img width="10px" height="6px"
-                                                                    src="assets/images/logos/doctor.png">
-                                                            </mat-icon> |
-                                                            <mat-icon *ngIf="option.isRadiology == true"
-                                                                matTooltip="IsRadiology">
-                                                                <img width="10px" height="6px"
-                                                                    src="assets/images/logos/radiology.png">
-                                                            </mat-icon>
-                                                            <mat-icon *ngIf="option.isPathology == true"
-                                                                matTooltip="IsPatholgy">
-                                                                <img width="10px" height="6px"
-                                                                    src="assets/images/logos/pathology.png">
-                                                            </mat-icon>
-                                                           
-                                                        </span>
-                                                    </mat-option>
-                                                </mat-autocomplete>
-                                               
-                                            </mat-form-field> -->
-                                        </div>
 
-                                        <div fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%">
-                                            <airmid-autocomplete label="Enter Service Name" [formGroup]="chargeForm"
+                                        <div fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%" >
+                                            <airmid-autocomplete label="Enter Service Name" [formGroup]="chargeForm" [disabled]="Regstatus"
                                                 formControlName="serviceName" 
                                                 placeholderText="Enter Service Name"
                                                 fxFlex
-                                                [ApiUrl]="'VisitDetail/GetServiceListwithTraiff?TariffId='+patientDetail.classId+'&ClassId='+patientDetail.tariffId+'&ServiceName='"
+                                                [ApiUrl]="'VisitDetail/GetServiceListwithTraiff?TariffId='+patientDetail.tariffId+'&ClassId='+patientDetail.classId+'&ServiceName='"
                                                 (selectionChange)="getSelectedserviceObj($event)"
                                                 TextField="formattedText" 
                                                 ValueField="serviceId"></airmid-autocomplete>
 
-                                            <!-- <airmid-textbox label="Service name" formControlName="serviceName"
-                                                [formGroup]="chargeForm"
-                                                [validations]="getValidationMessages().serviceName">
-                                            </airmid-textbox> -->
+                                          
                                         </div>
                                         <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
                                             <airmid-textbox label="Price" formControlName="price"

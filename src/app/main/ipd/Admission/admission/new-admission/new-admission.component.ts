@@ -292,10 +292,6 @@ if (invalidFields.length > 0) {
 
       this._AdmissionService.AdmissionRegisteredInsert(submitData).subscribe(response => {
         this.toastr.success(response.message);
-        console.log(response)
-        // let Res = response.message
-        // let ID = Res.split('.')
-        // let Id = ID[1]
         this.getAdmittedPatientCasepaperview(response);
         this.onClear();
         this._matDialog.closeAll();

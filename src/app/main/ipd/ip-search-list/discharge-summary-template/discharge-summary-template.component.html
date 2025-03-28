@@ -319,7 +319,7 @@
                     <mat-radio-button value="false">Death Summary</mat-radio-button>
                 </mat-radio-group> -->
                 <!-- [(ngModel)]="vIsNormalDeath" -->
-                <mat-radio-group  [formGroup]="DischargesumForm" formControlName="isNormalOrDeath"
+                <mat-radio-group  [formGroup]="DischargesumForm" formControlName="isNormalOrDeath"  [(ngModel)]="vIsNormalDeath"
                 fxLayoutAlign="center center" style="margin-left: 1100px;">
                 <mat-radio-button mat-fab value="1">Normal</mat-radio-button>
                 <mat-radio-button mat-fab value="0">Death Summary</mat-radio-button>
