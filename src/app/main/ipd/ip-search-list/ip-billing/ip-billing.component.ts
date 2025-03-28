@@ -358,6 +358,7 @@ export class IPBillingComponent implements OnInit {
       Admincheck: [''],
       GenerateBill: [1],
       CreditBill: [''],
+      ChargeDate:[new Date()]
     });
   }
   //service selected data
@@ -601,9 +602,11 @@ export class IPBillingComponent implements OnInit {
     }
   }
   //Charge list 
+  chargeDate='01/01/1900'
   getChargesList() {
+    debugger
     this.chargeslist = [];
-    this.dataSource.data = [];
+    this.dataSource.data = []; 
     var vdata = {
       "first": 0,
       "rows": 100,
@@ -614,11 +617,17 @@ export class IPBillingComponent implements OnInit {
           "fieldName": "OPD_IPD_Id",
           "fieldValue": String(this.opD_IPD_Id),
           "opType": "Equals"
+         }
+        ,
+        {
+          "fieldName": "ChargeDate",
+          "fieldValue": String(this.chargeDate),
+          "opType": "Equals"
         }
       ],
       "exportType": "JSON"
     }
-    // console.log(Query);
+     console.log(vdata);
     this._IpSearchListService.getchargesList(vdata).subscribe(response => {
       this.chargeslist = response.data
       console.log(this.chargeslist)
@@ -1275,24 +1284,7 @@ debugger
       this.PharmacyAmont = data[0].PhBillCredit;
     })
   }
-  getDatewiseChargesList(param) {
-    // console.log(param);
-    this.chargeslist = [];
-    this.dataSource.data = [];
-    this.isLoadingStr = 'loading';
-    let Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 and ChargesDate ='" + this.datePipe.transform(param, "dd/MM/YYYY") + "' Order by Chargesid"
 
-    // console.log(Query)
-    this._IpSearchListService.getchargesList(Query).subscribe(data => {
-      this.chargeslist = data as ChargesList[];
-      // console.log(this.chargeslist)
-      this.dataSource.data = this.chargeslist;
-      this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
-    },
-      (error) => {
-        this.isLoading = 'list-loaded';
-      });
-  }
   getRequestChargelist() {
     this.chargeslist1 = [];
     this.dataSource1.data = [];
@@ -1495,31 +1487,38 @@ debugger
  
   showAllFilter(event) {
     console.log(event);
-    if (event.checked == true)
-      // this.isFilteredDateDisabled = event.value;
+    if (event.checked == true) 
       this.isFilteredDateDisabled = true;
     if (event.checked == false) {
+      this.chargeDate  = '01/01/1900'
       this.getChargesList();
       this.isFilteredDateDisabled = false;
     }
   }
-  OnDateChange() {
-    // 
+  getDatewiseChargesList(param) {
+    debugger
+    this.chargeslist = [];
+    this.dataSource.data = [];
+    this.chargeDate  = this.datePipe.transform(this.Ipbillform.get('ChargeDate').value,"MM/dd/yyyy")
+    this.getChargesList()
+  }
+  OnDateChange() { 
     // if (this.selectedAdvanceObj.AdmDateTime) {
     //   const day = +this.selectedAdvanceObj.AdmDateTime.substring(0, 2);
     //   const month = +this.selectedAdvanceObj.AdmDateTime.substring(3, 5);
     //   const year = +this.selectedAdvanceObj.AdmDateTime.substring(6, 10);
 
-    //   this.vExpDate = `${year}/${this.pad(month)}/${day}`;
+    //  // this.vExpDate = `${year}/${this.pad(month)}/${day}`;
     // }
-    // const serviceDate = this.datePipe.transform(this.Serviceform.get('Date').value,"yyyy-MM-dd 00:00:00.000") || 0;
-    // const AdmissionDate = this.datePipe.transform(this.selectedAdvanceObj.AdmDateTime,"yyyy-MM-dd 00:00:00.000") || 0;
+    //const serviceDate = this.datePipe.transform(this.Serviceform.get('Date').value,"dd/MM/yyyy") || 0;
+   // const AdmissionDate = this.datePipe.transform(this.selectedAdvanceObj.AdmDateTime,"yyyy-MM-dd 00:00:00.000") || 0;
     // if(serviceDate > AdmissionDate){
     //   Swal.fire('should not chnage');
     // }
     // else{
     //   Swal.fire('ok');
     // }
+  
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
