@@ -143,6 +143,7 @@ export class IPAdvanceComponent implements OnInit {
                 console.log(this.selectedAdvanceObj)  
                 if(this.selectedAdvanceObj.length > 0)
                   this.vAdvanceId = this.selectedAdvanceObj[0].advanceId
+                console.log(this.vAdvanceId) 
                 this.selectedAdvanceObj.forEach(element=>{
                     this.TotalAdvanceAmt  += element.advanceAmount
                     this.TotalAdvUsedAmt  += element.usedAmount
@@ -195,7 +196,7 @@ export class IPAdvanceComponent implements OnInit {
       return;
     }
 
-    this.vAdvanceId = 0
+  
     let advanceHeaderObj = {};
     advanceHeaderObj['date'] = formattedDate || '1900-01-01';
     advanceHeaderObj['refId'] = this.registerObj.regId;
@@ -285,11 +286,11 @@ export class IPAdvanceComponent implements OnInit {
           "advancePayment": result.submitDataPay.ipPaymentInsert
         };
         console.log(submitData);
-        this._IpSearchListService.UpdateAdvanceHeader(submitData).subscribe(response => {
-          console.log(response) 
+        this._IpSearchListService.UpdateAdvanceHeader(submitData).subscribe(response => { 
           this.toastr.success(response.message);
           this.viewgetAdvanceReceiptReportPdf(response);
           this.getWhatsappsAdvance(response, this.vMobileNo);
+          this.vAdvanceId = 0;
           this._matDialog.closeAll();
         }, (error) => {
           this.toastr.error(error.message);
@@ -300,7 +301,7 @@ export class IPAdvanceComponent implements OnInit {
     this.AdvFormGroup.get('advanceAmt').reset(0);
     this.AdvFormGroup.get('comment').reset('');
     this.AdvFormGroup.get('CashCounterId').setValue(5);
-    this.vAdvanceId = 0;
+  
   } 
   
   getDateTime(dateTimeObj) {
