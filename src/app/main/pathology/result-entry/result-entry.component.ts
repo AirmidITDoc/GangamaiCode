@@ -414,33 +414,6 @@ opipType:any="2";
         });
     }
 
-    // getPatientsList() {
-    //     // debugger
-    //     this.dataSource1.data = [];
-    //     this.sIsLoading = 'loading-data';
-    //     var m_data = {
-    //         "F_Name": (this._SampleService.myformSearch.get("FirstNameSearch").value).trim() + '%' || '%',
-    //         "L_Name": (this._SampleService.myformSearch.get("LastNameSearch").value).trim() + '%' || '%',
-    //         "Reg_No": (this._SampleService.myformSearch.get("RegNoSearch").value) || 0,
-    //         "From_Dt": this.datePipe.transform(this._SampleService.myformSearch.get("start").value, "yyyy-MM-dd ") || '01/01/1900',
-    //         "To_Dt": this.datePipe.transform(this._SampleService.myformSearch.get("end").value, "yyyy-MM-dd") || '01/01/1900',
-    //         "IsCompleted": parseInt(this._SampleService.myformSearch.get("StatusSearch").value) || 0,
-    //         "OP_IP_Type": parseInt(this._SampleService.myformSearch.get("PatientTypeSearch").value) || 0,
-    //     }
-
-    //     this._SampleService.getPatientList(m_data).subscribe(Visit => {
-    //         this.dataSource.data = Visit as PatientList[];
-    //         this.dataSource.sort = this.sort;
-    //         this.dataSource.paginator = this.paginator;
-    //         this.sIsLoading = '';
-    //         this.click = false;
-    //         console.log(this.dataSource.data);
-    //     },
-    //         error => {
-    //             this.sIsLoading = '';
-    //         });
-    // }
-
     keyPressAlphanumeric(event) {
         var inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
@@ -561,6 +534,8 @@ opipType:any="2";
                         if (result) {
                             this.SpinLoading = false;
                         }
+                        this.selection.clear();
+                        this.dataSource1.data = [];
                     });
                 }, 100);
 
@@ -577,11 +552,13 @@ opipType:any="2";
 
             dialogRef.afterClosed().subscribe(result => {
                 console.log('Pathology Template  Saved ..', result);
+                this.selection.clear();
+                    this.dataSource1.data = [];
             });
         }
 
-        this.selection.clear(); // Clears all selected items
-        this.dataSource1.data = [];
+        // this.selection.clear(); // Clears all selected items
+        // this.dataSource1.data = [];
     }
 
     Printresultentrywithheader() {

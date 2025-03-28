@@ -335,7 +335,7 @@ export class ResultEntryOneComponent implements OnInit {
                 "searchFields": [          
                   {          
                     "fieldName": "PathReportId",          
-                    "fieldValue": "130388", //String(rbj[0].PathReportId),          
+                    "fieldValue": String(rbj[0].PathReportId),  //150452        
                     "opType": "Equals"          
                   }          
                 ],          
