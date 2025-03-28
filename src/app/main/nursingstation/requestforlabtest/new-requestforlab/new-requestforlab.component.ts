@@ -361,10 +361,10 @@ export class NewRequestforlabComponent implements OnInit {
         ipPathOrRadiRequestLabRequestInsert['serviceId'] = element.ServiceId || 1;
         ipPathOrRadiRequestLabRequestInsert['price'] = element.Price || 1;
         ipPathOrRadiRequestLabRequestInsert['isStatus'] = true;
-        ipPathOrRadiRequestLabRequestInsert['addedBillingId'] = 0,
+        ipPathOrRadiRequestLabRequestInsert['addedBillingId'] = 2,
           ipPathOrRadiRequestLabRequestInsert['addedByDate'] = formattedDate,
           ipPathOrRadiRequestLabRequestInsert['addedByTime'] = formattedTime,
-          ipPathOrRadiRequestLabRequestInsert['charId'] = 0,
+          ipPathOrRadiRequestLabRequestInsert['charId'] = 1,
           ipPathOrRadiRequestLabRequestInsert['isTestCompted'] = true,
           ipPathOrRadiRequestLabRequestInsert['IsOnFileTest'] = this.myFormGroup.get('IsOnFileTest').value || false;
         ipPathOrRadiRequestLabRequestInsertArray.push(ipPathOrRadiRequestLabRequestInsert);

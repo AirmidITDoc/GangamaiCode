@@ -216,6 +216,7 @@ this.myformSearch=this._SampleCollectionService.createSearchForm()
         dialogRef.afterClosed().subscribe(result => {
             // if (result) {
                 this.grid.bindGridData();
+            this.grid1.bindGridData();
             // }
         });
     }
