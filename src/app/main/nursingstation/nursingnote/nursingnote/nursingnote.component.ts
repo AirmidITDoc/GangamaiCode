@@ -67,10 +67,10 @@ export class NursingnoteComponent implements OnInit {
     // color:true,
     editable: true,
     spellcheck: true,
-    height: '15rem',
-    minHeight: '15rem',
+    height: '20rem',
+    minHeight: '20rem',
     translate: 'yes',
-    placeholder: 'Enter text here...',
+    // placeholder: 'Enter text here...',
     enableToolbar: true,
     showToolbar: true,
 
@@ -476,6 +476,8 @@ export class NursingnoteComponent implements OnInit {
     this._NursingStationService.PatientHandOverForm.get('HandOverType').setValue('Morning')
     this.HandOverNoteList = []
     this.IsAddFlag = false
+    this._NursingStationService.PatientHandOverForm.get('PatHandId').setValue('')
+    this._NursingStationService.PatientHandOverForm.get('Comments').setValue('')
   }
 
 

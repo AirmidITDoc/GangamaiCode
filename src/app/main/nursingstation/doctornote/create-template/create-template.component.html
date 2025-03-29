@@ -21,7 +21,11 @@
     <div class="content">
         <div class="center p-12 pb-56" fusePerfectScrollbar>
             <div class="content-card">
-                <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px">
+                <!-- <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" fxLayout.xs="column">
+                    <div fxFlex="25" fxFlex.xs="100" class="box">Box 1</div>
+                    
+                  </div> -->
+                 <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px">
 
                     <form [formGroup]="_NursingStationService.Templateform">
                         <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="8px">
@@ -62,8 +66,7 @@
                         <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
                         <button class="btn btn-primary" (click)="onSubmit()">Save</button>
                     </div> 
-                </div>
-            </div>
+                </div>  
         </div>
     </div>
 </div>

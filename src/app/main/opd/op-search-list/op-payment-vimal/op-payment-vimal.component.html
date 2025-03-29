@@ -129,7 +129,7 @@
                                                 {{Date}}
                                             </span>
                                         </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%" *ngIf="InterimBill">
                                             <mat-checkbox fxFlex="12" class="pr-4" [checked]="IsAdv" [(ngModel)]="IsAdv"
                                                 (change)="OnAdvAmt($event)">Advance Amount?</mat-checkbox>
                                         </div>

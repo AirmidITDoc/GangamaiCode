@@ -55,10 +55,10 @@ export class DoctornoteComponent implements OnInit {
     // color:true,
     editable: true,
     spellcheck: true,
-    height: '15rem',
-    minHeight: '15rem',
+    height: '20rem',
+    minHeight: '20rem',
     translate: 'yes',
-    placeholder: 'Enter text here...',
+    // placeholder: 'Enter text here...',
     enableToolbar: true,
     showToolbar: true,
 
@@ -313,7 +313,7 @@ export class DoctornoteComponent implements OnInit {
     }
 
     this.isLoading = 'submit';
-    if (!this._NursingStationService.myform.get("DoctNoteId").value) {
+    if (!this._NursingStationService.myform.get("docHandId").value) {
       let DocNoteTemplateInsertObj = {
 
         "admID": this.vAdmissionID,
@@ -356,7 +356,7 @@ export class DoctornoteComponent implements OnInit {
     else {
       let updateTDoctorsNotesParamObj = {
 
-        "doctNoteId": this._NursingStationService.myform.get("DoctNoteId").value,
+        "doctNoteId": this._NursingStationService.myform.get("docHandId").value,
 
         "admID": this.vAdmissionID,
 
@@ -418,7 +418,7 @@ export class DoctornoteComponent implements OnInit {
     //this.onClearPatientInfo();
     this._NursingStationService.myform.get('TemplateName').setValue('')
     this._NursingStationService.myform.get('Description').setValue('')
-    this._NursingStationService.myform.get("DoctNoteId").setValue('')
+    this._NursingStationService.myform.get("docHandId").setValue('')
     this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
     this.vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
     this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
@@ -426,7 +426,7 @@ export class DoctornoteComponent implements OnInit {
     this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
     this._NursingStationService.myform.get('HandOverType').setValue('Morning')
     this.HandOverNoteList = [];
-    this.IsAddFlag = false
+    this.IsAddFlag = false 
   }
   onClearPatientInfo() {
     this.vRegNo = '';

@@ -169,7 +169,7 @@
                                                                 <mat-table class="table2" matSort
                                                                     [dataSource]="dsDoctorNoteList"
                                                                     [@animateStagger]="{value:'50'}"
-                                                                    style="overflow: auto;height:360px;padding-bottom: 0px;">
+                                                                    style="overflow: auto;height:420px;padding-bottom: 0px;">
 
                                                                     <ng-container matColumnDef="VDate">
                                                                         <mat-header-cell *matHeaderCellDef
@@ -252,7 +252,7 @@
                                                         </div>
                                                         <div fxFlex.gt-sm="65%" fxFlex>
 
-                                                            <div fxLayout="column" fxLayoutGap="2px">
+                                                            <div fxLayout="column" fxLayoutGap="8px">
                                                               
                                                                     
                                                                     <div fxLayout="row" fxLayoutGap="20px">
@@ -311,7 +311,7 @@
                                                                         <mat-card style="padding: 5px;">
                                                                             <mat-label>Template Details</mat-label>
                                                                             <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                                                                [(ngModel)]="vDescription" required
+                                                                                [(ngModel)]="vDescription" required placeholder='Enter text here...'
                                                                                 formControlName="Description"></angular-editor>
                                                                         </mat-card>
                                                                     </div> 
@@ -419,12 +419,16 @@
                                                         </mat-radio-group>
                                                     </div> 
 
-                                                    <div style="padding: 30px 10px 0 10px;">
-                                                        <button type="button" class="btn btn-primary btn-with-icon py-8"
-                                                             (click)="OnAddHand()">
-                                                            Save
-                                                        </button> 
-                                                    </div> 
+                                                    <div>
+                                                        <div  fxLayout="row" fxLayoutGap="6px" style="padding: 30px 10px 0 10px;"> 
+                                                            <button class="btn btn-danger-outline" (click)="onClose()">Reset</button>
+                                                            <button type="button" class="btn btn-primary btn-with-icon py-8"
+                                                                 (click)="OnAddHand()">
+                                                                Save
+                                                            </button> 
+                                                        </div> 
+                                                    </div>
+                                                    
 
                                                 </div>
 
@@ -432,7 +436,7 @@
                                                     <mat-card style="padding: 5px;">
                                                         <mat-table class="table2" matSort
                                                             [dataSource]="dsHandOverNoteList"
-                                                            [@animateStagger]="{value:'50'}" style="overflow: auto;">
+                                                            [@animateStagger]="{value:'50'}" style="overflow: auto;height: 300px;">
 
                                                             <ng-container matColumnDef="Date" sticky>
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
