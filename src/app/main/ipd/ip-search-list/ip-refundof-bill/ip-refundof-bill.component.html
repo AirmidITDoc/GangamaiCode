@@ -285,7 +285,7 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                         ServiceName </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.ServiceName}}</span>
+                                        <span> {{element.serviceName}}</span>
                                     </mat-cell>
                                 </ng-container>
                     
@@ -293,7 +293,7 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                         Qty </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.Qty}}</span>
+                                        <span> {{element.qty}}</span>
                                     </mat-cell>
                                 </ng-container>
                     
@@ -301,7 +301,7 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Price
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.Price}}</span>
+                                        <span> {{element.price}}</span>
                                     </mat-cell>
                                 </ng-container>
                     
@@ -310,7 +310,7 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                         TotalAmt </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.TotalAmt | currency:'INR'}}</span>
+                                        <span> {{element.totalAmt | currency:'INR'}}</span>
                                     </mat-cell>
                                 </ng-container>
                     
@@ -318,7 +318,7 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                         NetAmount </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.NetAmount | currency:'INR'}}</span>
+                                        <span> {{element.netAmount | currency:'INR'}}</span>
                                     </mat-cell>
                                 </ng-container>
                     
@@ -326,7 +326,7 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                         ChargesDocName </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.ChargesDocName}} </span>
+                                        <span> {{element.chargesDocName}} </span>
                                     </mat-cell>
                                 </ng-container>
                     
@@ -335,8 +335,8 @@
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                         <mat-form-field appearance="legacy">
-                                            <input matInput [(ngModel)]="element.RefundAmount" type="text" OnlyNumber
-                                                (keyup)="gettablecalculation(element,element.RefundAmount)"
+                                            <input matInput [(ngModel)]="element.refundAmount" type="text" OnlyNumber
+                                                (keyup)="gettablecalculation(element,element.refundAmount)"
                                                 (keypress)="keyPressCharater($event)">
                                         </mat-form-field>
                                     </mat-cell>
@@ -346,7 +346,7 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                         BalanceAmount </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.BalanceAmount}} </span>
+                                        <span> {{element.balanceAmount}} </span>
                                     </mat-cell>
                                 </ng-container>
                     
@@ -354,7 +354,7 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                         PreviousRefundAmt </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.PreviousRefundAmt}} </span>
+                                        <span> {{element.previousRefundAmt}} </span>
                                     </mat-cell>
                                 </ng-container>
                     

@@ -990,7 +990,7 @@ export class NewCasepaperComponent implements OnInit {
     const iscekDuplicate = this.dsItemList.data.some(item => item.DrugId == this.durgId)
     if (!iscekDuplicate) {
 
-      let Qty = this.MedicineItemForm.get('DoseId').value.DoseQtyPerDay || 0
+      let Qty = this.MedicineItemForm.get('DoseId').value || 0
 
       let newEntry = {
         DrugId: this.durgId || 0,
@@ -999,9 +999,9 @@ export class NewCasepaperComponent implements OnInit {
         GenericName: this.vItemGenericName || '',
         GenericId: this.vItemGenericNameId || 1,
         DoseName: this.doseName || '',
-        Days: this.MedicineItemForm.get('Day').value || 0,
-        QtyPerDay: this.MedicineItemForm.get('DoseId').value.DoseQtyPerDay || 0,
-        totalQty: Qty * (this.MedicineItemForm.get('DoseId').value.DoseQtyPerDay || 0),
+        Days: this.MedicineItemForm.get('Day').value || this.vDay,
+        QtyPerDay: this.MedicineItemForm.get('DoseId').value || 0,
+        totalQty: Qty * (this.MedicineItemForm.get('DoseId').value || 0),
         DoseId1: this.doseId || 0,
         DoseName1: this.doseName || '',
         Day1: this.Day1,
@@ -1143,85 +1143,85 @@ export class NewCasepaperComponent implements OnInit {
       ReferDocNameID = this.ConsultantDocId
     }
 
-    let insertOPDPrescription = {
-      'opdIpdIp': this.vOPIPId,
-      'opdIpdType': 0,
-      'date': formattedDate,
-      'pTime': this.dateTimeObj.time,
-      'classId': this.vClassId || "12",
-      'genericId': 1, //element.GenericId
-      'drugId': 1, //element.DrugId || 0;
-      'doseId': 1, // element.DoseId || 0;
-      'days': 1, // element.Days || 0;
-      'instruction': "string", // element.Instruction || '';
-      'remark': this.MedicineItemForm.get('Remark').value || '',
-      'doseOption2': 0, // element.DoseId1 || 0;
-      'daysOption2': 1,//parseInt(element.Day1.toString()) || 0;
-      'doseOption3': 0, // element.DoseId2 || 0;
-      'daysOption3': 1,///parseInt(element.Day2.toString()) || 0;
-      'instructionId': 1,
-      'qtyPerDay': 1, // element.QtyPerDay || 0;
-      'totalQty': 1, // (element.QtyPerDay * element.Days) || 0;
-      'isClosed': true,
-      'isEnglishOrIsMarathi': JSON.parse(this.caseFormGroup.get('LangaugeRadio').value),
-      'chiefComplaint': this.caseFormGroup.get('ChiefComplaint').value || '',
-      'diagnosis': this.caseFormGroup.get('Diagnosis').value || '',
-      'examination': this.caseFormGroup.get('Examination').value || '',
-      'height': this.caseFormGroup.get('Height').value || '',
-      'pWeight': this.caseFormGroup.get('Weight').value || '',
-      'bmi': parseInt(this.caseFormGroup.get('BMI').value).toString() || '',
-      'bsl': this.caseFormGroup.get('BSL').value || '',
-      'spO2': this.caseFormGroup.get('SpO2').value || '',
-      'temp': this.caseFormGroup.get('Temp').value || '',
-      'pulse': this.caseFormGroup.get('Pulse').value || '',
-      'bp': this.caseFormGroup.get('BP').value || '',
-      'storeId': this._loggedService.currentUserValue.storeId || 1,
-      'patientReferDocId': ReferDocNameID || 1,
-      'advice': this.MedicineItemForm.get('Remark').value || '',
-      'isAddBy': this._loggedService.currentUserValue.userId,
-    }
+    // let insertOPDPrescription = {
+    //   'opdIpdIp': this.vOPIPId,
+    //   'opdIpdType': 0,
+    //   'date': formattedDate,
+    //   'pTime': this.dateTimeObj.time,
+    //   'classId': this.vClassId || "12",
+    //   'genericId': 1, //element.GenericId
+    //   'drugId': 1, //element.DrugId || 0;
+    //   'doseId': 1, // element.DoseId || 0;
+    //   'days': 1, // element.Days || 0;
+    //   'instruction': "string", // element.Instruction || '';
+    //   'remark': this.MedicineItemForm.get('Remark').value || '',
+    //   'doseOption2': 0, // element.DoseId1 || 0;
+    //   'daysOption2': 1,//parseInt(element.Day1.toString()) || 0;
+    //   'doseOption3': 0, // element.DoseId2 || 0;
+    //   'daysOption3': 1,///parseInt(element.Day2.toString()) || 0;
+    //   'instructionId': 1,
+    //   'qtyPerDay': 1, // element.QtyPerDay || 0;
+    //   'totalQty': 1, // (element.QtyPerDay * element.Days) || 0;
+    //   'isClosed': true,
+    //   'isEnglishOrIsMarathi': JSON.parse(this.caseFormGroup.get('LangaugeRadio').value),
+    //   'chiefComplaint': this.caseFormGroup.get('ChiefComplaint').value || '',
+    //   'diagnosis': this.caseFormGroup.get('Diagnosis').value || '',
+    //   'examination': this.caseFormGroup.get('Examination').value || '',
+    //   'height': this.caseFormGroup.get('Height').value || '',
+    //   'pWeight': this.caseFormGroup.get('Weight').value || '',
+    //   'bmi': parseInt(this.caseFormGroup.get('BMI').value).toString() || '',
+    //   'bsl': this.caseFormGroup.get('BSL').value || '',
+    //   'spO2': this.caseFormGroup.get('SpO2').value || '',
+    //   'temp': this.caseFormGroup.get('Temp').value || '',
+    //   'pulse': this.caseFormGroup.get('Pulse').value || '',
+    //   'bp': this.caseFormGroup.get('BP').value || '',
+    //   'storeId': this._loggedService.currentUserValue.storeId || 1,
+    //   'patientReferDocId': ReferDocNameID || 1,
+    //   'advice': this.MedicineItemForm.get('Remark').value || '',
+    //   'isAddBy': this._loggedService.currentUserValue.userId,
+    // }
 
-    // let insertOPDPrescriptionarray = [];
-    // this.dsItemList.data.forEach(element => {
-    //   let insertOPDPrescription = {};
-    //   insertOPDPrescription['opdIpdIp'] = this.vOPIPId;
-    //   insertOPDPrescription['opdIpdType'] = 0;
-    //   insertOPDPrescription['date'] = formattedDate,
-    //   insertOPDPrescription['pTime'] = this.dateTimeObj.time;
-    //   insertOPDPrescription['classId'] = this.vClassId || 12;
-    //   insertOPDPrescription['genericId'] = 1;
-    //   insertOPDPrescription['drugId'] = element.DrugId || 0;
-    //   insertOPDPrescription['doseId'] = element.DoseId || 0;
-    //   insertOPDPrescription['days'] = element.Days || 0;
-    //   insertOPDPrescription['instruction'] = element.Instruction || '';
-    //   insertOPDPrescription['remark'] = '';
-    //   insertOPDPrescription['doseOption2'] = element.DoseId1 || 0;
-    //   insertOPDPrescription['daysOption2'] = 0 ,//parseInt(element.Day1.toString()) || 0;
-    //   insertOPDPrescription['doseOption3'] = element.DoseId2 || 0;
-    //   insertOPDPrescription['daysOption3'] = 0 ,///parseInt(element.Day2.toString()) || 0;
-    //   insertOPDPrescription['instructionId'] = 0;
-    //   insertOPDPrescription['qtyPerDay'] = element.QtyPerDay || 0;
-    //   insertOPDPrescription['totalQty'] = (element.QtyPerDay * element.Days) || 0;
-    //   insertOPDPrescription['isClosed'] = true;
-    //   insertOPDPrescription['isEnglishOrIsMarathi'] = JSON.parse(this.caseFormGroup.get('LangaugeRadio').value), //this.caseFormGroup.get('LangaugeRadio').value;
-    //   insertOPDPrescription['chiefComplaint'] = this.caseFormGroup.get('ChiefComplaint').value || '';
-    //   insertOPDPrescription['diagnosis'] = this.caseFormGroup.get('Diagnosis').value || '';
-    //   insertOPDPrescription['examination'] = this.caseFormGroup.get('Examination').value || '';
-    //   insertOPDPrescription['height'] = this.caseFormGroup.get('Height').value || '';
-    //   insertOPDPrescription['pWeight'] = this.caseFormGroup.get('Weight').value || '';
-    //   insertOPDPrescription['bmi'] = parseInt(this.caseFormGroup.get('BMI').value).toString() || '';
-    //   insertOPDPrescription['bsl'] = this.caseFormGroup.get('BSL').value || '';
-    //   insertOPDPrescription['spO2'] = this.caseFormGroup.get('SpO2').value || '';
-    //   insertOPDPrescription['temp'] = this.caseFormGroup.get('Temp').value || '';
-    //   insertOPDPrescription['pulse'] = this.caseFormGroup.get('Pulse').value || '';
-    //   insertOPDPrescription['bp'] = this.caseFormGroup.get('BP').value || '';
-    //   insertOPDPrescription['storeId'] = this._loggedService.currentUserValue.storeId || 0;
-    //   insertOPDPrescription['patientReferDocId'] = ReferDocNameID || 0;
-    //   insertOPDPrescription['advice'] = this.MedicineItemForm.get('Remark').value || '';
-    //   insertOPDPrescription['isAddBy'] = this._loggedService.currentUserValue.userId;
+    let insertOPDPrescriptionarray = [];
+    this.dsItemList.data.forEach(element => {
+      let insertOPDPrescription = {};
+      insertOPDPrescription['opdIpdIp'] = this.vOPIPId;
+      insertOPDPrescription['opdIpdType'] = 0;
+      insertOPDPrescription['date'] = formattedDate,
+      insertOPDPrescription['pTime'] = this.dateTimeObj.time;
+      insertOPDPrescription['classId'] = this.vClassId || 12;
+      insertOPDPrescription['genericId'] = 1;
+      insertOPDPrescription['drugId'] = element.DrugId || 0;
+      insertOPDPrescription['doseId'] = element.DoseId || 0;
+      insertOPDPrescription['days'] = element.Days || 0;
+      insertOPDPrescription['instruction'] = element.Instruction || '';
+      insertOPDPrescription['remark'] = '';
+      insertOPDPrescription['doseOption2'] = element.DoseId1 || 0;
+      insertOPDPrescription['daysOption2'] = 0 ,//parseInt(element.Day1.toString()) || 0;
+      insertOPDPrescription['doseOption3'] = element.DoseId2 || 0;
+      insertOPDPrescription['daysOption3'] = 0 ,///parseInt(element.Day2.toString()) || 0;
+      insertOPDPrescription['instructionId'] = 0;
+      insertOPDPrescription['qtyPerDay'] = element.QtyPerDay || 0;
+      insertOPDPrescription['totalQty'] = (element.QtyPerDay * element.Days) || 0;
+      insertOPDPrescription['isClosed'] = true;
+      insertOPDPrescription['isEnglishOrIsMarathi'] = JSON.parse(this.caseFormGroup.get('LangaugeRadio').value), //this.caseFormGroup.get('LangaugeRadio').value;
+      insertOPDPrescription['chiefComplaint'] = this.caseFormGroup.get('ChiefComplaint').value || '';
+      insertOPDPrescription['diagnosis'] = this.caseFormGroup.get('Diagnosis').value || '';
+      insertOPDPrescription['examination'] = this.caseFormGroup.get('Examination').value || '';
+      insertOPDPrescription['height'] = this.caseFormGroup.get('Height').value || '';
+      insertOPDPrescription['pWeight'] = this.caseFormGroup.get('Weight').value || '';
+      insertOPDPrescription['bmi'] = parseInt(this.caseFormGroup.get('BMI').value).toString() || '';
+      insertOPDPrescription['bsl'] = this.caseFormGroup.get('BSL').value || '';
+      insertOPDPrescription['spO2'] = this.caseFormGroup.get('SpO2').value || '';
+      insertOPDPrescription['temp'] = this.caseFormGroup.get('Temp').value || '';
+      insertOPDPrescription['pulse'] = this.caseFormGroup.get('Pulse').value || '';
+      insertOPDPrescription['bp'] = this.caseFormGroup.get('BP').value || '';
+      insertOPDPrescription['storeId'] = this._loggedService.currentUserValue.storeId || 0;
+      insertOPDPrescription['patientReferDocId'] = ReferDocNameID || 0;
+      insertOPDPrescription['advice'] = this.MedicineItemForm.get('Remark').value || '';
+      insertOPDPrescription['isAddBy'] = this._loggedService.currentUserValue.userId;
 
-    //   insertOPDPrescriptionarray.push(insertOPDPrescription);
-    // });
+      insertOPDPrescriptionarray.push(insertOPDPrescription);
+    });
 
     let opRequestList = [];
     if (this.selectedItems.length == 0) {
@@ -1256,8 +1256,8 @@ export class NewCasepaperComponent implements OnInit {
     }
 
     let casePaperSaveObj = {
-      "tPrescription": insertOPDPrescription,
-      // "tPrescription": insertOPDPrescriptionarray,
+      // "tPrescription": insertOPDPrescription,
+      "tPrescription": insertOPDPrescriptionarray,
       "topRequestList": opRequestList,
       "mopCasepaperDignosisMaster": OpDescriptinList
     }

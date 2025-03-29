@@ -245,6 +245,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
       let nameField = obj.formattedText;
       let extractedName = nameField.split('|')[0].trim();
       this.vPatientName=extractedName;
+      this.OP_IP_Id=obj.visitId;
       // setTimeout(() => {
       //   this._PrescriptionReturnService.getVisitById(obj.regId).subscribe((response) => {
       //     this.registerObj = response;
@@ -277,6 +278,8 @@ export class NewPrescriptionreturnComponent implements OnInit {
       this.vTariffName=obj.tariffName
       this.vCompanyName=obj.companyName
       this.vDOA=obj.admissionDate
+    this.OP_IP_Id = obj.admissionID;
+
       // setTimeout(() => {
       //   this._PrescriptionReturnService.getAdmittedpatientlist(obj.regID).subscribe((response) => {
       //     this.registerObj = response;        

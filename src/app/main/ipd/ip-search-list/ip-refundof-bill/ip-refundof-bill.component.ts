@@ -157,7 +157,8 @@ refundForm(): FormGroup {
     CashCounterID:[7]   
   });
 } 
- // 
+ //
+ totalBalAmt:any=0 
 getSelectedRow(contact){
   console.log(contact)
   var vdata = {
@@ -168,15 +169,16 @@ getSelectedRow(contact){
     "filters": [
       {
         "fieldName": "BillNo",
-        "fieldValue": "contact.billno",
+        "fieldValue":contact.billNo,
         "opType": "Equals"
       }
 
     ],
     "exportType": "JSON"
   }
-  this._IpSearchListService.getRefundofBillServiceList(vdata).subscribe(data=>{
-    this.dataSource2.data = data as [];
+  this._IpSearchListService.getRefundofBillServiceList(vdata).subscribe(response=>{
+    this.totalBalAmt=response.data
+    this.dataSource2.data = response.data
     console.log(this.dataSource2.data)
     this.dataSource1.sort = this.sort;
     this.dataSource1.paginator = this.paginator;
@@ -263,7 +265,7 @@ OnEdit(row) {
 gettablecalculation(element, RefundAmt) {
    
   if(RefundAmt > 0 && RefundAmt <= element.BalAmt){
-    element.BalanceAmount= ((element.BalAmt) - (RefundAmt));   
+    element.balanceAmount= ((element.BalAmt) - (RefundAmt));   
     element.PrevRefAmount = RefundAmt;
   } 
   else if (RefundAmt > element.BalAmt) {
@@ -271,18 +273,18 @@ gettablecalculation(element, RefundAmt) {
       toastClass: 'tostr-tost custom-toast-warning',
     });
     element.RefundAmount = '';  
-    element.BalanceAmount =element.BalAmt;
+    element.balanceAmount =element.BalAmt;
   }
   else if(RefundAmt == 0 || RefundAmt == '' || RefundAmt == null || RefundAmt == undefined){
     element.RefundAmount = '';  
-    element.BalanceAmount =element.BalAmt;
+    element.balanceAmount =element.BalAmt;
   }
   else if(this.RefundAmount < this.NetBillAmount){
     this.toastr.warning('Bill Amount Already Refund .', 'Warning !', {
       toastClass: 'tostr-tost custom-toast-warning',
     });
     element.RefundAmount = '';  
-    element.BalanceAmount =element.BalAmt;
+    element.balanceAmount =element.BalAmt;
   } 
 }
  

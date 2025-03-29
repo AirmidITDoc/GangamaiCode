@@ -27,6 +27,7 @@ import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.com
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { element } from 'protractor';
 
 @Component({
     selector: 'app-result-entry',
@@ -145,7 +146,7 @@ export class ResultEntryComponent implements OnInit {
             heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
             template: this.actionsIPOP
         },
-        { heading: "Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', type: 9, width: 200 },
+        { heading: "Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
         { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
@@ -632,9 +633,10 @@ opipType:any="2";
     OPIPID: any = 0;
     onresultentryshow(event, m) {
         debugger
-        this.OPIPID = m.opD_IPD_ID //m.OPD_IPD_ID
+        console.log("2nd Table Data:",m)
+        this.OPIPID = m.opdipdid //m.OPD_IPD_ID
         this.advanceDataStored.storage = new SampleDetailObj(m);
-        console.log(this.advanceDataStored.storage)
+        // console.log(this.advanceDataStored.storage)
         if (event.checked) {
             if (m.pathTestID == 0) {
                 this.toastr.warning('This Test Not Created !', 'Warning !', {
