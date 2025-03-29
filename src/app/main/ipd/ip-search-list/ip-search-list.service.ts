@@ -624,12 +624,10 @@ public getUMOCombo() {
   {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IPBill_For_Refund",employee)
   }
-
-  public getRefundofBillServiceList(employee)
-  {
-    return this._httpClient1.PostData("IPBill/IPBillForRefundList",employee)
-  }
-
+ 
+  public getRefundofBillServiceList(Id) {
+    return this._httpClient1.PostData("RefundOfBill/IPBillForRefundList" , Id);
+}
   public getRefundofBillIPDList(employee){
   return this._httpClient.post("Generic/GetByProc?procName=m_IPBillListforRefund",employee)
   }
