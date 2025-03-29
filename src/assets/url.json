@@ -1,3 +1,4 @@
 {
-    "url": "http://192.168.2.100:9091/api"
+    
+    "url": "http://localhost:5251/api/v1/"
 }
