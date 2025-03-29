@@ -34,6 +34,7 @@ import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-
   animations: fuseAnimations
 })
 export class IPBillingComponent implements OnInit {
+  @ViewChild('serviceTable') serviceTable!: TemplateRef<any>;
   displayedColumns = [
     'checkbox',
     'IsCheck',
@@ -248,6 +249,12 @@ export class IPBillingComponent implements OnInit {
     }
     this.setupFormListener();
   }
+  openServiceTable():void{
+    this._matDialog.open(this.serviceTable, {
+      width: '400px',
+      height: '400px',
+    })
+  }
   private setupFormListener(): void { 
     this.handleChange('price', () => this.calculateTotalCharge());
     this.handleChange('qty', () => this.calculateTotalCharge());
@@ -257,7 +264,7 @@ export class IPBillingComponent implements OnInit {
  
   isOpen: boolean = false; // Sidebar starts open
 
-  toggleSidebar(obj) { 
+  toggleSidebar() { 
     this.isOpen = !this.isOpen; 
   }
   calculateTotalCharge(row: any = null): void {
