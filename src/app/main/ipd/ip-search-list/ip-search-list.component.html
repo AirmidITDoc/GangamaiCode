@@ -124,7 +124,7 @@
                         <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue" [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
                     <mat-form-field appearance="outline">
                         <mat-label>Reg No</mat-label>
-                        <input matInput placeholder="Search Reg No" autocomplete="off" [formGroup]="myFilterform" formControlName="RegNo"  (input)="onChangeFirst()" />
+                        <input matInput placeholder="Search Reg No" autocomplete="off" [formGroup]="myFilterform" formControlName="RegNo"  (input)="onChangeFirst($event)" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
                             <mat-icon>close</mat-icon>
                         </button>
@@ -132,7 +132,7 @@
 
                     <mat-form-field appearance="outline">
                          <mat-label>First Name</mat-label>
-                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform" formControlName="FirstName"  (input)="onChangeFirst()" />
+                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform" formControlName="FirstName"  (input)="onChangeFirst($event)" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
                             <mat-icon>close</mat-icon>
                         </button>
@@ -140,7 +140,7 @@
 
                     <mat-form-field appearance="outline">
                         <mat-label>Middle Name</mat-label>
-                       <input matInput placeholder="Search Middle Name" autocomplete="off" [formGroup]="myFilterform" formControlName="MiddleName"  (input)="onChangeFirst()" />
+                       <input matInput placeholder="Search Middle Name" autocomplete="off" [formGroup]="myFilterform" formControlName="MiddleName"  (input)="onChangeFirst($event)" />
                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('MiddleName')">
                            <mat-icon>close</mat-icon>
                        </button>
@@ -149,7 +149,7 @@
 
                     <mat-form-field appearance="outline">
                         <mat-label>Last Name</mat-label>
-                       <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform" formControlName="LastName"  (input)="onChangeFirst()" />
+                       <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform" formControlName="LastName"  (input)="onChangeFirst($event)" />
                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
                            <mat-icon>close</mat-icon>
                        </button>
@@ -160,17 +160,23 @@
 
                      <mat-form-field appearance="outline">
                         <mat-label>IPDNo</mat-label>
-                       <input matInput placeholder="Search IPDNo" autocomplete="off" [formGroup]="myFilterform" formControlName="IPDNo"  (input)="onChangeFirst()" />
+                       <input matInput placeholder="Search IPDNo" autocomplete="off" [formGroup]="myFilterform" formControlName="IPDNo"  (input)="onChangeFirst($event)" />
                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('IPDNo')">
                            <mat-icon>close</mat-icon>
                        </button>
                    </mat-form-field>
 
-                   <mat-radio-group value="" [(ngModel)]="gridConfig.filters[6].fieldValue"  [formGroup]="myFilterform" formControlName="IsDischarge"
-                        fxLayoutAlign="center center" (change)="onChangeStatus($event)">
+                   <!-- <mat-radio-group value="" [(ngModel)]="gridConfig.filters[6].fieldValue"  [formGroup]="myFilterform" formControlName="IsDischarge"
+                        fxLayoutAlign="center center" (change)="onChangeFirst()">
                         <mat-radio-button mat-fab value="1">Discharged</mat-radio-button>
                         <mat-radio-button mat-fab value="0">NonDischarged</mat-radio-button>
-                    </mat-radio-group>
+                    </mat-radio-group> --> 
+
+                    <mat-slide-toggle name="IsDischarge" (change)="onChangeFirst($event)"
+                    formControlName="IsDischarge" [(ngModel)]="IsDischarge">
+                    IsDischarge
+                      </mat-slide-toggle>
+
 
 
                      <!-- <app-airmid-slider label="Discharged"   formControlName="IsDischarge" [formGroup]="myFilterform" ></app-airmid-slider>  -->

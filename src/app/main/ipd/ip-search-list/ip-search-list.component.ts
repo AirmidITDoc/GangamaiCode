@@ -56,8 +56,8 @@ export class IPSearchListComponent implements OnInit {
     IPDNo: any = ""
     status="0"
         
-  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+  fromDate = '' ;// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate ='' ; // this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
 
    
     dataSource1 = new MatTableDataSource<AdvanceDetailObj>();
@@ -125,24 +125,23 @@ export class IPSearchListComponent implements OnInit {
         public datePipe: DatePipe,
         private _configue:ConfigService,
         public toastr: ToastrService,
-        private advanceDataStored: AdvanceDataStored) { }
+        private advanceDataStored: AdvanceDataStored) 
+        { }
 
     ngOnInit(): void {
         this.myFilterform = this._IpSearchListService.filterForm();
-      
+        this.myFilterform.get('fromDate').setValue('');
+        this.myFilterform.get('enddate').setValue('');   
+
         if (this._ActRoute.url == '/ipd/ipadvance') {
             this.menuActions.push('Advance');
             this.menuActions.push('Bed Transfer');
         }
         else if (this._ActRoute.url == '/ipd/discharge') {
-            // if(this._configue.configParams.IsDischargeTemplate)
-                this.menuActions.push('Discharge Summary Template');
-            //   else
-                this.menuActions.push('Discharge Summary');
-              
+                this.menuActions.push('Discharge');  
         }
         else if (this._ActRoute.url == '/ipd/dischargesummary') {
-            this.menuActions.push('Discharge'); 
+         
             // if(this._configue.configParams.IsDischargeTemplate)
               this.menuActions.push('Discharge Summary Template');
             // else
@@ -197,7 +196,7 @@ export class IPSearchListComponent implements OnInit {
                 });
             dialogRef.afterClosed().subscribe(result => {
                    this.status="1"
-                   this.onChangeFirst();
+                   this.onChangeFirst(m);
                 
             });
         }
@@ -416,11 +415,21 @@ export class IPSearchListComponent implements OnInit {
         this._ActRoute.navigate(['ipd/add-billing/new-appointment']);
     }
 
-
-    onChangeFirst() {
-        
-        // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-        // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+    apiUrl:any;
+    IsDischarge:boolean=false
+    onChangeFirst(event) {
+        debugger 
+        if(this.myFilterform.get('IsDischarge').value == false){
+        this.apiUrl =  "Admission/AdmissionList"
+        this.fromDate = ''
+        this.toDate = ''  
+        this.status = '0'
+        }else{
+        this.apiUrl =  "Admission/AdmissionDischargeList" 
+        this.fromDate =   this.datePipe.transform(Date.now(), 'yyyy-MM-dd'); //this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+        this.toDate =  this.datePipe.transform(Date.now(), 'yyyy-MM-dd'); // this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") 
+        this.status = '1'
+        }
         this.f_name = this.myFilterform.get('FirstName').value + "%"
         this.l_name = this.myFilterform.get('LastName').value + "%"
         this.regNo = this.myFilterform.get('RegNo').value || "0"
@@ -429,11 +438,11 @@ export class IPSearchListComponent implements OnInit {
 
         this.getfilterdata();
     }
-
+  
     getfilterdata() {
-        
+        debugger
         this.gridConfig = {
-            apiUrl: "Admission/AdmissionList",
+            apiUrl:this.apiUrl ,
             columnsList: this.allcolumns,
             sortField: "AdmissionId",
             sortOrder: 0,
@@ -471,7 +480,7 @@ export class IPSearchListComponent implements OnInit {
         if (event == 'IPDNo')
             this.myFilterform.get('IPDNo').setValue("")
 
-        this.onChangeFirst();
+        this.onChangeFirst(event);
     }
 
     onChangeStatus(event) {
@@ -487,15 +496,15 @@ export class IPSearchListComponent implements OnInit {
         this.grid.bindGridData();
     }
 
-    onClear() {
+    // onClear() {
 
-        this._IpSearchListService.myFilterform.reset();
-        this._IpSearchListService.myFilterform.get("IsDischarge").setValue(0);
-        this._IpSearchListService.myFilterform.get("FirstName").setValue('');
-        this._IpSearchListService.myFilterform.get("MiddleName").setValue('');
-        this._IpSearchListService.myFilterform.get("LastName").setValue('');
+    //     this._IpSearchListService.myFilterform.reset();
+    //     this._IpSearchListService.myFilterform.get("IsDischarge").setValue(0);
+    //     this._IpSearchListService.myFilterform.get("FirstName").setValue('');
+    //     this._IpSearchListService.myFilterform.get("MiddleName").setValue('');
+    //     this._IpSearchListService.myFilterform.get("LastName").setValue('');
 
-    }
+    // }
 
     getValidationdeptDocMessages() {
         return {
