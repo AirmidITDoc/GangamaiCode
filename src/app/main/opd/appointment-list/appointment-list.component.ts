@@ -28,7 +28,6 @@ import { EditRefranceDoctorComponent } from './edit-refrance-doctor/edit-refranc
 import Swal from 'sweetalert2';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { AirmidTable1Component } from 'app/main/shared/componets/airmid-table1/airmid-table1.component';
 import { AppointmentBillingComponent } from './appointment-billing/appointment-billing.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { forEach } from 'lodash';

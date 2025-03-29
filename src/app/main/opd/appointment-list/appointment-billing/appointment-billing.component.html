@@ -138,18 +138,23 @@
                                 <form [formGroup]="chargeForm">
                                     <div fxLayout="row" fxLayoutGap="5px">
 
-
+                                        <!-- [disabled]="Regstatus" -->
                                         <div fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%" >
-                                            <airmid-autocomplete label="Enter Service Name" [formGroup]="chargeForm" [disabled]="Regstatus"
+                                            <airmid-autocomplete label="Enter Service Name" [formGroup]="chargeForm" 
                                                 formControlName="serviceName" 
                                                 placeholderText="Enter Service Name"
                                                 fxFlex
                                                 [ApiUrl]="'VisitDetail/GetServiceListwithTraiff?TariffId='+patientDetail.tariffId+'&ClassId='+patientDetail.classId+'&ServiceName='"
                                                 (selectionChange)="getSelectedserviceObj($event)"
-                                                TextField="formattedText" 
+                                                TextField="serviceName" 
                                                 ValueField="serviceId"></airmid-autocomplete>
 
-                                          
+
+                                                <!-- <airmid-autocomplete label="Enter Service Name" [formGroup]="chargeForm"
+                                                formControlName="serviceName" placeholderText="Enter Service Name" fxFlex
+                                                ApiUrl="{{ApiURL}}" (selectionChange)="getSelectedserviceObj($event)"
+                                                TextField="serviceName" ValueField="serviceId">
+                                            </airmid-autocomplete> -->
                                         </div>
                                         <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
                                             <airmid-textbox label="Price" formControlName="price"

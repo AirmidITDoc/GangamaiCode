@@ -186,7 +186,6 @@ export class DischargeSummaryComponent implements OnInit {
 }, 500);
     }
 
-    this.getdischargeIdbyadmission();
 }
 
   
@@ -410,19 +409,7 @@ export class DischargeSummaryComponent implements OnInit {
   }
   });
   }
-  getdischargeIdbyadmission() {
-    
-    this._IpSearchListService.getDischargeId(this.data.admissionId).subscribe(data => {
-      console.log(data)
-      if(data.statusCode!==404){
-          
-      if (data.dischargeId)
-        this.vDischargeId = data.dischargeId
-      else this.vDischargeId = 0
-}
-    });
-  }
-
+  
 
   OnSave() {
     Swal.fire({

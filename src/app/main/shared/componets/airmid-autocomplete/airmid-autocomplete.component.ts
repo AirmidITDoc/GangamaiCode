@@ -121,6 +121,7 @@ export class AirmidAutoCompleteComponent implements OnInit {
         this.value=e;
     }
     displayFn(user: any): string {
+        debugger
         return user[this["ariaLabel"]];
     }
     selectedOption(e: any) {

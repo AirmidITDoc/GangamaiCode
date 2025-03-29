@@ -150,7 +150,6 @@ export class DischargeSummaryTemplateComponent {
       }, 500);
       }
   
-      this.getdischargeIdbyadmission();
   }
   
   saveflag: boolean = false
@@ -346,16 +345,6 @@ export class DischargeSummaryTemplateComponent {
       }
   }
 
-    getdischargeIdbyadmission() {
-      
-      this._IpSearchListService.getDischargeId(this.data.admissionId).subscribe(data => {
-        console.log(data)
-        
-        if (data.dischargeId)
-          this.vDischargeId = data.dischargeId
-        else this.vDischargeId = 0
-      });
-    }
   
     OnSave() {
       Swal.fire({

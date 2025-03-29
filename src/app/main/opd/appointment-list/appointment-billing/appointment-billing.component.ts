@@ -127,11 +127,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder, private toastrService: ToastrService,
     @Optional() public dialogRef: MatDialogRef<AppointmentBillingComponent>
   ) { };
-
+  ApiURL: any;
   ngOnInit() {
     this.isModal = !!this.dialogRef;
     console.log("DATA : ", this.advanceDataStored.storage);
-
+    this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 2 + "&ServiceName="
     if (this.data) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       this.patientDetail = this.selectedAdvanceObj;
@@ -140,7 +140,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       this.patientDetail.doctorName = this.patientDetail.doctorname
       this.vOPIPId = this.patientDetail.visitId
       this.savebtn = false
-      console.log("DATA : ", this.patientDetail);
+      // console.log("DATA : ", this.patientDetail);
     }
 
     this.searchForm = this.createSearchForm();
@@ -297,7 +297,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   onAddCharges(): void {
 
     const serviceNameValue = this.chargeForm.get('serviceName').value;
-    if (!serviceNameValue || this.serviceSelct==false) {
+    if (!serviceNameValue || this.serviceSelct == false) {
       this.toastrService.warning('Please select valid Service Name', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -343,13 +343,13 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.chargeList.push(newCharge);
         this.dsChargeList.data = this.chargeList;
         this.calculateTotalAmount();
-        this.serviceSelct=false
+        this.serviceSelct = false
         this.resetForm();
         this.chargeForm.get("qty").setValue(1);
-       const serviceNameElement = document.querySelector(`[name='serviceName']`) as HTMLElement;
-        if (serviceNameElement) {
-          serviceNameElement.focus();
-        }
+         const serviceNameElement = document.querySelector(`[name='serviceName']`) as HTMLElement;
+          if (serviceNameElement) {
+            serviceNameElement.focus();
+          }
       } else {
         Swal.fire({
           title: 'Message',
@@ -362,7 +362,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
   resetForm(): void {
     this.chargeForm.reset({
-      serviceName: '',
+      serviceName: "%",
       price: 0,
       qty: 0,
       totalAmount: 0,
@@ -372,8 +372,12 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       DoctorID: 0,
       DoctorName: ''
     });
+
     this.doctorName = '';
   }
+
+
+
   deleteCharge(index: number) {
     this.chargeList.splice(index, 1);
     this.dsChargeList.data = this.chargeList;
@@ -525,7 +529,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     console.log('Generated API URL:', url);  // Add this line for debugging
     return url;
   }
-  serviceSelct=false
+  serviceSelct = false
 
   getSelectedserviceObj(obj) {
     debugger
@@ -546,7 +550,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       }
       return;  // Exit the function early
     } else {
-      
+
       console.log(obj)
       this.SrvcName1 = obj.serviceName;
       this.vPrice = obj.classRate;
@@ -572,17 +576,17 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.chargeForm.get('DoctorID').disable();
       }
 
-      this.serviceSelct=true
+      this.serviceSelct = true
     }
-}
+  }
 
-   getSelectedObj(obj) {
+  getSelectedObj(obj) {
     console.log(obj)
     this.patientDetail = obj
     this.vOPIPId = obj.visitId
     if (this.vOPIPId > 0)
       this.savebtn = false
-    this.Regstatus=false
+    this.Regstatus = false
   }
   getValidationMessages() {
     return {
@@ -734,25 +738,26 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     console.log(submitData);
     this._AppointmentlistService.InsertOPBillingCredit(submitData).subscribe(response => {
       this.toastrService.success(response.message);
-     this.viewgetCreditOPBillReportPdf(response)
-     this._matDialog.closeAll();
+      this.viewgetCreditOPBillReportPdf(response)
+      // this._matDialog.closeAll();
+      if (response)
+        this.resetform();
     }, (error) => {
       this.toastrService.error(error.message);
     });
 
 
-    this.dsChargeList.data = []
-    this.totalChargeForm.reset();
-    this.dialogRef.close();
-    this.patientDetail = [];
+    // this.dsChargeList.data = []
+    // this.totalChargeForm.reset();
+    // this.dialogRef.close();
+    // this.patientDetail = [];
   }
 
 
   BillSave() {
-    console.log(this.vOPIPId)
+    debugger
     let InsertAdddetArr = [];
     this.dsChargeList.data.forEach((element) => {
-      console.log(element)
       let IsPathology, IsRadiology
       if (element.IsPathology)
         IsPathology = true
@@ -829,12 +834,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       dialogRef.afterClosed().subscribe(result => {
 
         this.flagSubmit = result.IsSubmitFlag
-        debugger
+        
         if (this.flagSubmit == true) {
           this.Paymentdataobj = result.submitDataPay.ipPaymentInsert;
-
-          console.log(this.Paymentdataobj)
-
           let submitData = {
             BillNo: 0,
             opdipdid: this.vOPIPId,
@@ -877,16 +879,14 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             // let Id = ID[1]
 
             this.viewgetOPBillReportPdf(response)
-            this.totalChargeForm.reset();
-            this._matDialog.closeAll();
+            if (response)
+              this.resetform();
+            // this._matDialog.closeAll();
           }, (error) => {
             this.toastrService.error(error.message);
           });
 
         }
-
-        else if (this.flagSubmit == false)
-          this.saveCreditbill();
       });
     }
     else if (this.totalChargeForm.get('paymentType').value == 'CashPay') {//Cash pay
@@ -959,27 +959,31 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       console.log(submitData);
       this._AppointmentlistService.InsertOPBilling(submitData).subscribe(response => {
         this.toastrService.success(response.message);
-        
+
         this.viewgetOPBillReportPdf(response)
-        this.totalChargeForm.reset();
-        this._matDialog.closeAll();
+        // this.totalChargeForm.reset();
+        // this._matDialog.closeAll();
+        if (response)
+          this.resetform();
 
       }, (error) => {
         this.toastrService.error(error.message);
       });
-      this.chargeForm.updateValueAndValidity();
+
     }
 
-    this.dsChargeList.data=[]
-    
-    // this.dialogRef.close();
-    this.patientDetail =[];
-
-    this.patientDetail.tariffId=1;
-    this.patientDetail.ClassId=1;
-    
   }
 
+  resetform() {
+    this.chargeList = [];
+    this.dsChargeList.data = []
+    this.patientDetail = [];
+    this.patientDetail.tariffId = 1;
+    this.patientDetail.ClassId = 1;
+    this.totalChargeForm.reset();
+   this.totalChargeForm.get('paymentType').setValue('CashPay')
+
+  }
   viewgetCreditOPBillReportPdf(element) {
 
     console.log('Third action clicked for:', element);

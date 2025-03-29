@@ -37,8 +37,6 @@ import { AirmidDropDownComponent } from './componets/airmid-dropdown/airmid-drop
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { AirmidTable1Component } from './componets/airmid-table1/airmid-table1.component';
-import { AirmidTextbox1Component } from './componets/airmid-textbox1/airmid-textbox1.component';
 import { AirmidDateofbirthComponent } from './componets/airmid-dateofbirth/airmid-dateofbirth.component';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { AirmidSliderComponent } from './componets/airmid-slider/airmid-slider.component';
@@ -60,7 +58,7 @@ import { AirmidTimePickerComponent } from './componets/airmid-time-picker/airmid
 
 @NgModule({
     declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-        AirmidTable1Component, AirmidTextbox1Component, AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent],
+      AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent],
     imports: [
         CommonModule,
         MatFormFieldModule,
@@ -105,9 +103,7 @@ import { AirmidTimePickerComponent } from './componets/airmid-time-picker/airmid
         AirmidTextboxComponent,
         AirmidDropDownComponent,
         AirmidAutoCompleteComponent,
-        AirmidTable1Component,
-        AirmidTextbox1Component,
-        AirmidDateofbirthComponent,
+       AirmidDateofbirthComponent,
         AirmidEditorComponent,
         AirmidSliderComponent,
         AirmidDatepickerComponent,

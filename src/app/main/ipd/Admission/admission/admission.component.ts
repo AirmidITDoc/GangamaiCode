@@ -36,7 +36,6 @@ import { ParameterDescriptiveMasterComponent } from 'app/main/setup/department/p
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { AirmidTable1Component } from 'app/main/shared/componets/airmid-table1/airmid-table1.component';
 import { User } from 'app/core/models/user';
 import { BedTransferComponent } from '../../ip-search-list/bed-transfer/bed-transfer.component';
 import { DischargeComponent } from '../../ip-search-list/discharge/discharge.component';
@@ -108,7 +107,7 @@ export class AdmissionComponent implements OnInit {
   Regflag: boolean = false;
 
   // new Api
-  @ViewChild(AirmidTableComponent) grid: AirmidTable1Component;
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   appUser$: Observable<User>;
 
   nowdate = new Date();

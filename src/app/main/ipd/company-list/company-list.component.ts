@@ -20,7 +20,7 @@ import { gridColumnTypes } from 'app/core/models/tableActions';
 import { FormGroup } from '@angular/forms';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { AirmidTable1Component } from 'app/main/shared/componets/airmid-table1/airmid-table1.component';
+
 
 @Component({
   selector: 'app-company-list',
@@ -38,7 +38,7 @@ export class CompanyListComponent implements OnInit {
   l_name:any="" 
   m_name:any="" 
   IPDNo:any="" 
-   @ViewChild(AirmidTableComponent) grid: AirmidTable1Component;
+   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   menuActions: Array<string> = [];
   constructor(
     public _CompanyListService: CompanyListService,
