@@ -155,8 +155,8 @@ export class ReportGenerationComponent implements OnInit {
     GetReportDeails(node: any){
         this.OnClose();
         this.selectedNode = node;
-        this.reportDetail = this.reportsData.find(x => (x.reportId == node?.id));
-        this.ReportName = this.reportDetail.reportName;
+        this.reportDetail = this.reportsData?.find(x => (x.reportId == node?.id));
+        this.ReportName = this.reportDetail?.reportName;
         let controllerPermission = this.reportDetail?.reportFilter?.split(",");
         if(controllerPermission.filter(x => x == "Doctor")?.length > 0)
             this.flagDoctorSelected = true;
@@ -247,15 +247,17 @@ export class ReportGenerationComponent implements OnInit {
                 });                                                            
             let param = {
                 "searchFields": paramFilterList,
-                "mode": this.reportDetail.reportMode,
-                "repoertName": this.reportDetail.reportName,
-                "headerList":  this.reportDetail.reportHeader.split(",") || [],
-                "colList": this.reportDetail.reportColumn.split(",") || [],
-                "htmlFilePath": this.reportDetail.reportBodyFile,
-                "htmlHeaderFilePath": this.reportDetail.reportHeaderFile,
-                "spName": this.reportDetail.reportSpname,
-                "folderName": this.reportDetail.reportFolderName,
-                "fileName": this.reportDetail.reportFileName
+                "mode": this.reportDetail?.reportMode,
+                "repoertName": this.reportDetail?.reportName,
+                "headerList":  this.reportDetail?.reportHeader?.split(",") || [],
+                "colList": this.reportDetail?.reportColumn?.split(",") || [],
+                "totalFieldList": this.reportDetail?.reportTotalField?.split(",") || [],
+                "groupByLabel": this.reportDetail?.reportGroupByLabel,
+                "htmlFilePath": this.reportDetail?.reportBodyFile,
+                "htmlHeaderFilePath": this.reportDetail?.reportHeaderFile,
+                "spName": this.reportDetail?.reportSpname,
+                "folderName": this.reportDetail?.reportFolderName,
+                "fileName": this.reportDetail?.reportFileName
               }
             console.log(param)
             this._ReportService.getReportView(param).subscribe(res => {
