@@ -124,7 +124,7 @@ export class RadiologyOrderListComponent implements OnInit {
                 { heading: "-", key: "patientType", type: gridColumnTypes.template, align: "center", width: 50,
                     template:this.actionsType
                  },
-                { heading: "RadDate", key: "radTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type:9 },
+                { heading: "RadDate", key: "radTime", sort: true, align: 'left', emptySign: 'NA', width: 200},
                 { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
                 { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },

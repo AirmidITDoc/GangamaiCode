@@ -47,7 +47,7 @@ export class TestFormMasterComponent implements OnInit {
     displayedColumns5: string[] = ['TemplateName', 'Action'];
 
     autocompleteModeCategoryId: string = "ItemCategory";
-    autocompleteModeServiceID: string = "ServiceName";
+    autocompleteModeServiceID: string = "Service";
     autocompleteModeTemplate: string = "Template";
 
     selectedItems: any;
@@ -305,19 +305,35 @@ export class TestFormMasterComponent implements OnInit {
 
     }
 
+    invalidFields1 = [];
+
     onSubmit() {
         debugger
         const currentDate = new Date();
         const datePipe = new DatePipe('en-US');
         const formattedTime = datePipe.transform(currentDate, 'shortTime');
         const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-        // if (this.testForm.invalid) {
-        //     this.toastr.warning('please check from is invalid', 'Warning !', {
-        //       toastClass:'tostr-tost custom-toast-warning',
-        //   })
-        //   return;
-        //   }else{
-        // if (!this.testForm.get("TestId").value) 
+
+        if (!this.testForm.invalid) {
+
+            this.invalidFields1 = [];
+
+            // Check table data validation
+            if (!this._TestmasterService.is_templatetest && this.DSTestList.data.length === 0) {
+                this.invalidFields1.push('No data in the table list!');
+            }
+
+            if (this._TestmasterService.is_templatetest && this.Templatetdatasource.data.length === 0) {
+                this.invalidFields1.push('No data in the template list!');
+            }
+
+            if (this.invalidFields1.length > 0) {
+                this.invalidFields1.forEach(field => {
+                    this.toastr.warning(field, 'Warning!');
+                });
+                return; // Stop further processing if there are errors
+            }
+
             if(!this.vTestId){
             let mPathTemplateDetails = this.Templatetdatasource.data.map((row: any) => ({
                 "PtemplateId": 0,
@@ -328,7 +344,7 @@ export class TestFormMasterComponent implements OnInit {
                 "TestDetId": 0,
                 "TestId": row.testId || 0,
                 "SubTestId": row.subTestID || 0,
-                "ParameterId": row.parameterID
+                "ParameterId": row.parameterID || row.parameterId
             }));
 
             var mdata = {
@@ -396,7 +412,24 @@ export class TestFormMasterComponent implements OnInit {
                 this.toastr.error(error.message);
             });
         }
-        //   }
+          } else {
+            this.invalidFields1 = [];
+            
+            if (this.testForm.invalid) {
+              for (const controlName in this.testForm.controls) {
+                if (this.testForm.controls[controlName].invalid) {
+                  this.invalidFields1.push(`My Form: ${controlName}`);
+                }
+              }
+            }
+                  
+            if (this.invalidFields1.length > 0) {
+              this.invalidFields1.forEach(field => {
+                  this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                  );
+              });
+          }
+          }
 
     }
 

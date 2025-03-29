@@ -49,7 +49,7 @@ export class TestmasterComponent implements OnInit {
 
   parameter = this._TestService.myform.get("ParameterNameSearch").value + "%" || '%';
   gridConfig: gridModel = {
-    apiUrl: "Pathology/PathologyTestList",
+    apiUrl: "PathTestMaster/TestMasterList", //"Pathology/PathologyTestList",
     columnsList: [
       { heading: "IsTemplateTest", key: "isTemplateTest", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 150 },
       { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -70,7 +70,8 @@ export class TestmasterComponent implements OnInit {
     sortField: "TestId",
     sortOrder: 0,
     filters: [
-      { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.StartsWith }
+      { fieldName: "TestId", fieldValue: "", opType: OperatorComparer.Equals }
+      // { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.StartsWith }
     ]
   }
 

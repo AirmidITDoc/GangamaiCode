@@ -1,14 +1,24 @@
 <div class="page-layout simple inner-sidebar inner-scroll" style="width:100% ;" dynamicTableHeight fusePerfectScrollbar>
     <!-- HEADER -->
     <div class="top-header">
-        <div class="top-header-info">
-            <!-- <button mat-icon-button class="sidebar-toggle" fxHide.gt-sm (click)="toggleSidebar('app-main')">
-                <mat-icon>menu</mat-icon>
-            </button> -->
+        <div class="top-header-info" fxLayout="row" fxLayoutAlign="start center" >
+            
             <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
             </mat-icon>
             <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 <span>Pathology Result Entry </span>
+            </div>
+        </div>
+
+        
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                <span>: OP </span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill green s-16">circle</mat-icon>
+                <span>: IP </span>
             </div>
         </div>
     </div>
@@ -86,16 +96,8 @@
                         <mat-card>
                             <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-                                <div style="height: 40px;">
+                                <!-- <div style="height: 40px;">
                                     <div fxLayout="row wrap" fxLayoutAlign="end" class="gap-8">
-                                        <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                                            <mat-icon class="pill orange-600 s-16">circle</mat-icon>
-                                            <span>: OP </span>
-                                        </div>
-                                        <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                                            <mat-icon class="pill green s-16">circle</mat-icon>
-                                            <span>: IP </span>
-                                        </div>
                                         <div class="table-header-right">
                                             <div class="export-buttons">
                                                 <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
@@ -112,7 +114,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <ng-template #actionButtonTemplate let-element>
                                     <div fxLayout="row" fxLayoutAlign="center center">
@@ -150,12 +152,13 @@
                                         Result Entry
                                     </button>
 
-                                    <button mat-raised-button (click)="Printresultentry()"
+                                    <button mat-raised-button (click)="Printresultentry()" style="margin-left: 5px;"
                                         *ngIf="selection.selected.length>0">
                                         Print Result
                                     </button>
+
                                     <button mat-raised-button (click)="Printresultentrywithheader(contact)"
-                                        *ngIf="selection.selected.length>0">
+                                        *ngIf="selection.selected.length>0" style="margin-left: 5px;">
                                         Print With Header
                                     </button>
                                 </div>
@@ -223,7 +226,8 @@
                                             Sample Coll.Date/Time
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                            <span> {{contact.sampleCollectionTime | date:'dd/MM/yyyy, h:mm a'}}</span>
+                                            <!-- <span> {{contact.sampleCollectionTime | date:'dd/MM/yyyy, h:mm a'}}</span> -->
+                                            <span> {{contact.sampleCollectionTime}}</span>
                                         </mat-cell>
                                     </ng-container>
 

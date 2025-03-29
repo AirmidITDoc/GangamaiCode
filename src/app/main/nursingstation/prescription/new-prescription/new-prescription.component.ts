@@ -162,7 +162,7 @@ export class NewPrescriptionComponent implements OnInit {
       ItemName: '',
       DoseId:'',
       Day: [''],
-      Qty:['',Validators.required],
+      Qty:['',[Validators.required,Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       Instruction:['']
     })
   }
@@ -280,7 +280,8 @@ export class NewPrescriptionComponent implements OnInit {
         { name: "required", Message: "Item Name is required" }
       ],
       Qty:[
-        { name: "required", Message: "Qty is required" }
+        { name: "required", Message: "Qty is required" },
+        { name: "pattern", Message: "Only numbers allowed" }
       ],
     };
   }
@@ -311,7 +312,7 @@ export class NewPrescriptionComponent implements OnInit {
           {
             ItemID: this.vitemId || 0,
             ItemName: this.vitemname || '',
-            Qty: this.vQty,
+            Qty: this.ItemForm.get('Qty').value || this.vQty,
             Remark: this.ItemForm.get('Instruction').value || ''
           });
         this.dsItemList.data = this.Chargelist

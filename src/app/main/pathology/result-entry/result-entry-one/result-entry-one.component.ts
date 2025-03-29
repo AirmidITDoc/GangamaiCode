@@ -103,8 +103,8 @@ export class ResultEntryOneComponent implements OnInit {
             debugger
             this.selectedAdvanceObj2 = data.patientdata;
             console.log(this.selectedAdvanceObj2)
-            this.OPIPID = this.selectedAdvanceObj2.opD_IPD_ID // this.selectedAdvanceObj2.OPD_IPD_ID;
-            this.OP_IPType = this.selectedAdvanceObj2.opD_IPD_Type;
+            this.OPIPID = this.selectedAdvanceObj2.opdipdid // this.selectedAdvanceObj2.OPD_IPD_ID;
+            this.OP_IPType = this.selectedAdvanceObj2.opdipdtype;
             this.SexId = this.selectedAdvanceObj2.genderId;
             if (this.selectedAdvanceObj2.ageYear)
                 this.CheckAge = this.selectedAdvanceObj2.ageYear.trim();
@@ -381,7 +381,7 @@ export class ResultEntryOneComponent implements OnInit {
           "searchFields": [        
             {
               "fieldName": "OPIPId",        
-              "fieldValue": String(obj.opD_IPD_ID),        
+              "fieldValue": String(obj.opdipdid),        
               "opType": "Equals"
             },
             {        
@@ -391,7 +391,7 @@ export class ResultEntryOneComponent implements OnInit {
             },        
             {        
               "fieldName": "OPIPType",        
-              "fieldValue": String(obj.opD_IPD_Type),        
+              "fieldValue": String(obj.opdipdtype),        
               "opType": "Equals"        
             },        
             {        
@@ -436,7 +436,7 @@ export class ResultEntryOneComponent implements OnInit {
           "searchFields": [        
             {
               "fieldName": "OPIPId",        
-              "fieldValue": String(obj.opD_IPD_ID),        
+              "fieldValue": String(obj.opdipdid),        
               "opType": "Equals"
             },
             {        
@@ -446,7 +446,7 @@ export class ResultEntryOneComponent implements OnInit {
             },        
             {        
               "fieldName": "OPIPType",        
-              "fieldValue": String(obj.opD_IPD_Type),        
+              "fieldValue": String(obj.opdipdtype),        
               "opType": "Equals"        
             },        
             {        
