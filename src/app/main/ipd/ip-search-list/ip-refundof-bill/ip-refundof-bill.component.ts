@@ -157,8 +157,46 @@ refundForm(): FormGroup {
     CashCounterID:[7]   
   });
 } 
- 
+ // 
+getSelectedRow(contact){
+  console.log(contact)
+  var vdata = {
+    "first": 0,
+    "rows": 10,
+    "sortField": "ChargesId",
+    "sortOrder": 0,
+    "filters": [
+      {
+        "fieldName": "BillNo",
+        "fieldValue": "contact.billno",
+        "opType": "Equals"
+      }
 
+    ],
+    "exportType": "JSON"
+  }
+  this._IpSearchListService.getRefundofBillServiceList(vdata).subscribe(data=>{
+    this.dataSource2.data = data as [];
+    console.log(this.dataSource2.data)
+    this.dataSource1.sort = this.sort;
+    this.dataSource1.paginator = this.paginator;
+  }) 
+}
+ 
+getServiceList(param){  
+  var m_data1 = {
+    "BillNo": param.BillNo
+  }
+  console.log(m_data1)
+  this.isLoadingStr = 'loading';
+  this._IpSearchListService.getRefundofBillServiceList(m_data1).subscribe(Visit => { 
+    this.dataSource2.data = Visit as InsertRefundDetail[];
+    console.log(this.dataSource2.data)
+    this.dataSource1.sort = this.sort;
+    this.dataSource1.paginator = this.paginator;
+    this.isLoadingStr = this.dataSource2.data.length == 0 ? 'no-data' : '';
+  });
+}  
   //new code 
   getSelectedObj(obj) {
     console.log(obj) 
@@ -197,21 +235,7 @@ refundForm(): FormGroup {
       console.log( this.dataSource3.data) 
     });
   }
- 
-getServiceList(param){  
-  var m_data1 = {
-    "BillNo": param.BillNo
-  }
-  console.log(m_data1)
-  this.isLoadingStr = 'loading';
-  this._IpSearchListService.getRefundofBillServiceList(m_data1).subscribe(Visit => { 
-    this.dataSource2.data = Visit as InsertRefundDetail[];
-    console.log(this.dataSource2.data)
-    this.dataSource1.sort = this.sort;
-    this.dataSource1.paginator = this.paginator;
-    this.isLoadingStr = this.dataSource2.data.length == 0 ? 'no-data' : '';
-  });
-}  
+
 OnEdit(row) { 
   console.log(row);
   

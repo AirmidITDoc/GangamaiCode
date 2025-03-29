@@ -221,7 +221,7 @@
                             </mat-card> -->
                        
                             <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false"  
-                            tableClasses="h-250">
+                            tableClasses="h-250" (onSelectRow)="getSelectedRow($event)">
                             </airmid-table>
                        
                         </div>
