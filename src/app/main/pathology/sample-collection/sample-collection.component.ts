@@ -46,7 +46,7 @@ export class SampleCollectionComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'lbl')!.template = this.iconlbl;
         this.gridConfig.columnsList.find(col => col.key === 'companyName')!.template = this.iconcompanyName;
         this.gridConfig.columnsList.find(col => col.key === 'isSampleCollection')!.template = this.iconisSampleCollection;
-        this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.iconisCompeleted;
+        // this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.iconisCompeleted;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     }
 
@@ -72,18 +72,19 @@ export class SampleCollectionComponent implements OnInit {
         { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "CompanyName", key: "cm", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        {
-            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                {
-                    action: gridActions.edit, callback: (data: any) => {
-                        this.onSave(data);
-                    }
-                }]
-        } //Action 1-view, 2-Edit,3-delete
         // {
-        //     heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
-        //     template: this.actionButtonTemplate  // Assign ng-template to the column
-        // } 
+        //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+        //         {
+        //             action: gridActions.edit, callback: (data: any) => {
+        //                 this.onSave(data);
+        //             }
+        //         }]
+        // } //Action 1-view, 2-Edit,3-delete
+        {
+            heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
+        } 
+                
     ];
     gridConfig: gridModel = {
         apiUrl: "PathlogySampleCollection/SampleCollectionPatientList",
@@ -128,7 +129,7 @@ this.myformSearch=this._SampleCollectionService.createSearchForm()
                     template:this.iconisCompeleted, width: 50 },
                 { heading: "SampleNo", key: "sampleNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "TestName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
-                { heading: "CollectionDate/Time", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "CollectionDate/Time", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             ],
             sortField: "BillNo",
             sortOrder: 0,

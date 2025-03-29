@@ -12,10 +12,16 @@
             </span>
         </div>
 
-        <!-- <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">New Sample Collection
-            </button>
-        </div> -->
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                <span>: OP </span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill green s-16">circle</mat-icon>
+                <span>: IP </span>
+            </div>
+        </div>
 
     </mat-toolbar>
 
@@ -25,16 +31,8 @@
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-            <div style="padding: 10px; height: 40px;">
+            <!-- <div style="padding: 10px; height: 40px;">
                 <div fxLayout="row wrap" fxLayoutAlign="end center" class="gap-8">
-                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                        <mat-icon class="pill orange-600 s-16">circle</mat-icon>
-                        <span>: OP </span>
-                    </div>
-                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                        <mat-icon class="pill green s-16">circle</mat-icon>
-                        <span>: IP </span>
-                    </div>
                     <div class="table-header-right">
                         <div class="export-buttons">
                             <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
@@ -49,7 +47,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <ng-template #iconlbl let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
@@ -82,23 +80,27 @@
 
             <ng-template #iconisCompeleted let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isSampleCollection == 'True'" matTooltip="IsCompleted">check_circle
+                    <mat-icon *ngIf="element.isSampleCollection == 'True'" matTooltip="IsCompleted"
+                    class="active-icon green-500 s-16">check_circle
                     </mat-icon>
                     
-                    <mat-icon *ngIf="element.isSampleCollection == 'False'" matTooltip="Not Completed">hourglass_empty
+                    <mat-icon *ngIf="element.isSampleCollection == 'False'" matTooltip="Not Completed"
+                    class="active-icon red-500 s-16">hourglass_empty
                     </mat-icon>
                     
                 </div>
             </ng-template>
 
             <ng-template #actionButtonTemplate let-element>
-                <div fxLayout="row" fxLayoutAlign="center center">
-    
-                    <button mat-icon-button matTooltip="Edit" (click)="onSave(element)"
-                    *ngIf="!element.isSampleCollection">
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                </div>
+
+                    <div fxLayout="row" fxLayoutAlign="center center">                        
+                        <mat-icon *ngIf="element.isSampleCollection?.toString().trim() === 'False'" (click)="onSave(element)"
+                        matTooltip="Edit">
+                            edit
+                        </mat-icon>                        
+                    </div>
+                    <!-- <p>{{ element.isSampleCollection }}</p> -->
+
             </ng-template>
 
             <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false" (onSelectRow)="getSelectedRow($event)">

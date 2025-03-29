@@ -920,6 +920,8 @@ export class AdmissionPersonlModel {
   doctorName: any;
   genderName: any;
   opD_IPD_ID: any;
+  opdipdtype:any;
+  opdipdid:any;
   pathReportId: any;
   adm_Visit_docId: any;
   visit_Adm_ID: any;
@@ -1126,6 +1128,8 @@ export class AdmissionPersonlModel {
       this.sampleCollectionTime = AdmissionPersonl.sampleCollectionTime || ''
       this.isSampleCollection = AdmissionPersonl.isSampleCollection || ''
       this.isTemplateTest = AdmissionPersonl.isTemplateTest || ''
+      this.opdipdtype=AdmissionPersonl.opdipdtype || ''
+      this.opdipdid=AdmissionPersonl.opdipdid || ''
     }
   }
 }
