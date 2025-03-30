@@ -116,6 +116,14 @@
 
                          
                         <mat-form-field appearance="outline">
+                            <mat-label>UHID</mat-label>
+                            <input matInput placeholder="UHID" autocomplete="off" [formGroup]="myFilterform" formControlName="RegNo" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
                             <mat-label>FirstName</mat-label>
                             <input matInput placeholder="FirstName" autocomplete="off" [formGroup]="myFilterform" formControlName="FirstName"  (input)="onChangeFirst()" />
                             <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
@@ -140,14 +148,6 @@
                             </button>
                         </mat-form-field>
 
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>RegNo</mat-label>
-                            <input matInput placeholder="RegNo" autocomplete="off" [formGroup]="myFilterform" formControlName="RegNo" (input)="onChangeFirst()" />
-                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                        </mat-form-field>
 
 
                         <mat-form-field appearance="outline">

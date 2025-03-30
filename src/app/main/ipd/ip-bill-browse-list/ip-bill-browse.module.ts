@@ -34,8 +34,6 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { IPBillBrowseListComponent } from './ip-bill-browse-list.component';
 import { ViewIPBillComponent } from './view-ip-bill/view-ip-bill.component';
 
-//import { ViewIPDBillComponent } from './ipd-bil-browse-list/view-ipdbill/view-ipdbill.component';
-
 const routes: Routes = [
   { 
       path: '**', 
@@ -82,9 +80,7 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatBadgeModule,
         MatSelectModule,
-        // NgMultiSelectDropDownModule.forRoot(),
         MatTooltipModule,
-        // MatTableExporterModule
     ],
     providers: [
         // IPSearchListService,

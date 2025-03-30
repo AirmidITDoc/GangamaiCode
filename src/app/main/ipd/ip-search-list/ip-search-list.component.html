@@ -123,8 +123,8 @@
                  
                         <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue" [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
                     <mat-form-field appearance="outline">
-                        <mat-label>Reg No</mat-label>
-                        <input matInput placeholder="Search Reg No" autocomplete="off" [formGroup]="myFilterform" formControlName="RegNo"  (input)="onChangeFirst($event)" />
+                        <mat-label>UHID No</mat-label>
+                        <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myFilterform" formControlName="RegNo"  (input)="onChangeFirst($event)" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
                             <mat-icon>close</mat-icon>
                         </button>

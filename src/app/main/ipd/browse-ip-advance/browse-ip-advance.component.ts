@@ -65,24 +65,24 @@ export class BrowseIPAdvanceComponent implements OnInit {
     ]
 
     allAdvanceColumns=[
-        { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 6}, 
+        { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', type: 6}, 
         { heading: "AdvanceNo", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA'}, 
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
-        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200}, 
+        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350}, 
         { heading: "IPDNo", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA'}, 
-        { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150}, 
-        { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA'}, 
-        { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA'}, 
-        { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA'}, 
-        { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA'}, 
-        { heading: "AdvanceAmt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA'}, 
-        { heading: "CashPay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA'}, 
-        { heading: "ChequePay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA'}, 
-        { heading: "CardPay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA'}, 
-        { heading: "OnlinePay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA'}, 
-        { heading: "BalanceAmt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA'}, 
-        { heading: "RefundAmt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA'}, 
-        { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA'}, 
+        { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 250}, 
+        { heading: "Ref DoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 250}, 
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 350}, 
+        { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA'}, 
+        { heading: "Ward Name", key: "wardName", sort: true, align: 'left', emptySign: 'NA'}, 
+        { heading: "Advance Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount}, 
+        { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount}, 
+        { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount}, 
+        { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount}, 
+        { heading: "Online Pay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount}, 
+        { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount}, 
+        { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount}, 
+        { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA'}, 
         {
             heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplateone  // Assign ng-template to the column
@@ -100,17 +100,17 @@ export class BrowseIPAdvanceComponent implements OnInit {
     allRefundOfAdvanceColumns=[
         { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Date", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6},
-        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 }, //
-        { heading: "AdvanceAmt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', width: 200 }, //
-        { heading: "AdvanceUsedAmt", key: "advanceUsedAmt", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "BalanceAmt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', width: 200 }, //
-        { heading: "RefundAmt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', width: 200 }, //
-        { heading: "PayDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 6}, //
-        { heading: "CashPay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150}, //
-        { heading: "ChequePay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150}, //
-        { heading: "CardPay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150}, //
-        { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 200 }, //
-        { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA',width: 150  }, //
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350 }, 
+        { heading: "Advance Amt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount }, 
+        { heading: "Advance UsedAmt", key: "advanceUsedAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount }, 
+        { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount }, 
+        { heading: "PayDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 6}, 
+        { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount}, 
+        { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount}, 
+        { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount},
+        { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 300 }, 
+        { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA'}, 
         {
             heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column

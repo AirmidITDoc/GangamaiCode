@@ -75,11 +75,17 @@
                                 </ng>
                                 <ng *ngSwitchCase="GridColumnType.wordBreak">
                                     <a class="table-link bold break-spaces text-overflow" test="{{element[row.key] | json}}" (click)="$event.stopPropagation();actionLink.emit({action: row.actionType, data: element})">{{
-                                        element[row.key]}}
+                                        element[row.key]
+                                    }}
                                     </a>
                                 </ng>
                                 <ng *ngSwitchDefault>
                                     <span class="text-overflow" [matTooltip]="element[row.key] || '--'">{{ element[row.key] || '--'}}</span>
+                                </ng>
+                                <ng *ngSwitchCase="GridColumnType.amount">
+                                    <span class="text-overflow" [matTooltip]="element[row.key] || '0'">
+                                        {{ element[row.key] || 0 | currency : 'INR' : 'symbol' }}
+                                    </span>
                                 </ng>
                                 <ng *ngSwitchCase="GridColumnType.action">
                                     <div class="action-list">

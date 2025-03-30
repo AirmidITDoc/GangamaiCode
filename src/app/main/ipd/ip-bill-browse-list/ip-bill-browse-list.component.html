@@ -196,15 +196,14 @@
                                 [(toValue)]="gridConfig1.filters[3].fieldValue">
                             </airmid-datepicker>
 
-                            <!-- <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Receipt No</mat-label>
-                                <input matInput placeholder="Search Receipt No" autocomplete="off"
-                                    [(ngModel)]="gridConfig1.filters[6].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig1.filters[6].fieldValue='0'">
+                            <mat-form-field appearance="outline">
+                                <mat-label>UHID</mat-label>
+                                <input matInput placeholder="Search UHID" autocomplete="off"
+                                    [formGroup]="myFilterFormIPBrowsePayment" formControlName="RegNo" (input)="onChangeIPPayment()" />
+                                <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterIPpayment('RegNo')">
                                     <mat-icon>close</mat-icon>
                                 </button>
-                            </mat-form-field> -->
+                            </mat-form-field>
 
                             <mat-form-field appearance="outline">
                                 <mat-label>Receipt No</mat-label>
@@ -215,30 +214,11 @@
                                 </button>
                             </mat-form-field>
 
-                            <!-- <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>PBillNo</mat-label>
-                                <input matInput placeholder="Search PBill No" autocomplete="off"
-                                    [(ngModel)]="gridConfig1.filters[5].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig1.filters[5].fieldValue='0'">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field> -->
-
                             <mat-form-field appearance="outline">
                                 <mat-label>PBillNo</mat-label>
                                 <input matInput placeholder="Search PBillNo" autocomplete="off"
                                     [formGroup]="myFilterFormIPBrowsePayment" formControlName="PBillNo" (input)="onChangeIPPayment()" />
                                 <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterIPpayment('PBillNo')">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline">
-                                <mat-label>RegNo</mat-label>
-                                <input matInput placeholder="Search RegNo" autocomplete="off"
-                                    [formGroup]="myFilterFormIPBrowsePayment" formControlName="RegNo" (input)="onChangeIPPayment()" />
-                                <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterIPpayment('RegNo')">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
@@ -295,8 +275,8 @@
                             </airmid-datepicker>
 
                             <mat-form-field appearance="outline">
-                                <mat-label>RegNo</mat-label>
-                                <input matInput placeholder="Search RegNo" autocomplete="off"
+                                <mat-label>UHID</mat-label>
+                                <input matInput placeholder="Search UHID" autocomplete="off"
                                     [formGroup]="myFilterFormIPBrowseRefund" formControlName="RegNo" (input)="onChangeIPRefund()" />
                                 <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterIPRefund('RegNo')">
                                     <mat-icon>close</mat-icon>

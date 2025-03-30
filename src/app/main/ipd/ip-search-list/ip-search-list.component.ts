@@ -82,11 +82,12 @@ export class IPSearchListComponent implements OnInit {
         { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
-        { heading: "IPDNo", key: "ipdno", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Doctorname", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "RefDocName", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "Adv.Amount", key: "adv.amount", sort: true, align: 'left', emptySign: 'NA', type: 10 },
-        { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', type: 10, width: 350 },
+        { heading: "IPD No", key: "ipdno", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Ref Doc Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', type: 10, width: 350 },
+        { heading: "Adv Amount", key: "AdvanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount},
+        { heading: "Charges Amount", key: "ChargesAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount},
         {
             heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,width:200,
             template: this.actionButtonTemplate  // Assign ng-template to the column

@@ -167,7 +167,7 @@ export class AdmissionComponent implements OnInit {
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
     { heading: "Date", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
     { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Ref DocName", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Ref Doc Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "IPDNo", key: "ipdno", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Ward Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', type: 14, width: 170 },
