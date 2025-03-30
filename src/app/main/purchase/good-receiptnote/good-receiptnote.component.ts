@@ -24,6 +24,7 @@ import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-s
 import * as XLSX from 'xlsx';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
 import { NewGrnComponent } from './new-grn/new-grn.component';
+import { GSTType } from './new-grn/types';
 
 @Component({
     selector: 'app-good-receiptnote',
@@ -486,7 +487,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     }
 
     viewgetGRNReportPdf(row) {
-        
+
         setTimeout(() => {
             this.SpinLoading = true;
             this._GRNService.getGRNreportview(
@@ -790,6 +791,8 @@ export class ItemNameList {
     TotalAmount: number;
     Disc: number;
     DisAmount: number;
+    Disc2: number;
+    DisAmount2: number;
     GSTNo: number;
     GST: number;
     GSTAmount: number;
@@ -839,7 +842,6 @@ export class ItemNameList {
     discPercentage: number;
     discAmount: number;
     DiscPercentage: number;
-    DiscAmount: number;
     DiscPer2: number;
     DiscAmt2: number;
     PaymentType: any;
@@ -880,6 +882,7 @@ export class ItemNameList {
     PurchaseNo: any;
     SupplierName: any;
     SrNo: number;
+    GSTType: GSTType | null;
     /**
      * Constructor
      *
@@ -960,6 +963,7 @@ export class ItemNameList {
             this.ConversionFactor = ItemNameList.ConversionFactor || 0
             this.SrNo = ItemNameList.SrNo || 0;
             this.PurchaseNo = ItemNameList.PurchaseNo || 0;
+            this.GSTType = ItemNameList.GSTType || null;
         }
     }
 }

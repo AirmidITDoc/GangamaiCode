@@ -20,7 +20,7 @@ export interface GRNFormModel {
 
   // Item Details
   ItemName: GRNItemResponseType | null;
-  UOM: string;
+  UOMId: string;
   HSNCode: string;
   BatchNo: string;
   ConversionFactor: number;
@@ -70,9 +70,9 @@ export interface GRNFormModel {
   GateEntryNo: string;
 
   // Type Details
-  GRNType: string; 
-  GSTType: string;
-  PaymentType: string; 
+  GRNType: string;
+  GSTType: GSTType;
+  PaymentType: string;
 }
 
 // Enum for GST Type Text
@@ -91,4 +91,42 @@ export interface GSTCalculation {
   igstAmount: number;
   totalGSTAmount: number;
   netAmount: number;
+}
+export interface GSTValidation {
+  readonly VALID_GST_RATES: number[];
+  readonly GST_ERROR_MESSAGE: string;
+}
+
+export interface GSTCalculationResult {
+  totalAmount: number;
+  discAmount: number;
+  cgst: number;
+  sgst: number;
+  igst: number;
+  gst: number;
+  finalTotalQty: number;
+  conversionFactor: number;
+  mrp: number;
+  rate: number;
+}
+export interface GRNFinalFormModel {
+  Status3: string;
+  Remark: string;
+  ReceivedBy: string;
+  DebitAmount: number;
+  CreditAmount: number;
+  DiscAmount: string;
+  TotalAmt: string;
+  VatAmount: string;
+  NetPayamt: string;
+  OtherCharge: number;
+  RoundingAmt: number;
+  EwayBillNo: string;
+  EwalBillDate: Date;
+  DiscAmount2: number;
+}
+export enum ToastType {
+  SUCCESS = 'success',
+  WARNING = 'warning',
+  ERROR = 'error'
 }

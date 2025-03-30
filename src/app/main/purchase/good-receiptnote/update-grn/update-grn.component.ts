@@ -1398,7 +1398,7 @@ chekgstper(obj){
             grnDetailSaveObj['vatPercentage'] = element.VatPercentage || 0;
             grnDetailSaveObj['vatAmount'] = element.VatAmount || 0;
             grnDetailSaveObj['discPercentage'] = element.DiscPercentage || 0;
-            grnDetailSaveObj['discAmount'] = element.DiscAmount || 0;
+            grnDetailSaveObj['discAmount'] = element.DisAmount || 0;
             grnDetailSaveObj['discPerc2'] = element.DiscPer2 || 0;
             grnDetailSaveObj['discAmt2'] = element.DiscAmt2 || 0;
             grnDetailSaveObj['otherTax'] = 0; // this.CgstPer;
@@ -1566,7 +1566,7 @@ chekgstper(obj){
             grnDetailSaveObj['vatPercentage'] = element.VatPercentage || 0;
             grnDetailSaveObj['vatAmount'] = element.VatAmount || 0;
             grnDetailSaveObj['discPercentage'] = element.DiscPercentage || 0;
-            grnDetailSaveObj['discAmount'] = element.DiscAmount || 0;
+            grnDetailSaveObj['discAmount'] = element.DisAmount || 0;
             grnDetailSaveObj['otherTax'] = 0; // this.CgstPer;
             grnDetailSaveObj['landedRate'] = element.LandedRate || 0;
             grnDetailSaveObj['netAmount'] = element.NetAmount || 0;
@@ -1738,7 +1738,7 @@ chekgstper(obj){
             grnDetailSaveObj['vatPercentage'] = element.VatPercentage || 0;
             grnDetailSaveObj['vatAmount'] = element.VatAmount || 0;
             grnDetailSaveObj['discPercentage'] = element.DiscPercentage || 0;
-            grnDetailSaveObj['discAmount'] = element.DiscAmount || 0;
+            grnDetailSaveObj['discAmount'] = element.DisAmount || 0;
             grnDetailSaveObj['discPerc2'] = element.DiscPer2 || 0;
             grnDetailSaveObj['discAmt2'] = element.DiscAmt2 || 0;
             grnDetailSaveObj['otherTax'] = 0; // this.CgstPer;
@@ -1887,7 +1887,7 @@ chekgstper(obj){
             grnDetailSaveObj['vatPercentage'] = element.VatPercentage || 0;
             grnDetailSaveObj['vatAmount'] = element.VatAmount || 0;
             grnDetailSaveObj['discPercentage'] = element.DiscPercentage || 0;
-            grnDetailSaveObj['discAmount'] = element.DiscAmount || 0;
+            grnDetailSaveObj['discAmount'] = element.DisAmount || 0;
             grnDetailSaveObj['discPerc2'] = element.DiscPer2 || 0;
             grnDetailSaveObj['discAmt2'] = element.DiscAmt2 || 0;
             grnDetailSaveObj['otherTax'] = 0; // this.CgstPer;

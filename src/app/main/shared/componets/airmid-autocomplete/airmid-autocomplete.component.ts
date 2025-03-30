@@ -14,6 +14,7 @@ import { debounceTime, distinctUntilChanged, switchMap, take, takeUntil } from '
 export class AirmidAutoCompleteComponent implements OnInit {
     @Input() filteredOptions: Observable<any[]>;
     @Output() selectionChange = new EventEmitter<any>();
+    @Output() onClearSelection = new EventEmitter<any>();
     private destroy: Subject<void> = new Subject();
     control = new FormControl();
     @Input() formGroup: FormGroup;
@@ -141,5 +142,6 @@ export class AirmidAutoCompleteComponent implements OnInit {
             control.setValue("0")
             // control.reset();
         }
+        this.onClearSelection.emit();
     }
 }

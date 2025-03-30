@@ -9,14 +9,10 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
-import Swal from 'sweetalert2';
-import { map, startWith } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { ToastrService } from 'ngx-toastr';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { FormsModule, FormControl } from '@angular/forms';
+import { FormsModule, FormControl, FormGroup } from '@angular/forms';
 import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
@@ -26,7 +22,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ItemFormMasterComponent } from 'app/main/setup/inventory/item-master/item-form-master/item-form-master.component';
 import { SupplierFormMasterComponent } from 'app/main/setup/inventory/supplier-master/supplier-form-master/supplier-form-master.component';
 import { PODetailList, PurchaseorderComponent } from '../update-grn/purchaseorder/purchaseorder.component';
-import { GRNFormModel, GRNItemResponseType, GSTCalculation, GSTType } from './types';
+import { GRNFinalFormModel, GRNFormModel, GRNItemResponseType, GSTCalculation, GSTType, ToastType } from './types';
 import { NewGRNService } from './new-grn.service';
 
 
@@ -198,6 +194,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     lastDay2: string = '';
     vExpDate: string = '';
     dateTimeObj: any;
+    // Make it true when you want to use mock data.
+    mock = false;
 
     // Bind dropdown mode
     dropdownMode = {
@@ -224,6 +222,9 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         // this.dsItemNameList.data.push(
         //     new ItemNameList(staticData),
         // );
+        if (this.mock) {
+            this.setMockData();
+        }
         if (this.data.chkNewGRN == 2) {
             this.registerObj = this.data.Obj;
             console.log(this.registerObj)
@@ -252,16 +253,19 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         this.getGSTtypeList();
     }
     getSelectedItem(item: GRNItemResponseType): void {
+        if (this.mock) {
+            return;
+        }
         this._GRNList.userFormGroup.patchValue({
-            UOM: item.umoId,
-            ConversionFactor: item.converFactor,
+            UOMId: item.umoId,
+            ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
             Qty: item.balanceQty,
             CGST: item.cgstPer,
             SGST: item.sgstPer,
             IGST: item.igstPer,
             GST: item.cgstPer + item.sgstPer + item.igstPer
         });
-        console.log("ITEM", item);
+        this.calculateTotalamt();
     }
     getValidationMessages() {
         return {
@@ -356,7 +360,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             this._GRNList.userFormGroup.get('GSTType').setValue(toSelectGSTType);
         }
     }
-    
+
     // onAdd() {
 
     //     if ((this.vItemName == '' || this.vItemName == null || this.vItemName == undefined)) {
@@ -463,40 +467,40 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     //     //this.vlastDay = '';
     // }
 
-    ItemReset() {
-        this.ItemName = " ";
-        this.ItemID = 0;
-        this.ItemId = 0;
-        this.vConversionFactor = "";
-        this.vUOM = "";
-        this.vHSNCode = "";
-        this.vBatchNo = "";
-        this.vlastDay = "";
-        this.vQty = 0;
-        this.vFreeQty = 0;
-        this.vMRP = 0;
-        this.vRate = 0;
-        this.vTotalAmount = 0;
-        this.vDisc = 0;
-        this.vDisAmount = 0;
-        this.vDisc2 = 0;
-        this.vDisAmount2 = 0;
-        this.vGST = 0;
-        this.vGSTAmount = 0;
-        this.vCGST = 0;
-        this.vCGSTAmount = 0;
-        this.vSGST = 0;
-        this.vSGSTAmount = 0;
-        this.vIGST = 0;
-        this.vIGSTAmount = 0;
-        this.vNetAmount = 0;
+    resetFormItem() {
+        const form = this._GRNList.userFormGroup;
+
+        form.patchValue({
+            ItemName: "",
+            ConversionFactor: 1,
+            Qty: 0,
+            UOMId: 0,
+            HSNCode: "",
+            BatchNo: "",
+            ExpDate: "",
+            FreeQty: 0,
+            Rate: 0,
+            MRP: 0,
+            Disc: 0,
+            Disc2: 0,
+            DisAmount: 0,
+            DisAmount2: 0,
+            CGST: 0,
+            CGSTAmount: 0,
+            SGST: 0,
+            SGSTAmount: 0,
+            IGST: 0,
+            TotalAmount: 0,
+            NetAmount: 0,
+            FinalTotalQty: 0,
+        });
+        this._GRNList.userFormGroup.markAsUntouched();
     }
     getDateTime(dateTimeObj) {
         this.dateTimeObj = dateTimeObj;
     }
     calculateTotalamt() {
         const form = this._GRNList.userFormGroup;
-
         // Get values with proper type conversion
         const qty = +form.get('Qty').value || 0;
         const freeqty = +form.get('FreeQty').value || 0;
@@ -525,8 +529,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             // Reset all calculated values
             form.patchValue({
                 TotalAmount: 0,
-                DisAmount: 0,
-                DisAmount2: 0,
+                DiscAmount: 0,
+                DiscAmount2: 0,
                 CGSTAmount: 0,
                 SGSTAmount: 0,
                 IGSTAmount: 0,
@@ -535,37 +539,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 FinalTotalQty: totalQty
             });
         }
+        this.calculateDiscountAmount();
         this.calculateGSTType();
-    }
-    calculateNetAmount() {
-        // Get form values with type assertion and null safety
-        const formValues = this._GRNList.userFormGroup.getRawValue() as GRNFormModel;
-
-        // Extract and convert values to numbers with default 0
-        const values = {
-            TotalAmount: Number(formValues.TotalAmount || 0),
-            DisAmount: Number(formValues.DisAmount || 0),
-            CGSTAmount: Number(formValues.CGSTAmount || 0),
-            SGSTAmount: Number(formValues.SGSTAmount || 0),
-            IGSTAmount: Number(formValues.IGSTAmount || 0)
-        };
-
-        // Calculate total GST amount
-        const totalGSTAmount = values.CGSTAmount + values.SGSTAmount + values.IGSTAmount;
-
-        // Calculate amount after discount
-        const amountAfterDiscount = values.TotalAmount - values.DisAmount;
-
-        // Calculate final net amount
-        const netAmount = Number((amountAfterDiscount + totalGSTAmount).toFixed(2));
-
-        // Update form with new value
-        this._GRNList.userFormGroup.patchValue({
-            NetAmount: netAmount,
-            GSTAmount: totalGSTAmount.toFixed(2)
-        }, { emitEvent: false }); // Prevent unnecessary form value emissions
-
-        return netAmount; // Return value for potential use elsewhere
     }
     // Calculate discount when discount percentage changes
     calculateDiscountAmount() {
@@ -575,9 +550,9 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         // Get and validate discount percentage
         const discountPercentage = Number(values.Disc || 0);
         if (discountPercentage >= 100 || discountPercentage < 0) {
-            this.toastr.warning('Discount percentage should be between 0 and 100');
+            this.newGRNService.showToast('Discount percentage should be between 0 and 100', ToastType.WARNING);
             form.patchValue({ Disc: 0 });
-            this.calculateNetAmount();
+            this.calculateGSTType();
             return;
         }
 
@@ -591,52 +566,17 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         }, { emitEvent: false });
 
         // // Recalculate GST after discount update
-        // this.calculateGSTBasedOnType(values.GSTType);
-        this.calculateNetAmount();
+        this.calculateGSTType();
     }
     calculateGSTType(type: GSTType = GSTType.GST_BEFORE_DISC) {
         const form = this._GRNList.userFormGroup;
         const formValues = form.getRawValue() as GRNFormModel;
 
         // Get all required values with proper type conversion
-        const values = {
-            totalAmount: Number(formValues.TotalAmount || 0),
-            discAmount: Number(formValues.DisAmount || 0),
-            cgst: Number(formValues.CGST || 0),
-            sgst: Number(formValues.SGST || 0),
-            igst: Number(formValues.IGST || 0),
-            gst: Number(formValues.GST || 0),
-            finalTotalQty: Number(formValues.FinalTotalQty || 0),
-            conversionFactor: Number(formValues.ConversionFactor || 1),
-            mrp: Number(formValues.MRP || 0),
-            rate: Number(formValues.Rate || 0)
-        };
+        const values = this.newGRNService.normalizeValues(formValues);
 
-        let calculation: GSTCalculation;
-
-        switch (type) {
-            case GSTType.GST_AFTER_DISC: {
-                calculation = this.newGRNService.calculateGSTAfterDisc(values);
-                break;
-            }
-            case GSTType.GST_BEFORE_DISC: {
-                calculation = this.newGRNService.calculateGSTBeforeDisc(values);
-                break;
-            }
-            case GSTType.GST_ON_MRP_PLUS_FREE_QTY: {
-                calculation = this.newGRNService.calculateGSTOnMRPPlusFreeQty(values);
-                break;
-            }
-            case GSTType.GST_ON_PUR_PLUS_FREE_QTY: {
-                calculation = this.newGRNService.calculateGSTOnPurPlusFreeQty(values);
-                break;
-            }
-            default: {
-                // Default fallback to GST Before Disc
-                calculation = this.newGRNService.calculateGSTBeforeDisc(values);
-                return;
-            }
-        }
+        // Get GST Calculation
+        const calculation = this.newGRNService.getGSTCalculation(formValues.GSTType || type, values);
 
         // Update form with calculated values
         form.patchValue({
@@ -647,80 +587,206 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             GSTAmount: calculation.totalGSTAmount.toFixed(2),
             NetAmount: calculation.netAmount.toFixed(2)
         }, { emitEvent: false });
+    }
+    calculateCellGSTType(item: ItemNameList): ItemNameList {
+        // Validate input
+        if (!item) return item;
 
-        this.calculateNetAmount();
+        try {
+            // Get all required values with proper type conversion
+            const values = this.newGRNService.normalizeValues(item);
+
+            // Get GST Calculation
+            const calculation = this.newGRNService.getGSTCalculation(item.GSTType, values);
+
+            // Create updated item with new values
+            return {
+                ...item,
+                IGST: item.GSTType === GSTType.GST_AFTER_DISC ? 0 : values.igst,
+                CGSTAmount: Number(calculation.cgstAmount.toFixed(2)),
+                SGSTAmount: Number(calculation.sgstAmount.toFixed(2)),
+                IGSTAmount: Number(calculation.igstAmount.toFixed(2)),
+                VatAmount: Number(calculation.totalGSTAmount.toFixed(2)),
+                NetAmount: Number(calculation.netAmount.toFixed(2)),
+                // Add any additional calculated fields
+                LandedRate: calculation.netAmount / (item.TotalQty || 1),
+                PurUnitRate: item.TotalAmount / (item.Qty * item.ConversionFactor),
+                PurUnitRateWF: item.TotalAmount / (item.TotalQty || 1),
+                UnitMRP: item.MRP / item.ConversionFactor
+            };
+        } catch (error) {
+            console.error('Error calculating GST:', error);
+            return item;
+        }
     }
     onAddGRNItem() {
-        console.log("FORM VALUES", this._GRNList.userFormGroup.getRawValue());
+        if (!this.newGRNService.validateGRNForm(this._GRNList.userFormGroup)) {
+            return;
+        }
+        // Check if the item is already in the list
+        const isDuplicate = this.dsItemNameList.data.some(item => item.BatchNo === this._GRNList.userFormGroup.get('BatchNo').value);
+        if (isDuplicate) {
+            this.newGRNService.showToast('Item already added in the list', ToastType.WARNING);
+            return;
+        }
         const formValues = this._GRNList.userFormGroup.getRawValue() as GRNFormModel;
+        const totalQty = (Number(formValues.Qty) + Number(formValues.FreeQty)) * (Number(formValues.ConversionFactor) || 1);
         if (formValues.ItemName) {
             const newItem = new ItemNameList({
                 ...formValues,
                 ItemName: formValues.ItemName.itemName,
-                TotalQty: formValues.Qty + Number(formValues.FreeQty)
+                TotalQty: totalQty,
+                // Add any additional calculated fields
+                LandedRate: formValues.NetAmount / (totalQty || 1),
+                PurUnitRate: formValues.TotalAmount / (formValues.Qty * formValues.ConversionFactor),
+                PurUnitRateWF: formValues.TotalAmount / (totalQty || 1),
+                UnitMRP: formValues.MRP / formValues.ConversionFactor
             });
             this.dsItemNameList.data = [...this.dsItemNameList.data, newItem];
+            this.updateGRNFinalForm();
         }
-        console.log("TABLE DATA", this.dsItemNameList.data);
+        this.resetFormItem();
     }
     deleteTableRow(row: ItemNameList) {
-        this.dsItemNameList.data = this.dsItemNameList.data.filter(item => item !== row);
+        if (row.IsVerifiedUserId == 1) {
+            this.newGRNService.showToast('Verified Record should not be Deleted .', ToastType.SUCCESS);
+        } else {
+            this.dsItemNameList.data = this.dsItemNameList.data.filter(item => item !== row);
+            this.newGRNService.showToast('Record Deleted Successfully.', ToastType.SUCCESS);
+            this.updateGRNFinalForm();
+        }
     }
-    onGSTTypeChange(event: any) {
-        this.calculateGSTType(event.name);
-    }   
-    getCGSTAmt(element) {
-        let CGSTAmt;
-        CGSTAmt = element.reduce((sum, { CGSTAmt }) => sum += +(CGSTAmt || 0), 0); this.vCGSTAmount
-        this.CGSTFinalAmount = CGSTAmt;
-        return CGSTAmt;
+    onGSTTypeChange(event: { value: number, text: string }) {
+        this.calculateGSTType(event.text as GSTType);
     }
-    getSGSTAmt(element) {
-        let SGSTAmt;
-        SGSTAmt = element.reduce((sum, { SGSTAmt }) => sum += +(SGSTAmt || 0), 0);
-        this.SGSTFinalAmount = SGSTAmt;
-        return SGSTAmt;
+    getCGSTAmt() {
+        return this.dsItemNameList.data.reduce((sum, { CGSTAmount }) => sum += +(CGSTAmount || 0), 0);
     }
-    getIGSTAmt(element) {
-        let IGSTAmt;
-        IGSTAmt = element.reduce((sum, { IGSTAmt }) => sum += +(IGSTAmt || 0), 0);
-        this.IGSTFinalAmount = IGSTAmt;
-        return IGSTAmt;
+    getSGSTAmt() {
+        return this.dsItemNameList.data.reduce((sum, { SGSTAmount }) => sum += +(SGSTAmount || 0), 0);
     }
-    NetAmount: any;
-    getTotalAmt(element) {
-        let FinalRoundAmt = (element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
-        this.NetAmount = FinalRoundAmt;
+    getIGSTAmt() {
+        return this.dsItemNameList.data.reduce((sum, { IGSTAmount }) => sum += +(IGSTAmount || 0), 0);
+    }
+    getTotalAmount() {
+        return this.dsItemNameList.data.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0);
+    }
+    getCellCalculation(item: ItemNameList) {
+        // Validate PO Quantity
+        // if (!this.newGRNService.validatePOQuantity(contact)) {
+        //     Swal.fire("Qty Should Be less than PO Qty");
+        //     return;
+        // }
+        this.newGRNService.validateCellData(item);
 
-        this.vTotalFinalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
-        this.vFinalDisAmount = (element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0)).toFixed(2);
-        this.vFinalDisAmount2 = (element.reduce((sum, { DiscAmt2 }) => sum += +(DiscAmt2 || 0), 0)).toFixed(2);
-        this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
+        // Calculate basic values
+        this.newGRNService.calculateBasicValues(item);
+        // Validate GST Rates
+        this.newGRNService.validateGSTRates(item);
 
-        let Othercharge = this._GRNList.GRNFinalForm.get("OtherCharge").value || 0;
-        FinalRoundAmt = (parseFloat(FinalRoundAmt) + parseFloat(Othercharge));
+        const updatedItem = this.calculateCellGSTType(item);
+        Object.assign(item, updatedItem);
 
-        let DebitAmount = this._GRNList.GRNFinalForm.get("DebitAmount").value || 0;
-        FinalRoundAmt = (parseFloat(FinalRoundAmt) + parseFloat(DebitAmount));
+        this.updateGRNFinalForm();
+    }
+    updateGRNFinalForm() {
+        const form = this._GRNList.GRNFinalForm;
+        const itemList = this.dsItemNameList.data;
+        const netAmount = itemList.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
+        const updatableFormValues: GRNFinalFormModel = {
+            TotalAmt: itemList.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0).toFixed(2),
+            VatAmount: itemList.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0).toFixed(2),
+            NetPayamt: netAmount.toFixed(2),
+            RoundingAmt: Math.round(netAmount),
+            DiscAmount: itemList.reduce((sum, { DisAmount }) => sum += +(DisAmount || 0), 0).toFixed(2),
+            DiscAmount2: itemList.reduce((sum, { DisAmount2 }) => sum += +(DisAmount2 || 0), 0),
+            OtherCharge: itemList.reduce((sum, { OtherCharge }) => sum += +(OtherCharge || 0), 0),
+        } as GRNFinalFormModel;
 
-        let CreditAmount = this._GRNList.GRNFinalForm.get("CreditAmount").value || 0;
-        FinalRoundAmt = (parseFloat(FinalRoundAmt) - parseFloat(CreditAmount));
-        let FinalnetAmt = FinalRoundAmt;
-        this.vFinalNetAmount = Math.round(FinalnetAmt).toFixed(2); //(element.reduce((sum, { RoundNetAmt }) => sum += +(RoundNetAmt || 0), 0)).toFixed(2) || Math.round(this.FinalNetAmount);
-        this.vDiffNetRoundAmt = (parseFloat(this.vFinalNetAmount) - (FinalnetAmt)).toFixed(2);
-
-        return this.vTotalFinalAmount;
+        form.patchValue({
+            ...updatableFormValues
+        });
+    }
+    OnAddItem() {
+        const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
+            maxWidth: "100%",
+            height: '95%',
+            width: '95%',
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log("The dialog was closed - Insert Action", result);
+        });
+    }
+    OnAddSupplier() {
+        const dialogRef = this._matDialog.open(SupplierFormMasterComponent, {
+            maxWidth: "100%",
+            height: '95%',
+            width: '95%',
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log("The dialog was closed - Insert Action", result);
+        });
+    }
+    OnReset() {
+        this.resetForm();
+    }
+    private resetCalculations(contact: any): void {
+        const resetValues = {
+            TotalAmount: 0,
+            DiscAmount: 0,
+            DiscAmt2: 0,
+            CGSTAmt: 0,
+            SGSTAmt: 0,
+            IGSTAmt: 0,
+            VatAmount: 0,
+            NetAmount: 0
+        };
+        Object.assign(contact, resetValues);
     }
     purchaseOrderList(): void {
-
+        // Get purchase order list
     }
     resetForm() {
         this._GRNList.userFormGroup.reset();
+        this.dsItemNameList.data = [];
+        this.updateGRNFinalForm();
+    }
+    setFocus(elementId: string) {
+        // Set focus to the element with the given id
+    }
+    setMockData() {
+        this._GRNList.userFormGroup.patchValue({
+            UOMId: 1234,
+            ConversionFactor: 5,
+            Qty: 10,
+            CGST: 6,
+            SGST: 6,
+            IGST: 0,
+            GST: 12,
+            Rate: 100,
+            MRP: 200,
+            FreeQty: 5,
+            Disc: 10,
+            BatchNo: "123",
+            ExpDate: "102025",
+            ItemName: {
+                itemName: "Test Item"
+            }
+        });
+        this.calculateTotalamt();
+    }
+    keyPressCharater(event: any) {
+
+    }
+    onSave() {
+        const formValues = this._GRNList.userFormGroup.getRawValue() as GRNFormModel;
+        const itemList = this.dsItemNameList.data;
+        console.log("SAVE", { formValues, itemList });
+        // Apply save flow here
     }
     ngOnDestroy(): void {
         this.resetForm();
     }
-
 }
 export class LastThreeItemList {
     ItemID: any;
