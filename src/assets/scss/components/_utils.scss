@@ -106,14 +106,16 @@
     .net-amt-section {
         .net-amt {
             display: flex;
-            justify-content: flex-start;
-            align-items: center;
+            // justify-content: flex-start;
+            justify-content: space-around;
+            // align-items: center;
             gap: 24px;
             .net-amt-box {
                 .net-amt-label {
                     font-weight: 600;
                 }
                 .net-amt-value {
+                    background-color: aquamarine;
                 }
             }
         }
