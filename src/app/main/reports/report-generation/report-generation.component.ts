@@ -257,7 +257,8 @@ export class ReportGenerationComponent implements OnInit {
                 "htmlHeaderFilePath": this.reportDetail?.reportHeaderFile,
                 "spName": this.reportDetail?.reportSpname,
                 "folderName": this.reportDetail?.reportFolderName,
-                "fileName": this.reportDetail?.reportFileName
+                "fileName": this.reportDetail?.reportFileName,
+                "vPageOrientation": this.reportDetail?.reportPageOrientation
               }
             console.log(param)
             this._ReportService.getReportView(param).subscribe(res => {

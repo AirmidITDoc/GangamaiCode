@@ -69,6 +69,20 @@ export class ReportConfigurationService {
                     // Validators.maxLength(1000),
                 ]
             ],
+
+            reportTotalField:["",
+                [
+                    // Validators.required, 
+                    // Validators.maxLength(1000),
+                ]
+            ],
+            reportGroupByLabel:["",
+                [
+                    // Validators.required, 
+                    // Validators.maxLength(1000),
+                ]
+            ],
+
             reportHeaderFile:["",
                 [
                     Validators.required, 
