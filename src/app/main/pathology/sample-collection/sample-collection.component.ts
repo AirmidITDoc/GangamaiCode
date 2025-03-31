@@ -72,14 +72,6 @@ export class SampleCollectionComponent implements OnInit {
         { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "CompanyName", key: "cm", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        // {
-        //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-        //         {
-        //             action: gridActions.edit, callback: (data: any) => {
-        //                 this.onSave(data);
-        //             }
-        //         }]
-        // } //Action 1-view, 2-Edit,3-delete
         {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column

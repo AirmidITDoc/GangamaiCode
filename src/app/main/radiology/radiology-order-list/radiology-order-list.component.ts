@@ -46,7 +46,7 @@ export class RadiologyOrderListComponent implements OnInit {
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-        this.gridConfig.columnsList.find(col => col.key === 'oPD_IPD_Type')!.template = this.actionsIPOP;
+        this.gridConfig.columnsList.find(col => col.key === 'opdipdtype')!.template = this.actionsIPOP;
         this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.actionsCompleted;
         this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsType;
     }
@@ -54,7 +54,9 @@ export class RadiologyOrderListComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "RadiologyTest/RadiologyList",
         columnsList: [
-            { heading: "-", key: "oPD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "-", key: "opdipdtype", type: gridColumnTypes.template, align: 'center', width: 50,
+                template:this.actionsIPOP
+            },
             { heading: "-", key: "isCompleted", type: gridColumnTypes.template, align: "center", width: 50,
                 template:this.actionsCompleted
              },
@@ -117,7 +119,9 @@ export class RadiologyOrderListComponent implements OnInit {
         this.gridConfig = {
             apiUrl: "RadiologyTest/RadiologyList",
             columnsList: [
-                { heading: "-", key: "oPD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+                { heading: "-", key: "opdipdtype", type: gridColumnTypes.template, align: 'center', width: 50,
+                    template:this.actionsIPOP
+                },
                 { heading: "-", key: "isCompleted", type: gridColumnTypes.template, align: "center", width: 50,
                     template:this.actionsCompleted
                  },
