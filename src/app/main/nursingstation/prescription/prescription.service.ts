@@ -110,4 +110,9 @@ public getRegistraionById(Id) {
   public deactivateTheStatus(m_data) {
     return this._httpClient1.PostData("PhoneApp", m_data);
   }
+
+  public getReportView(Param) {
+    return this._httpClient1.PostData("Report/ViewReport", Param);
+  }
+
 }

@@ -83,7 +83,7 @@ export class RequestforlabtestComponent implements OnInit {
     isShowDetailTable: boolean = false;
 
     getSelectedRow(row: any): void {
-        debugger
+        
         console.log("Selected row : ", row);
         let vRequestId = row.requestId
 

@@ -52,7 +52,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   screenFromString = 'payment-form';
   autocompleteitem: string = "ItemType";
   Chargelist:any=[];
-  vPresReturnId:any;
+  vPresReturnId:any=0;
   vPresDetailsId:any;
   registerObj1:any;
   vRegNo:any;
@@ -76,7 +76,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   vDOA:any;
   vSelectedOption: any = 'OP';
   vOPDNo:any;
-  vstoreId:any;
+  vstoreId:any=2;
 
   constructor(public _PrescriptionReturnService: PrescriptionReturnService,
     private _fuseSidebarService: FuseSidebarService,
@@ -392,7 +392,91 @@ export class NewPrescriptionreturnComponent implements OnInit {
     // console.log(this.registerObj)
     this.OP_IP_Id = this.registerObj.AdmissionID;
   }
+  
+  
+  selectChangeStore(obj: any) {
+    console.log("Store:", obj);
+    this.vstoreId = obj.value
+  }
 
+  // OnSavePrescriptionreturn() {
+  //   debugger
+  //   const currentDate = new Date();
+  //   const datePipe = new DatePipe('en-US');
+  //   const formattedTime = datePipe.transform(currentDate, 'dd-MM-yyyy hh:mm:ss a');
+  //   const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
+  //   let opip_Type;
+  //   if (this.MyForm.get('PatientType').value == 'IP') {
+  //     opip_Type = 1;
+  //   }
+  //   else {
+  //     opip_Type = 0;
+  //   }
+
+  //   if(!this.MyForm.invalid && this.saleSelectedDatasource.data.length > 0){
+  //     if(!this.vPresReturnId && !this.vPresDetailsId){
+
+  //       let tIpprescriptionReturnDs = this.saleSelectedDatasource.data.map((row: any) => ({
+  //         "presDetailsId": 0,
+  //         "presReId": 0,
+  //         "itemId": row.ItemID || 0,
+  //         "batchNo": row.BatchNo,
+  //         "batchExpDate": datePipe.transform(currentDate, 'yyyy-MM-dd'),
+  //         "qty": row.Qty,
+  //         "isClosed": true
+  //       }));
+  
+  //       let mdata = {
+  //         "presReId": this.vPresReturnId,
+  //         "presNo": "string",
+  //         "presDate": datePipe.transform(currentDate, 'yyyy-MM-dd'),
+
+  //         "presTime": datePipe.transform(currentDate, 'dd-MM-yyyy hh:mm:ss a'),
+  //         "toStoreId":this.vstoreId,// this._loggedService.currentUserValue.storeId || 0,
+  //         "opIpId": this.OP_IP_Id || 1,
+  //         "opIpType": opip_Type,
+  //         "addedby": this._loggedService.currentUserValue.userId,
+  //         "isActive": 1,
+  //         "isclosed": true,
+  //         "tIpprescriptionReturnDs":tIpprescriptionReturnDs
+  //       }
+  //       console.log('json mdata:', mdata);
+  //       this._PrescriptionReturnService.presciptionreturnSave(mdata).subscribe(response => {
+  //         this.toastr.success(response.message);
+  //         console.log(response)
+  //         this.viewgetIpprescriptionreturnReportPdf(response);
+  //         this._matDialog.closeAll();
+  
+  //       }, (error) => {
+  //         this.toastr.error(error.message);
+  //       });
+  
+  //     }
+  //   }else{
+  //     let invalidFields = [];
+
+  //     if (this.saleSelectedDatasource.data.length === 0) {
+  //       invalidFields.push('No data in the item list!');
+  //   }
+
+  //     if (this.MyForm.invalid) {
+  //       for (const controlName in this.MyForm.controls) {
+  //         if (this.MyForm.controls[controlName].invalid) {
+  //           invalidFields.push(`My Form: ${controlName}`);
+  //         }
+  //       }
+  //     }
+
+  //     if (invalidFields.length > 0) {
+  //       invalidFields.forEach(field => {
+  //           this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+  //           );
+  //       });
+  //   }
+  //   }
+
+  // }
   OnSavePrescriptionreturn() {
     debugger
     const currentDate = new Date();
@@ -416,7 +500,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
           "presReId": 0,
           "itemId": row.ItemID || 0,
           "batchNo": row.BatchNo,
-          "batchExpDate": formattedDate,
+          "batchExpDate": datePipe.transform(currentDate, 'yyyy-MM-dd'),
           "qty": row.Qty,
           "isClosed": true
         }));
@@ -424,9 +508,10 @@ export class NewPrescriptionreturnComponent implements OnInit {
         let mdata = {
           "presReId": 0,
           "presNo": "string",
-          "presDate": formattedDate,
-          "presTime": formattedTime,
-          "toStoreId": this._loggedService.currentUserValue.storeId || 0,
+          "presDate": datePipe.transform(currentDate, 'yyyy-MM-dd'),
+
+          "presTime": datePipe.transform(currentDate, 'dd-MM-yyyy hh:mm:ss a'),
+          "toStoreId":this.vstoreId,// this._loggedService.currentUserValue.storeId || 0,
           "opIpId": this.OP_IP_Id || 1,
           "opIpType": opip_Type,
           "addedby": this._loggedService.currentUserValue.userId,
@@ -436,19 +521,15 @@ export class NewPrescriptionreturnComponent implements OnInit {
         }
         console.log('json mdata:', mdata);
         this._PrescriptionReturnService.presciptionreturnSave(mdata).subscribe(response => {
-          if (response) {
-            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-              toastClass: 'tostr-tost custom-toast-success',
-            });
-            this.onClose();
-          } else {
-            this.toastr.error('Record not saved! Please check API error.', 'Error !', {
-              toastClass: 'tostr-tost custom-toast-error',
-            });
-          }
+          this.toastr.success(response.message);
+          console.log(response)
+          this.viewgetIpprescriptionreturnReportPdf(response);
+          this._matDialog.closeAll();
+  
         }, (error) => {
           this.toastr.error(error.message);
         });
+  
       }else{
   
         let tIpprescriptionReturnDs = this.saleSelectedDatasource.data.map((row: any) => ({
@@ -456,7 +537,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
           "presReId": 0,
           "itemId": row.ItemID || 0,
           "batchNo": row.BatchNo,
-          "batchExpDate": formattedDate,
+          "batchExpDate":  datePipe.transform(currentDate, 'yyyy-MM-dd'),
           "qty": row.Qty,
           "isClosed": true
         }));
@@ -464,9 +545,9 @@ export class NewPrescriptionreturnComponent implements OnInit {
         let mdata = {
           "presReId": this.vPresReturnId,
           "presNo": "string",
-          "presDate": formattedDate,
-          "presTime": formattedTime,
-          "toStoreId": this._loggedService.currentUserValue.storeId,
+          "presDate": datePipe.transform(currentDate, 'yyyy-MM-dd'),
+          "presTime":datePipe.transform(currentDate, 'dd-MM-yyyy hh:mm:ss a'),
+          "toStoreId": this.vstoreId,// this._loggedService.currentUserValue.storeId,
           "opIpId": this.OP_IP_Id || 1,
           "opIpType": 1,
           "addedby": this._loggedService.currentUserValue.userId,
@@ -476,19 +557,15 @@ export class NewPrescriptionreturnComponent implements OnInit {
         }
         console.log('json mdata:', mdata);
         this._PrescriptionReturnService.presciptionreturnUpdate(mdata).subscribe(response => {
-          if (response) {
-            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-              toastClass: 'tostr-tost custom-toast-success',
-            });
-            this.onClose();
-          } else {
-            this.toastr.error('Record not saved! Please check API error.', 'Error !', {
-              toastClass: 'tostr-tost custom-toast-error',
-            });
-          }
+          this.toastr.success(response.message);
+          console.log(response)
+          this.viewgetIpprescriptionreturnReportPdf(response);
+          this._matDialog.closeAll();
+  
         }, (error) => {
           this.toastr.error(error.message);
         });
+  
       }
     }else{
       let invalidFields = [];
@@ -515,6 +592,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
 
   }
 
+
   onClose() {
     this.ItemSubform.reset();
     this.dialogRef.close();
@@ -533,33 +611,37 @@ export class NewPrescriptionreturnComponent implements OnInit {
     // }
   }
   
-  viewgetIpprescriptionreturnReportPdf(row) {
-    // 
+  viewgetIpprescriptionreturnReportPdf(response) {
+   
     setTimeout(() => {
-      this.SpinLoading =true;
-    //  this.AdList=true;
-    this._PrescriptionReturnService.getIpPrescriptionreturnview(
-      row.PresReId
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
+      let param = {
+        
+          "searchFields": [
+            {
+              "fieldName": "PresReId",
+              "fieldValue": "10012",
+              "opType": "Equals"
+            }
+          ],
+          "mode": "NurIPprescriptionReturnReport"
+        }
+      
+    this._PrescriptionReturnService.getReportView(param).subscribe(res => {
+
+      const matDialog = this._matDialog.open(PdfviewerComponent,
         {
-          maxWidth: "95vw",
-          height: '850px',
+          maxWidth: "85vw",
+          height: '750px',
           width: '100%',
           data: {
             base64: res["base64"] as string,
-            title: "IP Prescription Return Viewer"
+            title: "Nursing Prescription Return" + " " + "Viewer"
           }
         });
-        dialogRef.afterClosed().subscribe(result => {
-          this.SpinLoading = false;
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          this.SpinLoading = false;
-        });
+      matDialog.afterClosed().subscribe(result => {
+      });
     });
-   
-    },100);
-  }
+  }, 100);
+}
 
 }

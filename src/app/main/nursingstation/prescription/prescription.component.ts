@@ -64,7 +64,7 @@ export class PrescriptionComponent implements OnInit {
                 actions: [
                     {
                         action: gridActions.print, callback: (data: any) => {
-                            this.viewPrescriptionListPdf(data);
+                            this.viewgetIpprescriptionReportPdf(data);
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -119,7 +119,7 @@ export class PrescriptionComponent implements OnInit {
                 heading: "Action", key: "action",width: 50,align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.print, callback: (data: any) => {
-                            this.viewPrescriptionReturnPdf(data);
+                            this.viewgetIpprescriptionreturnReportPdf(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
@@ -137,7 +137,9 @@ export class PrescriptionComponent implements OnInit {
         filters: [
             { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "", opType: OperatorComparer.Equals }
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
         ]
     }
     
@@ -173,14 +175,79 @@ export class PrescriptionComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    viewPrescriptionListPdf(data) {
-        this.commonService.Onprint("RequestId", data.requestId, "NurLabRequestTest");
-    }
 
-    viewPrescriptionReturnPdf(data) {
-        this.commonService.Onprint("RequestId", data.requestId, "NurLabRequestTest");
-    }
 
+
+     viewgetIpprescriptionReportPdf(response) {
+        console.log(response)
+                setTimeout(() => {
+          let param = {
+            "searchFields": [
+              {
+                "fieldName": "OP_IP_ID",
+                "fieldValue": String(response.ipMedID),
+                "opType": "Equals"
+              },
+              {
+                "fieldName": "PatientType",
+                "fieldValue": "1",
+                "opType": "Equals"
+              }
+            ],
+            "mode": "NurIPprescriptionReport"
+          }
+
+          console.log(param)
+        this._PrescriptionService.getReportView(param).subscribe(res => {
+    
+          const matDialog = this._matDialog.open(PdfviewerComponent,
+            {
+              maxWidth: "85vw",
+              height: '750px',
+              width: '100%',
+              data: {
+                base64: res["base64"] as string,
+                title: "Nursing Prescription" + " " + "Viewer"
+              }
+            });
+          matDialog.afterClosed().subscribe(result => {
+          });
+        });
+      }, 100);
+    }
+    
+ viewgetIpprescriptionreturnReportPdf(response) {
+       
+        setTimeout(() => {
+          let param = {
+            
+              "searchFields": [
+                {
+                  "fieldName": "PresReId",
+                  "fieldValue": "10012",
+                  "opType": "Equals"
+                }
+              ],
+              "mode": "NurIPprescriptionReturnReport"
+            }
+          
+        this._PrescriptionService.getReportView(param).subscribe(res => {
+    
+          const matDialog = this._matDialog.open(PdfviewerComponent,
+            {
+              maxWidth: "85vw",
+              height: '750px',
+              width: '100%',
+              data: {
+                base64: res["base64"] as string,
+                title: "Nursing Prescription Return" + " " + "Viewer"
+              }
+            });
+          matDialog.afterClosed().subscribe(result => {
+          });
+        });
+      }, 100);
+    }
     onSave(row: any = null) {
         let that = this;
         const dialogRef = this._matDialog.open(NewPrescriptionComponent,

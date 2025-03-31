@@ -81,15 +81,13 @@ public getRegistraionById(Id) {
 
 
   public presciptionreturnSave(emp){
-    // return this._httpClient.post("InPatient/InsertIPPrescriptionReturn",emp)
+   
     return this._httpClient1.PostData("IPPrescription/PrescriptionReturnInsert",emp)    
-    // return this._httpClient1.PostData("IPPrescription/IPPrescReturnItemDetList",emp)
-
+    
   }
 
   public presciptionreturnUpdate(emp){
-    // return this._httpClient.post("InPatient/InsertIPPrescriptionReturn",emp)
-    return this._httpClient1.PutData("Nursing/PrescriptionReturnUpdate",emp)
+   return this._httpClient1.PutData("Nursing/PrescriptionReturnUpdate",emp)
   }
 
   public getAdmittedpatientlist(id){
@@ -113,7 +111,9 @@ public getIpPrescriptionreturnview(PresReId){
 public deactivateTheStatus(m_data) {
   return this._httpClient1.PostData("PhoneApp", m_data);
 }
-
+  public getReportView(Param) {
+    return this._httpClient1.PostData("Report/ViewReport", Param);
+  }
 }
 
 

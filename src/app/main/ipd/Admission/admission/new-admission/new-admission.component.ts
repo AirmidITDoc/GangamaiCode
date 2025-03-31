@@ -268,10 +268,7 @@ if (invalidFields.length > 0) {
       this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
       
         this.toastr.success(response.message);
-        // let Res = response.message
-        // let ID = Res.split('.')
-        // let Id = ID[1]
-        this.getAdmittedPatientCasepaperview(response);
+       this.getAdmittedPatientCasepaperview(response);
         this.onClear();
         this._matDialog.closeAll();
 
@@ -280,8 +277,7 @@ if (invalidFields.length > 0) {
 
       });
 
-
-    }
+}
     else {
 
       let submitData = {

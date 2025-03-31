@@ -30,7 +30,7 @@ export class NewPrescriptionComponent implements OnInit {
   vItemName: any;
   vQty: any;
   vRemark: any;
-  
+
   myForm: FormGroup;
   searchFormGroup: FormGroup;
   ItemForm: FormGroup;
@@ -77,10 +77,10 @@ export class NewPrescriptionComponent implements OnInit {
   BalanceQty: any;
   matDialogRef: any;
   add: boolean = false;
-  isDoseSelected:boolean=false;
-  vDay:any=0;
-  vInstruction:any;
-  Chargelist:any=[];
+  isDoseSelected: boolean = false;
+  vDay: any = 0;
+  vInstruction: any;
+  Chargelist: any = [];
 
   filteredOptionsWard: Observable<string[]>;
   filteredOptionsDosename: Observable<string[]>;
@@ -98,30 +98,30 @@ export class NewPrescriptionComponent implements OnInit {
   vOPDNo: any = 0;
   vTariffId: any = 0;
   vClassId: any = 0;
-  vRegNo:any;
-  vPatientName:any; 
-  vAdmissionDate:any;
-  vMobileNo:any; 
-  vIPDNo:any; 
-  vTariffName:any;
-  vCompanyName:any; 
-  vDoctorName:any;
-  vRoomName:any;
-  vBedName:any;
-  vAge:any;
-  vGenderName:any;
-  vAdmissionTime:any;
-  vAgeMonth:any;
-  vAgeDay:any;
-  vDepartment:any;
-  vRefDocName:any;
-  vPatientType:any;
-  vDOA:any;
+  vRegNo: any;
+  vPatientName: any;
+  vAdmissionDate: any;
+  vMobileNo: any;
+  vIPDNo: any;
+  vTariffName: any;
+  vCompanyName: any;
+  vDoctorName: any;
+  vRoomName: any;
+  vBedName: any;
+  vAge: any;
+  vGenderName: any;
+  vAdmissionTime: any;
+  vAgeMonth: any;
+  vAgeDay: any;
+  vDepartment: any;
+  vRefDocName: any;
+  vPatientType: any;
+  vDOA: any;
 
   dsPresList = new MatTableDataSource<MedicineItemList>();
   dsiVisitList = new MatTableDataSource<MedicineItemList>();
   dsItemList = new MatTableDataSource<PrecriptionItemList>();
- 
+
   autocompletestore: string = "Store";
   autocompleteward: string = "Room";
   autocompleteitem: string = "ItemType";
@@ -130,19 +130,21 @@ export class NewPrescriptionComponent implements OnInit {
     private ref: MatDialogRef<NewPrescriptionComponent>,
     public _PrescriptionService: PrescriptionService,
     private _loggedService: AuthenticationService,
-    public _registerService: RegistrationService, 
+    public _registerService: RegistrationService,
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
 
-  ) { if (this.advanceDataStored.storage) {
-    
-     this.selectedAdvanceObj = this.advanceDataStored.storage;
-     // this.PatientHeaderObj = this.advanceDataStored.storage;
-     console.log( this.selectedAdvanceObj)
-   }}
+  ) {
+    if (this.advanceDataStored.storage) {
+
+      this.selectedAdvanceObj = this.advanceDataStored.storage;
+      // this.PatientHeaderObj = this.advanceDataStored.storage;
+      console.log(this.selectedAdvanceObj)
+    }
+  }
 
   createMyForm() {
     return this._FormBuilder.group({
@@ -160,67 +162,67 @@ export class NewPrescriptionComponent implements OnInit {
     return this._FormBuilder.group({
       ItemId: ['', [Validators.required, this.validateSelectedItem.bind(this)]],
       ItemName: '',
-      DoseId:'',
+      DoseId: '',
       Day: [''],
-      Qty:['',[Validators.required,Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
-      Instruction:['']
+      Qty: [Validators.pattern("^[0-9]*$")],
+      Instruction: ['']
     })
   }
 
   ngOnInit(): void {
     this.myForm = this.createMyForm();
-    this.ItemForm = this.createItemForm();  
-  
+    this.ItemForm = this.createItemForm();
+
   }
   dateTimeObj: any;
-  WardName:any;
-  BedNo:any;
-  getDateTime(dateTimeObj) { 
+  WardName: any;
+  BedNo: any;
+  getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
- 
+
   getSelectedObjIP(obj) {
-    
+
     if ((obj.regID ?? 0) > 0) {
-      console.log("Admitted patient:",obj)
-      this.vRegNo=obj.regNo
-      this.vDoctorName=obj.doctorName
-      this.vPatientName=obj.firstName + " " + obj.middleName + " " + obj.lastName
-      this.vDepartment=obj.departmentName
-      this.vAdmissionDate=obj.admissionDate
-      this.vAdmissionTime=obj.admissionTime
-      this.vIPDNo=obj.ipdNo
-      this.vAge=obj.age
-      this.vAgeMonth=obj.ageMonth
-      this.vAgeDay=obj.ageDay
-      this.vGenderName=obj.genderName
-      this.vRefDocName=obj.refDocName
-      this.vRoomName=obj.roomName
-      this.vBedName=obj.bedName
-      this.vPatientType=obj.patientType
-      this.vTariffName=obj.tariffName
-      this.vCompanyName=obj.companyName
-      this.vDOA=obj.admissionDate
-      this.vAdmissionID=obj.admissionID
-      this.vClassId=obj.classId
+      console.log("Admitted patient:", obj)
+      this.vRegNo = obj.regNo
+      this.vDoctorName = obj.doctorName
+      this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
+      this.vDepartment = obj.departmentName
+      this.vAdmissionDate = obj.admissionDate
+      this.vAdmissionTime = obj.admissionTime
+      this.vIPDNo = obj.ipdNo
+      this.vAge = obj.age
+      this.vAgeMonth = obj.ageMonth
+      this.vAgeDay = obj.ageDay
+      this.vGenderName = obj.genderName
+      this.vRefDocName = obj.refDocName
+      this.vRoomName = obj.roomName
+      this.vBedName = obj.bedName
+      this.vPatientType = obj.patientType
+      this.vTariffName = obj.tariffName
+      this.vCompanyName = obj.companyName
+      this.vDOA = obj.admissionDate
+      this.vAdmissionID = obj.admissionID
+      this.vClassId = obj.classId
       // setTimeout(() => {
       //   this._PrescriptionService.getAdmittedpatientlist(obj.regID).subscribe((response) => {
       //     this.registerObj = response;        
       //     console.log(this.registerObj)
       //   });
-  
+
       // }, 500);
     }
   }
 
-  vstoreId:any='';
-  selectChangeStore(obj:any){
-    console.log("Store:",obj);
-    this.vstoreId=obj.value
+  vstoreId: any = '';
+  selectChangeStore(obj: any) {
+    console.log("Store:", obj);
+    this.vstoreId = obj.value
   }
 
-  vitemId:any;
-  vitemname:any;
+  vitemId: any;
+  vitemname: any;
 
   validateSelectedItem(control: AbstractControl): { [key: string]: any } | null {
     if (control.value && typeof control.value !== 'object') {
@@ -228,30 +230,30 @@ export class NewPrescriptionComponent implements OnInit {
     }
     return null;
   }
-  
+
   selectChangeItem(obj: any) {
     debugger
-  //   if (this.vstoreId==0) {
-  //     this.toastr.warning('Please select Store', 'Warning!', {
-  //       toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
-  //   }
-  // else if(this.vstoreId!=0){
+    //   if (this.vstoreId==0) {
+    //     this.toastr.warning('Please select Store', 'Warning!', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    //   }
+    // else if(this.vstoreId!=0){
 
-  if (!obj || typeof obj !== 'object') {
-    this.toastr.error('Invalid item selection. Please choose a valid item from the list.', 'Error!');
-    this.ItemForm.get('ItemId').setErrors({ invalidItem: true });
-    return;
-  }
+    if (!obj || typeof obj !== 'object') {
+      this.toastr.error('Invalid item selection. Please choose a valid item from the list.', 'Error!');
+      this.ItemForm.get('ItemId').setErrors({ invalidItem: true });
+      return;
+    }
     console.log("Item:", obj);
     this.vitemId = obj.itemId;
     this.vitemname = obj.itemName;
     this.ItemForm.get('ItemId').setValue(obj);
-  // }
+    // }
   }
 
-  doseList:any=[];
+  doseList: any = [];
 
   deleteTableRow1(event, element) {
     // if (this.key == "Delete") {
@@ -263,7 +265,7 @@ export class NewPrescriptionComponent implements OnInit {
     }
     this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
       toastClass: 'tostr-tost custom-toast-success',
-    }); 
+    });
   }
 
   WardId: any;
@@ -271,15 +273,15 @@ export class NewPrescriptionComponent implements OnInit {
   getValidationMessages() {
     return {
       StoreId: [
-            { name: "required", Message: "Store Name is required" }
-        ],
-        WardName: [
-          { name: "required", Message: "Ward Name is required" }
+        { name: "required", Message: "Store Name is required" }
       ],
-      ItemId:[
+      WardName: [
+        { name: "required", Message: "Ward Name is required" }
+      ],
+      ItemId: [
         { name: "required", Message: "Item Name is required" }
       ],
-      Qty:[
+      Qty: [
         { name: "required", Message: "Qty is required" },
         { name: "pattern", Message: "Only numbers allowed" }
       ],
@@ -300,10 +302,10 @@ export class NewPrescriptionComponent implements OnInit {
     else {
       this.isRegSearchDisabled = false;
     }
-  }  
+  }
 
   onAdd() {
-   
+
     if (!this.ItemForm.invalid) {
       const iscekDuplicate = this.dsItemList.data.some(item => item.ItemID == this.vitemId)
       if (!iscekDuplicate) {
@@ -319,8 +321,8 @@ export class NewPrescriptionComponent implements OnInit {
         //console.log(this.dsItemList.data); 
 
         this.ItemForm.get('ItemId').reset('');
-    this.ItemForm.get('Qty').reset('');
-    this.ItemForm.get('Instruction').reset('');
+        this.ItemForm.get('Qty').reset('');
+        this.ItemForm.get('Instruction').reset('');
       } else {
         this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
@@ -339,14 +341,14 @@ export class NewPrescriptionComponent implements OnInit {
 
       if (invalidFields.length > 0) {
         invalidFields.forEach(field => {
-            this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-            );
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
         });
-    }
+      }
     }
   }
 
-  deleteTableRow(event, element) { 
+  deleteTableRow(event, element) {
     let index = this.Chargelist.indexOf(element);
     if (index >= 0) {
       this.Chargelist.splice(index, 1);
@@ -355,67 +357,40 @@ export class NewPrescriptionComponent implements OnInit {
     }
     this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
       toastClass: 'tostr-tost custom-toast-success',
-    }); 
+    });
   }
   @ViewChild('itemid') itemid: ElementRef;
   @ViewChild('dosename') dosename: ElementRef;
-  @ViewChild('remark') remark: ElementRef; 
-  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement; 
+  @ViewChild('remark') remark: ElementRef;
+  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
   @ViewChild('qty') qty: ElementRef;
 
-  public onEnterqty(event): void { 
+  public onEnterqty(event): void {
     if (event.which === 13) {
-      this.remark.nativeElement.focus(); 
+      this.remark.nativeElement.focus();
     }
   }
 
   onEnterItem(event): void {
     if (event.which === 13) {
-     // this.dosename.nativeElement.focus(); 
-      this.qty.nativeElement.focus(); 
+      // this.dosename.nativeElement.focus(); 
+      this.qty.nativeElement.focus();
     }
   }
-  public onEnterDose(event): void { 
+  public onEnterDose(event): void {
     if (event.which === 13) {
-      this.qty.nativeElement.focus(); 
+      this.qty.nativeElement.focus();
     }
   }
-  
-  public onEnterremark(event): void { 
+
+  public onEnterremark(event): void {
     if (event.which === 13) {
       this.addbutton.focus;
-      this.add = true; 
-    } 
+      this.add = true;
+    }
   }
 
-  viewgetIpprescriptionReportPdf(OP_IP_ID) {
-    setTimeout(() => {
-      // this.SpinLoading = true;
-      //  this.AdList=true;
-      this._PrescriptionService.getIpPrescriptionview(
-        OP_IP_ID, 1
-      ).subscribe(res => {
-        const dialogRef = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "IP Prescription Viewer"
-            }
-          });
-        dialogRef.afterClosed().subscribe(result => {
-         
-        });
-        dialogRef.afterClosed().subscribe(result => {
-         
-        });
-      });
 
-    }, 100);
-  }
-  
   OnSavePrescription() {
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
@@ -425,68 +400,59 @@ export class NewPrescriptionComponent implements OnInit {
 
     debugger
 
-    if(!this.myForm.invalid && this.dsItemList.data.length > 0){
+    if (!this.myForm.invalid && this.dsItemList.data.length > 0) {
       let insertIP_Prescriptionarray = [];
 
-    this.dsItemList.data.forEach((element) => {
-      let insertIP_Prescription = {};
-      insertIP_Prescription['ippreId']=0;
-      insertIP_Prescription['ipmedId'] = 0;
-      insertIP_Prescription['opIpId'] = this.vAdmissionID;
-      insertIP_Prescription['opdIpdType'] = 1;
-      insertIP_Prescription['pdate'] = formattedDate;
-      insertIP_Prescription['ptime'] = formattedTime;
-      insertIP_Prescription['classId'] = this.vClassId;
-      insertIP_Prescription['genericId'] = 1;
-      insertIP_Prescription['drugId'] = element.ItemID;
-      insertIP_Prescription['doseId'] = 0;
-      insertIP_Prescription['days'] =  0;
-      insertIP_Prescription['qtyPerDay'] =element.Qty || 0;
-      insertIP_Prescription['totalQty'] =element.Qty || 0;
-      insertIP_Prescription['remark'] = element.Remark || '';
-      insertIP_Prescription['isClosed'] = false;
-      insertIP_Prescription['isAddBy'] = this._loggedService.currentUserValue.userId;
-      insertIP_Prescription['storeId'] =  this.vstoreId || 0;
-      insertIP_Prescription['wardID'] = this.myForm.get('WardName').value || 0;
-      insertIP_Prescriptionarray.push(insertIP_Prescription);
-    });
-
-    let submissionObj = {
-      "medicalRecoredId": 0,
-      "admissionId": this.vAdmissionID,
-      "roundVisitDate": formattedDate,
-      "roundVisitTime": formattedTime,
-      "inHouseFlag": true,
-      "tIpPrescriptions":insertIP_Prescriptionarray
-    };  
-
-    console.log(submissionObj);
-
-    this._PrescriptionService.presciptionSave(submissionObj).subscribe(response => {
-      console.log(response);
-      if (response) { 
-        this.toastr.success('Record Saved Successfully.', 'Save !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-        this.onClose();
-      } else { 
-        this.toastr.error('Record Not Saved!', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      }
-      this.isLoading = '';
-    }, error => {
-      this.toastr.error('API Error!', 'Error !', {
-        toastClass: 'tostr-tost custom-toast-error',
+      this.dsItemList.data.forEach((element) => {
+        let insertIP_Prescription = {};
+        insertIP_Prescription['ippreId'] = 0;
+        insertIP_Prescription['ipmedId'] = 0;
+        insertIP_Prescription['opIpId'] = this.vAdmissionID;
+        insertIP_Prescription['opdIpdType'] = 1;
+        insertIP_Prescription['pdate'] = formattedDate;
+        insertIP_Prescription['ptime'] = formattedTime;
+        insertIP_Prescription['classId'] = this.vClassId;
+        insertIP_Prescription['genericId'] = 1;
+        insertIP_Prescription['drugId'] = element.ItemID;
+        insertIP_Prescription['doseId'] = 0;
+        insertIP_Prescription['days'] = 0;
+        insertIP_Prescription['qtyPerDay'] = element.Qty || 0;
+        insertIP_Prescription['totalQty'] = element.Qty || 0;
+        insertIP_Prescription['remark'] = element.Remark || '';
+        insertIP_Prescription['isClosed'] = false;
+        insertIP_Prescription['isAddBy'] = this._loggedService.currentUserValue.userId;
+        insertIP_Prescription['storeId'] = this.vstoreId || 0;
+        insertIP_Prescription['wardID'] = this.myForm.get('WardName').value || 0;
+        insertIP_Prescriptionarray.push(insertIP_Prescription);
       });
-    });
+
+      let submissionObj = {
+        "medicalRecoredId": 0,
+        "admissionId": this.vAdmissionID,
+        "roundVisitDate": formattedDate,
+        "roundVisitTime": formattedTime,
+        "inHouseFlag": true,
+        "tIpPrescriptions": insertIP_Prescriptionarray
+      };
+
+      console.log(submissionObj);
+
+      this._PrescriptionService.presciptionSave(submissionObj).subscribe(response => {
+        this.toastr.success(response.message);
+        console.log(response)
+        this.viewgetIpprescriptionReportPdf(response);
+        this._matDialog.closeAll();
+
+      }, (error) => {
+        this.toastr.error(error.message);
+      });
 
     } else {
       let invalidFields = [];
 
       if (this.dsItemList.data.length === 0) {
         invalidFields.push('No data in the item list!');
-    }
+      }
 
       if (this.myForm.invalid) {
         for (const controlName in this.myForm.controls) {
@@ -495,29 +461,66 @@ export class NewPrescriptionComponent implements OnInit {
           }
         }
       }
-            
+
       // Show a toast for each invalid field
       if (invalidFields.length > 0) {
         invalidFields.forEach(field => {
-            this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-            );
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
         });
-    }
+      }
     }
   }
 
-  onClose() {
-    this.ref.close();
+  viewgetIpprescriptionReportPdf(response) {
+    
+    setTimeout(() => {
+      let param = {
+        "searchFields": [
+          {
+            "fieldName": "OP_IP_ID",
+            "fieldValue": String(response),
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "PatientType",
+            "fieldValue": "1",
+            "opType": "Equals"
+          }
+        ],
+        "mode": "NurIPprescriptionReport"
+      }
+    this._PrescriptionService.getReportView(param).subscribe(res => {
+
+      const matDialog = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Nursing Prescription" + " " + "Viewer"
+          }
+        });
+      matDialog.afterClosed().subscribe(result => {
+      });
+    });
+  }, 100);
+}
+
+
+onClose() {
+  this.ref.close();
+}
+keyPressAlphanumeric(event) {
+  var inp = String.fromCharCode(event.keyCode);
+  if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+    return true;
+  } else {
+    event.preventDefault();
+    return false;
   }
-  keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
-    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
-    }
-  } 
+} 
 
 }
 export class PrecriptionItemList {

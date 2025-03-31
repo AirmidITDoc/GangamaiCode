@@ -107,4 +107,38 @@ export class PrescriptionReturnComponent implements OnInit {
         });
     }
 
+
+     viewgetIpprescriptionreturnReportPdf(response) {
+       
+        setTimeout(() => {
+          let param = {
+            
+              "searchFields": [
+                {
+                  "fieldName": "PresReId",
+                  "fieldValue": "10012",
+                  "opType": "Equals"
+                }
+              ],
+              "mode": "NurIPprescriptionReturnReport"
+            }
+          
+        this._PrescriptionReturnService.getReportView(param).subscribe(res => {
+    
+          const matDialog = this._matDialog.open(PdfviewerComponent,
+            {
+              maxWidth: "85vw",
+              height: '750px',
+              width: '100%',
+              data: {
+                base64: res["base64"] as string,
+                title: "Nursing Prescription Return" + " " + "Viewer"
+              }
+            });
+          matDialog.afterClosed().subscribe(result => {
+          });
+        });
+      }, 100);
+    }
+
 }

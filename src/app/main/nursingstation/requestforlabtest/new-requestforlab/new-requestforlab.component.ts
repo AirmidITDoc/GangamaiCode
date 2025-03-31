@@ -318,24 +318,7 @@ export class NewRequestforlabComponent implements OnInit {
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'hh:mm:ssa');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-    // if(!this.myFormGroup.invalid) 
-    // {
-    //     console.log("LabRequest Insert:",this.myFormGroup.value)
-
-    //     this._RequestforlabtestService.LabRequestSave(this.myFormGroup.value).subscribe((response) => {
-    //     this.toastr.success(response.message);
-    //     this.onClear(true);
-    //     }, (error) => {
-    //     this.toastr.error(error.message);
-    //     });
-    // } 
-    // else
-    // {
-    //     this.toastr.warning('please check from is invalid', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //     return;
-    // }
+    
     if ((this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined)) {
       this.toastr.warning('Please select patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -364,7 +347,7 @@ export class NewRequestforlabComponent implements OnInit {
         ipPathOrRadiRequestLabRequestInsert['addedBillingId'] = 2,
           ipPathOrRadiRequestLabRequestInsert['addedByDate'] = formattedDate,
           ipPathOrRadiRequestLabRequestInsert['addedByTime'] = formattedTime,
-          ipPathOrRadiRequestLabRequestInsert['charId'] = 1,
+          ipPathOrRadiRequestLabRequestInsert['charId'] = 260570,
           ipPathOrRadiRequestLabRequestInsert['isTestCompted'] = true,
           ipPathOrRadiRequestLabRequestInsert['IsOnFileTest'] = this.myFormGroup.get('IsOnFileTest').value || false;
         ipPathOrRadiRequestLabRequestInsertArray.push(ipPathOrRadiRequestLabRequestInsert);

@@ -102,8 +102,8 @@ export class DischargeComponent implements OnInit {
     if (this.data) {
       this.vAdmissionId = this.data.admissionId;
       this.vBedId = this.data.bedId
-      
-    }
+      this.DischargeForm.get("dischargedDocId").setValue(this.data.docNameId)
+        }
 
     if ((this.data?.regId ?? 0) > 0) {
       setTimeout(() => {
