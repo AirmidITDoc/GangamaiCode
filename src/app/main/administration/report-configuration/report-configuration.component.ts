@@ -28,7 +28,7 @@ export class ReportConfigurationComponent implements OnInit{
             columnsList: [
                 { heading: "Code", key: "reportId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
                 { heading: "ReportSection", key: "reportSection", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-                { heading: "ReportName", key: "reportName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+                { heading: "ReportName", key: "reportName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
                 { heading: "Parentid", key: "parentid", sort: true, align: 'left', emptySign: 'NA', width: 80 },
                 { heading: "ReportMode", key: "reportMode", sort: true, align: 'left', emptySign: 'NA', width: 250 },
                 { heading: "ReportTitle", key: "reportTitle", sort: true, align: 'left', emptySign: 'NA', width: 250 },
@@ -59,7 +59,7 @@ export class ReportConfigurationComponent implements OnInit{
                         }]
                 } //Action 1-view, 2-Edit,3-delete
             ],
-            sortField: "ReportName",
+            sortField: "ReportId",
             sortOrder: 0,
             filters: [
                 { fieldName: "reportName", fieldValue: "", opType: OperatorComparer.Contains },
