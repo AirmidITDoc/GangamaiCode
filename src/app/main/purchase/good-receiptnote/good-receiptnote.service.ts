@@ -75,7 +75,7 @@ export class GoodReceiptnoteService {
       BatchNo: ['', [Validators.required]],
       ConversionFactor: [''],
       Qty: [0, [Validators.required, Validators.min(1)]],
-      ExpDate: ['', [Validators.required]],
+      ExpDate: [new Date()],
       MRP: [0, [Validators.required]],
       FreeQty: [0],
       Rate: [0, [Validators.required]],

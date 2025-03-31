@@ -1,0 +1,200 @@
+.login-page-main {
+    min-height: 100vh;
+    display: flex;
+    background: linear-gradient(135deg, $primary-50, $primary-50);
+    position: relative;
+    .login-section-left {
+        flex: 1;
+        padding: 3rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        align-items: center;
+        .login-image-top {
+            margin-bottom: 2rem;
+
+            img {
+                max-height: 100px;
+                border-radius: 50%;
+            }
+        }
+
+        .welcome-content {
+            margin: 1rem 0;
+            color: $primary-900;
+
+            h1 {
+                font-size: 2.5rem;
+                font-weight: 600;
+                margin-bottom: 1rem;
+                line-height: 1.2;
+            }
+
+            p {
+                font-size: 1.2rem;
+                color: $primary-600;
+                max-width: 80%;
+            }
+        }
+
+        .auth-illustration {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 550px;
+            margin: 2rem auto;
+
+            img {
+                width: 100%;
+                height: auto;
+                border-radius: 12px;
+            }
+        }
+    }
+
+    .login-section-right {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: -4px 0 24px rgba($primary-900, 0.1);
+
+        form {
+            width: 100%;
+            max-width: 400px;
+            padding: 2rem;
+            display: flex;
+            flex-flow: column;
+            h2 {
+                color: $primary-800;
+                margin-bottom: 2rem;
+                font-size: 1.8rem;
+                font-weight: 600;
+                text-align: center;
+            }
+
+            .captcha-container {
+                background: white;
+                border: 1px solid $primary-100;
+                border-radius: 4px;
+                padding: 1rem;
+                margin: 1rem 0;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+
+                .captcha-image {
+                    flex: 1;
+
+                    img {
+                        width: 100%;
+                        height: auto;
+                        border-radius: 4px;
+                    }
+                }
+
+                .refresh-captcha {
+                    background: none;
+                    border: none;
+                    padding: 8px;
+                    cursor: pointer;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: background-color 0.3s;
+
+                    &:hover {
+                        background-color: $primary-50;
+                    }
+
+                    mat-icon {
+                        color: $primary-600;
+                        font-size: 24px;
+                        width: 24px;
+                        height: 24px;
+                    }
+                }
+            }
+
+            .btn-primary {
+                background: linear-gradient(45deg, $primary-600, $primary-400);
+                color: white;
+                padding: 1rem;
+                border: none;
+                border-radius: 4px;
+                font-weight: 500;
+                letter-spacing: 0.5px;
+                margin-top: 1rem;
+                cursor: pointer;
+                transition: box-shadow 0.3s;
+
+                &:hover {
+                    box-shadow: 0 4px 12px rgba($primary-600, 0.2);
+                }
+            }
+
+            .error-message {
+                margin-top: 1rem;
+                text-align: center;
+            }
+        }
+    }
+}
+
+// Responsive design
+@include media-breakpoint("lt-md") {
+    .login-page-main {
+        flex-direction: column;
+        .login-section-left {
+            padding: 2rem;
+            align-items: center;
+            text-align: center;
+            order: 2;
+            .welcome-content {
+                text-align: center;
+
+                p {
+                    max-width: 100%;
+                }
+            }
+
+            .auth-illustration {
+                max-width: 400px;
+            }
+        }
+
+        .login-section-right {
+            padding: 2rem;
+            order: 1;
+            min-height: 100vh;
+            form {
+                margin: 0 auto;
+            }
+        }
+    }
+}
+
+@include media-breakpoint("lt-sm") {
+    .login-section-left {
+        padding: 1.5rem;
+
+        .welcome-content {
+            h1 {
+                font-size: 2rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+        }
+    }
+
+    .login-section-right form {
+        padding: 1.5rem;
+    }
+}

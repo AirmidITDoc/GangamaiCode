@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {  Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { GRNList, GrnItemList, ItemNameList } from '../good-receiptnote.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -224,6 +224,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         // );
         if (this.mock) {
             this.setMockData();
+            
         }
         if (this.data.chkNewGRN == 2) {
             this.registerObj = this.data.Obj;
@@ -490,6 +491,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             SGST: 0,
             SGSTAmount: 0,
             IGST: 0,
+            GST: 0,
+            GSTAmount: 0,
             TotalAmount: 0,
             NetAmount: 0,
             FinalTotalQty: 0,
@@ -500,6 +503,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         this.dateTimeObj = dateTimeObj;
     }
     calculateTotalamt() {
+        this.validateFormValues();
         const form = this._GRNList.userFormGroup;
         // Get values with proper type conversion
         const qty = +form.get('Qty').value || 0;
@@ -624,6 +628,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             return;
         }
         // Check if the item is already in the list
+        console.log("Form values : ", this._GRNList.userFormGroup.value);
         const isDuplicate = this.dsItemNameList.data.some(item => item.BatchNo === this._GRNList.userFormGroup.get('BatchNo').value);
         if (isDuplicate) {
             this.newGRNService.showToast('Item already added in the list', ToastType.WARNING);
@@ -640,7 +645,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 LandedRate: formValues.NetAmount / (totalQty || 1),
                 PurUnitRate: formValues.TotalAmount / (formValues.Qty * formValues.ConversionFactor),
                 PurUnitRateWF: formValues.TotalAmount / (totalQty || 1),
-                UnitMRP: formValues.MRP / formValues.ConversionFactor
+                UnitMRP: formValues.MRP / formValues.ConversionFactor,
+                ExpDate: this.datePipe.transform(formValues.ExpDate, "MM/yyyy")
             });
             this.dsItemNameList.data = [...this.dsItemNameList.data, newItem];
             this.updateGRNFinalForm();
@@ -768,11 +774,11 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             FreeQty: 5,
             Disc: 10,
             BatchNo: "123",
-            ExpDate: "102025",
             ItemName: {
                 itemName: "Test Item"
             }
         });
+        console.log("Form values : ", this._GRNList.userFormGroup.value);
         this.calculateTotalamt();
     }
     keyPressCharater(event: any) {
@@ -783,6 +789,55 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         const itemList = this.dsItemNameList.data;
         console.log("SAVE", { formValues, itemList });
         // Apply save flow here
+    }
+
+    // Handlers
+    validateFormValues() {
+        const form = this._GRNList.userFormGroup;
+        const values = form.getRawValue() as GRNFormModel;
+        if (+values.Qty < 0) {
+            this.newGRNService.showToast('Quantity should be greater than 0', ToastType.WARNING);
+            form.patchValue({
+                Qty: 0,
+            });
+        }
+        if (+values.FreeQty < 0) {
+            this.newGRNService.showToast('Free Quantity should be greater than 0', ToastType.WARNING);
+            form.patchValue({
+                FreeQty: 0,
+            });
+        }
+        if (+values.MRP < 0) {
+            this.newGRNService.showToast('MRP should be greater than 0', ToastType.WARNING);
+            form.patchValue({
+                MRP: 0,
+            });
+        }
+        if (+values.Rate < 0) {
+            this.newGRNService.showToast('Rate should be greater than 0', ToastType.WARNING);
+            form.patchValue({
+                Rate: 0,
+            });
+        }
+        if (+values.Rate > +values.MRP) {
+            this.newGRNService.showToast('Rate should be less than MRP', ToastType.WARNING);
+            form.patchValue({
+                Rate: 0,
+            });
+        }
+        if (+values.ConversionFactor < 0) {
+            this.newGRNService.showToast('Conversion Factor should be greater than 0', ToastType.WARNING);
+            form.patchValue({
+                ConversionFactor: 1,
+            });
+        }
+    }
+    onExpiryChange() {
+        const form = this._GRNList.userFormGroup;
+        const values = form.getRawValue() as GRNFormModel;
+        if (+values.ExpDate < 0) {
+            this.newGRNService.showToast('Expiry should be greater than 0', ToastType.WARNING);
+        }
     }
     ngOnDestroy(): void {
         this.resetForm();

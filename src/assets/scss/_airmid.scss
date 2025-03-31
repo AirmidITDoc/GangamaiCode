@@ -7,3 +7,275 @@
 @import "./components/index";
 @import "./pages/index";
 // @import "./responsive";
+
+// // Variables and mixins
+// $box-shadow: 0 8px 24px rgba(26, 35, 126, 0.12);
+// $transition: all 0.3s ease;
+
+// @mixin flex-center {
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// }
+
+// @mixin glass-effect {
+//   background: rgba(255, 255, 255, 0.95);
+//   backdrop-filter: blur(10px);
+//   border: 1px solid rgba(255, 255, 255, 0.2);
+// }
+
+// // Main styles
+// .login-page-main {
+//   min-height: 100vh;
+//   display: flex;
+//   background: linear-gradient(135deg, $primary-100, $primary-50);
+//   position: relative;
+//   overflow: hidden;
+
+//   &::before {
+//     content: '';
+//     position: absolute;
+//     width: 1000px;
+//     height: 1000px;
+//     border-radius: 50%;
+//     background: linear-gradient(45deg, $primary-300, $primary-200);
+//     top: -20%;
+//     right: -20%;
+//     z-index: 0;
+//     animation: float 15s infinite linear;
+//   }
+
+//   &::after {
+//     content: '';
+//     position: absolute;
+//     width: 800px;
+//     height: 800px;
+//     border-radius: 50%;
+//     background: linear-gradient(45deg, $primary-400, $primary-300);
+//     bottom: -20%;
+//     left: -20%;
+//     z-index: 0;
+//     animation: float 20s infinite linear reverse;
+//   }
+// }
+
+// @keyframes float {
+//   0% { transform: rotate(0deg) translate(0, 0); }
+//   50% { transform: rotate(180deg) translate(50px, 50px); }
+//   100% { transform: rotate(360deg) translate(0, 0); }
+// }
+
+// .login-section-left {
+//   flex: 1;
+//   padding: 2rem;
+//   position: relative;
+//   z-index: 1;
+//   @include flex-center;
+//   flex-direction: column;
+
+//   .login-image-top {
+//     margin-bottom: 2rem;
+
+//     img {
+//       max-height: 60px;
+//       filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+//       transition: $transition;
+
+//       &:hover {
+//         transform: scale(1.05);
+//       }
+//     }
+//   }
+
+//   .login-image-bottom {
+//     width: 80%;
+//     max-width: 600px;
+
+//     img {
+//       width: 100%;
+//       height: auto;
+//       animation: levitate 3s infinite ease-in-out;
+//     }
+//   }
+// }
+
+// @keyframes levitate {
+//   0%, 100% { transform: translateY(0); }
+//   50% { transform: translateY(-20px); }
+// }
+
+// .login-section-right {
+//   flex: 1;
+//   @include flex-center;
+//   position: relative;
+//   z-index: 1;
+
+//   form {
+//     width: 100%;
+//     max-width: 450px;
+//     padding: 3rem;
+//     border-radius: 20px;
+//     @include glass-effect;
+//     box-shadow: $box-shadow;
+//     animation: slideIn 0.6s ease-out;
+
+//     mat-form-field {
+//       width: 100%;
+//       margin-bottom: 1rem;
+
+//       &.mat-form-field-appearance-outline {
+//         .mat-form-field-outline {
+//           background: rgba(255, 255, 255, 0.9);
+//           border-radius: 8px;
+//         }
+
+//         .mat-form-field-flex {
+//           padding: 0.75rem 0.5rem;
+//         }
+//       }
+
+//       input {
+//         font-size: 1rem;
+//         padding: 0.5rem;
+//       }
+
+//       mat-icon {
+//         color: $primary-400;
+//         transition: $transition;
+
+//         &:hover {
+//           color: $primary-600;
+//           transform: scale(1.1);
+//         }
+//       }
+//     }
+
+//     .captcha-container {
+//       background: white;
+//       padding: 1rem;
+//       border-radius: 8px;
+//       margin: 1rem 0;
+//       @include flex-center;
+//       gap: 1rem;
+
+//       img {
+//         max-width: 200px;
+//         border-radius: 4px;
+//       }
+
+//       mat-icon {
+//         color: $primary-400;
+//         cursor: pointer;
+//         transition: $transition;
+
+//         &:hover {
+//           transform: rotate(180deg);
+//           color: $primary-600;
+//         }
+//       }
+//     }
+
+//     button {
+//       width: 100%;
+//       padding: 1rem;
+//       border: none;
+//       border-radius: 8px;
+//       background: linear-gradient(45deg, $primary-600, $primary-400);
+//       color: white;
+//       font-size: 1.1rem;
+//       font-weight: 600;
+//       text-transform: uppercase;
+//       letter-spacing: 1px;
+//       margin-top: 1rem;
+//       cursor: pointer;
+//       transition: $transition;
+//       position: relative;
+//       overflow: hidden;
+
+//       &::before {
+//         content: '';
+//         position: absolute;
+//         top: 0;
+//         left: -100%;
+//         width: 100%;
+//         height: 100%;
+//         background: linear-gradient(
+//           120deg,
+//           transparent,
+//           rgba(255, 255, 255, 0.3),
+//           transparent
+//         );
+//         transition: 0.5s;
+//       }
+
+//       &:hover {
+//         transform: translateY(-2px);
+//         box-shadow: 0 5px 15px rgba($primary-600, 0.3);
+
+//         &::before {
+//           left: 100%;
+//         }
+//       }
+
+//       &:active {
+//         transform: translateY(1px);
+//       }
+//     }
+
+//     mat-error {
+//       margin-top: 0.5rem;
+//       font-size: 0.9rem;
+//       color: #f44336;
+//       animation: shake 0.5s ease-in-out;
+//     }
+//   }
+// }
+
+// @keyframes slideIn {
+//   from {
+//     opacity: 0;
+//     transform: translateX(50px);
+//   }
+//   to {
+//     opacity: 1;
+//     transform: translateX(0);
+//   }
+// }
+
+// @keyframes shake {
+//   0%, 100% { transform: translateX(0); }
+//   25% { transform: translateX(-5px); }
+//   75% { transform: translateX(5px); }
+// }
+
+// // Responsive design
+// @media (max-width: 1024px) {
+//   .login-page-main {
+//     flex-direction: column;
+//   }
+
+//   .login-section-left {
+//     padding: 2rem 1rem;
+
+//     .login-image-bottom {
+//       width: 60%;
+//     }
+//   }
+
+//   .login-section-right form {
+//     margin: 2rem;
+//     padding: 2rem;
+//   }
+// }
+
+// @media (max-width: 600px) {
+//   .login-section-left .login-image-bottom {
+//     width: 90%;
+//   }
+
+//   .login-section-right form {
+//     margin: 1rem;
+//     padding: 1.5rem;
+//   }
+// }
+
