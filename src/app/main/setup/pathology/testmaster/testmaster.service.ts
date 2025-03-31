@@ -32,55 +32,6 @@ export class TestmasterService {
 
     createPathtestForm(): FormGroup {
         return this._formBuilder.group({
-            // TestId: [0],
-            // TestName: ["",
-            //     [
-            //         // Validators.required,
-            //         // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-            //     ]
-            // ],
-            // PrintTestName: ["",
-            //     [
-            //         // Validators.required,
-            //         // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-            //     ]
-            // ],
-            // CategoryId: [""],
-            // TechniqueName: ["",
-            //     [
-            //         // Validators.required,
-            //         // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-            //     ]
-            // ],
-            // MachineName: ["",
-            //     [
-            //         // Validators.required,
-            //         // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-            //     ]
-            // ],
-            // SuggestionNote: ["", 
-            //     // Validators.required
-            // ],
-            // FootNote: ["", 
-            //     // Validators.required
-            // ],
-            // ServiceID: [""],
-            // ServiceName: [""],
-            // IsTemplateTest: ["0"],
-            // IsCategoryPrint: [""],
-            // IsPrintTestName: [""],
-            // ParameterId: [""],
-            // ParaId: [""],
-            // ParameterName: [""],
-            // IsDeleted: ["true"],
-            // UpdatedBy: [""],
-            // AddedBy: [""],
-            // action: [""],
-            // parametertxt: [""],
-            // PTemplateId: [""],
-            // IsSubTest: ["true"],
-            // Status:[1],
-            
             TestId: [0],
             TestName: ["", [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
             PrintTestName: ["", [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
@@ -91,7 +42,7 @@ export class TestmasterService {
             SuggestionNote: [""],
             FootNote: [""],
             IsDeleted: true,
-            ServiceId: ["",[Validators.required]],
+            ServiceId: [""],
             IsTemplateTest: true,
             TestTime: ["2022-09-10"],
             TestDate: ["2022-07-11"],
@@ -210,7 +161,7 @@ export class TestmasterService {
     // depends on checkbox
     // get subTest master list of checkbox
     public getIsSubTestList(param) {
-        return this._httpClient.PostData("PathTestMaster/TestMasterList",param);
+        return this._httpClient.PostData("PathTestMaster/SubTestList",param);
     }
      // get parameter master list
      public getParameterMasterList(param) {
@@ -285,9 +236,6 @@ export class TestmasterService {
     }
 
     public unitMasterSave(Param: any) {
-        // if (Param.TestId) {
-        //     return this._httpClient.PutData("PathTestMaster/Insert" + Param.TestId, Param);
-        // } else
          return this._httpClient.PostData("PathTestMaster/InsertEDMX", Param);
     }
 

@@ -12,6 +12,7 @@ import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import Swal from "sweetalert2";
+import { FormGroup } from "@angular/forms";
 
 @Component({
   selector: "app-testmaster",
@@ -26,13 +27,37 @@ export class TestmasterComponent implements OnInit {
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('actionsIsSubTest') actionsIsSubTest!: TemplateRef<any>;
   @ViewChild('actionsisTemplateTest') actionsisTemplateTest!: TemplateRef<any>;
-
+  testName:any="";   
+   searchFormGroup: FormGroup;
+  
   ngAfterViewInit() {
     // Assign the template to the column dynamically
     this.gridConfig.columnsList.find(col => col.key === 'isSubTest')!.template = this.actionsIsSubTest;
     this.gridConfig.columnsList.find(col => col.key === 'isTemplateTest')!.template = this.actionsisTemplateTest;
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
   }
+
+  allColumns=[
+    { heading: "IsTemplateTest", key: "isTemplateTest", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 150 },
+    { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "TestName", key: "testName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "PrintTestName", key: "printTestName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "BillingServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Technique Name", key: "techniqueName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Machine Name", key: "machineName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "IsSub Test", key: "isSubTest", sort: true, align: 'left', type: gridColumnTypes.template, width: 100 },
+    { heading: "Added By", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+    {
+      heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate  // Assign ng-template to the column
+    }
+  ]
+
+  filters=[
+    { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.StartsWith }
+  ]
 
   constructor(
     public _TestService: TestmasterService,
@@ -44,36 +69,44 @@ export class TestmasterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
+    this.searchFormGroup = this._TestService.createSearchForm();
   }
 
-  parameter = this._TestService.myform.get("ParameterNameSearch").value + "%" || '%';
   gridConfig: gridModel = {
-    apiUrl: "PathTestMaster/TestMasterList", //"Pathology/PathologyTestList",
-    columnsList: [
-      { heading: "IsTemplateTest", key: "isTemplateTest", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 150 },
-      { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-      { heading: "TestName", key: "testName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-      { heading: "PrintTestName", key: "printTestName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-      { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-      { heading: "BillingServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-      { heading: "Technique Name", key: "techniqueName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-      { heading: "Machine Name", key: "machineName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-      { heading: "IsSub Test", key: "isSubTest", sort: true, align: 'left', type: gridColumnTypes.template, width: 100 },
-      { heading: "Added By", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-      { heading: "IsActive", key: "isdeleted", type: gridColumnTypes.status, align: "center", width: 100 },
-      {
-        heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
-        template: this.actionButtonTemplate  // Assign ng-template to the column
-      }
-    ],
+    apiUrl: "PathTestMaster/PathTestList", //"Pathology/PathologyTestList",
+    columnsList: this.allColumns,
     sortField: "TestId",
     sortOrder: 0,
-    filters: [
-      { fieldName: "TestId", fieldValue: "", opType: OperatorComparer.Equals }
-      // { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.StartsWith }
-    ]
+    filters: this.filters
   }
+
+  Clearfilter(event) {
+    console.log(event)
+    if (event == 'TestNameSearch')
+        this.searchFormGroup.get('TestNameSearch').setValue("")
+   
+    this.onChangeFirst();
+  }
+  
+onChangeFirst() {
+    this.testName = this.searchFormGroup.get('TestNameSearch').value + "%"
+    this.getfilterdata();
+}
+
+getfilterdata(){
+    
+    this.gridConfig = {
+      apiUrl: "PathTestMaster/PathTestList",
+      columnsList: this.allColumns,
+      sortField: "TestId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "ServiceName", fieldValue: this.testName, opType: OperatorComparer.StartsWith }
+      ]
+    }
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData(); 
+}
 
   onSave(row: any = null) {
 

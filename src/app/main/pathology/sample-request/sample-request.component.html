@@ -27,10 +27,9 @@
                     </div>
 
                     <form [formGroup]="myformSearch">
-                        <mat-radio-group name="IsPathOrRad" formControlName="IsPathOrRad"
-                        (change)="onFilterChange()">
+                        <mat-radio-group name="IsPathOrRad" formControlName="IsPathOrRad">
                         <mat-radio-button (click)="toggle(0)" [checked]="true"
-                            value="3">All</mat-radio-button>
+                            value="0">All</mat-radio-button>
                         <mat-radio-button mat-fab value="1"
                             (click)="toggle(1)">IsPathology</mat-radio-button>
                         <mat-radio-button (click)="toggle(2)" value="2">IsRadiology</mat-radio-button>
@@ -149,12 +148,12 @@
                     <span class="font-weight-600"> Help : </span>
                     <span fxLayout="row" fxLayoutGap="4px">
                         <mat-icon class="pill green-600 s-16">circle</mat-icon>
-                        <span>IsPathology / ISRadiology / IsTestompleted</span>
+                        <span>IsPathology / IsRadiology / IsTestCompleted</span>
                     </span>
                     <span fxLayout="row" fxLayoutGap="4px">
                         <mat-icon class="pill orange-600 s-16">circle</mat-icon>
                         <span>
-                            IsNotPathology / ISNotRadiology / IsNotTestompleted
+                            IsNotPathology / IsNotRadiology / IsNotTestCompleted
                         </span>
                     </span>
                 </div>
