@@ -66,23 +66,12 @@ export class ReportConfigurationService {
             reportColumn:["",
                 [
                     Validators.required, 
-                    // Validators.maxLength(1000),
                 ]
             ],
 
-            reportTotalField:["",
-                [
-                    // Validators.required, 
-                    // Validators.maxLength(1000),
-                ]
-            ],
+            reportTotalField:[""],
             reportGroupByLabel:["",
-                [
-                    // Validators.required, 
-                    // Validators.maxLength(1000),
-                ]
             ],
-
             reportHeaderFile:["",
                 [
                     Validators.required, 
@@ -94,28 +83,24 @@ export class ReportConfigurationService {
                 [
                     Validators.required, 
                     Validators.maxLength(500),
-                    Validators.pattern("^[A-Za-z .,@$&]+$") //.html
                 ]
             ],
             reportFolderName:["",
                 [
                     Validators.required, 
                     Validators.maxLength(500),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             reportFileName:["",
                 [
                     Validators.required, 
                     Validators.maxLength(500),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             reportSpname:["",
                 [
                     Validators.required, 
                     Validators.maxLength(500),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             reportPageOrientation:["",[Validators.required]],
@@ -123,9 +108,7 @@ export class ReportConfigurationService {
             // isActive:[true,[Validators.required]],
             reportFilter: ["",
                 [
-                    // Validators.required, 
                     Validators.maxLength(500),
-                    Validators.pattern("^[A-Za-z .,@$&]+$") //.html
                 ]
             ],
         });

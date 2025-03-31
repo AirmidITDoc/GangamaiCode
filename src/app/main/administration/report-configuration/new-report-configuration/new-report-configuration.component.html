@@ -106,7 +106,7 @@
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                         <div fxFlex fxFlex.xs="100%">
                             <airmid-textbox label="reportTotalField" formControlName="reportTotalField" [value]="data?.reportTotalField"
-                                [formGroup]="myform" [validations]="getValidationMessages().reportTotalField">
+                                [formGroup]="myform" [validations]="getValidationMessages().reportTotalField" [maxLength]="2000">
                             </airmid-textbox>
                         </div>
                     </div>
@@ -156,14 +156,21 @@
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
+                            <!-- <airmid-textbox 
                                 label="ReportBodyFile" 
                                 formControlName="reportBodyFile" 
                                 [value]="data?.reportBodyFile" 
                                 [formGroup]="myform" 
                                 [validations]="getValidationMessages().reportBodyFile" 
                                 [maxLength]="200">
-                            </airmid-textbox>
+                            </airmid-textbox> -->
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>reportBodyFile</mat-label>
+                                <mat-select placeholder="ReportBodyFile" formControlName="reportBodyFile" name="reportBodyFile">
+                                    <mat-option *ngFor="let i of reportBodyFile" [value]="i">{{i}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
                         </div>
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">

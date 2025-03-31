@@ -19,6 +19,7 @@ export class NewReportConfigurationComponent implements OnInit{
 
     reportPageOrientation: string[] = ["Portrait", "Landscape"];
     reportPageSize: string[] = ["A4", "C5"];
+    reportBodyFile: string[] = ["SimpleReportFormat.html", "SimpleTotalReportFormat.html","MultiTotalReportFormat.html"];
 
     constructor(
         public _ReportConfigurationService: ReportConfigurationService,
@@ -109,7 +110,6 @@ export class NewReportConfigurationComponent implements OnInit{
             reportBodyFile:[
                 { name: "required", Message: "Report Body File is required" },
                 { name: "maxlength", Message: "Report Body File should not be greater than 200 char." },
-                { name: "pattern", Message: "Only Characters Allowed." }
             ],
             reportFolderName: [
                 { name: "required", Message: "Report Folder Name is required" },
@@ -119,12 +119,10 @@ export class NewReportConfigurationComponent implements OnInit{
             reportFileName:[
                 { name: "required", Message: "Report File Name is required" },
                 { name: "maxlength", Message: "Report File Name should not be greater than 200 char." },
-                // { name: "pattern", Message: "Only Characters Allowed." }
             ],
             reportSpname:[
                 { name: "required", Message: "Report SP Name is required" },
                 { name: "maxlength", Message: "Report SP Name should not be greater than 500 char." },
-                // { name: "pattern", Message: "Only Characters Allowed." }
             ],
             reportPageOrientation:[
                 { name: "required", Message: "Report Page Orientation is required" },
