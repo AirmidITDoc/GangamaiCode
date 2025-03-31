@@ -162,7 +162,7 @@ export class NewPrescriptionComponent implements OnInit {
       ItemName: '',
       DoseId:'',
       Day: [''],
-      Qty:['',[Validators.required,Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+      Qty:['',[Validators.required,Validators.pattern("^[0-9]{1,10}$")]],
       Instruction:['']
     })
   }
