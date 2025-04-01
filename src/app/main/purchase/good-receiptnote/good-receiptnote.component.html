@@ -487,7 +487,7 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         MRP</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.MRP | currency:'INR':'symbol-narrow':'0.2'}}
+                                                        {{contact.MRP | currency:'INR'}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -495,7 +495,7 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         Rate</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.Rate | currency:'INR':'symbol-narrow':'0.2'}}
+                                                        {{contact.Rate | currency:'INR'}}
                                                     </mat-cell>
                                                 </ng-container>
 

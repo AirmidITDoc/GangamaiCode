@@ -1703,15 +1703,28 @@ export class SalesHospitalComponent implements OnInit {
         }
       });
     dialogRef.afterClosed().subscribe(result1 => {
-     // debugger
+      debugger
       let result = result1.selectedData
       let vescflag = result1.vEscflag
       console.log(result);
 
-      if (vescflag) {
-        this._salesService.IndentSearchGroup.get('ItemId').setValue('')
-        this.itemid.nativeElement.focus();
-      } else if (!vescflag) {
+      if (vescflag || result.DaysFlag == 1) { 
+            Swal.fire({
+              title: 'Selected Item Batch already expired',
+              text: "Please select other batch ",
+              icon: "warning", 
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "OK!" 
+            }).then((result) => { 
+              if (result.isConfirmed) {
+                this._salesService.IndentSearchGroup.get('ItemId').setValue('')
+                this.itemid.nativeElement.focus();
+              } 
+            })
+            this._salesService.IndentSearchGroup.get('ItemId').setValue('')
+            this.itemid.nativeElement.focus();
+      } else if (!vescflag || result.DaysFlag != 1) {
         this.Quantity.nativeElement.focus();
 
         this.BatchNo = result.BatchNo;

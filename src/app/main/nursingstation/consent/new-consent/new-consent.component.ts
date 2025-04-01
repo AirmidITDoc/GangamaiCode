@@ -21,7 +21,7 @@ import { DatePipe } from '@angular/common';
 })
 export class NewConsentComponent implements OnInit {
 
-  vSelectedOption: any = 'OP';
+  vSelectedOption: any = 'IP';
   isRegIdSelected: boolean = false;
   vConsentText: any;
   DepartmentList: any = [];
@@ -348,6 +348,13 @@ export class NewConsentComponent implements OnInit {
   addTemplateDescription() {
     this.isButtonDisabled = false
     debugger
+    if (this.vRegNo == '' || this.vRegNo== null || this.vRegNo == undefined || this.vRegNo == 0) {
+      this.toastr.warning('Please select patient ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    
     if (this.selectedDepartment == '' || this.selectedDepartment == null || this.selectedDepartment == undefined) {
       this.toastr.warning('Please select Department ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -443,7 +450,7 @@ export class NewConsentComponent implements OnInit {
       opip_Type = 0;
     }
     if (!this.vConsentId) {
-
+debugger
       let saveTConsentInformationparams = {
         "consentId": 0,
         "consentDate": formattedDate,
@@ -545,7 +552,7 @@ debugger
         startWith(''),
         map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
       );
-      if (this.data.Obj) {
+      if (this.data) {
         const DValue = this.DepartmentList.filter(item => item.DepartmentName == this.registerObj1.DepartmentName);
         console.log("Department:", DValue)
         this._ConsentService.myform.get('Department').setValue(DValue[0]);
@@ -614,7 +621,8 @@ debugger
       start: this._ConsentService.myform.get('start')?.value,
       end: this._ConsentService.myform.get('end')?.value,
       Language: '1',
-      IsIPOrOP:'2'
+      IsIPOrOP:'2',
+      PatientType: ['IP']
     });
     this.dialogRef.close();
   }

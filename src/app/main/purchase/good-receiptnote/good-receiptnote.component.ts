@@ -417,6 +417,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         }
         this._GRNService.getGrnItemList(Param).subscribe(data => {
             this.dsGrnItemList.data = data as GrnItemList[];
+            console.log(this.dsGrnItemList.data)
             // this.dsGrnItemList.sort = this.sort;
             // this.dsGrnItemList.paginator = this.paginator;
             this.sIsLoading = '';

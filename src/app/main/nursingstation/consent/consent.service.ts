@@ -22,7 +22,7 @@ export class ConsentService {
   CreateMyform() {
     return this._frombuilder.group({
       RegID: [''],
-      PatientType: ['OP'],
+      PatientType: ['IP'],
       MobileNo: '',
       PatientName: '',
       ConsentName: '',
