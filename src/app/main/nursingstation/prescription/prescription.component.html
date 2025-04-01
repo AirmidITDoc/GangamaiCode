@@ -40,7 +40,7 @@
                         </div>
                     </div>
 
-                    <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="GetDetails1($event)" #grid>
+                    <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false" (onSelectRow)="GetDetails1($event)">
                         <ng-container filters>
                             <airmid-datepicker [formGroup]="_PrescriptionService.mysearchform" [isRangePicker]="true"
                                 formStartControlName="startdate" formEndControlName="enddate"
@@ -79,7 +79,7 @@
                         </div>
                     </ng-template>
 
-                    <airmid-table [gridConfig]="gridConfig" class="content" #grid1 [ShowFilter]="false" [ShowButtons]="false">
+                    <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false" [ShowButtons]="false">
                     </airmid-table>
                 </div>
             </div>

@@ -143,7 +143,8 @@ chargelist:any=[];
   }
   onClose(){
     this.vTemplatename = '';
-    this.dialogRef.close();
+    // this.dialogRef.close();
+    this._matDialog.closeAll();
   }
 
   onClear(){

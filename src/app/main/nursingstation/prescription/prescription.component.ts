@@ -43,7 +43,7 @@ export class PrescriptionComponent implements OnInit {
      @ViewChild('iconisClosed') iconisClosed!: TemplateRef<any>;
     
         ngAfterViewInit() {
-            this.gridConfig.columnsList.find(col => col.key === 'isClosed')!.template = this.iconisClosed;
+            // this.gridConfig1.columnsList.find(col => col.key === 'isClosed')!.template = this.iconisClosed;
         }
 
     hasSelectedContacts: boolean;
@@ -80,14 +80,14 @@ export class PrescriptionComponent implements OnInit {
     gridConfig1: gridModel = new gridModel();
 
     isShowDetailTable: boolean = false;
-    GetDetails1(data) {
+    GetDetails1(data:any):void {
         debugger
         console.log("detailList:",data)
-        
+        let ipMedID=data.ipMedID;
+
         this.gridConfig1 = {
             apiUrl: "IPPrescription/PrescriptionDetailList",
             columnsList: [
-                // { heading: "Status", key: "isClosed", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Status", key: "isClosed", sort: true, align: 'left',type: gridColumnTypes.template, 
                     template:this.iconisClosed, width: 50 },
                 { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
@@ -96,14 +96,14 @@ export class PrescriptionComponent implements OnInit {
             sortField: "ipMedID",
             sortOrder: 0,
             filters: [
-                { fieldName: "ipMedID", fieldValue: data.ipMedID.toString(), opType: OperatorComparer.Equals },
+                { fieldName: "ipMedID", fieldValue: String(ipMedID), opType: OperatorComparer.Equals },
             ]
-        }
+        };
         this.isShowDetailTable = true;
         setTimeout(() => {
             this.grid1.gridConfig = this.gridConfig1;
             this.grid1.bindGridData();
-        });
+        },500);
     }
 
     gridConfig3: gridModel = {
@@ -172,11 +172,9 @@ export class PrescriptionComponent implements OnInit {
     constructor(public _PrescriptionService: PrescriptionService, public _matDialog: MatDialog,
         public toastr: ToastrService, private commonService: PrintserviceService,
         public datePipe: DatePipe,) { }
+
     ngOnInit(): void {
     }
-
-
-
 
      viewgetIpprescriptionReportPdf(response) {
         console.log(response)

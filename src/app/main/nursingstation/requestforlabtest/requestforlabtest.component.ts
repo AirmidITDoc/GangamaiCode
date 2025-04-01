@@ -100,10 +100,10 @@ export class RequestforlabtestComponent implements OnInit {
                 },
                 { heading: "ReqDate", key: "reqDate", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "ReqTime", key: "reqTime", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA',width:150 },
                 { heading: "AddedBy", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Add Billing User", key: "billingUser", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "BillDateTime", key: "billdatetime", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "BillDateTime", key: "addedByDate", sort: true, align: 'left', emptySign: 'NA',width:150 },
                 { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
 
             ],

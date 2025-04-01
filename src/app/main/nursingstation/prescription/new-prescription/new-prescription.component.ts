@@ -125,6 +125,8 @@ export class NewPrescriptionComponent implements OnInit {
   autocompletestore: string = "Store";
   autocompleteward: string = "Room";
   autocompleteitem: string = "ItemType";
+  Regstatus: boolean = true;
+  public isItem=false;
 
   constructor(private _FormBuilder: UntypedFormBuilder,
     private ref: MatDialogRef<NewPrescriptionComponent>,
@@ -164,7 +166,7 @@ export class NewPrescriptionComponent implements OnInit {
       ItemName: '',
       DoseId: '',
       Day: [''],
-      Qty: [Validators.pattern("^[0-9]*$")],
+      Qty: ['',[Validators.required,Validators.pattern("^[0-9]*$")]],
       Instruction: ['']
     })
   }
@@ -172,11 +174,14 @@ export class NewPrescriptionComponent implements OnInit {
   ngOnInit(): void {
     this.myForm = this.createMyForm();
     this.ItemForm = this.createItemForm();
+    this.ItemForm.markAllAsTouched();
+    this.myForm.markAllAsTouched();
 
   }
   dateTimeObj: any;
   WardName: any;
   BedNo: any;
+
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
@@ -219,6 +224,11 @@ export class NewPrescriptionComponent implements OnInit {
   selectChangeStore(obj: any) {
     console.log("Store:", obj);
     this.vstoreId = obj.value
+
+    if(this.vstoreId)
+    // this.Regstatus = false
+    this.isItem=true;
+
   }
 
   vitemId: any;
@@ -231,27 +241,55 @@ export class NewPrescriptionComponent implements OnInit {
     return null;
   }
 
+  // selectChangeItem(obj: any) {
+  //   debugger
+  //   //   if (this.vstoreId==0) {
+  //   //     this.toastr.warning('Please select Store', 'Warning!', {
+  //   //       toastClass: 'tostr-tost custom-toast-warning',
+  //   //     });
+  //   //     return;
+  //   //   }
+  //   // else if(this.vstoreId!=0){
+
+  //   if (!obj || typeof obj !== 'object') {
+  //     this.toastr.error('Invalid item selection. Please choose a valid item from the list.', 'Error!');
+  //     this.ItemForm.get('ItemId').setErrors({ invalidItem: true });
+  //     return;
+  //   }
+  //   console.log("Item:", obj);
+  //   this.vitemId = obj.itemId;
+  //   this.vitemname = obj.itemName;
+  //   this.ItemForm.get('ItemId').setValue(obj);
+  //   // }
+  // }
+
+validateStoreOnTyping() {
+  if (!this.vstoreId) {
+      this.toastr.warning('Please select a StoreName before choosing an Item.', 'Warning!', {
+        toastClass: 'tostr-tost custom-toast-warning'
+    });
+      this.ItemForm.get('ItemId').reset(); 
+      this.ItemForm.get('ItemId').updateValueAndValidity();
+  }
+}
+
   selectChangeItem(obj: any) {
-    debugger
-    //   if (this.vstoreId==0) {
-    //     this.toastr.warning('Please select Store', 'Warning!', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //     return;
-    //   }
-    // else if(this.vstoreId!=0){
+    debugger;
+    if (!this.vstoreId) {
+      return;
+  }
 
     if (!obj || typeof obj !== 'object') {
       this.toastr.error('Invalid item selection. Please choose a valid item from the list.', 'Error!');
       this.ItemForm.get('ItemId').setErrors({ invalidItem: true });
       return;
     }
+
     console.log("Item:", obj);
     this.vitemId = obj.itemId;
     this.vitemname = obj.itemName;
     this.ItemForm.get('ItemId').setValue(obj);
-    // }
-  }
+}
 
   doseList: any = [];
 

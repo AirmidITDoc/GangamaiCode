@@ -68,6 +68,9 @@ export class MedicalrecordComponent implements OnInit {
   RegId = 0
   dateTimeObj: any;
   vOPIPId = 0;
+  f_name: any = ""
+  regNo: any = "0"
+  l_name: any = ""
 
   constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
     private commonService: PrintserviceService,
@@ -87,17 +90,6 @@ export class MedicalrecordComponent implements OnInit {
 
   }
 
-  allfilters = [
-    { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-    { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-    { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "Doctor_Id", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
-    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-    { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals }
-
-  ];
-
   ngAfterViewInit() {
     // Assign the template to the column dynamically
     this.gridConfig.columnsList.find(col => col.key === 'patientOldNew')!.template = this.actionsTemplate;
@@ -114,34 +106,47 @@ export class MedicalrecordComponent implements OnInit {
 
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
+  allfilters = [
+    { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+    { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+    { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "Doctor_Id", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
+    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+    { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+    { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals }
+
+  ];
+
+  allcolumns = [
+    { heading: "", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+    { heading: "", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+    { heading: "", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+    { heading: "", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+    { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
+    { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', type: 22 },
+    { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    {
+      heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate  // Assign ng-template to the column
+    }
+  ]
+
   gridConfig: gridModel = {
     apiUrl: "VisitDetail/AppVisitList",
-    columnsList: [
-      { heading: "Patient", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
-      { heading: "", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-      { heading: "", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-      { heading: "", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-      { heading: "UHID", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-      { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-      { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
-      { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-      { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-      { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-      { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', type: 22 },
-      { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-      { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-      {
-        heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
-        template: this.actionButtonTemplate  // Assign ng-template to the column
-      }
-    ],
-
+    columnsList: this.allcolumns,
     sortField: "VisitId",
     sortOrder: 0,
     filters: this.allfilters
   }
+
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
@@ -151,6 +156,62 @@ export class MedicalrecordComponent implements OnInit {
   onChangeEndDate(value) {
     this.gridConfig.filters[5].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
   }
+
+  onChangeFirst() {
+    this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
+    this.f_name = this.myformSearch.get('FirstName').value + "%"
+    this.l_name = this.myformSearch.get('LastName').value + "%"
+    this.regNo = this.myformSearch.get('RegNo').value
+    this.getfilterdata();
+  }
+
+  getfilterdata() {
+
+    this.gridConfig = {
+      apiUrl: "VisitDetail/AppVisitList",
+      columnsList: this.allcolumns,
+      sortField: "VisitId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
+        { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+        { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+        { fieldName: "Doctor_Id", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+        { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals }
+
+      ]
+    }
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData();
+  }
+
+  Clearfilter(event) {
+    console.log(event)
+    if (event == 'FirstName')
+      this.myformSearch.get('FirstName').setValue("")
+    else
+      if (event == 'LastName')
+        this.myformSearch.get('LastName').setValue("")
+    if (event == 'RegNo')
+      this.myformSearch.get('RegNo').setValue("")
+
+    this.onChangeFirst();
+  }
+
+  ListView(value) {
+        
+    console.log(value)
+     if(value.value!==0)
+        this.DoctorId=value.value
+    else
+    this.DoctorId="0"
+
+    this.onChangeFirst();
+}
+
   onSave(row: any = null) {
 
   }
@@ -279,46 +340,46 @@ export class MedicalrecordComponent implements OnInit {
 
   getSelectedObj(obj) {
     if ((obj.regId ?? 0) > 0) {
-        console.log(obj)
-        this.vOPIPId = obj.visitId
+      console.log(obj)
+      this.vOPIPId = obj.visitId
 
-        setTimeout(() => {
-            this._AppointmentlistService.getRegistraionById(obj.regId).subscribe((response) => {
-                this.patientDetail = response;
-                console.log(this.patientDetail)
-            });
+      setTimeout(() => {
+        this._AppointmentlistService.getRegistraionById(obj.regId).subscribe((response) => {
+          this.patientDetail = response;
+          console.log(this.patientDetail)
+        });
 
-        }, 500);
+      }, 500);
 
-        // setTimeout(() => {
-        //     this._AppointmentlistService.getVisitById(this.vOPIPId).subscribe(data => {
-        //         this.patientDetail1 = data;
-        //         console.log(data)
-        //         console.log(this.patientDetail1)
-        //     });
-        // }, 1000);
+      // setTimeout(() => {
+      //     this._AppointmentlistService.getVisitById(this.vOPIPId).subscribe(data => {
+      //         this.patientDetail1 = data;
+      //         console.log(data)
+      //         console.log(this.patientDetail1)
+      //     });
+      // }, 1000);
     }
     this.updateRegisteredPatientInfo(obj);
-}
+  }
 
-  getSelectedRow(row:any):void{
+  getSelectedRow(row: any): void {
     console.log("Selected row : ", row);
-}
+  }
 
-updateRegisteredPatientInfo(obj) {
-  const dialogRef = this._matDialog.open(UpdateRegPatientInfoComponent,
+  updateRegisteredPatientInfo(obj) {
+    const dialogRef = this._matDialog.open(UpdateRegPatientInfoComponent,
       {
-          maxWidth: "100%",
-          height: '95%',
-          width: '95%',
-          data: obj
+        maxWidth: "100%",
+        height: '95%',
+        width: '95%',
+        data: obj
       });
-  dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(result => {
       this.searchFormGroup.get('RegId').setValue('');
-        this.grid.bindGridData();
-  });
+      this.grid.bindGridData();
+    });
 
-}
+  }
 
   getVisitList1() {
     // call list

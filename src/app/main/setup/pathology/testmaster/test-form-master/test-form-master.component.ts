@@ -463,7 +463,7 @@ export class TestFormMasterComponent implements OnInit {
 
     // isSubtest checkbox list 
     getSubTestMasterList() {
-        // let parameter = this.testForm.get("ParameterNameSearch").value + "%" || '%';
+        let parameter = this.testForm.get("ParameterNameSearch").value + "%" || '%';
         var param={
             "first": 0,
             "rows": 10,
@@ -471,8 +471,8 @@ export class TestFormMasterComponent implements OnInit {
             "sortOrder": 0,
             "filters": [
               {
-                "fieldName": "TestId",
-                "fieldValue": "30429",
+                "fieldName": "TestName",
+                "fieldValue": parameter,
                 "opType": "Equals"
               }
             ],

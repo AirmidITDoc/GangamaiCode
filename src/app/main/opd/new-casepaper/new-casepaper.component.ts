@@ -468,21 +468,35 @@ export class NewCasepaperComponent implements OnInit {
   vInst: any;
   vPrescriptionId: any;
   getPrescription(obj) {
-    // 
+    debugger
     var m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "VisitId",
       "sortOrder": 0,
       "filters": [
-        {
+    {
           "fieldName": "VisitId",
-          "fieldValue": String(obj.visitId),//"40773",	
+          "fieldValue": String(obj.visitId),
           "opType": "Equals"
         }
-      ],
+    ],
       "exportType": "JSON"
     }
+    // {
+    //   "first": 0,
+    //   "rows": 10,
+    //   "sortField": "VisitId VisitId",
+    //   "sortOrder": 0,
+    //   "filters": [
+    //     {
+    //       "fieldName": "VisitId",
+    //       "fieldValue": String(obj.visitId),//"153094",	
+    //       "opType": "Equals"
+    //     }
+    //   ],
+    //   "exportType": "JSON"
+    // }
     console.log("VisitId:", m_data2)
     this._CasepaperService.RtrvPreviousprescriptionDetailsdemo(m_data2).subscribe(Visit => {
       this.dsItemList.data = Visit?.data as MedicineItemList[];
@@ -1195,9 +1209,9 @@ export class NewCasepaperComponent implements OnInit {
       insertOPDPrescription['days'] = element.Days || 0;
       insertOPDPrescription['instruction'] = element.Instruction || '';
       insertOPDPrescription['remark'] = '';
-      insertOPDPrescription['doseOption2'] = element.DoseId1 || 0;
+      insertOPDPrescription['doseOption2'] = 0, //element.DoseId1 || 0;
       insertOPDPrescription['daysOption2'] = 0 ,//parseInt(element.Day1.toString()) || 0;
-      insertOPDPrescription['doseOption3'] = element.DoseId2 || 0;
+      insertOPDPrescription['doseOption3'] = 0, //element.DoseId2 || 0;
       insertOPDPrescription['daysOption3'] = 0 ,///parseInt(element.Day2.toString()) || 0;
       insertOPDPrescription['instructionId'] = 0;
       insertOPDPrescription['qtyPerDay'] = element.QtyPerDay || 0;
