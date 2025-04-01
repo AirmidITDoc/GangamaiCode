@@ -120,7 +120,9 @@ export class TestFormMasterComponent implements OnInit {
         this.testForm = this._TestmasterService.createPathtestForm();
         this.templatedetailsForm = this._TestmasterService.templatedetailsForm();
         this.testdetailsForm = this._TestmasterService.testdetailsForm();
-
+        this.testForm.get("Status").setValue(1)
+        // this.testForm.reset({Status:[1]});
+        debugger
         if (this.data) {
             this.registerObj = this.data;
             console.log(this.registerObj);
@@ -129,7 +131,7 @@ export class TestFormMasterComponent implements OnInit {
             this.TemplateId = this.registerObj.TemplateId;
             this.isActive=this.registerObj.isdeleted;
 
-            if (!this.registerObj.isTemplateTest && !this.registerObj.isSubTest) {
+            if (this.registerObj.isTemplateTest === "0" && !this.registerObj.isSubTest) {
                 this._TestmasterService.is_subtest = false;
                 this.Statusflag = false;
                 this._TestmasterService.is_templatetest = false;
@@ -137,16 +139,15 @@ export class TestFormMasterComponent implements OnInit {
                 this._TestmasterService.is_Test=true
                 this.fetchTestlist(this.registerObj);
 
-            } else if (this.registerObj.isTemplateTest) {
+            } else if (this.registerObj.isTemplateTest === "1") {
                 this._TestmasterService.is_templatetest = true;
                 this._TestmasterService.is_subtest = false;
                 this._TestmasterService.is_Test = false;
                 this.Statusflag = true;
                 this.testForm.get("Status").setValue(3);
-                this.fetchTemplate(this.registerObj)
-
-            } else if (!this.registerObj.isTemplateTest && this.registerObj.isSubTest) {
-                this.Subtest = this.registerObj.IsSubTest
+                this.fetchTemplate(this.registerObj);
+            } else if (this.registerObj.isTemplateTest === "0" && this.registerObj.isSubTest) {
+                this.Subtest = this.registerObj.isSubTest; // Fix possible typo (IsSubTest → isSubTest)
                 this.Statusflag = false;
                 this._TestmasterService.is_templatetest = false;
                 this._TestmasterService.is_subtest = true;
@@ -218,7 +219,7 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     fetchTestlist(obj) {
-        
+        debugger
         var m_data =
         {
             "first": 0,
@@ -246,7 +247,7 @@ export class TestFormMasterComponent implements OnInit {
 
     // wroung api list used
     fetchSubTestlist(obj) {
-
+        debugger
         var m_data =
         {
             "first": 0,
@@ -281,7 +282,7 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     fetchTemplate(obj) {
-
+        debugger
         var m_data =  {
             "first": 0,
             "rows": 10,
@@ -358,7 +359,7 @@ export class TestFormMasterComponent implements OnInit {
                 "SuggestionNote": this.testForm.get("SuggestionNote").value || "",
                 "FootNote": this.testForm.get("FootNote").value || "",
                 "IsDeleted": Boolean(JSON.parse(this.testForm.get("isActive").value)), //true
-                "ServiceId": this.testForm.get("ServiceId").value || 15,
+                "ServiceId": this.testForm.get("ServiceId").value || 0,
                 "IsTemplateTest": this._TestmasterService.is_templatetest ? 1 : 0,//this.testForm.get('IsTemplateTest').value,
                 "TestTime": formattedTime,
                 "TestDate": formattedDate,//"2022-07-11",
@@ -396,7 +397,7 @@ export class TestFormMasterComponent implements OnInit {
                 "SuggestionNote": this.testForm.get("SuggestionNote").value,
                 "FootNote": this.testForm.get("FootNote").value,
                 "IsDeleted": Boolean(JSON.parse(this.testForm.get("isActive").value)),
-                "ServiceId": this.testForm.get("ServiceId").value || 15,
+                "ServiceId": this.testForm.get("ServiceId").value || 0,
                 "IsTemplateTest": this._TestmasterService.is_templatetest ? 1 : 0, //this.testForm.get('IsTemplateTest').value,
                 "TestTime": formattedTime,
                 "TestDate": formattedDate,//"2022-07-11",
@@ -436,7 +437,6 @@ export class TestFormMasterComponent implements OnInit {
     getParameterList() {
         let parameter = this.testForm.get("ParameterNameSearch").value + "%" || '%';
         var param={
-
             "first": 0,          
             "rows": 10,          
             "sortField": "ParameterId",          
@@ -472,7 +472,7 @@ export class TestFormMasterComponent implements OnInit {
             "filters": [
               {
                 "fieldName": "TestId",
-                "fieldValue": "144",
+                "fieldValue": "30429",
                 "opType": "Equals"
               }
             ],

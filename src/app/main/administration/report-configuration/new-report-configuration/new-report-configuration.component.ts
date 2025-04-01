@@ -17,8 +17,9 @@ export class NewReportConfigurationComponent implements OnInit{
     myform: FormGroup;
     isActive:boolean=true;
 
-    reportPageOrientation: string[] = ["Portrait (Vertical)", "Landscape (Horizontal)"];
-    reportPageSize: string[] = ["A1", "A2", "A3", "A4", "C4", "C5", "C6"];
+    reportPageOrientation: string[] = ["Portrait", "Landscape"];
+    reportPageSize: string[] = ["A4", "C5"];
+    reportBodyFile: string[] = ["SimpleReportFormat.html", "SimpleTotalReportFormat.html","MultiTotalReportFormat.html"];
 
     constructor(
         public _ReportConfigurationService: ReportConfigurationService,
@@ -62,12 +63,12 @@ export class NewReportConfigurationComponent implements OnInit{
         return {
             reportSection: [
                 { name: "required", Message: "Report Section is required" },
-                { name: "maxlength", Message: "Report Section should not be greater than 30 char." },
+                { name: "maxlength", Message: "Report Section should not be greater than 50 char." },
                 { name: "pattern", Message: "Only Characters and Spaces Allowed." }
             ],
             reportName:[
                 { name: "required", Message: "Report Name is required" },
-                { name: "maxlength", Message: "Report Name should not be greater than 30 char." },
+                { name: "maxlength", Message: "Report Name should not be greater than 200 char." },
                 { name: "pattern", Message: "Only Characters Allowed." }
             ],
             parentid:[
@@ -77,46 +78,51 @@ export class NewReportConfigurationComponent implements OnInit{
             ],
             reportMode:[
                 { name: "required", Message: "Report Name is required" },
-                { name: "maxlength", Message: "Report Name should not be greater than 30 char." },
-                { name: "pattern", Message: "Only Characters Allowed." }
+                { name: "maxlength", Message: "Report Name should not be greater than 200 char." },
+                // { name: "pattern", Message: "Only Characters Allowed." }
             ],
             reportTitle:[
                 { name: "required", Message: "Report Title is required" },
-                { name: "maxlength", Message: "Report Title should not be greater than 30 char." },
-                { name: "pattern", Message: "Only Characters Allowed." }
+                { name: "maxlength", Message: "Report Title should not be greater than 500 char." },
+                // { name: "pattern", Message: "Only Characters Allowed." }
             ],
             reportHeader:[
                 { name: "required", Message: "Report Header is required" },
-                { name: "maxlength", Message: "Report Header should not be greater than 100 char." },
+                { name: "maxlength", Message: "Report Header should not be greater than 1000 char." },
+            ],
+            reportTotalField:[
+                // { name: "required", Message: "Report column is required" },
+                // { name: "maxlength", Message: "Report Column should not be greater than 100 char." },
             ],
             reportColumn:[
                 { name: "required", Message: "Report column is required" },
-                { name: "maxlength", Message: "Report Column should not be greater than 100 char." },
+                { name: "maxlength", Message: "Report Column should not be greater than 1000 char." },
+            ],
+            reportGroupByLabel:[
+                // { name: "required", Message: "Report column is required" },
+                // { name: "maxlength", Message: "Report Column should not be greater than 100 char." },
             ],
             reportHeaderFile:[
                 { name: "required", Message: "Report Header File is required" },
-                { name: "maxlength", Message: "Report Header File should not be greater than 30 char." },
+                { name: "maxlength", Message: "Report Header File should not be greater than 100 char." },
                 { name: "pattern", Message: "Only Characters Allowed." }
             ],
             reportBodyFile:[
                 { name: "required", Message: "Report Body File is required" },
-                { name: "maxlength", Message: "Report Body File should not be greater than 30 char." },
-                { name: "pattern", Message: "Only Characters Allowed." }
+                { name: "maxlength", Message: "Report Body File should not be greater than 200 char." },
             ],
             reportFolderName: [
                 { name: "required", Message: "Report Folder Name is required" },
-                { name: "maxlength", Message: "Report Folder Name should not be greater than 30 char." },
+                { name: "maxlength", Message: "Report Folder Name should not be greater than 200 char." },
                 { name: "pattern", Message: "Only Characters Allowed." }
             ],
             reportFileName:[
                 { name: "required", Message: "Report File Name is required" },
-                { name: "maxlength", Message: "Report File Name should not be greater than 30 char." },
-                { name: "pattern", Message: "Only Characters Allowed." }
+                { name: "maxlength", Message: "Report File Name should not be greater than 200 char." },
             ],
             reportSpname:[
                 { name: "required", Message: "Report SP Name is required" },
-                { name: "maxlength", Message: "Report SP Name should not be greater than 30 char." },
-                { name: "pattern", Message: "Only Characters Allowed." }
+                { name: "maxlength", Message: "Report SP Name should not be greater than 500 char." },
             ],
             reportPageOrientation:[
                 { name: "required", Message: "Report Page Orientation is required" },

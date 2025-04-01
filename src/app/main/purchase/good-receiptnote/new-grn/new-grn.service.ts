@@ -78,6 +78,11 @@ export class NewGRNService {
             item.Disc2 = 0;
             return false;
         }
+        if (+item.MRP < 0) {
+            this.showToast('MRP should be greater than 0', ToastType.WARNING);
+            item.MRP = 0;
+            return false;
+        }
         if (+item.Rate < 0) {
             this.showToast('Rate should be greater than 0', ToastType.WARNING);
             item.Rate = 0;
@@ -92,7 +97,7 @@ export class NewGRNService {
             this.showToast('Free Quantity should be greater than 0', ToastType.WARNING);
             item.FreeQty = 0;
             return false;
-        }   
+        }
         if (+item.Qty < 0) {
             this.showToast('Quantity should be greater than 0', ToastType.WARNING);
             item.Qty = 0;
@@ -303,8 +308,22 @@ export class NewGRNService {
     }
     // You can create this method in a separate service for toast notifications.
     showToast(message: string, type: ToastType = ToastType.SUCCESS) {
-        this.toastr.warning(message, `${type} !`, {
-            toastClass: `tostr-tost custom-toast-${type}`,
-        });
+        if (type === ToastType.SUCCESS) {
+            this.toastr.success(message, `${type} !`, {
+                toastClass: `tostr-tost custom-toast-${ToastType.SUCCESS}`,
+            });
+        }
+
+        if (type === ToastType.WARNING) {
+            this.toastr.warning(message, `${type} !`, {
+                toastClass: `tostr-tost custom-toast-${ToastType.WARNING}`,
+            });
+        }
+        if (type === ToastType.ERROR) {
+            this.toastr.error(message, `${type} !`, {
+                toastClass: `tostr-tost custom-toast-${ToastType.ERROR}`,
+            });
+        }
+
     }
 }

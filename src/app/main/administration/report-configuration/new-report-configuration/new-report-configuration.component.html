@@ -29,7 +29,7 @@
                                 [value]="data?.reportSection" 
                                 [formGroup]="myform" 
                                 [validations]="getValidationMessages().reportSection" 
-                                [maxLength]="30">
+                                [maxLength]="50">
                             </airmid-textbox>
                         </div>
 
@@ -40,7 +40,7 @@
                                 [value]="data?.reportName" 
                                 [formGroup]="myform" 
                                 [validations]="getValidationMessages().reportName" 
-                                [maxLength]="30">
+                                [maxLength]="200">
                             </airmid-textbox>
                         </div>
 
@@ -63,7 +63,7 @@
                                 [value]="data?.reportMode" 
                                 [formGroup]="myform" 
                                 [validations]="getValidationMessages().reportMode" 
-                                [maxLength]="30">
+                                [maxLength]="500">
                             </airmid-textbox>
                         </div>
 
@@ -74,7 +74,7 @@
                                 [value]="data?.reportTitle" 
                                 [formGroup]="myform" 
                                 [validations]="getValidationMessages().reportTitle" 
-                                [maxLength]="30">
+                                [maxLength]="200">
                             </airmid-textbox>
                         </div>
 
@@ -85,21 +85,37 @@
                                 [value]="data?.reportHeaderFile" 
                                 [formGroup]="myform" 
                                 [validations]="getValidationMessages().reportHeaderFile" 
-                                [maxLength]="30">
+                                [maxLength]="1000">
                             </airmid-textbox>
                         </div>
                     </div>
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                         <div fxFlex fxFlex.xs="100%">
                             <airmid-textbox label="ReportHeader" formControlName="reportHeader" [value]="data?.reportHeader"
-                                [formGroup]="myform" [validations]="getValidationMessages().reportHeader" [maxLength]="100">
+                                [formGroup]="myform" [validations]="getValidationMessages().reportHeader" [maxLength]="1000">
                             </airmid-textbox>
                         </div>
                     </div>
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                         <div fxFlex fxFlex.xs="100%">
                             <airmid-textbox label="ReportColumn" formControlName="reportColumn" [value]="data?.reportColumn"
-                                [formGroup]="myform" [validations]="getValidationMessages().reportColumn" [maxLength]="100">
+                                [formGroup]="myform" [validations]="getValidationMessages().reportColumn" [maxLength]="1000">
+                            </airmid-textbox>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <div fxFlex fxFlex.xs="100%">
+                            <airmid-textbox label="reportTotalField" formControlName="reportTotalField" [value]="data?.reportTotalField"
+                                [formGroup]="myform" [validations]="getValidationMessages().reportTotalField" [maxLength]="2000">
+                            </airmid-textbox>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <div fxFlex fxFlex.xs="100%">
+                            <airmid-textbox label="reportGroupByLabel" formControlName="reportGroupByLabel" [value]="data?.reportGroupByLabel"
+                                [formGroup]="myform" 
+                                [validations]="getValidationMessages().reportGroupByLabel"
+                                >
                             </airmid-textbox>
                         </div>
                     </div>
@@ -140,14 +156,21 @@
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
+                            <!-- <airmid-textbox 
                                 label="ReportBodyFile" 
                                 formControlName="reportBodyFile" 
                                 [value]="data?.reportBodyFile" 
                                 [formGroup]="myform" 
                                 [validations]="getValidationMessages().reportBodyFile" 
-                                [maxLength]="30">
-                            </airmid-textbox>
+                                [maxLength]="200">
+                            </airmid-textbox> -->
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>reportBodyFile</mat-label>
+                                <mat-select placeholder="ReportBodyFile" formControlName="reportBodyFile" name="reportBodyFile">
+                                    <mat-option *ngFor="let i of reportBodyFile" [value]="i">{{i}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
                         </div>
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -157,7 +180,7 @@
                                 [value]="data?.reportFolderName" 
                                 [formGroup]="myform" 
                                 [validations]="getValidationMessages().reportFolderName" 
-                                [maxLength]="30">
+                                [maxLength]="200">
                             </airmid-textbox>
                         </div>
 
@@ -168,7 +191,7 @@
                                 [value]="data?.reportFileName" 
                                 [formGroup]="myform" 
                                 [validations]="getValidationMessages().reportFileName" 
-                                [maxLength]="30">
+                                [maxLength]="200">
                             </airmid-textbox>
                         </div>
 
@@ -179,7 +202,7 @@
                                 [value]="data?.reportSpname" 
                                 [formGroup]="myform" 
                                 [validations]="getValidationMessages().reportSpname" 
-                                [maxLength]="30">
+                                [maxLength]="500">
                             </airmid-textbox>
                         </div>
                     </div>

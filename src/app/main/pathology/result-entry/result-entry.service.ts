@@ -128,7 +128,7 @@ export class ResultEntryService {
   }
   // Rtrv_PathResultEntryList_Test_Dtls1
   public PathTemplateResultentryInsert(employee) {
-    return this._httpClient1.PostData("Pathology/Pathology", employee);
+    return this._httpClient1.PostData("Pathology/PathologyTemplateSave", employee);
   }
 
   public getPathTempReport(PathReportId,OP_IP_Type){

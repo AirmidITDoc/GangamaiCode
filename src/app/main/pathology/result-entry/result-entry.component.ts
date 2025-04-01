@@ -229,6 +229,7 @@ export class ResultEntryComponent implements OnInit {
 
     searchRecords(data) {
         this.dataSource1.data = [];
+        this.selection.clear(); 
         
         let regno = this.myformSearch.get("RegNoSearch").value || "0";
         let fromDate = this.myformSearch.get("start").value || "";
@@ -535,11 +536,9 @@ opipType:any="2";
                         if (result) {
                             this.SpinLoading = false;
                         }
-                        this.selection.clear();
-                        this.dataSource1.data = [];
                     });
                 }, 100);
-
+                return;
             }
         }
         else if (contact.isTemplateTest == 1) {
@@ -553,11 +552,9 @@ opipType:any="2";
 
             dialogRef.afterClosed().subscribe(result => {
                 console.log('Pathology Template  Saved ..', result);
-                this.selection.clear();
-                    this.dataSource1.data = [];
             });
         }
-
+        this.searchRecords(contact)
         // this.selection.clear(); // Clears all selected items
         // this.dataSource1.data = [];
     }

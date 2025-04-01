@@ -28,13 +28,14 @@ export class ReportConfigurationComponent implements OnInit{
             columnsList: [
                 { heading: "Code", key: "reportId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
                 { heading: "ReportSection", key: "reportSection", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-                { heading: "ReportName", key: "reportName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+                { heading: "ReportName", key: "reportName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
                 { heading: "Parentid", key: "parentid", sort: true, align: 'left', emptySign: 'NA', width: 80 },
                 { heading: "ReportMode", key: "reportMode", sort: true, align: 'left', emptySign: 'NA', width: 250 },
                 { heading: "ReportTitle", key: "reportTitle", sort: true, align: 'left', emptySign: 'NA', width: 250 },
                 { heading: "ReportHeader", key: "reportHeader", sort: true, align: 'left', emptySign: 'NA', width: 350 },
                 { heading: "ReportColumn", key: "reportColumn", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-                { heading: "ReportFilter", key: "reportFilter", sort: true, align: "left", emptySign: 'NA', width: 250 },
+                { heading: "reportTotalField", key: "reportTotalField", sort: true, align: "left", emptySign: 'NA', width: 350 },
+                { heading: "reportGroupByLabel", key: "reportGroupByLabel", sort: true, align: "left", emptySign: 'NA', width: 250 },
                 { heading: "ReportHeaderFile", key: "reportHeaderFile", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "ReportBodyFile", key: "reportBodyFile", sort: true, align: 'left', emptySign: 'NA', width: 200 },
                 { heading: "ReportFolderName", key: "reportFolderName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -58,7 +59,7 @@ export class ReportConfigurationComponent implements OnInit{
                         }]
                 } //Action 1-view, 2-Edit,3-delete
             ],
-            sortField: "ReportName",
+            sortField: "ReportId",
             sortOrder: 0,
             filters: [
                 { fieldName: "reportName", fieldValue: "", opType: OperatorComparer.Contains },

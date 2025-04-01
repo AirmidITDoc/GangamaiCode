@@ -100,7 +100,7 @@ export class SampleRequestComponent implements OnInit {
     { heading: "ReqDate", key: "reqDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
     { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "BedName", key: "bedName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "IsTestCompted", key: "isTestCompted", type: gridColumnTypes.status, align: "center" },
+    { heading: "IsTestCompleted", key: "isTestCompted", type: gridColumnTypes.status, align: "center" },
     { heading: "IsOnFileTest", key: "isOnFileTest", type: gridColumnTypes.status, align: "center" },
   ];
   gridConfig: gridModel = {
@@ -153,7 +153,7 @@ export class SampleRequestComponent implements OnInit {
         { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "IsPathology", key: "isPathology", type: gridColumnTypes.status, align: 'left' },
         { heading: "IsRadiology", key: "isRadiology", type: gridColumnTypes.status, align: 'left' },
-        { heading: "IsTestCompted", key: "isTestCompted", type: gridColumnTypes.status, align: 'left' },
+        { heading: "IsTestCompleted", key: "isTestCompted", type: gridColumnTypes.status, align: 'left' },
       ],
       sortField: "RequestId",
       sortOrder: 0,
@@ -171,15 +171,12 @@ export class SampleRequestComponent implements OnInit {
     });
   }
 
-
   onChangeFirst() {
-    debugger
+    // debugger
     this.isShowDetailTable = false;
 
     this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
-    // this.f_name = this.myformSearch.get('FirstName').value + "%"
-    // this.l_name = this.myformSearch.get('LastName').value + "%"
     this.regNo = this.myformSearch.get('RegNo').value || ""
     this.Istype = this.myformSearch.get('Istype').value
     this.IsCompleted = this.myformSearch.get('IsCompleted').value
@@ -188,7 +185,7 @@ export class SampleRequestComponent implements OnInit {
   }
 
   getfilterdata() {
-    debugger
+    // debugger
     this.gridConfig = {
       apiUrl: "PathlogySampleCollection/LabOrRadRequestPatientList",
       columnsList: this.allcolumns,
@@ -209,7 +206,7 @@ export class SampleRequestComponent implements OnInit {
 
 
   Clearfilter(event) {
-    debugger
+    // debugger
     console.log(event)
 
     if (event == "RegNo")
@@ -242,39 +239,18 @@ export class SampleRequestComponent implements OnInit {
   }
 
   toggle(val: any) {
+    // debugger
     if (val == "1") {
       this.Ispathradio = 1;
     } else if (val == "2") {
       this.Ispathradio = 2;
     }
     else {
-      this.Ispathradio = 3;
+      this.Ispathradio = 0;
 
     }
   }
-  onFilterChange() {
-    var m_data = {
 
-      "RequestId": this.RequestId,
-      "IsPathOrRad": this.Ispathradio,// parseInt(this._PathologyService.myformSearch.get("IsPathOrRad").value) || 1
-
-    }
-    setTimeout(() => {
-
-      this._PathologyService.getSampleNursingPathRadReqDetList(m_data).subscribe(Visit => {
-        this.dataSource1.data = Visit as NursingPathRadRequestList[];
-        this.dataSource1.sort = this.sort;
-        this.dataSource1.paginator = this.paginator;
-        console.log(m_data);
-        this.sIsLoading = '';
-        this.click = false;
-
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-    }, 50);
-  }
   sampledetaillist(m) {
 
     var m_data = {

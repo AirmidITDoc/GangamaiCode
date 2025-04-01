@@ -116,17 +116,16 @@
 
                                     </div>
                                 </ng-template>
-
-                                <ng-template #actionsIPOP let-element>
-                                    <div fxLayout="row" fxLayoutAlign="center center">
-
-                                        <mat-icon *ngIf="element.patientType=='OP'" title="OP"
-                                            class="pill orange s-16">circle</mat-icon>
-                                        <mat-icon *ngIf="element.patientType=='IP'" title="IP"
-                                            class="pill green s-16">circle</mat-icon>
-
-                                    </div>
-                                </ng-template>
+                                    
+                                    <ng-template #actionsIPOP let-element>
+                                        <div fxLayout="row" fxLayoutAlign="center center">
+    
+                                            <mat-icon *ngIf="element.opdipdtype==1" matTooltip="IP"
+                                                    class="pill green-600 s-16">circle</mat-icon>
+                                                <mat-icon *ngIf="element.opdipdtype==0" matTooltip="OP"
+                                                    class="pill orange s-16">circle</mat-icon>
+                                        </div>
+                                    </ng-template>
 
                                 <ng-template #actionsCompleted let-element>
                                     <div fxLayout="row" fxLayoutAlign="center center">
