@@ -1,33 +1,22 @@
 import { ChangeDetectorRef, Component, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AdvanceDetailObj } from '../ip-search-list.component'; 
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'; 
 import { Observable, Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { IPSearchListService } from '../ip-search-list.service';
-import { Router } from '@angular/router';
-import { AdvanceDataStored } from '../../advance';
+import { IPSearchListService } from '../ip-search-list.service'; 
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { DatePipe } from '@angular/common';
-import { IPAdvancePaymentComponent } from '../ip-advance-payment/ip-advance-payment.component';
+import { DatePipe } from '@angular/common'; 
 import Swal from 'sweetalert2';
-import { fuseAnimations } from '@fuse/animations';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { RegInsert } from '../../Admission/admission/admission.component';
-import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
+import { fuseAnimations } from '@fuse/animations'; 
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
-import { ToastrService } from 'ngx-toastr';
-import { element } from 'protractor';
-import { BrowseIpdreturnadvanceReceipt } from '../../ip-refundof-advance/ip-refundof-advance.component';
-import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
-import { map, startWith } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr'; 
+import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component'; 
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridColumnTypes } from 'app/core/models/tableActions';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest'; 
 
-type NewType = Observable<any[]>;
+  
 @Component({
   selector: 'app-ip-refundof-bill',
   templateUrl: './ip-refundof-bill.component.html',
@@ -36,7 +25,16 @@ type NewType = Observable<any[]>;
   animations: fuseAnimations
 })
 export class IPRefundofBillComponent implements OnInit {
-
+  displayedColumns1 = [
+    'ServiceName',
+    'Qty',
+    'Price',
+    'NetAmount',
+    'ChargesDocName',
+    'RefundAmount',
+    'BalanceAmount',
+    'PreviousRefundAmt'
+  ]; 
   AdmissionId:any='0'
         @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;  
         ngAfterViewInit() {
@@ -87,34 +85,8 @@ export class IPRefundofBillComponent implements OnInit {
 
   autocompleteModeCashCounter: string = "CashCounter";
 
-  displayedColumns1 = [
-    'ServiceName',
-    'Qty',
-    'Price',
-    'NetAmount',
-    'ChargesDocName',
-    'RefundAmount',
-    'BalanceAmount',
-    'PreviousRefundAmt'
-  ];
 
-  displayedColumns = [
-    'BillDate',
-    'BillNo',
-    'NetPayableAmt',
-    'RefundAmt'
-    // 'action'
-  ];
-
-  displayedColumns2 = [
-    'RefundDate',
-    'RefundAmount'
-  ];
-
-  
-  dataSource = new MatTableDataSource<InsertRefundDetail>();
-  dataSource3 = new MatTableDataSource<RegRefundBillMaster>();
-  dataSource1 = new MatTableDataSource<BillRefundMaster>(); 
+ 
   dataSource2 = new MatTableDataSource<InsertRefundDetail>();
 
 
@@ -139,10 +111,9 @@ export class IPRefundofBillComponent implements OnInit {
     if (this.data) {
       console.log(this.data)
       this.selectedAdvanceObj = this.data 
-    }
- 
-    this.getData(this.selectedAdvanceObj.admissionId)
-    this.getRefundofBillIPDList();  
+      this.getData(this.selectedAdvanceObj.admissionId) 
+    } 
+  
   } 
 createSearchForm() {
   return this.formBuilder.group({
@@ -160,6 +131,7 @@ refundForm(): FormGroup {
  //
  totalBalAmt:any=0 
 getSelectedRow(contact){
+  debugger
   console.log(contact)
   var vdata = {
     "first": 0,
@@ -176,12 +148,10 @@ getSelectedRow(contact){
     ],
     "exportType": "JSON"
   }
-  this._IpSearchListService.getRefundofBillServiceList(vdata).subscribe(response=>{
+  this._IpSearchListService.getRefundofBillServiceList(vdata).subscribe((response) => { 
     this.totalBalAmt=response.data
     this.dataSource2.data = response.data
-    console.log(this.dataSource2.data)
-    this.dataSource1.sort = this.sort;
-    this.dataSource1.paginator = this.paginator;
+    console.log(this.dataSource2.data) 
   }) 
 }
  
@@ -193,9 +163,7 @@ getServiceList(param){
   this.isLoadingStr = 'loading';
   this._IpSearchListService.getRefundofBillServiceList(m_data1).subscribe(Visit => { 
     this.dataSource2.data = Visit as InsertRefundDetail[];
-    console.log(this.dataSource2.data)
-    this.dataSource1.sort = this.sort;
-    this.dataSource1.paginator = this.paginator;
+    console.log(this.dataSource2.data) 
     this.isLoadingStr = this.dataSource2.data.length == 0 ? 'no-data' : '';
   });
 }  
@@ -227,16 +195,7 @@ getServiceList(param){
 
   RefundAmt:any; 
   
-  getRefundofBillIPDList() { 
-    var m_data = {
-      "AdmissionId ": this.vAdmissionId 
-    }
-    //console.log(m_data)
-    this._IpSearchListService.getRefundofBillIPDList(m_data).subscribe(Visit => {
-      this.dataSource3.data = Visit as RegRefundBillMaster[]; 
-      console.log( this.dataSource3.data) 
-    });
-  }
+ 
 
 OnEdit(row) { 
   console.log(row);
@@ -252,14 +211,7 @@ OnEdit(row) {
   this.RefundAmount=row.RefundAmount;
   this.RefundBalAmount = (parseInt(this.NetBillAmount.toString()) - parseInt(this.RefundAmount.toString()));
 
-  this.getServiceList(row);
-
-  var Query = 'select RefundDate,RefundAmount from refund where billid='+row.BillNo
-  this.isLoadingStr = 'loading';
-  this._IpSearchListService.getPreRefundofBill(Query).subscribe(Visit => {
-    this.dataSource1.data = Visit as BillRefundMaster[]; 
-    this.isLoadingStr = this.dataSource1.data.length == 0 ? 'no-data' : '';
-  }); 
+  this.getServiceList(row); 
   this.RefAmt1=this.RefundBalAmount;
 }    
 gettablecalculation(element, RefundAmt) {

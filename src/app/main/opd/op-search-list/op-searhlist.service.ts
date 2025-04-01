@@ -531,7 +531,8 @@ export class OPSearhlistService {
             { value: 'cheque', viewValue: 'Cheque' },
             { value: 'upi', viewValue: 'UPI' },
             { value: 'net banking', viewValue: 'Net Banking' },
-            { value: 'card', viewValue: 'Card' }
+            { value: 'card', viewValue: 'Card' },
+            { value: 'tds', viewValue: 'TDS' }
         ];
     }
     getPaymentModes() {

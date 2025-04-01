@@ -509,6 +509,10 @@ export class IPBillingComponent implements OnInit {
     this.interimArray = [];
     this.isDoctor = false;
     this.onClearServiceAddList();
+    const serviceNameElement = document.querySelector(`[name='ServiceName']`) as HTMLElement;
+    if (serviceNameElement) {
+      serviceNameElement.focus();
+    }
   }
   onClearServiceAddList() {
     this.Serviceform.get('ServiceName').setValue("");

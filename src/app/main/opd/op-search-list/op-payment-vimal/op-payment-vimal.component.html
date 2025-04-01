@@ -123,7 +123,7 @@
                                             </span>
                                         </div>
                                         <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="35%">
-                                            <mat-checkbox fxFlex="25%"  [checked]="IsAdv" [(ngModel)]="IsAdv"
+                                            <mat-checkbox fxFlex  [checked]="IsAdv" [(ngModel)]="IsAdv"
                                                 (change)="OnAdvAmt($event)">Advance Amount?</mat-checkbox>
                                         </div>
 
@@ -134,7 +134,8 @@
                     </div>
                     <div class="table-container" style="padding: 5px 5px 5px 5px;" *ngIf="IsAdv">
                         <mat-card style="padding: 6px;">
-                            <mat-table matSort class="h-120" [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+                            <div class="airmid-table-container">
+                            <mat-table matSort class="h-120" [dataSource]="dataSource" [@animateStagger]="{value:'50'}" class="airmid-table">
 
                                 <ng-container matColumnDef="Date">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
@@ -209,6 +210,7 @@
                                     [ngClass]="{'hide':!(isLoading=='no-data')}">
                                 </mat-footer-row>
                             </mat-table>
+                            </div>
                             <div class="net-amt">
                                 <span class="net-amt-label">Total UsedAmt:</span>&nbsp;
                                 <span class="net-amt-value" style="font-weight:bold;color: blue;">{{getAdvanceSum(dataSource.data) |
