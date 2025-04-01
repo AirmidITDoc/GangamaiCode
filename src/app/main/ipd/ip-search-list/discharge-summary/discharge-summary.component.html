@@ -572,11 +572,11 @@
                                         <mat-radio-button mat-fab value="1">Normal</mat-radio-button>
                                         <mat-radio-button mat-fab value="0">Death Summary</mat-radio-button>
                                     </mat-radio-group>
-
+                                    <button type="button" class="btn btn-danger-outline"
+                                    (click)="onClose()">Close</button>
                                     <button type="button" class="btn btn-primary" (click)="OnSave()"
                                         [disabled]="saveflag"> Save </button>
-                                    <button type="button" class="btn btn-danger-outline"
-                                        (click)="onClose()">Close</button>
+                                  
 
                                 </div>
                             </div>

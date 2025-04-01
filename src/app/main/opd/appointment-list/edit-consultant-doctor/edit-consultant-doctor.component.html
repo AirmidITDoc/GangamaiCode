@@ -29,29 +29,19 @@
                                         <div fxFlex.gt-sm="100%" fxFlex fxLayoutGap="8px">
                                             <div fxFlex.gt-sm="76%" fxFlex class="bill-info-title py-8 border-bottom" fxLayout="row" fxLayoutAlign="space-between">
                                             
-                                                <span class="h3 font-weight-600">Patient Information</span>
+                                                <span class="h3 font-weight-600" style="color: blue;font-size: larger;">Patient Information</span>
                                             
                                                 <div class="patient-col">
-                                                    <span class="patient-col-key">Patient Name
+                                                    <span class="patient-col-key">Patient Name/UHID No
                                                     </span>
                                                     <span>:</span>
                                                     <span
-                                                        class="patient-col-value font-weight-300">{{data?.patientName}}</span>
+                                                        class="patient-col-value font-weight-300">{{data?.patientName}}--{{data.regId}}</span>
                                                 </div>
                                                 <div class="patient-col">
-                                                    <span class="patient-col-key">UHID No
-                                                    </span>
+                                                    <span class="patient-col-key" style="color: blue;font-size: larger;">Doctor Name</span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{data.regId}}</span>
-                                                </div> 
-
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Age | Sex
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{data.ageYear}}Y|{{data.ageMonth}}M|{{data.ageDay}}
-                                                        D | {{data.genderName}}</span>
+                                                    <span class="patient-col-value">{{data.doctorname}}</span>
                                                 </div>
                                             </div>
                                       
@@ -65,40 +55,50 @@
                                             <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
                                                 fxLayoutAlign="space-between">
                                                 <div fxLayout="column" fxLayoutGap="10px">
-                                                    <!-- <div class="patient-col">
+                                                    <div class="patient-col">
                                                         <span class="patient-col-key">UHID No
                                                         </span>
                                                         <span>:</span>
                                                         <span class="patient-col-value">{{data.regId}}</span>
-                                                    </div> -->
-
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Patient Name
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{data.patientName}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Doctor Name</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{data.doctorname}}</span>
+                                                    </div>
+                                                </div>
+                                                <div fxLayout="column" fxLayoutGap="10px">
+        
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">OPD No</span>
                                                         <span>:</span>
                                                         <span class="patient-col-value">{{data.opdNo}}</span>
                                                     </div>
-                                                  <div class="patient-col">
-                                                        <span class="patient-col-key">Doctor Name</span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{data.doctorname}}</span>
-                                                    </div>
-
                                                     <div class="patient-col">
-                                                        <span class="patient-col-key">Ref-Doctor Name
+                                                        <span class="patient-col-key">Age | Sex
                                                         </span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{data.refDocName}}</span>
+                                                        <span
+                                                            class="patient-col-value">{{data.ageYear}}Y|{{data.ageMonth}}M|{{data.ageDay}}
+                                                            D | {{data.genderName}}</span>
                                                     </div>
-                                                </div>
-                                                <div fxLayout="column" fxLayoutGap="10px">
-
-                                                 
-                                                 
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Department</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{data.departmentName}}</span>
+                                                        <span
+                                                            class="patient-col-value">{{data.departmentName}}</span>
                                                     </div>
+        
+        
+                                                </div>
+                                                <div fxLayout="column" fxLayoutGap="10px" style="margin-right: 100px;">
+        
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Patient Type | Tarrif
                                                         </span>
@@ -112,17 +112,12 @@
                                                         <span class="patient-col-value"
                                                             style="color: orange;">{{data.companyName}}</span>
                                                     </div>
-
-                                                </div>
-                                                <div fxLayout="column" fxLayoutGap="10px" style="margin-right: 100px;">
-
-                                                   
-                                                    <!-- <div class="patient-col">
+                                                    <div class="patient-col">
                                                         <span class="patient-col-key">Ref-Doctor Name
                                                         </span>
                                                         <span>:</span>
                                                         <span class="patient-col-value">{{data.refDocName}}</span>
-                                                    </div> -->
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

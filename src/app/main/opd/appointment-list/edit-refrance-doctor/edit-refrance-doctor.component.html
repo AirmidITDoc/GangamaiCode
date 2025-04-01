@@ -1,4 +1,4 @@
-<div class="modal-wrapper grid-container">
+<div class="modal-wrapper grid-container" fusePerfectScrollbar>
     <!-- Modal header -->
     <div class="modal-header accent">
         <div class="modal-header-content">
@@ -18,12 +18,12 @@
     </div>
 
     <!-- Modal body -->
-    <div class="modal-body" fusePerfectScrollbar>
+    <div class="modal-body" >
         <div class="modal-body-container">
             <form [formGroup]="RefrancedrForm">
                 <div fxLayout="column" class="gap-12">
                     <div class="modal-card-container">
-                        <mat-card>
+                        <!-- <mat-card>
                             <div class="patient-info-container">
                                 <div class="patient-sub">
                                     <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
@@ -96,7 +96,10 @@
                                     </div>
                                 </div>
                             </div>
-                        </mat-card>
+                        </mat-card> -->
+                    
+                    
+                    <app-patient-info label="{{data}}"></app-patient-info>
                     </div>
                     <div class="modal-card-container">
                         <mat-card>

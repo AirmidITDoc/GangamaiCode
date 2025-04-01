@@ -54,11 +54,13 @@ import { Error500Component } from './APIerrorpages/error-500/error-500.component
 import { FocusNextDirective } from './directives/focus-next/focus-next.directive';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { AirmidTimePickerComponent } from './componets/airmid-time-picker/airmid-time-picker.component';
+import { PatientInfoComponent } from './componets/patient-info/patient-info.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 
 @NgModule({
     declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-      AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent],
+      AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent],
     imports: [
         CommonModule,
         MatFormFieldModule,
@@ -85,7 +87,8 @@ import { AirmidTimePickerComponent } from './componets/airmid-time-picker/airmid
         MatSelectModule,
         NgxMatSelectSearchModule,
         MatButtonToggleModule,
-        MatSlideToggleModule
+        MatSlideToggleModule,
+        MatExpansionModule
     ],
     providers: [
         ExcelDownloadService,
@@ -112,7 +115,8 @@ import { AirmidTimePickerComponent } from './componets/airmid-time-picker/airmid
         Error403Component,
         Error404Component,
         FocusNextDirective,
-        AirmidTimePickerComponent
+        AirmidTimePickerComponent,
+        PatientInfoComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

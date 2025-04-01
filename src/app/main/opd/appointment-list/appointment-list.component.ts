@@ -275,7 +275,7 @@ Clearfilter(event) {
                 {
                     maxWidth: "90vw",
                     height: "430px",
-                    width: "70%",
+                    width: "80%",
                     data: element
                 });
             dialogRef.afterClosed().subscribe(result => {
@@ -292,8 +292,8 @@ Clearfilter(event) {
             const dialogRef = this._matDialog.open(EditRefranceDoctorComponent,
                 {
                     maxWidth: "70vw",
-                    height: "390px",
-                    width: "50%",
+                    height: "430px",
+                    width: "80%",
                     data: element
                 });
             dialogRef.afterClosed().subscribe(result => {
@@ -370,9 +370,9 @@ Clearfilter(event) {
         console.log(element)
         const dialogRef = this._matDialog.open(CrossConsultationComponent,
             {
-                maxWidth: '75vw',
-                height: "390px",
-                width: "50%",
+                maxWidth: "90vw",
+                    height: "430px",
+                    width: "80%",
                 data: element
             });
         dialogRef.afterClosed().subscribe(result => {

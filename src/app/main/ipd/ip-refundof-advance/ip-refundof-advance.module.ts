@@ -48,7 +48,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [IPRefundofAdvanceComponent],
+    declarations: [],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,

@@ -118,10 +118,12 @@ export class UpdateRegPatientInfoComponent {
       setTimeout(() => {
           this._AppointmentlistService.getRegistraionById(this.data.value).subscribe((response) => {
             this.registerObj = response;
+            if(response)
+              this.getLastDepartmetnNameList(this.registerObj)
            console.log(this.registerObj)
           });}, 500);
       }
-      this.getLastDepartmetnNameList(this.registerObj)
+     
 
     }
   
@@ -210,7 +212,7 @@ export class UpdateRegPatientInfoComponent {
   }
   PrevregisterObj: any;
   getLastDepartmetnNameList(row) {
-    
+    console.log(row)
     const dialogRef = this._matDialog.open(PreviousDeptListComponent,
       {
         maxWidth: "45vw",

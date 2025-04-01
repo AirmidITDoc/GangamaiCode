@@ -149,20 +149,23 @@ export class IPSearchListComponent implements OnInit {
               this.menuActions.push('Discharge Summary');
             
         }
-        else if (this._ActRoute.url == '/ipd/refund/iprefundofadvance' || this._ActRoute.url == '/ipd/refund/iprefundofbill') {
+        else if (this._ActRoute.url == '/ipd/refund/iprefundofadvance') {
 
-            this.menuActions.push('Refund of Bill');
             this.menuActions.push('Refund of Advance');
-            this.menuActions.push('Refund of Advance');
+            
         }
+        else if (this._ActRoute.url == '/ipd/refundofbill') {
 
-        else if (this._ActRoute.url == '/ipd/add-billing') {
-            this.menuActions.push('Advance');
-            this.menuActions.push('Bill');
             this.menuActions.push('Refund of Bill');
-            this.menuActions.push('Refund of Advance');
-            // this.menuActions.push('Payment');
+          }
+        else if (this._ActRoute.url == '/ipd/add-billing') {
+            // this.menuActions.push('Advance');
+            this.menuActions.push('Bill');
+          // this.menuActions.push('Payment');
             this.menuActions.push('Update Company Information');
+        }
+        else if (this._ActRoute.url == '/ipd/ip-refund-browse') {
+            this.menuActions.push('Refund of Advance');
         }
         else if (this._ActRoute.url == '/ipd/medicalrecords') {
             this.menuActions.push('Case Paper');

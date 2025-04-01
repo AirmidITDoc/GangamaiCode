@@ -46,7 +46,6 @@ export class EditRefranceDoctorComponent implements OnInit {
 
   }
 
-
     createRefranceDrForm() {
           return this._formBuilder.group({
               visitId: 0,

@@ -31,8 +31,7 @@ const appRoutes: Routes = [
     {
         path: "ip-refund-browse",
         loadChildren: () =>
-       // import("./Refund/ip-refund/ip-browse-refundof-bill/ip-browse-refundof-bill.module").then((m) => m.IPBrowseRefundofBillModule),
-         import("./ip-refundof-advance/ip-refundof-advance.module").then((m) => m.IpRefundofAdvanceModule),     
+            import("./ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule),
     },
     {
         path: "refund",
@@ -41,14 +40,12 @@ const appRoutes: Routes = [
     {
         path: "ipd-bill-browse-list",
         loadChildren: () =>
-         // import("./ip-bill-browse/ip-bill-browse.module").then((m) => m.IpbillBrowseModule),
-           import("./ip-bill-browse-list/ip-bill-browse.module").then((m) => m.IPBillBrowseModule),
+       import("./ip-bill-browse-list/ip-bill-browse.module").then((m) => m.IPBillBrowseModule),
     },
     {
         path: "ipd-browse-receipt",
         loadChildren: () =>
-           // import("./ip-bill-browse/ip-bill-browse.module").then((m) => m.IpbillBrowseModule),
-        import("./ip-bill-browse-list/ip-bill-browse.module").then((m) => m.IPBillBrowseModule),
+           import("./ip-bill-browse-list/ip-bill-browse.module").then((m) => m.IPBillBrowseModule),
     },
     {
         path: "discharge",
@@ -93,11 +90,11 @@ const appRoutes: Routes = [
                
         },
 
-//     {
-//         path: "companylist", 
-//         loadChildren: () =>
-//            import("./Feedback/opip-feedback/feedback.module").then((m) => m.FeedbackModule),
-//    }
+    {
+        path: "refundofbill", 
+        loadChildren: () =>
+            import("./ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule),
+   }
 
 ];
 

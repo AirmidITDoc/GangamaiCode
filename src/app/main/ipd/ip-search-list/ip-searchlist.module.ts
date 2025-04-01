@@ -63,6 +63,7 @@ import { InitiateDischargeComponent } from './discharge/initiate-discharge/initi
 import { DischargeInitiateProcessComponent } from './discharge/initiate-discharge/discharge-initiate-process/discharge-initiate-process.component';
 import { DischargeSummaryTemplateComponent } from './discharge-summary-template/discharge-summary-template.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { IPRefundofAdvanceComponent } from '../ip-refundof-advance/ip-refundof-advance.component';
 
 const routes: Routes = [
     {
@@ -94,7 +95,7 @@ const routes: Routes = [
         InitiateDischargeComponent,
         DischargeInitiateProcessComponent,
         DischargeSummaryTemplateComponent,
-       
+        IPRefundofAdvanceComponent
     ],
     imports: [
         RouterModule.forChild(routes),
