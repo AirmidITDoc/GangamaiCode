@@ -148,138 +148,18 @@
                     </div>
 
                     <div fxLayout.gt-md="row" fxLayout="column" fxLayoutGap="12px">
-                        <div fxFlex.gt-md="70%" fxFlex.md="50%" fxFlex.lt-md="100%">
-                            <!-- <mat-card>
-                                <mat-table matSort [dataSource]="dataSource3" [@animateStagger]="{value:'50'}"
-                                    class="h-180"> 
-
-                                    <ng-container matColumnDef="BillNo">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            BillNo
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            {{element.PBillNo}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="BillDate">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            BillDate </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            {{element.BillDate | date:'shortDate'}} </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="NetPayableAmt">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            BillAmount </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            {{element.NetPayableAmt | currency:'INR'}} </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="RefundAmt">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            RefundAmt </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            {{element.RefundAmount | currency:'INR'}} </mat-cell>
-                                    </ng-container> 
-
-                                    <ng-container matColumnDef="loading">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                            loading data...
-                                        </mat-footer-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="noData">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                           
-                                            <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
-                                            </mat-spinner>
-                                            <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
-                                        </mat-footer-cell>
-                                    </ng-container> 
-
-                                    <mat-header-row class="accent min-width-600" *matHeaderRowDef="displayedColumns; sticky: true">
-                                    </mat-header-row>
-                                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="element min-width-600"
-                                     (click)="OnEdit(row)"   [@animate]="{value:'*',params:{y:'100%'}}" >
-                                    </mat-row>
-                                    <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{'hide':dataSource3!=null}"></mat-footer-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(dataSource3!=null && dataSource3.data.length==0)}">
-                                    </mat-footer-row>
-                                </mat-table>
- 
-                                <div class="net-amt">
-                                    <span class="net-amt-label" style="font-weight:bold;">Total Refund
-                                        :</span>&nbsp;
-                                   
-                                    <span class="net-amt-value"
-                                        style="font-weight:bold;color: blue;">{{getRefundtotSum1(dataSource3.data) |
-                                        currency:'INR' }}</span>
-                                </div>
-                            </mat-card> -->
-                       
+                        <div fxFlex.gt-md="100%" fxFlex.md="50%" fxFlex.lt-md="100%"> 
                             <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false"  
                             tableClasses="h-250" (onSelectRow)="getSelectedRow($event)">
-                            </airmid-table>
-                       
-                        </div>
-
-                        <div fxFlex.gt-md="30%" fxFlex.md="50%" fxFlex.lt-md="100%">
-                            <mat-card fxLayout="column" fxLayoutAlign="space-between">
-                                <mat-table class="table1" matSort [dataSource]="dataSource1"
-                                    [@animateStagger]="{value:'50'}" class="h-180">
-
-                                    <ng-container matColumnDef="RefundDate">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            Date
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            {{element.RefundDate | date:'shortDate'}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="RefundAmount">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            RefundAmount </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            {{element.RefundAmount | currency:'INR'}} </mat-cell>
-                                    </ng-container> 
-
-                                    <ng-container matColumnDef="loading">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                            loading data...
-                                        </mat-footer-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="noData">
-                                        <mat-footer-cell *matFooterCellDef colspan="6"> 
-                                            <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
-                                            </mat-spinner>
-                                            <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
-                                        </mat-footer-cell>
-                                    </ng-container>
-
-                                    <mat-header-row class="accent min-width-350" *matHeaderRowDef="displayedColumns2; sticky: true">
-                                    </mat-header-row>
-                                    <mat-row *matRowDef="let row; columns: displayedColumns2;" class="element min-width-350"
-                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                    <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{'hide':dataSource1!=null}"></mat-footer-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
-                                    </mat-footer-row>
-                                </mat-table> 
-                            </mat-card>
-                        </div>
-
+                            </airmid-table> 
+                        </div> 
                     </div>
 
                     <div fxlayout="row"> 
                         <div style="width: 100%;">
-                            <mat-table class="table h-200" matSort [dataSource]="dataSource2" [@animateStagger]="{value:'50'}">
-                    
+                            <div class="airmid-table-container">
+                            <mat-table class="table h-200" matSort [dataSource]="dataSource2" [@animateStagger]="{value:'50'}"
+                            class="airmid-table"> 
                     
                                 <ng-container matColumnDef="ServiceName">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>

@@ -143,8 +143,8 @@
                     
                         <div fxLayout.gt-md="row" fxLayout="column" fxLayoutGap="12px">
                             <div fxFlex.gt-md="100%" fxFlex.md="50%" fxFlex.lt-md="100%"> 
-                                    <mat-table matSort class="table1" [dataSource]="dsrefundlist" [@animateStagger]="{value:'50'}"
-                                    tableClasses="h-500"> 
+                                <div class="airmid-table-container">
+                                    <mat-table matSort   [dataSource]="dsrefundlist" [@animateStagger]="{value:'50'}" class="airmid-table"> 
                                         <ng-container matColumnDef="Date">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-130">Date
                                             </mat-header-cell>
@@ -221,7 +221,8 @@
                                         <mat-footer-row *matFooterRowDef="['noData']"
                                             [ngClass]="{'hide':!(dsrefundlist!=null && dsrefundlist.data.length==0)}">
                                         </mat-footer-row>
-                                    </mat-table>  
+                                    </mat-table>
+                                    </div>  
                             </div>
                     
                             <!-- <div fxFlex.gt-md="29%" fxFlex.md="50%" fxFlex.lt-md="100%"> 

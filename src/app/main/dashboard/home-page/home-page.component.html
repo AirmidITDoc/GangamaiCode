@@ -1,0 +1,14 @@
+<div id="dashboard-project" class="simple page-layout right-sidebar inner-scroll"  
+style=" background-color:white" fxLayout="column">
+    <mat-toolbar class="accent h-80" style="width: 100%;height: 100px;justify-content: space-between;">
+        <div fxLayout="row" faLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;"
+            [@animate]="{value:'*',params:{x:'50px'}}">
+                <mat-icon>dashboard</mat-icon>
+            </button>
+            <span class="mat-display-1 m-0 welcome-message h1" [@animate]="{value:'*',params:{x:'50px'}}">Welcome back,
+                <!-- {{username}} -->
+            </span>
+        </div>
+    </mat-toolbar>
+</div>
