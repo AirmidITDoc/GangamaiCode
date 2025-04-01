@@ -1,0 +1,20 @@
+<div class="airmid-date-time-picker">
+    <div fxLayout="row" fxLayoutGap="8px">
+      <div [style.width]="width + 'px'">
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Select date</mat-label>
+          <input matInput [matDatepicker]="picker" (dateChange)="onDateChange($event)" [readonly]="readonly" [disabled]="isDisabled" />
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div [style.width]="width + 'px'">
+        <airmid-time-picker [width]="100" (timeChange)="onTimeChange($event)" [readonly]="readonly" [disabled]="isDisabled"></airmid-time-picker>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Example how to use this -->
+  
+  <!-- <app-airmid-date-time-picker [formGroup]="formGroup" formControlName="formControlName" [width]="250" [readonly]="false" [isDisabled]="false"></app-airmid-date-time-picker> -->
+  

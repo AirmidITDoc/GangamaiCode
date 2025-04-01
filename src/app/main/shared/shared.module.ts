@@ -56,11 +56,12 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { AirmidTimePickerComponent } from './componets/airmid-time-picker/airmid-time-picker.component';
 import { PatientInfoComponent } from './componets/patient-info/patient-info.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { AirmidDateTimePickerComponent } from './componets/airmid-date-time-picker/airmid-date-time-picker.component';
 
 
 @NgModule({
     declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-      AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent],
+      AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent],
     imports: [
         CommonModule,
         MatFormFieldModule,
@@ -116,7 +117,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
         Error404Component,
         FocusNextDirective,
         AirmidTimePickerComponent,
-        PatientInfoComponent
+        PatientInfoComponent,
+        AirmidDateTimePickerComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
