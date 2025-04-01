@@ -6,11 +6,12 @@ import { CashlessDashboardComponent } from './cashless-dashboard/cashless-dashbo
 import { RadiologyDashboardComponent } from './radiology-dashboard/radiology-dashboard.component';
 import { PharmacyDashboardComponent } from './pharmacy-dashboard/pharmacy-dashboard.component';
 import { BedOccupancyComponent } from './bed-occupancy/bed-occupancy.component';
+import { HomePageComponent } from './home-page/home-page.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: DailyDashboardComponent
+    component: HomePageComponent
   },
   {
     path: 'dashboard',
@@ -39,7 +40,11 @@ const routes: Routes = [
   {
     path: 'bed-occupancy',
     component: BedOccupancyComponent
-  }
+  },
+  {
+    path: 'home-page',
+    component: HomePageComponent
+  },
 
 ];
 
