@@ -39,7 +39,7 @@
                     <mat-header-cell [style.min-width.px]="row.width || defaultColumnWidth" *matHeaderCellDef mat-sort-header [disabled]="!row.sort"> {{
                         row?.heading }}
                     </mat-header-cell>
-                    <mat-cell [style.min-width.px]="row.width || defaultColumnWidth" *matCellDef="let element; let i = index" fxShow.gt-sm>
+                    <mat-cell [style.min-width.px]="row.width || defaultColumnWidth" *matCellDef="let element; let i = index" fxShow.gt-sm [ngClass]="row?.columnClass ? row.columnClass(element) : ''">
                         <ng-container *ngIf="row.type==GridColumnType.template; else defaultTemplate">
                             <ng-container *ngTemplateOutlet="row.template; context: { $implicit: element,column: column,row:row }"></ng-container>
                         </ng-container>

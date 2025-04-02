@@ -60,3 +60,9 @@ export enum OperatorComparer {
     InClause='InClause',
     DateRange='DateRange'
 }
+export enum Color{
+    RED = 'red-200-bg',
+    BLUE = 'blue-200-bg',
+    GREEN = 'green-200-bg',
+    YELLOW = 'yellow-200-bg',
+}
