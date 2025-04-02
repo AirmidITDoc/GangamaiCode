@@ -46,7 +46,7 @@ export class SalesReturnBillSettlementService {
   }
   public getConcessionCombo()
   {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ConcessionReasonMasterForCombo", {});
+    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_ConcessionReasonMasterForCombo", {});
   } 
 
   public getAdmittedpatientlist(employee){
