@@ -92,8 +92,8 @@ chargelist:any=[];
     insert_TemplateHObj['presTemplateName'] = this.TemplateForm.get('TemplateName').value || '';
     insert_TemplateHObj['isActive'] = true;
     insert_TemplateHObj['opIpType'] =  0;
-    insert_TemplateHObj['isAddBy'] =  0;
-    insert_TemplateHObj['isUpdatedBy'] = 0;
+    insert_TemplateHObj['isAddBy'] =  this._loggedService.currentUserValue.userId || 0;
+    insert_TemplateHObj['isUpdatedBy'] = this._loggedService.currentUserValue.userId || 0;
 
     let insert_TemplateDObj = [];
     this.chargelist.forEach(element =>{

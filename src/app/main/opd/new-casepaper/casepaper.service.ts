@@ -141,11 +141,8 @@ export class CasepaperService {
   public getTemplateList() {
     return this._httpClient.post("Generic/GetByProc?procName=m_RtrvPresTemplateName_List", {})
   }
-  public getTempPrescriptionList(param, loader = true) {
-    if (loader) {
-      this._loaderService.show();
-  } 
-    return this._httpClient.post("Generic/GetByProc?procName=m_RtrvTemplate_PrescriptionList",param)
+  public getTempPrescriptionList(param) {
+    return this._httpClient1.PostData("OPDPrescriptionMedical/OPPrescriptionTemplateList",param)
   } 
   // used to retrive cheifcom,dignosis,exami data
   public getRtrvCheifComplaintList(visistId,loader = true) {
@@ -196,6 +193,9 @@ public getRtrvVisitedListdemo(employee) {
 
 public getItemMasterById(Id) {
   return this._httpClient1.GetData("ItemMaster/" + Id);
+}
+public getDoseMasterById(Id) {
+  return this._httpClient1.GetData("DoseMaster/" + Id);
 }
 public getItemGenericById(Id) {
   return this._httpClient1.GetData("ItemGenericName/" + Id);

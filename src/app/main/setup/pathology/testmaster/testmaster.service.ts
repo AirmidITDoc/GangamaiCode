@@ -143,22 +143,19 @@ export class TestmasterService {
     // retrieve list  remain
     // get Test master list
     public getTestListfor(param) {
-        return this._httpClient.PostData("Pathology/PathTestForUpdateList",param);
+        return this._httpClient.PostData("PathTestMaster/PathTestForUpdateList",param);
     }
     public getSubTestList(param) { 
-        // return this._httpClient.PostData("Generic/GetByProc?procName=Retrive_PathSubTestFill",
-        //     param
-        // );
-        return this._httpClient.PostData("Pathology/PathTestForUpdateList",param);
+        return this._httpClient.PostData("PathTestMaster/PathTestForUpdateList",param);
     }
     public getTemplateListfor(param) {
-        return this._httpClient.PostData("Pathology/PathTemplateForUpdateList",param);
+        return this._httpClient.PostData("PathTestMaster/PathTemplateForUpdateList",param);
     }
     // retrieve list remain end       
 
     // retrive parameter master list
 
-    // depends on checkbox
+    // checkbox list
     // get subTest master list of checkbox
     public getIsSubTestList(param) {
         return this._httpClient.PostData("PathTestMaster/SubTestList",param);
@@ -167,7 +164,7 @@ export class TestmasterService {
      public getParameterMasterList(param) {
         return this._httpClient.PostData("ParameterMaster/MPathParameterList",param);
     }
-    // depends on checkbox end
+    // checkbox end
     
     // retrive subtest list
     public getSubTestListfor(param) {
