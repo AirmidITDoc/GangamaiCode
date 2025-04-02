@@ -9,6 +9,7 @@ import { ServerMonitoringService } from "app/core/services/servermonitoring.serv
 import { setInterval, setTimeout } from "timers";
 import { MatDialog } from "@angular/material/dialog";
 import { AppointmentBillingComponent } from "app/main/opd/appointment-list/appointment-billing/appointment-billing.component";
+import { EncryptionService } from "app/core/services/encryption.service";
 
 @Component({
     selector: "login",
@@ -32,7 +33,8 @@ export class LoginComponent implements OnInit {
         private route: ActivatedRoute,
         private authenticationService: AuthenticationService,
         private serverMonitoringService: ServerMonitoringService,
-        private _matDialog: MatDialog
+        private _matDialog: MatDialog,
+        private encryptionService:EncryptionService
     ) {
         // Configure the layout
         this._fuseConfigService.config = {
@@ -82,6 +84,8 @@ export class LoginComponent implements OnInit {
         if (this.loginForm.invalid) {
             return;
         }
+        this.obj.Username=this.encryptionService.encrypt(this.obj.Username);
+        this.obj.Password=this.encryptionService.encrypt(this.obj.Password);
         this.authenticationService.login(this.obj).subscribe(
             (data) => {
                 if ((data?.userId ?? 0) > 0) {
