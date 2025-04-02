@@ -179,12 +179,20 @@
                 </form>
 
                 <div class="modal-card-container">
-
-                    <mat-card *ngIf="isItem">
+                    <!-- *ngIf="isItem" -->
+                    <mat-card>
                         <form [formGroup]="ItemForm">
                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8" >
                         <!-- [disabled]="Regstatus" -->
-                                <airmid-autocomplete label="Enter Item Name" [formGroup]="ItemForm" required
+                                <!-- <airmid-autocomplete label="Enter Item Name" [formGroup]="ItemForm" required
+                                    formControlName="ItemId" placeholderText="Enter Item Name" fxFlex="35%"
+                                    ApiUrl="{{ ApiURL }}"
+                                    (selectionChange)="selectChangeItem($event)" TextField="formattedText"
+                                    (keyup)="validateStoreOnTyping()" (click)="validateStoreOnTyping()"
+                                    ValueField="ItemId" [validations]="getValidationMessages().ItemId">
+                                </airmid-autocomplete> -->
+
+                                 <airmid-autocomplete label="Enter Item Name" [formGroup]="ItemForm" required
                                     formControlName="ItemId" placeholderText="Enter Item Name" fxFlex="35%"
                                     [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + vstoreId + '&ItemName='"
                                     (selectionChange)="selectChangeItem($event)" TextField="formattedText"

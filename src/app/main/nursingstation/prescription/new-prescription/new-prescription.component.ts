@@ -126,7 +126,9 @@ export class NewPrescriptionComponent implements OnInit {
   autocompleteward: string = "Room";
   autocompleteitem: string = "ItemType";
   Regstatus: boolean = true;
-  public isItem=false;
+  ApiURL: any;
+
+  // public isItem=false;
 
   constructor(private _FormBuilder: UntypedFormBuilder,
     private ref: MatDialogRef<NewPrescriptionComponent>,
@@ -222,12 +224,15 @@ export class NewPrescriptionComponent implements OnInit {
 
   vstoreId: any = '';
   selectChangeStore(obj: any) {
+    debugger
     console.log("Store:", obj);
     this.vstoreId = obj.value
 
-    if(this.vstoreId)
+    // if(this.vstoreId)
+    // this.ApiURL = "ItemMaster/GetItemListForPrescription?StoreId=" + this.vstoreId + "&ItemName="
+
     // this.Regstatus = false
-    this.isItem=true;
+    // this.isItem=true;
 
   }
 
@@ -241,37 +246,15 @@ export class NewPrescriptionComponent implements OnInit {
     return null;
   }
 
-  // selectChangeItem(obj: any) {
-  //   debugger
-  //   //   if (this.vstoreId==0) {
-  //   //     this.toastr.warning('Please select Store', 'Warning!', {
-  //   //       toastClass: 'tostr-tost custom-toast-warning',
-  //   //     });
-  //   //     return;
-  //   //   }
-  //   // else if(this.vstoreId!=0){
-
-  //   if (!obj || typeof obj !== 'object') {
-  //     this.toastr.error('Invalid item selection. Please choose a valid item from the list.', 'Error!');
-  //     this.ItemForm.get('ItemId').setErrors({ invalidItem: true });
-  //     return;
-  //   }
-  //   console.log("Item:", obj);
-  //   this.vitemId = obj.itemId;
-  //   this.vitemname = obj.itemName;
-  //   this.ItemForm.get('ItemId').setValue(obj);
-  //   // }
-  // }
-
-validateStoreOnTyping() {
-  if (!this.vstoreId) {
-      this.toastr.warning('Please select a StoreName before choosing an Item.', 'Warning!', {
-        toastClass: 'tostr-tost custom-toast-warning'
-    });
-      this.ItemForm.get('ItemId').reset(); 
-      this.ItemForm.get('ItemId').updateValueAndValidity();
+  validateStoreOnTyping() {
+    if (!this.vstoreId) {
+        this.toastr.warning('Please select a StoreName before choosing an Item.', 'Warning!', {
+          toastClass: 'tostr-tost custom-toast-warning'
+      });
+        this.ItemForm.get('ItemId').reset(); 
+        this.ItemForm.get('ItemId').updateValueAndValidity();
+    }
   }
-}
 
   selectChangeItem(obj: any) {
     debugger;

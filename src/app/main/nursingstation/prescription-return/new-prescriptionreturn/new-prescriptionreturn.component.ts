@@ -106,6 +106,8 @@ export class NewPrescriptionreturnComponent implements OnInit {
     }
     this.getItemSubform();
     this.createMyForm();
+    this.ItemSubform.markAllAsTouched();
+
   }
 
   getItemSubform() {
@@ -180,14 +182,6 @@ export class NewPrescriptionreturnComponent implements OnInit {
       this.BalanceQty = result.balanceQty;
      
     });
-  }
-
-  getValidationMessages() {
-    return {
-      ItemId:[
-        { name: "required", Message: "Item Name is required" }
-      ]
-    };
   }
 
   onChangePatientType(event) {
@@ -592,6 +586,20 @@ export class NewPrescriptionreturnComponent implements OnInit {
 
   }
 
+  getValidationMessages() {
+    return {
+      BatchNo: [
+        { name: "required", Message: "Store Name is required" }
+      ],
+      ItemId: [
+        { name: "required", Message: "Item Name is required" }
+      ],
+      Qty: [
+        { name: "required", Message: "Qty is required" },
+        { name: "pattern", Message: "Only numbers allowed" }
+      ],
+    };
+  }
 
   onClose() {
     this.ItemSubform.reset();

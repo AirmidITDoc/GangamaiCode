@@ -56,6 +56,7 @@ export class RequestforlabtestComponent implements OnInit {
                     {
                         action: gridActions.print, callback: (data: any) => {
                             this.viewLabRequestPdf(data);
+                            this.grid.bindGridData();
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -83,7 +84,7 @@ export class RequestforlabtestComponent implements OnInit {
     isShowDetailTable: boolean = false;
 
     getSelectedRow(row: any): void {
-        
+
         console.log("Selected row : ", row);
         let vRequestId = row.requestId
 
@@ -100,10 +101,10 @@ export class RequestforlabtestComponent implements OnInit {
                 },
                 { heading: "ReqDate", key: "reqDate", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "ReqTime", key: "reqTime", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA',width:150 },
+                { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "AddedBy", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Add Billing User", key: "billingUser", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "BillDateTime", key: "addedByDate", sort: true, align: 'left', emptySign: 'NA',width:150 },
+                { heading: "BillDateTime", key: "addedByDate", sort: true, align: 'left', emptySign: 'NA', width: 200 },
                 { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
 
             ],
@@ -135,9 +136,9 @@ export class RequestforlabtestComponent implements OnInit {
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
+            // if (result) {
+            this.grid.bindGridData();
+            // }
         });
     }
 

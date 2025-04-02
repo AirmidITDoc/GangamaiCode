@@ -111,8 +111,8 @@ export class PrescriptionComponent implements OnInit {
         columnsList: [            
             { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Patient Name", key: "patientname", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Adm Date", key: "admDate", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Adm Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "IPMedID", key: "ipMedId", sort: true, align: 'left', emptySign: 'NA'},   
             {
@@ -125,7 +125,7 @@ export class PrescriptionComponent implements OnInit {
                         action: gridActions.delete, callback: (data: any) => {
                             this._PrescriptionService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
-                                this.grid.bindGridData();
+                                this.grid2.bindGridData();
                             });
                         }
                     }]
@@ -137,9 +137,7 @@ export class PrescriptionComponent implements OnInit {
         filters: [
             { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+            { fieldName: "Reg_No", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     }
     
@@ -147,8 +145,11 @@ export class PrescriptionComponent implements OnInit {
     isShowDetailTable1: boolean = false;
 
     GetDetails2(data){
+        console.log("GetDetails2:",data)
+        let PresReId=data.presReId;
+
         this.gridConfig4 = {
-            apiUrl: "Nursing/PrescriptionReturnList",
+            apiUrl: "IPPrescription/IPPrescReturnItemDetList",
             columnsList: [
                 { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA'},
@@ -156,12 +157,8 @@ export class PrescriptionComponent implements OnInit {
             ],
             sortField: "PresReId",
             sortOrder: 0,
-            filters: [
-    
-                // { fieldName: "PresReId", fieldValue: "8", opType: OperatorComparer.Equals },
-                // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                // { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-                // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            filters: [    
+                { fieldName: "PresReId", fieldValue: String(PresReId), opType: OperatorComparer.Equals }
             ]
         }
         this.isShowDetailTable1 = true;
@@ -215,14 +212,14 @@ export class PrescriptionComponent implements OnInit {
     }
     
  viewgetIpprescriptionreturnReportPdf(response) {
-       
+       console.log(response)
         setTimeout(() => {
           let param = {
             
               "searchFields": [
                 {
                   "fieldName": "PresReId",
-                  "fieldValue": "10012",
+                  "fieldValue": String(response.presReId), //"10012"
                   "opType": "Equals"
                 }
               ],
@@ -273,7 +270,7 @@ export class PrescriptionComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             // if (result) {
-                this.grid.bindGridData();
+                this.grid2.bindGridData();
             // }
         });
     }
