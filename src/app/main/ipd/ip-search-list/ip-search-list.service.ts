@@ -643,7 +643,13 @@ public getUMOCombo() {
   //   return this._httpClient.post("Generic/GetByProc?procName=RtrvRefundOfBillOPDList",employee)
   //   }
 
-   
+      
+  public InsertRefundOfBill(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient1.PostData("RefundOfBill/IPRefundOfBILLInsert", employee)
+  } 
   public InsertAdvanceHeader(employee, loader = true) {
     if (loader) {
       this._loaderService.show();

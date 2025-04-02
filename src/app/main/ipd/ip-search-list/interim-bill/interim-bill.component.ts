@@ -243,7 +243,7 @@ debugger
     billObj['isFree'] = false;
     billObj['companyId'] = this.selectedAdvanceObj.companyId || 0,
     billObj['tariffId'] = this.selectedAdvanceObj.tariffId || 0,
-    billObj['unitId'] = this.selectedAdvanceObj.unitId || 0;
+    billObj['unitId'] = this.selectedAdvanceObj.hospitalID || 0;
     billObj['interimOrFinal'] = 1;
     billObj['companyRefNo'] = "";
     billObj['concessionAuthorizationName'] = 0;

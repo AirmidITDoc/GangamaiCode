@@ -613,13 +613,13 @@ export class OpPaymentVimalComponent implements OnInit {
             this.dataSource.data.forEach((element) => {
                 let Advanceobj = {};
                 console.log(element);
-                Advanceobj['AdvanceId'] = element.AdvanceId;
-                Advanceobj['AdvanceDetailID'] = element.AdvanceDetailID;
-                Advanceobj['AdvanceAmount'] = element.AdvanceAmount;
-                Advanceobj['UsedAmount'] = element.UsedAmount;
-                Advanceobj['Date'] = element.Date;
-                Advanceobj['BalanceAmount'] = element.BalanceAmount;
-                Advanceobj['RefundAmount'] = element.RefundAmount;
+                Advanceobj['AdvanceId'] = element.advanceId;
+                Advanceobj['AdvanceDetailID'] = element.advanceDetailID;
+                Advanceobj['AdvanceAmount'] = element.advanceAmount;
+                Advanceobj['UsedAmount'] = element.usedAmount;
+                Advanceobj['Date'] = element.date;
+                Advanceobj['BalanceAmount'] = element.balanceAmount;
+                Advanceobj['RefundAmount'] = element.refundAmount;
                 Advancesarr.push(Advanceobj);
             });  
              IsSubmit = {
@@ -693,7 +693,7 @@ export class OpPaymentVimalComponent implements OnInit {
                console.log(this.selectedAdvanceData)
                 if (this.dataSource.data.length > 0) {
                     this.IsAdv = true
-                    this.AdvanceId = this.dataSource.data[0].AdvanceId 
+                    this.AdvanceId = this.dataSource.data[0].advanceId 
                     this.calculateBalance();
                     this.SetAdvanceRow();
                     this.setPaidAmount();
@@ -724,7 +724,7 @@ export class OpPaymentVimalComponent implements OnInit {
               setTimeout(() => {
                   this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
                     this.dataSource.data  = response.data;  
-                    this.AdvanceId = this.dataSource.data[0].AdvanceId
+                    this.AdvanceId = this.dataSource.data[0].advanceId
                     console.log(this.dataSource.data)
                     this.calculateBalance();
                     this.SetAdvanceRow();
