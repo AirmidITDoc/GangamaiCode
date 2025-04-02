@@ -235,10 +235,10 @@ export class BrowseIPAdvanceComponent implements OnInit {
 export class IpdAdvanceBrowseModel {
     RegNo: Number;
     PatientName: string;
-    Date: Date;
+    date: Date;
     AdvanceNo: string;
     TransactionID: number;
-    AdvanceAmount: number;
+    advanceAmount: number;
     UsedAmount: number;
     BalanceAmount: number;
     AddedBy: number;
@@ -247,17 +247,17 @@ export class IpdAdvanceBrowseModel {
     CardPayAmount: number;
     TransactionType: number;
     UserName: string;
-    RefundAmount:number;
+    refundAmount:number;
     PrevAdvAmt:number;
     AdvanceId:number;
     IPDNo:any;
-    AdvanceDetailID:number;
+    advanceDetailID:number;
     HospitalName:any;
     HospAddress:any;
     Phone:any;
     EmailId:any;
     reason:any;
-  
+    advanceId:any
     Address: any;
     PatientType: any;
     TariffName:any;
@@ -274,6 +274,7 @@ export class IpdAdvanceBrowseModel {
       Remark:any;
       usedAmount:any;
       balanceAmount:any;
+
     /**
   * Constructor
   *
@@ -283,9 +284,9 @@ export class IpdAdvanceBrowseModel {
         {
             this.RegNo = IpdAdvanceBrowseModel.RegNo || '';
             this.PatientName = IpdAdvanceBrowseModel.PatientName || '';
-            this.Date = IpdAdvanceBrowseModel.Date || '';
+            this.date = IpdAdvanceBrowseModel.date || '';
             this.AdvanceNo = IpdAdvanceBrowseModel.AdvanceNo || '';
-            this.AdvanceAmount = IpdAdvanceBrowseModel.AdvanceAmount || '';
+            this.advanceAmount = IpdAdvanceBrowseModel.advanceAmount || '';
             this.UsedAmount = IpdAdvanceBrowseModel.UsedAmount || '';
             this.BalanceAmount = IpdAdvanceBrowseModel.BalanceAmount || '';
             this.AddedBy = IpdAdvanceBrowseModel.AddedBy || '';
@@ -293,10 +294,10 @@ export class IpdAdvanceBrowseModel {
             this.ChequePayAmount = IpdAdvanceBrowseModel.ChequePayAmount || '';
             this.CardPayAmount = IpdAdvanceBrowseModel.CardPayAmount || '';
             this.UserName = IpdAdvanceBrowseModel.UserName || '';
-            this.RefundAmount = IpdAdvanceBrowseModel.RefundAmount || '';
+            this.refundAmount = IpdAdvanceBrowseModel.refundAmount || '';
             this.PrevAdvAmt=IpdAdvanceBrowseModel.PrevAdvAmt || '';
-            this.AdvanceId = IpdAdvanceBrowseModel.AdvanceId || 0;
-            this.AdvanceDetailID = IpdAdvanceBrowseModel.AdvanceDetailID || 0;
+            this.advanceId = IpdAdvanceBrowseModel.advanceId || 0;
+            this.advanceDetailID = IpdAdvanceBrowseModel.advanceDetailID || 0;
             this.IPDNo = IpdAdvanceBrowseModel.IPDNo || 0;
             this.balanceAmount = IpdAdvanceBrowseModel.balanceAmount || 0;
             this.usedAmount = IpdAdvanceBrowseModel.usedAmount || 0;

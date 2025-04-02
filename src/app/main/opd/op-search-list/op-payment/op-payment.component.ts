@@ -51,6 +51,14 @@ export class OpPaymentComponent implements OnInit {
       this.patientDetailsFormGrp.get('bankName1').clearValidators();
       this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
     }
+    else if (this.selectedPaymnet1 == 'tds') {
+      this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
+      this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
+      this.patientDetailsFormGrp.get('regDate1').clearValidators();
+      this.patientDetailsFormGrp.get('regDate1').updateValueAndValidity();
+      this.patientDetailsFormGrp.get('bankName1').clearValidators();
+      this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
+      }
     else {
       this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
       this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
@@ -192,38 +200,7 @@ export class OpPaymentComponent implements OnInit {
     if (data) {
       this.advanceData = this.data.vPatientHeaderObj;
       console.log(this.advanceData)
-    }
-    if (this.data.FromName == "Advance") {
-
-      this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
-      this.amount1 = parseInt(this.advanceData.NetPayAmount);
-      this.Paymentobj['TransactionType'] = 1;
-    }
-    if (this.data.FromName == "OP-Bill" || this.data.FromName == "IP-Bill") {
-
-      this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
-      this.amount1 = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
-      this.PatientName = this.advanceData.PatientName;
-      this.RegNo = this.advanceData.RegNo;
-      this.DoctorName = this.advanceData.DoctorName;
-      this.CompanyName = this.advanceData.CompanyName;
-      this.Date = this.advanceData.Date;
-      this.Age = this.advanceData.Age;
-      this.OPD_IPD_Id = this.advanceData.OPD_IPD_Id;
-      this.DepartmentName = this.advanceData.DepartmentName;
-      this.Paymentobj['TransactionType'] = 0;
-      this.selectedPaymnet1 = 'cash';
-    }
-
-    if (this.data.FromName == "OP-SETTLEMENT") {
-      this.netPayAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
-      this.amount1 = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
-      this.paidAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
-      this.PatientName = this.advanceData.PatientName;
-      this.Date = this.advanceData.Date;
-      this.selectedPaymnet1 = 'cash';
-      this.Paymentobj['TransactionType'] = 0;
-    }
+    } 
     if (this.data.FromName == "IP-RefundOfAdvance" || this.data.FromName == "IP-Advance" || this.data.FromName == "IP-RefundOfBill") {
 
       this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
@@ -238,30 +215,7 @@ export class OpPaymentComponent implements OnInit {
       this.DepartmentName = this.advanceData.DepartmentName;
       // this.Paymentobj['TransactionType'] = 0;
       this.selectedPaymnet1 = 'cash';
-    }
-
-    if (this.data.FromName == "OP-RefundOfBill") {
-      this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
-      this.amount1 = parseInt(this.advanceData.NetPayAmount) ;
-      this.PatientName = this.advanceData.PatientName;
-      this.RegNo = this.advanceData.RegNo;
-      this.DoctorName = this.advanceData.Doctorname;
-      this.CompanyName = this.advanceData.CompanyName;
-      this.Date = this.advanceData.Date;
-      this.Age = this.advanceData.Age;
-      this.OPD_IPD_Id = this.advanceData.OPD_IPD_Id;
-      this.DepartmentName = this.advanceData.DepartmentName;
-      this.Paymentobj['TransactionType'] = 0;
-      this.selectedPaymnet1 = 'cash';
-    }
-     
-    
-    if (this.data.FromName == "SETTLEMENT") {
-      this.netPayAmt = parseInt(this.advanceData.NetPayableAmt) || this.advanceData.NetPayAmount;
-      this.amount1 = parseInt(this.advanceData.NetPayableAmt) || this.advanceData.NetPayAmount;
-      this.PatientName = this.advanceData.PatientName;
-      this.Paymentobj['TransactionType'] = 0;
-    }
+    } 
     if (this.data.FromName == "SalesSETTLEMENT") {
       this.netPayAmt = parseInt(this.advanceData.NetAmount);
       this.PatientName = this.advanceData.PatientName;
@@ -286,15 +240,7 @@ export class OpPaymentComponent implements OnInit {
       this.PatientName = this.advanceData.PatientName;
       this.Date = this.advanceData.Date;
       this.selectedPaymnet1 = 'cash';
-    }
-    else if (this.data.FromName == "OP-Pharma-SETTLEMENT") {
-      this.netPayAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
-      this.amount1 = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
-      this.PatientName = this.advanceData.PatientName;
-      this.Date = this.advanceData.Date;
-      this.selectedPaymnet1 = 'cash';
-      this.Paymentobj['TransactionType'] = 4;
-    }
+    } 
     else if (this.data.FromName == "IP-Pharma-Advance" || this.data.FromName == "IP-Pharma-Refund") {
       this.netPayAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
       this.amount1 = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
@@ -478,51 +424,7 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['PayTMTranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? 0;
       this.Paymentobj['PayTMDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       this.Paymentobj['paymentId'] = 0;
-    }
-    else if (this.data.FromName == "OP-Bill"  || this.data.FromName == "OP-RefundOfBill" ||
-      this.data.FromName == "IP-RefundOfBill"  ) {
-      this.Paymentobj['BillNo'] = this.data.billNo;
-      this.Paymentobj['ReceiptNo'] = "";
-      this.Paymentobj['PaymentDate'] = formattedDate
-      this.Paymentobj['PaymentTime'] = formattedTime
-      this.Paymentobj['CashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
-      this.Paymentobj['ChequePayAmount'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.Amount ?? 0;
-      this.Paymentobj['ChequeNo'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.RefNo ?? 0;
-      this.Paymentobj['BankName'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.BankName ?? "";
-      this.Paymentobj['ChequeDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-      this.Paymentobj['CardPayAmount'] = this.Payments.data.find(x => x.PaymentType == "card")?.Amount ?? 0;
-      this.Paymentobj['CardNo'] = this.Payments.data.find(x => x.PaymentType == "card")?.RefNo ?? 0;
-      this.Paymentobj['CardBankName'] = this.Payments.data.find(x => x.PaymentType == "card")?.BankName ?? "";
-      this.Paymentobj['CardDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-      this.Paymentobj['AdvanceUsedAmount'] = 0;
-      this.Paymentobj['AdvanceId'] = 0;
-      this.Paymentobj['RefundId'] = 0;
-      let TransactionType;
-      if (this.data.FromName == "OP-Bill") {
-        TransactionType = 0;
-      } else if (this.data.FromName == "OP-RefundOfBill" || this.data.FromName == "IP-RefundOfBill" || this.data.FromName == "IP-RefundOfAdvance") {
-        TransactionType = 2;
-      } else if (this.data.FromName == "IP-Advance") {
-        TransactionType = 1;
-      }
-      this.Paymentobj['TransactionType'] = TransactionType;
-      this.Paymentobj['Remark'] = " ";
-      this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.userId,
-        this.Paymentobj['IsCancelled'] = 0;
-      this.Paymentobj['IsCancelledBy'] = 0;
-      this.Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-      this.Paymentobj['CashCounterId'] = 0;
-      this.Paymentobj['NEFTPayAmount'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.Amount ?? 0;
-      this.Paymentobj['NEFTNo'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.RefNo ?? 0;
-      this.Paymentobj['NEFTBankMaster'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.BankName ?? "";
-      this.Paymentobj['NEFTDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-      this.Paymentobj['PayTMAmount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
-      this.Paymentobj['PayTMTranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? 0;
-      this.Paymentobj['PayTMDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-      this.Paymentobj['PaidAmt'] = this.paidAmt;// this.patientDetailsFormGrp.get('paidAmountController').value +Number(this.amount1);
-      this.Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
-      this.Paymentobj['tdsAmount'] = 0;
-    }
+    } 
     else if (this.data.FromName == "IP-Pharma-Advance" || this.data.FromName == "IP-Pharma-Refund") {
       this.Paymentobj['BillNo'] = this.advanceData.billNo;
       this.Paymentobj['ReceiptNo'] = "";
@@ -587,9 +489,9 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['payTMAmount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
       this.Paymentobj['payTMTranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? "";
       this.Paymentobj['payTMDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-
     }
-    else if(this.data.FromName == "IP-Advance" || this.data.FromName == "IP-RefundOfAdvance") {
+    else if(this.data.FromName == "IP-Advance" || this.data.FromName == "IP-RefundOfAdvance" ||
+      this.data.FromName == "IP-RefundOfBill" ) {
 
         this.Paymentobj['billNo'] = 0;
         this.Paymentobj['receiptNo'] = "";
@@ -621,7 +523,7 @@ export class OpPaymentComponent implements OnInit {
         this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
         this.Paymentobj['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? "";
         this.Paymentobj['payTmdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
-        this.Paymentobj['tdsAmount'] = 0; 
+        this.Paymentobj['tdsAmount'] =  this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0;
     }
     else if(this.data.FromName == "IP-IntrimBIll" ) {
 

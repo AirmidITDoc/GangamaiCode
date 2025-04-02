@@ -221,7 +221,7 @@ export class IPBillingComponent implements OnInit {
       console.log(this.selectedAdvanceObj)
       this.opD_IPD_Id = this.selectedAdvanceObj.admissionId || "0"
       console.log(this.opD_IPD_Id)
-      this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + 2 + "&ServiceName="
+      this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + this.selectedAdvanceObj.classId + "&ServiceName="
       this.getdata(this.selectedAdvanceObj.admissionId)
       this.getadvancelist(this.selectedAdvanceObj.admissionId)
       this.Serviceform.get("ChargeClass").setValue(this.selectedAdvanceObj.classId)

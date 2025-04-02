@@ -147,7 +147,7 @@
                         </div>
                     </div>
 
-                    <div fxLayout.gt-md="row" fxLayout="column" fxLayoutGap="12px">
+                    <div fxLayout.gt-md="row" fxLayout="column">
                         <div fxFlex.gt-md="100%" fxFlex.md="50%" fxFlex.lt-md="100%"> 
                             <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false"  
                             tableClasses="h-250" (onSelectRow)="getSelectedRow($event)">
@@ -162,42 +162,41 @@
                             class="airmid-table"> 
                     
                                 <ng-container matColumnDef="ServiceName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-250">
                                         ServiceName </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-250">
                                         <span> {{element.serviceName}}</span>
                                     </mat-cell>
                                 </ng-container>
                     
                                 <ng-container matColumnDef="Qty">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
                                         Qty </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
                                         <span> {{element.qty}}</span>
                                     </mat-cell>
                                 </ng-container>
                     
                                 <ng-container matColumnDef="Price">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Price
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-140">Price
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-140">
                                         <span> {{element.price}}</span>
                                     </mat-cell>
                                 </ng-container>
-                    
-                    
+                     
                                 <ng-container matColumnDef="TotalAmt">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-150">
                                         TotalAmt </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">
                                         <span> {{element.totalAmt | currency:'INR'}}</span>
                                     </mat-cell>
                                 </ng-container>
                     
                                 <ng-container matColumnDef="NetAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-150">
                                         NetAmount </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">
                                         <span> {{element.netAmount | currency:'INR'}}</span>
                                     </mat-cell>
                                 </ng-container>
@@ -206,7 +205,7 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                         ChargesDocName </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.chargesDocName}} </span>
+                                        <span> {{element.chargesDocName || '-'}} </span>
                                     </mat-cell>
                                 </ng-container>
                     
@@ -214,7 +213,7 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RefundAmt
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                        <mat-form-field appearance="legacy">
+                                        <mat-form-field appearance="fill">
                                             <input matInput [(ngModel)]="element.refundAmount" type="text" OnlyNumber
                                                 (keyup)="gettablecalculation(element,element.refundAmount)"
                                                 (keypress)="keyPressCharater($event)">
@@ -226,7 +225,7 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                         BalanceAmount </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.balanceAmount}} </span>
+                                        <span> {{element.balanceAmount | currency:'INR'}} </span>
                                     </mat-cell>
                                 </ng-container>
                     
@@ -234,7 +233,7 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                         PreviousRefundAmt </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.previousRefundAmt}} </span>
+                                        <span> {{element.previousRefundAmt | currency:'INR'}} </span>
                                     </mat-cell>
                                 </ng-container>
                     
@@ -264,16 +263,7 @@
                                     [ngClass]="{'hide':!(dataSource2!=null && dataSource2.data.length==0)}">
                                 </mat-footer-row>
                     
-                            </mat-table>
-                            
-                            <div class="table-footer mt-8">
-                                <div class="net-amt">
-                                    <span class="net-amt-label font-weight-600">Total of Items : </span>
-                                    <span class="net-amt-value" style="color: blue;">
-                                        {{getServicetotSum(dataSource2.data) | currency:'INR' }}
-                                    </span>
-                                </div>
-                            </div>
+                            </mat-table> 
                         </div> 
                     </div>
                 </div>
