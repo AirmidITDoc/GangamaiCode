@@ -17,6 +17,7 @@ import { IPpaymentWithadvanceComponent } from '../../ip-settlement/ippayment-wit
 import { map, startWith } from 'rxjs/operators';
 import { ConfigService } from 'app/core/services/config.service';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-interim-bill',
@@ -64,6 +65,7 @@ export class InterimBillComponent implements OnInit {
     private accountService: AuthenticationService,
     public dialogRef: MatDialogRef<InterimBillComponent>,
     private formBuilder: UntypedFormBuilder,
+    private commonService: PrintserviceService,
     public _WhatsAppEmailService:WhatsAppEmailService,
     public _ConfigService : ConfigService,
     @Inject(MAT_DIALOG_DATA) public data: any) 
@@ -438,22 +440,8 @@ debugger
     });
   }
   }  
-  viewgetInterimBillReportPdf(BillNo) {
-
-    this._IpSearchListService.getIpInterimBillReceipt(
-      BillNo
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Ip Interim Bill  Viewer"
-          }
-        });
-    });
+  viewgetInterimBillReportPdf(billNo) {
+    this.commonService.Onprint("BillNo", billNo, "IpInterimBill");
   }  
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);

@@ -317,10 +317,7 @@ export class IPAdvanceComponent implements OnInit {
       return false;
     }
   } 
-  viewgetAdvanceReceiptReportPdf(data) {
-   console.log(data)
-    this.commonService.Onprint("AdvanceDetailID", data, "IpAdvanceReceipt");
-  }
+
 
   getWhatsappsAdvance(el, vmono) { 
     if(vmono !='' && vmono !="0"){
@@ -354,28 +351,15 @@ export class IPAdvanceComponent implements OnInit {
   }
   } 
   getStatementPrint() {
-    let AdvanceDetailID=0
-    this._IpSearchListService.getViewAdvancestatementReceipt(
-      AdvanceDetailID
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Advance Statement Viewer"
-          }
-        });
-    });
+    this.commonService.Onprint("AdmissionID", this.registerObj.admissionId, "IpAdvanceStatement");
    }
  
-  transform2(value: string) {
-    var datePipe = new DatePipe("en-US");
-    value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
-    return value;
-  } 
+   viewgetAdvanceReceiptReportPdf(data) {
+    console.log(data)
+     this.commonService.Onprint("AdvanceDetailID", data, "IpAdvanceReceipt");
+   }
+
+ 
   onClose() {
     this.dialogRef.close();
   } 

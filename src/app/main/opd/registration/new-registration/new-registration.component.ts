@@ -121,8 +121,23 @@ export class NewRegistrationComponent implements OnInit {
       
         }
     }
-
- 
+    ageYear: number = 0;
+    ageMonth: number = 0;
+    ageDay: number = 0;
+  onChangeDateofBirth(DateOfBirth: Date) {
+         if (DateOfBirth) {
+             const todayDate = new Date();
+             const dob = new Date(DateOfBirth);
+             const timeDiff = Math.abs(Date.now() - dob.getTime());
+             this.ageYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+             this.ageMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
+             this.ageDay = Math.abs(todayDate.getDate() - dob.getDate());
+            //  this.value = DateOfBirth;
+             this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
+                 if(this.ageYear > 110)
+                 Swal.fire("Please Enter Valid BirthDate..")
+         }
+     }
     onClose() {
         this.dialogRef.close();
     }

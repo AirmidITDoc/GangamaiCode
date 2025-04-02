@@ -542,7 +542,7 @@
                 <mat-tab label="Advance">
                   <ng-template #actionButtonTemplate let-element>
                     <div fxLayout="row" fxLayoutAlign="center center">
-                      <button mat-icon-button matTooltip="Advance Print">
+                      <button mat-icon-button matTooltip="Advance Print"  (click)="viewgetAdvanceReceiptReportPdf(element)">
                         <mat-icon>print</mat-icon>
                       </button>
                     </div>
@@ -667,7 +667,7 @@
                       <button mat-icon-button matTooltip="Details" (click)="getPreBilldet(element)">
                         <mat-icon>visibility</mat-icon>
                       </button>
-                      <button mat-icon-button matTooltip="Bill Print" (click)="viewgetInterimBillReportPdf(contact)">
+                      <button mat-icon-button matTooltip="Bill Print" (click)="viewgetInterimBillReportPdf(element)">
                         <mat-icon>print</mat-icon>
                       </button>
                       <button mat-icon-button matTooltip="Send Bill On WhatsApp" class="p-4">

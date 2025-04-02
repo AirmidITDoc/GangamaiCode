@@ -14,6 +14,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
 import { ToastrService } from 'ngx-toastr';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 
 @Component({
@@ -86,6 +87,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
     public toastr: ToastrService,
     private _formBuilder: UntypedFormBuilder,
     private _loggedService: AuthenticationService,
+     private commonService: PrintserviceService,
     public dialogRef: MatDialogRef<NewPrescriptionreturnComponent>,
     public datePipe: DatePipe,) { }
 
@@ -119,10 +121,11 @@ export class NewPrescriptionreturnComponent implements OnInit {
       PatientName: '',
       DoctorName: '',
       extAddress: '',
-      MobileNo: [''],
-      // [Validators.required, Validators.pattern("^[0-9]*$"),
-      // Validators.minLength(10),
-      // Validators.maxLength(10),]
+      MobileNo:['', [
+        Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+        ]],
       PatientType: ['OP', [Validators.required]],
       TotalAmt: '',
     });
@@ -619,37 +622,37 @@ export class NewPrescriptionreturnComponent implements OnInit {
     // }
   }
   
-  viewgetIpprescriptionreturnReportPdf(response) {
-   
-    setTimeout(() => {
-      let param = {
+  viewgetIpprescriptionreturnReportPdf(element) {
+    this.commonService.Onprint("PresReId", element.PresReId, "NurIPprescriptionReturnReport");
+  //   setTimeout(() => {
+  //     let param = {
         
-          "searchFields": [
-            {
-              "fieldName": "PresReId",
-              "fieldValue": "10012",
-              "opType": "Equals"
-            }
-          ],
-          "mode": "NurIPprescriptionReturnReport"
-        }
+  //         "searchFields": [
+  //           {
+  //             "fieldName": "PresReId",
+  //             "fieldValue": "10012",
+  //             "opType": "Equals"
+  //           }
+  //         ],
+  //         "mode": "NurIPprescriptionReturnReport"
+  //       }
       
-    this._PrescriptionReturnService.getReportView(param).subscribe(res => {
+  //   this._PrescriptionReturnService.getReportView(param).subscribe(res => {
 
-      const matDialog = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Nursing Prescription Return" + " " + "Viewer"
-          }
-        });
-      matDialog.afterClosed().subscribe(result => {
-      });
-    });
-  }, 100);
+  //     const matDialog = this._matDialog.open(PdfviewerComponent,
+  //       {
+  //         maxWidth: "85vw",
+  //         height: '750px',
+  //         width: '100%',
+  //         data: {
+  //           base64: res["base64"] as string,
+  //           title: "Nursing Prescription Return" + " " + "Viewer"
+  //         }
+  //       });
+  //     matDialog.afterClosed().subscribe(result => {
+  //     });
+  //   });
+  // }, 100);
 }
 
 }

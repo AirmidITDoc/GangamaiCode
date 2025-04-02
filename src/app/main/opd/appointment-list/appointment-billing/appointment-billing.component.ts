@@ -739,7 +739,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     this._AppointmentlistService.InsertOPBillingCredit(submitData).subscribe(response => {
       this.toastrService.success(response.message);
       this.viewgetCreditOPBillReportPdf(response)
-      // this._matDialog.closeAll();
+      this._matDialog.closeAll();
       if (response)
         this.resetform();
     }, (error) => {
@@ -872,16 +872,10 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
           console.log(submitData);
           this._AppointmentlistService.InsertOPBilling(submitData).subscribe(response => {
             this.toastrService.success(response.message);
-            // console.log(response)
-
-            // let Res = response.message
-            // let ID = Res.split('.')
-            // let Id = ID[1]
-
-            this.viewgetOPBillReportPdf(response)
+                      this.viewgetOPBillReportPdf(response)
             if (response)
               this.resetform();
-            // this._matDialog.closeAll();
+            this._matDialog.closeAll();
           }, (error) => {
             this.toastrService.error(error.message);
           });
@@ -962,7 +956,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
         this.viewgetOPBillReportPdf(response)
         // this.totalChargeForm.reset();
-        // this._matDialog.closeAll();
+        this._matDialog.closeAll();
         if (response)
           this.resetform();
 

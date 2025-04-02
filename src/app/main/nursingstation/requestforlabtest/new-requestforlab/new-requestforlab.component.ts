@@ -248,8 +248,8 @@ export class NewRequestforlabComponent implements OnInit {
   }
 
 
-  viewgetLabrequestReportPdf(element) {
-    this.commonService.Onprint("BillNo", element.requestId, "OpBillReceipt");
+  viewgetLabrequestReportPdf(requestId) {
+    this.commonService.Onprint("RequestId", requestId, "NurLabRequestTest");
   }
 
   onSaveEntry(row) {
@@ -372,8 +372,9 @@ export class NewRequestforlabComponent implements OnInit {
       this._RequestforlabtestService.LabRequestSave(submissionObj).subscribe(response => {
         console.log(response.message);
         this.toastr.success(response);
-        this._matDialog.closeAll();
+       
         this.viewgetLabrequestReportPdf(response);
+        this._matDialog.closeAll();
       }, (error) => {
         this.toastr.error(error.message);
       });

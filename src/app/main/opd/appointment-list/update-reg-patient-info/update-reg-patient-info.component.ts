@@ -155,7 +155,7 @@ export class UpdateRegPatientInfoComponent {
     this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
       this.toastr.success(response.message);
      
-      this.OnViewReportPdf(response.data)
+      this.OnViewReportPdf(response)
       this.onClear(true);
       this._matDialog.closeAll();
     }, (error) => {

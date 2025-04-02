@@ -211,37 +211,38 @@ export class PrescriptionComponent implements OnInit {
       }, 100);
     }
     
- viewgetIpprescriptionreturnReportPdf(response) {
-       console.log(response)
-        setTimeout(() => {
-          let param = {
+ viewgetIpprescriptionreturnReportPdf(element) {
+       console.log(element)
+       this.commonService.Onprint("PresReId", element.PresReId, "NurIPprescriptionReturnReport");
+    //     setTimeout(() => {
+    //       let param = {
             
-              "searchFields": [
-                {
-                  "fieldName": "PresReId",
-                  "fieldValue": String(response.presReId), //"10012"
-                  "opType": "Equals"
-                }
-              ],
-              "mode": "NurIPprescriptionReturnReport"
-            }
+    //           "searchFields": [
+    //             {
+    //               "fieldName": "PresReId",
+    //               "fieldValue": String(response.presReId), //"10012"
+    //               "opType": "Equals"
+    //             }
+    //           ],
+    //           "mode": "NurIPprescriptionReturnReport"
+    //         }
           
-        this._PrescriptionService.getReportView(param).subscribe(res => {
+    //     this._PrescriptionService.getReportView(param).subscribe(res => {
     
-          const matDialog = this._matDialog.open(PdfviewerComponent,
-            {
-              maxWidth: "85vw",
-              height: '750px',
-              width: '100%',
-              data: {
-                base64: res["base64"] as string,
-                title: "Nursing Prescription Return" + " " + "Viewer"
-              }
-            });
-          matDialog.afterClosed().subscribe(result => {
-          });
-        });
-      }, 100);
+    //       const matDialog = this._matDialog.open(PdfviewerComponent,
+    //         {
+    //           maxWidth: "85vw",
+    //           height: '750px',
+    //           width: '100%',
+    //           data: {
+    //             base64: res["base64"] as string,
+    //             title: "Nursing Prescription Return" + " " + "Viewer"
+    //           }
+    //         });
+    //       matDialog.afterClosed().subscribe(result => {
+    //       });
+    //     });
+    //   }, 100);
     }
     onSave(row: any = null) {
         let that = this;

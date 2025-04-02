@@ -632,6 +632,7 @@ export class IPBillBrowseListComponent implements OnInit {
     }
 
     getRefundreceiptview(element) {
+        console.log(element)
         this.commonService.Onprint("RefundId", element.refundId, "IpBillRefundReceipt");
     }
 

@@ -329,7 +329,7 @@ export class NewAppointmentComponent implements OnInit {
 
     }
     getSelectedObjphone(obj) {
-        debugger
+        
         this.PatientName = obj.text;
         this.RegId = obj.value;
         this.vPhoneAppId = obj.value;
@@ -405,9 +405,6 @@ export class NewAppointmentComponent implements OnInit {
                 });
             }
 
-            // if (invalidFields.length > 0) {
-            //     Swal.fire('The following fields are invalid in the personal form: ' + invalidFields.join(', ') + '. Please check them and try again.');
-            // }
         }
     }
 

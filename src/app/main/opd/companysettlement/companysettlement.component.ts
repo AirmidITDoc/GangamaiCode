@@ -127,11 +127,7 @@ Age=0;
                 this._CompanysettlementService.InsertOPBillingsettlement(data).subscribe(response => {
                     this.toastr.success(response.message);
                     this.GetDetails(this.RegId1)
-
-                    // let Res=response.message
-                    // let ID=Res.split('.')
-                    // let Id=ID[1]
-                     this.viewgetOPPayemntPdf(response,true);
+                    this.viewgetOPPayemntPdf(response,true);
                   
                   }, (error) => {
                     this.toastr.error(error.message);

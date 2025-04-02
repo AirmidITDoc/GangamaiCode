@@ -1,6 +1,6 @@
 import { Component, ElementRef, Inject, Input, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AdvanceDetailObj } from '../ip-search-list.component';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -166,12 +166,12 @@ export class DischargeSummaryTemplateComponent {
     Tempdesc:any;
     showDischargeSummaryForm(): FormGroup {
       return this._formBuilder.group({
-        TemplateId:0,
+        TemplateId:['', Validators.required],
         templateDesc:'',
         dischargeSummaryId: 0,
         admissionId:0,// this.vAdmissionId,
         dischargeId: 0,
-        dischargeDoctor1: 0,
+        dischargeDoctor1: ['', Validators.required],
         dischargeDoctor2: 0,
         dischargeDoctor3: 0,
         dischargeSummaryTime: [(new Date()).toISOString()],

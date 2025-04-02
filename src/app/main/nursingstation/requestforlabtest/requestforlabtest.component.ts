@@ -35,8 +35,8 @@ export class RequestforlabtestComponent implements OnInit {
     @ViewChild('isTestCompletedIcon') isTestCompletedIcon!: TemplateRef<any>;
 
     ngAfterViewInit() {
-        this.gridConfig.columnsList.find(col => col.key === 'isStatus')!.template = this.isStatusIcon;
-        this.gridConfig.columnsList.find(col => col.key === 'isTestCompleted')!.template = this.isTestCompletedIcon;
+        // this.gridConfig.columnsList.find(col => col.key === 'isStatus')!.template = this.isStatusIcon;
+        // this.gridConfig.columnsList.find(col => col.key === 'isTestCompleted')!.template = this.isTestCompletedIcon;
     }
 
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")

@@ -24,6 +24,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 
 @Component({
@@ -208,6 +209,7 @@ export class IPBillingComponent implements OnInit {
     public _WhatsAppEmailService: WhatsAppEmailService,
     public toastr: ToastrService,
     public _ConfigService: ConfigService,
+    private commonService: PrintserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: UntypedFormBuilder) {
     this.showTable = false;
@@ -1235,7 +1237,7 @@ debugger
       console.log('============== Save IP Draft Bill Json ===========',submitData)
       this._IpSearchListService.InsertIPDraftBilling(submitData).subscribe(response => {
         this.toastr.success(response.message);
-        this.viewgetDraftBillReportPdf(response);  
+        this.viewgetDraftBillReportPdf(this.selectedAdvanceObj.admissionId);  
         this._matDialog.closeAll();
       }, (error) => {
         this.toastr.error(error.message);
@@ -1446,56 +1448,24 @@ debugger
     }
   }
   // exec rptIPDInterimBill 193667 9507 
-  viewgetInterimBillReportPdf(contact) {
-    this._IpSearchListService.getIpInterimBillReceipt(
-      contact.BillNo
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Ip Interim Bill  Viewer"
-          }
-        });
-    });
+  viewgetInterimBillReportPdf(element) {
+    console.log(element)
+    this.commonService.Onprint("BillNo", element.billNo, "IpInterimBill");
   }
   //For testing 
   viewgetDraftBillReportPdf(AdmissionID) {
-    this._IpSearchListService.getIpDraftBillReceipt(
-      AdmissionID
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "IP Draft Bill  Viewer"
-          }
-        });
-    });
+    this.commonService.Onprint("AdmissionID", AdmissionID, "IpDraftBill");
   }
-  viewgetBillReportPdf(BillNo) {
-    this._IpSearchListService.getIpFinalBillReceiptgroupwise(
-      BillNo
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Ip Bill  Viewer"
-          }
-        });
-    });
+  viewgetBillReportPdf(billNo) {
+    this.commonService.Onprint("BillNo", billNo, "IpFinalBill");
   }
  
+  viewgetAdvanceReceiptReportPdf(data) {
+    console.log(data)
+     this.commonService.Onprint("AdvanceDetailID", data.advanceDetailID, "IpAdvanceReceipt");
+   }
+
+
   showAllFilter(event) {
     console.log(event);
     if (event.checked == true) 

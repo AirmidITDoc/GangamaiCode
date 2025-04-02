@@ -50,7 +50,8 @@ export class SampleCollectionComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     }
 
-    hasSelectedContacts: boolean;
+    gridConfig1: gridModel = new gridModel();
+    isShowDetailTable: boolean = false;
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     vOPIPId = 0;
@@ -103,8 +104,7 @@ export class SampleCollectionComponent implements OnInit {
 this.myformSearch=this._SampleCollectionService.createSearchForm()
     }
 
-    gridConfig1: gridModel = new gridModel();
-    isShowDetailTable: boolean = false;
+
 
     getSelectedRow(row: any): void {
         console.log("selectedRow:",row)
