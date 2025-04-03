@@ -180,11 +180,15 @@
                                                     </div>
                                                 </mat-form-field> -->
 
-                                                <airmid-dropdown label="Bank Name" formControlName="bankName1"
-                                                [formGroup]="patientDetailsFormGrp"
-                                                [validations]="getValidationMessages().bankName1" (selectionChange)="selectChangebank($event)"
-                                                [mode]="autocompleteModebank">
-                                                 </airmid-dropdown>
+                                             
+                                                 <div  *ngIf="selectedPaymnet1 !='upi'">
+                                                    <airmid-dropdown label="Bank Name" formControlName="bankName1"
+                                                    [formGroup]="patientDetailsFormGrp"
+                                                    [validations]="getValidationMessages().bankName1" (selectionChange)="selectChangebank($event)"
+                                                    [mode]="autocompleteModebank">
+                                                     </airmid-dropdown>
+    
+                                                </div>
 
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Registration Date</mat-label>

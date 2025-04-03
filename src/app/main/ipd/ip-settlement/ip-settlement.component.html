@@ -22,6 +22,14 @@
                             placeholderText="Search Reg No / Patient Name / Mobile No" ApiUrl="OutPatient/auto-complete?Keyword="
                             (selectionChange)="getSelectedObj($event)">
                         </airmid-autocomplete>
+
+                        <!-- <airmid-autocomplete lbl="RegId" [formGroup]="searchFormGroup" formControlName="RegId"
+                        placeholderText="IP-RegNo/FirstName/LastName" class="w-700" 
+                        ApiUrl="Admission/search-patient?Keyword="
+                        (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
+                        TextField="formattedText">
+                        </airmid-autocomplete> -->
+
                 
                         <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                             <div class="patient-info-container" *ngIf="PatientName">

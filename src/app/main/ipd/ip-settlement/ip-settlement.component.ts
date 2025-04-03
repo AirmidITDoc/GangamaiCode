@@ -305,4 +305,12 @@ export class IPSettlementComponent implements OnInit {
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
     }
+    getSelectedObjIP(obj) {
+ 
+        if ((obj.regID ?? 0) > 0) {
+          console.log("Admitted patient:", obj)
+       
+        }
+      }
+ 
 }
