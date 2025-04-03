@@ -19,11 +19,18 @@
 
                         <div class="redio-container" style="width: 40%;padding: 10px;">
 
-                            <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No"
+                            <!-- <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No"
                                 [formGroup]="searchFormGroup" fxFlex="40%" formControlName="RegId"
                                 placeholderText="Search Reg No / Patient Name / Mobile No"
                                 ApiUrl="OutPatient/auto-complete?Keyword="
-                                (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
+                                (selectionChange)="getSelectedObj($event)"></airmid-autocomplete> -->
+
+                                <airmid-autocomplete lbl="RegId" [formGroup]="searchFormGroup" formControlName="RegId"
+                                placeholderText="IP-RegNo/FirstName/LastName"
+                                ApiUrl="Admission/search-patient?Keyword="
+                                (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
+                                TextField="formattedText">
+                            </airmid-autocomplete>
 
                         </div>
                     </div>

@@ -289,6 +289,40 @@ export class IPSettlementComponent implements OnInit {
 
     }
 
+    getSelectedObjIP(obj) {
+
+        if ((obj.regID ?? 0) > 0) {
+          console.log("Admitted patient:", obj)
+        //   this.vRegNo = obj.regNo
+        //   this.vDoctorName = obj.doctorName
+        //   this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
+        //   this.vDepartment = obj.departmentName
+        //   this.vAdmissionDate = obj.admissionDate
+        //   this.vAdmissionTime = obj.admissionTime
+        //   this.vIPDNo = obj.ipdNo
+        //   this.vAge = obj.age
+        //   this.vAgeMonth = obj.ageMonth
+        //   this.vAgeDay = obj.ageDay
+        //   this.vGenderName = obj.genderName
+        //   this.vRefDocName = obj.refDocName
+        //   this.vRoomName = obj.roomName
+        //   this.vBedName = obj.bedName
+        //   this.vPatientType = obj.patientType
+        //   this.vTariffName = obj.tariffName
+        //   this.vCompanyName = obj.companyName
+        //   this.vDOA = obj.admissionDate
+        //   this.vAdmissionID = obj.admissionID
+        //   this.vClassId = obj.classId
+          // setTimeout(() => {
+          //   this._PrescriptionService.getAdmittedpatientlist(obj.regID).subscribe((response) => {
+          //     this.registerObj = response;        
+          //     console.log(this.registerObj)
+          //   });
+    
+          // }, 500);
+        }
+      }
+
     GetDetails(data) {
         
         this.gridConfig = {
