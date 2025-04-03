@@ -751,7 +751,7 @@ public getUMOCombo() {
     if (loader) {
       this._loaderService.show();
   } 
-    return this._httpClient1.DeleteData("IPBill/IPAddchargesdelete" + m_data);
+    return this._httpClient1.PostData("IPBill/IPAddchargesdelete" , m_data);
   }  
   public deleteCharges(employee){
     return this._httpClient.post("Generic/GetByProc?procName=Delete_Addcharges",employee)
@@ -809,9 +809,11 @@ public getUMOCombo() {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
 
-  public getchargesList1(data) {
-    // return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathRadRequestList",data)
+  public getchargesList1(data, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient1.PostData("IPBill/PathRadRequestList",data)
   }
 
   // Get billing Service List 

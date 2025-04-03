@@ -52,9 +52,13 @@ export class IPBillingComponent implements OnInit {
     'ChargesAddedName',
     'buttons',
   ];
-  tableColumns = [
+  NurReqColumns = [
     'ServiceName',
-    'Price'
+    'Price',
+    'reqDate',
+    'reqTime',
+    'billingUser',
+    'Action'
   ];
   PackageBillColumns = [
     'BDate',
@@ -74,10 +78,12 @@ export class IPBillingComponent implements OnInit {
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
+  @ViewChild('actionButtonTemplate5') actionButtonTemplate5!: TemplateRef<any>;
   ngAfterViewInit() {
     // Assign the template to the column dynamically 
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
+    this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate5;
   }
 
   allColumns = [
@@ -114,6 +120,17 @@ export class IPBillingComponent implements OnInit {
       template: this.actionButtonTemplate  // Assign ng-template to the column
     }
   ]
+  NursingReqListColumn = [
+    { heading: "ServiceId", key: "serviceId", sort: true, align: 'left', emptySign: 'NA',width: 120 },
+    { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA',width: 120  },
+    { heading: "ReqDate", key: "reqDate", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "ReqTime", key: "reqTime", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "User Name", key: "billingUser", sort: true, align: 'left', emptySign: 'NA',width: 170  } ,
+    { heading: "Action", key: "action", align: "right", width: 90, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate5  // Assign ng-template to the column
+    }
+  ] 
   gridConfig1: gridModel = {
     apiUrl: "IPBill/IPPreviousBillList",
     columnsList: this.allColumns,
@@ -129,6 +146,15 @@ export class IPBillingComponent implements OnInit {
     sortOrder: 0,
     filters: [
       { fieldName: "AdmissionID", fieldValue: String(this.opD_IPD_Id), opType: OperatorComparer.Equals }
+    ]
+  }
+  gridConfig2: gridModel = {
+    apiUrl: "IPBill/PathRadRequestList",
+    columnsList: this.NursingReqListColumn,
+    sortField: "ServiceId",
+    sortOrder: 0,
+    filters: [
+      { fieldName: "OP_IP_ID", fieldValue: String(this.opD_IPD_Id), opType: OperatorComparer.Equals }
     ]
   }
  
@@ -253,8 +279,8 @@ export class IPBillingComponent implements OnInit {
   }
   openServiceTable():void{
     this._matDialog.open(this.serviceTable, {
-      width: '400px',
-      height: '400px',
+      width: '60%',
+      height: '60%',
     })
   }
   private setupFormListener(): void { 
@@ -575,6 +601,15 @@ export class IPBillingComponent implements OnInit {
         sortOrder: 0,
         filters: [
           { fieldName: "AdmissionID", fieldValue: String(opD_IPD_Id), opType: OperatorComparer.Equals }
+        ]
+      },
+      this.gridConfig2 = {
+        apiUrl: "IPBill/PathRadRequestList",
+        columnsList: this.NursingReqListColumn,
+        sortField: "ServiceId",
+        sortOrder: 0,
+        filters: [
+          { fieldName: "OP_IP_ID", fieldValue: String(30247), opType: OperatorComparer.Equals }
         ]
       }
   }
@@ -1301,18 +1336,32 @@ debugger
   getRequestChargelist() {
     this.chargeslist1 = [];
     this.dataSource1.data = [];
-    var m = {
-      OP_IP_ID: this.selectedAdvanceObj.AdmissionID,
-    }
-    this._IpSearchListService.getchargesList1(m).subscribe(data => {
-      this.chargeslist1 = data as ChargesList[];
-      this.dataSource1.data = this.chargeslist1;
-      // console.log(this.dataSource1.data)
+    var m = 
+     // OP_IP_ID: this.selectedAdvanceObj.AdmissionID,
+      {
+        "first": 0,
+        "rows": 10,
+        "sortField": "ServiceId",
+        "sortOrder": 0,
+        "filters": [
+          {
+            "fieldName": "OP_IP_ID",
+            "fieldValue": String(this.opD_IPD_Id),
+            "opType": "Equals"
+          }
+       
+        ],
+        "exportType": "JSON"
+      } 
+    this._IpSearchListService.getchargesList1(m).subscribe(response => {
+      this.chargeslist1 = response.data 
+      this.dataSource1.data = this.chargeslist1; 
+      console.log(this.dataSource1.data)
       this.isLoading = 'list-loaded';
     },
       (error) => {
         this.isLoading = 'list-loaded';
-      });
+      }); 
   } 
   billheaderlist: any;
   //Admin Charge retreiving 

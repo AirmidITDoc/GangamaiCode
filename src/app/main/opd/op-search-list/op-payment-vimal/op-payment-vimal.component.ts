@@ -281,6 +281,20 @@ export class OpPaymentVimalComponent implements OnInit {
             this.DepartmentName = this.advanceData.DepartmentName; 
             this.selectedPaymnet1 = 'cash';
         }
+        //Ip-Settlemet
+        if (this.data.FromName == "IP-SETTLEMENT") {
+            this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
+            this.amount1 = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
+            this.PatientName = this.advanceData.PatientName;
+            this.RegNo = this.advanceData.RegNo;
+            this.DoctorName = this.advanceData.DoctorName;
+            this.CompanyName = this.advanceData.CompanyName;
+            this.Date = this.advanceData.Date;
+            this.Age = this.advanceData.Age;
+            this.OPD_IPD_Id = this.advanceData.OPD_IPD_Id;
+            this.DepartmentName = this.advanceData.DepartmentName; 
+            this.selectedPaymnet1 = 'cash'; 
+        }
         if (this.data.FromName == "IP-RefundOfAdvance" || this.data.FromName == "IP-Advance" || this.data.FromName == "IP-RefundOfBill") {
             this.IsAdv = true;
             let Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
@@ -341,15 +355,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.selectedPaymnet1 = 'cash';
             this.Paymentobj['TransactionType'] = 2;
         }
-      //Ip-Settlemet
-        if (this.data.FromName == "IP-SETTLEMENT") {
-            this.netPayAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
-            this.amount1 = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
-            this.paidAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
-            this.PatientName = this.advanceData.PatientName;
-            this.selectedPaymnet1 = 'cash';
-            this.Date = this.advanceData.Date;
-        }
+      
         //Op-Settlemet
         if (this.data.FromName == "OP-SETTLEMENT") {
             this.netPayAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);

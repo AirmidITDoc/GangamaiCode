@@ -49,13 +49,6 @@ export class IPSettlementComponent implements OnInit {
     vpaidamt: any = 0;
     vbalanceamt: any = 0;
     FinalAmt = 0;
-   
-    constructor(public _IPSettlementService: IPSettlementService,
-        private commonService: PrintserviceService,
-          private accountService: AuthenticationService,
-        public _matDialog: MatDialog,
-        public datePipe: DatePipe,
-        public toastr: ToastrService, public formBuilder: UntypedFormBuilder,) { }
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
@@ -67,29 +60,29 @@ export class IPSettlementComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'companyId')!.template = this.actionsTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'balanceAmt')!.template = this.actionsTemplate2;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-
     }
+
+    AllColumns = [
+        {
+            heading: "-", key: "companyId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
+            template: this.actionsTemplate, width: 20
+        },
+        { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "BillAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "ConsessionAmt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "NetAmount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "BalanceAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
+        {
+            heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
+        }
+    ]
     gridConfig: gridModel = {
         apiUrl: "IPBill/IPBillList",
-        columnsList: [
-            {
-                heading: "-", key: "companyId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
-                template: this.actionsTemplate, width: 20
-            },
-            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "BillAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "ConsessionAmt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "NetAmount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "BalanceAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
-            {
-                heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
-                template: this.actionButtonTemplate  // Assign ng-template to the column
-            }
-
-        ],
+        columnsList: this.AllColumns,
         sortField: "BillNo",
         sortOrder: 0,
         filters: [
@@ -97,9 +90,44 @@ export class IPSettlementComponent implements OnInit {
         ]
     }
 
+    constructor(public _IPSettlementService: IPSettlementService,
+        private commonService: PrintserviceService,
+        private accountService: AuthenticationService,
+        public _matDialog: MatDialog,
+        public datePipe: DatePipe,
+        public toastr: ToastrService,
+        public formBuilder: UntypedFormBuilder,) { }
+
     ngOnInit(): void {
         this.searchFormGroup = this.createSearchForm();
         this.myFormGroup = this.createSearchForm1();
+    }
+    createSearchForm() {
+        return this.formBuilder.group({
+            RegId: 0,
+            AppointmentDate: [(new Date()).toISOString()],
+        });
+    }
+    createSearchForm1() {
+        return this.formBuilder.group({
+            RegId: 0
+        });
+    }
+
+    //    110193
+    registerObj = new RegInsert({});  
+    PatientName: any;
+    getSelectedObj(obj) {
+        console.log(obj)
+        this.RegId1 = obj.value; 
+        setTimeout(() => {
+            this._IPSettlementService.getRegistraionById(this.RegId1).subscribe((response) => {
+                this.registerObj = response;
+                this.PatientName = this.registerObj.firstName + ' ' + this.registerObj.middleName + ' ' + this.registerObj.lastName
+                console.log(response)
+            });
+        }, 500);
+        this.GetDetails(this.RegId1)
     }
     openPaymentpopup(contact) {
 
@@ -110,21 +138,25 @@ export class IPSettlementComponent implements OnInit {
         const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
         this.FinalAmt = contact.NetPayableAmt;
 
-        let PatientHeaderObj = {};
+        let PatientHeaderObj = {}; 
         PatientHeaderObj['Date'] = formattedDate;
-        PatientHeaderObj['PatientName'] = this.PatientName;
-        PatientHeaderObj['AdvanceAmount'] = contact.advUsdPay;
+        PatientHeaderObj['PatientName'] = this.PatientName; 
+        PatientHeaderObj['AdvanceAmount'] = contact.balanceAmt;
         PatientHeaderObj['NetPayAmount'] = contact.balanceAmt;
         PatientHeaderObj['BillNo'] = contact.billNo;
-        PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
-        PatientHeaderObj['IPDNo'] = contact.opD_IPD_ID;
-        PatientHeaderObj['RegNo'] = contact.RegNo;
+        PatientHeaderObj['OPD_IPD_Id'] = contact.opD_IPD_ID;
+        PatientHeaderObj['IPDNo'] = contact.ipdNo;
+        PatientHeaderObj['RegNo'] =  contact.regNo; 
+        PatientHeaderObj['DoctorName'] = contact.doctorname; 
+        PatientHeaderObj['CompanyName'] =contact.companyName;
+        PatientHeaderObj['DepartmentName'] = contact.departmentName;
+        PatientHeaderObj['Age'] = this.registerObj.age; 
 
         const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
             {
-                maxWidth: "95vw",
-                height: '750px',
-                width: '85%',
+                maxWidth: "85vw",
+                height: '700px',
+                width: '100%',
 
                 data: {
                     vPatientHeaderObj: PatientHeaderObj,
@@ -135,13 +167,13 @@ export class IPSettlementComponent implements OnInit {
 
 
         dialogRef.afterClosed().subscribe(result => {
-             let NeftNo="0"
+            let NeftNo = "0"
             // console.log(result.submitDataPay.ipPaymentInsert)
-            
-            if(result.submitDataPay.ipPaymentInsert.NEFTNo =="undefined")
-                NeftNo="0"
+
+            if (result.submitDataPay.ipPaymentInsert.NEFTNo == "undefined")
+                NeftNo = "0"
             else
-            NeftNo=String(result.submitDataPay.ipPaymentInsert.NEFTNo)
+                NeftNo = String(result.submitDataPay.ipPaymentInsert.NEFTNo)
             if (result.IsSubmitFlag) {
                 let Paymentobj = {};
 
@@ -163,8 +195,8 @@ export class IPSettlementComponent implements OnInit {
                 Paymentobj['RefundId'] = 0;
                 Paymentobj['TransactionType'] = 0;
                 Paymentobj['Remark'] = '';
-                Paymentobj['AddBy'] =this.accountService.currentUserValue.userId,
-                Paymentobj['IsCancelled'] = false;
+                Paymentobj['AddBy'] = this.accountService.currentUserValue.userId,
+                    Paymentobj['IsCancelled'] = false;
                 Paymentobj['IsCancelledBy'] = '0';
                 Paymentobj['IsCancelledDate'] = result.submitDataPay.ipPaymentInsert.IsCancelledDate
                 Paymentobj['opdipdType'] = 1;
@@ -227,24 +259,24 @@ export class IPSettlementComponent implements OnInit {
                     }
 
                     let submitData = {
-                        "payment":Paymentobj,// result.submitDataPay.ipPaymentInsert,
+                        "payment": Paymentobj,// result.submitDataPay.ipPaymentInsert,
                         "billupdate": BillUpdateObj,
                         "advanceDetailupdate": UpdateAdvanceDetailarr,
-                        "advanceHeaderupdate": UpdateAdvanceHeaderObj 
+                        "advanceHeaderupdate": UpdateAdvanceHeaderObj
                     };
-                    let data={
-                        submitDataPay:submitData
+                    let data = {
+                        submitDataPay: submitData
                     }
                     console.log(submitData);
                     this._IPSettlementService.InsertIPSettlementPayment(submitData).subscribe(response => {
                         this.toastr.success(response.message);
                         this.GetDetails(this.RegId1)
-                       this.viewgetIPPayemntPdf(response)
-                        
+                        this.viewgetIPPayemntPdf(response)
+                        this.reset();
                     }, (error) => {
                         this.toastr.error(error.message);
                     });
-                   
+
                 }
 
             }
@@ -252,72 +284,24 @@ export class IPSettlementComponent implements OnInit {
         this.searchFormGroup.get('RegId').setValue('')
     }
 
-    viewgetIPPayemntPdf(paymentId) {
-        
+    viewgetIPPayemntPdf(paymentId) { 
         this.commonService.Onprint("PaymentId", paymentId, "IpPaymentReceipt");
+    } 
+    reset(){
+        this.searchFormGroup.reset();
+        this.PatientName = '';
     }
-
-    createSearchForm() {
-        return this.formBuilder.group({
-            RegId: 0,
-            AppointmentDate: [(new Date()).toISOString()],
-        });
-    }
-    createSearchForm1() {
-        return this.formBuilder.group({
-            RegId: 0
-        });
-    }
-
-    //    110193
-    registerObj = new RegInsert({});
-    RegId = 0;
-    PatientName: any;
-    getSelectedObj(obj) {
-        
-        console.log(obj)
-        this.RegId1 = obj.value;
-        this.GetDetails(this.RegId1)
-        setTimeout(() => {
-            this._IPSettlementService.getRegistraionById(this.RegId1).subscribe((response) => {
-                this.registerObj = response;
-                console.log(response)
-
-            });
-
-        }, 500);
-
-    }
-
-    GetDetails(data) {
-        
+    GetDetails(RegId1) { 
+        debugger
         this.gridConfig = {
             apiUrl: "IPBill/IPBillList",
-            columnsList: [
-                {
-                    heading: "-", key: "companyId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
-                    template: this.actionsTemplate, width: 20
-                },
-                { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "BillAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "ConsessionAmt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "NetAmount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "BalanceAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
-                {
-                    heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
-                    template: this.actionButtonTemplate  // Assign ng-template to the column
-                }
-
-            ],
+            columnsList: this.AllColumns,
             sortField: "RegId",
             sortOrder: 0,
             filters: [
-                { fieldName: "RegId", fieldValue: String(this.RegId1), opType: OperatorComparer.Equals }
+                { fieldName: "RegId", fieldValue: String(RegId1), opType: OperatorComparer.Equals }
             ]
-        }
+        } 
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
     }

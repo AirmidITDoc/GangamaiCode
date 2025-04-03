@@ -6,69 +6,61 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Company Settlement
+                    IP Bill Settlement
                 </span>
             </div>
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <div class="modal-body-container">
-            <mat-card style="padding: 5px;">
+        <div class="modal-body-container p-12">
+            <mat-card style="padding: 8px;">
                 <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
-                    <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;">
-
-                        <div class="redio-container" style="width: 40%;padding: 10px;">
-
-                            <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No"
-                                [formGroup]="searchFormGroup" fxFlex="40%" formControlName="RegId"
-                                placeholderText="Search Reg No / Patient Name / Mobile No"
-                                ApiUrl="OutPatient/auto-complete?Keyword="
-                                (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
-
-                        </div>
-                    </div>
-                </form>
-            </mat-card>
-
-            <div fxlayout="row" style="padding: 0px 5px 0px 5px">
-                <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
-                    <mat-card style="padding: 5px;">
-                        <div class="patient-info-container">
-                            <div class="patient-info-box">
-                                <div class="patient-info-title border-bottom pb-2">
-                                    <span class="h1">Patient Information</span>
-                                </div>
-                                <div class="patient-info-box my-8">
-                                    <div class="patient-info-row ">
-                                        <div class="patient-col">
-                                            <span class="patient-col-key">UHID No</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{registerObj.regId}}</span>
+                    <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;" fxLayoutGap="6px">
+                
+                        <airmid-autocomplete class="w-700" label="Search Reg No / Patient Name / Mobile No"
+                            [formGroup]="searchFormGroup"   formControlName="RegId"
+                            placeholderText="Search Reg No / Patient Name / Mobile No" ApiUrl="OutPatient/auto-complete?Keyword="
+                            (selectionChange)="getSelectedObj($event)">
+                        </airmid-autocomplete>
+                
+                        <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                            <div class="patient-info-container" *ngIf="PatientName">
+                                <div class="patient-info-box">
+                                    <div class="patient-info-title border-bottom pb-2">
+                                        <span class="h1">Patient Information</span>
+                                    </div>
+                                    <div class="patient-info-box my-8">
+                                        <div class="patient-info-row ">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">UHID No</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj.regId}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key ">Patient Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{PatientName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Age</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj.ageDay}}D |
+                                                    | {{registerObj.ageMonth}}M | {{registerObj.ageYear}}Y </span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Mobile No</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj.mobileNo}}</span>
+                                            </div>
+                
                                         </div>
-                                        <div class="patient-col">
-                                            <span class="patient-col-key ">Patient Name</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{PatientName}}</span>
-                                        </div>
-                                        <div class="patient-col">
-                                            <span class="patient-col-key">Age | Gender</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{registerObj.ageYear}}Y
-                                                {{registerObj.genderId}}</span>
-                                        </div>
-                                        <div class="patient-col">
-                                            <span class="patient-col-key">Mobile No</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{registerObj.mobileNo}}</span>
-                                        </div>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </mat-card>
-                </div>
-            </div>
+                    </div>
+                </form>
+            </mat-card> 
         </div>
 
       

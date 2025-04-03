@@ -1,17 +1,47 @@
 <ng-template #serviceTable>
   <div class="service-table1">
-    <mat-table #table matSort [dataSource]="dataSource1" [@animateStagger]="{ value: '50' }" class="h-300">
+    <mat-table #table matSort [dataSource]="dataSource1" [@animateStagger]="{ value: '50' }" >
       <ng-container matColumnDef="ServiceName">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Service Name</mat-header-cell>
-        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-          <span>{{ contact.ServiceName }}</span>
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">Service Name</mat-header-cell>
+        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
+          <span>{{ contact.serviceName }}</span>
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="Price">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">Price</mat-header-cell>
-        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">Price</mat-header-cell>
+        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
           <span>{{ contact.price }}</span>
+        </mat-cell>
+      </ng-container> 
+
+      <ng-container matColumnDef="reqDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">ReqDate</mat-header-cell>
+        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
+          <span>{{ contact.reqDate }}</span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="reqTime">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">ReqTime</mat-header-cell>
+        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
+          <span>{{ contact.reqTime }}</span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="billingUser">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">User Name</mat-header-cell>
+        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+          <span>{{ contact.billingUser }}</span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Action" sticky="end">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">Action</mat-header-cell>
+        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
+          <button mat-icon-button matTooltip="Add Service"    (dblclick)="AddList(contact)">
+            <mat-icon color="warn">add</mat-icon>
+          </button>
         </mat-cell>
       </ng-container>
 
@@ -23,22 +53,17 @@
         <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
       </ng-container>
 
-      <mat-header-row class="accent" *matHeaderRowDef="tableColumns; sticky: true"></mat-header-row>
-      <!-- <mat-row *matRowDef="let contact; columns: tableColumns;" [@animate]="{value:'*',params:{y:'100%'}}"
-                      (dblclick)="AddList(contact)">
-                  </mat-row> -->
-
+      <mat-header-row class="accent" *matHeaderRowDef="NurReqColumns; sticky: true"></mat-header-row> 
       <mat-row
-        *matRowDef="let contact; columns: tableColumns"
+        *matRowDef="let contact; columns: NurReqColumns"
         [ngClass]="{ 'row-pink': contact.IsStatus == 0 }"
-        [@animate]="{ value: '*', params: { y: '100%' } }"
-        (dblclick)="AddList(contact)"
+        [@animate]="{ value: '*', params: { y: '100%' } }" 
       ></mat-row>
-      <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource1!=null}">
+      <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource1!=null}">
                   </mat-footer-row>
                   <mat-footer-row *matFooterRowDef="['noData']"
                       [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
-                  </mat-footer-row> -->
+                  </mat-footer-row>
     </mat-table>
   </div>
 </ng-template>
