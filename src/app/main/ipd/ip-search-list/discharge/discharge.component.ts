@@ -36,7 +36,7 @@ export class DischargeComponent implements OnInit {
   screenFromString = 'discharge';
 
   DischargeId: any = 0;
-  
+
   RtrvDischargeList: any = [];
   vComments: any;
   IsCancelled: any;
@@ -85,6 +85,10 @@ export class DischargeComponent implements OnInit {
         this.DischargeForm.get('dischargeTime').setValue(this.now);
         if (this.DischargeForm.get('dischargeTime'))
           this.DischargeForm.get('dischargeTime').setValue(this.now);
+
+        this.DischargeForm = this.DischargesaveForm();
+        this.DischargeForm.markAllAsTouched();
+        this.DischargeForm.get("dischargedDocId").setValue(this.data.docNameId)
       }
     }, 1);
 
@@ -96,14 +100,13 @@ export class DischargeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.DischargeForm = this.DischargesaveForm();
-    this.DischargeForm.markAllAsTouched();
+
     console.log(this.data)
     if (this.data) {
       this.vAdmissionId = this.data.admissionId;
       this.vBedId = this.data.bedId
-      this.DischargeForm.get("dischargedDocId").setValue(this.data.docNameId)
-        }
+      // this.DischargeForm.get("dischargedDocId").setValue(this.data.docNameId)
+    }
 
     if ((this.data?.regId ?? 0) > 0) {
       setTimeout(() => {
@@ -131,45 +134,45 @@ export class DischargeComponent implements OnInit {
 
       dischargeId: this.DischargeId,
       // admissionId: this.data.admissionId,
-      dischargeDate:  [(new Date()).toISOString()],
-      dischargeTime:  [(new Date()).toISOString()],
+      dischargeDate: [(new Date()).toISOString()],
+      dischargeTime: [(new Date()).toISOString()],
       dischargeTypeId: ['', Validators.required],
       dischargedDocId: ['', Validators.required],
       dischargedRmoid: 0,
-      modeOfDischargeId:0,
-      addedBy:this.accountService.currentUserValue.userId,
-      modifiedBy:this.accountService.currentUserValue.userId,
+      modeOfDischargeId: 0,
+      addedBy: this.accountService.currentUserValue.userId,
+      modifiedBy: this.accountService.currentUserValue.userId,
     });
   }
 
   onDischarge() {
     console.log(this.DischargeForm.value)
 
-    if(this.ChkConfigInitiate == false){
-      if(this.vDeptCount < 0 || this.vDeptCount == '' || this.vDeptCount == undefined){
+    if (this.ChkConfigInitiate == false) {
+      if (this.vDeptCount < 0 || this.vDeptCount == '' || this.vDeptCount == undefined) {
         this.toastr.warning('Please be informed that your initiate discharge to department', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
-      return;
-      } 
+        return;
+      }
     }
 
 
     if (!this.DischargeForm.invalid) {
       let dischargModeldata = {};
       dischargModeldata['dischargeDate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
-      dischargModeldata['dischargeTime'] = this.dateTimeObj.time
+        dischargModeldata['dischargeTime'] = this.dateTimeObj.time
       dischargModeldata['dischargeTypeId'] = this.DischargeForm.get("dischargedDocId").value || 0,
         dischargModeldata['dischargedDocId'] = this.DischargeForm.get("dischargeTypeId").value || 0,
         dischargModeldata['dischargedRmoid'] = this.DischargeForm.get("dischargedRmoid").value || 0,
         dischargModeldata['addedBy'] = this.accountService.currentUserValue.userId,
         dischargModeldata['dischargeId'] = this.DischargeId
-        dischargModeldata['modeOfDischargeId'] = 1
+      dischargModeldata['modeOfDischargeId'] = 1
       dischargModeldata['admissionId'] = this.vAdmissionId
 
       if (this.DischargeId == 0) {
         var m_data = {
-          "discharge":dischargModeldata,// this.DischargeForm.value,
+          "discharge": dischargModeldata,// this.DischargeForm.value,
           "admission": {
             "admissionId": this.vAdmissionId,
             "isDischarged": 1,
@@ -190,11 +193,11 @@ export class DischargeComponent implements OnInit {
           this.toastr.error(error.message);
         });
       } else if (this.DischargeId != 0) {
-      
+
         dischargModeldata['modifiedBy'] = 1
         console.log(this.DischargeForm.value)
         var m_data1 = {
-          "discharge":dischargModeldata,// this.DischargeForm.value,
+          "discharge": dischargModeldata,// this.DischargeForm.value,
           "admission": {
             "admissionId": this.vAdmissionId,
             "isDischarged": 1,
@@ -203,7 +206,7 @@ export class DischargeComponent implements OnInit {
           }
         }
         console.log(m_data1)
-        
+
         this._IpSearchListService.DichargeUpdate(m_data1).subscribe((response) => {
           this.toastr.success(response.message);
           this.viewgetDischargeSlipPdf(response)

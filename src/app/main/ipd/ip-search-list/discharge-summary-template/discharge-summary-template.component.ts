@@ -115,7 +115,8 @@ export class DischargeSummaryTemplateComponent {
     ngOnInit(): void {
       this.DischargesumForm = this.showDischargeSummaryForm();
       this.MedicineItemForm = this.MedicineItemform();
-  
+      this.DischargesumForm.markAllAsTouched();
+      
       console.log(this.data)
       if (this.data) {
   
@@ -250,7 +251,7 @@ export class DischargeSummaryTemplateComponent {
         });
         return;
       }
-      this.MedicineItemForm.get('ItemId').reset('');
+      this.MedicineItemForm.get('ItemId').reset('%');
       this.MedicineItemForm.get('DoseId').reset('');
       this.MedicineItemForm.get('Day').reset('');
       this.MedicineItemForm.get('Instruction').reset('');

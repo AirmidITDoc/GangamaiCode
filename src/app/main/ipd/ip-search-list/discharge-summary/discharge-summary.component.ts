@@ -309,7 +309,7 @@ export class DischargeSummaryComponent implements OnInit {
       });
       return;
     }
-    this.MedicineItemForm.get('ItemId').reset('');
+    this.MedicineItemForm.get('ItemId').reset('%');
     this.MedicineItemForm.get('DoseId').reset('');
     this.MedicineItemForm.get('Day').reset('');
     this.MedicineItemForm.get('Instruction').reset('');
