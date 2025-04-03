@@ -46,9 +46,7 @@ export class OTRequestComponent implements OnInit {
   
   displayedColumns: string[] = [
 
-    'IsCancelled',
-    'OP_IP_Type',
-    'SurgeryType',
+    'status',  
     'OTbookingDateTime',
     'Patientname',
     'SurgeonName',
@@ -63,20 +61,14 @@ export class OTRequestComponent implements OnInit {
 
   // @ViewChild(MatPaginator) PathTestpaginator: MatPaginator;
 
-  constructor(private formBuilder: FormBuilder,
-    // public _nursingStationService: NursingStationService,
-    // private _IpSearchListService: IpSearchListService,
-    private _ActRoute: Router,
-    public _OtManagementService: OTManagementServiceService,
-    // public dialogRef: MatDialogRef<OTRequestComponent>,
+  constructor(private formBuilder: FormBuilder,  
+    public _OtManagementService: OTManagementServiceService, 
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,
-    private accountService: AuthenticationService,
-    private _fuseSidebarService: FuseSidebarService,) {
-    console.log("Line 77")
-  }
+    private accountService: AuthenticationService, ) 
+    {  }
 
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
@@ -90,11 +82,8 @@ export class OTRequestComponent implements OnInit {
       end: [new Date().toISOString()],
       SurgeryType: ['0'],
     });
-  }
-
-
-  getRequestList() {   
-    
+  } 
+  getRequestList() { 
     this.sIsLoading = 'loading-data';
     var m_data = {
       "FromDate": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
@@ -119,8 +108,7 @@ export class OTRequestComponent implements OnInit {
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
-    
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');  
     
     Swal.fire({
       title: 'Do you want to cancel the OT Booking?',
@@ -134,18 +122,15 @@ export class OTRequestComponent implements OnInit {
       debugger
       if (flag.isConfirmed) {
         let bookingcancle = {};
-        bookingcancle['otBookingId'] = contact.OTRequestId;
+        bookingcancle['otRequestId'] = contact.OTRequestId;
         bookingcancle['isCancelled'] = 1;
         bookingcancle['isCancelledBy'] = this.accountService.currentUserValue.user.id;
-  
+    
         let submitData = {
           "cancelOTBookingRequestParam": bookingcancle,
-        };
-
-        console.log("cancelOTBookingRequestParam:",submitData);
-  
-        this.isLoading = true;
-  
+        }; 
+        console.log("cancelOTBookingRequestParam:",submitData); 
+        this.isLoading = true; 
         this._OtManagementService.BookingCancle(submitData).subscribe(
           (response) => {
             if (response) {
@@ -208,15 +193,11 @@ export class OTRequestComponent implements OnInit {
      });
   }
 
-  onShow(event: MouseEvent) {
-    // this.click = false;// !this.click;
-    this.click = !this.click;
-    // this. showSpinner = true;
-
+  onShow(event: MouseEvent) { 
+    this.click = !this.click; 
     setTimeout(() => {
       {
-        this.sIsLoading = 'loading-data';
-
+        this.sIsLoading = 'loading-data'; 
         this.getRequestList();
       }
 
@@ -229,8 +210,7 @@ export class OTRequestComponent implements OnInit {
     // debugger;
     console.log(contact);
     let PatInforObj = {};
-    PatInforObj['RegNo'] = contact.RegNo,
-
+    PatInforObj['RegNo'] = contact.RegNo, 
       PatInforObj['PatientName'] = contact.PatientName,
       PatInforObj['GenderName'] = contact.GenderName,
 

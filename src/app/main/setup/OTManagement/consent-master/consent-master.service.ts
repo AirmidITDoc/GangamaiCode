@@ -20,9 +20,7 @@ export class ConsentMasterService {
     return this._formBuilder.group({
       ConsentId: [''],
       ConsentName: ['', [
-        Validators.required,
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-      ]],
+        Validators.required,Validators.pattern('^[a-zA-Z ]*$') ]],
       ConsentDesc: ['',
         // Validators.required
       ],

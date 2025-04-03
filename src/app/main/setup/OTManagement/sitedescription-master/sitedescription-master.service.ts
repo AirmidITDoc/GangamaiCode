@@ -21,8 +21,7 @@ export class SitedescriptionMasterService {
     return this._formBuilder.group({
       SiteDescId: [''],
       SiteDescriptionName: ['', [
-        Validators.required,
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+        Validators.required,Validators.pattern('^[a-zA-Z ]*$')
       ]],
       SurgeryCategoryID: ['',
         Validators.required

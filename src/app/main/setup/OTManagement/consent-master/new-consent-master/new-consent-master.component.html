@@ -37,8 +37,7 @@
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Consent Name</mat-label>
                                                     <input name="ConsentName" formControlName="ConsentName" required
-                                                        placeholder="OT Consent Name" matInput type="text"
-                                                        oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');"
+                                                        placeholder="OT Consent Name" matInput type="text" 
                                                         [(ngModel)]="vConsentName ">
                                                     <mat-error
                                                         *ngIf="_otConsentService.myform.get('ConsentName').invalid && _otConsentService.myform.get('ConsentName').touched">

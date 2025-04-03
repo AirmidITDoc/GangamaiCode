@@ -36,9 +36,8 @@
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>SiteDescription Name</mat-label>
                                                 <input name="SiteDescriptionName" formControlName="SiteDescriptionName" required
-                                                    placeholder="SiteDescription Name" matInput type="text"
-                                                    oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');"
-                                                    [(ngModel)]="vSiteDescriptionName ">
+                                                    placeholder="SiteDescription Name" matInput type="text" 
+                                                    [(ngModel)]="vSiteDescriptionName "  >
                                                 <mat-error
                                                     *ngIf="_otSiteDescMasterService.myform.get('SiteDescriptionName').invalid && _otSiteDescMasterService.myform.get('SiteDescriptionName').touched">
                                                     SiteDescription Name is required Enter only

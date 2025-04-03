@@ -146,48 +146,28 @@
                                         <!-- sppinner -->
 
                                         <mat-table #table class="table1" matSort [dataSource]="dataSource"
-                                            [@animateStagger]="{value:'50'}" style="overflow:auto;">
+                                            [@animateStagger]="{value:'50'}" style="overflow:auto;"> 
 
-
-                                            <ng-container matColumnDef="IsCancelled" sticky>
+                                            <ng-container matColumnDef="status" sticky>
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md
-                                                    class="w-60">
-
+                                                    class="w-120"> Status
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" class="w-60">
-                                                    <mat-icon *ngIf="contact.IsCancelled=='1'" matTooltip="IsCancelled"
+                                                <mat-cell *matCellDef="let contact" class="w-120">
+                                                    <!-- <mat-icon *ngIf="contact.IsCancelled=='1'" matTooltip="IsCancelled"
+                                                        class=" pill red-600 s-16 ">circle</mat-icon> -->
+
+                                                        <mat-icon *ngIf="contact.OP_IP_Type=='1'" matTooltip="IP"
+                                                        class=" pill green-600 s-16 ">circle</mat-icon>&nbsp;
+                                                       <mat-icon *ngIf="contact.OP_IP_Type!='1'" matTooltip="OP"
+                                                        class="pill orange-600 s-16 ">circle</mat-icon>&nbsp;
+
+                                                        <mat-icon *ngIf="contact.SurgeryType==1" matTooltip="Emergency"
                                                         class=" pill red-600 s-16 ">circle</mat-icon>
-                                                    <mat-icon *ngIf="contact.IsCancelled!='1'"
-                                                        matTooltip="IsNotCancelled"
-                                                        class="pill green-600 s-16 ">circle</mat-icon>
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="OP_IP_Type" sticky>
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md
-                                                    class="w-60">
-
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" class="w-60">
-                                                    <mat-icon *ngIf="contact.OP_IP_Type=='1'" matTooltip="IP"
-                                                        class=" pill green-600 s-16 ">circle</mat-icon>
-                                                    <mat-icon *ngIf="contact.OP_IP_Type!='1'" matTooltip="OP"
-                                                        class="pill orange-600 s-16 ">circle</mat-icon>
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="SurgeryType" sticky>
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md
-                                                    class="w-60">
-
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" class="w-60">
-                                                    <mat-icon *ngIf="contact.SurgeryType==1" matTooltip="Emergency"
-                                                        class=" pill red-600 s-16 ">circle</mat-icon>
-                                                    <mat-icon *ngIf="contact.SurgeryType==0" matTooltip="Normal"
+                                                        <mat-icon *ngIf="contact.SurgeryType==0" matTooltip="Normal"
                                                         class="pill blue-600 s-16 ">circle</mat-icon>
+
                                                 </mat-cell>
-                                            </ng-container>
+                                            </ng-container>  
 
                                             <ng-container matColumnDef="OTbookingDateTime" sticky>
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
@@ -272,16 +252,16 @@
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" class="w-170">
                                                     <button mat-icon-button (click)="getPrint(contact)"
-                                                        matTooltip="print">
+                                                        matTooltip="print" >
                                                         <mat-icon style="color: black;">print</mat-icon>
                                                     </button>
 
-                                                    <button mat-icon-button matTooltip="Edit" (click)="OnEdit(contact)">
+                                                    <button mat-icon-button matTooltip="Edit" (click)="OnEdit(contact)" *ngIf="contact.isCancelled == 0">
                                                         <mat-icon style="color: black;">edit</mat-icon>
                                                     </button>
 
                                                     <button mat-icon-button (click)="CancleOTBooking(contact)"
-                                                        matTooltip="Cancel" *ngIf="contact.IsCancelled!= 1">
+                                                        matTooltip="Cancel" *ngIf="contact.isCancelled != 1">
                                                         <mat-icon title="Cancel Menu" style="color: black;">
                                                             cancel
                                                         </mat-icon>
@@ -305,7 +285,8 @@
                                             <mat-header-row class="accent min-width-1800"
                                                 *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                             <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                                class="min-width-1800" [@animate]="{value:'*',params:{y:'100%'}}">
+                                                class="min-width-1800" [@animate]="{value:'*',params:{y:'100%'}}"
+                                                [ngClass]="{'red-row': contact.isCancelled == 1}">
                                             </mat-row>
                                             <mat-footer-row *matFooterRowDef="['loading']"
                                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
