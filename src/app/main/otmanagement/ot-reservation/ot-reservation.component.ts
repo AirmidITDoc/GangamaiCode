@@ -45,10 +45,7 @@ export class OTReservationComponent implements OnInit {
   dataArray = {};  
   click: boolean = false;
 
-  displayedColumns = [
-
-    'IsCancelled',
-    'OP_IP_Type',
+  displayedColumns = [  
     'UnBooking',
     'OPDateTime',
     'PatientName',
@@ -56,14 +53,11 @@ export class OTReservationComponent implements OnInit {
     'SurgeonName2',
     'AnathesDrName1',
     'AnathesDrName2',
-    'Surgeryname',
-    // 'Duration',
+    'Surgeryname', 
     'OTTableName',
-    'AnesthType',
-    // 'AddedBy',
+    'AnesthType', 
     'instruction',
-    'action'
-
+    'action' 
   ];
   dataSource = new MatTableDataSource<OTReservationDetail>();
   isChecked = true;

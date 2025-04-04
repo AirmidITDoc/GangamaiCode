@@ -1049,7 +1049,7 @@ debugger
           "anestheticsDr1": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value.DoctorId || 0,
           "surgeryname": this._OtManagementService.otreservationFormGroup.get('SurgeryId').value.SurgeryName || '',// ? this.personalFormGroup.get('SurgeryId').value.SurgeryId : 0,
           "procedureId": 0,
-          "anesthType": this._OtManagementService.otreservationFormGroup.get('AnesthType').value || '',
+          "anesthType": 0 ,//this._OtManagementService.otreservationFormGroup.get('AnesthType').value || '',
           "unBooking": false,
           "instruction": this._OtManagementService.otreservationFormGroup.get('Instruction').value || '',
           "otTypeID": 0,

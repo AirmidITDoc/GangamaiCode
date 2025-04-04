@@ -1,23 +1,11 @@
-import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { OTManagementServiceService } from '../../ot-management-service.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { Router } from '@angular/router';
-import { map, startWith, takeUntil } from 'rxjs/operators';
-import Swal from 'sweetalert2';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core'; 
+import { OTManagementServiceService } from '../../ot-management-service.service'; 
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog'; 
 import { fuseAnimations } from '@fuse/animations';
-import { MatTableDataSource } from '@angular/material/table';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { MatTableDataSource } from '@angular/material/table'; 
 import { DatePipe } from '@angular/common';
 import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { ToastrService } from 'ngx-toastr';
-import { ro } from 'date-fns/locale';
-import { NewReservationComponent } from '../new-reservation/new-reservation.component';
+import { MatPaginator } from '@angular/material/paginator';  
 
 
 @Component({
@@ -36,31 +24,25 @@ export class GetOTRequetComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
-    public _OtManagementService: OTManagementServiceService,
-    private formBuilder: FormBuilder,
-    private accountService: AuthenticationService,
-    // public notification: NotificationServiceService,
+    public _OtManagementService: OTManagementServiceService, 
     public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<GetOTRequetComponent>,
-    public datePipe: DatePipe,
-    private advanceDataStored: AdvanceDataStored,
-    private router: Router) { }
-  private _loggedService: AuthenticationService
+    public datePipe: DatePipe 
+  ){ } 
 
-  displayedColumns: string[] = [
-
-    'SurgeryType',
-    'OP_IP_Type',
+  displayedColumns: string[] = [ 
+    'SurgeryType', 
     'UHID',
     'OTbookingDateTime',
     'Patientname',
     'SurgeonName',
     'SurgeryCategoryName',
     'SiteDesc',
-    'SurgeryName',
-    // 'action'
+    'SurgeryName'
   ];
+
+
   dataSource = new MatTableDataSource<getRequestlist>();
 
   ngOnInit(): void {

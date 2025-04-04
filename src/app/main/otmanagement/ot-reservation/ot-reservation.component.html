@@ -22,8 +22,7 @@
         New OT Reservation
       </button>
 
-    </div>
-
+    </div> 
   </mat-toolbar>
   <!-- / HEADER -->
 
@@ -40,14 +39,11 @@
         margin-left: 12px; margin-top: 5px; background-color: white;height:100%;">
       <div class="content">
         <div class="sidebar-content">
-
           <div class="card">
-
-            <!-- SIDEBAR HEADER -->
             <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center">
 
               <span class="search-title">Search Information</span>
-              <!-- / USER -->
+
             </div>
 
             <div class="nav material2">
@@ -64,24 +60,16 @@
                     <mat-date-range-picker #picker></mat-date-range-picker>
                   </mat-form-field>
 
-                  <!-- <mat-form-field appearance="outline">
-                        <mat-label>Search OTTableID</mat-label>
-                        <input name="OTTableID" formControlName="OTTableID" matInput keyup="getOtreservationList()">
-                         <span class="error" *ngIf="f.OTTableID.invalid && f.OTTableID.touched">Last Name is
-                                        required Enter only Alphabets</span>
-                      </mat-form-field> -->
-
                   <div style="margin-top: 20px;">
                     <button mat-raised-button (click)="onClear()" class="clearbutton">
                       <mat-icon class="cleariconbutton" matTooltip="close">close
                       </mat-icon>
                     </button>&nbsp;
-                    <!-- [disabled]="click" -->
+
                     <button mat-raised-button class="searchButton" (click)="getOtreservationList()">
                       <mat-icon class="searchiconbutton" matTooltip="search">search
                       </mat-icon>
                     </button>
-
                   </div>
                 </div>
               </form>
@@ -97,27 +85,18 @@
                   <mat-icon style="font-size: 50px;width: 10px !important; height:15px !important;border-radius:100% ;"
                     class=" teal-600 s-16">circle</mat-icon>&nbsp;UnBooking
                 </div>
-
               </div>
-
             </div>
-            <!-- </div> -->
           </div>
         </div>
-
       </div>
-
-
-
     </fuse-sidebar>
 
 
     <div class="center p-12 pb-56" fxFlexAlign="height: fit-content;">
 
       <div class="content-card" style="border-radius:4px;">
-        <!-- <button mat-button (click)="openDialog()">Open dialog</button> -->
         <div fxLayout="column" class="gap-12">
-
           <div fxLayout="row" fxLayoutAlign="start center" class="gap-8" style="margin-right: 10px;">
 
             <div style="color: green;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
@@ -144,226 +123,185 @@
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
               <div fxFlex.gt-sm="100%" fxFlex>
 
-                <div fxlayout="row">
-                  <div style="width: 100%;background-color: white;">
-
-                    <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
-                      style="background-color:white; margin-left:5px; width:100%;overflow:auto; width: fit-content;"
-                      sticky>
-                      <h3 style="font-weight: bold; font-size: 14px; margin: 0 0 0px;">Request List
-                      </h3>
-                    </div> -->
-
-                    <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                      class="backgroundBlur">
-                      <div class="spinner-border text-danger"></div>
-
-                    </div>
-                    <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
-                      style="overflow: auto;" class="table1">
-
-                      <ng-container matColumnDef="IsCancelled" sticky>
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-60">
-
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" class="w-60">
-                          <mat-icon *ngIf="contact.IsCancelled=='1'" matTooltip="IsCancelled"
-                            class=" pill red-600 s-16 ">circle</mat-icon>
-                          <mat-icon *ngIf="contact.IsCancelled!='1'" matTooltip="IsNotCancelled"
-                            class="pill green-600 s-16 ">circle</mat-icon>
-                        </mat-cell>
-                      </ng-container>
-
-                      <ng-container matColumnDef="OP_IP_Type" sticky>
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-60">
-
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" class="w-60">
-                          <mat-icon *ngIf="contact.OP_IP_Type=='1'" matTooltip="IP"
-                            class=" pill green-600 s-16 ">circle</mat-icon>
-                          <mat-icon *ngIf="contact.OP_IP_Type!='1'" matTooltip="OP"
-                            class="pill orange-600 s-16 ">circle</mat-icon>
-                        </mat-cell>
-                      </ng-container>
-
-                      <ng-container matColumnDef="UnBooking" sticky>
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-60">
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" class="w-60">
-                          <mat-icon *ngIf="contact.UnBooking=='1' " matTooltip="UnBooking"
-                            class=" pill teal s-16 ">circle</mat-icon>
-                          <mat-icon *ngIf="contact.UnBooking=='0' " matTooltip="Booking"
-                            class="pill grey-600 s-16 ">circle</mat-icon>
-                        </mat-cell>
-                      </ng-container>
-
-                      <ng-container matColumnDef="OPDateTime" sticky>
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
-                          OPDate&Time
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
-                          {{contact.OPDate | date: 'dd/MM/yyyy'}}-
-                          {{contact.OPTime | date:'shortTime'}}
-                        </mat-cell>
-                      </ng-container>
-
-                      <ng-container matColumnDef="PatientName" sticky>
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
-                          PatientName
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
-                          {{contact.PatientName}}
-                        </mat-cell>
-                      </ng-container>
-
-                      <ng-container matColumnDef="SurgeonName1">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
-                          SurgeonName1
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
-                          {{contact.SurgeonName1 ? contact.SurgeonName1 : '-'}}
-                        </mat-cell>
-                      </ng-container>
-
-                      <ng-container matColumnDef="SurgeonName2">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
-                          SurgeonName2
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
-                          {{contact.SurgeonName2 ? contact.SurgeonName2 : '-'}}
-                        </mat-cell>
-                      </ng-container>
-
-                      <ng-container matColumnDef="AnathesDrName1">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
-                          AnathesDrName1
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
-                          {{contact.AnestheticsDrName1}}
-                        </mat-cell>
-                      </ng-container>
-
-                      <ng-container matColumnDef="AnathesDrName2">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
-                          AnathesDrName2
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150 ellipsis"
-                        matTooltip="{{contact.AnestheticsDrName2}}">
-                          {{contact.AnestheticsDrName2}}
-                        </mat-cell>
-                      </ng-container>
-
-                      <ng-container matColumnDef="Surgeryname">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
-                          Surgeryname
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150 ellipsis"
-                        matTooltip="{{contact.Surgeryname}}">
-                          {{contact.Surgeryname}}
-                        </mat-cell>
-                      </ng-container>
-
-                      <ng-container matColumnDef="OTTableName">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
-                          OTTableName
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
-                          {{contact.OTTableName}}
-                        </mat-cell>
-                      </ng-container>
-
-                      <ng-container matColumnDef="AnesthType">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                          AnesthType
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                          {{contact.AnesthType}}
-                        </mat-cell>
-                      </ng-container>
-                      
-                      <ng-container matColumnDef="instruction">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
-                          Instruction
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150 ellipsis"
-                          matTooltip="{{contact.Instruction}}">
-                          {{contact.Instruction}}
-                        </mat-cell>
-                      </ng-container>
-
-                      <ng-container matColumnDef="action" stickyEnd>
-                        <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;" class="w-150">
-                          Action
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let row" class="w-150">
-
-                          <button mat-icon-button (click)="onEdit(row)" *ngIf="row.IsCancelled!= 1">
-                            <mat-icon title="Edit Menu">edit</mat-icon>
-                          </button>
-
-                          <button mat-icon-button (click)="Otnote(row)" *ngIf="row.IsCancelled!= 1">
-                            <mat-icon title="OTNote">note_add</mat-icon>
-                          </button>
-
-                          <button mat-icon-button (click)="OPreOPrativenote()" *ngIf="row.IsCancelled!= 1">
-                            <mat-icon title="OPreOPrativeNote">note_add</mat-icon>
-                          </button>
-
-                          <button mat-icon-button matTooltip="Cancel" *ngIf="row.IsCancelled!= 1"
-                          (click)="CancleOTBooking(row)">
-                            <mat-icon title="Cancel Menu" style="color: black;">
-                              cancel
-                            </mat-icon>
-                          </button>
-                          <!-- <button mat-icon-button (click)="addNewOtBooking(row)" color="warn"><mat-icon>add</mat-icon></button>       -->
-                        </mat-cell>
-                      </ng-container>
-
-
-                      <ng-container matColumnDef="loading">
-                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                        </mat-header-cell>
-                      </ng-container>
-
-                      <ng-container matColumnDef="noData">
-                        <mat-footer-cell *matFooterCellDef colspan="6">
-                          no data found...
-                        </mat-footer-cell>
-                      </ng-container>
-
-                      <mat-header-row class="accent min-width-1800" *matHeaderRowDef="displayedColumns; sticky: true">
-                      </mat-header-row>
-                      <mat-row *matRowDef="let contact; columns: displayedColumns;" class="min-width-1800"
-                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                      <mat-footer-row *matFooterRowDef="['loading']"
-                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                      </mat-footer-row>
-                      <mat-footer-row *matFooterRowDef="['noData']"
-                        [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
-                      </mat-footer-row>
-                    </mat-table>
-                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons>
-                    </mat-paginator>
-                  </div>
-
+                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                  class="backgroundBlur">
+                  <div class="spinner-border text-danger"></div>
 
                 </div>
+                <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
+                  style="overflow: auto;" class="table1"> 
+
+                  <ng-container matColumnDef="UnBooking" sticky>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-90">
+                      Status
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let contact" class="w-90">
+                      <mat-icon *ngIf="contact.OP_IP_Type=='1'" matTooltip="IP"
+                      class=" pill green-600 s-16 ">circle</mat-icon>&nbsp;
+                    <mat-icon *ngIf="contact.OP_IP_Type!='1'" matTooltip="OP"
+                      class="pill orange-600 s-16 ">circle</mat-icon>&nbsp;
+
+                      <mat-icon *ngIf="contact.UnBooking=='1' " matTooltip="UnBooking"
+                        class=" pill teal s-16 ">circle</mat-icon>&nbsp;
+                      <mat-icon *ngIf="contact.UnBooking=='0' " matTooltip="Booking"
+                        class="pill grey-600 s-16 ">circle</mat-icon>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="OPDateTime" sticky>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
+                      OPDate&Time
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
+                      {{contact.OPDate | date: 'dd/MM/yyyy'}}-
+                      {{contact.OPTime | date:'shortTime'}}
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="PatientName" sticky>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
+                      PatientName
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
+                      {{contact.PatientName}}
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="SurgeonName1">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
+                      SurgeonName1
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
+                      {{contact.SurgeonName1 ? contact.SurgeonName1 : '-'}}
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="SurgeonName2">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
+                      SurgeonName2
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
+                      {{contact.SurgeonName2 ? contact.SurgeonName2 : '-'}}
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="AnathesDrName1">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
+                      AnathesDrName1
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
+                      {{contact.AnestheticsDrName1}}
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="AnathesDrName2">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
+                      AnathesDrName2
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150 ellipsis"
+                      matTooltip="{{contact.AnestheticsDrName2}}">
+                      {{contact.AnestheticsDrName2}}
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Surgeryname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
+                      Surgeryname
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150 ellipsis"
+                      matTooltip="{{contact.Surgeryname}}">
+                      {{contact.Surgeryname}}
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="OTTableName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
+                      OTTableName
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
+                      {{contact.OTTableName}}
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="AnesthType">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
+                      AnesthType
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                      {{contact.AnesthType}}
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="instruction">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
+                      Instruction
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150 ellipsis"
+                      matTooltip="{{contact.Instruction}}">
+                      {{contact.Instruction}}
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="action" stickyEnd>
+                    <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;" class="w-150">
+                      Action
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="w-150">
+
+                      <button mat-icon-button (click)="onEdit(row)" *ngIf="row.IsCancelled != 1">
+                        <mat-icon title="Edit Menu">edit</mat-icon>
+                      </button>
+
+                      <button mat-icon-button (click)="Otnote(row)" *ngIf="row.IsCancelled != 1">
+                        <mat-icon title="OTNote">note_add</mat-icon>
+                      </button>
+
+                      <button mat-icon-button (click)="OPreOPrativenote()" *ngIf="row.IsCancelled != 1">
+                        <mat-icon title="OPreOPrativeNote">note_add</mat-icon>
+                      </button>
+
+                      <button mat-icon-button matTooltip="Cancel" *ngIf="row.IsCancelled != 1"
+                        (click)="CancleOTBooking(row)">
+                        <mat-icon title="Cancel Menu" style="color: black;">
+                          cancel
+                        </mat-icon>
+                      </button>
+                      <!-- <button mat-icon-button (click)="addNewOtBooking(row)" color="warn"><mat-icon>add</mat-icon></button>       -->
+                    </mat-cell>
+                  </ng-container>
+
+
+                  <ng-container matColumnDef="loading">
+                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                    </mat-header-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="noData">
+                    <mat-footer-cell *matFooterCellDef colspan="6">
+                      no data found...
+                    </mat-footer-cell>
+                  </ng-container>
+
+                  <mat-header-row class="accent min-width-1800" *matHeaderRowDef="displayedColumns; sticky: true">
+                  </mat-header-row>
+                  <mat-row *matRowDef="let contact; columns: displayedColumns;" class="min-width-1800"
+                    [@animate]="{value:'*',params:{y:'100%'}}"
+                    [ngClass]="{'red-row': contact.IsCancelled == 1}"></mat-row>
+                  <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                  </mat-footer-row>
+                  <mat-footer-row *matFooterRowDef="['noData']"
+                    [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+                  </mat-footer-row>
+                </mat-table>
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons>
+                </mat-paginator>
+
               </div>
             </div>
-
-
-
           </div>
         </div>
-
       </div>
     </div>
-    <!-- CENTER -->
   </div>
-  <!-- / USER -->
-  <!-- / CENTER -->
-  <!-- / CONTENT-->
 </div>
-
-<!--  -->
 .
