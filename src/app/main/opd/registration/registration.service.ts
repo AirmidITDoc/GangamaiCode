@@ -29,10 +29,12 @@ export class RegistrationService {
         return this._formBuilder.group({
             RegNo: '',
             FirstName: ['', [
-                 Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+                //  Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+                Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             LastName: ['', [
-                Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+                // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+                Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             fromDate: [(new Date()).toISOString()],
             enddate: [(new Date()).toISOString()],
@@ -51,14 +53,17 @@ export class RegistrationService {
             PrefixId: ['', [Validators.required]],
             FirstName: ['', [
                 Validators.required,
-               Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+            //    Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+            Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             MiddleName: ['', [
-               Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+            //    Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+            Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             LastName: ['', [
                 Validators.required,
-                Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+                // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+            Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             GenderId: new FormControl('', [Validators.required]),
             Address: '',

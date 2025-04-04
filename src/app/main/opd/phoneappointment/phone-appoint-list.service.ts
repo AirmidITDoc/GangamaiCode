@@ -25,10 +25,12 @@ export class PhoneAppointListService {
     filterForm(): FormGroup {
         return this._formBuilder.group({
             FirstName: ['', [
-                Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+                // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+                Validators.pattern("^[A-Za-z/() ]*$")                
             ]],
             LastName: ['', [
-                Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+                // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+                Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             DoctorId: '',
             fromDate: [(new Date()).toISOString()],
@@ -46,12 +48,15 @@ export class PhoneAppointListService {
             // seqNo: '',
            firstName: ['', [
                 Validators.required,
-                Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+                // Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+                Validators.pattern("^[A-Za-z/() ]*$")
+            
             ]],
             middleName: [''],
             lastName: ['', [
                 Validators.required,
-                Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
+                // Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
+                Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             address: [''],
             mobileNo: ['', [Validators.required,

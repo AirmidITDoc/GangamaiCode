@@ -350,7 +350,7 @@ Clearfilter(event) {
         buttonElement.blur(); // Remove focus from the button
         this.advanceDataStored.storage = new SearchInforObj1(row);
         console.log(row)
-
+        let that = this;
         console.log(this.advanceDataStored.storage)
         const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
             maxWidth: "99vw",
@@ -358,6 +358,11 @@ Clearfilter(event) {
             width: "100%",
             data:row
 
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
         });
     }
 
