@@ -22,27 +22,29 @@
             <div class="modal-card-container">
                 <form [formGroup]="searchFormGroup">
                     <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between" style="width: 50%;">
-                        <!-- <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegID"
-                            placeholderText="IP-RegNo/FirstName/LastName" ApiUrl="OutPatient/auto-complete?Keyword="
-                            (selectionChange)="getSelectedObj($event)">
-                        </airmid-autocomplete> -->
 
                         <div class="layout-card-container">
-                            <!-- <form [formGroup]="_NursingStationService.myform"> -->
-                                
-                                    <div class="patient-search">
-                                        <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
-                                          
-                                            <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
-                
-                                                    <airmid-autocomplete class="w-350" label="Patient Search" [formGroup]="searchFormGroup"  fxFlex="40%"
-                                                    formControlName="RegId" placeholderText="IP RegNo / PatientName / MobileNo" ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
-        
-                                            </div>
+                            <form [formGroup]="searchFormGroup">
+
+                                <div class="patient-search">
+                                    <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+
+                                        <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
+
+                                            <!-- <airmid-autocomplete class="w-350" label="Patient Search" [formGroup]="searchFormGroup"  fxFlex="40%"
+                                                    formControlName="RegId" placeholderText="IP RegNo / PatientName / MobileNo"
+                                                     ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>-->
+
+                                            <airmid-autocomplete class="w-500" lbl="RgId" [formGroup]="searchFormGroup"
+                                                formControlName="RegID" placeholderText="IP-RegNo/FirstName/LastName"
+                                                ApiUrl="Admission/search-patient?Keyword="
+                                                (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
+                                                TextField="formattedText">
+                                            </airmid-autocomplete>
                                         </div>
                                     </div>
-                                
-                            <!-- </form> -->
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </form>
@@ -74,18 +76,17 @@
                                                                 <span class="patient-col-key">Patient Name
                                                                 </span>
                                                                 <span>:</span>
-                                                                <span class="patient-col-value">{{vPatienName}}</span>
+                                                                <span class="patient-col-value">{{vPatientName}}</span>
                                                             </div>
                                                             <div class="patient-col">
                                                                 <span class="patient-col-key">Doctor Name</span>
                                                                 <span>:</span>
-                                                                <span class="patient-col-value">{{vDoctorname}}</span>
+                                                                <span class="patient-col-value">{{vDoctorName}}</span>
                                                             </div>
                                                             <div class="patient-col">
                                                                 <span class="patient-col-key">Department</span>
                                                                 <span>:</span>
-                                                                <span
-                                                                    class="patient-col-value">{{vDepartmentName}}</span>
+                                                                <span class="patient-col-value">{{vDepartment}}</span>
                                                             </div>
                                                         </div>
                                                         <div fxLayout="column" fxLayoutGap="6px">
@@ -93,8 +94,8 @@
                                                             <div class="patient-col">
                                                                 <span class="patient-col-key">DOA | Time</span>
                                                                 <span>:</span>
-                                                                <span
-                                                                    class="patient-col-value">{{vAdmissionDate}}</span>
+                                                                <span class="patient-col-value">{{vDOA |
+                                                                    date:'dd/MM/YYYY'}}</span>
                                                             </div>
                                                             <div class="patient-col">
                                                                 <span class="patient-col-key">IPD No</span>
@@ -106,8 +107,8 @@
                                                                 </span>
                                                                 <span>:</span>
                                                                 <span
-                                                                    class="patient-col-value">{{vAgeyear}}Y|{{vAgeMonth}}M|{{vAgeDay}}
-                                                                    D | {{vGender}}</span>
+                                                                    class="patient-col-value">{{vAge}}Y|{{vAgeMonth}}M|{{vAgeDay}}D
+                                                                    | {{vGenderName}}</span>
                                                             </div>
                                                             <div class="patient-col">
                                                                 <span class="patient-col-key">Ref-Doctor Name
@@ -164,10 +165,12 @@
                                                         <div fxFlex.gt-sm="40%" fxFlex>
                                                             <mat-card style="padding: 5px;">
 
-                                                                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                                                                    <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
+                                                                <div id="contacts"
+                                                                    class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                                                                    <airmid-table [gridConfig]="gridConfig" #grid
+                                                                        :ShowFilter="false" :ShowButtons="false">
                                                                         <ng-container filters>
-                                                        
+
                                                                         </ng-container>
                                                                     </airmid-table>
                                                                 </div>
@@ -241,71 +244,59 @@
                                                         </div>
                                                         <div fxFlex.gt-sm="60%" fxFlex>
 
-                                                            <input type="hidden" formControlName="DoctNoteId" >
+                                                            <input type="hidden" formControlName="DoctNoteId">
 
                                                             <div fxLayout="column" fxLayoutGap="2px">
 
-                                                                <div fxLayout="row" fxLayoutGap="10px" style=" height: 65px;">
-                                                                <airmid-dropdown label="Note" formControlName="Note" fxFlex
-                                                                    [formGroup]="_NursingStationService.myform"
-                                                                    [validations]="getValidationMessages().Note"
-                                                                    [mode]="autocompletenote">
-                                                                </airmid-dropdown>
+                                                                <div fxLayout="row" fxLayoutGap="10px"
+                                                                    style=" height: 65px;">
+                                                                    <airmid-dropdown label="Note" formControlName="Note"
+                                                                        fxFlex
+                                                                        [formGroup]="_NursingStationService.myform"
+                                                                        [validations]="getValidationMessages().Note"
+                                                                        [mode]="autocompletenote">
+                                                                    </airmid-dropdown>
 
-                                                                <div class="input-add-button">
-                                                                    <div>
-                                                                        <button #addbutton
-                                                                            class="btn btn-primary btn-with-icon"
-                                                                            (click)="OnAdd()" id="btnAdd">
-                                                                            <span class="btn-icon">
-                                                                                <mat-icon> add </mat-icon>
-                                                                            </span>
-                                                                            <span>Add</span>
-                                                                        </button>
+                                                                    <div class="input-add-button">
+                                                                        <div>
+                                                                            <button #addbutton
+                                                                                class="btn btn-primary btn-with-icon"
+                                                                                (click)="OnAdd()" id="btnAdd">
+                                                                                <span class="btn-icon">
+                                                                                    <mat-icon> add </mat-icon>
+                                                                                </span>
+                                                                                <span>Add</span>
+                                                                            </button>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
                                                                 <mat-card
                                                                     style="padding: 5px;height: 250px;overflow: auto;">
-                                                                    <div fxLayout="row" fxLayoutGap="20px">
-
-                                                                    <!-- <app-common-date [screenFrom]="screenFromString" style="padding-left: 30px;"
-                                                                    (dateTimeEventEmitter)="getDateTime($event)">
-                                                                </app-common-date> -->
-
-                                                                    </div>
                                                                     <div>
-                                                                        <!-- <mat-form-field appearance="outline" fxFlex>
-                                                                        <mat-label>Description</mat-label>
-                                                                                <textarea rows="10" matInput name="Description" formControlName="Description" placeholder="Add Note....."
-                                                                                    type="text" id="Description" #description required [(ngModel)]="vDescription">
-                                                                                </textarea> -->
-                                                                        <!-- <mat-label>Template Details</mat-label>
-                                                                        <angular-editor (blur)="onBlur($event)"
-                                                                            [config]="editorConfig"
-                                                                            style="height:300px;"
-                                                                            [(ngModel)]="vDescription" required
-                                                                            formControlName="Description">
-                                                                        </angular-editor> -->
-                                                                        <!-- </mat-form-field> -->
 
                                                                         <!-- <mat-label>Template Details</mat-label>
                                                                         <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
                                                                             style="height:300px;" [(ngModel)]="vTemplateDesc" required
                                                                             formControlName="templateDesc">
                                                                         </angular-editor> -->
-                                                                        <airmid-editor label="Template Details" formControlName="templateDesc" [(value)]="vTemplateDesc" [formGroup]="_NursingStationService.myform"></airmid-editor>
+                                                                        <airmid-editor label="Template Details"
+                                                                            style="height: 250px;"
+                                                                            formControlName="templateDesc"
+                                                                            [(value)]="vTemplateDesc"
+                                                                            [formGroup]="_NursingStationService.myform"></airmid-editor>
 
                                                                     </div>
                                                                 </mat-card>
 
                                                                 <div fxLayout="row" fxLayoutAlign="end"
                                                                     fxLayoutGap="6px">
-                                                                    <button class="btn btn-primary-outline" (click)="NewTemplate()">New
+                                                                    <button class="btn btn-primary-outline"
+                                                                        (click)="NewTemplate()">New
                                                                         Template</button>
-                                                                    <button
-                                                                        class="btn btn-danger-outline" (click)="onClear()">Reset</button>
-                                                                    <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                                                                    <button class="btn btn-danger-outline"
+                                                                        (click)="onClear()">Reset</button>
+                                                                    <button class="btn btn-primary"
+                                                                        (click)="onSubmit()">Save</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -387,10 +378,12 @@
                                                 <div fxFlex.gt-sm="100%" fxFlex>
                                                     <mat-card style="padding: 5px;">
 
-                                                        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                                                            <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false" :ShowButtons="false">
+                                                        <div id="contacts"
+                                                            class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                                                            <airmid-table [gridConfig]="gridConfig1" #grid
+                                                                :ShowFilter="false" :ShowButtons="false">
                                                                 <ng-container filters>
-                                                
+
                                                                 </ng-container>
                                                             </airmid-table>
                                                         </div>

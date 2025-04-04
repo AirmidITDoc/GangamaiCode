@@ -138,8 +138,8 @@ export class DoctornoteComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(NewTemplateComponent,
             {
-                maxWidth: "90vw",
-                height: '90%',
+                // maxWidth: "90vw",
+                maxHeight: '90vh',
                 width: '90%',
                 // maxHeight: '95vh',
                 // width: '90%',
@@ -209,6 +209,15 @@ export class DoctornoteComponent implements OnInit {
   autocompletenote: string = "Note";
   vDoctNoteId: any;
   IsAddFlag: boolean = false;
+  vDoctorName:any;
+  vPatientName:any;
+  vDepartment:any;
+  vAdmissionTime:any;
+  vAge:any;
+  vGenderName:any;
+  vRoomName:any;
+  vDOA:any;
+  OP_IP_Id:any;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -527,30 +536,38 @@ onEdit(row) {
   VisitFlagDisp: boolean = false;
   registerObj: any;
 
-  getSelectedObj(obj) {
+  getSelectedObjIP(obj) {
     
-    console.log(obj)
-    this.RegOrPhoneflag = 'Entry from Registration';
-    let todayDate = new Date();
-    const d = new Date(obj.DateofBirth);
+    if ((obj.regID ?? 0) > 0) {
+      console.log("Admitted patient:",obj)
+      this.vRegNo=obj.regNo
+      this.vDoctorName=obj.doctorName
+      this.vPatientName=obj.firstName + " " + obj.middleName + " " + obj.lastName
+      this.vDepartment=obj.departmentName
+      this.vAdmissionDate=obj.admissionDate
+      this.vAdmissionTime=obj.admissionTime
+      this.vIPDNo=obj.ipdNo
+      this.vAge=obj.age
+      this.vAgeMonth=obj.ageMonth
+      this.vAgeDay=obj.ageDay
+      this.vGenderName=obj.genderName
+      this.vRefDocName=obj.refDocName
+      this.vRoomName=obj.roomName
+      this.vBedName=obj.bedName
+      this.vPatientType=obj.patientType
+      this.vTariffName=obj.tariffName
+      this.vCompanyName=obj.companyName
+      this.vDOA=obj.admissionDate
+    this.OP_IP_Id = obj.admissionID;
 
-    this.PatientName = obj.PatientName;
-    this.RegId = obj.value;
-    this.VisitFlagDisp = true;
-    
-    if ((this.RegId ?? 0) > 0) {
-      
-      // console.log(this.data)
-      setTimeout(() => {
-        this._NursingStationService.getRegistraionById(this.RegId).subscribe((response) => {
-          this.registerObj = response;
-          console.log(this.registerObj)
-
-        });
-
-      }, 500);
+      // setTimeout(() => {
+      //   this._PrescriptionReturnService.getAdmittedpatientlist(obj.regID).subscribe((response) => {
+      //     this.registerObj = response;        
+      //     console.log(this.registerObj)
+      //   });
+  
+      // }, 500);
     }
-
   }
 
   dateTimeObj: any;

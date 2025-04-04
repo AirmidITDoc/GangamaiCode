@@ -348,6 +348,7 @@ export class NewRequestforlabComponent implements OnInit {
           ipPathOrRadiRequestLabRequestInsert['addedByDate'] = formattedDate,
           ipPathOrRadiRequestLabRequestInsert['addedByTime'] = formattedTime,
           ipPathOrRadiRequestLabRequestInsert['charId'] = 260570,
+          // ipPathOrRadiRequestLabRequestInsert['charId'] = 0,
           ipPathOrRadiRequestLabRequestInsert['isTestCompted'] = true,
           ipPathOrRadiRequestLabRequestInsert['IsOnFileTest'] = this.myFormGroup.get('IsOnFileTest').value || false;
         ipPathOrRadiRequestLabRequestInsertArray.push(ipPathOrRadiRequestLabRequestInsert);

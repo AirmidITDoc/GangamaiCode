@@ -63,7 +63,7 @@
                                                     formControlName="CategoryId" 
                                                     [value]="registerObj?.categoryId"
                                                     [formGroup]="testForm"
-                                                    [validations]="getValidationCategoryMessages().CategoryId"
+                                                    [validations]="_TestmasterService.getValidationMessages().CategoryId"
                                                     [mode]="autocompleteModeCategoryId" 
                                                     (selectionChange)="selectChangeCategoryId($event)">
                                                 </airmid-dropdown>
@@ -76,11 +76,11 @@
                                                     formControlName="ServiceId"
                                                     [value]="registerObj?.serviceID"
                                                     [formGroup]="testForm"
-                                                    [validations]="getValidationServiceMessages().ServiceId"
                                                     [mode]="autocompleteModeServiceID" 
                                                     (selectionChange)="selectChangeServiceID($event)"
                                                     *ngIf="serviceflag">
                                                 </airmid-dropdown>
+                                                <!-- [validations]="_TestmasterService.getValidationMessages().ServiceId" -->
                                             </div>
 
                                         </div>

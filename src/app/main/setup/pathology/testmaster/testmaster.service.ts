@@ -52,37 +52,7 @@ export class TestmasterService {
         });
     }
     /**
-     * {
-  "TestId": 0,
-  "TestName": "LUCY",
-  "PrintTestName": "STUFFY",
-  "CategoryId": 12,
-  "IsSubTest": true,
-  "TechniqueName": "Api",
-  "MachineName": "drill",
-  "SuggestionNote": "XYZ",
-  "FootNote": "ABC",
-  "IsDeleted": true,
-  "ServiceId": 15,
-  "IsTemplateTest": true,
-  "TestTime": "2022-09-10",
-  "TestDate": "2022-07-11",
-  "MPathTemplateDetails": [
-    {
-      "PtemplateId": 0,
-      "TestId": 11,
-      "TemplateId": 12
-    }
-  ],
-  "MPathTestDetailMasters": [
-    {
-      "TestDetId": 0,
-      "TestId": 16,
-      "SubTestId": 17,
-      "ParameterId": 19
-    }
-  ]
-}
+     * 
      * 
      */
     templatedetailsForm(): FormGroup{
@@ -109,18 +79,6 @@ export class TestmasterService {
             IsSubTest: [" "],
         });
     }
-    // createAddparaFrom(): FormGroup {
-    //     return this._formBuilder.group({
-    //         ParameterName: [""],
-    //         NewIsSubTest: [" "],
-    //     });
-    // }
-    // createTemplateForm(): FormGroup {
-    //     return this._formBuilder.group({
-    //         TemplateId:[""],
-    //         TemplateName:[""],
-    //     });
-    // }
       
     initializeFormGroup() {
         this.createPathtestForm();
@@ -158,7 +116,7 @@ export class TestmasterService {
     // checkbox list
     // get subTest master list of checkbox
     public getIsSubTestList(param) {
-        return this._httpClient.PostData("PathTestMaster/SubTestList",param);
+        return this._httpClient.PostData("PathTestMaster/PathSubTestList",param);
     }
      // get parameter master list
      public getParameterMasterList(param) {
@@ -209,34 +167,18 @@ export class TestmasterService {
                 { name: "maxlength", Message: "PrintTestName should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
             ],
-            TechniqueName: [
-                { name: "required", Message: "TechniqueName is required" },
-                { name: "maxlength", Message: "TechniqueName should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
+            CategoryId:[
+                { name: "required", Message: "Category is required" },
             ],
-            MachineName:[
-                { name: "required", Message: "MachineName is required" },
-                { name: "maxlength", Message: "MachineName should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ],
-            SuggestionNote:[
-                { name: "required", Message: "Suggestion is required" },
-                { name: "maxlength", Message: "Suggestion should not be greater than 50 char." },
-                // { name: "pattern", Message: "Special char not allowed." }
-            ],
-            FootNote:[
-                { name: "required", Message: "FootNote is required" },
-                { name: "maxlength", Message: "FootNote should not be greater than 50 char." },
-                // { name: "pattern", Message: "Special char not allowed." }
-            ]
+            
         };
     }
 
-    public unitMasterSave(Param: any) {
+    public TestMasterSave(Param: any) {
          return this._httpClient.PostData("PathTestMaster/InsertEDMX", Param);
     }
 
-    public unitMasterUpdate(Param: any) {
+    public TestMasterUpdate(Param: any) {
         
         if (Param.TestId) {
          return this._httpClient.PutData("PathTestMaster/Edit/" + Param.TestId, Param);

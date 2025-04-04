@@ -33,8 +33,8 @@ export class DoctornoteService {
         TemplateId:[''],
         TemplateName:[''],
         TemplateDesc:[''],
-        IsDeleted:[true],
-        Category:['NursNote']
+        Category:['NursNote'],
+        isActive:[true,[Validators.required]]        
           });
     }
 

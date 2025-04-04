@@ -592,7 +592,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   getValidationMessages() {
     return {
       BatchNo: [
-        { name: "required", Message: "Store Name is required" }
+        { name: "required", Message: "BatchNo is required" }
       ],
       ItemId: [
         { name: "required", Message: "Item Name is required" }

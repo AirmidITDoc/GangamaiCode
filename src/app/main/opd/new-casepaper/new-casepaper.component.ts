@@ -249,58 +249,98 @@ export class NewCasepaperComponent implements OnInit {
     }
   }
 
-  removedignosis(item) {
-    let removedIndex = this.caseFormGroup.value.mAssignDiagnosis.findIndex(x => x.id == item.id);
-    this.caseFormGroup.value.mAssignDiagnosis.splice(removedIndex, 1);
-    this.ddlDiagnosis.SetSelection(this.caseFormGroup.value.mAssignDiagnosis.map(x => x.id));
-  }
-
   // removedignosis(item) {
-  //   const updatedList = this.addDiagnolist.filter(
-  //     x => x.id !== item.id
-  //   );  
-  //   this.caseFormGroup.get('mAssignDiagnosis')?.setValue(updatedList);    
-  //   this.ddlDiagnosis.SetSelection(updatedList.map(x => x.id));  
-  //   this.addDiagnolist = updatedList;
+  //   let removedIndex = this.caseFormGroup.value.mAssignDiagnosis.findIndex(x => x.id == item.id);
+  //   this.caseFormGroup.value.mAssignDiagnosis.splice(removedIndex, 1);
+  //   this.ddlDiagnosis.SetSelection(this.caseFormGroup.value.mAssignDiagnosis.map(x => x.id));
+  // }
+
+  removedignosis(item) {
+    let removedIndex = this.caseFormGroup.value.mAssignDiagnosis.findIndex(x => x.id === item.id);
+
+    if (removedIndex !== -1) {
+        this.caseFormGroup.value.mAssignDiagnosis.splice(removedIndex, 1);
+
+        this.ddlDiagnosis.SetSelection(this.caseFormGroup.value.mAssignDiagnosis.map(x => x.id));
+
+        this.addDiagnolist = this.caseFormGroup.value.mAssignDiagnosis.map(x => ({
+            id: x.id,
+            descriptionName: x.descriptionName
+        }));
+
+        console.log("Updated addDiagnolist after removal:", this.addDiagnolist);
+    }
+}
+
+  // removeChiefComplaint(item) {
+  //   let removedIndex = this.caseFormGroup.value.mAssignChiefComplaint.findIndex(x => x.complaintId == item.complaintId);
+  //   this.caseFormGroup.value.mAssignChiefComplaint.splice(removedIndex, 1);
+  //   this.ddlChiefComplaint.SetSelection(this.caseFormGroup.value.mAssignChiefComplaint.map(x => x.complaintId));
   // }
 
   removeChiefComplaint(item) {
-    let removedIndex = this.caseFormGroup.value.mAssignChiefComplaint.findIndex(x => x.complaintId == item.complaintId);
-    this.caseFormGroup.value.mAssignChiefComplaint.splice(removedIndex, 1);
-    this.ddlChiefComplaint.SetSelection(this.caseFormGroup.value.mAssignChiefComplaint.map(x => x.complaintId));
-  }
+    debugger
+    let removedIndex = this.caseFormGroup.value.mAssignChiefComplaint.findIndex(x => x.complaintId === item.complaintId);
 
-  // removeChiefComplaint(item) {
-  //   // Filter the list by removing the selected item
-  //   const updatedList = this.addCheiflist.filter(
-  //     x => x.complaintId !== item.complaintId
-  //   );
-  //   this.caseFormGroup.get('mAssignChiefComplaint')?.setValue(updatedList);    
-  //   this.ddlChiefComplaint.SetSelection(updatedList.map(x => x.complaintId));  
-  //   this.addCheiflist = updatedList;
+    if (removedIndex !== -1) {
+        this.caseFormGroup.value.mAssignChiefComplaint.splice(removedIndex, 1);
+
+        this.ddlChiefComplaint.SetSelection(this.caseFormGroup.value.mAssignChiefComplaint.map(x => x.complaintId));
+
+        this.addCheiflist = this.caseFormGroup.value.mAssignChiefComplaint.map(x => ({
+            complaintId: x.complaintId,
+            complaintDescr: x.complaintDescr
+        }));
+
+        console.log("Updated addCheiflist after removal:", this.addCheiflist);
+    }
+}
+
+  // removeExamination(item) {
+  //   let removedIndex = this.caseFormGroup.value.mAssignExamination.findIndex(x => x.examinationId == item.examinationId);
+  //   this.caseFormGroup.value.mAssignExamination.splice(removedIndex, 1);
+  //   this.ddlExamination.SetSelection(this.caseFormGroup.value.mAssignExamination.map(x => x.examinationId));
   // }
 
   removeExamination(item) {
-    let removedIndex = this.caseFormGroup.value.mAssignExamination.findIndex(x => x.examinationId == item.examinationId);
-    this.caseFormGroup.value.mAssignExamination.splice(removedIndex, 1);
-    this.ddlExamination.SetSelection(this.caseFormGroup.value.mAssignExamination.map(x => x.examinationId));
-  }
+    debugger
+    let removedIndex = this.caseFormGroup.value.mAssignExamination.findIndex(x => x.examinationId === item.examinationId);
 
-  // removeExamination(item) {
-  //   const updatedList = this.addExaminlist.filter(
-  //     x => x.examinationId !== item.examinationId
-  //   );  
-  //   this.caseFormGroup.get('mAssignExamination')?.setValue(updatedList);    
-  //   this.ddlExamination.SetSelection(updatedList.map(x => x.examinationId));  
-  //   this.addExaminlist = updatedList;
+    if (removedIndex !== -1) {
+        this.caseFormGroup.value.mAssignExamination.splice(removedIndex, 1);
+
+        this.ddlExamination.SetSelection(this.caseFormGroup.value.mAssignExamination.map(x => x.examinationId));
+
+        this.addExaminlist = this.caseFormGroup.value.mAssignExamination.map(x => ({
+            examinationId: x.examinationId,
+            examinationDescr: x.examinationDescr
+        }));
+
+        console.log("Updated addExaminlist after removal:", this.addExaminlist);
+    }
+}
+
+  // removeService(item) {
+  //   let removedIndex = this.caseFormGroup.value.mAssignService.findIndex(x => x.serviceId == item.serviceId);
+  //   this.caseFormGroup.value.mAssignService.splice(removedIndex, 1);
+  //   this.ddlService.SetSelection(this.caseFormGroup.value.mAssignService.map(x => x.serviceId));
   // }
 
-
   removeService(item) {
-    let removedIndex = this.caseFormGroup.value.mAssignService.findIndex(x => x.serviceId == item.serviceId);
-    this.caseFormGroup.value.mAssignService.splice(removedIndex, 1);
-    this.ddlService.SetSelection(this.caseFormGroup.value.mAssignService.map(x => x.serviceId));
-  }
+    let removedIndex = this.caseFormGroup.value.mAssignService.findIndex(x => x.serviceId === item.serviceId);
+
+    if (removedIndex !== -1) {
+        this.caseFormGroup.value.mAssignService.splice(removedIndex, 1);
+
+        this.ddlService.SetSelection(this.caseFormGroup.value.mAssignService.map(x => x.serviceId));
+
+        this.selectedItems = this.caseFormGroup.value.mAssignService.map(x => ({ serviceId: x.serviceId }));
+
+        console.log("Updated selectedItems after removal:", this.selectedItems);
+    }
+}
+
+
 
   vDays: any = 10;
   followUpDate: string;

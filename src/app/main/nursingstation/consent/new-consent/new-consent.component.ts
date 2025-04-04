@@ -89,6 +89,7 @@ export class NewConsentComponent {
     public datePipe: DatePipe,) { }
 
   ngOnInit(): void {
+    this._ConsentService.myform.markAllAsTouched();
     this.vSelectedOption = this.OP_IPType === 1 ? 'IP' : 'OP';
     if (this.data) {
       this.registerObj = this.data.row;
@@ -151,13 +152,7 @@ export class NewConsentComponent {
       let nameField = obj.formattedText;
       let extractedName = nameField.split('|')[0].trim();
       this.vPatientName = extractedName;
-      setTimeout(() => {
-        this._ConsentService.getVisitById(obj.regId).subscribe((response) => {
-          this.registerObj = response;
-          console.log(this.registerObj)
-        });
 
-      }, 500);
     }
   }
 
@@ -183,13 +178,7 @@ export class NewConsentComponent {
       this.vTariffName = obj.tariffName
       this.vCompanyName = obj.companyName
       this.vDOA = obj.admissionDate
-      setTimeout(() => {
-        this._ConsentService.getAdmittedpatientlist(obj.regID).subscribe((response) => {
-          this.registerObj = response;
-          console.log(this.registerObj)
-        });
 
-      }, 500);
     }
   }
 
@@ -224,7 +213,7 @@ export class NewConsentComponent {
   onTemplateSelect(option: any) {
     
     console.log("selectedTemplateOption:", option)
-    this.selectedTemplateOption = option.ConsentDesc;
+    this.selectedTemplateOption = option.text; //details of template dd should pass
 
   }
 
@@ -235,13 +224,13 @@ export class NewConsentComponent {
   addTemplateDescription() {
     this.isButtonDisabled = false
     
-    if (this._ConsentService.myform.get('Department')?.value) {
+    if (!this._ConsentService.myform.get('Department')?.value) {
       this.toastr.warning('Please select Department ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if (this._ConsentService.myform.get('Template')?.value) {
+    if (!this._ConsentService.myform.get('Template')?.value) {
       this.toastr.warning('Please enter select Template ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -268,8 +257,12 @@ export class NewConsentComponent {
 
   getValidationMessages() {
     return {
-      Department: [],
-      Template: []
+      Department: [
+        { name: "required", Message: "Department is required" }
+      ],
+      Template: [
+        { name: "required", Message: "Template is required" }
+      ]
     };
   }
 }

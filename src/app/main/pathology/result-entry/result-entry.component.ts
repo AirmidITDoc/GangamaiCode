@@ -277,7 +277,12 @@ export class ResultEntryComponent implements OnInit {
     }
 
     getSelectedRow(row: any): void {
+        debugger
         console.log("Selected row : ", row);
+
+        this.dataSource1.data = [];
+        this.selection.clear(); 
+
         this.reportPrintObj = row
         this.reportPrintObj["DOA"] = row.vaTime
 

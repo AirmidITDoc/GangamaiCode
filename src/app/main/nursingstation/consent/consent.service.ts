@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormGroup, FormGroupName } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, FormGroupName, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
@@ -24,8 +24,8 @@ export class ConsentService {
       PatientName: '',
       ConsentName: '',
       ConsentText: [''],
-      Template: [''],
-      Department: [''],
+      Template: ['',[Validators.required]],
+      Department: ['',[Validators.required]],
       Language: ['1'],
       IsIPOrOP:['2'],
       start: [(new Date()).toISOString()],

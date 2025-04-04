@@ -188,6 +188,7 @@ export class ResultEntryOneComponent implements OnInit {
 
     // onResultUp(data) {
     //     debugger
+        // let items = this.dataSource.data.filter(x => (x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
     //     let items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
     
     //     for (let i = 0; i < items.length; i++) {
@@ -246,7 +247,6 @@ export class ResultEntryOneComponent implements OnInit {
     
     onResultUp(data) {
         debugger
-        // let items = this.dataSource.data.filter(x => (x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
         let items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
         for (let i = 0; i < items.length; i++) {
             let formula = items[i].Formula;
@@ -335,7 +335,7 @@ export class ResultEntryOneComponent implements OnInit {
                 "searchFields": [          
                   {          
                     "fieldName": "PathReportId",          
-                    "fieldValue": String(rbj[0].PathReportId),  //150452        
+                    "fieldValue": String(rbj[0].PathReportId), //"150452",  
                     "opType": "Equals"          
                   }          
                 ],          
@@ -683,7 +683,6 @@ export class ResultEntryOneComponent implements OnInit {
         }
     }
 
-
     public onEnterPathResultDoctorId(event, value): void {
 
         if (event.which === 13) {
@@ -698,76 +697,6 @@ export class ResultEntryOneComponent implements OnInit {
             }
         }
     }
-
-    // getPathresultdoctorList() {
-    //     this._SampleService.getPathologyDoctorCombo().subscribe(data => {
-    //         this.PathologyDoctorList = data;
-    //         this.optionsDoc3 = this.PathologyDoctorList.slice();
-    //         this.filteredresultdr = this.otherForm.get('PathResultDoctorId').valueChanges.pipe(
-    //             startWith(''),
-    //             map(value => value ? this._filterdoc3(value) : this.PathologyDoctorList.slice()),
-    //         );
-    //     });
-    // }
-
-    // getPathresultDoctorList() {
-
-    //     this._SampleService.getPathologyDoctorCombo().subscribe(data => {
-    //         this.PathologyDoctorList = data;
-    //         if (this.data) {
-
-    //             const ddValue = this.PathologyDoctorList.filter(c => c.DoctorId == this.PathResultDr1);
-    //             this.otherForm.get('PathResultDoctorId').setValue(ddValue[0]);
-    //             this.otherForm.updateValueAndValidity();
-    //             return;
-    //         }
-    //     });
-    // }
-    // private _filterdoc3(value: any): string[] {
-    //     if (value) {
-    //         const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
-    //         return this.PathologyDoctorList.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
-    //     }
-    // }
-
-    // // getDoctorList() {
-    // //     this._SampleService.getDoctorMaster1Combo().subscribe(data => {
-    // //         this.DoctorList = data;
-    // //         this.optionsDoc2 = this.DoctorList.slice();
-    // //         this.filteredpathdr = this.otherForm.get('DoctorId').valueChanges.pipe(
-    // //             startWith(''),
-    // //             map(value => value ? this._filterdoc2(value) : this.DoctorList.slice()),
-    // //         );
-    // //     });
-    // // }
-
-    // private _filterdoc2(value: any): string[] {
-    //     if (value) {
-    //         const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
-    //         return this.optionsDoc2.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
-    //     }
-    // }
-
-    // getRefDoctorList() {
-    //     this._SampleService.getDoctorMaster1Combo().subscribe(data => {
-    //         this.Doctor1List = data;
-    //         this.optionsDoc1 = this.Doctor1List.slice();
-    //         this.filteredrefdr = this.otherForm.get('RefDoctorID').valueChanges.pipe(
-    //             startWith(''),
-    //             map(value => value ? this._filterdoc1(value) : this.Doctor1List.slice()),
-    //         );
-    //     });
-    // }
-
-    // private _filterdoc1(value: any): string[] {
-    //     if (value) {
-    //         const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
-    //         return this.optionsDoc1.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
-    //     }
-    // }
-
-
-
 
     viewgetPathologyTestReportPdf(contact) {
 
@@ -818,8 +747,6 @@ export class ResultEntryOneComponent implements OnInit {
             });
         });
     }
-
-
 
     onClear() {
         this.otherForm.reset();

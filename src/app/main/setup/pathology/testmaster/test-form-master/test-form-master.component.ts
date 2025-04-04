@@ -118,6 +118,8 @@ export class TestFormMasterComponent implements OnInit {
     ngOnInit(): void {
         
         this.testForm = this._TestmasterService.createPathtestForm();
+        this.testForm.markAllAsTouched();
+
         this.templatedetailsForm = this._TestmasterService.templatedetailsForm();
         this.testdetailsForm = this._TestmasterService.testdetailsForm();
         this.testForm.get("Status").setValue(1)
@@ -368,7 +370,7 @@ export class TestFormMasterComponent implements OnInit {
             }
 
             console.log("json of Test:", mdata)
-            this._TestmasterService.unitMasterSave(mdata).subscribe((response) => {
+            this._TestmasterService.TestMasterSave(mdata).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClose(true);
             }, (error) => {
@@ -406,7 +408,7 @@ export class TestFormMasterComponent implements OnInit {
             }
 
             console.log("json of Test:", mdata1)
-            this._TestmasterService.unitMasterUpdate(mdata1).subscribe((response) => {
+            this._TestmasterService.TestMasterUpdate(mdata1).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClose(true);
             }, (error) => {
@@ -692,21 +694,6 @@ export class TestFormMasterComponent implements OnInit {
     selectChangeTemplateName(obj: any) {
         console.log(obj);
         this.TemplateId = obj;
-    }
-
-    getValidationCategoryMessages() {
-        return {
-            CategoryId: [
-                { name: "required", Message: "Category is required" }
-            ]
-        };
-    }
-    getValidationServiceMessages() {
-        return {
-            ServiceID: [
-                { name: "required", Message: "Service is required" }
-            ]
-        };
     }
 
     onClose(val: boolean) {
