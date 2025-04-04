@@ -155,7 +155,7 @@ export class IPSettlementComponent implements OnInit {
         const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
             {
                 maxWidth: "85vw",
-                height: '700px',
+                height: '750px',
                 width: '100%',
 
                 data: {

@@ -249,7 +249,7 @@ export class IPAdvanceComponent implements OnInit {
     const dialogRef = this._matDialog.open(OpPaymentComponent,
       {
         maxWidth: "80vw",
-        height: '650px',
+        height: '750px',
         width: '80%',
         data: {
           vPatientHeaderObj: PatientHeaderObj,
