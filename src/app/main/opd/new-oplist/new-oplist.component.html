@@ -95,7 +95,7 @@
 
                 </div>
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <airmid-table [gridConfig]="gridConfig" class="content">
+                    <airmid-table [gridConfig]="gridConfig" class="content" #opBillGrid>
                         <ng-container filters>
                             <form [formGroup]="myFilterbillform">
                                 <airmid-datepicker [formGroup]="myFilterbillform" [isRangePicker]="true"
@@ -234,7 +234,7 @@
                         </div>
                     </ng-template>
 
-                    <airmid-table [gridConfig]="gridConfig1" class="content">
+                    <airmid-table [gridConfig]="gridConfig1" class="content" #opPaymentGrid>
                         <ng-container filters>
 
                             <form [formGroup]="myFilterpayform">
@@ -339,7 +339,7 @@
 
                         </div>
                     </ng-template>
-                    <airmid-table [gridConfig]="gridConfig2" class="content">
+                    <airmid-table [gridConfig]="gridConfig2" class="content" #opRefundGrid>
                         <ng-container filters>
                             <form [formGroup]="myFilterrefundform">
 

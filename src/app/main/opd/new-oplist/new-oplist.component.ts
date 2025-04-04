@@ -31,9 +31,14 @@ export class NewOPListComponent implements OnInit {
     myFilterpayform: FormGroup;
     myFilterrefundform: FormGroup;
     menuActions: Array<string> = [];
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    @ViewChild(AirmidTableComponent) grid1: AirmidTableComponent;
-    @ViewChild(AirmidTableComponent) grid2: AirmidTableComponent;
+    // @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    // @ViewChild(AirmidTableComponent) grid1: AirmidTableComponent;
+    // @ViewChild(AirmidTableComponent) grid2: AirmidTableComponent;
+
+    @ViewChild('opBillGrid', { static: false }) grid: AirmidTableComponent;
+@ViewChild('opPaymentGrid', { static: false }) grid1: AirmidTableComponent;
+@ViewChild('opRefundGrid', { static: false }) grid2: AirmidTableComponent;
+
     hasSelectedContacts: boolean;
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -450,6 +455,11 @@ export class NewOPListComponent implements OnInit {
         // console.log("ssss:",this.grid1.gridConfig)
 
         // this.grid1.bindGridData();
+
+        this.grid1.gridConfig = { ...this.gridConfig1 }; // Use a new object reference
+this.grid1.bindGridData(); // Only refresh the OPPayment grid
+
+
     }
 
     ClearfilterOPpayment(event) {
@@ -495,6 +505,9 @@ export class NewOPListComponent implements OnInit {
         }
         // this.grid2.gridConfig = this.gridConfig2;
         // this.grid2.bindGridData();
+        this.grid2.gridConfig = { ...this.gridConfig2 }; // Use a new object reference
+        this.grid2.bindGridData(); // Only refresh the OPRefund grid        
+
     }
 
     ClearfilterOPRefund(event) {

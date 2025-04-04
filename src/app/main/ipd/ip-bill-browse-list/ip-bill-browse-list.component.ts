@@ -53,7 +53,12 @@ export class IPBillBrowseListComponent implements OnInit {
     myFilterFormIPBrowsePayment: FormGroup;
     myFilterFormIPBrowseRefund: FormGroup;
     menuActions: Array<string> = [];
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    // @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+
+    @ViewChild('ipBrowse', { static: false }) grid: AirmidTableComponent;
+    @ViewChild('ipPayment', { static: false }) grid1: AirmidTableComponent;
+    @ViewChild('ipRefund', { static: false }) grid2: AirmidTableComponent;
+
     hasSelectedContacts: boolean;
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -319,8 +324,8 @@ export class IPBillBrowseListComponent implements OnInit {
             { fieldName: "ReceiptNo", fieldValue: this.pReceiptNo, opType: OperatorComparer.Equals }
             ]
         }
-        // this.grid1.gridConfig = this.gridConfig1;
-        // this.grid1.bindGridData();
+        this.grid1.gridConfig = this.gridConfig1;
+        this.grid1.bindGridData();
     }
 
     ClearfilterIPpayment(event) {
@@ -361,8 +366,8 @@ export class IPBillBrowseListComponent implements OnInit {
             { fieldName: "Reg_No", fieldValue: this.rregNo, opType: OperatorComparer.Equals },
             ]
         }
-        // this.grid2.gridConfig = this.gridConfig2;
-        // this.grid2.bindGridData();
+        this.grid2.gridConfig = this.gridConfig2;
+        this.grid2.bindGridData();
     }
 
     ClearfilterIPRefund(event) {

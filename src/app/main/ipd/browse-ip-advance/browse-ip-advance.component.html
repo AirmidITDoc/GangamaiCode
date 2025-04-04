@@ -32,7 +32,7 @@
                         </div>
                     </ng-template>
 
-                    <airmid-table [gridConfig]="gridConfig" class="content">
+                    <airmid-table [gridConfig]="gridConfig" class="content" #ipBrowse>
                         <ng-container filters>
                             <form [formGroup]="_BrowseIpAdvanceService.UserFormGroup">
                                 <airmid-datepicker [formGroup]="_BrowseIpAdvanceService.UserFormGroup"
@@ -162,7 +162,7 @@
                         </div>
                     </ng-template>
 
-                    <airmid-table [gridConfig]="gridConfig1" class="content">
+                    <airmid-table [gridConfig]="gridConfig1" class="content" #ipRefund>
                         <ng-container filters>
                             <form [formGroup]="_BrowseIpAdvanceService.AdvanceOfRefund">
                                 <airmid-datepicker [formGroup]="_BrowseIpAdvanceService.AdvanceOfRefund"

@@ -41,8 +41,11 @@ export class BrowseIPAdvanceComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateone;
     }
 
-     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    @ViewChild(AirmidTableComponent) grid1: AirmidTableComponent;
+    //  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    // @ViewChild(AirmidTableComponent) grid1: AirmidTableComponent;
+
+    @ViewChild('ipBrowse', { static: false }) grid: AirmidTableComponent;
+    @ViewChild('ipRefund', { static: false }) grid1: AirmidTableComponent;
 
      f_name: any = ""
      regNo: any = "0"
@@ -200,8 +203,8 @@ export class BrowseIPAdvanceComponent implements OnInit {
                 { fieldName: "Reg_No", fieldValue: this.aregNo, opType: OperatorComparer.Equals }
                 ]
             }
-            // this.grid1.gridConfig = this.gridConfig1;
-            // this.grid1.bindGridData();
+            this.grid1.gridConfig = this.gridConfig1;
+            this.grid1.bindGridData();
         }
     
         ClearfilterAdvanceOfRefund(event) {

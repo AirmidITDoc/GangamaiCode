@@ -17,7 +17,6 @@
                             </span>
                         </div>
                     </div>
-
                     <button mat-raised-button (click)="IPAdvanceComponent()">IPAdvance
                     </button>
 
@@ -106,7 +105,7 @@
                         </mat-menu>
                         </div>
                     </ng-template>
-                    <airmid-table [gridConfig]="gridConfig" class="content">
+                    <airmid-table [gridConfig]="gridConfig" class="content" #ipBrowse>
                         <ng-container filters>
                         <form [formGroup]="myFilterform">
                             <airmid-datepicker [formGroup]="myFilterform"
@@ -187,7 +186,7 @@
                            
                         </div>
                     </ng-template>
-                    <airmid-table [gridConfig]="gridConfig1" class="content">
+                    <airmid-table [gridConfig]="gridConfig1" class="content" #ipPayment>
                         <ng-container filters>
                         <form [formGroup]="myFilterFormIPBrowsePayment">
                             <airmid-datepicker [formGroup]="myFilterFormIPBrowsePayment" [isRangePicker]="true"
@@ -265,7 +264,7 @@
                             </button>
                         </div>
                     </ng-template>
-                    <airmid-table [gridConfig]="gridConfig2" class="content">
+                    <airmid-table [gridConfig]="gridConfig2" class="content" #ipRefund>
                         <ng-container filters>
                             <form [formGroup]="myFilterFormIPBrowseRefund">
                             <airmid-datepicker [formGroup]="myFilterFormIPBrowseRefund"
