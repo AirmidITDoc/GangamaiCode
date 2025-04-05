@@ -153,14 +153,7 @@
                     ></airmid-textbox>
 
                     <!-- <airmid-textbox fxFlex="5%" label="Expiry" formControlName="ExpDate" [formGroup]="_GRNList.userFormGroup" placeholder="mmyyyy" (valueChange)="onExpiryChange()"></airmid-textbox> -->
-                    <!-- <airmid-textbox fxFlex="5%" label="Expiry" formControlName="ExpDate" [formGroup]="_GRNList.userFormGroup" placeholder="mmyyyy" (valueChange)="onExpiryChange()"></airmid-textbox> -->
-                    
-                    <airmid-datepicker
-                      fxFlex="10%"
-                      [formGroup]="_GRNList.userFormGroup"
-                      formControlName="ExpDate"
-                      [label]="'Expiry'"
-                    ></airmid-datepicker>
+                    <airmid-textbox fxFlex="8%" label="ExpDate" formControlName="ExpDate" [formGroup]="_GRNList.userFormGroup" placeholder="mmyyyy" (change)="calculateLastDay()" [(ngModel)]="vlastDay"></airmid-textbox>
 
                     <airmid-textbox
                       fxFlex="4%"
@@ -309,13 +302,13 @@
               </ng-container>
 
               <ng-container matColumnDef="ExpDate">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ExpDate</mat-header-cell>
-                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-140">ExpDate</mat-header-cell>
+                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140">
                   <mat-form-field appearance="fill">
                     <input
                       matInput
                       #inputField
-                      (keyup)="CellcalculateLastDay(contact, inputField.value)"
+                      (change)="CellcalculateLastDay(contact, inputField.value)"
                       [(ngModel)]="contact.ExpDate"
                       placeholder="mmyyyy"
                       [disabled]="contact.IsVerifiedUserId > 0"

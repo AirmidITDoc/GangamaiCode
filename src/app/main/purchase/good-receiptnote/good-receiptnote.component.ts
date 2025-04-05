@@ -783,7 +783,7 @@ export class ItemNameList {
     UOMId: number;
     HSNCode: number;
     BatchNo: number;
-    ExpDate: number;
+    ExpDate: string;
     Qty: number;
     FreeQty: number;
     MRP: number;

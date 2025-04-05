@@ -1,4 +1,4 @@
-import {  Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { GRNList, GrnItemList, ItemNameList } from '../good-receiptnote.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -224,7 +224,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         // );
         if (this.mock) {
             this.setMockData();
-            
+
         }
         if (this.data.chkNewGRN == 2) {
             this.registerObj = this.data.Obj;
@@ -291,7 +291,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             rate: [
                 // { name: "required", Message: "Rate is required" }
             ],
-
+            
         };
     }
     selectChangeSupplier(supplier: any): void {
@@ -300,8 +300,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     date = new FormControl(new Date());
     minDate = new Date();
     maxDate = new Date(2024, 4, 1);
-    calculateLastDay(inputDate: string) {
-        // 
+    calculateLastDay() {
+        const inputDate = this._GRNList.userFormGroup.get("ExpDate").value;
         if (inputDate && inputDate.length === 6) {
             const month = +inputDate.substring(0, 2);
             const year = +inputDate.substring(2, 6);
@@ -310,11 +310,10 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 const lastDay = this.getLastDayOfMonth(month, year);
                 this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
                 this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
-                // console.log(this.vlastDay)
-
-                this._GRNList.userFormGroup.get('ExpDatess').setValue(this.vlastDay)
+                this._GRNList.userFormGroup.get('ExpDate').setValue(this.vlastDay)
             } else {
-                this.vlastDay = 'Invalid month';
+                this.vlastDay = '';
+                this.newGRNService.showToast('Invalid month in Expiry Date. Use format MMYYYY', ToastType.WARNING);
             }
         } else {
             this.vlastDay = '';
@@ -329,7 +328,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         return n < 10 ? '0' + n : n.toString();
     }
     lastDay1: any;
-    CellcalculateLastDay(contact, inputDate: string) {
+    CellcalculateLastDay(contact: ItemNameList, inputDate: string) {
         if (inputDate && inputDate.length === 6) {
             const month = +inputDate.substring(0, 2);
             const year = +inputDate.substring(2, 6);
@@ -339,12 +338,13 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 this.lastDay1 = `${lastDay1}/${this.pad(month)}/${year}`;
                 this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`;
                 //console.log(this.lastDay2)
-                contact.BatchExpDate = this.lastDay1;
+                contact.ExpDate = this.lastDay1;
             } else {
-                this.vlastDay = 'Invalid month';
+                this.vlastDay = '';
+                this.newGRNService.showToast('Invalid month in Expiry Date. Use format MMYYYY', ToastType.WARNING);
             }
         } else {
-            this.vlastDay = ' ';
+            this.vlastDay = '';
         }
     }
 
@@ -646,7 +646,6 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 PurUnitRate: formValues.TotalAmount / (formValues.Qty * formValues.ConversionFactor),
                 PurUnitRateWF: formValues.TotalAmount / (totalQty || 1),
                 UnitMRP: formValues.MRP / formValues.ConversionFactor,
-                ExpDate: this.datePipe.transform(formValues.ExpDate, "MM/yyyy")
             });
             this.dsItemNameList.data = [...this.dsItemNameList.data, newItem];
             this.updateGRNFinalForm();
@@ -830,13 +829,6 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             form.patchValue({
                 ConversionFactor: 1,
             });
-        }
-    }
-    onExpiryChange() {
-        const form = this._GRNList.userFormGroup;
-        const values = form.getRawValue() as GRNFormModel;
-        if (+values.ExpDate < 0) {
-            this.newGRNService.showToast('Expiry should be greater than 0', ToastType.WARNING);
         }
     }
     ngOnDestroy(): void {

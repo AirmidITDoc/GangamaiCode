@@ -108,6 +108,11 @@ export class NewGRNService {
             item.ConversionFactor = 1;
             return false;
         }
+        const expDatePattern = /^(0[1-9]|1[0-2])\d{4}$/;
+        if (!expDatePattern.test(item.ExpDate)) {
+            this.showToast('Invalid Expiry Date format. Expected MMYYYY', ToastType.WARNING);
+            return false;
+        }
         return true;
     }
     calculateTotalQuantity(receiveQty: number, freeQty: number, conversionFactor: number): number {
