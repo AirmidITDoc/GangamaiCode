@@ -35,88 +35,81 @@ export class DoctornoteComponent implements OnInit {
     vTemplateDesc:any;
     vTemplateName:any;
     isActive:boolean=true;
+
     editorConfig: AngularEditorConfig = {
-        editable: true,
-        spellcheck: true,
-        height: '20rem',
-        minHeight: '20rem',
-        translate: 'yes',
-        placeholder: 'Enter text here...',
-        enableToolbar: true,
-        showToolbar: true,
-    };
+      editable: true,
+      spellcheck: true,
+      height: '20rem',
+      minHeight: '20rem',
+      translate: 'yes',
+      placeholder: 'Enter text here...',
+      enableToolbar: true,
+      showToolbar: true,
+  };
+
+    currentDate = new Date();
+    screenFromString = 'opd-casepaper';
+    sIsLoading: string = '';
+    isLoading: string = '';
+    PathologyDoctorList: any = [];
+    wardList: any = [];
+    DoctorNoteList: any = [];
+    NoteList: any = [];
+    vCompanyName: any;
+    vRegNo: any;
+    vDescription: any;
+    vGender: any;
+    vAdmissionDate: any;
+    vAdmissionID: any;
+    vIPDNo: any;
+    vAgeyear: any;
+    vAgeMonth: any;
+    vAgeDay: any;
+    vWardName: any;
+    vBedName: any;
+    vPatientType: any;
+    vRefDocName: any;
+    vTariffName: any;
+  
+    selectedAdvanceObj: AdmissionPersonlModel;
+    dsPatientList = new MatTableDataSource;
+    dsDoctorNoteList = new MatTableDataSource<DocNote>();
+    dsHandOverNoteList = new MatTableDataSource<PatientHandNote>();
+    searchFormGroup: FormGroup;
+    autocompletenote: string = "Note";
+    vDoctNoteId: any;
+    IsAddFlag: boolean = false;
+    vDoctorName:any;
+    vPatientName:any;
+    vDepartment:any;
+    vAdmissionTime:any;
+    vAge:any;
+    vGenderName:any;
+    vRoomName:any;
+    vDOA:any;
+    OP_IP_Id:any;
+  
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+  
+    constructor(
+      public _NursingStationService: DoctornoteService,
+      private accountService: AuthenticationService,
+      private advanceDataStored: AdvanceDataStored,
+      private formBuilder: UntypedFormBuilder,
+      public datePipe: DatePipe,
+      public toastr: ToastrService,
+      public _matDialog: MatDialog,
+    ) {
+      if (this.advanceDataStored.storage) {
+  
+        this.selectedAdvanceObj = this.advanceDataStored.storage;
+        // this.PatientHeaderObj = this.advanceDataStored.storage;
+        console.log(this.selectedAdvanceObj)
+      }
+    }
 
    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-
-    gridConfig: gridModel = {
-        apiUrl: "Nursing/PrescriptionWardList",
-        columnsList: [
-            { heading: "DateTime", key: "date", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Note", key: "note", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "CreatedBy", key: "createdby", sort: true, align: 'left', emptySign: 'NA' },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onEdit(data);
-                        }
-                    }, 
-                    {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._NursingStationService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "ReqId",
-        sortOrder: 0,
-        filters: [
-            { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
-            { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals }
-        ]
-    }
-
-    gridConfig1: gridModel = {
-        apiUrl: "Nursing/PrescriptionWardList",
-        columnsList: [
-            { heading: "DateTime", key: "date", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Shift", key: "shift", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "I", key: "i", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "S", key: "s", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "B", key: "b", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "A", key: "a", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "R", key: "r", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Comments", key: "comments", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "CreatedBy", key: "createdby", sort: true, align: 'left', emptySign: 'NA' },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onEdit(data);
-                        }
-                    }, 
-                    {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._NursingStationService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "ReqId",
-        sortOrder: 0,
-        filters: [
-            { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
-            { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals }
-        ]
-    }
    
        onSave(row: any = null) {
            let that = this;
@@ -138,11 +131,8 @@ export class DoctornoteComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(NewTemplateComponent,
             {
-                // maxWidth: "90vw",
                 maxHeight: '90vh',
                 width: '90%',
-                // maxHeight: '95vh',
-                // width: '90%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -152,159 +142,98 @@ export class DoctornoteComponent implements OnInit {
         });
     }
 
-//   displayedColumns: string[] = [
-//     'RegNo',
-//     'PatienName'
-//   ]
-//   displayedDoctorNote: string[] = [
-//     'Date&Time',
-//     // 'Time',
-//     'Note',
-//     'Action'
-//   ]
-//   displayedHandOverNote: string[] = [
-//     'Date&Time',
-//     // 'Time',
-//     'Shift',
-//     'I',
-//     'S',
-//     'B',
-//     'A',
-//     'R',
-//     'Action'
-//   ]
+    allColumns=[
+      { heading: "DateTime", key: "tdate", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "Note", key: "doctorsNote", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "CreatedBy", key: "createdby", sort: true, align: 'left', emptySign: 'NA' },
+      {
+          heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+              {
+                  action: gridActions.edit, callback: (data: any) => {
+                      this.onEdit(data);
+                  }
+              }, 
+              {
+                  action: gridActions.delete, callback: (data: any) => {
+                      this._NursingStationService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
+                          this.toastr.success(response.message);
+                          this.grid.bindGridData();
+                      });
+                  }
+              }]
+      } //Action 1-view, 2-Edit,3-delete
+  ]
 
-  currentDate = new Date();
-  screenFromString = 'opd-casepaper';
-  sIsLoading: string = '';
-  isLoading: string = '';
-  PathologyDoctorList: any = [];
-  wardList: any = [];
-  DoctorNoteList: any = [];
-  NoteList: any = [];
-  vCompanyName: any;
-  vRegNo: any;
-  vDescription: any;
-  vPatienName: any;
-  vGender: any;
-  vAdmissionDate: any;
-  vAdmissionID: any;
-  vIPDNo: any;
-  vAgeyear: any;
-  vAgeMonth: any;
-  vAgeDay: any;
-  vWardName: any;
-  vBedName: any;
-  vPatientType: any;
-  vRefDocName: any;
-  vTariffName: any;
-  vDoctorname: any;
-  vDepartmentName: any;
-
-  selectedAdvanceObj: AdmissionPersonlModel;
-  dsPatientList = new MatTableDataSource;
-  dsDoctorNoteList = new MatTableDataSource<DocNote>();
-  dsHandOverNoteList = new MatTableDataSource<PatientHandNote>();
-  searchFormGroup: FormGroup;
-  autocompletenote: string = "Note";
-  vDoctNoteId: any;
-  IsAddFlag: boolean = false;
-  vDoctorName:any;
-  vPatientName:any;
-  vDepartment:any;
-  vAdmissionTime:any;
-  vAge:any;
-  vGenderName:any;
-  vRoomName:any;
-  vDOA:any;
-  OP_IP_Id:any;
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
-  constructor(
-    public _NursingStationService: DoctornoteService,
-    private accountService: AuthenticationService,
-    private advanceDataStored: AdvanceDataStored,
-    private formBuilder: UntypedFormBuilder,
-    public datePipe: DatePipe,
-    public toastr: ToastrService,
-    public _matDialog: MatDialog,
-  ) {
-    if (this.advanceDataStored.storage) {
-
-      this.selectedAdvanceObj = this.advanceDataStored.storage;
-      // this.PatientHeaderObj = this.advanceDataStored.storage;
-      console.log(this.selectedAdvanceObj)
-    }
-  }
-
-//   editorConfig: AngularEditorConfig = {
-//     editable: true,
-//     spellcheck: true,
-//     height: '12rem',
-//     minHeight: '12rem',
-//     translate: 'yes',
-//     placeholder: 'Enter text here...',
-//     enableToolbar: true,
-//     showToolbar: true,
-//   };
-
-  onBlur(e: any) {
-    this.vTemplateDesc = e.target.innerHTML;
-  }
+  allFilters=[
+          { fieldName: "AdmId", fieldValue:"0", opType: OperatorComparer.Equals }
+      ]
 
   ngOnInit(): void {
-    // this.vRegNo = this.selectedAdvanceObj.RegNo;
-    // this.vPatienName = this.selectedAdvanceObj.PatientName;
-    // this.vDoctorname = this.selectedAdvanceObj.DoctorName;
-    // this.vDepartmentName = this.selectedAdvanceObj.DepartmentName;
-    // this.vAgeyear = this.selectedAdvanceObj.AgeYear;
-    // this.vAgeMonth = this.selectedAdvanceObj.AgeMonth;
-    // this.vAgeDay = this.selectedAdvanceObj.AgeDay;
-    // this.vBedName = this.selectedAdvanceObj.BedName;
-    // this.vWardName = this.selectedAdvanceObj.RoomName;
-    // this.getDoctorNoteList(); 
-    // this.getWardNameList();
-    this.getDoctorNoteList();
     this.getHandOverNotelist();
     this.searchFormGroup = this.createSearchForm();
   }
 
-  getDoctorNoteList() {
-    
-    var param = {
-        sortField: "DoctNoteId",
-        sortOrder: 0,
-        filters: [
-                  { fieldName: "AdmId", fieldValue: "119", opType: OperatorComparer.Equals }
-              ]
-    }
-    this._NursingStationService.getdoctornoteList(param).subscribe(Menu => {
-
-        this.dsDoctorNoteList.data = Menu.data as DocNote[];
-        this.dsDoctorNoteList.sort = this.sort;
-        this.dsDoctorNoteList.paginator = this.paginator;
-        console.log(this.dsDoctorNoteList.data)
-    });
+  gridConfig: gridModel = {
+    apiUrl: "Nursing/DoctorNoteList",
+    columnsList: this.allColumns,
+    sortField: "AdmId",
+    sortOrder: 0,
+    filters: this.allFilters
 }
+
+  initializeGridConfig() {
+    this.gridConfig = {
+      apiUrl: "Nursing/DoctorNoteList",
+      columnsList: this.allColumns,
+      sortField: "AdmId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "AdmId", fieldValue: String(this.OP_IP_Id), opType: OperatorComparer.Equals }
+      ]
+    }
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData();
+  }
+
+  gridConfig1: gridModel = new gridModel();
 
 getHandOverNotelist() {
   
-  var param = {
-      sortField: "DocHandId",
-      sortOrder: 0,
-      filters: [
-                { fieldName: "AdmId", fieldValue: "3", opType: OperatorComparer.Equals }
-            ]
-  }
-  this._NursingStationService.getpatientHandList(param).subscribe(Menu => {
-
-      this.dsDoctorNoteList.data = Menu.data as PatientHandNote[];
-      this.dsDoctorNoteList.sort = this.sort;
-      this.dsDoctorNoteList.paginator = this.paginator;
-      console.log(this.dsDoctorNoteList.data)
-  });
+  this.gridConfig1 = {
+    apiUrl: "Nursing/PatientHandoverList",
+    columnsList: [
+        { heading: "DateTime", key: "date", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Shift", key: "shift", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "I", key: "i", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "S", key: "s", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "B", key: "b", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "A", key: "a", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "R", key: "r", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Comments", key: "comments", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "CreatedBy", key: "createdby", sort: true, align: 'left', emptySign: 'NA' },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onEdit(data);
+                    }
+                }, 
+                {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._NursingStationService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
+                            this.toastr.success(response.message);
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ],
+    sortField: "AdmId",
+    sortOrder: 0,
+    filters: [
+          { fieldName: "AdmId", fieldValue:this.OP_IP_Id, opType: OperatorComparer.Equals } //12
+    ]
+}
 }
 
 
@@ -320,18 +249,6 @@ onEdit(row) {
   this._NursingStationService.DoctorNotepoppulateForm(m_data);
       
     }
-
-//   NewTemplate() {
-//     const dialogRef = this._matDialog.open(NewTemplateComponent,
-//       {
-//         maxWidth: "75vw",
-//         height: '85%',
-//         width: '100%',
-//       });
-//     dialogRef.afterClosed().subscribe(result => {
-//       this.getDoctorNoteList();
-//     });
-//   }
 
   OnAdd() {
     if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
@@ -560,13 +477,8 @@ onEdit(row) {
       this.vDOA=obj.admissionDate
     this.OP_IP_Id = obj.admissionID;
 
-      // setTimeout(() => {
-      //   this._PrescriptionReturnService.getAdmittedpatientlist(obj.regID).subscribe((response) => {
-      //     this.registerObj = response;        
-      //     console.log(this.registerObj)
-      //   });
-  
-      // }, 500);
+    this.initializeGridConfig();
+    this.getHandOverNotelist();
     }
   }
 
@@ -586,13 +498,13 @@ onEdit(row) {
   }
   onClearPatientInfo() {
     this.vRegNo = '';
-    this.vPatienName = '';
+    this.vPatientName = '';
     this.vWardName = '';
     this.vBedName = '';
     this.vGender = '';
     this.vIPDNo = '';
-    this.vDepartmentName = '';
-    this.vDoctorname = '';
+    this.vDepartment = '';
+    this.vDoctorName = '';
     this.vAgeyear = '';
     this.vAgeMonth = '';
     this.vAgeDay = '';

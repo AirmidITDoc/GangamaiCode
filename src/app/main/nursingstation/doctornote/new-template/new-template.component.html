@@ -32,7 +32,7 @@
                             </airmid-textbox>
 
                             <div fxFlex="20%" fxLayout="row">
-                                <mat-radio-group name="Category" formControlName="Category" (change)="onChangePatientType($event)"
+                                <mat-radio-group name="Category" formControlName="Category"
                                     fxLayout="row" value="NursNote" class="gap-4">
                                     <mat-label><b>Category:</b></mat-label>
                                     <div fxLayout="row">
@@ -56,6 +56,7 @@
 
         </div>
     </div>
+    
     <div class="modal-footer" style="margin-top: 10px;">
         <form [formGroup]="myform">
         <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="space-between">

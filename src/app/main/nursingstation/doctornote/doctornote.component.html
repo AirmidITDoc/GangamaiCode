@@ -1,21 +1,12 @@
 <div class="simple page-layout inner-scroll inner-sidebar left-sidebar">
     <mat-toolbar style="width: 100%;justify-content: space-between;">
         <div fxLayout="row" fxLayoutAlign="start center">
-            <!-- <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">account_box
-            </mat-icon> -->
+
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
                 Doctor Note
             </span>
         </div>
-        <!-- <div class="close-icon">
-            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-                <mat-icon>close</mat-icon>
-            </button>
-        </div> -->
+
     </mat-toolbar>
     <div class="content">
         <div class="center p-12 pb-56" style="border-radius: 4px;">
@@ -30,13 +21,8 @@
                                     <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
 
                                         <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
-
-                                            <!-- <airmid-autocomplete class="w-350" label="Patient Search" [formGroup]="searchFormGroup"  fxFlex="40%"
-                                                    formControlName="RegId" placeholderText="IP RegNo / PatientName / MobileNo"
-                                                     ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>-->
-
                                             <airmid-autocomplete class="w-500" lbl="RgId" [formGroup]="searchFormGroup"
-                                                formControlName="RegID" placeholderText="IP-RegNo/FirstName/LastName"
+                                                formControlName="RegID" placeholderText="IP Reg No / Patient Name / Mobile No"
                                                 ApiUrl="Admission/search-patient?Keyword="
                                                 (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
                                                 TextField="formattedText">
@@ -167,79 +153,14 @@
 
                                                                 <div id="contacts"
                                                                     class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                                                                    <airmid-table [gridConfig]="gridConfig" #grid
-                                                                        :ShowFilter="false" :ShowButtons="false">
+                                                                    <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false"
+                                                                        :ShowButtons="false">
                                                                         <ng-container filters>
 
                                                                         </ng-container>
                                                                     </airmid-table>
                                                                 </div>
-                                                                <!-- <airmid-table [gridConfig]="gridConfig" class="content">
-                                                                    
-                                                                </airmid-table> -->
-                                                                <!-- <mat-table class="table2" matSort
-                                                                    [dataSource]="dsDoctorNoteList"
-                                                                    [@animateStagger]="{value:'50'}"
-                                                                    style="overflow: auto;height:305px;padding-bottom: 0px;">
 
-                                                                    <ng-container matColumnDef="Date&Time">
-                                                                        <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxShow.gt-sm>
-                                                                            Date&Time </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let element"
-                                                                            fxShow.gt-sm>
-                                                                            {{element.vtDate}} | {{element.tTime}} </mat-cell>
-                                                                    </ng-container>
-
-                                                                    <ng-container matColumnDef="Note">
-                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                                            Note 
-                                                                        </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let element" class="ellipsis"
-                                                                            fxShow.gt-sm matTooltip="{{element.doctorsNotes}}">
-                                                                            {{element.doctorsNotes}} </mat-cell>
-                                                                    </ng-container>
-
-                                                                    <ng-container matColumnDef="Action">
-                                                                        <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxShow.gt-sm>
-                                                                            Action </mat-header-cell>
-                                                                            <mat-cell *matCellDef="let row">
-                                                                                <button mat-icon-button (click)="onEdit(row)"><mat-icon
-                                                                                        title="Edit Menu">edit</mat-icon></button>
-                                                                                <button mat-icon-button>
-                                                                                    <mat-icon>print</mat-icon>
-                                                                                </button>
-                                                                            </mat-cell>
-                                                                    </ng-container>
-
-                                                                    <ng-container matColumnDef="loading">
-                                                                        <mat-header-cell *matFooterCellDef colspan="6"
-                                                                            style="display: none;">
-                                                                        </mat-header-cell>
-                                                                    </ng-container>
-
-                                                                    <ng-container matColumnDef="noData">
-                                                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                                                            no data found...
-                                                                        </mat-footer-cell>
-                                                                    </ng-container>
-
-                                                                    <mat-header-row class="accent"
-                                                                        *matHeaderRowDef="displayedDoctorNote; sticky: true">
-                                                                    </mat-header-row>
-                                                                    <mat-row
-                                                                        *matRowDef="let row; columns: displayedDoctorNote;"
-                                                                        class="element"
-                                                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                                                        [ngClass]="{'hide':!(dsDoctorNoteList!=null && dsDoctorNoteList.data.length==0)}">
-                                                                    </mat-footer-row>
-                                                                </mat-table>
-                                                                <mat-paginator #paginator
-                                                                    [pageSizeOptions]="[10, 25, 50, 100]"
-                                                                    [pageSize]="10" showFirstLastButtons>
-                                                                </mat-paginator> -->
                                                             </mat-card>
                                                         </div>
                                                         <div fxFlex.gt-sm="60%" fxFlex>
@@ -250,8 +171,7 @@
 
                                                                 <div fxLayout="row" fxLayoutGap="10px"
                                                                     style=" height: 65px;">
-                                                                    <airmid-dropdown label="Note" formControlName="Note"
-                                                                        fxFlex
+                                                                    <airmid-dropdown label="Note" formControlName="Note" fxFlex
                                                                         [formGroup]="_NursingStationService.myform"
                                                                         [validations]="getValidationMessages().Note"
                                                                         [mode]="autocompletenote">
@@ -271,7 +191,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <mat-card
-                                                                    style="padding: 5px;height: 250px;overflow: auto;">
+                                                                    style="padding: 5px;height: 220px;overflow: auto;">
                                                                     <div>
 
                                                                         <!-- <mat-label>Template Details</mat-label>
@@ -280,16 +200,16 @@
                                                                             formControlName="templateDesc">
                                                                         </angular-editor> -->
                                                                         <airmid-editor label="Template Details"
-                                                                            style="height: 250px;"
+                                                                            style="height: 200px;"
                                                                             formControlName="templateDesc"
                                                                             [(value)]="vTemplateDesc"
-                                                                            [formGroup]="_NursingStationService.myform"></airmid-editor>
+                                                                            [formGroup]="_NursingStationService.myform">
+                                                                        </airmid-editor>
 
                                                                     </div>
                                                                 </mat-card>
 
-                                                                <div fxLayout="row" fxLayoutAlign="end"
-                                                                    fxLayoutGap="6px">
+                                                                <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="6px">
                                                                     <button class="btn btn-primary-outline"
                                                                         (click)="NewTemplate()">New
                                                                         Template</button>
@@ -314,23 +234,23 @@
 
                                                 <div fxLayout="row" fxLayoutGap="20px">
                                                     <span style="font-size:40px;padding: 10px 10px 0 0;">I</span>
-                                                    <div fxLayout="column" style="border: 1px solid black;height: 90px;"
-                                                        fxFlex="25%">
+                                                    <div fxLayout="column" style="border: 1px solid black;height: 90px; border-radius: 5px; padding: 5px;"
+                                                        fxFlex="30%">
                                                         <span style="margin-bottom: 10px;">Handover Given Details
                                                             :</span>
                                                         <span>Staff Nurse Name :</span>
                                                         <span>Designation :</span>
                                                     </div>
                                                     <span style="font-size:40px;padding: 10px 0px 0 0;">B</span>
-                                                    <div fxLayout="column" style="border: 1px solid black;height: 90px;"
-                                                        fxFlex="25%">
+                                                    <div fxLayout="column" style="border: 1px solid black;height: 90px; border-radius: 5px; padding: 5px;"
+                                                        fxFlex="30%">
                                                         <span style="margin-bottom: 10px;">Presenting SYMPTOMS</span>
                                                         <span>Vitals :</span>
                                                         <span>Any Status Changes :</span>
                                                     </div>
                                                     <span style="font-size:40px;padding: 10px 0px 0 0;">R</span>
-                                                    <div fxLayout="column" style="border: 1px solid black;height: 90px;"
-                                                        fxFlex="25%">
+                                                    <div fxLayout="column" style="border: 1px solid black;height: 90px; border-radius: 5px; padding: 5px;"
+                                                        fxFlex="30%">
                                                         <span>BE CLEAR ABOUT THE REQUESTS</span>
                                                         <span>(If any special Instruction)</span>
                                                     </div>
@@ -338,8 +258,8 @@
                                                 </div>
                                                 <div fxLayout="row" fxLayoutGap="20px">
                                                     <span style="font-size:40px;padding-top: 10px;">S</span>
-                                                    <div fxLayout="column" style="border: 1px solid black;height: 90px;"
-                                                        fxFlex="25%">
+                                                    <div fxLayout="column" style="border: 1px solid black;height: 90px; border-radius: 5px; padding: 5px;"
+                                                        fxFlex="29.5%">
 
                                                         <span>THE PATIENT IS - Stable / Unstable </span>
                                                         <span>But i have a wwomes</span>
@@ -348,8 +268,8 @@
 
                                                     </div>
                                                     <span style="font-size:40px;padding-top: 10px;">A</span>
-                                                    <div fxLayout="column" style="border: 1px solid black;height: 90px;"
-                                                        fxFlex="25%">
+                                                    <div fxLayout="column" style="border: 1px solid black;height: 90px; border-radius: 5px; padding: 5px;"
+                                                        fxFlex="29.5%">
                                                         <span>ON THE BASIC OF ABOVE </span>
                                                         <span>Assessment give</span>
                                                         <span>Any Need</span>
@@ -369,7 +289,8 @@
                                                     <div style="padding: 30px 10px 0 10px;">
                                                         <button type="button" class="btn btn-primary btn-with-icon py-8"
                                                             #addbutton id="btnAdd">
-                                                            <mat-icon>add</mat-icon>
+                                                            <!-- <mat-icon>add</mat-icon> -->
+                                                             Save
                                                         </button>
                                                     </div>&nbsp;
 

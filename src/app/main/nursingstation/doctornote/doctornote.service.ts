@@ -24,7 +24,9 @@ export class DoctornoteService {
       Description:[''],
       DoctNoteId:'',
       WardName:[''],
-      HandOverType:['0']
+      HandOverType:['0'],
+      Category:['NursNote'],
+      isActive:[true,[Validators.required]]        
       });
     }
 
@@ -33,9 +35,7 @@ export class DoctornoteService {
         TemplateId:[''],
         TemplateName:[''],
         TemplateDesc:[''],
-        Category:['NursNote'],
-        isActive:[true,[Validators.required]]        
-          });
+      });
     }
 
     public templateMasterSave(Param: any) {

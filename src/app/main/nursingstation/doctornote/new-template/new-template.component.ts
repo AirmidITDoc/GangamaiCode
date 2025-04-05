@@ -47,37 +47,6 @@ export class NewTemplateComponent implements OnInit {
         }
     }
 
-    onChangePatientType(event) {
-            // if (event.value == 'OP') {
-            //     this.OP_IPType = 0;
-            //     this.RegId = "";
-            //     this.paymethod = true;
-            //     this.myform.get('MobileNo').clearValidators();
-            //     this.myform.get('PatientName').clearValidators();
-            //     this.myform.get('MobileNo').updateValueAndValidity();
-            //     this.myform.get('PatientName').updateValueAndValidity();
-            // }
-            // else if (event.value == 'IP') {
-            //     this.OP_IPType = 1;
-            //     this.RegId = "";
-    
-            //     this.myform.get('MobileNo').clearValidators();
-            //     this.myform.get('PatientName').clearValidators();
-            //     this.myform.get('MobileNo').updateValueAndValidity();
-            //     this.myform.get('PatientName').updateValueAndValidity();
-            // } else {
-            //     this.myform.get('MobileNo').reset();
-            //     this.myform.get('MobileNo').setValidators([Validators.required]);
-            //     this.myform.get('MobileNo').enable();
-            //     this.myform.get('PatientName').reset();
-            //     this.myform.get('PatientName').setValidators([Validators.required]);
-            //     this.myform.get('PatientName').enable();
-            //     this.myform.updateValueAndValidity();
-    
-            //     this.OP_IPType = 2;
-            // }
-        }
-
     onSubmit() {
             
         if(!this.myform.invalid)

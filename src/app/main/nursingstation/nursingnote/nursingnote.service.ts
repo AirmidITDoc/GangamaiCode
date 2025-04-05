@@ -23,7 +23,8 @@ export class NursingnoteService {
       Description:[''],
       Op_ip_id:['1'],
       RegID:[''],
-      HandOverType:['0'],
+      HandOverType:['Morning'],
+      Category:['NursNote'],
       isActive:[true,[Validators.required]],
     });
   }

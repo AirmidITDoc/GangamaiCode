@@ -189,10 +189,9 @@ export class NursingnoteComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(NewTemplateComponent,
             {
-                maxWidth: "90vw",
-                height: '90%',
-                width: '90%',
-                data: row
+              maxHeight: '90vh',
+              width: '90%',
+              data: row
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
@@ -259,7 +258,6 @@ export class NursingnoteComponent implements OnInit {
             Qty: [],
             Remark: [],
             comments:[],
-
         }
     }
 
@@ -278,14 +276,15 @@ export class NursingnoteComponent implements OnInit {
 //     'Action'
 //   ]
 
-//   displayedColumns2: string[] = [
-//     'DrugName',
-//     'DoseName',
-//     'Route',
-//     'Frequency',
-//     'NurseName',
-//     'Action'
-//   ]
+displayedItemColumn: string[] = [
+    'Status',
+    'DrugName',
+    'DoseName',
+    'Route',
+    'Frequency',
+    'NurseName',
+    'Action'
+  ]
 
 //   displayedHandOverNote: string[] = [
 //     'VDate',
@@ -312,7 +311,6 @@ export class NursingnoteComponent implements OnInit {
   vCompanyName:any;
   vRegNo:any;
   vDescription:any;
-  vPatienName:any;
   vGender:any;
   vAdmissionDate:any;
   vAdmissionID:any;
@@ -325,20 +323,26 @@ export class NursingnoteComponent implements OnInit {
   vPatientType:any;
   vRefDocName:any;
   vTariffName:any;
-  vDoctorname:any;
-  vDepartmentName:any;
+  vDoctorName:any;
+  vPatientName:any;
+  vDepartment:any;
+  vAdmissionTime:any;
+  vAge:any;
+  vGenderName:any;
+  vRoomName:any;
+  vDOA:any;
+  OP_IP_Id:any;
+
   NoteList:any=[]; 
    selectedAdvanceObj: AdmissionPersonlModel;
   dsNursingNoteList = new MatTableDataSource<DocNote>();
   dsMadicationChartList=new MatTableDataSource<DocNote>();
-  dsMadicationChart1List=new MatTableDataSource<DocNote>();
+  dsItemList=new MatTableDataSource<MedicineItemList>();
   dsHandOverNoteList=new MatTableDataSource<DocNote>();
  
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
  
- 
-
   constructor(
     public _NursingStationService: NursingnoteService,
     private accountService: AuthenticationService, 
@@ -363,9 +367,9 @@ export class NursingnoteComponent implements OnInit {
   private _onDestroy = new Subject<void>();
   ngOnInit(): void { 
     this.vRegNo = this.selectedAdvanceObj.RegNo;
-    this.vPatienName = this.selectedAdvanceObj.PatientName;
-    this.vDoctorname = this.selectedAdvanceObj.DoctorName;
-    this.vDepartmentName = this.selectedAdvanceObj.DepartmentName;
+    this.vPatientName = this.selectedAdvanceObj.PatientName;
+    this.vDepartment = this.selectedAdvanceObj.DoctorName;
+    this.vDoctorName = this.selectedAdvanceObj.DepartmentName;
     this.vAgeyear = this.selectedAdvanceObj.AgeYear;
     this.vAgeMonth = this.selectedAdvanceObj.AgeMonth;
     this.vAgeDay = this.selectedAdvanceObj.AgeDay;
@@ -375,39 +379,34 @@ export class NursingnoteComponent implements OnInit {
     this.getNoteList(); 
     this.getDoctorList(); 
   }
-  getSearchList() {
-    var m_data = {
-      "Keyword": `${this._NursingStationService.myform.get('RegID').value}%`
+
+  getSelectedObjIP(obj) {
+    
+    if ((obj.regID ?? 0) > 0) {
+      console.log("Admitted patient:",obj)
+      this.vRegNo=obj.regNo
+      this.vDoctorName=obj.doctorName
+      this.vPatientName=obj.firstName + " " + obj.middleName + " " + obj.lastName
+      this.vDepartment=obj.departmentName
+      this.vAdmissionDate=obj.admissionDate
+      this.vAdmissionTime=obj.admissionTime
+      this.vIPDNo=obj.ipdNo
+      this.vAge=obj.age
+      this.vAgeMonth=obj.ageMonth
+      this.vAgeDay=obj.ageDay
+      this.vGenderName=obj.genderName
+      this.vRefDocName=obj.refDocName
+      this.vRoomName=obj.roomName
+      this.vBedName=obj.bedName
+      this.vPatientType=obj.patientType
+      this.vTariffName=obj.tariffName
+      this.vCompanyName=obj.companyName
+      this.vDOA=obj.admissionDate
+    this.OP_IP_Id = obj.admissionID;
     }
-    if (this._NursingStationService.myform.get('RegID').value.length >= 1) {
-      this._NursingStationService.getAdmittedpatientlist(m_data).subscribe(resData => {
-        this.filteredOptions = resData;
-        console.log(resData)
-        this.PatientListfilteredOptions = resData;
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        } 
-      });
-    } 
-  } 
-  getOptionText(option) {
-    if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' (' + option.RegID + ')';
-  }
-  getSelectedObj(obj){
-    console.log(obj)
-   this.vRegNo = obj.RegNo;
-   this.vPatienName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
-   this.vWardName = obj.RoomName;
-   this.vBedName = obj.BedName;
-   this.vGender = obj.GenderName;
-  //  this.vAge = obj.Age
-   this.vAdmissionID = obj.AdmissionID;
-   this.vIPDNo = obj.IPDNo 
    this.getNoteTablelist(obj);
   }
+
  getNoteList(){
   this._NursingStationService.getNoteList().subscribe(data =>{
     this.NoteList = data;
@@ -415,13 +414,13 @@ export class NursingnoteComponent implements OnInit {
  }
  onClearPatientInfo() {
   this.vRegNo = '';
-  this.vPatienName = '';
+  this.vPatientName = '';
   this.vWardName = '';
   this.vBedName = '';
   this.vGender = '';
   this.vIPDNo = '';
-  this.vDepartmentName = '';
-  this.vDoctorname = '';
+  this.vDepartment = '';
+  this.vDoctorName = '';
   this.vAgeyear = '';
   this.vAgeMonth = '';
   this.vAgeDay = '';
@@ -456,25 +455,21 @@ export class NursingnoteComponent implements OnInit {
   });
  }
 
-  private filterDoctor() { 
-    if (!this.PathologyDoctorList) {
-      return;
-    } 
-    let search = this.pathodoctorFilterCtrl.value;
-    if (!search) {
-      this.filteredPathDoctor.next(this.PathologyDoctorList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    } 
-    this.filteredPathDoctor.next(
-      this.PathologyDoctorList.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    ); 
+ Chargelist: any = [];
+
+ getSchedulerlist() {
+  var vdata = {
+    'AdmissionId': this.vAdmissionID
   }
+  // this._NursingStationService.getSchedulerlist(vdata).subscribe(data => {
+  //   this.dsItemList.data = data as MedicineItemList[];
+  //   this.Chargelist = data as MedicineItemList[];
+  //   this.dsItemList.sort = this.sort
+  //   this.dsItemList.paginator = this.paginator
+  // })
+}
 
   getDoctorList() {
-    ;
    
     this._NursingStationService.getDoctorCombo().subscribe(data => {
       this.PathologyDoctorList = data;
@@ -539,7 +534,13 @@ export class NursingnoteComponent implements OnInit {
   //   this._SampleService.populateForm(m_data);
   // }
 
-  
+  SelectedChecked(contact, event) {
+    if (event.checked) {
+      this.toastr.success('The selected dose/item has been successfully administered to the patient.', 'successfully !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
+    }
+  }
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -573,6 +574,38 @@ export class DocNote {
     this.IsAddedBy = DocNote.IsAddedBy || 0;
    this.DoctNoteId =DocNote.DoctNoteId  || 0;
   } 
+}
+
+export class MedicineItemList {
+  ItemID: any;
+  ItemId: any;
+  ItemName: string;
+  DoseName: any;
+  Route: number;
+  Frequency: any;
+  NurseName: number;
+  DoseName2: any;
+  Day2: number;
+  Instruction: any;
+  DoseDateTime: any;
+
+  /**
+  * Constructor
+  *
+  * @param MedicineItemList
+  */
+  constructor(MedicineItemList) {
+    {
+      this.ItemId = MedicineItemList.ItemId || 0;
+      this.ItemID = MedicineItemList.ItemID || 0;
+      this.ItemName = MedicineItemList.ItemName || "";
+      this.Frequency = MedicineItemList.Frequency || '';
+      this.DoseName = MedicineItemList.DoseName || '';
+      this.Route = MedicineItemList.Route || 0;
+      this.NurseName = MedicineItemList.NurseName || 0;
+
+    }
+  }
 }
 
 
