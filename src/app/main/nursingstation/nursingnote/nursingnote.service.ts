@@ -47,19 +47,8 @@ export class NursingnoteService {
     }
 
 
-  public DoctorNoteInsert(employee) {
-    return this._httpClient.PostData("InPatient/DoctorNoteInsert", employee)
+  public NursingNoteInsert(employee) {
+    return this._httpClient.PostData("Nursing", employee)
   }
-  public getDoctorCombo() {
-    return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_NursingNotesTemplateMaterForCombo", {})
-  }
-  public getAdmittedpatientlist(employee){
-    return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
-  }
-  public getNoteList() {
-    return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_NursingNotesTemplateMaterForCombo", {})
-  }
-  public getNursingNotelist(employee){
-    return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_NursingNotesList ", employee)
-  }
+  
 }

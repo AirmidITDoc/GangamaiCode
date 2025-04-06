@@ -6,11 +6,11 @@
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Template </span>
             </div>
             <div class="modal-header-right">
-                    <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </div>
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -22,18 +22,19 @@
                 <form [formGroup]="myform">
                     <div fxLayout="row wrap" fxLayoutGap="12px grid">
                         <div fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="8px" fxLayoutAlign="center">
-                            <airmid-textbox 
-                                label="TemplateName" fxFlex
-                                formControlName="templateName" 
-                                [value]="data?.templateName"
-                                [formGroup]="myform"
-                                [validations]="getValidationMessages().templateName"
-                                [maxLength]="50">
-                            </airmid-textbox>
+
+
+                            <airmid-dropdown label="Template" formControlName="TemplateId" [formGroup]="myform"
+                                [mode]="autocompleteModetemplate">
+                            </airmid-dropdown>
+
+                            
+
+
 
                             <div fxFlex="20%" fxLayout="row">
-                                <mat-radio-group name="Category" formControlName="Category"
-                                    fxLayout="row" value="NursNote" class="gap-4">
+                                <mat-radio-group name="Category" formControlName="Category" fxLayout="row"
+                                    value="NursNote" class="gap-4">
                                     <mat-label><b>Category:</b></mat-label>
                                     <div fxLayout="row">
                                         <mat-radio-button value="NursNote">NursingNote</mat-radio-button>
@@ -42,12 +43,12 @@
                                 </mat-radio-group>
                             </div>
                         </div>
-                    </div> 
+                    </div>
 
-                    <div  fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                         <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-editor label="Template Details" formControlName="templateDesc" 
-                            [(value)]="vTemplateDesc" [formGroup]="myform"></airmid-editor>
+                            <airmid-editor label="Template Details" formControlName="templateDesc"
+                                [(value)]="vTemplateDesc" [formGroup]="myform"></airmid-editor>
                         </div>
                     </div>
                 </form>
@@ -56,22 +57,23 @@
 
         </div>
     </div>
-    
+
     <div class="modal-footer" style="margin-top: 10px;">
         <form [formGroup]="myform">
-        <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="space-between">
-            <div>
-                <app-airmid-slider label="IsActive/Deactive"  formControlName="isActive" [formGroup]="myform" [(ngModel)]="isActive" ></app-airmid-slider>
+            <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="space-between">
+                <div>
+                    <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="myform"
+                        [(ngModel)]="isActive"></app-airmid-slider>
+                </div>
+                <div class="modal-footer-buttons">
+                    <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                    <button class="btn btn-primary" (click)="onSubmit()">
+                        Save
+                    </button>
+                    <!-- [disabled]="myForm.invalid || dsItemList.data.length == 0" -->
+                </div>
             </div>
-            <div class="modal-footer-buttons">
-                <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                <button class="btn btn-primary" (click)="onSubmit()">
-                    Save
-                </button>
-                <!-- [disabled]="myForm.invalid || dsItemList.data.length == 0" -->
-            </div>
-        </div>
-    </form>
+        </form>
     </div>
-   
+
 </div>

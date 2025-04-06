@@ -66,7 +66,7 @@ export class TemplatedescriptionService {
         return this._httpClient.PostData("BankMaster/List", param);
     }
 
-    public bankMasterSave(Param: any) {
+    public TemplateSave(Param: any) {
         if (Param.bankId) {
             return this._httpClient.PutData("BankMaster/" + Param.bankId, Param);
         } else return this._httpClient.PostData("BankMaster", Param);

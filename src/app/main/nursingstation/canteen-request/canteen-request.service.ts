@@ -22,11 +22,10 @@ export class CanteenRequestService {
 
    createMyForm(){
       return this._formbuilder.group({
-        RegId: '',
+        RegID: '',
         PatientName: '',
-        WardName: '',
-        StoreId: '',
-        RegID: [''],
+        WardName: 0,
+        StoreId: 2,
         Op_ip_id: ['1'],
         AdmissionID: 0,
       })
@@ -77,7 +76,7 @@ export class CanteenRequestService {
       return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CanteenItemList",Param)
     }
     public CanteenReqSave(param){
-      return this._httpClient.post('InPatient/CanteenRequest',param);
+      return this._httpClient1.PostData('CanteenRequest/Insert',param);
     }
     public deactivateTheStatus(m_data) {
       return this._httpClient1.PostData("PhoneApp", m_data);

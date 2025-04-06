@@ -1,5 +1,5 @@
-<div class="modal-wrapper grid-container">
-    <!-- Modal header -->
+<!-- <div class="modal-wrapper grid-container">
+     Modal header 
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
@@ -15,7 +15,7 @@
         </div>
     </div>
 
-    <!-- Modal body -->
+     Modal body 
     <div class="modal-body" fusePerfectScrollbar>
     <div class="modal-body-container">
             <form [formGroup]="myForm">
@@ -23,14 +23,14 @@
                     <div class="modal-card-container">
                         <mat-card>
                             <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                <!-- <div>
+                                 <div>
                                     <app-airmid-slider 
                                         label="IsPatientWiseConsumption"   
                                         formControlName="consumption" 
                                         [formGroup]="myForm" 
                                         [(ngModel)]="isPatientWiseConsumption">
                                     </app-airmid-slider>
-                                </div> -->
+                                </div> 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <div fxLayout="row" class="gap-8">
                                         <mat-checkbox  formControlName="IsHealthCard" (change)="chkHealthcard($event)" style="padding: 15px;">IsPatientWiseConsumption
@@ -90,7 +90,7 @@
                             </div>
 
                             <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                <!-- 1st -->
+                                 1st 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown 
                                         label="ItemName" 
@@ -100,7 +100,7 @@
                                         [mode]="autocompleteModeItemName">
                                     </airmid-dropdown>
                                 </div>
-                                <!-- 2nd -->
+                                 2nd 
                                 <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-textbox 
                                         label="BalQty" 
@@ -111,7 +111,7 @@
                                         [maxLength]="50">
                                     </airmid-textbox>
                                 </div>
-                                <!-- 3rd -->
+                                 3rd 
                                 <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-textbox 
                                         label="UsedQty" 
@@ -122,7 +122,7 @@
                                         [maxLength]="50">
                                     </airmid-textbox>
                                 </div>
-                                <!-- 4th -->
+                                 4th 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-textbox 
                                         label="Remark" 
@@ -133,14 +133,14 @@
                                         [maxLength]="50">
                                     </airmid-textbox>
                                 </div>
-                                <!-- 5th -->
+                                 5th 
                                 <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-datepicker [formGroup]="myForm" [isRangePicker]="true"
                                         formStartControlName="startdate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[1].fieldValue"
                                         [(toValue)]="gridConfig.filters[2].fieldValue">
                                     </airmid-datepicker>
                                 </div>
-                                <!-- 6th -->
+                                 6th 
                                 <div class="input-add-button">
                                     <button class="btn btn-primary" (click)="onSaveEntry()" [disabled]="!add" addbutton> Add </button>
                                 </div>
@@ -168,17 +168,17 @@
                                     <span class="net-amt-mat-label" style="font-weight:bold;padding-bottom: 8px;">No Of
                                         Item:
                                     </span>&nbsp;
-                                    <!-- <span class="net-amt-value"
+                                     <span class="net-amt-value"
                                         style="margin-left:10px;font-weight:bolder;color: blue;">{{dsNewmaterialList.data.length}}
-                                    </span> -->&nbsp;
+                                    </span> &nbsp;
         
     
                                     <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Total MRPAmount
                                         Amount :
                                     </span>&nbsp;
-                                    <!-- <span class="net-amt-value text-primary"
+                                     <span class="net-amt-value text-primary"
                                         style="margin-left:10px;font-weight:bolder;color: blue;">{{getTotalamt(dsNewmaterialList.data)
-                                        | currency:'INR' }}</span>  -->
+                                        | currency:'INR' }}</span>  
                                 </div>
         
                             </mat-card>
@@ -189,7 +189,7 @@
                         <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
                             
                             <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                <!-- 1st -->
+                                 1st 
                                 <div fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-textbox 
                                         label="Remark"  #Remark
@@ -200,7 +200,7 @@
                                         [validations]="getValidationMessages().Remark">
                                     </airmid-textbox>
                                 </div>
-                                <!-- 2nd -->
+                                 2nd 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-textbox 
                                         label="MRPTotalAmount" 
@@ -211,7 +211,7 @@
                                         [(ngModel)]="vMRPTotalAmount">
                                     </airmid-textbox>
                                 </div>
-                                <!-- 3rd -->
+                                 3rd 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-textbox 
                                         label="PurTotalAmount" 
@@ -222,7 +222,7 @@
                                         [(ngModel)]="vPurTotalAmount">
                                     </airmid-textbox>
                                 </div>
-                                <!-- 4th -->
+                                 4th 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-textbox 
                                         label="LandedTotalAmount" 
@@ -247,4 +247,4 @@
             </form>
         </div>
     </div>
-</div>
+</div> -->

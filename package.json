@@ -91,5 +91,9 @@
     "tslint": "~6.1.0",
     "typescript": "4.9.5",
     "webpack-bundle-analyzer": "3.6.0"
+  },
+  "browser": {
+    "crypto": false,
+    "stream": false
   }
 }

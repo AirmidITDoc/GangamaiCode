@@ -23,7 +23,7 @@
 
                                             <airmid-autocomplete class="w-500" lbl="RgId"
                                                 [formGroup]="_NursingStationService.myform" formControlName="RegID"
-                                                placeholderText="IP Reg No / Patient Name / Mobile No"
+                                                label="Search Reg No / Patient Name / Mobile No"
                                                 ApiUrl="Admission/search-patient?Keyword="
                                                 (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
                                                 TextField="formattedText">
@@ -167,7 +167,7 @@
                                                                         formControlName="ItemId"
                                                                         [formGroup]="_NursingStationService.myform"
                                                                         [validations]="getValidationMessages().ItemId"
-                                                                        [mode]="autocompleteModegroupName">
+                                                                        [mode]="autocompleteModeNurNote">
                                                                     </airmid-dropdown>
 
                                                                     <div class="input-add-button">

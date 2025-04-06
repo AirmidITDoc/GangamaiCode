@@ -31,11 +31,12 @@ import { NewTemplateComponent } from './new-template/new-template.component';
   animations: fuseAnimations,
 })
 export class DoctornoteComponent implements OnInit {
-
+  myform:FormGroup;
+  mytemplteform:FormGroup;
     vTemplateDesc:any;
     vTemplateName:any;
     isActive:boolean=true;
-
+    autocompleteModetemplate: string = "Template";
     editorConfig: AngularEditorConfig = {
       editable: true,
       spellcheck: true,
@@ -49,12 +50,7 @@ export class DoctornoteComponent implements OnInit {
 
     currentDate = new Date();
     screenFromString = 'opd-casepaper';
-    sIsLoading: string = '';
-    isLoading: string = '';
-    PathologyDoctorList: any = [];
-    wardList: any = [];
-    DoctorNoteList: any = [];
-    NoteList: any = [];
+  
     vCompanyName: any;
     vRegNo: any;
     vDescription: any;
@@ -76,7 +72,7 @@ export class DoctornoteComponent implements OnInit {
     dsDoctorNoteList = new MatTableDataSource<DocNote>();
     dsHandOverNoteList = new MatTableDataSource<PatientHandNote>();
     searchFormGroup: FormGroup;
-    autocompletenote: string = "Note";
+    autocompleteModeTemplate: string= "Template"; 
     vDoctNoteId: any;
     IsAddFlag: boolean = false;
     vDoctorName:any;
@@ -111,22 +107,6 @@ export class DoctornoteComponent implements OnInit {
 
    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
    
-       onSave(row: any = null) {
-           let that = this;
-        //    const dialogRef = this._matDialog.open(NewTemplateComponent,
-        //        {
-        //            maxWidth: "90vw",
-        //            height: '90%',
-        //            width: '90%',
-        //            data: row
-        //        });
-        //    dialogRef.afterClosed().subscribe(result => {
-        //        if (result) {
-        //            that.grid.bindGridData();
-        //        }
-        //    });
-       }
-
     NewTemplate(row: any = null) {
         let that = this;
         const dialogRef = this._matDialog.open(NewTemplateComponent,
@@ -169,6 +149,8 @@ export class DoctornoteComponent implements OnInit {
       ]
 
   ngOnInit(): void {
+    this.myform=this._NursingStationService.createtemplateForm();
+    this.mytemplteform = this._NursingStationService.createtemplateForm();
     this.getHandOverNotelist();
     this.searchFormGroup = this.createSearchForm();
   }
@@ -249,7 +231,10 @@ onEdit(row) {
   this._NursingStationService.DoctorNotepoppulateForm(m_data);
       
     }
-
+tempdesc:any='';
+    onChangetemplate(event){
+      this.tempdesc=event.text
+    }
   OnAdd() {
     if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
       this.toastr.warning('Please select Patient', 'Warning !', {
@@ -257,13 +242,14 @@ onEdit(row) {
       });
       return;
     }
-    if (this._NursingStationService.myform.get('Note').value) {
-      this.vDescription = this._NursingStationService.myform.get('Note').value.DocsTempName || '';
-    } else {
-      this.toastr.warning('Please select Note', 'Warning !', {
+    if (this.tempdesc == '') {
+      this.toastr.warning('Please select Template', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
+      return;
     }
+    
+    this.vDescription = this.tempdesc || '';
     this._NursingStationService.myform.get('Note').setValue('');
   }
 
@@ -276,158 +262,47 @@ onEdit(row) {
   }
 
   onSubmit() {
-    
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'shortTime');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+  
     if (!this.vDoctNoteId || this.vDoctNoteId === 0) {  // Insert Condition
       var mdata = {
         "doctNoteId": 0,
         "admId": 0,
-        "tdate": formattedDate,
-        "ttime": formattedTime,
+        "tdate": this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+        "ttime": this.datePipe.transform(new Date(), 'shortTime'),
         "doctorsNotes": this._NursingStationService.myform.get("Description").value,
-        "isAddedBy": 1, //this.accountService.currentUserValue.userId,
+        "isAddedBy": this.accountService.currentUserValue.userId,
       };
       console.log('json mdata:', mdata);
     
       this._NursingStationService.DoctorNoteInsert(mdata).subscribe(response => {
-        if (response) {
-          this.toastr.success('Record Saved Successfully.', 'Saved !', {
-            toastClass: 'tostr-tost custom-toast-success',
-          });
-          this.onClose();
-        } else {
-          this.toastr.error('Record not saved! Please check API error.', 'Error !', {
-            toastClass: 'tostr-tost custom-toast-error',
-          });
-        }
-      }, (error) => {
-        this.toastr.error(error.message);
-      });
+        this.toastr.success(response.message);
+      this._matDialog.closeAll();
+    }, (error) => {
+      this.toastr.error(error.message);
+    });
     } 
     else if (this.registerObj?.doctNoteId && this.registerObj.doctNoteId !== 0) {  // Update Condition
       var mdata1 = {
         "doctNoteId": this.registerObj.doctNoteId,
         "admId": 0,
-        "tdate": formattedDate,
-        "ttime": formattedTime,
+        "tdate": this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+        "ttime": this.datePipe.transform(new Date(), 'shortTime'),
         "doctorsNotes": this._NursingStationService.myform.get("Description").value,
-        "isAddedBy": 1, //this.accountService.currentUserValue.userId,
+        "isAddedBy": this.accountService.currentUserValue.userId,
       };
       console.log('json mdata:', mdata1);
     
       this._NursingStationService.DoctorNoteUpdate(mdata1).subscribe(response => {
-        if (response) {
-          this.toastr.success('Record Updated Successfully.', 'Update !', {
-            toastClass: 'tostr-tost custom-toast-success',
-          });
-          this.onClose();
-        } else {
-          this.toastr.error('Record not updated! Please check API error.', 'Error !', {
-            toastClass: 'tostr-tost custom-toast-error',
-          });
-        }
-      }, (error) => {
-        this.toastr.error(error.message);
-      });
+        this.toastr.success(response.message);
+      this._matDialog.closeAll();
+    }, (error) => {
+      this.toastr.error(error.message);
+    });
     } 
     else {
       this.toastr.error('Invalid data! Cannot insert or update.', 'Error !');
     }
-    
-    // if (this.vDoctNoteId) {
-    //   var mdata = {
-    //     "doctNoteId": 0,
-    //     "admId": 0,
-    //     "tdate": formattedDate,
-    //     "ttime": formattedTime,
-    //     "doctorsNotes": this._NursingStationService.myform.get("Description").value,
-    //     "isAddedBy": 0, //this.accountService.currentUserValue.user.id,
-    //   }
-    //   console.log('json mdata:', mdata);
-
-    //   this._NursingStationService.DoctorNoteInsert(mdata).subscribe(response => {
-    //     if (response) {
-    //       this.toastr.success('Record Saved Successfully.', 'Saved !', {
-    //         toastClass: 'tostr-tost custom-toast-success',
-    //       });
-    //       this.onClose()
-    //     } else {
-    //       this.toastr.error('Record not saved !, Please check API error..', 'Error !', {
-    //         toastClass: 'tostr-tost custom-toast-error',
-    //       });
-    //     }
-    //   }, (error) => {
-    //     this.toastr.error(error.message);
-    //   });
-    // }
-    // else if (this.registerObj.doctNoteId) {
-    //   var mdata1 = {
-    //     "doctNoteId": this.registerObj.doctNoteId,
-    //     "admId": 0,
-    //     "tdate": formattedDate,
-    //     "ttime": formattedTime,
-    //     "doctorsNotes": this._NursingStationService.myform.get("Description").value,
-    //     "isAddedBy": 0, //this.accountService.currentUserValue.user.id,
-    //   }
-    //   console.log('json mdata:', mdata1);
-
-    //   this._NursingStationService.DoctorNoteUpdate(mdata1).subscribe((response) => {
-    //     if (response) {
-    //       this.toastr.success('Record Update Successfully.', 'Update !', {
-    //         toastClass: 'tostr-tost custom-toast-success',
-    //       });
-    //       this.onClose()
-    //     } else {
-    //       this.toastr.error('Record not Update !, Please check API error..', 'Error !', {
-    //         toastClass: 'tostr-tost custom-toast-error',
-    //       });
-    //     }
-    //   }, (error) => {
-    //     this.toastr.error(error.message);
-    //   });
-    // }
-
-    // this.isLoading = 'submit';
-
-    // let DocNoteTemplateInsertObj = {};
-
-    // DocNoteTemplateInsertObj['AdmID'] = 11,//this.selectedAdvanceObj.PathReportID;
-    // DocNoteTemplateInsertObj['TDate']= this.dateTimeObj.date;
-    // DocNoteTemplateInsertObj['TTime ']= this.dateTimeObj.time;
-    // DocNoteTemplateInsertObj['DoctorsNotes']= this._NursingStationService.myform.get("DoctorsNotes").value || '',
-
-    // DocNoteTemplateInsertObj['doctNoteId'] =1,// this.accountService.currentUserValue.userId
-    // DocNoteTemplateInsertObj['IsAddedBy'] = this.accountService.currentUserValue.userId
-
-
-    // // this.dialogRef.afterClosed().subscribe(result => {
-    //       console.log('==============================  Advance Amount ===========');
-    //       let submitData = {
-
-    //         "doctorNoteInsert": DocNoteTemplateInsertObj
-    //       };
-    //     console.log(submitData);
-
-    //       this._NursingStationService.DoctorNoteInsert(submitData).subscribe(response => {
-
-    //         if (response) {
-    //           Swal.fire('Congratulations !', 'Doctor Note Template data saved Successfully !', 'success').then((result) => {
-    //             if (result.isConfirmed) {
-    //             //  this._matDialog.closeAll();
-    //              ;
-    //             //  this.getPrint();
-    //             }
-    //           });
-    //         } else {
-    //           Swal.fire('Error !', 'Doctor Note Template data not saved', 'error');
-    //         }
-    //         this.isLoading = '';
-    //       });
-
-    // });
+   
   }
 
   // onEdit(row) {

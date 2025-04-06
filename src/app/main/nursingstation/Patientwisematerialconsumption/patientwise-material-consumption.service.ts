@@ -68,7 +68,7 @@ export class PatientwiseMaterialConsumptionService {
   }
 
   public MaterialConsumptionSave(employee){
-    return this._httpClient.post("InPatient/MaterialConsumption", employee);
+    return this._httpClient1.PostData("InPatient/MaterialConsumption", employee);
   }
 
   public getLoggedStoreList(Param){

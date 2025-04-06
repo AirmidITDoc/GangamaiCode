@@ -402,61 +402,6 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
   }
 
  
-  // private filterDepartment() {
-  //   // ;
-  //   if (!this.DepartmentList) {
-  //     return;
-  //   }
-  //   // get the search keyword
-  //   let search = this.departmentFilterCtrl.value;
-  //   if (!search) {
-  //     this.filteredDepartment.next(this.DepartmentList.slice());
-  //     return;
-  //   }
-  //   else {
-  //     search = search.toLowerCase();
-  //   }
-  //   // filter
-  //   this.filteredDepartment.next(
-  //     this.DepartmentList.filter(bank => bank.departmentName.toLowerCase().indexOf(search) > -1)
-  //   );
-
-  //   // let cData = this._NursingStationService.getDepartmentCombo().subscribe(data => {
-  //   //   this.DepartmentList = data;
-  //   //   this.filteredDepartment.next(this.DepartmentList.slice());
-  //   // });
-  // }
-
-  //  ===================================================================================
-  filterStates(name: string) {
-    let tempArr = [];
-
-    this.billingServiceList.forEach((element) => {
-      if (element.ServiceName.toString().toLowerCase().search(name) !== -1) {
-        tempArr.push(element);
-      }
-    });
-    return tempArr;
-  }
-
-  // getDepartmentList() {
-  //   let cData = this._NursingStationService.getDepartmentCombo().subscribe(data => {
-  //     this.DepartmentList = data;
-  //     this.filteredDepartment.next(this.DepartmentList.slice());
-  //   });
-  // }
-
-//   Patientlist(){
-// ;
-// var m_data = {
-//   "DepartmentId": this.registeredForm.get('Departmentid').value.Departmentid,
-  
-// }
-//     this._NursingStationService.getpatientlist(m_data).subscribe(Visit => {
-//       this.dataSource1.data = Visit as  patientinfo [];
-//       console.log(this.dataSource1.data);
-//     });
-//   }
   onOptionSelected(selectedItem) {
     this.b_price = selectedItem.Price
     this.b_totalAmount = selectedItem.Price  //* parseInt(this.b_qty)
@@ -477,37 +422,6 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
     if (e.length == 0) { this.b_price = ''; this.b_totalAmount = '0'; this.b_netAmount = '0'; this.b_disAmount = '0'; }
   }
 
-  getServiceListCombobox() {
-    let tempObj;
-    var m_data = {
-      ServiceName:`${this.registeredForm.get('SrvcName').value}%`,
-      TariffId:1,// this.selectedAdvanceObj.TariffId,
-      IsPathRad:1,
-      ClassId:1,// this.selectedAdvanceObj.ClassId
-    };
-    // console.log(m_data);
-    if (this.registeredForm.get('SrvcName').value.length >= 1) {
-    this._NursingStationService.getBillingServiceList(m_data).subscribe(data => {
-      console.log(data);
-      this.filteredOptions = data;
-      console.log( this.filteredOptions);
-      if (this.filteredOptions.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
-    });
-    // });
-  }
-  }
-
-  getOptionText(option) {
-  // ;
-    if (!option)
-     return '';
-    return option.ServiceName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
-   
-  }
 
   BatchNo:any;
   ExpDate:any;
@@ -691,8 +605,6 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
     let materialconsumptionInsertarray = [];
     let materialconsumptionInsert = {};
    
-    // submissionObj['insertIP_MedicalRecord'] = insertIP_MedicalRecordArray;
-
     // this.dataSource.data.forEach((element) => {
       let insertIP_Prescription = {};
       materialconsumptionInsert['materialConsumptionId'] = 0;
@@ -711,17 +623,11 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
       this._NursingStationService.MaterialConsumptionSave(submissionObj).subscribe(response => {
         console.log(response);
-        if (response) {
-          Swal.fire('Congratulations !', 'New Material Consumption Saved Successfully  !', 'success').then((result) => {
-            if (result.isConfirmed) {
-              this._matDialog.closeAll();
-            }   
-          });
-        } else {
-          Swal.fire('Error !', 'Material Consumption Not Updated', 'error');
-        }
-        this.isLoading = '';
-      });
+        this.toastr.success(response.message);
+      this._matDialog.closeAll();
+    }, (error) => {
+      this.toastr.error(error.message);
+    });
   }
   
   @ViewChild('itemid') itemid: ElementRef;

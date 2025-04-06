@@ -26,7 +26,10 @@ export class DoctornoteService {
       WardName:[''],
       HandOverType:['0'],
       Category:['NursNote'],
-      isActive:[true,[Validators.required]]        
+      isActive:[true,[Validators.required]]   ,
+      TemplateId:[''],
+      TemplateName:[''],
+      templateDesc:[''],     
       });
     }
 

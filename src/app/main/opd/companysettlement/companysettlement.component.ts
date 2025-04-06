@@ -12,6 +12,7 @@ import { NewSettlementComponent } from './new-settlement/new-settlement.componen
 import Swal from 'sweetalert2';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { DatePipe } from '@angular/common';
+import { OpPaymentComponent } from '../op-search-list/op-payment/op-payment.component';
 
 @Component({
     selector: 'app-companysettlement',
@@ -94,8 +95,19 @@ Age=0;
         PatientHeaderObj['TariffName'] = contact.tariffName;
         PatientHeaderObj['CompanyName'] = contact.companyName;
         PatientHeaderObj['NetPayAmount'] = contact.netPayableAmt;
+
+        //  let PatientHeaderObj = {};
+        //     PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '1900-01-01',
+        //     PatientHeaderObj['PatientName'] = this.registerObj.patientName;
+        //     PatientHeaderObj['RegNo'] = this.registerObj.regNo,
+        //     PatientHeaderObj['DoctorName'] = this.registerObj.doctorname;
+        //     PatientHeaderObj['CompanyName'] = this.registerObj.companyName;
+        //     PatientHeaderObj['DepartmentName'] = this.registerObj.departmentName;
+        //     PatientHeaderObj['OPD_IPD_Id'] = this.registerObj.ipdno;
+        //     PatientHeaderObj['Age'] = this.registerObj.ageYear;
+        //     PatientHeaderObj['NetPayAmount'] = this.AdvFormGroup.get('advanceAmt').value || 0;
        
-        const dialogRef = this._matDialog.open(NewSettlementComponent,
+        const dialogRef = this._matDialog.open(OpPaymentComponent,
             {
                 maxWidth: "80vw",
                width: '70%',

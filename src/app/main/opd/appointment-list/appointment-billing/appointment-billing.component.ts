@@ -740,6 +740,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       this.toastrService.success(response.message);
       this.viewgetCreditOPBillReportPdf(response)
       this._matDialog.closeAll();
+      this.savebtn = true
       if (response)
         this.resetform();
     }, (error) => {
@@ -876,6 +877,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             if (response)
               this.resetform();
             this._matDialog.closeAll();
+            this.savebtn = true
           }, (error) => {
             this.toastrService.error(error.message);
           });
@@ -957,6 +959,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.viewgetOPBillReportPdf(response)
         // this.totalChargeForm.reset();
         this._matDialog.closeAll();
+        this.savebtn = true
         if (response)
           this.resetform();
 

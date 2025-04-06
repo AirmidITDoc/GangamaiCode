@@ -13,288 +13,191 @@ import { element } from 'protractor';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { CanteenList } from '../canteen-request.component';
 
 @Component({
   selector: 'app-new-canteen-request',
   templateUrl: './new-canteen-request.component.html',
-  styleUrls: ['./new-canteen-request.component.scss'],  
+  styleUrls: ['./new-canteen-request.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
 export class NewCanteenRequestComponent implements OnInit {
 
-    data: any;
-    autocompleteModegroupName:string = "Service";
-    autocompleteModestoreName:string = "Store";
-    autocompleteModewardName:string = "Room";
+  data: any;
+  autocompleteModegroupName: string = "Service";
+  autocompleteModestoreName: string = "Store";
+  autocompleteModewardName: string = "Room";
+  dsItemList = new MatTableDataSource<CanteenItemList>();
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  // gridConfig1: gridModel = {
+  //     apiUrl: "CurrencyMaster/List",
+  //     columnsList: [
+  //         { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
+  //         { heading: "Time", key: "time", sort: true, align: 'left', emptySign: 'NA' },
+  //     ],
+  //     sortField: "firstName",
+  //     sortOrder: 0,
+  //     filters: [
+  //         { fieldName: "firstName", fieldValue: "", opType: OperatorComparer.Contains },
+  //         { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals },
+  //         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+  //     ]
+  // }
 
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig1: gridModel = {
-        apiUrl: "CurrencyMaster/List",
-        columnsList: [
-            { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Time", key: "time", sort: true, align: 'left', emptySign: 'NA' },
-        ],
-        sortField: "firstName",
-        sortOrder: 0,
-        filters: [
-            { fieldName: "firstName", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-        ]
-    }
 
-    
-    gridConfig: gridModel = {
-        apiUrl: "CurrencyMaster/List",
-        columnsList: [
-            { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Buttons", key: "button", sort: true, align: 'left', emptySign: 'NA' },
-        ],
-        sortField: "firstName",
-        sortOrder: 0,
-        filters: [
-            { fieldName: "firstName", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-        ]
-    }
+  // gridConfig: gridModel = {
+  //     apiUrl: "CurrencyMaster/List",
+  //     columnsList: [
+  //         { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
+  //         { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
+  //         { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
+  //         { heading: "Buttons", key: "button", sort: true, align: 'left', emptySign: 'NA' },
+  //     ],
+  //     sortField: "firstName",
+  //     sortOrder: 0,
+  //     filters: [
+  //         { fieldName: "firstName", fieldValue: "", opType: OperatorComparer.Contains },
+  //         { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals },
+  //         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+  //     ]
+  // }
   vOPIPId: any = 0;
-  vOPDNo: any ;
+  vOPDNo: any;
   vTariffId: any = 0;
   vClassId: any = 0;
-  filteredOptions:any;
-  PatientListfilteredOptions:any;
-  noOptionFound:any;
-  PatientName: any ;
+  filteredOptions: any;
+  PatientListfilteredOptions: any;
+  noOptionFound: any;
+  PatientName: any;
   vAdmissionID: any = 0;
-  RegNo:any;
-  Doctorname:any;
-  Tarrifname:any;
-  CompanyName:any;
-  WardName:any;
-  BedNo:any;
-  registerObj:any; 
-  isRegIdSelected:boolean=false;
-  isItemIdSelected:boolean=false;
-  filteredOptionsWard: Observable<string[]>;
-  optionsWard: any[] = [];
-  isWardselected: boolean = false;
-  filteredOptionsStore: Observable<string[]>;
-  optionsStore: any[] = [];
-  isStoreselected: boolean = false;
-  WardList: any = [];
-  StoreList: any = [];
-  Itemlist: any = [];
+  RegNo: any;
+  Doctorname: any;
+  Tarrifname: any;
+  CompanyName: any;
+  WardName: any;
+  BedNo: any;
+  registerObj: any;
+  isRegIdSelected: boolean = false;
+  
   PresItemlist: any = [];
   dataArray: any = [];
-  filteredOptionsItem:any;
-  ItemId:any;
-  ItemName:any;
-  vQty:any;
-  vRemark:any
-  Chargelist:any=[];
-  vStoredId:any;
-  vOpDId:any;
+  filteredOptionsItem: any;
+  ItemId: any;
+  ItemName: any;
+  vQty: any;
+  vRemark: any
+  Chargelist: any = [];
+  vStoredId: any;
+  vOpDId: any;
+
+  
+  PatientType: any;
+  RefDocName: any;
+  DepartmentName: any;
+  Ageyear: any;
+  AgeMonth: any;
+  AgeDay: any;
+  AdmissionDate: any;
+  GenderName: any;
+
 
   constructor(
-    public _CanteenRequestservice:CanteenRequestService,
+    public _CanteenRequestservice: CanteenRequestService,
     private _loggedService: AuthenticationService,
     public datePipe: DatePipe,
+    
     public _matDialog: MatDialog,
     public toastr: ToastrService,
   ) { }
 
   ngOnInit(): void {
-    this.gePharStoreList();
-    this.getWardList(); 
+   
   }
 
-    getValidationMessages(){
-        return{
-            StoreId: [],
-            WardName: [],
-            ItemId: [],
-            Qty: [],
-            Remark: [],
+  getValidationMessages() {
+    return {
+      StoreId: [],
+      WardName: [],
+      ItemId: [],
+      Qty: [],
+      Remark: [],
 
-        }
     }
-
-  getSearchList() {
-    var m_data = {
-      "Keyword": `${this._CanteenRequestservice.MyForm.get('RegID').value}%`
-    }
-    if (this._CanteenRequestservice.MyForm.get('RegID').value.length >= 1) {
-      this._CanteenRequestservice.getAdmittedpatientlist(m_data).subscribe(resData => {
-        this.filteredOptions = resData;
-        console.log(resData)
-        this.PatientListfilteredOptions = resData;
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        } 
-      });
-    } 
   }
- 
-  getOptionText(option) {
-    if (!option) return '';
-    return option.FirstName + ' '+ option.MiddleName + ' ' + option.LastName + ' (' + option.RegID + ')';
-  }
-  PatientType:any;
-  RefDocName:any;
-  DepartmentName:any;
-  Ageyear:any;
-  AgeMonth:any;
-  AgeDay:any;
-  AdmissionDate:any;
-  GenderName:any;
-  
-  getSelectedObj(obj) { 
-    if(obj.IsDischarged == 1){
+  displayedVisitColumns: string[] = [
+    'Date',
+    'Time'
+  ]
+  displayedVisitColumns2: string[] = [
+    'ItemName',
+    'Qty',
+    'Remark',
+    'buttons'
+  ]
+  getSelectedObj(obj) {
+    console.log(obj)
+    if (obj.IsDischarged == 1) {
       Swal.fire('Selected Patient is already discharged');
-      this.PatientName = ''  
-      this.vAdmissionID =  ''
+      this.PatientName = ''
+      this.vAdmissionID = ''
       this.RegNo = ''
-      this.Doctorname =  ''
+      this.Doctorname = ''
       this.Tarrifname = ''
-      this.CompanyName =''
+      this.CompanyName = ''
       this.vOPDNo = ''
-      this.WardName =''
+      this.WardName = ''
       this.BedNo = ''
     }
-    else{ 
+    else {
       this.registerObj = obj;
       console.log(obj)
       // this.PatientName = obj.FirstName + '' + obj.LastName;
-      this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
-      this.RegNo = obj.RegNo;
-      this.vAdmissionID = obj.AdmissionID;
-      this.CompanyName = obj.CompanyName;
-      this.Tarrifname = obj.TariffName;
-      this.Doctorname = obj.DoctorName;
-      this.vOpDId = obj.AdmissionID;
-      this.vOPDNo = obj.IPDNo;
-      this.WardName = obj.RoomName;
-      this.BedNo = obj.BedName;
+      this.PatientName = obj.formattedText;
+      // obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
+      this.RegNo = obj.regNo;
+      this.vAdmissionID = obj.admissionID;
+      this.CompanyName = obj.companyName;
+      this.Tarrifname = obj.tariffName;
+      this.Doctorname = obj.doctorName;
+      this.vOpDId = obj.admissionID;
+      this.vOPDNo = obj.ipdNo;
+      this.WardName = obj.roomName;
+      this.BedNo = obj.bedName;
       this.PatientType = obj.PatientType
       this.RefDocName = obj.RefDocName
       this.DepartmentName = obj.DepartmentName
-      this.Ageyear = obj.Ageyear
+      this.Ageyear = obj.age
       this.AgeMonth = obj.AgeMonth
-      this.AgeDay = obj.AgeDay 
-      this.GenderName = obj.GenderName
-      this.AdmissionDate = obj.AdmissionDate
+      this.AgeDay = obj.AgeDay
+      this.GenderName = obj.genderName
+      this.AdmissionDate = obj.admissionTime
       console.log(obj);
-    } 
-  } 
-
-
-  private _filterStore(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-      return this.optionsStore.filter(option => option.StoreName.toLowerCase().includes(filterValue));
-    } 
-  }
-  gePharStoreList() {
-    this._CanteenRequestservice.getPharmacyStoreList().subscribe(data => {
-      this.StoreList = data;
-      this.optionsStore = this.StoreList.slice();
-      this.filteredOptionsStore = this._CanteenRequestservice.MyForm.get('StoreId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterStore(value) : this.StoreList.slice()),
-      );
-      this._CanteenRequestservice.MyForm.get('StoreId').setValue(this.StoreList[7])
-    });
-  } 
-  private _filterWard(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.RoomName ? value.RoomName.toLowerCase() : value.toLowerCase();
-      return this.optionsWard.filter(option => option.RoomName.toLowerCase().includes(filterValue));
-    } 
-  }
-  getWardList() {
-    this._CanteenRequestservice.getWardList().subscribe(data => {
-      this.WardList = data;
-      console.log(this.WardList)
-      this.optionsWard = this.WardList.slice();
-      this.filteredOptionsWard = this._CanteenRequestservice.MyForm.get('WardName').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterWard(value) : this.WardList.slice()),
-      ); 
-    });
-  }
-  WardId: any;
-  getOptionTextWard(option) {
-    // 
-    return option && option.RoomName ? option.RoomName : '';
-  }
-  getOptionTextStore(option) {
-    return option && option.StoreName ? option.StoreName : '';
-  }
-  getSelectedObjward(obj) {
-    this.WardId = obj.RoomId;
-  }
-
-  getSearchItemList() {  
-    if(this._CanteenRequestservice.MyForm.get('StoreId').value.StoreId > 0){ 
-      var m_data = {
-        "ItemName": `${this._CanteenRequestservice.ItemForm.get('ItemId').value}%` 
-      }
-      console.log(m_data); 
-      this._CanteenRequestservice.getItemlist(m_data).subscribe(data => {
-        this.filteredOptionsItem = data;
-        // console.log(this.data);
-        this.filteredOptionsItem = data;
-        if (this.filteredOptionsItem.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
-      });
-    }else{
-      this.toastr.warning('Please enter a Store', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      }); 
     }
-    
-  } 
-  getOptionItemText(option) {
-    this.ItemId = option.ItemID;
-    if (!option) return '';
-    return option.ItemName;
-  } 
-  getSelectedObjItem(obj) {
-    console.log(obj)
-      this.ItemName = obj.ItemName;
-      this.ItemId = obj.ItemID; 
-   
   }
-  dsItemList:any;
+
+
   onAdd() {
-    if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
-      this.toastr.warning('Please enter a qty', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    // if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
+    //   this.toastr.warning('Please enter a qty', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
     const iscekDuplicate = this.dsItemList.data.some(item => item.ItemID == this.ItemId)
-    if(!iscekDuplicate){
-    this.dsItemList.data = [];
-    this.Chargelist.push(
-      {
-        ItemID: this.ItemId,
-        ItemName: this.ItemName,
-        Qty: this.vQty,
-        Remark: this.vRemark || '' 
-      });
-    this.dsItemList.data = this.Chargelist
-    console.log(this.dsItemList.data); 
-    }else{
+    if (!iscekDuplicate) {
+
+      this.dsItemList.data = [];
+      this.Chargelist.push(
+        {
+          ItemID: this.ItemId,
+          ItemName: this.ItemName,
+          Qty:2,// this.vQty,
+          Remark:'Chk'// this.vRemark || ''
+        });
+      this.dsItemList.data = this.Chargelist
+      console.log(this.dsItemList.data);
+    } else {
       this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -308,6 +211,18 @@ export class NewCanteenRequestComponent implements OnInit {
     //console.log(this.dsPrePresList.data)
   }
 
+  getSelectedserviceObj(obj) {
+
+    console.log(obj)
+    this.ItemId = obj.serviceId
+    this.ItemName = obj.serviceName
+    this.vQty = 2
+    this.vRemark = 's'
+    this.add = true;
+  }
+
+
+
   deleteTableRow(event, element) {
     // if (this.key == "Delete") {
     let index = this.Chargelist.indexOf(element);
@@ -318,7 +233,7 @@ export class NewCanteenRequestComponent implements OnInit {
     }
     this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
       toastClass: 'tostr-tost custom-toast-success',
-    }); 
+    });
   }
 
   keyPressAlphanumeric(event) {
@@ -329,130 +244,89 @@ export class NewCanteenRequestComponent implements OnInit {
       event.preventDefault();
       return false;
     }
-  } 
+  }
   @ViewChild('itemid') itemid: ElementRef;
   @ViewChild('qty') qty: ElementRef;
-  @ViewChild('remark') remark: ElementRef; 
-  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement; 
+  @ViewChild('remark') remark: ElementRef;
+  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
   add: boolean = false;
   onEnterItem(event): void {
     if (event.which === 13) {
-      this.qty.nativeElement.focus(); 
+      this.qty.nativeElement.focus();
     }
   }
 
-  public onEnterqty(event): void { 
+  public onEnterqty(event): void {
     if (event.which === 13) {
-      this.remark.nativeElement.focus(); 
+      this.remark.nativeElement.focus();
     }
   }
 
-  public onEnterremark(event): void { 
+  public onEnterremark(event): void {
     if (event.which === 13) {
-      this.add = true; 
-    } 
-  }
-  savebtn:boolean=false;
-  OnSave(){
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'shortTime');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-    if (( this.RegNo== '' || this.RegNo == null || this.RegNo == undefined)) {
-      this.toastr.warning('Please select patient', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
+      this.add = true;
     }
-    if ((this.vStoredId == '' || this.vStoredId == null || this.vStoredId == undefined)) {
-    this.toastr.warning('Please select Store', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
   }
-  if(!this.StoreList.some(item => item.StoreName ===this._CanteenRequestservice.MyForm.get('StoreId').value.StoreName)){
-    this.toastr.warning('Please Select valid Store Name', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-  }
-    if ((this._CanteenRequestservice.MyForm.get('WardName').value == '' || 
-      this._CanteenRequestservice.MyForm.get('WardName').value == null || 
-      this._CanteenRequestservice.MyForm.get('WardName').value == undefined)) {
-      this.toastr.warning('Please select WardName', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if(!this.WardList.some(item => item.RoomName ===this._CanteenRequestservice.MyForm.get('WardName').value.RoomName)){
-      this.toastr.warning('Please Select valid Ward Name', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+  savebtn: boolean = false;
+  OnSave() {
+    
     if ((!this.dsItemList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    this.savebtn = true;
-    let canteenRequestHeaderInsert = {};
+   
+    
     let canteenRequestDetailsInsert = [];
 
-    canteenRequestHeaderInsert['date'] = formattedDate;
-    canteenRequestHeaderInsert['time'] = formattedTime;
-    canteenRequestHeaderInsert['oP_IP_ID'] = this.vOpDId || 0;
-    canteenRequestHeaderInsert['oP_IP_Type'] = 1 ;
-    canteenRequestHeaderInsert['wardId'] = this._CanteenRequestservice.MyForm.get('WardName').value.RoomId || 0;
-    canteenRequestHeaderInsert['cashCounterID'] = 0
-    canteenRequestHeaderInsert['isFree'] = false ;
-    canteenRequestHeaderInsert['unitID'] = 0
-    canteenRequestHeaderInsert['isBillGenerated'] = false ;
-    canteenRequestHeaderInsert['addedBy'] = this._loggedService.currentUserValue.userId;
-    canteenRequestHeaderInsert['isPrint'] = false;
-    canteenRequestHeaderInsert['reqId'] = 0;
-
-    this.dsItemList.data.forEach(element =>{
+    this.dsItemList.data.forEach(element => {
       let CanteenReqDetObj = {};
-      CanteenReqDetObj['reqId'] = 0 
+      CanteenReqDetObj['reqDetId'] = 0
+      CanteenReqDetObj['reqId'] = 0
       CanteenReqDetObj['itemId'] = element.ItemID || 0;
-      CanteenReqDetObj['unitMRP'] = 0
+      CanteenReqDetObj['unitMRP'] = 210
       CanteenReqDetObj['qty'] = element.Qty || 0;
-      CanteenReqDetObj['totalAmount'] = 0;
+      CanteenReqDetObj['totalAmount'] = 20;
+      CanteenReqDetObj['isBillGenerated'] = true;
+      CanteenReqDetObj['isCancelled'] = false;
       canteenRequestDetailsInsert.push(CanteenReqDetObj);
     });
 
-    let SubmitDataObj={
-      'canteenRequestHeaderInsert' : canteenRequestHeaderInsert,
-      'canteenRequestDetailsInsert' : canteenRequestDetailsInsert
+    let SubmitDataObj = {
+      "reqId": 0,
+      "date":this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+      "time": this.datePipe.transform(new Date(), 'hh:mm:ss a'),
+      "reqNo": "string",
+      "opIpId": this.vOpDId || 0,
+      "opIpType": 1,
+      "wardId":this._CanteenRequestservice.MyForm.get('WardName').value || 0,
+      "cashCounterId": 0,
+      "isFree": true,
+      "unitId": 1,
+      "isBillGenerated": true,
+      "isPrint": true,
+      'tCanteenRequestDetails': canteenRequestDetailsInsert
     }
     console.log(SubmitDataObj);
-    this._CanteenRequestservice.CanteenReqSave(SubmitDataObj).subscribe(response =>{
-      if (response) { 
-        this.toastr.success('Record Saved Successfully.', 'Save !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-        this.onClose();
-        this.savebtn = false;
-      } else { 
-        this.toastr.error('Record Not Saved!', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      }
-    }, error => {
-      this.toastr.error('API Error!', 'Error !', {
-        toastClass: 'tostr-tost custom-toast-error',
-      });
+    this._CanteenRequestservice.CanteenReqSave(SubmitDataObj).subscribe(response => {
+      this.toastr.success(response.message);
+      this._matDialog.closeAll();
+    }, (error) => {
+      this.toastr.error(error.message);
     });
+
+ 
   }
-  dsCanteenDateList:any;
-  onClose(){
+
+  dsCanteenDateList = new MatTableDataSource<CanteenList>();
+
+  onClose() {
     this._matDialog.closeAll();
     this._CanteenRequestservice.ItemForm.reset();
     this._CanteenRequestservice.MyForm.reset();
     this.dsCanteenDateList.data = [];
-    this.dsItemList.data =[];
+    this.dsItemList.data = [];
     this.Chargelist.data = [];
     this._CanteenRequestservice.MyForm.get('Op_ip_id').setValue('1')
   }

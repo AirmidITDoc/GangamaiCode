@@ -63,7 +63,7 @@ export class NewTemplateComponent implements OnInit {
             }
             console.log('json mdata:',mdata);
 
-              this._TemplatedescriptionService.bankMasterSave(mdata).subscribe((response) => {
+              this._TemplatedescriptionService.TemplateSave(mdata).subscribe((response) => {
                   this.toastr.success(response.message);
                   this.onClear();
               }, (error) => {

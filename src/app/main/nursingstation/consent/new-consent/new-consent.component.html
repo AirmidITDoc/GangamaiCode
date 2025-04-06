@@ -48,7 +48,7 @@
                                                 <airmid-autocomplete lbl="RgId"
                                                     *ngIf="_ConsentService.myform.get('PatientType').value == 'OP'"
                                                     [formGroup]="_ConsentService.myform" formControlName="RegID"
-                                                    placeholderText="OP-RegNo/FirstName/LastName"
+                                                    label="OP-RegNo/FirstName/LastName"
                                                     ApiUrl="VisitDetail/search-patient?Keyword="
                                                     (selectionChange)="getSelectedObjOP($event)"
                                                     TextField="formattedText" ValueField="regId">
@@ -57,7 +57,7 @@
                                                 <airmid-autocomplete lbl="RgId"
                                                     *ngIf="_ConsentService.myform.get('PatientType').value == 'IP'"
                                                     [formGroup]="_ConsentService.myform" formControlName="RegID"
-                                                    placeholderText="IP-RegNo/FirstName/LastName"
+                                                    label="IP-RegNo/FirstName/LastName"
                                                     ApiUrl="Admission/search-patient?Keyword="
                                                     (selectionChange)="getSelectedObjIP($event)"
                                                     ValueField="admissionID" TextField="firstName">

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { CanteenRequestService } from './canteen-request.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -13,6 +13,7 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 
 
@@ -24,36 +25,31 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations
 })
 export class CanteenRequestComponent implements OnInit {
+    myFilterform
+
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
-
-    hasSelectedContacts: boolean;
+@ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    ngAfterViewInit() {
+        // this.gridConfig.columnsList.find(col => col.key === 'admId')!.template = this.Status;
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    }
 
     gridConfig: gridModel = {
-        apiUrl: "Nursing/PrescriptionWardList",
+        apiUrl: "CanteenRequest/CanteenRequestHeaderList",
         columnsList: [
             { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Visit/AdmDate", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "WardName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "AddUserName", key: "oP_IP_ID", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Visit/AdmDate", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA',type:8 },
+            { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "AddUserName", key: "addedUserName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsBillGenerated", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA' },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._CanteenRequestService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
+                heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+                template: this.actionButtonTemplate  // Assign ng-template to the column
+            }
         ],
         sortField: "ReqId",
         sortOrder: 0,
@@ -69,9 +65,9 @@ export class CanteenRequestComponent implements OnInit {
     isShowDetailTable: boolean = false;
 
     GetDetails(data) {
-        
+        let reqId=data.reqId
         this.gridConfig1 = {
-        apiUrl: "Nursing/PrescriptionDetailList",
+        apiUrl: "CanteenRequest/CanteenRequestList",
         columnsList: [
             // { heading: "Code", key: "reqId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
@@ -81,12 +77,8 @@ export class CanteenRequestComponent implements OnInit {
         sortField: "ReqId",
         sortOrder: 0,
         filters: [
-            // { fieldName: "ReqId", fieldValue: "ReqId", opType: OperatorComparer.Equals },
-            // { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
-            // { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
-            // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            // { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            { fieldName: "ReqId", fieldValue: "1", opType: OperatorComparer.Equals }
+           
         ]
       }
         this.isShowDetailTable = true;
@@ -95,26 +87,24 @@ export class CanteenRequestComponent implements OnInit {
     }
 
     
-    constructor(public _CanteenRequestService: CanteenRequestService, public _matDialog: MatDialog,
+    constructor(public _CanteenRequestService: CanteenRequestService, public _matDialog: MatDialog, private _formBuilder: FormBuilder,
         public toastr: ToastrService,) { }
     ngOnInit(): void {
+        this.myFilterform=this.filterForm()
     }
 
-    onSave(row: any = null) {
-        let that = this;
-        const dialogRef = this._matDialog.open(NewCanteenRequestComponent,
-            {
-                maxWidth: "75vw",
-                height: '75%',
-                width: '70%',
-                data: row
+  
+     filterForm(): FormGroup {
+            return this._formBuilder.group({
+                RegNo: '',
+               
+                fromDate: [(new Date()).toISOString()],
+                enddate: [(new Date()).toISOString()],
             });
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
-        });
-    }
+        }
+
+
+    onPrint(){}
 
     NewRequest(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -136,3 +126,57 @@ export class CanteenRequestComponent implements OnInit {
         });
     }
 }
+
+
+export class CanteenList {
+    IndentNo: Number;
+    IndentDate: number;
+    FromStoreName: string;
+    ToStoreName: string;
+    Addedby: number;
+    IsInchargeVerify: string;
+    CanteenList: any;
+    FromStoreId: boolean;
+  
+    /**
+     * Constructor
+     *
+     * @param CanteenList
+     */
+    constructor(CanteenList) {
+      {
+        this.IndentNo = CanteenList.IndentNo || 0;
+        this.IndentDate = CanteenList.IndentDate || 0;
+        this.FromStoreName = CanteenList.FromStoreName || "";
+        this.ToStoreName = CanteenList.ToStoreName || "";
+        this.Addedby = CanteenList.Addedby || 0;
+        this.IsInchargeVerify = CanteenList.IsInchargeVerify || "";
+        this.CanteenList = CanteenList.CanteenList || "";
+        this.FromStoreId = CanteenList.FromStoreId || "";
+  
+      }
+    }
+  }
+  export class CanteenDetList {
+  
+    ItemName: string;
+    Qty: number;
+    IssQty: number;
+    BalQty: any;
+    StoreName: any;
+    /**
+     * Constructor
+     *
+     * @param CanteenDetList
+     */
+    constructor(CanteenDetList) {
+      {
+  
+        this.ItemName = CanteenDetList.ItemName || "";
+        this.Qty = CanteenDetList.Qty || 0;
+        this.IssQty = CanteenDetList.IssQty || 0;
+        this.BalQty = CanteenDetList.BalQty || 0;
+        this.StoreName = CanteenDetList.StoreName || '';
+      }
+    }
+  }

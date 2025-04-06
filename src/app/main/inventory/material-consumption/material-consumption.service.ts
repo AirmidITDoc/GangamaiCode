@@ -23,7 +23,7 @@ export class MaterialConsumptionService {
 
   createSearchFrom() {
     return this._formBuilder.group({
-      StoreId:'',
+      ToStoreId: ['2'],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
     });
@@ -31,7 +31,7 @@ export class MaterialConsumptionService {
   
   createUserForm() {
     return this._formBuilder.group({
-      FromStoreId: [''],
+      FromStoreId: ['2'],
       BatchNO: [''],
       ItemName:[''],
       BalQty:[''],
@@ -41,6 +41,9 @@ export class MaterialConsumptionService {
       ItemID:[''],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
+      IsPatientWiseConsumption:[true],
+      RegID:[''],
+      PatientType:['1']
     });
   }
   createfinalform() {

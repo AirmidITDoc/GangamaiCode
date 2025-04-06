@@ -19,6 +19,9 @@ export class NewTemplateComponent implements OnInit {
     vTemplateDesc:any;
     vTemplateName:any;
     isActive:boolean=true;
+    autocompleteModetemplate: string = "Template";
+
+    
     editorConfig: AngularEditorConfig = {
         editable: true,
         spellcheck: true,

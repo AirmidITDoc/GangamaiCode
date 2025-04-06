@@ -85,11 +85,7 @@ export class DischargeComponent implements OnInit {
         this.DischargeForm.get('dischargeTime').setValue(this.now);
         if (this.DischargeForm.get('dischargeTime'))
           this.DischargeForm.get('dischargeTime').setValue(this.now);
-
-        this.DischargeForm = this.DischargesaveForm();
-        this.DischargeForm.markAllAsTouched();
-        this.DischargeForm.get("dischargedDocId").setValue(this.data.docNameId)
-      }
+}
     }, 1);
 
     if (this.advanceDataStored.storage) {
@@ -100,12 +96,14 @@ export class DischargeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.DischargeForm = this.DischargesaveForm();
+    this.DischargeForm.markAllAsTouched();
+    
     console.log(this.data)
     if (this.data) {
       this.vAdmissionId = this.data.admissionId;
       this.vBedId = this.data.bedId
-      // this.DischargeForm.get("dischargedDocId").setValue(this.data.docNameId)
+      this.DischargeForm.get("dischargedDocId").setValue(this.data.docNameId)
     }
 
     if ((this.data?.regId ?? 0) > 0) {

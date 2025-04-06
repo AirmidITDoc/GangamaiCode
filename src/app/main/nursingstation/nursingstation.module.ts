@@ -42,7 +42,7 @@ const approtes: Routes = [
 },
 {
   path:"patientwisematerialconsumption",
-  loadChildren: () => import("./Patientwisematerialconsumption/material-consumption.module").then((m)=>m.MaterialConsumptionModule), 
+  loadChildren: () => import("../inventory/material-consumption/material-consumption.module").then((m)=>m.MaterialConsumptionModule), 
 },
 {
   path:"doctornote",

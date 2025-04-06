@@ -312,10 +312,10 @@ export class TestFormMasterComponent implements OnInit {
 
     onSubmit() {
         debugger
-        const currentDate = new Date();
-        const datePipe = new DatePipe('en-US');
-        const formattedTime = datePipe.transform(currentDate, 'shortTime');
-        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+        // const currentDate = new Date();
+        // const datePipe = new DatePipe('en-US');
+        // const formattedTime = datePipe.transform(currentDate, 'shortTime');
+        // const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
         if (!this.testForm.invalid) {
 
@@ -350,6 +350,9 @@ export class TestFormMasterComponent implements OnInit {
                 "ParameterId": row.parameterID || row.parameterId
             }));
 
+
+            
+
             var mdata = {
                 "TestId": 0,
                 "TestName": this.testForm.get("TestName").value || "",
@@ -363,8 +366,8 @@ export class TestFormMasterComponent implements OnInit {
                 "IsDeleted": Boolean(JSON.parse(this.testForm.get("isActive").value)), //true
                 "ServiceId": this.testForm.get("ServiceId").value || 0,
                 "IsTemplateTest": this._TestmasterService.is_templatetest ? 1 : 0,//this.testForm.get('IsTemplateTest').value,
-                "TestTime": formattedTime,
-                "TestDate": formattedDate,//"2022-07-11",
+                // "TestTime": formattedTime,
+                // "TestDate": formattedDate,//"2022-07-11",
                 "MPathTemplateDetails": mPathTemplateDetails,
                 "MPathTestDetailMasters": mPathTestDetailMasters
             }
@@ -401,8 +404,8 @@ export class TestFormMasterComponent implements OnInit {
                 "IsDeleted": Boolean(JSON.parse(this.testForm.get("isActive").value)),
                 "ServiceId": this.testForm.get("ServiceId").value || 0,
                 "IsTemplateTest": this._TestmasterService.is_templatetest ? 1 : 0, //this.testForm.get('IsTemplateTest').value,
-                "TestTime": formattedTime,
-                "TestDate": formattedDate,//"2022-07-11",
+                // "TestTime": formattedTime,
+                // "TestDate": formattedDate,//"2022-07-11",
                 "MPathTemplateDetails": mPathTemplateDetails,
                 "MPathTestDetailMasters": mPathTestDetailMasters
             }
@@ -701,3 +704,35 @@ export class TestFormMasterComponent implements OnInit {
         this.dialogRef.close(val);
     }
 }
+
+
+// {
+//     "pathTest": {
+//       "testName": "string",
+//       "printTestName": "string",
+//       "categoryId": 0,
+//       "isSubTest": true,
+//       "techniqueName": "string",
+//       "machineName": "string",
+//       "suggestionNote": "string",
+//       "footNote": "string",
+//       "isActive": true,
+//       "addedBy": 0,
+//       "serviceId": 0,
+//       "isTemplateTest": 0,
+//       "testId": 0
+//     },
+//     "pathTemplateDetail": [
+//       {
+//         "testId": 0,
+//         "templateId": 0
+//       }
+//     ],
+//     "pathTestDetail": [
+//       {
+//         "testId": 0,
+//         "subTestId": 0,
+//         "parameterId": 0
+//       }
+//     ]
+//   }

@@ -167,8 +167,8 @@ export class DischargeSummaryTemplateComponent {
     Tempdesc:any;
     showDischargeSummaryForm(): FormGroup {
       return this._formBuilder.group({
-        TemplateId:['', Validators.required],
-        templateDesc:'',
+        TemplateId:0,
+        templateDesc:['', Validators.required],
         dischargeSummaryId: 0,
         admissionId:0,// this.vAdmissionId,
         dischargeId: 0,
@@ -348,6 +348,7 @@ export class DischargeSummaryTemplateComponent {
 
   
     OnSave() {
+      if (!this.DischargesumForm.invalid) {
       Swal.fire({
         title: 'Do you want to Save the Discharge Summary Template',
         text: "You won't be able to revert this!",
@@ -444,6 +445,25 @@ export class DischargeSummaryTemplateComponent {
           }
         }
         })
+      }else {
+        let invalidFields = [];
+  
+        if (this.DischargesumForm.invalid) {
+          for (const controlName in this.DischargesumForm.controls) {
+            if (this.DischargesumForm.controls[controlName].invalid) {
+              invalidFields.push(`Discharge Form: ${controlName}`);
+            }
+          }
+        }
+        if (invalidFields.length > 0) {
+          invalidFields.forEach(field => {
+            this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+            );
+          });
+        }
+  
+      }
+
     }
   
   

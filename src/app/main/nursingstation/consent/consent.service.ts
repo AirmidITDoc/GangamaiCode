@@ -25,7 +25,7 @@ export class ConsentService {
       ConsentName: '',
       ConsentText: [''],
       Template: ['',[Validators.required]],
-      Department: ['',[Validators.required]],
+      Department: [1,[Validators.required]],
       Language: ['1'],
       IsIPOrOP:['2'],
       start: [(new Date()).toISOString()],
