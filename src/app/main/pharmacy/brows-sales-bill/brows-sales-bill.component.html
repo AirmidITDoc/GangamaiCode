@@ -261,6 +261,20 @@
                                                     </mat-cell>
                                                 </ng-container>
                                             
+                                                <ng-container matColumnDef="IsPrinted" stickyEnd>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">
+                                                        IsPrinted
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
+                                                        <button mat-icon-button matTooltip="IsPrinted"  *ngIf="contact.IsPrint == '1' else Show">
+                                                            <mat-icon class="green-600 pill">check</mat-icon>
+                                                        </button>
+                                                        <ng-template #Show>
+                                                            <span>-</span>
+                                                        </ng-template>
+                                                    </mat-cell>
+                                                </ng-container>
+
                                                 <ng-container matColumnDef="action1" stickyEnd>
                                             
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-150">

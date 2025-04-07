@@ -86,6 +86,7 @@ export class BrowsSalesBillComponent implements OnInit {
     'PaidAmt',
     'PaidType',
     'IPNo',
+    'IsPrinted',
     'action1'
   ]
   displayedColumns2: string[] = [

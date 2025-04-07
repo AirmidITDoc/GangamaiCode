@@ -483,6 +483,7 @@ export class SalesHospitalComponent implements OnInit {
 
     this.getSalesPatientList();
     this.getSalesDoctorList();
+    this.getScrolling();
   }
 
   // createForm() {
@@ -548,7 +549,13 @@ export class SalesHospitalComponent implements OnInit {
       + (this.amount4 ? parseInt(this.amount4) : 0)
       + (this.amount5 ? parseInt(this.amount5) : 0));
   }
-
+  ExpiryItem:any=[];
+getScrolling(){
+  this._salesService.getExpiryItemlist().subscribe(data=>{
+    this.ExpiryItem = data
+    console.log(this.ExpiryItem)
+  })
+}
   // onAddClick(paymentOption: string) {
   //   this.paymentRowObj[paymentOption] = true;
   //   switch (paymentOption) {
@@ -2239,7 +2246,7 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['concessionReasonID'] = ConcessionId || 0;
     SalesInsert['concessionAuthorizationId'] = 0;
     SalesInsert['isSellted'] = 0;
-    SalesInsert['isPrint'] = 0;
+    SalesInsert['isPrint'] = 1;
     SalesInsert['isFree'] = 0;
     SalesInsert['unitID'] = 1;
     SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
@@ -2479,7 +2486,7 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['concessionReasonID'] = ConcessionId || 0;
     SalesInsert['concessionAuthorizationId'] = 0;
     SalesInsert['isSellted'] = 0;
-    SalesInsert['isPrint'] = 0;
+    SalesInsert['isPrint'] = 1;
     SalesInsert['isFree'] = 0;
     SalesInsert['unitID'] = 1;
     SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
@@ -2706,7 +2713,7 @@ export class SalesHospitalComponent implements OnInit {
     salesInsertCredit['concessionReasonID'] = ConcessionId || 0;
     salesInsertCredit['concessionAuthorizationId'] = 0;
     salesInsertCredit['isSellted'] = 0;
-    salesInsertCredit['isPrint'] = 0;
+    salesInsertCredit['isPrint'] = 1;
     salesInsertCredit['isFree'] = 0;
     salesInsertCredit['unitID'] = 1;
     salesInsertCredit['addedBy'] = this._loggedService.currentUserValue.user.id,
@@ -3454,7 +3461,7 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['concessionReasonID'] = ConcessionId || 0;
     SalesInsert['concessionAuthorizationId'] = 0;
     SalesInsert['isSellted'] = 0;
-    SalesInsert['isPrint'] = 0;
+    SalesInsert['isPrint'] = 1;
     SalesInsert['unitID'] = 1;
     SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
     SalesInsert['externalPatientName'] = ExternalPatient ;

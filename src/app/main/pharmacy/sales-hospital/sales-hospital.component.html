@@ -601,6 +601,21 @@
                                     </mat-card>
                                 </div>
 
+                                <div fxLayout="row" fxLayoutGap="5px"> 
+                                    <span style="font-weight: bold;color: rgb(127, 79, 239);width: 145px;" >Expired ItemName :</span>
+                                    <marquee behavior="scroll" direction="left" scrollamount="10">
+                                        <span *ngFor="let item of ExpiryItem">
+                                          {{item.ItemName}}
+                                          </span>
+                                      </marquee>
+                                </div>
+                               
+                                
+                                <!-- <marquee direction="left" scrollamount="5" scrolldelay="100">
+                                    <span *ngFor="let item of ExpiryItem">
+                                        {{item.ItemName}}
+                                    </span>
+                                </marquee> -->
                                 <form class="example-form mt-12" [formGroup]="ItemSubform">
                                     <mat-card style="width: 100%;font-size: large;">
                                         <div class="footer-container" fxLayout="column" fxLayoutAlign="start"
@@ -1474,7 +1489,8 @@
                             </div>
                         </mat-card>
                     </div>
-                </div>
+                </div> 
+                
             </div>
             <!-- / CONTENT -->
         </div>

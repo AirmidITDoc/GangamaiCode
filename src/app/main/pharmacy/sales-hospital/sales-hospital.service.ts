@@ -79,7 +79,9 @@ import { LoaderService } from 'app/core/components/loader/loader.service';
     public getIndentID(Param){
       return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Indent_by_ID",Param);
     }
-  
+    public getExpiryItemlist(){
+      return this._httpClient.post("Generic/GetByProc?procName=m_ExpiryItemScrollingData",{});
+    }
   
     public getIndentList(Param){
       return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IndentItemList",Param);
