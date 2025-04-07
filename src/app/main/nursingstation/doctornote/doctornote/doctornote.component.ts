@@ -140,8 +140,6 @@ export class DoctornoteComponent implements OnInit {
     }
   }
 
-
-
   ngOnInit(): void {
     this.getTemplateNoteList();
     // this.getWardNameList();
@@ -161,23 +159,7 @@ export class DoctornoteComponent implements OnInit {
     }
 
   }
-  //Patient search 
-  getSearchList() {
-    var m_data = {
-      "Keyword": `${this._NursingStationService.myform.get('RegID').value}%`
-    }
-    this._NursingStationService.getAdmittedPatientList(m_data).subscribe(data => {
-      this.PatientListfilteredOptionsIP = data;
-      if (this.PatientListfilteredOptionsIP.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
-    });
-  }
-  getOptionTextIPObj(option) {
-    return option && option.FirstName + " " + option.LastName;
-  }
+
   getSelectedObjRegIP(obj) {
     console.log(obj)
     this.registerObj = obj;
