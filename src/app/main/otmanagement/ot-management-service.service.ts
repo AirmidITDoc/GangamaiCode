@@ -144,8 +144,7 @@ export class OTManagementServiceService {
       AnathesticNAme:'',
       OtNote:'',
       Extra:'',
-      Pre:'',
-
+      Pre:'', 
       Description:'',
       DoctorId:''
 
@@ -218,6 +217,12 @@ export class OTManagementServiceService {
 
   public ReservationInsert(employee){
     return this._httpClient.post("OT/SaveOTBooking", employee);
+  }
+  public InsertOTNotes(employee){
+    return this._httpClient.post("InPatient/OTNoteTemplateInsert", employee);
+  }
+  public UpdateOTNotes(employee){
+    return this._httpClient.post("InPatient/OTNoteTemplateUpdate", employee);
   }
 
   public ReservationUpdate(employee){
