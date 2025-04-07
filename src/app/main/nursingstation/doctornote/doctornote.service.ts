@@ -7,74 +7,101 @@ import { ApiCaller } from 'app/core/services/apiCaller';
   providedIn: 'root'
 })
 export class DoctornoteService {
-    myform: FormGroup;
-    Templateform: FormGroup;
+  myform: FormGroup;
+  Templateform: FormGroup;
+  noteform: FormGroup
 
-    constructor(
-        // public _httpClient: HttpClient,
-        public _httpClient: ApiCaller,
-        public _formBuilder: UntypedFormBuilder) {
-        this.myform = this.createtemplateForm();
-        this.Templateform=this.createnewtemplateForm();
-    }
+  constructor(
+    // public _httpClient: HttpClient,
+    public _httpClient: ApiCaller,
+    public _formBuilder: UntypedFormBuilder) {
+    this.myform = this.createtemplateForm();
+    this.noteform = this.createDoctorNoteForm();
+    this.Templateform = this.createnewtemplateForm();
+  }
 
-     createtemplateForm(): FormGroup {
-      return this._formBuilder.group({
-      Note: [''], 
-      Description:[''],
-      DoctNoteId:'',
-      WardName:[''],
-      HandOverType:['0'],
-      Category:['NursNote'],
-      isActive:[true,[Validators.required]]   ,
-      TemplateId:[''],
-      TemplateName:[''],
-      templateDesc:[''],     
-      });
-    }
+  createtemplateForm(): FormGroup {
+    return this._formBuilder.group({
+      Note: [''],
+      Description: [''],
+      DoctNoteId: '',
+      WardName: [''],
+      docHandId:[0],
+      HandOverType: ["Morning"],
+      staffName: [''],
+      SYMPTOMS: [''],
+      Instruction: [''],
+      Stable: [''],
+      Assessment: [''],
+      Category: ['NursNote'],
+      isActive: [true, [Validators.required]],
+      TemplateId: [''],
+      TemplateName: [''],
+      templateDesc: [''],
+    });
+  }
 
-    createnewtemplateForm(): FormGroup {
-      return this._formBuilder.group({
-        TemplateId:[''],
-        TemplateName:[''],
-        TemplateDesc:[''],
-      });
-    }
+  createDoctorNoteForm(): FormGroup {
+    return this._formBuilder.group({
+      doctNoteId: [0],
+      admId: [''],
+      TemplateId: [''],
+      tdate: [(new Date()).toISOString()],
+      ttime: [(new Date()).toISOString()],
+      // TemplateName:[''],
+      templateDesc: [''],
+      isAddedBy: ['']
+    });
+  }
 
-    public templateMasterSave(Param: any) {
-        if (Param.templateId) {
-            return this._httpClient.PutData("RadiologyTemplate/" + Param.templateId, Param);
-        } else return this._httpClient.PostData("RadiologyTemplate", Param);
-    }
+  createnewtemplateForm(): FormGroup {
+    return this._formBuilder.group({
+      TemplateId: [''],
+      TemplateName: [''],
+      TemplateDesc: [''],
+    });
+  }
 
-    public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("ItemCategoryMaster?Id=" + m_data.toString());
-    }
-  
-  // public DoctorNoteInsert(employee) {
-  //   return this._httpClient.post("InPatient/DoctorNoteInsert", employee)
-  // }
-  DoctorNotepoppulateForm(param){
+  public templateMasterSave(Param: any) {
+    if (Param.templateId) {
+      return this._httpClient.PutData("RadiologyTemplate/" + Param.templateId, Param);
+    } else return this._httpClient.PostData("RadiologyTemplate", Param);
+  }
+
+  public deactivateTheStatus(m_data) {
+    return this._httpClient.DeleteData("ItemCategoryMaster?Id=" + m_data.toString());
+  }
+
+  DoctorNotepoppulateForm(param) {
     this.myform.patchValue(param)
   }
   public getdoctornoteList(param) {
-    return this._httpClient.PostData("CanteenRequest/DoctorNoteList",param);
-}
-public getpatientHandList(param) {
-  return this._httpClient.PostData("CanteenRequest/TDoctorPatientHandoverList",param);
-}
-  public DoctorNoteInsert(employee) {
-    return this._httpClient.PostData("DoctorNote", employee)
+    return this._httpClient.PostData("CanteenRequest/DoctorNoteList", param);
   }
-  public DoctorNoteUpdate(Param: any) {
-    
-    if (Param.doctNoteId) {
-        return this._httpClient.PutData("DoctorNote/" + Param.doctNoteId, Param);
+  public getpatientHandList(param) {
+    return this._httpClient.PostData("CanteenRequest/TDoctorPatientHandoverList", param);
+  }
+  public HandOverInsert(employee) {
+    return this._httpClient.PostData("Nursing/DoctorPatientHandoverInsert", employee)
+  }
+
+  public HandOverUpdate(Param: any) {
+    if (Param.docHandId) {
+      return this._httpClient.PutData("Nursing/DoctorPatientHandover/" + Param.docHandId, Param);
     }
   }
+
+  public DoctorNoteInsert(Param: any) {
+    debugger
+    if (Param.doctNoteId) {
+      return this._httpClient.PutData("Nursing/DoctorNoteUpdate/" + Param.doctNoteId, Param);
+    } else return this._httpClient.PostData("Nursing/DoctorNoteInsert", Param);
+  }
+
+
   public getRegistraionById(Id) {
     return this._httpClient.GetData("OutPatient/" + Id);
-}
+  }
 
   public getDoctorNoteCombo() {
     return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_DoctorNotesTemplateMaterForCombo", {})

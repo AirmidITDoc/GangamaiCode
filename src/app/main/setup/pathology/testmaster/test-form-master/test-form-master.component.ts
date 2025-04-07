@@ -15,6 +15,7 @@ import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/conf
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { DatePipe } from "@angular/common";
+import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Component({
     selector: "app-test-form-master",
@@ -112,6 +113,7 @@ export class TestFormMasterComponent implements OnInit {
         public dialogRef: MatDialogRef<TestFormMasterComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public toastr: ToastrService,
+        private _loggedService: AuthenticationService,
         public _matDialog: MatDialog
     ) { }
 
@@ -131,7 +133,7 @@ export class TestFormMasterComponent implements OnInit {
             this.vTestId = this.registerObj.testId
             this.vTestName=this.registerObj.testName
             this.TemplateId = this.registerObj.TemplateId;
-            this.isActive=this.registerObj.isdeleted;
+            this.isActive=this.registerObj.isActive;
 
             if (this.registerObj.isTemplateTest === "0" && !this.registerObj.isSubTest) {
                 this._TestmasterService.is_subtest = false;
@@ -173,11 +175,6 @@ export class TestFormMasterComponent implements OnInit {
             SuggestionNote: this.data?.suggestionNote
         };
         this.testForm.patchValue(m_data);
-    }
-
-    getOptionTextTemplate(option) {
-
-        return option && option.TemplateName ? option.TemplateName : '';
     }
 
     toggle(val) {
@@ -312,16 +309,11 @@ export class TestFormMasterComponent implements OnInit {
 
     onSubmit() {
         debugger
-        // const currentDate = new Date();
-        // const datePipe = new DatePipe('en-US');
-        // const formattedTime = datePipe.transform(currentDate, 'shortTime');
-        // const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
         if (!this.testForm.invalid) {
 
             this.invalidFields1 = [];
 
-            // Check table data validation
             if (!this._TestmasterService.is_templatetest && this.DSTestList.data.length === 0) {
                 this.invalidFields1.push('No data in the table list!');
             }
@@ -334,46 +326,47 @@ export class TestFormMasterComponent implements OnInit {
                 this.invalidFields1.forEach(field => {
                     this.toastr.warning(field, 'Warning!');
                 });
-                return; // Stop further processing if there are errors
+                return;
             }
 
             if(!this.vTestId){
             let mPathTemplateDetails = this.Templatetdatasource.data.map((row: any) => ({
-                "PtemplateId": 0,
+                // "PtemplateId": 0,
                 "TestId": 0,
                 "TemplateId": row.templateId,
             }));
+
             let mPathTestDetailMasters = this.DSTestList.data.map((row: any) => ({
-                "TestDetId": 0,
+                // "TestDetId": 0,
                 "TestId": row.testId || 0,
                 "SubTestId": row.subTestID || 0,
                 "ParameterId": row.parameterID || row.parameterId
             }));
 
-
-            
-
-            var mdata = {
+            let pathTest = {
+                "testName": this.testForm.get("TestName").value || "",
+                "printTestName": this.testForm.get("PrintTestName").value || "",
+                "categoryId": this.testForm.get("CategoryId").value || 12,
+                "isSubTest": this.Subtest !== undefined ? this.Subtest : false,//this.testForm.get('IsSubTest').value,
+                "techniqueName": this.testForm.get("TechniqueName").value || "",
+                "machineName": this.testForm.get("MachineName").value || "",
+                "suggestionNote": this.testForm.get("SuggestionNote").value || "",
+                "footNote": this.testForm.get("FootNote").value || "",
+                "isActive": Boolean(JSON.parse(this.testForm.get("isActive").value)), //true
+                "addedBy": this._loggedService.currentUserValue.userId,
+                "serviceId": this.testForm.get("ServiceId").value || 0,
+                "isTemplateTest": this._TestmasterService.is_templatetest ? 1 : 0,//this.testForm.get('IsTemplateTest').value,
                 "TestId": 0,
-                "TestName": this.testForm.get("TestName").value || "",
-                "PrintTestName": this.testForm.get("PrintTestName").value || "",
-                "CategoryId": this.testForm.get("CategoryId").value || 12,
-                "IsSubTest": this.Subtest !== undefined ? this.Subtest : false,//this.testForm.get('IsSubTest').value,
-                "TechniqueName": this.testForm.get("TechniqueName").value || "",
-                "MachineName": this.testForm.get("MachineName").value || "",
-                "SuggestionNote": this.testForm.get("SuggestionNote").value || "",
-                "FootNote": this.testForm.get("FootNote").value || "",
-                "IsDeleted": Boolean(JSON.parse(this.testForm.get("isActive").value)), //true
-                "ServiceId": this.testForm.get("ServiceId").value || 0,
-                "IsTemplateTest": this._TestmasterService.is_templatetest ? 1 : 0,//this.testForm.get('IsTemplateTest').value,
-                // "TestTime": formattedTime,
-                // "TestDate": formattedDate,//"2022-07-11",
-                "MPathTemplateDetails": mPathTemplateDetails,
-                "MPathTestDetailMasters": mPathTestDetailMasters
             }
 
-            console.log("json of Test:", mdata)
-            this._TestmasterService.TestMasterSave(mdata).subscribe((response) => {
+            let testMaster = {
+                "pathTest": pathTest,
+                "pathTemplateDetail": mPathTemplateDetails,
+                "pathTestDetail": mPathTestDetailMasters
+              }
+
+            console.log("json of Test:", testMaster)
+            this._TestmasterService.TestMasterSave(testMaster).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClose(true);
             }, (error) => {
@@ -381,37 +374,42 @@ export class TestFormMasterComponent implements OnInit {
             });
         } else {
             let mPathTemplateDetails = this.Templatetdatasource.data.map((row: any) => ({
-                "PtemplateId": 0,
+                // "PtemplateId": 0,
                 "TestId": 0,
                 "TemplateId": row.templateId, //teplate id is not comming becasue we not using dropdown so
             }));
             let mPathTestDetailMasters = this.DSTestList.data.map((row: any) => ({
-                "TestDetId": 0,
+                // "TestDetId": 0,
                 "TestId": row.testId || 0,
                 "SubTestId": row.subTestID || 0,
                 "ParameterId": row.parameterID || row.parameterId
             }));
-            var mdata1 = {
+
+            let pathTest = {
+                "testName": this.testForm.get("TestName").value || "",
+                "printTestName": this.testForm.get("PrintTestName").value || "",
+                "categoryId": this.testForm.get("CategoryId").value || 12,
+                "isSubTest": this.Subtest !== undefined ? this.Subtest : false,//this.testForm.get('IsSubTest').value,
+                "techniqueName": this.testForm.get("TechniqueName").value || "",
+                "machineName": this.testForm.get("MachineName").value || "",
+                "suggestionNote": this.testForm.get("SuggestionNote").value || "",
+                "footNote": this.testForm.get("FootNote").value || "",
+                "isActive": Boolean(JSON.parse(this.testForm.get("isActive").value)), //true
+                "addedBy": this._loggedService.currentUserValue.userId,
+                "serviceId": this.testForm.get("ServiceId").value || 0,
+                "isTemplateTest": this._TestmasterService.is_templatetest ? 1 : 0,//this.testForm.get('IsTemplateTest').value,
                 "TestId": this.vTestId,
-                "TestName": this.testForm.get("TestName").value,
-                "PrintTestName": this.testForm.get("PrintTestName").value,
-                "CategoryId": this.testForm.get("CategoryId").value || 12,
-                "IsSubTest": this.Subtest !== undefined ? this.Subtest : false, //this.Subtest, //this.testForm.get('IsSubTest').value,
-                "TechniqueName": this.testForm.get("TechniqueName").value,
-                "MachineName": this.testForm.get("MachineName").value,
-                "SuggestionNote": this.testForm.get("SuggestionNote").value,
-                "FootNote": this.testForm.get("FootNote").value,
-                "IsDeleted": Boolean(JSON.parse(this.testForm.get("isActive").value)),
-                "ServiceId": this.testForm.get("ServiceId").value || 0,
-                "IsTemplateTest": this._TestmasterService.is_templatetest ? 1 : 0, //this.testForm.get('IsTemplateTest').value,
-                // "TestTime": formattedTime,
-                // "TestDate": formattedDate,//"2022-07-11",
-                "MPathTemplateDetails": mPathTemplateDetails,
-                "MPathTestDetailMasters": mPathTestDetailMasters
             }
 
-            console.log("json of Test:", mdata1)
-            this._TestmasterService.TestMasterUpdate(mdata1).subscribe((response) => {
+            let testMaster1 = {
+                "pathTest": pathTest,
+                "pathTemplateDetail": mPathTemplateDetails,
+                "pathTestDetail": mPathTestDetailMasters
+              }
+
+            console.log("Updatejson of Test:", testMaster1)
+
+            this._TestmasterService.TestMasterUpdate(testMaster1).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClose(true);
             }, (error) => {

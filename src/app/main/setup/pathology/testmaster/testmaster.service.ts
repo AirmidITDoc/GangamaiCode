@@ -175,13 +175,13 @@ export class TestmasterService {
     }
 
     public TestMasterSave(Param: any) {
-         return this._httpClient.PostData("PathTestMaster/InsertEDMX", Param);
+         return this._httpClient.PostData("PathTestMaster/Insert", Param);
     }
 
     public TestMasterUpdate(Param: any) {
-        
-        if (Param.TestId) {
-         return this._httpClient.PutData("PathTestMaster/Edit/" + Param.TestId, Param);
+        debugger
+        if (Param.pathTest.TestId) {
+         return this._httpClient.PutData("PathTestMaster/Edit/" + Param.pathTest.TestId, Param);
         }
     }
 

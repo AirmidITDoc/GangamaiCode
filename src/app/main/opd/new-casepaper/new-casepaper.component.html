@@ -135,11 +135,12 @@
                                                 <hr>
 
                                                 <div fxLayout="row wrap" fxLayoutGap="10px">
-                                                    <!-- Height -->
+                                                    <!-- Height  -->
                                                     <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>Height</mat-label>
                                                         <input matInput formControlName="Height"
-                                                            placeholder="Height in cm" [(ngModel)]="vHeight" required
+                                                            placeholder="Height in cm" 
+                                                            [(ngModel)]="vHeight" required
                                                             (keydown)="onEnterHeight($event)" OnlyNumber
                                                             (keyup)="getBMIcalculation()"
                                                             (keypress)="keyPressCharater($event)">
@@ -165,7 +166,7 @@
                                                     <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>BMI</mat-label>
                                                         <input matInput formControlName="BMI" placeholder="BMI"
-                                                            [(ngModel)]="vBMI" readonly>
+                                                        [(ngModel)]="vBMI" readonly>
                                                     </mat-form-field>
 
                                                     <!-- BSL -->
@@ -199,7 +200,7 @@
                                                     <mat-form-field appearance="outline" fxFlex="12%">
                                                         <mat-label>BP</mat-label>
                                                         <input matInput formControlName="BP" placeholder="BP"
-                                                            [(ngModel)]="vBP" (keydown)="onEnterBP($event)" OnlyNumber
+                                                        [(ngModel)]="vBP" (keydown)="onEnterBP($event)" OnlyNumber
                                                             (keypress)="keyPressOk($event)">
                                                         <span matSuffix style="font-size: x-large;">|</span>
                                                         <span matSuffix
@@ -210,7 +211,7 @@
                                                     <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>Temp</mat-label>
                                                         <input matInput formControlName="Temp" placeholder="Temp"
-                                                            [(ngModel)]="vTemp" (keydown)="onEnterTemp($event)"
+                                                        [(ngModel)]="vTemp" (keydown)="onEnterTemp($event)"
                                                             OnlyNumber (keypress)="keyPressCharater($event)">
                                                         <span matSuffix style="font-size: x-large;">|</span>
                                                         <!-- <span matSuffix style="margin-right: 10px; font-size: x-large;">°F</span> -->
@@ -417,9 +418,7 @@
                                             </div>
                                             <div class="modal-card-container table-container fusePerfectScrollbar">
                                                 <div class="table" fxFlex="100%">
-                                                    <!-- <mat-table class="mat-table-1 h-230" matSort
-                                                        [dataSource]="dsItemList" [@animateStagger]="{value:'50'}"
-                                                        style="overflow: auto;"> -->
+
                                                     <div class="airmid-table-container">
                                                         <mat-table matSort [dataSource]="dsItemList"
                                                             [@animateStagger]="{value:'50'}" class="airmid-table">
@@ -429,7 +428,8 @@
                                                                     fxHide fxShow.gt-sm>
                                                                     Drug Name</mat-header-cell>
                                                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                    <span> {{element.DrugName || vDrugName}}</span>
+                                                                    <span> {{element.DrugName || element.drugName}}</span>
+                                                                    <!-- <span> {{element.DrugName || vDrugName}}</span> -->
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -443,7 +443,8 @@
                                                                     fxHide fxShow.gt-sm class="w-300">
                                                                     <!-- Display text when not in edit mode -->
                                                                     <span *ngIf="editingIndex1 !== in">
-                                                                        {{ element.GenericName || vItemGN }}
+                                                                        {{ element.GenericName || element.genericName }}
+                                                                        <!-- {{ element.GenericName || vItemGN }} -->
                                                                         <mat-icon (click)="editItem(in, element)"
                                                                             class="edit-icon">edit</mat-icon>
                                                                     </span>
@@ -485,7 +486,8 @@
                                                                     fxHide fxShow.gt-sm class="w-300">
 
                                                                     <span *ngIf="editingIndex !== i">
-                                                                        {{ element.DoseName || vDoseName }}
+                                                                        {{ element.DoseName || element.doseName }}
+                                                                        <!-- {{ element.DoseName || vDoseName }} -->
                                                                         <mat-icon (click)="editDose(i, element)"
                                                                             class="edit-icon">edit</mat-icon>
                                                                     </span>
@@ -523,11 +525,12 @@
                                                                     <mat-form-field appearance="fill"
                                                                         floatLabel="never">
                                                                         <input matInput
-                                                                            [(ngModel)]="element.Days || vDayys"
+                                                                            [(ngModel)]="element.Days || element.days"
                                                                             type="number" OnlyNumber>
                                                                     </mat-form-field>
                                                                 </mat-cell>
                                                             </ng-container>
+                                                            <!-- [(ngModel)]="element.Days || vDayys" -->
 
                                                             <ng-container matColumnDef="Remark">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -537,11 +540,12 @@
                                                                     <mat-form-field appearance="fill"
                                                                         floatLabel="never">
                                                                         <input matInput
-                                                                            [(ngModel)]="element.Instruction || vInst"
+                                                                            [(ngModel)]="element.Instruction || element.instruction"
                                                                             type="text">
                                                                     </mat-form-field>
                                                                 </mat-cell>
                                                             </ng-container>
+                                                            <!-- [(ngModel)]="element.Instruction || vInst" -->
 
                                                             <ng-container matColumnDef="Action" stickyEnd>
                                                                 <mat-header-cell *matHeaderCellDef
