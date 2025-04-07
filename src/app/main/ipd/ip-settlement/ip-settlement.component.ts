@@ -121,7 +121,7 @@ export class IPSettlementComponent implements OnInit {
         console.log(obj)
         this.RegId1 = obj.value; 
         setTimeout(() => {
-            this._IPSettlementService.getRegistraionById(this.RegId1).subscribe((response) => {
+            this._IPSettlementService.getAdmissionById(this.RegId1).subscribe((response) => {
                 this.registerObj = response;
                 this.PatientName = this.registerObj.firstName + ' ' + this.registerObj.middleName + ' ' + this.registerObj.lastName
                 console.log(response)

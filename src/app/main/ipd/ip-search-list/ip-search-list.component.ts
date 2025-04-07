@@ -311,6 +311,12 @@ export class IPSearchListComponent implements OnInit {
 
         }
         else if (m == "Bill") {
+            if(element.isBillGenerated == '1'){
+                this.toastr.warning('Final Bill already Generated', 'warning !', {
+                    toastClass: 'tostr-tost custom-toast-error',
+                  });
+                  return  
+            }
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
 
@@ -328,6 +334,7 @@ export class IPSearchListComponent implements OnInit {
             dialogRef.afterClosed().subscribe(result => {
                 if (result) {
                     that.grid.bindGridData();
+                    this.grid.bindGridData();
                 }
             });
         }

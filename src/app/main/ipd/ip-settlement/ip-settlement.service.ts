@@ -62,8 +62,8 @@ public InsertIPSettlementPayment (employee){
 }
 
 
-public getRegistraionById(Id) {
-  return this._httpClient1.GetData("OutPatient/" + Id);
+public getAdmissionById(Id) {
+  return this._httpClient1.GetData("Admission/" + Id);
 }
 
 

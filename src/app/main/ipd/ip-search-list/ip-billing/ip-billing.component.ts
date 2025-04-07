@@ -295,13 +295,13 @@ export class IPBillingComponent implements OnInit {
   toggleSidebar() { 
     this.isOpen = !this.isOpen; 
   }
-  calculateTotalCharge(row: any = null): void {
+  calculateTotalCharge(row: any = null): void { 
     let qty = +this.Serviceform.get("qty").value;
     let price = +this.Serviceform.get("price").value;
-
-    if (qty <= 0 || price <= 0) return;
-
-    let total = qty * price;
+    let total = 0
+    if (qty > 0 && price > 0){
+      total = qty * price;
+    }   
     this.Serviceform.patchValue({
       TotalAmt: total,
       netAmount: total  // Set net amount initially
