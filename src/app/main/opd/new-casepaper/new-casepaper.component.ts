@@ -532,30 +532,59 @@ export class NewCasepaperComponent implements OnInit {
       this.Chargelist = this.dsItemList.data;
 
       console.log("iiiiii:", this.Chargelist);
-      if (this.dsItemList.data.length > 0) {
-        this.vHeight = this.dsItemList.data[0].pHeight;
-        this.vWeight = this.dsItemList.data[0].pWeight;
-        this.vBMI = this.dsItemList.data[0].bmi;
-        this.vSpO2 = this.dsItemList.data[0].spO2;
-        this.vTemp = this.dsItemList.data[0].temp;
-        this.vPulse = this.dsItemList.data[0].pulse;
-        this.vBSL = this.dsItemList.data[0].bsl;
-        this.vBP = this.dsItemList.data[0].bp;
 
-        this.vChiefComplaint = this.dsItemList.data[0].chiefComplaint;
-        this.vDiagnosis = this.dsItemList.data[0].diagnosis;
-        this.vExamination = this.dsItemList.data[0].examination;
-        this.PrefollowUpDate = this.datePipe.transform(this.dsItemList.data[0].followupDate, 'MM/dd/YYYY');
+      if (this.dsItemList.data.length > 0) {
+        for (let item of this.dsItemList.data) {
+          this.vHeight = item.pHeight;
+          this.vWeight = item.pWeight;
+          this.vBMI = item.bmi;
+          this.vSpO2 = item.spO2;
+          this.vTemp = item.temp;
+          this.vPulse = item.pulse;
+          this.vBSL = item.bsl;
+          this.vBP = item.bp;
+
+          this.vChiefComplaint = item.chiefComplaint;
+        this.vDiagnosis = item.diagnosis;
+        this.vExamination = item.examination;
+        this.PrefollowUpDate = this.datePipe.transform(item.followupDate, 'MM/dd/YYYY');
         this.specificDate = new Date(this.PrefollowUpDate)
-        this.MedicineItemForm.get('Remark').setValue(this.dsItemList.data[0].advice)
-        this.RefDocName = this.dsItemList.data[0].doctorname
-        this.vDrugName = this.dsItemList.data[0].drugName
-        this.vDoseName = this.dsItemList.data[0].doseName
-        this.vItemGN = this.dsItemList.data[0].genericName
-        this.vDayys = this.dsItemList.data[0].days
-        this.vInst = this.dsItemList.data[0].instruction
-        this.MedicineItemForm.get("DoctorID").setValue(this.dsItemList.data[0].patientReferDocId)
+        this.MedicineItemForm.get('Remark').setValue(item.advice)
+        this.RefDocName = item.doctorname
+        this.vDrugName = item.drugName
+        this.vDoseName = item.doseName
+        this.vItemGN = item.genericName
+        this.vDayys = item.days
+        this.vInst = item.instruction
+        this.MedicineItemForm.get("DoctorID").setValue(item.patientReferDocId)
+        }
+        
       }
+
+      // if (this.dsItemList.data.length > 0) {
+      //   this.vHeight = this.dsItemList.data[0].pHeight;
+      //   this.vWeight = this.dsItemList.data[0].pWeight;
+      //   this.vBMI = this.dsItemList.data[0].bmi;
+      //   this.vSpO2 = this.dsItemList.data[0].spO2;
+      //   this.vTemp = this.dsItemList.data[0].temp;
+      //   this.vPulse = this.dsItemList.data[0].pulse;
+      //   this.vBSL = this.dsItemList.data[0].bsl;
+      //   this.vBP = this.dsItemList.data[0].bp;
+
+      //   this.vChiefComplaint = this.dsItemList.data[0].chiefComplaint;
+      //   this.vDiagnosis = this.dsItemList.data[0].diagnosis;
+      //   this.vExamination = this.dsItemList.data[0].examination;
+      //   this.PrefollowUpDate = this.datePipe.transform(this.dsItemList.data[0].followupDate, 'MM/dd/YYYY');
+      //   this.specificDate = new Date(this.PrefollowUpDate)
+      //   this.MedicineItemForm.get('Remark').setValue(this.dsItemList.data[0].advice)
+      //   this.RefDocName = this.dsItemList.data[0].doctorname
+      //   this.vDrugName = this.dsItemList.data[0].drugName
+      //   this.vDoseName = this.dsItemList.data[0].doseName
+      //   this.vItemGN = this.dsItemList.data[0].genericName
+      //   this.vDayys = this.dsItemList.data[0].days
+      //   this.vInst = this.dsItemList.data[0].instruction
+      //   this.MedicineItemForm.get("DoctorID").setValue(this.dsItemList.data[0].patientReferDocId)
+      // }
     });
 
   }
@@ -1110,7 +1139,7 @@ export class NewCasepaperComponent implements OnInit {
       return;
     }
 
-    const iscekDuplicate = this.dsItemList.data.some(item => item.Presid == this.MedicineItemForm.get('TemplateId').value.PresId)
+    const iscekDuplicate = this.dsItemList.data.some(item => item.Presid == this.MedicineItemForm.get('TemplateId').value)
     if (!iscekDuplicate) {
       var vdata = {
         "first": 0,

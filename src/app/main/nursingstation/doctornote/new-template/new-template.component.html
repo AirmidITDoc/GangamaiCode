@@ -23,14 +23,18 @@
                     <div fxLayout="row wrap" fxLayoutGap="12px grid">
                         <div fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="8px" fxLayoutAlign="center">
 
-
-                            <airmid-dropdown label="Template" formControlName="TemplateId" [formGroup]="myform"
+                            <airmid-textbox 
+                            label="TemplateName" fxFlex
+                            formControlName="templateName" 
+                            [value]="data?.templateName"
+                            [formGroup]="myform"
+                            [validations]="getValidationMessages().templateName"
+                            [maxLength]="50">
+                        </airmid-textbox>
+                        <!-- here is on textbox no DD as per in 8085 -->
+                            <!-- <airmid-dropdown label="Template" formControlName="TemplateId" [formGroup]="myform"
                                 [mode]="autocompleteModetemplate">
-                            </airmid-dropdown>
-
-                            
-
-
+                            </airmid-dropdown> -->                          
 
                             <div fxFlex="20%" fxLayout="row">
                                 <mat-radio-group name="Category" formControlName="Category" fxLayout="row"
