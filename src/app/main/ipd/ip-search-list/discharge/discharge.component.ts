@@ -98,7 +98,7 @@ export class DischargeComponent implements OnInit {
   ngOnInit(): void {
     this.DischargeForm = this.DischargesaveForm();
     this.DischargeForm.markAllAsTouched();
-    this.getdischargeIdbyadmission()
+    // this.getdischargeIdbyadmission()
     console.log(this.data)
     if (this.data) {
       this.vAdmissionId = this.data.admissionId;
@@ -190,7 +190,7 @@ export class DischargeComponent implements OnInit {
       dischargModeldata['modeOfDischargeId'] = 1
       dischargModeldata['admissionId'] = this.vAdmissionId
 
-      if (this.DischargeId == 0) {
+      if (this.data.isDischarged == 0) {
         var m_data = {
           "discharge": dischargModeldata,// this.DischargeForm.value,
           "admission": {
@@ -212,8 +212,8 @@ export class DischargeComponent implements OnInit {
         }, (error) => {
           this.toastr.error(error.message);
         });
-      } else if (this.DischargeId != 0) {
-
+      } else if (this.data.isDischarged == 1) {
+        dischargModeldata['dischargeId'] = 1
         dischargModeldata['modifiedBy'] = 1
         console.log(this.DischargeForm.value)
         var m_data1 = {

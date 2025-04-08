@@ -135,7 +135,7 @@ export class NewAppointmentComponent implements OnInit {
 
     constructor(
         public _AppointmentlistService: AppointmentlistService,
-
+        private _formBuilder: UntypedFormBuilder,
         public dialogRef: MatDialogRef<NewAppointmentComponent>,
         public _matDialog: MatDialog,
         private _ActRoute: Router,
@@ -153,7 +153,7 @@ export class NewAppointmentComponent implements OnInit {
     }
     ngOnInit(): void {
 
-        this.personalFormGroup = this._AppointmentlistService.createPesonalForm();
+        this.personalFormGroup = this.createPesonalForm();
         this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
         this.personalFormGroup.markAllAsTouched();
         this.VisitFormGroup.markAllAsTouched();
@@ -329,7 +329,7 @@ export class NewAppointmentComponent implements OnInit {
 
     }
     getSelectedObjphone(obj) {
-        
+
         this.PatientName = obj.text;
         this.RegId = obj.value;
         this.vPhoneAppId = obj.value;
@@ -352,9 +352,22 @@ export class NewAppointmentComponent implements OnInit {
         }
 
     }
-
+    ageYear="0"
+    ageMonth="0"
+    ageDay="0"
     onSave() {
-        console.log("Personal", this.personalFormGroup.value, "Visit", this.VisitFormGroup, values)
+console.log(this.registerObj.dateOfBirth)
+
+        let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
+        if (DateOfBirth1) {
+            const todayDate = new Date();
+            const dob = new Date(DateOfBirth1);
+            const timeDiff = Math.abs(Date.now() - dob.getTime());
+            this.ageYear = String(Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25))
+            this.ageMonth = String(Math.abs(todayDate.getMonth() - dob.getMonth()))
+            this.ageDay = String(Math.abs(todayDate.getDate() - dob.getDate()))
+
+        }
         if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
 
             if (this.isCompanySelected && this.VisitFormGroup.get('CompanyId').value == 0) {
@@ -363,6 +376,9 @@ export class NewAppointmentComponent implements OnInit {
                 });
                 return;
             }
+            this.personalFormGroup.get('AgeYear').setValue(this.ageYear)
+            this.personalFormGroup.get('AgeMonth').setValue(this.ageMonth)
+            this.personalFormGroup.get('AgeDay').setValue(this.ageDay)
 
             this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
             this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
@@ -378,37 +394,24 @@ export class NewAppointmentComponent implements OnInit {
 
         } else {
             let invalidFields = [];
-
-            // Check personalFormGroup
             if (this.personalFormGroup.invalid) {
                 for (const controlName in this.personalFormGroup.controls) {
-                    if (this.personalFormGroup.controls[controlName].invalid) {
-                        invalidFields.push(`Personal Form: ${controlName}`);
-                    }
+                    if (this.personalFormGroup.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
                 }
             }
-
-            // Check VisitFormGroup
             if (this.VisitFormGroup.invalid) {
-                for (const controlName in this.VisitFormGroup.controls) {
-                    if (this.VisitFormGroup.controls[controlName].invalid) {
-                        invalidFields.push(`Visit Form: ${controlName}`);
-                    }
-                }
+                for (const controlName in this.VisitFormGroup.controls) { if (this.VisitFormGroup.controls[controlName].invalid) { invalidFields.push(`Visit Form: ${controlName}`); } }
             }
 
-            // Show a toast for each invalid field
             if (invalidFields.length > 0) {
-                invalidFields.forEach(field => {
-                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-                    );
-                });
+                invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
             }
 
         }
     }
 
     OnsaveNewRegister() {
+        console.log(this.personalFormGroup.value)
         this.personalFormGroup.get("RegId").setValue(0)
         this.VisitFormGroup.get("regId").setValue(0)
         if (this.vPhoneAppId)
@@ -421,8 +424,7 @@ export class NewAppointmentComponent implements OnInit {
         console.log(submitData);
 
         this._AppointmentlistService.NewappointmentSave(submitData).subscribe((response) => {
-            // this.toastr.success(response.message);
-            // debugger
+            this.toastr.success(response.message);
             this.OnViewReportPdf(response)
             this.onClear(true);
             this._matDialog.closeAll();
@@ -441,7 +443,7 @@ export class NewAppointmentComponent implements OnInit {
         console.log(submitData);
 
         this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
-            // this.toastr.success(response.message);
+            this.toastr.success(response.message);
             if (response) {
                 this.OnViewReportPdf(response)
                 this.onClear(true);
@@ -452,6 +454,7 @@ export class NewAppointmentComponent implements OnInit {
 
     }
 
+    
 
     chkHealthcard(event) {
         if (event.checked) {
@@ -471,8 +474,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onChangecity(e) {
-        console.log(e)
-        this.registerObj.stateId = e.stateId
+       this.registerObj.stateId = e.stateId
         this._AppointmentlistService.getstateId(e.stateId).subscribe((Response) => {
             console.log(Response)
             this.ddlCountry.SetSelection(Response.countryId);
@@ -639,6 +641,74 @@ export class NewAppointmentComponent implements OnInit {
                 }
             }
         });
+    }
+
+
+    createPesonalForm() {
+        return this._formBuilder.group({
+            RegId: [0],
+            RegNo: "0",
+            PrefixId: ['', [Validators.required]],
+            FirstName: ['', [
+                Validators.required,
+                // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"), 
+                Validators.pattern("^[A-Za-z/() ]*$")
+            ]],
+            MiddleName: ['', [
+                // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+                Validators.pattern("^[A-Za-z/() ]*$")
+            ]],
+            LastName: ['', [
+                Validators.required,
+                // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+                Validators.pattern("^[A-Za-z/() ]*$")
+            ]],
+            GenderId: new FormControl('', [Validators.required]),
+            Address: '',
+            DateOfBirth: [(new Date()).toISOString()],
+            Age: ['0'],
+            AgeYear: ['0', [
+                // Validators.required,
+                Validators.maxLength(3),
+                Validators.pattern("^[0-9]*$")]],
+            AgeMonth: ['0', [
+                Validators.pattern("^[0-9]*$")]],
+            AgeDay: ['0', [
+                Validators.pattern("^[0-9]*$")]],
+            PhoneNo: ['', [Validators.minLength(10),
+            Validators.maxLength(10),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            ]],
+            MobileNo: ['', [Validators.required,
+            Validators.minLength(10),
+            Validators.maxLength(10),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            ]],
+            aadharCardNo: ['', [
+                Validators.minLength(12),
+                Validators.maxLength(12),
+                Validators.pattern("^[0-9]*$")
+            ]],
+
+            panCardNo: '',
+            MaritalStatusId: 0,
+            ReligionId: 0,
+            AreaId: 0,
+            CityId: ['', [Validators.required]],
+            City: [''],
+            StateId: ['', [Validators.required]],
+            CountryId: [0, [Validators.required]],
+            IsCharity: false,
+            IsSeniorCitizen: false,
+            AddedBy: this.accountService.currentUserValue.userId,
+            updatedBy: this.accountService.currentUserValue.userId,
+            RegDate: [(new Date()).toISOString()],
+            RegTime: [(new Date()).toISOString()],
+            Photo: [''],
+            PinNo: ['']
+
+        });
+
     }
 
 }

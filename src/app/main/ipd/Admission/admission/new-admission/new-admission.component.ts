@@ -164,7 +164,7 @@ export class NewAdmissionComponent implements OnInit {
       this.personalFormGroup = this._AdmissionService.createPesonalForm();
       this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
       this.Regdisplay = false;
-     
+
     } else {
       this.Regdisplay = true;
       this.Regflag = true;
@@ -178,7 +178,7 @@ export class NewAdmissionComponent implements OnInit {
   }
 
   onNewSave() {
-   
+
     if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid) {
 
       Swal.fire({
@@ -196,32 +196,32 @@ export class NewAdmissionComponent implements OnInit {
           this.OnSaveAdmission();
         }
       })
-    } 
-     else {
+    }
+    else {
       let invalidFields = [];
 
       if (this.personalFormGroup.invalid) {
-          for (const controlName in this.personalFormGroup.controls) {
-              if (this.personalFormGroup.controls[controlName].invalid) {
-                  invalidFields.push(`Personal Form: ${controlName}`);
-              }
+        for (const controlName in this.personalFormGroup.controls) {
+          if (this.personalFormGroup.controls[controlName].invalid) {
+            invalidFields.push(`Personal Form: ${controlName}`);
           }
+        }
       }
-  if (this.admissionFormGroup.invalid) {
-          for (const controlName in this.admissionFormGroup.controls) {
-              if (this.admissionFormGroup.controls[controlName].invalid) {
-                  invalidFields.push(`Admission Form: ${controlName}`);
-              }
+      if (this.admissionFormGroup.invalid) {
+        for (const controlName in this.admissionFormGroup.controls) {
+          if (this.admissionFormGroup.controls[controlName].invalid) {
+            invalidFields.push(`Admission Form: ${controlName}`);
           }
+        }
       }
-if (invalidFields.length > 0) {
-          invalidFields.forEach(field => {
-              this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-              );
-          });
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
       }
 
-  }
+    }
   }
 
 
@@ -244,8 +244,23 @@ if (invalidFields.length > 0) {
 
 
   }
-
+  ageYear = "0"
+  ageMonth = "0"
+  ageDay = "0"
   OnSaveAdmission() {
+    let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
+    if (DateOfBirth1) {
+      const todayDate = new Date();
+      const dob = new Date(DateOfBirth1);
+      const timeDiff = Math.abs(Date.now() - dob.getTime());
+      this.ageYear = String(Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25))
+      this.ageMonth = String(Math.abs(todayDate.getMonth() - dob.getMonth()))
+      this.ageDay = String(Math.abs(todayDate.getDate() - dob.getDate()))
+
+    }
+    this.personalFormGroup.get('AgeYear').setValue(this.ageYear)
+    this.personalFormGroup.get('AgeMonth').setValue(this.ageMonth)
+    this.personalFormGroup.get('AgeDay').setValue(this.ageDay)
 
     this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
     this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.admissionFormGroup.get('AdmissionDate').value, 'yyyy-MM-dd'))
@@ -257,18 +272,18 @@ if (invalidFields.length > 0) {
       return;
     }
 
+
+    let submitData = {
+      "AdmissionReg": this.personalFormGroup.value,
+      "ADMISSION": this.admissionFormGroup.value
+    };
+    console.log(submitData);
     if (this.searchFormGroup.get('regRadio').value == "registration" && this.AdmissionId == 0) {
 
-      let submitData = {
-        "AdmissionReg": this.personalFormGroup.value,
-        "ADMISSION": this.admissionFormGroup.value
-      };
-      console.log(submitData);
-
       this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
-      
+
         this.toastr.success(response.message);
-       this.getAdmittedPatientCasepaperview(response);
+        this.getAdmittedPatientCasepaperview(response);
         this.onClear();
         this._matDialog.closeAll();
 
@@ -277,13 +292,8 @@ if (invalidFields.length > 0) {
 
       });
 
-}
+    }
     else {
-
-      let submitData = {
-        "AdmissionReg": this.personalFormGroup.value,
-        "ADMISSION": this.admissionFormGroup.value
-      };
       console.log(submitData);
 
       this._AdmissionService.AdmissionRegisteredInsert(submitData).subscribe(response => {
@@ -324,11 +334,11 @@ if (invalidFields.length > 0) {
   }
 
   onChangeWard(e) {
-  this.ddlClassName.SetSelection(e.classId);
+    this.ddlClassName.SetSelection(e.classId);
   }
 
   onChangecity(e) {
-   this.registerObj.stateId = e.stateId
+    this.registerObj.stateId = e.stateId
     this._AdmissionService.getstateId(e.stateId).subscribe((Response) => {
       console.log(Response)
       this.ddlCountry.SetSelection(Response.countryId);

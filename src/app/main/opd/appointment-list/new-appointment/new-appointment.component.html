@@ -77,6 +77,9 @@
                         <form [formGroup]="personalFormGroup" class="mat-form-field-100">
                             <input type="hidden" name="RegId" formControlName="RegId" [(ngModel)]="registerObj.regId">
 
+                            <input type="hidden" name="AgeYear" formControlName="AgeYear" [(ngModel)]="ageYear">
+                            <input type="hidden" name="AgeMonth" formControlName="AgeMonth" [(ngModel)]="ageMonth">
+                            <input type="hidden" name="AgeDay" formControlName="AgeDay" [(ngModel)]="ageDay">
 
                             <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid">
 
@@ -223,8 +226,7 @@
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <div fxLayout="row" class="gap-8">
-                                            <mat-checkbox formControlName="IsHealthCard"
-                                                (change)="chkHealthcard($event)" style="padding: 15px;">IsHealthCard
+                                            <mat-checkbox (change)="chkHealthcard($event)" style="padding: 15px;">IsHealthCard
                                             </mat-checkbox>
                                         </div>
                                     </div>

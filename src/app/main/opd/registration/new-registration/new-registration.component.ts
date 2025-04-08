@@ -87,8 +87,27 @@ export class NewRegistrationComponent implements OnInit {
         }
       
     }
- 
+    ageYear= "0";
+    ageMonth ="0";
+    ageDay = "0";
     OnSubmit() {
+
+        console.log(this.registerObj.dateOfBirth)
+
+        let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
+        if (DateOfBirth1) {
+            const todayDate = new Date();
+            const dob = new Date(DateOfBirth1);
+            const timeDiff = Math.abs(Date.now() - dob.getTime());
+            this.ageYear = String(Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25))
+            this.ageMonth = String(Math.abs(todayDate.getMonth() - dob.getMonth()))
+            this.ageDay = String(Math.abs(todayDate.getDate() - dob.getDate()))
+
+        }
+        this.personalFormGroup.get('AgeYear').setValue(this.ageYear)
+        this.personalFormGroup.get('AgeMonth').setValue(this.ageMonth)
+        this.personalFormGroup.get('AgeDay').setValue(this.ageDay)
+
         console.log(this.personalFormGroup.value)
         this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
        
@@ -121,23 +140,8 @@ export class NewRegistrationComponent implements OnInit {
       
         }
     }
-    ageYear: number = 0;
-    ageMonth: number = 0;
-    ageDay: number = 0;
-  onChangeDateofBirth(DateOfBirth: Date) {
-         if (DateOfBirth) {
-             const todayDate = new Date();
-             const dob = new Date(DateOfBirth);
-             const timeDiff = Math.abs(Date.now() - dob.getTime());
-             this.ageYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-             this.ageMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-             this.ageDay = Math.abs(todayDate.getDate() - dob.getDate());
-            //  this.value = DateOfBirth;
-             this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
-                 if(this.ageYear > 110)
-                 Swal.fire("Please Enter Valid BirthDate..")
-         }
-     }
+
+ 
     onClose() {
         this.dialogRef.close();
     }
