@@ -386,6 +386,7 @@ export class TestFormMasterComponent implements OnInit {
             }));
 
             let pathTest = {
+                "testId": this.vTestId,
                 "testName": this.testForm.get("TestName").value || "",
                 "printTestName": this.testForm.get("PrintTestName").value || "",
                 "categoryId": this.testForm.get("CategoryId").value || 12,
@@ -395,10 +396,9 @@ export class TestFormMasterComponent implements OnInit {
                 "suggestionNote": this.testForm.get("SuggestionNote").value || "",
                 "footNote": this.testForm.get("FootNote").value || "",
                 "isActive": Boolean(JSON.parse(this.testForm.get("isActive").value)), //true
-                "addedBy": this._loggedService.currentUserValue.userId,
+                "updatedBy": this._loggedService.currentUserValue.userId,
                 "serviceId": this.testForm.get("ServiceId").value || 0,
                 "isTemplateTest": this._TestmasterService.is_templatetest ? 1 : 0,//this.testForm.get('IsTemplateTest').value,
-                "TestId": this.vTestId,
             }
 
             let testMaster1 = {

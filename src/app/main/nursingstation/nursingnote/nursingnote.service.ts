@@ -19,11 +19,18 @@ export class NursingnoteService {
      
   createtemplateForm(): FormGroup {
     return this._formBuilder.group({
+      TemplateId: [''],
+      DoctNoteId: '',
       Note: [''], 
       Description:[''],
       Op_ip_id:['1'],
       RegID:[''],
       HandOverType:['Morning'],
+      staffName: [''],
+      SYMPTOMS: [''],
+      Instruction: [''],
+      Stable: [''],
+      Assessment: [''],
       Category:['NursNote'],
       isActive:[true,[Validators.required]],
     });
@@ -47,8 +54,17 @@ export class NursingnoteService {
     }
 
 
-  public NursingNoteInsert(employee) {
-    return this._httpClient.PostData("Nursing", employee)
+  public NursingNoteInsert(Param) {
+    if (Param.doctNoteId) {
+      return this._httpClient.PutData("Nursing/NursingNoteUpdate/" + Param.doctNoteId, Param);
+    } else return this._httpClient.PostData("Nursing/NursingNoteInsert", Param)
   }
   
+  public HandOverInsert(employee) {
+    return this._httpClient.PostData("", employee)
+  }
+
+  public HandOverUpdate(employee) {
+    return this._httpClient.PostData("", employee)
+  }
 }

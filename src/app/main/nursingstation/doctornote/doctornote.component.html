@@ -1,4 +1,4 @@
-<div class="simple page-layout inner-scroll inner-sidebar left-sidebar">
+<div class="simple page-layout inner-scroll inner-sidebar left-sidebar" dynamicTableHeight>
     <mat-toolbar style="width: 100%;justify-content: space-between;">
         <div fxLayout="row" fxLayoutAlign="start center">
 
@@ -34,7 +34,6 @@
                         </form>
                     </div>
                 </div>
-
 
                 <form [formGroup]="myform">
 
@@ -157,9 +156,7 @@
                                                                     class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                                                                     <airmid-table [gridConfig]="gridConfig" #docNote
                                                                         :ShowFilter="false" :ShowButtons="false">
-                                                                        <ng-container filters>
-
-                                                                        </ng-container>
+                                                                        
                                                                     </airmid-table>
                                                                 </div>
 
@@ -256,7 +253,6 @@
                                                 <div fxLayout="row" fxLayoutGap="20px">
 
                                                     <span style="font-size:40px;padding-top: 10px;">S</span>
-
                                                     <mat-form-field appearance="outline" fxFlex="29.5%">
                                                         <textarea rows="4" matInput   name="Stable" formControlName="Stable" 
                                                         [(ngModel)]="VStable"></textarea> 
@@ -270,7 +266,7 @@
 
                                                     <div fxLayout="column" fxLayoutGap="6px"
                                                         style="padding: 10px 10px 0 60px;">
-                                                        <mat-radio-group name="HandOverType" value="Morning"
+                                                        <mat-radio-group name="HandOverType"
                                                             formControlName="HandOverType" fxLayout="column" [(ngModel)]="vHandOverType">
                                                             <mat-radio-button value="Morning">Morning</mat-radio-button>
                                                             <mat-radio-button value="Evening"> Evening</mat-radio-button>
@@ -281,7 +277,6 @@
                                                     <div style="padding: 30px 10px 0 10px;">
                                                         <button type="button" class="btn btn-primary btn-with-icon py-8"
                                                             #addbutton id="btnAdd" (click)="onSubmitHandOver()">
-                                                            <!-- <mat-icon>add</mat-icon> (click)="OnAddHand()" -->
                                                             Save
                                                         </button>
                                                     </div>&nbsp;

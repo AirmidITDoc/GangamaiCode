@@ -74,7 +74,7 @@ export class ResultEntryOneComponent implements OnInit {
     OPIPID: any = 0;
     OP_IPType: any;
     Iscompleted: any;
-    PathReportId: any;
+    vPathReportId: any;
     PathResultDr1: any;
     SexId: any;
     CheckAge: any;
@@ -115,7 +115,9 @@ export class ResultEntryOneComponent implements OnInit {
 
             this.reportIdData = [];
             this.regObj=data.RIdData
-            this.data.RIdData.forEach((element) => {
+                this.vPathReportId=this.regObj[0].PathReportId
+
+                this.data.RIdData.forEach((element) => {
                 this.reportIdData.push(element.PathReportId)
                 this.ServiceIdData.push(element.ServiceId)
                 if (element.IsCompleted == "true")
@@ -334,7 +336,7 @@ export class ResultEntryOneComponent implements OnInit {
             var param =  {
                 "searchFields": [          
                   {          
-                    "fieldName": "PathReportId",          
+                    "fieldName": "PathReportId",   
                     "fieldValue": String(rbj[0].PathReportId), //"150452",  
                     "opType": "Equals"          
                   }          
@@ -580,15 +582,6 @@ export class ResultEntryOneComponent implements OnInit {
     
         }
     
-    // getOptionTextresultdr(option) {
-    //     return option && option.Doctorname ? option.Doctorname : '';
-    // }
-    getOptionTextpath(option) {
-        return option && option.Doctorname ? option.Doctorname : '';
-    }
-    getOptionTextRefdr(option) {
-        return option && option.Doctorname ? option.Doctorname : '';
-    }
 
     nEnterresultdr
     Saveflag = 2;
@@ -603,7 +596,7 @@ export class ResultEntryOneComponent implements OnInit {
         }
 
         let PathInsertArry = [];
-        let pathologyUpdateReportObjarray = [];
+        // let pathologyUpdateReportObjarray = [];
 
         this.dataSource.data.forEach((element) => {
 
@@ -634,24 +627,40 @@ export class ResultEntryOneComponent implements OnInit {
             PathInsertArry.push(pathologyResult);
         });
 
-        this.data.RIdData.forEach((element) => {
-            let pathologyReport = {};
+        let pathologyUpdateReportObjarray = 
+        {        
+            "pathReportId": this.vPathReportId,        
+            "reportDate": this.datePipe.transform(this.currentDate, "yyyy-MM-dd"),        
+            "reportTime":  this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),       
+            "isCompleted": true,        
+            "isPrinted": true,        
+            "pathResultDr1": this.vPathResultDoctorId,        
+            "pathResultDr2": 0,        
+            "pathResultDr3": 0,        
+            "isTemplateTest": 0,        
+            "suggestionNotes": this.otherForm.get('suggestionNotes').value || "",        
+            "admVisitDoctorId": 0,        
+            "refDoctorId": 0        
+          }
 
-            pathologyReport['pathReportId'] = element.PathReportId// element1.PathReportId;
-            pathologyReport['reportDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-            pathologyReport['reportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
-            pathologyReport['isCompleted'] = true;
-            pathologyReport['isPrinted'] = true;
-            pathologyReport['pathResultDr1'] = this.otherForm.get('PathResultDoctorId').value || 0;
-            pathologyReport['pathResultDr2'] = 0; //this.otherForm.get('DoctorId').value.DoctorId || 0;
-            pathologyReport['pathResultDr3'] = 0;
-            pathologyReport['isTemplateTest'] = 0;
-            pathologyReport['suggestionNotes'] = this.otherForm.get('suggestionNotes').value || "";
-            pathologyReport['admVisitDoctorId'] = 0; //this.otherForm.get('AdmDoctorID').value.DoctorID || 0;
-            pathologyReport['refDoctorId'] = this.otherForm.get('RefDoctorID').value || 0;
+        // this.data.RIdData.forEach((element) => {
+        //     let pathologyReport = {};
 
-            pathologyUpdateReportObjarray.push(pathologyReport);
-        });
+        //     pathologyReport['pathReportId'] = element.PathReportId// element1.PathReportId;
+        //     pathologyReport['reportDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
+        //     pathologyReport['reportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
+        //     pathologyReport['isCompleted'] = true;
+        //     pathologyReport['isPrinted'] = true;
+        //     pathologyReport['pathResultDr1'] = this.otherForm.get('PathResultDoctorId').value || 0;
+        //     pathologyReport['pathResultDr2'] = 0; //this.otherForm.get('DoctorId').value.DoctorId || 0;
+        //     pathologyReport['pathResultDr3'] = 0;
+        //     pathologyReport['isTemplateTest'] = 0;
+        //     pathologyReport['suggestionNotes'] = this.otherForm.get('suggestionNotes').value || "";
+        //     pathologyReport['admVisitDoctorId'] = 0; //this.otherForm.get('AdmDoctorID').value.DoctorID || 0;
+        //     pathologyReport['refDoctorId'] = this.otherForm.get('RefDoctorID').value || 0;
+
+        //     pathologyUpdateReportObjarray.push(pathologyReport);
+        // });
 
         console.log('==============================  PathologyResult ===========');
         let submitData = {

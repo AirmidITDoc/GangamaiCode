@@ -73,7 +73,7 @@ export class DoctornoteComponent implements OnInit {
   dsDoctorNoteList = new MatTableDataSource<DocNote>();
   dsHandOverNoteList = new MatTableDataSource<PatientHandNote>();
   searchFormGroup: FormGroup;
-  autocompleteModeTemplate: string = "Template";//DoctorNote & NurNote
+  autocompleteModeTemplate: string = "DoctorNote" //Template 
   vDoctNoteId: any;
   IsAddFlag: boolean = false;
   vDoctorName: any;
@@ -377,7 +377,8 @@ debugger
   vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
   VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
   VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
-  vHandOverType:any;
+  // vHandOverType:any;
+  vHandOverType = 'Morning';
 
   onSubmitHandOver() {
     debugger
@@ -545,20 +546,13 @@ debugger
     // this.myform.reset();
     this.myform.get('templateDesc').setValue('')
     this.myform.get('TemplateId').setValue('')
-    // this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
-    // this.vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
-    // this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
-    // this.VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
-    // this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
-    // this.myform.get('HandOverType').setValue('Morning')
-    // this.HandOverNoteList = [];
     this.IsAddFlag = false 
   }
 
   onClose() {
     this.myNoteform.reset();
     this._matDialog.closeAll();
-    this.onClearPatientInfo();
+    // this.onClearPatientInfo();
   }
   onClearPatientInfo() {
     this.vRegNo = '';
