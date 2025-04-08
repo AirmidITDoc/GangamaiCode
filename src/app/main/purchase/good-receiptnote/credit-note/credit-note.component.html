@@ -1,0 +1,157 @@
+<div class="page-layout modal-wrapper grid-container" dynamicTableHeight>
+ 
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <div class="title-icon">
+                    <span>
+                        <mat-icon class="logo-icon"
+                            [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+                        </mat-icon>
+                    </span>
+                </div>
+                <div class="title">
+                    <span>Debit Note</span>
+                </div>
+            </div>
+            <div class="modal-header-icon"> 
+                <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                    <mat-icon>close</mat-icon>
+                  </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body" fxLayoutGap="8px">
+        <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="8px">
+            <div fxFlex="100%"> 
+                <mat-table #table matSort class="table" [dataSource]="dsCreditnotelist" [@animateStagger]="{value:'50'}"
+                    style="overflow: auto;">
+
+                    <ng-container matColumnDef="Status">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-70">
+                            </mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-70">
+                            <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)"></mat-checkbox>
+                        </mat-cell>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="GRNReturnNo">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                            GRNReturn No</mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                            <span> {{contact.GRNReturnNo}}</span>
+                        </mat-cell>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="SupplierName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                            Supplier Name</mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                            <span> {{contact.SupplierName}}</span>
+                        </mat-cell>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="NetAmount">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                            Net Amount</mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                            <span> {{contact.NetAmount}}</span>
+                        </mat-cell>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="loading">
+                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                        </mat-header-cell>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="noData">
+                        <mat-footer-cell *matFooterCellDef colspan="6">
+                            No data found...
+                        </mat-footer-cell>
+                    </ng-container>
+            
+                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                    </mat-header-row>
+            
+                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dsCreditnotelist!=null}"></mat-footer-row>
+                    <mat-footer-row *matFooterRowDef="['noData']"
+                        [ngClass]="{'hide':!(dsCreditnotelist!=null && dsCreditnotelist.data.length==0)}"></mat-footer-row>
+                </mat-table> 
+                <mat-paginator #paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10" showFirstLastButtons>
+                </mat-paginator> 
+            </div>
+
+            <div fxFlex="100%">
+                <mat-table #table matSort  [dataSource]="dsCreditADDnotelist" [@animateStagger]="{value:'50'}"
+                    style="overflow: auto;">
+            
+                    <ng-container matColumnDef="GRNReturnNo">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                            GRNReturn No</mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                            <span> {{contact.GRNReturnNo}}</span>
+                        </mat-cell>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="SupplierName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                            Supplier Name</mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                            <span> {{contact.SupplierName}}</span>
+                        </mat-cell>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="NetAmount">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                            Net Amount</mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                            <span> {{contact.NetAmount}}</span>
+                        </mat-cell>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="loading">
+                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                        </mat-header-cell>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="noData">
+                        <mat-footer-cell *matFooterCellDef colspan="6">
+                            No data found...
+                        </mat-footer-cell>
+                    </ng-container>
+            
+                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumnsADD; sticky: true">
+                    </mat-header-row>
+            
+                    <mat-row *matRowDef="let contact; columns: displayedColumnsADD;" class="contact"
+                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dsCreditADDnotelist!=null}"></mat-footer-row>
+                    <mat-footer-row *matFooterRowDef="['noData']"
+                        [ngClass]="{'hide':!(dsCreditADDnotelist!=null && dsCreditADDnotelist.data.length==0)}"></mat-footer-row>
+                </mat-table>
+            
+                <mat-paginator #paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10" showFirstLastButtons>
+                </mat-paginator>
+            </div>
+         
+        </div> 
+        <div class="modal-footer" fxLayoutAlign="end" fxLayoutGap="10px">
+            <mat-form-field appearance="outline" fxFlex="20%">
+                <mat-label>Final Net Amount</mat-label>
+                <input matInput [(ngModel)]="vFinalNetAmt" name="FinalNetAmt" readonly >
+            </mat-form-field>
+    
+            <div>
+                <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="6px"> 
+                    <button class="btn btn-danger-outline" (click)="onReset()">Reset</button>
+                    <button class="btn btn-primary" (click)="OnSave()">OK</button>
+                </div>
+            </div>
+         
+        </div>
+    </div>
+   
+</div>

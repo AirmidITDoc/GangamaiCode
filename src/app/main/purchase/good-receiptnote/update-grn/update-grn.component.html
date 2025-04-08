@@ -992,7 +992,8 @@
                                 </div>
                                 <div fxFlex fxFlex.gt-xs="60%" fxFlex.xs="100%">
                                     <div fxLayout="column" fxLayoutGap="6px">
-                                        <div fxLayout="row" class="gap-4">
+                                        <div fxLayout="row" class="gap-4" fxLayoutAlign="space-between">
+                                            <div fxLayout="row" class="gap-4">
                                             <span class="net-amt-mat-label" style="font-weight:bold;padding-bottom: 8px;">No Of
                                                 Item:
                                             </span>&nbsp;
@@ -1028,7 +1029,16 @@
                                             <span class="net-amt-value text-primary"
                                                 style="margin-left:10px;font-weight:bolder;">{{getTotalAmt(dsItemNameList.data)
                                                 |
-                                                currency:'INR' }}</span>
+                                                currency:'INR' }}</span>&nbsp;&nbsp; 
+
+                                            </div>
+                                            <div>
+                                                <button class="btn btn-primary btn-with-icon py-8" (click)="getDebitnotelist()"
+                                                style="width: 100px;height: 30px;"> Debit Note
+                                                </button>
+                                            </div>
+                                               
+                        
                                         </div>
                                         <div fxLayout="row" class="gap-4">
                                             <mat-form-field appearance="outline" fxFlex>
@@ -1058,7 +1068,8 @@
                                                     [(ngModel)]="registerObj.CreditNote" type="number"
                                                     (keydown)="onEnterCreditAmount($event)" (keydown.enter)="focusNextService()">
                                             </mat-form-field>
-                    
+
+                                          
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Other Charges</mat-label>
                                                 <input matInput placeholder="Placeholder" formControlName="OtherCharge" #OtherCharge

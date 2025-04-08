@@ -1000,7 +1000,7 @@ onTemplDetAdd(){
       insertOPDPrescription['instructionId'] = 0;
       insertOPDPrescription['qtyPerDay'] = element.QtyPerDay || 0;
       insertOPDPrescription['totalQty'] = (element.QtyPerDay * element.Days) || 0;
-      insertOPDPrescription['isClosed'] = true;
+      insertOPDPrescription['isClosed'] = false;
       insertOPDPrescription['isEnglishOrIsMarathi'] = this.caseFormGroup.get('LangaugeRadio').value;
       insertOPDPrescription['chiefComplaint'] = this.caseFormGroup.get('ChiefComplaint').value || '';
       insertOPDPrescription['diagnosis'] = this.caseFormGroup.get('Diagnosis').value || '';

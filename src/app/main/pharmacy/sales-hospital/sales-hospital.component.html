@@ -601,14 +601,12 @@
                                     </mat-card>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutGap="5px"> 
-                                    <span style="font-weight: bold;color: rgb(127, 79, 239);width: 145px;" >Expired ItemName :</span>
-                                    <marquee behavior="scroll" direction="left" scrollamount="10">
-                                        <span *ngFor="let item of ExpiryItem">
+                              
+                                    <marquee behavior="scroll" direction="left" scrollamount="4">
+                                        <span *ngFor="let item of ExpiryItem" style="background-color: rgb(240, 100, 100);">
                                           {{item.ItemName}}
                                           </span>
-                                      </marquee>
-                                </div>
+                                      </marquee> 
                                
                                 
                                 <!-- <marquee direction="left" scrollamount="5" scrolldelay="100">

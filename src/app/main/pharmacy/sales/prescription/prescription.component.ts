@@ -101,11 +101,11 @@ savebtn:boolean=false;
       });
       this.dsItemDetList.data = [];
   } 
-  IPMedID:any;
+  IPMedID:any=0;
   DoctorName:any;
   IPDNo:any;
   getItemDetailList(contact){
-    console.log(contact)
+    console.log(contact) 
     this.IPMedID = contact.IPMedID;
     this.PatienName = contact.PatientName;
     this.BedNo =  contact.bedId;
@@ -116,8 +116,14 @@ savebtn:boolean=false;
     this.IPMedID = contact.IPMedID;
     this.DoctorName = contact.DoctorName;
     this.IPDNo = contact.IPDNo;
+    let OP_IP_ID = 0
+    if(contact.IPMedID > 0){
+      OP_IP_ID = contact.IPMedID
+    }else{
+      OP_IP_ID = contact.OP_IP_ID
+    }
     var Param = {
-      "OP_IP_Id": contact.IPMedID ,
+      "OP_IP_Id": OP_IP_ID ,
       "OP_IP_Type":contact.PatientType
     }
     console.log(Param)

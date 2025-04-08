@@ -104,158 +104,151 @@
             </mat-card>
 
             <form [formGroup]="personalFormGroup">
-                <mat-tab-group>
-                    <mat-tab label="OT Note">
-                        <div class="content" style="overflow: auto;">
-                            <div class="center pb-56" style="border-radius: 4px;">
-
-                                <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
-                                    <mat-card>
-                                        <!-- <mat-label>Notes</mat-label> -->
-                                        <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                            [(ngModel)]="vDescription" required
-                                            formControlName="Description"></angular-editor>
-                                    </mat-card>
-                                </div>
-                            </div>
-                        </div>
-                    </mat-tab>
-                    <mat-tab label="Doctor Information">
-                        <div class="content" style="overflow: auto;">
-                            <div class="center pb-56" style="border-radius: 4px;">
-
-                                <div fxFlexFill fxLayout="row" fxLayoutGap="10px">
-
-                                    <mat-form-field appearance="outline" fxFlex="25%">
-                                        <mat-label>Doctor Name</mat-label>
-                                        <input matAutocompletePosition="below" type="text" placeholder="Select Doctor"
-                                            matInput formControlName="DoctorId" [matAutocomplete]="autoSearchDoctor1"
-                                            (input)="getDoctorNameCombobox()">
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="personalFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="personalFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #autoSearchDoctor1="matAutocomplete"
-                                            [displayWith]="getOptionTextDoctor"
-                                            (optionSelected)='onDoctorSelect($event.option.value)'>
-                                            <mat-option *ngFor="let option of filteredOptionsDoctorsearch "
-                                                [value]="option">
-                                                {{option.Doctorname}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                    </mat-form-field>
-
-                                    <div class="modal-footer-buttons gap-8 m-8">
-                                        <button class="btn btn-primary" (click)="addDoctor()">
-                                            Add
-                                        </button>
+                <div fxLayout="column" fxLayoutGap="8px">
+                    <div fxLayout="row" fxLayoutGap="4px">
+                        
+                    </div>
+                    <mat-tab-group>
+                        <mat-tab label="OT Note">
+                            <div class="content" style="overflow: auto;">
+                                <div class="center pb-56" style="border-radius: 4px;">
+    
+                                    <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
+                                        <mat-card>
+                                            <!-- <mat-label>Notes</mat-label> -->
+                                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                                                [(ngModel)]="vDescription" required
+                                                formControlName="Description"></angular-editor>
+                                        </mat-card>
                                     </div>
                                 </div>
-                                <div fxlayout="row">
-                                    <div style="width: 100%;background-color: white;">
-
-                                        <div matColumnDef="loading"
-                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                            class="backgroundBlur">
-                                            <div class="spinner-border text-danger"></div>
-
+                            </div>
+                        </mat-tab> 
+    
+                        <!-- <mat-tab label="Doctor Information">
+                            <div class="content" style="overflow: auto;">
+                                <div class="center pb-56" style="border-radius: 4px;">
+    
+                                    <div fxFlexFill fxLayout="row" fxLayoutGap="10px">
+    
+                                        <mat-form-field appearance="outline" fxFlex="25%">
+                                            <mat-label>Doctor Name</mat-label>
+                                            <input matAutocompletePosition="below" type="text" placeholder="Select Doctor"
+                                                matInput formControlName="DoctorId" [matAutocomplete]="autoSearchDoctor1"
+                                                (input)="getDoctorNameCombobox()">
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="personalFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="personalFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autoSearchDoctor1="matAutocomplete"
+                                                [displayWith]="getOptionTextDoctor"
+                                                (optionSelected)='onDoctorSelect($event.option.value)'>
+                                                <mat-option *ngFor="let option of filteredOptionsDoctorsearch "
+                                                    [value]="option">
+                                                    {{option.Doctorname}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+    
+                                        <div class="modal-footer-buttons gap-8 m-8">
+                                            <button class="btn btn-primary" (click)="addDoctor()">
+                                                Add
+                                            </button>
                                         </div>
-                                        <mat-table #table matSort [dataSource]="dataSource"
-                                            [@animateStagger]="{value:'50'}" style="overflow: auto;" class="table1">
-
-                                            <ng-container matColumnDef="DoctorId" sticky>
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md
-                                                    class="w-150">
-                                                    DoctorId
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
-                                                    {{contact.DoctorId}}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="DoctorName" sticky>
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md
-                                                    class="w-150">
-                                                    DoctorName
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
-                                                    {{contact.DoctorName}}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <!-- <ng-container matColumnDef="Amount">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
-                                                                  Amount
-                                                                </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
-                                                                  <div class="underline"></div>
-                                                                  <input type="number" placeholder="Enter Amount"
-                                                                         [(ngModel)]="contact.Amount" 
-                                                                         (ngModelChange)="onAmountChange(contact, $event)" 
-                                                                         class="amount-input" />
-                                                                </mat-cell>
-                                                              </ng-container> -->
-
-                                            <ng-container matColumnDef="Amount">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    Amount
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <mat-form-field appearance="legacy">
-                                                        <input matInput [(ngModel)]="contact.Amount" OnlyNumber
-                                                            (ngModelChange)="onAmountChange(contact, $event)">
-                                                    </mat-form-field>
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="loading">
-                                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                                </mat-header-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="noData">
-                                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                                    no data found...
-                                                </mat-footer-cell>
-                                            </ng-container>
-
-                                            <mat-header-row class="accent min-width-800"
-                                                *matHeaderRowDef="displayedColumns; sticky: true">
-                                            </mat-header-row>
-                                            <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                                class="min-width-800"
-                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                            <mat-footer-row *matFooterRowDef="['loading']"
-                                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                            </mat-footer-row>
-                                            <mat-footer-row *matFooterRowDef="['noData']"
-                                                [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
-                                            </mat-footer-row>
-                                        </mat-table>
-                                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
-                                            showFirstLastButtons>
-                                        </mat-paginator>
                                     </div>
-
+                                    <div fxlayout="row">
+                                        <div style="width: 100%;background-color: white;">
+    
+                                            <div matColumnDef="loading"
+                                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                                class="backgroundBlur">
+                                                <div class="spinner-border text-danger"></div>
+    
+                                            </div>
+                                            <mat-table #table matSort [dataSource]="dataSource"
+                                                [@animateStagger]="{value:'50'}" style="overflow: auto;" class="table1">
+    
+                                                <ng-container matColumnDef="DoctorId" sticky>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md
+                                                        class="w-150">
+                                                        DoctorId
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
+                                                        {{contact.DoctorId}}
+                                                    </mat-cell>
+                                                </ng-container>
+    
+                                                <ng-container matColumnDef="DoctorName" sticky>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md
+                                                        class="w-150">
+                                                        DoctorName
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
+                                                        {{contact.DoctorName}}
+                                                    </mat-cell>
+                                                </ng-container> 
+    
+                                                <ng-container matColumnDef="Amount">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        Amount
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        <mat-form-field appearance="legacy">
+                                                            <input matInput [(ngModel)]="contact.Amount" OnlyNumber
+                                                                (ngModelChange)="onAmountChange(contact, $event)">
+                                                        </mat-form-field>
+                                                    </mat-cell>
+                                                </ng-container>
+    
+                                                <ng-container matColumnDef="loading">
+                                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                    </mat-header-cell>
+                                                </ng-container>
+    
+                                                <ng-container matColumnDef="noData">
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                                        no data found...
+                                                    </mat-footer-cell>
+                                                </ng-container>
+    
+                                                <mat-header-row class="accent min-width-800"
+                                                    *matHeaderRowDef="displayedColumns; sticky: true">
+                                                </mat-header-row>
+                                                <mat-row *matRowDef="let contact; columns: displayedColumns;"
+                                                    class="min-width-800"
+                                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                <mat-footer-row *matFooterRowDef="['loading']"
+                                                    [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                                </mat-footer-row>
+                                                <mat-footer-row *matFooterRowDef="['noData']"
+                                                    [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+                                                </mat-footer-row>
+                                            </mat-table>
+                                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
+                                                showFirstLastButtons>
+                                            </mat-paginator>
+                                        </div>
+    
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </mat-tab>
-                    <mat-tab label="Material Consumption">
-                        <div class="content" style="overflow: auto;">
-                            <div class="center p-12 pb-56" style="border-radius: 4px;">
-
-                                <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
-                                    <!-- need to design same as inventory-> material consumption 
-                                                            add dropdown and add button after click on add data need to add in table -->
+                        </mat-tab>
+                        <mat-tab label="Material Consumption">
+                            <div class="content" style="overflow: auto;">
+                                <div class="center p-12 pb-56" style="border-radius: 4px;">
+    
+                                    <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
+                                      
+                                    </div>
+    
                                 </div>
-
                             </div>
-                        </div>
-                    </mat-tab>
-                </mat-tab-group>
+                        </mat-tab> -->
+                    </mat-tab-group>
+                </div>
+           
             </form>
         </div>
     </div>

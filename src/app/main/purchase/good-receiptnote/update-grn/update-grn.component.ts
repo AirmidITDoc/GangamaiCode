@@ -26,6 +26,7 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ItemFormMasterComponent } from 'app/main/setup/inventory/item-master/item-form-master/item-form-master.component';
 import { SupplierFormMasterComponent } from 'app/main/setup/inventory/supplier-master/supplier-form-master/supplier-form-master.component';
+import { CreditNoteComponent } from '../credit-note/credit-note.component';
 
 const moment = _rollupMoment || _moment;
 @Component({
@@ -133,7 +134,7 @@ export class UpdateGRNComponent implements OnInit {
     dsItemNameList1 = new MatTableDataSource<ItemNameList>();
     dsTempItemNameList = new MatTableDataSource<ItemNameList>();
     dsLastThreeItemList = new MatTableDataSource<LastThreeItemList>();
-
+    
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
     filteredOptions: any;
@@ -2330,7 +2331,34 @@ debugger
     onClose() {
         this.dialogRef.close();
     }
-
+    getDebitnotelist() {
+        let SupplierId = this._GRNList.userFormGroup.get('SupplierId').value
+        if(SupplierId == '' || SupplierId == 0 || SupplierId == null || SupplierId == undefined){ 
+            this.toastr.warning('select supplier Name.', 'warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return
+        }
+        if(!this.dsItemNameList.data.length){ 
+            this.toastr.warning('add item in list', 'warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return
+        }
+        const dialogRef = this._matDialog.open(CreditNoteComponent,
+            {
+                maxWidth: "100%",
+                height: '50%',
+                width: '70%',
+                data: {
+                    Obj: this.vSupplierId ,
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this._GRNList.GRNFinalForm.get('CreditAmount').setValue(result)
+        });
+    }
 
     FinalTotalQty1: any = 0;
     FinalLandedrate1: any = 0;

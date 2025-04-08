@@ -4072,7 +4072,7 @@ getSearchListIP() {
   IPMedID:any;
   TotalBalQty:any=0;
   getPRESCRIPTION() {
-    if (this.ItemSubform.get('PatientType').value == 'IP') {
+    if (this.ItemSubform.get('PatientType').value == 'IP' || this.ItemSubform.get('PatientType').value == 'OP') {
       const dialogRef = this._matDialog.open(PrescriptionComponent,
         {
           maxWidth: "100%",
@@ -4082,26 +4082,47 @@ getSearchListIP() {
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
         console.log(result)
-        this.DoctorNamecheck = true;
-        this.IPDNocheck = true;
-        this.OPDNoCheck = false;
-        this.registerObj = result;
-        console.log(this.registerObj)
-        this.PatientName = result[0].PatientName;
-        this.RegId = result[0].RegId;
-        this.OP_IP_Id = result[0].AdmissionID;
-        this.ItemSubform.get('RegID').setValue(result[0].RegId);
-        this.IPDNo = result[0].IPDNo;
-        this.RegNo = result[0].RegNo;
-        this.DoctorName = result[0].DoctorName;
-        this.TariffName = result[0].TariffName;
-        this.IPMedID = result[0].IPMedID;
-        this.CompanyName = result[0].CompanyName;
-        this.IPDNo = result[0].IPDNo;
-        if (this.IPMedID > 0) {
-          this.paymethod = true;
-          this.vSelectedOption = 'IP';
-        } 
+        if(result[0].IPMedID > 0){
+          this.DoctorNamecheck = true;
+          this.IPDNocheck = true;
+          this.OPDNoCheck = false;
+          this.registerObj = result;
+          console.log(this.registerObj)
+          this.PatientName = result[0].PatientName;
+          this.RegId = result[0].RegId;
+          this.OP_IP_Id = result[0].AdmissionID;
+          this.ItemSubform.get('RegID').setValue(result[0].RegId);
+          this.IPDNo = result[0].IPDNo;
+          this.RegNo = result[0].RegNo;
+          this.DoctorName = result[0].DoctorName;
+          this.TariffName = result[0].TariffName;
+          this.IPMedID = result[0].IPMedID;
+          this.CompanyName = result[0].CompanyName;
+          this.IPDNo = result[0].IPDNo; 
+            this.paymethod = true;
+            this.vSelectedOption = 'IP';
+        }else{
+          this.DoctorNamecheck = true;
+          this.IPDNocheck = false;
+          this.OPDNoCheck = true;
+          this.registerObj = result;
+          console.log(this.registerObj)
+          this.PatientName = result[0].PatientName;
+          this.RegId = result[0].RegId;
+          this.OP_IP_Id = result[0].AdmissionID;
+          this.ItemSubform.get('RegID').setValue(result[0].RegId);
+          this.OPDNo = result[0].IPDNo;
+          this.RegNo = result[0].RegNo;
+          this.DoctorName = result[0].DoctorName;
+          this.TariffName = result[0].TariffName;
+          this.IPMedID = result[0].IPMedID;
+          this.CompanyName = result[0].CompanyName;
+          this.IPDNo = result[0].IPDNo; 
+            this.paymethod = true;
+            this.vSelectedOption = 'OP';
+        }
+       
+      
 
         this.dsItemNameList1.data = result;
         this.dsItemNameList1.data.forEach((contact) => {

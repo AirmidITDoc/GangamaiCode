@@ -244,4 +244,16 @@ export class GoodReceiptnoteService {
   public getBarcodeSave(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data,  {});
   }
+  public getdebitnote(Param,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_GrnReturnForDebitNote", Param);
+  }
+  public getdebitADDnote(Param,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_GrnReturnForDebitNoteAdd", Param);
+  }
 }
