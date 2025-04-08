@@ -98,23 +98,24 @@ export class DischargeComponent implements OnInit {
   ngOnInit(): void {
     this.DischargeForm = this.DischargesaveForm();
     this.DischargeForm.markAllAsTouched();
-    
+    this.getdischargeIdbyadmission()
     console.log(this.data)
     if (this.data) {
       this.vAdmissionId = this.data.admissionId;
       this.vBedId = this.data.bedId
       this.DischargeForm.get("dischargedDocId").setValue(this.data.docNameId)
-    }
-
-    if ((this.data?.regId ?? 0) > 0) {
       setTimeout(() => {
         this._IpSearchListService.getRegistraionById(this.data.regId).subscribe((response) => {
           this.registerObj = response;
           console.log(this.registerObj)
-
+        
         });
       }, 500);
+    
+
+      // this.DischargeForm.get("dischargedDocId").setValue(this.data.docNameId)
     }
+ 
 
     console.log(this._ConfigService.configParams.IsDischargeInitiateflow)
 
@@ -125,7 +126,28 @@ export class DischargeComponent implements OnInit {
 
     this.getchkConfigInitiate();
   }
+  getdischargeIdbyadmission() {
+    
+    this._IpSearchListService.getDischargeId(this.data.admissionId).subscribe(data => {
+      console.log(data)
 
+      if (data) {
+        this.IsCancelled = data.isCancelled || 0
+        // if (this.IsCancelled == '1') {
+        // this.DischargeId = 0
+        // } else {
+        this.DischargeId = data.dischargeId || 0
+        // }
+
+
+        this.DischargeForm.get("dischargedDocId").setValue(data.dischargedDocId)
+        this.DischargeForm.get("dischargeTypeId").setValue(data.dischargeTypeId)
+        this.DischargeForm.get("dischargedRmoid").setValue(data.dischargedRmoid)
+
+      }
+
+    });
+  }
 
   DischargesaveForm(): FormGroup {
     return this._formBuilder.group({

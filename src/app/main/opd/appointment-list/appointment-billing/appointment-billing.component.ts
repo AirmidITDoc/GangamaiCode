@@ -19,6 +19,7 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { SearchInforObj } from '../../op-search-list/opd-search-list/opd-search-list.component';
 import { AppointmentBillService } from './appointment-bill.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
   selector: 'app-appointment-billing',
@@ -123,6 +124,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     private advanceDataStored: AdvanceDataStored,
     private commonService: PrintserviceService,
     public _AppointmentlistService: AppointmentBillService,
+       private accountService: AuthenticationService,
     // private dialogRef: MatDialogRef<AppointmentBillingComponent>,
     private formBuilder: FormBuilder, private toastrService: ToastrService,
     @Optional() public dialogRef: MatDialogRef<AppointmentBillingComponent>
@@ -532,7 +534,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   serviceSelct = false
 
   getSelectedserviceObj(obj) {
-    debugger
+    
     const isItemAlreadyAdded = this.dsChargeList.data.some((element) => element.ServiceId === obj.serviceId);
     if (isItemAlreadyAdded) {
       // If the item is already added, show the alert
@@ -679,14 +681,14 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         InsertAddChargesObj['qty'] = element.Qty,
         InsertAddChargesObj['totalAmt'] = element.TotalAmt,
         InsertAddChargesObj['concessionPercentage'] = element.DiscPer || 0,
-        InsertAddChargesObj['concessionAmount'] = element.DiscAmt || 0,
+        InsertAddChargesObj['concessionAmount'] = Math.round(element.DiscAmt) || 0,
         InsertAddChargesObj['netAmount'] = element.NetAmount,
         InsertAddChargesObj['doctorId'] = element.DoctorId || 0,
         InsertAddChargesObj['docPercentage'] = 0,
         InsertAddChargesObj['docAmt'] = 0,
         InsertAddChargesObj['hospitalAmt'] = element.NetAmount,
         InsertAddChargesObj['isGenerated'] = false,
-        InsertAddChargesObj['addedBy'] = 1,
+        InsertAddChargesObj['addedBy'] =this.accountService.currentUserValue.userId,
         InsertAddChargesObj['isCancelled'] = false,
         InsertAddChargesObj['isCancelledBy'] = 0,
         InsertAddChargesObj['isCancelledDate'] = "1900-01-01",
@@ -775,14 +777,14 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         InsertAddChargesObj['qty'] = element.Qty,
         InsertAddChargesObj['totalAmt'] = element.TotalAmt,
         InsertAddChargesObj['concessionPercentage'] = element.DiscPer || 0,
-        InsertAddChargesObj['concessionAmount'] = element.DiscAmt || 0,
+        InsertAddChargesObj['concessionAmount'] = Math.round(element.DiscAmt) || 0,
         InsertAddChargesObj['netAmount'] = element.NetAmount,
         InsertAddChargesObj['doctorId'] = element.DoctorId || 0,
         InsertAddChargesObj['docPercentage'] = 0,
         InsertAddChargesObj['docAmt'] = 0,
         InsertAddChargesObj['hospitalAmt'] = element.NetAmount,
         InsertAddChargesObj['isGenerated'] = false,
-        InsertAddChargesObj['addedBy'] = 1,
+        InsertAddChargesObj['addedBy'] = this.accountService.currentUserValue.userId,
         InsertAddChargesObj['isCancelled'] = false,
         InsertAddChargesObj['isCancelledBy'] = 0,
         InsertAddChargesObj['isCancelledDate'] = "1900-01-01",
@@ -989,6 +991,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   viewgetOPBillReportPdf(element) {
     console.log('Third action clicked for:', element);
     this.commonService.Onprint("BillNo", element, "OpBillReceipt");
+  }
+
+  selectChangeConcession(event){
+    this.ConcessionId=event.value
+    this.ConcessionReason=event.text
   }
   onClose() { }
 

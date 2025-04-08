@@ -107,14 +107,14 @@ export class MaterialConsumptionComponent implements OnInit {
 
     getSelectedRow(row: any): void {
         console.log("selectedRow:", row)
-        let materialConsumptionId = row.materialConsumptionId;
+        let materialConsumptionId =1001//row.materialConsumptionId;
         // let inputDate = row.vaDate;
         // let parts = inputDate.split(' ')[0].split('-');
         // let date = `${parts[2]}-${parts[1]}-${parts[0]}`;
         // let opipType = row.lbl === 'OP' ? 0 : 1;
 
         this.gridConfig1 = {
-            apiUrl: "PathlogySampleCollection/MaterialConsumptionDetailList",
+            apiUrl: "MaterialConsumption/MaterialConsumptionDetailList",
             columnsList: [
                  { heading: "ItemName", key: "itemName", sort: true, align: 'left',type: gridColumnTypes.template, width: 250 },
                  { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },

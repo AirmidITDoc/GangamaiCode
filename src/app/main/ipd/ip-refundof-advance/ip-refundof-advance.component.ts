@@ -21,6 +21,7 @@ import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
 import { element } from 'protractor';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { map, startWith } from 'rxjs/operators';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-ip-refundof-advance',
@@ -92,6 +93,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any, 
     private dialogRef: MatDialogRef<IPRefundofAdvanceComponent>,
     private accountService: AuthenticationService,
+     private commonService: PrintserviceService,
     private advanceDataStored: AdvanceDataStored,
     public toastr: ToastrService, 
     public _WhatsAppEmailService:WhatsAppEmailService, 
@@ -360,28 +362,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   }
   sIsLoading: string = '';
   viewgetRefundofAdvanceReportPdf(RefundId) {
-    setTimeout(() => { 
-      this.sIsLoading = 'loading-data'; 
-      this._IpSearchListService.getRefundofAdvanceview(
-        RefundId
-      ).subscribe(res => {
-        const dialogRef = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "Refund Of Advance  Viewer"
-            }
-          });
-        dialogRef.afterClosed().subscribe(result => { 
-          this.sIsLoading = ''; 
-        });
-
-      });
-
-    }, 100);
+    this.commonService.Onprint("RefundId",RefundId,"IpAdvanceRefundReceipt");
   } 
   getWhatsappsRefundAdvance(el, vmono) { 
     var m_data = {

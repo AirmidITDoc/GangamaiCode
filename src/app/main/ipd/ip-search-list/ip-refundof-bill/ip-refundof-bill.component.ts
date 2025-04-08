@@ -15,6 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component'; 
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest'; 
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
   
 @Component({
@@ -95,6 +96,7 @@ export class IPRefundofBillComponent implements OnInit {
     private accountService: AuthenticationService,
     private formBuilder: UntypedFormBuilder,
     public _WhatsAppEmailService:WhatsAppEmailService,
+      private commonService: PrintserviceService,
     public toastr: ToastrService, 
     private dialogRef: MatDialogRef<IPRefundofBillComponent>,
     private _formBuilder: UntypedFormBuilder,
@@ -307,6 +309,7 @@ onSave() {
     this._IpSearchListService.InsertRefundOfBill(submitData).subscribe(response => {
       console.log(response)
      this.toastr.success(response.message);
+     this.viewgetRefundofBillReportPdf(response)
      this.grid.bindGridData(); 
      this.onClose();
    }, (error) => {
@@ -316,6 +319,11 @@ onSave() {
   });
   
 }
+
+viewgetRefundofBillReportPdf(RefundId) {
+  this.commonService.Onprint("RefundId",RefundId,"IpBillRefundReceipt");
+} 
+
 
 onClose() { 
 this.dialogRef.close();

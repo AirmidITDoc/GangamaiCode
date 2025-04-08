@@ -20,15 +20,15 @@ export class TemplateDescriptionComponent implements OnInit {
         @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     
         gridConfig: gridModel = {
-            apiUrl: "Scheduler/List",
+            apiUrl: "Administration/BrowseReportTemplateConfigList",
             columnsList: [
-                { heading: "TemplateId", key: "templateid", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "TemplateName", key: "templatename", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "TemplateId", key: "templateId", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "TemplateName", key: "templateName", sort: true, align: 'left', emptySign: 'NA' },
                 {
                     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                         {
                             action: gridActions.edit, callback: (data: any) => {
-                                this.onSave(data) // EDIT Records
+                                this.onEdit(data) // EDIT Records
                             }
                         }, {
                             action: gridActions.delete, callback: (data: any) => {
@@ -40,11 +40,10 @@ export class TemplateDescriptionComponent implements OnInit {
                         }]
                 } //Action 1-view, 2-Edit,3-delete
             ],
-            sortField: "bankId",
+            sortField: "TemplateId",
             sortOrder: 0,
             filters: [
-                { fieldName: "BankName", fieldValue: "", opType: OperatorComparer.Contains },
-                { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+                
             ]
         }
     
@@ -62,7 +61,7 @@ export class TemplateDescriptionComponent implements OnInit {
     
         }
     
-        onSave(row: any = null) {
+        onEdit(row: any = null) {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
             
@@ -73,6 +72,26 @@ export class TemplateDescriptionComponent implements OnInit {
                     height: '80%',
                     width: '90%',
                     data: row
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    that.grid.bindGridData();
+                }
+                console.log('The dialog was closed - Action', result);
+            });
+        }
+
+        onSave(row: any = null) {
+            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+            buttonElement.blur(); // Remove focus from the button
+            
+            let that = this;
+            const dialogRef = this._matDialog.open(NewTemplateComponent,
+                {
+                    maxWidth: "90vw",
+                    height: '80%',
+                    width: '90%'
+                  
                 });
             dialogRef.afterClosed().subscribe(result => {
                 if (result) {

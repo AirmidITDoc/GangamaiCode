@@ -104,21 +104,21 @@ export class EditAdmissionComponent implements OnInit {
 
         });
 
-        this._AdmissionService.getAdmissionById(this.data.admissionId).subscribe((response) => {
-          this.registerObj1 = response;
-          console.log(response)
-          if (this.registerObj1) {
-            this.registerObj1.phoneNo = this.registerObj1.phoneNo.trim()
-            this.registerObj1.mobileNo = this.registerObj1.mobileNo.trim()
-            if (this.registerObj1.patientTypeId !== 1) {
-              this.isCompanySelected = true
-              this.admissionFormGroup.get("DepartmentId").setValue(this.registerObj1.departmentId
-              )
-              this.admissionFormGroup.get("CompanyId").setValue(this.registerObj1.companyId)
-            }
-          }
+        // this._AdmissionService.getAdmissionById(this.data.admissionId).subscribe((response) => {
+        //   this.registerObj1 = response;
+        //   console.log(response)
+        //   if (this.registerObj1) {
+        //     this.registerObj1.phoneNo = this.registerObj1.phoneNo.trim()
+        //     this.registerObj1.mobileNo = this.registerObj1.mobileNo.trim()
+        //     if (this.registerObj1.patientTypeId !== 1) {
+        //       this.isCompanySelected = true
+        //       this.admissionFormGroup.get("DepartmentId").setValue(this.registerObj1.departmentId
+        //       )
+        //       this.admissionFormGroup.get("CompanyId").setValue(this.registerObj1.companyId)
+        //     }
+        //   }
 
-        });
+        // });
       }, 500);
     }
 

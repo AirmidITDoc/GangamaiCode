@@ -457,7 +457,7 @@ export class NewOPListComponent implements OnInit {
         // this.grid1.bindGridData();
 
         this.grid1.gridConfig = { ...this.gridConfig1 }; // Use a new object reference
-this.grid1.bindGridData(); // Only refresh the OPPayment grid
+        this.grid1.bindGridData(); // Only refresh the OPPayment grid
 
 
     }
