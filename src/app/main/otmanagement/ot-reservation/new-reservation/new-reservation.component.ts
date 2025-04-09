@@ -928,21 +928,8 @@ debugger
         }
       }
 
-      if (this.selectedDoctor2 == '' || this.selectedDoctor2 == null || this.selectedDoctor2 == undefined) {
-        this.toastr.warning('Please select Surgeon 2 ', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-      if (this._OtManagementService.otreservationFormGroup.get('DoctorId1').value) {
-        if (!this.DoctorList2.find(item => item.DoctorName == this._OtManagementService.otreservationFormGroup.get('DoctorId1').value.DoctorName)) {
-          this.toastr.warning('Please select Valid Surgeon Name 2', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-        }
-      }
-  
+   
+    
       if (this.selectedAnestheticsDr == '' || this.selectedAnestheticsDr == null || this.selectedAnestheticsDr == undefined) {
         this.toastr.warning('Please select AnestheticsDr 1 ', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
@@ -952,21 +939,6 @@ debugger
       if (this._OtManagementService.otreservationFormGroup.get('AnestheticsDr').value) {
         if (!this.Anesthestishdoclist1.find(item => item.DoctorName == this._OtManagementService.otreservationFormGroup.get('AnestheticsDr').value.DoctorName)) {
           this.toastr.warning('Please select Valid AnestheticsDr Name 1', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-        }
-      }
-
-      if (this.selectedAnestheticsDr2 == '' || this.selectedAnestheticsDr2 == null || this.selectedAnestheticsDr2 == undefined) {
-        this.toastr.warning('Please select AnestheticsDr 2 ', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-      if (this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value) {
-        if (!this.Anesthestishdoclist2.find(item => item.DoctorName == this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value.DoctorName)) {
-          this.toastr.warning('Please select Valid AnestheticsDr Name 2', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
           return;

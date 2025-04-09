@@ -220,7 +220,7 @@
                                 <mat-label>Surgeon Name 1</mat-label>
                                 <input matAutocompletePosition="below" type="text" placeholder="Select Surgeon Name 1"
                                     matInput formControlName="DoctorId" [(ngModel)]="selectedDoctor1"
-                                    [matAutocomplete]="autoSurgeonId1" required>
+                                    [matAutocomplete]="autoSurgeonId1"  >
                                 <span matSuffix style="display: flex;">
                                     <mat-icon class="mat-icon-close"
                                         (click)="_OtManagementService.otreservationFormGroup.get('DoctorId').setValue(''); isSurgeon1Selected = false;">close</mat-icon>
@@ -239,7 +239,7 @@
                                 <mat-label>Surgeon Name 2</mat-label>
                                 <input matAutocompletePosition="below" type="text" placeholder="Select Surgeon Name 2"
                                     matInput formControlName="DoctorId1" [(ngModel)]="selectedDoctor2"
-                                    [matAutocomplete]="autoSurgeonId2" required>
+                                    [matAutocomplete]="autoSurgeonId2"  >
                                 <span matSuffix style="display: flex;">
                                     <mat-icon class="mat-icon-close"
                                         (click)="_OtManagementService.otreservationFormGroup.get('DoctorId1').setValue(''); isSurgeon2Selected = false;">close</mat-icon>
@@ -281,7 +281,7 @@
                                 <input matAutocompletePosition="below" type="text"
                                     placeholder="Select Anesthestish Doctor 2" matInput formControlName="AnestheticsDr1"
                                     [(ngModel)]="selectedAnestheticsDr2" [matAutocomplete]="autoAnestheticsDr2"
-                                    required>
+                                     >
                                 <span matSuffix style="display: flex;">
                                     <mat-icon class="mat-icon-close"
                                         (click)="_OtManagementService.otreservationFormGroup.get('AnestheticsDr1').setValue(''); isAnestheticsDr2Selected = false;">close</mat-icon>

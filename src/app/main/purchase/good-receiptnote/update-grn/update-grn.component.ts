@@ -1110,8 +1110,15 @@ debugger
         let DebitAmount = this._GRNList.GRNFinalForm.get("DebitAmount").value || 0;
         FinalRoundAmt = (parseFloat(FinalRoundAmt) + parseFloat(DebitAmount));
 
+
         let CreditAmount = this._GRNList.GRNFinalForm.get("CreditAmount").value || 0;
-        FinalRoundAmt = (parseFloat(FinalRoundAmt) - parseFloat(CreditAmount));
+        if(CreditAmount > FinalRoundAmt){
+            this.toastr.warning('check credit amount should not be greater than net amount', 'warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            }); 
+        }else{
+            FinalRoundAmt = (parseFloat(FinalRoundAmt) - parseFloat(CreditAmount));
+        } 
         let FinalnetAmt = FinalRoundAmt;
         this.vFinalNetAmount = Math.round(FinalnetAmt).toFixed(2); //(element.reduce((sum, { RoundNetAmt }) => sum += +(RoundNetAmt || 0), 0)).toFixed(2) || Math.round(this.FinalNetAmount);
         this.vDiffNetRoundAmt = (parseFloat(this.vFinalNetAmount) - (FinalnetAmt)).toFixed(2);

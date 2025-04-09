@@ -113,6 +113,7 @@ export class OTManagementServiceService {
       OTTableId:'',
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
+           AnestheticsDr3:''
      });
    }
 
@@ -146,8 +147,14 @@ export class OTManagementServiceService {
       Extra:'',
       Pre:'', 
       Description:'',
-      DoctorId:''
-
+      DoctorId:'',
+      BloodLoss:'',
+      sorubNurse:'',
+      histopathology:'',
+      bostOPOrders:'',
+      complicationMode:'',
+      assistant:'',
+      DoctorId1:''
     });
   }
 
@@ -234,7 +241,7 @@ export class OTManagementServiceService {
   }
 
   public PrepostOTNoteUpdate(employee){
-    return this._httpClient.post("InPatient/PrepostOtNoteUpdate", employee);
+    return this._httpClient.post("InPatient/OTNoteTemplateUpdate", employee);
   }
     
   //Deartment Combobox List
