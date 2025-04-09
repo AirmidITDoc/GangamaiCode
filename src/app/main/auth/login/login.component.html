@@ -1,63 +1,4 @@
-<div id="login" class="inner-scroll" fxLayout="row" fxLayoutAlign="start" *ngIf="false">
-    <div id="login-intro" fxFlex fxHide fxShow.gt-xs>
-        <div class="logo" [@animate]="{ value: '*', params: { scale: '0.2' } }">
-            <img src="assets/images/logos/Airmid_NewLogo.jpeg" />
-        </div>
-        <div class="title" [@animate]="{ value: '*', params: { delay: '50ms', y: '25px' } }">
-            Welcome to the AirMid Technologies
-        </div>
-        <div class="description" [@animate]="{ value: '*', params: { delay: '100ms', y: '25px' } }">
-            We care healthcare ....
-        </div>
-    </div>
-
-    <div id="login-form-wrapper" fusePerfectScrollbar
-        [@animate]="{ value: '*', params: { delay: '300ms', x: '100%' } }">
-        <div id="login-form">
-            <div class="logo" fxHide.gt-xs>
-                <!-- <img src="assets/images/logos/logo_final.png" /> -->
-            </div>
-            <div class="title">LOGIN TO YOUR ACCOUNT</div>
-            <form name="loginForm" [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate class="mat-error-fix">
-                <mat-form-field appearance="outline" fxFlex="100">
-                    <mat-label>Username</mat-label>
-                    <input matInput formControlName="Username" />
-                    <mat-icon matSuffix class="secondary-text">mail</mat-icon>
-                    <mat-error *ngIf="loginForm.get('Username').hasError('required')">
-                        Username is required
-                    </mat-error>
-                </mat-form-field>
-            
-                <mat-form-field appearance="outline" fxFlex="100">
-                    <mat-label>Password</mat-label>
-                    <input matInput type="password" formControlName="Password" />
-                    <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
-                    <mat-error>
-                        Password is required
-                    </mat-error>
-                </mat-form-field>
-                <img [src]="captcha" />
-                <mat-icon (click)="loadCaptcha()" style="font-size: 45px;width: 40px;height: 50px;cursor: pointer;">refresh</mat-icon>
-                <mat-form-field appearance="outline" fxFlex="100" style="margin-top: 15px;">
-                    <mat-label>Captcha</mat-label>
-                    <input matInput type="text" formControlName="CaptchaCode" />
-                    <mat-error>
-                        Captcha is required
-                    </mat-error>
-                </mat-form-field>
-                <button color="accent" class="btn btn-primary w-100-p" aria-label="LOGIN">
-                    <!-- [disabled]="loginForm.invalid"> -->
-                    LOGIN
-                </button>
-                <mat-error *ngIf="errorMessage !== ''">
-                    {{ errorMessage }}
-                </mat-error>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="login-page-main inner-scroll w-100-p">
+<div class="login-page-main inner-scroll w-100-p h-100-p">
     <div class="login-section-left">
         <div class="login-image-top" [@animate]="{ value: '*', params: { scale: '0.2' } }">
             <img src="assets/images/logos/Airmid_NewLogo.jpeg" alt="Airmid Logo">
@@ -72,6 +13,9 @@
     </div>
     <div class="login-section-right">
         <form name="loginForm" [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate class="mat-error-fix" [@animate]="{ value: '*', params: { delay: '200ms', x: '100%' } }">
+            <div class="airmid-logo-square">
+                <img src="assets/images/logos/Airmid_Logo4.jpeg" alt="Airmid Logo">
+            </div>
             <h2>LOGIN HERE</h2>
             <mat-form-field appearance="outline">
                 <mat-label>Username</mat-label>
