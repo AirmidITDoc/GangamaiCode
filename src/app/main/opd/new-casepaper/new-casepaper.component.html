@@ -443,7 +443,7 @@
                                                                     fxHide fxShow.gt-sm class="w-300">
                                                                     <!-- Display text when not in edit mode -->
                                                                     <span *ngIf="editingIndex1 !== in">
-                                                                        {{ element.GenericName || element.genericName }}
+                                                                        {{ element.GenericName || element.genericName || vItemGenericName}}
                                                                         <!-- {{ element.GenericName || vItemGN }} -->
                                                                         <mat-icon (click)="editItem(in, element)"
                                                                             class="edit-icon">edit</mat-icon>

@@ -131,7 +131,7 @@ export class NursingnoteComponent implements OnInit {
   gridConfig: gridModel = {
     apiUrl: "Nursing/NursingNoteList",
     columnsList: this.allColumnsOfDocNote,
-    sortField: "AdmId",
+    sortField: "DocNoteId", //AdmId
     sortOrder: 0,
     filters: this.allFiltersOfDocNote
   }
@@ -140,7 +140,7 @@ export class NursingnoteComponent implements OnInit {
     this.gridConfig = {
       apiUrl: "Nursing/NursingNoteList",
       columnsList: this.allColumnsOfDocNote,
-      sortField: "AdmId",
+      sortField: "DocNoteId", //AdmId
       sortOrder: 0,
       filters: [
         { fieldName: "AdmId", fieldValue: String(this.OP_IP_Id), opType: OperatorComparer.Equals }
