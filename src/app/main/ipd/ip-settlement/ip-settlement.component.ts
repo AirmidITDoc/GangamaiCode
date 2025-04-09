@@ -65,10 +65,10 @@ export class IPSettlementComponent implements OnInit {
     AllColumns = [
         {
             heading: "-", key: "companyId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
-            template: this.actionsTemplate, width: 20
+            template: this.actionsTemplate, width: 50
         },
         { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' ,width: 200,type: 9},
         { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "BillAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "ConsessionAmt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' },
@@ -155,7 +155,7 @@ export class IPSettlementComponent implements OnInit {
         const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
             {
                 maxWidth: "85vw",
-                height: '750px',
+                height: '700px',
                 width: '100%',
 
                 data: {

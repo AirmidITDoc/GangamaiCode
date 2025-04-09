@@ -63,7 +63,7 @@ public InsertIPSettlementPayment (employee){
 
 
 public getAdmissionById(Id) {
-  return this._httpClient1.GetData("Admission/" + Id);
+  return this._httpClient1.GetData("IPBill/RegID/" + Id);
 }
 
 

@@ -90,11 +90,11 @@
 
                 <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement"
                     *ngIf="element.balanceAmt!='0'">
-                    <mat-icon title="Settlement">receipt</mat-icon>
-                </button>
-                <button mat-icon-button matTooltip="Paid" *ngIf="element.balanceAmt=='0'">
                     <mat-icon title="Settlement">payment</mat-icon>
                 </button>
+                <!-- <button mat-icon-button matTooltip="Paid" *ngIf="element.balanceAmt=='0'">
+                    <mat-icon title="Settlement">payment</mat-icon>
+                </button> -->
 
                 <button mat-icon-button matTooltip="Print" (click)="viewgetOPPayemntPdf(element)">
                     <mat-icon>print</mat-icon>

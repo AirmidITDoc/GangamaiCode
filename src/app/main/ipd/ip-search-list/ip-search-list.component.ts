@@ -333,7 +333,6 @@ export class IPSearchListComponent implements OnInit {
                 });
             dialogRef.afterClosed().subscribe(result => {
                 if (result) {
-                    that.grid.bindGridData();
                     this.grid.bindGridData();
                 }
             });
