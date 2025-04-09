@@ -356,7 +356,7 @@ export class NewAppointmentComponent implements OnInit {
     ageMonth="0"
     ageDay="0"
     onSave() {
-console.log(this.registerObj.dateOfBirth)
+// console.log(this.registerObj.dateOfBirth)
 
         let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
         if (DateOfBirth1) {

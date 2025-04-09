@@ -91,12 +91,7 @@ export class EditAdmissionComponent implements OnInit {
   ngOnInit(): void {
     this.admissionFormGroup = this._AdmissionService.createEditAdmissionForm();
     this.admissionFormGroup.markAllAsTouched();
-
     console.log(this.data)
-    // this.registerObj1 = this.data
-
-
-
     if ((this.data?.regId ?? 0) > 0) {
       setTimeout(() => {
         this._AdmissionService.getRegistraionById(this.data.regId).subscribe((response) => {

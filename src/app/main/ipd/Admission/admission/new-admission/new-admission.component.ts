@@ -261,6 +261,7 @@ export class NewAdmissionComponent implements OnInit {
     this.personalFormGroup.get('AgeYear').setValue(this.ageYear)
     this.personalFormGroup.get('AgeMonth').setValue(this.ageMonth)
     this.personalFormGroup.get('AgeDay').setValue(this.ageDay)
+    this.admissionFormGroup.get('hospitalId').setValue(this.searchFormGroup.get("HospitalId").value)
 
     this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
     this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.admissionFormGroup.get('AdmissionDate').value, 'yyyy-MM-dd'))

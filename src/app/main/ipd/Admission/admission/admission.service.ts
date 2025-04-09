@@ -142,7 +142,7 @@ export class AdmissionService {
             DepartmentId: ['', [Validators.required]],
             RelativeName: "",
             RelativeAddress: "",
-            PhoneNo: ['', [Validators.required,
+            PhoneNo: ['', [
                 Validators.minLength(10),
                 Validators.maxLength(10),
                 Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
@@ -186,7 +186,7 @@ export class AdmissionService {
             AdmissionDate: [(new Date()).toISOString()],
             AdmissionTime: [(new Date()).toISOString()],
             PatientTypeId: 1,
-            hospitalId: 0,
+            hospitalId: 1,
             DocNameId: ['', [Validators.required]],
             RefDocNameId: 0,
             DischargeDate: "1900-01-01",
@@ -202,7 +202,7 @@ export class AdmissionService {
             DepartmentId: ['', [Validators.required]],
             RelativeName: "",
             RelativeAddress: "",
-            PhoneNo: ['', [Validators.required,
+            PhoneNo: ['', [
                 Validators.minLength(10),
                 Validators.maxLength(10),
                 Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")

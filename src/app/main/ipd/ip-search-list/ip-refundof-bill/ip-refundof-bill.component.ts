@@ -332,7 +332,7 @@ this.RefundOfBillFormGroup.reset();
 } 
 
 getStatementPrint(){
-
+  // this.commonService.Onprint("RefundId",RefundId,"IpBillRefundReceipt");
 }
 getDateTime(dateTimeObj) {
   this.dateTimeObj = dateTimeObj;

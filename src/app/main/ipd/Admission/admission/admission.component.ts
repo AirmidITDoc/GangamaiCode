@@ -583,7 +583,7 @@ export class AdmissionComponent implements OnInit {
     });
     this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
-
+debugger
     this.onChangeFirst() 
     this.grid.bindGridData();
   }
