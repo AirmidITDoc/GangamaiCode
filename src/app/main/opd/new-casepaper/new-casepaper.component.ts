@@ -279,7 +279,7 @@ export class NewCasepaperComponent implements OnInit {
   // }
 
   removeChiefComplaint(item) {
-    debugger
+    
     let removedIndex = this.caseFormGroup.value.mAssignChiefComplaint.findIndex(x => x.complaintId === item.complaintId);
 
     if (removedIndex !== -1) {
@@ -303,7 +303,7 @@ export class NewCasepaperComponent implements OnInit {
   // }
 
   removeExamination(item) {
-    debugger
+    
     let removedIndex = this.caseFormGroup.value.mAssignExamination.findIndex(x => x.examinationId === item.examinationId);
 
     if (removedIndex !== -1) {
@@ -508,7 +508,7 @@ export class NewCasepaperComponent implements OnInit {
   vInst: any;
   vPrescriptionId: any;
   getPrescription(obj) {
-    debugger
+    // debugger
     var m_data2 = {
       "first": 0,
       "rows": 10,
@@ -803,7 +803,7 @@ export class NewCasepaperComponent implements OnInit {
   DoseObjects: any;
   DoseQtyPerDay:any;
   selectChangeDoseName(row) {
-    debugger
+    
     console.log("Dose:", row)
     this.doseId = row.value
     this.doseName = row.text
@@ -1123,6 +1123,7 @@ export class NewCasepaperComponent implements OnInit {
     this.templateId = row.value
     this.templateName = row.text
   }
+  itemObjects1: any[] = [];
 
   onTemplDetAdd() {
     debugger
@@ -1245,7 +1246,7 @@ export class NewCasepaperComponent implements OnInit {
       insertOPDPrescription['date'] = formattedDate,
       insertOPDPrescription['pTime'] = this.dateTimeObj.time;
       insertOPDPrescription['classId'] = this.vClassId || 12;
-      insertOPDPrescription['genericId'] = element.GenericId || element.genericId;
+      insertOPDPrescription['genericId'] = element.GenericId || element.genericId || element.genericid
       insertOPDPrescription['drugId'] = element.DrugId || element.drugId ;
       insertOPDPrescription['doseId'] = element.DoseId || element.doseId;
       insertOPDPrescription['days'] = element.Days || element.days;
@@ -2164,6 +2165,7 @@ export class MedicineItemList {
   doseOption3: any;
   doseNameOption3: any;
   daysOption3: any;
+  genericid:any;
   /**
   * Constructor
   *
@@ -2245,6 +2247,7 @@ export class MedicineItemList {
       this.doseOption3 = MedicineItemList.doseOption3
       this.doseNameOption3 = MedicineItemList.doseNameOption3
       this.daysOption3 = MedicineItemList.daysOption3
+      this.genericid=MedicineItemList.genericid
     }
   }
 }

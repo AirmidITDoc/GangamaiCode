@@ -180,8 +180,8 @@ export class TestmasterService {
 
     public TestMasterUpdate(Param: any) {
         debugger
-        if (Param.pathTest.TestId) {
-         return this._httpClient.PutData("PathTestMaster/Edit/" + Param.pathTest.TestId, Param);
+        if (Param.pathTest.testId) {
+         return this._httpClient.PutData("PathTestMaster/Update/" + Param.pathTest.testId, Param);
         }
     }
 

@@ -130,7 +130,7 @@ export class ResultEntryOneComponent implements OnInit {
         // this.getPathresultdoctorList();
 
 
-        if (this.Iscompleted == 1) {
+        if (this.Iscompleted == 0) {
             if (this.OP_IPType == 1)
                 this.getResultListIP(this.selectedAdvanceObj2,this.regObj);
             else
@@ -359,12 +359,14 @@ export class ResultEntryOneComponent implements OnInit {
        
         console.log(param)
         this._SampleService.getPathologyResultListforOP(param).subscribe(Visit => {
+            debugger
             this.dataSource.data = Visit as Pthologyresult[];
             console.log(this.dataSource.data)
             // this.Pthologyresult = Visit as Pthologyresult[];
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
             this.sIsLoading = '';
+            this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].PathResultDr1)
             this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
             this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
             console.log(this.PathResultDr1);
@@ -533,7 +535,7 @@ export class ResultEntryOneComponent implements OnInit {
                 pathologyInsertReportObj['ParameterName'] = element.ParameterName || '';
                 pathologyInsertReportObj['UnitName'] = element.UnitName || '';
                 pathologyInsertReportObj['PatientName'] = this.selectedAdvanceObj2.PatientName || '';
-                pathologyInsertReportObj['RegNo'] = this.selectedAdvanceObj2.RegNo;
+                pathologyInsertReportObj['RegNo'] = this.selectedAdvanceObj2.regNo;
                 pathologyInsertReportObj['MinValue'] = parseFloat(element.MinValue) || 0;
                 pathologyInsertReportObj['MaxValue'] = parseFloat(element.MaxValue) || 0;
                 pathologyInsertReportObj['SampleID'] = element.SampleID || '';
@@ -618,7 +620,7 @@ export class ResultEntryOneComponent implements OnInit {
             pathologyResult['parameterName'] = element.ParameterName || '';
             pathologyResult['unitName'] = element.UnitName || '';
             pathologyResult['patientName'] = this.selectedAdvanceObj2.PatientName || '';
-            pathologyResult['regNo'] = this.selectedAdvanceObj2.RegNo;
+            pathologyResult['regNo'] = this.selectedAdvanceObj2.regNo;
             pathologyResult['sampleId'] = element.SampleID || '';
             pathologyResult['paraBoldFlag'] = element.ParaBoldFlag || '';
             pathologyResult['minValue'] = parseFloat(element.MinValue) || 0;
