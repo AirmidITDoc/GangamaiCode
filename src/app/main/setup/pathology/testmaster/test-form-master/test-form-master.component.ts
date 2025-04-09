@@ -331,16 +331,14 @@ export class TestFormMasterComponent implements OnInit {
 
             if(!this.vTestId){
             let mPathTemplateDetails = this.Templatetdatasource.data.map((row: any) => ({
-                // "PtemplateId": 0,
                 "TestId": 0,
                 "TemplateId": row.templateId,
             }));
-
+            console.log(mPathTemplateDetails)
             let mPathTestDetailMasters = this.DSTestList.data.map((row: any) => ({
-                // "TestDetId": 0,
-                "TestId": row.testId || 0,
-                "SubTestId": row.subTestID || 0,
-                "ParameterId": row.parameterID || row.parameterId
+                "TestId": 0,
+                "SubTestId": row.subTestID || 1,
+                "ParameterId": row.parameterID || row.parameterId || 1
             }));
 
             let pathTest = {
@@ -374,15 +372,13 @@ export class TestFormMasterComponent implements OnInit {
             });
         } else {
             let mPathTemplateDetails = this.Templatetdatasource.data.map((row: any) => ({
-                // "PtemplateId": 0,
-                "TestId": 0,
-                "TemplateId": row.templateId, //teplate id is not comming becasue we not using dropdown so
+                "TestId": row.testId,
+                "TemplateId": row.templateId,
             }));
             let mPathTestDetailMasters = this.DSTestList.data.map((row: any) => ({
-                // "TestDetId": 0,
                 "TestId": row.testId || 0,
                 "SubTestId": row.subTestID || 0,
-                "ParameterId": row.parameterID || row.parameterId
+                "ParameterId": row.parameterID || row.parameterId || 0
             }));
 
             let pathTest = {
@@ -628,9 +624,9 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     addSubTest(row) {
-        
+        debugger        
 
-        if (!row || !row.parameterID) {
+        if (!row || !row.testId) {
             console.error("Invalid row data!");
             return;
         }
@@ -638,7 +634,7 @@ export class TestFormMasterComponent implements OnInit {
             this.chargeslist = [];
         }
         if (this.chargeslist.length > 0) {
-            let isDuplicate = this.chargeslist.some(ele => ele.parameterID === row.parameterID);
+            let isDuplicate = this.chargeslist.some(ele => ele.testId === row.testId);
 
             if (isDuplicate) {
                 this.toastr.warning('Selected Parameter already added in the list', 'Warning!', {
@@ -663,13 +659,12 @@ export class TestFormMasterComponent implements OnInit {
 
         this.ChargeList = this.DSTestList.data || [];
 
-        let exists = this.ChargeList.some(item => item.parameterID === row.parameterID);
-        // let exists = this.ChargeList.some(item => item.subTestID === row.subTestID);
+        let exists = this.ChargeList.some(item => item.testId === row.testId);
         if (!exists) {
             this.ChargeList.push({
-                parameterID: row.parameterID,
+                parameterID: row.parameterID || 0,
                 parameterName: row.parameterName,
-                subTestID: row.subTestID,
+                subTestID: row.subTestID || 0,
                 testId: row.testId
             });
 

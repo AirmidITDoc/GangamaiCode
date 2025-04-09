@@ -538,9 +538,8 @@ opipType:any="2";
                             }
                         });
                     dialogRef.afterClosed().subscribe(result => {
-                        if (result) {
-                            this.SpinLoading = false;
-                        }
+                        this.grid.bindGridData();
+                        this.getSelectedRow(event);
                     });
                 }, 100);
                 return;
