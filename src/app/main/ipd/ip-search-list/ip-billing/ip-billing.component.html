@@ -816,7 +816,13 @@
                       <mat-checkbox formControlName="CreditBill" (checked)="(true)">Credit Bill</mat-checkbox>
                     </div>
 
-                    <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center">
+                    <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center" class="gap-24">
+                      <mat-radio-group aria-label="Select an option" formControlName="BillType" name="BillType">
+                        <mat-radio-button value="1">Class Wise DraftBill
+                        </mat-radio-button>
+                        <mat-radio-button value="2">Service Wise DraftBill</mat-radio-button>
+                      </mat-radio-group>
+
                       <div class="button-row-group">
                         <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                         <button class="btn btn-primary-outline" (click)="getInterimData()">Interim</button>

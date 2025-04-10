@@ -393,7 +393,8 @@ export class IPBillingComponent implements OnInit {
       Admincheck: [''],
       GenerateBill: [1],
       CreditBill: [''],
-      ChargeDate:[new Date()]
+      ChargeDate:[new Date()],
+      BillType:['1']
     });
   }
   //service selected data
@@ -1229,7 +1230,7 @@ export class IPBillingComponent implements OnInit {
   onSaveDraft() {
 debugger
     if (this.dataSource.data.length > 0 && this.Ipbillform.valid) { 
-      this.isLoading = 'submit'; 
+      this.isLoading = 'submit';  
       let InsertDraftBillOb = {};
       InsertDraftBillOb['drbno'] = 0;
       InsertDraftBillOb['opdIpdId'] = this.selectedAdvanceObj.admissionId;
@@ -1245,11 +1246,11 @@ debugger
       InsertDraftBillOb['addedBy'] = this.accountService.currentUserValue.userId; 
       InsertDraftBillOb['billTime'] = this.dateTimeObj.time;
       InsertDraftBillOb['concessionReasonId'] = this.Ipbillform.get('ConcessionId').value || 0;
-      InsertDraftBillOb['isSettled'] = true;
+      InsertDraftBillOb['isSettled'] = false;
       InsertDraftBillOb['isPrinted'] = true;
       InsertDraftBillOb['isFree'] = false;
       InsertDraftBillOb['companyId'] = this.selectedAdvanceObj.companyId || 0;
-      InsertDraftBillOb['tariffId'] =this.selectedAdvanceObj.tariffId || 0;
+      InsertDraftBillOb['tariffId'] = 3 ,//this.selectedAdvanceObj.tariffId || 0;
       InsertDraftBillOb['unitId'] = this.selectedAdvanceObj.hospitalID || 0;
       InsertDraftBillOb['interimOrFinal'] = 0;
       InsertDraftBillOb['companyRefNo'] = "";

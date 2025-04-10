@@ -117,14 +117,20 @@ export class IPSettlementComponent implements OnInit {
     //    110193
     registerObj = new RegInsert({});  
     PatientName: any;
+    AdmissionId:any=0;
     getSelectedObj(obj) {
         console.log(obj)
         this.RegId1 = obj.value; 
         setTimeout(() => {
-            this._IPSettlementService.getAdmissionById(this.RegId1).subscribe((response) => {
+            this._IPSettlementService.getRegistraionById(this.RegId1).subscribe((response) => {
                 this.registerObj = response;
                 this.PatientName = this.registerObj.firstName + ' ' + this.registerObj.middleName + ' ' + this.registerObj.lastName
                 console.log(response)
+            }); 
+
+            this._IPSettlementService.getAdmissionById(this.RegId1).subscribe((response) => { 
+                this.AdmissionId =  response.admissionId
+                console.log(this.AdmissionId)
             });
         }, 500);
         this.GetDetails(this.RegId1)
@@ -144,7 +150,7 @@ export class IPSettlementComponent implements OnInit {
         PatientHeaderObj['AdvanceAmount'] = contact.balanceAmt;
         PatientHeaderObj['NetPayAmount'] = contact.balanceAmt;
         PatientHeaderObj['BillNo'] = contact.billNo;
-        PatientHeaderObj['OPD_IPD_Id'] = contact.opD_IPD_ID;
+        PatientHeaderObj['OPD_IPD_Id'] = this.AdmissionId;
         PatientHeaderObj['IPDNo'] = contact.ipdNo;
         PatientHeaderObj['RegNo'] =  contact.regNo; 
         PatientHeaderObj['DoctorName'] = contact.doctorname; 
@@ -291,8 +297,7 @@ export class IPSettlementComponent implements OnInit {
         this.searchFormGroup.reset();
         this.PatientName = '';
     }
-    GetDetails(RegId1) { 
-        debugger
+    GetDetails(RegId1) {  
         this.gridConfig = {
             apiUrl: "IPBill/IPBillList",
             columnsList: this.AllColumns,
