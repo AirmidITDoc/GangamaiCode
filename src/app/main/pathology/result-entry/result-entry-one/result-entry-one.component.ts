@@ -100,7 +100,7 @@ export class ResultEntryOneComponent implements OnInit {
         private _fuseSidebarService: FuseSidebarService) {
 
         if (this.data) {
-            debugger
+            // debugger
             this.selectedAdvanceObj2 = data.patientdata;
             console.log(this.selectedAdvanceObj2)
             this.OPIPID = this.selectedAdvanceObj2.opdipdid // this.selectedAdvanceObj2.OPD_IPD_ID;
@@ -264,7 +264,7 @@ export class ResultEntryOneComponent implements OnInit {
         }
 
         data.ParaBoldFlag = '';
-        if (data.PIsNumeric) {
+        if (data.ParaIsNumeric || data.PIsNumeric) {
 
             let a = parseFloat(data.ResultValue);
             let b = parseFloat(data.MinValue);
@@ -331,7 +331,7 @@ export class ResultEntryOneComponent implements OnInit {
     }
 
     getResultList1(rbj) {
-        debugger
+        // debugger
         if (this.OP_IPType == 0) {
             var param =  {
                 "searchFields": [          
@@ -359,7 +359,6 @@ export class ResultEntryOneComponent implements OnInit {
        
         console.log(param)
         this._SampleService.getPathologyResultListforOP(param).subscribe(Visit => {
-            debugger
             this.dataSource.data = Visit as Pthologyresult[];
             console.log(this.dataSource.data)
             // this.Pthologyresult = Visit as Pthologyresult[];
@@ -367,6 +366,7 @@ export class ResultEntryOneComponent implements OnInit {
             this.dataSource.paginator = this.paginator;
             this.sIsLoading = '';
             this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].PathResultDr1)
+            this.vPathResultDoctorId=this.dataSource.data[0].PathResultDr1
             this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
             this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
             console.log(this.PathResultDr1);
@@ -422,6 +422,8 @@ export class ResultEntryOneComponent implements OnInit {
             this.dataSource.data = Visit as Pthologyresult[];
             //  this.Pthologyresult = Visit as Pthologyresult[];
             console.log(this.dataSource.data)
+            this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].adm_Visit_docId)
+            this.vPathResultDoctorId=this.dataSource.data[0].adm_Visit_docId
             this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
             this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
             this.dataSource.sort = this.sort;
@@ -434,6 +436,9 @@ export class ResultEntryOneComponent implements OnInit {
     }
 
     getResultListOP(obj,rbj) {
+        const serviceIds = rbj.map(r => String(r.ServiceId));
+        const pathReportIds = rbj.map(r => String(r.PathReportId));
+        
         debugger
         var SelectQuery=
         {        
@@ -479,6 +484,10 @@ export class ResultEntryOneComponent implements OnInit {
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
             this.sIsLoading = '';
+            // this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].PathResultDr1)
+            this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].adm_Visit_docId)
+
+            this.vPathResultDoctorId=this.dataSource.data[0].adm_Visit_docId
             this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
             this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
             console.log(this.PathResultDr1);
@@ -494,11 +503,11 @@ export class ResultEntryOneComponent implements OnInit {
         this.vPathResultDoctorId=row.value;
     }
     onReload(){
-        this.getResultList1(this.selectedAdvanceObj2);
+        this.getResultList1(this.regObj);
     }
 
     onUpload(){
-       debugger
+    //    debugger
             if ((this.vPathResultDoctorId == '')) {
                 this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',
@@ -528,7 +537,7 @@ export class ResultEntryOneComponent implements OnInit {
                 pathologyInsertReportObj['UnitId'] = element.UnitId || 1;
                 pathologyInsertReportObj['NormalRange'] = element.NormalRange || '';
                 pathologyInsertReportObj['PrintOrder'] = element.PrintOrder || 0;
-                pathologyInsertReportObj['PIsNumeric'] = element.PIsNumeric || 0;
+                pathologyInsertReportObj['PIsNumeric'] = element.ParaIsNumeric || element.PIsNumeric || 0;
                 pathologyInsertReportObj['CategoryName'] = element.CategoryName || '';
                 pathologyInsertReportObj['TestName'] = element.TestName || '';
                 pathologyInsertReportObj['SubTestName'] = element.SubTestName || '';
@@ -590,6 +599,7 @@ export class ResultEntryOneComponent implements OnInit {
     printf: boolean = true;
 
     onSave() {
+        debugger
         if ((this.vPathResultDoctorId == '')) {
             this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -598,7 +608,6 @@ export class ResultEntryOneComponent implements OnInit {
         }
 
         let PathInsertArry = [];
-        // let pathologyUpdateReportObjarray = [];
 
         this.dataSource.data.forEach((element) => {
 
@@ -613,7 +622,7 @@ export class ResultEntryOneComponent implements OnInit {
             pathologyResult['unitId'] = element.UnitId || 1;
             pathologyResult['normalRange'] = element.NormalRange || '';
             pathologyResult['printOrder'] = element.PrintOrder || 0;
-            pathologyResult['pisNumeric'] = element.PIsNumeric || 0;
+            pathologyResult['pisNumeric'] = element.ParaIsNumeric || element.PIsNumeric || 0;
             pathologyResult['categoryName'] = element.CategoryName || '';
             pathologyResult['testName'] = element.TestName || '';
             pathologyResult['subTestName'] = element.SubTestName || '';
@@ -644,25 +653,6 @@ export class ResultEntryOneComponent implements OnInit {
             "admVisitDoctorId": 0,        
             "refDoctorId": 0        
           }
-
-        // this.data.RIdData.forEach((element) => {
-        //     let pathologyReport = {};
-
-        //     pathologyReport['pathReportId'] = element.PathReportId// element1.PathReportId;
-        //     pathologyReport['reportDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-        //     pathologyReport['reportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
-        //     pathologyReport['isCompleted'] = true;
-        //     pathologyReport['isPrinted'] = true;
-        //     pathologyReport['pathResultDr1'] = this.otherForm.get('PathResultDoctorId').value || 0;
-        //     pathologyReport['pathResultDr2'] = 0; //this.otherForm.get('DoctorId').value.DoctorId || 0;
-        //     pathologyReport['pathResultDr3'] = 0;
-        //     pathologyReport['isTemplateTest'] = 0;
-        //     pathologyReport['suggestionNotes'] = this.otherForm.get('suggestionNotes').value || "";
-        //     pathologyReport['admVisitDoctorId'] = 0; //this.otherForm.get('AdmDoctorID').value.DoctorID || 0;
-        //     pathologyReport['refDoctorId'] = this.otherForm.get('RefDoctorID').value || 0;
-
-        //     pathologyUpdateReportObjarray.push(pathologyReport);
-        // });
 
         console.log('==============================  PathologyResult ===========');
         let submitData = {
@@ -786,12 +776,14 @@ export class Pthologyresult {
     SubTestId: any;
     UnitId: any;
     PrintOrder: any;
-    PIsNumeric: any;
+    ParaIsNumeric: any;
+    PIsNumeric:any;
     CategoryName: any;
     UnitName: any;
     MinValue: any;
     MaxValue: any;
     SampleID: any;
+    adm_Visit_docId:any;
 
     constructor(Pthologyresult) {
         this.TestName = Pthologyresult.TestName || '';
@@ -805,13 +797,14 @@ export class Pthologyresult {
         this.ParaBoldFlag = Pthologyresult.ParaBoldFlag || '';
         this.SuggestionNote = Pthologyresult.SuggestionNote || '';
         this.PathResultDr1 = Pthologyresult.PathResultDr1 || 0;
-
+        this.adm_Visit_docId=Pthologyresult.adm_Visit_docId || 0;
         this.PathReportId = Pthologyresult.PathReportId || '';
         this.CategoryId = Pthologyresult.CategoryId || '';
         this.TestId = Pthologyresult.TestId || '';
         this.SubTestId = Pthologyresult.SubTestId || '';
         this.UnitId = Pthologyresult.UnitId || '';
         this.PrintOrder = Pthologyresult.PrintOrder || '';
+        this.ParaIsNumeric = Pthologyresult.ParaIsNumeric || '';
         this.PIsNumeric = Pthologyresult.PIsNumeric || '';
         this.CategoryName = Pthologyresult.CategoryName || '';
         this.UnitName = Pthologyresult.UnitName || '';
@@ -851,7 +844,8 @@ export class PthologyresultInsert {
     UnitId: any;
     NormalRange: any;
     PrintOrder: any;
-    PIsNumeric: boolean;
+    ParaIsNumeric: boolean;
+    PIsNumeric:any;
     CategoryName: any;
     TestName: any;
     SubTestName: any;
@@ -871,6 +865,7 @@ export class PthologyresultInsert {
         this.UnitId = pathologyInsertReportObj.UnitId || '0';
         this.NormalRange = pathologyInsertReportObj.NormalRange || '';
         this.PrintOrder = pathologyInsertReportObj.PrintOrder || '0';
+        this.ParaIsNumeric = pathologyInsertReportObj.ParaIsNumeric || 0;
         this.PIsNumeric = pathologyInsertReportObj.PIsNumeric || 0;
         this.CategoryName = pathologyInsertReportObj.CategoryName || '';
         this.TestName = pathologyInsertReportObj.TestName || '';

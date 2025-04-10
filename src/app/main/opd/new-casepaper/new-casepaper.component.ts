@@ -1159,7 +1159,7 @@ export class NewCasepaperComponent implements OnInit {
       console.log(vdata)
       this._CasepaperService.getTempPrescriptionList(vdata).subscribe(data => {
         this.dsItemList.data = data.data as MedicineItemList[];
-        this.Chargelist = data as MedicineItemList[];
+        this.Chargelist = data.data as MedicineItemList[];
         console.log(this.dsItemList.data)
       });
     }
@@ -1273,7 +1273,8 @@ export class NewCasepaperComponent implements OnInit {
       insertOPDPrescription['pulse'] = this.caseFormGroup.get('Pulse').value || '';
       insertOPDPrescription['bp'] = this.caseFormGroup.get('BP').value || '';
       insertOPDPrescription['storeId'] = this._loggedService.currentUserValue.storeId || 0;
-      insertOPDPrescription['patientReferDocId'] = ReferDocNameID || element.doctorname;
+      insertOPDPrescription['patientReferDocId'] = ReferDocNameID || 0;
+      // insertOPDPrescription['patientReferDocId'] = ReferDocNameID || element.doctorname || 0;
       insertOPDPrescription['advice'] = this.MedicineItemForm.get('Remark').value || '';
       insertOPDPrescription['isAddBy'] = this._loggedService.currentUserValue.userId;
 

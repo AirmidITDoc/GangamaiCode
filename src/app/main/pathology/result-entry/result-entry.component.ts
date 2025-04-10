@@ -102,7 +102,9 @@ export class ResultEntryComponent implements OnInit {
     vOPIPId = 0;
     f_name:any = "" 
     regNo:any="0"
-    l_name:any="" 
+    l_name:any=""
+    vStatusSearch:any="0";
+
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -129,10 +131,6 @@ export class ResultEntryComponent implements OnInit {
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('actionsIPOP') actionsIPOP!: TemplateRef<any>;
 
-    // fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    // toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-
-    
     fromdate = this.fromDate ? this.datePipe.transform(this.fromDate, "yyyy-MM-dd") : "";
     todate = this.toDate ? this.datePipe.transform(this.toDate, "yyyy-MM-dd") : "";
     ngAfterViewInit() {
@@ -172,7 +170,7 @@ export class ResultEntryComponent implements OnInit {
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "From_Dt ", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt ", fieldValue: this.todate, opType: OperatorComparer.Equals },
-            { fieldName: "IsCompleted", fieldValue: "1", opType: OperatorComparer.Equals },
+            { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals }
         ]
     }
@@ -277,7 +275,7 @@ export class ResultEntryComponent implements OnInit {
     }
 
     getSelectedRow(row: any): void {
-        debugger
+        
         console.log("Selected row : ", row);
 
         this.dataSource1.data = [];
@@ -350,7 +348,7 @@ export class ResultEntryComponent implements OnInit {
         this.dateTimeObj = dateTimeObj;
     }
 
-status:any="1"
+status:any="0"
 opipType:any="2";
     onChangeFirst() {
         this.dataSource1.data = [];
@@ -390,11 +388,6 @@ opipType:any="2";
     
     Clearfilter(event) {
     console.log(event)
-    if (event == 'FirstName')
-        this.myformSearch.get('FirstName').setValue("")
-    else
-        if (event == 'LastName')
-            this.myformSearch.get('LastName').setValue("")
     if (event == 'RegNoSearch')
         this.myformSearch.get('RegNoSearch').setValue("")
     
@@ -633,7 +626,7 @@ opipType:any="2";
 
     OPIPID: any = 0;
     onresultentryshow(event, m) {
-        debugger
+        // debugger
         console.log("2nd Table Data:",m)
         this.OPIPID = m.opdipdid //m.OPD_IPD_ID
         this.advanceDataStored.storage = new SampleDetailObj(m);
