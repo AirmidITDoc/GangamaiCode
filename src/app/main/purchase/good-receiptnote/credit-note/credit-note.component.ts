@@ -68,7 +68,7 @@ getdebitAddNote(){
   var vdata={
     'SupplierId': this.registerObj.SupplierId ,    
     'StoreId':  this.accountService.currentUserValue.user.storeId,
-    'GrnID': this.registerObj
+    'GrnID': 0
   }
   console.log(vdata)
   this._GRNList.getdebitADDnote(vdata).subscribe(data=>{
@@ -76,12 +76,17 @@ getdebitAddNote(){
     console.log(this.dsCreditADDnotelist.data)
   })
 }
- 
+selectedList:any=[];
 tableElementChecked(event, element) {
   if (event.checked) {
+    this.selectedList.push(element)
     this.vFinalNetAmt +=element.NetAmount
   }else{
     this.vFinalNetAmt -=element.NetAmount
+    let index = this.selectedList.indexOf(element);
+    if (index !== -1) {
+      this.selectedList.splice(index, 1);
+    }
   }
 }
 onReset(){
@@ -95,7 +100,13 @@ OnSave(){
   });
   return
   }
-this.dialogRef.close(this.vFinalNetAmt)
+this.dialogRef.close(
+  {
+    FinalNetAmt:this.vFinalNetAmt,
+    SelectedList : this.selectedList,
+ 
+  }
+  )
 }
 
 

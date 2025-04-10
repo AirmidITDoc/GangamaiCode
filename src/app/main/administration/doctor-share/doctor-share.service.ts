@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class DoctorShareService {
   
   constructor(
     public _formBuilder: FormBuilder,
-    public _httpClient: HttpClient
+    public _httpClient: HttpClient,
+    public _loaderService: LoaderService
   ) { this.UserFormGroup = this.createUserFormGroup(),
     this.DocFormGroup = this.createDocFormGroup(),
     this.DocPrecessForm = this.createProDocFormGroup() 
@@ -73,19 +75,34 @@ export class DoctorShareService {
   public getGroupList() {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveGroupMasterForCombo",{}) 
   }
-  public InsertDocShare(employee) {
+  public InsertDocShare(employee, loader = true) {
+    if(loader){
+      this._loaderService.show()
+    }
     return this._httpClient.post("Administration/InsertDoctorShareMaster",employee) 
   }
-  public UpdateDocShare(employee) {
+  public UpdateDocShare(employee, loader = true) {
+    if(loader){
+      this._loaderService.show()
+    }
     return this._httpClient.post("Administration/UpdateDoctorShareMaster",employee) 
   }
-  public SaveProcessdocShare(employee) {
+  public SaveProcessdocShare(employee, loader = true) {
+    if(loader){
+      this._loaderService.show()
+    }
     return this._httpClient.post("Administration/DoctorShareProcess",employee) 
   } 
-  public getPdfDocShareSummaryRpt(FromDate,ToDate,DoctorId){
-    return this._httpClient.get("DoctorShareReports/viewDoctorWiseSummaryReport?FromDate=" + FromDate +"&ToDate=" + ToDate +"&DoctorId" +DoctorId);
+  public getPdfDocShareSummaryRpt(From_Dt,ToDate,DoctorId,GroupId,OP_IP_Type, loader = true) {
+    if(loader){
+      this._loaderService.show()
+    }
+    return this._httpClient.get("DoctorShareReports/viewDoctorWiseSummaryReport?Doctor_Id="+ DoctorId +"&GroupId" +GroupId + "&From_Dt=" + From_Dt +"&To_Dt=" + ToDate +"&OP_IP_Type" +OP_IP_Type);
   }
-  public getPdfDocShareRpt(FromDate,ToDate,DoctorId){
-    return this._httpClient.get("DoctorShareReports/view-DoctorShareReport?FromDate=" + FromDate +"&ToDate=" + ToDate +"&DoctorId" +DoctorId);
+  public getPdfDocShareRpt(From_Dt,ToDate,DoctorId,GroupId,OP_IP_Type, loader = true) {
+    if(loader){
+      this._loaderService.show()
+    }
+    return this._httpClient.get("DoctorShareReports/view-DoctorShareReport?Doctor_Id="+ DoctorId +"&GroupId" +GroupId + "&From_Dt=" + From_Dt +"&To_Dt=" + ToDate +"&OP_IP_Type" +OP_IP_Type);
   }
 }

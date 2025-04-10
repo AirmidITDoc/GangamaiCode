@@ -27,6 +27,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ItemFormMasterComponent } from 'app/main/setup/inventory/item-master/item-form-master/item-form-master.component';
 import { SupplierFormMasterComponent } from 'app/main/setup/inventory/supplier-master/supplier-form-master/supplier-form-master.component';
 import { CreditNoteComponent } from '../credit-note/credit-note.component';
+import { element } from 'protractor';
 
 const moment = _rollupMoment || _moment;
 @Component({
@@ -1112,13 +1113,16 @@ debugger
 
 
         let CreditAmount = this._GRNList.GRNFinalForm.get("CreditAmount").value || 0;
-        if(CreditAmount > FinalRoundAmt){
-            this.toastr.warning('check credit amount should not be greater than net amount', 'warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            }); 
-        }else{
-            FinalRoundAmt = (parseFloat(FinalRoundAmt) - parseFloat(CreditAmount));
-        } 
+        if(CreditAmount > 0){
+            if(CreditAmount > FinalRoundAmt){
+                this.toastr.warning('check credit amount should not be greater than net amount', 'warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                }); 
+            }else{
+                FinalRoundAmt = (parseFloat(FinalRoundAmt) - parseFloat(CreditAmount));
+            } 
+        }
+      
         let FinalnetAmt = FinalRoundAmt;
         this.vFinalNetAmount = Math.round(FinalnetAmt).toFixed(2); //(element.reduce((sum, { RoundNetAmt }) => sum += +(RoundNetAmt || 0), 0)).toFixed(2) || Math.round(this.FinalNetAmount);
         this.vDiffNetRoundAmt = (parseFloat(this.vFinalNetAmount) - (FinalnetAmt)).toFixed(2);
@@ -1906,11 +1910,22 @@ debugger
             updateItemMasterGSTPerObj['hsNcode'] = element.HSNcode || "";
             updateItemMasterGSTPerObjarray.push(updateItemMasterGSTPerObj);
         });
+ 
+          let GRNCreditObj = []
+          this.selectedCreditNotelist.forEach(element=>{
+            let insertTGRNRetDet = {};
+            insertTGRNRetDet['grnReturnId'] = element.GRNReturnId || 0;
+            insertTGRNRetDet['grnId'] = element.GRNID || 0;
+            insertTGRNRetDet['storeId'] = element.StoreId || 0; 
+            GRNCreditObj.push(insertTGRNRetDet);
+          })
+
 
         let submitData = {
             "grnSave": grnSaveObj,
             "grnDetailSave": SavegrnDetailObj,
-            "updateItemMasterGSTPer": updateItemMasterGSTPerObjarray
+            "updateItemMasterGSTPer": updateItemMasterGSTPerObjarray,
+            "insertTGRNRetDet":GRNCreditObj
         };
         console.log(submitData);
         this._GRNList.GRNSave(submitData).subscribe(response => {
@@ -2046,11 +2061,26 @@ debugger
             update_POHeader_Status_AganistGRN.push(update_POHeader_Status_AganistGRNObj);
         });
 
+         
+          let deleteRetDetObj = {}
+          deleteRetDetObj['det_Id'] = this.CreditDetID || 0;
+
+        let GRNCreditObj = []
+        this.selectedCreditNotelist.forEach(element=>{
+          let insertTGRNRetDet = {};
+          insertTGRNRetDet['grnReturnId'] = element.GRNReturnId || 0;
+          insertTGRNRetDet['grnId'] = element.GRNID || 0;
+          insertTGRNRetDet['storeId'] = element.StoreId || 0; 
+          GRNCreditObj.push(insertTGRNRetDet);
+        })
+
 
         let submitData = {
             "updateGRNHeader": updateGRNHeaderObj,
             "delete_GRNDetails": delete_GRNDetailsobj,
             "grnDetailSave": SavegrnDetailObj,
+            "deleteRetDet":deleteRetDetObj,
+            "insertTGRNRetDet":GRNCreditObj
         };
         console.log(submitData);
         this._GRNList.GRNEdit(submitData).subscribe(response => {
@@ -2338,6 +2368,8 @@ debugger
     onClose() {
         this.dialogRef.close();
     }
+    selectedCreditNotelist:any=[];
+    CreditDetID:any=0;
     getDebitnotelist() {
         let SupplierId = this._GRNList.userFormGroup.get('SupplierId').value
         if(SupplierId == '' || SupplierId == 0 || SupplierId == null || SupplierId == undefined){ 
@@ -2363,7 +2395,9 @@ debugger
             });
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
-            this._GRNList.GRNFinalForm.get('CreditAmount').setValue(result)
+            this.selectedCreditNotelist = result.SelectedList;
+             this.CreditDetID = result.Det_ID;
+            this._GRNList.GRNFinalForm.get('CreditAmount').setValue(result.FinalNetAmt)
         });
     }
 

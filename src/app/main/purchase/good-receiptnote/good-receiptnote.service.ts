@@ -189,7 +189,8 @@ export class GoodReceiptnoteService {
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.post("Pharmacy/InsertGRNDirect", Param);
+    //return this._httpClient.post("Pharmacy/InsertGRNDirect", Param);
+    return this._httpClient.post("Pharmacy/InsertGRNDirectNEW", Param);
   }
   public POtoGRNSave(Param,loader = true){ 
     if (loader) {
@@ -208,7 +209,8 @@ export class GoodReceiptnoteService {
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.post("Pharmacy/updateGRN", Param);
+    //return this._httpClient.post("Pharmacy/updateGRN", Param);
+    return this._httpClient.post("Pharmacy/UpdateGRNNEW", Param);
   }
 
   public getLoggedStoreList(Param) {

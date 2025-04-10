@@ -36,7 +36,7 @@
                         <form [formGroup]="_DoctorShareService.UserFormGroup">
                             <div fxLayout="row" fxLayoutGap="6px">
                     
-                                <div fxLayout="row" style="padding: 15px;">
+                                <div fxLayout="row" style="padding: 10px;"  fxFlex="15%">
                                     <mat-radio-group formControlName="OP_IP_Type" name="Radio" (change)="getBillListForDoctorList()">
                                         <mat-radio-button value="2">ALL</mat-radio-button>&nbsp;
                                         <mat-radio-button value="0">OP</mat-radio-button>&nbsp;
@@ -44,7 +44,7 @@
                                     </mat-radio-group>
                                 </div>
 
-                                <mat-form-field appearance="outline" fxFlex="18%">
+                                <mat-form-field appearance="outline" fxFlex="15%">
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker">
                                         <input matStartDate formControlName="startdate" placeholder="Start date">
@@ -54,7 +54,7 @@
                                     <mat-date-range-picker #picker></mat-date-range-picker>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="36%">
+                                <mat-form-field appearance="outline" fxFlex="28%">
                                     <mat-label>Select Doctor Name</mat-label>
                                     <input type="text" name="DoctorID" formControlName="DoctorID" placeholder="Doctor Name " matInput
                                         [matAutocomplete]="autoDoc">
@@ -71,7 +71,7 @@
                                     </mat-autocomplete>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="36%">
+                                <mat-form-field appearance="outline" fxFlex="28%">
                                     <mat-label>Select Group Name</mat-label>
                                     <input type="text" name="GroupId" formControlName="GroupId" placeholder="Group Name " matInput
                                         [matAutocomplete]="autoDoc">
@@ -89,7 +89,7 @@
                                 </mat-form-field>
 
 
-                                <mat-form-field appearance="outline" fxFlex="20%">
+                                <mat-form-field appearance="outline" fxFlex="12%">
                                     <mat-label>PBill No</mat-label>
                                     <input name="PbillNo" formControlName="PbillNo" matInput (keyup)="getBillListForDoctorList()"
                                     (keypress)="keyPressAlphanumeric($event)">

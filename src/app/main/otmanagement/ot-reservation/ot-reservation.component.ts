@@ -245,8 +245,7 @@ export class OTReservationComponent implements OnInit {
     //  if(row) this.dialogRef.close(m_data);
   }
 
-  Otnote(contact) {
-
+  Otnote(contact) { 
     const dialogRef = this._matDialog.open(OTNoteComponent,
       {
         maxWidth: "80%",
@@ -255,8 +254,7 @@ export class OTReservationComponent implements OnInit {
         data: {
           Obj: contact
         }
-      });
-
+      }); 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
       this.getOtreservationList();
@@ -276,46 +274,7 @@ OPreOPrativenote(){
   //     });
 }
 
-  onEdit(contact) {
-
-    // if (contact.AnesthType)
-    //   this.AnesthType = contact.AnesthType.trim();
-
-    // let PatInforObj = {};
-    // PatInforObj['OTBookingID'] = contact.OTBookingID,
-
-    //   PatInforObj['PatientName'] = contact.PatientName,
-    //   PatInforObj['OTTableName'] = contact.OTTableName,
-
-    //   PatInforObj['OTTableID'] = contact.OTTableID,
-    //   PatInforObj['RegNo'] = contact.RegNo,
-    //   PatInforObj['SurgeonId'] = contact.SurgeonId,
-    //   PatInforObj['SurgeonId1'] = contact.SurgeonId1,
-    //   PatInforObj['SurgeonName'] = contact.SurgeonName,
-    //   PatInforObj['Surgeryname'] = contact.Surgeryname,
-
-    //   PatInforObj['AnathesDrName'] = contact.AnathesDrName,
-    //   PatInforObj['AnathesDrName1'] = contact.AnathesDrName1,
-    //   PatInforObj['AnesthType'] = contact.AnesthType,
-    //   PatInforObj['AnestheticsDr'] = contact.AnestheticsDr,
-    //   PatInforObj['AnestheticsDr1'] = contact.AnestheticsDr1,
-    //   PatInforObj['Duration'] = contact.Duration,
-    //   PatInforObj['OPDate'] = contact.OPDate,
-    //   PatInforObj['OPTime'] = contact.OPTime,
-    //   PatInforObj['OP_IP_ID'] = contact.OP_IP_ID
-
-    // PatInforObj['TranDate'] = contact.TranDate,
-    //   PatInforObj['UnBooking'] = contact.UnBooking,
-    //   PatInforObj['Instruction'] = contact.instruction,
-    //   PatInforObj['AddedBy'] = contact.AddedBy,
-
-    //   console.log(PatInforObj);
-
-
-    // this._OtManagementService.populateFormpersonal(PatInforObj);
-
-    // this.advanceDataStored.storage = new OTReservationDetail(PatInforObj);
-
+  onEdit(contact) { 
     const dialogRef = this._matDialog.open(NewReservationComponent,
       {
         maxWidth: "80%",
@@ -327,18 +286,8 @@ OPreOPrativenote(){
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-        this.getOtreservationList();
-      // this._OtManagementService.getOTReservationlist(this.D_data1).subscribe(Visit => {
-      //   this.dataSource.data = Visit as OTReservationDetail[];
-      //   console.log(this.dataSource.data);
-      //   this.sIsLoading = '';
-      //   //  this.click = false;
-      // },
-      //   error => {
-      //     this.sIsLoading = '';
-      //   });
-    });
-    // if (contact) this.dialogRef.close(PatInforObj);
+        this.getOtreservationList(); 
+    }); 
   }
   
 

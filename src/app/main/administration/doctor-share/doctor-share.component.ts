@@ -148,12 +148,13 @@ getOptionTextgroupName(option) {
      let FromDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get("startdate").value,"MM-dd-yyyy") || "01/01/1900";
      let ToDate =  this.datePipe.transform(this._DoctorShareService.UserFormGroup.get("enddate").value,"MM-dd-yyyy") || "01/01/1900";
      let DoctorId = this._DoctorShareService.UserFormGroup.get('DoctorID').value.DoctorId || 0;
- 
+     let OP_IP_Type = this._DoctorShareService.UserFormGroup.get('OP_IP_Type').value || 1;
+     let GroupId = this._DoctorShareService.UserFormGroup.get('GroupId').value.GroupId || 0
     console.log(FromDate)
     console.log(ToDate)
     console.log(DoctorId)
       setTimeout(() => { 
-        this._DoctorShareService.getPdfDocShareSummaryRpt(FromDate,ToDate,DoctorId).subscribe(res => {
+        this._DoctorShareService.getPdfDocShareSummaryRpt(FromDate,ToDate,DoctorId,OP_IP_Type,GroupId).subscribe(res => {
           const dialogRef = this._matDialog.open(PdfviewerComponent,
             {
               maxWidth: "85vw",
@@ -177,12 +178,13 @@ getOptionTextgroupName(option) {
        let FromDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get("startdate").value,"MM-dd-yyyy") || "01/01/1900";
        let ToDate =  this.datePipe.transform(this._DoctorShareService.UserFormGroup.get("enddate").value,"MM-dd-yyyy") || "01/01/1900";
        let DoctorId = this._DoctorShareService.UserFormGroup.get('DoctorID').value.DoctorId || 0;
-   
+       let OP_IP_Type = this._DoctorShareService.UserFormGroup.get('OP_IP_Type').value || 1;
+       let GroupId = this._DoctorShareService.UserFormGroup.get('GroupId').value.GroupId || 0
       console.log(FromDate)
       console.log(ToDate)
       console.log(DoctorId)
         setTimeout(() => { 
-          this._DoctorShareService.getPdfDocShareRpt(FromDate,ToDate,DoctorId).subscribe(res => {
+          this._DoctorShareService.getPdfDocShareRpt(FromDate,ToDate,DoctorId,OP_IP_Type,GroupId).subscribe(res => {
             const dialogRef = this._matDialog.open(PdfviewerComponent,
               {
                 maxWidth: "85vw",

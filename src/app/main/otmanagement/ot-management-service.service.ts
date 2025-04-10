@@ -154,7 +154,8 @@ export class OTManagementServiceService {
       bostOPOrders:'',
       complicationMode:'',
       assistant:'',
-      DoctorId1:''
+      DoctorId1:'',
+       AnestheticsDr3:''
     });
   }
 
