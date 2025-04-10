@@ -100,7 +100,7 @@
 
                     <airmid-table [gridConfig]="gridConfig" class="content">
                         <ng-container filters>
-
+                            <form [formGroup]="_CancellationService.UserFormGroup" fxLayout="column">
                             <airmid-datepicker [formGroup]="_CancellationService.UserFormGroup" [isRangePicker]="true"
                                 formStartControlName="startdate" formEndControlName="enddate"
                                 [(fromValue)]="gridConfig.filters[2].fieldValue"
@@ -110,9 +110,9 @@
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Registration No</mat-label>
                                 <input matInput placeholder="Search Registration No" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[4].fieldValue" />
+                                (input)="onChangeopd(); onChangeipd()" formControlName="RegNo"/>                                
                                 <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[4].fieldValue='0'">
+                                (click)=" ClearfilterOPD('RegNo'); ClearfilterIPD('RegNo')">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
@@ -120,9 +120,9 @@
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>First Name</mat-label>
                                 <input matInput placeholder="Search First Name" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                                (input)="onChangeopd(); onChangeipd()" formControlName="FirstName" />
                                 <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[0].fieldValue='%'">
+                                (click)=" ClearfilterOPD('FirstName'); ClearfilterIPD('FirstName')">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
@@ -130,9 +130,9 @@
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Last Name</mat-label>
                                 <input matInput placeholder="Search Last Name" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                                (input)="onChangeopd(); onChangeipd()" formControlName="LastName"/>
                                 <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[1].fieldValue='%'">
+                                (click)=" ClearfilterOPD('LastName'); ClearfilterIPD('LastName')">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
@@ -140,14 +140,13 @@
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>PBill No</mat-label>
                                 <input matInput placeholder="Search PBill No" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[5].fieldValue" />
+                                (input)="onChangeopd(); onChangeipd()" formControlName="PBillNo"/>
                                 <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[5].fieldValue='%'">
+                                (click)=" ClearfilterOPD('PBillNo'); ClearfilterIPD('PBillNo')">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
 
-                            <form [formGroup]="_CancellationService.UserFormGroup">
                                 <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row">
                                     <mat-radio-group formControlName="OP_IP_Type" name="OP_IP_Type">
                                         <mat-label>Type : </mat-label>
@@ -161,6 +160,7 @@
                                         </div>
                                     </mat-radio-group>
                                 </div>
+                                
                             </form>
                         </ng-container>
                     </airmid-table>

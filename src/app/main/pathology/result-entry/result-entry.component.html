@@ -65,7 +65,7 @@
                                 <div fxFlex="20%" fxLayout="row">
                                     <mat-radio-group name="StatusSearch" formControlName="StatusSearch"  (change)="onChangeFirst()"
                                         fxLayout="column" value="0" class="gap-4"
-                                        [(ngModel)]="gridConfig.filters[5].fieldValue">
+                                        [(ngModel)]="vStatusSearch">
                                         <mat-label><b>Status:</b></mat-label>
                                         <div fxLayout="row">
                                             <mat-radio-button value='0'>Pending</mat-radio-button>
@@ -95,26 +95,6 @@
                     <div class="layout-card-containr">
                         <mat-card>
                             <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-
-                                <!-- <div style="height: 40px;">
-                                    <div fxLayout="row wrap" fxLayoutAlign="end" class="gap-8">
-                                        <div class="table-header-right">
-                                            <div class="export-buttons">
-                                                <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
-                                                    <button mat-icon-button (click)="exportReportPdf()">
-                                                        <img width="32" height="10px"
-                                                            src="assets/images/svg/pdf-svg.svg">
-                                                    </button>
-
-                                                    <button mat-icon-button (click)="exportSamplerequstReportExcel()">
-                                                        <img width="32" height="10px"
-                                                            src="assets/images/svg/xls-svg.svg">
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> -->
 
                                 <ng-template #actionButtonTemplate let-element>
                                     <div fxLayout="row" fxLayoutAlign="center center">

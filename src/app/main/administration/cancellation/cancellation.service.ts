@@ -25,8 +25,8 @@ export class CancellationService {
       FirstName: '',
       LastName: '',
       PBillNo: '',
-      OP_IP_Type: ['0']
-
+      OP_IP_Type: ['0'],
+      IsIntrimOrFinal:"2"
     })
   }
   public deactivateTheStatus(m_data) {

@@ -372,11 +372,11 @@ export class TestFormMasterComponent implements OnInit {
             });
         } else {
             let mPathTemplateDetails = this.Templatetdatasource.data.map((row: any) => ({
-                "TestId": row.testId,
+                "TestId": row.testId || this.vTestId,
                 "TemplateId": row.templateId,
             }));
             let mPathTestDetailMasters = this.DSTestList.data.map((row: any) => ({
-                "TestId": row.testId || 0,
+                "TestId": row.testId || this.vTestId || 0,
                 "SubTestId": row.subTestID || 0,
                 "ParameterId": row.parameterID || row.parameterId || 0
             }));

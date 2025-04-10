@@ -11,8 +11,6 @@ export class RadioloyOrderlistService {
   myformSearch: FormGroup;
   myform: FormGroup;
   
-  
-  
   constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
       private _formBuilder: UntypedFormBuilder
       ) {
