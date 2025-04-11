@@ -32,6 +32,24 @@ export class MaterialConsumptionService {
   createUserForm() {
     return this._formBuilder.group({
       FromStoreId: ['2'],
+      // BatchNO: [''],
+      // ItemName:[''],
+      // BalQty:[''],
+      // UsedQty:[''],
+      // Rate:[''],
+      // Remark: [''],
+      // ItemID:[''],
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+      IsPatientWiseConsumption:[true],
+      RegID:[''],
+      PatientType:['1']
+    });
+  }
+
+  createItemForm() {
+    return this._formBuilder.group({
+     
       BatchNO: [''],
       ItemName:[''],
       BalQty:[''],
@@ -41,11 +59,10 @@ export class MaterialConsumptionService {
       ItemID:[''],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
-      IsPatientWiseConsumption:[true],
-      RegID:[''],
-      PatientType:['1']
+     
     });
   }
+
   createfinalform() {
     return this._formBuilder.group({
       Remark: [''],
@@ -64,7 +81,7 @@ export class MaterialConsumptionService {
   // }
 
   public MaterialconsSave(Param){
-    return this._httpClient.post("InventoryTransaction/MaterialConsumptionSave",Param);
+    return this._httpClient1.PostData("MaterialConsumption/InsertEDMX",Param);
   }
 
   public getLoggedStoreList(Param){

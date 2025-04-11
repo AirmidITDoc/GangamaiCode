@@ -20,7 +20,7 @@
 </mat-form-field> -->
 <mat-form-field appearance="outline" fxFlex class="airmid-dropdown">
     <mat-label>{{label}}</mat-label>
-    <mat-select [formControl]="formGroup.controls[formControlName]" placeholder="Search..." #singleSelect (selectionChange)="onDdlChange($event)" [disabled]="disabled" [(ngModel)]="value" ariaDescribedby="ValueField" aria-label="{{ValueField}}" [debounceTime]="300" [threshold]="'10%'" [compareWith]="comparer" msInfiniteScroll [multiple]="IsMultiPle" appFocusNext >
+    <mat-select [formControl]="formGroup.controls[formControlName]" placeholder="Search..." #singleSelect (selectionChange)="onDdlChange($event)" [disabled]="disabled" [(ngModel)]="value" ariaDescribedby="ValueField" aria-label="{{ValueField}}" [debounceTime]="300" [threshold]="'10%'" [compareWith]="comparer" msInfiniteScroll [multiple]="IsMultiPle"  >
         <mat-option>
             <ngx-mat-select-search [formControl]="ddlFilterCtrl" placeholderLabel="Search..." noEntriesFoundLabel="No results found"></ngx-mat-select-search>
         </mat-option>

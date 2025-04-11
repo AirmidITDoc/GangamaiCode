@@ -16,23 +16,23 @@ export class TemplatedescriptionService {
     ) {
         this.myform = this.createBankForm();
         this.myformSearch = this.createSearchForm();
-        this.myform=this.createRadiologytemplateForm();
+        // this.myform=this.createRadiologytemplateForm();
     }
 
-    createRadiologytemplateForm(): FormGroup {
-        return this._formBuilder.group({
-            templateId:[0],
-            templateName:['',
-            [
-            // Validators.required,
-            // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-        ]
-        ],
-        templateDesc:['', 
-            // Validators.required
-        ],
-        });
-    }
+    // createRadiologytemplateForm(): FormGroup {
+    //     return this._formBuilder.group({
+    //         templateId:[0],
+    //         templateName:['',
+    //         [
+    //         // Validators.required,
+    //         // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+    //     ]
+    //     ],
+    //     templateDesc:['', 
+    //         // Validators.required
+    //     ],
+    //     });
+    // }
 
     createBankForm(): FormGroup {
         return this._formBuilder.group({
@@ -62,18 +62,16 @@ export class TemplatedescriptionService {
         this.createBankForm();
     }
 
-    public getbankMasterList(param: gridRequest) {
-        return this._httpClient.PostData("BankMaster/List", param);
-    }
 
     public TemplateSave(Param: any) {
-        if (Param.bankId) {
-            return this._httpClient.PutData("BankMaster/" + Param.bankId, Param);
-        } else return this._httpClient.PostData("BankMaster", Param);
+        debugger
+        if (Param.templateId) {
+            return this._httpClient.PutData("Administration/TemplateUpdate" + Param.templateId, Param);
+        } else return this._httpClient.PostData("Administration/TemplateInsert", Param);
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("BankMaster?Id=" + m_data.toString());
+        return this._httpClient.DeleteData("Administration?Id=" + m_data.toString());
     }
 
 }

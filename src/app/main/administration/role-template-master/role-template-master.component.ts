@@ -8,6 +8,7 @@ import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { NewRoletemplateComponent } from "./new-roletemplate/new-roletemplate.component";
 import { RolePermissionComponent } from "../role-permission/role-permission.component";
+import { FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 
 @Component({
   selector: 'app-role-template-master',
@@ -17,43 +18,45 @@ import { RolePermissionComponent } from "../role-permission/role-permission.comp
   animations: fuseAnimations,
 })
 export class RoleTemplateMasterComponent implements OnInit {
-
+    myformSearch: FormGroup;
     constructor(
-        public _RoleTemplateService: RoleTemplateService,
+        public _RoleTemplateService: RoleTemplateService, private _formBuilder: UntypedFormBuilder,
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 
      @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     
+
+     allcolumns= [
+        { heading: "Code", key: "roleId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Role Name", key: "roleName", sort: true, align: 'left', emptySign: 'NA' },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, 
+                {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._RoleTemplateService.deactivateTheStatus(data.roleId).subscribe((response: any) => {
+                            this.toastr.success(response.message);
+                            this.grid.bindGridData();
+                        });
+                    }
+                },
+                {
+                    action: gridActions.view, callback: (data: any) => {
+                        this.onPermission(data.roleId);
+                    }
+                }, 
+            ]
+        } //Action 1-view, 2-Edit,3-delete
+    ];
+
     gridConfig: gridModel = {
         apiUrl: "Administration/RoleMasterList",
-        columnsList: [
-            { heading: "Code", key: "roleId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Role Name", key: "roleName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, 
-                    {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._RoleTemplateService.deactivateTheStatus(data.roleId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    },
-                    {
-                        action: gridActions.view, callback: (data: any) => {
-                            this.onPermission(data.roleId);
-                        }
-                    }, 
-                ]
-            } //Action 1-view, 2-Edit,3-delete
-        ],
+        columnsList:this.allcolumns,
         sortField: "RoleId",
         sortOrder: 0,
         filters: [
@@ -62,9 +65,10 @@ export class RoleTemplateMasterComponent implements OnInit {
     }
     
     ngOnInit(): void {
-        // this.getRoleMasterList();
+        this.myformSearch = this.filterForm();
     }
     
+
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
@@ -101,162 +105,42 @@ export class RoleTemplateMasterComponent implements OnInit {
             });
     }
 
+
+    filterForm(): FormGroup {
+        return this._formBuilder.group({
+          RoleName: []              
+        });
+    }
+
+Clearfilter(event) {
+    console.log(event)
+    if (event == 'Rolename')
+        this.myformSearch.get('RoleName').setValue("")
+   
+    this.onChangeFirst();
+  }
+  Rolename:any
+  onChangeFirst() {
+    this.Rolename = this.myformSearch.get('RoleName').value
+   
+    this.getfilterdata();
 }
 
-
-    // displayedColumns: string[] = [
-    //   "RoleId",
-    //   "RoleName",
-    //   "action"
-    // ];
-  
-    // isLoading: String = '';
-    // sIsLoading: string = "";
-  
-    // dsRoleMasterList = new MatTableDataSource<RoleMaster>();
-    // @ViewChild(MatSort) sort: MatSort;
-    // @ViewChild(MatPaginator) paginator: MatPaginator;
-  
-    // constructor(public _RoleService: RoleTemplateService,
-    //   public toastr: ToastrService, public _matDialog: MatDialog
-    // ) { }
-  
-    // ngOnInit(): void {
-    //   this.getRoleMasterList();
-    // }
-  
-    // onSearch() {
-    //   this.getRoleMasterList();
-    // }
-  
-    // onSearchClear() {
-    //   this._RoleService.myformSearch.reset({
-    //     RoleNameSearch: ""
-    //   });
-    //   this.getRoleMasterList();
-    // }
-    // getRoleMasterList() {
-    //   this._RoleService.getRoleMasterList((this._RoleService.myformSearch.get("RoleNameSearch")?.value??"")).subscribe((Menu) => {
-    //     this.dsRoleMasterList.data = Menu as unknown as RoleMaster[];
-    //     this.dsRoleMasterList.sort = this.sort;
-    //     this.dsRoleMasterList.paginator = this.paginator;
-    //   });
-    // }
-  
-    // onSubmit() {
-    //   if (this._RoleService.myform.valid) {
-    //     if (!this._RoleService.myform.get("RoleId").value) {
-    //       var m_data = {
-    //         RoleName: this._RoleService.myform.get("RoleName").value.trim(),
-    //         RoleId: this._RoleService.myform.get("RoleId").value | 0
-    //       };
-    //       this._RoleService.insertRoleMaster(m_data).subscribe((data) => {
-    //         this.msg = data;
-    //         if (data) {
-    //           this.toastr.success('Record Saved Successfully.', 'Saved !', {
-    //             toastClass: 'tostr-tost custom-toast-success',
-    //           });
-    //         } else {
-    //           this.toastr.error('Role not saved !, Please check API error..', 'Error !', {
-    //             toastClass: 'tostr-tost custom-toast-error',
-    //           });
-    //         }
-    //         this.getRoleMasterList();
-    //       }, error => {
-    //         this.toastr.error('Role not saved !, Please check API error..', 'Error !', {
-    //           toastClass: 'tostr-tost custom-toast-error',
-    //         });
-    //       }
-  
-    //       );
-    //     } else {
-    //       var m_dataUpdate = {
-    //         RoleId: this._RoleService.myform.get("RoleId").value,
-    //         RoleName: this._RoleService.myform.get("RoleName").value.trim()
-    //       };
-    //       // console.log(m_dataUpdate);
-    //       this._RoleService.insertRoleMaster(m_dataUpdate).subscribe((data) => {
-    //         this.msg = data;
-    //         if (data) {
-    //           this.toastr.success('Record updated Successfully.', 'updated !', {
-    //             toastClass: 'tostr-tost custom-toast-success',
-    //           });
-    //           this.getRoleMasterList();
-    //         } else {
-    //           error => {
-    //             this.toastr.error('Role not updated !, Please check  error..', 'Error !', {
-    //               toastClass: 'tostr-tost custom-toast-error',
-    //             });
-    //           }
-    //         }
-    //         this.getRoleMasterList();
-    //       }, error => {
-    //         this.toastr.error('Role not updated !, Please check API error..', 'Error !', {
-    //           toastClass: 'tostr-tost custom-toast-error',
-    //         });
-    //       });
-    //     }
-  
-    //     this.onClear();
-    //   }
-    // }
-    // onClear() {
-    //   this._RoleService.myform.reset({ IsActive: "true" });
-    //   this._RoleService.initializeFormGroup();
-    // }
+getfilterdata(){
+    debugger
+this.gridConfig = {
     
-  
-    // // newSchduler(){
-    // //   const dialogRef = this._matDialog.open(NewSchdulerComponent,
-    // //     {
-    // //       maxWidth: "70vw",
-    // //       height: "510px",
-    // //       width: "90%",
-           
-    // //     });
-    // //   dialogRef.afterClosed().subscribe(result => {
-      
-    // //   });
-     
-    // // }
-  
-  
-    // onDeactive(RoleId) {
-    //   this.confirmDialogRef = this._matDialog.open(
-    //     FuseConfirmDialogComponent,
-    //     {
-    //       disableClose: false,
-    //     }
-    //   );
-    //   this.confirmDialogRef.componentInstance.confirmMessage =
-    //     "Are you sure you want to deactive?";
-    //   this.confirmDialogRef.afterClosed().subscribe((result) => {
-    //     if (result) {
-    //       let Query = "Update RoleMaster set IsActive=0 where RoleId=" + RoleId;
-    //       this._RoleService.deactivateTheStatus(Query).subscribe((data) => (this.msg = data));
-    //       this.getRoleMasterList();
-    //     }
-    //     this.confirmDialogRef = null;
-    //   });
-    // }
-    // onEdit(row) {
-    //   var m_data = {
-    //     RoleId: row.roleId,
-    //     RoleName: row.roleName
-    //   };
-    //   this._RoleService.populateForm(m_data);
-    // }
-//   }
-  
-//   export class RoleMaster {
-//     RoleId: number;
-//     RoleName: string;
-//     constructor(RoleMaster) {
-//       {
-//         this.RoleId = RoleMaster.RoleId || 0;
-//         this.RoleName = RoleMaster.RoleName || "";
-//       }
-//     }
-  
-//   }
-  
+    apiUrl: "Administration/RoleMasterList",
+    columnsList:this.allcolumns,
+    sortField: "RoleId",
+    sortOrder: 0,
+    filters:  [
+        { fieldName: "RoleName", fieldValue: this.Rolename, opType: OperatorComparer.Contains }
+    ]
+}
+this.grid.gridConfig = this.gridConfig;
+this.grid.bindGridData(); 
+}
+
+}
+

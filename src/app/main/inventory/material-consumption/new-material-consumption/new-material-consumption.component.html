@@ -68,41 +68,49 @@
                                 [mode]="autocompleteModeStoreName">
                             </airmid-dropdown>
                         </div>
+                    </form>
+                    <form [formGroup]="ItemFormGroup">
                         <div fxLayout="row wrap" fxLayoutGap="12px grid">
 
                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <!-- <airmid-dropdown label="ItemName" formControlName="itemName" [formGroup]="userFormGroup"
-                                    [validations]="getValidationMessages().itemName" [mode]="autocompleteModeItemName">
-                                </airmid-dropdown> -->
-
-                                <airmid-autocomplete lbl="Item" [formGroup]="userFormGroup" label="Search Item Name"
+                               
+                                <!-- <airmid-autocomplete lbl="Item" [formGroup]="ItemFormGroup" label="Search Item Name"
                                     formControlName="ItemName" placeholderText="Enter Item Name" fxFlex
                                     ApiUrl="VisitDetail/GetServiceListwithTraiff?TariffId=1&ClassId=2&ServiceName="
                                     (selectionChange)="getSelectedserviceObj($event)" TextField="serviceName"
-                                    ValueField="serviceId"></airmid-autocomplete>
+                                    ValueField="serviceId"></airmid-autocomplete> -->
+
+                                    <airmid-autocomplete lbl="Item" [formGroup]="ItemFormGroup" label="Search Item Name"
+                                    formControlName="ItemName" placeholderText="Enter Item Name" fxFlex
+                                    ApiUrl="ItemMaster/GetItemListBatchPopItemwise?StoreId=2&ItemName="
+                                    (selectionChange)="getSelectedserviceObj($event)" TextField="itemName"
+                                    ValueField="itemId"></airmid-autocomplete>
+
+                                   
 
                             </div>
 
                             <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="BalQty" formControlName="BalQty" [value]="data?.balqty"
-                                    [formGroup]="userFormGroup" [validations]="getValidationMessages().balqty"
+                                <airmid-textbox label="BalQty" formControlName="BalQty" [(ngModel)]="vBalQty"
+                                    [formGroup]="ItemFormGroup" [validations]="getValidationMessages().balqty"
                                     [maxLength]="50">
                                 </airmid-textbox>
                             </div>
 
                             <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="UsedQty" formControlName="UsedQty" [value]="data?.usedqty"
-                                    [formGroup]="userFormGroup" [validations]="getValidationMessages().usedqty"
+                                <airmid-textbox label="UsedQty" formControlName="UsedQty" [(ngModel)]="vUsedQty"
+                                    [formGroup]="ItemFormGroup" [validations]="getValidationMessages().usedqty"
                                     [maxLength]="50">
                                 </airmid-textbox>
                             </div>
 
                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="Remark" formControlName="Remark" [value]="data?.remark"
-                                    [formGroup]="userFormGroup" [validations]="getValidationMessages().remark"
+                                <airmid-textbox label="Remark" formControlName="Remark" [(ngModel)]="vRemark"
+                                    [formGroup]="ItemFormGroup" [validations]="getValidationMessages().remark"
                                     [maxLength]="50">
                                 </airmid-textbox>
                             </div>
+                            <airmid-datepicker [formGroup]="ItemFormGroup" [isRangePicker]="true" formStartControlName="start" formEndControlName="end" [(fromValue)]="fromDate" [(toValue)]="todate"></airmid-datepicker>
 
                             <!-- <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-datepicker [formGroup]="userFormGroup" [isRangePicker]="true"
@@ -294,9 +302,9 @@
                             <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Total MRPAmount
                                 Amount :
                             </span>&nbsp;
-                            <!-- <span class="net-amt-value text-primary"
-                                style="margin-left:10px;font-weight:bolder;color: blue;">{{getTotalamt(dsNewmaterialList.data)
-                                | currency:'INR' }}</span> -->
+                            <span class="net-amt-value text-primary"
+                                style="margin-left:10px;font-weight:bolder;color: blue;"> {{vMRPTotalAmount |
+                                currency:'INR' }}</span>
                         </div>
                     </mat-card>
 

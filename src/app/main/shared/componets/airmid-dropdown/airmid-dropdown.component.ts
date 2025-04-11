@@ -192,6 +192,7 @@ export class AirmidDropDownComponent implements OnInit {
         this.selectionChange.emit($event.value);
     }
     SetSelection(value) {
+        console.log(value)
         if (this.IsMultiPle) {
             this.control.setValue(value);
             if (this.ddls.length > 0)
@@ -209,8 +210,8 @@ export class AirmidDropDownComponent implements OnInit {
         event.stopPropagation();
         const control = this.formGroup.controls[this.formControlName];
         if (control) {
-            control.setValue("")
-            // control.setValue("0")
+            // control.setValue("")
+            control.setValue("0")
             // control.reset();
         }
     }

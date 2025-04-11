@@ -50,7 +50,7 @@ export class RegistrationService {
         return this._formBuilder.group({
             RegId: [0],
             RegNo: "0",
-            PrefixId: ['', [Validators.required]],
+            PrefixId:[0, [Validators.required, Validators.pattern(/^[1-9]*$/)]],
             FirstName: ['', [
                 Validators.required,
             //    Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
@@ -65,7 +65,7 @@ export class RegistrationService {
                 // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
             Validators.pattern("^[A-Za-z/() ]*$")
             ]],
-            GenderId: new FormControl('', [Validators.required]),
+            GenderId: new FormControl( [0, [Validators.required, Validators.pattern(/^[1-9]*$/)]],),
             Address: '',
             DateOfBirth: [(new Date()).toISOString()],
             Age: ['0'],
@@ -96,10 +96,10 @@ export class RegistrationService {
             MaritalStatusId:0,
             ReligionId: 0,
             AreaId: 0,
-            CityId: ['', [Validators.required]],
+            CityId:[0, [Validators.required, Validators.pattern(/^[1-9]*$/)]],
             City: [''],
-            StateId:  ['', [Validators.required]],
-            CountryId:  [0, [Validators.required]],
+            StateId:  [0, [Validators.required, Validators.pattern(/^[1-9]*$/)]],
+            CountryId:  [0, [Validators.required, Validators.pattern(/^[1-9]*$/)]],
             IsCharity: false,
             IsSeniorCitizen: false,
             AddedBy:this.accountService.currentUserValue.userId,

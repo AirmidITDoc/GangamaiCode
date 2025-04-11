@@ -97,7 +97,9 @@ export class RolePermissionComponent implements OnInit {
         
         if (this.data) {
             this.roleId = this.data.roleId;
+            debugger
             this._RoleTemplateService.getPermissionList(this.data.roleId).subscribe((Menu) => {
+                console.log(Menu)
                 this.dataSource.data = Menu as FileNode[];
             });
         }

@@ -78,7 +78,18 @@ export class DischargeComponent implements OnInit {
     private accountService: AuthenticationService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
+
+    
+    this.DischargeForm = this.DischargesaveForm();
+    this.DischargeForm.markAllAsTouched();
+    
+    console.log(this.data.docNameId)
+   
+
     setInterval(() => {
+
+      this.DischargeForm.get("dischargedDocId").setValue(this.data.docNameId)
+
       this.now = new Date();
       this.dateTimeString = this.now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
       if (!this.isTimeChanged) {
@@ -93,17 +104,18 @@ export class DischargeComponent implements OnInit {
       console.log(this.selectedAdvanceObj);
 
     }
+
   }
 
   ngOnInit(): void {
-    this.DischargeForm = this.DischargesaveForm();
-    this.DischargeForm.markAllAsTouched();
+    // this.DischargeForm = this.DischargesaveForm();
+    // this.DischargeForm.markAllAsTouched();
     // this.getdischargeIdbyadmission()
     console.log(this.data)
     if (this.data) {
       this.vAdmissionId = this.data.admissionId;
       this.vBedId = this.data.bedId
-      this.DischargeForm.get("dischargedDocId").setValue(this.data.docNameId)
+      // this.DischargeForm.get("dischargedDocId").setValue(this.data.docNameId)
       setTimeout(() => {
         this._IpSearchListService.getRegistraionById(this.data.regId).subscribe((response) => {
           this.registerObj = response;

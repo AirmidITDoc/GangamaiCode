@@ -27,6 +27,7 @@ export class NewRoletemplateComponent implements OnInit {
  
     ngOnInit(): void {
         this.myform = this._RoleTemplateService.createRoleForm();
+        console.log(this.data)
         if((this.data?.roleId??0) > 0)
         {
             console.log(this.data)
@@ -36,11 +37,8 @@ export class NewRoletemplateComponent implements OnInit {
         }
     }
     onSubmit() {
-        
-   
         if (this.myform.valid) {
-
-            console.log("JSON :-",this.myform.value)
+        console.log("JSON :-",this.myform.value)
 
             this._RoleTemplateService.roleMasterSave(this.myform.value).subscribe((response) => {
               this.toastr.success(response.message);

@@ -23,8 +23,11 @@ import { FormGroup } from '@angular/forms';
   animations: fuseAnimations,
 })
 export class NewMaterialConsumptionComponent implements OnInit {
-  userFormGroup:FormGroup;
-  vConsumDate=new Date()
+  userFormGroup: FormGroup;
+  ItemFormGroup: FormGroup;
+
+
+  vConsumDate = new Date()
   displayedColumns = [
     'ItemName',
     'BatchNo',
@@ -55,84 +58,85 @@ export class NewMaterialConsumptionComponent implements OnInit {
   vRate: any;
   vRemark: any;
   vItemID: any;
-  vbatchNo:any;
-  vTotalAmount:any;
-  vlandedTotalAmount:any;
-  vPureTotalAmount:any;
-  vStoreId:any;
+  vbatchNo: any;
+  vTotalAmount: any;
+  vlandedTotalAmount: any;
+  vPureTotalAmount: any;
+  vStoreId: any;
   vfinalTotalAmount
-  vStockId:any;
-  vExpDate:any;
-  vItemName:any;
+  vStockId: any;
+  vExpDate: any;
+  vItemName: any;
   chargeslist: any = [];
-  ItemID:any;
-  ItemName:any;
-  vPurchaseRate:any;
-  vUnitMRP:any;
-  vMRP:any;
-  vTotalMRP:any;
-  vMRPTotalAmt:any;
-  vLandedTotalAmt:any;
-  vPurTotalAmt:any;
-  vLandedRate:any;
-  vVatPercentage:any;
-  vbatchExpDate:any;
+  ItemID: any;
+  ItemName: any;
+  vPurchaseRate: any;
+  vUnitMRP: any;
+  vMRP: any;
+  vTotalMRP: any;
+  vMRPTotalAmt: any;
+  vLandedTotalAmt: any;
+  vPurTotalAmt: any;
+  vLandedRate: any;
+  vVatPercentage: any;
+  vbatchExpDate: any;
   sIsLoading: string = '';
   SpinLoading: boolean = false;
   isRegIdSelected: boolean = false;
   dsNewmaterialList = new MatTableDataSource<ItemList>();
   dsTempItemNameList = new MatTableDataSource<ItemList>();
-  PatientListfilteredOptionsOP:any;
-  PatientListfilteredOptionsIP:any;
-  vIsPatientWiseConsumption:any;
+  PatientListfilteredOptionsOP: any;
+  PatientListfilteredOptionsIP: any;
+  vIsPatientWiseConsumption: any;
 
-  registerObjOP:any;
-  registerObjIP:any;
-  vAdmissionId:any;
-  autocompleteModeItemName:string = "Item";
-  autocompleteModeStoreName:string = "Store";
+  registerObjOP: any;
+  registerObjIP: any;
+  vAdmissionId: any;
+  autocompleteModeItemName: string = "Item";
+  autocompleteModeStoreName: string = "Store";
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
-
+  fromDate:any;
+  todate:any;
   constructor(
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NewMaterialConsumptionComponent>,
-     public _loggedService: AuthenticationService,
+    public _loggedService: AuthenticationService,
     public toastr: ToastrService,
     private accountService: AuthenticationService,
+    
     public _MaterialConsumptionService: MaterialConsumptionService,
   ) { }
 
   ngOnInit(): void {
-    this.userFormGroup=this._MaterialConsumptionService.createUserForm();
-    
-    // this.userFormGroup=this._MaterialConsumptionService.createSearchFrom();
-    
+    this.userFormGroup = this._MaterialConsumptionService.createUserForm();
+    this.ItemFormGroup=this._MaterialConsumptionService.createItemForm();
+
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  
 
-  Pstatus=1
-  onChange(event) {  
+
+  Pstatus = 1
+  onChange(event) {
     debugger
-    if(event.value="0")
-      this.Pstatus=0
-    if(event.value="1")
-      this.Pstatus=1
+    if (event.value = "0")
+      this.Pstatus = 0
+    if (event.value = "1")
+      this.Pstatus = 1
 
     this.userFormGroup.get('RegID').setValue('')
     // this.PatientListfilteredOptionsOP = [];
     // this.PatientListfilteredOptionsIP = [];
   }
 
-  vRegNo=0
-  vAdmissionID=0
+  vRegNo = 0
+  vAdmissionID = 0
   getSelectedObjRegIP(obj) {
- 
+
     if ((obj.regID ?? 0) > 0) {
       console.log("Admitted patient:", obj)
       this.vRegNo = obj.regNo
@@ -153,30 +157,21 @@ export class NewMaterialConsumptionComponent implements OnInit {
       // this.vTariffName = obj.tariffName
       // this.vCompanyName = obj.companyName
       // this.vDOA = obj.admissionDate
-      this.vAdmissionID = obj.admissionID
+      this.vAdmissionId = obj.admissionID
       // this.vClassId = obj.classId
-      
-    }
-  } 
-  getSelectedObjOP(obj) { 
-      console.log(obj) 
-      this.registerObjOP = obj; 
-      this.vAdmissionId = this.registerObjIP.this.VisitId 
-  }
-  
 
-  getSelectedObj(obj) {
-    //console.log(obj)
-    this.ItemName = obj.ItemName;
-    this.ItemID = obj.ItemId;
-    this.vBalQty = obj.BalanceQty;
-   
-    if (this.vBalQty > 0) {
-      // this.getBatch();
     }
   }
+  getSelectedObjOP(obj) {
+    console.log(obj)
+    this.registerObjOP = obj;
+    this.vAdmissionId = this.registerObjIP.this.VisitId
+  }
+
+
   getBatch() {
-    this.usedQty.nativeElement.focus();
+    // this.usedQty.nativeElement.focus();
+    
     const dialogRef = this._matDialog.open(SalePopupComponent,
       {
         maxWidth: "800px",
@@ -185,83 +180,84 @@ export class NewMaterialConsumptionComponent implements OnInit {
         height: '380px',
         disableClose: true,
         data: {
-          "ItemId": this._MaterialConsumptionService.userFormGroup.get('ItemID').value.ItemId,
-          "StoreId": this._MaterialConsumptionService.userFormGroup.get('FromStoreId').value.storeid
+          "ItemId": this.ItemFormGroup.get('ItemName').value.itemId,
+          "StoreId":this.userFormGroup.get('FromStoreId').value
         }
       });
     dialogRef.afterClosed().subscribe(result => {
-
-       result=result.selectedData
-       this.vbatchNo = result.BatchNo;
-       this.vBalQty = result.BalanceQty;
-       this.vMRP = result.UnitMRP;
-       this.vStockId = result.StockId
-       this.vPurchaseRate = result.PurchaseRate;
-       this.vbatchExpDate = result.BatchExpDate;
-       this.vLandedRate = result.LandedRate;
-       this.vPurchaseRate =result.PurchaseRate;
-       this.vUnitMRP = result.UnitMRP;
+console.log(result)
+      result = result.selectedData
+      this.vbatchNo = result.batchNo;
+      this.vBalQty = result.balanceQty;
+      this.vMRP = result.unitMRP;
+      this.vStockId = result.stockId
+      this.vPurchaseRate = result.purchaseRate;
+      this.vbatchExpDate = result.batchExpDate;
+      this.vLandedRate = result.landedRate;
+      this.vPurchaseRate = result.purchaseRate;
+      this.vUnitMRP = result.unitMRP;
     });
   }
 
   onAdd() {
-    // if ((this.vItemID == '' || this.vItemID == null || this.vItemID == undefined)) {
-    //   this.toastr.warning('Please enter a item', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-    // if ((this.vUsedQty == '' || this.vUsedQty == null || this.vUsedQty == undefined)) {
-    //   this.toastr.warning('Please enter a Qty', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // } 
+    this.vUsedQty = this.ItemFormGroup.get("UsedQty").value
+    if ((this.ItemFormGroup.get("ItemName").value == '' || this.ItemFormGroup.get("ItemName").value == null || this.ItemFormGroup.get("ItemName").value == undefined)) {
+      this.toastr.warning('Please enter a item', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vUsedQty == '' || this.vUsedQty == null || this.vUsedQty == undefined)) {
+      this.toastr.warning('Please enter a Qty', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
 
-    this.vUsedQty=this.userFormGroup.get("UsedQty").value
-    this.vUnitMRP=800
-    const isDuplicate = this.dsNewmaterialList.data.some(item => item.ItemId === this._MaterialConsumptionService.userFormGroup.get('ItemID').value.ItemId);
-    if (!isDuplicate) {
+    // const isDuplicate = this.dsNewmaterialList.data.some(item => item.ItemId === this.ItemFormGroup.get('ItemName').value.serviceId);
+    // if (!isDuplicate) {
 
       this.chargeslist = this.dsTempItemNameList.data;
       debugger
       this.chargeslist.push(
         {
-          ItemId: this.ItemID ,//this._MaterialConsumptionService.userFormGroup.get('ItemID').value.ItemId || 0,
+          ItemId: this.ItemID,//this._MaterialConsumptionService.userFormGroup.get('ItemID').value.ItemId || 0,
           ItemName: this.ItemName, //this._MaterialConsumptionService.userFormGroup.get('ItemID').value.ItemName || '',
           BatchNo: this.vbatchNo || " ",
           BatchExpDate: this.datePipe.transform(this.vbatchExpDate, "yyyy-MM-dd") || '01/01/1900',
-          StartDate: this.datePipe.transform(this.userFormGroup.get("start").value, "yyyy-MM-dd") || '01/01/1900',
-          EndDate: this.datePipe.transform(this.userFormGroup.get("end").value, "yyyy-MM-dd") || '01/01/1900',
+          StartDate: this.datePipe.transform(this.ItemFormGroup.get("start").value, "yyyy-MM-dd") || '01/01/1900',
+          EndDate: this.datePipe.transform(this.ItemFormGroup.get("end").value, "yyyy-MM-dd") || '01/01/1900',
           BalQty: this.vBalQty || 0,
           UsedQty: this.vUsedQty || 0,
-          LandedRate:this.vLandedRate,
-          PurchaseRate:this.vPurchaseRate,
+          LandedRate: this.vLandedRate,
+          PurchaseRate: this.vPurchaseRate,
           UnitMRP: this.vUnitMRP,
-          MRPTotalAmt: this.vUsedQty *  this.vUnitMRP || 0,
-          LandedTotalAmt :this.vUsedQty * this.vLandedRate  || 0,
+          MRPTotalAmt: this.vUsedQty * this.vUnitMRP || 0,
+          LandedTotalAmt: this.vUsedQty * this.vLandedRate || 0,
           PurTotalAmt: this.vUsedQty * this.vPurchaseRate || 0,
-          Remark: this.vRemark ||  " ",
-          StockId:this.vStockId || 0,
-          StoreId:this.userFormGroup.get("FromStoreId").value
-          
-        }); 
+          Remark: this.vRemark || " ",
+          StockId: this.vStockId || 0,
+          StoreId: this.userFormGroup.get("FromStoreId").value
+
+        });
       this.dsNewmaterialList.data = this.chargeslist
-    } else {
-      this.toastr.warning('Selected Item already added in the list', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      }); 
-    }
-    this.ItemReset(); 
-    this.itemid.nativeElement.focus();
+      this.getTotalamt()
+    // } else {
+    //   this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    // }
+    this.ItemReset();
+    // this.itemid.nativeElement.focus();
   }
 
   getSelectedserviceObj(obj) {
-    this.ItemName = obj.serviceName;
-    this.ItemID = obj.serviceId;
-    this.vBalQty = obj.BalanceQty;
+    debugger
+    this.ItemName = obj.itemName;
+    this.ItemID = obj.itemId;
+    this.vBalQty = obj.balanceQty;
     if (this.vBalQty > 0) {
-      // this.getBatch();
+      this.getBatch();
     }
 
   }
@@ -277,83 +273,76 @@ export class NewMaterialConsumptionComponent implements OnInit {
     });
   }
   ItemReset() {
-    // this.ItemName = "";
-    // this.vItemID = 0;
-    // this.vBalQty = 0;
-    // this.vUsedQty = 0;
-    // this.vRemark = " ";
-    // this._MaterialConsumptionService.userFormGroup.get('ItemID').setValue(''); 
+   
+    // this.ItemFormGroup.reset({
+    //   ItemName: "",
+    //   balqty: 0,
+    //   usedqty: 0,
+    //   remark: 0,
 
-    this.userFormGroup.reset({
-      ItemName: "",
-      balqty: 0,
-      usedqty: 0,
-      remark: 0,
-     
-    });
+    // });
+this.ItemFormGroup.get("ItemName").reset("")
+this.ItemFormGroup.get("balqty").reset(0)
+this.ItemFormGroup.get("usedqty").reset(0)
+this.ItemFormGroup.get("remark").reset('')
+  }
 
-  } 
 
- 
-  QtyCondition(){
-    
-    if(this.vBalQty < this.vUsedQty){
+  QtyCondition() {
+
+    if (this.vBalQty < this.vUsedQty) {
       this.toastr.warning('Enter UsedQty less than BalQty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
-      }); 
+      });
       this.vUsedQty = '';
-      return 
-    } 
+      return
+    }
     //this.remark.nativeElement.focus()
   }
-  vMRPTotalAmount:any;
-  vPurTotalAmount:any;
-  vLandedTotalAmount:any;
-  Savebtn:boolean=false;
+  vMRPTotalAmount: any;
+  vPurTotalAmount: any;
+  vLandedTotalAmount: any;
+  Savebtn: boolean = false;
 
-  getTotalamt(element) {
-    debugger
-    this.vMRPTotalAmount = (element.reduce((sum, { MRPTotalAmt }) => sum += +(MRPTotalAmt || 0), 0)).toFixed(2);
-    this.vPurTotalAmount = (element.reduce((sum, { PurTotalAmt }) => sum += +(PurTotalAmt || 0), 0)).toFixed(2);
-    this.vLandedTotalAmount = (element.reduce((sum, { LandedTotalAmt }) => sum += +(LandedTotalAmt || 0), 0)).toFixed(2);
+  getTotalamt() {
+
+    this.vMRPTotalAmount= this.chargeslist.reduce((sum, charge) => sum + (+charge.MRPTotalAmt), 0);
+    this.vPurTotalAmount = this.chargeslist.reduce((sum, charge) => sum + (+charge.PurTotalAmt), 0);
+    this.vLandedTotalAmount= this.chargeslist.reduce((sum, charge) => sum + (+charge.LandedRate), 0);
+
+    
+    console.log(this.chargeslist)
+    // this.vMRPTotalAmount = (element.reduce((sum, { MRPTotalAmt }) => sum += +(MRPTotalAmt || 0), 0)).toFixed(2);
+    // this.vPurTotalAmount = (element.reduce((sum, { PurTotalAmt }) => sum += +(PurTotalAmt || 0), 0)).toFixed(2);
+    // this.vLandedTotalAmount = (element.reduce((sum, { LandedTotalAmt }) => sum += +(LandedTotalAmt || 0), 0)).toFixed(2);
     return this.vMRPTotalAmount;
   }
-  OnSave(){
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'shortTime');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-
+  OnSave() {
+   
     if ((!this.dsNewmaterialList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    }  
-    this.Savebtn=true;
-    let materialConsumptionObj = {};
-    materialConsumptionObj['materialConsumptionId'] = 0;
-    materialConsumptionObj['consumptionNo'] =  0;
-    materialConsumptionObj['consumptionDate'] =  formattedDate;
-    materialConsumptionObj['consumptionTime'] = formattedTime;
-    materialConsumptionObj['fromStoreId'] =this._loggedService.currentUserValue.user.storeId;
-    materialConsumptionObj['landedTotalAmount'] = this.vLandedTotalAmount || 0;
-    materialConsumptionObj['purchaseTotal'] = this.vPurTotalAmount || 0;
-    materialConsumptionObj['mrpTotalAmount'] =this.vMRPTotalAmount || 0;
-    materialConsumptionObj['remark'] = this._MaterialConsumptionService.FinalMaterialForm.get('Remark').value;
-    materialConsumptionObj['oP_IP_Type'] = this._MaterialConsumptionService.userFormGroup.get('PatientType').value;
-    materialConsumptionObj['admId'] =  this.vAdmissionId || 0;
-    materialConsumptionObj['createdBy'] =this.accountService.currentUserValue.user.id || 0; 
-    
-    let insertMaterialConsDetail =[];
-    this.dsNewmaterialList.data.forEach((element) =>{
+    }
+    if ((this.vAdmissionId==0)) {
+      this.toastr.warning('Please Selct Patient ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    this.Savebtn = true;
+   
+    let insertMaterialConsDetail = [];
+    this.dsNewmaterialList.data.forEach((element) => {
       let insertMaterialConstDetailObj = {};
+      insertMaterialConstDetailObj['materialConDetId'] = 0;
       insertMaterialConstDetailObj['materialConsumptionId'] = 0;
       insertMaterialConstDetailObj['itemId'] = element.ItemId;
       insertMaterialConstDetailObj['batchNo'] = element.BatchNo;
       insertMaterialConstDetailObj['batchExpDate'] = element.BatchExpDate;
       insertMaterialConstDetailObj['qty'] = element.UsedQty;
-      insertMaterialConstDetailObj['perUnitLandedRate'] =element.LandedRate || 0
+      insertMaterialConstDetailObj['perUnitLandedRate'] = element.LandedRate || 0
       insertMaterialConstDetailObj['parUnitPurchaseRate'] = element.PurchaseRate || 0;
       insertMaterialConstDetailObj['perUnitMRPRate'] = element.UnitMRP || 0;
       insertMaterialConstDetailObj['landedRateTotalAmount'] = element.LandedTotalAmt || 0;
@@ -361,66 +350,70 @@ export class NewMaterialConsumptionComponent implements OnInit {
       insertMaterialConstDetailObj['mrpTotalAmount'] = element.MRPTotalAmt || 0;
       insertMaterialConstDetailObj['startDate'] = element.StartDate || 0;
       insertMaterialConstDetailObj['endDate'] = element.EndDate || 0;
-      insertMaterialConstDetailObj['remark'] =element.Remark || 0;
-      insertMaterialConstDetailObj['admId'] =this.vAdmissionId || 0;
+      insertMaterialConstDetailObj['remark'] = element.Remark || 0;
+      insertMaterialConstDetailObj['admId'] = this.vAdmissionId || 0;
       insertMaterialConsDetail.push(insertMaterialConstDetailObj);
     })
 
-    let updateCurrentStock =[];
-    this.dsNewmaterialList.data.forEach((element) =>{
+    let updateCurrentStock = [];
+    this.dsNewmaterialList.data.forEach((element) => {
       let updateCurrentStockObj = {};
-      updateCurrentStockObj['itemId'] =element.ItemId;
-      updateCurrentStockObj['issueQty'] =  element.UsedQty;
-      updateCurrentStockObj['storeID'] =this._loggedService.currentUserValue.user.storeId;
-      updateCurrentStockObj['stkId'] = element.StockId ;
+      updateCurrentStockObj['itemId'] = element.ItemId;
+      updateCurrentStockObj['issueQty'] = element.UsedQty;
+      updateCurrentStockObj['storeID'] =2,// this._loggedService.currentUserValue.user.storeId;
+      updateCurrentStockObj['stkId'] = element.StockId;
       updateCurrentStock.push(updateCurrentStockObj);
     })
 
-    let submitdata={
-      'insertMaterialConsumption':materialConsumptionObj,
-      'insertMaterialConsDetail':insertMaterialConsDetail,
-      'updateCurrentStock':updateCurrentStock
+    let submitdata = {
+      "materialConsumptionId": 0,
+      "consumptionNo": "string",
+      "consumptionDate": this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+      "consumptionTime":  this.datePipe.transform(new Date(), 'shortTime'),
+      "fromStoreId":2,// this._loggedService.currentUserValue.user.storeId,
+      "landedTotalAmount":this.vLandedTotalAmount || 0,
+      "purTotalAmount": this.vPurTotalAmount || 0,
+      "mrpTotalAmount":this.vMRPTotalAmount,
+      "remark": this._MaterialConsumptionService.FinalMaterialForm.get('Remark').value,
+      "addedBy": this._loggedService.currentUserValue.userId,
+      "updatedBy":this._loggedService.currentUserValue.userId,
+      "admId": this.vAdmissionId || 0,
+      'tMaterialConsumptionDetails': insertMaterialConsDetail
+      // 'updateCurrentStock':updateCurrentStock
     }
     console.log(submitdata)
     this._MaterialConsumptionService.MaterialconsSave(submitdata).subscribe(response => {
-      if (response) {
-        this.toastr.success('Record New Material Consumption Saved Successfully.', 'Saved !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-        this.OnReset();
-        this.Savebtn=true;
-        this.onClose();
-        this.viewgetMaterialconsumptionReportPdf(response);
-      } else {
-        this.toastr.error('New Material Consumption Data not saved !, Please check validation error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      }
-    }, error => {
-      this.toastr.error('New Material Consumption Data not saved !, Please check API error..', 'Error !', {
-        toastClass: 'tostr-tost custom-toast-error',
-      });
-    });
+    this.toastr.success(response.message);
+    this.viewgetMaterialconsumptionReportPdf(response)
+  this._matDialog.closeAll();
+    this.Savebtn = true
+    if (response)
+      this.OnReset();
+
+  }, (error) => {
+    this.toastr.error(error.message);
+  });
+
   }
 
-  getSelectedObjIP(){}
+  getSelectedObjIP() { }
 
-  getValidationMessages(){
-    return{
-        itemName: [],
-        balqty: [],
-        usedqty: [],
-        remark: [],
-        Remark:[],
-        MRPTotalAmount:[],
-        PurTotalAmount:[],
-        LandedTotalAmount:[],
-        FromStoreId:[]
+  getValidationMessages() {
+    return {
+      itemName: [],
+      balqty: [],
+      usedqty: [],
+      remark: [],
+      Remark: [],
+      MRPTotalAmount: [],
+      PurTotalAmount: [],
+      LandedTotalAmount: [],
+      FromStoreId: []
     }
-}
+  }
 
   viewgetMaterialconsumptionReportPdf(MaterialConsumptionId) {
-   
+
   }
   @ViewChild('itemid') itemid: ElementRef;
   @ViewChild('usedQty') usedQty: ElementRef;
@@ -452,8 +445,8 @@ export class NewMaterialConsumptionComponent implements OnInit {
   }
   onEnterdate(event): void {
     if (event.which === 13) {
-      this.addbutton.nativeElement.focus(); 
-    } 
+      this.addbutton.nativeElement.focus();
+    }
   }
   onClose() {
     this._matDialog.closeAll();
@@ -467,16 +460,16 @@ export class NewMaterialConsumptionComponent implements OnInit {
       event.preventDefault();
       return false;
     }
-  } 
-  OnReset(){
-   this.ItemReset();
-  //  this._MaterialConsumptionService.userFormGroup.reset();
-   this.dsNewmaterialList.data = []; 
-   this.chargeslist.data = [];
-   this.dsTempItemNameList.data =[];
-   this._MaterialConsumptionService.FinalMaterialForm.get('Remark').setValue('')
-   this._MaterialConsumptionService.userFormGroup.get('RegID').setValue('');
-   
+  }
+  OnReset() {
+    this.ItemReset();
+    //  this._MaterialConsumptionService.userFormGroup.reset();
+    this.dsNewmaterialList.data = [];
+    this.chargeslist.data = [];
+    this.dsTempItemNameList.data = [];
+    this._MaterialConsumptionService.FinalMaterialForm.get('Remark').setValue('')
+    this._MaterialConsumptionService.userFormGroup.get('RegID').setValue('');
+
   }
 }
 export class ItemList {
@@ -489,15 +482,15 @@ export class ItemList {
   TotalAmount: number;
   Remark: number;
   StockId: any;
-  ItemId:any;
-  MRPTotalAmt:any;
-  StartDate:any;
-  EndDate:any;
-  LandedTotalAmt:any;
-  PurTotalAmt:any;
-  UnitMRP:any;
-  LandedRate:any;
-  PurchaseRate:any;
+  ItemId: any;
+  MRPTotalAmt: any;
+  StartDate: any;
+  EndDate: any;
+  LandedTotalAmt: any;
+  PurTotalAmt: any;
+  UnitMRP: any;
+  LandedRate: any;
+  PurchaseRate: any;
 
   constructor(ItemList) {
     {

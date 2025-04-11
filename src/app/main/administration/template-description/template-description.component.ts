@@ -32,9 +32,9 @@ export class TemplateDescriptionComponent implements OnInit {
                             }
                         }, {
                             action: gridActions.delete, callback: (data: any) => {
-                                this._TemplatedescriptionService.deactivateTheStatus(data.bankId).subscribe((response: any) => {
+                                this._TemplatedescriptionService.deactivateTheStatus(data.templateId).subscribe((response: any) => {
                                     this.toastr.success(response.Message);
-                                    this.grid.bindGridData;
+                                  this.getfilterdata();
                                 });
                             }
                         }]
@@ -74,10 +74,8 @@ export class TemplateDescriptionComponent implements OnInit {
                     data: row
                 });
             dialogRef.afterClosed().subscribe(result => {
-                if (result) {
-                    that.grid.bindGridData();
-                }
-                console.log('The dialog was closed - Action', result);
+               this.getfilterdata()
+              
             });
         }
 
@@ -94,11 +92,44 @@ export class TemplateDescriptionComponent implements OnInit {
                   
                 });
             dialogRef.afterClosed().subscribe(result => {
-                if (result) {
-                    that.grid.bindGridData();
-                }
-                console.log('The dialog was closed - Action', result);
+                                 this.getfilterdata()
+              
             });
         }
     
+        getfilterdata() {
+            debugger
+            this.gridConfig = {
+                apiUrl: "Administration/BrowseReportTemplateConfigList",
+                columnsList: [
+                    { heading: "TemplateId", key: "templateId", sort: true, align: 'left', emptySign: 'NA' },
+                    { heading: "TemplateName", key: "templateName", sort: true, align: 'left', emptySign: 'NA' },
+                    {
+                        heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                            {
+                                action: gridActions.edit, callback: (data: any) => {
+                                    this.onEdit(data) // EDIT Records
+                                }
+                            }, {
+                                action: gridActions.delete, callback: (data: any) => {
+                                    this._TemplatedescriptionService.deactivateTheStatus(data.bankId).subscribe((response: any) => {
+                                        this.toastr.success(response.Message);
+                                        this.grid.bindGridData;
+                                    });
+                                }
+                            }]
+                    } //Action 1-view, 2-Edit,3-delete
+                ],
+                sortField: "TemplateId",
+                sortOrder: 0,
+                filters: [
+                    
+                ]
+            }
+             
+              this.grid.gridConfig = this.gridConfig;
+              this.grid.bindGridData();
+          
+            }
+          
     }

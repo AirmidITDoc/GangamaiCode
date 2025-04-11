@@ -36,6 +36,8 @@ export class MaterialConsumptionComponent implements OnInit {
     @ViewChild('grid1') grid1: AirmidTableComponent;
 @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
  @ViewChild('Status') Status!: TemplateRef<any>;
+//  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+ toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
 
   ngAfterViewInit() {
@@ -65,20 +67,17 @@ export class MaterialConsumptionComponent implements OnInit {
         sortOrder: 0,
         filters: [
             { fieldName: "ToStoreId", fieldValue: "2", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: "2025-01-01", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "2025-01-01", opType: OperatorComparer.Equals }
+            { fieldName: "From_Dt", fieldValue: "2024-01-01", opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals }
         ]
     }
-    datePipe: any;
-    private _loggedService: any;
+   
+  
     dsMaterialConLList: any;
-    paginator: any;
-    sIsLoading: string;
-    sort: any;
-
+   
     constructor(
         public _MaterialConsumptionService: MaterialConsumptionService, public _formBuilder: UntypedFormBuilder,
-        public toastr: ToastrService, public _matDialog: MatDialog
+        public toastr: ToastrService, public _matDialog: MatDialog,public datePipe: DatePipe,
     ) { }
 
     ngOnInit(): void {this.myFilterform = this.filterForm();}
@@ -101,20 +100,20 @@ export class MaterialConsumptionComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
+            this.isShowDetailTable = false;
 
+            this.grid.gridConfig=this.gridConfig
+            this.grid.bindGridData();
         });
     }
 
     getSelectedRow(row: any): void {
+        debugger
         console.log("selectedRow:", row)
-        let materialConsumptionId =1001//row.materialConsumptionId;
-        // let inputDate = row.vaDate;
-        // let parts = inputDate.split(' ')[0].split('-');
-        // let date = `${parts[2]}-${parts[1]}-${parts[0]}`;
-        // let opipType = row.lbl === 'OP' ? 0 : 1;
-
+        let materialConsumptionId =row.materialConsumptionId//row.materialConsumptionId;
+    
         this.gridConfig1 = {
-            apiUrl: "MaterialConsumption/MaterialConsumptionDetailList",
+            apiUrl: "MaterialConsumption/MaterialConsumptionDetailsList",
             columnsList: [
                  { heading: "ItemName", key: "itemName", sort: true, align: 'left',type: gridColumnTypes.template, width: 250 },
                  { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },

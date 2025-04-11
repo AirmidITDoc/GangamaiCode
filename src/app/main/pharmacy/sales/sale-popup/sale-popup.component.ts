@@ -12,14 +12,14 @@ import { SalesService } from '../sales.service';
 export class SalePopupComponent implements OnInit {
 
   displayedColumns: string[] = [
-    'BatchNo',
-    'BatchExpDate',
-    'BalanceQty',
-    'MRP',
-    'PurPrice',
-    'ConversionFactor',
-    'LandedRate',
-    'ExpDays'
+    'batchNo',
+    'batchExpDate',
+    'balanceQty',
+    'unitMRP',
+    'purchaseRate',
+    'converFacto',
+    'landedRate',
+    // 'ExpDays'
     // 'ItemCode',
   ];;
   isLoadingStr: string = '';
@@ -32,10 +32,7 @@ vEscflag:boolean=false;
   constructor(
     private dialogRef: MatDialogRef<SalePopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public salesService: SalesService,
-  ) {
-    
-
+    public salesService: SalesService ) {
    }
 
   // const ESCAPE_KEYCODE = 27;
@@ -47,9 +44,6 @@ vEscflag:boolean=false;
 
     }
 }
-
-
-
 
   close(){
     var d={
@@ -85,12 +79,14 @@ vEscflag:boolean=false;
   }
 
   getSalesData() {
+    console.log(this.data)
     this.isLoadingStr = 'loading';
     var reqData = {
       "ItemId": this.data.ItemId,
       "StoreId": this.data.StoreId
     }
     this.salesService.getBatchList(reqData).subscribe((res: any) => {
+      console.log(res)
       if (res && res.length > 0) {
         res.forEach((element, index) => {
           element['position'] = index + 1;

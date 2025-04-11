@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class SalesService {
 
 
   constructor(
-    public _httpClient: HttpClient,
+    public _httpClient: HttpClient,public _httpClient1 :ApiCaller,
     private _loaderService: LoaderService,
     private _formBuilder: UntypedFormBuilder
   ) { 
@@ -100,9 +101,13 @@ export class SalesService {
   public getItemList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty",Param);
   }
-
+  // ItemMaster/GetItemListForSalesBatchPop?StoreId=2&ItemId=0
   public getBatchList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemName_BatchPOP_BalanceQty",Param);
+    debugger
+    return this._httpClient1.GetData("ItemMaster/GetItemListForSalesBatchPop?StoreId="+Param.StoreId+"&ItemId="+Param.ItemId);
+
+
+    // return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode=" + mode + "&Id=" + Id);
   }
   public getConcessionCombo()
   {

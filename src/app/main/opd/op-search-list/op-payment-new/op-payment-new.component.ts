@@ -35,14 +35,22 @@ export class OpPaymentNewComponent implements OnInit {
   } 
 paystatus=true;
   onChangePaymentType() { 
-    if (this.selectedPaymnet1 == 'cash' || this.selectedPaymnet1 == 'upi') {
-     this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
+    if (this.selectedPaymnet1 == 'cash') {
+      this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
       this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
       this.patientDetailsFormGrp.get('regDate1').clearValidators();
       this.patientDetailsFormGrp.get('regDate1').updateValueAndValidity();
       this.patientDetailsFormGrp.get('bankName1').clearValidators();
       this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
     }
+    else if (this.selectedPaymnet1 == 'tds') {
+      this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
+      this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
+      this.patientDetailsFormGrp.get('regDate1').clearValidators();
+      this.patientDetailsFormGrp.get('regDate1').updateValueAndValidity();
+      this.patientDetailsFormGrp.get('bankName1').clearValidators();
+      this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
+      }
     else {
       this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
       this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
@@ -59,7 +67,6 @@ paystatus=true;
         this.patientDetailsFormGrp.get('bankName1').clearValidators();
         this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
       }
-     
     }
   }
   Payments = new MatTableDataSource<PaymentList>();

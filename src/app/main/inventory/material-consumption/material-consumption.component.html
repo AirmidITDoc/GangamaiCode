@@ -54,11 +54,10 @@
                         formEndControlName="enddate" [(fromValue)]="gridConfig.filters[1].fieldValue"
                         [(toValue)]="gridConfig.filters[2].fieldValue"></airmid-datepicker>
 
-                    <airmid-dropdown label="Store Name" formControlName="ToStoreId" [formGroup]="myFilterform"
-                        [validations]="getValidationMessages().ToStoreId" [(ngModel)]="gridConfig.filters[0].fieldValue"
-                        [mode]="autocompleteModeStoreName">
-                    </airmid-dropdown>
+                  
 
+                    <airmid-dropdown label="Store Name" formControlName="ToStoreId" [formGroup]="myFilterform" [(ngModel)]="gridConfig.filters[0].fieldValue" [validations]="getValidationMessages().ToStoreId" [mode]="autocompleteModeStoreName" >
+                    </airmid-dropdown>
 
                 </ng-container>
             </airmid-table>

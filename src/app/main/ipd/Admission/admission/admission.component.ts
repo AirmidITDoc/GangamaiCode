@@ -708,8 +708,8 @@ debugger
       this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
 
       this.onChangeFirst() 
-      console.log(this.gridConfig)
-      this.grid.bindGridData();
+      // console.log(this.gridConfig)
+      // this.grid.bindGridData();
     });
    
   }

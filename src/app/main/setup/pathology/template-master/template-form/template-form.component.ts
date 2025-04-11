@@ -21,23 +21,23 @@ export class TemplateFormComponent implements OnInit {
     TemplateId = 0;
     vTemplateDescInHtml='';
     vTemplateDesc='';
-
-
     editorConfig: AngularEditorConfig = {
         editable: true,
         spellcheck: true,
-        height: '24rem',
-        minHeight: '24rem',
+        height: '20rem',
+        minHeight: '20rem',
         translate: 'yes',
         placeholder: 'Enter text here...',
         enableToolbar: true,
         showToolbar: true,
-    };
-
-    onBlur(e: any) {
-        this.vTemplateDesc = e.target.innerHTML;
-        throw new Error('Method not implemented.');
-    }
+    
+      };
+    
+         
+           onBlur(e: any) {
+             this.vTemplateDesc = e.target.innerHTML;
+             throw new Error('Method not implemented.');
+           }
     constructor(
         public _TemplateServieService: TemplateServieService,
         public dialogRef: MatDialogRef<TemplateFormComponent>,
@@ -63,15 +63,15 @@ export class TemplateFormComponent implements OnInit {
     createTemplateForm(): FormGroup {
         return this._formBuilder1.group({
             templateId: this.TemplateId,
-            templateName: 'ccc',
-            templateDesc: 'sss',
-            templateDescInHtml: 'vddddddddddddddd'
+            templateName: '',
+            templateDesc: this.vTemplateDesc,
+            templateDescInHtml: ''
             // IsDeleted: ['true']
         });
     }
 
 add(){
-    this.vTemplateDesc ="mmmmmmmmmmmmmmm"
+    this.vTemplateDesc =""
 }
     onSubmit() {
         debugger
