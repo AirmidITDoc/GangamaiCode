@@ -84,7 +84,9 @@ export class GstReportService {
   }
 
   public getpurchasedatewiseReport(FromDate,ToDate,StoreId,loader = true){
-  
+    if (loader) {
+      this._loaderService.show();
+  } 
     return this._httpClient.get("GSTReport/view-ViewPurchaseGSTReportDateWise?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
   
@@ -151,7 +153,18 @@ export class GstReportService {
   }
     return this._httpClient.get("GSTReport/view-SalesReturnGSTReport?FromDate="+FromDate+"&ToDate="+ToDate);
   }
-  
+  public getGSTB2CsconsolidatedPdf(FromDate,ToDate,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.get("GSTReport/view-GSTB2GSReportConsolidated?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
+  }
+  public getSalesgstsummconsolidatedReport(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.get("GSTReport/view-SalesGSTSummaryConsolidated?FromDate="+FromDate+"&ToDate="+ToDate);
+  }
   public getHSNcodewiseReport(FromDate,ToDate,StoreId,loader = true){
     if (loader) {
       this._loaderService.show();

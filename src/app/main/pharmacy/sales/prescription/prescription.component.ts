@@ -117,7 +117,7 @@ savebtn:boolean=false;
     this.DoctorName = contact.DoctorName;
     this.IPDNo = contact.IPDNo;
     let OP_IP_ID = 0
-    if(contact.IPMedID > 0){
+    if(this.IPMedID > 0){
       OP_IP_ID = contact.IPMedID
     }else{
       OP_IP_ID = contact.OP_IP_ID
@@ -143,12 +143,21 @@ savebtn:boolean=false;
   Patientlist:any=[];
 
   GetPrescrpList() { 
+    debugger
     if(this.dsItemDetList.data.length > 0){
-    let strSql = "Select ItemId,QtyPerDay,BalQty,IsBatchRequired,ItemName from GeT_IP_PrescriptionItemDet where IPMedID=" + this.IPMedID + " Order by ItemName "
-    this._SalesService.getchargesList(strSql).subscribe(data => {
-      this.chargelist = data as any;
-   
-    });  
+      let strSql
+      if(this.IPMedID > 0){
+        strSql = "Select ItemId,QtyPerDay,BalQty,IsBatchRequired,ItemName from GeT_IP_PrescriptionItemDet where IPMedID=" + this.IPMedID + " Order by ItemName "
+        this._SalesService.getchargesList(strSql).subscribe(data => {
+          this.chargelist = data as any; 
+        });  
+      }else{
+        strSql = "Select ItemId,QtyPerDay,BalQty,IsBatchRequired,ItemName from Get_PrescriptionItemDet where OPD_IPD_IP=" + this.AddmissionId + " Order by ItemName "
+        this._SalesService.getchargesList(strSql).subscribe(data => {
+          this.chargelist = data as any; 
+        });  
+      }
+  
     this.chargelist.forEach((element) => { 
       this.Patientlist.push(
         {

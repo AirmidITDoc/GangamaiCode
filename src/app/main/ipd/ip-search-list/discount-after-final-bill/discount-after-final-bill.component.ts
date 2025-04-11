@@ -93,7 +93,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
         return  this.vDiscountPer2 = '';
       }
       else{
-        this.vDiscAmount2 = ((parseFloat(this.vFinalNetAmt) * parseFloat(this.vDiscountPer2)) / 100).toFixed(2) || 0;
+        this.vDiscAmount2 = Math.round((parseFloat(this.vFinalNetAmt) * parseFloat(this.vDiscountPer2)) / 100).toFixed(2) || 0;
         DiscAmt2 = this.vDiscAmount2;
       } 
     }else{
@@ -111,7 +111,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
         return  this.vCompanyDiscper = '';
       }
       else{
-        this.vCompanyDiscAmt = ((parseFloat(this.vFinalNetAmt) * parseFloat(this.vCompanyDiscper)) / 100).toFixed(2) || 0;
+        this.vCompanyDiscAmt = Math.round((parseFloat(this.vFinalNetAmt) * parseFloat(this.vCompanyDiscper)) / 100).toFixed(2) || 0;
         CompanyDiscAmt =   this.vCompanyDiscAmt;
         this.vFinalCompanyDiscAmt = Math.round(this.vCompanyDiscAmt)
       } 
@@ -188,12 +188,12 @@ export class DiscountAfterFinalBillComponent implements OnInit {
         return
       }
     }
-    if(this.vFinalDiscAmt == 0 || this.vFinalDiscAmt == '' || this.vFinalDiscAmt == undefined || this.vFinalDiscAmt == null){
-      this.toastr.warning('Please check final DiscAmount is zero', 'warning !', {
-        toastClass: 'tostr-tost custom-toast-error',
-      });
-      return
-    }
+    // if(this.vFinalDiscAmt == 0 || this.vFinalDiscAmt == '' || this.vFinalDiscAmt == undefined || this.vFinalDiscAmt == null){
+    //   this.toastr.warning('Please check final DiscAmount is zero', 'warning !', {
+    //     toastClass: 'tostr-tost custom-toast-error',
+    //   });
+    //   return
+    // }
     if(this.vNetamount == 0 || this.vNetamount == '' || this.vNetamount == undefined || this.vNetamount == null){
       this.toastr.warning('Please check final netamount is zero', 'warning !', {
         toastClass: 'tostr-tost custom-toast-error',

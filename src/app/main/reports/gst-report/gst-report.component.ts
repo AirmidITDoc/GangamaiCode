@@ -138,7 +138,7 @@ export class GSTReportComponent implements OnInit {
     else if (this.ReportName == 'Purchase GST Report Date Wise') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
-      this.FlagReportTypeSelected= true;
+      this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;      
       this.FlagPatientSelected=false;
       this.clearField();
@@ -209,7 +209,7 @@ export class GSTReportComponent implements OnInit {
     } 
     else if (this.ReportName == 'Sales GST Summary Consolidated') {
       this.FlagUserSelected = false;
-      this.FlagStoreSelected = true;
+      this.FlagStoreSelected = false;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
       this.FlagPatientSelected=false;
@@ -323,7 +323,7 @@ export class GSTReportComponent implements OnInit {
     //   this.viewsalesgstreturn();
     //  } 
      else if (this.ReportName == 'Sales GST Summary Consolidated') {
-     // this.viewgetSalesreturngstsummconsolidatedPdf();
+      this.viewgetSalesgstsummconsolidatedPdf();
      } 
      else if (this.ReportName == 'HSN Code Wise Report') {
       this.viewgetHSMCodewisePdf();
@@ -332,7 +332,7 @@ export class GSTReportComponent implements OnInit {
       this.viewgetGSTB2CsPdf();
      } 
      else if (this.ReportName == 'GST B2GS Report Consolidated') {
-     // this.viewgetGSTB2CsconsolidatedPdf();
+     this.viewgetGSTB2CsconsolidatedPdf();
      }   else if (this.ReportName == 'GSTR2A Purchase Report') {
       this.viewgeGSTRAZpurchasePdf();
      } 
@@ -577,9 +577,9 @@ export class GSTReportComponent implements OnInit {
    
        }, 100);
      }
-     viewgetpurchasegstdatewisePdf() {
-      this.sIsLoading = 'loading-data';
-   
+     viewgetpurchasegstdatewisePdf() { 
+      debugger
+      this.sIsLoading = 'loading-data'; 
       let storeId=0;
       if(this.StoreId){
         storeId=this.StoreId
@@ -587,8 +587,9 @@ export class GSTReportComponent implements OnInit {
        setTimeout(() => {
        
          this._GstReportService.getpurchasedatewiseReport(
-          this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",storeId
+          this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM/dd/yyyy") || "01/01/1900",
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM/dd/yyyy") || "01/01/1900",
+        storeId
          ).subscribe(res => {
            const dialogRef = this._matDialog.open(PdfviewerComponent,
              {
@@ -885,7 +886,33 @@ export class GSTReportComponent implements OnInit {
        }, 100);
      }
 
-
+     viewgetSalesgstsummconsolidatedPdf() {
+      this.sIsLoading = 'loading-data'; 
+       setTimeout(() => {
+       
+         this._GstReportService.getSalesgstsummconsolidatedReport(
+          this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+         ).subscribe(res => {
+           const dialogRef = this._matDialog.open(PdfviewerComponent,
+             {
+               maxWidth: "85vw",
+               height: '750px',
+               width: '100%',
+               data: {
+                 base64: res["base64"] as string,
+                 title: "Sales GST Summary Consolidated Report  Viewer"
+               }
+             });
+           dialogRef.afterClosed().subscribe(result => {
+             
+             this.sIsLoading = '';
+             this.clearField();
+           });
+         });
+   
+       }, 100);
+     }
      
      viewgetGSTB2CsPdf() {
       this.sIsLoading = 'loading-data';
@@ -920,7 +947,39 @@ export class GSTReportComponent implements OnInit {
        }, 100);
      }
 
-     
+     viewgetGSTB2CsconsolidatedPdf() { 
+      this.sIsLoading = 'loading-data';
+   
+      let storeId=0;
+    if(this.StoreId){
+      storeId=this.StoreId
+    }
+       setTimeout(() => {
+       
+         this._GstReportService.getGSTB2CsconsolidatedPdf(
+          this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",storeId
+         ).subscribe(res => {
+           const dialogRef = this._matDialog.open(PdfviewerComponent,
+             {
+               maxWidth: "85vw",
+               height: '750px',
+               width: '100%',
+               data: {
+                 base64: res["base64"] as string,
+                 title: "GST B2GS Report Consolidated Viewer"
+               }
+             });
+           dialogRef.afterClosed().subscribe(result => {
+             
+             this.sIsLoading = '';
+             this.clearField();
+           });
+         });
+   
+       }, 100);
+     }
+
 
      viewgeGSTRAZpurchasePdf() {
       debugger

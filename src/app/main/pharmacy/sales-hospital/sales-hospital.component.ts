@@ -552,8 +552,7 @@ export class SalesHospitalComponent implements OnInit {
   ExpiryItem:any=[];
 getScrolling(){
   this._salesService.getExpiryItemlist().subscribe(data=>{
-    this.ExpiryItem = data
-    console.log(this.ExpiryItem)
+    this.ExpiryItem = data 
   })
 }
   // onAddClick(paymentOption: string) {
@@ -2330,8 +2329,7 @@ getScrolling(){
     let cal_GSTAmount_Sales = {};
     cal_GSTAmount_Sales['salesID'] = 0;
 
-    let salesDraftStatusUpdate = {};
-    console.log(this.DraftID);
+    let salesDraftStatusUpdate = {}; 
     salesDraftStatusUpdate['DSalesId'] = this.DraftID || 0;
     salesDraftStatusUpdate['IsClosed'] = 1
 
@@ -2648,8 +2646,9 @@ getScrolling(){
                 this._matDialog.closeAll();
                 this.ItemFormreset();
                 this.Formreset();
-                this.isLoading123=false;
+              
               }
+              this.isLoading123=false;
             } else {
               this.toastr.error('API Error!', 'Error !', {
                 toastClass: 'tostr-tost custom-toast-error',
@@ -2852,6 +2851,7 @@ getScrolling(){
   }
 
   getPrint3(el) { 
+    debugger
     if (this.vPaymode=='Credit') {
       this.type = "Credit"
       this.Creditflag = true;
@@ -4082,47 +4082,34 @@ getSearchListIP() {
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
         console.log(result)
-        if(result[0].IPMedID > 0){
-          this.DoctorNamecheck = true;
+        this.ItemSubform.get('RegID').setValue(result[0].PatientName); 
+        this.DoctorNamecheck = true;
+        this.registerObj = result;
+        this.PatientName = result[0].PatientName;
+        this.RegId = result[0].RegId;
+        this.OP_IP_Id = result[0].AdmissionID; 
+        this.DoctorName = result[0].DoctorName;
+        this.TariffName = result[0].TariffName;
+        this.RegNo = result[0].RegNo; 
+        this.CompanyName = result[0].CompanyName;
+
+        if(result[0].IPMedID > 0){ 
           this.IPDNocheck = true;
-          this.OPDNoCheck = false;
-          this.registerObj = result;
-          console.log(this.registerObj)
-          this.PatientName = result[0].PatientName;
-          this.RegId = result[0].RegId;
-          this.OP_IP_Id = result[0].AdmissionID;
-          this.ItemSubform.get('RegID').setValue(result[0].RegId);
-          this.IPDNo = result[0].IPDNo;
-          this.RegNo = result[0].RegNo;
-          this.DoctorName = result[0].DoctorName;
-          this.TariffName = result[0].TariffName;
-          this.IPMedID = result[0].IPMedID;
-          this.CompanyName = result[0].CompanyName;
-          this.IPDNo = result[0].IPDNo; 
+          this.OPDNoCheck = false;  
+          this.IPDNo = result[0].IPDNo;  
+          this.IPMedID = result[0].IPMedID; 
             this.paymethod = true;
             this.vSelectedOption = 'IP';
-        }else{
-          this.DoctorNamecheck = true;
+            this.OP_IPType = 1;  
+        }else{ 
           this.IPDNocheck = false;
-          this.OPDNoCheck = true;
-          this.registerObj = result;
-          console.log(this.registerObj)
-          this.PatientName = result[0].PatientName;
-          this.RegId = result[0].RegId;
-          this.OP_IP_Id = result[0].AdmissionID;
-          this.ItemSubform.get('RegID').setValue(result[0].RegId);
-          this.OPDNo = result[0].IPDNo;
-          this.RegNo = result[0].RegNo;
-          this.DoctorName = result[0].DoctorName;
-          this.TariffName = result[0].TariffName;
-          this.IPMedID = result[0].IPMedID;
-          this.CompanyName = result[0].CompanyName;
-          this.IPDNo = result[0].IPDNo; 
+          this.OPDNoCheck = true;   
+          this.OPDNo = result[0].IPDNo; 
+          this.IPMedID = result[0].AdmissionID;  
             this.paymethod = true;
             this.vSelectedOption = 'OP';
-        }
-       
-      
+            this.OP_IPType = 0;  
+        } 
 
         this.dsItemNameList1.data = result;
         this.dsItemNameList1.data.forEach((contact) => {
@@ -4180,7 +4167,7 @@ getSearchListIP() {
         });
       });
     } else {
-      this.toastr.warning('Please Select PatientType IP.', 'Warning !', {
+      this.toastr.warning('Please Select PatientType IP or OP.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-success',
       });
     }
