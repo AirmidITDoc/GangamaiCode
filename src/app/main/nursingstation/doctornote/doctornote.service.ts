@@ -38,6 +38,7 @@ export class DoctornoteService {
       TemplateId: [''],
       TemplateName: [''],
       templateDesc: [''],
+      templateName:['']
     });
   }
 

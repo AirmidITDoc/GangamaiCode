@@ -106,10 +106,10 @@ export class NursingnoteComponent implements OnInit {
   @ViewChild('Handover', { static: false }) grid1: AirmidTableComponent;
 
    allColumnsOfDocNote = [
-      { heading: "Date", key: "tdate", sort: true, align: 'left', emptySign: 'NA',type:6},
-      { heading: "Time", key: "ttime", sort: true, align: 'left', emptySign: 'NA'},
-      { heading: "Note", key: "doctorsNotes", sort: true, align: 'left', emptySign: 'NA', width:250 },
-      { heading: "CreatedBy", key: "createdby", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "Date", key: "tDate", sort: true, align: 'left', emptySign: 'NA',type:6},
+      { heading: "Time", key: "tTime", sort: true, align: 'left', emptySign: 'NA'},
+      { heading: "Note", key: "nursingNotes", sort: true, align: 'left', emptySign: 'NA', width:250 },
+      { heading: "CreatedBy", key: "isAddedBy", sort: true, align: 'left', emptySign: 'NA' },
       {
         heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
           {
@@ -395,12 +395,13 @@ export class NursingnoteComponent implements OnInit {
     // this.getNoteTablelist(obj);
   }
 
-  onEdit(row: any = null) {
+  onEdit(row) {
     debugger
     console.log("data:", row)
     this.registerObj = row;
-    this.vDescription = this.registerObj.doctorsNotes || '';
-    this.vDoctNoteId=this.registerObj.doctNoteId
+    this.vDescription = this.registerObj.nursingNotes || '';
+    this.myform.get('templateDesc').setValue(this.vDescription);
+    this.vDoctNoteId=this.registerObj.docNoteId
     this.IsAddFlag = true;
   }
 
@@ -468,7 +469,8 @@ export class NursingnoteComponent implements OnInit {
       "admId": this.OP_IP_Id,
       "tdate": this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
       "ttime": this.datePipe.transform(new Date(), 'shortTime'),
-      "nursingNotes": this.vDescription
+      "nursingNotes": this.vDescription,
+      "isAddedBy":this.accountService.currentUserValue.userId
     }
       console.log("submitData:",submitData);
   
@@ -485,7 +487,8 @@ export class NursingnoteComponent implements OnInit {
       "admId": this.OP_IP_Id,
       "tdate": this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
       "ttime": this.datePipe.transform(new Date(), 'shortTime'),
-      "nursingNotes": this.vDescription
+      "nursingNotes": this.vDescription,
+      "isAddedBy":this.accountService.currentUserValue.userId
     }
       console.log("updateData:",updateData);
   
@@ -501,11 +504,12 @@ export class NursingnoteComponent implements OnInit {
   }
 
   onClear() {
-    // this.myform.reset();
-    this.myform.get('templateDesc').setValue('')
-    this.myform.get('TemplateId').setValue('')
-    this.IsAddFlag = false 
+    this.myform.reset(); 
+    this.IsAddFlag = false;
+    this.vDoctNoteId = null;
+    this.vDescription=null;
   }
+  
 
   HandOverNoteList: any = [];
 
@@ -621,16 +625,6 @@ export class NursingnoteComponent implements OnInit {
     // this.vInstruction
     // this.VStable
     // this.VAssessment
-    // var m_data = {
-    //   "HandOverType": row.ShiftInfo,
-    //   "staffName": row.PatHand_I,
-    //   "SYMPTOMS": row.PatHand_B,
-    //   "Instruction": row.PatHand_R,
-    //   "Stable": row.PatHand_S,
-    //   "Assessment": row.PatHand_A,
-    //   "docHandId": row.DocHandId
-    // }
-    // this._NursingStationService.DoctorNotepoppulateForm(m_data);
   }
 
   SelectedChecked(contact, event) {

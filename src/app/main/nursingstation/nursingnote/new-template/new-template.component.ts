@@ -5,20 +5,22 @@ import { NursingnoteService } from '../nursingnote.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
-  selector: 'app-new-template',
-  templateUrl: './new-template.component.html',
-  styleUrls: ['./new-template.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+    selector: 'app-new-template',
+    templateUrl: './new-template.component.html',
+    styleUrls: ['./new-template.component.scss'],
+    encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
 })
 export class NewTemplateComponent implements OnInit {
-    
+
     myform: FormGroup;
-    vTemplateDesc:any;
-    vTemplateName:any;
-    isActive:boolean=true;
+    myTemplateform: FormGroup;
+    vTemplateDesc: any;
+    vTemplateName: any;
+    isActive: boolean = true;
     editorConfig: AngularEditorConfig = {
         editable: true,
         spellcheck: true,
@@ -33,6 +35,7 @@ export class NewTemplateComponent implements OnInit {
 
     constructor(
         public _NursingnoteService: NursingnoteService,
+        private accountService: AuthenticationService,
         public dialogRef: MatDialogRef<NewTemplateComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public toastr: ToastrService
@@ -40,39 +43,39 @@ export class NewTemplateComponent implements OnInit {
 
     ngOnInit(): void {
         this.myform = this._NursingnoteService.createtemplateForm();
-        if((this.data?.templateId??0) > 0)
-        {
+        this.myTemplateform = this._NursingnoteService.templateForm();
+        if ((this.data?.templateId ?? 0) > 0) {
             this.isActive = this.data.isActive
-            this.myform.patchValue(this.data);
+            this.myTemplateform.patchValue(this.data);
         }
     }
 
     onSubmit() {
-            
-        if(!this.myform.invalid)
-        {
-        
-        console.log("template json:", this.myform.value);
+        debugger
+        if (!this.myTemplateform.invalid) {
 
-        this._NursingnoteService.templateMasterSave(this.myform.value).subscribe((response)=>{
-            this.toastr.success(response.message);
-            this.onClear(true);
-        }, (error)=>{
-            this.toastr.error(error.message);
-        });
-        } 
-        else
-        {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
+            this.myTemplateform.get('addedBy').setValue(this.accountService.currentUserValue.userId)
+            this.myTemplateform.get('updatedBy').setValue(this.accountService.currentUserValue.userId)
+            console.log("template json:", this.myTemplateform.value);
+
+            this._NursingnoteService.templateMasterSave(this.myTemplateform.value).subscribe((response) => {
+                this.toastr.success(response.message);
+                this.onClear(true);
+            }, (error) => {
+                this.toastr.error(error.message);
+            });
+        }
+        else {
+            this.toastr.warning('please check from is invalid', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
-        }             
+        }
     }
 
-    getValidationMessages(){
-        return{
-            templateName: [
+    getValidationMessages() {
+        return {
+            nursTempName: [
                 { name: "required", Message: "templateName Name is required" },
                 { name: "maxlength", Message: "templateName name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
@@ -80,7 +83,8 @@ export class NewTemplateComponent implements OnInit {
         }
     }
 
-    onClose(){
+    onClose() {
+        this.myTemplateform.reset();
         this.myform.reset();
         this.dialogRef.close();
     }
@@ -89,6 +93,7 @@ export class NewTemplateComponent implements OnInit {
     }
 
     onClear(val: boolean) {
+        this.myTemplateform.reset();
         this.myform.reset();
         this.dialogRef.close(val);
     }
