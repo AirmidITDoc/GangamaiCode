@@ -337,8 +337,8 @@ export class TestFormMasterComponent implements OnInit {
             console.log(mPathTemplateDetails)
             let mPathTestDetailMasters = this.DSTestList.data.map((row: any) => ({
                 "TestId": 0,
-                "SubTestId": row.subTestID || 1,
-                "ParameterId": row.parameterID || row.parameterId || 1
+                "SubTestId": row.subTestID || 0,
+                "ParameterId": row.parameterID || row.parameterId || 0
             }));
 
             let pathTest = {
@@ -372,11 +372,11 @@ export class TestFormMasterComponent implements OnInit {
             });
         } else {
             let mPathTemplateDetails = this.Templatetdatasource.data.map((row: any) => ({
-                "TestId": row.testId || this.vTestId,
+                "TestId": this.vTestId, //row.testId || this.vTestId,
                 "TemplateId": row.templateId,
             }));
             let mPathTestDetailMasters = this.DSTestList.data.map((row: any) => ({
-                "TestId": row.testId || this.vTestId || 0,
+                "TestId": this.vTestId, //row.testId || this.vTestId || 0,
                 "SubTestId": row.subTestID || 0,
                 "ParameterId": row.parameterID || row.parameterId || 0
             }));

@@ -65,7 +65,7 @@ export class SampleCollectionComponent implements OnInit {
         { heading: "-", key: "lbl", width: 30, sort: true, align: 'left', type: gridColumnTypes.template },
         { heading: "-", key: "companyName", width: 30, sort: true, align: 'left', type: gridColumnTypes.template },
         { heading: "-", key: "isSampleCollection", width: 80, sort: true, align: 'left', type: gridColumnTypes.template },
-        { heading: "Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 200},
+        { heading: "Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200},
         { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -104,14 +104,20 @@ export class SampleCollectionComponent implements OnInit {
 this.myformSearch=this._SampleCollectionService.createSearchForm()
     }
 
-
-
     getSelectedRow(row: any): void {
         console.log("selectedRow:",row)
         let billNo = row.billNo;
-        let inputDate = row.vaDate;
-        let parts = inputDate.split(' ')[0].split('-');
-        let date = `${parts[2]}-${parts[1]}-${parts[0]}`;
+
+        let rawDate = row.pathDate; 
+        let day = rawDate.split("T")[0];
+        let rest = rawDate.split("T")[1].split("-"); 
+        let month = rest[0]; 
+        let year = rest[1]; 
+     
+        let formattedDate=`${day}` 
+        
+        console.log(formattedDate);
+
         let opipType = row.lbl === 'OP' ? 0 : 1;
 
         this.gridConfig1 = {
@@ -127,7 +133,7 @@ this.myformSearch=this._SampleCollectionService.createSearchForm()
             sortOrder: 0,
             filters: [
                 { fieldName: "BillNo", fieldValue: String(billNo), opType: OperatorComparer.Equals },
-                { fieldName: "BillDate", fieldValue: date, opType: OperatorComparer.Equals },
+                { fieldName: "BillDate", fieldValue: formattedDate, opType: OperatorComparer.Equals },
                 { fieldName: "OP_IP_Type", fieldValue: String(opipType), opType: OperatorComparer.Equals },
             ]
         };
@@ -138,6 +144,7 @@ this.myformSearch=this._SampleCollectionService.createSearchForm()
             this.grid1.gridConfig = this.gridConfig1;
             this.grid1.bindGridData();
         });
+        console.log(this.gridConfig1)
     }
 
      onChangeFirst() {

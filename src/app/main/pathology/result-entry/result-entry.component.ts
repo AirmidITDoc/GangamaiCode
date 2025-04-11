@@ -144,7 +144,7 @@ export class ResultEntryComponent implements OnInit {
             heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
             template: this.actionsIPOP
         },
-        { heading: "Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
         { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
@@ -244,7 +244,7 @@ export class ResultEntryComponent implements OnInit {
                     heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
                     template: this.actionsIPOP
                 },
-                { heading: "Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+                { heading: "Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200 },
                 { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
                 { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
@@ -282,7 +282,7 @@ export class ResultEntryComponent implements OnInit {
         this.selection.clear(); 
 
         this.reportPrintObj = row
-        this.reportPrintObj["DOA"] = row.vaTime
+        this.reportPrintObj["DOA"] = row.pathDate
 
         this.PatientName = row.patientName;
         this.OPD_IPD = row.oP_IP_No
@@ -297,12 +297,17 @@ export class ResultEntryComponent implements OnInit {
     }
 
       getSampledetailList1(row) {
-        // debugger
+        debugger
         this.dataSource1.data = [];
-
-        let inputDate = row.vaDate;
-        let parts = inputDate.split(' ')[0].split('-');
-        let date = `${parts[2]}-${parts[1]}-${parts[0]}`;
+        let rawDate = row.pathDate; 
+        let day = rawDate.split("T")[0];
+        let rest = rawDate.split("T")[1].split("-"); 
+        let month = rest[0]; 
+        let year = rest[1]; 
+     
+        let formattedDate=`${day}` 
+        
+        console.log(formattedDate);
     
         let OPIP = row.patientType === 'OP' ? "0" : "1";
     
@@ -324,7 +329,7 @@ export class ResultEntryComponent implements OnInit {
             },
             {
               "fieldName": "From_Dt",
-              "fieldValue": date,
+              "fieldValue": formattedDate,
               "opType": "Equals"
             }
           ],
