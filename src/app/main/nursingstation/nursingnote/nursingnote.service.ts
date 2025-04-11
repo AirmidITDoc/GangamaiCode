@@ -9,11 +9,13 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 export class NursingnoteService {
     
     myform: FormGroup;
+    Templateform:FormGroup
 
     constructor(public _httpClient: ApiCaller,
         public _formBuilder: UntypedFormBuilder) 
     {
         this.myform = this.createtemplateForm();
+        this.Templateform=this.templateForm();
     }
 
      
@@ -33,6 +35,18 @@ export class NursingnoteService {
       Assessment: [''],
       Category:['NursNote'],
       isActive:[true,[Validators.required]],
+      templateDesc: [''],
+      templateName:['']
+    });
+  }
+
+  templateForm(): FormGroup {
+    return this._formBuilder.group({
+      nursingId:0,
+      templateDesc: [''],
+      nursTempName:[''],
+      addedBy:0,
+      updatedBy:0
     });
   }
 
@@ -48,15 +62,12 @@ export class NursingnoteService {
     }
 
     public templateMasterSave(Param: any) {
-        if (Param.templateId) {
-            return this._httpClient.PutData("RadiologyTemplate/" + Param.templateId, Param);
-        } else return this._httpClient.PostData("RadiologyTemplate", Param);
+        return this._httpClient.PostData("Nursing/NursingTemplateInsert", Param);
     }
 
-
   public NursingNoteInsert(Param) {
-    if (Param.doctNoteId) {
-      return this._httpClient.PutData("Nursing/NursingNoteUpdate/" + Param.doctNoteId, Param);
+    if (Param.docNoteId) {
+      return this._httpClient.PutData("Nursing/NursingNoteUpdate/" + Param.docNoteId, Param);
     } else return this._httpClient.PostData("Nursing/NursingNoteInsert", Param)
   }
   

@@ -149,7 +149,7 @@ export class SampledetailtwoComponent implements OnInit {
     //   console.log(this.selectedAdvanceObj1);
     // }
 
-    this.getSampledetailList();
+    // this.getSampledetailList();
     this.getSampledetailList1(this.regObj);
   }
 
@@ -176,33 +176,33 @@ export class SampledetailtwoComponent implements OnInit {
     }
 
   }
-  getSampledetailList() {
+  // getSampledetailList() {
 
-    let OPIP
-    if (this.regObj.lbl == "IP" || this.regObj.lbl == "IP") {
-      OPIP = 1;
-    }
-    else if (this.regObj.lbl == "OP" || this.regObj.lbl == "OP") {
-      OPIP = 0;
-    }
+  //   let OPIP
+  //   if (this.regObj.lbl == "IP" || this.regObj.lbl == "IP") {
+  //     OPIP = 1;
+  //   }
+  //   else if (this.regObj.lbl == "OP" || this.regObj.lbl == "OP") {
+  //     OPIP = 0;
+  //   }
 
-    var m_data = {
-      "BillNo": this.regObj.billNo,
-      "BillDate": this.datePipe.transform(this.regObj.pathDate, "yyyy-MM-dd"),
-      "OP_IP_Type": OPIP,
-    }
-    console.log(m_data);
-    this._SampleService.getSampleDetailsList(m_data).subscribe(Visit => {
-      this.dataSource.data = Visit as SampleList[];
-      console.log(this.dataSource.data)
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        // this.sIsLoading = '';
-      });
-  }
+  //   var m_data = {
+  //     "BillNo": this.regObj.billNo,
+  //     "BillDate": this.datePipe.transform(this.regObj.pathDate, "yyyy-MM-dd"),
+  //     "OP_IP_Type": OPIP,
+  //   }
+  //   console.log(m_data);
+  //   this._SampleService.getSampleDetailsList(m_data).subscribe(Visit => {
+  //     this.dataSource.data = Visit as SampleList[];
+  //     console.log(this.dataSource.data)
+  //     this.dataSource.sort = this.sort;
+  //     this.dataSource.paginator = this.paginator;
+  //     this.sIsLoading = '';
+  //   },
+  //     error => {
+  //       // this.sIsLoading = '';
+  //     });
+  // }
 
   getSampledetailList1(row) {
 debugger
@@ -214,16 +214,20 @@ debugger
       OPIP = "0";
     }
 
-    let inputDate = row.vaDate;
-    let parts = inputDate.split(' ')[0].split('-');
-    let date = `${parts[2]}-${parts[1]}-${parts[0]}`;
-
-    // let OPIP = row.lbl === 'OP' ? 0 : 1;
+    let rawDate = row.pathDate; 
+    let day = rawDate.split("T")[0];
+    let rest = rawDate.split("T")[1].split("-"); 
+    let month = rest[0]; 
+    let year = rest[1]; 
+ 
+    let formattedDate=`${day}` 
+    
+    console.log(formattedDate);
 
     var m_data = {
       "first": 0,
       "rows": 10,
-      "sortField": "BillNo",
+      "sortField": "PathTestID",
       "sortOrder": 0,
       "filters": [
         {
@@ -233,7 +237,7 @@ debugger
         },
         {
           "fieldName": "BillDate",
-          "fieldValue": date,
+          "fieldValue": formattedDate,
           "opType": "Equals"
         },
         {

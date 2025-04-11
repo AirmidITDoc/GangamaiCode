@@ -474,7 +474,7 @@ export class ResultEntryOneComponent implements OnInit {
               "opType": "Equals"        
             }        
           ],        
-          "mode": "PathologyResultEntryIP"        
+          "mode": "PathologyResultEntryOP"        
         }
         console.log(SelectQuery)
         this._SampleService.getPathologyResultListforOP(SelectQuery).subscribe(Visit => {

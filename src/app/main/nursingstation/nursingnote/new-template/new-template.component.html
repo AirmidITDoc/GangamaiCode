@@ -19,31 +19,33 @@
         <div class="modal-body-container">
 
             <div fxLayout="column" class="gap-12">
-                <form [formGroup]="myform">
+                <form [formGroup]="myTemplateform">
                     <div fxLayout="row wrap" fxLayoutGap="12px grid">
                         <div fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="8px" fxLayoutAlign="center">
-                            <airmid-textbox label="TemplateName" fxFlex formControlName="templateName"
-                                [value]="data?.templateName" [formGroup]="myform"
-                                [validations]="getValidationMessages().templateName" [maxLength]="50">
+                            <airmid-textbox label="Template Name" fxFlex formControlName="nursTempName"
+                                [value]="data?.nursTempName" [formGroup]="myTemplateform"
+                                [validations]="getValidationMessages().nursTempName" [maxLength]="50">
                             </airmid-textbox>
 
-                            <div fxFlex="20%" fxLayout="row">
-                                <mat-radio-group name="Category" formControlName="Category" fxLayout="row"
-                                    value="NursNote" class="gap-4">
-                                    <mat-label><b>Category:</b></mat-label>
-                                    <div fxLayout="row">
-                                        <mat-radio-button value="NursNote">NursingNote</mat-radio-button>
-                                        <mat-radio-button value='DoctorNote'>DoctorNote</mat-radio-button>
-                                    </div>
-                                </mat-radio-group>
-                            </div>
+                            <form [formGroup]="myform">
+                                <div fxFlex="20%" fxLayout="row">
+                                    <mat-radio-group name="Category" formControlName="Category" fxLayout="row"
+                                        value="NursNote" class="gap-4">
+                                        <mat-label><b>Category:</b></mat-label>
+                                        <div fxLayout="row">
+                                            <mat-radio-button value="NursNote">NursingNote</mat-radio-button>
+                                            <mat-radio-button value='DoctorNote'>DoctorNote</mat-radio-button>
+                                        </div>
+                                    </mat-radio-group>
+                                </div>
+                            </form>
                         </div>
                     </div>
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                         <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-editor label="Template Details" formControlName="templateDesc"
-                                [(value)]="vTemplateDesc" [formGroup]="myform"></airmid-editor>
+                                [(value)]="vTemplateDesc" [formGroup]="myTemplateform"></airmid-editor>
                         </div>
                     </div>
                 </form>
@@ -55,12 +57,14 @@
     </div>
 
     <div class="modal-footer" style="margin-top: 10px;">
-        <form [formGroup]="myform">
             <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="space-between">
+        <form [formGroup]="myform">
                 <div>
                     <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="myform"
                         [(ngModel)]="isActive"></app-airmid-slider>
                 </div>
+            </form>
+                <form [formGroup]="myTemplateform">
                 <div class="modal-footer-buttons">
                     <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                     <button class="btn btn-primary" (click)="onSubmit()">
@@ -68,8 +72,8 @@
                     </button>
                     <!-- [disabled]="myForm.invalid || dsItemList.data.length == 0" -->
                 </div>
+                </form>
             </div>
-        </form>
     </div>
 
 </div>

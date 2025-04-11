@@ -155,11 +155,11 @@ export class DoctornoteComponent implements OnInit {
     { heading: "Date", key: "vDate", sort: true, align: 'left', emptySign: 'NA'},
     { heading: "Time", key: "mTime", sort: true, align: 'left', emptySign: 'NA'},
     { heading: "Shift", key: "shiftInfo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "I", key: "patHand_I", sort: true, align: 'left', emptySign: 'NA', width:200 },
-    { heading: "S", key: "s", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "B", key: "b", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "A", key: "a", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "R", key: "r", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "I", key: "patHandI", sort: true, align: 'left', emptySign: 'NA', width:200 },
+    { heading: "S", key: "patHandS", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "B", key: "patHandB", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "A", key: "patHandA", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "R", key: "patHandR", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Comments", key: "comments", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "CreatedBy", key: "createdBy", sort: true, align: 'left', emptySign: 'NA' },
     {
@@ -240,6 +240,7 @@ debugger
     console.log("data:", row)
     this.registerObj = row;
     this.vDescription = this.registerObj.doctorsNotes || '';
+    this.myform.get('templateDesc').setValue(this.vDescription);
     this.vDoctNoteId=this.registerObj.doctNoteId
     this.IsAddFlag = true;
   }
@@ -274,50 +275,6 @@ debugger
       ]
     };
   }
-
-  // onSubmit() {
-  //   debugger
-  //   if (!this.vDescription || this.vDescription.trim() === '') {
-  //     this.toastr.warning('Please enter template description', 'Warning !', {
-  //       toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
-  //   }
-
-  //   this.myNoteform.get('templateDesc').setValue(this.vDescription);
-
-  //   if (!this.searchFormGroup.invalid) {
-
-  //     console.log("DoctorNote json:", this.myNoteform.value);
-
-  //     this._NursingStationService.DoctorNoteInsert(this.myNoteform.value).subscribe((response) => {
-  //       this.toastr.success(response.message);
-  //       this.onClear();
-  //       this.grid.bindGridData();
-  //     }, (error) => {
-  //       this.toastr.error(error.message);
-  //     });
-  //   }
-  //   else {
-  //     let invalidFields = [];
-
-  //     if (this.searchFormGroup.invalid) {
-  //       for (const controlName in this.searchFormGroup.controls) {
-  //         if (this.searchFormGroup.controls[controlName].invalid) {
-  //           invalidFields.push(`My Form: ${controlName}`);
-  //         }
-  //       }
-  //     }
-
-  //     if (invalidFields.length > 0) {
-  //       invalidFields.forEach(field => {
-  //         this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-  //         );
-  //       });
-  //     }
-      
-  //   }
-  // }
 
   onSubmit() {
 debugger
@@ -394,7 +351,7 @@ debugger
       return;
     }
 
-    if (!this.myform.get("docHandId").value) {
+    if (!this.vdocHandId) {
 
       let submitData = {
 
@@ -479,21 +436,11 @@ debugger
     console.log(row)
     this.vdocHandId=row.docHandId
     this.vHandOverType=row.shiftInfo
-    this.vStaffNursName=row.patHand_I
-    // this.vSYMPTOMS
-    // this.vInstruction
-    // this.VStable
-    // this.VAssessment
-    // var m_data = {
-    //   "HandOverType": row.ShiftInfo,
-    //   "staffName": row.PatHand_I,
-    //   "SYMPTOMS": row.PatHand_B,
-    //   "Instruction": row.PatHand_R,
-    //   "Stable": row.PatHand_S,
-    //   "Assessment": row.PatHand_A,
-    //   "docHandId": row.DocHandId
-    // }
-    // this._NursingStationService.DoctorNotepoppulateForm(m_data);
+    this.vStaffNursName=row.patHandI
+    this.vSYMPTOMS=row.patHandB
+    this.vInstruction=row.patHandR
+    this.VStable=row.patHandS
+    this.VAssessment=row.patHandA
   }
 
   createSearchForm() {
@@ -543,10 +490,10 @@ debugger
   }
 
   onClear() {
-    // this.myform.reset();
-    this.myform.get('templateDesc').setValue('')
-    this.myform.get('TemplateId').setValue('')
+    this.myform.reset();
     this.IsAddFlag = false 
+    this.vDoctNoteId = null;
+    this.vDescription=null;
   }
 
   onClose() {
