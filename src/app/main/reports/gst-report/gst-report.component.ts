@@ -91,6 +91,7 @@ export class GSTReportComponent implements OnInit {
    }
      this._GstReportService.getDataByQuery(data).subscribe(data => {
        this.dataSource.data = data as any[];
+       console.log(this.dataSource.data)
  
      });
    }
