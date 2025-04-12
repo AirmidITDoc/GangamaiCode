@@ -449,10 +449,7 @@ export class IPBillingComponent implements OnInit {
         return;
       }
       if (this.Serviceform.get("DoctorID").value)
-        doctorid = this.Serviceform.get("DoctorID").value.DoctorID;
-
-      if (this.Serviceform.get("DoctorID").value)
-        doctorName = this.Serviceform.get("DoctorID").value.DoctorName;
+        doctorid = this.Serviceform.get("DoctorID").value; 
     }
 
     if (this.Serviceform.valid) {

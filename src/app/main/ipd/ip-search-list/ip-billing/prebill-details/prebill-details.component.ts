@@ -68,7 +68,7 @@ export class PrebillDetailsComponent implements OnInit {
       sortField: "BillNo",
       sortOrder: 0,
       filters: [
-        { fieldName: "BillNo", fieldValue: String(1), opType:OperatorComparer.Equals }
+        { fieldName: "BillNo", fieldValue: String(BillNo), opType:OperatorComparer.Equals }
       ]
     }
   }
