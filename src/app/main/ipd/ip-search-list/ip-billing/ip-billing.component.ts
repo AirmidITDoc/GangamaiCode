@@ -1272,8 +1272,9 @@ debugger
       };
       console.log('============== Save IP Draft Bill Json ===========',submitData)
       this._IpSearchListService.InsertIPDraftBilling(submitData).subscribe(response => {
+        //console.log(response)
         this.toastr.success(response.message);
-        this.viewgetDraftBillReportPdf(this.selectedAdvanceObj.admissionId);  
+        this.viewgetDraftBillReportPdf(response.drbno);  
         this._matDialog.closeAll();
       }, (error) => {
         this.toastr.error(error.message);
