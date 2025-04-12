@@ -20,6 +20,7 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { SearchInforObj } from '../../op-search-list/opd-search-list/opd-search-list.component';
 import { AppointmentBillService } from './appointment-bill.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { OpPaymentComponent } from '../../op-search-list/op-payment/op-payment.component';
 
 @Component({
   selector: 'app-appointment-billing',
@@ -822,7 +823,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     PatientHeaderObj['NetPayAmount'] = Math.round(this.totalChargeForm.get('totalNetAmount').value);
 
     if (this.totalChargeForm.get('paymentType').value == 'PayOption') {
-      const dialogRef = this._matDialog.open(OpPaymentNewComponent,
+      const dialogRef = this._matDialog.open(OpPaymentComponent,
         {
           maxWidth: "90vw",
           height: '650px',

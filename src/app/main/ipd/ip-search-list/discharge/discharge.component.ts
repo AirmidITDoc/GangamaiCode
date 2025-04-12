@@ -78,14 +78,10 @@ export class DischargeComponent implements OnInit {
     private accountService: AuthenticationService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
-
-    
     this.DischargeForm = this.DischargesaveForm();
     this.DischargeForm.markAllAsTouched();
-    
     console.log(this.data.docNameId)
    
-
     setInterval(() => {
 
       this.DischargeForm.get("dischargedDocId").setValue(this.data.docNameId)
@@ -108,14 +104,12 @@ export class DischargeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.DischargeForm = this.DischargesaveForm();
-    // this.DischargeForm.markAllAsTouched();
-    // this.getdischargeIdbyadmission()
+   
     console.log(this.data)
     if (this.data) {
       this.vAdmissionId = this.data.admissionId;
       this.vBedId = this.data.bedId
-      // this.DischargeForm.get("dischargedDocId").setValue(this.data.docNameId)
+      this.DischargeForm.get("dischargedDocId").setValue(this.data.docNameId)
       setTimeout(() => {
         this._IpSearchListService.getRegistraionById(this.data.regId).subscribe((response) => {
           this.registerObj = response;
@@ -124,11 +118,9 @@ export class DischargeComponent implements OnInit {
         });
       }, 500);
     
-
       // this.DischargeForm.get("dischargedDocId").setValue(this.data.docNameId)
     }
  
-
     console.log(this._ConfigService.configParams.IsDischargeInitiateflow)
 
     if (this._ConfigService.configParams.IsDischargeInitiateflow == 1)

@@ -262,7 +262,22 @@ export class OpPaymentComponent implements OnInit {
       this.DepartmentName = this.advanceData.DepartmentName;
       // this.Paymentobj['TransactionType'] = 0;
       this.selectedPaymnet1 = 'cash';
+    }else if (this.data.FromName == "OP-Bill") {
+
+      this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
+      this.amount1 = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
+      this.PatientName = this.advanceData.PatientName;
+      this.RegNo = this.advanceData.RegNo;
+      this.DoctorName = this.advanceData.DoctorName;
+      this.CompanyName = this.advanceData.CompanyName;
+      this.Date = this.advanceData.Date;
+      this.Age = this.advanceData.Age;
+      this.OPD_IPD_Id = this.advanceData.OPD_IPD_Id;
+      this.DepartmentName = this.advanceData.DepartmentName;
+      this.Paymentobj['TransactionType'] = 0;
+      this.selectedPaymnet1 = 'cash';
     }
+
   }
 
   ngOnInit(): void {
@@ -561,6 +576,45 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['tdsAmount'] = 0; 
       
       
+    }
+    else if (this.data.FromName == "OP-Bill") {
+      this.Paymentobj['BillNo'] = this.data.billNo;
+      this.Paymentobj['PaymentId'] = 0;
+      this.Paymentobj['PaymentDate'] = formattedDate
+      this.Paymentobj['PaymentTime'] = formattedTime
+      this.Paymentobj['CashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
+      this.Paymentobj['ChequePayAmount'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.Amount ?? 0;
+      this.Paymentobj['ChequeNo'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.RefNo ?? "0";
+      this.Paymentobj['BankName'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.BankName ?? "";
+      this.Paymentobj['ChequeDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+      this.Paymentobj['CardPayAmount'] = this.Payments.data.find(x => x.PaymentType == "card")?.Amount ?? 0;
+      this.Paymentobj['CardNo'] = this.Payments.data.find(x => x.PaymentType == "card")?.RefNo ?? "0";
+      this.Paymentobj['CardBankName'] = this.Payments.data.find(x => x.PaymentType == "card")?.BankName ?? "";
+      this.Paymentobj['CardDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+      this.Paymentobj['AdvanceUsedAmount'] = 0;
+      this.Paymentobj['AdvanceId'] = 0;
+      this.Paymentobj['RefundId'] = 0;
+      let TransactionType;
+      if (this.data.FromName == "OP-Bill") {
+        TransactionType = 0;
+      } 
+      this.Paymentobj['TransactionType'] = TransactionType;
+      this.Paymentobj['Remark'] = " ";
+      this.Paymentobj['AddBy'] =1// this._loggedService.currentUserValue.user.id,
+        this.Paymentobj['IsCancelled'] = false;
+      this.Paymentobj['IsCancelledBy'] = 0;
+      this.Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+      this.Paymentobj['CashCounterId'] = 0;
+      this.Paymentobj['NEFTPayAmount'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.Amount ?? 0;
+      this.Paymentobj['NEFTNo'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.RefNo ?? "0";
+      this.Paymentobj['NEFTBankMaster'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.BankName ?? "";
+      this.Paymentobj['NEFTDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+      this.Paymentobj['PayTMAmount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
+      this.Paymentobj['PayTMTranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? "0";
+      this.Paymentobj['PayTMDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+      this.Paymentobj['PaidAmt'] = this.paidAmt;// this.patientDetailsFormGrp.get('paidAmountController').value +Number(this.amount1);
+      this.Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
+      this.Paymentobj['tdsAmount'] = 0;
     }
 
     console.log(JSON.stringify(this.Paymentobj));

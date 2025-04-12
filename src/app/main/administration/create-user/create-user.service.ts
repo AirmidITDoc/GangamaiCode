@@ -148,71 +148,21 @@ export class CreateUserService {
   public deactivateTheStatus(m_data) {
     return this._httpClient.DeleteData("LoginManager/LoginCanceled?Id=" + m_data.toString());
   }
-  //   createuserform: FormGroup;
-  //   myformSearch: FormGroup;
+  
 
-  //  constructor(private _httpClient: HttpClient,private _formBuilder: UntypedFormBuilder) {
-  //    this.createuserform=this.createuserForm();
-  //     this.myformSearch=this.createSearchForm();
-  //  }
+ 
+  // public getRoleCombobox() {
+  //   return this._httpClient.PostData("Generic/GetByProc?procName=ps_Retrieve_RoleTemplateForCombo", {})
+  // }
 
-  //  createuserForm(): FormGroup {
-  //    return this._formBuilder.group({
-  //      UserId:[''],
-  //      FirstName:['', [
-  //        Validators.required,
-  //        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-  //      ]],
-  //      LastName:['', [
-  //        Validators.required,
-  //        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-  //      ]],
-  //      LoginName:[''],
-  //      Password:[''],
-  //      RoleId:['', [Validators.minLength(6),Validators.maxLength(6)]],
-  //      RoleName:[''],
-  //      IsDoctor:[''],
-  //      DoctorId:[''],
-  //      DoctorName:[''],
-  //      StoreId:[''],
-  //      StoreName:[''],
-  //      MailId:[''],
-  //      MailDomain:[''],
-  //      Status:[''],
-
-  //    });
-  //  }
-
-  //  createSearchForm(): FormGroup {
-  //    return this._formBuilder.group({
-  //      DoctorNameSearch: [''],
-  //      IsDeletedSearch: ['2'],
-
-  //      UserName:[''],
-  //    });
-  //  }
+  // public getStoreCombo() {
+  //   return this._httpClient.PostData("Generic/GetByProc?procName=ps_Retrieve_StoreMasterForCombo", {})
+  // }
 
 
-  //  initializeFormGroup() {
-  //    this.createuserForm();
-  //  }
-
-  public getUserList() {
-    return this._httpClient.PostData("Generic/GetByProc?procName=RtrvUserList", {})
-  }
-
-  public getRoleCombobox() {
-    return this._httpClient.PostData("Generic/GetByProc?procName=ps_Retrieve_RoleTemplateForCombo", {})
-  }
-
-  public getStoreCombo() {
-    return this._httpClient.PostData("Generic/GetByProc?procName=ps_Retrieve_StoreMasterForCombo", {})
-  }
-
-
-  public getDoctorMasterCombo() {
-    return this._httpClient.PostData("Generic/GetByProc?procName=ps_Cmb_DoctorMasterForCombo", {})
-  }
+  // public getDoctorMasterCombo() {
+  //   return this._httpClient.PostData("Generic/GetByProc?procName=ps_Cmb_DoctorMasterForCombo", {})
+  // }
 
 
   public userInsert(employee) {

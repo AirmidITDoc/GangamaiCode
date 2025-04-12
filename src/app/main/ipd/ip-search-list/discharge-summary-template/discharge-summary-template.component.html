@@ -203,9 +203,9 @@
                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
                                             <airmid-autocomplete lbl="Item" [formGroup]="MedicineItemForm"
                                                 formControlName="ItemId" placeholderText="Enter Item Name" fxFlex
-                                                ApiUrl="VisitDetail/GetServiceListwithTraiff?TariffId=1&ClassId=2&ServiceName="
+                                                ApiUrl="ItemMaster/GetItemListForPrescription?StoreId=2&ItemName="
                                                 (selectionChange)="getSelectedserviceObj($event)"
-                                                TextField="serviceName" ValueField="serviceId"></airmid-autocomplete>
+                                                TextField="itemName" ValueField="itemId"></airmid-autocomplete>
 
                                             <airmid-dropdown label="Dose Name" formControlName="DoseId"
                                                 [formGroup]="MedicineItemForm"

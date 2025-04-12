@@ -31,21 +31,17 @@
 
         <airmid-table [gridConfig]="gridConfig"  class="content">
             <ng-container filters>
-                 <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>UserName</mat-label>
-                    <input matInput placeholder="Search UserName" autocomplete="off"
-                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                    <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="gridConfig.filters[0].fieldValue='%'">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
-
-                <!-- <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center">
-                    <mat-radio-button value="">All</mat-radio-button>
-                    <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
-                    <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                </mat-radio-group> -->
+               
+                <form [formGroup]="myuserform">  
+                    <mat-form-field appearance="outline">
+                        <mat-label>User Name</mat-label>
+                        <input matInput placeholder="Search UserName" autocomplete="off" [formGroup]="myuserform" formControlName="UserName" (input)="onChangeFirst()"/>
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('UserName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                    </form>
+              
             </ng-container>
         </airmid-table>
     </div>

@@ -186,7 +186,7 @@ export class DischargeSummaryTemplateComponent {
       this.doseId = event.value
     }
     getSelectedserviceObj(obj) {
-      this.ItemId=obj.serviceId
+      this.ItemId=obj.itemId
      console.log(obj)
   
     }
@@ -237,8 +237,8 @@ export class DischargeSummaryTemplateComponent {
         this.dsItemList.data = [];
         this.Chargeslist.push(
           {
-            itemID: this.MedicineItemForm.get('ItemId').value.serviceId || 0,
-            itemName: this.MedicineItemForm.get('ItemId').value.serviceName || '',
+            itemID: this.MedicineItemForm.get('ItemId').value.itemId || 0,
+            itemName: this.MedicineItemForm.get('ItemId').value.itemName || '',
             doseName: this.doseName1,//this.MedicineItemForm.get('DoseId').value || '',
             doseId: this.doseId,// this.MedicineItemForm.get('DoseId').value || 0,
             days: this.MedicineItemForm.get('Day').value || 0,
