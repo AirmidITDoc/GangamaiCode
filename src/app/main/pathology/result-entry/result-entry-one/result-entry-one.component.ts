@@ -21,6 +21,7 @@ import { debug } from 'console';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatAccordion } from '@angular/material/expansion';
 import {MatMenuTrigger } from '@angular/material/menu';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
     selector: 'app-result-entry-one',
@@ -96,6 +97,7 @@ export class ResultEntryOneComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         private advanceDataStored: AdvanceDataStored,
         private configService: ConfigService,
+          private commonService: PrintserviceService,
         public toastr: ToastrService,
         private _fuseSidebarService: FuseSidebarService) {
 
@@ -699,30 +701,8 @@ export class ResultEntryOneComponent implements OnInit {
         }
     }
 
-    viewgetPathologyTestReportPdf(contact) {
-
-        setTimeout(() => {
-            // this.SpinLoading = true;
-            // this.AdList = true;
-            this._SampleService.getPathTestReport(
-                contact.OP_IP_Type
-            ).subscribe(res => {
-                const dialogRef = this._matDialog.open(PdfviewerComponent,
-                    {
-                        maxWidth: "85vw",
-                        height: '750px',
-                        width: '100%',
-                        data: {
-                            base64: res["base64"] as string,
-                            title: "pathology Test  Viewer"
-                        }
-                    });
-                dialogRef.afterClosed().subscribe(result => {
-
-                });
-            });
-
-        }, 100);
+    viewgetPathologyTestReportPdf(element) {
+        this.commonService.Onprint("OP_IP_Type", element.OP_IP_Type, "PathresultEntry");
     }
 
     Printresultentry() {

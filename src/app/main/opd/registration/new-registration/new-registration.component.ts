@@ -172,7 +172,7 @@ export class NewRegistrationComponent implements OnInit {
     }
 
     onChangecity(e) {
-        
+        console.log(e)
         this.ddlState.SetSelection(e.stateId);
         this.ddlCountry.SetSelection(this.personalFormGroup.get("StateId").value)
       

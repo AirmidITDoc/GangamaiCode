@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -60,7 +60,7 @@ export class AdmissionService {
         return this._formBuilder.group({
             RegId: [0],
             RegNo: "0",
-            PrefixId: ['', [Validators.required]],
+            PrefixId:[0, [Validators.required, notEmptyOrZeroValidator()]],
             FirstName: ['', [
                 Validators.required,
                 // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
@@ -75,7 +75,7 @@ export class AdmissionService {
                 // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
                 Validators.pattern("^[A-Za-z/() ]*$")
             ]],
-            GenderId: new FormControl('', [Validators.required]),
+            GenderId: new FormControl('', [Validators.required, notEmptyOrZeroValidator()]),
             Address: '',
             DateOfBirth: [(new Date()).toISOString()],
             Age: ['0'],
@@ -104,10 +104,10 @@ export class AdmissionService {
             MaritalStatusId:0,
             ReligionId: 0,
             AreaId: 0,
-            CityId: ['', [Validators.required]],
+            CityId:[0, [Validators.required, notEmptyOrZeroValidator()]],
             City: [''],
-            StateId:  ['', [Validators.required]],
-            CountryId:  [1, [Validators.required]],
+            StateId:[0, [Validators.required, notEmptyOrZeroValidator()]],
+            CountryId:[0, [Validators.required, notEmptyOrZeroValidator()]],
             IsCharity: false,
             IsSeniorCitizen: false,
             AddedBy: this.accountService.currentUserValue.userId,
@@ -127,19 +127,19 @@ export class AdmissionService {
             AdmissionTime: [(new Date()).toISOString()],
             PatientTypeId: 1,
             hospitalId: 1,
-            DocNameId: ['', [Validators.required]],
+            DocNameId:[0, [Validators.required, notEmptyOrZeroValidator()]],
             RefDocNameId: 0,
             DischargeDate: "1900-01-01",
             DischargeTime: "1900-01-01T11:24:02.655Z",
             IsDischarged: 0,
             IsBillGenerated: 0,
             CompanyId: 0,
-            TariffId: [1, [Validators.required]],
-            ClassId: ['', [Validators.required]],
-            wardId: ['', [Validators.required]],
-            bedId: ['', [Validators.required]],
+            TariffId:[1, [Validators.required, notEmptyOrZeroValidator()]],
+            ClassId:[0, [Validators.required, notEmptyOrZeroValidator()]],
+            wardId:[0, [Validators.required, notEmptyOrZeroValidator()]],
+            bedId:[0, [Validators.required, notEmptyOrZeroValidator()]],
 
-            DepartmentId: ['', [Validators.required]],
+            DepartmentId:[0, [Validators.required, notEmptyOrZeroValidator()]],
             RelativeName: "",
             RelativeAddress: "",
             PhoneNo: ['', [
@@ -187,7 +187,7 @@ export class AdmissionService {
             AdmissionTime: [(new Date()).toISOString()],
             PatientTypeId: 1,
             hospitalId: 1,
-            DocNameId: ['', [Validators.required]],
+            DocNameId:[0, [Validators.required, notEmptyOrZeroValidator()]],
             RefDocNameId: 0,
             DischargeDate: "1900-01-01",
             DischargeTime: "1900-01-01T11:24:02.655Z",
@@ -199,7 +199,7 @@ export class AdmissionService {
             wardId: [0],
             bedId: [0],
 
-            DepartmentId: ['', [Validators.required]],
+            DepartmentId:[0, [Validators.required, notEmptyOrZeroValidator()]],
             RelativeName: "",
             RelativeAddress: "",
             PhoneNo: ['', [
@@ -317,3 +317,10 @@ export class AdmissionService {
     }
 }
 
+
+function notEmptyOrZeroValidator(): any {
+    return (control: AbstractControl): ValidationErrors | null => {
+        const value = control.value;
+        return value > 0 ? null : { greaterThanZero: { value: value } };
+      };
+}

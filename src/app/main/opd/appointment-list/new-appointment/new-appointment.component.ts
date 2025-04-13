@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { ToastrService } from 'ngx-toastr';
@@ -648,7 +648,7 @@ export class NewAppointmentComponent implements OnInit {
         return this._formBuilder.group({
             RegId: [0],
             RegNo: "0",
-            PrefixId: ['', [Validators.required]],
+            PrefixId:[0, [Validators.required, notEmptyOrZeroValidator()]],
             FirstName: ['', [
                 Validators.required,
                 // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"), 
@@ -663,7 +663,7 @@ export class NewAppointmentComponent implements OnInit {
                 // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
                 Validators.pattern("^[A-Za-z/() ]*$")
             ]],
-            GenderId: new FormControl('', [Validators.required]),
+            GenderId: new FormControl('', [Validators.required, notEmptyOrZeroValidator()]),
             Address: '',
             DateOfBirth: [(new Date()).toISOString()],
             Age: ['0'],
@@ -694,10 +694,10 @@ export class NewAppointmentComponent implements OnInit {
             MaritalStatusId: 0,
             ReligionId: 0,
             AreaId: 0,
-            CityId: ['', [Validators.required]],
+            CityId:[0, [Validators.required, notEmptyOrZeroValidator()]],
             City: [''],
-            StateId: ['', [Validators.required]],
-            CountryId: [0, [Validators.required]],
+            StateId:[0, [Validators.required, notEmptyOrZeroValidator()]],
+            CountryId:[0, [Validators.required, notEmptyOrZeroValidator()]],
             IsCharity: false,
             IsSeniorCitizen: false,
             AddedBy: this.accountService.currentUserValue.userId,
@@ -711,4 +711,10 @@ export class NewAppointmentComponent implements OnInit {
 
     }
 
+}
+function notEmptyOrZeroValidator(): any {
+    return (control: AbstractControl): ValidationErrors | null => {
+        const value = control.value;
+        return value > 0 ? null : { greaterThanZero: { value: value } };
+      };
 }

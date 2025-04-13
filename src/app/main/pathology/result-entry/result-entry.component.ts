@@ -28,6 +28,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { element } from 'protractor';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
     selector: 'app-result-entry',
@@ -214,6 +215,7 @@ export class ResultEntryComponent implements OnInit {
         private advanceDataStored: AdvanceDataStored,
         private accountService: AuthenticationService,
         public toastr: ToastrService,
+        private commonService: PrintserviceService,
         public _WhatsAppEmailService: WhatsAppEmailService,
         private _fuseSidebarService: FuseSidebarService,
     ) { }
@@ -718,29 +720,44 @@ opipType:any="2";
     AdList: boolean = false;
 
     viewgetPathologyTemplateReportPdf(contact) {
-
         setTimeout(() => {
+            let param = {
+                    "searchFields": [
+                        {
+                            "fieldName": "PathReportId" ,
+                            "fieldValue": String(contact.PathReportId ),
+                            "opType": "13"
+                        },
+                        {
+                            "fieldName": "OP_IP_Type"   ,
+                            "fieldValue": 1,
+                            "opType": "13"
+                        }
+                    ],
+                    "mode": "PathTemplateReport"
+                }
 
-            this._SampleService.getPathTempReport(contact.PathReportID, contact.OPD_IPD_Type).subscribe(res => {
-                const dialogRef = this._matDialog.open(PdfviewerComponent,
+          this._SampleService.getReportView(param).subscribe(res => {
+              
+                const matDialog = this._matDialog.open(PdfviewerComponent,
                     {
                         maxWidth: "85vw",
                         height: '750px',
                         width: '100%',
                         data: {
                             base64: res["base64"] as string,
-                            title: "Pathology Template  Viewer"
+                            title: "Template Report" + " "+ "Viewer"
                         }
                     });
-                dialogRef.afterClosed().subscribe(result => {
-                    this.AdList = false;
-                    this.SpinLoading = false;
+                matDialog.afterClosed().subscribe(result => {
                 });
             });
-
         }, 100);
     }
-
+    
+    viewgetPathologyTestReportPdf(element) {
+        this.commonService.Onprint("OP_IP_Type", element.OP_IP_Type, "PathresultEntry");
+    }
 
     whatsappresultentry() {
         console.log(this.selection.selected)
@@ -782,32 +799,10 @@ opipType:any="2";
         this.selection.clear();
     }
 
-    viewgetPathologyTestReportPdf(OPD_IPD_Type) {
-
-        setTimeout(() => {
-            this.SpinLoading = true;
-            this.AdList = true;
-            this._SampleService.getPathTestReport(
-                OPD_IPD_Type
-            ).subscribe(res => {
-                const dialogRef = this._matDialog.open(PdfviewerComponent,
-                    {
-                        maxWidth: "85vw",
-                        height: '750px',
-                        width: '100%',
-                        data: {
-                            base64: res["base64"] as string,
-                            title: "pathology Test Report Viewer"
-                        }
-                    });
-                dialogRef.afterClosed().subscribe(result => {
-                    this.AdList = false;
-                    this.SpinLoading = false;
-                });
-            });
-
-        }, 100);
-    }
+    
+      
+    
+    
 
     exportResultentryReportExcel() {
         this.sIsLoading == 'loading-data'

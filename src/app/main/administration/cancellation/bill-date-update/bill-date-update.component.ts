@@ -53,22 +53,18 @@ export class BillDateUpdateComponent implements OnInit {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */ 
       if (result.isConfirmed) { 
-        let Query
-      Query = "update bill set BillDate='"+formattedDate+"',BillTime='"+formattedTime+"'where BillNo=" +this.BillNo 
+        var data = {
+          'BillNo': this.BillNo,
+          'BillDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+          'BillTime': formattedDate + this.dateTimeObj.time
 
-      console.log(Query);
-        this._CancellationService.getDateTimeChange(Query).subscribe(response => {
-          if (response) {
-            this.toastr.success('Bill Date & Time Updated Successfuly', 'Updated !', {
-              toastClass: 'tostr-tost custom-toast-success',
-            }); 
-            this.onClose();
-          } else {
-            this.toastr.error('API Error!', 'Error !', {
-              toastClass: 'tostr-tost custom-toast-error',
-            });
-            this.onClose();
-          }
+        }
+        console.log(data);
+     this._CancellationService.getDateTimeChange(data).subscribe(response => {
+          this.toastr.success(response);
+           this._matDialog.closeAll();
+      }, (error) => {
+          this.toastr.error(error.message);
         });
       }
     }); 

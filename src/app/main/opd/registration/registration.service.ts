@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { RegInsert } from './registration.component';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
@@ -50,7 +50,7 @@ export class RegistrationService {
         return this._formBuilder.group({
             RegId: [0],
             RegNo: "0",
-            PrefixId:[0, [Validators.required, Validators.pattern(/^[1-9]*$/)]],
+            PrefixId:[0, [Validators.required, notEmptyOrZeroValidator()]],
             FirstName: ['', [
                 Validators.required,
             //    Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
@@ -65,7 +65,7 @@ export class RegistrationService {
                 // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
             Validators.pattern("^[A-Za-z/() ]*$")
             ]],
-            GenderId: new FormControl( [0, [Validators.required, Validators.pattern(/^[1-9]*$/)]],),
+            GenderId: new FormControl( [0, [Validators.required,notEmptyOrZeroValidator()]]),
             Address: '',
             DateOfBirth: [(new Date()).toISOString()],
             Age: ['0'],
@@ -96,10 +96,10 @@ export class RegistrationService {
             MaritalStatusId:0,
             ReligionId: 0,
             AreaId: 0,
-            CityId:[0, [Validators.required, Validators.pattern(/^[1-9]*$/)]],
+            CityId:[0, [Validators.required, notEmptyOrZeroValidator()]],
             City: [''],
-            StateId:  [0, [Validators.required, Validators.pattern(/^[1-9]*$/)]],
-            CountryId:  [0, [Validators.required, Validators.pattern(/^[1-9]*$/)]],
+            StateId:  [0, [Validators.required, notEmptyOrZeroValidator()]],
+            CountryId:  [0, [Validators.required,notEmptyOrZeroValidator()]],
             IsCharity: false,
             IsSeniorCitizen: false,
             AddedBy:this.accountService.currentUserValue.userId,
@@ -147,5 +147,13 @@ export class RegistrationService {
         return this._httpClient1.PostData("Report/NewViewReport", mode);
 
     }
+}
+
+
+function notEmptyOrZeroValidator(): any {
+    return (control: AbstractControl): ValidationErrors | null => {
+        const value = control.value;
+        return value > 0 ? null : { greaterThanZero: { value: value } };
+      };
 }
 // Set NODE_OPTIONS="--max-old-space-size=8192"

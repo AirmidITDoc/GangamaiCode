@@ -164,4 +164,8 @@ export class ResultEntryService {
   populateForm(employee) {
     this.myform.patchValue(employee);
   }
+
+  public getReportView(Param) {
+    return this._httpClient1.PostData("Report/ViewReport", Param);
+  }
 }
