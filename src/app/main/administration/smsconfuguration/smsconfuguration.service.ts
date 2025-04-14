@@ -32,8 +32,25 @@ export class SMSConfugurationService {
       Message:[''],
       TemplateId:[''],
       IsBlock:['']
+
+      // url[''],
+      // keys[''],
+      // campaign[''],
+      // routeid[''],
+      // senderId": "string",
+      // userName": "string",
+      // spassword": "string",
+      // storageLocLink": "string",
+      // conType": "string"
+
+
     });
    }
+
+   public SMSSave(m_data) {
+    return this._httpClient.PostData("smsConfig/InsertSP",m_data);
+    }
+
 
    public deactivateTheStatus(m_data) {
     return this._httpClient.DeleteData("TalukaMaster?Id=" + m_data.toString());

@@ -94,7 +94,7 @@ export class IssueToDepartmentComponent implements OnInit {
     @ViewChild('grid') grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
     gridConfig: gridModel = {
-        apiUrl: "IssueToDepartment/IssueToDepttList",
+        apiUrl: "IssueToDepartment/IssueToDeptList",
         columnsList: [
             { heading: "IsAccepted", key: "isAcc", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IssueNo", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -132,25 +132,22 @@ export class IssueToDepartmentComponent implements OnInit {
     GetDetails1(data) {
         
         this.gridConfig1 = {
-            apiUrl: "IssueToDepartment/IssueToDepttList",
+            apiUrl: "IssueToDepartment/IssueToDeptdetailList",
             columnsList: [
                 { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Batch Exp Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "GST%", key: "gst", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Rate", key: "rate", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Total Amount", key: "amt", sort: true, align: 'left', emptySign: 'NA' }
+                { heading: "GST%", key: "vatPercentage", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Rate", key: "perUnitLandedRate", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Total Amount", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA' }
             ],
             sortField: "IssueId",
             sortOrder: 0,
             filters: [
-                // { fieldName: "FromStoreId", fieldValue: "10009", opType: OperatorComparer.Equals },
-                // { fieldName: "ToStoreId", fieldValue: "10003", opType: OperatorComparer.Equals },
-                // { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-                // { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-                // { fieldName: "Status", fieldValue: "1", opType: OperatorComparer.Equals }
+                { fieldName: "IssueId", fieldValue: "10009", opType: OperatorComparer.Equals },
+                
             ]
         }
         this.isShowDetailTable = true;

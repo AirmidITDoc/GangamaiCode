@@ -437,7 +437,7 @@ export class NewAppointmentComponent implements OnInit {
         this.VisitFormGroup.get("regId").setValue(this.registerObj.regId)
         this.VisitFormGroup.get("patientOldNew").setValue(2)
         let submitData = {
-            "registration": this.personalFormGroup.value,
+            "appReistrationUpdate": this.personalFormGroup.value,
             "visit": this.VisitFormGroup.value
         };
         console.log(submitData);

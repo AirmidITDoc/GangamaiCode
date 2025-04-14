@@ -12,6 +12,7 @@ import { UpdateSMSComponent } from './update-sms/update-sms.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-smsconfuguration',
@@ -21,17 +22,17 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
   animations: fuseAnimations,
 })
 export class SMSConfugurationComponent implements OnInit {
-
+  MySearchForm:FormGroup;
     msg: any;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
-        apiUrl: "TalukaMaster/List",
+        apiUrl: "smsConfig/SMSconfigList",
         columnsList: [
-            { heading: "OutGoingCode", key: "OutGoingCode", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Date", key: "Date", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "MobileNo", key: "MobileNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "SMSString", key: "SMSString", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsSent", key: "IsSent", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "OutGoingCode", key: "sMSOutGoingID", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Date", key: "sMSDate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "SMSString", key: "sMSString", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsSent", key: "isSent", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -49,11 +50,11 @@ export class SMSConfugurationComponent implements OnInit {
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "talukaId",
+        sortField: "SMSOutGoingID",
         sortOrder: 0,
         filters: [
-            { fieldName: "talukaName", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            { fieldName: "FromDate", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "ToDate", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     }
     onSave(row: any = null) {
@@ -75,15 +76,8 @@ export class SMSConfugurationComponent implements OnInit {
         });
     }
 
-  sIsLoading: string = '';
-  isLoading = true;
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('paginator', { static: true }) public paginator: MatPaginator; 
-
-  dsSMSSentList= new MatTableDataSource<SentSMSList>();
-
-  constructor(
+   constructor(
     public _SMSConfigService : SMSConfugurationService,
     private _loggedService: AuthenticationService,
     public datePipe: DatePipe,
@@ -92,27 +86,10 @@ export class SMSConfugurationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getSMSSentList();
+    this.MySearchForm = this._SMSConfigService.CreateSearchForm();
   }
 
-  getSMSSentList(){
-    this.sIsLoading = 'loading-data';
-    var vdata = {    
-      "FromDate":this.datePipe.transform(this._SMSConfigService.MySearchForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "ToDate":  this.datePipe.transform(this._SMSConfigService.MySearchForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-    }
-      console.log(vdata);
-      this._SMSConfigService.getSMSSentList(vdata).subscribe(data => {
-      this.dsSMSSentList.data = data as SentSMSList[];
-      console.log(this.dsSMSSentList.data)
-      this.dsSMSSentList.sort = this.sort;
-      this.dsSMSSentList.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
+ 
   NewSMS(){ 
     const dialogRef = this._matDialog.open(UpdateSMSComponent,
       {
@@ -122,25 +99,9 @@ export class SMSConfugurationComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      this.getSMSSentList();
+      
     });
   }
 }
  
-export class SentSMSList {
- 
-  PatientName:string;
-  Date: Number;
-  RegNo:number;
-  MobileNo:number;
-  Doctorname:number; 
-  constructor(SentSMSList) {
-    {
-      this.Date = SentSMSList.Date || 0;
-      this.RegNo = SentSMSList.RegNo || 0;
-      this.MobileNo = SentSMSList.MobileNo || 0; 
-      this.Doctorname = SentSMSList.Doctorname || '';
-      this.PatientName = SentSMSList.PatientName || '';
-    }
-  }
-}
+

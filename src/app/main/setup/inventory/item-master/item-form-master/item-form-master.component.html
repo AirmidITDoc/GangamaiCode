@@ -40,36 +40,36 @@
                             </airmid-textbox>
                         </div>
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-dropdown label="Item Type Name" formControlName="itemTypeId" [value]="registerObj?.itemTypeId" [formGroup]="itemForm" [validations]="getValidationMessages().itemTypeId" [mode]="autocompleteModeItemType" (selectDdlObject)="selectChangeItemType($event)">
+                            <airmid-dropdown label="Item Type Name" formControlName="itemTypeId" [value]="registerObj?.itemTypeId" [formGroup]="itemForm" [validations]="getValidationMessages().itemTypeId" [mode]="autocompleteModeItemType" >
                             </airmid-dropdown>
                         </div>
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-dropdown label="Item Category Name" formControlName="itemCategaryId" [value]="registerObj?.itemCategaryId" [formGroup]="itemForm" [validations]="getValidationMessages().itemCategaryId" [mode]="autocompleteModeItemCategory" (selectDdlObject)="selectChangeItemCategory($event)">
+                            <airmid-dropdown label="Item Category Name" formControlName="itemCategaryId" [value]="registerObj?.itemCategaryId" [formGroup]="itemForm" [validations]="getValidationMessages().itemCategaryId" [mode]="autocompleteModeItemCategory" >
                             </airmid-dropdown>
                         </div>
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-dropdown label="Item Generic Name" formControlName="itemGenericNameId" [value]="registerObj?.itemGenericNameId" [formGroup]="itemForm" [validations]="getValidationMessages().itemGenericNameId" [mode]="autocompleteModeItemGenericName" (selectDdlObject)="selectChangeItemGenericName($event)">
+                            <airmid-dropdown label="Item Generic Name" formControlName="itemGenericNameId" [value]="registerObj?.itemGenericNameId" [formGroup]="itemForm" [validations]="getValidationMessages().itemGenericNameId" [mode]="autocompleteModeItemGenericName" >
                             </airmid-dropdown>
                         </div>
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-dropdown label="Item Class Name" formControlName="itemClassId" [value]="registerObj?.itemClassId" [formGroup]="itemForm" [validations]="getValidationMessages().itemClassId" [mode]="autocompleteModeItemClass" (selectDdlObject)="selectChangeItemClass($event)">
+                            <airmid-dropdown label="Item Class Name" formControlName="itemClassId" [value]="registerObj?.itemClassId" [formGroup]="itemForm" [validations]="getValidationMessages().itemClassId" [mode]="autocompleteModeItemClass">
                             </airmid-dropdown>
                         </div>
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-dropdown label="Currency Id" formControlName="currencyId" [value]="registerObj?.currencyId" [formGroup]="itemForm" [validations]="getValidationMessages().currencyId" [mode]="autocompleteModeCurrency" (selectDdlObject)="selectChangeCurrency($event)">
-                            </airmid-dropdown>
-                        </div>
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-dropdown label="Unit Of Measurement ID" formControlName="purchaseUomid" [value]="registerObj?.purchaseUomid" [formGroup]="itemForm" [validations]="getValidationMessages().purchaseUomid" [mode]="autocompleteModePurchaseUOM" (selectDdlObject)="selectChangePurchaseUOM($event)">
+                            <airmid-dropdown label="Currency Id" formControlName="currencyId" [value]="registerObj?.currencyId" [formGroup]="itemForm" [validations]="getValidationMessages().currencyId" [mode]="autocompleteModeCurrency" >
                             </airmid-dropdown>
                         </div>
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-dropdown label="Stock Unit Of Measurement ID" formControlName="stockUomid" [value]="registerObj?.stockUomid" [formGroup]="itemForm" [validations]="getValidationMessages().stockUomid" [mode]="autocompleteModeStockUOM" (selectDdlObject)="selectChangeStockUOM($event)">
+                            <airmid-dropdown label="Unit Of Measurement ID" formControlName="purchaseUomid" [value]="registerObj?.purchaseUomid" [formGroup]="itemForm" [validations]="getValidationMessages().purchaseUomid" [mode]="autocompleteModePurchaseUOM" >
+                            </airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-dropdown label="Stock Unit Of Measurement ID" formControlName="stockUomid" [value]="registerObj?.stockUomid" [formGroup]="itemForm" [validations]="getValidationMessages().stockUomid" [mode]="autocompleteModeStockUOM" >
                             </airmid-dropdown>
                         </div>
 
@@ -112,17 +112,17 @@
                             </airmid-textbox>
                         </div>
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-dropdown label="Drug Type" formControlName="drugType" [value]="registerObj?.drugType" [formGroup]="itemForm" [validations]="getValidationMessages().drugType" [mode]="autocompleteModeDrugType" (selectDdlObject)="selectChangeDrugType($event)">
+                            <airmid-dropdown label="Drug Type" formControlName="drugType" [value]="registerObj?.drugType" [formGroup]="itemForm" [validations]="getValidationMessages().drugType" [mode]="autocompleteModeDrugType" >
                             </airmid-dropdown>
                         </div>
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-dropdown label="Manufacture Name" formControlName="manufId" [value]="registerObj?.manufId" [formGroup]="itemForm" [validations]="getValidationMessages().manufId" [mode]="autocompleteModeMenu" (selectDdlObject)="selectChangeMenu($event)">
+                            <airmid-dropdown label="Manufacture Name" formControlName="manufId" [value]="registerObj?.manufId" [formGroup]="itemForm" [validations]="getValidationMessages().manufId" [mode]="autocompleteModeMenu" >
                             </airmid-dropdown>
                         </div>
 
                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
-                            <airmid-dropdown label="Company Name" formControlName="itemCompnayId" [value]="registerObj?.itemCompnayId" [formGroup]="itemForm" [validations]="getValidationMessages().itemCompnayId" [mode]="autocompleteModeCompany" (selectDdlObject)="selectChangeCompany($event)">
+                            <airmid-dropdown label="Company Name" formControlName="itemCompnayId" [value]="registerObj?.itemCompnayId" [formGroup]="itemForm" [validations]="getValidationMessages().itemCompnayId" [mode]="autocompleteModeCompany" >
                             </airmid-dropdown>
                         </div>
                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">

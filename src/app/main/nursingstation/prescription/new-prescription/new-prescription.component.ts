@@ -228,12 +228,6 @@ export class NewPrescriptionComponent implements OnInit {
     console.log("Store:", obj);
     this.vstoreId = obj.value
 
-    // if(this.vstoreId)
-    // this.ApiURL = "ItemMaster/GetItemListForPrescription?StoreId=" + this.vstoreId + "&ItemName="
-
-    // this.Regstatus = false
-    // this.isItem=true;
-
   }
 
   vitemId: any;

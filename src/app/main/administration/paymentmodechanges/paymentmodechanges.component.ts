@@ -249,7 +249,8 @@ PaymentDate(contact){
         // height: "35%",
         width: '100%',
         data: { 
-          obj:contact.PaymentId 
+          obj:contact.paymentId
+           
         }, 
       });
     dialogRef.afterClosed().subscribe(result => {

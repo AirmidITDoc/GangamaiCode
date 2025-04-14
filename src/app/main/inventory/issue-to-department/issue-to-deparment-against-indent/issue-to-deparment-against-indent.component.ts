@@ -42,10 +42,8 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
   FromStoreList: any = [];
   hasSelectedContacts: boolean = false;
   Charglist:any=[];
-  ToStoreList1:any=[];
-  filteredOptionsStore: Observable<string[]>;
-  isStoreSelected:boolean=false;
-
+ 
+  autocompletestore: string = "Store";
 
   dsIndentList = new MatTableDataSource<IndentList>();
   dsIndentItemDetList = new MatTableDataSource<IndentItemDetList>();
@@ -65,26 +63,9 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getToStoreList();
-    this.filteredOptionsStore = this._IssueToDep.IndentFrom.get('ToStoreId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterToStore(value)),
-  );
+   
   }
-  getToStoreList() {
-    this._IssueToDep.getToStoreSearchList().subscribe(data => {
-        this.ToStoreList1 = data;
-    });
-}
-private _filterToStore(value: any): string[] {
-    if (value) {
-        const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-        return this.ToStoreList1.filter(option => option.StoreName.toLowerCase().includes(filterValue));
-    }
-}
-getOptionTextStores(option) {
-  return option && option.StoreName ? option.StoreName : '';
-}
+  
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
@@ -166,6 +147,32 @@ getOptionTextStores(option) {
   OnReset(){
     this._matDialog.closeAll();
     this._IssueToDep.IndentFrom.reset();
+  }
+
+  vstoreId: any = '';
+  selectChangeStore(obj: any) {
+    debugger
+    console.log("Store:", obj);
+    this.vstoreId = obj.value
+
+  }
+
+  getValidationMessages() {
+    return {
+      StoreId: [
+        { name: "required", Message: "Store Name is required" }
+      ],
+      // WardName: [
+      //   { name: "required", Message: "Ward Name is required" }
+      // ],
+      // ItemId: [
+      //   { name: "required", Message: "Item Name is required" }
+      // ],
+      // Qty: [
+      //   { name: "required", Message: "Qty is required" },
+      //   { name: "pattern", Message: "Only numbers allowed" }
+      // ],
+    };
   }
 }
 export class IndentList {

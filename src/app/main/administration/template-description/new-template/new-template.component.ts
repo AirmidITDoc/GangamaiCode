@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { TemplatedescriptionService } from '../templatedescription.service';
@@ -51,9 +51,8 @@ export class NewTemplateComponent implements OnInit {
   createRadiologytemplateForm(): FormGroup {
     return this._formBuilder.group({
       templateId: [0],
-      templateName: ['',
-        [
-          // Validators.required,
+      templateName: ['',[
+          Validators.required,
           // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
         ]
       ],
@@ -65,13 +64,9 @@ export class NewTemplateComponent implements OnInit {
 
   onSubmit() {
     console.log(this.templateForm.value)
-    debugger
-    if (this.templateForm.invalid) {
-      this.toastr.warning('please check from is invalid', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      })
-      return;
-    } else {
+  
+    if (this.templateForm.valid) {
+     
      var mdata = {
           "templateId": this.templateId,
           "templateName": this.templateForm.get("templateName").value,
@@ -82,13 +77,23 @@ export class NewTemplateComponent implements OnInit {
         
         this._TemplatedescriptionService.TemplateSave(mdata).subscribe((response) => {
           this.toastr.success(response.message);
-          this.onClear();
+          this.onClose();
         }, (error) => {
           this.toastr.error(error.message);
         });
+      }  else {
+        let invalidFields = [];
+        if (this.templateForm.invalid) {
+            for (const controlName in this.templateForm.controls) {
+                if (this.templateForm.controls[controlName].invalid) { invalidFields.push(`Template Form: ${controlName}`); }
+            }
+        }
+       
+        if (invalidFields.length > 0) {
+            invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+        }
+
       }
-    
-    this.onClose();
   }
   onClose() {
     this.templateForm.reset();

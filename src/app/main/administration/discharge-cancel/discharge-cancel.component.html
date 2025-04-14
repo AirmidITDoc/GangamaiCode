@@ -13,11 +13,7 @@
         </div>
     </mat-toolbar>
     <div class="content">
-        <div *ngIf="isLoading123">
-            <div id="pause" class="d-flex align-items-center justify-content-center">
-                <div id="spinner"></div>
-            </div>
-        </div>
+      
         <div class="center p-16 pb-56" fxFlexAlign="start center">
             <div class="content-card" style="border-radius: 4px;">
                 <div fxFlexFill fxLayout="row" fxLayout="column" fxLayoutGap="10px">
@@ -31,20 +27,20 @@
                                     </mat-radio-group>
                                 </div>
     
-                                <airmid-autocomplete lbl="RegID" *ngIf="!vCheckBox"
-                                     [formGroup]="_DischargeCancelService.DischargeForm" 
-                                    formControlName="RegID" fxFlex="80%"
-                                     placeholderText="RegNo / First Name / Last Name / Mobile No(AD)" 
-                                    ApiUrl="Admission/search-patient?Keyword=" 
-                                    (selectionChange)="getSelectedObjAM($event)"
-                                    ValueField="admissionID" TextField="firstName">
-                                </airmid-autocomplete>
-    
                                 <airmid-autocomplete lbl="RegID" *ngIf="vCheckBox"
                                      [formGroup]="_DischargeCancelService.DischargeForm" 
                                     formControlName="RegID" fxFlex="80%"
+                                    label="Search Reg No / Patient Name / Mobile No(AD)"
+                                    ApiUrl="Admission/Dischargesearch-patient?Keyword=" 
+                                    (selectionChange)="getSelectedObjDC($event)"
+                                    ValueField="admissionID" TextField="firstName">
+                                </airmid-autocomplete>
+    
+                                <airmid-autocomplete lbl="RegID" *ngIf="!vCheckBox"
+                                     [formGroup]="_DischargeCancelService.DischargeForm"  label="Search Reg No / Patient Name / Mobile No(DC)"
+                                    formControlName="RegID" fxFlex="80%"
                                      placeholderText="RegNo / First Name / Last Name / Mobile No(DC)" 
-                                    ApiUrl="VisitDetail/search-patient?Keyword=" 
+                                    ApiUrl="Admission/search-patient?Keyword=" 
                                     (selectionChange)="getSelectedObjDC($event)"
                                     TextField="formattedText" ValueField="regId">
                                 </airmid-autocomplete>

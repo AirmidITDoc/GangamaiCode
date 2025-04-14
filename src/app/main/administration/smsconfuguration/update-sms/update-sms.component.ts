@@ -93,6 +93,13 @@ export class UpdateSMSComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
+      console.log(this._SMSConfigService.MyNewSMSForm.value)
+      this._SMSConfigService.SMSSave(this._SMSConfigService.MyNewSMSForm.value).subscribe((response) => {
+        this.toastr.success(response.message);
+      
+      }, (error) => {
+        this.toastr.error(error.message);
+      }); 
     }
   }
   OnReset(){

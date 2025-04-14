@@ -19,6 +19,19 @@ export class ItemFormMasterComponent implements OnInit {
 
     itemForm: FormGroup;
     isActive: boolean = true;
+
+    itemId = 0;
+    categoryId = 0;
+    genericId = 0;
+    classId = 0;
+    currencyId = 0;
+    purchaseId = 0;
+    stockId = 0;
+    companyId = 0;
+    storeId = 0;
+    drugId = 0;
+    menuId = 0;
+
     // new api
     autocompleteModeItemType: string = "ItemType";
     autocompleteModeItemCategory: string = "ItemCategory";
@@ -86,51 +99,41 @@ export class ItemFormMasterComponent implements OnInit {
         this.ddlStore.SetSelection(this.itemForm.value.mAssignItemToStores.map(x => x.storeId));
     }
 
-    itemId = 0;
-    categoryId = 0;
-    genericId = 0;
-    classId = 0;
-    currencyId = 0;
-    purchaseId = 0;
-    stockId = 0;
-    companyId = 0;
-    storeId = 0;
-    drugId = 0;
-    menuId = 0;
+   
 
-    selectChangeItemType(obj: any) {
-        this.itemId = obj.value;
-    }
-    selectChangeItemCategory(obj: any) {
-        this.categoryId = obj.value;
-    }
-    selectChangeItemGenericName(obj: any) {
-        this.genericId = obj.value;
-    }
-    selectChangeItemClass(obj: any) {
-        this.classId = obj.value;
-    }
-    selectChangeCurrency(obj: any) {
-        this.currencyId = obj.value;
-    }
-    selectChangePurchaseUOM(obj: any) {
-        this.purchaseId = obj.value;
-    }
-    selectChangeStockUOM(obj: any) {
-        this.stockId = obj.value;
-    }
-    selectChangeCompany(obj: any) {
-        this.companyId = obj.value
-    }
-    selectChangeStore(obj: any) {
-        this.storeId = obj.value
-    }
-    selectChangeDrugType(obj: any) {
-        this.drugId = obj.value
-    }
-    selectChangeMenu(obj: any) {
-        this.menuId = obj.value
-    }
+    // selectChangeItemType(obj: any) {
+    //     this.itemId = obj.value;
+    // }
+    // selectChangeItemCategory(obj: any) {
+    //     this.categoryId = obj.value;
+    // }
+    // selectChangeItemGenericName(obj: any) {
+    //     this.genericId = obj.value;
+    // }
+    // selectChangeItemClass(obj: any) {
+    //     this.classId = obj.value;
+    // }
+    // selectChangeCurrency(obj: any) {
+    //     this.currencyId = obj.value;
+    // }
+    // selectChangePurchaseUOM(obj: any) {
+    //     this.purchaseId = obj.value;
+    // }
+    // selectChangeStockUOM(obj: any) {
+    //     this.stockId = obj.value;
+    // }
+    // selectChangeCompany(obj: any) {
+    //     this.companyId = obj.value
+    // }
+    // selectChangeStore(obj: any) {
+    //     this.storeId = obj.value
+    // }
+    // selectChangeDrugType(obj: any) {
+    //     this.drugId = obj.value
+    // }
+    // selectChangeMenu(obj: any) {
+    //     this.menuId = obj.value
+    // }
 
     onSubmit() {
 

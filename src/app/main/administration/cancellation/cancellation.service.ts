@@ -47,6 +47,6 @@ export class CancellationService {
     return this._httpClient.PutData("BillCancellation/IPCancelBill", param) 
   }
   public getDateTimeChange(m_data) {
-    return this._httpClient.PostData("Generic/ExecByQueryStatement?query=" + m_data,{});
+    return this._httpClient.PostData("Administration/UpdateBilldatetime" + m_data.BillNo,m_data);
 }
 }

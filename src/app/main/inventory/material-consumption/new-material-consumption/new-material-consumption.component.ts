@@ -214,8 +214,8 @@ console.log(result)
       return;
     } 
 
-    // const isDuplicate = this.dsNewmaterialList.data.some(item => item.ItemId === this.ItemFormGroup.get('ItemName').value.serviceId);
-    // if (!isDuplicate) {
+    const isDuplicate = this.dsNewmaterialList.data.some(item => item.ItemId === this.ItemFormGroup.get('ItemName').value.serviceId);
+    if (!isDuplicate) {
 
       this.chargeslist = this.dsTempItemNameList.data;
       debugger
@@ -242,11 +242,11 @@ console.log(result)
         });
       this.dsNewmaterialList.data = this.chargeslist
       this.getTotalamt()
-    // } else {
-    //   this.toastr.warning('Selected Item already added in the list', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    // }
+    } else {
+      this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    }
     this.ItemReset();
     // this.itemid.nativeElement.focus();
   }
@@ -281,10 +281,11 @@ console.log(result)
     //   remark: 0,
 
     // });
+    debugger
 this.ItemFormGroup.get("ItemName").reset("")
-this.ItemFormGroup.get("balqty").reset(0)
-this.ItemFormGroup.get("usedqty").reset(0)
-this.ItemFormGroup.get("remark").reset('')
+this.ItemFormGroup.get("BalQty").reset(0)
+this.ItemFormGroup.get("UsedQty").reset(0)
+this.ItemFormGroup.get("Remark").reset('')
   }
 
 
@@ -315,6 +316,8 @@ this.ItemFormGroup.get("remark").reset('')
     // this.vMRPTotalAmount = (element.reduce((sum, { MRPTotalAmt }) => sum += +(MRPTotalAmt || 0), 0)).toFixed(2);
     // this.vPurTotalAmount = (element.reduce((sum, { PurTotalAmt }) => sum += +(PurTotalAmt || 0), 0)).toFixed(2);
     // this.vLandedTotalAmount = (element.reduce((sum, { LandedTotalAmt }) => sum += +(LandedTotalAmt || 0), 0)).toFixed(2);
+
+    this.vMRPTotalAmount=Math.round(this.vMRPTotalAmount)
     return this.vMRPTotalAmount;
   }
   OnSave() {

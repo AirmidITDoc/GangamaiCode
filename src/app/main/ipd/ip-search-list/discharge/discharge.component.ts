@@ -260,7 +260,7 @@ export class DischargeComponent implements OnInit {
     }
   }
   viewgetDischargeSlipPdf(data) {
-
+console.log(data)
     this.commonService.Onprint("AdmId", data, "IpDischargeReceipt");
   }
   getValidationMessages() {

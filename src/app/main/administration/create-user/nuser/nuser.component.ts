@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
 import { CreateUserService } from '../create-user.service';
 import { ToastrService } from 'ngx-toastr';
@@ -17,27 +17,31 @@ export class NUserComponent implements OnInit{
     myuserform: FormGroup;
     isActive:boolean=true;
     
-    vPharExpOpt:any;
-    vPharIPOpt:any;
-    vPharOPOpt:any;
+    vPharExpOpt:any=0;
+    vPharIPOpt:any=0;
+    vPharOPOpt:any=0;
     registerObj = new UserDetail({});
     vUserId: any = 0;
     isLoading: string;
-    vdoctorID:any;
+    vdoctorID:any=0;
     regobj:any;
-    visGRNVerify: any;
-    visPoinchargeVerify:any;
-    visPOVerify:any;
-    visIndentVerify:any;
-    visInchIndVfy:any;
-    vpharExtOpt:any;
-    vpharIPOpt:any;
-    vpharOPOpt:any;
-    visCollection:any;
-    visPatientInfo:any;
-    visBedStatus:any;
-    visCurrentStk:any;
-    vaddChargeIsDelete:any;
+    visGRNVerify: any=false;
+    visPoinchargeVerify:any=false;
+    visPOVerify:any=false;
+    visIndentVerify:any=false;
+    visInchIndVfy:any=false;
+    vpharExtOpt:any=false;
+    vpharIPOpt:any=false;
+    vpharOPOpt:any=false;
+    visCollection:any=false;
+    visPatientInfo:any=false;
+    visBedStatus:any=false;
+    visCurrentStk:any=false;
+    vaddChargeIsDelete:any=false;
+    unitname = 0;
+    rolename = 0;
+    storename = 0;
+    webrolename = 0;
 
     autocompleteModeUnitName: string = "Hospital"; 
     autocompleteModeRoleName: String = "Role";
@@ -51,12 +55,14 @@ export class NUserComponent implements OnInit{
         public _CreateUserService: CreateUserService,
         public toastr: ToastrService,
         public _matDialog: MatDialog,
-        private _formBuilder: FormBuilder,
+      private _formBuilder: UntypedFormBuilder,
         private _loggedService: AuthenticationService,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public dialogRef: MatDialogRef<NUserComponent>,
         private renderer: Renderer2
-    ) { }
+    ) {    
+      this.myuserform = this.createuserForm();
+      this.myuserform.markAllAsTouched(); }
 
     ngAfterViewInit() {
       setTimeout(() => {
@@ -69,11 +75,10 @@ export class NUserComponent implements OnInit{
   }
     
     ngOnInit(): void {
-        
-        this.myuserform = this._CreateUserService.createuserForm();
-        this.myuserform.get("unitId").setValue("1")
+    
         if((this.data?.userId??0) > 0)
         {
+          console.log(this.data)
           this.myuserform.patchValue(this.data);
           
             console.log("data:", this.data)
@@ -107,123 +112,89 @@ export class NUserComponent implements OnInit{
         }
     }
 
-    createPesonalForm() {
-        return this._formBuilder.group({
-            mobileNo:['', 
-                [   
-                    Validators.required,
-                    Validators.minLength(10),
-                    Validators.maxLength(10),
-                    Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-                ]],
-        HospitalId: '1',
+    createuserForm(): FormGroup {
+      return this._formBuilder.group({
+        userId: [0],
         firstName: ['', [
-            Validators.required,
-            Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+          Validators.required,
+          Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
         ]],
         lastName: ['', [
-            Validators.required,
-            Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+          Validators.required,
+          Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
         ]],
-        userName: ['', 
-            [
-                Validators.required, 
-                Validators.pattern('[a-zA-Z0-9_]*')
-            ]],
+        userName: ['',
+          [
+            Validators.required,
+            Validators.pattern('[a-z A-Z 0-9_ ]*')
+          ]],
         password: [
-            "",
+          "",
+          [
+            Validators.required,
             Validators.pattern("^\\d{0,12}(\\.\\d*)?$")
+          ]
         ],
-        storeId: '',
-        mailId:  [
-            "",
+        unitId: [1],
+        mobileNo: ["", [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(10),
+          Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+        ]],
+        roleId: [0,
+          [
+            Validators.required
+          ]
+        ],
+        storeId: [2,
+          [
+            Validators.required
+          ]
+        ],
+        isDoctorType: false,
+        doctorId: "0",
+        isPoverify: false,
+        isGrnverify:false,
+        isCollection:false,
+        isBedStatus: false,
+        isCurrentStk:false,
+        isPatientInfo:false,
+        isDateInterval: true,
+        isDateIntervalDays: [0
+        ],
+          //  [Validators.minLength(10),
+          // Validators.maxLength(10),
+          // Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+        // ]],
+        mailId: ["",[Validators.required,
             Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"),
+          ]
         ],
-        roleId: '1',
-        webRoleId:'1',
-        DoctorID: '',
-        IsDoctor: '',
-        userId:'0',
-        unitId:'',
-        // browseDay:'',
-        isActive:true,
-        
-        // RoleName: '',
-        // Status: '1',
-        Poverify: '',
-        Ipoverify: '',
-        Grnverify: '',
-        Indentverify: '',
-        IIverify: '',
-        CollectionInformation: '',
-        CurrentStock: '',
-        PatientInformation: '',
-        ViewBrowseBill: '0',
-        IsAddChargeDelete: '',
-        IsPharmacyBalClearnace: '',
-        BedStatus: '',
-        IsActive: 'true',
-        PharExpOpt:'',
-        PharIPOpt:'',
-        PharOPOpt:'',
-        isDiscApply:'',
-        discApplyPer:'',
-        });
+        mailDomain: ["1"],
+        loginStatus: true,
+        addChargeIsDelete:true,
+        isIndentVerify: false,
+        isPoinchargeVerify: false,
+        isInchIndVfy: false,
+        isRefDocEditOpt: true,
+        webRoleId: [0,
+          [
+            Validators.required
+          ]
+        ],
+        userToken: [""],
+        pharExtOpt: 0,
+        pharOpopt: 0,
+        pharIpopt: 0,
+        isDiscApply: 0,
+        discApplyPer: [0],
+      isActive:[true,[Validators.required]]
+      });
     }
-
     onSubmit() {
                
-        if (!this.myuserform.get("firstName")?.value) {
-          this.toastr.warning('Please enter a First Name', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-        }
-        if (!this.myuserform.get("lastName")?.value) {
-          this.toastr.warning('Please enter a Last Name', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-        }
-        if (!this.myuserform.get("userName")?.value) {
-          this.toastr.warning('Please enter a User Name', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-        }
-
-        if (!this.myuserform.get("password")?.value) {
-          this.toastr.warning('Please enter a Password', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-        }
-        if (!this.myuserform.get("mailId")?.value) {
-          this.toastr.warning('Please enter a Email', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-        }
-        if (!this.myuserform.get("roleId")?.value) {
-          this.toastr.warning('Please select a Role Name', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-        }
-
-        if (!this.myuserform.get("storeId")?.value) {
-          this.toastr.warning('Please select a Store Name', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-        }     
-        
-        if (!this.myuserform.get("webRoleId")?.value) {
-          this.toastr.warning('Please select a WebRole Name', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-        }  
+     
         if (this.docflag == true) {
           if(!this.myuserform.get('doctorId')?.value){
             this.toastr.warning('Please select Doctor Name', 'Warning !', {
@@ -241,7 +212,9 @@ export class NUserComponent implements OnInit{
             return;
           } 
         }
-                 
+
+        console.log(this.myuserform.value)
+         if(this.myuserform.valid){        
             let formData = { ...this.myuserform.value };
     
             formData.pharExtOpt = formData.pharExtOpt === true ? 1 : 0;
@@ -269,12 +242,22 @@ export class NUserComponent implements OnInit{
               this.toastr.error(error.message);
             });                
           }
+          else {
+            let invalidFields = [];
+            if (this.myuserform.invalid) {
+                for (const controlName in this.myuserform.controls) {
+                    if (this.myuserform.controls[controlName].invalid) { invalidFields.push(`User Form: ${controlName}`); }
+                }
+            }
+           
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+            }
 
-    unitname = 0;
-    rolename = 0;
-    storename = 0;
-    webrolename = 0;
+        }
+        }
 
+   
     selectChangeUnitName(obj: any){
         console.log(obj);
         this.unitname=obj.value

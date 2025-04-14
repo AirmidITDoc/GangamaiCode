@@ -181,15 +181,7 @@ export class DischargeSummaryTemplateComponent {
       });
     }
   
-    getdose(event) {
-      this.doseName1 = event.text
-      this.doseId = event.value
-    }
-    getSelectedserviceObj(obj) {
-      this.ItemId=obj.itemId
-     console.log(obj)
   
-    }
    
     @ViewChild('dosename') dosename: ElementRef;
     @ViewChild('Day') Day: ElementRef;
@@ -222,7 +214,16 @@ export class DischargeSummaryTemplateComponent {
       this.dateTimeObj = dateTimeObj;
     }
    
+    getdose(event) {
+      this.doseName1 = event.text
+      this.doseId = event.value
+    }
+    getSelectedserviceObj(obj) {
+      this.ItemId=obj.itemId
+      this.ItemId=obj.itemId
+     console.log(obj)
   
+    }
     onAdd() {
   
       if ((this.MedicineItemForm.get("ItemId").value=="" || this.MedicineItemForm.get("DoseId").value =="")) {

@@ -41,6 +41,6 @@ export class PaymentmodechangesService {
     return this._httpClient.PostData("Generic/GetByProc?procName=Retrieve_BrowseIPAdvPaymentReceipt",Param)
   }
   public getDateTimeChange(m_data) {
-    return this._httpClient.PostData("Generic/ExecByQueryStatement?query=" + m_data,{});
+    return this._httpClient.PutData("Administration/UpdatePaymentdatetime"+ m_data.PaymentId,m_data);
 }
 }

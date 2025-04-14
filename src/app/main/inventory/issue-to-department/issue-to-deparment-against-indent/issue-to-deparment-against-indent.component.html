@@ -16,78 +16,17 @@
 
 
     <div class="content">
-        <!-- <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-            margin-left:12px; background-color: white;height:100%;">
-            <div>
-               
-                <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
-                    <span class="h5" style="font-size: 17px;">Search Facility</span>
-                  
-                </div>
-                <div>
-                    <div class="nav material2">
-
-                        <form [formGroup]="_IssueToDep.IndentFrom" style="padding: 6px 6px 5px 5px;"
-                            fusePerfectScrollbar>
-                            <div fxLayout="column" fxLayoutAlign="start none">
-                                <br />
-                                <mat-form-field appearance="outline" style="margin-left: 2%;">
-                                    <mat-label>Enter a date range</mat-label>
-                                    <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="start" placeholder="Start date">
-                                        <input matEndDate formControlName="end" placeholder="End date"
-                                        (dateChange)='getIndentList()'>
-                                    </mat-date-range-input>
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-date-range-picker #picker></mat-date-range-picker>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>From Store</mat-label>
-                                    <mat-select formControlName="FromStoreId" name="FromStoreId">
-                                        <mat-option></mat-option>
-                                        <mat-option *ngFor="let m of FromStoreList" [value]="m">
-                                            {{m.StoreName}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-
-                                <mat-radio-group name="Status" formControlName="Status" fxFlex="30%" value="0"
-                                    style="padding-top: 12px;">
-                                    <mat-label>Status:</mat-label>&nbsp;
-                                    <mat-radio-button value="1" class="mr-sm-12" (keyup)="getIndentList()">Verify
-                                    </mat-radio-button>
-                                    <mat-radio-button value="0" class="mr-sm-12" (keyup)="getIndentList()">Pending
-                                    </mat-radio-button>
-                                </mat-radio-group>
-
-                                <div style="margin-top: 10px;">
-                                    <button mat-raised-button class="clearbutton" matTooltip="close">
-                                        <mat-icon class="cleariconbutton">close</mat-icon>
-                                    </button>&nbsp;
-
-                                    <button mat-raised-button class="searchButton" (click)="getIndentList()"
-                                        matTooltip="search">
-                                        <mat-icon class="searchiconbutton">search</mat-icon>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </fuse-sidebar> -->
 
         <div class="center p-12 pb-56" fxFlexAlign="start center">
 
             <div class="content-card" style="border-radius:4px; ">
 
 
-                <div fxFlexFill fxLayout="column"  fxLayoutGap="10px">
+                <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
 
                     <form [formGroup]="_IssueToDep.IndentFrom">
                         <div fxLayout="row" fxLayoutAlign="start none" fxLayoutGap="8px">
-                            <mat-form-field appearance="outline" fxFlex="15%" >
+                            <!-- <mat-form-field appearance="outline" fxFlex="15%">
                                 <mat-label>Enter a date range</mat-label>
                                 <mat-date-range-input [rangePicker]="picker">
                                     <input matStartDate formControlName="start" placeholder="Start date">
@@ -96,35 +35,21 @@
                                 </mat-date-range-input>
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-date-range-picker #picker></mat-date-range-picker>
-                            </mat-form-field>
-
-                            <!-- <mat-form-field appearance="outline" fxFlex="30%">
-                                <mat-label>From Store</mat-label>
-                                <mat-select formControlName="FromStoreId" name="FromStoreId">
-                                    <mat-option></mat-option>
-                                    <mat-option *ngFor="let m of FromStoreList" [value]="m">
-                                        {{m.StoreName}}
-                                    </mat-option>
-                                </mat-select>
                             </mat-form-field> -->
 
-                            <mat-form-field appearance="outline" fxFlex="25%">
-                                <mat-label>To Store</mat-label>
-                                <input matAutocompletePosition="below" type="text" placeholder="Select Store"
-                                    matInput formControlName="ToStoreId" [matAutocomplete]="auto2" required >
-                                <span matSuffix style="display: flex;">
-                                    <mat-icon class="mat-icon-close"
-                                        (click)="_IssueToDep.IndentFrom.get('ToStoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
-                                    <mat-icon class="mat-icon-close"
-                                        (click)="_IssueToDep.IndentFrom.get('ToStoreId').setValue(''); isStoreSelected = false;">search</mat-icon>
-                                </span>
-                                <mat-autocomplete #auto2="matAutocomplete" [displayWith]="getOptionTextStores">
-                                    <mat-option *ngFor="let option of filteredOptionsStore | async"
-                                        [value]="option">
-                                        {{option.StoreName}}
-                                    </mat-option>
-                                </mat-autocomplete>
-                            </mat-form-field>
+                            <!-- <airmid-datepicker [formGroup]="_IssueToDep.IndentFrom" [isRangePicker]="true"
+                            formStartControlName="startdate" formEndControlName="enddate"
+                            [(fromValue)]="gridConfig.filters[0].fieldValue"
+                            [(toValue)]="gridConfig.filters[1].fieldValue">
+                        </airmid-datepicker>
+ -->
+
+                            <airmid-dropdown label="Store Name" formControlName="ToStoreId"
+                                [formGroup]="_IssueToDep.IndentFrom" [validations]="getValidationMessages().StoreId"
+                                fxFlex="50%" [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)">
+                            </airmid-dropdown>
+
+
 
                             <mat-radio-group name="Status" formControlName="Status" fxFlex="20%" value="0"
                                 style="padding: 12px;" fxLayout="row">
@@ -135,15 +60,15 @@
                                 </mat-radio-button>
                             </mat-radio-group>
 
-                                <button mat-raised-button class="clearbutton" matTooltip="close">
-                                    <mat-icon class="cleariconbutton">close</mat-icon>
-                                </button>&nbsp;
+                            <button mat-raised-button class="clearbutton" matTooltip="close">
+                                <mat-icon class="cleariconbutton">close</mat-icon>
+                            </button>&nbsp;
 
-                                <button mat-raised-button class="searchButton" (click)="getIndentList()"
-                                    matTooltip="search">
-                                    <mat-icon class="searchiconbutton">search</mat-icon>
-                                </button>
-                          
+                            <button mat-raised-button class="searchButton" (click)="getIndentList()"
+                                matTooltip="search">
+                                <mat-icon class="searchiconbutton">search</mat-icon>
+                            </button>
+
                         </div>
                     </form>
                     <div fxFlex.gt-sm="100%" fxFlex>
@@ -151,13 +76,13 @@
                         <div fxlayout="row">
                             <div style="width:100%;">
                                 <div>
-                                    <div matColumnDef="loading" 
-                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
+                                    <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                        class="backgroundBlur">
                                         <div class="spinner-border text-danger"></div>
                                     </div>
 
-                                    <mat-table matSort [dataSource]="dsIndentList"
-                                        [@animateStagger]="{value:'50'}" style="overflow: auto;">
+                                    <mat-table matSort [dataSource]="dsIndentList" [@animateStagger]="{value:'50'}"
+                                        style="overflow: auto;">
 
                                         <!-- <ng-container matColumnDef="CheckBox" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -272,7 +197,7 @@
                                             IndTotalQty</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.Qty }}
-                                        </mat-cell> 
+                                        </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="IssueQty">
@@ -280,7 +205,7 @@
                                             IssueQty</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.IssQty }}
-                                        </mat-cell> 
+                                        </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="IndBalQty">
@@ -288,7 +213,7 @@
                                             IndBalQty</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.Bal }}
-                                        </mat-cell> 
+                                        </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="loading">

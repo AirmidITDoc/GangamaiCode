@@ -154,27 +154,12 @@ debugger
 
         this._CreateUserService.PasswordUpdate(submitData).subscribe(
           (response) => {
-            if (response) {
-              this.toastr.success('Password Updated Successfully.', 'Success!', {
-                toastClass: 'tostr-tost custom-toast-success',
-              });
-            } else {
-              this.toastr.error('Password not Updated! Please check API error..', 'Error!', {
-                toastClass: 'tostr-tost custom-toast-error',
-              });
-            }
-
-            this.grid.bindGridData();
-          },
-          (error) => {
-
-            this.toastr.error('An error occurred while Updating the Password.', 'Error!', {
-              toastClass: 'tostr-tost custom-toast-error',
-            });
-          }
-        );
-      } else {
-      }
+            this.toastr.success(response.message);
+            
+            }, (error) => {
+              this.toastr.error(error.message);
+            }); 
+          }    
     });
   }
 }

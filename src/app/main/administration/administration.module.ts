@@ -58,10 +58,10 @@ const appRoutes: Routes = [
     path:"pharamacypayipadvmode", 
     loadChildren: () => import("./pharmacypayipadvmode/pharmacypayipadvmode.module").then((m)=>m.PharmacypayipadvmodeModule),
    },
-   {
-    path:"scheduler",
-    loadChildren: () => import("./scheduler/scheduler.module").then((m)=>m.NewScdulerModule),
-   },
+  //  {
+  //   path:"scheduler",
+  //   loadChildren: () => import("./scheduler/scheduler.module").then((m)=>m.NewScdulerModule),
+  //  },
    {
     path: "smsconfigrationtool",
     loadChildren: () => import("./smsconfuguration/smsconfuguration.module").then((m) => m.SMSConfugurationModule),
@@ -70,7 +70,10 @@ const appRoutes: Routes = [
     path: "Template Description",
     loadChildren: () => import("./template-description/templatedescription.module").then((m) => m.TemplatedescriptionModule),
 },
-
+{
+  path: "scheduler",
+  loadChildren: () => import("./daily-expenses/daily-expenses.module").then((m) => m.DailyExpensesModule),
+}
  
 ];
 

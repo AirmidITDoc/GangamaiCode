@@ -15,33 +15,34 @@ import { PaymentmodechangesService } from '../paymentmodechanges.service';
 })
 export class DateUpdateComponent implements OnInit {
 
-  dateTimeObj:any;
-  PaymentId:any;
+  dateTimeObj: any;
+  PaymentId: any;
   screenFromString = 'Paymentform-form';
 
   constructor(
-    public _PaymentmodechangesService:PaymentmodechangesService,
-    public datePipe: DatePipe, 
+    public _PaymentmodechangesService: PaymentmodechangesService,
+    public datePipe: DatePipe,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
-    public dialogRef: MatDialogRef<DateUpdateComponent>, 
+    public dialogRef: MatDialogRef<DateUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
 
   ngOnInit(): void {
     if (this.data) {
+      console.log(this.data)
       this.PaymentId = this.data.obj;
-      console.log(this.PaymentId) 
+      console.log(this.PaymentId)
     }
   }
   getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj; 
+    this.dateTimeObj = dateTimeObj;
     console.log(this.dateTimeObj)
-  } 
-  PaymentDate() { 
-    const formattedDate = this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd");
-    const formattedTime = formattedDate+this.dateTimeObj.time;//this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd")+this.dateTimeObj.time;  
-    
+  }
+  PaymentDate() {
+    const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
+    const formattedTime = formattedDate + this.dateTimeObj.time;//this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd")+this.dateTimeObj.time;  
+
     Swal.fire({
       title: 'Do you want to Update Payment Date & Time ',
       text: "You won't be able to revert this!",
@@ -51,28 +52,25 @@ export class DateUpdateComponent implements OnInit {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Update it!"
     }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */ 
-      if (result.isConfirmed) { 
-        let Query
-      Query = "update payment set PaymentDate='"+formattedDate+"',PaymentTime='"+formattedTime+"'where paymentId=" +this.PaymentId 
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        var data = {
+          'PaymentId': this.PaymentId,
+          'PaymentDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+          'PaymentTime': formattedDate + this.dateTimeObj.time
 
-      console.log(Query);
-        this._PaymentmodechangesService.getDateTimeChange(Query).subscribe(response => {
-          if (response) {
-            this.toastr.success('Payment Date & Time Updated Successfuly', 'Updated !', {
-              toastClass: 'tostr-tost custom-toast-success',
-            }); 
-            this.onClose();
-          } else {
-            this.toastr.error('API Error!', 'Error !', {
-              toastClass: 'tostr-tost custom-toast-error',
-            });
-          }
+        }
+        console.log(data);
+        this._PaymentmodechangesService.getDateTimeChange(data).subscribe(response => {
+          this.toastr.success(response);
+        this._matDialog.closeAll();
+        }, (error) => {
+          this.toastr.error(error.message);
         });
       }
-    }); 
+      });
   }
-  onClose(){
-    this._matDialog.closeAll(); 
+  onClose() {
+    this._matDialog.closeAll();
   }
 }

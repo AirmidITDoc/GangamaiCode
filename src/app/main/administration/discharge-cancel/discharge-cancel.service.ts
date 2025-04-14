@@ -34,15 +34,13 @@ export class DischargeCancelService {
     return this._httpClient1.GetData("VisitDetail/" + Id);
 }
   public SaveDischargeCancel(employee){
-    return this._httpClient.post("Administration/IPDischargeCancel", employee)
+    return this._httpClient1.PostData("Administration/IP_DISCHARGE_CANCELLATION", employee)
   }
   public getDischargepatientlist(employee){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientDischargedListSearch ", employee)
   }
-  // public getDateTimeChange(data) {
-  //   return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
-  // }
-  public getDateTimeChange(m_data) {
-    return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
+ 
+public getDateTimeChange(employee){
+  return this._httpClient1.PutData("Administration/UpdateAdmissiondatetime"+ employee.admissionID, employee)
 }
 }

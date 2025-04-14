@@ -19,9 +19,6 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class ChangePasswordComponent implements OnInit {
 
-
-
-  // selectedAdvanceObj: UserList;
   hasSelectedContacts: boolean;
   fname: String;
   lname: String;
@@ -89,10 +86,7 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   onSubmit() {
-    // let pass = this.changePasswordFormGroup.get('password').value;
-    // let id = this.accountService.currentUserValue.user.id;
-
-    // let UpdateUserPassword = "update LoginManager set Password ='" + pass + "' where UserId=" + id 
+  
     let changePasswordObj = {};
     changePasswordObj['userId'] = this.UserId
     changePasswordObj['userName'] = this.Uname;
@@ -114,7 +108,7 @@ export class ChangePasswordComponent implements OnInit {
         }
       },
     (error) => {
-      // this.isLoading = 'list-loaded';
+      
     }
       );
   }

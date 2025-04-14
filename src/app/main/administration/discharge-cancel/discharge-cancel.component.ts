@@ -87,40 +87,10 @@ export class DischargeCancelComponent implements OnInit {
     } 
 }
  
-getSelectedObjAM(obj) {
-  
-  if ((obj.regID ?? 0) > 0) {
-    console.log("Admitted patient:",obj)
-    this.vRegNo=obj.regNo
-    this.vDoctorName=obj.doctorName
-    this.vPatientName=obj.firstName + " " + obj.middleName + " " + obj.lastName
-    this.vDepartment=obj.departmentName
-    this.vAdmissionDate=obj.admissionDate
-    this.vAdmissionTime=obj.admissionTime
-    this.vIPDNo=obj.ipdNo
-    this.vAge=obj.age
-    this.vAgeMonth=obj.ageMonth
-    this.vAgeDay=obj.ageDay
-    this.vGenderName=obj.genderName
-    this.vRefDocName=obj.refDocName
-    this.vRoomName=obj.roomName
-    this.vBedName=obj.bedName
-    this.vPatientType=obj.patientType
-    this.vTariffName=obj.tariffName
-    this.vCompanyName=obj.companyName
-    setTimeout(() => {
-      this._DischargeCancelService.getAdmittedpatientlist(obj.regID).subscribe((response) => {
-        this.registerObjAM = response;        
-        console.log(this.registerObjAM)
-      });
-
-    }, 500);
-  }
-}
 
 getSelectedObjDC(obj) {
-  
-  if ((obj.regId ?? 0) > 0) {
+  console.log(obj)
+  if ((obj.regID ?? 0) > 0) {
     console.log("Discharge patient:",obj)
     this.vRegNo=obj.regNo
     this.vDoctorName=obj.doctorName
@@ -141,17 +111,18 @@ getSelectedObjDC(obj) {
     let nameField = obj.formattedText;
     let extractedName = nameField.split('|')[0].trim();
     this.vPatientName=extractedName;
-    setTimeout(() => {
-      this._DischargeCancelService.getVisitById(obj.regId).subscribe((response) => {
-        this.registerObj = response;
-        console.log(this.registerObj)
-      });
+    this.AdmissionId=obj.admissionID
+    // setTimeout(() => {
+    //   this._DischargeCancelService.getVisitById(obj.regId).subscribe((response) => {
+    //     this.registerObj = response;
+    //     console.log(this.registerObj)
+    //   });
 
-    }, 500);
+    // }, 500);
   }
 }
 
-  isLoading123:boolean=false;
+
   DischargeCancel(){ 
     Swal.fire({
       title: 'Do you want to cancel the Discharge ',
@@ -164,23 +135,16 @@ getSelectedObjDC(obj) {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {  
-        let iP_DischargeCancelParam = {};
-        iP_DischargeCancelParam['admissionId'] = this.AdmissionId; 
-
+      
         let SubmitDate ={
-          "iP_DischargeCancelParam":iP_DischargeCancelParam
+          "admissionID":this.AdmissionId
         } 
         this._DischargeCancelService.SaveDischargeCancel(SubmitDate).subscribe(response => {
-          if (response) {
-            Swal.fire('Congratulations !', 'Discharge Cancel Successfully !', 'success').then((result) => {
-              if (result.isConfirmed) { 
-                this.onClear();
-              }
-            });
-          } else {
-            Swal.fire('Error !', 'Discharge  not saved', 'error');
-          } 
-        });  
+          this.toastr.success(response);
+           this.resetform();
+        }, (error) => {
+            this.toastr.error(error.message);
+        });
       } 
     })
   }
@@ -188,6 +152,26 @@ getSelectedObjDC(obj) {
 
   }
 
+  resetform(){
+    this._DischargeCancelService.DischargeForm.reset();
+    this.vRegNo=""
+    this.vDoctorName=""
+    this.vPatientName=""
+    this.vDepartment=""
+    
+    this.vIPDNo=""
+    this.vAge=""
+    this.vAgeMonth=""
+    this.vAgeDay=""
+    this.vGenderName=""
+    this.vRefDocName=""
+    this.vRoomName=""
+    this.vBedName=""
+    this.vPatientType=""
+    this.vTariffName=""
+    this.vCompanyName=""
+    // this.AdmissionId=obj.admissionID
+  }
   today: Date = new Date();
   formattedDate: string;
  
@@ -213,22 +197,20 @@ getSelectedObjDC(obj) {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */  
       if (result.isConfirmed) { 
-        let Query
-      Query = "update admission set AdmissionDate='"+formattedDate+"',AdmissionTime='"+formattedTime+"'where AdmissionID=" +this.AdmissionId 
-
-       console.log(Query);
-        this._DischargeCancelService.getDateTimeChange(Query).subscribe(response => {
-          if (response) {
-            this.toastr.success('Admission Date & Time Updated Successfuly', 'Updated !', {
-              toastClass: 'tostr-tost custom-toast-success',
-            });
-            this.onClear();
-          } else {
-            this.toastr.error('API Error!', 'Error !', {
-              toastClass: 'tostr-tost custom-toast-error',
-            });
-          }
-        });
+       var data={
+        'admissionID':this.AdmissionId,
+        'admissionDate':this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd"),
+        'admissionTime':formattedDate+this.dateTimeObj.time
+       }
+       console.log(data);
+        this._DischargeCancelService.getDateTimeChange(data).subscribe(response => {
+          this.toastr.success(response);
+           
+          this._matDialog.closeAll();
+      }, (error) => {
+          this.toastr.error(error.message);
+      });
+     
       }
     }); 
   }

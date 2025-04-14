@@ -15,113 +15,10 @@ export class CreateUserService {
     private _formBuilder: UntypedFormBuilder
   ) {
     this.myformSearch = this.createSearchForm();
-    this.myuserform = this.createuserForm();
+    // this.myuserform = this.createuserForm();
   }
 
-  createuserForm(): FormGroup {
-    return this._formBuilder.group({
-      userId: [0],
-      firstName: ['', [
-        Validators.required,
-        Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
-      ]],
-      lastName: ['', [
-        Validators.required,
-        Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
-      ]],
-      unitId: [""],
-      mobileNo: ["", [
-        Validators.required,
-        Validators.minLength(10),
-        Validators.maxLength(10),
-        Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-      ]],
-      userName: ['',
-        [
-          Validators.required,
-          Validators.pattern('[a-zA-Z0-9_]*')
-        ]],
-      password: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern("^\\d{0,12}(\\.\\d*)?$")
-        ]
-      ],
-      mailId: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"),
-        ]
-      ],
-      roleId: ["",
-        [
-          Validators.required
-        ]
-      ],
-      storeId: ["",
-        [
-          Validators.required
-        ]
-      ],
-      webRoleId: ["",
-        [
-          Validators.required
-        ]
-      ],
-      isDoctorType: false,
-      doctorId: 0,
-      isDiscApply: '',
-      discApplyPer: [0],
-      isGrnverify: "",
-      isPoverify: false,
-      isPoinchargeVerify: "",
-      isIndentVerify: "",
-      isInchIndVfy: "",
-      pharExtOpt: 0,
-      pharOpopt: 0,
-      pharIpopt: 0,
-      isCollection: "",
-      isCurrentStk: '',
-      isPatientInfo: '',
-      isBedStatus: '',
-      addChargeIsDelete: '',
-      IsPharmacyBalClearnace: '',
-      // browseDay: [""],
-      mailDomain: ["1"],
-      isRefDocEditOpt: true,
-      isDateInterval: true,
-      isDateIntervalDays: [0, [
-        // Validators.required,
-        Validators.minLength(10),
-        Validators.maxLength(10),
-        Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-      ]],
-      loginStatus: true,
-      userToken: [""],
-
-      // isCollection: "",
-      // isBedStatus: "",
-      // isCurrentStk: "",
-      // isPatientInfo: "",
-
-      // addChargeIsDelete: "",
-      // isIndentVerify: "",
-      // isPoinchargeVerify: "",
-      // isInchIndVfy: "",
-
-
-
-      // IsDoctor:[""],
-
-      // Poverify: "",
-      // Grnverify: '',
-      // ViewBrowseBill: '0',
-      // IsActive: 'true',
-      isActive:[true,[Validators.required]],
-    });
-  }
+ 
 
   createSearchForm(): FormGroup {
     return this._formBuilder.group({
@@ -131,7 +28,7 @@ export class CreateUserService {
   }
 
   initializeFormGroup() {
-    this.createuserForm();
+    // this.createuserForm();
   }
 
   public insertuser(Param: any) {
@@ -150,21 +47,6 @@ export class CreateUserService {
   }
   
 
- 
-  // public getRoleCombobox() {
-  //   return this._httpClient.PostData("Generic/GetByProc?procName=ps_Retrieve_RoleTemplateForCombo", {})
-  // }
-
-  // public getStoreCombo() {
-  //   return this._httpClient.PostData("Generic/GetByProc?procName=ps_Retrieve_StoreMasterForCombo", {})
-  // }
-
-
-  // public getDoctorMasterCombo() {
-  //   return this._httpClient.PostData("Generic/GetByProc?procName=ps_Cmb_DoctorMasterForCombo", {})
-  // }
-
-
   public userInsert(employee) {
     return this._httpClient.PostData("DoctorMaster/DoctorSave", employee);
   }
@@ -174,17 +56,12 @@ export class CreateUserService {
   }
 
 
-  //  populateForm(employee) {
-  //    this.createuserform.patchValue(employee);
-  //  }
-  //  public getUserList(employee) {
-  //   return this._httpClient.post("Generic/GetByProc?procName=RtrvUserList", employee)
-  // }
+  
   public getpasswwordupdate(data) {
     return this._httpClient.PostData("Generic/ExecByQueryStatement?query=" + data, {})
   }
   public getpasswwordChange(data) {
-    return this._httpClient.PostData("Administration/UserChangePassword", data)
+    return this._httpClient.PostData("LoginManager/updatepassword", data)
   }
 
 
