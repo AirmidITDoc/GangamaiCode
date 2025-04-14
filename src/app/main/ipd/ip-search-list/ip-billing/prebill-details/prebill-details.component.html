@@ -1,31 +1,27 @@
 <div class="page-layout modal-wrapper grid-container" fusePerfectScrollbar>
-    
+
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
                 <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">account_box
+                    style="color: white;">account_box
                 </mat-icon>
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Bill Details</span>
             </div>
-            <div class="modal-header-left"> 
-                    
-                    <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </div> 
+            <div class="modal-header-left">
+
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>  
-    <div class="modal-body content"> 
-        <div class="center" fxFlexAlign="start center">
-            <div class="content-card" style="border-radius:4px;">  
-                    <div fxLayout="column" fxLayoutAlign="start none"> 
-                        <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
-                        </airmid-table> 
-                    </div> 
-            </div>
-        </div> 
-    </div>  
+    </div>
+    <div class="modal-card-container h-100-p">
+        <div fxFlex.gt-sm="100%" fxFlex class="dynamic-table-wrapper">
+            <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
+            </airmid-table>
+        </div>
+    </div>
 </div>

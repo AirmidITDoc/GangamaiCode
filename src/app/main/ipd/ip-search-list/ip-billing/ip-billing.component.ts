@@ -93,10 +93,10 @@ export class IPBillingComponent implements OnInit {
     { heading: "Disc Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', width: 130 },
     { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', width: 130 },
     { heading: "Bal Amt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-    { heading: "cashPayAmt", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-    { heading: "chequePayAmt", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-    { heading: "cardPayAmt", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-    { heading: "AdvUsedAmt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+    { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+    { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+    { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+    { heading: "Adv Used Amt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', width: 130 },
     { heading: "Action", key: "action", align: "right", width: 110, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate1  // Assign ng-template to the column
     }
@@ -124,8 +124,8 @@ export class IPBillingComponent implements OnInit {
     { heading: "ServiceId", key: "serviceId", sort: true, align: 'left', emptySign: 'NA',width: 120 },
     { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA',width: 120  },
-    { heading: "ReqDate", key: "reqDate", sort: true, align: 'left', emptySign: 'NA'},
-    { heading: "ReqTime", key: "reqTime", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "Req Date", key: "reqDate", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "Req Time", key: "reqTime", sort: true, align: 'left', emptySign: 'NA'},
     { heading: "User Name", key: "billingUser", sort: true, align: 'left', emptySign: 'NA',width: 170  } ,
     { heading: "Action", key: "action", align: "right", width: 90, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate5  // Assign ng-template to the column
@@ -1231,7 +1231,6 @@ export class IPBillingComponent implements OnInit {
     this.advanceDataStored.storage = [];
   }
   onSaveDraft() {
-debugger
     if (this.dataSource.data.length > 0 && this.Ipbillform.valid) { 
       this.isLoading = 'submit';  
       let InsertDraftBillOb = {};

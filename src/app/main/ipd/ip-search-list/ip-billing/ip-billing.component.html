@@ -578,7 +578,7 @@
                 <mat-tab label="Package Det.">
                   <div class="airmid-table-container">
                     <div class="content-card">
-                      <mat-table matSort [dataSource]="PackageDatasource" [@animateStagger]="{ value: '50' }" class="airmid-table mt-8 max-h-450">
+                      <mat-table matSort [dataSource]="PackageDatasource" [@animateStagger]="{ value: '50' }" >
                         <ng-container matColumnDef="BDate">
                           <mat-header-cell *matHeaderCellDef mat-sort-header>BDate</mat-header-cell>
                           <mat-cell *matCellDef="let contact">
