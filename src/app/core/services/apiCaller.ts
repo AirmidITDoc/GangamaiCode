@@ -86,4 +86,34 @@ export class ApiCaller {
             }
         })));
     }
+    downloadFilePost(url: string, body: any, filename: string): Observable<Blob> {
+        return this._httpClient.post(`${this.config.apiBaseUrl}${url}`, body, {
+            responseType: 'blob',
+            observe: 'response',
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Accept': 'application/octet-stream'
+            })
+        }).pipe(
+            map(response => {
+                this.saveFile(response.body as Blob, filename);
+                return response.body as Blob;
+            })
+        );
+    }
+    saveFile(blob: Blob, filename: string): void {
+        const link = document.createElement('a');
+        const url = window.URL.createObjectURL(blob);
+
+        link.href = url;
+        link.download = filename;
+        link.click();
+
+        // Cleanup
+        setTimeout(() => {
+            window.URL.revokeObjectURL(url);
+            link.remove();
+        }, 100);
+    }
+
 }

@@ -4,14 +4,14 @@ export class gridRequest {
     sortField: string = "";
     sortOrder: number = 0;
     filters: gridFilter[] = [];
-    columns: [] = [];
+    columns: any[] = [];
     exportType: gridResponseType = gridResponseType.JSON;
 }
 
 export class gridRequest1 {
     first: number = 0;
     rows: number = 10;
-     mode: string = "";
+    mode: string = "";
     sortOrder: number = 0;
     searchFields: gridFilter[] = [];
     columns: [] = [];
@@ -25,7 +25,7 @@ export class gridFilter {
     opType: OperatorComparer = OperatorComparer.Equals;
 }
 export enum gridResponseType {
-    JSON = 1, Excel = 2, Pdf = 3
+    JSON = 1, Excel = 2, Pdf = 3, Csv = 4
 }
 export class gridModel {
     columnsList: any[] = [];
@@ -34,6 +34,7 @@ export class gridModel {
     sortOrder: number = 0;
     filters: gridFilter[] = [];
     row?: number = 10;
+    fileName?: string = "";
 }
 
 export class gridModel1 {
@@ -48,19 +49,19 @@ export class gridModel1 {
 
 
 export enum OperatorComparer {
-    Contains='Contains',
-    StartsWith='StartsWith',
-    EndsWith='EndsWith',
-    Equals='Equals',
-    GreaterThan='GreaterThan',
-    GreaterThanOrEqual='GreaterThanOrEqual',
-    LessThan='LessThan',
-    LessThanOrEqual='LessThanOrEqual',
-    NotEqual='NotEqual',
-    InClause='InClause',
-    DateRange='DateRange'
+    Contains = 'Contains',
+    StartsWith = 'StartsWith',
+    EndsWith = 'EndsWith',
+    Equals = 'Equals',
+    GreaterThan = 'GreaterThan',
+    GreaterThanOrEqual = 'GreaterThanOrEqual',
+    LessThan = 'LessThan',
+    LessThanOrEqual = 'LessThanOrEqual',
+    NotEqual = 'NotEqual',
+    InClause = 'InClause',
+    DateRange = 'DateRange'
 }
-export enum Color{
+export enum Color {
     RED = 'red-200-bg',
     BLUE = 'blue-200-bg',
     GREEN = 'green-200-bg',

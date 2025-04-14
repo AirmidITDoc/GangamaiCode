@@ -24,6 +24,7 @@ export class PrefixMasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     gridConfig: gridModel = {
         apiUrl: "Prefix/List",
+        fileName:"PrefixList",
         columnsList: [
             { heading: "Code", key: "prefixId", sort: false, align: 'left', emptySign: 'NA' },
             { heading: "PrefixName", key: "prefixName", sort: true, align: 'left', emptySign: 'NA' },
