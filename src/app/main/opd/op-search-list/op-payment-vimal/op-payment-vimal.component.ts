@@ -914,7 +914,7 @@ export class OpPaymentVimalComponent implements OnInit {
         this.dataSource.data = [];
         let Query
         if(this.data.FromName != "IP-IntrimBIll"){
-            if (this.advanceData.FromName == "IP-Pharma-SETTLEMENT") {
+            if (this.data.FromName == "IP-Pharma-SETTLEMENT") {
                 Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from T_PHAdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
             } else {
                 Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""

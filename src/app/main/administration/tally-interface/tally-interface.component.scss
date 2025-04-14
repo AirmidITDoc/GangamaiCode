@@ -1,0 +1,11 @@
+  .mat-column-PatientName{
+    width: 220px;
+    max-width: 220px;
+    min-width: 220px;
+    align-items: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+    justify-content:left; 
+  }
