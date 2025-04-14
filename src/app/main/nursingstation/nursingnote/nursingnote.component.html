@@ -163,12 +163,21 @@
 
                                                                 <div fxLayout="row" fxLayoutGap="10px">
 
-                                                                    <airmid-dropdown label="Template"
+                                                                    <!-- <airmid-dropdown label="Template"
                                                                         formControlName="TemplateId"
                                                                         [formGroup]="myform" fxFlex="70%"
                                                                         [mode]="autocompleteModeNurNote"
                                                                         (selectionChange)="onChangetemplate($event)">
-                                                                    </airmid-dropdown>
+                                                                    </airmid-dropdown> -->
+
+                                                                    <airmid-dropdown label="Template Name" 
+                                                                    formControlName="TemplateId" 
+                                                                    [formGroup]="myform"  fxFlex="70%"
+                                                                    ValueField="nursingId" 
+                                                                    TextField="nursTempName"
+                                                                    (selectionChange)="onChangetemplate($event)" 
+                                                                    ApiUrl="Pathology/get-NursingTemplateMaster">
+                                                                </airmid-dropdown>
 
                                                                     <div class="input-add-button">
                                                                         <div>

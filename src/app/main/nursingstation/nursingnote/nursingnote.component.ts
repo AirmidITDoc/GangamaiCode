@@ -106,7 +106,7 @@ export class NursingnoteComponent implements OnInit {
   @ViewChild('Handover', { static: false }) grid1: AirmidTableComponent;
 
    allColumnsOfDocNote = [
-      { heading: "Date", key: "tDate", sort: true, align: 'left', emptySign: 'NA',type:6},
+      { heading: "Date", key: "tDate", sort: true, align: 'left', emptySign: 'NA'},
       { heading: "Time", key: "tTime", sort: true, align: 'left', emptySign: 'NA'},
       { heading: "Note", key: "nursingNotes", sort: true, align: 'left', emptySign: 'NA', width:250 },
       { heading: "CreatedBy", key: "isAddedBy", sort: true, align: 'left', emptySign: 'NA' },
@@ -430,9 +430,11 @@ export class NursingnoteComponent implements OnInit {
   }
 
   tempdesc: any = '';
+  nursingId:any;
   onChangetemplate(event) {
-    console.log(event)
-    this.tempdesc = event.text
+    console.log("Template:", event)
+    this.tempdesc = event.templateDesc
+    this.nursingId=event.nursingId
   }
 
   onAdd(){

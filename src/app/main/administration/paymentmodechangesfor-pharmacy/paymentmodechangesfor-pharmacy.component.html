@@ -65,6 +65,7 @@
 
         <airmid-table [gridConfig]="gridConfig"  class="content">
             <ng-container filters>    
+                <form [formGroup]="_PaymentmodechangeforpharmacyService.userFormGroup" fxLayout="column">
 
                 <airmid-datepicker [formGroup]="_PaymentmodechangeforpharmacyService.userFormGroup" [isRangePicker]="true"
                 formStartControlName="startdate" formEndControlName="enddate"
@@ -75,9 +76,9 @@
             <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Reg No</mat-label>
                 <input matInput placeholder="Search Reg No" autocomplete="off"
-                    [(ngModel)]="gridConfig.filters[4].fieldValue" />
+                (input)="onNameFieldChange()" formControlName="RegNo"/>
                 <button matSuffix mat-icon-button aria-label="Clear"
-                    (click)="gridConfig.filters[4].fieldValue='0'">
+                (click)="Clearfilteropd('RegNo')">
                     <mat-icon>close</mat-icon>
                 </button>
             </mat-form-field>
@@ -85,9 +86,9 @@
             <mat-form-field appearance="outline" fxFlex>
                 <mat-label>First Name</mat-label>
                 <input matInput placeholder="Search First Name" autocomplete="off"
-                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                    (input)="onNameFieldChange()" formControlName="FirstName"/>
                 <button matSuffix mat-icon-button aria-label="Clear"
-                    (click)="gridConfig.filters[0].fieldValue='%'">
+                    (click)="Clearfilteropd('FirstName')">
                     <mat-icon>close</mat-icon>
                 </button>
             </mat-form-field>
@@ -95,9 +96,9 @@
             <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Last Name</mat-label>
                 <input matInput placeholder="Search Last Name" autocomplete="off"
-                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                    (input)="onNameFieldChange()" formControlName="LastName" />
                 <button matSuffix mat-icon-button aria-label="Clear"
-                    (click)="gridConfig.filters[1].fieldValue='%'">
+                    (click)="Clearfilteropd('LastName')">
                     <mat-icon>close</mat-icon>
                 </button>
             </mat-form-field>
@@ -105,15 +106,15 @@
             <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Sales No</mat-label>
                 <input matInput placeholder="Search Sales No" autocomplete="off"
-                    [(ngModel)]="gridConfig.filters[5].fieldValue" />
+                    (input)="onNameFieldChange()" formControlName="SalesNo"/>
                 <button matSuffix mat-icon-button aria-label="Clear"
-                    (click)="gridConfig.filters[5].fieldValue='0'">
+                    (click)=" Clearfilteropd('SalesNo')">
                     <mat-icon>close</mat-icon>
                 </button>
             </mat-form-field>
 
-                <form [formGroup]="_PaymentmodechangeforpharmacyService.userFormGroup" fxLayout="row" > 
-                <mat-radio-group formControlName="Radio" name="Radio" >
+                <mat-radio-group formControlName="Radio" name="Radio" 
+                (change)="onRadioChange($event)">
                     <mat-label>Type :</mat-label>&nbsp;
                     <mat-radio-button value="0">Sales</mat-radio-button>
                     <mat-radio-button value="1">IP Phar Advance</mat-radio-button>

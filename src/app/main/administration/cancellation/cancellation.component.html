@@ -114,9 +114,9 @@
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Registration No</mat-label>
                                     <input matInput placeholder="Search Registration No" autocomplete="off"
-                                        (input)="onChangeopd(); onChangeipd()" formControlName="RegNo" />
+                                        (input)="onNameFieldChange()" formControlName="RegNo" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)=" ClearfilterOPD('RegNo'); ClearfilterIPD('RegNo')">
+                                        (click)="ClearfilterOPD('RegNo')">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -124,9 +124,9 @@
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>First Name</mat-label>
                                     <input matInput placeholder="Search First Name" autocomplete="off"
-                                        (input)="onChangeopd(); onChangeipd()" formControlName="FirstName" />
+                                        (input)="onNameFieldChange()" formControlName="FirstName" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)=" ClearfilterOPD('FirstName'); ClearfilterIPD('FirstName')">
+                                        (click)="ClearfilterOPD('FirstName')">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -134,9 +134,9 @@
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Last Name</mat-label>
                                     <input matInput placeholder="Search Last Name" autocomplete="off"
-                                        (input)="onChangeopd(); onChangeipd()" formControlName="LastName" />
+                                        (input)="onNameFieldChange()" formControlName="LastName" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)=" ClearfilterOPD('LastName'); ClearfilterIPD('LastName')">
+                                        (click)="ClearfilterOPD('LastName')">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -144,15 +144,16 @@
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>PBill No</mat-label>
                                     <input matInput placeholder="Search PBill No" autocomplete="off"
-                                        (input)="onChangeopd(); onChangeipd()" formControlName="PBillNo" />
+                                        (input)="onNameFieldChange()" formControlName="PBillNo" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)=" ClearfilterOPD('PBillNo'); ClearfilterIPD('PBillNo')">
+                                        (click)="ClearfilterOPD('PBillNo')">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
 
                                 <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row">
-                                    <mat-radio-group formControlName="OP_IP_Type" name="OP_IP_Type">
+                                    <mat-radio-group formControlName="OP_IP_Type" name="OP_IP_Type"
+                                    (change)="onRadioChange($event)">
                                         <mat-label>Type : </mat-label>
                                         <div>
                                             <mat-radio-button value="0" style="margin-bottom:10px;">
@@ -208,7 +209,6 @@
                                         (click)=" ClearfilterAdvance('PBillNo')">
                                         <mat-icon>close</mat-icon>
                                     </button>
-                                    <!-- [(ngModel)]="gridConfig1.filters[5].fieldValue" -->
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>

@@ -234,12 +234,15 @@
                                             Action</mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
 
-                                            <mat-icon *ngIf="contact.isTemplateTest == 1" title="IsTemplateTest">
-                                                <img width="15px" height="8px" src="assets/images/logos/radiology.png"
-                                                    (click)="chkresultentry(contact,false)"
-                                                    *ngIf="contact.isTemplateTest">
+                                                <button
+                                                *ngIf="contact.isTemplateTest == 1"
+                                                title="IsTemplateTest"
+                                                (click)="chkresultentry(contact, false)"
+                                                style="background: none; border: none; padding: 0; cursor: pointer;">
+                                                <mat-icon title="IsTemplateTest">edit</mat-icon>
+                                                <!-- <img src="assets/images/logos/radiology.png" width="15px" height="8px" /> -->
+                                                </button>
 
-                                            </mat-icon>
                                             <mat-icon *ngIf="contact.isTemplateTest != 1" title="IsTest">
                                                 <img width="15px" height="9px" src="assets/images/logos/pathology.png">
                                             </mat-icon>

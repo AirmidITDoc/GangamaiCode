@@ -125,8 +125,7 @@ export class TestFormMasterComponent implements OnInit {
         this.templatedetailsForm = this._TestmasterService.templatedetailsForm();
         this.testdetailsForm = this._TestmasterService.testdetailsForm();
         this.testForm.get("Status").setValue(1)
-        // this.testForm.reset({Status:[1]});
-        debugger
+        // debugger
         if (this.data) {
             this.registerObj = this.data;
             console.log(this.registerObj);
@@ -662,7 +661,7 @@ export class TestFormMasterComponent implements OnInit {
         let exists = this.ChargeList.some(item => item.testId === row.testId);
         if (!exists) {
             this.ChargeList.push({
-                parameterID: row.parameterID || 0,
+                parameterID: row.parameterId || 0,
                 parameterName: row.parameterName,
                 subTestID: row.subTestID || 0,
                 testId: row.testId

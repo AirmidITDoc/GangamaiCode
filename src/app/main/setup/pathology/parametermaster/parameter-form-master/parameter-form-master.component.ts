@@ -143,11 +143,8 @@ export class ParameterFormMasterComponent implements OnInit {
     }
 
     OnSave() {
-        
-        if (this._ParameterService.myform.get("IsBold").value)
-            var BoldValue = "B"
-        else
-            var BoldValue = ""
+        const isBoldChecked = this._ParameterService.myform.get("IsBold").value;
+        const BoldValue = isBoldChecked ? "B" : "";
 
         if (this._ParameterService.is_numeric)
             var is_numeric = "1"
@@ -197,9 +194,10 @@ export class ParameterFormMasterComponent implements OnInit {
                 "printParameterName": this.parameterForm.get('printParameterName').value,
                 "unitId": this.parameterForm.get('unitId').value || 1,
                 "isNumeric": is_numeric, //0,
-                "MethodName": this.parameterForm.get('MethodName').value,
-                "Formula": this.parameterForm.get('Formula').value,
                 "isPrintDisSummary": true,
+                "methodName": this.parameterForm.get('MethodName').value,
+                "formula": this.parameterForm.get('Formula').value,
+                "isBoldFlag":BoldValue,
                 "mParameterDescriptiveMasters": data2,
                 "mPathParaRangeWithAgeMasters": mPathParaRangeMasters, //numeric_info
             }
@@ -231,9 +229,10 @@ export class ParameterFormMasterComponent implements OnInit {
                 "printParameterName": this.parameterForm.get('printParameterName').value,
                 "unitId": this.parameterForm.get('unitId').value,
                 "isNumeric": is_numeric, //0,
-                "MethodName": this.parameterForm.get('MethodName').value,
-                "Formula": this.parameterForm.get('Formula').value,
                 "isPrintDisSummary": true,
+                "methodName": this.parameterForm.get('MethodName').value,
+                "formula": this.parameterForm.get('Formula').value,
+                "isBoldFlag":BoldValue,
                 "mParameterDescriptiveMasters": data2,
                 "mPathParaRangeWithAgeMasters": mPathParaRangeMasters, //numeric_info
             }
