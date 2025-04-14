@@ -107,9 +107,6 @@ export class DoctornoteComponent implements OnInit {
     }
   }
 
-  // @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-  // @ViewChild(AirmidTableComponent) grid1: AirmidTableComponent;
-
   @ViewChild('docNote', { static: false }) grid: AirmidTableComponent;
   @ViewChild('Handover', { static: false }) grid1: AirmidTableComponent;
 
@@ -129,7 +126,7 @@ export class DoctornoteComponent implements OnInit {
   }
 
   allColumns = [
-    { heading: "Date", key: "tdate", sort: true, align: 'left', emptySign: 'NA',type:6},
+    { heading: "Date", key: "tdate", sort: true, align: 'left', emptySign: 'NA'},
     { heading: "Time", key: "ttime", sort: true, align: 'left', emptySign: 'NA'},
     { heading: "Note", key: "doctorsNotes", sort: true, align: 'left', emptySign: 'NA', width:250 },
     { heading: "CreatedBy", key: "createdby", sort: true, align: 'left', emptySign: 'NA' },
@@ -246,8 +243,12 @@ debugger
   }
 
   tempdesc: any = '';
+  docNoteTempId:any;
+
   onChangetemplate(event) {
-    this.tempdesc = event.text
+    console.log("Template:", event)
+    this.tempdesc = event.templateDesc
+    this.docNoteTempId=event.docNoteTempId
   }
 
   OnAdd() {

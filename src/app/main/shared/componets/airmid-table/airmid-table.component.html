@@ -119,7 +119,7 @@
         </div>
         <div class="table-footer-wrapper">
             <div class="table-export-wrapper"  *ngIf="ShowButtons==true;else elseButtonBlock">
-                <button class="btn btn-primary btn-with-icon">
+                <button class="btn btn-primary btn-with-icon" (click)="onExportClick(GridExportType.Excel)">
                     <span class="btn-icon">
                         <i class="fa-solid fa-file-excel fa-lg"></i>
                     </span>

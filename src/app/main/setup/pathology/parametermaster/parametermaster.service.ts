@@ -62,7 +62,7 @@ export class ParametermasterService {
             ],
             isNumeric: ["1"],
             isPrintDisSummary: true,
-            IsBold:['0'],
+            IsBold: [true],
             IsDeleted: ["true"],
             MethodName: ["",
                 // [Validators.pattern("^[A-Za-z ]*$")],

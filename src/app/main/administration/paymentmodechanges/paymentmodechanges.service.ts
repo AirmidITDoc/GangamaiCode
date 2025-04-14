@@ -21,7 +21,7 @@ export class PaymentmodechangesService {
       RegNo:'',
       FirstName:'',
       LastName:'',
-      BillNo:'',
+      PBillNo:'',
       Radio:['0'],
       ReceiptNo:''
     })

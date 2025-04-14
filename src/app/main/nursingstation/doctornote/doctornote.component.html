@@ -170,12 +170,14 @@
 
                                                                 <div fxLayout="row" fxLayoutGap="10px">
 
-                                                                    <airmid-dropdown label="Template"
-                                                                        formControlName="TemplateId"
-                                                                        [formGroup]="myform" fxFlex="70%" #ddlTemplate
-                                                                        [mode]="autocompleteModeTemplate"
-                                                                        (selectionChange)="onChangetemplate($event)">
-                                                                    </airmid-dropdown>
+                                                                    <airmid-dropdown label="Template Name" 
+                                                                    formControlName="TemplateId" 
+                                                                    [formGroup]="myform"  fxFlex="70%"
+                                                                    ValueField="docNoteTempId" 
+                                                                    TextField="docsTempName"
+                                                                    (selectionChange)="onChangetemplate($event)" 
+                                                                    ApiUrl="Pathology/get-DoctorNotesTemplateMaster">
+                                                                </airmid-dropdown>
 
                                                                     <div class="input-add-button">
                                                                         <div>

@@ -32,7 +32,7 @@ export class PrebillDetailsComponent implements OnInit {
     { heading: "Add Doctor Name", key: "addDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 }, 
   ] 
   gridConfig: gridModel = {
-    apiUrl: "IPBill/PreviousBillList", 
+    apiUrl: "IPBill/PreviousBillDetailList", 
     columnsList: this.PrevColumnList,
     sortField: "BillNo",
     sortOrder: 0,
@@ -63,7 +63,7 @@ export class PrebillDetailsComponent implements OnInit {
   }  
   getprelistData(BillNo){
     this.gridConfig = {
-      apiUrl: "IPBill/PreviousBillList", 
+      apiUrl: "IPBill/PreviousBillDetailList", 
       columnsList: this.PrevColumnList,
       sortField: "BillNo",
       sortOrder: 0,

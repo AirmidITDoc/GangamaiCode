@@ -57,18 +57,19 @@ export class AirmidTableComponent implements OnInit {
     public get Headers() {
         return this.gridConfig.columnsList.map(x => x.key.replaceAll(' ', ''));
     }
+    gridDataRequest: gridRequest = new gridRequest();
     bindGridData() {
         // this.updateFilters();
 
-        var param: gridRequest = {
+        this.gridDataRequest = {
             sortField: this.sort?.active ?? this.gridConfig.sortField,
             sortOrder: this.sort?.direction ?? 'asc' == 'asc' ? 0 : -1, filters: this.gridConfig.filters,
-            columns: [],
+            columns: this.gridConfig.columnsList.map(x => ({ Name: x.heading, Data: x.key })),
             first: (this.paginator?.pageIndex ?? 0),
             rows: (this.paginator?.pageSize ?? this.pageSize),
             exportType: gridResponseType.JSON
         };
-        this._httpClient.PostData(this.gridConfig.apiUrl, param).subscribe((data: any) => {
+        this._httpClient.PostData(this.gridConfig.apiUrl, this.gridDataRequest).subscribe((data: any) => {
             this.dataSource.data = data.data as [];
             this.dataSource.sort = this.sort;
             this.resultsLength = data["recordsFiltered"];
@@ -131,4 +132,22 @@ export class AirmidTableComponent implements OnInit {
 
 
     }
+    public get GridExportType() {
+        return gridResponseType;
+    }
+    onExportClick(type: gridResponseType) {
+        this.gridDataRequest.exportType = type;
+        let filename=this.gridConfig.fileName;
+        if(filename=="") filename="Document";
+        if(type==gridResponseType.Csv)
+            filename=filename+".csv";
+        else if(type==gridResponseType.Pdf)
+            filename=filename+".pdf";
+        else if(type==gridResponseType.Excel)
+            filename=filename+".xlsx";
+        this._httpClient.downloadFilePost(this.gridConfig.apiUrl, this.gridDataRequest,filename).subscribe((data)=>{
+
+        });
+    }
+
 }

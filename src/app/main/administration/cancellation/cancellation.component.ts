@@ -16,6 +16,7 @@ import { BillDateUpdateComponent } from './bill-date-update/bill-date-update.com
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { MatRadioChange } from '@angular/material/radio';
 
 @Component({
   selector: 'app-cancellation',
@@ -110,7 +111,7 @@ export class CancellationComponent implements OnInit {
       af_name: any = ""
       aregNo: any = "0"
       al_name: any = ""
-      aPBillNo: any = "%"
+      aPBillNo: any = "0"
       afromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
       atoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
@@ -197,7 +198,8 @@ ClearfilterOPD(event) {
   if (event == 'PBillNo')
       this._CancellationService.UserFormGroup.get('PBillNo').setValue("")
 
-  this.onChangeopd();
+  // this.onChangeopd();
+  this.onNameFieldChange()
 }
 
   allipdColumns=[
@@ -228,7 +230,7 @@ ClearfilterOPD(event) {
   ]
 
   ipdGridConfig: gridModel = {
-    apiUrl: "Billing/IPBillList",
+    apiUrl: "Billing/BrowseIPBillList",
     columnsList: this.allipdColumns,
     sortField: "BillNo",
     sortOrder: 0,
@@ -249,7 +251,7 @@ ClearfilterOPD(event) {
 getfilteripd() {
   debugger    
   this.gridConfig = {
-      apiUrl: "Billing/IPBillList",
+      apiUrl: "Billing/BrowseIPBillList",
       columnsList: this.allipdColumns,
       sortField: "BillNo",
       sortOrder: 0,
@@ -267,20 +269,41 @@ getfilteripd() {
   console.log("IPD:",this.gridConfig)
 }
 
-ClearfilterIPD(event) {
-  debugger
-  console.log(event)
-  if (event == 'FirstName')
-      this._CancellationService.UserFormGroup.get('FirstName').setValue("")
-  else
-      if (event == 'LastName')
-          this._CancellationService.UserFormGroup.get('LastName').setValue("")
-  if (event == 'RegNo')
-      this._CancellationService.UserFormGroup.get('RegNo').setValue("")
-  if (event == 'PBillNo')
-      this._CancellationService.UserFormGroup.get('PBillNo').setValue("")
+// ClearfilterIPD(event) {
+//   debugger
+//   console.log(event)
+//   if (event == 'FirstName')
+//       this._CancellationService.UserFormGroup.get('FirstName').setValue("")
+//   else
+//       if (event == 'LastName')
+//           this._CancellationService.UserFormGroup.get('LastName').setValue("")
+//   if (event == 'RegNo')
+//       this._CancellationService.UserFormGroup.get('RegNo').setValue("")
+//   if (event == 'PBillNo')
+//       this._CancellationService.UserFormGroup.get('PBillNo').setValue("")
 
-  this.onChangeipd();
+//   this.onChangeipd();
+// }
+
+onNameFieldChange(): void {
+  debugger
+  const selectedType = this._CancellationService.UserFormGroup.get('OP_IP_Type')?.value;
+
+  if (selectedType === '0' || selectedType === 0) {
+    this.onChangeopd();
+  } else if (selectedType === '1' || selectedType === 1) {
+    this.onChangeipd();
+  }
+}
+
+onRadioChange(event: MatRadioChange) {
+  debugger
+  const selectedValue = event.value;
+  if (selectedValue === '0' || selectedValue === 0) {
+    this.onChangeopd();
+  } else if (selectedValue === '1' || selectedValue === 1) {
+    this.onChangeipd();
+  }
 }
 
   // 2nd table
@@ -309,7 +332,7 @@ ClearfilterIPD(event) {
   ]
 
   gridConfig1: gridModel = {
-    apiUrl: "Advance/AdvanceList",
+    apiUrl: "Advance/BrowseAdvanceList",
     columnsList:this.allColumnsOfAdvanceList ,
     sortField: "RegID",
     sortOrder: 0,
@@ -318,18 +341,18 @@ ClearfilterIPD(event) {
 
   onChangeAdvance() {
     debugger
-    this.afromDate = this.datePipe.transform(this._CancellationService.UserFormGroup.get('fromDate').value, "yyyy-MM-dd")
+    this.afromDate = this.datePipe.transform(this._CancellationService.UserFormGroup.get('startdate').value, "yyyy-MM-dd")
     this.atoDate = this.datePipe.transform(this._CancellationService.UserFormGroup.get('enddate').value, "yyyy-MM-dd")
     this.af_name = this._CancellationService.UserFormGroup.get('FirstName').value + "%"
     this.al_name = this._CancellationService.UserFormGroup.get('LastName').value + "%"
     this.aregNo = this._CancellationService.UserFormGroup.get('RegNo').value || "0"
-    this.aPBillNo = this._CancellationService.UserFormGroup.get('PBillNo').value || "%"
+    this.aPBillNo = this._CancellationService.UserFormGroup.get('PBillNo').value || "0"
     this.getfilterAdvance();
 }
 
 getfilterAdvance() {
     this.gridConfig1 = {
-        apiUrl: "Advance/AdvanceList",
+        apiUrl: "Advance/BrowseAdvanceList",
         columnsList: this.allColumnsOfAdvanceList,
         sortField: "RegID",
         sortOrder: 0,
@@ -382,7 +405,7 @@ ClearfilterAdvance(event) {
   ]
 
   gridConfig2: gridModel = {
-    apiUrl: "Billing/IPRefundBillList",
+    apiUrl: "Billing/BrowseIPRefundlist",
     columnsList:this.allColumnsOfIpRefund,
     sortField: "RegNo",
     sortOrder: 0,
@@ -391,7 +414,7 @@ ClearfilterAdvance(event) {
 
   onChangeIPRefund() {
     debugger
-    this.ipfromDate = this.datePipe.transform(this._CancellationService.UserFormGroup.get('fromDate').value, "yyyy-MM-dd")
+    this.ipfromDate = this.datePipe.transform(this._CancellationService.UserFormGroup.get('startdate').value, "yyyy-MM-dd")
     this.iptoDate = this.datePipe.transform(this._CancellationService.UserFormGroup.get('enddate').value, "yyyy-MM-dd")
     this.ipf_name = this._CancellationService.UserFormGroup.get('FirstName').value + "%"
     this.ipl_name = this._CancellationService.UserFormGroup.get('LastName').value + "%"
@@ -401,7 +424,7 @@ ClearfilterAdvance(event) {
 
 getfilterIPRefund() {
     this.gridConfig2 = {
-        apiUrl: "Billing/IPRefundBillList",
+        apiUrl: "Billing/BrowseIPRefundlist",
         columnsList: this.allColumnsOfIpRefund,
         sortField: "RegNo",
         sortOrder: 0,
@@ -454,7 +477,7 @@ ClearfilterIPRefund(event) {
   ]
 
   gridConfig3: gridModel = {
-    apiUrl: "Advance/RefundOfAdvanceList",
+    apiUrl: "Advance/PatientRefundOfAdvancesList",
     columnsList: this.allColumnsOfRefundAd,
     sortField: "RefundId",
     sortOrder: 0,
@@ -463,7 +486,7 @@ ClearfilterIPRefund(event) {
 
   onChangeRefundAd() {
     debugger
-    this.ipfromDate = this.datePipe.transform(this._CancellationService.UserFormGroup.get('fromDate').value, "yyyy-MM-dd")
+    this.ipfromDate = this.datePipe.transform(this._CancellationService.UserFormGroup.get('startdate').value, "yyyy-MM-dd")
     this.iptoDate = this.datePipe.transform(this._CancellationService.UserFormGroup.get('enddate').value, "yyyy-MM-dd")
     this.ipf_name = this._CancellationService.UserFormGroup.get('FirstName').value + "%"
     this.ipl_name = this._CancellationService.UserFormGroup.get('LastName').value + "%"
@@ -473,7 +496,7 @@ ClearfilterIPRefund(event) {
 
 getfilterRefundAd() {
     this.gridConfig3 = {
-        apiUrl: "Advance/RefundOfAdvanceList",
+        apiUrl: "Advance/PatientRefundOfAdvancesList",
         columnsList: this.allColumnsOfIpRefund,
         sortField: "RefundId",
         sortOrder: 0,
@@ -486,6 +509,7 @@ getfilterRefundAd() {
     }
     this.grid3.gridConfig = this.gridConfig3;
     this.grid3.bindGridData();
+    console.log(this.gridConfig3)
 }
 
 ClearfilterRefundAd(event) {
