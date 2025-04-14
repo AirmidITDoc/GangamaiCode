@@ -169,8 +169,8 @@
                     [readonly]="true"
                   ></airmid-textbox>
                 </div>
-
-                <div style="width: 260px">
+                
+                <div style="width: 260px" *ngIf="isDoctor">
                   <airmid-dropdown
                     label="Doctor Name"
                     formControlName="DoctorID"

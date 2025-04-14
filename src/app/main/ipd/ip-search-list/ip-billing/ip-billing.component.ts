@@ -426,6 +426,12 @@ export class IPBillingComponent implements OnInit {
   getdocdetail(event) {
     this.doctorName = event.text
     this.doctorID = event.value
+
+    const discPerElement = document.querySelector(`[name='discPer']`) as HTMLElement;
+    if (event.value) {
+      discPerElement.focus();
+    }
+
   }
   //Class selected 
   getSelectedClassObj(event) {
@@ -541,7 +547,7 @@ export class IPBillingComponent implements OnInit {
     }
   }
   onClearServiceAddList() {
-    this.Serviceform.get('ServiceName').setValue("");
+    this.Serviceform.get('ServiceName').setValue("%");
     this.Serviceform.get('price').reset();
     this.Serviceform.get('qty').reset('1');
     this.Serviceform.get('TotalAmt').reset();
