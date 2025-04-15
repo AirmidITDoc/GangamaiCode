@@ -1275,7 +1275,11 @@ export class IPBillingComponent implements OnInit {
       this._IpSearchListService.InsertIPDraftBilling(submitData).subscribe(response => {
         //console.log(response)
         this.toastr.success(response.message);
+        debugger
+        if(this.Ipbillform.get("BillType").value==1)
         this.viewgetDraftBillReportPdf(response.drbno);  
+      else
+      this.viewgetDraftBillservicewiseReportPdf(response.drbno);
         this._matDialog.closeAll();
       }, (error) => {
         this.toastr.error(error.message);
@@ -1505,9 +1509,15 @@ export class IPBillingComponent implements OnInit {
     this.commonService.Onprint("BillNo", element.billNo, "IpInterimBill");
   }
   //For testing 
-  viewgetDraftBillReportPdf(AdmissionID) {
-    this.commonService.Onprint("AdmissionID", AdmissionID, "IpDraftBill");
+  viewgetDraftBillReportPdf(Id) {
+    this.commonService.Onprint("AdmissionID", Id, "IpDraftBill");
   }
+
+   //For testing 
+   viewgetDraftBillservicewiseReportPdf(Id) {
+    this.commonService.Onprint("AdmissionID", Id, "IpDraftBillNew");
+  }
+
   viewgetBillReportPdf(billNo) {
     this.commonService.Onprint("BillNo", billNo, "IpFinalBill");
   }
