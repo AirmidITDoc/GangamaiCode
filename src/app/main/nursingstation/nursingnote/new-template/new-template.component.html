@@ -44,8 +44,14 @@
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                         <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-editor label="Template Details" formControlName="templateDesc"
-                                [(value)]="vTemplateDesc" [formGroup]="myTemplateform"></airmid-editor>
+                            <!-- <airmid-editor label="Template Details" formControlName="templateDesc"
+                                [(value)]="vTemplateDesc" [formGroup]="myTemplateform">
+                            </airmid-editor> -->
+                            <mat-label>Template Details</mat-label>
+                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                                style="height:400px;" [(ngModel)]="vTemplateDesc" required
+                                formControlName="templateDesc">
+                            </angular-editor>
                         </div>
                     </div>
                 </form>

@@ -34,35 +34,18 @@
                             <input name="Qty" formControlName="Qty"  type="hidden" ([ngModel])="VReQty">
 
                             <form [formGroup]="_GRNReturnService.GRNReturnStoreFrom">
-                                <mat-form-field appearance="outline" fxFlex="100%">
-                                    <mat-label>Store Name</mat-label>
-                                    <mat-select formControlName="ToStoreId" name="ToStoreId">
-                                        <mat-option></mat-option>
-                                        <mat-option *ngFor="let m of ToStoreList" [value]="m">
-                                            {{m.StoreName}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
+                                
+                                <airmid-dropdown label="Store Name" formControlName="ToStoreId"
+                                [formGroup]="_GRNReturnService.GRNReturnStoreFrom"
+                                   [mode]="autocompletestore"
+                                    (selectionChange)="selectChangeStore($event)">
+                               </airmid-dropdown>
                             </form>
 
-                            <mat-form-field appearance="outline" fxFlex="25%">
-                                <mat-label>Supplier Name</mat-label>
-                                <input matAutocompletePosition="below" type="text" placeholder="Select Supplier"
-                                    matInput formControlName="SupplierId" [matAutocomplete]="autoSupllier">
-                                <span matSuffix style="display: flex;">
-                                    <mat-icon class="mat-icon-close"
-                                        (click)="_GRNReturnService.NewGRNReturnFrom.get('SupplierId').setValue(''); isSupplierSelected = false;">close</mat-icon>
-                                    <mat-icon class="mat-icon-close"
-                                        (click)="_GRNReturnService.NewGRNReturnFrom.get('SupplierId').setValue(''); isSupplierSelected = false;">search</mat-icon>
-                                </span>
-                                <mat-autocomplete #autoSupllier="matAutocomplete"
-                                    [displayWith]="getOptionTextSupplier">
-                                    <mat-option *ngFor="let option of filteredoptionsSupplier | async"
-                                        [value]="option">
-                                        {{option.SupplierName}}
-                                    </mat-option>
-                                </mat-autocomplete>
-                            </mat-form-field>
+                            <airmid-dropdown label="Supplier Name" formControlName="SupplierId"
+                            [formGroup]="_GRNReturnService.NewGRNReturnFrom"
+                               [mode]="autocompleteSupplier">
+                           </airmid-dropdown>
 
                             <!-- <mat-form-field appearance="outline" fxFlex="10%">
                                 <mat-label>Return Date</mat-label>

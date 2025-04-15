@@ -34,6 +34,7 @@ export class GrnListComponent implements OnInit {
   optionsSupplier:any;
   sIsLoading: string;
   Onsave:boolean = true;
+  autocompleteSupplier:string="Supplier"
 
   dsGRNList = new MatTableDataSource<GRNList>();
   @ViewChild(MatSort) sort: MatSort;
@@ -49,34 +50,34 @@ export class GrnListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getSupplierSearchCombo();
+    // this.getSupplierSearchCombo();
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  getSupplierSearchCombo() {
-    var vdata={
-      'SupplierName':`${this._GRNReturnHeaderList.GRNListFrom.get('SupplierId').value}%`,
-    }
-    this._GRNReturnHeaderList.getSupplierSearchList(vdata).subscribe(data => {
-      this.SupplierList = data;
-      // console.log(data);
-       this.optionsSupplier = this.SupplierList.slice();
-       this.filteredoptionsSupplier = this._GRNReturnHeaderList.GRNListFrom.get('SupplierId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
-      );
-    });
-  }
-  private _filterSupplier(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
-      return this.optionsSupplier.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
-    }
-  }
-  getOptionTextSupplier(option) {
-    return option && option.SupplierName ? option.SupplierName : '';
-  }  
+  // getSupplierSearchCombo() {
+  //   var vdata={
+  //     'SupplierName':`${this._GRNReturnHeaderList.GRNListFrom.get('SupplierId').value}%`,
+  //   }
+  //   this._GRNReturnHeaderList.getSupplierSearchList(vdata).subscribe(data => {
+  //     this.SupplierList = data;
+  //     // console.log(data);
+  //      this.optionsSupplier = this.SupplierList.slice();
+  //      this.filteredoptionsSupplier = this._GRNReturnHeaderList.GRNListFrom.get('SupplierId').valueChanges.pipe(
+  //       startWith(''),
+  //       map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
+  //     );
+  //   });
+  // }
+  // private _filterSupplier(value: any): string[] {
+  //   if (value) {
+  //     const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
+  //     return this.optionsSupplier.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
+  //   }
+  // }
+  // getOptionTextSupplier(option) {
+  //   return option && option.SupplierName ? option.SupplierName : '';
+  // }  
   getGRNList(){
     this.sIsLoading = 'loading-data';
     var Param = {

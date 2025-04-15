@@ -30,7 +30,7 @@ export class BillDateUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data) {
-      this.BillNo = this.data.obj;
+      this.BillNo = this.data.billNo;
       console.log(this.BillNo) 
     }
   }
@@ -39,6 +39,7 @@ export class BillDateUpdateComponent implements OnInit {
     console.log(this.dateTimeObj)
   } 
   BillDate() { 
+    debugger
     const formattedDate = this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd");
     const formattedTime = formattedDate+this.dateTimeObj.time;//this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd")+this.dateTimeObj.time;  
     
@@ -54,10 +55,9 @@ export class BillDateUpdateComponent implements OnInit {
       /* Read more about isConfirmed, isDenied below */ 
       if (result.isConfirmed) { 
         var data = {
-          'BillNo': this.BillNo,
-          'BillDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-          'BillTime': formattedDate + this.dateTimeObj.time
-
+          'billNo': this.BillNo,
+          'billDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+          'billTime': formattedDate + this.dateTimeObj.time
         }
         console.log(data);
      this._CancellationService.getDateTimeChange(data).subscribe(response => {

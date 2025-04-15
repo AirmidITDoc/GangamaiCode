@@ -1,5 +1,81 @@
- 
-<div id="grn-return" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
+<div fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto" dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    GRN Return List
+                </span>
+            </div>
+        </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="getNewGRNRet()">New GRNReturn
+            </button>
+
+        </div>
+    </div>
+
+        <div fusePerfectScrollbar
+            class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+            dynamicTableHeight>
+
+            <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false" (onSelectRow)="GetDetails1($event)">
+                    <ng-container filters>
+                        <form [formGroup]="_GRNReturnService.NewGRNReturnFrom" fxLayout="column">
+                            <airmid-datepicker [formGroup]="_GRNReturnService.NewGRNReturnFrom" [isRangePicker]="true"
+                            formStartControlName="start" formEndControlName="end"
+                            [(fromValue)]="gridConfig.filters[0].fieldValue"
+                            [(toValue)]="gridConfig.filters[1].fieldValue">
+                        </airmid-datepicker>
+
+                        <airmid-dropdown label="Store Name" formControlName="ToStoreId"
+                         [formGroup]="_GRNReturnService.NewGRNReturnFrom"
+                            [mode]="autocompletestore"
+                             (selectionChange)="selectChangeStore($event)">
+                        </airmid-dropdown>
+
+                        <airmid-dropdown label="Supplier Name" formControlName="SupplierId"
+                         [formGroup]="_GRNReturnService.NewGRNReturnFrom"
+                            [mode]="autocompleteSupplier">
+                        </airmid-dropdown>
+
+                        <div fxFlex fxLayout="row">
+                            <mat-radio-group name="Status" fxLayout="row" value="1" [formGroup]="_GRNReturnService.NewGRNReturnFrom"
+                             formControlName="Status"
+                                style="padding: 6px;" class="gap-4">
+                                <mat-label>Status:</mat-label>
+                                <div fxLayout="row">
+                                    <mat-radio-button value='0'>Close</mat-radio-button>
+                                    <mat-radio-button value='1'>Pending</mat-radio-button>
+                                </div>
+                            </mat-radio-group>
+                        </div>
+                        </form>
+
+                    </ng-container>
+                </airmid-table>
+            </div>
+
+            <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
+                *ngIf="isShowDetailTable">
+
+                <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false" [ShowButtons]="false">
+                </airmid-table>
+            </div>
+        </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- <div id="grn-return" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
             <mat-toolbar class="top-header accent">
                 <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
                     <button mat-icon-button class="sidebar-toggle">
@@ -73,8 +149,7 @@
                                         <mat-radio-group name="Status" formControlName="Status" fxLayout="row" class="gap-4 "
                                             value="0" style="margin-top: 10px;">
                                             <mat-label>Status:</mat-label>&nbsp;
-                                            <!-- <mat-radio-button value="2" class="mr-sm-12" (keyup)=" getGRNList()">All
-                                                </mat-radio-button> -->
+                                          
                                             <mat-radio-button value="1" class="mr-sm-12" (keyup)=" getGRNReturnList()">Close
                                             </mat-radio-button>&nbsp;
                                             <mat-radio-button value="0" class="mr-sm-12" (keyup)=" getGRNReturnList()">Pending
@@ -133,15 +208,7 @@
                                                     <span> {{contact.GRNReturnDate | date:'dd/MM/YYYY'}}</span>
                                                 </mat-cell>
                                             </ng-container>
-        
-                                            <!-- <ng-container matColumnDef="StoreName">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                            Store Name </mat-header-cell>
-                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                            <span> {{contact.StoreName}}</span>
-                                                        </mat-cell>
-                                                    </ng-container> -->
-        
+                
                                             <ng-container matColumnDef="SupplierName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     SupplierName</mat-header-cell>
@@ -190,7 +257,6 @@
                                                 </mat-cell>
                                             </ng-container>
         
-                                            <!-- stickyEnd -->
                                             <ng-container matColumnDef="action" stickyEnd>
                                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
                                                 </mat-header-cell>
@@ -198,9 +264,7 @@
                                                     <button mat-icon-button matTooltip="print" (click)="viewgetGRNreturnReportPdf(row)">
                                                         <mat-icon>print</mat-icon>
                                                     </button>
-                                                    <!-- <button mat-icon-button matTooltip="print" (click)="getVerify(row)">
-                                                        <mat-icon>Verify</mat-icon>
-                                                    </button> -->
+                                                   
                                                     <button mat-icon-button (click)="getVerify(row)"
                                                     matTooltip="Verify">
                                                     <mat-icon *ngIf="row.IsVerified==1"title="verify Menu">verified_user</mat-icon>
@@ -245,9 +309,7 @@
         
                                         <mat-paginator #paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
                                             showFirstLastButtons>
-                                        </mat-paginator>
-        
-        
+                                        </mat-paginator>      
         
         
                                     </div>
@@ -398,7 +460,7 @@
                     </div>
                 </div>
             </div>
- </div>
+ </div> -->
 
     <!-- <mat-tab label="New GRN Retrun">
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">

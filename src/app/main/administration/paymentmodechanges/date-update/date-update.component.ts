@@ -31,7 +31,7 @@ export class DateUpdateComponent implements OnInit {
   ngOnInit(): void {
     if (this.data) {
       console.log(this.data)
-      this.PaymentId = this.data.obj;
+      this.PaymentId = this.data.paymentId;
       console.log(this.PaymentId)
     }
   }
@@ -40,6 +40,7 @@ export class DateUpdateComponent implements OnInit {
     console.log(this.dateTimeObj)
   }
   PaymentDate() {
+    debugger
     const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
     const formattedTime = formattedDate + this.dateTimeObj.time;//this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd")+this.dateTimeObj.time;  
 
@@ -52,13 +53,13 @@ export class DateUpdateComponent implements OnInit {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Update it!"
     }).then((result) => {
+      debugger
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         var data = {
-          'PaymentId': this.PaymentId,
-          'PaymentDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-          'PaymentTime': formattedDate + this.dateTimeObj.time
-
+          'paymentId': this.PaymentId,
+          'paymentDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+          'paymentTime': formattedDate + this.dateTimeObj.time
         }
         console.log(data);
         this._PaymentmodechangesService.getDateTimeChange(data).subscribe(response => {

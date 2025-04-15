@@ -193,13 +193,15 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <mat-card
-                                                                    style="padding: 5px;overflow: auto;">
+                                                                <mat-card style="padding: 5px;overflow: auto;">
                                                                     <div>
-                                                                        <airmid-editor label="Template Details"
-                                                                            formControlName="templateDesc"
-                                                                            [(value)]="vDescription"
+                                                                        <airmid-editor label="Template Details" formControlName="templateDesc" [(value)]="vDescription"
                                                                             [formGroup]="myform"></airmid-editor>
+                                                                
+                                                                        <!-- <mat-label>Template Details</mat-label>
+                                                                        <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:400px;"
+                                                                            [(ngModel)]="vDescription" required formControlName="templateDesc">
+                                                                        </angular-editor> -->
                                                                     </div>
                                                                 </mat-card>
 

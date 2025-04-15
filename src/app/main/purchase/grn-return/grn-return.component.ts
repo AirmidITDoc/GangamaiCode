@@ -19,6 +19,8 @@ import { GrnItemList } from '../good-receiptnote/good-receiptnote.component';
 import { FormBuilder } from '@angular/forms';
 import { NewGRNReturnComponent } from './new-grnreturn/new-grnreturn.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 
 @Component({
   selector: 'app-grn-return',
@@ -28,38 +30,37 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
   animations: fuseAnimations,
 })
 export class GRNReturnComponent implements OnInit {
-  displayedColumns = [
-    'Status',
-    'GRNReturnId',
-    'GRNReturnNo',
-    'GRNReturnDate',
-    //'StoreName',
-    'SupplierName',
-    'UserName',
-    'GSTAmount',
-    'NetAmount',
-    'Remark',
-    'AddedBy',
-    'action',
-  ];
+  // displayedColumns = [
+  //   'Status',
+  //   'GRNReturnId',
+  //   'GRNReturnNo',
+  //   'GRNReturnDate',
+  //   //'StoreName',
+  //   'SupplierName',
+  //   'UserName',
+  //   'GSTAmount',
+  //   'NetAmount',
+  //   'Remark',
+  //   'AddedBy',
+  //   'action',
+  // ];
   
-  displayedColumns1 = [
-    // "Action",
-    "ItemName",
-    "BatchNo",
-    "BatchExpiryDate",
-     "Conversion",
-    "ReturnQty",
-    "TotalQty",
-    "MRP",
-    "LandedRate",
-    "Totalamt",
-    "GST",
-    "GSTAmount",
-    "NetAmount",
-    "StkId",
-  ];
-
+  // displayedColumns1 = [
+  //   // "Action",
+  //   "ItemName",
+  //   "BatchNo",
+  //   "BatchExpiryDate",
+  //    "Conversion",
+  //   "ReturnQty",
+  //   "TotalQty",
+  //   "MRP",
+  //   "LandedRate",
+  //   "Totalamt",
+  //   "GST",
+  //   "GSTAmount",
+  //   "NetAmount",
+  //   "StkId",
+  // ];
 
   SpinLoading: boolean = false;
   ToStoreList: any = [];
@@ -80,6 +81,8 @@ export class GRNReturnComponent implements OnInit {
   vFinalVatAmount:any=0
   vFinalDiscAmount:any=0;
   vRoundingAmt:any;
+  autocompletestore: string = "Store";
+  autocompleteSupplier:string="Supplier"
 
   dsGRNReturnList = new MatTableDataSource<GRNReturnList>();
   dsGRNReturnItemDetList = new MatTableDataSource<GRNReturnItemDetList>();
@@ -112,16 +115,62 @@ export class GRNReturnComponent implements OnInit {
    isDataAvailableInColumn(column: string): boolean {
     return this.dsGrnItemList.data.some(item => !!item[column]);
   }
-  ngOnInit(): void {
-    this.getStoreList();
-    this.getGRNReturnList();
-    this.getSupplierSearchCombo();
 
-    this.filteredoptionsSupplier = this._GRNReturnService.GRNReturnSearchFrom.get('SupplierId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterSupplier(value)),
-    ); 
+  ngOnInit(): void {
+    // this.getStoreList();
+    this.getGRNReturnList();
   }
+  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
+  allColumns=[
+    { heading: "Verify", key: "v", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "GRNReturnId", key: "grnreturnid", sort: true, align: 'left', emptySign: 'NA', width:200 },
+    { heading: "GRNReturnNo", key: "grnReturnNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "GRNReturnDate", key: "date", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "GSTAmount", key: "gstamt", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "NetAmount", key: "netAmt", sort: true, align: 'left', emptySign: 'NA', width:200 },
+    { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
+    {
+        heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,
+        actions: [
+            {
+                action: gridActions.print, callback: (data: any) => {
+                    // this.viewgetIpprescriptionReportPdf(data);
+                }
+            }]
+    }
+]
+allFilters=[
+  { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+  { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+  { fieldName: "Reg_No", fieldValue: "", opType: OperatorComparer.Equals }
+]
+  gridConfig: gridModel = {
+          apiUrl: "demo",
+          columnsList: this.allColumns,
+          sortField: "RegNo",
+          sortOrder: 0,
+          filters: this.allFilters
+      }
+      
+  gridConfig1: gridModel = new gridModel();
+  isShowDetailTable: boolean = false;
+  GetDetails1(data:any):void {
+    debugger
+    console.log("detailList:",data)
+  }
+
+  vstoreId: any = '';
+  selectChangeStore(obj: any) {
+    debugger
+    console.log("Store:", obj);
+    this.vstoreId = obj.value
+  }
+
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
@@ -137,24 +186,7 @@ export class GRNReturnComponent implements OnInit {
       this._GRNReturnService.GRNReturnSearchFrom.get('ToStoreId').setValue(this.ToStoreList[0]); 
     });
   }
-  
-  getSupplierSearchCombo() {
-    var vdata={
-      'SupplierName':`${this._GRNReturnService.GRNReturnSearchFrom.get('SupplierId').value}%`,
-    }
-    this._GRNReturnService.getSupplierSearchList(vdata).subscribe(data => {
-      this.SupplierList = data; 
-    });
-  }
-  private _filterSupplier(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
-      return this.SupplierList.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
-    }
-  }
-  getOptionTextSupplier(option) {
-    return option && option.SupplierName ? option.SupplierName : '';
-  } 
+
   
   getGRNReturnList() {
     this.sIsLoading = 'loading-data';
@@ -229,16 +261,15 @@ onClear() { }
 getNewGRNRet(){
   const dialogRef = this._matDialog.open(NewGRNReturnComponent,
     {
-      maxWidth: "100%",
-      height: '95%',
-      width: '95%',
+      maxWidth: "95vw",
+      maxHeight: '100vh',
+      width: '100%',
     });
   dialogRef.afterClosed().subscribe(result => {
     console.log('The dialog was closed - Insert Action', result);
    this.getGRNReturnList();
   });
 }
-
 
 viewgetGRNreturnReportPdf(row) {
   

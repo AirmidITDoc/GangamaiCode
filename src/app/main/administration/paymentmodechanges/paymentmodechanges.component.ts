@@ -29,6 +29,17 @@ export class PaymentmodechangesComponent implements OnInit {
   gridConfig: any;
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+
+  @ViewChild('actionButtonTemplateIP') actionButtonTemplateIP!: TemplateRef<any>;
+  @ViewChild('ColorCodeIp') ColorCodeIp!: TemplateRef<any>;
+
+  @ViewChild('actionButtonTemplateOP') actionButtonTemplateOP!: TemplateRef<any>;
+  @ViewChild('ColorCodeOP') ColorCodeOP!: TemplateRef<any>;
+
+
+  @ViewChild('actionButtonTemplateIPAdv') actionButtonTemplateIPAdv!: TemplateRef<any>;
+  @ViewChild('ColorCodeIPAdv') ColorCodeIPAdv!: TemplateRef<any>;
+
   ngAfterViewInit() {
     this.gridConfigOP.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateOP;
     this.gridConfigOP.columnsList.find(col => col.key === 'label')!.template = this.ColorCodeOP;
@@ -39,16 +50,7 @@ export class PaymentmodechangesComponent implements OnInit {
     this.gridConfigIPAdv.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIPAdv;
     this.gridConfigIPAdv.columnsList.find(col => col.key === 'label')!.template = this.ColorCodeIPAdv;
   }
-  @ViewChild('actionButtonTemplateIP') actionButtonTemplateOP!: TemplateRef<any>;
-  @ViewChild('ColorCodeIp') ColorCodeIp!: TemplateRef<any>;
-
-  @ViewChild('actionButtonTemplateOP') actionButtonTemplateIP!: TemplateRef<any>;
-  @ViewChild('ColorCodeOP') ColorCodeOP!: TemplateRef<any>;
-
-
-  @ViewChild('actionButtonTemplateIPAdv') actionButtonTemplateIPAdv!: TemplateRef<any>;
-  @ViewChild('ColorCodeIPAdv') ColorCodeIPAdv!: TemplateRef<any>;
-
+  
   f_name: any = ""
   regNo: any = "0"
   l_name: any = ""
@@ -453,11 +455,10 @@ getfilterAd() {
         maxWidth: '90vh',
         // height: "35%",
         width: '100%',
-        data: {
-          obj: contact.PaymentId
-        },
+        data: contact
       });
     dialogRef.afterClosed().subscribe(result => {
+      this.grid.bindGridData();
       console.log('The dialog was closed - Insert Action', result);
       //  if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '0')
       //   this.getOPReceiptList();

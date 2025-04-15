@@ -73,7 +73,8 @@ export class NewGRNReturnComponent implements OnInit {
   vFinalVatAmount:any=0
   vFinalDiscAmount:any=0;
   vRoundingAmt:any;
-
+  autocompletestore: string = "Store";
+  autocompleteSupplier:string="Supplier"
   
   dsGrnItemList = new MatTableDataSource<ItemNameList>();
   dsNewGRNReturnItemList = new MatTableDataSource<ItemNameList>();
@@ -93,59 +94,30 @@ export class NewGRNReturnComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.getStoreList();
-    this.getSupplierSearchCombo(); 
-  
-    this.filteredoptionsSupplier = this._GRNReturnService.NewGRNReturnFrom.get('SupplierId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterSupplier(value)),
-    );
+    // this.getStoreList();
+
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  getStoreList() {
-    var vdata = {
-      Id: this._loggedService.currentUserValue.storeId
-    }
-    this._GRNReturnService.getLoggedStoreList(vdata).subscribe(data => {
-      this.ToStoreList = data;
-      //console.log(this.ToStoreList) 
-      this._GRNReturnService.GRNReturnStoreFrom.get('ToStoreId').setValue(this.ToStoreList[0]);
-    });
+  vstoreId: any = '';
+  selectChangeStore(obj: any) {
+    debugger
+    console.log("Store:", obj);
+    this.vstoreId = obj.value
   }
-  vsupplierName:any;
-  getSupplierSearchCombo() { 
-    if (this.VsupplierId > 0) {
-      this.vsupplierName = this.VsupplierName;
-    } 
-    else {
-      this.vsupplierName = this._GRNReturnService.NewGRNReturnFrom.get('SupplierId').value;
-    }
-    var vdata={
-      'SupplierName':`${this.vsupplierName}%`,
-    }
-    this._GRNReturnService.getSupplierSearchList(vdata).subscribe(data => {
-      this.SupplierList = data;
-      //console.log(this.SupplierList) 
-      if(this.VsupplierId != 0){
-        const ddValue = this.SupplierList.find(c => c.SupplierId == this.VsupplierId);
-       // console.log(ddValue.SupplierName)
-        this._GRNReturnService.NewGRNReturnFrom.get('SupplierId').setValue(ddValue.SupplierName);
-        this._GRNReturnService.NewGRNReturnFrom.get('SupplierId').setValue(this.SupplierList[0]);
-       
-      }
-    });
-  }
-  private _filterSupplier(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
-      return this.SupplierList.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
-    }
-  } 
-  getOptionTextSupplier(option) {
-    return option && option.SupplierName ? option.SupplierName : '';
-  }
+
+  // getStoreList() {
+  //   var vdata = {
+  //     Id: this._loggedService.currentUserValue.storeId
+  //   }
+  //   this._GRNReturnService.getLoggedStoreList(vdata).subscribe(data => {
+  //     this.ToStoreList = data;
+  //     //console.log(this.ToStoreList) 
+  //     this._GRNReturnService.GRNReturnStoreFrom.get('ToStoreId').setValue(this.ToStoreList[0]);
+  //   });
+  // }
+ 
 
   getGrnItemDetailList(Params) {
     this.sIsLoading = 'loading-data';
@@ -437,8 +409,8 @@ OnReset() {
     const dialogRef = this._matDialog.open(GrnListComponent,
       {
         maxWidth: "100%",
-        height: '95%',
-        width: '95%',
+        maxHeight: '95%',
+        width: '85%',
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
@@ -448,7 +420,7 @@ OnReset() {
       this.VsupplierName = this.dsNewGRNReturnItemList.data[0]['SupplierName']
       this.vGRNID = this.dsNewGRNReturnItemList.data[0].GRNID
       this.CashCredittype = this.dsNewGRNReturnItemList.data[0].Cash_CreditType
-      this.getSupplierSearchCombo(); 
+      // this.getSupplierSearchCombo(); 
   
       this.getGrnItemDetailList(this.dsNewGRNReturnItemList.data[0]) 
       if(this.dsNewGRNReturnItemList.data[0].Cash_CreditType == false){

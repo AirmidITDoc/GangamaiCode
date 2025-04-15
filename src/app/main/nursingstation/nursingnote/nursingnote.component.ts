@@ -30,19 +30,24 @@ import { NewTemplateComponent } from './new-template/new-template.component';
 })
 export class NursingnoteComponent implements OnInit {
 
-  vTemplateDesc: any;
   vTemplateName: any;
   isActive: boolean = true;
-  editorConfig: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: '20rem',
-    minHeight: '20rem',
-    translate: 'yes',
-    placeholder: 'Enter text here...',
-    enableToolbar: true,
-    showToolbar: true,
-  };
+   editorConfig: AngularEditorConfig = {
+          editable: true,
+          spellcheck: true,
+          height: '20rem',
+          minHeight: '20rem',
+          translate: 'yes',
+          placeholder: 'Enter text here...',
+          enableToolbar: true,
+          showToolbar: true,
+      
+        };
+                 
+  onBlur(e: any) {
+    this.vDescription = e.target.innerHTML;
+    throw new Error('Method not implemented.');
+  }
   displayedItemColumn: string[] = [
     'Status',
     'DrugName',
@@ -281,9 +286,9 @@ export class NursingnoteComponent implements OnInit {
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        that.grid.bindGridData();
-      }
+      // if (result) {
+        this.grid.bindGridData();
+      // }
     });
   }
 
@@ -314,10 +319,6 @@ export class NursingnoteComponent implements OnInit {
     });
 
 
-  }
-
-  onBlur(e: any) {
-    this.vTemplateDesc = e.target.innerHTML;
   }
 
   data: any;

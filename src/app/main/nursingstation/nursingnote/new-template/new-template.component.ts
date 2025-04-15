@@ -21,6 +21,7 @@ export class NewTemplateComponent implements OnInit {
     vTemplateDesc: any;
     vTemplateName: any;
     isActive: boolean = true;
+    
     editorConfig: AngularEditorConfig = {
         editable: true,
         spellcheck: true,
@@ -32,6 +33,10 @@ export class NewTemplateComponent implements OnInit {
         showToolbar: true,
     };
 
+    onBlur(e: any) {
+        this.vTemplateDesc = e.target.innerHTML;
+        throw new Error('Method not implemented.');
+    }
 
     constructor(
         public _NursingnoteService: NursingnoteService,
@@ -87,9 +92,6 @@ export class NewTemplateComponent implements OnInit {
         this.myTemplateform.reset();
         this.myform.reset();
         this.dialogRef.close();
-    }
-    onBlur(e: any) {
-        this.vTemplateDesc = e.target.innerHTML;
     }
 
     onClear(val: boolean) {

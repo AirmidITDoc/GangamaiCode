@@ -549,18 +549,15 @@ ClearfilterRefundAd(event) {
     let that = this;
     const dialogRef = this._matDialog.open( BillDateUpdateComponent, 
         {
-          // maxWidth:'50vh',
-          //   maxHeight: '50vh',
-          //   width: '90%',
             maxHeight: "35vh",
             maxWidth: '90vh',
             width: '100%',
             data: row
         });
     dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-            that.grid.bindGridData();
-        }
+        // if (result) {
+            this.grid.bindGridData();
+        // }
     });
   }
 
