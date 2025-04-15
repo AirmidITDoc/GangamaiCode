@@ -24,14 +24,17 @@ import { FormGroup } from '@angular/forms';
 export class SMSConfugurationComponent implements OnInit {
   MySearchForm:FormGroup;
     msg: any;
+    fromDate ="01/01/2024" //this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "smsConfig/SMSconfigList",
         columnsList: [
-            { heading: "OutGoingCode", key: "sMSOutGoingID", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Date", key: "sMSDate", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "SMSString", key: "sMSString", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "OutGoingCode", key: "smsOutGoingID", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Date", key: "smsDate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "MobileNo", key: "mobileNumber", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "SMSString", key: "smsString", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsSent", key: "isSent", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
@@ -53,8 +56,8 @@ export class SMSConfugurationComponent implements OnInit {
         sortField: "SMSOutGoingID",
         sortOrder: 0,
         filters: [
-            { fieldName: "FromDate", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "ToDate", fieldValue: "", opType: OperatorComparer.Equals }
+            { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Contains },
+            { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals }
         ]
     }
     onSave(row: any = null) {

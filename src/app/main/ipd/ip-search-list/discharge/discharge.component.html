@@ -152,7 +152,7 @@
                                     <airmid-dropdown label="DischargedDoc" formControlName="dischargedDocId"
                                         [formGroup]="DischargeForm" fxFlex
                                         [validations]="getValidationMessages().dischargedDocId"
-                                        [mode]="autocompletcondoc">
+                                        [mode]="autocompletcondoc" (SelectionChange)="docName($event)">
                                     </airmid-dropdown>
 
                                     <airmid-dropdown label="DischargeType" formControlName="dischargeTypeId"

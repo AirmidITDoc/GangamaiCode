@@ -25,7 +25,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
     animations: fuseAnimations
 })
 export class CanteenRequestComponent implements OnInit {
-    myFilterform
+    myFilterform:FormGroup;
+    fromDate ="01/01/2024" //this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
@@ -54,9 +56,9 @@ export class CanteenRequestComponent implements OnInit {
         sortField: "ReqId",
         sortOrder: 0,
         filters: [
-            { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
-            { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals }
+            { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
         ]
     }
 
@@ -65,7 +67,8 @@ export class CanteenRequestComponent implements OnInit {
     isShowDetailTable: boolean = false;
 
     GetDetails(data) {
-        let reqId=data.reqId
+        console.log(data)
+        let reqId=String(data.reqId)
         this.gridConfig1 = {
         apiUrl: "CanteenRequest/CanteenRequestList",
         columnsList: [
@@ -77,7 +80,7 @@ export class CanteenRequestComponent implements OnInit {
         sortField: "ReqId",
         sortOrder: 0,
         filters: [
-            { fieldName: "ReqId", fieldValue: "1", opType: OperatorComparer.Equals }
+            { fieldName: "ReqId", fieldValue: reqId, opType: OperatorComparer.Equals }
            
         ]
       }
@@ -88,7 +91,7 @@ export class CanteenRequestComponent implements OnInit {
 
     
     constructor(public _CanteenRequestService: CanteenRequestService, public _matDialog: MatDialog, private _formBuilder: FormBuilder,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService, public datePipe: DatePipe) { }
     ngOnInit(): void {
         this.myFilterform=this.filterForm()
     }

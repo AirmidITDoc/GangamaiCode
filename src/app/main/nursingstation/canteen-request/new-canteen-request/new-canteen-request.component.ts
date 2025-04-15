@@ -30,38 +30,7 @@ export class NewCanteenRequestComponent implements OnInit {
   autocompleteModewardName: string = "Room";
   dsItemList = new MatTableDataSource<CanteenItemList>();
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-  // gridConfig1: gridModel = {
-  //     apiUrl: "CurrencyMaster/List",
-  //     columnsList: [
-  //         { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
-  //         { heading: "Time", key: "time", sort: true, align: 'left', emptySign: 'NA' },
-  //     ],
-  //     sortField: "firstName",
-  //     sortOrder: 0,
-  //     filters: [
-  //         { fieldName: "firstName", fieldValue: "", opType: OperatorComparer.Contains },
-  //         { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals },
-  //         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-  //     ]
-  // }
-
-
-  // gridConfig: gridModel = {
-  //     apiUrl: "CurrencyMaster/List",
-  //     columnsList: [
-  //         { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
-  //         { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
-  //         { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
-  //         { heading: "Buttons", key: "button", sort: true, align: 'left', emptySign: 'NA' },
-  //     ],
-  //     sortField: "firstName",
-  //     sortOrder: 0,
-  //     filters: [
-  //         { fieldName: "firstName", fieldValue: "", opType: OperatorComparer.Contains },
-  //         { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals },
-  //         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-  //     ]
-  // }
+  
   vOPIPId: any = 0;
   vOPDNo: any;
   vTariffId: any = 0;
@@ -101,7 +70,8 @@ export class NewCanteenRequestComponent implements OnInit {
   AdmissionDate: any;
   GenderName: any;
 
-
+  price=0
+  isBatchRequired:boolean=false;
   constructor(
     public _CanteenRequestservice: CanteenRequestService,
     private _loggedService: AuthenticationService,
@@ -186,15 +156,18 @@ export class NewCanteenRequestComponent implements OnInit {
     // }
     const iscekDuplicate = this.dsItemList.data.some(item => item.ItemID == this.ItemId)
     if (!iscekDuplicate) {
-
+debugger
       this.dsItemList.data = [];
       this.Chargelist.push(
         {
           ItemID: this.ItemId,
           ItemName: this.ItemName,
-          Qty:2,// this.vQty,
-          Remark:'Chk'// this.vRemark || ''
+          Qty:this._CanteenRequestservice.ItemForm.get('Qty').value,
+          Price:this.price || 0,
+          totalamt:parseInt(this._CanteenRequestservice.ItemForm.get('Qty').value) * this.price,
+          Remark:this._CanteenRequestservice.ItemForm.get('Remark').value || ''
         });
+        console.log(this.Chargelist);
       this.dsItemList.data = this.Chargelist
       console.log(this.dsItemList.data);
     } else {
@@ -211,16 +184,16 @@ export class NewCanteenRequestComponent implements OnInit {
     //console.log(this.dsPrePresList.data)
   }
 
+
   getSelectedserviceObj(obj) {
 
     console.log(obj)
-    this.ItemId = obj.serviceId
-    this.ItemName = obj.serviceName
-    this.vQty = 2
-    this.vRemark = 's'
+    this.ItemId = obj.itemID
+    this.ItemName = obj.itemName
+    this.price = obj.price
+    this.isBatchRequired = obj.isBatchRequired
     this.add = true;
   }
-
 
 
   deleteTableRow(event, element) {
@@ -285,9 +258,9 @@ export class NewCanteenRequestComponent implements OnInit {
       CanteenReqDetObj['reqDetId'] = 0
       CanteenReqDetObj['reqId'] = 0
       CanteenReqDetObj['itemId'] = element.ItemID || 0;
-      CanteenReqDetObj['unitMRP'] = 210
+      CanteenReqDetObj['unitMRP'] = element.Price || 0,
       CanteenReqDetObj['qty'] = element.Qty || 0;
-      CanteenReqDetObj['totalAmount'] = 20;
+      CanteenReqDetObj['totalAmount'] = element.totalamt;
       CanteenReqDetObj['isBillGenerated'] = true;
       CanteenReqDetObj['isCancelled'] = false;
       canteenRequestDetailsInsert.push(CanteenReqDetObj);
@@ -337,6 +310,8 @@ export class CanteenItemList {
   ItemName: string;
   Qty: number;
   Remark: any;
+  Price:any;
+  totalamt:any;
   /**
   * Constructor
   *
@@ -348,7 +323,9 @@ export class CanteenItemList {
       this.ItemID = CanteenItemList.ItemID || 0;
       this.ItemName = CanteenItemList.ItemName || "";
       this.Qty = CanteenItemList.Quantity || 0;
+      this.Price = CanteenItemList.price || 0;
       this.Remark = CanteenItemList.Remark || '';
+      this.totalamt = CanteenItemList.totalamt || '';
     }
   }
 }

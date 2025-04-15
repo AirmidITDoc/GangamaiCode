@@ -57,10 +57,6 @@ export class DischargeComponent implements OnInit {
   registerObj1 = new AdmissionPersonlModel({});
   registerObj = new RegInsert({});
 
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
   autocompletcondoc: string = "ConDoctor";
   autocompletedichargetype: string = "DichargeType";
   autocompletemode: string = "ModeOfDischarge";
@@ -84,8 +80,7 @@ export class DischargeComponent implements OnInit {
    
     setInterval(() => {
 
-      this.DischargeForm.get("dischargedDocId").setValue(this.data.docNameId)
-
+    
       this.now = new Date();
       this.dateTimeString = this.now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
       if (!this.isTimeChanged) {
@@ -130,29 +125,32 @@ export class DischargeComponent implements OnInit {
 
     this.getchkConfigInitiate();
   }
-  getdischargeIdbyadmission() {
+  // getdischargeIdbyadmission() {
     
-    this._IpSearchListService.getDischargeId(this.data.admissionId).subscribe(data => {
-      console.log(data)
+  //   this._IpSearchListService.getDischargeId(this.data.admissionId).subscribe(data => {
+  //     console.log(data)
 
-      if (data) {
-        this.IsCancelled = data.isCancelled || 0
-        // if (this.IsCancelled == '1') {
-        // this.DischargeId = 0
-        // } else {
-        this.DischargeId = data.dischargeId || 0
-        // }
+  //     if (data) {
+  //       this.IsCancelled = data.isCancelled || 0
+  //       // if (this.IsCancelled == '1') {
+  //       // this.DischargeId = 0
+  //       // } else {
+  //       this.DischargeId = data.dischargeId || 0
+  //       // }
 
 
-        this.DischargeForm.get("dischargedDocId").setValue(data.dischargedDocId)
-        this.DischargeForm.get("dischargeTypeId").setValue(data.dischargeTypeId)
-        this.DischargeForm.get("dischargedRmoid").setValue(data.dischargedRmoid)
+  //       this.DischargeForm.get("dischargedDocId").setValue(data.dischargedDocId)
+  //       this.DischargeForm.get("dischargeTypeId").setValue(data.dischargeTypeId)
+  //       this.DischargeForm.get("dischargedRmoid").setValue(data.dischargedRmoid)
 
-      }
+  //     }
 
-    });
+  //   });
+  // }
+
+  docName(event){
+console.log(event)
   }
-
   DischargesaveForm(): FormGroup {
     return this._formBuilder.group({
 

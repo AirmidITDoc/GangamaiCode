@@ -169,22 +169,22 @@
                                             <airmid-autocomplete lbl="Item"
                                                 [formGroup]="_CanteenRequestservice.ItemForm" label="Search Item Name"
                                                 formControlName="ItemId" placeholderText="Enter Item Name" fxFlex
-                                                ApiUrl="VisitDetail/GetServiceListwithTraiff?TariffId=1&ClassId=2&ServiceName="
+                                                ApiUrl="CanteenRequest/GetItemListforCanteen?ItemName="
                                                 (selectionChange)="getSelectedserviceObj($event)"
-                                                TextField="serviceName" ValueField="serviceId"></airmid-autocomplete>
+                                                TextField="itemName" ValueField="itemID"></airmid-autocomplete>
 
 
                                         </div>
                                         <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="Qty" formControlName="Qty" [value]="data?.Qty"
-                                                [formGroup]="_CanteenRequestservice.MyForm"
+                                                [formGroup]="_CanteenRequestservice.ItemForm"
                                                 [validations]="getValidationMessages().Qty" #qty
                                                 (keypress)="keyPressAlphanumeric($event)" [maxLength]="50">
                                             </airmid-textbox>
                                         </div>
                                         <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="Remark" formControlName="Remark"
-                                                [value]="data?.Remark" [formGroup]="_CanteenRequestservice.MyForm"
+                                                [value]="data?.Remark" [formGroup]="_CanteenRequestservice.ItemForm"
                                                 [validations]="getValidationMessages().Remark" #remark
                                                 (keydown)="onEnterremark($event)" [maxLength]="50">
                                             </airmid-textbox>
