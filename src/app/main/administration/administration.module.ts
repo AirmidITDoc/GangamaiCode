@@ -70,10 +70,10 @@ const appRoutes: Routes = [
     path: "Template Description",
     loadChildren: () => import("./template-description/templatedescription.module").then((m) => m.TemplatedescriptionModule),
 },
-{
-  path: "scheduler",
-  loadChildren: () => import("./daily-expenses/daily-expenses.module").then((m) => m.DailyExpensesModule),
-}
+// {
+//   path: "scheduler",
+//   loadChildren: () => import("./daily-expenses/daily-expenses.module").then((m) => m.DailyExpensesModule),
+// }
  
 ];
 
