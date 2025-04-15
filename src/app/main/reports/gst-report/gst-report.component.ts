@@ -1185,16 +1185,20 @@ export class GSTReportComponent implements OnInit {
     this.StoreId=obj.StoreId;
   }
 
-  clearField(){
-    this._GstReportService.userForm.reset();
-    this._GstReportService.userForm.get('startdate').setValue(new Date());
-    this._GstReportService.userForm.get('enddate').setValue(new Date());
+  clearField(){ 
+    //this._GstReportService.userForm.reset();
+    // this._GstReportService.userForm.get('startdate').setValue(new Date());
+    // this._GstReportService.userForm.get('enddate').setValue(new Date());
     this._GstReportService.userForm.get('DoctorId').setValue('');
     this._GstReportService.userForm.get('StoreId').setValue('');
     this._GstReportService.userForm.get('RegID').setValue('');
+    this._GstReportService.userForm.get('UserId').setValue('');
+    this._GstReportService.userForm.get('ReportType').setValue('1');
     this.RegId='';
     this.StoreId='';
+ 
   }
+
 
   getDoctorList() {
     debugger

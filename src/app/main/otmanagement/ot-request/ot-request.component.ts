@@ -48,6 +48,7 @@ export class OTRequestComponent implements OnInit {
 
     'status',  
     'OTbookingDateTime',
+    'Regno',
     'Patientname',
     'SurgeonName',
     'SurgeryCategoryName',
@@ -81,6 +82,9 @@ export class OTRequestComponent implements OnInit {
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
       SurgeryType: ['0'],
+      F_Name:[''],
+      L_Name:[''],
+      Reg_No:[''],
     });
   } 
   getRequestList() { 
@@ -88,6 +92,9 @@ export class OTRequestComponent implements OnInit {
     var m_data = {
       "FromDate": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
       "ToDate": this.datePipe.transform(this.searchFormGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
+      "FirstName":this.searchFormGroup.get("F_Name").value + '%' || '%',
+      "LastName":this.searchFormGroup.get("L_Name").value + '%' || '%', 
+      "RegNo":this.searchFormGroup.get("Reg_No").value || 0
     }
     console.log(m_data);
     this._OtManagementService.getOTRequestList(m_data).subscribe(Visit => {

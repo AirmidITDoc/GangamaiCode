@@ -52,7 +52,9 @@ export class OTNoteComponent implements OnInit {
   registerObj = new OPIPPatientModel({}); 
   registerObj1 = new OTReservationDetail({});
   
-  
+  PatientListfilteredOptionsIP: any;
+  PatientListfilteredOptionsOP: any;
+  isRegIdSelected: boolean = false;
   vSelectedOption: any = '';
   vPatientName: any = '';
   vAgeYear: any = '';
@@ -109,6 +111,8 @@ export class OTNoteComponent implements OnInit {
   filteredAnesthDoctor3: Observable<string[]>;
   optionsAnesthDoctor3: any[] = [];
   isAnestheticsDr3Selected: boolean = false; 
+  options = [];
+  filteredOptions: any; 
 
 
   dataSource = new MatTableDataSource<OTNoteDetail>();
@@ -116,14 +120,14 @@ export class OTNoteComponent implements OnInit {
   constructor(
     public _OtManagementService: OTManagementServiceService,
     private accountService: AuthenticationService,
-    public _matDialog: MatDialog,
+  //   public _matDialog: MatDialog,
     public toastr: ToastrService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<OTNoteComponent>,
+    // @Inject(MAT_DIALOG_DATA) public data: any,
+    //  public dialogRef: MatDialogRef<OTNoteComponent>,
     private advanceDataStored: AdvanceDataStored,
     public datePipe: DatePipe,
   ) { }
-
+  data:any
   ngOnInit(): void { 
     this.personalFormGroup = this._OtManagementService.createOtNoteForm();
     this.vSelectedOption = this.OP_IPType === true ? 'IP' : 'OP';
@@ -163,6 +167,127 @@ export class OTNoteComponent implements OnInit {
     this.getAnesthestishDoctorList2();
     this.getAnesthestishDoctorList3();
   }
+  onChangePatientType(event) {
+
+    this.personalFormGroup.get('RegID').reset();
+    if (event.value == 'OP') {
+      this.PatientInformReset();
+      this.OP_IPType = 0;
+      this.RegId = "";
+    }
+    else if (event.value == 'IP') {
+      this.PatientInformReset();
+      this.OP_IPType = 1;
+      this.RegId = "";
+    }
+  }
+    getSearchList() {
+      var m_data = {
+        "Keyword": `${this.personalFormGroup.get('RegID').value}%`
+      }
+      if (this.personalFormGroup.get('PatientType').value == 'OP') {
+  
+        if (this.personalFormGroup.get('RegID').value.length >= 1) {
+          this._OtManagementService.getPatientVisitedListSearch(m_data).subscribe(resData => {
+            this.filteredOptions = resData;
+            this.PatientListfilteredOptionsOP = resData;
+            console.log(resData);
+            if (this.filteredOptions.length == 0) {
+              this.noOptionFound = true;
+            } else {
+              this.noOptionFound = false;
+            }
+          });
+        }
+      } else if (this.personalFormGroup.get('PatientType').value == 'IP') {
+  
+        if (this.personalFormGroup.get('RegID').value.length >= 1) {
+          this._OtManagementService.getAdmittedPatientList(m_data).subscribe(resData => {
+            this.filteredOptions = resData;
+            // console.log(resData);
+            this.PatientListfilteredOptionsIP = resData;
+            if (this.filteredOptions.length == 0) {
+              this.noOptionFound = true;
+            } else {
+              this.noOptionFound = false;
+            }
+          });
+        }
+      }
+      this.PatientInformReset();
+    }
+  
+    getSelectedObjOP(obj) {
+      console.log("AdmittedListOP:", obj)
+      this.registerObj = obj;
+      this.vWardName = obj.RoomName;
+      this.vBedNo = obj.BedName;
+      this.vGenderName = obj.GenderName;
+      this.vPatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
+      this.vAgeYear = obj.AgeYear;
+      this.RegId = obj.RegID;
+      this.vOPIP_ID = obj.VisitId
+      this.vAge = obj.Age;
+      this.vRegNo = obj.RegNo;
+      this.vOPDNo = obj.OPDNo;
+      this.vCompanyName = obj.CompanyName;
+      this.vTariffName = obj.TariffName;
+      this.vOP_IP_MobileNo = obj.MobileNo;
+      this.vDoctorName = obj.DoctorName;
+      this.vDepartmentName = obj.DepartmentName; 
+    }
+  
+    getSelectedObjRegIP(obj) {
+      let IsDischarged = 0;
+      IsDischarged = obj.IsDischarged
+      if (IsDischarged == 1) {
+        Swal.fire('Selected Patient is already discharged');
+        this.RegId = ''
+      }
+      else {
+        console.log("AdmittedListIP:", obj)
+        this.registerObj = obj;
+        this.vPatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
+        this.RegId = obj.RegID;
+        this.vOPIP_ID = this.registerObj.AdmissionID;
+        this.vIPDNo = obj.IPDNo;
+        this.vRegNo = obj.RegNo;
+        this.vDoctorName = obj.DoctorName;
+        this.vTariffName = obj.TariffName
+        this.vCompanyName = obj.CompanyName;
+        this.vAgeYear = obj.AgeYear;
+        this.vOP_IP_MobileNo = obj.MobileNo;
+        this.vDepartmentName = obj.DepartmentName;
+        this.vAge = obj.Age;
+        this.vGenderName = obj.GenderName;
+      } 
+    }
+  
+  getOptionTextIPObj(option) {
+    return option && option.FirstName + " " + option.LastName;
+  }
+  getOptionTextOPObj(option) {
+    return option && option.FirstName + " " + option.LastName;
+  }
+  PatientInformReset() {
+    this.vWardName = '';
+    this.vBedNo = '';
+    this.vGenderName = '';
+    this.vPatientName = '';
+    this.vAgeYear = '';
+    this.RegId = '';
+    this.vAdmissionID = '';
+    this.vOPIP_ID = '';
+    this.vAge = '';
+    this.vRegNo='';
+    this.vOPDNo = '';
+    this.vCompanyName = '';
+    this.vTariffName = '';
+    this.vOP_IP_MobileNo = '';
+    this.vDoctorName = '';
+    this.vDepartmentName = ''; 
+    this.vIPDNo = '';
+  } 
 
   getSurgeryList() {
     this._OtManagementService.getSurgeryCombo().subscribe(data => {
@@ -505,7 +630,7 @@ export class OTNoteComponent implements OnInit {
           this._OtManagementService
           Swal.fire('Congratulations !', 'OT Note  Data save Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
-              this._matDialog.closeAll();
+             // this._matDialog.closeAll();
             }
           });
         } else {
@@ -559,7 +684,7 @@ export class OTNoteComponent implements OnInit {
         if (response) {
           Swal.fire('Congratulations !', 'OT NOTE Data Updated Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
-              this._matDialog.closeAll();
+            //  this._matDialog.closeAll();
             }
           });
         } else {
@@ -574,7 +699,8 @@ export class OTNoteComponent implements OnInit {
   onClose() {
     this.dataSource.data = [];
     this.personalFormGroup.reset();
-    this.dialogRef.close(); 
+    // this.dialogRef.close(); 
+    // this._matDialog.closeAll();
   }
 
   //Doctor list 

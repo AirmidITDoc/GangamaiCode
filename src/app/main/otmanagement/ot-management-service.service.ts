@@ -155,7 +155,9 @@ export class OTManagementServiceService {
       complicationMode:'',
       assistant:'',
       DoctorId1:'',
-       AnestheticsDr3:''
+       AnestheticsDr3:'',
+       RegID: '',
+       PatientType: ['IP'],
     });
   }
 

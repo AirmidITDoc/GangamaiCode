@@ -485,6 +485,13 @@ debugger
   }
 
   onSave() {
+    if (this.RegId == '' || this.RegId == null || this.RegId == undefined) {
+      this.toastr.warning('Please select patient Name ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    
     if (this.selectedDepartment == '' || this.selectedDepartment == null || this.selectedDepartment == undefined) {
       this.toastr.warning('Please select Department ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -591,6 +598,7 @@ debugger
       opip_Type = 0;
     }
 
+ 
   let OTRequestId = this.registerObj1.OTRequestId;
 
   this.isLoading = 'submit';

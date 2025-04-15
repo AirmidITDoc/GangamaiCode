@@ -60,6 +60,22 @@
                     <mat-date-range-picker #picker></mat-date-range-picker>
                   </mat-form-field>
 
+                  <mat-form-field appearance="outline">
+                    <mat-label>Search RegNo</mat-label>
+                    <input name="Reg_No" formControlName="Reg_No" matInput (keyup)="getOtreservationList()"> 
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Search First Name</mat-label>
+                    <input name="F_Name" formControlName="F_Name" matInput (keyup)="getOtreservationList()"> 
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Search Last Name</mat-label>
+                    <input name="L_Name" formControlName="L_Name" matInput (keyup)="getOtreservationList()"> 
+                </mat-form-field>
+
+
                   <div style="margin-top: 20px;">
                     <button mat-raised-button (click)="onClear()" class="clearbutton">
                       <mat-icon class="cleariconbutton" matTooltip="close">close
@@ -157,6 +173,15 @@
                       {{contact.OPTime | date:'shortTime'}}
                     </mat-cell>
                   </ng-container>
+
+                  <ng-container matColumnDef="Regno" sticky>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
+                        UHID NO
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
+                        {{ contact.RegNo}}
+                    </mat-cell>
+                </ng-container>
 
                   <ng-container matColumnDef="PatientName" sticky>
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">

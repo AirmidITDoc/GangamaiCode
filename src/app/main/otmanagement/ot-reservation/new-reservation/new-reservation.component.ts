@@ -607,7 +607,7 @@ debugger
   } 
     onSave() {
 
-      if (this.RegId == '' || this.RegId == null || this.RegId == undefined) {
+      if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
         this.toastr.warning('Please select patient Name ', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });

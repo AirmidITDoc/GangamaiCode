@@ -48,6 +48,7 @@ export class OTReservationComponent implements OnInit {
   displayedColumns = [  
     'UnBooking',
     'OPDateTime',
+    'Regno',
     'PatientName',
     'SurgeonName1',
     'SurgeonName2',
@@ -137,7 +138,9 @@ export class OTReservationComponent implements OnInit {
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
       OTTableID: [''],
-
+      F_Name:[''],
+      L_Name:[''],
+      Reg_No:[''],
     });
   }
 
@@ -148,6 +151,9 @@ export class OTReservationComponent implements OnInit {
       "From_Dt": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
       "To_Dt": this.datePipe.transform(this.searchFormGroup.get("end").value, "yyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
       // "OTTableID": this.searchFormGroup.get("OTTableID").value || 0
+      "FirstName":this.searchFormGroup.get("F_Name").value + '%' || '%',
+      "LastName":this.searchFormGroup.get("L_Name").value + '%' || '%', 
+      "RegNo":this.searchFormGroup.get("Reg_No").value || 0
     }
     console.log(m_data);
     this._OtManagementService.getOTReservationlist(m_data).subscribe(Visit => {

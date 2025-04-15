@@ -62,5 +62,16 @@ export class TallyInterfaceService {
     }
     return this._httpClient.post("Generic/GetByProc?procName=m_tally_IP_BillList_PatientWise_Payment", emp)
   }
- 
+  public getipbillcashcounterlist(emp, loader = true){
+    if(loader){
+      this._LoaderService.show()
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=m_tally_IP_BillList_CashCounter", emp)
+  }
+  public getipbillRefundlist(emp, loader = true){
+    if(loader){
+      this._LoaderService.show()
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=m_tally_IPBillRefund_BillList_PatientWise_Payment", emp)
+  }
 }

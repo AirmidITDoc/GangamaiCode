@@ -350,6 +350,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.selectedPaymnet1 = 'cash';
             this.Date = this.advanceData.Date; 
              this.MulPaySettleAmt = true
+             this.InterimBill = false
         }
         //IP-Interim Bill
         if (this.data.FromName == "IP-IntrimBIll") {
@@ -547,7 +548,7 @@ export class OpPaymentVimalComponent implements OnInit {
         }
         else if(this.data.FromName == "IP-Pharma-SETTLEMENT"){  
             let PaymentMul = []; 
-
+debugger
             let PayCashAmt,PayChequeAmt,PayCardAmt,PayNeftAmt,PyaPytmAmt,PyaTDSAmt
             let CashAmount =  this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
             let ChequeAmt =  this.Payments.data.find(x => x.PaymentType == "cheque")?.Amount ?? 0;
@@ -717,7 +718,7 @@ export class OpPaymentVimalComponent implements OnInit {
                     } 
              
                 let MultiplePay = {} 
-                MultiplePay['BillNo'] = this.advanceData.BillNo;
+                MultiplePay['BillNo'] = element.SalesId || 0; //this.advanceData.BillNo;
                 MultiplePay['PaymentDate'] =  this.dateTimeObj.date; //this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
                 MultiplePay['PaymentTime'] =  this.dateTimeObj.time; //this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
                 MultiplePay['CashPayAmount'] = PayCashAmt || 0
@@ -913,12 +914,14 @@ export class OpPaymentVimalComponent implements OnInit {
         debugger 
         this.dataSource.data = [];
         let Query
-        if(this.data.FromName != "IP-IntrimBIll"){
-            if (this.data.FromName == "IP-Pharma-SETTLEMENT") {
-                Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from T_PHAdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
-            } else {
-                Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
-            }
+        if(this.data.FromName != "IP-IntrimBIll" && this.data.FromName != "IP-Pharma-SETTLEMENT"){
+            // if (this.data.FromName == "IP-Pharma-SETTLEMENT") {
+            //     Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from T_PHAdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
+            // } else {
+            //     Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
+            // }
+            Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
+
             this.ipSearchService.getAdvcanceDetailslist(Query).subscribe(data => {
                 this.dataSource.data = data as [];
                 console.log(data);
@@ -941,11 +944,14 @@ export class OpPaymentVimalComponent implements OnInit {
         this.IsAdv = e.checked;
         if (this.IsAdv) {
             let Query
-            if(this.data.FromName == "IP-Pharma-SETTLEMENT"){
-              Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from T_PHAdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
-            }else{
-              Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
-            }
+            // if(this.data.FromName == "IP-Pharma-SETTLEMENT" ){
+            //   Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from T_PHAdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
+            // }else{
+            //   Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
+            // }
+
+            Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
+
             this.ipSearchService.getAdvcanceDetailslist(Query).subscribe(data => {
                 this.dataSource.data = data as [];
                 this.AdvanceId = this.dataSource.data[0].AdvanceId
