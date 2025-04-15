@@ -1,6 +1,6 @@
 <ng-template #serviceTable>
   <div class="service-table1">
-    <mat-table #table matSort [dataSource]="dataSource1" [@animateStagger]="{ value: '50' }" >
+    <mat-table #table matSort [dataSource]="dataSource1" [@animateStagger]="{ value: '50' }">
       <ng-container matColumnDef="ServiceName">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">Service Name</mat-header-cell>
         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
@@ -13,7 +13,7 @@
         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
           <span>{{ contact.price }}</span>
         </mat-cell>
-      </ng-container> 
+      </ng-container>
 
       <ng-container matColumnDef="reqDate">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">ReqDate</mat-header-cell>
@@ -39,7 +39,7 @@
       <ng-container matColumnDef="Action" sticky="end">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">Action</mat-header-cell>
         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
-          <button mat-icon-button matTooltip="Add Service"    (dblclick)="AddList(contact)">
+          <button mat-icon-button matTooltip="Add Service" (dblclick)="AddList(contact)">
             <mat-icon color="warn">add</mat-icon>
           </button>
         </mat-cell>
@@ -53,17 +53,10 @@
         <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
       </ng-container>
 
-      <mat-header-row class="accent" *matHeaderRowDef="NurReqColumns; sticky: true"></mat-header-row> 
-      <mat-row
-        *matRowDef="let contact; columns: NurReqColumns"
-        [ngClass]="{ 'row-pink': contact.IsStatus == 0 }"
-        [@animate]="{ value: '*', params: { y: '100%' } }" 
-      ></mat-row>
-      <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource1!=null}">
-                  </mat-footer-row>
-                  <mat-footer-row *matFooterRowDef="['noData']"
-                      [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
-                  </mat-footer-row>
+      <mat-header-row class="accent" *matHeaderRowDef="NurReqColumns; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let contact; columns: NurReqColumns" [ngClass]="{ 'row-pink': contact.IsStatus == 0 }" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+      <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{ hide: dataSource1 != null }"></mat-footer-row>
+      <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{ hide: !(dataSource1 != null && dataSource1.data.length == 0) }"></mat-footer-row>
     </mat-table>
   </div>
 </ng-template>
@@ -169,7 +162,7 @@
                     [readonly]="true"
                   ></airmid-textbox>
                 </div>
-                
+
                 <div style="width: 260px" *ngIf="isDoctor">
                   <airmid-dropdown
                     label="Doctor Name"
@@ -243,7 +236,7 @@
             </div>
           </mat-card>
         </mat-drawer>
-        <mat-drawer-content [class.expanded]="!isOpen">
+        <mat-drawer-content [class.expanded]="!isOpen" class="overflow-hidden">
           <div class="main-content h-100-p">
             <div fxLayout="column" fxLayoutGap="8px" class="h-100-p">
               <mat-accordion>
@@ -257,13 +250,13 @@
                           <div class="patient-col">
                             <!-- <span class="patient-col-key font-weight-600">Patient Name</span> -->
                             <!-- <span>:</span> -->
-                            <span class="patient-col-value">{{ selectedAdvanceObj?.regNo }} - {{selectedAdvanceObj?.patientName }}</span>
+                            <span class="patient-col-value">{{ selectedAdvanceObj?.regNo }} - {{ selectedAdvanceObj?.patientName }}</span>
                           </div>
 
                           <div class="patient-col">
                             <span class="patient-col-key font-weight-600">DOA</span>
                             <span>:</span>
-                            <span class="patient-col-value">{{ selectedAdvanceObj?.doa }} - {{ selectedAdvanceObj?.admissionTime | date:'hh:mm' }}</span>
+                            <span class="patient-col-value">{{ selectedAdvanceObj?.doa }} - {{ selectedAdvanceObj?.admissionTime | date : 'hh:mm' }}</span>
                           </div>
 
                           <div class="patient-col">
@@ -271,7 +264,6 @@
                             <span>:</span> -->
                             <span class="patient-col-value">{{ selectedAdvanceObj?.doctorname }}</span>
                           </div>
-                        
                         </div>
 
                         <div fxFlex.gt-sm="25%" fxFlex>
@@ -298,7 +290,7 @@
                             <span class="patient-col-key">Patient Name</span>
                             <span>:</span>
                             <span class="patient-col-value">{{ selectedAdvanceObj?.patientName }}</span>
-                          </div> 
+                          </div>
                           <div class="patient-col">
                             <span class="patient-col-key">Doctor Name</span>
                             <span>:</span>
@@ -314,7 +306,7 @@
                           <div class="patient-col">
                             <span class="patient-col-key">DOA</span>
                             <span>:</span>
-                            <span class="patient-col-value">{{ selectedAdvanceObj?.doa }}-{{ selectedAdvanceObj?.admissionTime | date:'hh:mm' }}</span>
+                            <span class="patient-col-value">{{ selectedAdvanceObj?.doa }}-{{ selectedAdvanceObj?.admissionTime | date : 'hh:mm' }}</span>
                           </div>
 
                           <div class="patient-col">
@@ -335,7 +327,6 @@
                             <span>:</span>
                             <span class="patient-col-value">{{ selectedAdvanceObj?.refDocName }}</span>
                           </div>
-                         
                         </div>
                         <div fxLayout="column" fxLayoutGap="6px">
                           <div class="patient-col">
@@ -432,7 +423,7 @@
                 <mat-tab label="Charges List">
                   <div class="airmid-table-container">
                     <div class="content-card">
-                      <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{ value: '50' }" class="airmid-table table max-h-450">
+                      <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{ value: '50' }" class="airmid-table table">
                         <ng-container matColumnDef="checkbox" sticky>
                           <mat-header-cell *matHeaderCellDef mat-sort-header class="w-60">
                             <span class="material-icons" (click)="getChargesList()">cached</span>
@@ -567,18 +558,18 @@
                 <mat-tab label="Advance">
                   <ng-template #actionButtonTemplate let-element>
                     <div fxLayout="row" fxLayoutAlign="center center">
-                      <button mat-icon-button matTooltip="Advance Print"  (click)="viewgetAdvanceReceiptReportPdf(element)">
+                      <button mat-icon-button matTooltip="Advance Print" (click)="viewgetAdvanceReceiptReportPdf(element)">
                         <mat-icon>print</mat-icon>
                       </button>
                     </div>
                   </ng-template>
-                  <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false" tableClasses="max-h-450"></airmid-table>
+                  <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false"></airmid-table>
                 </mat-tab>
 
                 <mat-tab label="Package Det.">
                   <div class="airmid-table-container">
                     <div class="content-card">
-                      <mat-table matSort [dataSource]="PackageDatasource" [@animateStagger]="{ value: '50' }" >
+                      <mat-table matSort [dataSource]="PackageDatasource" [@animateStagger]="{ value: '50' }">
                         <ng-container matColumnDef="BDate">
                           <mat-header-cell *matHeaderCellDef mat-sort-header>BDate</mat-header-cell>
                           <mat-cell *matCellDef="let contact">
@@ -700,7 +691,7 @@
                       </button>
                     </div>
                   </ng-template>
-                  <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false" :ShowButtons="false" tableClasses="max-h-450"></airmid-table>
+                  <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false" :ShowButtons="false"></airmid-table>
                 </mat-tab>
               </mat-tab-group>
               <form class="example-form" [formGroup]="Ipbillform">
@@ -818,8 +809,7 @@
 
                     <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center" class="gap-24">
                       <mat-radio-group aria-label="Select an option" formControlName="BillType" name="BillType">
-                        <mat-radio-button value="1">Class Wise DraftBill
-                        </mat-radio-button>
+                        <mat-radio-button value="1">Class Wise DraftBill</mat-radio-button>
                         <mat-radio-button value="2">Service Wise DraftBill</mat-radio-button>
                       </mat-radio-group>
 
