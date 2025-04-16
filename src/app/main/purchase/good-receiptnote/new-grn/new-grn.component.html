@@ -131,7 +131,7 @@
                       [formGroup]="_GRNList.userFormGroup"
                       formControlName="ItemName"
                       placeholderText="Item Name (enter 2 char)"
-                      fxFlex
+                      fxFlex="14%"
                       ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
                       (selectionChange)="getSelectedItem($event)"
                       TextField="formattedText"
@@ -194,16 +194,11 @@
 
                     <airmid-textbox fxFlex="5%" label="Disc1 %" formControlName="Disc" [formGroup]="_GRNList.userFormGroup" type="number" (valueChange)="calculateTotalamt()"></airmid-textbox>
 
-                    <!-- <airmid-textbox
-                      fxFlex="5%"
-                      label="Disc2 %"
-                      formControlName="Disc2"
-                     
-                      [formGroup]="_GRNList.userFormGroup"
-                      type="text"
-                      (keyup)="calculateDiscper2Amt()"
-                      [validations]="getValidationMessages().discPer2"
-                    ></airmid-textbox> -->
+                    <div *ngIf="IsDiscPer2" fxFlex="5%">
+                      <airmid-textbox    label="Disc2 %" formControlName="Disc2" [formGroup]="_GRNList.userFormGroup" type="text"
+                      (keyup)="calculateDiscper2Amt()" ></airmid-textbox>
+                    </div>
+                  
 
                     <airmid-textbox fxFlex="5%" label="GST" formControlName="GST" [formGroup]="_GRNList.userFormGroup" type="text" [readonly]="true"></airmid-textbox>
 

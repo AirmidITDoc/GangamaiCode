@@ -632,6 +632,7 @@ export class IPBillingComponent implements OnInit {
             "opType": "Equals"
           }
         ],
+        "Columns":[],
         "exportType": "JSON"
       }
       setTimeout(() => {
@@ -1358,6 +1359,7 @@ export class IPBillingComponent implements OnInit {
           }
        
         ],
+        "Columns":[],
         "exportType": "JSON"
       } 
     this._IpSearchListService.getchargesList1(m).subscribe(response => {

@@ -206,6 +206,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
             "opType": "Equals"
           }
         ],
+        "Columns":[],
         "exportType": "JSON" 
     }
     console.log(m_data) 

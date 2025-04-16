@@ -156,6 +156,7 @@ getSelectedRow(contact){
       }
 
     ],
+    "Columns":[],
     "exportType": "JSON"
   }
   this._IpSearchListService.getRefundofBillServiceList(vdata).subscribe((response) => {  

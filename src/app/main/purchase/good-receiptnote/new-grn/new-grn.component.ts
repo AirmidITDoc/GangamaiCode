@@ -24,6 +24,7 @@ import { SupplierFormMasterComponent } from 'app/main/setup/inventory/supplier-m
 import { PODetailList, PurchaseorderComponent } from '../update-grn/purchaseorder/purchaseorder.component';
 import { GRNFinalFormModel, GRNFormModel, GRNItemResponseType, GSTCalculation, GSTType, ToastType } from './types';
 import { NewGRNService } from './new-grn.service';
+import { values } from 'lodash';
 
 
 const moment = _rollupMoment || _moment;
@@ -546,6 +547,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         this.calculateDiscountAmount();
         this.calculateGSTType();
     }
+    calculateDiscper2Amt(){}
     // Calculate discount when discount percentage changes
     calculateDiscountAmount() {
         const form = this._GRNList.userFormGroup;
@@ -661,8 +663,15 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             this.updateGRNFinalForm();
         }
     }
+    IsDiscPer2:boolean=false;
     onGSTTypeChange(event: { value: number, text: string }) {
+        console.log(event)
         this.calculateGSTType(event.text as GSTType);
+        if(event.text == "GST After TwoTime Disc"){
+            this.IsDiscPer2 = true
+        }else{
+            this.IsDiscPer2 = false
+        }
     }
     getCGSTAmt() {
         return this.dsItemNameList.data.reduce((sum, { CGSTAmount }) => sum += +(CGSTAmount || 0), 0);

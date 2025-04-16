@@ -134,6 +134,7 @@ export class IPAdvanceComponent implements OnInit {
               "opType": "Equals"
             }
           ],
+          "Columns":[],
           "exportType": "JSON"
         }
      
