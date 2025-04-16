@@ -120,7 +120,7 @@ export class OTNoteComponent implements OnInit {
   constructor(
     public _OtManagementService: OTManagementServiceService,
     private accountService: AuthenticationService,
-  //   public _matDialog: MatDialog,
+    public _matDialog: MatDialog,
     public toastr: ToastrService,
     // @Inject(MAT_DIALOG_DATA) public data: any,
     //  public dialogRef: MatDialogRef<OTNoteComponent>,
@@ -132,9 +132,9 @@ export class OTNoteComponent implements OnInit {
     this.personalFormGroup = this._OtManagementService.createOtNoteForm();
     this.vSelectedOption = this.OP_IPType === true ? 'IP' : 'OP';
 
-    if (this.data) {
+    if (this.advanceDataStored.storage) {
       debugger
-      this.registerObj1 = this.data.Obj; 
+      this.registerObj1 = this.advanceDataStored.storage; 
       console.log(this.registerObj1);
       this.vWardName = this.registerObj1.RoomName;
       this.vBedNo = this.registerObj1.BedName;
@@ -471,7 +471,12 @@ export class OTNoteComponent implements OnInit {
   }
 
   onSubmit() { 
-  
+    if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
+      this.toastr.warning('Please select patient Name ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     if (this.personalFormGroup.get('SurgeryId').value) {
       if (!this.SurgeryList.find(item => item.SurgeryName == this.personalFormGroup.get('SurgeryId').value.SurgeryName)) {
         this.toastr.warning('Please select Valid Surgery Name', 'Warning !', {
@@ -581,8 +586,32 @@ export class OTNoteComponent implements OnInit {
       }
       //console.log(row)  
     })
-    //console.log(ID)   
- 
+    
+    let SurgeryName = ''
+    if(this.personalFormGroup.get('SurgeryId').value)
+      SurgeryName = this.personalFormGroup.get('SurgeryId').value.SurgeryName
+
+    let SurgeonId = 0
+    if(this.personalFormGroup.get('DoctorId').value)
+      SurgeonId = this.personalFormGroup.get('DoctorId').value.DoctorId
+
+    let SurgeonId1 = 0
+    if(this.personalFormGroup.get('DoctorId1').value)
+      SurgeonId1 = this.personalFormGroup.get('DoctorId1').value.SurgeryName
+
+    let AnestheticsDr = 0
+    if(this.personalFormGroup.get('AnestheticsDr').value)
+      AnestheticsDr = this._OtManagementService.otreservationFormGroup.get('AnestheticsDr').value.DoctorId
+
+    let AnestheticsDr1 = 0
+    if(this.personalFormGroup.get('AnestheticsDr1').value)
+      AnestheticsDr1 = this._OtManagementService.otreservationFormGroup.get('AnestheticsDr').value.DoctorId
+
+    let AnestheticsDr3 = 0
+    if(this.personalFormGroup.get('AnestheticsDr3').value)
+      AnestheticsDr3 = this._OtManagementService.otreservationFormGroup.get('AnestheticsDr3').value.DoctorId
+
+
     let otBookingID = this.registerObj1.OTBookingID;
     if (!otBookingID) {
       var m_data = {
@@ -590,13 +619,13 @@ export class OTNoteComponent implements OnInit {
           "otTemplateName": "string",
           "otDate": formattedDate,
           "otTime": formattedTime,
-          "surgeryName": this.personalFormGroup.get('SurgeryId').value.SurgeryName || '',
-          "surgeonID": this.personalFormGroup.get('DoctorId').value.DoctorId || 0,
-          "surgeonID1": this.personalFormGroup.get('DoctorId1').value.DoctorId || 0,
+          "surgeryName": SurgeryName || '',
+          "surgeonID": SurgeonId || 0,
+          "surgeonID1": SurgeonId1  || 0,
           "assistant": this.personalFormGroup.get('assistant').value || '',
-          "anesthetishID": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr').value.DoctorId,
-          "anesthetishID1": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value.DoctorId,
-          "anesthetishID2": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr3').value.DoctorId,
+          "anesthetishID": AnestheticsDr,
+          "anesthetishID1":AnestheticsDr1,
+          "anesthetishID2": AnestheticsDr3,
           "anesthetishType": "string",
           "incision": IncisionNew || '',
           "operativeDiagnosis": OPeDignosis || '',
@@ -630,7 +659,7 @@ export class OTNoteComponent implements OnInit {
           this._OtManagementService
           Swal.fire('Congratulations !', 'OT Note  Data save Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
-             // this._matDialog.closeAll();
+              this.onClose();
             }
           });
         } else {
@@ -645,13 +674,13 @@ export class OTNoteComponent implements OnInit {
           "otGenSurId": 0,
           "otDate": formattedDate,
           "otTime": formattedTime,
-          "surgeryName": this.personalFormGroup.get('SurgeryId').value?.SurgeryName || '',
-          "surgeonID": this.personalFormGroup.get('DoctorId').value?.DoctorId || 0,
-          "surgeonID1": this.personalFormGroup.get('DoctorId1').value?.DoctorId || 0,
+          "surgeryName": SurgeryName || '',
+          "surgeonID": SurgeonId || 0,
+          "surgeonID1": SurgeonId1  || 0,
           "assistant": this.personalFormGroup.get('assistant').value || '',
-          "anesthetishID": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr').value?.DoctorId || 0,
-          "anesthetishID1": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value?.DoctorId || 0,
-          "anesthetishID2": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr3').value?.DoctorId || 0,
+          "anesthetishID": AnestheticsDr,
+          "anesthetishID1":AnestheticsDr1,
+          "anesthetishID2": AnestheticsDr3,
           "anesthetishType": "string",
           "incision": IncisionNew || '',
           "operativeDiagnosis": OPeDignosis || '',
@@ -684,7 +713,7 @@ export class OTNoteComponent implements OnInit {
         if (response) {
           Swal.fire('Congratulations !', 'OT NOTE Data Updated Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
-            //  this._matDialog.closeAll();
+         this.onClose();
             }
           });
         } else {
@@ -700,7 +729,11 @@ export class OTNoteComponent implements OnInit {
     this.dataSource.data = [];
     this.personalFormGroup.reset();
     // this.dialogRef.close(); 
-    // this._matDialog.closeAll();
+    this._matDialog.closeAll();
+    this.personalFormGroup.get('PatientType').setValue('IP')
+    this.personalFormGroup.get('Description').setValue( "Incision:<br><br>OperativeDiagnosis:<br><br>OperativeFindings:<br><br>OperativeProcedure:<br><br>ExtraProPerformed:<br><br>ClosureTechnique:<br><br>PostOpertiveInstru:<br><br>DetSpecimenForLab:")
+    this.vDescription = "Incision:<br><br>OperativeDiagnosis:<br><br>OperativeFindings:<br><br>OperativeProcedure:<br><br>ExtraProPerformed:<br><br>ClosureTechnique:<br><br>PostOpertiveInstru:<br><br>DetSpecimenForLab:"
+
   }
 
   //Doctor list 

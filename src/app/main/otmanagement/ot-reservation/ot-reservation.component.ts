@@ -252,6 +252,7 @@ export class OTReservationComponent implements OnInit {
   }
 
   Otnote(contact) { 
+  this.advanceDataStored.storage = new OTReservationDetail(contact);
     const dialogRef = this._matDialog.open(OTNoteComponent,
       {
         maxWidth: "80%",

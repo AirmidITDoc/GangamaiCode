@@ -1,24 +1,24 @@
 <div class="page-layout modal-wrapper grid-container">
     <div class="modal-header accent">
-        <div class="modal-header-content"> 
-            <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
-                <div fxLayout="row" fxLayoutAlign="start center">
-                    <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                        <mat-icon>menu</mat-icon>
-                    </button>
-                    <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                        style="color: white;">account_box
-                    </mat-icon>
-                    <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-                        OT Notes
-                    </span> 
-                </div>
-                
+        <div class="modal-header-content" fxLayout="row" style="height:50px; justify-content: space-between;width: 100%;">
+            <div class="modal-header-title" fxLayout="row" fxLayoutAlign="start center"> 
+                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">account_box
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                    OT Notes
+                </span>
+            </div>
+        
+            <div class="close-icon">
                 <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
                     <mat-icon>close</mat-icon>
                 </button>
-            </mat-toolbar>
-        </div>
+            </div>
+        </div> 
     </div>
     <div class="modal-body"> 
         <form [formGroup]="personalFormGroup" class="p-12">
@@ -459,13 +459,13 @@
             </div> 
         </form>
     </div>
-
-    <div class="modal-footer">
-        <div class="footer-navigation-container">
-            <div class="modal-footer-buttons">
+    <div class="modal-footer" class="p-12">
+        <div class="footer-navigation-container" fxLayoutAlign="end">
+            <div class="modal-footer-buttons"  fxLayoutGap="6px">
                 <button class="btn btn-danger-outline" (click)="onClose()">Cancel</button>
                 <button class="btn btn-primary" (click)="onSubmit()">Save</button>
             </div>
         </div>
     </div> 
+   
 </div>

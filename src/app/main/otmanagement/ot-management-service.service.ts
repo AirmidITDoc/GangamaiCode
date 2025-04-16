@@ -228,22 +228,37 @@ export class OTManagementServiceService {
   public ReservationInsert(employee){
     return this._httpClient.post("OT/SaveOTBooking", employee);
   }
-  public InsertOTNotes(employee){
+  public InsertOTNotes(employee,loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.post("InPatient/OTNoteTemplateInsert", employee);
   }
-  public UpdateOTNotes(employee){
+  public UpdateOTNotes(employee,loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.post("InPatient/OTNoteTemplateUpdate", employee);
   }
 
-  public ReservationUpdate(employee){
+  public ReservationUpdate(employee,loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.post("OT/UpdateOTBooking", employee);
   }
 
-  public PrepostOTNoteInsert(employee){
+  public PrepostOTNoteInsert(employee,loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.post("InPatient/PrepostOtNoteInsert", employee);
   }
 
-  public PrepostOTNoteUpdate(employee){
+  public PrepostOTNoteUpdate(employee,loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.post("InPatient/OTNoteTemplateUpdate", employee);
   }
     
