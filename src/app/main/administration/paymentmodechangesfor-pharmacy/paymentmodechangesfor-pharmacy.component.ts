@@ -15,6 +15,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { MatRadioChange } from '@angular/material/radio';
+import { BillDateUpdateComponent } from '../cancellation/bill-date-update/bill-date-update.component';
 
 @Component({
   selector: 'app-paymentmodechangesfor-pharmacy',
@@ -293,8 +294,24 @@ onRadioChange(event: MatRadioChange) {
   }
 
   OnUpdate(row){
+const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button
 
+    let that = this;
+    const dialogRef = this._matDialog.open( BillDateUpdateComponent, 
+        {
+            maxHeight: "35vh",
+            maxWidth: '90vh',
+            width: '100%',
+            data: row
+        });
+    dialogRef.afterClosed().subscribe(result => {
+        // if (result) {
+            this.grid.bindGridData();
+        // }
+    });
   }
+  
   sIsLoading: string = '';
   isLoading = true;
   dateTimeObj: any;

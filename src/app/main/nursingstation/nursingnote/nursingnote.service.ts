@@ -36,7 +36,9 @@ export class NursingnoteService {
       Category:['NursNote'],
       isActive:[true,[Validators.required]],
       templateDesc: [''],
-      templateName:['']
+      templateName:[''],
+      patHandId:0,
+      Comments:['']
     });
   }
 
@@ -72,10 +74,12 @@ export class NursingnoteService {
   }
   
   public HandOverInsert(employee) {
-    return this._httpClient.PostData("", employee)
+    return this._httpClient.PostData("Nursing/NursingPatientHandoverInsert", employee)
   }
 
-  public HandOverUpdate(employee) {
-    return this._httpClient.PostData("", employee)
+  public HandOverUpdate(Param: any) {
+    if (Param.patHandId) {
+      return this._httpClient.PutData("Nursing/NursingPatientHandover/" + Param.patHandId, Param);
+    }
   }
 }

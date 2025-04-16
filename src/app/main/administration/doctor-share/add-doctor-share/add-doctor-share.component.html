@@ -24,11 +24,11 @@
                             <div fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-dropdown 
                                     label="Select Doctor Name" 
-                                    formControlName="patientType"
-                                    [value]="data?.patientType"
-                                    [formGroup]="_DoctorShareService.UserFormGroup"
-                                    [validations]="getValidationMessages().patientType"
-                                    (selectDdlObject)="selectChangeItem($event)"
+                                    formControlName="DoctorName"
+                                    [value]="data?.DoctorName"
+                                    [formGroup]="_DoctorShareService.DocFormGroup"
+                                    [validations]="getValidationMessages().DoctorName"
+                                    (selectionChange)="selectChangeDoctor($event)"
                                     [mode]="autocompleteModeItem">
                                 </airmid-dropdown>
                             </div>
@@ -51,14 +51,11 @@
                    <!-- 1st -->
                    <mat-card style="padding: 5px;">
                     <div fxFlex.gt-sm="100%" fxFlex>
-                        <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                            class="backgroundBlur">
-                            <div class="spinner-border text-danger"></div>
-                        </div> -->
+                     
                         <div fusePerfectScrollbar
                             class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                             dynamicTableHeight>
-                            <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
+                            <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" (onSelectRow)="OnEdit($event)">
                                 <ng-container filters>
 
                                 </ng-container>
@@ -89,50 +86,52 @@
                     
                             <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     
-                                <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown 
                                         label="Select Doctor Name" 
-                                        formControlName="patientType"
-                                        [value]="data?.patientType"
-                                        [formGroup]="_DoctorShareService.UserFormGroup"
-                                        [validations]="getValidationMessages().patientType"
-                                        (selectDdlObject)="selectChangeItem($event)"
+                                        formControlName="DoctorID"
+                                        [value]="data?.DoctorID"
+                                        [formGroup]="_DoctorShareService.DocFormGroup"
+                                        [validations]="getValidationMessages().DoctorID"
+                                        (selectionChange)="selectChangeDoctor($event)"
                                         [mode]="autocompleteModeItem">
                                     </airmid-dropdown>
                                 </div>
 
-                                <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                *ngIf="_DoctorShareService.DocFormGroup.get('ServiceOrgrpType').value=='1'">
                                     <airmid-dropdown 
                                         label="Select Service Name" 
-                                        formControlName="patientType"
-                                        [value]="data?.patientType"
-                                        [formGroup]="_DoctorShareService.UserFormGroup"
-                                        [validations]="getValidationMessages().patientType"
-                                        (selectDdlObject)="selectChangeItem($event)"
+                                        formControlName="ServiceID"
+                                        [value]="data?.ServiceID"
+                                        [formGroup]="_DoctorShareService.DocFormGroup"
+                                        [validations]="getValidationMessages().ServiceID"
+                                        (selectionChange)="selectChangeService($event)"
                                         [mode]="autocompleteModeService">
                                     </airmid-dropdown>
                                 </div>
                 
-                                <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                *ngIf="_DoctorShareService.DocFormGroup.get('ServiceOrgrpType').value=='2'">
                                     <airmid-dropdown 
                                         label="Select Group Name" 
-                                        formControlName="patientType"
-                                        [value]="data?.patientType"
-                                        [formGroup]="_DoctorShareService.UserFormGroup"
-                                        [validations]="getValidationMessages().patientType"
-                                        (selectDdlObject)="selectChangeItem($event)"
+                                        formControlName="GroupWise"
+                                        [value]="data?.GroupWise"
+                                        [formGroup]="_DoctorShareService.DocFormGroup"
+                                        [validations]="getValidationMessages().GroupWise"
+                                        (selectionChange)="selectChangeGroup($event)"
                                         [mode]="autocompletedepartment">
                                     </airmid-dropdown>
                                 </div>
 
-                                <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown 
                                         label="Select Class Name" 
-                                        formControlName="patientType"
-                                        [value]="data?.patientType"
-                                        [formGroup]="_DoctorShareService.UserFormGroup"
-                                        [validations]="getValidationMessages().patientType"
-                                        (selectDdlObject)="selectChangeItem($event)"
+                                        formControlName="ClassId"
+                                        [value]="data?.ClassId"
+                                        [formGroup]="_DoctorShareService.DocFormGroup"
+                                        [validations]="getValidationMessages().ClassId"
+                                        (selectionChange)="selectChangeClass($event)"
                                         [mode]="autocompleteClass">
                                     </airmid-dropdown>
                                 </div>

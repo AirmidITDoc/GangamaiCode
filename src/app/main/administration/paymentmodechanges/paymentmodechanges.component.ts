@@ -110,7 +110,7 @@ export class PaymentmodechangesComponent implements OnInit {
 }
 
 getfilteropd() {
-  debugger    
+  // debugger    
   this.gridConfig = {
       apiUrl: "paymentpharmacy/OPDPaymentReceiptList",
       columnsList: this.allopdColumns,
@@ -131,7 +131,7 @@ getfilteropd() {
 }
 
 Clearfilteropd(event) {
-  debugger
+  // debugger
   console.log(event)
   if (event == 'FirstName')
       this._PaymentmodechangesService.UseFormGroup.get('FirstName').setValue("")
@@ -208,7 +208,7 @@ allipdFilters=[
 }
 
 getfilteripd() {
-  debugger    
+  // debugger    
   this.gridConfigIP = {
       apiUrl: "paymentpharmacy/IPDPaymentReceiptList",
       columnsList: this.allipdColumns,
@@ -259,7 +259,7 @@ allAdColumns=[
   { heading: "-", key: "label", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
   { heading: "PayDate", key: "payDate", sort: true, align: 'left', emptySign: 'NA' },
   { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA' },
-  { heading: "BillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+  { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
   { heading: "UHIDNo ", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
   { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
   { heading: "BillAmt", key: "billAmt", sort: true, align: 'left', emptySign: 'NA' },
@@ -304,7 +304,7 @@ allAdFilters=[
 }
 
 getfilterAd() {
-  debugger    
+  // debugger    
   this.gridConfigIP = {
       apiUrl: "paymentpharmacy/IPAdvPaymentReceiptList",
       columnsList: this.allAdColumns,
@@ -374,7 +374,7 @@ getfilterAd() {
   }
 
   onNameFieldChange(): void {
-    debugger
+    // debugger
     const selectedType = this._PaymentmodechangesService.UseFormGroup.get('Radio')?.value;
   
     if (selectedType === '0' || selectedType === 0) {
@@ -387,7 +387,7 @@ getfilterAd() {
   }
 
   onRadioChange(event: MatRadioChange) {
-    debugger
+    // debugger
     const selectedValue = event.value;
     if (selectedValue === '0' || selectedValue === 0) {
       this.onChangeopd();

@@ -77,12 +77,12 @@ export class DoctorShareComponent implements OnInit {
       { heading: "-", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "PBillNo", key: "middleName", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "PatientName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "BillAmt", key: "address", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "DiscountAmt", key: "City", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "NetAmt", key: "Age", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "DoctorName", key: "PhoneNo", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "PatientType", key: "oPBILL", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "CompanyName", key: "oPReceipt", sort: true, align: 'left', emptySign: 'NA' }
+      { heading: "Bill Amt", key: "address", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "Discount Amt", key: "City", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "Net Amt", key: "Age", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "Doctor Name", key: "PhoneNo", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "Patient Type", key: "oPBILL", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "Company Name", key: "oPReceipt", sort: true, align: 'left', emptySign: 'NA' }
     ],
     sortField: "firstName",
     sortOrder: 0,

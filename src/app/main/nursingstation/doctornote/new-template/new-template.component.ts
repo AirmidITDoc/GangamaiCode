@@ -5,6 +5,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { DoctornoteService } from '../doctornote.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
   selector: 'app-new-template',
@@ -16,48 +17,58 @@ import { ToastrService } from 'ngx-toastr';
 export class NewTemplateComponent implements OnInit {
     
     myform: FormGroup;
+  Templateform: FormGroup;
+
     vTemplateDesc:any;
     vTemplateName:any;
     isActive:boolean=true;
     autocompleteModetemplate: string = "Template";
 
     
-    editorConfig: AngularEditorConfig = {
-        editable: true,
-        spellcheck: true,
-        height: '24rem',
-        minHeight: '24rem',
-        translate: 'yes',
-        placeholder: 'Enter text here...',
-        enableToolbar: true,
-        showToolbar: true,
-    };
+     editorConfig: AngularEditorConfig = {
+            editable: true,
+            spellcheck: true,
+            height: '20rem',
+            minHeight: '20rem',
+            translate: 'yes',
+            placeholder: 'Enter text here...',
+            enableToolbar: true,
+            showToolbar: true,
+        };
+    
+        onBlur(e: any) {
+            this.vTemplateDesc = e.target.innerHTML;
+            throw new Error('Method not implemented.');
+        }
 
 
     constructor(
         public _DoctornoteService: DoctornoteService,
-        public dialogRef: MatDialogRef<NewTemplateComponent>,
+        public dialogRef: MatDialogRef<NewTemplateComponent>, 
+        private accountService: AuthenticationService,        
         @Inject(MAT_DIALOG_DATA) public data: any,
         public toastr: ToastrService
     ) { }
 
     ngOnInit(): void {
         this.myform = this._DoctornoteService.createtemplateForm();
+        this.Templateform=this._DoctornoteService.templateForm();
         if((this.data?.templateId??0) > 0)
         {
             this.isActive = this.data.isActive
-            this.myform.patchValue(this.data);
+            this.Templateform.patchValue(this.data);
         }
     }
 
     onSubmit() {
             
-        if(!this.myform.invalid)
+        if(!this.Templateform.invalid)
         {
-        
-        console.log("template json:", this.myform.value);
+            this.Templateform.get('addedBy').setValue(this.accountService.currentUserValue.userId)
+            this.Templateform.get('updatedBy').setValue(this.accountService.currentUserValue.userId)
+        console.log("template json:", this.Templateform.value);
 
-        this._DoctornoteService.templateMasterSave(this.myform.value).subscribe((response)=>{
+        this._DoctornoteService.templateMasterSave(this.Templateform.value).subscribe((response)=>{
             this.toastr.success(response.message);
             this.onClear(true);
         }, (error)=>{
@@ -75,9 +86,9 @@ export class NewTemplateComponent implements OnInit {
 
     getValidationMessages(){
         return{
-            templateName: [
-                { name: "required", Message: "templateName Name is required" },
-                { name: "maxlength", Message: "templateName name should not be greater than 50 char." },
+            docsTempName: [
+                { name: "required", Message: "Template Name is required" },
+                { name: "maxlength", Message: "Template name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
             ]
         }
@@ -85,13 +96,12 @@ export class NewTemplateComponent implements OnInit {
 
     onClose(){
         this.myform.reset();
+        this.Templateform.reset();
         this.dialogRef.close();
-    }
-    onBlur(e: any) {
-        this.vTemplateDesc = e.target.innerHTML;
     }
 
     onClear(val: boolean) {
+        this.Templateform.reset();
         this.myform.reset();
         this.dialogRef.close(val);
     }

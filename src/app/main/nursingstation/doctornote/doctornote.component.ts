@@ -119,9 +119,9 @@ export class DoctornoteComponent implements OnInit {
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        that.grid.bindGridData();
-      }
+      // if (result) {
+        this.grid.bindGridData();
+      // }
     });
   }
 
@@ -335,8 +335,8 @@ debugger
   vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
   VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
   VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
-  // vHandOverType:any;
-  vHandOverType = 'Morning';
+
+  vHandOverType = 'morning';
 
   onSubmitHandOver() {
     debugger
@@ -352,11 +352,47 @@ debugger
       return;
     }
 
-    if (!this.vdocHandId) {
+    if(!this.myform.invalid){
+      if (!this.vdocHandId) {
 
-      let submitData = {
-
-          "docHandId": 0,
+        let submitData = {
+  
+            "docHandId": 0,
+            "admID": this.OP_IP_Id,
+            "tDate": formattedDate,
+            "tTime": formattedTime,
+            "shiftInfo": this.myform.get('HandOverType').value,
+            "patHandI": this.myform.get('staffName').value,
+            "patHandS": this.myform.get('Stable').value,
+            "patHandB": this.myform.get('SYMPTOMS').value,
+            "patHandA": this.myform.get('Assessment').value,
+            "patHandR": this.myform.get('Instruction').value,
+            "isAddedBy": this.accountService.currentUserValue.userId,
+          
+        };
+        console.log(submitData);
+        this._NursingStationService.HandOverInsert(submitData).subscribe(response => {
+          if (response) {
+            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+              toastClass: 'tostr-tost custom-toast-success',
+            });
+          this.grid1.bindGridData();
+            this.onClose()
+          }
+          else {
+            this.toastr.error('Record Data not saved !, Please check error..', 'Error !', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+          }
+        }, error => {
+          this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        });
+      }
+      else {
+        let updateData = {
+          "docHandId": this.vdocHandId,
           "admID": this.OP_IP_Id,
           "tDate": formattedDate,
           "tTime": formattedTime,
@@ -366,70 +402,41 @@ debugger
           "patHandB": this.myform.get('SYMPTOMS').value,
           "patHandA": this.myform.get('Assessment').value,
           "patHandR": this.myform.get('Instruction').value,
-          "isAddedBy": this.accountService.currentUserValue.userId,
-        
+          "isAddedBy": this.accountService.currentUserValue.userId,      
       };
-      console.log(submitData);
-      this._NursingStationService.HandOverInsert(submitData).subscribe(response => {
-        if (response) {
-          this.toastr.success('Record Saved Successfully.', 'Saved !', {
-            toastClass: 'tostr-tost custom-toast-success',
-          });
-        this.grid1.bindGridData();
-          this.onClose()
-        }
-        else {
-          this.toastr.error('Record Data not saved !, Please check error..', 'Error !', {
+  
+        console.log(updateData);
+        this._NursingStationService.HandOverUpdate(updateData).subscribe(response => {
+          if (response) {
+            this.toastr.success('Record Updated Successfully.', 'Updated !', {
+              toastClass: 'tostr-tost custom-toast-success',
+            });
+            this.grid1.bindGridData();
+            this.onClose()
+          }
+          else {
+            this.toastr.error('Record Data not Updated !, Please check error..', 'Error !', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+          }
+        }, error => {
+          this.toastr.error('Record Data not Updated !, Please check API error..', 'Error !', {
             toastClass: 'tostr-tost custom-toast-error',
           });
-        }
-      }, error => {
-        this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
         });
+      }
+    }else{
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
       });
-    }
-    else {
-      let updateData = {
-        "docHandId": this.vdocHandId,
-        "admID": this.OP_IP_Id,
-        "tDate": formattedDate,
-        "tTime": formattedTime,
-        "shiftInfo": this.myform.get('HandOverType').value,
-        "patHandI": this.myform.get('staffName').value,
-        "patHandS": this.myform.get('Stable').value,
-        "patHandB": this.myform.get('SYMPTOMS').value,
-        "patHandA": this.myform.get('Assessment').value,
-        "patHandR": this.myform.get('Instruction').value,
-        "isAddedBy": this.accountService.currentUserValue.userId,      
-    };
-
-      console.log(updateData);
-      this._NursingStationService.HandOverUpdate(updateData).subscribe(response => {
-        if (response) {
-          this.toastr.success('Record Updated Successfully.', 'Updated !', {
-            toastClass: 'tostr-tost custom-toast-success',
-          });
-          this.grid1.bindGridData();
-          this.onClose()
-        }
-        else {
-          this.toastr.error('Record Data not Updated !, Please check error..', 'Error !', {
-            toastClass: 'tostr-tost custom-toast-error',
-          });
-        }
-      }, error => {
-        this.toastr.error('Record Data not Updated !, Please check API error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      });
+      return;
     }
     this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
     this.vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
     this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
     this.VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
     this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
-    this.myform.get('HandOverType').setValue('Morning')
+    this.myform.get('HandOverType').setValue('morning')
     this.dsHandOverNoteList.data = [];
   }
 
@@ -500,7 +507,16 @@ debugger
   onClose() {
     this.myNoteform.reset();
     this._matDialog.closeAll();
-    // this.onClearPatientInfo();
+    this.onClearPatientInfo();
+    this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
+    this.vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
+    this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
+    this.VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
+    this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
+    this.myform.get('HandOverType').setValue('morning')
+    this.dsHandOverNoteList.data = [];
+    // this.HandOverNoteList = [];
+    this.IsAddFlag = false 
   }
   onClearPatientInfo() {
     this.vRegNo = '';
@@ -519,6 +535,7 @@ debugger
     this.vPatientType = '';
     this.vTariffName = '';
     this.vCompanyName = '';
+    this.myform.get('RegID').setValue('')
   }
 }
 export class DocNote {
