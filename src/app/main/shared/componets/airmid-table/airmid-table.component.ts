@@ -9,6 +9,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { gridModel, gridRequest, gridResponseType, OperatorComparer } from 'app/core/models/gridRequest';
 import { DATE_TYPES, gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { PagePermissionService } from '../../services/page-permission.service';
 
 @Component({
     selector: 'airmid-table',
@@ -17,7 +18,8 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 })
 export class AirmidTableComponent implements OnInit {
 
-    constructor(private _httpClient: ApiCaller, public datePipe: DatePipe, public _matDialog: MatDialog, private fuseSidebarService: FuseSidebarService) {
+    constructor(private _httpClient: ApiCaller, public datePipe: DatePipe, public _matDialog: MatDialog, private fuseSidebarService: FuseSidebarService,
+       public permissionService: PagePermissionService) {
     }
     dateType = DATE_TYPES;
     @Input() gridConfig: gridModel; // or whatever type of datasource you have
@@ -137,15 +139,15 @@ export class AirmidTableComponent implements OnInit {
     }
     onExportClick(type: gridResponseType) {
         this.gridDataRequest.exportType = type;
-        let filename=this.gridConfig.fileName;
-        if(filename=="") filename="Document";
-        if(type==gridResponseType.Csv)
-            filename=filename+".csv";
-        else if(type==gridResponseType.Pdf)
-            filename=filename+".pdf";
-        else if(type==gridResponseType.Excel)
-            filename=filename+".xlsx";
-        this._httpClient.downloadFilePost(this.gridConfig.apiUrl, this.gridDataRequest,filename).subscribe((data)=>{
+        let filename = this.gridConfig.fileName;
+        if ((filename ?? "") == "") filename = "Document";
+        if (type == gridResponseType.Csv)
+            filename = filename + ".csv";
+        else if (type == gridResponseType.Pdf)
+            filename = filename + ".pdf";
+        else if (type == gridResponseType.Excel)
+            filename = filename + ".xlsx";
+        this._httpClient.downloadFilePost(this.gridConfig.apiUrl, this.gridDataRequest, filename).subscribe((data) => {
 
         });
     }
