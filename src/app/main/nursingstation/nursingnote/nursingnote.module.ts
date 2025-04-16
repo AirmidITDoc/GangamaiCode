@@ -39,6 +39,7 @@ import { NursingnoteComponent } from './nursingnote.component';
 import { NursingnoteService } from './nursingnote.service';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { NewTemplateComponent } from './new-template/new-template.component';
+import { MedicineSchedulerComponent } from './medicine-scheduler/medicine-scheduler.component';
 
 
 const routes: Routes = [
@@ -49,7 +50,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [NursingnoteComponent, NewTemplateComponent],
+    declarations: [NursingnoteComponent, NewTemplateComponent, MedicineSchedulerComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,

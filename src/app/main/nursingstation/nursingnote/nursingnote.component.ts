@@ -20,6 +20,7 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { NewTemplateComponent } from './new-template/new-template.component';
+import { MedicineSchedulerComponent } from './medicine-scheduler/medicine-scheduler.component';
 
 @Component({
   selector: 'app-nursingnote',
@@ -109,6 +110,7 @@ export class NursingnoteComponent implements OnInit {
   // @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('docNote', { static: false }) grid: AirmidTableComponent;
   @ViewChild('Handover', { static: false }) grid1: AirmidTableComponent;
+  @ViewChild('MedicationItem', { static: false }) grid2: AirmidTableComponent;
 
    allColumnsOfDocNote = [
       { heading: "Date", key: "tDate", sort: true, align: 'left', emptySign: 'NA'},
@@ -151,41 +153,57 @@ export class NursingnoteComponent implements OnInit {
         { fieldName: "AdmId", fieldValue: String(this.OP_IP_Id), opType: OperatorComparer.Equals }
       ]
     }
-
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
   }
 
+  allMedicationColumns=[
+    { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
+    {
+      heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+        {
+          action: gridActions.edit, callback: (data: any) => {
+            this.getSchedular(data);
+          }
+        },
+        {
+          action: gridActions.delete, callback: (data: any) => {
+            this._NursingStationService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
+              this.toastr.success(response.message);
+              this.grid.bindGridData();
+            });
+          }
+        }]
+    } //Action 1-view, 2-Edit,3-delete
+  ]
+  allMedicationFilters=[
+    { fieldName: "AdmId", fieldValue: "0", opType: OperatorComparer.Equals } //1
+  ]
+
   gridConfig1: gridModel = {
-    apiUrl: "Nursing/PrescriptionWardList",
-    columnsList: [
-      { heading: "ItemName", key: "itemname", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "BatchNo", key: "batchno", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
-      {
-        heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-          {
-            action: gridActions.edit, callback: (data: any) => {
-              this.onEdit(data);
-            }
-          },
-          {
-            action: gridActions.delete, callback: (data: any) => {
-              this._NursingStationService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
-                this.toastr.success(response.message);
-                this.grid.bindGridData();
-              });
-            }
-          }]
-      } //Action 1-view, 2-Edit,3-delete
-    ],
-    sortField: "ReqId",
+    apiUrl: "Nursing/MedicationChartlist",
+    columnsList: this.allMedicationColumns,
+    sortField: "AdmissionID",
     sortOrder: 0,
-    filters: [
-      { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
-      { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
-      { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals }
-    ]
+    filters: this.allMedicationFilters
+  }
+
+  getMedicationList() {
+    debugger
+    this.gridConfig1 = {
+      apiUrl: "Nursing/MedicationChartlist",
+      columnsList: this.allMedicationColumns,
+      sortField: "AdmissionID", //AdmId
+      sortOrder: 0,
+      filters: [
+        { fieldName: "AdmId", fieldValue: String(this.OP_IP_Id), opType: OperatorComparer.Equals }
+      ]
+    }
+    console.log(this.gridConfig1)
+    this.grid2.gridConfig = this.gridConfig1;
+    this.grid2.bindGridData();
   }
 
   gridConfig2: gridModel = {
@@ -263,12 +281,12 @@ export class NursingnoteComponent implements OnInit {
   getHandOverNotelist() {
     debugger
         this.gridConfig3 = {
-          apiUrl: "Nursing",
+          apiUrl: "Nursing/NursingPatientHandoverList",
           columnsList: this.allColumnOfHandOver,
-          sortField: "AdmId",
+          sortField: "PatHandId",
           sortOrder: 0,
           filters: [
-            { fieldName: "AdmId", fieldValue: String(this.OP_IP_Id), opType: OperatorComparer.Equals } //12
+            { fieldName: "AdmId", fieldValue: String(this.OP_IP_Id), opType: OperatorComparer.Equals } //91024
           ]
         }
         console.log(this.gridConfig3)
@@ -292,6 +310,21 @@ export class NursingnoteComponent implements OnInit {
     });
   }
 
+  getSchedular(row: any = null) {
+    let that = this;
+    const dialogRef = this._matDialog.open(MedicineSchedulerComponent,
+      {
+        maxHeight: '90vh',
+        width: '90%',
+        data: row
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      // if (result) {
+        this.getSchedulerlist();
+        this.grid2.bindGridData();
+      // }
+    });
+  }
   getRefundofBillOPDListByReg(RegId) {
 
     var m_data = {
@@ -391,6 +424,9 @@ export class NursingnoteComponent implements OnInit {
       this.vDOA = obj.admissionDate
       this.OP_IP_Id = obj.admissionID;
       this.initializeGridConfig();
+      this.getSchedulerlist();
+      this.getMedicationList();
+      this.getHandOverNotelist();
 
     }
     // this.getNoteTablelist(obj);
@@ -428,6 +464,7 @@ export class NursingnoteComponent implements OnInit {
     this.vPatientType = '';
     this.vTariffName = '';
     this.vCompanyName = '';
+    this.myform.get('RegID').setValue('')
   }
 
   tempdesc: any = '';
@@ -436,6 +473,32 @@ export class NursingnoteComponent implements OnInit {
     console.log("Template:", event)
     this.tempdesc = event.templateDesc
     this.nursingId=event.nursingId
+  }
+
+  Chargelist: any = [];
+
+  getSchedulerlist() {
+    var vdata = {
+      'AdmissionId': this.vAdmissionID//OP_IP_Id
+    }
+    // this._NursingStationService.getSchedulerlist(vdata).subscribe(data => {
+    //   this.dsItemList.data = data as MedicineItemList[];
+    //   this.Chargelist = data as MedicineItemList[];
+    //   // this.dsItemList.sort = this.sort
+    //   // this.dsItemList.paginator = this.Medicinepaginator
+    // })
+  }
+
+  deleteTableRow(event, element) {
+    let index = this.Chargelist.indexOf(element);
+    if (index >= 0) {
+      this.Chargelist.splice(index, 1);
+      this.dsItemList.data = [];
+      this.dsItemList.data = this.Chargelist;
+    }
+    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    });
   }
 
   onAdd(){
@@ -513,7 +576,6 @@ export class NursingnoteComponent implements OnInit {
     this.vDescription=null;
   }
   
-
   HandOverNoteList: any = [];
 
   vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
@@ -521,8 +583,8 @@ export class NursingnoteComponent implements OnInit {
   vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
   VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
   VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
-  vdocHandId:any;
-  vHandOverType = 'Morning';
+  vpatHandId:any;
+  vHandOverType = 'morning';
   // patient hand over
   onSubmitHandOver() {
     debugger
@@ -538,21 +600,22 @@ export class NursingnoteComponent implements OnInit {
       return;
     }
 
-    if (!this.myform.get("docHandId").value) {
+   if(!this.myform.invalid){
+    if (!this.myform.get("patHandId").value) {
 
       let submitData = {
 
-          "docHandId": 0,
-          "admID": this.OP_IP_Id,
-          "tDate": formattedDate,
-          "tTime": formattedTime,
+          "patHandId": 0,
+          "admId": this.OP_IP_Id,
+          "tdate": formattedDate,
+          "ttime": formattedTime,
           "shiftInfo": this.myform.get('HandOverType').value,
           "patHandI": this.myform.get('staffName').value,
           "patHandS": this.myform.get('Stable').value,
           "patHandB": this.myform.get('SYMPTOMS').value,
           "patHandA": this.myform.get('Assessment').value,
           "patHandR": this.myform.get('Instruction').value,
-          "isAddedBy": this.accountService.currentUserValue.userId,
+          "comments": this.myform.get('Comments').value,
         
       };
       console.log(submitData);
@@ -577,17 +640,17 @@ export class NursingnoteComponent implements OnInit {
     }
     else {
       let updateData = {
-        "docHandId": this.vdocHandId,
-        "admID": this.OP_IP_Id,
-        "tDate": formattedDate,
-        "tTime": formattedTime,
+        "patHandId": this.vpatHandId,
+        "admId": this.OP_IP_Id,
+        "tdate": formattedDate,
+        "ttime": formattedTime,
         "shiftInfo": this.myform.get('HandOverType').value,
         "patHandI": this.myform.get('staffName').value,
         "patHandS": this.myform.get('Stable').value,
         "patHandB": this.myform.get('SYMPTOMS').value,
         "patHandA": this.myform.get('Assessment').value,
         "patHandR": this.myform.get('Instruction').value,
-        "isAddedBy": this.accountService.currentUserValue.userId,      
+        "comments": this.myform.get('Comments').value,     
     };
 
       console.log(updateData);
@@ -610,6 +673,12 @@ export class NursingnoteComponent implements OnInit {
         });
       });
     }
+   }else{
+    this.toastr.warning('please check from is invalid', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
     this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
     this.vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
     this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
@@ -621,13 +690,13 @@ export class NursingnoteComponent implements OnInit {
 
   OnHandOverEdit(row) {
     console.log(row)
-    this.vdocHandId=row.docHandId
+    this.vpatHandId=row.patHandId
     this.vHandOverType=row.shiftInfo
-    this.vStaffNursName=row.patHand_I
-    // this.vSYMPTOMS
-    // this.vInstruction
-    // this.VStable
-    // this.VAssessment
+    this.vStaffNursName=row.patHandI
+    this.vSYMPTOMS=row.patHandB
+    this.vInstruction=row.patHandR
+    this.VStable=row.patHandS
+    this.VAssessment=row.patHandA
   }
 
   SelectedChecked(contact, event) {
@@ -644,9 +713,19 @@ export class NursingnoteComponent implements OnInit {
   }
 
   onClose() {
-    this.myform.reset();
+    // this.myform.reset();
     this._matDialog.closeAll();
     this.onClearPatientInfo();
+    this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
+    this.vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
+    this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
+    this.VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
+    this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
+    this.myform.get('HandOverType').setValue('morning')
+    this.myform.get('Comments').setValue('')
+    this.dsHandOverNoteList.data = [];
+    // this.HandOverNoteList = [];
+    this.IsAddFlag = false 
   }
 }
 

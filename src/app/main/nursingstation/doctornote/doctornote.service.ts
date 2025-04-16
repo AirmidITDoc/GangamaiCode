@@ -17,7 +17,7 @@ export class DoctornoteService {
     public _formBuilder: UntypedFormBuilder) {
     this.myform = this.createtemplateForm();
     this.noteform = this.createDoctorNoteForm();
-    this.Templateform = this.createnewtemplateForm();
+    this.Templateform = this.templateForm();
   }
 
   createtemplateForm(): FormGroup {
@@ -27,7 +27,7 @@ export class DoctornoteService {
       DoctNoteId: '',
       WardName: [''],
       docHandId:[0],
-      HandOverType: ["Morning"],
+      HandOverType: ["morning"],
       staffName: [''],
       SYMPTOMS: [''],
       Instruction: [''],
@@ -55,19 +55,19 @@ export class DoctornoteService {
     });
   }
 
-  createnewtemplateForm(): FormGroup {
+  templateForm(): FormGroup {
     return this._formBuilder.group({
-      TemplateId: [''],
-      TemplateName: [''],
-      TemplateDesc: [''],
+      docNoteTempId: 0,
+      docsTempName:[''],
+      templateDesc: [''],
+      addedBy:0,
+      updatedBy:0
     });
   }
 
   public templateMasterSave(Param: any) {
-    if (Param.templateId) {
-      return this._httpClient.PutData("RadiologyTemplate/" + Param.templateId, Param);
-    } else return this._httpClient.PostData("RadiologyTemplate", Param);
-  }
+    return this._httpClient.PostData("Nursing/DoctorNotesTemplateInsert", Param);
+}
 
   public deactivateTheStatus(m_data) {
     return this._httpClient.DeleteData("ItemCategoryMaster?Id=" + m_data.toString());

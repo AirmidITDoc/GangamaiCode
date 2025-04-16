@@ -163,13 +163,6 @@
 
                                                                 <div fxLayout="row" fxLayoutGap="10px">
 
-                                                                    <!-- <airmid-dropdown label="Template"
-                                                                        formControlName="TemplateId"
-                                                                        [formGroup]="myform" fxFlex="70%"
-                                                                        [mode]="autocompleteModeNurNote"
-                                                                        (selectionChange)="onChangetemplate($event)">
-                                                                    </airmid-dropdown> -->
-
                                                                     <airmid-dropdown label="Template Name" 
                                                                     formControlName="TemplateId" 
                                                                     [formGroup]="myform"  fxFlex="70%"
@@ -231,13 +224,17 @@
                                         <div class="center pb-56" style="border-radius: 4px;padding: 10px;">
                                             <div class="content-card">
                                                 <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
+
+                                                    <button class="btn btn-primary" (click)="getSchedular(data)"
+                                                                        value="Medicine Form">Medicine</button>
+
                                                     <div fxLayout="row" fxLayoutGap="10px">
                                                         <div fxFlex.gt-sm="40%" fxFlex>
                                                             <mat-card style="padding: 5px;">
 
                                                                 <div id="contacts"
                                                                     class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                                                                    <airmid-table [gridConfig]="gridConfig1" #grid
+                                                                    <airmid-table [gridConfig]="gridConfig1" #MedicationItem
                                                                         :ShowFilter="false" :ShowButtons="false">
                                                                         <ng-container filters>
 
@@ -363,7 +360,7 @@
 
                                                 <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
 
-                                                    <input name="docHandId" formControlName="docHandId" type="hidden">
+                                                    <input name="patHandId" formControlName="patHandId" type="hidden">
 
                                                     <div fxLayout="row" fxLayoutGap="20px">
 
@@ -409,12 +406,14 @@
                                                             </mat-form-field> 
     
                                                             <div fxLayout="row" fxLayoutGap="10px" style="padding: 10px;">
-                                                                <mat-radio-group name="HandOverType" formControlName="HandOverType" fxLayout="row" >
-                                                                    <mat-radio-button value="Morning">Morning</mat-radio-button>
+                                                                <mat-radio-group name="HandOverType" formControlName="HandOverType" 
+                                                                fxLayout="row" [(ngModel)]="vHandOverType" >
+                                                                    <mat-radio-button value="morning">Morning</mat-radio-button>
                                                                     <mat-radio-button value="Evening"> Evening</mat-radio-button>
                                                                     <mat-radio-button value="Night">Night</mat-radio-button>
                                                                 </mat-radio-group>
     
+                                                        <button class="btn btn-danger-outline" type="button" (click)="onClose()">Reset</button>
                                                                 <button type="button" class="btn btn-primary btn-with-icon py-8" #addbutton id="btnAdd"
                                                                 (click)="onSubmitHandOver()">
                                                                     Save </button>

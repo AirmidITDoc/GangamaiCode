@@ -77,10 +77,12 @@ export class DoctorShareService {
     return this._httpClient.PostData("Generic/GetByProc?procName=RetrieveGroupMasterForCombo",{}) 
   }
   public InsertDocShare(employee) {
-    return this._httpClient.PostData("Administration/InsertDoctorShareMaster",employee) 
+    return this._httpClient.PostData("Administration/InsertDoctorPerMaster",employee) 
   }
-  public UpdateDocShare(employee) {
-    return this._httpClient.PostData("Administration/UpdateDoctorShareMaster",employee) 
+  public UpdateDocShare(emp) {
+    if(emp.doctorShareId){
+    return this._httpClient.PutData("Administration/UpdateDoctorPerMaster Edit" +emp.doctorShareId, emp) 
+    }
   }
   public SaveProcessdocShare(employee) {
     return this._httpClient.PostData("Administration/DoctorShareProcess",employee) 

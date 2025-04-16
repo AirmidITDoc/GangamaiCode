@@ -477,9 +477,9 @@ ClearfilterIPRefund(event) {
   ]
 
   gridConfig3: gridModel = {
-    apiUrl: "Advance/PatientRefundOfAdvancesList",
+    apiUrl: "Advance/BrowseRefundOfAdvanceList",
     columnsList: this.allColumnsOfRefundAd,
-    sortField: "RefundId",
+    sortField: "RegId",
     sortOrder: 0,
     filters: this.allFiltersOfRefundAd
   }
@@ -496,9 +496,9 @@ ClearfilterIPRefund(event) {
 
 getfilterRefundAd() {
     this.gridConfig3 = {
-        apiUrl: "Advance/PatientRefundOfAdvancesList",
-        columnsList: this.allColumnsOfIpRefund,
-        sortField: "RefundId",
+        apiUrl: "Advance/BrowseRefundOfAdvanceList",
+        columnsList: this.allColumnsOfRefundAd,
+        sortField: "RegId",
         sortOrder: 0,
         filters: [{ fieldName: "F_Name", fieldValue: this.ipf_name, opType: OperatorComparer.Contains },
         { fieldName: "L_Name", fieldValue: this.ipl_name, opType: OperatorComparer.Contains },
