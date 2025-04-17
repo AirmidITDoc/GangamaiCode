@@ -171,9 +171,15 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     let qty = +this.chargeForm.get("qty").value;
     let price = +this.chargeForm.get("price").value;
 
-    if (qty <= 0 || price <= 0) return;
+    // if (qty <= 0 || price <= 0) return;
 
-    let total = qty * price;
+    // let total = qty * price;
+
+    let total = 0
+    if (qty > 0 && price > 0){
+      total = qty * price;
+    }  
+
     this.chargeForm.patchValue({
       totalAmount: total,
       netAmount: total  // Set net amount initially
@@ -365,7 +371,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
   resetForm(): void {
     this.chargeForm.reset({
-      serviceName: "%",
+      serviceName: "a",
       price: 0,
       qty: 0,
       totalAmount: 0,
