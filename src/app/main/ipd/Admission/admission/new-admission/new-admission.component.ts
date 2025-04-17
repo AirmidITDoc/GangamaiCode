@@ -258,6 +258,7 @@ export class NewAdmissionComponent implements OnInit {
       this.ageDay = String(Math.abs(todayDate.getDate() - dob.getDate()))
 
     }
+    this.personalFormGroup.get('Age').setValue(this.ageYear)
     this.personalFormGroup.get('AgeYear').setValue(this.ageYear)
     this.personalFormGroup.get('AgeMonth').setValue(this.ageMonth)
     this.personalFormGroup.get('AgeDay').setValue(this.ageDay)

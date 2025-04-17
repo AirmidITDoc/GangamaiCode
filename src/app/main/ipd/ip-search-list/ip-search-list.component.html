@@ -121,8 +121,23 @@
                 <ng-container filters>
                     <form [formGroup]="myFilterform">
                  
-                        <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue" [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
-                    <mat-form-field appearance="outline">
+                        <!-- <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue" [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
+                     -->
+                        <mat-form-field appearance="outline">
+                            <mat-label>Enter a date range</mat-label>
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate formControlName="fromDate"
+                                    placeholder="Start date"  (dateChange)="onChangeFirst($event)">
+                                <input matEndDate formControlName="enddate"
+                                    placeholder="End date"  (dateChange)="onChangeFirst($event)">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix
+                                [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field>
+
+                    
+                        <mat-form-field appearance="outline">
                         <mat-label>UHID No</mat-label>
                         <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myFilterform" formControlName="RegNo"  (input)="onChangeFirst($event)" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">

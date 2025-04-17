@@ -376,6 +376,8 @@ export class NewAppointmentComponent implements OnInit {
                 });
                 return;
             }
+
+            this.personalFormGroup.get('Age').setValue(this.ageYear)
             this.personalFormGroup.get('AgeYear').setValue(this.ageYear)
             this.personalFormGroup.get('AgeMonth').setValue(this.ageMonth)
             this.personalFormGroup.get('AgeDay').setValue(this.ageDay)

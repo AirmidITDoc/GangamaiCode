@@ -167,7 +167,7 @@ export class IPBillBrowseListComponent implements OnInit {
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
+        { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Equals }
     ]
 

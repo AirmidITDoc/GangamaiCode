@@ -154,6 +154,9 @@ getSelectedObjDC(obj) {
 
   resetform(){
     this._DischargeCancelService.DischargeForm.reset();
+    this._DischargeCancelService.DischargeForm.get('Op_ip_id').setValue('1')
+    this._DischargeCancelService.DischargeForm.get('RegID').setValue('');
+    this._DischargeCancelService.DischargeForm.get('RegID').reset();
     this.vRegNo=""
     this.vDoctorName=""
     this.vPatientName=""
@@ -205,8 +208,8 @@ getSelectedObjDC(obj) {
        console.log(data);
         this._DischargeCancelService.getDateTimeChange(data).subscribe(response => {
           this.toastr.success(response);
-           
-          this._matDialog.closeAll();
+          this.resetform()
+          // this._matDialog.closeAll();
       }, (error) => {
           this.toastr.error(error.message);
       });
