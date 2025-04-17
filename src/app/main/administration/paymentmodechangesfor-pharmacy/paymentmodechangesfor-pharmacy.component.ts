@@ -61,7 +61,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
   @ViewChild('ColorCodeSale') ColorCodeSale!: TemplateRef<any>;
 
   ngOnInit(): void {
-    this.gridConfig = this.gridConfigIpPhy;
+    this.gridConfig = this.gridConfigSales;
 
     this._PaymentmodechangeforpharmacyService.userFormGroup.get('Radio')?.valueChanges.subscribe((value) => {
       console.log("Radio changed to:", value);
@@ -106,16 +106,16 @@ onNameFieldChange(): void {
 
 allColumns=[
   { heading: "-", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-  { heading: "PayDate", key: "paydate", sort: true, align: 'left', emptySign: 'NA', width: 80,type:9 },
-  { heading: "ReceiptNo", key: "receiptno", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-  { heading: "SalesNo", key: "salesno", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-  { heading: "PatientName", key: "patientname", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-  { heading: "PaidAmount", key: "paidamount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-  { heading: "CashAmount", key: "cashamount", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-  { heading: "ChequeAmount", key: "chequeamount", sort: true, align: 'left', emptySign: 'NA', width: 60 },
-  { heading: "CardAmount", key: "cardamount", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-  { heading: "NEFTPay", key: "neftpay", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-  { heading: "PayATM", key: "payatm", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+  { heading: "PayDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 150,type:6 },
+  { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+  { heading: "SalesNo", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+  { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+  { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+  { heading: "CashAmount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+  { heading: "ChequeAmount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+  { heading: "CardAmount", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+  { heading: "NEFTPay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+  { heading: "PayATM", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
   {
     heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
     template: this.actionButtonTemplateSale  // Assign ng-template to the column
@@ -151,7 +151,7 @@ allFilters=[
 
 getfilteropd() {
   debugger    
-  this.gridConfig = {
+  this.gridConfigSales = {
       apiUrl: "paymentpharmacy/BrowsePharmacyPayReceiptList",
       columnsList: this.allColumns,
       sortField: "PaymentId",
@@ -164,9 +164,9 @@ getfilteropd() {
       { fieldName: "SalesNo", fieldValue: this.SalesNo, opType: OperatorComparer.Equals }
       ]
   }
-  this.grid.gridConfig = this.gridConfig;
+  this.grid.gridConfig = this.gridConfigSales;
   this.grid.bindGridData();
-  console.log("opd:",this.gridConfig)
+  console.log("opd:",this.gridConfigSales)
 }
 
 Clearfilteropd(event) {
@@ -186,20 +186,21 @@ Clearfilteropd(event) {
 }
 
 allColumns1=[
+
   { heading: "-", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-  { heading: "PayDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type:6 },
-  { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA'},
-  { heading: "SalesNo", key: "salesNo", sort: true, align: 'left', emptySign: 'NA'},
-  { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-  { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA'},
-  { heading: "CashAmount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA'},
-  { heading: "ChequeAmount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA'},
-  { heading: "CardAmount", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA'},
-  { heading: "NEFTPay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA'},
-  { heading: "PayATM", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA'},
+  { heading: "PayDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 150,type:6 },
+  { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+  { heading: "SalesNo", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+  { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+  { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+  { heading: "CashAmount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+  { heading: "ChequeAmount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+  { heading: "CardAmount", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+  { heading: "NEFTPay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+  { heading: "PayATM", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
   {
-    heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
-    template: this.actionButtonTemplate  // Assign ng-template to the column
+    heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+    template: this.actionButtonTemplateSale  // Assign ng-template to the column
 }
 ]
 allFilters1=[

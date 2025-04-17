@@ -88,7 +88,6 @@ export class AdmissionComponent implements OnInit {
   PatientName: any;
   RegId: any;
   RegNo: any = "0";
-  DoctorId: any = 0;
   AdmittedPatientList: any;
   msg: any;
 
@@ -124,6 +123,8 @@ export class AdmissionComponent implements OnInit {
   l_name: any = ""
   m_name: any = ""
   IPDNo: any = ""
+  DoctorId = "0";
+
 
   ngOnInit(): void {
 
@@ -179,15 +180,8 @@ export class AdmissionComponent implements OnInit {
       heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
     }
-
   ];
-
-  gridConfig: gridModel = {
-    apiUrl: "Admission/AdmissionList",
-    columnsList: this.allcolumns,
-    sortField: "AdmissionId",
-    sortOrder: 1,
-    filters: [{ fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+  allFilters=[{ fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
     { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
@@ -196,7 +190,14 @@ export class AdmissionComponent implements OnInit {
     { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Equals },
     { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals }
-       ],
+       ]
+
+  gridConfig: gridModel = {
+    apiUrl: "Admission/AdmissionList",
+    columnsList: this.allcolumns,
+    sortField: "AdmissionId",
+    sortOrder: 1,
+    filters: this.allFilters,
        row: 25
   }
 
@@ -274,7 +275,6 @@ export class AdmissionComponent implements OnInit {
   ngOnDestroys() {
     this.isAlive = false;
   }
-
 
   createSearchForm() {
     return this.formBuilder.group({
@@ -396,8 +396,6 @@ export class AdmissionComponent implements OnInit {
     }
   }
 
-
-
   onClose() {
     this.searchFormGroup.get('RegId').reset();
     this.searchFormGroup.get('RegId').disable();
@@ -409,13 +407,13 @@ export class AdmissionComponent implements OnInit {
   }
 
   onChangeFirst() {
-    
+    debugger
     // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
     // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
     this.f_name = this.myFilterform.get('FirstName').value + "%"
     this.l_name = this.myFilterform.get('LastName').value + "%"
-    this.regNo = this.myFilterform.get('RegNo').value || "0"
     this.m_name = this.myFilterform.get('MiddleName').value + "%"
+    this.regNo = this.myFilterform.get('RegNo').value || "0"
     this.IPDNo = this.myFilterform.get('IPDNo').value || "0"
 
     this.getfilterdata();
@@ -448,14 +446,17 @@ export class AdmissionComponent implements OnInit {
 
   }
 
-
   Clearfilter(event) {
+    debugger
     console.log(event)
     if (event == 'FirstName')
       this.myFilterform.get('FirstName').setValue("")
     else
       if (event == 'LastName')
         this.myFilterform.get('LastName').setValue("")
+      else
+      if (event == 'MiddleName')
+        this.myFilterform.get('MiddleName').setValue("")
     if (event == 'RegNo')
       this.myFilterform.get('RegNo').setValue("")
     if (event == 'IPDNo')
@@ -463,6 +464,17 @@ export class AdmissionComponent implements OnInit {
 
     this.onChangeFirst();
   }
+
+  ListView(value) {
+        debugger
+    console.log(value)
+     if(value.value!==0)
+        this.DoctorId=value.value
+    else
+    this.DoctorId="0"
+
+    this.onChangeFirst();
+}
 
   getAdmittedPatientListview() {
     // setTimeout(() => {

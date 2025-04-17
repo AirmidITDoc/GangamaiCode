@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { NursingnoteService } from './nursingnote.service';
 import { NotificationServiceService } from 'app/core/notification-service.service';
@@ -111,6 +111,11 @@ export class NursingnoteComponent implements OnInit {
   @ViewChild('docNote', { static: false }) grid: AirmidTableComponent;
   @ViewChild('Handover', { static: false }) grid1: AirmidTableComponent;
   @ViewChild('MedicationItem', { static: false }) grid2: AirmidTableComponent;
+  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  
+  ngAfterViewInit() {
+    this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+}
 
    allColumnsOfDocNote = [
       { heading: "Date", key: "tDate", sort: true, align: 'left', emptySign: 'NA'},
@@ -162,24 +167,20 @@ export class NursingnoteComponent implements OnInit {
     { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
     {
-      heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-        {
-          action: gridActions.edit, callback: (data: any) => {
-            this.getSchedular(data);
-          }
-        },
-        {
-          action: gridActions.delete, callback: (data: any) => {
-            this._NursingStationService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
-              this.toastr.success(response.message);
-              this.grid.bindGridData();
-            });
-          }
-        }]
-    } //Action 1-view, 2-Edit,3-delete
+      heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate  // Assign ng-template to the column
+  } 
+    // {
+    //   heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+    //     {
+    //       action: gridActions.add, callback: (data: any) => {
+    //         this.getSchedular(data);
+    //       }
+    //     }]
+    // } //Action 1-view, 2-Edit,3-delete
   ]
   allMedicationFilters=[
-    { fieldName: "AdmId", fieldValue: "0", opType: OperatorComparer.Equals } //1
+    { fieldName: "AdmId", fieldValue: "1", opType: OperatorComparer.Equals } //1
   ]
 
   gridConfig1: gridModel = {
@@ -245,11 +246,11 @@ export class NursingnoteComponent implements OnInit {
     { heading: "Date", key: "vDate", sort: true, align: 'left', emptySign: 'NA'},
     { heading: "Time", key: "mTime", sort: true, align: 'left', emptySign: 'NA'},
     { heading: "Shift", key: "shiftInfo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "I", key: "patHand_I", sort: true, align: 'left', emptySign: 'NA', width:200 },
-    { heading: "S", key: "s", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "B", key: "b", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "A", key: "a", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "R", key: "r", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "I", key: "patHandI", sort: true, align: 'left', emptySign: 'NA', width:200 },
+    { heading: "S", key: "patHandS", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "B", key: "patHandB", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "A", key: "patHandA", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "R", key: "patHandR", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Comments", key: "comments", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "CreatedBy", key: "createdBy", sort: true, align: 'left', emptySign: 'NA' },
     {
@@ -271,9 +272,9 @@ export class NursingnoteComponent implements OnInit {
   ]
 
   gridConfig3: gridModel = {
-    apiUrl: "Nursing",
+    apiUrl: "Nursing/NursingPatientHandoverList",
     columnsList: this.allColumnOfHandOver,
-    sortField: "AdmId",
+    sortField: "PatHandId",
     sortOrder: 0,
     filters: this.allFilterOfHandOver
   }
@@ -585,6 +586,7 @@ export class NursingnoteComponent implements OnInit {
   VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
   vpatHandId:any;
   vHandOverType = 'morning';
+  vcomments:any
   // patient hand over
   onSubmitHandOver() {
     debugger
@@ -697,6 +699,7 @@ export class NursingnoteComponent implements OnInit {
     this.vInstruction=row.patHandR
     this.VStable=row.patHandS
     this.VAssessment=row.patHandA
+    this.vcomments=row.comments
   }
 
   SelectedChecked(contact, event) {

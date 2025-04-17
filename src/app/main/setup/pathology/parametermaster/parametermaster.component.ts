@@ -151,6 +151,7 @@ export class ParametermasterComponent implements OnInit {
                         "opType": "Equals"
                     }
                 ],
+                "Columns":[],
                 "exportType": "JSON"
             }
         }
@@ -167,6 +168,7 @@ export class ParametermasterComponent implements OnInit {
                         "opType": "Equals"
                     }
                 ],
+                "Columns":[],
                 "exportType": "JSON"
             }
         }

@@ -22,16 +22,14 @@
 
                             <mat-form-field appearance="outline" fxFlex="15%">
                                 <mat-label>Item Name</mat-label>
-                                <input type="text" name="ItemId"
+                                <input type="text" name="ItemId" [(ngModel)]="registerObj.itemName"
                                     formControlName="ItemId" matInput readonly>
-                                    <!-- [(ngModel)]="registerObj.ItemName" -->
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="6%">
                                 <mat-label>Qty</mat-label>
                                 <input type="text" name="Qty" matInput readonly
-                                    formControlName="Qty">
-                                    <!-- [(ngModel)]="registerObj.Qty" -->
+                                    formControlName="Qty" [(ngModel)]="registerObj.qty">
                             </mat-form-field>
 
                             <mat-form-field appearance="outline">
@@ -46,7 +44,6 @@
                                 <input type="text" OnlyNumber [(ngModel)]="vRoute" name="Route" required
                                    formControlName="Route" matInput required>
                             </mat-form-field>
-
 
                             <mat-form-field appearance="outline" fxFlex="15%">
                                 <mat-label>Frequency</mat-label>

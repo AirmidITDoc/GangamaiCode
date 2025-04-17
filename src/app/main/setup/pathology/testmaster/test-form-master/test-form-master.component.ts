@@ -231,6 +231,7 @@ export class TestFormMasterComponent implements OnInit {
                     "opType": "Equals"
                 }
             ],
+            "Columns":[],
             "exportType": "JSON"
         }
 
@@ -259,6 +260,7 @@ export class TestFormMasterComponent implements OnInit {
                     "opType": "Equals"
                 }
             ],
+            "Columns":[],
             "exportType": "JSON"
         }
 
@@ -293,6 +295,7 @@ export class TestFormMasterComponent implements OnInit {
                     "opType": "Equals"
                 }
             ],
+            "Columns":[],
             "exportType": "JSON"
         }
         this._TestmasterService.getTemplateListfor(m_data).subscribe(Visit => {
@@ -445,7 +448,8 @@ export class TestFormMasterComponent implements OnInit {
                 "fieldValue": parameter,          
                 "opType": "StartsWith"          
               }          
-            ],          
+            ],
+            "Columns":[],
             "exportType": "JSON"          
           }
 
@@ -474,6 +478,7 @@ export class TestFormMasterComponent implements OnInit {
                 "opType": "Equals"
               }
             ],
+            "Columns":[],
             "exportType": "JSON"
           }
 

@@ -246,6 +246,7 @@ debugger
           "opType": "Equals"
         }
       ],
+      "Columns":[],
       "exportType": "JSON"
     }
 

@@ -82,4 +82,7 @@ export class NursingnoteService {
       return this._httpClient.PutData("Nursing/NursingPatientHandover/" + Param.patHandId, Param);
     }
   }
+  public insertMedicationChart(employee) {
+    return this._httpClient.PostData("Nursing/SaveTNursingMedicationChart", employee)
+  }
 }

@@ -159,9 +159,13 @@
                         </mat-form-field>
 
 
-                        <airmid-dropdown label="Doctor Name" formControlName="searchDoctorId" [formGroup]="myFilterform" [(ngModel)]="gridConfig.filters[3].fieldValue" [validations]="getValidationdoctorMessages().searchDoctorId" [mode]="autocompleteModedeptdoc" >
+                        <airmid-dropdown label="Doctor Name" formControlName="searchDoctorId"
+                         [formGroup]="myFilterform"
+                         [(ngModel)]="gridConfig.filters[3].fieldValue" 
+                         [validations]="getValidationdoctorMessages().searchDoctorId" 
+                         [mode]="autocompleteModedeptdoc" (selectionChange)="ListView($event)"
+                         (keyup)="ListView($event)" >
                         </airmid-dropdown>
-
 
                         <div class="addmision-list">
                             <button mat-raised-button class="btn btn-primary w-100-p" (click)="getAdmittedPatientListview()" matTooltip="search">
