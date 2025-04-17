@@ -882,6 +882,7 @@ export class ItemNameList {
     PurchaseNo: any;
     SupplierName: any;
     SrNo: number;
+    DebitAmount:any;
     GSTType: GSTType | null;
     /**
      * Constructor
@@ -914,6 +915,7 @@ export class ItemNameList {
             this.SGSTAmount = ItemNameList.SGSTAmount || 0;
             this.IGST = ItemNameList.IGST || 0;
             this.IGSTAmount = ItemNameList.IGSTAmount || 0;
+            this.DisAmount2 = ItemNameList.DisAmount2 || 0;
             this.NetAmount = ItemNameList.NetAmount || 0;
             this.ItemID = ItemNameList.ItemID || 0;
             this.ItemId = ItemNameList.ItemId || 0;
@@ -964,6 +966,7 @@ export class ItemNameList {
             this.SrNo = ItemNameList.SrNo || 0;
             this.PurchaseNo = ItemNameList.PurchaseNo || 0;
             this.GSTType = ItemNameList.GSTType || null;
+            this.DebitAmount = ItemNameList.DebitAmount || 0
         }
     }
 }

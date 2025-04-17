@@ -234,6 +234,7 @@ export class RefundbillComponent implements OnInit {
           "opType": "Equals"
         }
       ],
+      "Columns":[],
       "exportType": "JSON"
     }
 
@@ -267,6 +268,7 @@ export class RefundbillComponent implements OnInit {
           "opType": "Equals"
         }
       ],
+      "Columns":[],
       "exportType": "JSON"
     }
 

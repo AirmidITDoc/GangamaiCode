@@ -547,7 +547,7 @@ export class IPBillingComponent implements OnInit {
     }
   }
   onClearServiceAddList() {
-    this.Serviceform.get('ServiceName').setValue("%");
+    this.Serviceform.get('ServiceName').setValue("a");
     this.Serviceform.get('price').reset();
     this.Serviceform.get('qty').reset('1');
     this.Serviceform.get('TotalAmt').reset();
