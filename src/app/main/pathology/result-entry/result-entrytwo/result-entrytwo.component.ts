@@ -23,18 +23,23 @@ import { ToastrService } from 'ngx-toastr';
   animations: fuseAnimations
 })
 export class ResultEntrytwoComponent implements OnInit {
-  editorConfig: AngularEditorConfig = {
-    // color:true,
-    editable: true,
-    spellcheck: true,
-    height: '20rem',
-    minHeight: '20rem',
-    translate: 'yes',
-    placeholder: 'Enter text here...',
-    enableToolbar: true,
-    showToolbar: true,
+   editorConfig: AngularEditorConfig = {
+          editable: true,
+          spellcheck: true,
+          height: '20rem',
+          minHeight: '20rem',
+          translate: 'yes',
+          placeholder: 'Enter text here...',
+          enableToolbar: true,
+          showToolbar: true,
+      
+        };
+                 
+    onBlur(e: any) {
+      this.vTemplateDesc = e.target.innerHTML;
+      throw new Error('Method not implemented.');
+    }
     
-  };
   isresultdrSelected: boolean = false;
   vTemplateName: any = 0;
   vPathResultDoctorId: any = 0;

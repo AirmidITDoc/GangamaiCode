@@ -90,7 +90,7 @@ export class SampleCollectionComponent implements OnInit {
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "IsCompleted", fieldValue: "1", opType: OperatorComparer.Equals },
+            { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals }
         ]
     }
@@ -169,8 +169,8 @@ this.myformSearch=this._SampleCollectionService.createSearchForm()
             sortField: "RegNo",
             sortOrder: 0,
             filters:  [
-                { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
-                { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+                { fieldName: "F_Name ", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
+                { fieldName: "L_Name", fieldValue:this.l_name, opType: OperatorComparer.StartsWith },
                 { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },

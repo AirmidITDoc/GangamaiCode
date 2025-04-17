@@ -166,9 +166,14 @@
                         </div>
 
                         <div fxLayoutGap="5px">
-                                <airmid-editor label="Template Details" formControlName="ResultEntry"
+                                <!-- <airmid-editor label="Template Details" formControlName="ResultEntry"
                                 [(value)]="vTemplateDesc" 
-                                [formGroup]="otherForm"></airmid-editor>
+                                [formGroup]="otherForm"></airmid-editor> -->
+                                <mat-label>Template Details</mat-label>
+                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                                    style="height:400px;" [(ngModel)]="vTemplateDesc" required
+                                    formControlName="ResultEntry">
+                                </angular-editor>
                         </div>
 
                         <div fxLayout="column" fxLayout="row" fxLayout="4px" style="margin-top: 10px;">

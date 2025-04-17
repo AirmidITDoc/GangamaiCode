@@ -50,8 +50,8 @@ export class MedicineSchedulerComponent {
     ngOnInit(): void {
       this.MedicineItemForm = this.createMedicineItemForm();
       if (this.data) {
-        this.registerObj = this.data.Obj
-        console.log(this.registerObj)
+        this.registerObj = this.data
+        console.log("Medication:",this.registerObj)
       }
     }
 
@@ -111,10 +111,8 @@ export class MedicineSchedulerComponent {
       debugger
       this.Chargelist.push(
         {
-          DrugId: this.registerObj.ItemId || 0,
-          DrugName: this.registerObj.ItemName || '',
-          // DoseId: this.MedicineItemForm.get('DoseId').value.DoseId || 0, 
-          // DoseName: this.MedicineItemForm.get('DoseId').value.DoseName || '',
+          DrugId: this.registerObj.itemId || 0,
+          DrugName: this.registerObj.itemName || '',
           DoseDateTime: this.MedicineItemForm.get('DoseDateTime').value || '01/01/1900',   
           Route: this.MedicineItemForm.get('Route').value || '',
           Frequency: this.MedicineItemForm.get('Frequency').value || 0,
@@ -140,78 +138,65 @@ export class MedicineSchedulerComponent {
       });
     }
 
-  //   onSubmit() {
-  //     const currentDate = new Date();
-  //     const datePipe = new DatePipe('en-US');
-  //     const formattedTime = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
-  //     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-  // debugger
-  //     if (!this.dsItemList.data.length) {
-  //       this.toastr.warning('Please add Scheduler in list !,list is blank', 'warning !', {
-  //         toastClass: 'tostr-tost custom-toast-warning',
-  //       });
-  //       return
-  //     }
+    onSubmit() {
+      const currentDate = new Date();
+      const datePipe = new DatePipe('en-US');
+      const formattedTime = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
+      const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+  debugger
+      if (!this.dsItemList.data.length) {
+        this.toastr.warning('Please add Scheduler in list !,list is blank', 'warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return
+      }
   
-  //     let saveTNursingMedicationChartParamsObj = [];
-  //     this.dsItemList.data.forEach(element => {
+      let saveTNursingMedicationChartParamsObj = [];
+      this.dsItemList.data.forEach(element => {
   
-  //       let saveTNursingMedicationChartParams = {
+        let saveTNursingMedicationChartParams = {
   
-  //         "medChartId": 0,
+          "medChartId": 0,  
+          "admID":this.registerObj.AdmissionID,  
+          "mDate": formattedDate,   
+          "mTime": formattedTime,  
+          "durgId":  this.registerObj.ItemId,  
+          "doseID": 0,  
+          "route":element.Route || '',  
+          "freq": element.Frequency || '',  
+          "nurseName": element.NurseName || '',  
+          "doseName":  this.datePipe.transform(element.DoseDateTime, 'h:mm a') || '',  
+          "createdBy": this.accountService.currentUserValue.user.id,  
+        }   
+        saveTNursingMedicationChartParamsObj.push(saveTNursingMedicationChartParams)
+      })
   
-  //         "admID":this.registerObj.AdmissionID,
-  
-  //         "mDate": formattedDate, 
-  
-  //         "mTime": formattedTime,
-  
-  //         "durgId":  this.registerObj.ItemId,
-  
-  //         "doseID": 0,
-  
-  //         "route":element.Route || '',
-  
-  //         "freq": element.Frequency || '',
-  
-  //         "nurseName": element.NurseName || '',
-  
-  //         "doseName":  this.datePipe.transform(element.DoseDateTime, 'h:mm a') || '',
-  
-  //         "createdBy": this.accountService.currentUserValue.user.id,
-  
-  //       }   
-  //       saveTNursingMedicationChartParamsObj.push(saveTNursingMedicationChartParams)
-  //     })
-  
-  //     let submitData = {
-  //       "saveTNursingMedicationChartParams": saveTNursingMedicationChartParamsObj
-  //     };
-  //     console.log(submitData);
-  //     this._NursingStationService.insertMedicationChart(submitData).subscribe(response=>{
-  //       console.log(response)
-  //       debugger
-  //       if (response) {
-  //         this.toastr.success('Record Saved Successfully.', 'Saved !', {
-  //           toastClass: 'tostr-tost custom-toast-success',
-  //         });
-  //         this._matDialog.closeAll();
-  //         this.onClose();
-  //       } else {
-  //         this.toastr.error('Record Data not saved !, Please check error..', 'Error !', {
-  //           toastClass: 'tostr-tost custom-toast-error',
-  //         });
-  //       }
-  //     }, error => {
-  //       this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
-  //         toastClass: 'tostr-tost custom-toast-error',
-  //       });
-  //     });
-  //   }
+      let submitData = {
+        "saveTNursingMedicationChartParams": saveTNursingMedicationChartParamsObj
+      };
+      console.log(submitData);
+      this._NursingStationService.insertMedicationChart(submitData).subscribe(response=>{
+        console.log(response)
+        debugger
+        if (response) {
+          this.toastr.success('Record Saved Successfully.', 'Saved !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this._matDialog.closeAll();
+          this.onClose();
+        } else {
+          this.toastr.error('Record Data not saved !, Please check error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      }, error => {
+        this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      });
+    }
 
-  onSubmit(){
 
-  }
   onClose() {
     this.MedicineItemForm.reset();
     this.dialogRef.close();

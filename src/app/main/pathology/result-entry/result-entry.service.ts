@@ -154,7 +154,7 @@ export class ResultEntryService {
   
   
   public RoolbackStatus(employee) {
-    return this._httpClient.post("Pathology/PathResultentryrollback", employee);
+    return this._httpClient1.PostData("Pathology/PathResultentryrollback", employee);
   }
 
   public deactivateTheStatus(m_data) {

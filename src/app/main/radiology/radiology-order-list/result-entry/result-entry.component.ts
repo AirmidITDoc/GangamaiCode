@@ -28,7 +28,6 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 export class ResultEntryComponent implements OnInit {
 
   editorConfig: AngularEditorConfig = {
-    // color:true,
     editable: true,
     spellcheck: true,
     height: '20rem',
@@ -39,6 +38,11 @@ export class ResultEntryComponent implements OnInit {
     showToolbar: true,
 
   };
+
+  onBlur(e: any) {
+    this.vTemplateDesc = e.target.innerHTML;
+    throw new Error('Method not implemented.');
+  }
   filteredrefdr: Observable<string[]>;
   optionsDoc1: any[] = [];
   msg: any;

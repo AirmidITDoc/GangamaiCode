@@ -232,8 +232,16 @@
                                                         <div fxFlex.gt-sm="40%" fxFlex>
                                                             <mat-card style="padding: 5px;">
 
-                                                                <div id="contacts"
-                                                                    class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                                                                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                                                                    <ng-template #actionButtonTemplate let-element>
+                                                                        <div fxLayout="row" fxLayoutAlign="center center">
+                                                                            <button mat-icon-button matTooltip="Add Schedular" (click)="getSchedular(element)">
+                                                                                <mat-icon>add</mat-icon>
+                                                                            </button>
+                                                                        </div>
+                                                                    </ng-template>
+
                                                                     <airmid-table [gridConfig]="gridConfig1" #MedicationItem
                                                                         :ShowFilter="false" :ShowButtons="false">
                                                                         <ng-container filters>
@@ -402,7 +410,7 @@
                                                         <div fxLayout="column" fxLayoutGap="10px">
                                                             <mat-form-field appearance="outline" fxFlex="31%">
                                                             <mat-label>Comment</mat-label>
-                                                            <input  matInput name="Comments" formControlName="Comments"  >
+                                                            <input  matInput name="Comments" formControlName="Comments" [(ngModel)]="vcomments" >
                                                             </mat-form-field> 
     
                                                             <div fxLayout="row" fxLayoutGap="10px" style="padding: 10px;">

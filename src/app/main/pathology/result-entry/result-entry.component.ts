@@ -139,7 +139,6 @@ export class ResultEntryComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsIPOP;
     }
 
-
     allcolumns=  [
         {
             heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
@@ -335,6 +334,7 @@ export class ResultEntryComponent implements OnInit {
               "opType": "Equals"
             }
           ],
+          "Columns":[],
           "exportType": "JSON"
         }
     
@@ -344,7 +344,6 @@ export class ResultEntryComponent implements OnInit {
           console.log("ResultList:",this.dataSource1.data)
           this.dataSource1.sort = this.sort;
           this.dataSource1.paginator = this.paginator;
-
         },
           error => {
             // this.sIsLoading = '';
@@ -664,7 +663,6 @@ opipType:any="2";
     }    
 
     Cancleresult(row) {
-
         Swal.fire({
             title: 'Confirm Result cancellation ',
             text: 'Are you sure you want to Cancel the result?',
@@ -675,19 +673,19 @@ opipType:any="2";
             confirmButtonText: 'Yes, deactivate!'
 
         }).then((flag) => {
-
+debugger
             if (flag.isConfirmed) {
-                let Rollback = {}
-                Rollback["PathReportId"] = row.PathReportID
 
                 let submitData = {
-                    "rollbackReport": Rollback
+                    "pathReportID": row.pathReportId
                 };
                 console.log(submitData);
                 this._SampleService.RoolbackStatus(submitData).subscribe(response => {
                     if (response) {
                         Swal.fire('Congratulations !', 'Data Updated Successfully !', 'success').then((result) => {
                             this._matDialog.closeAll();
+                            this.grid.bindGridData();
+                            this.dataSource1.data = [];
                         });
                     } else {
                         Swal.fire('Error !', 'Pathology Resulentry data not Updated', 'error');
@@ -799,10 +797,6 @@ opipType:any="2";
         this.selection.clear();
     }
 
-    
-      
-    
-    
 
     exportResultentryReportExcel() {
         this.sIsLoading == 'loading-data'
