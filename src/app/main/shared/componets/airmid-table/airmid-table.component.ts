@@ -9,7 +9,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { gridModel, gridRequest, gridResponseType, OperatorComparer } from 'app/core/models/gridRequest';
 import { DATE_TYPES, gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { ApiCaller } from 'app/core/services/apiCaller';
-import { PagePermissionService } from '../../services/page-permission.service';
+//import { PagePermissionService } from '../../services/page-permission.service';
 
 @Component({
     selector: 'airmid-table',
@@ -19,7 +19,8 @@ import { PagePermissionService } from '../../services/page-permission.service';
 export class AirmidTableComponent implements OnInit {
 
     constructor(private _httpClient: ApiCaller, public datePipe: DatePipe, public _matDialog: MatDialog, private fuseSidebarService: FuseSidebarService,
-       public permissionService: PagePermissionService) {
+       //public permissionService: PagePermissionService
+    ) {
     }
     dateType = DATE_TYPES;
     @Input() gridConfig: gridModel; // or whatever type of datasource you have

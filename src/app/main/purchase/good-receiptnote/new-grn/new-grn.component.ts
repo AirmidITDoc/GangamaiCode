@@ -25,6 +25,7 @@ import { PODetailList, PurchaseorderComponent } from '../update-grn/purchaseorde
 import { GRNFinalFormModel, GRNFormModel, GRNItemResponseType, GSTCalculation, GSTType, ToastType } from './types';
 import { NewGRNService } from './new-grn.service';
 import { values } from 'lodash';
+import Swal from 'sweetalert2';
 
 
 const moment = _rollupMoment || _moment;
@@ -203,6 +204,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         gstCalcType: "GstCalcType",
         supplierMaster: "SupplierMaster"
     }
+    autocompleteModeGSTType: string = "GstCalcType";
     constructor(
         public _GRNList: GoodReceiptnoteService,
         public _matDialog: MatDialog,
@@ -224,17 +226,11 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         //     new ItemNameList(staticData),
         // );
         if (this.mock) {
-            this.setMockData();
-
+            this.setMockData(); 
         }
         if (this.data.chkNewGRN == 2) {
             this.registerObj = this.data.Obj;
-            console.log(this.registerObj)
-            // this.InvoiceNo = this.registerObj.InvoiceNo;
-            // this.GateEntryNo = this.registerObj.GateEntryNo;
-            // this.SupplierId = this.registerObj.SupplierId;
-            // this.StoreId = this.registerObj.StoreId;
-            // this._GRNList.GRNFinalForm.get('NetPayamt').setValue(this.registerObj.RoundingAmt);
+            console.log(this.registerObj) 
             if (this.registerObj.Cash_CreditType)
                 this.vCahchecked = 1;
             if (!this.registerObj.Cash_CreditType)
@@ -251,9 +247,9 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             this.dsItemNameList.data = obj.Items as ItemNameList[];
             this.chargeslist = obj.Items as ItemNameList[];
             this.dsTempItemNameList.data = obj.Items as ItemNameList[];
-        }
-        this.getGSTtypeList();
+        } 
     }
+    //Item selectedObj
     getSelectedItem(item: GRNItemResponseType): void {
         if (this.mock) {
             return;
@@ -269,34 +265,18 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         });
         this.calculateTotalamt();
     }
-    getValidationMessages() {
-        return {
-            supplierId: [
-                // { name: "required", Message: "SupplierId is required" }
-            ],
-            itemName: [
-                // { name: "required", Message: "Item Name is required" }
-            ],
-            batchNo: [
-                // { name: "required", Message: "Batch No is required" }
-            ],
-            invoiceNo: [
-                // { name: "required", Message: "Invoice No is required" }
-            ],
-            gateEntryNo: [
-                // { name: "required", Message: "Gate Entry No is required" }
-            ],
-            mrp: [
-                // { name: "required", Message: "MRP is required" }
-            ],
-            rate: [
-                // { name: "required", Message: "Rate is required" }
-            ],
-            
-        };
-    }
+  //supplier det
     selectChangeSupplier(supplier: any): void {
         console.log({ supplier });
+        this._GRNList.getSupplierdetails(supplier.value).subscribe(response=>{
+            // console.log({response})
+            if(response){
+                this._GRNList.userFormGroup.patchValue({
+                    Contact: response.contactPerson,
+                    Mobile:response.mobile
+                })
+            }
+        })
     }
     date = new FormControl(new Date());
     minDate = new Date();
@@ -318,16 +298,15 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             }
         } else {
             this.vlastDay = '';
-        }
-
-    }
-
+        } 
+    } 
     getLastDayOfMonth(month: number, year: number): number {
         return new Date(year, month, 0).getDate();
     }
     pad(n: number): string {
         return n < 10 ? '0' + n : n.toString();
     }
+    //Table Exp Date change
     lastDay1: any;
     CellcalculateLastDay(contact: ItemNameList, inputDate: string) {
         if (inputDate && inputDate.length === 6) {
@@ -347,133 +326,56 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         } else {
             this.vlastDay = '';
         }
-    }
-
-    getGSTtypeList() {
-        var vdata = {
-            'ConstanyType': 'GST_CALC_TYPE',
+    } 
+ //Add item list
+    onAddGRNItem() {
+        if (!this.newGRNService.validateGRNForm(this._GRNList.userFormGroup)) {
+            return;
         }
-        this._GRNList.getGSTtypeList(vdata).subscribe(data => {
-            this.GSTTypeList = data;
-            this._GRNList.userFormGroup.get('GSTType').setValue(this.GSTTypeList[0]);
-        });
-        if (this.data) {
-            const toSelectGSTType = this.GSTTypeList.find(c => c.Name == this.registerObj.Tranprocessmode);
-            this._GRNList.userFormGroup.get('GSTType').setValue(toSelectGSTType);
+        // Check if the item is already in the list
+        console.log("Form values : ", this._GRNList.userFormGroup.value);
+        const isDuplicate = this.dsItemNameList.data.some(item => item.BatchNo === this._GRNList.userFormGroup.get('BatchNo').value);
+        if (isDuplicate) {
+            this.newGRNService.showToast('Item already added in the list', ToastType.WARNING);
+            return;
+        }
+        const formValues = this._GRNList.userFormGroup.getRawValue() as GRNFormModel;
+        const totalQty = (Number(formValues.Qty) + Number(formValues.FreeQty)) * (Number(formValues.ConversionFactor) || 1);
+        if (formValues.ItemName) {
+            const newItem = new ItemNameList({
+                ...formValues,
+                ItemName: formValues.ItemName.itemName,
+                TotalQty: totalQty,
+                // Add any additional calculated fields
+                LandedRate: formValues.NetAmount / (totalQty || 1),
+                PurUnitRate: formValues.TotalAmount / (formValues.Qty * formValues.ConversionFactor),
+                PurUnitRateWF: formValues.TotalAmount / (totalQty || 1),
+                UnitMRP: formValues.MRP / formValues.ConversionFactor,
+                ItemId:formValues.ItemName.itemId
+            });
+            this.dsItemNameList.data = [...this.dsItemNameList.data, newItem];
+            this.updateGRNFinalForm();
+        }
+        this.resetFormItem();
+        const itemNameElement = document.querySelector(`[name='ItemName']`) as HTMLElement;
+        if (itemNameElement) {
+            itemNameElement.focus();
         }
     }
-
-    // onAdd() {
-
-    //     if ((this.vItemName == '' || this.vItemName == null || this.vItemName == undefined)) {
-    //         this.toastr.warning('Please enter a ItemName', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //         return;
-    //     }
-    //     if ((this.vBatchNo == '' || this.vBatchNo == null || this.vBatchNo == undefined)) {
-    //         this.toastr.warning('Please enter a Batch No', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //         return;
-    //     }
-    //     if ((this.vlastDay == '' || this.vlastDay == null || this.vlastDay == undefined)) {
-    //         this.toastr.warning('Please enter a Expairy Date', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //         return;
-    //     }
-    //     if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
-    //         this.toastr.warning('Please enter a Qty', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //         return;
-    //     }
-    //     if ((this.vMRP == '' || this.vMRP == null || this.vMRP == undefined)) {
-    //         this.toastr.warning('Please enter a MRP', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //         return;
-    //     }
-    //     if ((this.vRate == '' || this.vRate == null || this.vRate == undefined)) {
-    //         this.toastr.warning('Please enter a Rate', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //         return;
-    //     }
-    //     const isDuplicate = this.dsItemNameList.data.some(item => item.BatchNo === this._GRNList.userFormGroup.get('BatchNo').value);
-
-    //     if (!isDuplicate) {
-    //         this.loading = true;
-    //         this.dsItemNameList.data = [];
-    //         this.chargeslist = this.dsTempItemNameList.data;
-    //         this.chargeslist.push(
-    //             {
-    //                 ItemId: this._GRNList.userFormGroup.get('ItemName').value.ItemID || 0,
-    //                 ItemName: this._GRNList.userFormGroup.get('ItemName').value.ItemName || '',
-    //                 ConversionFactor: this.vConversionFactor || 0,
-    //                 UOMId: this.vUOM,
-    //                 HSNcode: this.vHSNCode,
-    //                 BatchNo: this.vBatchNo,
-    //                 BatchExpDate: this.vlastDay,// this.datePipe.transform(this.lastDay, "yyyy-MM-dd"),
-    //                 ReceiveQty: this.vQty || 0,
-    //                 FreeQty: this.vFreeQty || 0,
-    //                 TotalQty: this.FinalTotalQty || 0,
-    //                 MRP: this.vMRP || 0,
-    //                 Rate: this.vRate || 0,
-    //                 TotalAmount: this.vTotalAmount || 0,
-    //                 DiscPercentage: this.vDisc || 0,
-    //                 DiscAmount: this.vDisAmount || 0,
-    //                 DiscPer2: this.vDisc2 || 0,
-    //                 DiscAmt2: this.vDisAmount2 || 0,
-    //                 VatPercentage: this.vGST || 0,
-    //                 VatAmount: this.vGSTAmount || 0,
-    //                 CGSTPer: this.vCGST || 0,
-    //                 CGSTAmt: this.vCGSTAmount || 0,
-    //                 SGSTPer: this.vSGST || 0,
-    //                 SGSTAmt: this.vSGSTAmount || 0,
-    //                 IGSTPer: this.vIGST || 0,
-    //                 IGSTAmt: this.vIGSTAmount || 0,
-    //                 NetAmount: this.vNetAmount || 0,
-    //                 PurchaseId: 0,
-    //                 PurDetId: 0,
-    //                 POBalQty: 0,
-    //                 POQty: 0,
-    //                 LandedRate: this.FinalLandedrate || 0,
-    //                 PurUnitRate: this.FinalpurUnitRate || 0,
-    //                 PurUnitRateWF: this.FinalpurUnitrateWF || 0,
-    //                 UnitMRP: this.FinalUnitMRP || 0,
-    //                 IsVerifiedUserId: 0,
-    //                 IsVerified: false,
-    //                 IsVerifiedDatetime: "01/01/1900",
-    //                 StkID: 0
-    //             });
-    //         console.log(this.chargeslist)
-    //         setTimeout(() => {
-    //             this.dsItemNameList.data = this.chargeslist;
-    //             this.loading = false;
-    //         }, 3000);
-    //     }
-    //     else {
-    //         this.toastr.warning('Selected Item already added in the list', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //         this.loading = false;
-    //     }
-    //     this.ItemReset();
-    //     //this.date.setValue(new Date());
-    //     this._GRNList.userFormGroup.get('ItemName').setValue('');
-    //     //this.vNetAmount = 0;
-    //     this.itemid.nativeElement.focus();
-    //     //this.add = false;
-    //     //this.vlastDay = '';
-    // }
-
+    deleteTableRow(row: ItemNameList) {
+        if (row.IsVerifiedUserId == 1) {
+            this.newGRNService.showToast('Verified Record should not be Deleted .', ToastType.SUCCESS);
+        } else {
+            this.dsItemNameList.data = this.dsItemNameList.data.filter(item => item !== row);
+            this.newGRNService.showToast('Record Deleted Successfully.', ToastType.SUCCESS);
+            this.updateGRNFinalForm();
+        }
+    }
     resetFormItem() {
         const form = this._GRNList.userFormGroup;
 
         form.patchValue({
-            ItemName: "",
+            ItemName: "a",
             ConversionFactor: 1,
             Qty: 0,
             UOMId: 0,
@@ -500,9 +402,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         });
         this._GRNList.userFormGroup.markAsUntouched();
     }
-    getDateTime(dateTimeObj) {
-        this.dateTimeObj = dateTimeObj;
-    }
+ 
     calculateTotalamt() {
         this.validateFormValues();
         const form = this._GRNList.userFormGroup;
@@ -625,44 +525,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             return item;
         }
     }
-    onAddGRNItem() {
-        if (!this.newGRNService.validateGRNForm(this._GRNList.userFormGroup)) {
-            return;
-        }
-        // Check if the item is already in the list
-        console.log("Form values : ", this._GRNList.userFormGroup.value);
-        const isDuplicate = this.dsItemNameList.data.some(item => item.BatchNo === this._GRNList.userFormGroup.get('BatchNo').value);
-        if (isDuplicate) {
-            this.newGRNService.showToast('Item already added in the list', ToastType.WARNING);
-            return;
-        }
-        const formValues = this._GRNList.userFormGroup.getRawValue() as GRNFormModel;
-        const totalQty = (Number(formValues.Qty) + Number(formValues.FreeQty)) * (Number(formValues.ConversionFactor) || 1);
-        if (formValues.ItemName) {
-            const newItem = new ItemNameList({
-                ...formValues,
-                ItemName: formValues.ItemName.itemName,
-                TotalQty: totalQty,
-                // Add any additional calculated fields
-                LandedRate: formValues.NetAmount / (totalQty || 1),
-                PurUnitRate: formValues.TotalAmount / (formValues.Qty * formValues.ConversionFactor),
-                PurUnitRateWF: formValues.TotalAmount / (totalQty || 1),
-                UnitMRP: formValues.MRP / formValues.ConversionFactor,
-            });
-            this.dsItemNameList.data = [...this.dsItemNameList.data, newItem];
-            this.updateGRNFinalForm();
-        }
-        this.resetFormItem();
-    }
-    deleteTableRow(row: ItemNameList) {
-        if (row.IsVerifiedUserId == 1) {
-            this.newGRNService.showToast('Verified Record should not be Deleted .', ToastType.SUCCESS);
-        } else {
-            this.dsItemNameList.data = this.dsItemNameList.data.filter(item => item !== row);
-            this.newGRNService.showToast('Record Deleted Successfully.', ToastType.SUCCESS);
-            this.updateGRNFinalForm();
-        }
-    }
+
     IsDiscPer2:boolean=false;
     onGSTTypeChange(event: { value: number, text: string }) {
         console.log(event)
@@ -672,15 +535,18 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         }else{
             this.IsDiscPer2 = false
         }
-    }
+    } 
     getCGSTAmt() {
-        return this.dsItemNameList.data.reduce((sum, { CGSTAmount }) => sum += +(CGSTAmount || 0), 0);
+        this.CGSTFinalAmount = this.dsItemNameList.data.reduce((sum, { CGSTAmount }) => sum += +(CGSTAmount || 0), 0);
+        return this.CGSTFinalAmount
     }
     getSGSTAmt() {
-        return this.dsItemNameList.data.reduce((sum, { SGSTAmount }) => sum += +(SGSTAmount || 0), 0);
+        this.SGSTFinalAmount = this.dsItemNameList.data.reduce((sum, { SGSTAmount }) => sum += +(SGSTAmount || 0), 0);
+        return  this.SGSTFinalAmount
     }
     getIGSTAmt() {
-        return this.dsItemNameList.data.reduce((sum, { IGSTAmount }) => sum += +(IGSTAmount || 0), 0);
+        this.IGSTFinalAmount = this.dsItemNameList.data.reduce((sum, { IGSTAmount }) => sum += +(IGSTAmount || 0), 0);
+        return  this.IGSTFinalAmount
     }
     getTotalAmount() {
         return this.dsItemNameList.data.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0);
@@ -721,29 +587,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             ...updatableFormValues
         });
     }
-    OnAddItem() {
-        const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
-            maxWidth: "100%",
-            height: '95%',
-            width: '95%',
-        });
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log("The dialog was closed - Insert Action", result);
-        });
-    }
-    OnAddSupplier() {
-        const dialogRef = this._matDialog.open(SupplierFormMasterComponent, {
-            maxWidth: "100%",
-            height: '95%',
-            width: '95%',
-        });
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log("The dialog was closed - Insert Action", result);
-        });
-    }
-    OnReset() {
-        this.resetForm();
-    }
+ 
     private resetCalculations(contact: any): void {
         const resetValues = {
             TotalAmount: 0,
@@ -793,12 +637,163 @@ export class NewGrnComponent implements OnInit, OnDestroy {
 
     }
     onSave() {
-        const formValues = this._GRNList.userFormGroup.getRawValue() as GRNFormModel;
-        const itemList = this.dsItemNameList.data;
-        console.log("SAVE", { formValues, itemList });
-        // Apply save flow here
+        const formValues = this._GRNList.userFormGroup.getRawValue() as GRNFormModel; 
+        // Apply save flow here 
+        if ((formValues.SupplierId == '' || formValues.SupplierId == null || formValues.SupplierId == '0')) {
+            this.toastr.warning('Please select a supplier name', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+
+        if ((formValues.InvoiceNo == '' || formValues.InvoiceNo == null)) {
+            this.toastr.warning('Please enter a InvoiceNo', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+
+        if ((this._GRNList.GRNFinalForm.get('ReceivedBy').value == '' || this._GRNList.GRNFinalForm.get('ReceivedBy').value == null)) {
+            this.toastr.warning('Please enter a ReceivedBy Name', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        } 
+       Swal.fire({
+            title: 'Do you want to Save the New GRN ',
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Save!"
+    
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              this.OnSavenew();
+            }
+          })
+    }
+    OnSavenew() {  
+        let grnSaveObj = {};
+        grnSaveObj['grnid'] = 0;
+        grnSaveObj['grnNumber'] = '0';
+        grnSaveObj['grndate'] =this.datePipe.transform(this.dateTimeObj.date ,"yyyy-MM-dd") || '1900-01-01';
+        grnSaveObj['grntime'] = this.dateTimeObj.time;
+        grnSaveObj['storeId'] = this.accountService.currentUserValue.storeId;
+        grnSaveObj['supplierId'] = this._GRNList.userFormGroup.get('SupplierId').value || 0;
+        grnSaveObj['invoiceNo'] = this._GRNList.userFormGroup.get('InvoiceNo').value || '';
+        grnSaveObj['deliveryNo'] = '';
+        grnSaveObj['gateEntryNo'] = this._GRNList.userFormGroup.get('GateEntryNo').value || '';
+        grnSaveObj['cashCreditType'] = this._GRNList.userFormGroup.get('PaymentType').value;
+        grnSaveObj['grntype'] = this._GRNList.userFormGroup.get('GRNType').value;
+        grnSaveObj['totalAmount'] = this._GRNList.GRNFinalForm.get('TotalAmt').value || 0;
+        grnSaveObj['totalDiscAmount'] = this._GRNList.GRNFinalForm.get('DiscAmount').value || 0;
+        grnSaveObj['totalVatamount'] = this._GRNList.GRNFinalForm.get('VatAmount').value || 0;
+        grnSaveObj['netAmount'] = this._GRNList.GRNFinalForm.get('NetPayamt').value || 0;
+        grnSaveObj['remark'] = this._GRNList.GRNFinalForm.get('Remark').value || '';
+        grnSaveObj['receivedBy'] = this._GRNList.GRNFinalForm.get('ReceivedBy').value || '';
+        grnSaveObj['isVerified'] = false;
+        grnSaveObj['isClosed'] = false;  
+        grnSaveObj['invDate'] = this.datePipe.transform(this._GRNList.userFormGroup.get('DateOfInvoice').value, "yyyy-MM-dd") || '1900-01-01';
+        grnSaveObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
+        grnSaveObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
+        grnSaveObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharge').value || 0;
+        grnSaveObj['roundingAmt'] = this._GRNList.GRNFinalForm.get('RoundingAmt').value || 0;
+        grnSaveObj['totCgstamt'] = this.CGSTFinalAmount || 0; 
+        grnSaveObj['totSgstamt'] = this.SGSTFinalAmount || 0; 
+        grnSaveObj['totIgstamt'] = this.IGSTFinalAmount || 0; 
+        grnSaveObj['tranProcessId'] = this._GRNList.userFormGroup.get('GSTType').value || 0;
+        grnSaveObj['tranProcessMode'] = this._GRNList.userFormGroup.get('GSTType').value || '';
+        grnSaveObj['ewayBillNo'] = this._GRNList.GRNFinalForm.get('EwayBillNo').value || 0;
+        grnSaveObj['ewayBillDate'] = this.datePipe.transform(this._GRNList.GRNFinalForm.get('EwalBillDate').value, "yyyy-MM-dd") || '01/01/1099';
+        grnSaveObj['billDiscAmt'] =   this._GRNList.GRNFinalForm.get('DiscAmount2').value || 0; 
+        
+   
+        let SavegrnDetailObj = [];
+        this.dsItemNameList.data.forEach((element) => {
+            console.log(element); 
+            let grnDetailSaveObj = {};
+            grnDetailSaveObj['grndetId'] = 0;
+            grnDetailSaveObj['grnId'] = 0; 
+            grnDetailSaveObj['itemId'] = element.ItemId || 0;
+            grnDetailSaveObj['uomId'] = element.UOMId || 0;
+            grnDetailSaveObj['receiveQty'] = element.Qty || 0;
+            grnDetailSaveObj['freeQty'] = element.FreeQty || 0;
+            grnDetailSaveObj['mrp'] = element.UnitMRP || 0;
+            grnDetailSaveObj['rate'] = element.Rate || 0;
+            grnDetailSaveObj['totalAmount'] = element.TotalAmount || 0;
+            grnDetailSaveObj['conversionFactor'] = element.ConversionFactor || 0;
+            grnDetailSaveObj['vatPercentage'] = element.GST || 0;
+            grnDetailSaveObj['vatAmount'] = element.GSTAmount || 0;
+            grnDetailSaveObj['discPercentage'] = element.Disc || 0;
+            grnDetailSaveObj['discAmount'] = element.DisAmount || 0;
+            grnDetailSaveObj['discPerc2'] = element.DiscPer2 || 0;
+            grnDetailSaveObj['discAmt2'] = element.DiscAmt2 || 0;
+            grnDetailSaveObj['otherTax'] = 0; // this.CgstPer;
+            grnDetailSaveObj['landedRate'] = element.LandedRate || 0;
+            grnDetailSaveObj['netAmount'] = element.NetAmount || 0;
+            grnDetailSaveObj['grossAmount'] = element.NetAmount || 0;
+            grnDetailSaveObj['totalQty'] = element.TotalQty || 0;
+            grnDetailSaveObj['pono'] = 0; //this.IgstAmt;
+            grnDetailSaveObj['batchNo'] = element.BatchNo || "";
+
+            if (element.ExpDate && element.ExpDate.length === 10) {
+                const day = +element.ExpDate.substring(0, 2);
+                const month = +element.ExpDate.substring(3, 5);
+                const year = +element.ExpDate.substring(6, 10);
+
+                this.vExpDate = `${year}-${this.pad(month)}-${day}`;
+                // console.log(this.vExpDate)
+            } 
+            grnDetailSaveObj['batchExpDate'] = this.vExpDate;
+            grnDetailSaveObj['purUnitRate'] = element.PurUnitRate || 0;
+            grnDetailSaveObj['purUnitRateWF'] = element.PurUnitRateWF || 0;
+            grnDetailSaveObj['cgstper'] = element.CGST || 0;
+            grnDetailSaveObj['cgstamt'] = element.CGSTAmount || 0;
+            grnDetailSaveObj['sgstper'] = element.SGST || 0;
+            grnDetailSaveObj['sgstamt'] = element.SGSTAmount || 0;
+            grnDetailSaveObj['igstper'] = element.IGST || 0;
+            grnDetailSaveObj['igstamt'] = element.IGSTAmount || 0;
+            grnDetailSaveObj['mrpStrip'] = element.MRP || 0;
+            // grnDetailSaveObj['isVerified'] = element.IsVerified; 
+            // grnDetailSaveObj['isVerifiedDatetime'] = element.IsVerifiedDatetime || 0;
+            // grnDetailSaveObj['isVerifiedUserId'] = element.IsVerifiedUserId || 0;
+            grnDetailSaveObj['StkID'] = element.StkID || 0; 
+            SavegrnDetailObj.push(grnDetailSaveObj); 
+        }); 
+        grnSaveObj['tGrndetails'] = SavegrnDetailObj
+
+        let updateItemMasterGSTPerObjarray = [];
+        this.dsItemNameList.data.forEach((element) => {
+            let updateItemMasterGSTPerObj = {};
+            updateItemMasterGSTPerObj['itemId'] = element.ItemId || 0;
+            updateItemMasterGSTPerObj['cgst'] = element.CGST || 0;
+            updateItemMasterGSTPerObj['sgst'] = element.SGST || 0;
+            updateItemMasterGSTPerObj['igst'] = element.IGST || 0;
+            updateItemMasterGSTPerObj['hsNcode'] = element.HSNCode || "";
+            updateItemMasterGSTPerObjarray.push(updateItemMasterGSTPerObj);
+        }); 
+        let submitData = {
+            "grnSave": grnSaveObj,
+           //"grnDetailSave": SavegrnDetailObj,
+            "grnItems": updateItemMasterGSTPerObjarray
+        };
+        console.log(submitData); 
+        this._GRNList.GRNSave(submitData).subscribe(response => { 
+            console.log(response)
+            this.toastr.success(response.message);  
+            this._matDialog.closeAll();
+            this.OnReset();
+          }, (error) => {
+            this.toastr.error(error.message);
+          });
     }
 
+    OnReset() {
+        this.resetForm();
+    }
     // Handlers
     validateFormValues() {
         const form = this._GRNList.userFormGroup;
@@ -842,6 +837,58 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     }
     ngOnDestroy(): void {
         this.resetForm();
+    }
+    getValidationMessages() {
+        return {
+            supplierId: [
+                // { name: "required", Message: "SupplierId is required" }
+            ],
+            GSTType: [
+                // { name: "required", Message: "SupplierId is required" }
+            ],
+            itemName: [
+                // { name: "required", Message: "Item Name is required" }
+            ],
+            batchNo: [
+                // { name: "required", Message: "Batch No is required" }
+            ],
+            invoiceNo: [
+                // { name: "required", Message: "Invoice No is required" }
+            ],
+            gateEntryNo: [
+                // { name: "required", Message: "Gate Entry No is required" }
+            ],
+            mrp: [
+                // { name: "required", Message: "MRP is required" }
+            ],
+            rate: [
+                // { name: "required", Message: "Rate is required" }
+            ],
+            
+        };
+    }
+    getDateTime(dateTimeObj) {
+        this.dateTimeObj = dateTimeObj;
+    }
+    OnAddItem() {
+        const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
+            maxWidth: "100%",
+            height: '95%',
+            width: '95%',
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log("The dialog was closed - Insert Action", result);
+        });
+    }
+    OnAddSupplier() {
+        const dialogRef = this._matDialog.open(SupplierFormMasterComponent, {
+            maxWidth: "100%",
+            height: '95%',
+            width: '95%',
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log("The dialog was closed - Insert Action", result);
+        });
     }
 }
 export class LastThreeItemList {

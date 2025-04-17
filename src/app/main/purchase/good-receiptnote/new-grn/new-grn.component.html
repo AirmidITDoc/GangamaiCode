@@ -59,7 +59,7 @@
                     ></airmid-dropdown>
 
                     <airmid-textbox
-                      fxFlex="10%"
+                      fxFlex="11%"
                       label="Contact Persion"
                       formControlName="Contact"
                       [(ngModel)]="vContact"
@@ -68,12 +68,12 @@
                       [disabled]="true"
                     ></airmid-textbox>
 
-                    <airmid-textbox fxFlex="10%" label="Mobile" formControlName="Mobile" [(ngModel)]="vMobile" [formGroup]="_GRNList.userFormGroup" [readonly]="true"></airmid-textbox>
+                    <airmid-textbox fxFlex="9%" label="Mobile" formControlName="Mobile" [(ngModel)]="vMobile" [formGroup]="_GRNList.userFormGroup" [readonly]="true"></airmid-textbox>
 
-                    <airmid-datepicker fxFlex="10%" [formGroup]="_GRNList.userFormGroup" formControlName="DateOfInvoice" [label]="'Invoice Date'" ></airmid-datepicker>
+                    <airmid-datepicker fxFlex="11%" [formGroup]="_GRNList.userFormGroup" formControlName="DateOfInvoice" [label]="'Invoice Date'" ></airmid-datepicker>
 
                     <airmid-textbox
-                      fxFlex="10%"
+                      fxFlex="8%"
                       label="Invoice No"
                       formControlName="InvoiceNo"
                       [(ngModel)]="registerObj.InvoiceNo"
@@ -83,7 +83,7 @@
                     ></airmid-textbox>
 
                     <airmid-textbox
-                      fxFlex="10%"
+                      fxFlex="8%"
                       label="Gate Entry No"
                       formControlName="GateEntryNo"
                       [(ngModel)]="registerObj.GrnNumber"
@@ -93,21 +93,21 @@
                     ></airmid-textbox>
 
                     <airmid-datepicker
-                      fxFlex="10%"
+                      fxFlex="11%"
                       [formGroup]="_GRNList.userFormGroup"
                       formControlName="PaymentDate"
                       [label]="'Payment due date'"
                     ></airmid-datepicker>
 
                     <airmid-dropdown
-                      fxFlex="10%"
+                      fxFlex="12%"
                       label="Select GST Type"
                       formControlName="GSTType"
                       ValueField="text"
                       [formGroup]="_GRNList.userFormGroup"
-                      [validations]="getValidationMessages().supplierId"
+                      [validations]="getValidationMessages().GSTType"
                       (selectionChange)="onGSTTypeChange($event)"
-                      [mode]="dropdownMode.gstCalcType"
+                      [mode]="autocompleteModeGSTType"
                     ></airmid-dropdown>
 
                     <div fxLayout="row" fxFlex="15%" class="ml-8">
@@ -804,91 +804,47 @@
                         <span class="net-amt-value text-primary" style="margin-left: 10px; font-weight: bolder">{{ getTotalAmount() | currency : 'INR' }}</span>
                       </div>
                       <div fxLayout="row" class="gap-4">
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>Remark</mat-label>
-                          <input matInput placeholder="Placeholder" formControlName="Remark" #Remark type="text" [(ngModel)]="registerObj.Remark" />
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>Received By</mat-label>
-                          <input matInput placeholder="Placeholder" formControlName="ReceivedBy" type="text" #ReceivedBy [(ngModel)]="registerObj.ReceivedBy" required />
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>Debit Amt</mat-label>
-                          <input matInput placeholder="Placeholder" formControlName="DebitAmount" #DebitAmount [(ngModel)]="registerObj.DebitNote" type="text" />
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>Credit Amt</mat-label>
-                          <input matInput placeholder="Placeholder" formControlName="CreditAmount" #CreditAmount [(ngModel)]="registerObj.CreditNote" type="text" />
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>Other Charges</mat-label>
-                          <input matInput placeholder="Placeholder" formControlName="OtherCharge" #OtherCharge [(ngModel)]="registerObj.OtherCharge" />
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>Eway BillNo</mat-label>
-                          <input matInput placeholder="Placeholder" formControlName="EwayBillNo" [(ngModel)]="registerObj.EwayBillNo" #EwayBillNo />
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>EwayBill date</mat-label>
-                          <input name="EwalBillDate" matInput [matDatepicker]="picker9" formControllName="EwalBillDate" [(ngModel)]="registerObj.EwayBillDate" />
-                          <mat-datepicker-toggle matSuffix [for]="picker9"></mat-datepicker-toggle>
-                          <mat-datepicker #picker9></mat-datepicker>
-                        </mat-form-field>
+                        <airmid-textbox fxFlex="17%" label="Remark" formControlName="Remark" [(ngModel)]="registerObj.Remark"
+                          [formGroup]="_GRNList.GRNFinalForm" type="text"></airmid-textbox>
+                      
+                        <airmid-textbox fxFlex="14%" label="Received By" formControlName="ReceivedBy" [(ngModel)]="registerObj.ReceivedBy"
+                          [formGroup]="_GRNList.GRNFinalForm" type="text"></airmid-textbox>
+                      
+                        <airmid-textbox fxFlex="12%" label="Debit Amt" formControlName="DebitAmount" [(ngModel)]="registerObj.DebitAmount"
+                          [formGroup]="_GRNList.GRNFinalForm" type="number"></airmid-textbox>
+                      
+                        <airmid-textbox fxFlex="12%" label="Credit Amt" formControlName="CreditAmount" [(ngModel)]="registerObj.CreditNote"
+                          [formGroup]="_GRNList.GRNFinalForm" type="number"></airmid-textbox>
+                      
+                        <airmid-textbox fxFlex="12%" label="Other Charges" formControlName="OtherCharge" [(ngModel)]="registerObj.OtherCharge"
+                          [formGroup]="_GRNList.GRNFinalForm" type="number"></airmid-textbox>
+                      
+                        <airmid-textbox fxFlex="12%" label="EwayBillNo" formControlName="Contact" [(ngModel)]="registerObj.EwayBillNo"
+                          [formGroup]="_GRNList.GRNFinalForm" type="number"></airmid-textbox>
+                      
+                        <airmid-datepicker fxFlex="17%" [formGroup]="_GRNList.GRNFinalForm" formControlName="EwalBillDate"
+                          [label]="'EwayBill date'"></airmid-datepicker>
+                      
                       </div>
                       <div fxLayout="row" class="gap-4">
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>Total Amount</mat-label>
-                          <input matInput placeholder="Placeholder" formControlName="TotalAmt" [(ngModel)]="vTotalFinalAmount" #DiscAmount type="text" [(ngModel)]="registerObj.TotalAmount" readonly />
-                        </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>DiscAmt</mat-label>
-                          <input
-                            matInput
-                            placeholder="Placeholder"
-                            formControlName="DiscAmount"
-                            [(ngModel)]="vFinalDisAmount"
-                            #DiscAmount
-                            type="text"
-                            [(ngModel)]="registerObj.TotalDiscAmount"
-                            readonly
-                          />
-                        </mat-form-field>
+                        <airmid-textbox fxFlex="18%" label="Total Amt" formControlName="TotalAmt" [(ngModel)]="registerObj.TotalAmount"
+                          [formGroup]="_GRNList.GRNFinalForm" type="number"   [readonly]="true"></airmid-textbox>
 
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>DiscAmt2</mat-label>
-                          <input matInput placeholder="Placeholder" formControlName="DiscAmount2" [(ngModel)]="vFinalDisAmount2" #DiscAmount1 type="text" readonly />
-                        </mat-form-field>
+                          <airmid-textbox fxFlex="15%" label="Disc Amt" formControlName="DiscAmount" [(ngModel)]="registerObj.TotalDiscAmount"
+                          [formGroup]="_GRNList.GRNFinalForm" type="number"   [readonly]="true"></airmid-textbox>
 
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>GST Amt</mat-label>
-                          <input
-                            matInput
-                            placeholder="Placeholder"
-                            formControlName="VatAmount"
-                            [(ngModel)]="vFinalVatAmount"
-                            #VatAmount
-                            [(ngModel)]="registerObj.totalVATAmount"
-                            readonly
-                            type="text"
-                          />
-                        </mat-form-field>
+                          <airmid-textbox fxFlex="15%" label="DiscAmt2" formControlName="DiscAmount2" [(ngModel)]="vFinalDisAmount2"
+                          [formGroup]="_GRNList.GRNFinalForm" type="number"   [readonly]="true"></airmid-textbox>
+                      
+                          <airmid-textbox fxFlex="15%" label="GST Amt" formControlName="VatAmount" [(ngModel)]="registerObj.totalVATAmount"
+                          [formGroup]="_GRNList.GRNFinalForm" type="number"   [readonly]="true"></airmid-textbox>
 
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>Net Pay Amt</mat-label>
-                          <input matInput placeholder="Placeholder" formControlName="NetPayamt" type="text" readonly [(ngModel)]="vFinalNetAmount" [(ngModel)]="registerObj.NetAmount" #NetPayamt />
-                        </mat-form-field>
+                          <airmid-textbox fxFlex="18%" label="Net Amt" formControlName="NetPayamt" [(ngModel)]="registerObj.NetAmount"
+                          [formGroup]="_GRNList.GRNFinalForm" type="number"   [readonly]="true"></airmid-textbox>
 
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>Rounding Amt</mat-label>
-                          <input matInput placeholder="Placeholder" formControlName="RoundingAmt" #RoundingAmt [(ngModel)]="vDiffNetRoundAmt" />
-                        </mat-form-field>
+                          <airmid-textbox fxFlex="15%" label="Rounding Amt" formControlName="RoundingAmt" [(ngModel)]="vDiffNetRoundAmt"
+                          [formGroup]="_GRNList.GRNFinalForm" type="number"   [readonly]="true"></airmid-textbox>  
                       </div>
                     </div>
                   </div>

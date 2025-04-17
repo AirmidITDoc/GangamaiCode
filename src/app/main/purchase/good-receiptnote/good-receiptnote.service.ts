@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,8 @@ export class GoodReceiptnoteService {
   constructor(
     public _httpClient: HttpClient,
     private _loaderService: LoaderService,
-    private _formBuilder: UntypedFormBuilder
+    private _formBuilder: UntypedFormBuilder,
+    public _httpClient1:ApiCaller
   ) {
     this.GRNStoreForm = this.createStoreFrom();
     // this.GRNFirstForm=this.getGRNfirstForm();
@@ -100,7 +102,7 @@ export class GoodReceiptnoteService {
       DateOfInvoice: [new Date()],
       GateEntryNo: [''],
       GRNType: ['1'],
-      GSTType: ['1'],
+      GSTType: ['2'],
       PaymentType: ['0'],
       PaymentDate: [new Date()]
     });
@@ -110,13 +112,13 @@ export class GoodReceiptnoteService {
     return this._formBuilder.group({
       Status3: [''],
       Remark: [''],
-      ReceivedBy: [''],
+      ReceivedBy: ['',Validators.required],
       DebitAmount: [''],
       CreditAmount: [''],
       DiscAmount: [''],
-      TotalAmt: [''],
+      TotalAmt: ['',Validators.required],
       VatAmount: [''],
-      NetPayamt: [''],
+      NetPayamt: ['',Validators.required],
       OtherCharge: [''],
       RoundingAmt: [''],
       EwayBillNo: [""],
@@ -186,7 +188,7 @@ export class GoodReceiptnoteService {
     if (loader) {
       this._loaderService.show();
     }
-    return this._httpClient.post("Pharmacy/InsertGRNDirect", Param);
+    return this._httpClient1.PostData("GRN/Insert", Param);
   }
   public POtoGRNSave(Param, loader = true) {
     if (loader) {
@@ -228,5 +230,9 @@ export class GoodReceiptnoteService {
   }
   public getCheckInvoiceNo(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query=" + data, {});
+  }
+
+  public getSupplierdetails(Id) { 
+    return this._httpClient1.GetData("Supplier/" + Id);
   }
 }
