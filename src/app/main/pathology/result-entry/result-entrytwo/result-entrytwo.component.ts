@@ -225,7 +225,7 @@ export class ResultEntrytwoComponent implements OnInit {
               Swal.fire('Congratulations !', 'Pathology Template data saved Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
                  this.dialogRef.close();
-                 this.viewgetPathologyTemplateReportPdf(this.selectedAdvanceObj1.PathReportID);
+                 this.viewgetPathologyTemplateReportPdf(this.selectedAdvanceObj1);
                 }
               });
             } else {
@@ -236,20 +236,54 @@ export class ResultEntrytwoComponent implements OnInit {
         
   }
   
-  viewgetPathologyTemplateReportPdf(PathReportID) {
+  viewgetPathologyTemplateReportPdf(contact) {
+    debugger
+    setTimeout(() => {
+                let param = {
+                        "searchFields": [
+                            {
+                                "fieldName": "PathReportId" ,
+                                "fieldValue": String(contact.pathReportId),
+                                "opType": "Equals"
+                            },
+                            {
+                                "fieldName": "OP_IP_Type"   ,
+                                "fieldValue": contact.opdipdtype,
+                                "opType": "Equals"
+                            }
+                        ],
+                        "mode": "PathTemplateReport"
+                    }
     
-    this._SampleService.getPathologyTempReport(PathReportID,this.selectedAdvanceObj1.OPD_IPD_Type).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Pathology Template Report Viewer"
-          }
-        });
-    });
+              this._SampleService.getReportView(param).subscribe(res => {
+                  
+                    const matDialog = this._matDialog.open(PdfviewerComponent,
+                        {
+                            maxWidth: "85vw",
+                            height: '750px',
+                            width: '100%',
+                            data: {
+                                base64: res["base64"] as string,
+                                title: "Template Report" + " "+ "Viewer"
+                            }
+                        });
+                    matDialog.afterClosed().subscribe(result => {
+                    });
+                });
+            }, 100);
+    
+    // this._SampleService.getPathologyTempReport(PathReportID,this.selectedAdvanceObj1.opdipdtype).subscribe(res => {
+    //   const dialogRef = this._matDialog.open(PdfviewerComponent,
+    //     {
+    //       maxWidth: "85vw",
+    //       height: '750px',
+    //       width: '100%',
+    //       data: {
+    //         base64: res["base64"] as string,
+    //         title: "Pathology Template Report Viewer"
+    //       }
+    //     });
+    // });
   }
   
   onEdit(row) {

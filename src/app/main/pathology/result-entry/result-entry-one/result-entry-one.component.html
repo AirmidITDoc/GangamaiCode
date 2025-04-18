@@ -194,8 +194,8 @@
                                         </mat-header-cell>
                                         <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
                                             <mat-form-field appearance="fill">
-                                                <input matInput matTooltip="Status" [(ngModel)]="contact.ParaBoldFlag"
-                                                    (keyup)="editflag()">
+                                                <input matInput matTooltip="Status" [(ngModel)]="contact.ParaBoldFlag">
+                                                <!-- (keyup)="editflag()" -->
                                             </mat-form-field>
                                         </mat-cell>
                                     </ng-container>

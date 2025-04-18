@@ -287,18 +287,18 @@ export class ResultEntryComponent implements OnInit {
 
         this.PatientName = row.patientName;
         this.OPD_IPD = row.oP_IP_No
-        this.Age = row.AgeYear
+        this.Age = row.ageYear
         this.PatientType = row.patientType
         this.Mobileno = row.mobileNo
         this.SBillNo = row.billNo;
-        this.SOPIPtype = row.OPD_IPD_Type;
-        this.SFromDate = this.datePipe.transform(row.PathDate, "yyyy-MM-dd ");
+        this.SOPIPtype = row.opdipdtype;
+        this.SFromDate = this.datePipe.transform(row.pathDate, "yyyy-MM-dd ");
 
         this.getSampledetailList1(row);
     }
 
       getSampledetailList1(row) {
-        debugger
+        // debugger
         this.dataSource1.data = [];
         let rawDate = row.pathDate; 
         let day = rawDate.split("T")[0];
@@ -484,7 +484,7 @@ opipType:any="2";
     
     IsTemplateTest: any;
     chkresultentry(contact, flag) {
-        debugger
+        // debugger
         this.printdata = [];
         this.reportIdData = [];
         this.ServiceIdData = [];
@@ -562,24 +562,33 @@ opipType:any="2";
         // this.dataSource1.data = [];
     }
 
+    // Printresultentrywithheader() {
+    //     console.log(this.selection.selected)
+    //     let pathologyDelete = [];
+    //     this.selection.selected.forEach((element) => {
+    //         this.SOPIPtype = element["OPD_IPD_Type"]
+    //         let pathologyDeleteObj = {};
+    //         pathologyDeleteObj['pathReportId'] = element["PathReportID"]
+    //         pathologyDelete.push(pathologyDeleteObj);
+    //     });
+
+    //     let submitData = {
+    //         "printInsert": pathologyDelete,
+    //     };
+    //     console.log(submitData);
+    //     this._SampleService.PathPrintResultentryInsert(submitData).subscribe(response => {
+
+    //     });
+    //     this.selection.clear();
+    // }
+
     Printresultentrywithheader() {
+        debugger
         console.log(this.selection.selected)
-        let pathologyDelete = [];
         this.selection.selected.forEach((element) => {
-            this.SOPIPtype = element["OPD_IPD_Type"]
-            let pathologyDeleteObj = {};
-            pathologyDeleteObj['pathReportId'] = element["PathReportID"]
-            pathologyDelete.push(pathologyDeleteObj);
+            this.OP_IP_Type = element.opdipdtype
         });
-
-        let submitData = {
-            "printInsert": pathologyDelete,
-        };
-        console.log(submitData);
-        this._SampleService.PathPrintResultentryInsert(submitData).subscribe(response => {
-
-        });
-        this.selection.clear();
+        this.commonService.Onprint("OP_IP_Type", this.OP_IP_Type, "PathresultEntryWithHeader");
     }
 
     getWhatsappshareResult(contact) {
@@ -698,7 +707,8 @@ debugger
     }
 
     getPrint(contact) {
-
+        debugger
+        console.log(contact)
 
         if (contact.isTemplateTest)
             this.viewgetPathologyTemplateReportPdf(contact)
@@ -715,21 +725,33 @@ debugger
         }
         this.selection.clear();
     }
+
+    OP_IP_Type:any;
+    Printresultentry() {
+        debugger
+        console.log(this.selection.selected)
+        this.selection.selected.forEach((element) => {
+            this.OP_IP_Type = element.opdipdtype
+        });
+        this.commonService.Onprint("OP_IP_Type", this.OP_IP_Type, "PathresultEntry");
+    }
+
     AdList: boolean = false;
 
     viewgetPathologyTemplateReportPdf(contact) {
+        debugger
         setTimeout(() => {
             let param = {
                     "searchFields": [
                         {
                             "fieldName": "PathReportId" ,
-                            "fieldValue": String(contact.PathReportId ),
-                            "opType": "13"
+                            "fieldValue": String(contact.pathReportId),
+                            "opType": "Equals"
                         },
                         {
                             "fieldName": "OP_IP_Type"   ,
-                            "fieldValue": 1,
-                            "opType": "13"
+                            "fieldValue": contact.opdipdtype,
+                            "opType": "Equals"
                         }
                     ],
                     "mode": "PathTemplateReport"
@@ -775,27 +797,27 @@ debugger
         // this.selection.clear();
     }
 
-    Printresultentry() {
-        console.log(this.selection.selected)
-        let pathologyDelete = [];
-        this.selection.selected.forEach((element) => {
-            this.SOPIPtype = element["OPD_IPD_Type"]
-            let pathologyDeleteObj = {};
-            pathologyDeleteObj['pathReportId'] = element["PathReportID"]
-            pathologyDelete.push(pathologyDeleteObj);
-        });
+    // Printresultentry() {
+    //     console.log(this.selection.selected)
+    //     let pathologyDelete = [];
+    //     this.selection.selected.forEach((element) => {
+    //         this.SOPIPtype = element["OPD_IPD_Type"]
+    //         let pathologyDeleteObj = {};
+    //         pathologyDeleteObj['pathReportId'] = element["PathReportID"]
+    //         pathologyDelete.push(pathologyDeleteObj);
+    //     });
 
-        let submitData = {
-            "printInsert": pathologyDelete,
-        };
-        console.log(submitData);
-        this._SampleService.PathPrintResultentryInsert(submitData).subscribe(response => {
-            if (response) {
-                this.viewgetPathologyTestReportPdf(this.SOPIPtype)
-            }
-        });
-        this.selection.clear();
-    }
+    //     let submitData = {
+    //         "printInsert": pathologyDelete,
+    //     };
+    //     console.log(submitData);
+    //     this._SampleService.PathPrintResultentryInsert(submitData).subscribe(response => {
+    //         if (response) {
+    //             this.viewgetPathologyTestReportPdf(this.SOPIPtype)
+    //         }
+    //     });
+    //     this.selection.clear();
+    // }
 
 
     exportResultentryReportExcel() {
@@ -913,6 +935,7 @@ export class SampleList {
     TemplateDesc: String;
     IsCompleted: boolean;
     CategoryId: any;
+    opdipdtype:any;
 
     constructor(SampleList) {
         this.VADate = SampleList.VADate || '';
@@ -924,6 +947,7 @@ export class SampleList {
         this.TemplateDesc = SampleList.TemplateDesc || '';
         this.IsCompleted = SampleList.IsCompleted || 0;
         this.CategoryId = SampleList.CategoryId || 0;
+        this.opdipdtype=SampleList.opdipdtype || 0
     }
 
 }

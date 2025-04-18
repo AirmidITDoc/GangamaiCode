@@ -561,7 +561,8 @@ export class ResultEntryOneComponent implements OnInit {
     
                 pathologyUpdateReportObj['PathReportID'] = element.PathReportId// element1.PathReportId;
                 pathologyUpdateReportObj['ReportDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-                pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
+                // pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
+                pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "HH:mm");
                 pathologyUpdateReportObj['IsCompleted'] = true;
                 pathologyUpdateReportObj['IsPrinted'] = true;
                 pathologyUpdateReportObj['PathResultDr1'] = this.otherForm.get('PathResultDoctorId').value || 0;
@@ -586,6 +587,7 @@ export class ResultEntryOneComponent implements OnInit {
                 if (response) {
                     Swal.fire('Congratulations !', 'Data saved Successfully !', 'success').then((result) => {
                         this._matDialog.closeAll();
+                        this.Printresultentry();
                     });
                 } else {
                     Swal.fire('Error !', 'Pathology Resulentry data not saved', 'error');
@@ -594,7 +596,13 @@ export class ResultEntryOneComponent implements OnInit {
             });
     
         }
-    
+
+        OP_IP_Type:any;
+    Printresultentry() {
+        debugger
+            this.OP_IP_Type = this.selectedAdvanceObj2.opdipdtype
+        this.commonService.Onprint("OP_IP_Type", this.OP_IP_Type, "PathresultEntry");
+    }    
 
     nEnterresultdr
     Saveflag = 2;
@@ -644,7 +652,7 @@ export class ResultEntryOneComponent implements OnInit {
         {        
             "pathReportId": this.vPathReportId,        
             "reportDate": this.datePipe.transform(this.currentDate, "yyyy-MM-dd"),        
-            "reportTime":  this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),       
+            "reportTime":  this.datePipe.transform(this.currentDate, "HH:mm"),       
             "isCompleted": true,        
             "isPrinted": true,        
             "pathResultDr1": this.vPathResultDoctorId,        
@@ -705,29 +713,30 @@ export class ResultEntryOneComponent implements OnInit {
         this.commonService.Onprint("OP_IP_Type", element.OP_IP_Type, "PathresultEntry");
     }
 
-    Printresultentry() {
-        let pathologyDelete = [];
-        this.data.RIdData.forEach((element) => {
-            let pathologyDeleteObj = {};
-            pathologyDeleteObj['pathReportId'] = element.PathReportId// element1.PathReportId;
-            pathologyDelete.push(pathologyDeleteObj);
-            let submitData = {
-                "printInsert": pathologyDelete,
-            };
-            console.log(submitData);
-            this._SampleService.PathPrintResultentryInsert(submitData).subscribe(response => {
-                if (response) {
-                    Swal.fire('Congratulations !', 'Pathology Report Print !!', 'success').then((result) => {
-                        if (result.isConfirmed) {
-                            this.viewgetPathologyTestReportPdf(this.OP_IPType)
-                        }
-                    });
-                } else {
-                    Swal.fire('Error !', 'Pathology Print not saved', 'error');
-                }
-            });
-        });
-    }
+    // Printresultentry() {
+    //     debugger
+    //     let pathologyDelete = [];
+    //     this.data.RIdData.forEach((element) => {
+    //         let pathologyDeleteObj = {};
+    //         pathologyDeleteObj['pathReportId'] = element.PathReportId// element1.PathReportId;
+    //         pathologyDelete.push(pathologyDeleteObj);
+    //         let submitData = {
+    //             "printInsert": pathologyDelete,
+    //         };
+    //         console.log(submitData);
+    //         this._SampleService.PathPrintResultentryInsert(submitData).subscribe(response => {
+    //             if (response) {
+    //                 Swal.fire('Congratulations !', 'Pathology Report Print !!', 'success').then((result) => {
+    //                     if (result.isConfirmed) {
+    //                         this.viewgetPathologyTestReportPdf(this.OP_IPType)
+    //                     }
+    //                 });
+    //             } else {
+    //                 Swal.fire('Error !', 'Pathology Print not saved', 'error');
+    //             }
+    //         });
+    //     });
+    // }
 
     onClear() {
         this.otherForm.reset();
