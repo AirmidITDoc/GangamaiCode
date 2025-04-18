@@ -59,7 +59,10 @@ public getIPsettlementPrint(PaymentId){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch", employee)
   }
 
-  public getSettlementview(PaymentId){
+  public getSettlementview(PaymentId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InPatient/view-IP-SettlementReceipt?PaymentId=" + PaymentId);
   }
 

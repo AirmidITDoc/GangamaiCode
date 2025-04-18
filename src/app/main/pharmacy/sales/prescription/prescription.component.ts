@@ -197,7 +197,26 @@ savebtn:boolean=false;
   }
   viewgetIpprescriptionReportPdf(contact) {
     setTimeout(() => { 
-     debugger
+     debugger 
+     if(contact.IPPreId == 0 && contact.VisitId>0){  
+      this._SalesService.getOpPrescriptionview(
+        contact.VisitId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "OP Prescription Viewer"
+            }
+          }); 
+        dialogRef.afterClosed().subscribe(result => { 
+        });
+      });
+
+     }else{ 
       this._SalesService.getIpPrescriptionview(
         contact.IPMedID, 1
       ).subscribe(res => {
@@ -210,14 +229,17 @@ savebtn:boolean=false;
               base64: res["base64"] as string,
               title: "IP Prescription Viewer"
             }
-          });
-        dialogRef.afterClosed().subscribe(result => { 
-        });
+          }); 
         dialogRef.afterClosed().subscribe(result => {  
         });
-      }); 
+      });
+
+     }
+    
     }, 100);
   } 
+
+ 
 }
 export class PriscriptionList {
  

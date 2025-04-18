@@ -6,6 +6,8 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 
 @Component({
     selector: "app-concession-reason-master",
@@ -17,7 +19,7 @@ import { ToastrService } from "ngx-toastr";
 export class ConcessionReasonMasterComponent implements OnInit {
     ConsessionreasonMasterList: any;
     msg: any;
-
+  confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -35,6 +37,7 @@ export class ConcessionReasonMasterComponent implements OnInit {
     constructor(
         public _consessionreasonService: ConcessionReasonMasterService,
         public toastr : ToastrService,
+        public _matDialog:MatDialog
     ) {}
 
     ngOnInit(): void {
@@ -188,6 +191,27 @@ export class ConcessionReasonMasterComponent implements OnInit {
         };
         this._consessionreasonService.populateForm(m_data);
     }
+      onDeactive(ConcessionId) {
+            this.confirmDialogRef = this._matDialog.open(
+                FuseConfirmDialogComponent,
+                {
+                    disableClose: false,
+                }
+            );
+            this.confirmDialogRef.componentInstance.confirmMessage =
+                "Are you sure you want to deactive?";
+            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                if (result) {
+                    let Query =
+                        "Update M_ConcessionReasonMaster set IsDeleted=1 where ConcessionId=" +
+                        ConcessionId;
+                    console.log(Query);
+                    this._consessionreasonService.deactivateTheStatus(Query).subscribe((data) => (this.msg = data));
+                    this.getConcessionreasonMasterList();
+                }
+                this.confirmDialogRef = null;
+            });
+        }
 }
 
 export class ConcessionReasonMaster {

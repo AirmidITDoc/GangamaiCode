@@ -106,11 +106,11 @@ public getServiceList(param,loader = true){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientRegistrationList", employee)
   }
 
-  public getItemlist(Param, loader = true) {//m_Rtrv_ItemName_BalanceQty
+  public getItemlist(Param, loader = true) {//m_Rtrv_ItemName_BalanceQty  m_Rtrv_ItemName_ForPrescription
     if (loader) {
       this._loaderService.show();
   } 
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemName_ForPrescription",Param)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemName_BalanceQty",Param)
   }
   public getPatientVisitedListSearch(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)

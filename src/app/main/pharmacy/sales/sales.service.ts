@@ -183,4 +183,11 @@ export class SalesService {
   }
     return this._httpClient.post("Generic/GetByProc?procName=Ret_PrescriptionDet",Param);
   }
+  public getOpPrescriptionview(VisitId,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.get("OutPatient/view-OP_Prescription?VisitId=" + VisitId);
+  }
+
 }

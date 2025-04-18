@@ -4207,7 +4207,11 @@ getBillSummary(){
   query  = "select  SUM(BalanceAmount) as CreditAmount from t_salesheader where OP_IP_ID="+ this.OP_IP_Id 
   this._salesService.getBillSummaryQuery(query).subscribe((data) =>{
     console.log(data)
-    this.TotalCreditAmt = data[0].CreditAmount ;
+    if(data[0].CreditAmount > 0){
+      this.TotalCreditAmt = data[0].CreditAmount ; 
+    }else{
+      this.TotalCreditAmt = 0;
+    }
   });
 
   query  = "select AdvanceAmount,BalanceAmount from T_PHAdvanceHeader where OPD_IPD_Id="+ this.OP_IP_Id

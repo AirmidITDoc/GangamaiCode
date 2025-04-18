@@ -208,7 +208,7 @@ export class OTManagementServiceService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_AnesthestishDoctor_ForCombo", {})
   }
   public getDoctorMaster2Combo() {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+    return this._httpClient.post("Generic/GetByProc?procName=m_RetrieveConsultantDoctorMasterForCombo", {})
   }
     
   // public getDoctorMaster() {
@@ -216,7 +216,7 @@ export class OTManagementServiceService {
   // }
 
   public getDoctorMaster() {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+    return this._httpClient.post("Generic/GetByProc?procName=m_RetrieveConsultantDoctorMasterForCombo", {})
   }
   public getDoctorMaster1Combo() {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveDoctorMasterForCombo", {})
