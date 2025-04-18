@@ -597,12 +597,47 @@ export class ResultEntryOneComponent implements OnInit {
     
         }
 
-        OP_IP_Type:any;
+    //     OP_IP_Type:any;
+    // Printresultentry() {
+    //     debugger
+    //         this.OP_IP_Type = this.selectedAdvanceObj2.opdipdtype
+    //     this.commonService.Onprint("OP_IP_Type", this.OP_IP_Type, "PathresultEntry");
+    // }    
+
     Printresultentry() {
-        debugger
-            this.OP_IP_Type = this.selectedAdvanceObj2.opdipdtype
-        this.commonService.Onprint("OP_IP_Type", this.OP_IP_Type, "PathresultEntry");
-    }    
+        debugger;
+        // console.log(this.selection.selected);
+    
+        // this.selection.selected.forEach((element) => {
+            const param = {
+                searchFields: [
+                    {
+                        fieldName: "OP_IP_Type",
+                        fieldValue: String(this.selectedAdvanceObj2.opdipdtype),
+                        opType: "Equals"
+                    }
+                ],
+                mode: "PathresultEntry"
+            };
+    
+            console.log(param);
+    
+            this._SampleService.getReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent, {
+                    maxWidth: "85vw",
+                    height: '750px',
+                    width: '100%',
+                    data: {
+                        base64: res["base64"] as string,
+                        title: "Template Report Viewer"
+                    }
+                });
+    
+                matDialog.afterClosed().subscribe(result => {
+                    
+                });
+            });        
+    }
 
     nEnterresultdr
     Saveflag = 2;
@@ -674,6 +709,7 @@ export class ResultEntryOneComponent implements OnInit {
             if (response) {
                 Swal.fire('Congratulations !', 'Data saved Successfully !', 'success').then((result) => {
                     this._matDialog.closeAll();
+                    this.Printresultentry();
                 });
             } else {
                 Swal.fire('Error !', 'Pathology Resulentry data not saved', 'error');
@@ -712,31 +748,6 @@ export class ResultEntryOneComponent implements OnInit {
     viewgetPathologyTestReportPdf(element) {
         this.commonService.Onprint("OP_IP_Type", element.OP_IP_Type, "PathresultEntry");
     }
-
-    // Printresultentry() {
-    //     debugger
-    //     let pathologyDelete = [];
-    //     this.data.RIdData.forEach((element) => {
-    //         let pathologyDeleteObj = {};
-    //         pathologyDeleteObj['pathReportId'] = element.PathReportId// element1.PathReportId;
-    //         pathologyDelete.push(pathologyDeleteObj);
-    //         let submitData = {
-    //             "printInsert": pathologyDelete,
-    //         };
-    //         console.log(submitData);
-    //         this._SampleService.PathPrintResultentryInsert(submitData).subscribe(response => {
-    //             if (response) {
-    //                 Swal.fire('Congratulations !', 'Pathology Report Print !!', 'success').then((result) => {
-    //                     if (result.isConfirmed) {
-    //                         this.viewgetPathologyTestReportPdf(this.OP_IPType)
-    //                     }
-    //                 });
-    //             } else {
-    //                 Swal.fire('Error !', 'Pathology Print not saved', 'error');
-    //             }
-    //         });
-    //     });
-    // }
 
     onClear() {
         this.otherForm.reset();
