@@ -112,13 +112,13 @@
 
                     <div fxLayout="row" fxFlex="15%" class="ml-8">
                       <mat-radio-group [(ngModel)]="vGrntypechecked" formControlName="GRNType" fxLayout="column" class="gap-4">
-                        <mat-radio-button [value]="1">Direct Purchase</mat-radio-button>
-                        <mat-radio-button [value]="0" (click)="purchaseOrderList()">Purchase Orders</mat-radio-button>
+                        <mat-radio-button [value]="true">Direct Purchase</mat-radio-button>
+                        <mat-radio-button [value]="false" (click)="purchaseOrderList()">Purchase Orders</mat-radio-button>
                       </mat-radio-group>
 
                       <mat-radio-group [(ngModel)]="vCahchecked" formControlName="PaymentType" fxLayout="column" class="gap-4">
-                        <mat-radio-button [value]="1">Cash</mat-radio-button>
-                        <mat-radio-button [value]="0">Credit</mat-radio-button>
+                        <mat-radio-button [value]="true">Cash</mat-radio-button>
+                        <mat-radio-button [value]="false">Credit</mat-radio-button>
                       </mat-radio-group>
                     </div>
                   </div>

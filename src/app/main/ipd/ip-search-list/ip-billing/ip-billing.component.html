@@ -434,14 +434,19 @@
                         </ng-container>
 
                         <ng-container matColumnDef="IsCheck" sticky>
-                          <mat-header-cell *matHeaderCellDef mat-sort-header class="w-50">Status</mat-header-cell>
-                          <mat-cell *matCellDef="let contact" class="w-50">
-                            <mat-icon *ngIf="contact.isPathology != 1" matTooltip="IsRadiology">
-                              <img width="15px" height="8px" src="assets/images/logos/radiology.png" />
-                            </mat-icon>
-                            <mat-icon *ngIf="contact.isPathology == 1" matTooltip="IsPatholgy">
-                              <img width="15px" height="9px" src="assets/images/logos/pathology.png" />
-                            </mat-icon>
+                          <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">Status</mat-header-cell>
+                          <mat-cell *matCellDef="let contact" class="w-80">
+                            <div fxLayout="row" fxLayoutGap="4px">
+                              <mat-icon *ngIf="contact.isPackage == 1" matTooltip="IsPackage">
+                                <img width="15px" height="9px" src="assets/images/logos/package.png">
+                              </mat-icon>
+                              <mat-icon *ngIf="contact.isPathology != 1" matTooltip="IsRadiology">
+                                <img width="15px" height="8px" src="assets/images/logos/radiology.png" />
+                              </mat-icon>
+                              <mat-icon *ngIf="contact.isPathology == 1" matTooltip="IsPatholgy">
+                                <img width="15px" height="9px" src="assets/images/logos/pathology.png" />
+                              </mat-icon>
+                            </div>
                           </mat-cell>
                         </ng-container>
 
@@ -545,7 +550,7 @@
                         <mat-row
                           *matRowDef="let contact; columns: displayedColumns"
                           class="min-width-1600"
-                          [ngClass]="{ 'row-yellow': contact.ServiceName == 'CBC' }"
+                          [ngClass]="{'red-row': contact.isPathTestCompleted == '1' ||  contact.isRadTestCompleted == '1' }"
                           [@animate]="{ value: '*', params: { y: '100%' } }"
                         ></mat-row>
                         <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{ hide: dataSource != null }"></mat-footer-row>

@@ -557,6 +557,19 @@ export class IPBillingComponent implements OnInit {
     this.Serviceform.get('netAmount').reset();
   }
   deletecharges(contact) {
+    debugger
+    if (contact.isPathTestCompleted == 1) {
+      this.toastr.warning('Selected Service Test is Already Completed you cannot delete !', 'warning', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return
+    }
+    if (contact.isRadTestCompleted == 1) {
+      this.toastr.warning('Selected Service Test is Already Completed you cannot delete !', 'warning', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return
+    } 
     Swal.fire({  
       title: 'Do you want to cancel the Service ',
       text: "You won't be able to revert this!",

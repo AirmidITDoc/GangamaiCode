@@ -61,5 +61,9 @@
   .main-content {
     margin-left: 6px; /* Adjust when sidebar is collapsed */
   }
+  .red-row {
+    background-color: rgb(245, 186, 195) !important; /* Use !important to override default styles */
+    //color: white; /* Optional: Change text color for better visibility */
+    }
   
  

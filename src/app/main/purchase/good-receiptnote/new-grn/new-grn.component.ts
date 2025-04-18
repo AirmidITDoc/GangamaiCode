@@ -159,7 +159,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     filteredoptionsItemName: Observable<string[]>;
     @ViewChild('picker') datePickerElement = MatDatepicker;
     vCahchecked: any = 0;
-    vGrntypechecked: any = 1;
+    vGrntypechecked: any;
     selectedAdvanceObj: PODetailList;
     optionsToStore: any;
     optionsFrom: any;
@@ -232,13 +232,13 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             this.registerObj = this.data.Obj;
             console.log(this.registerObj) 
             if (this.registerObj.Cash_CreditType)
-                this.vCahchecked = 1;
+                this.vCahchecked = true;
             if (!this.registerObj.Cash_CreditType)
-                this.vCahchecked = 0;
+                this.vCahchecked = false;
             if (this.registerObj.GRNType)
-                this.vGrntypechecked = 1;
+                this.vGrntypechecked = true;
             if (!this.registerObj.GRNType)
-                this.vGrntypechecked = 0;
+                this.vGrntypechecked = false;
         }
         else if (this.data.chkNewGRN == 3) {
             // get full data from excell import.
@@ -248,6 +248,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             this.chargeslist = obj.Items as ItemNameList[];
             this.dsTempItemNameList.data = obj.Items as ItemNameList[];
         } 
+        this.getGRNrtrvItemlist();
     }
     //Item selectedObj
     getSelectedItem(item: GRNItemResponseType): void {
@@ -685,7 +686,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         grnSaveObj['supplierId'] = this._GRNList.userFormGroup.get('SupplierId').value || 0;
         grnSaveObj['invoiceNo'] = this._GRNList.userFormGroup.get('InvoiceNo').value || '';
         grnSaveObj['deliveryNo'] = '';
-        grnSaveObj['gateEntryNo'] = this._GRNList.userFormGroup.get('GateEntryNo').value || '';
+        grnSaveObj['gateEntryNo'] = this._GRNList.userFormGroup.get('GateEntryNo').value || ''; 
         grnSaveObj['cashCreditType'] = this._GRNList.userFormGroup.get('PaymentType').value;
         grnSaveObj['grntype'] = this._GRNList.userFormGroup.get('GRNType').value;
         grnSaveObj['totalAmount'] = this._GRNList.GRNFinalForm.get('TotalAmt').value || 0;
@@ -757,10 +758,10 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             grnDetailSaveObj['igstper'] = element.IGST || 0;
             grnDetailSaveObj['igstamt'] = element.IGSTAmount || 0;
             grnDetailSaveObj['mrpStrip'] = element.MRP || 0;
-            // grnDetailSaveObj['isVerified'] = element.IsVerified; 
-            // grnDetailSaveObj['isVerifiedDatetime'] = element.IsVerifiedDatetime || 0;
-            // grnDetailSaveObj['isVerifiedUserId'] = element.IsVerifiedUserId || 0;
-            grnDetailSaveObj['StkID'] = element.StkID || 0; 
+            grnDetailSaveObj['isVerified'] = element.IsVerified; 
+            grnDetailSaveObj['isVerifiedDatetime'] = element.IsVerifiedDatetime || 0;
+            grnDetailSaveObj['isVerifiedUserId'] = element.IsVerifiedUserId || 0;
+            grnDetailSaveObj['stkId'] = element.StkID || 0; 
             SavegrnDetailObj.push(grnDetailSaveObj); 
         }); 
         grnSaveObj['tGrndetails'] = SavegrnDetailObj
@@ -794,6 +795,29 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     OnReset() {
         this.resetForm();
     }
+    getGRNrtrvItemlist() { 
+        var vdata = {  
+            "first": 0,
+            "rows": 10,
+            "sortField": "GRNDetID",
+            "sortOrder": 0,
+            "filters": [
+              {
+                "fieldName": "GRNID",
+                "fieldValue": String(this.registerObj.GRNId),
+                "opType": "Equals"
+              }
+            ],
+            "exportType": "JSON"
+          } 
+         console.log(vdata);
+        this._GRNList.getGRNrtrvItemlist(vdata).subscribe(response => {
+          this.chargeslist = response
+          console.log(response)
+          this.dsItemNameList.data = this.chargeslist;
+          console.log(this.dsItemNameList.data)  
+        });  
+      } 
     // Handlers
     validateFormValues() {
         const form = this._GRNList.userFormGroup;

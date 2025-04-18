@@ -101,9 +101,9 @@ export class GoodReceiptnoteService {
       InvoiceNo: [''],
       DateOfInvoice: [new Date()],
       GateEntryNo: [''],
-      GRNType: ['1'],
+      GRNType: [true],
       GSTType: ['2'],
-      PaymentType: ['0'],
+      PaymentType: [true],
       PaymentDate: [new Date()]
     });
   }
@@ -209,7 +209,12 @@ export class GoodReceiptnoteService {
     }
     return this._httpClient.post("Pharmacy/updateGRN", Param);
   }
-
+  public getGRNrtrvItemlist(Param, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+    }
+    return this._httpClient.post("GRN/GRNUpdateList", Param);
+  }
   public getLoggedStoreList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
   }
