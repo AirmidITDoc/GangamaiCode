@@ -17,6 +17,7 @@ export class FileNode {
     isAdd?: boolean;
     isEdit?: boolean;
     isDelete?: boolean;
+    isExport?: boolean;
     menuId?: number;
     id?: string;
     translate?: string;
@@ -48,6 +49,7 @@ export class RolePermissionComponent implements OnInit {
             isAdd: node.isAdd,
             isEdit: node.isEdit,
             isDelete: node.isDelete,
+            isExport: node.isExport,
             menuId: node.id,
             id: node.id,
             translate: node.translate,
@@ -97,7 +99,7 @@ export class RolePermissionComponent implements OnInit {
         
         if (this.data) {
             this.roleId = this.data.roleId;
-            debugger
+            // debugger
             this._RoleTemplateService.getPermissionList(this.data.roleId).subscribe((Menu) => {
                 console.log(Menu)
                 this.dataSource.data = Menu as FileNode[];
@@ -110,6 +112,7 @@ export class RolePermissionComponent implements OnInit {
         else if (type == 'add') proptype = "isAdd";
         else if (type == 'edit') proptype = "isEdit";
         else if (type == 'delete') proptype = "isDelete";
+        else if (type == 'export') proptype = "isExport";
         const descendants = this.treeControl.getDescendants(obj);
         for (let i = 0; i < descendants.length; i++) {
             //this.chkunchk(obj.children[i], type, proptype, $event);
@@ -152,6 +155,7 @@ export class MenuMaster {
     isAdd: boolean;
     isEdit: boolean;
     isDelete: boolean;
+    isExport: boolean;
     /**
      * Constructor
      *
@@ -167,6 +171,7 @@ export class MenuMaster {
             this.isAdd = MenuMaster.isAdd || false;
             this.isEdit = MenuMaster.isEdit || false;
             this.isDelete = MenuMaster.isDelete || false;
+            this.isExport = MenuMaster.isExport || false;
 
         }
     }

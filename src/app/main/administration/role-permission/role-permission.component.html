@@ -56,6 +56,9 @@
                                                 <div class="checkbox-item">
                                                     <mat-checkbox class="checklist-leaf-node" (change)="updatePermission(data,'delete',$event)" [checked]="data.isDelete">Delete</mat-checkbox>
                                                 </div>
+                                                <div class="checkbox-item">
+                                                    <mat-checkbox class="checklist-leaf-node" (change)="updatePermission(data,'Export',$event)" [checked]="data.isExport">Export</mat-checkbox>
+                                                </div>
                                             </div>
                                         </div>
                                     </mat-cell>
