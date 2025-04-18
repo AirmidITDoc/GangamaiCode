@@ -563,32 +563,48 @@ opipType:any="2";
     }
 
     // Printresultentrywithheader() {
+    //     debugger
     //     console.log(this.selection.selected)
-    //     let pathologyDelete = [];
     //     this.selection.selected.forEach((element) => {
-    //         this.SOPIPtype = element["OPD_IPD_Type"]
-    //         let pathologyDeleteObj = {};
-    //         pathologyDeleteObj['pathReportId'] = element["PathReportID"]
-    //         pathologyDelete.push(pathologyDeleteObj);
+    //         this.OP_IP_Type = element.opdipdtype
     //     });
-
-    //     let submitData = {
-    //         "printInsert": pathologyDelete,
-    //     };
-    //     console.log(submitData);
-    //     this._SampleService.PathPrintResultentryInsert(submitData).subscribe(response => {
-
-    //     });
-    //     this.selection.clear();
+    //     this.commonService.Onprint("OP_IP_Type", this.OP_IP_Type, "PathresultEntryWithHeader");
     // }
 
     Printresultentrywithheader() {
-        debugger
-        console.log(this.selection.selected)
+        debugger;
+        console.log(this.selection.selected);
+    
         this.selection.selected.forEach((element) => {
-            this.OP_IP_Type = element.opdipdtype
+            const param = {
+                searchFields: [
+                    {
+                        fieldName: "OP_IP_Type",
+                        fieldValue: String(element.opdipdtype),
+                        opType: "Equals"
+                    }
+                ],
+                mode: "PathresultEntryWithHeader"
+            };
+    
+            console.log(param);
+    
+            this._SampleService.getReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent, {
+                    maxWidth: "85vw",
+                    height: '750px',
+                    width: '100%',
+                    data: {
+                        base64: res["base64"] as string,
+                        title: "Template Report Viewer"
+                    }
+                });
+    
+                matDialog.afterClosed().subscribe(result => {
+                    
+                });
+            });
         });
-        this.commonService.Onprint("OP_IP_Type", this.OP_IP_Type, "PathresultEntryWithHeader");
     }
 
     getWhatsappshareResult(contact) {
@@ -706,12 +722,65 @@ debugger
         // this.onEdit(row);
     }
 
+viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
+    debugger;
+    setTimeout(() => {
+        const param = {
+            searchFields: [
+                {
+                    fieldName: "PathReportId",
+                    fieldValue: String(contact.pathReportId),
+                    opType: "Equals"
+                },
+                {
+                    fieldName: "OP_IP_Type",
+                    fieldValue: String(contact.opdipdtype),
+                    opType: "Equals"
+                }
+            ],
+            mode: mode  // dynamic
+        };
+        console.log(param)
+        this._SampleService.getReportView(param).subscribe(res => {
+            const matDialog = this._matDialog.open(PdfviewerComponent, {
+                maxWidth: "85vw",
+                height: '750px',
+                width: '100%',
+                data: {
+                    base64: res["base64"] as string,
+                    title: "Template Report Viewer"
+                }
+            });
+            matDialog.afterClosed().subscribe(result => {});
+        });
+    }, 100);
+}
+
     getPrint(contact) {
         debugger
         console.log(contact)
 
         if (contact.isTemplateTest)
-            this.viewgetPathologyTemplateReportPdf(contact)
+            // this.viewgetPathologyTemplateReportPdf(contact)
+        Swal.fire({
+            title: 'Select Report Format',
+            text: "Choose how you want to view the report:",
+            icon: "warning",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            denyButtonColor: "#6c757d",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "With Header",
+            denyButtonText: "Without Header",
+        }).then((result) => {
+            debugger
+            if (result.isConfirmed) {
+                this.viewgetPathologyTemplateReportPdf1(contact, "PathTemplateHeaderReport");
+            } else if (result.isDenied) {
+                this.viewgetPathologyTemplateReportPdf1(contact, "PathTemplateReport");
+            }
+        });
         else {
             // this.viewgetPathologyTestReportPdf(contact)
             if (this.selection.selected.length == 0) {
@@ -727,57 +796,52 @@ debugger
     }
 
     OP_IP_Type:any;
+    // Printresultentry() {
+    //     debugger
+    //     console.log(this.selection.selected)
+    //     this.selection.selected.forEach((element) => {
+    //         this.OP_IP_Type = element.opdipdtype
+    //     });
+    //     this.commonService.Onprint("OP_IP_Type", this.OP_IP_Type, "PathresultEntry");
+    // }
+
     Printresultentry() {
-        debugger
-        console.log(this.selection.selected)
+        debugger;
+        console.log(this.selection.selected);
+    
         this.selection.selected.forEach((element) => {
-            this.OP_IP_Type = element.opdipdtype
-        });
-        this.commonService.Onprint("OP_IP_Type", this.OP_IP_Type, "PathresultEntry");
-    }
-
-    AdList: boolean = false;
-
-    viewgetPathologyTemplateReportPdf(contact) {
-        debugger
-        setTimeout(() => {
-            let param = {
-                    "searchFields": [
-                        {
-                            "fieldName": "PathReportId" ,
-                            "fieldValue": String(contact.pathReportId),
-                            "opType": "Equals"
-                        },
-                        {
-                            "fieldName": "OP_IP_Type"   ,
-                            "fieldValue": contact.opdipdtype,
-                            "opType": "Equals"
-                        }
-                    ],
-                    "mode": "PathTemplateReport"
-                }
-
-          this._SampleService.getReportView(param).subscribe(res => {
-              
-                const matDialog = this._matDialog.open(PdfviewerComponent,
+            const param = {
+                searchFields: [
                     {
-                        maxWidth: "85vw",
-                        height: '750px',
-                        width: '100%',
-                        data: {
-                            base64: res["base64"] as string,
-                            title: "Template Report" + " "+ "Viewer"
-                        }
-                    });
+                        fieldName: "OP_IP_Type",
+                        fieldValue: String(element.opdipdtype),
+                        opType: "Equals"
+                    }
+                ],
+                mode: "PathresultEntry"
+            };
+    
+            console.log(param);
+    
+            this._SampleService.getReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent, {
+                    maxWidth: "85vw",
+                    height: '750px',
+                    width: '100%',
+                    data: {
+                        base64: res["base64"] as string,
+                        title: "Template Report Viewer"
+                    }
+                });
+    
                 matDialog.afterClosed().subscribe(result => {
+                    
                 });
             });
-        }, 100);
+        });
     }
     
-    viewgetPathologyTestReportPdf(element) {
-        this.commonService.Onprint("OP_IP_Type", element.OP_IP_Type, "PathresultEntry");
-    }
+    AdList: boolean = false;
 
     whatsappresultentry() {
         console.log(this.selection.selected)

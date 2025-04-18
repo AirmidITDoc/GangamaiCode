@@ -248,7 +248,7 @@ export class ResultEntrytwoComponent implements OnInit {
                             },
                             {
                                 "fieldName": "OP_IP_Type"   ,
-                                "fieldValue": contact.opdipdtype,
+                                "fieldValue": String(contact.opdipdtype),
                                 "opType": "Equals"
                             }
                         ],
