@@ -131,6 +131,7 @@ export class ReportGenerationComponent implements OnInit {
             "sortField": "reportId",
             "sortOrder": 1,
             "filters": paramFilter || [],
+            "Columns":[],
             "exportType": "JSON"
         }
         console.log(param)

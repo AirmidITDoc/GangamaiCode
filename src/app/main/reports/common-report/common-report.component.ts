@@ -136,6 +136,7 @@ ServiceList: any = [];
             "opType": "Contains"
           }
         ],
+        "Columns":[],
         "exportType": "JSON"
       }
     
