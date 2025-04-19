@@ -27,17 +27,12 @@
     </mat-toolbar>
 
     <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <div class="content">
-            <!-- SIDEBAR -->
+        <div class="content"> 
             <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar">
-                <div class="sidebar-content">
-                    <!-- SIDEBAR HEADER -->
+                <div class="sidebar-content"> 
                     <div class="sidebar-header accent" fxLayout="row" fxLayoutAlign="start center">
-                        <span class="search-title">Search Facility</span>
-                        <!-- / USER -->
-                    </div>
-                    <!-- / SIDEBAR HEADER -->
-                    <!-- SIDEBAR CONTENT -->
+                        <span class="search-title">Search Facility</span> 
+                    </div> 
                     <div class="sidebar-body">
                         <div class="sidebar-form">
                             <form [formGroup]="_GRNService.GRNSearchGroup">
@@ -557,90 +552,8 @@
                                     <button mat-raised-button *ngIf="selection.selected.length>0"
                                         (click)="printBulkQrCode()">
                                         Print QrCode
-                                    </button>
-                                    <!-- <mat-paginator #paginator [pageSizeOptions]="[15, 24, 35, 100]"
-                                                [pageSize]="15" showFirstLastButtons>
-                                            </mat-paginator> -->
-
-
-                                </div>
-                                <!-- <div fxFlex.gt-xs="40%" fxFlex.xs="100%">
-                                            <mat-table #table class="table4" matSort [dataSource]="dsLastThreeItemList"
-                                                style="overflow:auto;">
-                                                <ng-container matColumnDef="SupplierName">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                        class="w-200">
-                                                        SupplierName</mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
-                                                        <span> {{contact.SupplierName}}</span>
-                                                    </mat-cell>
-                                                </ng-container>
-
-                                                <ng-container matColumnDef="ReceiveQty">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        R_Qty</mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.ReceiveQty}}
-                                                    </mat-cell>
-                                                </ng-container>
-
-                                                <ng-container matColumnDef="FreeQty">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        F_Qty</mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.FreeQty}}
-                                                    </mat-cell>
-                                                </ng-container>
-
-                                                <ng-container matColumnDef="MRP">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        MRP</mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.MRP | currency:'INR':'symbol-narrow':'0.2'}}
-                                                    </mat-cell>
-                                                </ng-container>
-
-                                                <ng-container matColumnDef="Rate">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        Rate</mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.Rate | currency:'INR':'symbol-narrow':'0.2'}}
-                                                    </mat-cell>
-                                                </ng-container>
-
-                                                <ng-container matColumnDef="discpercentage">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        Disc</mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.discpercentage}}%
-                                                    </mat-cell>
-                                                </ng-container>
-
-                                                <ng-container matColumnDef="VatPercentage">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        Vat</mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.VatPercentage}}%
-                                                    </mat-cell>
-                                                </ng-container>
-
-                                                <ng-container matColumnDef="noData">
-                                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                                        no data found...
-                                                    </mat-footer-cell>
-                                                </ng-container>
-                                                <mat-header-row class="accent min-width-700"
-                                                    *matHeaderRowDef="displayedColumns3; sticky: true">
-                                                </mat-header-row>
-                                                <mat-row *matRowDef="let contact; columns: displayedColumns3;"
-                                                    class="contact min-width-700" [@animate]="{value:'*',params:{y:'100%'}}"
-                                                    appHighlight></mat-row>
-
-                                                <mat-footer-row *matFooterRowDef="['noData']"
-                                                    [ngClass]="{'hide':!(dsLastThreeItemList!=null && dsLastThreeItemList.data.length==0)}">
-                                                </mat-footer-row>
-                                            </mat-table>
-                                        </div> -->
+                                    </button>  
+                                </div> 
                             </div>
                         </div>
                     </div>

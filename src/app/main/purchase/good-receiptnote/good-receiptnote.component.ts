@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { GoodReceiptnoteService } from './good-receiptnote.service';
@@ -6,14 +6,10 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { DatePipe } from '@angular/common';
-import { difference } from 'lodash';
+import { DatePipe } from '@angular/common'; 
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
-import { Observable } from 'rxjs/internal/Observable';
-import { startWith } from 'rxjs/internal/operators/startWith';
-import { map } from 'rxjs/operators';
-import { MatSelect } from '@angular/material/select';
+import { Observable } from 'rxjs/internal/Observable'; 
 import { UpdateGRNComponent } from './update-grn/update-grn.component';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
@@ -25,6 +21,9 @@ import * as XLSX from 'xlsx';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
 import { NewGrnComponent } from './new-grn/new-grn.component';
 import { GSTType } from './new-grn/types';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridColumnTypes } from 'app/core/models/tableActions';
 
 @Component({
     selector: 'app-good-receiptnote',
@@ -164,6 +163,41 @@ export class GoodReceiptnoteComponent implements OnInit {
     loadingarry: any = [];
     currentDate = new Date();
     IsLoading: boolean = false;
+
+      @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;  
+          ngAfterViewInit() { 
+            this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;  
+          } 
+     AllColumns= [
+      { heading: "Advance Date", key: "date", sort: true, align: 'left', emptySign: 'NA' , width: 200,type: 9 },
+      { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA',width: 120 },
+      { heading: "Advance Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA',width: 160, type: gridColumnTypes.amount},
+      { heading: "Used Amt", key: "usedAmount", sort: true, align: 'left', emptySign: 'NA',width: 160 , type: gridColumnTypes.amount},
+      { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA',width: 160, type: gridColumnTypes.amount},
+      { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA',width: 160 , type: gridColumnTypes.amount}, 
+      { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA',width: 230 },
+      { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 200 , type: 9 }, 
+      { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA',width: 180 , type: gridColumnTypes.amount},
+      { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA',width: 180 , type: gridColumnTypes.amount},
+      { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA',width: 180 , type: gridColumnTypes.amount},
+      { heading: "NEFT Pay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA',width: 180 , type: gridColumnTypes.amount}, 
+      { heading: "PayTM Pay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA',width: 180 , type: gridColumnTypes.amount},
+      { heading: "Reason", key: "reason", sort: true, align: 'left', emptySign: 'NA' , width: 250} ,
+      { heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
+        template: this.actionButtonTemplate  // Assign ng-template to the column
+      }
+    ]
+      @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+      gridConfig: gridModel = {
+          apiUrl: "GRN/GRNHeaderList",
+          columnsList:this.AllColumns,
+          sortField: "GRNDetID",
+          sortOrder: 0,
+          filters: [
+              { fieldName: "GrnId", fieldValue: String(1), opType: OperatorComparer.Equals }
+          ],
+          
+      } 
 
     constructor(
         public _GRNService: GoodReceiptnoteService,

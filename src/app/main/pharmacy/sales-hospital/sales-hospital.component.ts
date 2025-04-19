@@ -463,7 +463,107 @@ export class SalesHospitalComponent implements OnInit {
     } else{
       this.vCondition = true
     }  
+
+    this.vSelectedOption = 'OP'; 
   }
+
+  RegNo:any;
+IPDNo:any; 
+TariffName:any;
+CompanyName:any;
+Age:any;
+OPDNo:any;
+DoctorNamecheck:boolean=false;
+IPDNocheck:boolean=false;
+OPDNoCheck:boolean=false;
+//New code 
+ 
+getSelectedObjIplist(obj) {
+  console.log('IP:',obj)
+  let IsDischarged = 0;
+  IsDischarged = obj.isDischarged 
+  if(IsDischarged == 1){
+    Swal.fire('Selected Patient is already discharged');
+    //this.PatientInformRest();
+    this.RegId = ''
+  } 
+  else{ 
+    this.DoctorNamecheck = true;
+    this.IPDNocheck = true;
+    this.OPDNoCheck = false;
+    // this.registerObj = obj; 
+    this.RegNo =obj.regNo;
+    this.DoctorName = obj.doctorName;
+    this.TariffName =obj.TariffName
+    this.CompanyName = obj.CompanyName;
+    this.Age = obj.age; 
+    this.PatientName = obj.firstName + ' ' + obj.middleName + ' ' + obj.lastName;
+    this.RegId = obj.regID;
+    this.OP_IP_Id = obj.admissionID; 
+    this.IPDNo = obj.ipdNo; 
+    this.TariffName = obj. tariffName 
+  } 
+  this.getBillSummary();
+} 
+getSelectedObjOplist(obj) { 
+  console.log('OP:',obj)
+    this.OPDNoCheck = true;
+    this.DoctorNamecheck = false;
+    this.IPDNocheck = false;
+    // this.registerObj = obj;
+    this.RegId = obj.regID;
+    this.PatientName = obj.firstName + ' ' + obj.middleName + ' ' + obj.lastName;
+    this.OP_IP_Id  = obj.VisitId;
+    this.RegNo =obj.regNo; 
+    this.OPDNo = obj.opdNo;
+    this.CompanyName = obj.CompanyName;
+    this.TariffName = obj.tariffName; 
+    this.getBillSummary(); 
+}
+
+  getValidationMessages() {
+        return {
+          MobileNo: [
+                // { name: "required", Message: "SupplierId is required" }
+            ],
+            PatientName: [
+                // { name: "required", Message: "SupplierId is required" }
+            ],
+            itemName: [
+                // { name: "required", Message: "Item Name is required" }
+            ],
+            DoctorName: [
+                // { name: "required", Message: "Batch No is required" }
+            ],
+            extAddress: [
+                // { name: "required", Message: "Invoice No is required" }
+            ],
+            gateEntryNo: [
+                // { name: "required", Message: "Gate Entry No is required" }
+            ],
+            mrp: [
+                // { name: "required", Message: "MRP is required" }
+            ],
+            rate: [
+                // { name: "required", Message: "Rate is required" }
+            ],
+            
+        };
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // createForm() {
   //   return this.formBuilder.group({
@@ -950,7 +1050,7 @@ export class SalesHospitalComponent implements OnInit {
       MobileNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
       Validators.minLength(10),
       Validators.maxLength(10),]],
-      PatientType: ['OP'],
+      PatientType: ['IP'],
       // paymode: ['cashpay'],
       // OP_IP_ID: [0,[Validators.required]],
       TotalAmt: '',
@@ -3316,63 +3416,8 @@ getSearchListIP() {
    this.saleSelectedDatasource.data = [];
    this.PatientInformRest();
   }
-  RegNo:any;
-  IPDNo:any; 
-  TariffName:any;
-  CompanyName:any;
-  Age:any;
-  getSelectedObjRegIP(obj) {
-    let IsDischarged = 0;
-    IsDischarged = obj.IsDischarged 
-    if(IsDischarged == 1){
-      Swal.fire('Selected Patient is already discharged');
-      //this.PatientInformRest();
-      this.RegId = ''
-    }
-    else{
-      console.log(obj)
-      this.DoctorNamecheck = true;
-      this.IPDNocheck = true;
-      this.OPDNoCheck = false;
-      // this.registerObj = obj;
-      // this.PatientName = obj.FirstName + ' ' + obj.LastName;
-      // this.RegId = obj.RegID;
-      // this.OP_IP_Id = this.registerObj.AdmissionID;
-      // this.IPDNo = obj.IPDNo;
-      this.RegNo =obj.RegNo;
-      this.DoctorName = obj.DoctorName;
-      this.TariffName =obj.TariffName
-      this.CompanyName = obj.CompanyName;
-      this.Age = obj.Age;
-    } 
-    this.getBillSummary();
-  }
-  OPDNo:any;
-  DoctorNamecheck:boolean=false;
-  IPDNocheck:boolean=false;
-  OPDNoCheck:boolean=false;
 
-  getSelectedObjOP(obj) { 
-      console.log(obj)
-      this.OPDNoCheck = true;
-      this.DoctorNamecheck = false;
-      this.IPDNocheck = false;
-      // this.registerObj = obj;
-      this.RegId = obj.RegId;
-      this.PatientName = obj.FirstName + " " + obj.LastName; 
-      this.OP_IP_Id  = obj.VisitId;
-      this.RegNo =obj.RegNo; 
-      this.OPDNo = obj.OPDNo;
-      this.CompanyName = obj.CompanyName;
-      this.TariffName = obj.TariffName; 
-      this.getBillSummary();
-  }
-  getOptionTextIPObj(option) { 
-    return option && option.FirstName + " " + option.LastName; 
-  }
-  getOptionTextOPObj(option) { 
-    return option && option.FirstName + " " + option.LastName; 
-  }
+ 
   PatientInformRest(){
     this.PatientName = ''  
     this.IPDNo =  ''
