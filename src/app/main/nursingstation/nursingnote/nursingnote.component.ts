@@ -170,14 +170,6 @@ export class NursingnoteComponent implements OnInit {
       heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
   } 
-    // {
-    //   heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-    //     {
-    //       action: gridActions.add, callback: (data: any) => {
-    //         this.getSchedular(data);
-    //       }
-    //     }]
-    // } //Action 1-view, 2-Edit,3-delete
   ]
   allMedicationFilters=[
     { fieldName: "AdmId", fieldValue: "1", opType: OperatorComparer.Equals } //1
@@ -193,13 +185,14 @@ export class NursingnoteComponent implements OnInit {
 
   getMedicationList() {
     debugger
+
     this.gridConfig1 = {
       apiUrl: "Nursing/MedicationChartlist",
       columnsList: this.allMedicationColumns,
-      sortField: "AdmissionID", //AdmId
+      sortField: "AdmissionID",
       sortOrder: 0,
       filters: [
-        { fieldName: "AdmId", fieldValue: String(this.OP_IP_Id), opType: OperatorComparer.Equals }
+        { fieldName: "AdmId", fieldValue: String(this.OP_IP_Id), opType: OperatorComparer.Equals } //91024
       ]
     }
     console.log(this.gridConfig1)
@@ -482,12 +475,14 @@ export class NursingnoteComponent implements OnInit {
     var vdata = {
       'AdmissionId': this.vAdmissionID//OP_IP_Id
     }
-    // this._NursingStationService.getSchedulerlist(vdata).subscribe(data => {
-    //   this.dsItemList.data = data as MedicineItemList[];
-    //   this.Chargelist = data as MedicineItemList[];
-    //   // this.dsItemList.sort = this.sort
-    //   // this.dsItemList.paginator = this.Medicinepaginator
-    // })
+    this._NursingStationService.getSchedulerlist(vdata).subscribe(data => {
+      this.dsItemList.data = data.data as MedicineItemList[];
+      this.Chargelist = data as MedicineItemList[];
+      console.log(this.dsItemList.data)
+      console.log(this.Chargelist)
+      // this.dsItemList.sort = this.sort
+      // this.dsItemList.paginator = this.Medicinepaginator
+    })
   }
 
   deleteTableRow(event, element) {
@@ -571,7 +566,7 @@ export class NursingnoteComponent implements OnInit {
   }
 
   onClear() {
-    this.myform.reset(); 
+    // this.myform.reset(); 
     this.IsAddFlag = false;
     this.vDoctNoteId = null;
     this.vDescription=null;
@@ -718,7 +713,7 @@ export class NursingnoteComponent implements OnInit {
   onClose() {
     // this.myform.reset();
     this._matDialog.closeAll();
-    this.onClearPatientInfo();
+    // this.onClearPatientInfo();
     this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
     this.vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
     this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"

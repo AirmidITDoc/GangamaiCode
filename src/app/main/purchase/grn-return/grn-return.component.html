@@ -20,29 +20,46 @@
 
             <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-                <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false" (onSelectRow)="GetDetails1($event)">
+                <ng-template #ColorCode let-element>
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                      <mat-icon *ngIf="element.isVerified === false" matTooltip="Pending" class="pill red-600 s-16">circle</mat-icon>
+                      <mat-icon *ngIf="element.isVerified === true" matTooltip="Verified" class="pill green-600 s-16">circle</mat-icon>
+                    </div>
+                  </ng-template>                  
+
+                <ng-template #actionButtonTemplate let-element>
+                    <div fxLayout="row" fxLayoutAlign="center center">        
+                        <button mat-icon-button matTooltip="Print">
+                            <mat-icon>print</mat-icon>
+                        </button>
+                        <button mat-icon-button matTooltip="Verify">
+                            <mat-icon>verified_user</mat-icon>
+                        </button>                       
+                    </div>
+                </ng-template>
+
+                <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false" #grid (onSelectRow)="GetDetails1($event)">
                     <ng-container filters>
-                        <form [formGroup]="_GRNReturnService.NewGRNReturnFrom" fxLayout="column">
-                            <airmid-datepicker [formGroup]="_GRNReturnService.NewGRNReturnFrom" [isRangePicker]="true"
+                        <form [formGroup]="_GRNReturnService.GRNReturnSearchFrom" fxLayout="column">
+                            <airmid-datepicker [formGroup]="_GRNReturnService.GRNReturnSearchFrom" [isRangePicker]="true"
                             formStartControlName="start" formEndControlName="end"
                             [(fromValue)]="gridConfig.filters[0].fieldValue"
                             [(toValue)]="gridConfig.filters[1].fieldValue">
                         </airmid-datepicker>
 
                         <airmid-dropdown label="Store Name" formControlName="ToStoreId"
-                         [formGroup]="_GRNReturnService.NewGRNReturnFrom"
-                            [mode]="autocompletestore"
-                             (selectionChange)="selectChangeStore($event)">
+                         [formGroup]="_GRNReturnService.GRNReturnSearchFrom"
+                            [mode]="autocompletestore" (selectionChange)="ListView($event)">
                         </airmid-dropdown>
 
                         <airmid-dropdown label="Supplier Name" formControlName="SupplierId"
-                         [formGroup]="_GRNReturnService.NewGRNReturnFrom"
-                            [mode]="autocompleteSupplier">
+                         [formGroup]="_GRNReturnService.GRNReturnSearchFrom"
+                            [mode]="autocompleteSupplier" (selectionChange)="ListView1($event)">
                         </airmid-dropdown>
 
                         <div fxFlex fxLayout="row">
-                            <mat-radio-group name="Status" fxLayout="row" value="1" [formGroup]="_GRNReturnService.NewGRNReturnFrom"
-                             formControlName="Status"
+                            <mat-radio-group name="Status" fxLayout="row" value="1" [formGroup]="_GRNReturnService.GRNReturnSearchFrom"
+                             formControlName="Status" (change)="onChangeFirst()"
                                 style="padding: 6px;" class="gap-4">
                                 <mat-label>Status:</mat-label>
                                 <div fxLayout="row">

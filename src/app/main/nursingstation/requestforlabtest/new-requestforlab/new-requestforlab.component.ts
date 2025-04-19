@@ -151,6 +151,7 @@ export class NewRequestforlabComponent implements OnInit {
             "opType": "Equals"
           }
         ],
+        "Columns":[],
         "exportType": "JSON"
       }
       console.log(param)

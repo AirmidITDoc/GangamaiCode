@@ -597,13 +597,6 @@ export class ResultEntryOneComponent implements OnInit {
     
         }
 
-    //     OP_IP_Type:any;
-    // Printresultentry() {
-    //     debugger
-    //         this.OP_IP_Type = this.selectedAdvanceObj2.opdipdtype
-    //     this.commonService.Onprint("OP_IP_Type", this.OP_IP_Type, "PathresultEntry");
-    // }    
-
     Printresultentry() {
         debugger;
         // console.log(this.selection.selected);
@@ -617,7 +610,7 @@ export class ResultEntryOneComponent implements OnInit {
                         opType: "Equals"
                     }
                 ],
-                mode: "PathresultEntry"
+                mode: "PathologyReport"
             };
     
             console.log(param);
@@ -746,7 +739,7 @@ export class ResultEntryOneComponent implements OnInit {
     }
 
     viewgetPathologyTestReportPdf(element) {
-        this.commonService.Onprint("OP_IP_Type", element.OP_IP_Type, "PathresultEntry");
+        this.commonService.Onprint("OP_IP_Type", element.OP_IP_Type, "PathologyReport");
     }
 
     onClear() {

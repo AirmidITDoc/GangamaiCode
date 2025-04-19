@@ -32,12 +32,29 @@
                                     formControlName="Qty" [(ngModel)]="registerObj.qty">
                             </mat-form-field>
 
-                            <mat-form-field appearance="outline">
+                            <!-- <mat-form-field appearance="outline">
                                 <mat-label>Dose Date / Time</mat-label>
                                 <input matInput type="datetime-local" placeholder="date" [value]="date"
                                     [(ngModel)]="date" (change)="date=$event.target.value"
                                     formControlName="DoseDateTime" />
+                            </mat-form-field> -->                           
+
+                              <mat-form-field appearance="outline" class="dateField" fxFlex="12%">
+                                <mat-label>Dose Date</mat-label>
+                                <input matInput [matDatepicker]="picker1" [min]="minDate" formControlName="DoseDate"
+                                    (dateChange)="onChangeDate($event.value)">
+                                <mat-datepicker-toggle matSuffix [for]="picker1"
+                                    [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
                             </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="timeField" fxFlex="12%">
+                                    <mat-label>Dose Time</mat-label>
+                                    <input matTimepicker #t="matTimepicker" mode="12h" formControlName="DoseTime"
+                                        (timeChange)="onChangeTime($event)" [disableDialogOpenOnClick]="isDatePckrDisabled">
+                                    <mat-icon matSuffix
+                                        (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                                </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="10%">
                                 <mat-label>Route</mat-label>

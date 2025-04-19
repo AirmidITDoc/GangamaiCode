@@ -136,10 +136,7 @@ export class ResultEntryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.getTemplateList(); 
-    if (this.advanceDataStored.storage) {
-      // this.getUpdatetemplate();
-    }
+
     if (this.data) {
       this.regObj = this.data
       console.log(this.regObj)
@@ -165,6 +162,8 @@ export class ResultEntryComponent implements OnInit {
       this.DOT = this.regObj.dot
       this.WardName = this.regObj.wardName
     }
+    this.getTemplateList(this.regObj); 
+
   }
 
   Tempdesc: any;
@@ -181,16 +180,22 @@ export class ResultEntryComponent implements OnInit {
     this.vTemplateDesc = this.Tempdesc
   }
 
-  //   getTemplateList() {
-  //     if (this.data) {
-  //       this._radiologytemplateService.gettemplateId(this.TemplateId).subscribe(data => {
-  //         console.log(data)
-  //         this._radiologytemplateService.myform.get('TemplateName').setValue(data.templateId);
-  //       this.vTemplateDesc = data.Tempdesc
-  //       });
-
-  //     }
-  // }
+ RadReportId = 0
+  templateObj: any;
+    getTemplateList(row) {
+      debugger
+      console.log("data:", row)
+    this.RadReportId = row.pathReportId
+      if ((this.RadReportId ?? 0) > 0) {
+        setTimeout(() => {
+          this._radiologytemplateService.getRadTemplateById(this.RadReportId).subscribe((response) => {
+            this.templateObj = response;
+            console.log("all data:", this.templateObj)
+            this.vTemplateDesc=this.templateObj.pathTemplateDetailsResult
+          });
+        }, 500);
+      }
+  }
 
   onSubmit() {
     debugger
@@ -199,12 +204,12 @@ export class ResultEntryComponent implements OnInit {
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
 
-    if (this._radiologytemplateService.myform.get("TemplateName")?.value == '') {
-      this.toastr.warning('Please select valid Template ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    // if (this._radiologytemplateService.myform.get("TemplateName")?.value == '') {
+    //   this.toastr.warning('Please select valid Template ', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
     if (this._radiologytemplateService.myform.get("ResultEntry")?.value == '') {
       this.toastr.warning('Please Enter Result Entry ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
