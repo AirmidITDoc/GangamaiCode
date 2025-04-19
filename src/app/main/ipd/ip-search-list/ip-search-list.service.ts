@@ -514,89 +514,8 @@ public getPaymentPrint (paymentid){
     return this._httpClient.post("Generic/GetByProc?procName=rptIPDPaymentReceiptPrint", paymentid)
 }
 
-  //Doctor 1 Combobox List
-public getDischaregDoctor1Combo() {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_AdmittedDoctorForCombo", {})
-}
-//Doctor 1 Combobox List
-public getDischaregDoctor2Combo() {
-  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_AdmittedDoctorForCombo", {})
-}
-//Doctor 1 Combobox List
-public getDischaregDoctor3Combo() {
-  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_AdmittedDoctorForCombo", {})
-}
-
   
-  //Dischargedoctor Master Combobox List
-   public getDischargedoctorNameCombo() {
-     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_AdmittedDoctorForCombo", {})
-   }
-
-  public getPatientTypeCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=ps_Cmb_rtrv_PatientTypeMasterForCombo", {})
-  }
- 
-  public getDischargetypeCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DischargeTypeForCombo", {})
-  }
-
-   //Ward Combobox List
-   public getWardCombo(loader = true){ 
-    if (loader) {
-      this._loaderService.show();
-  }
-     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RoomMasterForCombo", {})
-   }//Retrieve_RoomMasterForCombo
   
-   
-  //Bed Combobox List
-  public getBedCombo(Id) {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveBedMasterForCombo_Conditional",{"Id":Id})
-   }
-
- //Class Combobox List
- public getClassCombo(Id) {
-  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ClassName_Conditional", {"Id":Id})
-}
-//ClassName Combobox List
-public getBedClassCombo(Id) {
-  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ClassName_Conditional", {"Id":Id})
-}
-
-
- //Store Combobox List
- public getStoreCombo() {
-  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForCombo", {})
-}
-
- //Drug Combobox List
- public getDrugCombo() {
-  return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_M_DrugMaster_Cmb", {})
-}
-
-
-//UMO Combobox List
-public getUMOCombo() {
-  return this._httpClient.post("Generic/GetByProc?procName=ps_M_UnitofMeasurementMasterCombo", {})
-}
-
-
-
- // Search Window Option
-
- // Admitted Doctor Master Combobox List
-  public getAdmittedDoctorCombo(param,loader = true) {
-    if (loader) {
-      this._loaderService.show();
-  } 
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DoctorListMasterForCombo",param)
-  } 
-
-  //Ward Master Combobox List
-  public getWardNameCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_WardClassMasterForCombo", {})
-  }
   public getAdvanceList(employee)
   {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_T_AdvanceList",employee)
@@ -1172,8 +1091,6 @@ public insertIPDDischargSummary(param)
 public getDischargeSummary(employee) {
   return this._httpClient1.PostData("DischargeSummary/IPDischargeSummaryData",employee)
 }
-
-
 
 
 
