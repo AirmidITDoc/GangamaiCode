@@ -455,8 +455,9 @@ opipType:any="2";
     }
 
     selection = new SelectionModel<SampleList>(true, []);
+
     masterToggle() {
-        // if there is a selection then clear that selection
+        // Toggle selection
         if (this.isSomeSelected()) {
             this.selection.clear();
         } else {
@@ -464,10 +465,13 @@ opipType:any="2";
                 ? this.selection.clear()
                 : this.dataSource1.data.forEach(row => this.selection.select(row));
         }
-
-        this.resultSource.push(this.selection);
-        console.log(this.resultSource)
+    
+        console.log('Selected items count:', this.selection.selected.length);
+    
+        this.resultSource = [...this.selection.selected];
+        console.log('Selected items:', this.resultSource);
     }
+    
 
     isSomeSelected() {
         // console.log(this.selection.selected);
@@ -562,15 +566,6 @@ opipType:any="2";
         // this.dataSource1.data = [];
     }
 
-    // Printresultentrywithheader() {
-    //     debugger
-    //     console.log(this.selection.selected)
-    //     this.selection.selected.forEach((element) => {
-    //         this.OP_IP_Type = element.opdipdtype
-    //     });
-    //     this.commonService.Onprint("OP_IP_Type", this.OP_IP_Type, "PathresultEntryWithHeader");
-    // }
-
     Printresultentrywithheader() {
         debugger;
         console.log(this.selection.selected);
@@ -584,7 +579,7 @@ opipType:any="2";
                         opType: "Equals"
                     }
                 ],
-                mode: "PathresultEntryWithHeader"
+                mode: "PathologyReportWithHeader"
             };
     
             console.log(param);
@@ -776,9 +771,9 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
         }).then((result) => {
             debugger
             if (result.isConfirmed) {
-                this.viewgetPathologyTemplateReportPdf1(contact, "PathTemplateHeaderReport");
+                this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplateWithHeader");
             } else if (result.isDenied) {
-                this.viewgetPathologyTemplateReportPdf1(contact, "PathTemplateReport");
+                this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplate");
             }
         });
         else {
@@ -796,14 +791,6 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
     }
 
     OP_IP_Type:any;
-    // Printresultentry() {
-    //     debugger
-    //     console.log(this.selection.selected)
-    //     this.selection.selected.forEach((element) => {
-    //         this.OP_IP_Type = element.opdipdtype
-    //     });
-    //     this.commonService.Onprint("OP_IP_Type", this.OP_IP_Type, "PathresultEntry");
-    // }
 
     Printresultentry() {
         debugger;
@@ -818,7 +805,7 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
                         opType: "Equals"
                     }
                 ],
-                mode: "PathresultEntry"
+                mode: "PathologyReport"
             };
     
             console.log(param);

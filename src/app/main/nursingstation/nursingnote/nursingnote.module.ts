@@ -40,7 +40,7 @@ import { NursingnoteService } from './nursingnote.service';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { NewTemplateComponent } from './new-template/new-template.component';
 import { MedicineSchedulerComponent } from './medicine-scheduler/medicine-scheduler.component';
-
+import { MatTimepickerModule } from 'mat-timepicker';
 
 const routes: Routes = [
   {
@@ -97,6 +97,8 @@ const routes: Routes = [
         MatSlideToggleModule,
         FuseSharedModule,
         AngularEditorModule,
+        MatTimepickerModule,
+
     ],
     providers: [
         DatePipe,
