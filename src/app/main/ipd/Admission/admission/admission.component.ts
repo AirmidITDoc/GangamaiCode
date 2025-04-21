@@ -940,6 +940,7 @@ export class AdmissionPersonlModel {
   sampleCollectionTime: any;
   isSampleCollection: any;
   isTemplateTest: any;
+  isDischarge:any;
   /**
 * Constructor
 *
@@ -1141,6 +1142,7 @@ export class AdmissionPersonlModel {
       this.isTemplateTest = AdmissionPersonl.isTemplateTest || ''
       this.opdipdtype=AdmissionPersonl.opdipdtype || ''
       this.opdipdid=AdmissionPersonl.opdipdid || ''
+      this.isDischarge=AdmissionPersonl.isDischarge 
     }
   }
 }

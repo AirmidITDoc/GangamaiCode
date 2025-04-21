@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { GrnReturnService } from './grn-return.service';
@@ -21,6 +21,7 @@ import { NewGRNReturnComponent } from './new-grnreturn/new-grnreturn.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 
 @Component({
   selector: 'app-grn-return',
@@ -44,7 +45,7 @@ export class GRNReturnComponent implements OnInit {
   //   'AddedBy',
   //   'action',
   // ];
-  
+
   // displayedColumns1 = [
   //   // "Action",
   //   "ItemName",
@@ -68,21 +69,21 @@ export class GRNReturnComponent implements OnInit {
   optionsToStore: any;
   optionsSupplier: any;
   isPaymentSelected: boolean = false;
-  isSupplierSelected: boolean = false; 
+  isSupplierSelected: boolean = false;
   dateTimeObj: any;
-  screenFromString = 'admission-form'; 
+  screenFromString = 'admission-form';
   sIsLoading: string;
   filteredoptionsToStore: Observable<string[]>;
-  filteredoptionsSupplier: Observable<string[]>; 
+  filteredoptionsSupplier: Observable<string[]>;
   vGRNReturnItemFilter: any;
-  VsupplierId:any=0
-  vFinalTotalAmount:any=0
-  vFinalNetAmount:any=0
-  vFinalVatAmount:any=0
-  vFinalDiscAmount:any=0;
-  vRoundingAmt:any;
+  VsupplierId: any = 0
+  vFinalTotalAmount: any = 0
+  vFinalNetAmount: any = 0
+  vFinalVatAmount: any = 0
+  vFinalDiscAmount: any = 0;
+  vRoundingAmt: any;
   autocompletestore: string = "Store";
-  autocompleteSupplier:string="Supplier"
+  autocompleteSupplier: string = "SupplierMaster"
 
   dsGRNReturnList = new MatTableDataSource<GRNReturnList>();
   dsGRNReturnItemDetList = new MatTableDataSource<GRNReturnItemDetList>();
@@ -95,13 +96,7 @@ export class GRNReturnComponent implements OnInit {
   @ViewChild('paginator1', { static: true }) public paginator1: MatPaginator;
   @ViewChild('paginator2', { static: true }) public paginator2: MatPaginator;
   @ViewChild(MatTable) table: MatTable<any>;
-  // items: Item[] = [];
-  // displayedColumns: string[] = ['name', 'quantity'];
-  // constructor(private fb: FormBuilder) {
-  //   // Initialize table data
-  //   this.items.push({ name: 'Item 1', quantity: 10 });
-  //   this.items.push({ name: 'Item 2', quantity: 5 });
-  // }
+
   constructor(
     public _GRNReturnService: GrnReturnService,
     public _matDialog: MatDialog,
@@ -111,65 +106,157 @@ export class GRNReturnComponent implements OnInit {
     private accountService: AuthenticationService,
     public toastr: ToastrService,
   ) { }
-                                                                 
-   isDataAvailableInColumn(column: string): boolean {
+
+  isDataAvailableInColumn(column: string): boolean {
     return this.dsGrnItemList.data.some(item => !!item[column]);
   }
+
+  @ViewChild('grid') grid: AirmidTableComponent;
+  @ViewChild('grid1') grid1: AirmidTableComponent;
 
   ngOnInit(): void {
     // this.getStoreList();
     this.getGRNReturnList();
+    console.log("main list:", this.gridConfig);
   }
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  @ViewChild('ColorCode') ColorCode!: TemplateRef<any>;
 
-  allColumns=[
-    { heading: "Verify", key: "v", sort: true, align: 'left', emptySign: 'NA'},
-    { heading: "GRNReturnId", key: "grnreturnid", sort: true, align: 'left', emptySign: 'NA', width:200 },
+  ngAfterViewInit() {
+    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'isVerified')!.template = this.ColorCode; 
+
+  }
+
+  allColumns = [
+        { heading: "-", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
+          template:this.ColorCode, width: 50 },
+    { heading: "GRNReturnId", key: "grnReturnId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "GRNReturnNo", key: "grnReturnNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "GRNReturnDate", key: "date", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "GRNReturnDate", key: "grnReturnDate", sort: true, align: 'left', emptySign: 'NA',width: 150 },
     { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "GSTAmount", key: "gstamt", sort: true, align: 'left', emptySign: 'NA'},
-    { heading: "NetAmount", key: "netAmt", sort: true, align: 'left', emptySign: 'NA', width:200 },
+    { heading: "GSTAmount", key: "TotalVatAmount", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "NetAmount", key: "NetAmount", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
     {
-        heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,
-        actions: [
-            {
-                action: gridActions.print, callback: (data: any) => {
-                    // this.viewgetIpprescriptionReportPdf(data);
-                }
-            }]
+      heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate  // Assign ng-template to the column
     }
-]
-allFilters=[
-  { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-  { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-  { fieldName: "Reg_No", fieldValue: "", opType: OperatorComparer.Equals }
-]
+  ]
+  allFilters = [
+    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+    { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+    { fieldName: "ToStoreId", fieldValue: "2", opType: OperatorComparer.Equals },
+    { fieldName: "SupplierId", fieldValue: "1", opType: OperatorComparer.Equals },
+    { fieldName: "IsVerify", fieldValue: "1", opType: OperatorComparer.Equals }
+  ]
   gridConfig: gridModel = {
-          apiUrl: "demo",
-          columnsList: this.allColumns,
-          sortField: "RegNo",
-          sortOrder: 0,
-          filters: this.allFilters
-      }
-      
-  gridConfig1: gridModel = new gridModel();
-  isShowDetailTable: boolean = false;
-  GetDetails1(data:any):void {
-    debugger
-    console.log("detailList:",data)
+    apiUrl: "Purchase/GRNReturnlistbynameList",
+    columnsList: this.allColumns,
+    sortField: "GRNReturnId",
+    sortOrder: 0,
+    filters: this.allFilters
   }
 
-  vstoreId: any = '';
-  selectChangeStore(obj: any) {
-    debugger
-    console.log("Store:", obj);
-    this.vstoreId = obj.value
+  ToStoreId: any = "2"
+  Supplier: any = "1"
+  Status: any = "1";
+  onChangeFirst() {
+    // debugger
+    this.fromDate = this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get('start').value, "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get('end').value, "yyyy-MM-dd")
+    // this.ToStoreId = this.vstoreId || '2'
+    // this.Supplier = this.vSupplier || "1"
+    this.Status = this._GRNReturnService.GRNReturnSearchFrom.get('Status').value || "1"
+    this.getfilterdata();
   }
+
+  getfilterdata() {
+    // debugger
+    this.gridConfig = {
+      apiUrl: "Purchase/GRNReturnlistbynameList",
+      columnsList: this.allColumns,
+      sortField: "GRNReturnId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "ToStoreId", fieldValue: this.vstoreId, opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+        { fieldName: "SupplierId", fieldValue: this.vSupplier, opType: OperatorComparer.Equals },
+        { fieldName: "IsVerify", fieldValue: this.Status, opType: OperatorComparer.Equals }
+      ]
+    }
+    console.log(this.gridConfig)
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData();
+  }
+
+  vSupplier: any = '1';
+  vstoreId: any = '2';
+  ListView(value) {
+    // debugger
+    console.log(value)
+    if (value.value !== 0)
+      this.vstoreId = value.value
+    else
+      this.vstoreId = "0"
+
+    this.onChangeFirst();
+  }
+
+  ListView1(value) {
+    // debugger
+    console.log(value)
+    if (value.value !== 0)
+      this.vSupplier = value.value
+    else
+      this.vSupplier = "0"
+
+    this.onChangeFirst();
+  }
+
+  gridConfig1: gridModel = new gridModel();
+  isShowDetailTable: boolean = false;
+
+  GetDetails1(data: any): void {
+    debugger
+    console.log("detailList:", data)
+    let grnReturnId = data.grnReturnId;
+
+    this.gridConfig1 = {
+      apiUrl: "Purchase/GRNReturnList",
+      columnsList: [
+        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA',width: 150 },
+        { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "ExpDate", key: "batchExpiryDate", sort: true, align: 'left', emptySign: 'NA',width: 150 },
+        { heading: "Packing", key: "pack", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "RQty", key: "returnQty", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "TotalQty", key: "totalQty", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "MRP", key: "mrp", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "LandRate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "TotalAmt", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "GSt", key: "vatPercentage", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "GSTAmount", key: "vatAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "NetAmount", key: "netAmt", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "StkId", key: "StkId", sort: true, align: 'left', emptySign: 'NA' },
+      ],
+      sortField: "GRNReturnId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "GRNReturnId", fieldValue: String(grnReturnId), opType: OperatorComparer.Equals },//"10161"
+      ]
+    };
+    this.isShowDetailTable = true;
+    setTimeout(() => {
+      this.grid1.gridConfig = this.gridConfig1;
+      this.grid1.bindGridData();
+    }, 500);
+  }
+
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -182,12 +269,12 @@ allFilters=[
       Id: this.accountService.currentUserValue.storeId
     }
     this._GRNReturnService.getLoggedStoreList(vdata).subscribe(data => {
-      this.ToStoreList = data; 
-      this._GRNReturnService.GRNReturnSearchFrom.get('ToStoreId').setValue(this.ToStoreList[0]); 
+      this.ToStoreList = data;
+      this._GRNReturnService.GRNReturnSearchFrom.get('ToStoreId').setValue(this.ToStoreList[0]);
     });
   }
 
-  
+
   getGRNReturnList() {
     this.sIsLoading = 'loading-data';
     var Param = {
@@ -200,7 +287,7 @@ allFilters=[
     console.log(Param);
     this._GRNReturnService.getGRNReturnList(Param).subscribe(data => {
       this.dsGRNReturnList.data = data as GRNReturnList[];
-     // console.log(this.dsGRNReturnList);
+      // console.log(this.dsGRNReturnList);
       this.dsGRNReturnList.sort = this.sort;
       this.dsGRNReturnList.paginator = this.paginator;
       this.sIsLoading = '';
@@ -219,14 +306,14 @@ allFilters=[
       this.dsGRNReturnItemDetList.sort = this.sort;
       this.dsGRNReturnItemDetList.paginator = this.paginator1;
       this.sIsLoading = '';
-     // console.log(this.dsGRNReturnItemDetList.data)
+      // console.log(this.dsGRNReturnItemDetList.data)
     },
       error => {
         this.sIsLoading = '';
       });
   }
 
-onClear() { } 
+  onClear() { }
   getVerify(row) {
 
     let updateGRNReturnVerifyStatus = {};
@@ -236,7 +323,7 @@ onClear() { }
     let submitObj = {
       "updateGRNReturnVerifyStatus": updateGRNReturnVerifyStatus
     }
-   // console.log(submitObj)
+    // console.log(submitObj)
     this._GRNReturnService.getVerifyGRNReturn(submitObj).subscribe(response => {
       if (response) {
         this.toastr.success('Record Verified Successfully.', 'Verified !', {
@@ -258,48 +345,48 @@ onClear() { }
     this.getGRNReturnList();
   }
 
-getNewGRNRet(){
-  const dialogRef = this._matDialog.open(NewGRNReturnComponent,
-    {
-      maxWidth: "95vw",
-      maxHeight: '100vh',
-      width: '100%',
+  getNewGRNRet() {
+    const dialogRef = this._matDialog.open(NewGRNReturnComponent,
+      {
+        maxWidth: "95vw",
+        maxHeight: '100vh',
+        width: '100%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getGRNReturnList();
     });
-  dialogRef.afterClosed().subscribe(result => {
-    console.log('The dialog was closed - Insert Action', result);
-   this.getGRNReturnList();
-  });
-}
+  }
 
-viewgetGRNreturnReportPdf(row) {
-  
-  setTimeout(() => {
-    this.SpinLoading = true;
-    this._GRNReturnService.getGRNreturnreportview(
-      row.GRNReturnId
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "95vw",
-          height: '850px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "GRN RETURN REPORT Viewer"
-          }
+  viewgetGRNreturnReportPdf(row) {
+
+    setTimeout(() => {
+      this.SpinLoading = true;
+      this._GRNReturnService.getGRNreturnreportview(
+        row.GRNReturnId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '850px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "GRN RETURN REPORT Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
         });
-      dialogRef.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.SpinLoading = false;
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
       });
-      dialogRef.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.SpinLoading = false;
-      });
-    });
 
-  }, 100);
-}
+    }, 100);
+  }
 }
 
 export class GRNReturnList {
@@ -336,7 +423,7 @@ export class GRNReturnItemDetList {
   ItemName: string;
   BatchNo: number;
   BatchExpiryDate: number;
-  Conversion:any;
+  Conversion: any;
   BalQty: number;
   ReturnQty: number;
   PureRate: number;
@@ -346,10 +433,10 @@ export class GRNReturnItemDetList {
   NetAmount: number;
   BQty: number;
   StkId: number;
-  TotalQty:any;
-  MRP:number;
+  TotalQty: any;
+  MRP: number;
   LandedRate: number;
-  Totalamt:any;
+  Totalamt: any;
 
   constructor(GRNReturnItemDetList) {
     {
@@ -484,7 +571,7 @@ export class ItemNameList {
   EwayBillDate: Date;
   CurrentDate = new Date();
   Tranprocessmode: any;
-  Cash_CreditType: boolean;
+  cash_CreditType: boolean;
   tranProcessMode: any;
   EwayBillNo: any;
   TotalQty: any;
@@ -499,23 +586,28 @@ export class ItemNameList {
   PurUnitRateWF: any;
   BatchExpDate: any;
   POQty: any;
-  ItemDiscAmount:any;
-  DiscPer:any;
-  ItemTotalAmount:any;
-  UOMID:any;
-  GrandTotalAmount:any;
-  TranProcessId:any;
-  UnitMRP:any;
-  IsVerified:any;
-  IsVerifiedDatetime:any;
-  IsVerifiedUserId:any;
-  StkID:any;
-  OtherTax:any
-  BalanceQty:any;
-  PurchaseID:any;
-  GRNDetID:any;
-  ReturnQty:any;
-  
+  ItemDiscAmount: any;
+  DiscPer: any;
+  ItemTotalAmount: any;
+  UOMID: any;
+  GrandTotalAmount: any;
+  TranProcessId: any;
+  UnitMRP: any;
+  IsVerified: any;
+  IsVerifiedDatetime: any;
+  IsVerifiedUserId: any;
+  StkID: any;
+  OtherTax: any
+  BalanceQty: any;
+  PurchaseID: any;
+  GRNDetID: any;
+  ReturnQty: any;
+  grnid:any;
+  itemId:any
+itemName:any
+batchNo:any
+batchExpDate:any
+grnDetID:any
   /**
    * Constructor
    *
@@ -523,7 +615,7 @@ export class ItemNameList {
    */
   constructor(ItemNameList) {
     {
-    
+
       this.ItemName = ItemNameList.ItemName || "";
       this.UOMId = ItemNameList.UOMId || 0;
       this.HSNCode = ItemNameList.HSNCode || 0;
@@ -590,9 +682,15 @@ export class ItemNameList {
       this.StkID = ItemNameList.StkID || 0;
       this.OtherTax = ItemNameList.OtherTax || 0;
       this.BalanceQty = ItemNameList.BalanceQty || 0;
-      this.GRNDetID = ItemNameList.GRNDetID || 0; 
-       this.ReturnQty = ItemNameList.ReturnQty || 0;
-       this.Cash_CreditType = ItemNameList.Cash_CreditType ;
+      this.GRNDetID = ItemNameList.GRNDetID || 0;
+      this.ReturnQty = ItemNameList.ReturnQty || 0;
+      this.cash_CreditType = ItemNameList.cash_CreditType;
+      this.grnid=ItemNameList.grnid;
+      this.itemId=ItemNameList.itemId || 0
+      this.itemName=ItemNameList.itemName || 0
+      this.batchNo=ItemNameList.batchNo || 0
+      this.batchExpDate=ItemNameList.batchExpDate || 0
+      this.grnDetID=ItemNameList.grnDetID || 0
     }
   }
 }

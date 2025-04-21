@@ -427,14 +427,20 @@
                                                 <form [formGroup]="MedicineItemForm">
                                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                                         class="gap-8">
-                                                        <airmid-autocomplete lbl="Item" [formGroup]="MedicineItemForm" label="Search Item Name"
+                                                        <!-- <airmid-autocomplete lbl="Item" [formGroup]="MedicineItemForm" label="Search Item Name"
                                                             formControlName="ItemId" placeholderText="Enter Item Name"
                                                             fxFlex
                                                             ApiUrl="VisitDetail/GetServiceListwithTraiff?TariffId=1&ClassId=2&ServiceName="
                                                             (selectionChange)="getSelectedserviceObj($event)"
                                                             TextField="serviceName"
-                                                            ValueField="serviceId"></airmid-autocomplete>
+                                                            ValueField="serviceId"></airmid-autocomplete> -->
 
+                                                            <airmid-autocomplete lbl="Item" [formGroup]="MedicineItemForm"
+                                                            formControlName="ItemId" placeholderText="Enter Item Name" fxFlex
+                                                            ApiUrl="ItemMaster/GetItemListForPrescription?StoreId=2&ItemName="
+                                                            (selectionChange)="getSelectedserviceObj($event)"
+                                                            TextField="itemName" ValueField="itemId"></airmid-autocomplete>
+            
                                                         <airmid-dropdown label="Dose Name" formControlName="DoseId"
                                                             [formGroup]="MedicineItemForm"
                                                             [validations]="getValidationMessages().DoseId"
@@ -442,9 +448,10 @@
                                                             [mode]="autocompleteModeDose">
                                                         </airmid-dropdown>
 
-                                                        <!-- <airmid-textbox label="Day" formControlName="Day" [value]="vDay"
+                                                        <airmid-textbox label="Day" formControlName="Day" [value]="vDay"  [type]="'text'"
+                                                        (keypress)="keyPressCharater($event)"
                                                             [formGroup]="MedicineItemForm">
-                                                        </airmid-textbox> -->
+                                                        </airmid-textbox>
 
                                                         <div class="input-add-button">
                                                             <div matTooltip="Select Itemname to enable this button!!"
@@ -544,8 +551,8 @@
                                         [validations]="getValidationMessages().dischargeDoctor3"
                                         [mode]="autocompleteModeRefDoctor">
                                     </airmid-dropdown>
-                                    <airmid-editor label="Template Details" formControlName="templateDesc"
-                                        [(value)]="vTemplateDesc" [formGroup]="DischargesumForm"></airmid-editor>
+                                    <!-- <airmid-editor label="Template Details" formControlName="templateDesc"
+                                        [(value)]="vTemplateDesc" [formGroup]="DischargesumForm"></airmid-editor> -->
                                 </mat-tab>
                             </mat-tab-group>
                         </div>

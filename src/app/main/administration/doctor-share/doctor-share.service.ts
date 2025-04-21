@@ -25,6 +25,7 @@ export class DoctorShareService {
     //   enddate: [(new Date()).toISOString()],
       RegId: '',
       DoctorID:'',
+      GroupId:'',
       FirstName: '',
       LastName: '',
       PbillNo: '',

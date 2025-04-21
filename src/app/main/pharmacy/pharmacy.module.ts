@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router'; 
+import { RouterModule, Routes } from '@angular/router';
 
 const appRoutes: Routes = [
     {
@@ -38,7 +38,7 @@ const appRoutes: Routes = [
   },
   {
     path:"saleshospital", 
-    loadChildren :() =>import("./sales-hospital/sales-hospital.module").then ((m)=>m.SalesHospitalModule),
+    loadChildren :() =>import("./sales-hopsital-new/sales-hopsital-new.module").then ((m)=>m.SalesHospitalNewModule),
   },
   {
     path:"issuetracker",

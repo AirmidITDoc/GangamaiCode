@@ -168,4 +168,8 @@ export class ResultEntryService {
   public getReportView(Param) {
     return this._httpClient1.PostData("Report/ViewReport", Param);
   }
+
+  public getPathTemplateById(Id) {
+    return this._httpClient1.GetData("PathologyTemplate/PathReportId /" + Id);
+  }
 }

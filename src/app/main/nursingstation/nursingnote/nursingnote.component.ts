@@ -170,17 +170,9 @@ export class NursingnoteComponent implements OnInit {
       heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
   } 
-    // {
-    //   heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-    //     {
-    //       action: gridActions.add, callback: (data: any) => {
-    //         this.getSchedular(data);
-    //       }
-    //     }]
-    // } //Action 1-view, 2-Edit,3-delete
   ]
   allMedicationFilters=[
-    { fieldName: "AdmId", fieldValue: "1", opType: OperatorComparer.Equals } //1
+    { fieldName: "AdmId", fieldValue: "0", opType: OperatorComparer.Equals } //1
   ]
 
   gridConfig1: gridModel = {
@@ -193,13 +185,14 @@ export class NursingnoteComponent implements OnInit {
 
   getMedicationList() {
     debugger
+
     this.gridConfig1 = {
       apiUrl: "Nursing/MedicationChartlist",
       columnsList: this.allMedicationColumns,
-      sortField: "AdmissionID", //AdmId
+      sortField: "AdmissionID",
       sortOrder: 0,
       filters: [
-        { fieldName: "AdmId", fieldValue: String(this.OP_IP_Id), opType: OperatorComparer.Equals }
+        { fieldName: "AdmId", fieldValue: String(this.OP_IP_Id), opType: OperatorComparer.Equals } //91024
       ]
     }
     console.log(this.gridConfig1)
@@ -280,7 +273,7 @@ export class NursingnoteComponent implements OnInit {
   }
 
   getHandOverNotelist() {
-    debugger
+    // debugger
         this.gridConfig3 = {
           apiUrl: "Nursing/NursingPatientHandoverList",
           columnsList: this.allColumnOfHandOver,
@@ -434,7 +427,7 @@ export class NursingnoteComponent implements OnInit {
   }
 
   onEdit(row) {
-    debugger
+    // debugger
     console.log("data:", row)
     this.registerObj = row;
     this.vDescription = this.registerObj.nursingNotes || '';
@@ -479,15 +472,31 @@ export class NursingnoteComponent implements OnInit {
   Chargelist: any = [];
 
   getSchedulerlist() {
-    var vdata = {
-      'AdmissionId': this.vAdmissionID//OP_IP_Id
+    debugger
+    var param = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "MedChartId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "AdmissionId",
+          "fieldValue": String(this.OP_IP_Id),
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": []
     }
-    // this._NursingStationService.getSchedulerlist(vdata).subscribe(data => {
-    //   this.dsItemList.data = data as MedicineItemList[];
-    //   this.Chargelist = data as MedicineItemList[];
-    //   // this.dsItemList.sort = this.sort
-    //   // this.dsItemList.paginator = this.Medicinepaginator
-    // })
+    console.log(param)
+    this._NursingStationService.getSchedulerlist(param).subscribe(data => {
+      this.dsItemList.data = data.data as MedicineItemList[];
+      this.Chargelist = data as MedicineItemList[];
+      console.log(this.dsItemList.data)
+      console.log(this.Chargelist)
+      // this.dsItemList.sort = this.sort
+      // this.dsItemList.paginator = this.Medicinepaginator
+    })
   }
 
   deleteTableRow(event, element) {
@@ -522,7 +531,7 @@ export class NursingnoteComponent implements OnInit {
 
 // Doctor Note insert
   onSubmit() {
-    debugger
+    // debugger
     if (!this.vDescription || this.vDescription.trim() === '') {
       this.toastr.warning('Please enter template description', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -571,7 +580,7 @@ export class NursingnoteComponent implements OnInit {
   }
 
   onClear() {
-    this.myform.reset(); 
+    // this.myform.reset(); 
     this.IsAddFlag = false;
     this.vDoctNoteId = null;
     this.vDescription=null;
@@ -589,7 +598,7 @@ export class NursingnoteComponent implements OnInit {
   vcomments:any
   // patient hand over
   onSubmitHandOver() {
-    debugger
+    // debugger
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
@@ -718,7 +727,7 @@ export class NursingnoteComponent implements OnInit {
   onClose() {
     // this.myform.reset();
     this._matDialog.closeAll();
-    this.onClearPatientInfo();
+    // this.onClearPatientInfo();
     this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
     this.vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
     this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"

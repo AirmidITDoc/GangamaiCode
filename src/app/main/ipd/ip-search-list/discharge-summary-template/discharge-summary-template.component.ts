@@ -74,7 +74,7 @@ export class DischargeSummaryTemplateComponent {
     registerObj1 = new AdmissionPersonlModel({});
     screenFromString = 'discharge-summary';
     dateTimeObj: any;
-  
+    ItemName:any;
     ItemId: any;
     vDay: any;
     vInstruction: any;
@@ -220,7 +220,7 @@ export class DischargeSummaryTemplateComponent {
     }
     getSelectedserviceObj(obj) {
       this.ItemId=obj.itemId
-      this.ItemId=obj.itemId
+      this.ItemName=obj.itemName
      console.log(obj)
   
     }
@@ -285,7 +285,13 @@ export class DischargeSummaryTemplateComponent {
             "opType": "Equals"
           }
         ],
-        "exportType": "JSON"
+        "exportType": "JSON",
+        "columns": [
+         {
+           "data": "string",
+           "name": "string"
+         }
+       ]
       }
       console.log(m_data2)
       this._IpSearchListService.getPrescriptionList(m_data2).subscribe((data) => {
@@ -310,7 +316,13 @@ export class DischargeSummaryTemplateComponent {
             "opType": "Equals"
           }
         ],
-        "exportType": "JSON"
+        "exportType": "JSON",
+     "columns": [
+      {
+        "data": "string",
+        "name": "string"
+      }
+    ]
       }
   
       console.log(m_data2)
@@ -415,7 +427,8 @@ export class DischargeSummaryTemplateComponent {
             setTimeout(() => {
               this._IpSearchListService.insertIPDDischargSummaryTemplate(data).subscribe(response => {
                 this.toastr.success(response.message);
-                this.viewgetDischargesummaryPdf(response)
+                // this.viewgetDischargesummaryPdf(response)
+                this.getPrint(response)
                 this._matDialog.closeAll();
               }, (error) => {
                 this.toastr.error(error.message);
@@ -435,7 +448,9 @@ export class DischargeSummaryTemplateComponent {
             setTimeout(() => {
               this._IpSearchListService.UpdateIPDDischargSummaryTemplate(data1).subscribe(response => {
                 this.toastr.success(response.message);
-                this.viewgetDischargesummaryPdf(response)
+                console.log(response[0].opdIpdId)
+                // this.getPrint(response[0].opdIpdId)
+                this.viewgetDischargesummaryPdf(response[0].opdIpdId)
                 this._matDialog.closeAll();
               }, (error) => {
                 this.toastr.error(error.message);
@@ -466,16 +481,40 @@ export class DischargeSummaryTemplateComponent {
       }
 
     }
-  
-  
+
+    
+      getPrint(contact){
+     Swal.fire({
+                title: 'Select Report Format',
+                text: "Choose how you want to view the report:",
+                icon: "warning",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                denyButtonColor: "#6c757d",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "With Header",
+                denyButtonText: "Without Header Template",
+            }).then((result) => {
+                debugger
+                if (result.isConfirmed) {
+                    this.viewgetDischargesummaryPdf(contact);
+                } else if (result.isDenied) {
+                    this.viewgetDischargesummaryTempPdf(contact);
+                }
+            });
+      }
+
     viewgetDischargesummaryPdf(AdmId) {
-      this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryReport");
+      this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryTemplate");
     }
   
   
     viewgetDischargesummaryTempPdf(AdmId) {
-  
+      // this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryTemplateWithoutHeader");
     }
+  
+    
     getItemMaster() {
       // const dialogRef = this._matDialog.open(AddItemComponent,
       //   {
@@ -593,7 +632,24 @@ export class DischargeSummaryTemplateComponent {
   
       };
     }
-  
+    keyPressAlphanumeric(event) {
+      var inp = String.fromCharCode(event.keyCode);
+      if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+    keyPressCharater(event) {
+      var inp = String.fromCharCode(event.keyCode);
+      if (/^\d*\.?\d*$/.test(inp)) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
     onChangetemp(e){
       console.log(e)
       this.Tempdesc=e.templateDescription

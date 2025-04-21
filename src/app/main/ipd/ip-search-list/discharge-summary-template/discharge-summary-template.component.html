@@ -214,7 +214,8 @@
                                             </airmid-dropdown>
 
                                             <airmid-textbox label="Day" formControlName="Day" [value]="vDay"
-                                                [formGroup]="MedicineItemForm">
+                                                [formGroup]="MedicineItemForm"  [type]="'text'"
+                                                (keypress)="keyPressCharater($event)">
                                             </airmid-textbox>
 
                                             <div class="input-add-button">

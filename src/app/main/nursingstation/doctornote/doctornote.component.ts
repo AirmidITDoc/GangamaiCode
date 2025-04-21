@@ -498,7 +498,7 @@ debugger
   }
 
   onClear() {
-    this.myform.reset();
+    // this.myform.reset();
     this.IsAddFlag = false 
     this.vDoctNoteId = null;
     this.vDescription=null;
@@ -507,7 +507,7 @@ debugger
   onClose() {
     this.myNoteform.reset();
     this._matDialog.closeAll();
-    this.onClearPatientInfo();
+    // this.onClearPatientInfo();
     this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
     this.vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
     this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"

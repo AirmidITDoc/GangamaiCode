@@ -30,6 +30,7 @@ export class NewGRNReturnComponent implements OnInit {
     "BatchExpDate",
     "ConversionFactor",
     "BalanceQty",
+    'ReceivedQty',
     "ReturnQty",
     "MRP",
     //"Rate",
@@ -68,13 +69,14 @@ export class NewGRNReturnComponent implements OnInit {
   filteredoptionsSupplier: Observable<string[]>; 
   vGRNReturnItemFilter: any;
   VsupplierId:any=0
+  vStoreId:any=2
   vFinalTotalAmount:any=0
   vFinalNetAmount:any=0
   vFinalVatAmount:any=0
   vFinalDiscAmount:any=0;
   vRoundingAmt:any;
   autocompletestore: string = "Store";
-  autocompleteSupplier:string="Supplier"
+  autocompleteSupplier:string="SupplierMaster"
   
   dsGrnItemList = new MatTableDataSource<ItemNameList>();
   dsNewGRNReturnItemList = new MatTableDataSource<ItemNameList>();
@@ -100,11 +102,10 @@ export class NewGRNReturnComponent implements OnInit {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  vstoreId: any = '';
+  
   selectChangeStore(obj: any) {
-    debugger
     console.log("Store:", obj);
-    this.vstoreId = obj.value
+    this.vStoreId = obj.value
   }
 
   // getStoreList() {
@@ -120,24 +121,44 @@ export class NewGRNReturnComponent implements OnInit {
  
 
   getGrnItemDetailList(Params) {
-    this.sIsLoading = 'loading-data';
+    debugger
+
     var Param = {
-      "GrnId": Params.GRNID
+      "first": 0,
+      "rows": 10,
+      "sortField": "GRNID",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "GRNID",
+          "fieldValue": String(Params.grnid),
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": [
+        {
+          "data": "string",
+          "name": "string"
+        }
+      ]
     }
+    console.log(Param)
     this._GRNReturnService.getGrnItemList(Param).subscribe(data => {
-      this.dsItemNameList1.data = data as ItemNameList[];
+      this.dsItemNameList1.data = data.data as ItemNameList[];
       console.log(this.dsItemNameList1.data)
       this.dsItemNameList1.data.forEach((element) => {
         this.chargeslist.push(
           {
-            ItemId: element.ItemId || 0,
-            ItemName: element.ItemName || '',
-            BatchNo: element.BatchNo || 0,
-            BatchExpDate: element.BatchExpDate,
+            ItemId: element.itemId || 0,
+            ItemName: element.itemName || '',
+            BatchNo: element.batchNo || 0,
+            BatchExpDate: element.batchExpDate,
             ConversionFactor: element.ConversionFactor,
             BalanceQty: element.BalanceQty,
             ReturnQty: 0,
             MRP: element.MRP || 0,
+            ReceiveQty: element.ReceiveQty || 0,
             //Rate: element.Rate || 0,
             TotalAmount: 0,
             VatPer: element.VatPer || 0,
@@ -147,12 +168,13 @@ export class NewGRNReturnComponent implements OnInit {
             LandedRate: element.Rate || 0,
             NetAmount: 0,
             StkID: element.StkID || 0 ,
-            GRNID:element.GRNID || 0,
-            GRNDetID:element.GRNDetID || 0,
+            GRNID:element.grnid || 0,
+            GRNDetID:element.grnDetID || 0,
             TotalQty:0
           });
          // console.log(this.chargeslist)
         this.dsGrnItemList.data = this.chargeslist
+        console.log(this.dsGrnItemList.data)
         this.dsGrnItemList.sort = this.sort;
         this.dsGrnItemList.paginator = this.paginator;
         this.sIsLoading = '';
@@ -162,7 +184,9 @@ export class NewGRNReturnComponent implements OnInit {
         this.sIsLoading = '';
       });
   }
+
   deleteTableRow(elm) {
+    debugger
     this.dsGrnItemList.data = this.dsGrnItemList.data
       .filter(i => i !== elm)
       .map((i, idx) => (i.position = (idx + 1), i));
@@ -171,6 +195,19 @@ export class NewGRNReturnComponent implements OnInit {
       });
   }
   
+  parseDate(dateStr: string): Date | null {
+    
+    const parts = dateStr.split(' ');
+    const dateParts = parts[0].split('-'); // ["31", "07", "2026"]
+    const time = parts[1] || '00:00:00';
+  
+    if (dateParts.length === 3) {
+      const formatted = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}T${time}`;
+      return new Date(formatted);
+    }
+  
+    return null;
+  }  
 
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
@@ -182,6 +219,7 @@ export class NewGRNReturnComponent implements OnInit {
     }
   } 
   getTotalamt(element) {
+    // console.log("getTotalamt:",element)
     this.vFinalTotalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
     this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
     this.vFinalDiscAmount = (element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0)).toFixed(2);
@@ -189,14 +227,17 @@ export class NewGRNReturnComponent implements OnInit {
   }
   
   getNetamt(element) {
+    // console.log("getNetamt:",element)
    let finalAmt = (element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
    this.vFinalNetAmount = Math.round(finalAmt).toFixed(2); 
    this.vRoundingAmt = (parseFloat(this.vFinalNetAmount) - (finalAmt)).toFixed(2);
   
     return this.vFinalNetAmount;
   }
+
   RQty:any; 
   getCellCalculation(contact, ReturnQty) {
+    debugger
     if (parseInt(contact.ReturnQty) > parseInt(contact.BalanceQty)) {
       this.toastr.warning('Return Qty cannot be greater than BalQty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -222,6 +263,7 @@ export class NewGRNReturnComponent implements OnInit {
  
 interimArray: any = [];
 tableElementChecked(event, element) {
+  debugger
   if (event.checked) {
     this.interimArray.push(element);
   }
@@ -230,13 +272,14 @@ tableElementChecked(event, element) {
  
 Savebtn:boolean=false;
 OnSave(){
+  debugger
   if ((!this.dsGrnItemList.data.length)) {
     this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
       toastClass: 'tostr-tost custom-toast-warning',
     });
     return;
   }
-  if ((!this._GRNReturnService.NewGRNReturnFrom.get('SupplierId').value.SupplierId)) {
+  if ((!this.VsupplierId)) {
     this.toastr.warning('Please Select Supplier name.', 'Warning !', {
       toastClass: 'tostr-tost custom-toast-warning',
     });
@@ -253,8 +296,8 @@ OnSave(){
   grnReturnSave['grnId'] = this.vGRNID || 0;
   grnReturnSave['grnReturnDate'] = this.dateTimeObj.date;
   grnReturnSave['grnReturnTime'] =this.dateTimeObj.time;
-  grnReturnSave['storeId'] =this._loggedService.currentUserValue.storeId || 0;
-  grnReturnSave['supplierID'] =this._GRNReturnService.NewGRNReturnFrom.get('SupplierId').value.SupplierId;
+  grnReturnSave['storeId'] =this._loggedService.currentUserValue.storeId || this.vStoreId;
+  grnReturnSave['supplierID'] =this.VsupplierId;
   grnReturnSave['totalAmount'] = this.vFinalTotalAmount || 0;
   grnReturnSave['grnReturnAmount'] = this.vFinalTotalAmount || 0;
   grnReturnSave['totalDiscAmount'] = this.vFinalDiscAmount || 0;
@@ -320,7 +363,7 @@ OnSave(){
     grnReturnUpdateCurrentStockObj['itemId'] = element.ItemId || 0;
     grnReturnUpdateCurrentStockObj['issueQty'] =element.ReturnQty || 0;
     grnReturnUpdateCurrentStockObj['stkId'] = element.StkID || 0;
-    grnReturnUpdateCurrentStockObj['storeID'] = this._loggedService.currentUserValue.storeId || 0;
+    grnReturnUpdateCurrentStockObj['storeID'] = this._loggedService.currentUserValue.storeId || this.vStoreId;
     grnReturnUpdateCurrentStockarray.push(grnReturnUpdateCurrentStockObj);
   });
 
@@ -360,9 +403,6 @@ OnSave(){
     });
   }); 
 }
-
-
-
 
 viewgetGRNreturnReportPdf(GRNReturnId) {
   
@@ -408,22 +448,24 @@ OnReset() {
     this.chargeslist.data = [];
     const dialogRef = this._matDialog.open(GrnListComponent,
       {
-        maxWidth: "100%",
-        maxHeight: '95%',
+        // maxWidth: "100%",
+        maxHeight: '95vh',
         width: '85%',
       });
     dialogRef.afterClosed().subscribe(result => {
+      // debugger
       console.log('The dialog was closed - Insert Action', result);
-       //console.log(result) 
+       console.log("ddddddaaaaaatttttaaa",result) 
       this.dsNewGRNReturnItemList.data = result as ItemNameList[];
-      this.VsupplierId = this.dsNewGRNReturnItemList.data[0]['SupplierId']
-      this.VsupplierName = this.dsNewGRNReturnItemList.data[0]['SupplierName']
-      this.vGRNID = this.dsNewGRNReturnItemList.data[0].GRNID
-      this.CashCredittype = this.dsNewGRNReturnItemList.data[0].Cash_CreditType
+      this.VsupplierId = this.dsNewGRNReturnItemList.data[0]['supplierId']
+      this.vStoreId=this.dsNewGRNReturnItemList.data[0]['storeId']
+      this.VsupplierName = this.dsNewGRNReturnItemList.data[0]['supplierName']
+      this.vGRNID = this.dsNewGRNReturnItemList.data[0].grnid
+      this.CashCredittype = this.dsNewGRNReturnItemList.data[0].cash_CreditType
       // this.getSupplierSearchCombo(); 
   
       this.getGrnItemDetailList(this.dsNewGRNReturnItemList.data[0]) 
-      if(this.dsNewGRNReturnItemList.data[0].Cash_CreditType == false){
+      if(this.dsNewGRNReturnItemList.data[0].cash_CreditType == false){
         this.isChecked = true;
       }else{
         this.isChecked = false;

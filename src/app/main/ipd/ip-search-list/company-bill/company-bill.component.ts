@@ -448,19 +448,19 @@ export class CompanyBillComponent implements OnInit {
 
   //Doctor list 
   getAdmittedDoctorCombo() {
-    var vdata = {
-      "Keywords": this.Serviceform.get('DoctorID').value + "%" || "%"
-    }
-    console.log(vdata)
-    this._IpSearchListService.getAdmittedDoctorCombo(vdata).subscribe(data => {
-      this.filteredOptionsDoctors = data;
-      console.log(this.filteredOptionsDoctors)
-      if (this.filteredOptionsDoctors.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
-    });
+    // var vdata = {
+    //   "Keywords": this.Serviceform.get('DoctorID').value + "%" || "%"
+    // }
+    // console.log(vdata)
+    // this._IpSearchListService.getAdmittedDoctorCombo(vdata).subscribe(data => {
+    //   this.filteredOptionsDoctors = data;
+    //   console.log(this.filteredOptionsDoctors)
+    //   if (this.filteredOptionsDoctors.length == 0) {
+    //     this.noOptionFound = true;
+    //   } else {
+    //     this.noOptionFound = false;
+    //   }
+    // });
   }
   getOptionTextDoctor(option) {
     return option && option.Doctorname ? option.Doctorname : '';
