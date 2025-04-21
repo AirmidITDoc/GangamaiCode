@@ -35,7 +35,7 @@ export class MedicineSchedulerComponent {
 
   constructor(
     public _NursingStationService: NursingnoteService,
-    private accountService: AuthenticationService,
+    private _loggedService: AuthenticationService,
     public datePipe: DatePipe,
     public toastr: ToastrService,
     public _matDialog: MatDialog,
@@ -56,7 +56,7 @@ export class MedicineSchedulerComponent {
   doseDateTime:any;
 
   onChangeDate(value) {
-    debugger
+
     if (value) {
       const dateOfReg = new Date(value);
       let splitDate = dateOfReg.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
@@ -69,7 +69,7 @@ export class MedicineSchedulerComponent {
   }
 
   onChangeTime(event) {
-    debugger
+ 
     this.timeflag = 1
     if (event) {
 
@@ -87,7 +87,7 @@ export class MedicineSchedulerComponent {
   }
 
   setDoseDateTime(date: Date | null, time: any): void {
-    debugger;
+    // debugger;
     if (!date || !time) return;
   
     let hours: number, minutes: number;
@@ -148,7 +148,7 @@ export class MedicineSchedulerComponent {
   Chargelist: any = [];
   onAddMedicine() {
     debugger
-    if (this.registerObj.Qty == this.dsItemList.data.length) {
+    if (this.registerObj.qty == this.dsItemList.data.length) {
       this.toastr.warning('selected item Qty is 0,You cannot add new scheduler', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -157,7 +157,8 @@ export class MedicineSchedulerComponent {
       this.MedicineItemForm.get('Route').setValue('');
       this.MedicineItemForm.get('Frequency').setValue('');
       this.MedicineItemForm.get('NurseName').setValue('');
-      this.MedicineItemForm.get('DoseDateTime').setValue('');
+      this.MedicineItemForm.get('DoseDate').setValue('');
+      this.MedicineItemForm.get('DoseTime').setValue('');
       return;
     }
 
@@ -186,7 +187,6 @@ export class MedicineSchedulerComponent {
       return;
     }
 
-    debugger
     this.Chargelist.push(
       {
         DrugId: this.registerObj.itemId || 0,
@@ -219,11 +219,11 @@ export class MedicineSchedulerComponent {
   }
 
   onSubmit() {
+    debugger
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-    debugger
     if (!this.dsItemList.data.length) {
       this.toastr.warning('Please add Scheduler in list !,list is blank', 'warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -237,17 +237,20 @@ export class MedicineSchedulerComponent {
       let saveTNursingMedicationChartParams = {
 
         "medChartId": 0,
-        "admID": this.registerObj.AdmissionID,
-        "mDate": formattedDate,
-        "mTime": formattedTime,
-        "durgId": this.registerObj.ItemId,
-        "doseID": 0,
+        "admId": this.registerObj.admissionID,
+        "mdate": formattedDate,
+        "mtime": formattedTime,
+        "durgId": this.registerObj.itemId,
+        "doseId": 0,
         "route": element.Route || '',
         "freq": element.Frequency || '',
+        "isAddedBy": this._loggedService.currentUserValue.userId,
         "nurseName": element.NurseName || '',
+        "createdBy": true,
+        // "doseName": element.DoseDateTime || '',
         "doseName": this.datePipe.transform(element.DoseDateTime, 'h:mm a') || '',
-        "createdBy": this.accountService.currentUserValue.user.id,
       }
+
       saveTNursingMedicationChartParamsObj.push(saveTNursingMedicationChartParams)
     })
 
@@ -257,7 +260,6 @@ export class MedicineSchedulerComponent {
     console.log(submitData);
     this._NursingStationService.insertMedicationChart(submitData).subscribe(response => {
       console.log(response)
-      debugger
       if (response) {
         this.toastr.success('Record Saved Successfully.', 'Saved !', {
           toastClass: 'tostr-tost custom-toast-success',

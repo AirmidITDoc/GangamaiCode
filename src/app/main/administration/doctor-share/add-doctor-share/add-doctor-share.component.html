@@ -21,20 +21,20 @@
                     <form [formGroup]="_DoctorShareService.DocFormGroup">
                         <div fxLayout="row" fxLayoutGap="6px"> 
 
-                            <div fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-dropdown 
                                     label="Select Doctor Name" 
                                     formControlName="DoctorName"
                                     [value]="data?.DoctorName"
                                     [formGroup]="_DoctorShareService.DocFormGroup"
                                     [validations]="getValidationMessages().DoctorName"
-                                    (selectionChange)="selectChangeDoctor($event)"
+                                    (selectionChange)="ListView($event)"
                                     [mode]="autocompleteModeItem">
                                 </airmid-dropdown>
                             </div>
 
                             <div fxLayout="row" style="padding: 15px;">
-                                <mat-radio-group formControlName="Type" name="Type" >
+                                <mat-radio-group formControlName="Type" name="Type" (change)="onChange()" >
                                     <mat-radio-button value="1">Service Wise</mat-radio-button>
                                     <mat-radio-button value="2">Group Wise</mat-radio-button> 
                                 </mat-radio-group>

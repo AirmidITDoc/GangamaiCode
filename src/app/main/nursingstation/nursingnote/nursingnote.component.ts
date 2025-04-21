@@ -172,7 +172,7 @@ export class NursingnoteComponent implements OnInit {
   } 
   ]
   allMedicationFilters=[
-    { fieldName: "AdmId", fieldValue: "1", opType: OperatorComparer.Equals } //1
+    { fieldName: "AdmId", fieldValue: "0", opType: OperatorComparer.Equals } //1
   ]
 
   gridConfig1: gridModel = {
@@ -273,7 +273,7 @@ export class NursingnoteComponent implements OnInit {
   }
 
   getHandOverNotelist() {
-    debugger
+    // debugger
         this.gridConfig3 = {
           apiUrl: "Nursing/NursingPatientHandoverList",
           columnsList: this.allColumnOfHandOver,
@@ -427,7 +427,7 @@ export class NursingnoteComponent implements OnInit {
   }
 
   onEdit(row) {
-    debugger
+    // debugger
     console.log("data:", row)
     this.registerObj = row;
     this.vDescription = this.registerObj.nursingNotes || '';
@@ -472,10 +472,24 @@ export class NursingnoteComponent implements OnInit {
   Chargelist: any = [];
 
   getSchedulerlist() {
-    var vdata = {
-      'AdmissionId': this.vAdmissionID//OP_IP_Id
+    debugger
+    var param = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "MedChartId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "AdmissionId",
+          "fieldValue": String(this.OP_IP_Id),
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": []
     }
-    this._NursingStationService.getSchedulerlist(vdata).subscribe(data => {
+    console.log(param)
+    this._NursingStationService.getSchedulerlist(param).subscribe(data => {
       this.dsItemList.data = data.data as MedicineItemList[];
       this.Chargelist = data as MedicineItemList[];
       console.log(this.dsItemList.data)
@@ -517,7 +531,7 @@ export class NursingnoteComponent implements OnInit {
 
 // Doctor Note insert
   onSubmit() {
-    debugger
+    // debugger
     if (!this.vDescription || this.vDescription.trim() === '') {
       this.toastr.warning('Please enter template description', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -584,7 +598,7 @@ export class NursingnoteComponent implements OnInit {
   vcomments:any
   // patient hand over
   onSubmitHandOver() {
-    debugger
+    // debugger
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');

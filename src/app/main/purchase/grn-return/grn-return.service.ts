@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class GrnReturnService {
 
   constructor(
     public _httpClient: HttpClient,
+    public _httpClient1: ApiCaller,
     private _formBuilder: UntypedFormBuilder
   ) { 
     this.NewGRNRetFinalFrom = this.NewGRNReturnFinal();
@@ -71,7 +73,7 @@ export class GrnReturnService {
     return this._httpClient.post("Generic/GetByProc?procName=getGRNReturnList",Param);
   }
   public getGRNList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_GRNList_by_Name_For_GRNReturn",Param);
+    return this._httpClient1.PostData("Purchase/GRNListBynameforGrnReturn",Param);
   }
   public getSupplierSearchList(param){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SupplierName_list",param);
@@ -82,11 +84,11 @@ export class GrnReturnService {
   }
  
   public getGrnItemList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemList_by_Supplier_Name_For_GRNReturn",Param);
+    return this._httpClient1.PostData("Purchase/ItemListBYSupplierName",Param);
   }
 
   public GRNReturnSave(Param){
-    return this._httpClient.post("Pharmacy/InsertGRNReturn", Param);
+    return this._httpClient1.PostData("GRNReturn/Insert", Param);
   }
 
   public getVerifyGRNReturn(Param) {

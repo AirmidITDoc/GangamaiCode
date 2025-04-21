@@ -41,7 +41,7 @@
                                 
                                 <div fxFlex="19%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <div fxLayout="row" style="padding: 10px;">
-                                    <mat-radio-group formControlName="OP_IP_Type" name="Radio">
+                                    <mat-radio-group formControlName="OP_IP_Type" name="Radio" (change)="onChangeFirst()">
                                         <mat-radio-button value="2">ALL</mat-radio-button>&nbsp;
                                         <mat-radio-button value="0">OP</mat-radio-button>&nbsp;
                                         <mat-radio-button value="1">IP</mat-radio-button>&nbsp;
@@ -59,11 +59,9 @@
                                 <div fxFlex="18%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown 
                                         label="Select Doctor Name" 
-                                        formControlName="patientType"
-                                        [value]="data?.patientType"
+                                        formControlName="DoctorID"
                                         [formGroup]="_DoctorShareService.UserFormGroup"
-                                        [validations]="getValidationMessages().patientType"
-                                        (selectDdlObject)="selectChangeItem($event)"
+                                        (selectionChange)="ListView($event)" (keyup)="ListView($event)"
                                         [mode]="autocompleteModeItem">
                                     </airmid-dropdown>
                                 </div>
@@ -71,11 +69,8 @@
                                 <div fxFlex="18%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown 
                                         label="Select Group Name" 
-                                        formControlName="patientType"
-                                        [value]="data?.patientType"
+                                        formControlName="GroupId"
                                         [formGroup]="_DoctorShareService.UserFormGroup"
-                                        [validations]="getValidationMessages().patientType"
-                                        (selectDdlObject)="selectChangeItem($event)"
                                         [mode]="autocompletedepartment">
                                     </airmid-dropdown>
                                 </div>
@@ -84,9 +79,8 @@
                                     <airmid-textbox 
                                         label="PbillNo"
                                         formControlName="PbillNo"
-                                        [value]="data?.PbillNo"
                                         [formGroup]="_DoctorShareService.UserFormGroup"
-                                        [validations]="getValidationMessages().opNo"
+                                        (click)=" Clearfilter('PbillNo')"
                                         (keypress)="keyPressAlphanumeric($event)"
                                         [maxLength]="50">
                                     </airmid-textbox> 

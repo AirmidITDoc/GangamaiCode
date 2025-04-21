@@ -27,31 +27,63 @@ export class AddDoctorShareComponent implements OnInit {
   autocompletedepartment: string = "Department";
   autocompleteModeService: string = "Service";
   autocompleteClass: string = "Class";
+  ShrTypeSerOrGrp:any=1
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+
+  allColumns=[
+    { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Share%", key: "servicePercentage", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "ShareAmt", key: "serviceAmount", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "DocShareType", key: "docShrTypeS", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "ClassName", key: "className", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "OP_IP_Type", key: "op_IP_Type", sort: true, align: 'left', emptySign: 'NA' },
+  ]
+  allFilters=[
+    { fieldName: "DoctorId", fieldValue: "10006", opType: OperatorComparer.StartsWith },
+    { fieldName: "ShrTypeSerOrGrp", fieldValue: "1", opType: OperatorComparer.StartsWith }
+  ]
   gridConfig: gridModel = {
-    apiUrl: "CurrencyMaster/List",
-    columnsList: [
-      { heading: "-", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "DoctorName", key: "middleName", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "ServiceName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Share%", key: "address", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "ShareAmt", key: "City", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "DocShareType", key: "Age", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "ClassName", key: "PhoneNo", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "O", key: "oPBILL", sort: true, align: 'left', emptySign: 'NA' },
-    ],
-    sortField: "firstName",
+    apiUrl: "Doctor/DoctorShareLbyNameList",
+    columnsList: this.allColumns,
+    sortField: "DoctorShareId",
     sortOrder: 0,
-    filters: [
-      { fieldName: "firstName", fieldValue: "", opType: OperatorComparer.Contains },
-      { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals },
-      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-      // { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
-      // { fieldName: "To_Dt", fieldValue:this.toDate, opType: OperatorComparer.Equals },
-    ]
+    filters: this.allFilters
   }
 
+  onChange() {
+    debugger
+    this.ShrTypeSerOrGrp = this._DoctorShareService.DocFormGroup.get('Type').value
+    this.getfilterdata();
+}
+
+  getfilterdata(){
+    debugger
+    this.gridConfig = {
+        apiUrl: "Doctor/DoctorShareLbyNameList",
+        columnsList:this.allColumns , 
+        sortField: "DoctorShareId",
+        sortOrder: 0,
+        filters: [
+          { fieldName: "DoctorId", fieldValue: this.DoctorId, opType: OperatorComparer.StartsWith },
+          { fieldName: "ShrTypeSerOrGrp", fieldValue: this.ShrTypeSerOrGrp, opType: OperatorComparer.StartsWith }
+        ]
+    }
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData(); 
+}
+
+DoctorId = "0";
+  ListView(value) {
+    console.log(value)
+     if(value.value!==0)
+        this.DoctorId=value.value
+    else
+    this.DoctorId="0"
+
+    this.getfilterdata();
+}
 
   classid = 0;
   selectChangeClass(obj: any) {

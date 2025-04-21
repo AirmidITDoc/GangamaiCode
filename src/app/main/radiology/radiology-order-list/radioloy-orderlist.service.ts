@@ -119,7 +119,7 @@ export class RadioloyOrderlistService {
     }
 
     public getRadTemplateById(Id) {
-      return this._httpClient1.GetData("PathologyTemplate/PathReportId /" + Id);
+      return this._httpClient1.GetData("RadiologyTemplate/" + Id);
     }
     
     public insertRadiologyTemplateMaster(employee) {

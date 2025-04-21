@@ -83,7 +83,7 @@ export class GRNReturnComponent implements OnInit {
   vFinalDiscAmount: any = 0;
   vRoundingAmt: any;
   autocompletestore: string = "Store";
-  autocompleteSupplier: string = "Supplier"
+  autocompleteSupplier: string = "SupplierMaster"
 
   dsGRNReturnList = new MatTableDataSource<GRNReturnList>();
   dsGRNReturnItemDetList = new MatTableDataSource<GRNReturnItemDetList>();
@@ -166,7 +166,7 @@ export class GRNReturnComponent implements OnInit {
   Supplier: any = "1"
   Status: any = "1";
   onChangeFirst() {
-    debugger
+    // debugger
     this.fromDate = this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get('start').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get('end').value, "yyyy-MM-dd")
     // this.ToStoreId = this.vstoreId || '2'
@@ -176,7 +176,7 @@ export class GRNReturnComponent implements OnInit {
   }
 
   getfilterdata() {
-    debugger
+    // debugger
     this.gridConfig = {
       apiUrl: "Purchase/GRNReturnlistbynameList",
       columnsList: this.allColumns,
@@ -198,7 +198,7 @@ export class GRNReturnComponent implements OnInit {
   vSupplier: any = '1';
   vstoreId: any = '2';
   ListView(value) {
-    debugger
+    // debugger
     console.log(value)
     if (value.value !== 0)
       this.vstoreId = value.value
@@ -209,7 +209,7 @@ export class GRNReturnComponent implements OnInit {
   }
 
   ListView1(value) {
-    debugger
+    // debugger
     console.log(value)
     if (value.value !== 0)
       this.vSupplier = value.value
@@ -571,7 +571,7 @@ export class ItemNameList {
   EwayBillDate: Date;
   CurrentDate = new Date();
   Tranprocessmode: any;
-  Cash_CreditType: boolean;
+  cash_CreditType: boolean;
   tranProcessMode: any;
   EwayBillNo: any;
   TotalQty: any;
@@ -602,7 +602,12 @@ export class ItemNameList {
   PurchaseID: any;
   GRNDetID: any;
   ReturnQty: any;
-
+  grnid:any;
+  itemId:any
+itemName:any
+batchNo:any
+batchExpDate:any
+grnDetID:any
   /**
    * Constructor
    *
@@ -679,7 +684,13 @@ export class ItemNameList {
       this.BalanceQty = ItemNameList.BalanceQty || 0;
       this.GRNDetID = ItemNameList.GRNDetID || 0;
       this.ReturnQty = ItemNameList.ReturnQty || 0;
-      this.Cash_CreditType = ItemNameList.Cash_CreditType;
+      this.cash_CreditType = ItemNameList.cash_CreditType;
+      this.grnid=ItemNameList.grnid;
+      this.itemId=ItemNameList.itemId || 0
+      this.itemName=ItemNameList.itemName || 0
+      this.batchNo=ItemNameList.batchNo || 0
+      this.batchExpDate=ItemNameList.batchExpDate || 0
+      this.grnDetID=ItemNameList.grnDetID || 0
     }
   }
 }

@@ -34,7 +34,8 @@ export class GrnListComponent implements OnInit {
   optionsSupplier:any;
   sIsLoading: string;
   Onsave:boolean = true;
-  autocompleteSupplier:string="Supplier"
+  autocompleteSupplier:string="SupplierMaster"
+  vSupplier=0;
 
   dsGRNList = new MatTableDataSource<GRNList>();
   @ViewChild(MatSort) sort: MatSort;
@@ -50,74 +51,107 @@ export class GrnListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.getSupplierSearchCombo();
+    this.getGRNList();
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  // getSupplierSearchCombo() {
-  //   var vdata={
-  //     'SupplierName':`${this._GRNReturnHeaderList.GRNListFrom.get('SupplierId').value}%`,
-  //   }
-  //   this._GRNReturnHeaderList.getSupplierSearchList(vdata).subscribe(data => {
-  //     this.SupplierList = data;
-  //     // console.log(data);
-  //      this.optionsSupplier = this.SupplierList.slice();
-  //      this.filteredoptionsSupplier = this._GRNReturnHeaderList.GRNListFrom.get('SupplierId').valueChanges.pipe(
-  //       startWith(''),
-  //       map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
-  //     );
-  //   });
-  // }
-  // private _filterSupplier(value: any): string[] {
-  //   if (value) {
-  //     const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
-  //     return this.optionsSupplier.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
-  //   }
-  // }
-  // getOptionTextSupplier(option) {
-  //   return option && option.SupplierName ? option.SupplierName : '';
-  // }  
-  getGRNList(){
-    this.sIsLoading = 'loading-data';
-    var Param = {
-      "SupplierId": this._GRNReturnHeaderList.GRNListFrom.get('SupplierId').value.SupplierId || 0,
-      "From_Dt": this.datePipe.transform(this._GRNReturnHeaderList.GRNListFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "To_Dt": this.datePipe.transform(this._GRNReturnHeaderList.GRNListFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "StoreId":this._loggedService.currentUserValue.storeId || 0,
-    }
-   // console.log(Param);
+
+  selectChangeSupplier(row:any){
+    console.log(row)
+    this.vSupplier=row.value
+  }
+
+  getGRNList() {
+    // debugger;
+    const fromDate = this._GRNReturnHeaderList.GRNListFrom.get('start').value;
+    const toDate = this._GRNReturnHeaderList.GRNListFrom.get('end').value;
+  
+    const Param = {
+      first: 0,
+      rows: 10,
+      sortField: "GRNID",
+      sortOrder: 0,
+      filters: [
+        {
+          fieldName: "SupplierId",
+          fieldValue: String(this.vSupplier),
+          opType: "Equals"
+        },
+        {
+          fieldName: "From_Dt",
+          fieldValue: fromDate,
+          opType: "Equals"
+        },
+        {
+          fieldName: "To_Dt",
+          fieldValue: toDate,
+          opType: "Equals"
+        },
+        {
+          fieldName: "StoreId",
+          fieldValue: "2",
+          opType: "Equals"
+        }
+      ],
+      exportType: "JSON",
+      columns: []
+    };
+  
+    console.log(Param);
+  
     this._GRNReturnHeaderList.getGRNList(Param).subscribe(data => {
-      this.dsGRNList.data = data as GRNList[];
-    //  console.log(this.dsGRNList);
+      this.dsGRNList.data = data.data as GRNList[];
+      console.log(this.dsGRNList.data)
       this.dsGRNList.sort = this.sort;
       this.dsGRNList.paginator = this.paginator;
       this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
+    }, error => {
+      this.sIsLoading = '';
+    });
   }
+
+  parseDate(dateStr: string): Date | null {
+    
+    const parts = dateStr.split(' ');
+    const dateParts = parts[0].split('-'); // ["31", "07", "2026"]
+    const time = parts[1] || '00:00:00';
+  
+    if (dateParts.length === 3) {
+      const formatted = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}T${time}`;
+      return new Date(formatted);
+    }
+  
+    return null;
+  }  
+  
   SelectedArray: any = [];
   tableElementChecked(event, element) {
+    // debugger
     if (event.checked) {
       this.SelectedArray.push(element);
     }
     console.log(this.SelectedArray)
     this.Onsave=false;
   }
+
   onClear(){
     this._GRNReturnHeaderList.GRNListFrom.reset();
   }
+
   onClose(){
     this._matDialog.closeAll();
+    // this._GRNReturnHeaderList.GRNListFrom.reset();
   }
+
   OnReset(){
    // this._GRNReturnHeaderList.GRNListFrom.reset();
     this.dsGRNList.data = []; 
     this.onClose();
   }
+
   OnselectGRNList(){
+    
     if ((!this.dsGRNList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',

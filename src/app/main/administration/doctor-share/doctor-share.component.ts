@@ -50,6 +50,8 @@ export class DoctorShareComponent implements OnInit {
 
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  pBillNo:any="0"
+  opipType:any="1"
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
@@ -71,29 +73,65 @@ export class DoctorShareComponent implements OnInit {
 
   }
 
+  allColumns=[
+    { heading: "-", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Bill Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Discount Amt", key: "ConcessionAmt", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Doctor Name", key: "admittedDoctorName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA' }
+  ]
+  allFilters=[
+    { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "DoctorId", fieldValue: "1", opType: OperatorComparer.Contains },
+    { fieldName: "PBillNo", fieldValue: "1", opType: OperatorComparer.Equals },
+    { fieldName: "OP_IP_TYpe", fieldValue: "0", opType: OperatorComparer.Equals },
+  ]
   gridConfig: gridModel = {
-    apiUrl: "CurrencyMaster/List",
-    columnsList: [
-      { heading: "-", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "PBillNo", key: "middleName", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "PatientName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Bill Amt", key: "address", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Discount Amt", key: "City", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Net Amt", key: "Age", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Doctor Name", key: "PhoneNo", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Patient Type", key: "oPBILL", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Company Name", key: "oPReceipt", sort: true, align: 'left', emptySign: 'NA' }
-    ],
-    sortField: "firstName",
+    apiUrl: "Doctor/DoctorShareList",
+    columnsList: this.allColumns,
+    sortField: "DoctorId",
     sortOrder: 0,
-    filters: [
-      { fieldName: "firstName", fieldValue: "", opType: OperatorComparer.Contains },
-      { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals },
-      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-      { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    ]
+    filters: this.allFilters
   }
+
+  onChangeFirst() {
+    this.fromDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('fromDate').value, "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('enddate').value, "yyyy-MM-dd")
+    this.pBillNo = this._DoctorShareService.UserFormGroup.get('PbillNo').value 
+    this.opipType = this._DoctorShareService.UserFormGroup.get('OP_IP_Type').value 
+    this.getfilterdata();
+}
+
+getfilterdata(){
+debugger
+this.gridConfig = {
+    apiUrl: "Doctor/DoctorShareList",
+    columnsList:this.allColumns , 
+    sortField: "DoctorId",
+    sortOrder: 0,
+    filters:  [
+      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+      { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+      { fieldName: "DoctorId", fieldValue: this.DoctorId, opType: OperatorComparer.Contains },
+      { fieldName: "PBillNo", fieldValue: this.pBillNo, opType: OperatorComparer.Equals },
+      { fieldName: "OP_IP_TYpe", fieldValue: this.opipType, opType: OperatorComparer.Equals },
+    ]
+}
+this.grid.gridConfig = this.gridConfig;
+this.grid.bindGridData(); 
+}
+
+Clearfilter(event) {
+  console.log(event)
+  if (event == 'PBillNo')
+      this._DoctorShareService.UserFormGroup.get('PbillNo').setValue("")
+  this.onChangeFirst();
+}
 
   gridConfig1: gridModel = {
     apiUrl: "CurrencyMaster/List",
@@ -139,11 +177,17 @@ export class DoctorShareComponent implements OnInit {
     // });
   }
 
-  itemId = 0;
-  selectChangeItem(obj: any) {
-    console.log(obj);
-    this.itemId = obj
-  }
+  DoctorId = "0";
+
+  ListView(value) {        
+    console.log(value)
+     if(value.value!==0)
+        this.DoctorId=value.value
+    else
+    this.DoctorId="0"
+
+    this.onChangeFirst();
+}
 
   getValidationMessages() {
     return {
