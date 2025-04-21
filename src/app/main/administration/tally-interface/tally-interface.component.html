@@ -1461,7 +1461,7 @@
                                         Purchase Wise Supplier
                                     </span> 
                                         <button class="btn btn-white btn-with-icon py-8"    matTooltip="Excel Export" (click)="getPurchaseexcel()"
-                                        style="width:30x;height: 30px;"> <img width="25" height="10px" 
+                                        style="width:30x;height: 30px;margin-right: 30px;"> <img width="25" height="10px" 
                                         src="assets/images/logos/excelfile.png">
                                         </button> 
                                 </div>
@@ -1612,10 +1612,10 @@
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent min-width-2500"
+                                    <mat-header-row class="accent min-width-1500"
                                         *matHeaderRowDef="displayedColumnsPur; sticky: true">
                                     </mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumnsPur;" class="contact min-width-2500"
+                                    <mat-row *matRowDef="let contact; columns: displayedColumnsPur;" class="contact min-width-1500"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                     [ngClass]="{'hide':dsPurchaselist!=null}">
