@@ -244,9 +244,10 @@
                   <mat-expansion-panel-header>
                     <div fxFlex.gt-sm="100%" fxFlex class="border-bottom">
                       <div fxLayout="row wrap" fxLayoutGap="16px grid">
-                        <div fxFlex.gt-sm="75%" fxFlex class="bill-info-title py-8 border-bottom" fxLayout="row" fxLayoutAlign="space-between">
+                        <div fxFlex.gt-sm="85%" fxFlex class="bill-info-title py-8 border-bottom" fxLayout="row" fxLayoutAlign="space-between">
+                          <div class="bill-summary-title py-8 ml-8">
                           <span class="h3 font-weight-600" style="color: sandybrown">Patient Information</span>
-
+                        </div>
                           <div class="patient-col">
                             <!-- <span class="patient-col-key font-weight-600">Patient Name</span> -->
                             <!-- <span>:</span> -->
@@ -260,17 +261,23 @@
                           </div>
 
                           <div class="patient-col">
+                            <span class="patient-col-key">IPD No</span>
+                            <span>:</span>
+                            <span class="patient-col-value">{{ selectedAdvanceObj?.ipdno }}</span>
+                          </div>
+
+                          <div class="patient-col">
                             <!-- <span class="patient-col-key font-weight-600">Doctor Name</span>
                             <span>:</span> -->
                             <span class="patient-col-value">{{ selectedAdvanceObj?.doctorname }}</span>
                           </div>
                         </div>
 
-                        <div fxFlex.gt-sm="25%" fxFlex>
+                        <!-- <div fxFlex.gt-sm="25%" fxFlex>
                           <div class="bill-summary-title py-8 ml-8">
                             <span class="h3 font-weight-600" style="color: sandybrown">Bill Summary</span>
                           </div>
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                     <!-- <mat-panel-title>
@@ -354,8 +361,8 @@
                       </div>
                     </div>
 
-                    <div fxFlex.gt-sm="25%" fxFlex>
-                      <div class="bil-summary-list px-4 mt-8">
+                   <div fxFlex.gt-sm="25%" fxFlex>
+                      <!--  <div class="bil-summary-list px-4 mt-8">
                         <ul class="gap-4 list-basic" fxLayout="column">
                           <li>
                             <div class="list-item">
@@ -386,9 +393,35 @@
                             </div>
                           </li>
                         </ul>
+                      </div>-->
+                       <div fxLayout="column" class="right-content input-error-hidden gap-4" fxLayoutAlign="end center">
+                        <ng-container *ngIf="isFilteredDateDisabled">
+                          <form [formGroup]="Ipbillform">
+                            <mat-form-field appearance="outline" fxFlex class="padding-fix">
+                              <mat-label>Choose date</mat-label>
+                              <input
+                                name="ChargeDate"
+                                matInput
+                                [matDatepicker]="picker"
+                                formControllName="ChargeDate"
+                                (dateChange)="getDatewiseChargesList($event.value)"
+                                [value]="currentDate"
+                                [readonly]="true"
+                              />
+                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                              <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                          </form>
+                        </ng-container>
+                        <div fxLayout="row" fxLayoutAlign="end center" class="date-time-container gap-8">
+                          <mat-checkbox (change)="showAllFilter($event)" aria-label="Remember Me">Show All Charges</mat-checkbox>
+                          <!-- <button mat-icon-button (click)="openServiceTable()">
+                            <span class="material-icons">notifications_none</span>
+                          </button> -->
+                        </div>
                       </div>
-                    </div>
-                    <div fxFlex="100%">
+                    </div> 
+                    <!-- <div fxFlex="100%">
                       <div fxLayout="row" class="right-content input-error-hidden gap-4" fxLayoutAlign="end center">
                         <ng-container *ngIf="isFilteredDateDisabled">
                           <form [formGroup]="Ipbillform">
@@ -415,10 +448,51 @@
                           </button>
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </mat-expansion-panel>
               </mat-accordion>
+
+              <mat-card style="padding: 2px;"> 
+
+                <div fxFlex.gt-sm="75%" fxFlex class="bill-info-title" fxLayout="row" fxLayoutAlign="space-between center">
+
+               
+                  <span style="color: sandybrown;margin-left: 15px;" class=" border-bottom h3 font-weight-600">
+                    Bill Summary</span>
+                 
+
+                    <div class="patient-col">
+                      <span class="patient-col-key font-weight-600">Bill Amount</span>
+                      <span>:</span>
+                      <span class="patient-col-value">{{ Ipbillform.get('FinalAmount').value | currency : 'INR' }}</span>
+                    </div>
+
+                    <div class="patient-col">
+                      <span class="patient-col-key font-weight-600">Advance Amount</span>
+                      <span>:</span>
+                      <span class="patient-col-value"> {{ TotalAdvanceAmt | currency : 'INR' }}</span>
+                    </div>
+
+                    <div class="patient-col">
+                      <span class="patient-col-key font-weight-600">Bill Balance Amount</span>
+                      <span>:</span>
+                      <span class="patient-col-value">{{ BillBalAmount | currency : 'INR' }}</span>
+                    </div>
+                
+                    <div class="patient-col">
+                      <span class="patient-col-key font-weight-600">Pharmacy Amount</span>
+                      <span>:</span>
+                      <span class="patient-col-value">{{ PharmacyAmont | currency : 'INR' }}</span>
+                    </div> 
+
+                    <button mat-icon-button (click)="openServiceTable()" style="padding: 0px;">
+                      <mat-icon>notifications_none</mat-icon>
+                    </button>
+                  
+                </div> 
+              </mat-card>
+
               <mat-tab-group class="mat-tab-header-small dynamic-table-wrapper" mat-stretch-tabs="false" mat-align-tabs="start" style="width: 100%">
                 <mat-tab label="Charges List">
                   <div class="airmid-table-container">

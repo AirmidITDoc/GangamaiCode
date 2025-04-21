@@ -180,6 +180,7 @@ export class OpPaymentVimalComponent implements OnInit {
                     "opType": "Equals"
                 }
             ],
+            "Columns":[],
             "exportType": "JSON"
         }
         this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
@@ -689,6 +690,7 @@ export class OpPaymentVimalComponent implements OnInit {
                 "opType": "Equals"
               }
             ],
+            "Columns":[],
             "exportType": "JSON"
           }
        
@@ -724,6 +726,7 @@ export class OpPaymentVimalComponent implements OnInit {
                     "opType": "Equals"
                   }
                 ],
+                "Columns":[],
                 "exportType": "JSON"
               }
            
