@@ -8,7 +8,8 @@ import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/conf
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { permissionCodes } from "app/main/shared/model/permission.model";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 
 
 @Component({
@@ -21,12 +22,22 @@ import { permissionCodes } from "app/main/shared/model/permission.model";
 export class PrefixMasterComponent implements OnInit {
     PrefixMasterList: any;
     msg: any;
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Prefix, permissionType.Add);
+    
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    
+    constructor(
+        public _PrefixMasterService: PrefixMasterService,
+        public toastr: ToastrService, public _matDialog: MatDialog,
+        public permissionService: PagePermissionService
+    ) { }
+    ngOnInit(): void {
+    }
     gridConfig: gridModel = {
-        permissionCode:permissionCodes.Prefix,
+        permissionCode: permissionCodes.Prefix,
         apiUrl: "Prefix/List",
-        fileName:"PrefixList",
+        fileName: "PrefixList",
         columnsList: [
             { heading: "Code", key: "prefixId", sort: false, align: 'left', emptySign: 'NA' },
             { heading: "PrefixName", key: "prefixName", sort: true, align: 'left', emptySign: 'NA' },
@@ -35,11 +46,11 @@ export class PrefixMasterComponent implements OnInit {
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
+                        action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.Prefix, permissionType.Edit), callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
-                        action: gridActions.delete, message: 'Are you sure want to deactive?', callback: (data: any) => {
+                        action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.Prefix, permissionType.Delete), message: 'Are you sure want to deactive?', callback: (data: any) => {
                             this._PrefixMasterService.deactivateTheStatus(data.prefixId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
@@ -56,13 +67,6 @@ export class PrefixMasterComponent implements OnInit {
         ]
     }
 
-    constructor(
-        public _PrefixMasterService: PrefixMasterService,
-        public toastr: ToastrService, public _matDialog: MatDialog
-    ) { }
-
-    ngOnInit(): void {
-    }
     onClear() {
         this._PrefixMasterService.myform.reset({ IsDeleted: "false" });
         this._PrefixMasterService.initializeFormGroup();
