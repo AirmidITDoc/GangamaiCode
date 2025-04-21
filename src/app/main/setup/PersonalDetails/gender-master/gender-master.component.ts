@@ -7,6 +7,7 @@ import { NewGendermasterComponent } from "./new-gendermaster/new-gendermaster.co
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-gender-master",
@@ -21,6 +22,7 @@ export class GenderMasterComponent implements OnInit {
     options: any[] = [{ Text: 'Text-1', Id: 1 }, { Text: 'Text-2', Id: 2 }, { Text: 'Text-3', Id: 3 }];
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
+        permissionCode:permissionCodes.Prefix,
         apiUrl: "Gender/List",
         columnsList: [
             { heading: "Code", key: "genderId", sort: true, align: 'left', emptySign: 'NA' },

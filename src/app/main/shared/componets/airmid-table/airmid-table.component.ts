@@ -9,7 +9,8 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { gridModel, gridRequest, gridResponseType, OperatorComparer } from 'app/core/models/gridRequest';
 import { DATE_TYPES, gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { ApiCaller } from 'app/core/services/apiCaller';
-//import { PagePermissionService } from '../../services/page-permission.service';
+import { PagePermissionService } from '../../services/page-permission.service';
+import { permissionType } from '../../model/permission.model';
 
 @Component({
     selector: 'airmid-table',
@@ -19,7 +20,7 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 export class AirmidTableComponent implements OnInit {
 
     constructor(private _httpClient: ApiCaller, public datePipe: DatePipe, public _matDialog: MatDialog, private fuseSidebarService: FuseSidebarService,
-       //public permissionService: PagePermissionService
+        public permissionService: PagePermissionService
     ) {
     }
     dateType = DATE_TYPES;
@@ -50,6 +51,7 @@ export class AirmidTableComponent implements OnInit {
         if (this.gridConfig.row > 0)
             this.pageSize = this.gridConfig.row;
         this.bindGridData();
+        this.ShowButtons = this.permissionService.getPermission(this.gridConfig.permissionCode, permissionType.Export);
     }
     public get GridAction() {
         return gridActions;

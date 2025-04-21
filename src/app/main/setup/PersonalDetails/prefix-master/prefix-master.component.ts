@@ -8,6 +8,7 @@ import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/conf
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes } from "app/main/shared/model/permission.model";
 
 
 @Component({
@@ -23,6 +24,7 @@ export class PrefixMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     gridConfig: gridModel = {
+        permissionCode:permissionCodes.Prefix,
         apiUrl: "Prefix/List",
         fileName:"PrefixList",
         columnsList: [

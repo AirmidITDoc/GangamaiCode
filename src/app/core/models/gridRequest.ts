@@ -1,3 +1,5 @@
+import { permissionCodes } from "app/main/shared/model/permission.model";
+
 export class gridRequest {
     first: number = 0;
     rows: number = 10;
@@ -35,6 +37,7 @@ export class gridModel {
     filters: gridFilter[] = [];
     row?: number = 10;
     fileName?: string = "";
+    permissionCode?:permissionCodes;
 }
 
 export class gridModel1 {
