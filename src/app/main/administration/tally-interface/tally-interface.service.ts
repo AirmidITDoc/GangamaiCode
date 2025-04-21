@@ -24,6 +24,12 @@ export class TallyInterfaceService {
     enddateIP: [(new Date()).toISOString()],
     startdateAdv: [(new Date()).toISOString()],
     enddateAdv: [(new Date()).toISOString()],
+    startdatePurchase: [(new Date()).toISOString()],
+    enddatePurchase: [(new Date()).toISOString()],
+    startdatePharma: [(new Date()).toISOString()],
+    enddatePharma: [(new Date()).toISOString()],
+    StoreId:[''],
+    PurStoreId:['']
   })
   }
   public getOpbilllist(emp, loader = true){
@@ -73,5 +79,38 @@ export class TallyInterfaceService {
       this._LoaderService.show()
     }
     return this._httpClient.post("Generic/GetByProc?procName=m_tally_IPBillRefund_BillList_PatientWise_Payment", emp)
+  }
+  public getPurcahselist(emp, loader = true){
+    if(loader){
+      this._LoaderService.show()
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Tally_PurchaseWiseSupplier", emp)
+  }
+  public getPharmacylist(emp, loader = true){
+    if(loader){
+      this._LoaderService.show()
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Tally_Phar2_Sales", emp)
+  }
+  public getPharmaPaymentlist(emp, loader = true){
+    if(loader){
+      this._LoaderService.show()
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Tally_Phar2_Payment", emp)
+  }
+  public getPharmaSalesReturnlist(emp, loader = true){
+    if(loader){
+      this._LoaderService.show()
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Tally_Phar2_SalesReturn", emp)
+  }
+  public getPharmaSalesreceiptlist(emp, loader = true){
+    if(loader){
+      this._LoaderService.show()
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Tally_Phar2_Receipt", emp)
+  }
+  public getStoreList(){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
   }
 }

@@ -229,7 +229,7 @@ export class NewIPRefundAdvanceComponent implements OnInit {
       insertPharRefundofAdvance['refundDate'] = this.dateTimeObj.date || '01/01/1900'
       insertPharRefundofAdvance['refundTime'] = this.dateTimeObj.time || '01/01/1900'
       insertPharRefundofAdvance['billId'] = 0;
-      insertPharRefundofAdvance['advanceId'] = this.advDetailId || 0;
+      insertPharRefundofAdvance['advanceId'] = this.advanceId || 0;
       insertPharRefundofAdvance['opD_IPD_ID'] = this.vAdmissionID;
       insertPharRefundofAdvance['opD_IPD_Type'] = 1;
       insertPharRefundofAdvance['refundAmount'] = parseFloat(this._PharAdvanceService.NewRefundForm.get('ToatalRefunfdAmt').value) || 0;

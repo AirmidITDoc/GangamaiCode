@@ -1,0 +1,53 @@
+<div class="page-layout modal-wrapper grid-container " fusePerfectScrollbar dynamicTableHeight>
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div fxLayout="row" fxLayoutAlign="start center" style="height: 40px;">
+                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">account_box
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                    style="color: white;">
+                    GST Re-Calculate Process
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body">
+        <div fxLayout="column" fxFlexFill fxLayoutGap="10px" style="padding: 40px;">
+        
+            <form [formGroup]="gstForm">
+                <mat-card style="padding: 10px;">
+                    <div fxLayout="row" fxLayoutGap="10px">
+                      
+                        <mat-form-field appearance="outline" fxFlex="30%">
+                            <mat-label>From Date</mat-label>
+                            <input matInput [matDatepicker]="picker" placeholder="Choose a date" 
+                                formControlName="FromDate"  >
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field> 
+
+                        <mat-form-field appearance="outline" fxFlex="30%">
+                            <mat-label>To Date</mat-label>
+                            <input matInput [matDatepicker]="pickerA" placeholder="Choose a date" 
+                                formControlName="ToDate"  >
+                            <mat-datepicker-toggle matSuffix [for]="pickerA"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerA></mat-datepicker>
+                        </mat-form-field>  
+                      
+                    </div>
+                </mat-card> 
+            </form> 
+
+            <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="10px" class="p-12">
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button class="btn btn-primary" (click)="OnSave()">Process</button>
+            </div>
+        </div>
+ 
+    </div> 
+</div>

@@ -8,6 +8,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tally-interface',
@@ -109,7 +111,40 @@ export class TallyInterfaceComponent implements OnInit {
     'PayTMAmount',
     'ConcessionReason'
   ];
+
+  displayedColumnsPur: string[] = [ 
+    'SupplierName',
+    'GRNDate',
+    'GrnNumber',
+    'InvoiceNo',
+    'CGSTPer', 
+    'CGSTAmt',
+    'SGSTPer',
+    'SGSTAmt',
+    'IGSTPer',
+    'IGSTAmt',
+    'VatPercentage',
+    'VatAmount',
+    'MRP',
+    'PTR',
+    'DISCOUNTAMOUNT',
+    'TOTALBILLAMOUNT' 
+  ];
+  displayedColumnsPhsales: string[] = [ 
+    'MDate',
+    'DEBIT',
+    'CREDIT', 
+    'CashPay',
+    'SrNo' 
+  ]; 
+
   sIsLoading: string = '';
+  isStoreSelected:boolean=false;
+  isPurStoreSelected:boolean=false;
+  StoreList:any=[];
+  PurStoreList:any=[];
+  filteredOptionsStorename:Observable<string[]>
+  filteredOptionsPurStorename:Observable<string[]>
 
   dsOplist = new MatTableDataSource<TallyInterfacelist>();
   dsOpRefundList =new MatTableDataSource<TallyInterfacelist>();
@@ -121,13 +156,21 @@ export class TallyInterfaceComponent implements OnInit {
   dsipbillcashcounterwise = new MatTableDataSource<TallyInterfacelist>();
   dsiprefundlist = new MatTableDataSource<TallyInterfacelist>();
 
+  dsPurchaselist = new MatTableDataSource<TallyInterfacelist>();
+
+  dsPharmaSaleslist =new MatTableDataSource<TallyInterfacelist>();
+  dsPharmaSalesPaymentlist =new MatTableDataSource<TallyInterfacelist>();
+  dsPharmaSalesReturnlist =new MatTableDataSource<TallyInterfacelist>();
+  dsPharmaSalesReceiptlist =new MatTableDataSource<TallyInterfacelist>();
+ 
+
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('OpRefRetPaginator', { static: true }) public OpRefRetPaginator: MatPaginator;
   @ViewChild('IpAdvancePaginator', { static: true }) public IpAdvancePaginator: MatPaginator;
   @ViewChild('IpAdvanceRefPaginator', { static: true }) public IpAdvanceRefPaginator: MatPaginator;
-  @ViewChild('IpbillPaginator', { static: true }) public IpbillPaginator: MatPaginator;
+  @ViewChild('PurchasePaginator', { static: true }) public PurchasePaginator: MatPaginator;
   @ViewChild('IpPaymentRefPaginator', { static: true }) public IpPaymentRefPaginator: MatPaginator;
 
 
@@ -140,9 +183,13 @@ export class TallyInterfaceComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.gePharStoreList1();
+    this.gePurStoreList1();
     this.getoplist();
     this.getAdvancelist();
     this.getipBIlllist();
+    this.getPurcahselist();
+    this.getPharmacylist();
   }
 
 
@@ -210,9 +257,7 @@ export class TallyInterfaceComponent implements OnInit {
     console.log(vdata)
     this._TallyInterfaceService.getipBIlllist(vdata).subscribe(data => {
       this.dsipbilllist.data = data as TallyInterfacelist[]
-      console.log(this.dsipbilllist.data)
-      this.dsipbilllist.sort = this.sort
-      this.dsipbilllist.paginator = this.IpbillPaginator
+      console.log(this.dsipbilllist.data) 
     })
     this.getippaymentwiselist();
     this.getipbillcashcounterlist();
@@ -226,9 +271,7 @@ export class TallyInterfaceComponent implements OnInit {
     console.log(vdata)
     this._TallyInterfaceService.getippaymentwiselist(vdata).subscribe(data => {
       this.dsipPaymentList.data = data as TallyInterfacelist[]
-      console.log(this.dsipPaymentList.data)
-      this.dsipPaymentList.sort = this.sort
-      this.dsipPaymentList.paginator = this.IpPaymentRefPaginator
+      console.log(this.dsipPaymentList.data) 
     })
   }
 
@@ -240,9 +283,7 @@ export class TallyInterfaceComponent implements OnInit {
     console.log(vdata)
     this._TallyInterfaceService.getipbillcashcounterlist(vdata).subscribe(data => {
       this.dsipbillcashcounterwise.data = data as TallyInterfacelist[]
-      console.log(this.dsipbillcashcounterwise.data)
-      this.dsipbillcashcounterwise.sort = this.sort
-      this.dsipbillcashcounterwise.paginator = this.IpPaymentRefPaginator
+      console.log(this.dsipbillcashcounterwise.data) 
     })
   }
 
@@ -254,12 +295,53 @@ export class TallyInterfaceComponent implements OnInit {
     console.log(vdata)
     this._TallyInterfaceService.getipbillRefundlist(vdata).subscribe(data => {
       this.dsiprefundlist.data = data as TallyInterfacelist[]
-      console.log(this.dsiprefundlist.data)
-      this.dsiprefundlist.sort = this.sort
-      this.dsiprefundlist.paginator = this.IpPaymentRefPaginator
+      console.log(this.dsiprefundlist.data) 
     })
   }
+//Purchase list
+getPurcahselist() {
+  var vdata = {
+    'FromDate': this.datePipe.transform(this._TallyInterfaceService.tallyForm.get('startdatePurchase').value, 'MM/dd/yyyy') || '01/01/1999',
+    'ToDate': this.datePipe.transform(this._TallyInterfaceService.tallyForm.get('enddatePurchase').value, 'MM/dd/yyyy') || '01/01/1999',
+    'StoreID':this._TallyInterfaceService.tallyForm.get('PurStoreId').value.StoreId || 0
+  }
+  console.log(vdata)
+  this._TallyInterfaceService.getPurcahselist(vdata).subscribe(data => {
+    this.dsPurchaselist.data = data as TallyInterfacelist[]
+    console.log(this.dsPurchaselist.data)
+    this.dsPurchaselist.sort = this.sort
+    this.dsPurchaselist.paginator = this.PurchasePaginator
+  })
+}
+  //Phamacy list
+  getPharmacylist() {
+    var vdata = {
+      'FromDate': this.datePipe.transform(this._TallyInterfaceService.tallyForm.get('startdatePharma').value, 'MM/dd/yyyy') || '01/01/1999',
+      'ToDate': this.datePipe.transform(this._TallyInterfaceService.tallyForm.get('enddatePharma').value, 'MM/dd/yyyy') || '01/01/1999',
+      'StoreId':this._TallyInterfaceService.tallyForm.get('StoreId').value.StoreId || 0
+    }
+    console.log(vdata)
+    this._TallyInterfaceService.getPharmacylist(vdata).subscribe(data => {
+      this.dsPharmaSaleslist.data = data as TallyInterfacelist[]
+      console.log(this.dsPharmaSaleslist.data) 
+    })
+ 
+    this._TallyInterfaceService.getPharmaSalesreceiptlist(vdata).subscribe(data => {
+      this.dsPharmaSalesReceiptlist.data = data as TallyInterfacelist[]
+      console.log(this.dsPharmaSalesReceiptlist.data) 
+    })
 
+    this._TallyInterfaceService.getPharmaSalesReturnlist(vdata).subscribe(data => {
+      this.dsPharmaSalesReturnlist.data = data as TallyInterfacelist[]
+      console.log(this.dsPharmaSalesReturnlist.data) 
+    })
+
+    this._TallyInterfaceService.getPharmaPaymentlist(vdata).subscribe(data => {
+      this.dsPharmaSalesPaymentlist.data = data as TallyInterfacelist[]
+      console.log(this.dsPharmaSalesPaymentlist.data) 
+    })
+  }
+  
   //op execl export
   getopbilllexcel() {
     this.sIsLoading == 'loading-data'
@@ -319,6 +401,81 @@ export class TallyInterfaceComponent implements OnInit {
     // this.dsAdvRefList.data = [];
     this.sIsLoading = '';
   }
+  //Purchase excel export
+  getPurchaseexcel() {
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['SupplierName', 'GRNDate', 'GrnNumber', 'InvoiceNo', 'CGSTPer', 'CGSTAmt', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'VatPercentage','VatAmount','MRP','PTR','DISCOUNTAMOUNT','TOTALBILLAMOUNT'];
+    this.reportDownloadService.getExportJsonData(this.dsPurchaselist.data, exportHeaders, 'Purchase Wise Supplier');
+    // this.dsPurchaselist.data = [];
+    this.sIsLoading = '';
+  }
+   //Pharmacy sales excel export
+   getPhSalesexcel() {
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['MDate', 'DEBIT', 'CREDIT', 'CashPay', 'SrNo' ];
+    this.reportDownloadService.getExportJsonData(this.dsPharmaSaleslist.data, exportHeaders, 'Pharmacy sales list');
+    // this.dsPharmaSaleslist.data = [];
+    this.sIsLoading = '';
+  }
+  getPhPaymentexcel() {
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['MDate', 'DEBIT', 'CREDIT', 'CashPay', 'SrNo' ];
+    this.reportDownloadService.getExportJsonData(this.dsPharmaSalesPaymentlist.data, exportHeaders, 'Pharmacy Payment list');
+    // this.dsPharmaSalesPaymentlist.data = [];
+    this.sIsLoading = '';
+  }
+  getPhSalesReturnexcel() {
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['MDate', 'DEBIT', 'CREDIT', 'CashPay', 'SrNo' ];
+    this.reportDownloadService.getExportJsonData(this.dsPharmaSalesReturnlist.data, exportHeaders, 'Pharmacy Sales Retrun list');
+    // this.dsPharmaSalesReturnlist.data = [];
+    this.sIsLoading = '';
+  }
+  getPhSalesReceiptexcel() {
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['MDate', 'DEBIT', 'CREDIT', 'CashPay', 'SrNo' ];
+    this.reportDownloadService.getExportJsonData(this.  dsPharmaSalesReceiptlist.data, exportHeaders, 'Pharmacy Sales Receipt list');
+    // this.dsPharmaSalesReceiptlist.data = [];
+    this.sIsLoading = '';
+  }
+
+    gePharStoreList1() {
+      this._TallyInterfaceService.getStoreList().subscribe(data => {
+        this.StoreList = data;
+        this.filteredOptionsStorename = this._TallyInterfaceService.tallyForm.get('StoreId').valueChanges.pipe(
+          startWith(''), 
+          map(value => value ? this._filterStore(value) : this.StoreList.slice()),
+        ); 
+      });
+    }
+    private _filterStore(value: any): string[] {
+      if (value) {
+        const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+        return this.StoreList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+      }
+    }
+    getOptionTextStoreName(option) {
+      return option && option.StoreName ? option.StoreName : '';
+    }
+
+    gePurStoreList1() {
+      this._TallyInterfaceService.getStoreList().subscribe(data => {
+        this.PurStoreList = data;
+        this.filteredOptionsPurStorename = this._TallyInterfaceService.tallyForm.get('PurStoreId').valueChanges.pipe(
+          startWith(''), 
+          map(value => value ? this._filterPurStore(value) : this.PurStoreList.slice()),
+        ); 
+      });
+    }
+    private _filterPurStore(value: any): string[] {
+      if (value) {
+        const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+        return this.PurStoreList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+      }
+    }
+    getOptionTextPurStoreName(option) {
+      return option && option.StoreName ? option.StoreName : '';
+    }
 }
  
 export class TallyInterfacelist{

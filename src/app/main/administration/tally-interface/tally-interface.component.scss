@@ -31,3 +31,14 @@
     overflow: hidden !important;
     justify-content:left; 
   }
+  .mat-column-SupplierName{
+    width: 180px;
+    max-width: 180px;
+    min-width: 180px;
+    align-items: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+    justify-content:left; 
+  }

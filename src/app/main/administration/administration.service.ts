@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class AdministrationService {
   myDocShrformSearch: FormGroup;
   constructor(private _httpClient: HttpClient, private _formBuilder: FormBuilder,
+    public _loaderservice:LoaderService
     ) {
       this.myDocShrformSearch = this.BillListForDocShr();
      }
@@ -24,6 +26,12 @@ export class AdministrationService {
 
 
     });
+  }
+  public getGSTRecalculate(emp ,loader = true) {
+    if(loader){
+      this._loaderservice.show();
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=m_RecalcGST", emp)
   }
     //Hospital Combobox List
     public getHospitalCombo() {
