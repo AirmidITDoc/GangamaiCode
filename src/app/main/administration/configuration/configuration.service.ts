@@ -16,18 +16,74 @@ export class ConfigurationService {
     
     createConfigForm(): FormGroup {
         return this._formBuilder.group({
-            // currencyId: [0],
-            // currencyName: ["",
-            //     [
-            //         Validators.required, Validators.maxLength(50),
-            //         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-            //     ]
-            // ],
-            // isDeleted: ["false"],
-            // isActive:[true,[Validators.required]]
-            registrationNo:[""],
-            ipNo:[""],
-            
+            configId: 0,
+            printRegAfterReg: 0,
+            ipdprefix: "",
+            otcharges: 0,
+            printOpdcaseAfterVisit: 0,
+            printIpdafterAdm: 0,
+            popOpbillAfterVisit: 0,
+            popPayAfterOpbill: 0,
+            generateOpbillInCashOption: 0,
+            mandatoryFirstName: 0,
+            mandatoryMiddleName: 0,
+            mandatoryLastName: 0,
+            mandatoryAddress: 0,
+            mandatoryCity: 0,
+            mandatoryAge: 0,
+            mandatoryPhoneNo: 0,
+            opdBillingCounterId: 0,
+            opdReceiptCounterId: 0,
+            opdRefundBillCounterId: 0,
+            opdAdvanceCounterId: 0,
+            opdRefundAdvanceCounterId: 0,
+            ipdAdvanceCounterId: 0,
+            ipdBillingCounterId: 0,
+            ipdReceiptCounterId: 0,
+            ipdRefundOfBillCounterId: 0,
+            ipdRefundOfAdvanceCounterId: 0,
+            regPrefix: "",
+            regNo:"",
+            ipprefix: "",
+            ipno: "",
+            opprefix: "",
+            opno:"",
+            pathDepartment: 0,
+            isPathologistDr: 0,
+            labSampleNo: "",
+            patientTypeSelf: 0,
+            pharmacySalesCounterId: 0,
+            pharmacySalesReturnCounterId: 0,
+            pharmacyReceiptCounterId: 0,
+            classForEdit: true,
+            anesthetishId: 0,
+            neroSurgeonId: 0,
+            generalSurgeonId: 0,
+            dateInterval: true,
+            dateIntervalDays: 0,
+            memberNoG: 0,
+            barCodeSeqNo: 0,
+            grnpartyCounterId: 0,
+            cantenCashId: 0,
+            cantenPayCashId: 0,
+            pharIpadvCounterId: 0,
+            pharStrId: 0,
+            chkPharmacyDue: true,
+            compBillNo: 0,
+            pharServiceIdToTranfer: 0,
+            filePathLocation: "",
+            ipnoEmg: 0,
+            ipdayCareNo: 0,
+            gIsPharmacyPaperSetting: true,
+            gPharmacyPrintName: "",
+            gPharmacyPaperName: "",
+            gIsOppaperSetting: "",
+            gOpprintName: "",
+            gOppaperName: "",
+            gIsIppaperSetting: true,
+            gIpprintName: "",
+            gIppaperName: "",
+          
         });
     }
     
@@ -42,13 +98,13 @@ export class ConfigurationService {
         this.createConfigForm();
     }
 
-    public currencyMasterSave(Param: any) {
+    public ConfigSave(Param: any) {
         if (Param.currencyId) {
-            return this._httpClient.PutData("CurrencyMaster/" + Param.currencyId, Param);
-        } else return this._httpClient.PostData("CurrencyMaster", Param);
+            return this._httpClient.PutData("Configuration/" + Param.currencyId, Param);
+        } else return this._httpClient.PostData("Configuration", Param);
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("CurrencyMaster?Id=" + m_data.toString());
+        return this._httpClient.DeleteData("Configuration?Id=" + m_data.toString());
     }
 }

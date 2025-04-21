@@ -67,7 +67,7 @@ export class MaterialConsumptionComponent implements OnInit {
         sortOrder: 0,
         filters: [
             { fieldName: "ToStoreId", fieldValue: "2", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: "2024-01-01", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: "2025-01-01", opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals }
         ]
     }
@@ -84,7 +84,7 @@ export class MaterialConsumptionComponent implements OnInit {
 
     filterForm(): FormGroup {
         return this._formBuilder.group({
-            ToStoreId: 2,
+            ToStoreId: [2],
             fromDate: [(new Date()).toISOString()],
             enddate: [(new Date()).toISOString()],
 

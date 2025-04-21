@@ -46,7 +46,7 @@ export class NewconfigComponent implements OnInit {
         {
             console.log("Currency JSON :-",this.myform.value);
 
-            this._ConfigurationService.currencyMasterSave(this.myform.value).subscribe((response) => {
+            this._ConfigurationService.ConfigSave(this.myform.value).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);
                 }, (error) => {

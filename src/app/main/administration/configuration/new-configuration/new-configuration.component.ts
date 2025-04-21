@@ -89,26 +89,7 @@ export class NewConfigurationComponent implements OnInit {
       this.getPharmacySalesReturnCounterList();
       this.getPharmacySalesReceiptCounterList();
       this.getPathDepartmentList();
-      // this.getPathDoctorList();
-  
-  
-      // this.pharmacySalesFilterCtrl.valueChanges
-      //   .pipe(takeUntil(this._onDestroy))
-      //   .subscribe(() => {
-      //     this.filterpharmacySales();
-      //   });
-  
-      // this.pharmacySalesReturnFilterCtrl.valueChanges
-      //   .pipe(takeUntil(this._onDestroy))
-      //   .subscribe(() => {
-      //     this.filterpharmacySalesReturn();
-      //   });
-  
-      // this.pharmacySalesReceiptFilterCtrl.valueChanges
-      //   .pipe(takeUntil(this._onDestroy))
-      //   .subscribe(() => {
-      //     this.filterpharmacySalesReceipt();
-      //   });
+   
   
       if (this.data) {
         this.configObj = this.data.configObj;
@@ -212,69 +193,7 @@ export class NewConfigurationComponent implements OnInit {
   
     }
   
-    // private filterpharmacySales() {
-  
-    //   if (!this.SalesList) {
-    //     return;
-    //   }
-    //   // get the search keyword
-    //   let search = this.pharmacySalesFilterCtrl.value;
-    //   if (!search) {
-    //     this.filteredPharmacySales.next(this.SalesList.slice());
-    //     return;
-    //   }
-    //   else {
-    //     search = search.toLowerCase();
-    //   }
-    //   // filter
-    //   this.filteredPharmacySales.next(
-    //     this.SalesList.filter(bank => bank.CashCounterName.toLowerCase().indexOf(search) > -1)
-    //   );
-  
-    // }
-  
-    // private filterpharmacySalesReturn() {
-  
-    //   if (!this.SalesReturnList) {
-    //     return;
-    //   }
-    //   // get the search keyword
-    //   let search = this.pharmacySalesReturnFilterCtrl.value;
-    //   if (!search) {
-    //     this.filteredPharmacySalesReturn.next(this.SalesReturnList.slice());
-    //     return;
-    //   }
-    //   else {
-    //     search = search.toLowerCase();
-    //   }
-    //   // filter
-    //   this.filteredPharmacySalesReturn.next(
-    //     this.SalesReturnList.filter(bank => bank.CashCounterName.toLowerCase().indexOf(search) > -1)
-    //   );
-  
-    // }
-  
-    // private filterpharmacySalesReceipt() {
-  
-    //   if (!this.SalesReceiptList) {
-    //     return;
-    //   }
-    //   // get the search keyword
-    //   let search = this.pharmacySalesReceiptFilterCtrl.value;
-    //   if (!search) {
-    //     this.filteredPharmacySalesReceipt.next(this.SalesReceiptList.slice());
-    //     return;
-    //   }
-    //   else {
-    //     search = search.toLowerCase();
-    //   }
-    //   // filter
-    //   this.filteredPharmacySalesReceipt.next(
-    //     this.SalesReceiptList.filter(bank => bank.CashCounterName.toLowerCase().indexOf(search) > -1)
-    //   );
-  
-    // }
-  
+   
     onClose() {
       // this.configFormGroup.reset();
       this.dialogRef.close();
@@ -319,21 +238,21 @@ export class NewConfigurationComponent implements OnInit {
       var m_data = {
         "configsettingupdate": {
           "ConfigId": this.configObj.ConfigId,// this._registerService.mySaveForm.get("RegId").value || 0,
-          "PrintRegAfterReg": pr,// this.configFormGroup.get('PrintReg').value,
+          "PrintRegAfterReg": this.configFormGroup.get('PrintReg').value,
           "ipdPrefix": this.configFormGroup.get('IPPrefix').value || "",
-          "OTCharges": otc,// this.configFormGroup.get('OTCharges').value|| "",
-          "printOPDCaseAfterVisit": pov,//  this.configFormGroup.get('PrintOPDVisit').value || 0,
-          "printIPDAfterAdm": pa,//this.configFormGroup.get('PrintAdm').value || 0,
-          "popOPBillAfterVisit": 1,// this.configFormGroup.get('PopPayBill').value || 0,
-          "popPayAfterOPBill": ppb,// this.configFormGroup.get('PrintRegAfterReg').value || 0,
-          "generateOPBillInCashOption": gpb,//  this.configFormGroup.get('GenerateOPBill').value || 0,
-          "MandatoryFirstName": fn,// this.configFormGroup.get('FirstName').value || '',
-          "MandatoryLastName": ln,//  this.configFormGroup.get('LastName').value || '',
-          "MandatoryMiddleName": mn,// this.configFormGroup.get('MiddleName').value || '',
-          "MandatoryAddress": ad,//  this.configFormGroup.get('Address').value,
-          "MandatoryCity": c,// this.configFormGroup.get('City').value,
-          "MandatoryAge": ag,// this.configFormGroup.get('Age').value,
-          "MandatoryPhoneNo": ph,//this.pharmacySalesFilterCtrl,// this.configFormGroup.get('PhoneNo').value,
+          "OTCharges": this.configFormGroup.get('OTCharges').value|| "",
+          "printOPDCaseAfterVisit": this.configFormGroup.get('PrintOPDVisit').value || 0,
+          "printIPDAfterAdm": this.configFormGroup.get('PrintAdm').value || 0,
+          "popOPBillAfterVisit":  this.configFormGroup.get('PopPayBill').value || 0,
+          "popPayAfterOPBill": this.configFormGroup.get('PrintRegAfterReg').value || 0,
+          "generateOPBillInCashOption":  this.configFormGroup.get('GenerateOPBill').value || 0,
+          "MandatoryFirstName":  this.configFormGroup.get('FirstName').value || '',
+          "MandatoryLastName":  this.configFormGroup.get('LastName').value || '',
+          "MandatoryMiddleName": this.configFormGroup.get('MiddleName').value || '',
+          "MandatoryAddress": this.configFormGroup.get('Address').value,
+          "MandatoryCity": this.configFormGroup.get('City').value,
+          "MandatoryAge":  this.configFormGroup.get('Age').value,
+          "MandatoryPhoneNo": this.configFormGroup.get('PhoneNo').value,
           "opD_Billing_CounterId": this.configFormGroup.get('OPD_Billing_CounterId').value.CashCounterId,
           "opD_Receipt_CounterId": this.configFormGroup.get('OPD_Receipt_CounterId').value.CashCounterId,
           "opD_Refund_Bill_CounterId": this.configFormGroup.get('OPD_Refund_Bill_CounterId').value.CashCounterId,
@@ -354,67 +273,45 @@ export class NewConfigurationComponent implements OnInit {
           "salesReturnCounterId": this.configFormGroup.get('PharmacySalesReturn_CounterId').value.CashCounterId || 0,
           "salesReceiptCounterID": this.configFormGroup.get('PharmacyReceipt_CounterId').value.CashCounterId || 0,
           "classForEdit": this.configObj.ClassForEdit || 0,
+          "anesthetishId": 0,
+          "neroSurgeonId": 0,
+          "generalSurgeonId": 0,
+          "dateInterval": true,
+          "dateIntervalDays": 0,
+          "memberNoG": 0,
+          "barCodeSeqNo": 0,
+          "grnpartyCounterId": 0,
+          "cantenCashId": 0,
+          "cantenPayCashId": 0,
+          "pharIpadvCounterId": 0,
+          "pharStrId": 0,
+          "chkPharmacyDue": true,
+          "compBillNo": 0,
+          "pharServiceIdToTranfer": 0,
+          "filePathLocation": "string",
+          "ipnoEmg": 0,
+          "ipdayCareNo": 0,
+          "gIsPharmacyPaperSetting": true,
+          "gPharmacyPrintName": "string",
+          "gPharmacyPaperName": "string",
+          "gIsOppaperSetting": "string",
+          "gOpprintName": "string",
+          "gOppaperName": "string",
+          "gIsIppaperSetting": true,
+          "gIpprintName": "string",
+          "gIppaperName": "string"
         }
       }
   
       console.log("UpdateJson:", m_data);
   
-    //   this._configurationService.ConfigUpdate(m_data).subscribe(response => {
-    //     if (response) {
-    //       this.toastr.success('Record Updated Successfully.', 'Updated !', {
-    //         toastClass: 'tostr-tost custom-toast-success',
-    //       });
-    //       this.onClose()
-    //     } else {
-    //       this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
-    //         toastClass: 'tostr-tost custom-toast-error',
-    //       });
-    //     }
-    //   });
+      this._configurationService.ConfigSave(m_data).subscribe(response => {
+        this.toastr.success(response);
+              }, (error) => {
+        this.toastr.error(error.message);
+      });
     }
   
-  
-    // setDropdownObjs() {
-    //    ;
-  
-    //   // const toSelect2= this.OPDRefundOfBillCounterList.find(c => c.CashCounterId == this.configObj.OPD_Refund_Bill_CounterId);
-    //   // this.configFormGroup.get('OPD_Refund_Bill_CounterId').setValue(toSelect2);
-  
-    //   // const toSelect3 = this.IPDAdvanceCounterList.find(c => c.CashCounterId == this.configObj.IPD_Advance_CounterId);
-    //   // this.configFormGroup.get('IPD_Advance_CounterId').setValue(toSelect3);
-  
-    //   // const toSelect4 = this.IPDBillingList.find(c => c.CashCounterId == this.configObj.IPD_Billing_CounterId);
-    //   // this.configFormGroup.get('IPD_Billing_CounterId').setValue(toSelect4);
-  
-    //   // const toSelect5 = this.IPDReceiptCounterList.find(c => c.CashCounterId == this.configObj.IPD_Receipt_CounterId);
-    //   // this.configFormGroup.get('IPD_Receipt_CounterId').setValue(toSelect5);
-  
-    //   // const toSelect7 = this.IPDRefundOfBillCounterList.find(c => c.CashCounterId == this.configObj.IPD_Refund_of_Bill_CounterId);
-    //   // this.configFormGroup.get('IPD_Refund_of_Bill_CounterId').setValue(toSelect7);
-  
-    //   // const toSelect8 = this.IPDRefundOfAdvanceCounterList.find(c => c.CashCounterId == this.configObj.IPD_Refund_of_Advance_CounterId);
-    //   // this.configFormGroup.get('IPD_Refund_of_Advance_CounterId').setValue(toSelect8);
-  
-    //   // const toSelect9 = this.PathDepartmentList.find(c => c.DepartmentId == this.configObj.PathDepartment);
-    //   // this.configFormGroup.get('DepartmentId').setValue(toSelect9);
-  
-    //   // const toSelect10 = this.PathDoctorList.find(c => c.DoctorId == this.configObj.DoctorId);
-    //   // this.configFormGroup.get('DoctorId').setValue(toSelect10);
-  
-  
-    //   // const toSelect11 = this.SalesList.find(c => c.CashCounterId == this.configObj.PharmacySales_CounterId);
-    //   // this.configFormGroup.get('PharmacySales_CounterId').setValue(toSelect11);
-  
-    //   // const toSelect12 = this.SalesReturnList.find(c => c.CashCounterId == this.configObj.PharmacySalesReturn_CounterId);
-    //   // this.configFormGroup.get('PharmacySalesReturn_CounterId').setValue(toSelect12);
-  
-    //   // const toSelect13 = this.SalesReceiptList.find(c => c.CashCounterId == this.configObj.PharmacySalesReturn_CounterId);
-    //   // this.configFormGroup.get('PharmacyReceipt_CounterId').setValue(toSelect13);
-  
-    //   // this.configFormGroup.updateValueAndValidity();
-    // }
-  
-    // IPD Advance Counter start
   
     optionsSearchIpdAdvCounter: any[] = [];
     filteredOptionsIpdAdvCounter: Observable<string[]>;
@@ -451,10 +348,7 @@ export class NewConfigurationComponent implements OnInit {
         return this.IPDAdvanceCounterList.filter(option => option.CashCounterName.toLowerCase().includes(filterValue));
       }
     }
-    // IPD Advance Counter end
-  
-    // IPD Billing Counter start
-  
+    
     optionsSearchIpdBillCounter: any[] = [];
     filteredOptionsIpdBillCounter: Observable<string[]>;
     selectedIpdBillCounter: any;

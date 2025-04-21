@@ -35,13 +35,11 @@
 
             <ng-template #Status let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.admId == '1'" matTooltip="PatientWise Material Comsumption"
-                        class="active-icon green-500 s-16">circle
-                    </mat-icon>
-
-                    <mat-icon *ngIf="element.admId == '0'" atTooltip="DepartmentWise Material Comsumption"
-                        class="active-icon red-500 s-16">circle
-                    </mat-icon>
+                 
+                    <mat-icon *ngIf="element.admId" class="pill orange-600 s-16"
+                    matTooltip="PatientWise Material Comsumption">circle</mat-icon>
+                <mat-icon  *ngIf="!element.admId" class="pill green s-16"
+                    matTooltip="DepartmentWise Material Comsumption">circle</mat-icon>
 
                 </div>
             </ng-template>
@@ -49,7 +47,9 @@
 
             <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false"
                 (onSelectRow)="getSelectedRow($event)">
+
                 <ng-container filters>
+                    <form [formGroup]="myFilterform">
                     <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
                         formEndControlName="enddate" [(fromValue)]="gridConfig.filters[1].fieldValue"
                         [(toValue)]="gridConfig.filters[2].fieldValue"></airmid-datepicker>
@@ -58,7 +58,7 @@
 
                     <airmid-dropdown label="Store Name" formControlName="ToStoreId" [formGroup]="myFilterform" [(ngModel)]="gridConfig.filters[0].fieldValue" [validations]="getValidationMessages().ToStoreId" [mode]="autocompleteModeStoreName" >
                     </airmid-dropdown>
-
+                    </form>
                 </ng-container>
             </airmid-table>
         </div>
