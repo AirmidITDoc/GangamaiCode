@@ -98,7 +98,9 @@ export class NewAppointmentComponent implements OnInit {
     vDays: any = 0;
     HealthCardExpDate: any;
     followUpDate: string;
-
+    ageYear="0"
+    ageMonth="0"
+    ageDay="0"
 
     screenFromString = 'appointment';
     @ViewChild('attachments') attachment: any;
@@ -352,9 +354,7 @@ export class NewAppointmentComponent implements OnInit {
         }
 
     }
-    ageYear="0"
-    ageMonth="0"
-    ageDay="0"
+   
     onSave() {
 // console.log(this.registerObj.dateOfBirth)
 
@@ -430,8 +430,6 @@ export class NewAppointmentComponent implements OnInit {
             this.OnViewReportPdf(response)
             this.onClear(true);
             this._matDialog.closeAll();
-        }, (error) => {
-            this.toastr.error(error.message);
         });
     }
 
@@ -489,7 +487,6 @@ export class NewAppointmentComponent implements OnInit {
     getVisitRecord(row) {
         this.departmentId = row.DepartmentId;
         this.DosctorId = row.DoctorId;
-        Swal.fire(this.departmentId, this.DoctorId)
         this.VisitFlagDisp = false;
     }
 

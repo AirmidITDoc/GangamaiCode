@@ -61,8 +61,6 @@ export class EditConsultantDoctorComponent implements OnInit {
       this._AppointmentlistService.EditConDoctor(this.ConsdrForm.value).subscribe((response) => {
         this.toastr.success(response.message);
         this.onClear(true);
-      }, (error) => {
-        this.toastr.error(error.message);
       });
     }
   }

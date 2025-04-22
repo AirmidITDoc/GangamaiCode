@@ -132,8 +132,6 @@ Age=0;
                     this.GetDetails(this.RegId1)
                     this.viewgetOPPayemntPdf(response,true);
                   
-                  }, (error) => {
-                    this.toastr.error(error.message);
                   });
                 
                 }

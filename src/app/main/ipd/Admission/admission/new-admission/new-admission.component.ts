@@ -289,9 +289,6 @@ export class NewAdmissionComponent implements OnInit {
         this.onClear();
         this._matDialog.closeAll();
 
-      }, (error) => {
-        this.toastr.error(error.message);
-
       });
 
     }
@@ -303,9 +300,6 @@ export class NewAdmissionComponent implements OnInit {
         this.getAdmittedPatientCasepaperview(response);
         this.onClear();
         this._matDialog.closeAll();
-      }, (error) => {
-        this.toastr.error(error.message);
-
       });
     }
   }

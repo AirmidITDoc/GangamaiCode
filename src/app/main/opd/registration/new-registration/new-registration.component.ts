@@ -118,9 +118,6 @@ export class NewRegistrationComponent implements OnInit {
                this.toastr.success(response.message);
                 this.onClear(true);
                 this.isSaving = false;
-            }, (error) => {
-                this.toastr.error(error.message);
-                this.isSaving = false;
             });
         }  else {
             let invalidFields = [];

@@ -128,10 +128,10 @@ export class IPSettlementComponent implements OnInit {
                 console.log(response)
             }); 
 
-            this._IPSettlementService.getAdmissionById(this.RegId1).subscribe((response) => { 
-                this.AdmissionId =  response.admissionId
-                console.log(this.AdmissionId)
-            });
+            // this._IPSettlementService.getAdmissionById(this.RegId1).subscribe((response) => { 
+            //     this.AdmissionId =  response.admissionId
+            //     console.log(this.AdmissionId)
+            // });
         }, 500);
         this.GetDetails(this.RegId1)
     }
@@ -150,7 +150,7 @@ export class IPSettlementComponent implements OnInit {
         PatientHeaderObj['AdvanceAmount'] = contact.balanceAmt;
         PatientHeaderObj['NetPayAmount'] = contact.balanceAmt;
         PatientHeaderObj['BillNo'] = contact.billNo;
-        PatientHeaderObj['OPD_IPD_Id'] = this.AdmissionId;
+        PatientHeaderObj['OPD_IPD_Id'] = contact.opdipdid;
         PatientHeaderObj['IPDNo'] = contact.ipdNo;
         PatientHeaderObj['RegNo'] =  contact.regNo; 
         PatientHeaderObj['DoctorName'] = contact.doctorname; 
@@ -279,8 +279,6 @@ export class IPSettlementComponent implements OnInit {
                         this.GetDetails(this.RegId1)
                         this.viewgetIPPayemntPdf(response)
                         this.reset();
-                    }, (error) => {
-                        this.toastr.error(error.message);
                     });
 
                 }

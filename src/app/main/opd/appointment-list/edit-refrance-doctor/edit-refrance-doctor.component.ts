@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormGroup, UntypedFormBuilder, ValidationErrors, Validators } from '@angular/forms';
 import { AppointmentlistService } from '../appointmentlist.service';
 import { DatePipe } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -51,7 +51,7 @@ export class EditRefranceDoctorComponent implements OnInit {
               visitId: 0,
               // regId:this.data.regId,
               refDocId: ['', [
-                  Validators.required]],
+                  Validators.required, notEmptyOrZeroValidator()]],
   
           });
       }
@@ -76,8 +76,6 @@ export class EditRefranceDoctorComponent implements OnInit {
     this._AppointmentlistService.EditRefDoctor(this.RefrancedrForm.value).subscribe((response) => {
       this.toastr.success(response.message);
       this.onClear(true);
-    }, (error) => {
-      this.toastr.error(error.message);
     });
     
      
@@ -110,4 +108,10 @@ export class EditRefranceDoctorComponent implements OnInit {
     console.log(obj);
     this.refdocId = obj
   }
+}
+function notEmptyOrZeroValidator(): any {
+    return (control: AbstractControl): ValidationErrors | null => {
+        const value = control.value;
+        return value > 0 ? null : { greaterThanZero: { value: value } };
+      };
 }

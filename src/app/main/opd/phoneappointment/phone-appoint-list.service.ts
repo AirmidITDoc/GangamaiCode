@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 
@@ -66,8 +66,8 @@ export class PhoneAppointListService {
             ]],
             phAppDate: [(new Date()).toISOString()],
             phAppTime: [""],
-            departmentId: ['', Validators.required],
-            doctorId:['', Validators.required],
+            departmentId: [0, [Validators.required, notEmptyOrZeroValidator()]],
+            doctorId:[0, [Validators.required, notEmptyOrZeroValidator()]],
             addedBy:this.accountService.currentUserValue.userId,
             updatedBy: this.accountService.currentUserValue.userId,
             regNo: ["0"],
@@ -110,4 +110,10 @@ export class PhoneAppointListService {
     public getRegistraionById(Id) {
         return this._httpClient.GetData("OutPatient/" + Id);
     }
+}
+function notEmptyOrZeroValidator(): any {
+    return (control: AbstractControl): ValidationErrors | null => {
+        const value = control.value;
+        return value > 0 ? null : { greaterThanZero: { value: value } };
+      };
 }

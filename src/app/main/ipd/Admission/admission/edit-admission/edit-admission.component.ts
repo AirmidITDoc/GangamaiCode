@@ -166,12 +166,8 @@ debugger
 
       this._AdmissionService.AdmissionUpdate(this.registerObj1.admissionId, submitData).subscribe(response => {
         this.toastr.success(response.message);
-        // this.onClear();
       this.getAdmittedPatientCasepaperview(response);
         this._matDialog.closeAll();
-      }, (error) => {
-        this.toastr.error(error.message);
-
       });
     }  else {
       let invalidFields = [];

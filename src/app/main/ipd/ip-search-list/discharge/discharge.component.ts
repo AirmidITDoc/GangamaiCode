@@ -2,7 +2,7 @@ import { Component, EventEmitter, Inject, OnInit, Output, ViewChild, ViewEncapsu
 import { fuseAnimations } from '@fuse/animations';
 import { AdvanceDetailObj, Discharge, IPSearchListComponent } from '../ip-search-list.component';
 import { MatPaginator } from '@angular/material/paginator';
-import { FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, UntypedFormBuilder, ValidationErrors, Validators } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
@@ -158,8 +158,8 @@ console.log(event)
       // admissionId: this.data.admissionId,
       dischargeDate: [(new Date()).toISOString()],
       dischargeTime: [(new Date()).toISOString()],
-      dischargeTypeId: ['', Validators.required],
-      dischargedDocId: ['', Validators.required],
+      dischargeTypeId: ['', Validators.required, notEmptyOrZeroValidator()],
+      dischargedDocId: ['', Validators.required, notEmptyOrZeroValidator()],
       dischargedRmoid: 0,
       modeOfDischargeId: 0,
       addedBy: this.accountService.currentUserValue.userId,
@@ -178,14 +178,14 @@ console.log(event)
         return;
       }
     }
-
+    
 
     if (!this.DischargeForm.invalid) {
       let dischargModeldata = {};
       dischargModeldata['dischargeDate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
         dischargModeldata['dischargeTime'] = this.dateTimeObj.time
-      dischargModeldata['dischargeTypeId'] = this.DischargeForm.get("dischargedDocId").value || 0,
-        dischargModeldata['dischargedDocId'] = this.DischargeForm.get("dischargeTypeId").value || 0,
+      dischargModeldata['dischargeTypeId'] = this.DischargeForm.get("dischargeTypeId").value || 0,
+        dischargModeldata['dischargedDocId'] = this.DischargeForm.get("dischargedDocId").value || 0,
         dischargModeldata['dischargedRmoid'] = this.DischargeForm.get("dischargedRmoid").value || 0,
         dischargModeldata['addedBy'] = this.accountService.currentUserValue.userId,
         dischargModeldata['dischargeId'] = this.DischargeId
@@ -211,8 +211,6 @@ console.log(event)
           this.toastr.success(response.message);
           this.viewgetDischargeSlipPdf(response)
           this._matDialog.closeAll();
-        }, (error) => {
-          this.toastr.error(error.message);
         });
       } else if (this.data.isDischarged == 1) {
         dischargModeldata['dischargeId'] = 1
@@ -233,8 +231,6 @@ console.log(event)
           this.toastr.success(response.message);
           this.viewgetDischargeSlipPdf(response)
           this._matDialog.closeAll();
-        }, (error) => {
-          this.toastr.error(error.message);
         });
       }
       this.DischargeForm.reset();
@@ -326,3 +322,9 @@ console.log(data)
 
 
 
+function notEmptyOrZeroValidator(): any {
+    return (control: AbstractControl): ValidationErrors | null => {
+        const value = control.value;
+        return value > 0 ? null : { greaterThanZero: { value: value } };
+      };
+}

@@ -46,20 +46,7 @@ export class CrossConsultationComponent implements OnInit {
   ngOnInit(): void {   
     this.crossconForm = this.createCrossConForm();
     console.log(this.data)
-    // if ((this.data?.visitId ?? 0) > 0) {
-    //   setTimeout(() => {
-    //     this._AppointmentlistService.getVisitById(this.data.visitId).subscribe((response) => {
-    //       this.registerObj1 = response;
-    //       this.regId=this.data.regId;
-    //       // this.crossconForm.get("consultantDocId").setValue(this.registerObj1.doctorId)
-    //       // this.ddldoctor.SetSelection(this.registerObj1.doctorId);
-    
-    //       // this.registerObj1.visitTime= this.datePipe.transform(new Date(),'yyyy-MM-ddTHH:mm')
-    //       console.log(response)
-    //     });
-    //   }, 500);
-    // }
-   
+ 
   }
 
 
@@ -110,8 +97,6 @@ export class CrossConsultationComponent implements OnInit {
   console.log(response);
       this.toastr.success(response);
       this.onClear(true);
-    }, (error) => {
-      this.toastr.error(error.message);
     });
   }
 

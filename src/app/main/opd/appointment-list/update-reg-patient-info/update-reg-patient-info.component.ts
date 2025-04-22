@@ -158,12 +158,10 @@ export class UpdateRegPatientInfoComponent {
       this.OnViewReportPdf(response)
       this.onClear(true);
       this._matDialog.closeAll();
-    }, (error) => {
-      this.toastr.error(error.message);
     });
 
   }
-  // this.grid.Bind
+
   }
 
   OnViewReportPdf(element) {

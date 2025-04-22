@@ -86,12 +86,11 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
 
   getSelectedObj(obj) {
-    console.log(obj)
+  
     this.RegId = obj.value;
     
     if ((this.RegId ?? 0) > 0) {
-
-      setTimeout(() => {
+  setTimeout(() => {
         this._phoneAppointListService.getRegistraionById(this.RegId).subscribe((response) => {
           this.registerObj = response;
           console.log(response)
@@ -143,13 +142,12 @@ phdatetime: any;
 
     console.log(this.phoneappForm.value);
        this.phoneappForm.get('appDate').setValue(this.datePipe.transform(this.phoneappForm.get('appDate').value, 'yyyy-MM-dd'))
-      this.phoneappForm.get('appTime').setValue(this.datePipe.transform(this.phoneappForm.get('appTime').value, 'hh:mm:ss a'))
+      // this.phoneappForm.get('appTime').setValue(this.datePipe.transform(this.phoneappForm.get('appTime').value, 'hh:mm:ss a'))
      
       this.phoneappForm.get('phAppDate').setValue(this.datePipe.transform(this.phoneappForm.get('phAppDate').value, 'yyyy-MM-dd'))
-
+debugger
       if (!this.phoneappForm.invalid) {
-     
-      console.log(this.phoneappForm.value);
+     console.log(this.phoneappForm.value);
       this._phoneAppointListService.phoneMasterSave(this.phoneappForm.value).subscribe((response) => {
         console.log(response)
         this.toastr.success(response.message);

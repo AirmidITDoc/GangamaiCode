@@ -249,6 +249,13 @@ debugger
       });
       return;
     }
+
+    if ((this.vAdmissionID ==0)) {
+      this.toastr.warning('Please Select Patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
    
     
     let canteenRequestDetailsInsert = [];
@@ -285,12 +292,8 @@ debugger
     this._CanteenRequestservice.CanteenReqSave(SubmitDataObj).subscribe(response => {
       this.toastr.success(response.message);
       this._matDialog.closeAll();
-    }, (error) => {
-      this.toastr.error(error.message);
     });
-
- 
-  }
+}
 
   dsCanteenDateList = new MatTableDataSource<CanteenList>();
 
