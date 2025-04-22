@@ -30,6 +30,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
 import { LoaderModule } from './core/components/loader/loader.module';
 import { ApiCaller } from './core/services/apiCaller';
+import { SignalRService } from './core/services/signalr.service';
 
 @Component({
     selector: 'app',
@@ -95,7 +96,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private _loading: SpinnerService,
         private router: Router,
         private bandwidthService: BandwidthService,
-
+        private signalRService: SignalRService,
     ) {
 
         this.bandwidthService.monitorBandwidth();
@@ -180,11 +181,17 @@ export class AppComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
     // -----------------------------------------------------------------------------------------------------
+    send() {
+        this.signalRService.sendMessage('AngularUser', 'Hello from Angular!');
+    }
 
     /**
      * On init
      */
     async ngOnInit(): Promise<void> {
+        debugger
+        this.signalRService.startConnection();
+        this.signalRService.addReceiveMessageListener();
 
         //check connection
         this.subscriptions.push(this.onlineEvent.subscribe(e => {
@@ -252,19 +259,19 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     ConfigSettingParam() {
-        var Params=
-        {        
-          "searchFields": [        
-            {
-              "fieldName": "ConfigId",        
-              "fieldValue": "1",        
-              "opType": "Equals"
-            }     
-          ],        
-          "mode": "SysConfig"        
+        var Params =
+        {
+            "searchFields": [
+                {
+                    "fieldName": "ConfigId",
+                    "fieldValue": "1",
+                    "opType": "Equals"
+                }
+            ],
+            "mode": "SysConfig"
         }
         this._httpClient1
-            .PostData("Common",Params).subscribe(data => {
+            .PostData("Common", Params).subscribe(data => {
                 this.configSettingParam = data;
                 this.configService.setCongiParam(this.configSettingParam[0]);
                 console.log(this.configSettingParam);

@@ -33,6 +33,7 @@
     "@ckeditor/ckeditor5-angular": "8.0.0",
     "@ckeditor/ckeditor5-build-classic": "42.0.2",
     "@kolkov/angular-editor": "3.0.0-beta.2",
+    "@microsoft/signalr": "8.0.7",
     "@ngx-translate/core": "16.0.4",
     "@swimlane/ngx-charts": "21.1.2",
     "@techiediaries/ngx-qrcode": "9.1.0",
