@@ -279,9 +279,12 @@ export class IPBillingComponent implements OnInit {
   }
   openServiceTable():void{
     this._matDialog.open(this.serviceTable, {
-      width: '60%',
+      width: '50%',
       height: '60%',
     })
+  }
+  oncloseservice(){
+    this.dialogRef.close(this.serviceTable);
   }
   private setupFormListener(): void { 
     this.handleChange('price', () => this.calculateTotalCharge());

@@ -163,41 +163,63 @@ export class GoodReceiptnoteComponent implements OnInit {
     loadingarry: any = [];
     currentDate = new Date();
     IsLoading: boolean = false;
-
+    autocompletestore: string = "Store";
+    autocompleteSupplier: string = "SupplierMaster";
+    
       @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;  
+      @ViewChild('actionButtonTemplateStatus') actionButtonTemplateStatus!: TemplateRef<any>;  
           ngAfterViewInit() { 
-            this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;  
+            this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate; 
+            this.gridConfig.columnsList.find(col => col.key === 'Status')!.template = this.actionButtonTemplateStatus;   
           } 
      AllColumns= [
-      { heading: "Advance Date", key: "date", sort: true, align: 'left', emptySign: 'NA' , width: 200,type: 9 },
-      { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA',width: 120 },
-      { heading: "Advance Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA',width: 160, type: gridColumnTypes.amount},
-      { heading: "Used Amt", key: "usedAmount", sort: true, align: 'left', emptySign: 'NA',width: 160 , type: gridColumnTypes.amount},
-      { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA',width: 160, type: gridColumnTypes.amount},
-      { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA',width: 160 , type: gridColumnTypes.amount}, 
-      { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA',width: 230 },
-      { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 200 , type: 9 }, 
-      { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA',width: 180 , type: gridColumnTypes.amount},
-      { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA',width: 180 , type: gridColumnTypes.amount},
-      { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA',width: 180 , type: gridColumnTypes.amount},
-      { heading: "NEFT Pay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA',width: 180 , type: gridColumnTypes.amount}, 
-      { heading: "PayTM Pay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA',width: 180 , type: gridColumnTypes.amount},
-      { heading: "Reason", key: "reason", sort: true, align: 'left', emptySign: 'NA' , width: 250} ,
-      { heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
+        { heading: "Status", key: "Status", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate},
+      { heading: "GRN No", key: "grnNumber", sort: true, align: 'left', emptySign: 'NA' , width: 100},
+      { heading: "GRN Date", key: "grndate", sort: true, align: 'left', emptySign: 'NA',width: 130,},
+      { heading: "Invoice No", key: "invoiceNo", sort: true, align: 'left', emptySign: 'NA',width: 100},
+      { heading: "supplier Name", key: "supplierName", sort: true, align: 'left', emptySign: 'NA',width: 200},
+      { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA',width: 150, type: gridColumnTypes.amount},
+      { heading: "Total DiscAmt", key: "totalDiscAmount", sort: true, align: 'left', emptySign: 'NA',width: 140 , type: gridColumnTypes.amount}, 
+      { heading: "Total GSTAmt", key: "totalVatamount", sort: true, align: 'left', emptySign: 'NA',width: 140, type: gridColumnTypes.amount },
+      { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 , type: gridColumnTypes.amount }, 
+      { heading: "Rounding Amt", key: "roundingAmt", sort: true, align: 'left', emptySign: 'NA',width: 140 , type: gridColumnTypes.amount},
+      { heading: "Debit Note", key: "debitNote", sort: true, align: 'left', emptySign: 'NA',width: 130 , type: gridColumnTypes.amount},
+      { heading: "Credit Note", key: "creditNote", sort: true, align: 'left', emptySign: 'NA',width: 130,type: gridColumnTypes.amount },
+      { heading: "Received By", key: "receivedBy", sort: true, align: 'left', emptySign: 'NA',width: 180}, 
+      { heading: "isClosed", key: "isClosed", sort: true, align: 'left', emptySign: 'NA',width: 100 ,},
+       { heading: "Action", key: "action", align: "right", width: 160, sticky: true, type: gridColumnTypes.template,
         template: this.actionButtonTemplate  // Assign ng-template to the column
       }
-    ]
+    ]  
+    isShowtable:boolean=false;
       @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
       gridConfig: gridModel = {
           apiUrl: "GRN/GRNHeaderList",
           columnsList:this.AllColumns,
-          sortField: "GRNDetID",
+          sortField: "GRNID",
           sortOrder: 0,
           filters: [
-              { fieldName: "GrnId", fieldValue: String(1), opType: OperatorComparer.Equals }
-          ],
-          
+              { fieldName: "ToStoreId", fieldValue: "0", opType: OperatorComparer.Equals },
+              { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.Equals },
+              { fieldName: "To_Dt", fieldValue: "", opType: OperatorComparer.Equals },
+              { fieldName: "IsVerify", fieldValue: "0", opType: OperatorComparer.Equals },
+              { fieldName: "Supplier_Id", fieldValue: "0", opType: OperatorComparer.Equals } 
+          ], 
       } 
+      gridConfig1: gridModel = {
+        apiUrl: "GRN/GRNHeaderList",
+        columnsList:this.AllColumns,
+        sortField: "GRNID",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "ToStoreId", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: "", opType: OperatorComparer.Equals },
+            { fieldName: "IsVerify", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Supplier_Id", fieldValue: "%", opType: OperatorComparer.Equals } 
+        ], 
+    } 
 
     constructor(
         public _GRNService: GoodReceiptnoteService,
@@ -214,6 +236,74 @@ export class GoodReceiptnoteComponent implements OnInit {
         this.getToStoreSearchCombo();
         this.getGRNList();
     }
+
+    selectChangeStore(event){
+        console.log(event)
+    }
+    selectChangeSupplier(event){
+        console.log(event)
+    }
+    getSelectedRow(event){
+        console.log(event)
+        this.isShowtable = true;
+    }
+    getValidationMessages() {
+        return {
+            supplierId: [
+                // { name: "required", Message: "SupplierId is required" }
+            ],
+            ToStoreId: [
+                // { name: "required", Message: "SupplierId is required" }
+            ],
+            itemName: [
+                // { name: "required", Message: "Item Name is required" }
+            ],
+            batchNo: [
+                // { name: "required", Message: "Batch No is required" }
+            ],
+            invoiceNo: [
+                // { name: "required", Message: "Invoice No is required" }
+            ] 
+            
+        };
+    }
+
+    fromDate:any = "";
+    toDate:any = "";
+    StoreId:any = 0;
+    SupplierId:any = 0;
+    IsVerify:any;
+    onChangeFirst($event) {
+        debugger  
+        this.isShowtable = false;
+        this.fromDate =  this.datePipe.transform(this._GRNService.GRNSearchGroup.get('start').value, "yyyy-MM-dd")
+        this.toDate =   this.datePipe.transform(this._GRNService.GRNSearchGroup.get('end').value, "yyyy-MM-dd") 
+        this.StoreId = this._GRNService.GRNSearchGroup.get('ToStoreId').value || "0"
+        this.SupplierId = this._GRNService.GRNSearchGroup.get('SupplierId').value || "0"
+        this.IsVerify = this._GRNService.GRNSearchGroup.get('Status1').value || "0" 
+        this.getfilterdata();
+    }
+    
+    getfilterdata() {
+        this.gridConfig = {
+            apiUrl: "GRN/GRNHeaderList",
+            columnsList:this.AllColumns,
+            sortField: "GRNID",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "ToStoreId", fieldValue: this.StoreId, opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue:  this.toDate, opType: OperatorComparer.Equals },
+                { fieldName: "IsVerify", fieldValue: this.IsVerify , opType: OperatorComparer.Equals },
+                { fieldName: "Supplier_Id", fieldValue: this.SupplierId, opType: OperatorComparer.Equals } 
+            ], 
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+
+        
+    }
+  
     data: any[];
     FullData: GRNList = {} as GRNList;
 
