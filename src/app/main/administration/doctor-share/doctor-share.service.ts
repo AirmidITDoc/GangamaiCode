@@ -30,8 +30,8 @@ export class DoctorShareService {
       LastName: '',
       PbillNo: '',
       OP_IP_Type: ['1'] ,
-      fromDate: [(new Date()).toISOString()],
-      enddate: [(new Date()).toISOString()],
+      fromDate: [new Date().toISOString()],
+      enddate: [new Date().toISOString()],
       fieldValue:"",
     })
   }
@@ -78,11 +78,11 @@ export class DoctorShareService {
     return this._httpClient.PostData("Generic/GetByProc?procName=RetrieveGroupMasterForCombo",{}) 
   }
   public InsertDocShare(employee) {
-    return this._httpClient.PostData("Administration/InsertDoctorPerMaster",employee) 
+    return this._httpClient.PostData("DoctorShareMaster/InsertEDMX",employee) 
   }
   public UpdateDocShare(emp) {
     if(emp.doctorShareId){
-    return this._httpClient.PutData("Administration/UpdateDoctorPerMaster Edit" +emp.doctorShareId, emp) 
+    return this._httpClient.PutData("DoctorShareMaster/Update/" +emp.doctorShareId, emp) 
     }
   }
   public SaveProcessdocShare(employee) {

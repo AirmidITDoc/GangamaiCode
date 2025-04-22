@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
@@ -35,7 +35,7 @@ export class DoctornoteService {
       Assessment: [''],
       Category: ['NursNote'],
       isActive: [true, [Validators.required]],
-      TemplateId: [''],
+      TemplateId: ['',[Validators.required,notEmptyOrZeroValidator()]],
       TemplateName: [''],
       templateDesc: [''],
       templateName:['']
@@ -46,7 +46,7 @@ export class DoctornoteService {
     return this._formBuilder.group({
       doctNoteId: [0],
       admId: [''],
-      TemplateId: [''],
+      TemplateId: ['',[Validators.required,notEmptyOrZeroValidator()]],
       tdate: [(new Date()).toISOString()],
       ttime: [(new Date()).toISOString()],
       // TemplateName:[''],
@@ -111,4 +111,10 @@ export class DoctornoteService {
   //   return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_WardClassMasterForCombo", {})
   // }
 
+}
+function notEmptyOrZeroValidator(): any {
+  return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      return value > 0 ? null : { greaterThanZero: { value: value } };
+    };
 }

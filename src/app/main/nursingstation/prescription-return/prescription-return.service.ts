@@ -82,7 +82,7 @@ public getRegistraionById(Id) {
 
   public presciptionreturnSave(emp){
    
-    return this._httpClient1.PostData("IPPrescription/PrescriptionReturnInsert",emp)    
+    return this._httpClient1.PostData("Prescription/PrescriptionReturnInsert",emp)    
     
   }
 

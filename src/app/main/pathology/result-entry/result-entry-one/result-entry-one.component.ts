@@ -622,7 +622,7 @@ export class ResultEntryOneComponent implements OnInit {
                     width: '100%',
                     data: {
                         base64: res["base64"] as string,
-                        title: "Template Report Viewer"
+                        title: "Pathology Test Report Viewer"
                     }
                 });
     

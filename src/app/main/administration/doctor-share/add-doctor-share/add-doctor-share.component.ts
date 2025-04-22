@@ -28,6 +28,11 @@ export class AddDoctorShareComponent implements OnInit {
   autocompleteModeService: string = "Service";
   autocompleteClass: string = "Class";
   ShrTypeSerOrGrp:any=1
+  DoctorId = "0";
+  classid = 0;
+  doctorId = 0
+  serviceId = 0
+  groupId = 0
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
@@ -41,7 +46,7 @@ export class AddDoctorShareComponent implements OnInit {
     { heading: "OP_IP_Type", key: "op_IP_Type", sort: true, align: 'left', emptySign: 'NA' },
   ]
   allFilters=[
-    { fieldName: "DoctorId", fieldValue: "10006", opType: OperatorComparer.StartsWith },
+    { fieldName: "DoctorId", fieldValue: this.DoctorId, opType: OperatorComparer.StartsWith },//"10006"
     { fieldName: "ShrTypeSerOrGrp", fieldValue: "1", opType: OperatorComparer.StartsWith }
   ]
   gridConfig: gridModel = {
@@ -74,7 +79,6 @@ export class AddDoctorShareComponent implements OnInit {
     this.grid.bindGridData(); 
 }
 
-DoctorId = "0";
   ListView(value) {
     console.log(value)
      if(value.value!==0)
@@ -85,25 +89,21 @@ DoctorId = "0";
     this.getfilterdata();
 }
 
-  classid = 0;
   selectChangeClass(obj: any) {
     console.log(obj);
     this.classid = obj.value
   }
 
-  doctorId = 0
   selectChangeDoctor(obj: any) {
     console.log(obj);
     this.doctorId = obj.value
   }
 
-  serviceId = 0
   selectChangeService(obj: any) {
     console.log(obj);
     this.serviceId = obj.value
   }
 
-  groupId = 0
   selectChangeGroup(obj: any) {
     console.log(obj);
     this.groupId = obj.value
@@ -137,7 +137,6 @@ DoctorId = "0";
   DoctorListfilteredOptions: Observable<string[]>;
   DoctorNamefilteredOptions: Observable<string[]>;
   ClassListfilteredOptions: Observable<string[]>;
-  doctorNameCmbList: any = [];
   sIsLoading: string = '';
   isDoctorIDSelected: boolean = false;
   isDoctorID1Selected: boolean = false;
@@ -146,12 +145,10 @@ DoctorId = "0";
   ServiceList: any = [];
   filterdService: Observable<string[]>;
   noOptionFound: any;
-  doctorNameCmbList1: any = [];
   GroupList: any = [];
   isGroupnameSelected: boolean = false;
   GroupListfilteredOptions: Observable<string[]>;
   doctorShareId: any;
-  ClassList: any = [];
 
   dataSource = new MatTableDataSource<BillListForDocShrList>();
   @ViewChild(MatSort) sort: MatSort;
@@ -196,39 +193,38 @@ DoctorId = "0";
 
   ServiceName: any;
   OnEdit(contact) {
+    debugger
     console.log(contact)
 
-    this.doctorShareId = contact.DoctorShareId;
-    this.ServiceName = contact.ServiceName;
+    this.doctorShareId = contact.doctorShareId;
+    this.ServiceName = contact.serviceName;
+    this.classid=contact.classId
+    this.doctorId=contact.doctorId
+    this.serviceId=contact.serviceId
+
+    this._DoctorShareService.DocFormGroup.get('DoctorID').setValue(contact.doctorId);
+    this._DoctorShareService.DocFormGroup.get('ServiceID').setValue(contact.serviceId);
+    this._DoctorShareService.DocFormGroup.get('ClassId').setValue(contact.classId)
+
+
     // this.getServiceListCombobox();
-    if (contact.ServicePercentage > 0) {
+    if (contact.servicePercentage > 0) {
       this._DoctorShareService.DocFormGroup.get('DocShareType').setValue('P');
-      this.vServicePerc = contact.ServicePercentage;
+      this.vServicePerc = contact.servicePercentage;
     } else {
       this._DoctorShareService.DocFormGroup.get('DocShareType').setValue('A');
-      this.vServiceAmt = contact.ServiceAmount;
+      this.vServiceAmt = contact.serviceAmount;
     }
-    if (contact.Op_IP_Type == '0') {
+    if (contact.op_IP_Type == '0') {
       this._DoctorShareService.DocFormGroup.get('PatientType').setValue('0');
     } else {
       this._DoctorShareService.DocFormGroup.get('PatientType').setValue('1');
     }
-    if (contact.ShrTypeSerOrGrp == '1') {
+    if (contact.shrTypeSerOrGrp == '1') {
       this._DoctorShareService.DocFormGroup.get('ServiceOrgrpType').setValue('1');
     } else {
       this._DoctorShareService.DocFormGroup.get('ServiceOrgrpType').setValue('2');
     }
-    if (contact.DoctorId) {
-      const doctorValue = this.doctorNameCmbList.find(item => item.DoctorId === contact.DoctorId)
-      console.log(doctorValue)
-      this._DoctorShareService.DocFormGroup.get('DoctorID').setValue(doctorValue)
-    }
-    if (contact.ClassId) {
-      const ClassValue = this.ClassList.find(item => item.ClassId === contact.ClassId)
-      console.log(ClassValue)
-      this._DoctorShareService.DocFormGroup.get('ClassId').setValue(ClassValue)
-    }
-
 
   }
 

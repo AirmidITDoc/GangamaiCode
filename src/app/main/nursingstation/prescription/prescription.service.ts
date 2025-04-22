@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators, ValidationErrors, AbstractControl } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { Observable } from 'rxjs/internal/Observable';
 
@@ -11,11 +11,16 @@ export class PrescriptionService {
 
   mysearchform: FormGroup;
   mypreretunForm: FormGroup;
+  myForm: FormGroup;
+  ItemForm: FormGroup;
+
   constructor(
     public _httpClient:HttpClient, public _httpClient1:ApiCaller,
     private _formBuilder: UntypedFormBuilder,
   ) { 
     this.mysearchform= this.SearchFilterFrom();
+    this.myForm = this.createMyForm();
+    this.ItemForm = this.createItemForm();
     this.mypreretunForm=this.PrescriptionReturnFilterForm();
   }
 
@@ -28,6 +33,29 @@ export class PrescriptionService {
     })  
   }
 
+   createMyForm() {
+      return this._formBuilder.group({
+        RegId: '',
+        PatientName: '',
+        WardName: ['', [Validators.required,notEmptyOrZeroValidator()]],
+        StoreId: ['', [Validators.required,notEmptyOrZeroValidator()]],
+        RegID: ['', Validators.required],
+        Op_ip_id: ['1'],
+        AdmissionID: 0
+      })
+    }
+
+    createItemForm() {
+      return this._formBuilder.group({
+        ItemId: ['', [Validators.required, this.validateSelectedItem.bind(this)]],
+        ItemName: '',
+        DoseId: '',
+        Day: [''],
+        Qty: ['',[Validators.required,Validators.pattern("^[0-9]*$")]],
+        Instruction: ['']
+      })
+    }
+
   PrescriptionReturnFilterForm():FormGroup{
     return this._formBuilder.group({
       startdate: [(new Date()).toISOString()],
@@ -36,6 +64,14 @@ export class PrescriptionService {
       PrescriptionStatus:['Pending']
     })
   }
+
+  validateSelectedItem(control: AbstractControl): { [key: string]: any } | null {
+    if (control.value && typeof control.value !== 'object') {
+      return { invalidItem: true };
+    }
+    return null;
+  }
+  
 // new dropdown
 public getRegistraionById(Id) {
   return this._httpClient1.GetData("OutPatient/" + Id);
@@ -76,7 +112,7 @@ public getRegistraionById(Id) {
     return this._httpClient1.GetData("Admission/" + id);
   }
   public presciptionSave(employee) {
-    return this._httpClient1.PostData("IPPrescription/InsertPrescription", employee);
+    return this._httpClient1.PostData("Prescription/InsertPrescription", employee);
   }
    
   public getDoseList() {
@@ -115,4 +151,11 @@ public getRegistraionById(Id) {
     return this._httpClient1.PostData("Report/ViewReport", Param);
   }
 
+}
+
+function notEmptyOrZeroValidator(): any {
+  return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      return value > 0 ? null : { greaterThanZero: { value: value } };
+    };
 }

@@ -51,8 +51,8 @@
 
                                 <div fxFlex="18%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-datepicker [formGroup]="_DoctorShareService.UserFormGroup" [isRangePicker]="true" formStartControlName="fromDate"
-                                            formEndControlName="enddate" [(fromValue)]="gridConfig.filters[3].fieldValue"
-                                            [(toValue)]="gridConfig.filters[4].fieldValue">
+                                            formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
+                                            [(toValue)]="gridConfig.filters[1].fieldValue">
                                     </airmid-datepicker>
                                 </div>
 
@@ -81,13 +81,13 @@
                                         formControlName="PbillNo"
                                         [formGroup]="_DoctorShareService.UserFormGroup"
                                         (click)=" Clearfilter('PbillNo')"
-                                        (keypress)="keyPressAlphanumeric($event)"
                                         [maxLength]="50">
                                     </airmid-textbox> 
                                 </div>
                                 
                                  <div style="padding: 10px;"> 
-                                    <button mat-raised-button class="searchButton" matTooltip="search">
+                                    <button mat-raised-button class="searchButton" matTooltip="search"
+                                    (click)="getfilterdata()" >
                                         <mat-icon class="searchiconbutton">search</mat-icon>
                                     </button>
                                 </div>

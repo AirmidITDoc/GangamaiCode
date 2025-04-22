@@ -75,7 +75,7 @@ export class DoctornoteComponent implements OnInit {
   searchFormGroup: FormGroup;
   autocompleteModeTemplate: string = "DoctorNote" //Template 
   vDoctNoteId: any;
-  IsAddFlag: boolean = false;
+  IsAddFlag: boolean = true;
   vDoctorName: any;
   vPatientName: any;
   vDepartment: any;
@@ -249,6 +249,7 @@ debugger
     console.log("Template:", event)
     this.tempdesc = event.templateDesc
     this.docNoteTempId=event.docNoteTempId
+    this.IsAddFlag = false;
   }
 
   OnAdd() {
@@ -324,7 +325,7 @@ debugger
       }, (error) => {
         this.toastr.error(error.message);
       });
-      this.IsAddFlag = false
+      this.IsAddFlag = true
     }
   }
 
@@ -499,7 +500,9 @@ debugger
 
   onClear() {
     // this.myform.reset();
-    this.IsAddFlag = false 
+    this.myform.get('TemplateId').setValue('');
+    this.myform.get('templateDesc').setValue('');
+    this.IsAddFlag = true 
     this.vDoctNoteId = null;
     this.vDescription=null;
   }
@@ -516,7 +519,7 @@ debugger
     this.myform.get('HandOverType').setValue('morning')
     this.dsHandOverNoteList.data = [];
     // this.HandOverNoteList = [];
-    this.IsAddFlag = false 
+    this.IsAddFlag = true 
   }
   onClearPatientInfo() {
     this.vRegNo = '';

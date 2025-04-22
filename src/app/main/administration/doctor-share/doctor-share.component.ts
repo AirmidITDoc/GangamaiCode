@@ -53,6 +53,12 @@ export class DoctorShareComponent implements OnInit {
   pBillNo:any="0"
   opipType:any="1"
 
+  // fromDate = this._DoctorShareService.UserFormGroup.get('fromDate').value
+  // toDate = this._DoctorShareService.UserFormGroup.get('enddate').value
+
+  // fromdate = this.fromDate ? this.datePipe.transform(this.fromDate, "yyyy-MM-dd") : "";
+  // todate = this.toDate ? this.datePipe.transform(this.toDate, "yyyy-MM-dd") : "";
+
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
   constructor(
@@ -87,7 +93,7 @@ export class DoctorShareComponent implements OnInit {
   allFilters=[
     { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
     { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
-    { fieldName: "DoctorId", fieldValue: "1", opType: OperatorComparer.Contains },
+    { fieldName: "DoctorId", fieldValue: "1", opType: OperatorComparer.Equals },
     { fieldName: "PBillNo", fieldValue: "1", opType: OperatorComparer.Equals },
     { fieldName: "OP_IP_TYpe", fieldValue: "0", opType: OperatorComparer.Equals },
   ]
@@ -109,6 +115,14 @@ export class DoctorShareComponent implements OnInit {
 
 getfilterdata(){
 debugger
+let fromD = this._DoctorShareService.UserFormGroup.get("fromDate").value || "";
+let toD = this._DoctorShareService.UserFormGroup.get("enddate").value || "";
+this.fromDate = fromD ? this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('fromDate').value, "yyyy-MM-dd") : "";
+this.toDate = toD ? this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('enddate').value, "yyyy-MM-dd") : "";
+
+console.log("fromDate:",this.fromDate)
+console.log("toDate:",this.toDate)
+
 this.gridConfig = {
     apiUrl: "Doctor/DoctorShareList",
     columnsList:this.allColumns , 
@@ -117,7 +131,7 @@ this.gridConfig = {
     filters:  [
       { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
       { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
-      { fieldName: "DoctorId", fieldValue: this.DoctorId, opType: OperatorComparer.Contains },
+      { fieldName: "DoctorId", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
       { fieldName: "PBillNo", fieldValue: this.pBillNo, opType: OperatorComparer.Equals },
       { fieldName: "OP_IP_TYpe", fieldValue: this.opipType, opType: OperatorComparer.Equals },
     ]
