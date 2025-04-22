@@ -94,7 +94,7 @@ export class NursingnoteComponent implements OnInit {
   vDOA: any;
   OP_IP_Id: any;
   myform: FormGroup;
-  IsAddFlag: boolean = false;
+  IsAddFlag: boolean = true;
   registerObj: any;
   vDoctNoteId: any;
 
@@ -433,7 +433,8 @@ export class NursingnoteComponent implements OnInit {
     this.vDescription = this.registerObj.nursingNotes || '';
     this.myform.get('templateDesc').setValue(this.vDescription);
     this.vDoctNoteId=this.registerObj.docNoteId
-    this.IsAddFlag = true;
+    this.IsAddFlag = true 
+  
   }
 
   getNoteList() {
@@ -467,6 +468,7 @@ export class NursingnoteComponent implements OnInit {
     console.log("Template:", event)
     this.tempdesc = event.templateDesc
     this.nursingId=event.nursingId
+    this.IsAddFlag = false 
   }
 
   Chargelist: any = [];
@@ -575,14 +577,14 @@ export class NursingnoteComponent implements OnInit {
       }, (error) => {
         this.toastr.error(error.message);
       });
-      this.IsAddFlag = false
+    this.IsAddFlag = true 
     }
   }
 
   onClear() {
     // this.myform.reset(); 
-    this.IsAddFlag = false;
     this.vDoctNoteId = null;
+    this.IsAddFlag = true 
     this.vDescription=null;
   }
   
@@ -726,6 +728,7 @@ export class NursingnoteComponent implements OnInit {
 
   onClose() {
     // this.myform.reset();
+    this.IsAddFlag = true 
     this._matDialog.closeAll();
     // this.onClearPatientInfo();
     this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
@@ -737,7 +740,6 @@ export class NursingnoteComponent implements OnInit {
     this.myform.get('Comments').setValue('')
     this.dsHandOverNoteList.data = [];
     // this.HandOverNoteList = [];
-    this.IsAddFlag = false 
   }
 }
 

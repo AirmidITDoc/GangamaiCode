@@ -591,7 +591,7 @@ opipType:any="2";
                     width: '100%',
                     data: {
                         base64: res["base64"] as string,
-                        title: "Template Report Viewer"
+                        title: "Pathology Test Report With Header Viewer"
                     }
                 });
     
@@ -817,7 +817,7 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
                     width: '100%',
                     data: {
                         base64: res["base64"] as string,
-                        title: "Template Report Viewer"
+                        title: "Pathology Test Report Viewer"
                     }
                 });
     

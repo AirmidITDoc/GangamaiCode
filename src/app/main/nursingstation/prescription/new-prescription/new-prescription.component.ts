@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { PrescriptionService } from '../prescription.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -150,35 +150,11 @@ export class NewPrescriptionComponent implements OnInit {
     }
   }
 
-  createMyForm() {
-    return this._FormBuilder.group({
-      RegId: '',
-      PatientName: '',
-      WardName: ['', Validators.required],
-      StoreId: ['', Validators.required],
-      RegID: ['', Validators.required],
-      Op_ip_id: ['1'],
-      AdmissionID: 0
-    })
-  }
-
-  createItemForm() {
-    return this._FormBuilder.group({
-      ItemId: ['', [Validators.required, this.validateSelectedItem.bind(this)]],
-      ItemName: '',
-      DoseId: '',
-      Day: [''],
-      Qty: ['',[Validators.required,Validators.pattern("^[0-9]*$")]],
-      Instruction: ['']
-    })
-  }
-
   ngOnInit(): void {
-    this.myForm = this.createMyForm();
-    this.ItemForm = this.createItemForm();
+    this.myForm = this._PrescriptionService.createMyForm();
+    this.ItemForm = this._PrescriptionService.createItemForm();
     this.ItemForm.markAllAsTouched();
     this.myForm.markAllAsTouched();
-
   }
   dateTimeObj: any;
   WardName: any;
@@ -224,21 +200,12 @@ export class NewPrescriptionComponent implements OnInit {
 
   vstoreId: any = '';
   selectChangeStore(obj: any) {
-    debugger
     console.log("Store:", obj);
     this.vstoreId = obj.value
-
   }
-
+  
   vitemId: any;
   vitemname: any;
-
-  validateSelectedItem(control: AbstractControl): { [key: string]: any } | null {
-    if (control.value && typeof control.value !== 'object') {
-      return { invalidItem: true };
-    }
-    return null;
-  }
 
   validateStoreOnTyping() {
     if (!this.vstoreId) {
@@ -251,11 +218,12 @@ export class NewPrescriptionComponent implements OnInit {
   }
 
   selectChangeItem(obj: any) {
-    debugger;
+    // debugger;
+  console.log("ssss:",this.vstoreId)
+
     if (!this.vstoreId) {
       return;
   }
-
     if (!obj || typeof obj !== 'object') {
       this.toastr.error('Invalid item selection. Please choose a valid item from the list.', 'Error!');
       this.ItemForm.get('ItemId').setErrors({ invalidItem: true });
@@ -302,6 +270,7 @@ export class NewPrescriptionComponent implements OnInit {
       ],
     };
   }
+
   onEdit(row) {
     console.log(row);
 
@@ -538,6 +507,7 @@ keyPressAlphanumeric(event) {
 } 
 
 }
+
 export class PrecriptionItemList {
   ItemID: any;
   ItemId: any;

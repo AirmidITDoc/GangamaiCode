@@ -192,6 +192,8 @@ export class ResultEntrytwoComponent implements OnInit {
         "pathTemplateDetailsResult":this.otherForm.get("ResultEntry").value || "string",  //this.Tempdesc
         "templateResultInHTML": this.otherForm.get("ResultEntry").value || "string",  //this.Tempdesc
         "testId":  this.selectedAdvanceObj1.pathTestID || 0,
+        "suggestionNotes": this.otherForm.get("suggestionNotes").value || "string",
+        "pathResultDr1": this.VpathResultDr1 || 0,
       }
       
       let pathologyReportHeader={
