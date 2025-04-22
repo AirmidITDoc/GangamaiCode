@@ -1,599 +1,477 @@
 <div class="modal-wrapper grid-container discharge-summary-section">
-    <div class="modal-header accent">
-        <div class="modal-header-content">
-            <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Discharge Summary </span>
-            </div>
-            <div class="modal-header-right">
-                <div class="comman-date-container">
-                    <div class="comman-date">
-                        <app-common-date [screenFrom]="screenFromString"
-                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                    </div>
-                    <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </div>
-                </div>
-            </div>
+  <div class="modal-header accent">
+    <div class="modal-header-content">
+      <div class="modal-header-title">
+        <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Discharge Summary</span>
+      </div>
+      <div class="modal-header-right">
+        <div class="comman-date-container">
+          <div class="comman-date">
+            <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+          </div>
+          <div class="close-icon">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 
-    <div style="padding: 12px;">
+  <div class="modal-body">
+    <div class="modal-body-container">
+      <div fxLayout="column" class="gap-12 h-100-p">
         <mat-card>
+          <mat-card-content>
             <div class="patient-info-container">
-                <div class="patient-info-box">
-                    <div class="patient-info-title border-bottom pb-2">
-                        <span class="h2">Patient Information</span>
-                    </div>
-                    <div class="patient-sub">
-                        <div class="patient-sub">
-                            <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                fxLayoutAlign="space-between">
-                                <div fxLayout="column" fxLayoutGap="1px">
-                                    <div class="patient-col">
-                                        <span class="patient-col-key">UHID No
-                                        </span>
-                                        <span>:</span>
-                                        <span class="patient-col-value">{{data.regNo}}</span>
-                                    </div>
-                                    <div class="patient-col">
-                                        <span class="patient-col-key">Patient Name
-                                        </span>
-                                        <span>:</span>
-                                        <span class="patient-col-value">{{data.patientName}}</span>
-                                    </div>
-                                    <div class="patient-col">
-                                        <span class="patient-col-key">Doctor Name</span>
-                                        <span>:</span>
-                                        <span class="patient-col-value">{{data.doctorname}}</span>
-                                    </div>
-                                    <div class="patient-col">
-                                        <span class="patient-col-key">Department</span>
-                                        <span>:</span>
-                                        <span class="patient-col-value">{{data.departmentName}}</span>
-                                    </div>
-                                </div>
-                                <div fxLayout="column" fxLayoutGap="1px">
-
-                                    <div class="patient-col">
-                                        <span class="patient-col-key">DOA | Time</span>
-                                        <span>:</span>
-                                        <span class="patient-col-value">{{data.doa}}</span>
-                                    </div>
-                                    <div class="patient-col">
-                                        <span class="patient-col-key">IPD No</span>
-                                        <span>:</span>
-                                        <span class="patient-col-value">{{data.ipdno}}</span>
-                                    </div>
-                                    <div class="patient-col">
-                                        <span class="patient-col-key">Age | Sex
-                                        </span>
-                                        <span>:</span>
-                                        <span
-                                            class="patient-col-value">{{data.ageYear}}Y|{{data.ageMonth}}M|{{data.ageDay}}
-                                            D | {{data.genderName}}</span>
-                                    </div>
-                                    <div class="patient-col">
-                                        <span class="patient-col-key">Ref-Doctor Name
-                                        </span>
-                                        <span>:</span>
-                                        <span class="patient-col-value">{{data.refDocName}}</span>
-                                    </div>
-
-                                </div>
-                                <div fxLayout="column" fxLayoutGap="1px">
-                                    <div class="patient-col">
-                                        <span class="patient-col-key">Ward | Bed Name
-                                        </span>
-                                        <span>:</span>
-                                        <span class="patient-col-value">{{data.RoomName}}
-                                            | {{data.bedName}}</span>
-                                    </div>
-                                    <div class="patient-col">
-                                        <span class="patient-col-key">Patient Type
-                                        </span>
-                                        <span>:</span>
-                                        <span class="patient-col-value">{{data.patientType}}</span>
-                                    </div>
-                                    <div class="patient-col">
-                                        <span class="patient-col-key">Tarrif Name
-                                        </span>
-                                        <span>:</span>
-                                        <span class="patient-col-value">{{data.tariffName}}</span>
-                                    </div>
-                                    <div class="patient-col">
-                                        <span class="patient-col-key">Company Name</span>
-                                        <span>:</span>
-                                        <span class="patient-col-value"
-                                            style="color: orange;">{{data.companyName}}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+              <div class="patient-info-box">
+                <div class="patient-info-title border-bottom pb-2">
+                  <span class="h2 font-weight-600">Patient Information</span>
                 </div>
+                <div class="patient-sub">
+                  <div class="patient-sub">
+                    <div class="patient-info-row pt-8" fxLayout="row" fxLayoutAlign="space-between">
+                      <div fxLayout="column" fxLayoutGap="1px">
+                        <div class="patient-col">
+                          <span class="patient-col-key">UHID No</span>
+                          <span>:</span>
+                          <span class="patient-col-value">{{ data.regNo }}</span>
+                        </div>
+                        <div class="patient-col">
+                          <span class="patient-col-key">Patient Name</span>
+                          <span>:</span>
+                          <span class="patient-col-value">{{ data.patientName }}</span>
+                        </div>
+                        <div class="patient-col">
+                          <span class="patient-col-key">Doctor Name</span>
+                          <span>:</span>
+                          <span class="patient-col-value">{{ data.doctorname }}</span>
+                        </div>
+                        <div class="patient-col">
+                          <span class="patient-col-key">Department</span>
+                          <span>:</span>
+                          <span class="patient-col-value">{{ data.departmentName }}</span>
+                        </div>
+                      </div>
+                      <div fxLayout="column" fxLayoutGap="1px">
+                        <div class="patient-col">
+                          <span class="patient-col-key">DOA | Time</span>
+                          <span>:</span>
+                          <span class="patient-col-value">{{ data.doa }}</span>
+                        </div>
+                        <div class="patient-col">
+                          <span class="patient-col-key">IPD No</span>
+                          <span>:</span>
+                          <span class="patient-col-value">{{ data.ipdno }}</span>
+                        </div>
+                        <div class="patient-col">
+                          <span class="patient-col-key">Age | Sex</span>
+                          <span>:</span>
+                          <span class="patient-col-value">{{ data.ageYear }}Y|{{ data.ageMonth }}M|{{ data.ageDay }} D | {{ data.genderName }}</span>
+                        </div>
+                        <div class="patient-col">
+                          <span class="patient-col-key">Ref-Doctor Name</span>
+                          <span>:</span>
+                          <span class="patient-col-value">{{ data.refDocName }}</span>
+                        </div>
+                      </div>
+                      <div fxLayout="column" fxLayoutGap="1px">
+                        <div class="patient-col">
+                          <span class="patient-col-key">Ward | Bed Name</span>
+                          <span>:</span>
+                          <span class="patient-col-value">{{ data.RoomName }} | {{ data.bedName }}</span>
+                        </div>
+                        <div class="patient-col">
+                          <span class="patient-col-key">Patient Type</span>
+                          <span>:</span>
+                          <span class="patient-col-value">{{ data.patientType }}</span>
+                        </div>
+                        <div class="patient-col">
+                          <span class="patient-col-key">Tarrif Name</span>
+                          <span>:</span>
+                          <span class="patient-col-value">{{ data.tariffName }}</span>
+                        </div>
+                        <div class="patient-col">
+                          <span class="patient-col-key">Company Name</span>
+                          <span>:</span>
+                          <span class="patient-col-value" style="color: orange">{{ data.companyName }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+          </mat-card-content>
         </mat-card>
-    </div>
-    <div class="modal-body" fusePerfectScrollbar>
-        <div class="modal-body-container">
-
-            <div fxLayout="column" class="gap-12">
-                <form [formGroup]="DischargesumForm">
-                    <div class="modal-card-container">
-                        <div class="mat-tab-container">
-                            <mat-tab-group>
-                                <mat-tab label="FINAL DIAGNOSS">
-                                    <mat-card class="mat-tab-card-container">
-                                        <div fxLayout="column" fxLayoutGap="10px">
-                                            <div fxLayout="row" fxLayoutGap="10px">
-                                                <div fxLayout="column" fxFlex>
-                                                    <div class="form-title mb-2 pb-2 border-bottom">
-                                                        <span class="h1 font-weight-600">FINAL DIAGNOSS</span>
-                                                    </div>
-                                                    <div class="form-input">
-                                                        <mat-form-field appearance="outline" fxFlex>
-                                                            <mat-label>FInal DIAGNOSS</mat-label>
-                                                            <textarea matInput name="Diagnosis"
-                                                                formControlName="diagnosis" [(ngModel)]="vDiagnosis"
-                                                                cols="300" rows="8"></textarea>
-                                                        </mat-form-field>
-                                                    </div>
-                                                </div>
-                                                <div fxLayout="column" fxFlex>
-                                                    <div class="form-title mb-2 pb-2 border-bottom">
-                                                        <span class="h2 font-weight-600">HISTORY</span>
-                                                    </div>
-                                                    <div class="form-input">
-                                                        <mat-form-field appearance="outline" fxFlex>
-                                                            <mat-label>HISTORY</mat-label>
-                                                            <textarea matInput name="history" formControlName="history"
-                                                                [(ngModel)]="vhistory" cols="300" rows="8"></textarea>
-                                                        </mat-form-field>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div fxLayout="row" fxLayoutGap="10px">
-                                                <div fxLayout="column" fxFlex>
-                                                    <div class="form-title mb-2 pb-2 border-bottom">
-                                                        <span class="h2 font-weight-600">CLINICAL CONDITION ON
-                                                            ADMISSION</span>
-                                                    </div>
-                                                    <div class="form-input">
-                                                        <mat-form-field appearance="outline" fxFlex>
-                                                            <mat-label>Clinical Condition OnAdmisssion</mat-label>
-                                                            <textarea matInput name="ClinicalConditionOnAdmisssion"
-                                                                formControlName="clinicalConditionOnAdmisssion"
-                                                                [(ngModel)]="vClinicalCondition" cols="300"
-                                                                rows="8"></textarea>
-                                                        </mat-form-field>
-                                                    </div>
-                                                </div>
-                                                <div fxLayout="column" fxFlex>
-                                                    <div class="form-title mb-2 pb-2 border-bottom">
-                                                        <span class="h2 font-weight-600">CLINICAL FINDING</span>
-                                                    </div>
-                                                    <div class="form-input">
-
-                                                        <mat-form-field appearance="outline" fxFlex>
-                                                            <mat-label>CLINICAL FINDING</mat-label>
-                                                            <textarea matInput name="ClinicalFinding"
-                                                                formControlName="clinicalFinding"
-                                                                [(ngModel)]="vClinicalFinding" cols="300" rows="8">
-                                                                </textarea>
-                                                        </mat-form-field>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </mat-card>
-                                </mat-tab>
-
-                                <mat-tab label="SURGERY / OPRATIVE NOTES">
-                                    <mat-card class="mat-tab-card-container" fxLayoutGap="6px">
-                                        <div>
-                                            <div class="form-title mb-2 pb-2 border-bottom">
-                                                <span class="h2 font-weight-600">SURGERY/PROCEDURE DONE</span>
-                                            </div>
-                                            <div class="form-input">
-                                                <mat-form-field appearance="outline" fxFlex>
-                                                    <mat-label>SURGERY /PROCEDURE DONE</mat-label>
-                                                    <textarea matInput name="SurgeryProcDone"
-                                                        formControlName="surgeryProcDone"
-                                                        [(ngModel)]="vSURGERYprocedure" cols="300" rows="8"></textarea>
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-                                        <div>
-
-                                            <div class="form-title mb-2 pb-2 border-bottom">
-                                                <span class="h2 font-weight-600">OPRATIVE NOTES</span>
-                                            </div>
-                                            <div class="form-input">
-                                                <mat-form-field appearance="outline" fxFlex>
-                                                    <mat-label>OPRATIVE NOTES</mat-label>
-                                                    <textarea matInput name="OperativeNotes"
-                                                        formControlName="opertiveNotes" [(ngModel)]="vOperativeNotes"
-                                                        cols="300" rows="8"></textarea>
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-                                    </mat-card>
-
-                                </mat-tab>
-
-                                <mat-tab label="PATHOLOGY / RADIOLOGY ">
-                                    <mat-card class="mat-tab-card-container">
-                                        <div class="form-title mb-2 pb-2 border-bottom">
-                                            <span class="h2 font-weight-600">PATHOLOGY</span>
-                                        </div>
-                                        <div class="form-input">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>PATHOLOGY</mat-label>
-                                                <textarea matInput name="Pathology" formControlName="pathology"
-                                                    [(ngModel)]="vPathology" cols="300" rows="8"></textarea>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div class="form-title mb-2 pb-2 border-bottom">
-                                            <span class="h2 font-weight-600">Radiology</span>
-                                        </div>
-                                        <div class="form-input">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Radiology</mat-label>
-                                                <textarea matInput name="Radiology" formControlName="radiology"
-                                                    [(ngModel)]="vRadiology" cols="300" rows="8"></textarea>
-                                            </mat-form-field>
-                                        </div>
-                                    </mat-card>
-                                </mat-tab>
-
-                                <mat-tab label="COURSES IN THE HOSPITAL">
-                                    <mat-card class="mat-tab-card-container">
-                                        <div fxLayout="column" class="gap-8">
-                                            <div class="card-content">
-                                                <div class="form-title mb-2 pb-2 border-bottom">
-                                                    <span class="h2 font-weight-600">COURSES IN THE HOSPITAL</span>
-                                                </div>
-                                                <div class="form-input">
-                                                    <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>COURSES IN THE HOSPITAL</mat-label>
-                                                        <h4 style="padding: 0px;"><b>Detail History</b></h4>
-                                                        <textarea matInput name="TreatmentGiven"
-                                                            style="white-space: pre-wrap;"
-                                                            formControlName="treatmentGiven"
-                                                            [(ngModel)]="vTreatmentGiven" cols="200" rows="8">
-                                                        </textarea>
-                                                    </mat-form-field>
-                                                </div>
-                                            </div>
-                                            <!-- *ngIf="DischargesumForm.get('isNormalOrDeath').value == 'True'" -->
-                                            <div class="card-content">
-                                                <div class="form-title mb-2 pb-2 border-bottom">
-                                                    <span class="h2 font-weight-600">TREATMENT ADVICED</span>
-                                                </div>
-                                                <div class="form-input">
-                                                    <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>Treatment Adviced</mat-label>
-                                                        <textarea matInput name="TreatmentAdvisedAfterDischarge"
-                                                            formControlName="treatmentAdvisedAfterDischarge"
-                                                            [(ngModel)]="vTreatmentAdvisedAfterDischarge" cols="200"
-                                                            rows="8"></textarea>
-                                                    </mat-form-field>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </mat-card>
-                                </mat-tab>
-
-                                <mat-tab label="OTHER CON DR.OPINION">
-                                    <mat-card class="mat-tab-card-container"> -->
-                                        <div class="form-title mb-2 pb-2 border-bottom">
-                                            <span class="h2 font-weight-600">OTHER CON DR.OPINION</span>
-                                        </div>
-                                        <div class="form-input">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>OTHER CON DR.OPINION</mat-label>
-                                                <textarea matInput name="OtherConDrOpinions"
-                                                    formControlName="otherConDrOpinions"
-                                                    [(ngModel)]="vOtherConDrOpinions" cols="300" rows="8"></textarea>
-                                            </mat-form-field>
-                                        </div>
-                                        <!-- *ngIf="DischargesumForm.get('isNormalOrDeath').value == 'True'" -->
-                                        <div class="form-title mb-2 pb-2 border-bottom">
-                                            <span class="h2 font-weight-600">PAIN MANAGMENT TECHNIQUE</span>
-                                        </div>
-                                        <!-- *ngIf="DischargesumForm.get('isNormalOrDeath').value == 'True'" -->
-                                        <div class="form-input">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>PAIN MANAGMENT TECHNIQUE</mat-label>
-                                                <textarea matInput name="PainManagementTechnique"
-                                                    formControlName="painManagementTechnique"
-                                                    [(ngModel)]="vPainManagementTechnique" cols="300"
-                                                    rows="8"></textarea>
-                                            </mat-form-field>
-                                        </div>
-
-                                    </mat-card>
-                                </mat-tab>
-
-                                <mat-tab label="FOLLOW UP">
-                                    <mat-card class="mat-tab-card-container">
-                                        <div fxLayout="column" class="gap-8">
-                                            <div class="card-content">
-                                                <div class="form-title mb-2 pb-2 border-bottom">
-                                                    <span class="h2 font-weight-600">FOLLOW UP</span>
-                                                </div>
-                                                <!-- *ngIf="DischargesumForm.get('isNormalOrDeath').value == 'True'" -->
-                                                <div class="form-input" fxLayoutGap="8px grid">
-                                                    <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>FOLLOW UP</mat-label>
-                                                        <textarea matInput name="LifeStyle" formControlName="lifeStyle"
-                                                            [(ngModel)]="vLifeStyle" cols="300" rows="6"></textarea>
-                                                    </mat-form-field>
-                                                    <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>CONDITION AT THE TIME OF DISCHARGE</mat-label>
-                                                        <textarea matInput name="ConditionAtTheTimeOfDischarge"
-                                                            formControlName="conditionAtTheTimeOfDischarge"
-                                                            [(ngModel)]="vConditionofTimeDischarge" cols="300"
-                                                            rows="6"></textarea>
-                                                    </mat-form-field>
-                                                </div>
-
-                                                <div class="card-content">
-                                                    <div class="input-container">
-                                                        <div fxLayout="row wrap" fxLayoutGap="8px grid">
-                                                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
-
-                                                                <airmid-dropdown label="Doctor Name"
-                                                                    formControlName="dischargeDoctor1"
-                                                                    [formGroup]="DischargesumForm"
-                                                                    [validations]="getValidationMessages().dischargeDoctor1"
-                                                                    [mode]="autocompleteModeRefDoctor">
-                                                                </airmid-dropdown>
-                                                            </div>
-
-                                                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                                                <mat-form-field appearance="outline" fxFlex>
-                                                                    <mat-label>Claim Number</mat-label>
-                                                                    <input name="ClaimNumber"
-                                                                        formControlName="claimNumber"
-                                                                        [(ngModel)]="vClaimNumber" matInput>
-                                                                </mat-form-field>
-                                                            </div>
-
-                                                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
-
-
-                                                                <airmid-dropdown label="Ref.Doctor Name"
-                                                                    formControlName="dischargeDoctor2"
-                                                                    [formGroup]="DischargesumForm"
-                                                                    [validations]="getValidationMessages().dischargeDoctor2"
-                                                                    [mode]="autocompleteModeRefDoctor">
-                                                                </airmid-dropdown>
-                                                            </div>
-
-                                                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                                                <mat-form-field appearance="outline" fxFlex>
-                                                                    <mat-label>Pre OTH Number</mat-label>
-                                                                    <input name="PreOthNumber"
-                                                                        formControlName="preOthNumber"
-                                                                        [(ngModel)]="vPreOthNumber" matInput>
-                                                                </mat-form-field>
-                                                            </div>
-
-                                                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
-
-
-                                                                <!-- <airmid-dropdown label="Ref.Doctor Name"
-                                                                    formControlName="dischargeDoctor3"
-                                                                    [formGroup]="DischargesumForm"
-                                                                    [validations]="getValidationMessages().dischargeDoctor3"
-                                                                    [mode]="autocompleteModeRefDoctor">
-                                                                </airmid-dropdown> -->
-                                                            </div>
-
-                                                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                                                <mat-form-field appearance="outline" fxFlex>
-                                                                    <mat-label>Doctor Assistant Name</mat-label>
-                                                                    <input name="DoctorAssistantName"
-                                                                        formControlName="doctorAssistantName"
-                                                                        [(ngModel)]="vDoctorAssistantName" matInput>
-                                                                </mat-form-field>
-                                                            </div>
-
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </mat-card>
-                                </mat-tab>
-
-                                <mat-tab label="MEDICINE AT THE TIME OF DISCHARGE">
-                                    <mat-card class="mat-tab-card-container">
-                                        <div class="form-title mb-2 pb-2 border-bottom">
-                                            <span class="h2 font-weight-600">MEDICINE AT THE TIME OF DISCHARGE</span>
-                                        </div>
-
-                                        <div fxLayout="column" fxLayoutGap="10px">
-                                            <div fxFlex.gt-sm="100%" fxFlex>
-                                                <form [formGroup]="MedicineItemForm">
-                                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
-                                                        class="gap-8">
-                                                        <!-- <airmid-autocomplete lbl="Item" [formGroup]="MedicineItemForm" label="Search Item Name"
-                                                            formControlName="ItemId" placeholderText="Enter Item Name"
-                                                            fxFlex
-                                                            ApiUrl="VisitDetail/GetServiceListwithTraiff?TariffId=1&ClassId=2&ServiceName="
-                                                            (selectionChange)="getSelectedserviceObj($event)"
-                                                            TextField="serviceName"
-                                                            ValueField="serviceId"></airmid-autocomplete> -->
-
-                                                            <airmid-autocomplete lbl="Item" [formGroup]="MedicineItemForm"
-                                                            formControlName="ItemId" placeholderText="Enter Item Name" fxFlex
-                                                            ApiUrl="ItemMaster/GetItemListForPrescription?StoreId=2&ItemName="
-                                                            (selectionChange)="getSelectedserviceObj($event)"
-                                                            TextField="itemName" ValueField="itemId"></airmid-autocomplete>
-            
-                                                        <airmid-dropdown label="Dose Name" formControlName="DoseId"
-                                                            [formGroup]="MedicineItemForm"
-                                                            [validations]="getValidationMessages().DoseId"
-                                                            (selectionChange)="getdose($event)"
-                                                            [mode]="autocompleteModeDose">
-                                                        </airmid-dropdown>
-
-                                                        <airmid-textbox label="Day" formControlName="Day" [value]="vDay"  [type]="'text'"
-                                                        (keypress)="keyPressCharater($event)"
-                                                            [formGroup]="MedicineItemForm">
-                                                        </airmid-textbox>
-
-                                                        <div class="input-add-button">
-                                                            <div matTooltip="Select Itemname to enable this button!!"
-                                                                [matTooltipPosition]="'above'" fxLayoutGap="10px"
-                                                                fxLayout="row">
-                                                                <button #addbutton class="btn btn-primary btn-with-icon"
-                                                                    (click)="onAdd()">
-                                                                    <span class="btn-icon">
-                                                                        <mat-icon> add </mat-icon>
-                                                                    </span>
-                                                                    <span>Add</span>
-                                                                </button>
-
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                        <div class="modal-card-container table-container">
-                                            <div class="table-row gap-12" fxLayout="column" fxLayout.gt-md="row">
-                                                <!-- Table 1 -->
-                                                <div class="table" fxFlex="100%">
-                                                    <mat-card>
-                                                        <mat-table class="mat-table-1 h-250" matSort
-                                                            [dataSource]="dsItemList" [@animateStagger]="{value:'50'}">
-
-                                                            <ng-container matColumnDef="itemName">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>
-                                                                    ItemName</mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                    <span> {{element.itemName}}</span>
-                                                                </mat-cell>
-                                                            </ng-container>
-
-                                                            <ng-container matColumnDef="doseName">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>
-                                                                    Dose Name</mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                    <span> {{element.doseName}}</span>
-                                                                </mat-cell>
-                                                            </ng-container>
-
-                                                            <ng-container matColumnDef="day">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>
-                                                                    Day</mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                    <span> {{element.days}}</span>
-                                                                </mat-cell>
-                                                            </ng-container>
-
-                                                            <!-- <ng-container matColumnDef="Remark">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                                    Instruction</mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                    <span> {{element.Instruction}}</span>
-                                                                </mat-cell>
-                                                            </ng-container> -->
-
-                                                            <ng-container matColumnDef="Action" stickyEnd>
-                                                                <mat-header-cell *matHeaderCellDef
-                                                                    class="table-actions">Action
-                                                                </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact">
-                                                                    <ng-container class="actions">
-                                                                        <mat-icon
-                                                                            (click)="deleteTableRow($event ,contact)"
-                                                                            color="warn">
-                                                                            delete
-                                                                        </mat-icon>
-                                                                    </ng-container>
-                                                                </mat-cell>
-                                                            </ng-container>
-
-                                                            <mat-header-row class="accent"
-                                                                *matHeaderRowDef="displayedColumns; sticky: true">
-                                                            </mat-header-row>
-                                                            <mat-row *matRowDef="let row; columns: displayedColumns;"
-                                                                class="element"
-                                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                                        </mat-table>
-                                                    </mat-card>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                    </mat-card>
-                                </mat-tab>
-                                <mat-tab>
-                                    <airmid-dropdown label="Ref.Doctor Name" formControlName="dischargeDoctor3"
-                                        [formGroup]="DischargesumForm"
-                                        [validations]="getValidationMessages().dischargeDoctor3"
-                                        [mode]="autocompleteModeRefDoctor">
-                                    </airmid-dropdown>
-                                    <!-- <airmid-editor label="Template Details" formControlName="templateDesc"
-                                        [(value)]="vTemplateDesc" [formGroup]="DischargesumForm"></airmid-editor> -->
-                                </mat-tab>
-                            </mat-tab-group>
-                        </div>
+        <form [formGroup]="DischargesumForm" fusePerfectScrollbar>
+          <mat-tab-group class="dynamic-table-wrapper">
+            <mat-tab label="FINAL DIAGNOSS">
+              <mat-card class="mat-tab-card-container">
+                <div fxLayout="column" fxLayoutGap="10px">
+                  <div fxLayout="row" fxLayoutGap="10px">
+                    <div fxLayout="column" fxFlex>
+                      <div class="form-title mb-2 pb-2 border-bottom">
+                        <span class="h3 font-weight-600">FINAL DIAGNOSS</span>
+                      </div>
+                      <div class="form-input">
+                        <mat-form-field appearance="outline" fxFlex>
+                          <mat-label>FInal DIAGNOSS</mat-label>
+                          <textarea matInput name="Diagnosis" formControlName="diagnosis" [(ngModel)]="vDiagnosis" cols="300" rows="6"></textarea>
+                        </mat-form-field>
+                      </div>
                     </div>
-                </form>
-                <div class="modal-card-container">
-                    <form [formGroup]="DischargesumForm">
-                        <mat-card>
-                            <div fxLayout="row" style="margin-left: 1000px;">
+                    <div fxLayout="column" fxFlex>
+                      <div class="form-title mb-2 pb-2 border-bottom">
+                        <span class="h3 font-weight-600">HISTORY</span>
+                      </div>
+                      <div class="form-input">
+                        <mat-form-field appearance="outline" fxFlex>
+                          <mat-label>HISTORY</mat-label>
+                          <textarea matInput name="history" formControlName="history" [(ngModel)]="vhistory" cols="300" rows="6"></textarea>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
 
-
-                                <!-- <app-airmid-slider label="Normal/Death Summary" formControlName="isNormalOrDeath"
-                                    [formGroup]="DischargesumForm" [(ngModel)]="vIsNormalDeath"></app-airmid-slider> -->
-
-
-                            </div>
-
-                        </mat-card>
-                        <div class="modal-footer">
-                            <div class="footer-navigation-container">
-                                <div class="modal-footer-buttons">
-                                    <mat-radio-group [formGroup]="DischargesumForm" formControlName="isNormalOrDeath"  [(ngModel)]="vIsNormalDeath"
-                                        fxLayoutAlign="center center" style="margin-left: 900px;">
-                                        <mat-radio-button mat-fab value="1">Normal</mat-radio-button>
-                                        <mat-radio-button mat-fab value="0">Death Summary</mat-radio-button>
-                                    </mat-radio-group>
-                                    <button type="button" class="btn btn-danger-outline"
-                                    (click)="onClose()">Close</button>
-                                    <button type="button" class="btn btn-primary" (click)="OnSave()"
-                                        [disabled]="saveflag"> Save </button>
-                                  
-
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                  <div fxLayout="row" fxLayoutGap="10px">
+                    <div fxLayout="column" fxFlex>
+                      <div class="form-title mb-2 pb-2 border-bottom">
+                        <span class="h3 font-weight-600">CLINICAL CONDITION ON ADMISSION</span>
+                      </div>
+                      <div class="form-input">
+                        <mat-form-field appearance="outline" fxFlex>
+                          <mat-label>Clinical Condition OnAdmisssion</mat-label>
+                          <textarea matInput name="ClinicalConditionOnAdmisssion" formControlName="clinicalConditionOnAdmisssion" [(ngModel)]="vClinicalCondition" cols="300" rows="6"></textarea>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div fxLayout="column" fxFlex>
+                      <div class="form-title mb-2 pb-2 border-bottom">
+                        <span class="h3 font-weight-600">CLINICAL FINDING</span>
+                      </div>
+                      <div class="form-input">
+                        <mat-form-field appearance="outline" fxFlex>
+                          <mat-label>CLINICAL FINDING</mat-label>
+                          <textarea matInput name="ClinicalFinding" formControlName="clinicalFinding" [(ngModel)]="vClinicalFinding" cols="300" rows="6"></textarea>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-            </div>
+              </mat-card>
+            </mat-tab>
 
-        </div>
+            <mat-tab label="SURGERY / OPRATIVE NOTES">
+              <mat-card class="mat-tab-card-container" fxLayoutGap="6px">
+                <div>
+                  <div class="form-title mb-2 pb-2 border-bottom">
+                    <span class="h3 font-weight-600">SURGERY/PROCEDURE DONE</span>
+                  </div>
+                  <div class="form-input">
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>SURGERY /PROCEDURE DONE</mat-label>
+                      <textarea matInput name="SurgeryProcDone" formControlName="surgeryProcDone" [(ngModel)]="vSURGERYprocedure" cols="300" rows="6"></textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div>
+                  <div class="form-title mb-2 pb-2 border-bottom">
+                    <span class="h3 font-weight-600">OPRATIVE NOTES</span>
+                  </div>
+                  <div class="form-input">
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>OPRATIVE NOTES</mat-label>
+                      <textarea matInput name="OperativeNotes" formControlName="opertiveNotes" [(ngModel)]="vOperativeNotes" cols="300" rows="6"></textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </mat-card>
+            </mat-tab>
+
+            <mat-tab label="PATHOLOGY / RADIOLOGY ">
+              <mat-card class="mat-tab-card-container">
+                <div class="form-title mb-2 pb-2 border-bottom">
+                  <span class="h3 font-weight-600">PATHOLOGY</span>
+                </div>
+                <div class="form-input">
+                  <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>PATHOLOGY</mat-label>
+                    <textarea matInput name="Pathology" formControlName="pathology" [(ngModel)]="vPathology" cols="300" rows="6"></textarea>
+                  </mat-form-field>
+                </div>
+
+                <div class="form-title mb-2 pb-2 border-bottom">
+                  <span class="h3 font-weight-600">Radiology</span>
+                </div>
+                <div class="form-input">
+                  <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Radiology</mat-label>
+                    <textarea matInput name="Radiology" formControlName="radiology" [(ngModel)]="vRadiology" cols="300" rows="6"></textarea>
+                  </mat-form-field>
+                </div>
+              </mat-card>
+            </mat-tab>
+
+            <mat-tab label="COURSES IN THE HOSPITAL">
+              <mat-card class="mat-tab-card-container">
+                <div fxLayout="column" class="gap-8">
+                  <div class="card-content">
+                    <div class="form-title mb-2 pb-2 border-bottom">
+                      <span class="h3 font-weight-600">COURSES IN THE HOSPITAL</span>
+                    </div>
+                    <div class="form-input">
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>COURSES IN THE HOSPITAL</mat-label>
+                        <textarea matInput name="TreatmentGiven" style="white-space: pre-wrap" formControlName="treatmentGiven" [(ngModel)]="vTreatmentGiven" cols="200" rows="6"></textarea>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <!-- *ngIf="DischargesumForm.get('isNormalOrDeath').value == 'True'" -->
+                  <div class="card-content">
+                    <div class="form-title mb-2 pb-2 border-bottom">
+                      <span class="h3 font-weight-600">TREATMENT ADVICED</span>
+                    </div>
+                    <div class="form-input">
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Treatment Adviced</mat-label>
+                        <textarea
+                          matInput
+                          name="TreatmentAdvisedAfterDischarge"
+                          formControlName="treatmentAdvisedAfterDischarge"
+                          [(ngModel)]="vTreatmentAdvisedAfterDischarge"
+                          cols="200"
+                          rows="6"
+                        ></textarea>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </mat-card>
+            </mat-tab>
+
+            <mat-tab label="OTHER CON DR.OPINION">
+              <mat-card class="mat-tab-card-container">
+                <div class="form-title mb-2 pb-2 border-bottom">
+                  <span class="h3 font-weight-600">OTHER CON DR.OPINION</span>
+                </div>
+                <div class="form-input">
+                  <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>OTHER CON DR.OPINION</mat-label>
+                    <textarea matInput name="OtherConDrOpinions" formControlName="otherConDrOpinions" [(ngModel)]="vOtherConDrOpinions" cols="300" rows="6"></textarea>
+                  </mat-form-field>
+                </div>
+                <!-- *ngIf="DischargesumForm.get('isNormalOrDeath').value == 'True'" -->
+                <div class="form-title mb-2 pb-2 border-bottom">
+                  <span class="h3 font-weight-600">PAIN MANAGMENT TECHNIQUE</span>
+                </div>
+                <!-- *ngIf="DischargesumForm.get('isNormalOrDeath').value == 'True'" -->
+                <div class="form-input">
+                  <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>PAIN MANAGMENT TECHNIQUE</mat-label>
+                    <textarea matInput name="PainManagementTechnique" formControlName="painManagementTechnique" [(ngModel)]="vPainManagementTechnique" cols="300" rows="6"></textarea>
+                  </mat-form-field>
+                </div>
+              </mat-card>
+            </mat-tab>
+
+            <mat-tab label="FOLLOW UP">
+              <mat-card>
+                <mat-card-content>
+                  <div fxLayout="column" class="gap-8">
+                    <div class="card-content">
+                      <div class="form-title mb-2 pb-2 border-bottom">
+                        <span class="h3 font-weight-600">FOLLOW UP</span>
+                      </div>
+
+                      <div class="input-container input-error-hidden">
+                        <div fxFlexFill fxLayout="row wrap" fxLayoutGap="8px 16px grid">
+                          <div fxFlex="50" fxFlex.xs="100">
+                            <mat-form-field appearance="outline" fxFlex>
+                              <mat-label>FOLLOW UP</mat-label>
+                              <textarea matInput name="LifeStyle" formControlName="lifeStyle" [(ngModel)]="vLifeStyle" cols="300" rows="6"></textarea>
+                            </mat-form-field>
+                          </div>
+
+                          <div fxFlex="50" fxFlex.xs="100">
+                            <mat-form-field appearance="outline" fxFlex>
+                              <mat-label>CONDITION AT THE TIME OF DISCHARGE</mat-label>
+                              <textarea
+                                matInput
+                                name="ConditionAtTheTimeOfDischarge"
+                                formControlName="conditionAtTheTimeOfDischarge"
+                                [(ngModel)]="vConditionofTimeDischarge"
+                                cols="300"
+                                rows="6"
+                              ></textarea>
+                            </mat-form-field>
+                          </div>
+
+                          <div fxFlex="50" fxFlex.xs="100">
+                            <airmid-dropdown
+                              label="Doctor Name"
+                              formControlName="dischargeDoctor1"
+                              [formGroup]="DischargesumForm"
+                              [validations]="getValidationMessages().dischargeDoctor1"
+                              [mode]="autocompleteModeRefDoctor"
+                            ></airmid-dropdown>
+                          </div>
+
+                          <div fxFlex="50" fxFlex.xs="100">
+                            <mat-form-field appearance="outline" fxFlex>
+                              <mat-label>Claim Number</mat-label>
+                              <input name="ClaimNumber" formControlName="claimNumber" [(ngModel)]="vClaimNumber" matInput />
+                            </mat-form-field>
+                          </div>
+
+                          <div fxFlex="50" fxFlex.xs="100">
+                            <airmid-dropdown
+                              label="Ref.Doctor Name"
+                              formControlName="dischargeDoctor2"
+                              [formGroup]="DischargesumForm"
+                              [validations]="getValidationMessages().dischargeDoctor2"
+                              [mode]="autocompleteModeRefDoctor"
+                            ></airmid-dropdown>
+                          </div>
+
+                          <div fxFlex="50" fxFlex.xs="100">
+                            <mat-form-field appearance="outline" fxFlex>
+                              <mat-label>Pre OTH Number</mat-label>
+                              <input name="PreOthNumber" formControlName="preOthNumber" [(ngModel)]="vPreOthNumber" matInput />
+                            </mat-form-field>
+                          </div>
+
+                          <div fxFlex="50" fxFlex.xs="100">
+                            <mat-form-field appearance="outline" fxFlex>
+                              <mat-label>Doctor Assistant Name</mat-label>
+                              <input name="DoctorAssistantName" formControlName="doctorAssistantName" [(ngModel)]="vDoctorAssistantName" matInput />
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </mat-tab>
+
+            <mat-tab label="MEDICINE AT THE TIME OF DISCHARGE">
+              <mat-card class="mat-tab-card-container h-100-p" fxLayout="column">
+                <div class="modal-card-container">
+                  <div class="form-title mb-2 pb-2 border-bottom">
+                    <span class="h3 font-weight-600">MEDICINE AT THE TIME OF DISCHARGE</span>
+                  </div>
+
+                  <div fxLayout="column" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                      <form [formGroup]="MedicineItemForm">
+                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
+                          <airmid-autocomplete
+                            label="Enter Item Name"
+                            [formGroup]="MedicineItemForm"
+                            formControlName="ItemId"
+                            placeholderText="Enter Item Name"
+                            fxFlex
+                            ApiUrl="ItemMaster/GetItemListForPrescription?StoreId=2&ItemName="
+                            (selectionChange)="getSelectedserviceObj($event)"
+                            TextField="itemName"
+                            ValueField="itemId"
+                          ></airmid-autocomplete>
+
+                          <airmid-dropdown
+                            label="Dose Name"
+                            formControlName="DoseId"
+                            [formGroup]="MedicineItemForm"
+                            [validations]="getValidationMessages().DoseId"
+                            (selectionChange)="getdose($event)"
+                            [mode]="autocompleteModeDose"
+                          ></airmid-dropdown>
+
+                          <airmid-textbox label="Day" formControlName="Day" [value]="vDay" [type]="'text'" (keypress)="keyPressCharater($event)" [formGroup]="MedicineItemForm"></airmid-textbox>
+
+                          <div class="input-add-button">
+                            <div matTooltip="Select Itemname to enable this button!!" [matTooltipPosition]="'above'" fxLayoutGap="10px" fxLayout="row">
+                              <button #addbutton class="btn btn-primary btn-with-icon" (click)="onAdd()">
+                                <span class="btn-icon">
+                                  <mat-icon>add</mat-icon>
+                                </span>
+                                <span>Add</span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-card-container table-container overflow-auto">
+                  <!-- Table 1 -->
+                  <div class="airmid-table-container">
+                    <div class="content-card">
+                      <mat-table class="mat-table-1 h-250" matSort [dataSource]="dsItemList" [@animateStagger]="{ value: '50' }">
+                        <ng-container matColumnDef="itemName">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>ItemName</mat-header-cell>
+                          <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                            <span>{{ element.itemName }}</span>
+                          </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="doseName">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Dose Name</mat-header-cell>
+                          <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                            <span>{{ element.doseName }}</span>
+                          </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="day">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Day</mat-header-cell>
+                          <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                            <span>{{ element.days }}</span>
+                          </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Action" stickyEnd>
+                          <mat-header-cell *matHeaderCellDef class="table-actions">Action</mat-header-cell>
+                          <mat-cell *matCellDef="let contact">
+                            <ng-container class="actions">
+                              <mat-icon (click)="deleteTableRow($event, contact)" color="warn">delete</mat-icon>
+                            </ng-container>
+                          </mat-cell>
+                        </ng-container>
+
+                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns" class="element" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                      </mat-table>
+                    </div>
+                  </div>
+                </div>
+              </mat-card>
+            </mat-tab>
+            <mat-tab>
+              <airmid-dropdown
+                label="Ref.Doctor Name"
+                formControlName="dischargeDoctor3"
+                [formGroup]="DischargesumForm"
+                [validations]="getValidationMessages().dischargeDoctor3"
+                [mode]="autocompleteModeRefDoctor"
+              ></airmid-dropdown>
+            </mat-tab>
+          </mat-tab-group>
+        </form>
+      </div>
     </div>
-
-
+  </div>
+  <div class="modal-footer">
+    <div class="modal-footer-container" fxLayoutAlign="end center" fxLayoutGap="16px">
+      <form [formGroup]="DischargesumForm">
+        <mat-radio-group [formGroup]="DischargesumForm" formControlName="isNormalOrDeath" [(ngModel)]="vIsNormalDeath">
+          <mat-radio-button mat-fab value="1">Normal</mat-radio-button>
+          <mat-radio-button mat-fab value="0">Death Summary</mat-radio-button>
+        </mat-radio-group>
+      </form>
+      <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+      <button type="button" class="btn btn-primary" (click)="OnSave()" [disabled]="saveflag">Save</button>
+    </div>
+  </div>
 </div>

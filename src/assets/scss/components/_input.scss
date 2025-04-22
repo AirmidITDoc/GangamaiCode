@@ -195,6 +195,7 @@
 }
 
 mat-form-field {
+    --mat-form-field-container-text-size:0.9rem;
     input,mat-label,.mat-mdc-select {
         font-size: $input-size !important;
     }
