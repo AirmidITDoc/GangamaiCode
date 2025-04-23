@@ -597,11 +597,62 @@ export class ResultEntryOneComponent implements OnInit {
     
         }
 
-    Printresultentry() {
-        debugger;
-        // console.log(this.selection.selected);
+    // Printresultentry() {
+    //     debugger;
+    //         const param = {
+    //             searchFields: [
+    //                 {
+    //                     fieldName: "OP_IP_Type",
+    //                     fieldValue: String(this.selectedAdvanceObj2.opdipdtype),
+    //                     opType: "Equals"
+    //                 }
+    //             ],
+    //             mode: "PathologyReport"
+    //         };
     
-        // this.selection.selected.forEach((element) => {
+    //         console.log(param);
+    
+    //         this._SampleService.getReportView(param).subscribe(res => {
+    //             const matDialog = this._matDialog.open(PdfviewerComponent, {
+    //                 maxWidth: "85vw",
+    //                 height: '750px',
+    //                 width: '100%',
+    //                 data: {
+    //                     base64: res["base64"] as string,
+    //                     title: "Pathology Test Report Viewer"
+    //                 }
+    //             });
+    
+    //             matDialog.afterClosed().subscribe(result => {
+                    
+    //             });
+    //         });        
+    // }
+
+    Printresultentry() {
+        debugger
+        let pathologyDelete = [];
+    
+        this.data.RIdData.forEach((element) => {
+            pathologyDelete.push({ pathReportId: element.pathReportId });
+        });
+    
+        const submitData = {
+            pathPrintResultEntry: pathologyDelete
+        };
+    
+        console.log(submitData);
+    
+        this._SampleService.PathPrintResultentryInsert(submitData).subscribe(res => {
+            if (res) {
+                debugger
+                this.viewgetPathologyTestReportPdf()
+            }
+        });
+    }
+
+    viewgetPathologyTestReportPdf() {
+        debugger;
             const param = {
                 searchFields: [
                     {
@@ -736,10 +787,6 @@ export class ResultEntryOneComponent implements OnInit {
                 this.DoctorId.nativeElement.focus();
             }
         }
-    }
-
-    viewgetPathologyTestReportPdf(element) {
-        this.commonService.Onprint("OP_IP_Type", element.OP_IP_Type, "PathologyReport");
     }
 
     onClear() {

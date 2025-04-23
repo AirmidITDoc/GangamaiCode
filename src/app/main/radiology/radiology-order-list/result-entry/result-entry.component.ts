@@ -59,7 +59,7 @@ export class ResultEntryComponent implements OnInit {
   currentDate = new Date();
   ResultEntry: any;
   SuggestionNotes: any;
-  vsuggation: any;
+  vsuggestionNotes: any;
   DoctorId: any;
   printTemplate: any;
   subscriptionArr: Subscription[] = [];
@@ -185,13 +185,14 @@ export class ResultEntryComponent implements OnInit {
     getTemplateList(row) {
       debugger
       console.log("data:", row)
-    this.RadReportId = row.pathReportId
+    this.RadReportId = row.radReportId
       if ((this.RadReportId ?? 0) > 0) {
         setTimeout(() => {
           this._radiologytemplateService.getRadTemplateById(this.RadReportId).subscribe((response) => {
             this.templateObj = response;
             console.log("all data:", this.templateObj)
-            this.vTemplateDesc=this.templateObj.pathTemplateDetailsResult
+            this.vTemplateDesc=this.templateObj.resultEntry
+            this.vsuggestionNotes=this.templateObj.suggestionNotes
           });
         }, 500);
       }
@@ -242,7 +243,7 @@ export class ResultEntryComponent implements OnInit {
               this.dialogRef.close();
               // this.grid.bindGridData();
               this._radiologytemplateService.myform.get('TemplateDesc').reset();
-              // this.viewgetRadioloyTemplateReportPdf(this.regObj.radReportId);
+              this.viewgetRadioloyTemplateReportPdf(this.regObj);
             }
           });
         } else {
@@ -253,22 +254,41 @@ export class ResultEntryComponent implements OnInit {
   }
 
 
-  viewgetRadioloyTemplateReportPdf(obj) {
-    // 
-    this._radiologytemplateService.getRadiologyTempReport(
-      obj, 0
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Radiology Template  Viewer"
-          }
-        });
-    });
+  viewgetRadioloyTemplateReportPdf(contact) {
+    debugger
+    setTimeout(() => {
+                let param = {
+                        "searchFields": [
+                            {
+                                "fieldName": "RadReportId" ,
+                                "fieldValue": String(contact.radReportId),
+                                "opType": "Equals"
+                            },
+                            {
+                                "fieldName": "OP_IP_Type"   ,
+                                "fieldValue": String(contact.opdipdtype),
+                                "opType": "Equals"
+                            }
+                        ],
+                        "mode": "RadiologyTemplateReport"
+                    }
+    
+              this._radiologytemplateService.getReportView(param).subscribe(res => {
+                  
+                    const matDialog = this._matDialog.open(PdfviewerComponent,
+                        {
+                            maxWidth: "85vw",
+                            height: '750px',
+                            width: '100%',
+                            data: {
+                                base64: res["base64"] as string,
+                                title: "Template Report" + " "+ "Viewer"
+                            }
+                        });
+                    matDialog.afterClosed().subscribe(result => {
+                    });
+                });
+            }, 100);
   }
 
   onEdit(row) {

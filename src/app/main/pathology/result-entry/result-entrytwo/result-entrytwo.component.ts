@@ -66,7 +66,7 @@ export class ResultEntrytwoComponent implements OnInit {
   vTemplateDesc:any="";
   OP_IPType:any;
   PathResultDr1: any;
-  vsuggation: any = '';
+  vsuggestionNotes: any = '';
 
   autocompleteModeDoctor: string = "ConDoctor";
   autocompleteModeTemplate: string = "RadioTemplate";
@@ -131,7 +131,9 @@ export class ResultEntrytwoComponent implements OnInit {
           this._SampleService.getPathTemplateById(this.PathReportId).subscribe((response) => {
             this.templateObj = response;
             console.log("all data:", this.templateObj)
-            this.vTemplateDesc=this.templateObj.pathTemplateDetailsResult
+            this.vTemplateDesc=this.templateObj.templateResultInHTML
+            this.vsuggestionNotes=this.templateObj.suggestionNotes
+            this.otherForm.get("PathResultDoctorId").setValue(this.templateObj.pathResultDr1)
           });
         }, 500);
       }
@@ -146,7 +148,9 @@ export class ResultEntrytwoComponent implements OnInit {
           this._SampleService.getPathTemplateById(this.PathReportId).subscribe((response) => {
             this.templateObj = response;
             console.log("all data:", this.templateObj)
-            this.vTemplateDesc=this.templateObj.pathTemplateDetailsResult
+            this.vTemplateDesc=this.templateObj.templateResultInHTML
+            this.vsuggestionNotes=this.templateObj.suggestionNotes
+            this.otherForm.get("PathResultDoctorId").setValue(this.templateObj.pathResultDr1)
           });
         }, 500);
       }
@@ -270,19 +274,6 @@ export class ResultEntrytwoComponent implements OnInit {
                     });
                 });
             }, 100);
-    
-    // this._SampleService.getPathologyTempReport(PathReportID,this.selectedAdvanceObj1.opdipdtype).subscribe(res => {
-    //   const dialogRef = this._matDialog.open(PdfviewerComponent,
-    //     {
-    //       maxWidth: "85vw",
-    //       height: '750px',
-    //       width: '100%',
-    //       data: {
-    //         base64: res["base64"] as string,
-    //         title: "Pathology Template Report Viewer"
-    //       }
-    //     });
-    // });
   }
   
   onEdit(row) {

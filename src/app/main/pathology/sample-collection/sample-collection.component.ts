@@ -209,7 +209,7 @@ this.myformSearch=this._SampleCollectionService.createSearchForm()
         const dialogRef = this._matDialog.open(SampledetailtwoComponent,
             {
                 // maxWidth: "75vw",
-                maxHeight: '75vh',
+                maxHeight: '80vh',
                 width: '70%',
                 data: row
             });

@@ -119,7 +119,8 @@ export class RadioloyOrderlistService {
     }
 
     public getRadTemplateById(Id) {
-      return this._httpClient1.GetData("RadiologyTemplate/" + Id);
+      debugger
+      return this._httpClient1.GetData("RadiologyTemplate/RadReportId/" + Id);
     }
     
     public insertRadiologyTemplateMaster(employee) {
@@ -155,4 +156,7 @@ export class RadioloyOrderlistService {
       return this._httpClient1.PostData("PhoneApp", m_data);
     }
     
+    public getReportView(Param) {
+      return this._httpClient1.PostData("Report/ViewReport", Param);
+    }
 }
