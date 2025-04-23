@@ -135,11 +135,6 @@ export class ResultEntryService {
     return this._httpClient.get("Pathology/view-PathTemplate?PathReportId=" + PathReportId + "&OP_IP_Type=" + OP_IP_Type);
   }
 
-  
-  public PathPrintResultentryInsert(employee) {
-    return this._httpClient.post("Pathology/PathPrintResultentryInsert", employee);
-  }
-
   public getPathTestReport(OP_IP_Type){
     return this._httpClient.get("Pathology/view-PathReportMultiple?OP_IP_Type=" + OP_IP_Type);
   }
@@ -167,6 +162,10 @@ export class ResultEntryService {
 
   public getReportView(Param) {
     return this._httpClient1.PostData("Report/ViewReport", Param);
+  }
+
+  public PathPrintResultentryInsert(employee) {
+    return this._httpClient.post("Pathology/PathPrintResultentryInsert", employee);
   }
 
   public getPathTemplateById(Id) {

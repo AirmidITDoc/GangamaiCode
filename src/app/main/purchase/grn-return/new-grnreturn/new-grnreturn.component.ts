@@ -154,24 +154,30 @@ export class NewGRNReturnComponent implements OnInit {
             ItemName: element.itemName || '',
             BatchNo: element.batchNo || 0,
             BatchExpDate: element.batchExpDate,
-            ConversionFactor: element.ConversionFactor,
-            BalanceQty: element.BalanceQty,
+            ConversionFactor: element.conversionFactor,
+            BalanceQty: element.balanceQty,
             ReturnQty: 0,
-            MRP: element.MRP || 0,
+            MRP: element.mrp || 0,
             ReceiveQty: element.ReceiveQty || 0,
             //Rate: element.Rate || 0,
             TotalAmount: 0,
-            VatPer: element.VatPer || 0,
+            VatPer: element.vatPer || 0,
             VatAmount: 0,
-            DiscPercentage: element.DiscPercentage || 0,
+            DiscPercentage: element.discPercentage || 0,
             DiscAmount: 0,
-            LandedRate: element.Rate || 0,
+            LandedRate: element.rate || 0,
             NetAmount: 0,
-            StkID: element.StkID || 0 ,
+            StkID: element.stkId || 0 ,
             GRNID:element.grnid || 0,
             GRNDetID:element.grnDetID || 0,
             TotalQty:0
           });
+
+            // TotalAmount: element.totalAmount || 0,// returnQty
+            // VatAmount: element.vatAmount || 0,//
+            // NetAmount: element.netAmount || 0, 
+            // TotalQty:element.totalQty || 0//
+
          // console.log(this.chargeslist)
         this.dsGrnItemList.data = this.chargeslist
         console.log(this.dsGrnItemList.data)

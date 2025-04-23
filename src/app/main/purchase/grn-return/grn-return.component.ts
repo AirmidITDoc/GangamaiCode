@@ -608,6 +608,16 @@ itemName:any
 batchNo:any
 batchExpDate:any
 grnDetID:any
+conversionFactor:any;
+mrp:any;
+vatPer:any;
+rate:any;
+stkId:any;
+balanceQty:any
+totalAmount:any
+netAmount:any
+vatAmount:any
+totalQty:any;
   /**
    * Constructor
    *
@@ -691,6 +701,16 @@ grnDetID:any
       this.batchNo=ItemNameList.batchNo || 0
       this.batchExpDate=ItemNameList.batchExpDate || 0
       this.grnDetID=ItemNameList.grnDetID || 0
+      this.conversionFactor=ItemNameList.conversionFactor
+      this.mrp=ItemNameList.mrp
+      this.vatPer=ItemNameList.vatPer
+      this.rate=ItemNameList.rate
+      this.stkId=ItemNameList.stkId
+      this.balanceQty=ItemNameList.balanceQty
+      this.totalAmount=ItemNameList.totalAmount
+      this.netAmount=ItemNameList.netAmount
+      this.vatAmount=ItemNameList.vatAmount
+      this.totalQty=ItemNameList.totalQty
     }
   }
 }

@@ -566,42 +566,6 @@ opipType:any="2";
         // this.dataSource1.data = [];
     }
 
-    Printresultentrywithheader() {
-        debugger;
-        console.log(this.selection.selected);
-    
-        this.selection.selected.forEach((element) => {
-            const param = {
-                searchFields: [
-                    {
-                        fieldName: "OP_IP_Type",
-                        fieldValue: String(element.opdipdtype),
-                        opType: "Equals"
-                    }
-                ],
-                mode: "PathologyReportWithHeader"
-            };
-    
-            console.log(param);
-    
-            this._SampleService.getReportView(param).subscribe(res => {
-                const matDialog = this._matDialog.open(PdfviewerComponent, {
-                    maxWidth: "85vw",
-                    height: '750px',
-                    width: '100%',
-                    data: {
-                        base64: res["base64"] as string,
-                        title: "Pathology Test Report With Header Viewer"
-                    }
-                });
-    
-                matDialog.afterClosed().subscribe(result => {
-                    
-                });
-            });
-        });
-    }
-
     getWhatsappshareResult(contact) {
 
         if (!contact.isTemplateTest) {
@@ -792,8 +756,68 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
 
     OP_IP_Type:any;
 
+    // Printresultentry() {
+    //     debugger;
+    //     console.log(this.selection.selected);
+    
+    //     this.selection.selected.forEach((element) => {
+    //         const param = {
+    //             searchFields: [
+    //                 {
+    //                     fieldName: "OP_IP_Type",
+    //                     fieldValue: String(element.opdipdtype),
+    //                     opType: "Equals"
+    //                 }
+    //             ],
+    //             mode: "PathologyReport"
+    //         };
+    
+    //         console.log(param);
+    
+    //         this._SampleService.getReportView(param).subscribe(res => {
+    //             const matDialog = this._matDialog.open(PdfviewerComponent, {
+    //                 maxWidth: "85vw",
+    //                 height: '750px',
+    //                 width: '100%',
+    //                 data: {
+    //                     base64: res["base64"] as string,
+    //                     title: "Pathology Test Report Viewer"
+    //                 }
+    //             });
+    
+    //             matDialog.afterClosed().subscribe(result => {
+                    
+    //             });
+    //         });
+    //     });
+    // }
+
+
     Printresultentry() {
-        debugger;
+        debugger
+        console.log(this.selection.selected);
+        let pathologyDelete = [];
+    
+        this.selection.selected.forEach((element) => {
+            pathologyDelete.push({ pathReportId: element.pathReportId });
+        });
+    
+        const submitData = {
+            pathPrintResultEntry: pathologyDelete
+        };
+    
+        console.log(submitData);
+    
+        this._SampleService.PathPrintResultentryInsert(submitData).subscribe(res => {
+            if (res) {
+                debugger
+                this.viewgetPathologyTestReportPdf()
+            }
+        });
+    }
+
+    viewgetPathologyTestReportPdf() {
+        debugger
         console.log(this.selection.selected);
     
         this.selection.selected.forEach((element) => {
@@ -828,6 +852,65 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
         });
     }
     
+    Printresultentrywithheader() {
+        debugger
+        console.log(this.selection.selected);
+        let pathologyDelete = [];
+    
+        this.selection.selected.forEach((element) => {
+            pathologyDelete.push({ pathReportId: element.pathReportId });
+        });
+    
+        const submitData = {
+            pathPrintResultEntry: pathologyDelete
+        };
+    
+        console.log(submitData);
+    
+        this._SampleService.PathPrintResultentryInsert(submitData).subscribe(res => {
+            if (res) {
+                debugger
+                this.viewgetPathologyTestReportwithheaderPdf()
+            }
+        });
+    }
+
+    viewgetPathologyTestReportwithheaderPdf() {
+        debugger;
+        console.log(this.selection.selected);
+    
+        this.selection.selected.forEach((element) => {
+            const param = {
+                searchFields: [
+                    {
+                        fieldName: "OP_IP_Type",
+                        fieldValue: String(element.opdipdtype),
+                        opType: "Equals"
+                    }
+                ],
+                mode: "PathologyReportWithHeader"
+            };
+    
+            console.log(param);
+    
+            this._SampleService.getReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent, {
+                    maxWidth: "85vw",
+                    height: '750px',
+                    width: '100%',
+                    data: {
+                        base64: res["base64"] as string,
+                        title: "Pathology Test Report With Header Viewer"
+                    }
+                });
+    
+                matDialog.afterClosed().subscribe(result => {
+                    
+                });
+            });
+        });
+    }
+    
     AdList: boolean = false;
 
     whatsappresultentry() {
@@ -848,29 +931,7 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
         // this.selection.clear();
     }
 
-    // Printresultentry() {
-    //     console.log(this.selection.selected)
-    //     let pathologyDelete = [];
-    //     this.selection.selected.forEach((element) => {
-    //         this.SOPIPtype = element["OPD_IPD_Type"]
-    //         let pathologyDeleteObj = {};
-    //         pathologyDeleteObj['pathReportId'] = element["PathReportID"]
-    //         pathologyDelete.push(pathologyDeleteObj);
-    //     });
-
-    //     let submitData = {
-    //         "printInsert": pathologyDelete,
-    //     };
-    //     console.log(submitData);
-    //     this._SampleService.PathPrintResultentryInsert(submitData).subscribe(response => {
-    //         if (response) {
-    //             this.viewgetPathologyTestReportPdf(this.SOPIPtype)
-    //         }
-    //     });
-    //     this.selection.clear();
-    // }
-
-
+   
     exportResultentryReportExcel() {
         this.sIsLoading == 'loading-data'
         let exportHeaders = ['Date', 'Time', 'RegNo', 'PatientName', 'DoctorName', 'PatientType', 'PBillNo', 'GenderName', 'AgeYear', 'PathDues'];
@@ -987,6 +1048,7 @@ export class SampleList {
     IsCompleted: boolean;
     CategoryId: any;
     opdipdtype:any;
+    pathReportId:any
 
     constructor(SampleList) {
         this.VADate = SampleList.VADate || '';
@@ -999,6 +1061,7 @@ export class SampleList {
         this.IsCompleted = SampleList.IsCompleted || 0;
         this.CategoryId = SampleList.CategoryId || 0;
         this.opdipdtype=SampleList.opdipdtype || 0
+        this.pathReportId=SampleList.pathReportId || 0
     }
 
 }
