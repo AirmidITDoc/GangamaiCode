@@ -1,42 +1,34 @@
-<div class="page-layout grn-section" dynamicTableHeight>
-    <mat-toolbar class="top-header accent" style="justify-content: space-between;width: 100%;">
-        <div class="top-header-info" fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle" style="color: white;">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <button mat-icon-button class="user-icon">
-                <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                    style="color: white;">account_box
-                </mat-icon>
-            </button>
-            <div class="top-header-title">
-                <span class="logo-text" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    GRN List
-                </span>
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+        <div class="top-header">
+            <div class="top-header-info">
+                <button mat-icon-button class="sidebar-toggle" style="color: white;">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <span> GRN List </span>
+                </div>
+            </div>
+            <div class="top-header-right">
+                <div class="header-add-button" fxLayoutGap="25px" fxLayout="row" >
+                    <button mat-raised-button fxLayoutAlign="center center" class="py-8">
+                        <input type="file" #fileInput (change)="onFileChange($event)"
+                            style="font-size: 100px;left: 0;opacity: 0;position: absolute;top: 0;" /><span>Import
+                            GRN</span>
+                    </button>
+                    <button mat-raised-button (click)="newGRNEntry(1)">New GRN</button>
+                </div>
             </div>
         </div>
-        <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
-            <button mat-raised-button fxLayoutAlign="center center" class="py-8" style="margin-right: 25px;">
-                <input type="file" #fileInput (change)="onFileChange($event)"
-                    style="font-size: 100px;left: 0;opacity: 0;position: absolute;top: 0;" /><span>Import GRN</span>
-            </button>
-            <button mat-raised-button (click)="newGRNEntry(1)" fxLayoutAlign="center center" class="py-8">
-                <span>New GRN</span>
-            </button>
-        </div>
-    </mat-toolbar>
 
-     
-    <div class="content">
-        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    
-    
-            <ng-template #actionButtonTemplateStatus let-element>
-                <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isVerified" matTooltip="Verified"
-                    class="pill green-600 s-16">circle</mat-icon>
-                <mat-icon *ngIf="!element.isVerified" matTooltip="Pending"
-                    class="pill red-600 s-16">circle</mat-icon> 
+        <ng-template #actionButtonTemplateStatus let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon *ngIf="element.isVerified" matTooltip="Verified" class="pill green-600 s-16">circle</mat-icon>
+                <mat-icon *ngIf="!element.isVerified" matTooltip="Pending" class="pill red-600 s-16">circle</mat-icon>
 
                 <mat-icon *ngIf="!element.Cash_CreditType" matTooltip="Credit">
                     <span class="material-icons">credit_card</span>
@@ -45,97 +37,94 @@
                 <mat-icon *ngIf="element.Cash_CreditType" matTooltip="Cash">
                     <span class="material-icons">currency_rupee</span>
                 </mat-icon>
-                </div>
-            </ng-template> 
+            </div>
+        </ng-template>
 
-            <ng-template #actionButtonTemplate let-element>
-                <div fxLayout="row" fxLayoutAlign="center center">
-                    <button mat-icon-button matTooltip="print"
-                        (click)="viewgetGRNReportPdf(element)">
-                        <mat-icon>print</mat-icon>
-                    </button>
-                    <button mat-icon-button (click)="onEdit(element)" matTooltip="Edit">
-                        <mat-icon title="Edit Menu" *ngIf="element.isVerified == 1"
-                            [disabled]="element.disabled" class="disabled-icon">
-                            edit</mat-icon>
-                        <mat-icon title="Edit Menu" *ngIf="element.isVerified == 0">
-                            edit</mat-icon>
-                    </button>
-                    <button mat-icon-button (click)="onVerify(element)" matTooltip="Verify">
-                        <mat-icon    title="verify Menu">verified_user</mat-icon> 
-                    </button>
-                    <button mat-icon-button (click)="GRNEmail(element)">
-                        <mat-icon *ngIf="!element.isVerified" [disabled]="element.disabled"
-                            class="disabled-icon" title="Email Menu">mail</mat-icon>
-                        <mat-icon *ngIf="element.isVerified"
-                            title="Email Menu">mail</mat-icon>
-                    </button>
-                    <button mat-icon-button matTooltip="Send Bill On WhatsApp" class="p-4"
-                        (click)="getWhatsappshareSales(row)">
-                        <img width="100" height="20px"
-                            src="assets/images/logos/WhatsApp.png">
-                    </button>
+        <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <button mat-icon-button matTooltip="print" (click)="viewgetGRNReportPdf(element)">
+                    <mat-icon>print</mat-icon>
+                </button>
+                <button mat-icon-button (click)="onEdit(element)" matTooltip="Edit">
+                    <mat-icon title="Edit Menu" *ngIf="element.isVerified == 1" [disabled]="element.disabled"
+                        class="disabled-icon">
+                        edit</mat-icon>
+                    <mat-icon title="Edit Menu" *ngIf="element.isVerified == 0">
+                        edit</mat-icon>
+                </button>
+                <button mat-icon-button (click)="onVerify(element)" matTooltip="Verify">
+                    <mat-icon title="verify Menu">verified_user</mat-icon>
+                </button>
+                <button mat-icon-button (click)="GRNEmail(element)">
+                    <mat-icon *ngIf="!element.isVerified" [disabled]="element.disabled" class="disabled-icon"
+                        title="Email Menu">mail</mat-icon>
+                    <mat-icon *ngIf="element.isVerified" title="Email Menu">mail</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Send Bill On WhatsApp" class="p-4"
+                    (click)="getWhatsappshareSales(row)">
+                    <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                </button>
 
-                    <button mat-icon-button (click)="deleteRow(row)">
-                        <mat-icon *ngIf="element.isVerified" [disabled]="row.disabled"
-                            class="disabled-icon" title="Cancle">highlight_off</mat-icon>
-                        <mat-icon *ngIf="!element.isVerified"
-                            title="Cancle">highlight_off</mat-icon>
-                    </button>
-                </div>
-            </ng-template>
-           
+                <button mat-icon-button (click)="deleteRow(row)">
+                    <mat-icon *ngIf="element.isVerified == 1" [disabled]="row.disabled" class="disabled-icon"
+                        title="Cancle">highlight_off</mat-icon>
+                    <mat-icon *ngIf="element.isVerified == 0" title="Cancle">highlight_off</mat-icon>
+                </button>
+            </div>
+        </ng-template>
 
-            <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)">
-                <ng-container filters>
-    
-                    <airmid-datepicker [formGroup]="_GRNService.GRNSearchGroup" [isRangePicker]="true"
-                        formStartControlName="start" formEndControlName="end"
-                        [(fromValue)]="gridConfig.filters[2].fieldValue" 
-                        [(toValue)]="gridConfig.filters[3].fieldValue" (dateChange)="onChangeFirst($event)"></airmid-datepicker>
-    
-    
-                    <airmid-dropdown label="Store Name" formControlName="ToStoreId" [formGroup]="_GRNService.GRNSearchGroup"
-                        [validations]="getValidationMessages().ToStoreId" fxFlex [mode]="autocompletestore"
-                        (selectionChange)="selectChangeStore($event)">
-                    </airmid-dropdown>
-    
-                    <airmid-dropdown label="Supplier Name | Code" formControlName="SupplierId"
-                        [formGroup]="_GRNService.GRNSearchGroup" [validations]="getValidationMessages().supplierId"
-                        [mode]="autocompleteSupplier" (selectionChange)="selectChangeSupplier($event)"></airmid-dropdown>
-    
-                    <mat-radio-group name="Status1" formControlName="Status1" fxLayout="column" class="gap-4 " value="0"
-                    (change)="onChangeFirst($event)">
+
+        <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)">
+            <ng-container filters>
+
+                <airmid-datepicker [formGroup]="_GRNService.GRNSearchGroup" [isRangePicker]="true"
+                    formStartControlName="start" formEndControlName="end"
+                    [(fromValue)]="gridConfig.filters[1].fieldValue" [(toValue)]="gridConfig.filters[2].fieldValue"
+                    (change)="onChangeFirst()"></airmid-datepicker>
+
+
+                <airmid-dropdown label="Store Name" formControlName="ToStoreId" [formGroup]="_GRNService.GRNSearchGroup"
+                    [validations]="getValidationMessages().ToStoreId" fxFlex [mode]="autocompletestore"
+                    (selectionChange)="selectChangeStore($event)" (keyup)="selectChangeStore($event)"
+                    [(ngModel)]="gridConfig.filters[0].fieldValue">
+                </airmid-dropdown>
+
+                <airmid-dropdown label="Supplier Name | Code" formControlName="SupplierId"
+                    [formGroup]="_GRNService.GRNSearchGroup" [validations]="getValidationMessages().supplierId"
+                    [mode]="autocompleteSupplier" (selectionChange)="selectChangeSupplier($event)"  (keyup)="selectChangeSupplier($event)"
+                    [(ngModel)]="gridConfig.filters[4].fieldValue"></airmid-dropdown>
+
+                <form [formGroup]="_GRNService.GRNSearchGroup">
+                    <mat-radio-group name="Status1" formControlName="Status1" fxLayout="column" class="gap-4 "  
+                    [(ngModel)]="gridConfig.filters[3].fieldValue" (change)="onChangeFirst()">
                         <mat-label>Status:</mat-label>
-                        <mat-radio-button value="2" class="mr-sm-12" >All
+                        <mat-radio-button value="2" >All
                         </mat-radio-button>
-                        <mat-radio-button value="1" class="mr-sm-12" >Close
+                        <mat-radio-button value="1">Close
                         </mat-radio-button>
-                        <mat-radio-button value="0" class="mr-sm-12" >Pending
+                        <mat-radio-button value="0">Pending
                         </mat-radio-button>
                     </mat-radio-group>
-    
-                </ng-container>
-            </airmid-table> 
-        </div>
+                </form>  
+            </ng-container>
+        </airmid-table>
     </div>
-    <div class="content">
-        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
-        *ngIf="isShowtable">
-    
-    
-    
-    
-    
-        
-            <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false">
-            </airmid-table>
-            
-    
-    
-        </div>
+
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
+
+        <ng-template #actionButtonTemplateCheck let-element>
+
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-checkbox>
+               </mat-checkbox>
+            </div>
+
+        </ng-template>
+
+        <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false" [ShowButtons]="false">
+        </airmid-table>
     </div>
-</div>
+</div> 
 
 
 

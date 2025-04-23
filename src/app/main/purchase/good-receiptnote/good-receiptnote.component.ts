@@ -167,10 +167,12 @@ export class GoodReceiptnoteComponent implements OnInit {
     autocompleteSupplier: string = "SupplierMaster";
     
       @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;  
-      @ViewChild('actionButtonTemplateStatus') actionButtonTemplateStatus!: TemplateRef<any>;  
+      @ViewChild('actionButtonTemplateStatus') actionButtonTemplateStatus!: TemplateRef<any>;
+      @ViewChild('actionButtonTemplateCheck') actionButtonTemplateCheck!: TemplateRef<any>;   
           ngAfterViewInit() { 
             this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate; 
-            this.gridConfig.columnsList.find(col => col.key === 'Status')!.template = this.actionButtonTemplateStatus;   
+            this.gridConfig.columnsList.find(col => col.key === 'Status')!.template = this.actionButtonTemplateStatus; 
+            this.gridConfig1.columnsList.find(col => col.key === 'check')!.template = this.actionButtonTemplateCheck;  
           } 
      AllColumns= [
         { heading: "Status", key: "Status", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
@@ -191,8 +193,31 @@ export class GoodReceiptnoteComponent implements OnInit {
        { heading: "Action", key: "action", align: "right", width: 160, sticky: true, type: gridColumnTypes.template,
         template: this.actionButtonTemplate  // Assign ng-template to the column
       }
-    ]  
-    isShowtable:boolean=false;
+    ]   
+   
+    AllDetailsColumns= [  
+    //   { heading: "-", key: "check", sort: false, align: 'left', emptySign: 'NA',width:60,type: gridColumnTypes.template,
+    //     template: this.actionButtonTemplateCheck},
+      { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA',width: 200},
+      { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA',width: 100},  
+      { heading: "BatchExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA',width: 180},
+      { heading: "Package", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA' , width: 100},
+      { heading: "R Qty", key: "receiveQty", sort: true, align: 'left', emptySign: 'NA' , width: 100},
+      { heading: "Free Qty", key: "freeQty", sort: true, align: 'left', emptySign: 'NA' , width: 90},
+      { heading: "MRP", key: "mrp", sort: true, align: 'left', emptySign: 'NA',width: 120, type: gridColumnTypes.amount},
+      { heading: "Rate", key: "rate", sort: true, align: 'left', emptySign: 'NA',width: 120 , type: gridColumnTypes.amount}, 
+      { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA',width: 120, type: gridColumnTypes.amount },
+      { heading: "GST Amt", key: "vatPercentage", sort: true, align: 'left', emptySign: 'NA', width: 120 , type: gridColumnTypes.amount }, 
+      { heading: "Disc Amt", key: "discPercentage", sort: true, align: 'left', emptySign: 'NA', width: 120 , type: gridColumnTypes.amount }, 
+      { heading: "LandedRate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA',width: 120 , type: gridColumnTypes.amount},
+      { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 130 , type: gridColumnTypes.amount }, 
+      { heading: "TotalQty", key: "totalQty", sort: true, align: 'left', emptySign: 'NA' , width: 100},
+      { heading: "StockId", key: "stockid", sort: true, align: 'left', emptySign: 'NA' , width: 100},
+      { heading: "IsVerified", key: "isVerified", sort: true, align: 'left', emptySign: 'NA',width: 100 ,},
+      { heading: "SsVerifiedDatetime", key: "isVerifiedDatetime", sort: true, align: 'left', emptySign: 'NA',width: 160, type:9}
+    ]    
+    
+    isShowDetailTable:boolean=false;
       @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
       gridConfig: gridModel = {
           apiUrl: "GRN/GRNHeaderList",
@@ -208,17 +233,13 @@ export class GoodReceiptnoteComponent implements OnInit {
           ], 
       } 
       gridConfig1: gridModel = {
-        apiUrl: "GRN/GRNHeaderList",
-        columnsList:this.AllColumns,
-        sortField: "GRNID",
-        sortOrder: 0,
-        filters: [
-            { fieldName: "ToStoreId", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "", opType: OperatorComparer.Equals },
-            { fieldName: "IsVerify", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Supplier_Id", fieldValue: "%", opType: OperatorComparer.Equals } 
-        ], 
+        apiUrl: "GRN/GRNDetailsList",
+            columnsList:this.AllDetailsColumns,
+            sortField: "GRNDetID",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "GrnId", fieldValue: "0", opType: OperatorComparer.Equals }
+             ], 
     } 
 
     constructor(
@@ -232,21 +253,26 @@ export class GoodReceiptnoteComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.getToStoreSearchList();
-        this.getToStoreSearchCombo();
-        this.getGRNList();
+        // this.getToStoreSearchList();
+        // this.getToStoreSearchCombo();
+        // this.getGRNList();
     }
 
-    selectChangeStore(event){
-        console.log(event)
-    }
-    selectChangeSupplier(event){
-        console.log(event)
-    }
+ 
+ 
     getSelectedRow(event){
         console.log(event)
-        this.isShowtable = true;
+        this.isShowDetailTable = true; 
+        this.gridConfig1 = {
+            apiUrl: "GRN/GRNDetailsList",
+            columnsList:this.AllDetailsColumns,
+            sortField: "GRNDetID",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "GrnId", fieldValue: String(event.grnid), opType: OperatorComparer.Equals }
+             ], 
     }
+}
     getValidationMessages() {
         return {
             supplierId: [
@@ -273,13 +299,11 @@ export class GoodReceiptnoteComponent implements OnInit {
     StoreId:any = 0;
     SupplierId:any = 0;
     IsVerify:any;
-    onChangeFirst($event) {
+    onChangeFirst() {
         debugger  
-        this.isShowtable = false;
+        this.isShowDetailTable = false;
         this.fromDate =  this.datePipe.transform(this._GRNService.GRNSearchGroup.get('start').value, "yyyy-MM-dd")
-        this.toDate =   this.datePipe.transform(this._GRNService.GRNSearchGroup.get('end').value, "yyyy-MM-dd") 
-        this.StoreId = this._GRNService.GRNSearchGroup.get('ToStoreId').value || "0"
-        this.SupplierId = this._GRNService.GRNSearchGroup.get('SupplierId').value || "0"
+        this.toDate =   this.datePipe.transform(this._GRNService.GRNSearchGroup.get('end').value, "yyyy-MM-dd")   
         this.IsVerify = this._GRNService.GRNSearchGroup.get('Status1').value || "0" 
         this.getfilterdata();
     }
@@ -297,13 +321,27 @@ export class GoodReceiptnoteComponent implements OnInit {
                 { fieldName: "IsVerify", fieldValue: this.IsVerify , opType: OperatorComparer.Equals },
                 { fieldName: "Supplier_Id", fieldValue: this.SupplierId, opType: OperatorComparer.Equals } 
             ], 
-        }
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
-
-        
+        } 
     }
-  
+    selectChangeStore(value) { 
+        debugger
+    console.log(value)
+     if(value.value!==0)
+        this.StoreId=value.value
+    else
+    this.StoreId="0"
+
+    this.onChangeFirst();
+}
+selectChangeSupplier(value){
+    console.log(value)
+    if(value.value!==0)
+       this.SupplierId=value.value
+   else
+   this.SupplierId="0"
+
+   this.onChangeFirst();
+}
     data: any[];
     FullData: GRNList = {} as GRNList;
 
@@ -390,97 +428,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 
         reader.readAsBinaryString(target.files[0]);
     }
-
-    toggleSidebar(name): void {
-        this._fuseSidebarService.getSidebar(name).toggleOpen();
-    }
-
-    dateTimeObj: any;
-    getDateTime(dateTimeObj) {
-        this.dateTimeObj = dateTimeObj;
-    }
-    getOptionTextPayment(option) {
-        return option && option.StoreName ? option.StoreName : '';
-    }
-
-    deleteTableRow(element) {
-        let index = this.chargeslist.indexOf(element);
-        if (index >= 0) {
-            this.chargeslist.splice(index, 1);
-            this.dsItemNameList.data = [];
-            this.dsItemNameList.data = this.chargeslist;
-        }
-        Swal.fire('Success !', 'ChargeList Row Deleted Successfully', 'success');
-    }
-    getGRNList() {
-        var Param = {
-            "ToStoreId": this.accountService.currentUserValue.storeId,// this._GRNService.GRNSearchGroup.get('ToStoreId').value.storeid,
-            "From_Dt": this.datePipe.transform(this._GRNService.GRNSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-            "To_Dt": this.datePipe.transform(this._GRNService.GRNSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-            "IsVerify": this._GRNService.GRNSearchGroup.get("Status1").value || 0,
-            "Supplier_Id": this._GRNService.GRNSearchGroup.get('SupplierId').value.SupplierId || 0,
-        }
-        //console.log(Param)
-        this._GRNService.getGRNList(Param).subscribe(data => {
-            this.dsGRNList.data = data as GRNList[];
-            this.dsGRNList.sort = this.sort;
-            this.dsGRNList.paginator = this.paginator;
-            this.sIsLoading = '';
-        },
-            error => {
-                this.sIsLoading = '';
-            });
-    }
-
-    getToStoreSearchCombo() {
-        var vdata = {
-            Id: this.accountService.currentUserValue.storeId
-        }
-        this._GRNService.getLoggedStoreList(vdata).subscribe(data => {
-            this.StoreList = data;
-            this._GRNService.GRNSearchGroup.get('ToStoreId').setValue(this.StoreList[0]);
-            this.StoreName = this._GRNService.GRNSearchGroup.get('ToStoreId').value.StoreName;
-        });
-
-    }
-    getToStoreSearchList() {
-        var vdata = {
-            Id: this.accountService.currentUserValue.storeId
-        }
-        this._GRNService.getLoggedStoreList(vdata).subscribe(data => {
-            this.ToStoreList = data;
-            this._GRNService.GRNSearchGroup.get('ToStoreId').setValue(this.ToStoreList[0]);
-            this.StoreName = this._GRNService.GRNSearchGroup.get('ToStoreId').value.StoreName;
-        });
-    }
-    filteredOptionssupplier: any;
-    noOptionFoundsupplier: any;
-    vSupplierId: any;
-    getSupplierSearchCombo() {
-        var m_data = {
-            'SupplierName': `${this._GRNService.GRNSearchGroup.get('SupplierId').value}%`
-        }
-        //console.log(m_data)
-        this._GRNService.getSupplierSearchList(m_data).subscribe(data => {
-            this.filteredOptionssupplier = data;
-            //  console.log(this.filteredOptionssupplier)
-            if (this.filteredOptionssupplier.length == 0) {
-                this.noOptionFoundsupplier = true;
-            } else {
-                this.noOptionFoundsupplier = false;
-            }
-        });
-    }
-    getOptionTextSupplier(option) {
-        return option && option.SupplierName ? option.SupplierName : '';
-    }
-    private _filterStore(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-            return this.optionsToStore.filter(option => option.StoreName.toLowerCase().includes(filterValue));
-        }
-    }
-
+ 
     selection = new SelectionModel<GrnItemList>(true, []);
     printBulkQrCode() {
         setTimeout(() => {
@@ -662,9 +610,8 @@ export class GoodReceiptnoteComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
-            this.getGRNList();
-        });
-        this.getGRNList();
+            this.grid.bindGridData();
+        }); 
     }
 
     GRNEmail(contact) {
@@ -680,7 +627,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
         });
-        this.getGRNList();
+        this.grid.bindGridData();
     }
 
     onEdit(contact) {
@@ -698,7 +645,7 @@ export class GoodReceiptnoteComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
-            this.getGRNList();
+            this.grid.bindGridData();
         });
     }
 
@@ -714,7 +661,7 @@ export class GoodReceiptnoteComponent implements OnInit {
                 this.toastr.success('Record Verified Successfully.', 'Verified !', {
                     toastClass: 'tostr-tost custom-toast-success',
                 });
-                this.getGRNList();
+                this.grid.bindGridData();
             } else {
                 this.toastr.error('Record Not Verified !, Please check error..', 'Error !', {
                     toastClass: 'tostr-tost custom-toast-error',
@@ -728,7 +675,7 @@ export class GoodReceiptnoteComponent implements OnInit {
                 });
 
             });
-        this.getGRNList();
+            this.grid.bindGridData();
     }
 
 
@@ -764,24 +711,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         });
         this.IsLoading = false;
         el.button.disable = false;
-    }
-    RowData: any = [];
-    deleteRow(row) {
-        // 
-        // this.RowData = this.dsItemNameList.data;
-        // const index = this.RowData.data.indexOf(row);
-        // console.log(index);
-        // if (index >= 0) {
-        //   this.RowData.data.splice(index, 1);
-        //   // this.dsItemNameList.data = [];
-        //    this.dsItemNameList = this.RowData.data;
-        //    console.log(this.dsItemNameList.data);
-        // }
-        // this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
-        //   toastClass: 'tostr-tost custom-toast-success',
-        // });
-        // //this.getGRNList();
-    }
+    } 
 }
 
 export class GRNList {

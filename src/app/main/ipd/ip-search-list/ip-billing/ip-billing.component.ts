@@ -25,6 +25,7 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { IPPackageDetComponent } from '../ippackage-det/ippackage-det.component';
 
 
 @Component({
@@ -1594,6 +1595,21 @@ export class IPBillingComponent implements OnInit {
         width: '74%',
         data: {
           Obj: contact
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+  }
+  getpackageDet(contact) { 
+    const dialogRef = this._matDialog.open(IPPackageDetComponent,
+      {
+        maxWidth: "100%",
+        height: '75%',
+        width: '70%',
+        data: {
+          Obj: contact,
+          Selected:this.selectedAdvanceObj
         }
       });
     dialogRef.afterClosed().subscribe(result => {

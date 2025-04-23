@@ -531,7 +531,7 @@
                               <mat-icon *ngIf="contact.isPathology == 1" matTooltip="IsPatholgy">
                                 <img width="15px" height="9px" src="assets/images/logos/pathology.png" />
                               </mat-icon> 
-                              <mat-icon *ngIf="contact.isPackage == 1" matTooltip="IsPackage">
+                              <mat-icon *ngIf="contact.isPackage == 1" matTooltip="IsPackage" (click)="getpackageDet(contact)">
                                 <img width="15px" height="9px" src="assets/images/logos/package.png">
                               </mat-icon>
                             </div>

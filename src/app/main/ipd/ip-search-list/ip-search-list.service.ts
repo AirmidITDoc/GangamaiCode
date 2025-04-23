@@ -400,7 +400,10 @@ constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
     });
   }
 
-
+  public getpackagedetList(employee)
+  {    
+    return this._httpClient1.PostData("IPBill/PackageDetailsList",employee);
+  }
   public advanceHeaderInsert(employee)
   {    
     return this._httpClient.post("InPatient/IPAdvance",employee);

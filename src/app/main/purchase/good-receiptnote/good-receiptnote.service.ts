@@ -53,10 +53,10 @@ export class GoodReceiptnoteService {
 
   GRNSearchFrom() {
     return this._formBuilder.group({
-      ToStoreId: ['2'], 
+      ToStoreId: [2], 
       SupplierId: '',
       Status: 0,
-      Status1: ['0'],
+      Status1: [0],
       Status2: [true],
       Status3: 0,
       Verify: 0,
