@@ -70,11 +70,11 @@ export class IPSettlementComponent implements OnInit {
         { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' ,width: 200,type: 9},
         { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "BillAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "ConsessionAmt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "NetAmount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "BalanceAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "BillAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
+        { heading: "ConsessionAmt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "NetAmount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
+        { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
+        { heading: "BalanceAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
         {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
