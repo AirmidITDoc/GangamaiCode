@@ -344,13 +344,13 @@ export class NewRequestforlabComponent implements OnInit {
         ipPathOrRadiRequestLabRequestInsert['requestId'] = 0;
         ipPathOrRadiRequestLabRequestInsert['serviceId'] = element.ServiceId || 1;
         ipPathOrRadiRequestLabRequestInsert['price'] = element.Price || 1;
-        ipPathOrRadiRequestLabRequestInsert['isStatus'] = true;
+        ipPathOrRadiRequestLabRequestInsert['isStatus'] = false;
         ipPathOrRadiRequestLabRequestInsert['addedBillingId'] = 2,
           ipPathOrRadiRequestLabRequestInsert['addedByDate'] = formattedDate,
           ipPathOrRadiRequestLabRequestInsert['addedByTime'] = formattedTime,
           ipPathOrRadiRequestLabRequestInsert['charId'] = 260570,
           // ipPathOrRadiRequestLabRequestInsert['charId'] = 0,
-          ipPathOrRadiRequestLabRequestInsert['isTestCompted'] = true,
+          ipPathOrRadiRequestLabRequestInsert['isTestCompted'] = false,
           ipPathOrRadiRequestLabRequestInsert['IsOnFileTest'] = this.myFormGroup.get('IsOnFileTest').value || false;
         ipPathOrRadiRequestLabRequestInsertArray.push(ipPathOrRadiRequestLabRequestInsert);
       });

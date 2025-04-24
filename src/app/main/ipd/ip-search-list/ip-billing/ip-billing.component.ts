@@ -1412,42 +1412,20 @@ export class IPBillingComponent implements OnInit {
   //nursing Service List added
   AddList(m) {
     console.log(m)
-    var m_data = {
-      "chargeID": 0,
-      "chargesDate": this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-      "opD_IPD_Type": 1,
-      "opD_IPD_Id": m.OP_IP_ID,
-      "serviceId": m.ServiceId,
-      "price": m.price,
-      "qty": 1,
-      "totalAmt": (m.price * 1),
-      "concessiondiscPer": 0,
-      "concessionAmount": 0,
-      "netAmount": (m.price * 1),
-      "doctorId": 0,
-      "docdiscPer": 0,
-      "docAmt": 0,
-      "hospitalAmt": 0,
-      "isGenerated": 0,
-      "addedBy": this.accountService.currentUserValue.userId,
-      "isCancelled": 0,
-      "isCancelledBy": 0,
-      "isCancelledDate": "01/01/1900",
-      "isPathology": m.IsPathology,
-      "isRadiology": m.IsRadiology,
-      "isPackage": 0,
-      "packageMainChargeID": 0,
-      "isSelfOrCompanyService": false,
-      "packageId": 0,
-      "chargeTime": this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
-      "classId": this.Serviceform.get("ChargeClass").value.ClassId
-    }
-    let submitData = {
-      "addCharges": m_data
-    };
-    this._IpSearchListService.InsertIPAddChargesNew(submitData).subscribe(data => {
-      if (data) {
-        Swal.fire('Success !', 'ChargeList Row Added Successfully', 'success');
+    var m_data = {  
+      "opdIpdId": m.opipid,
+      "classID": this.selectedAdvanceObj.classId || 0 ,
+      "serviceId": m.serviceId,
+      "traiffId": this.selectedAdvanceObj.tariffId ,
+      "reqDetId": m.reqDetId,
+      "userId": this.accountService.currentUserValue.userId, 
+      "chargesDate": this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+      "doctorId": 0,  
+    }  
+    console.log(m_data)
+    this._IpSearchListService.InsertIPAddChargesNew(m_data).subscribe(data => {
+      if (data) { 
+        this.getRequestChargelist();
         this.getChargesList();
       }
     });
@@ -1609,7 +1587,8 @@ export class IPBillingComponent implements OnInit {
         width: '70%',
         data: {
           Obj: contact,
-          Selected:this.selectedAdvanceObj
+          Selected:this.selectedAdvanceObj,
+          FormName: 'IPD Package'
         }
       });
     dialogRef.afterClosed().subscribe(result => {

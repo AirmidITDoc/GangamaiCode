@@ -628,8 +628,14 @@ public getPaymentPrint (paymentid){
     if (loader) {
       this._loaderService.show();
   } 
-    return this._httpClient.post("InPatient/AddIPCharges",employee)
-  }
+  return this._httpClient1.PostData("IPBill/InsertLabRequest",employee)
+  } 
+  public InsertIPpacakgeAddCharges(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+  return this._httpClient1.PostData("IPBill/IPAddcharges",employee)
+  } 
   // public InsertIPBilling(employee)
   // {
   //   return this._httpClient.post("InPatient/IPBillingInsert",employee)

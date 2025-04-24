@@ -44,9 +44,7 @@ export class IPPackageDetComponent  implements OnInit {
   CreditedtoDoctor: any;
 
   SrvcName: any;
-  filteredOptionsDoctors: any;
-  vServiceId: any;
-  vDoctor: any;
+  filteredOptionsDoctors: any; 
   isLoading: string = '';
   ChargesDoctorname: any;
   ChargeDoctorId: any;
@@ -110,7 +108,7 @@ export class IPPackageDetComponent  implements OnInit {
     if (this.dsPackageDet.data.length > 0) {
       this.dsPackageDet.data.forEach((element) => {
         if (obj.serviceId == element.serviceId) {
-          Swal.fire('Selected Item already added in the list ');
+          Swal.fire('Selected ServiceName already added in the list ');
           this.PackageForm.get('ServiceName').setValue('')
         }
       });
@@ -133,7 +131,160 @@ export class IPPackageDetComponent  implements OnInit {
   getdocdetail(event){
     console.log(event)
   } 
+    //IPD package list 
+    getIPDpackagedetList(obj) {
+      this.PacakgeList = []; 
+      var vdata = { 
+        "first": 0,
+        "rows": 10,
+        "sortField": "ChargesId",
+        "sortOrder": 0,
+        "filters": [
+       
+      {
+            "fieldName": "ChargesId",
+            "fieldValue": String(obj.chargesId),
+            "opType": "Equals"
+          }
+      ],
+      "columns": [] ,
+        "exportType": "JSON" 
+    
+      } 
+      this._IpSearchListService.getpackagedetList(vdata).subscribe((response) => {
+        this.dsPackageDet.data = response.data as ChargesList[];
+        console.log(this.dsPackageDet.data);
+        this.dsPackageDet.data.forEach(element => {
+          this.PacakgeList.push(
+            {
+              ServiceId: element.ServiceId,
+              ServiceName: element.ServiceName,
+              Price: element.Price || 0,
+              Qty: element.Qty || 1,
+              TotalAmt: element.TotalAmt || 0,
+              ConcessionPercentage:element.ConcessionPercentage || 0,
+              DiscAmt:element.DiscAmt || 0,
+              NetAmount: element.NetAmount || 0,
+              IsPathology: element.IsPathology,
+              IsRadiology: element.IsRadiology,
+              PackageId: element.PackageId,
+              PackageServiceId: element.PackageServiceId,
+              PacakgeServiceName: element.PacakgeServiceName,
+              DoctorId: element.DoctorId || 0,
+              DoctorName: element.DoctorName || '',
+              ChargesId: element.ChargesId || 0
+            })
+        })
+        this.dsPackageDet.data = this.PacakgeList
+        console.log(this.PacakgeList);
   
+      });
+    }
+
+
+     
+  // Service Add 
+  onSaveAddCharges() { 
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
+    const formvalue = this.PackageForm.value
+    console.log(formvalue)
+    if ((formvalue.ServiceName.serviceId == 0 || formvalue.ServiceName.serviceId == null || formvalue.ServiceName.serviceId == undefined)) {
+      this.toastr.warning('Please select Service', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+ 
+    if (this.CreditedtoDoctor) {
+      if ((formvalue.DoctorID == undefined || formvalue.DoctorID == null || formvalue.DoctorID == "")) {
+        this.toastr.warning('Please select Doctor', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      if (this.PackageForm.get('DoctorID').value) { 
+        this.ChargesDoctorname = this.PackageForm.get('DoctorID').value.Doctorname || ''
+        this.ChargeDoctorId = this.PackageForm.get('DoctorID').value.DoctorId || 0;
+        console.log(this.ChargesDoctorname)
+      }
+    }
+
+    if (this.data.FormName == 'IPD Package') { 
+      var Vdata = {
+          "chargesId": 0,
+          "chargesDate": formattedDate,
+          "opdIpdType": 1,
+          "opdIpdId": this.registerObj.admissionId,
+          "serviceId": formvalue.ServiceName.serviceId,
+          "price": 0,
+          "qty": 1,
+          "totalAmt": 0,
+          "concessionPercentage": 0,
+          "concessionAmount": 0,
+          "netAmount": 0,
+          "doctorId": formvalue.DoctorID || 0,
+          "docPercentage": 0,
+          "docAmt": 0,
+          "hospitalAmt": 0,
+          "isGenerated": false,
+          "addedBy": this._loggedService.currentUserValue.userId || 0,
+          "isCancelled": false,
+          "isCancelledBy": 0,
+          "isCancelledDate": "2025-01-31",
+          "isPathology": this.selectedAdvanceObj.isPathology,
+          "isRadiology":this.selectedAdvanceObj.isRadiology,
+          "isPackage": 1,
+          "packageMainChargeId": this.selectedAdvanceObj.chargesId,
+          "isSelfOrCompanyService":0,
+          "packageId": this.selectedAdvanceObj.serviceId,
+          "chargeTime": formattedTime,
+          "classId": this.selectedAdvanceObj.classId
+        }   
+      let submitData = {
+        "saveAddChargesParameters": Vdata 
+      };
+      console.log(submitData)
+      this._IpSearchListService.InsertIPpacakgeAddCharges(Vdata).subscribe(data => {
+        if (data) { 
+          this.getIPDpackagedetList(this.registerObj)
+        }  
+      });
+    } else {
+      this.isLoading = 'save';
+      this.dsPackageDet.data = [];
+      this.PacakgeList.push(
+        {
+          ChargesId: 0,// this.serviceId,
+          ServiceId: this.registerObj.ServiceId, //this.PackageForm.get('SrvcName').value.ServiceId || 0,
+          ServiceName: this.PackageForm.get('SrvcName').value.ServiceName || '',
+          Price: 0,
+          Qty: 1,
+          TotalAmt: 0,
+          DiscPer: 0,
+          DiscAmt: 0,
+          NetAmount: 0,
+          DoctorId: this.ChargeDoctorId,
+          DoctorName: this.ChargesDoctorname,
+          IsPathology: this.IsPathology || 0,
+          IsRadiology: this.IsRadiology || 0,
+          PackageServiceId: this.PackageForm.get('SrvcName').value.ServiceId || 0,
+
+        });
+      this.isLoading = '';
+      this.dsPackageDet.data = this.PacakgeList;
+    }
+    this.isDoctor = false;
+    this.ChargesDoctorname = ''
+    this.ChargeDoctorId = 0; 
+    this.Servicename.nativeElement.focus();
+    this.PackageForm.get('SrvcName').reset();
+    this.PackageForm.get('DoctorID').reset('');
+    this.PackageForm.get('MainServiceName').setValue(this.registerObj.ServiceName);
+  }
   getBillwiseAmt(event) {
     debugger
     if (event.checked) {
@@ -225,179 +376,9 @@ getOPDpackagedetList(obj) {
 
   // });
 }
-  //IPD package list 
-  getIPDpackagedetList(obj) {
-    this.PacakgeList = []; 
-    var vdata = { 
-      "first": 0,
-      "rows": 10,
-      "sortField": "ChargesId",
-      "sortOrder": 0,
-      "filters": [
-     
-    {
-          "fieldName": "ChargesId",
-          "fieldValue": String(obj.chargesId),
-          "opType": "Equals"
-        }
-    ],
-      "exportType": "JSON",
-     
-    "columns": [] 
-    } 
-    this._IpSearchListService.getpackagedetList(vdata).subscribe((response) => {
-      this.dsPackageDet.data = response.data as ChargesList[];
-      console.log(this.dsPackageDet.data);
-      this.dsPackageDet.data.forEach(element => {
-        this.PacakgeList.push(
-          {
-            ServiceId: element.serviceId,
-            ServiceName: element.ServiceName,
-            Price: element.Price || 0,
-            Qty: element.Qty || 1,
-            TotalAmt: element.TotalAmt || 0,
-            ConcessionPercentage:element.ConcessionPercentage || 0,
-            DiscAmt:element.ConcessionAmount || 0,
-            NetAmount: element.NetAmount || 0,
-            IsPathology: element.IsPathology,
-            IsRadiology: element.IsRadiology,
-            PackageId: element.PackageId,
-            PackageServiceId: element.PackageServiceId,
-            PacakgeServiceName: element.PacakgeServiceName,
-            DoctorId: element.DoctorId || 0,
-            DoctorName: element.DoctorName || '',
-            ChargesId: element.ChargesId || 0
-          })
-      })
-      this.dsPackageDet.data = this.PacakgeList
-      console.log(this.PacakgeList);
 
-    });
-  }
 
- 
-  // Service Add 
-  onSaveAddCharges() { 
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
-    if ((this.vServiceId == 0 || this.vServiceId == null || this.vServiceId == undefined)) {
-      this.toastr.warning('Please select Service', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if (this.PackageForm.get('SrvcName').value) {
-      if (!this.filteredOptionsService.find(item => item.ServiceName == this.PackageForm.get('SrvcName').value.ServiceName)) {
-        this.toastr.warning('Please select valid Service Name', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-    }
-    if (this.CreditedtoDoctor) {
-      if ((this.vDoctor == undefined || this.vDoctor == null || this.vDoctor == "")) {
-        this.toastr.warning('Please select Doctor', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-      if (this.PackageForm.get('DoctorID').value) {
-        if (!this.filteredOptionsDoctors.find(item => item.Doctorname == this.PackageForm.get('DoctorID').value.Doctorname)) {
-          this.toastr.warning('Please select valid Doctor Name', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-        }
-        this.ChargesDoctorname = this.PackageForm.get('DoctorID').value.Doctorname || ''
-        this.ChargeDoctorId = this.PackageForm.get('DoctorID').value.DoctorId || 0;
-        console.log(this.ChargesDoctorname)
-      }
-    }
-
-    if (this.data.FormName == 'IPD Package') { 
-      var Vdata = {
-          "chargeID": 0,
-          "chargesDate": formattedDate,
-          "opD_IPD_Type": 1,
-          "opD_IPD_Id": this.registerObj.OPD_IPD_Id,
-          "serviceId":  this.PackageForm.get('SrvcName').value.ServiceId,
-          "price": 0,
-          "qty": 1,
-          "totalAmt": 0,
-          "concessionPercentage": 0,
-          "concessionAmount": 0,
-          "netAmount": 0,
-          "doctorId": this.ChargeDoctorId || 0,
-          "docPercentage": 0,
-          "docAmt": 0,
-          "hospitalAmt": 0,
-          "isGenerated": false,
-          "addedBy": this._loggedService.currentUserValue.user.id,
-          "isCancelled": false,
-          "isCancelledBy": 0,
-          "isCancelledDate": "2025-01-31T04:29:41.863Z",
-          "isPathology": this.registerObj.IsPathology,
-          "isRadiology":this.registerObj.IsRadiology,
-          "isPackage": 1,
-          "packageMainChargeID": this.registerObj.ChargesId,
-          "isSelfOrCompanyService": false,
-          "packageId": this.registerObj.ServiceId,
-          "chargeTime": formattedTime,
-          "classId": this.registerObj.ClassId
-        } 
-      console.log(Vdata) 
-
-      let submitData = {
-        "saveAddChargesParameters": Vdata 
-      };
-      console.log(submitData)
-      // this._OpBillingService.InsertIPAddCharges(submitData).subscribe(data => {
-      //   if (data) {
-      //     this.toastr.success('Record Saved Successfully.', 'Saved !', {
-      //       toastClass: 'tostr-tost custom-toast-success',
-      //     });
-      //     this.getpackagedetList(this.registerObj)
-      //   } else {
-      //     this.toastr.error('Record Data not Saved !, Please check API error..', 'Error !', {
-      //       toastClass: 'tostr-tost custom-toast-error',
-      //     });
-      //   }
-      // });
-    } else {
-      this.isLoading = 'save';
-      this.dsPackageDet.data = [];
-      this.PacakgeList.push(
-        {
-          ChargesId: 0,// this.serviceId,
-          ServiceId: this.registerObj.ServiceId, //this.PackageForm.get('SrvcName').value.ServiceId || 0,
-          ServiceName: this.PackageForm.get('SrvcName').value.ServiceName || '',
-          Price: 0,
-          Qty: 1,
-          TotalAmt: 0,
-          DiscPer: 0,
-          DiscAmt: 0,
-          NetAmount: 0,
-          DoctorId: this.ChargeDoctorId,
-          DoctorName: this.ChargesDoctorname,
-          IsPathology: this.IsPathology || 0,
-          IsRadiology: this.IsRadiology || 0,
-          PackageServiceId: this.PackageForm.get('SrvcName').value.ServiceId || 0,
-
-        });
-      this.isLoading = '';
-      this.dsPackageDet.data = this.PacakgeList;
-    }
-    this.isDoctor = false;
-    this.ChargesDoctorname = ''
-    this.ChargeDoctorId = 0; 
-    this.Servicename.nativeElement.focus();
-    this.PackageForm.get('SrvcName').reset();
-    this.PackageForm.get('DoctorID').reset('');
-    this.PackageForm.get('MainServiceName').setValue(this.registerObj.ServiceName);
-  }
 
 
   //Editable doctor
@@ -753,6 +734,7 @@ getOPDpackagedetList(obj) {
 export class ChargesList {
   ChargesId: number;
   serviceId: number;
+  ServiceId: number;
   ServiceName: String;
   Price: number;
   Qty: number;

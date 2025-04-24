@@ -68,7 +68,7 @@
       </ng-container>
 
       <mat-header-row class="accent" *matHeaderRowDef="NurReqColumns; sticky: true"></mat-header-row>
-      <mat-row *matRowDef="let contact; columns: NurReqColumns" [ngClass]="{ 'row-pink': contact.IsStatus == 0 }" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+      <mat-row *matRowDef="let contact; columns: NurReqColumns" [ngClass]="{'red-row': contact.IsStatus == 1}" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
       <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{ hide: dataSource1 != null }"></mat-footer-row>
       <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{ hide: !(dataSource1 != null && dataSource1.data.length == 0) }"></mat-footer-row>
     </mat-table>

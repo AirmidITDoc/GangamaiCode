@@ -29,18 +29,15 @@
             </div>
 
             <div class="modal-body">
+                <form [formGroup]="PackageForm">
                 <div fxLayout="column" fxLayoutGap="5px" fxFlex>
-                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-                        <airmid-textbox
-                          label="Package Service Name"
-                          formControlName="MainServiceName"
-                          [formGroup]="PackageForm" 
-                          [type]="'text'" 
-                          [readonly]="true"
-                          [validations]="getValidationMessages().MainServiceName"
-                          [value]="vPackageServiceName" 
-                        ></airmid-textbox>
-                      </div>
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%"> 
+                        <airmid-textbox label="Package Service Name" formControlName="MainServiceName"
+                            [ngModel]="selectedAdvanceObj.serviceName" [formGroup]="PackageForm" [readonly]="true"
+                            [validations]="getValidationMessages().MainServiceName" [maxLength]="100">
+                        </airmid-textbox> 
+                    </div>
+
                     <div fxLayout="row" fxLayoutGap="10px">
                         <div style="width: 340px">   
                                 <airmid-autocomplete
@@ -56,14 +53,12 @@
                                 ValueField="serviceId"
                               ></airmid-autocomplete> 
                         </div>
-                        <!-- *ngIf="isDoctor" -->
-                        <div style="width: 300px" >
+                      
+                        <div style="width: 300px" *ngIf="isDoctor" >
                             <airmid-dropdown label="Doctor Name" formControlName="DoctorID" [formGroup]="PackageForm"
                                 [mode]="autocompleteModedeptdoc"     [validations]="getValidationMessages().DoctorID"
                                 (selectionChange)="getdocdetail($event)"></airmid-dropdown>
-                        </div>
-
-
+                        </div> 
 
                         <div class="mt-2">
                             <button type="button" (click)="onSaveAddCharges()" class="btn btn-primary btn-with-icon py-8"
@@ -109,7 +104,7 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        <mat-form-field appearance="legacy">
+                                        <mat-form-field appearance="fill">
                                             <input matInput [(ngModel)]="contact.Price" type="text" OnlyNumber
                                                 (keyup)="gettablecalculation(contact)"
                                                 (keypress)="keyPressCharater($event)">
@@ -121,7 +116,7 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        <mat-form-field appearance="legacy">
+                                        <mat-form-field appearance="fill">
                                             <input matInput [(ngModel)]="contact.Qty" type="text" OnlyNumber
                                                 (keyup)="gettablecalculation(contact)"
                                                 (keypress)="keyPressAlphanumeric($event)">
@@ -150,7 +145,7 @@
                                         </ng-container>
                                         <ng-template #showInput>
                                             <form [formGroup]="PackageForm">
-                                                <mat-form-field appearance="legacy" class="w-120">
+                                                <mat-form-field appearance="fill" class="w-120">
                                                     <mat-label>Select Doctor</mat-label>
                                                     <input matAutocompletePosition="below" type="text"
                                                         placeholder="Select Doctor" matInput
@@ -274,7 +269,7 @@
                         </div>
                     </mat-card>
                 </div>
-
+                </form>
             </div>
             <div class="modal-footer">
                 <div class="modal-footer-buttons">
