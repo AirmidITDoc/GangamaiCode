@@ -72,11 +72,12 @@ export class AddDoctorShareComponent implements OnInit {
         sortOrder: 0,
         filters: [
           { fieldName: "DoctorId", fieldValue: this.DoctorId, opType: OperatorComparer.StartsWith },
-          { fieldName: "ShrTypeSerOrGrp", fieldValue: this.ShrTypeSerOrGrp, opType: OperatorComparer.StartsWith }
+          { fieldName: "ShrTypeSerOrGrp", fieldValue: String(this.ShrTypeSerOrGrp), opType: OperatorComparer.StartsWith }
         ]
     }
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData(); 
+    console.log(this.gridConfig)
 }
 
   ListView(value) {
@@ -301,6 +302,7 @@ export class AddDoctorShareComponent implements OnInit {
             toastClass: 'tostr-tost custom-toast-success',
           });
           this.getAddDoctorList()
+          this.grid.bindGridData(); 
           this.Reset();
         } else {
           this.toastr.error('API Error!', 'Error !', {
@@ -314,7 +316,7 @@ export class AddDoctorShareComponent implements OnInit {
         "doctorShareId": this.doctorShareId,
         "doctorId": this.doctorId || 0,
         "serviceId": this.serviceId || 0,
-        "docShrType": this._DoctorShareService.DocFormGroup.get('DocShareType').value || 0,
+        "docShrType": 0,
         "docShrTypeS": docShrTypeS,
         "servicePercentage": this._DoctorShareService.DocFormGroup.get('Percentage').value || 0,
         "serviceAmount": this._DoctorShareService.DocFormGroup.get('Amount').value || 0,
@@ -329,6 +331,7 @@ export class AddDoctorShareComponent implements OnInit {
             toastClass: 'tostr-tost custom-toast-success',
           });
           this.getAddDoctorList()
+          this.grid.bindGridData(); 
           this.Reset();
         } else {
           this.toastr.error('API Error!', 'Error !', {

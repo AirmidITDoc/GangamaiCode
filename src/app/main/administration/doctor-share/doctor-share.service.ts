@@ -80,11 +80,13 @@ export class DoctorShareService {
   public InsertDocShare(employee) {
     return this._httpClient.PostData("DoctorShareMaster/InsertEDMX",employee) 
   }
-  public UpdateDocShare(emp) {
-    if(emp.doctorShareId){
-    return this._httpClient.PutData("DoctorShareMaster/Update/" +emp.doctorShareId, emp) 
+
+  public UpdateDocShare(Param: any) {
+    if (Param.doctorShareId) {
+        return this._httpClient.PutData("DoctorShareMaster/" + Param.doctorShareId, Param);
     }
-  }
+}
+
   public SaveProcessdocShare(employee) {
     return this._httpClient.PostData("Administration/DoctorShareProcess",employee) 
   } 

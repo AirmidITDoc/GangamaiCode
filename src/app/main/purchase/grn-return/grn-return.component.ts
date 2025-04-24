@@ -116,7 +116,7 @@ export class GRNReturnComponent implements OnInit {
 
   ngOnInit(): void {
     // this.getStoreList();
-    this.getGRNReturnList();
+    // this.getGRNReturnList();
     console.log("main list:", this.gridConfig);
   }
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -264,54 +264,54 @@ export class GRNReturnComponent implements OnInit {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  getStoreList() {
-    var vdata = {
-      Id: this.accountService.currentUserValue.storeId
-    }
-    this._GRNReturnService.getLoggedStoreList(vdata).subscribe(data => {
-      this.ToStoreList = data;
-      this._GRNReturnService.GRNReturnSearchFrom.get('ToStoreId').setValue(this.ToStoreList[0]);
-    });
-  }
+  // getStoreList() {
+  //   var vdata = {
+  //     Id: this.accountService.currentUserValue.storeId
+  //   }
+  //   this._GRNReturnService.getLoggedStoreList(vdata).subscribe(data => {
+  //     this.ToStoreList = data;
+  //     this._GRNReturnService.GRNReturnSearchFrom.get('ToStoreId').setValue(this.ToStoreList[0]);
+  //   });
+  // }
 
 
-  getGRNReturnList() {
-    this.sIsLoading = 'loading-data';
-    var Param = {
-      "ToStoreId": this.accountService.currentUserValue.storeId || 0,
-      "From_Dt": this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "To_Dt": this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "SupplierId": this._GRNReturnService.GRNReturnSearchFrom.get('SupplierId').value.SupplierId || 0,
-      "IsVerify": this._GRNReturnService.GRNReturnSearchFrom.get("Status").value || 0,
-    }
-    console.log(Param);
-    this._GRNReturnService.getGRNReturnList(Param).subscribe(data => {
-      this.dsGRNReturnList.data = data as GRNReturnList[];
-      // console.log(this.dsGRNReturnList);
-      this.dsGRNReturnList.sort = this.sort;
-      this.dsGRNReturnList.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
-  getGRNReturnItemDetList(Params) {
-    this.sIsLoading = 'loading-data';
-    var Param = {
-      "GRNReturnId": Params.GRNReturnId
-    }
-    this._GRNReturnService.getGRNReturnItemDetList(Param).subscribe(data => {
-      this.dsGRNReturnItemDetList.data = data as GRNReturnItemDetList[];
-      this.dsGRNReturnItemDetList.sort = this.sort;
-      this.dsGRNReturnItemDetList.paginator = this.paginator1;
-      this.sIsLoading = '';
-      // console.log(this.dsGRNReturnItemDetList.data)
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
+  // getGRNReturnList() {
+  //   this.sIsLoading = 'loading-data';
+  //   var Param = {
+  //     "ToStoreId": this.accountService.currentUserValue.storeId || 0,
+  //     "From_Dt": this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+  //     "To_Dt": this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+  //     "SupplierId": this._GRNReturnService.GRNReturnSearchFrom.get('SupplierId').value.SupplierId || 0,
+  //     "IsVerify": this._GRNReturnService.GRNReturnSearchFrom.get("Status").value || 0,
+  //   }
+  //   console.log(Param);
+  //   this._GRNReturnService.getGRNReturnList(Param).subscribe(data => {
+  //     this.dsGRNReturnList.data = data as GRNReturnList[];
+  //     // console.log(this.dsGRNReturnList);
+  //     this.dsGRNReturnList.sort = this.sort;
+  //     this.dsGRNReturnList.paginator = this.paginator;
+  //     this.sIsLoading = '';
+  //   },
+  //     error => {
+  //       this.sIsLoading = '';
+  //     });
+  // }
+  // getGRNReturnItemDetList(Params) {
+  //   this.sIsLoading = 'loading-data';
+  //   var Param = {
+  //     "GRNReturnId": Params.GRNReturnId
+  //   }
+  //   this._GRNReturnService.getGRNReturnItemDetList(Param).subscribe(data => {
+  //     this.dsGRNReturnItemDetList.data = data as GRNReturnItemDetList[];
+  //     this.dsGRNReturnItemDetList.sort = this.sort;
+  //     this.dsGRNReturnItemDetList.paginator = this.paginator1;
+  //     this.sIsLoading = '';
+  //     // console.log(this.dsGRNReturnItemDetList.data)
+  //   },
+  //     error => {
+  //       this.sIsLoading = '';
+  //     });
+  // }
 
   onClear() { }
   getVerify(row) {
@@ -342,7 +342,7 @@ export class GRNReturnComponent implements OnInit {
         });
 
       });
-    this.getGRNReturnList();
+    // this.getGRNReturnList();
   }
 
   getNewGRNRet() {
@@ -354,7 +354,7 @@ export class GRNReturnComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      this.getGRNReturnList();
+      // this.getGRNReturnList();
     });
   }
 

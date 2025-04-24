@@ -22,21 +22,21 @@ export class GRNReturnWithoutGRNService {
   }
   CreateReturnSearchForm() {
     return this._formBuilder.group({
-      FromStoreId: '',
+      ToStoreId: 2,
       SupplierId:[''],
-      Status:['0'],
+      Status:['1'],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
     });
   }
   CreateStoreForm() {
     return this._formBuilder.group({
-      FromStoreId: '',
+      ToStoreId: 2,
     });
   }
   CreateNewGRNReturnForm() {
     return this._formBuilder.group({
-      FromStoreId: '',
+      ToStoreId: 2,
       SupplierName:'',
       GSTType:['GST Return'],
       ReturnDate: [(new Date()).toISOString()],

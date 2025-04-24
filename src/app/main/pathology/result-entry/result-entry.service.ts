@@ -165,7 +165,7 @@ export class ResultEntryService {
   }
 
   public PathPrintResultentryInsert(employee) {
-    return this._httpClient.post("Pathology/PathPrintResultentryInsert", employee);
+    return this._httpClient1.PostData("Pathology/PathPrintResultentryInsert", employee);
   }
 
   public getPathTemplateById(Id) {

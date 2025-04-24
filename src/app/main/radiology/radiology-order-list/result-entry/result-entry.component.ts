@@ -282,7 +282,7 @@ export class ResultEntryComponent implements OnInit {
                             width: '100%',
                             data: {
                                 base64: res["base64"] as string,
-                                title: "Template Report" + " "+ "Viewer"
+                                title: "Radiology Template Report" + " "+ "Viewer"
                             }
                         });
                     matDialog.afterClosed().subscribe(result => {
