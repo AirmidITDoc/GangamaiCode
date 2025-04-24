@@ -134,6 +134,8 @@ export class IPSearchListComponent implements OnInit {
         this.myFilterform.get('fromDate').setValue('');
         this.myFilterform.get('enddate').setValue('');   
 
+        console.log(this._configue.configParams)
+
         if (this._ActRoute.url == '/ipd/ipadvance') {
             this.menuActions.push('Advance');
             this.menuActions.push('Bed Transfer');
@@ -143,9 +145,9 @@ export class IPSearchListComponent implements OnInit {
         }
         else if (this._ActRoute.url == '/ipd/dischargesummary') {
          
-            // if(this._configue.configParams.IsDischargeTemplate)
+            if(this._configue.configParams.IsDischargeTemplate)
               this.menuActions.push('Discharge Summary Template');
-            // else
+            else
               this.menuActions.push('Discharge Summary');
             
         }

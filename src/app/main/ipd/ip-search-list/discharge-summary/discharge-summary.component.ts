@@ -187,17 +187,6 @@ export class DischargeSummaryComponent implements OnInit {
       }, 500);
     }
 
-  //   console.log(this.registerObj1)
-  //   if (this.registerObj1.isDischarge) {
-  //     setTimeout(() => {
-  //       this._IpSearchListService.getDischargeId(this.data.admissionId).subscribe((response) => {
-  //             this.registerObj = response[0];
-      // this.vDischargeId = this.registerObj.DischargeId
-    
-  //       });
-  //      }, 500);
-
-  // }
 }
 
   isItemIdSelected: boolean = false;
@@ -392,7 +381,7 @@ export class DischargeSummaryComponent implements OnInit {
       }
     ]
   }
-debugger
+
     console.log(m_data2)
     this._IpSearchListService.getDischargeSummary(m_data2).subscribe((data) => {
 
@@ -514,8 +503,7 @@ debugger
 
         if (this.DischargeSummaryId == undefined) {
           this.DischargesumForm.get("admissionId").setValue(this.vAdmissionId)
-          // this.DischargesumForm.get("addedBy").setValue(1)
-
+          
           dischargModeldata['admissionId'] = this.vAdmissionId
           dischargModeldata['addedBy'] = this.accountService.currentUserValue.userId
 
@@ -540,10 +528,6 @@ debugger
         }
         else {
           dischargModeldata['updatedBy'] = this.accountService.currentUserValue.userId
-
-          // this.DischargesumForm.get("updatedBy").setValue(this.accountService.currentUserValue.userId)
-
-
           var data1 = {
             "dischargModel": dischargModeldata,//  this.DischargesumForm.value,
             "prescriptionDischarge": insertIPPrescriptionDischarge
