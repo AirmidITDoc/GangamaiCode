@@ -207,12 +207,12 @@ export class ReportGenerationComponent implements OnInit {
             let paramFilterList = [
                 {
                 "fieldName": "FromDate",
-                "fieldValue": this.datePipe.transform(this._ReportService.userForm.get("StartDate").value,"dd-MM-yyyy"),//"10-01-2024",
+                "fieldValue": this.datePipe.transform(this._ReportService.userForm.get("StartDate").value,"yyyy-MM-dd"),//"10-01-2024",
                 "opType": OperatorComparer.Equals
                 },
                 {
                 "fieldName": "ToDate",
-                "fieldValue": this.datePipe.transform(this._ReportService.userForm.get("EndDate").value,"dd-MM-yyyy"),//"12-12-2024",
+                "fieldValue": this.datePipe.transform(this._ReportService.userForm.get("EndDate").value,"yyyy-MM-dd"),//"12-12-2024",
                 "opType": OperatorComparer.Equals
                 }
             ];

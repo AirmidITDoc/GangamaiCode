@@ -792,12 +792,15 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
     //     });
     // }
 
-
+    selectedItem:any;
+    // opiptype = this.selectedItem.opdipdtype;
     Printresultentry() {
         debugger
         console.log(this.selection.selected);
         let pathologyDelete = [];
-    
+
+        this.selectedItem = this.selection.selected[0];
+
         this.selection.selected.forEach((element) => {
             pathologyDelete.push({ pathReportId: element.pathReportId });
         });
@@ -811,21 +814,20 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
         this._SampleService.PathPrintResultentryInsert(submitData).subscribe(res => {
             if (res) {
                 debugger
-                this.viewgetPathologyTestReportPdf()
+                this.viewgetPathologyTestReportPdf(this.selectedItem)
             }
         });
     }
 
-    viewgetPathologyTestReportPdf() {
+    viewgetPathologyTestReportPdf(data) {
         debugger
-        console.log(this.selection.selected);
     
-        this.selection.selected.forEach((element) => {
+        // this.selection.selected.forEach((element) => {
             const param = {
                 searchFields: [
                     {
                         fieldName: "OP_IP_Type",
-                        fieldValue: String(element.opdipdtype),
+                        fieldValue: String(data.opdipdtype),
                         opType: "Equals"
                     }
                 ],
@@ -849,7 +851,7 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
                     
                 });
             });
-        });
+        // });
     }
     
     Printresultentrywithheader() {
@@ -857,6 +859,8 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
         console.log(this.selection.selected);
         let pathologyDelete = [];
     
+        this.selectedItem = this.selection.selected[0];
+
         this.selection.selected.forEach((element) => {
             pathologyDelete.push({ pathReportId: element.pathReportId });
         });
@@ -870,21 +874,21 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
         this._SampleService.PathPrintResultentryInsert(submitData).subscribe(res => {
             if (res) {
                 debugger
-                this.viewgetPathologyTestReportwithheaderPdf()
+                this.viewgetPathologyTestReportwithheaderPdf(this.selectedItem)
             }
         });
     }
 
-    viewgetPathologyTestReportwithheaderPdf() {
+    viewgetPathologyTestReportwithheaderPdf(data) {
         debugger;
         console.log(this.selection.selected);
     
-        this.selection.selected.forEach((element) => {
+        // this.selection.selected.forEach((element) => {
             const param = {
                 searchFields: [
                     {
                         fieldName: "OP_IP_Type",
-                        fieldValue: String(element.opdipdtype),
+                        fieldValue: String(data.opdipdtype),
                         opType: "Equals"
                     }
                 ],
@@ -908,7 +912,7 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
                     
                 });
             });
-        });
+        // });
     }
     
     AdList: boolean = false;

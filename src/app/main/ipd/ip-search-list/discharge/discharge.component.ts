@@ -56,7 +56,7 @@ export class DischargeComponent implements OnInit {
   selectedAdvanceObj: AdvanceDetailObj;
   registerObj1 = new AdmissionPersonlModel({});
   registerObj = new RegInsert({});
-
+  dischargeTypeId=0;
   autocompletcondoc: string = "ConDoctor";
   autocompletedichargetype: string = "DichargeType";
   autocompletemode: string = "ModeOfDischarge";
@@ -151,6 +151,11 @@ export class DischargeComponent implements OnInit {
   docName(event){
 console.log(event)
   }
+
+  selctdischargeType(event){
+this.dischargeTypeId=event.value
+  }
+
   DischargesaveForm(): FormGroup {
     return this._formBuilder.group({
 
@@ -170,21 +175,21 @@ console.log(event)
   onDischarge() {
     console.log(this.DischargeForm.value)
 
-    if (this.ChkConfigInitiate == false) {
-      if (this.vDeptCount < 0 || this.vDeptCount == '' || this.vDeptCount == undefined) {
-        this.toastr.warning('Please be informed that your initiate discharge to department', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-    }
+    // if (this.ChkConfigInitiate == false) {
+    //   if (this.vDeptCount < 0 || this.vDeptCount == '' || this.vDeptCount == undefined) {
+    //     this.toastr.warning('Please be informed that your initiate discharge to department', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    //   }
+    // }
     
 
     if (!this.DischargeForm.invalid) {
       let dischargModeldata = {};
       dischargModeldata['dischargeDate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
         dischargModeldata['dischargeTime'] = this.dateTimeObj.time
-      dischargModeldata['dischargeTypeId'] = this.DischargeForm.get("dischargeTypeId").value || 0,
+      dischargModeldata['dischargeTypeId'] =this.dischargeTypeId,// this.DischargeForm.get("dischargeTypeId").value.value || 0,
         dischargModeldata['dischargedDocId'] = this.DischargeForm.get("dischargedDocId").value || 0,
         dischargModeldata['dischargedRmoid'] = this.DischargeForm.get("dischargedRmoid").value || 0,
         dischargModeldata['addedBy'] = this.accountService.currentUserValue.userId,
@@ -279,17 +284,17 @@ console.log(data)
   vApproved_Cnt: any;
   vDeptCount: any;
   getchkConfigInitiate() {
-    //  var data={
+     var data={
 
-    //  }
-    //   this._IpSearchListService.getchkConfigInitiate(data).subscribe((data) => {
-    //     console.log(data)
-    //     if(data){
-    //       this.vApproved_Cnt = data[0]?.Approved_Cnt
-    //       this.vDeptCount = data[0]?.DeptCount
+     }
+      this._IpSearchListService.getchkConfigInitiate(data).subscribe((data) => {
+        console.log(data)
+        if(data){
+          this.vApproved_Cnt = data[0]?.Approved_Cnt
+          this.vDeptCount = data[0]?.DeptCount
 
-    //     } 
-    //   })
+        } 
+      })
   }
 
 

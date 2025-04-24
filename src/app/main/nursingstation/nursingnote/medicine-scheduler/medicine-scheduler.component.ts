@@ -246,7 +246,7 @@ export class MedicineSchedulerComponent {
         "freq": element.Frequency || '',
         "isAddedBy": this._loggedService.currentUserValue.userId,
         "nurseName": element.NurseName || '',
-        "createdBy": true,
+        "isCancelled": true,
         // "doseName": element.DoseDateTime || '',
         "doseName": this.datePipe.transform(element.DoseDateTime, 'h:mm a') || '',
       }

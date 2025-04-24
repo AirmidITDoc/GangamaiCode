@@ -339,7 +339,7 @@ export class ResultEntryOneComponent implements OnInit {
                 "searchFields": [          
                   {          
                     "fieldName": "PathReportId",   
-                    "fieldValue": String(rbj[0].PathReportId), //"150452",  
+                    "fieldValue": String(rbj[0].PathReportId), //"150598",  
                     "opType": "Equals"          
                   }          
                 ],          
@@ -634,7 +634,7 @@ export class ResultEntryOneComponent implements OnInit {
         let pathologyDelete = [];
     
         this.data.RIdData.forEach((element) => {
-            pathologyDelete.push({ pathReportId: element.pathReportId });
+            pathologyDelete.push({ pathReportId: element.PathReportId });
         });
     
         const submitData = {

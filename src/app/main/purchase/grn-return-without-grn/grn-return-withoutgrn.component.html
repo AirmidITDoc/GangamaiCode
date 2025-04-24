@@ -1,4 +1,109 @@
-<div class="page-layout simple inner-scroll inner-sidebar right-sidebar" dynamicTableHeight>
+<div fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto" dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <button mat-icon-button class="sidebar-toggle">
+                    <mat-icon>menu</mat-icon>
+                </button>
+
+                <button mat-icon-button class="user-icon">
+                    <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+                    </mat-icon>
+                </button>
+
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    GRN Return List
+                </span>
+            </div>
+        </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="newGRNRetunr()">New GRNReturn
+            </button>
+
+        </div>
+    </div>
+
+        <div fusePerfectScrollbar
+            class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+            dynamicTableHeight>
+
+            <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                <ng-template #ColorCode let-element>
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                      <mat-icon *ngIf="element.isVerified === false" matTooltip="Pending" class="pill red-600 s-16">circle</mat-icon>
+                      <mat-icon *ngIf="element.isVerified === true" matTooltip="Verified" class="pill green-600 s-16">circle</mat-icon>
+                    </div>
+                  </ng-template>                  
+
+                <ng-template #actionButtonTemplate let-element>
+                    <div fxLayout="row" fxLayoutAlign="center center">        
+                        <button mat-icon-button matTooltip="Print">
+                            <mat-icon>print</mat-icon>
+                        </button>
+                        <button mat-icon-button matTooltip="Verify">
+                            <mat-icon>verified_user</mat-icon>
+                        </button>                       
+                    </div>
+                </ng-template>
+
+                <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false" #grid (onSelectRow)="GetDetails1($event)">
+                    <ng-container filters>
+                        <form [formGroup]="_GRNReturnService.GRNReturnSearchFrom" fxLayout="column">
+                            <airmid-datepicker [formGroup]="_GRNReturnService.GRNReturnSearchFrom" [isRangePicker]="true"
+                            formStartControlName="start" formEndControlName="end"
+                            [(fromValue)]="gridConfig.filters[0].fieldValue"
+                            [(toValue)]="gridConfig.filters[1].fieldValue">
+                        </airmid-datepicker>
+
+                        <airmid-dropdown label="Store Name" formControlName="ToStoreId"
+                         [formGroup]="_GRNReturnService.GRNReturnSearchFrom"
+                            [mode]="autocompletestore" (selectionChange)="ListView($event)">
+                        </airmid-dropdown>
+
+                        <airmid-dropdown label="Supplier Name" formControlName="SupplierId"
+                         [formGroup]="_GRNReturnService.GRNReturnSearchFrom"
+                            [mode]="autocompleteSupplier" (selectionChange)="ListView1($event)">
+                        </airmid-dropdown>
+
+                        <div fxFlex fxLayout="row">
+                            <mat-radio-group name="Status" fxLayout="row" value="1" [formGroup]="_GRNReturnService.GRNReturnSearchFrom"
+                             formControlName="Status" (change)="onChangeFirst()"
+                                style="padding: 6px;" class="gap-4">
+                                <mat-label>Status:</mat-label>
+                                <div fxLayout="row">
+                                    <mat-radio-button value='2'>All</mat-radio-button>
+                                    <mat-radio-button value='0'>Close</mat-radio-button>
+                                    <mat-radio-button value='1'>Pending</mat-radio-button>
+                                </div>
+                            </mat-radio-group>
+                        </div>
+                        </form>
+
+                    </ng-container>
+                </airmid-table>
+            </div>
+
+            <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
+                *ngIf="isShowDetailTable">
+
+                <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false" [ShowButtons]="false">
+                </airmid-table>
+            </div>
+        </div> 
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="page-layout simple inner-scroll inner-sidebar right-sidebar" dynamicTableHeight>
     <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -134,14 +239,6 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <!-- <ng-container matColumnDef="StoreName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Store Name </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.StoreName}}</span>
-                                        </mat-cell>
-                                    </ng-container> -->
-
                                     <ng-container matColumnDef="SupplierName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             SupplierName</mat-header-cell>
@@ -190,7 +287,6 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <!-- stickyEnd -->
                                     <ng-container matColumnDef="action" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                             style="color: white;">Action
@@ -399,4 +495,4 @@
         </div>
 
     </div>
-</div>
+</div> -->

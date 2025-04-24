@@ -66,6 +66,12 @@ export class NewGRNReturnComponent implements OnInit {
   screenFromString:'GrnReturn-Form'
   SpinLoading: boolean = false;
   vGSTTpe:any;
+  autocompletestore: string = "Store";
+  autocompleteSupplier:string="SupplierMaster"
+  VsupplierId:any=0
+  vstoreId:any=2
+  itemName:any;
+
  dsItemList = new MatTableDataSource<ItemNameList>();
  dsTempItemNameList = new MatTableDataSource<ItemNameList>();
 
@@ -78,81 +84,34 @@ export class NewGRNReturnComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.gePharStoreList();
     this.vGSTTpe = 'GST Return';
+    this._GRNReturnService.NewGRNReturnFrom.markAllAsTouched();
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  gePharStoreList() {
-    var vdata = {
-      Id: this._loggedService.currentUserValue.storeId
+  
+  selectChangeItem(obj: any) {
+    
+    if (!obj || typeof obj !== 'object') {
+      this.toastr.error('Invalid item selection. Please choose a valid item from the list.', 'Error!');
+      this._GRNReturnService.NewGRNReturnFrom.get('ItemName').setErrors({ invalidItem: true });
+      return;
     }
-    this._GRNReturnService.getLoggedStoreList(vdata).subscribe(data => {
-      this.StoreList = data;
-      console.log(this.StoreList)
-      this._GRNReturnService.GRNReturnStoreFrom.get('FromStoreId').setValue(this.StoreList[0]);
-    });
+
+    console.log("Item:",obj);
+    this.ItemId=obj.itemId;
+    this.itemName=obj.itemName
+    this._GRNReturnService.NewGRNReturnFrom.get('ItemName').setValue(obj);
+
+    this.getBatch();
+}
+
+  selectChangeStore(obj: any) {
+    console.log("Store:", obj);
+    this.vstoreId = obj.value
   }
 
-  getSuppliernameList() {
-    // if(this.vSupplierId){
-    //   this.vsupplierName = this._WorkOrderService.WorkorderItemForm.get('SupplierName').value ;
-    //  }
-    //  else{
-    //    this.vsupplierName = this.registerObj.SupplierName;
-    //  }
-    var m_data = {
-      'SupplierName': `${this._GRNReturnService.NewGRNReturnFrom.get('SupplierName').value}%`
-    }
-    this._GRNReturnService.getSupplierList(m_data).subscribe(data => {
-      this.filteredOptionssupplier = data;
-      console.log(this.filteredOptionssupplier)
-      if (this.filteredOptionssupplier.length == 0) {
-        this.noOptionFoundsupplier = true;
-      } else {
-        this.noOptionFoundsupplier = false;
-      }
-      // if (this.registerObj.SupplierId > 0) { 
-      //   const toSelectSUpplierId = this.filteredOptionssupplier.find(c => c.SupplierId == this.registerObj.SupplierId);
-      //   this._GRNReturnService.NewGRNReturnFrom.get('SupplierName').setValue(toSelectSUpplierId);
-      //   console.log(toSelectSUpplierId)
-      //   this._GRNReturnService.NewGRNReturnFrom.get('SupplierName').setValue(this.filteredOptionssupplier[0]);
-      // }
-    })
-    this.vGSTTpe = 'GST Return';
-  }
-  getOptionTextSupplier(option) {
-    return option && option.SupplierName ? option.SupplierName : '';
-  }
-  getGRNReturnItemList() {
-    var m_data = {
-      "ItemName": `${this._GRNReturnService.NewGRNReturnFrom.get('ItemName').value}%`,
-      "StoreId": this._GRNReturnService.GRNReturnStoreFrom.get('FromStoreId').value.storeid
-    }
-    this._GRNReturnService.getItemNameList(m_data).subscribe(data => {
-      this.filteredOptions = data;
-      if (this.filteredOptions.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
-    });
-  }
-  getOptionText(option) {
-    if (!option)
-      return '';
-    return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
-  }
-  getSelectedObj(obj) {
-    console.log(obj)
-    this.ItemId = obj.ItemID;
-    this.ItemName = obj.ItemName;
-    this.vBalQty = obj.BalQty;
-    if(this.vBalQty > 0){
-      this.getBatch();
-    }
-  }
   vLandedrate:any;
   vUnitMRP:any;
   vStockId:any;
@@ -206,8 +165,8 @@ export class NewGRNReturnComponent implements OnInit {
       this.chargeslist = this.dsTempItemNameList.data;
       this.chargeslist.push(
         {
-          ItemId: this._GRNReturnService.NewGRNReturnFrom.get('ItemName').value.ItemID || 0,
-          ItemName: this._GRNReturnService.NewGRNReturnFrom.get('ItemName').value.ItemName || '',
+          ItemId: this.ItemId || 0,
+          ItemName: this.itemName || '',
           BatchNo: this.vBatchNo || '',
           ConversionFactor: this.vConversionFactor || 0,
           ExpDate: this.vExpDates,

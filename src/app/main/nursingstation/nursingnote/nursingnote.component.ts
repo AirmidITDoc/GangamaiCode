@@ -111,6 +111,7 @@ export class NursingnoteComponent implements OnInit {
   @ViewChild('docNote', { static: false }) grid: AirmidTableComponent;
   @ViewChild('Handover', { static: false }) grid1: AirmidTableComponent;
   @ViewChild('MedicationItem', { static: false }) grid2: AirmidTableComponent;
+  // @ViewChild('Medicationlist2', { static: false }) grid3: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   
   ngAfterViewInit() {
@@ -185,7 +186,6 @@ export class NursingnoteComponent implements OnInit {
 
   getMedicationList() {
     debugger
-
     this.gridConfig1 = {
       apiUrl: "Nursing/MedicationChartlist",
       columnsList: this.allMedicationColumns,
@@ -200,40 +200,50 @@ export class NursingnoteComponent implements OnInit {
     this.grid2.bindGridData();
   }
 
-  gridConfig2: gridModel = {
-    apiUrl: "Nursing/PrescriptionWardList",
-    columnsList: [
-      { heading: "()", key: "logo", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "DrugName", key: "drugname", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "DoseName", key: "dosename", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Route", key: "route", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Frequency", key: "frequency", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "NurseName", key: "nursename", sort: true, align: 'left', emptySign: 'NA' },
-      {
-        heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-          {
-            action: gridActions.edit, callback: (data: any) => {
-              this.onEdit(data);
-            }
-          },
-          {
-            action: gridActions.delete, callback: (data: any) => {
-              this._NursingStationService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
-                this.toastr.success(response.message);
-                this.grid.bindGridData();
-              });
-            }
-          }]
-      } //Action 1-view, 2-Edit,3-delete
-    ],
-    sortField: "ReqId",
-    sortOrder: 0,
-    filters: [
-      { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
-      { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
-      { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals }
-    ]
-  }
+  // allColumnMed1=[
+  //   { heading: "()", key: "logo", sort: true, align: 'left', emptySign: 'NA' },
+  //   { heading: "DrugName", key: "drugname", sort: true, align: 'left', emptySign: 'NA' },
+  //   { heading: "DoseName", key: "dosename", sort: true, align: 'left', emptySign: 'NA' },
+  //   { heading: "Route", key: "route", sort: true, align: 'left', emptySign: 'NA' },
+  //   { heading: "Frequency", key: "frequency", sort: true, align: 'left', emptySign: 'NA' },
+  //   { heading: "NurseName", key: "nursename", sort: true, align: 'left', emptySign: 'NA' },
+  //   {
+  //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+  //       {
+  //           action: gridActions.edit, callback: ($event,contact: any) => {
+  //               this.deleteTableRow($event ,contact)
+  //           }
+  //       }]
+  //   }
+  // ]
+
+  // allfilterMed1=[
+  //   { fieldName: "AdmissionId", fieldValue: "0", opType: OperatorComparer.Equals }
+  // ]
+
+  // gridConfig2: gridModel = {
+  //   apiUrl: "Nursing/NursingMedicationList",
+  //   columnsList: this.allColumnMed1,
+  //   sortField: "MedChartId",
+  //   sortOrder: 0,
+  //   filters: this.allfilterMed1
+  // }
+
+  // getMedicationList1() {
+  //   debugger
+  //   this.gridConfig2 = {
+  //     apiUrl: "Nursing/NursingMedicationList",
+  //     columnsList: this.allColumnMed1,
+  //     sortField: "MedChartId",
+  //     sortOrder: 0,
+  //     filters: [
+  //       { fieldName: "AdmissionId", fieldValue: String(this.OP_IP_Id), opType: OperatorComparer.Equals } //20001
+  //     ]
+  //   }
+  //   console.log(this.gridConfig2)
+  //   this.grid3.gridConfig = this.gridConfig2;
+  //   this.grid3.bindGridData();
+  // }
 
   allColumnOfHandOver=[
     { heading: "Date", key: "vDate", sort: true, align: 'left', emptySign: 'NA'},
@@ -319,34 +329,35 @@ export class NursingnoteComponent implements OnInit {
       // }
     });
   }
-  getRefundofBillOPDListByReg(RegId) {
+  
+  // getRefundofBillOPDListByReg(RegId) {
 
-    var m_data = {
-      "first": 0,
-      "rows": 10,
-      "sortField": "BillNo",
-      "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "RegId",
-          "fieldValue": String(RegId),
-          "opType": "Equals"
-        }
-      ],
-      "exportType": "JSON"
-    }
+  //   var m_data = {
+  //     "first": 0,
+  //     "rows": 10,
+  //     "sortField": "BillNo",
+  //     "sortOrder": 0,
+  //     "filters": [
+  //       {
+  //         "fieldName": "RegId",
+  //         "fieldValue": String(RegId),
+  //         "opType": "Equals"
+  //       }
+  //     ],
+  //     "exportType": "JSON"
+  //   }
 
-    console.log(m_data);
+  //   console.log(m_data);
 
-    this._NursingStationService.getRefundofBillOPDList(m_data).subscribe(Visit => {
-      console.log(Visit);
-      //   this.dataSource3.data = Visit.data
-      //   console.log(this.dataSource3.data);
-      //   this.vOPIPId = this.dataSource3.data
-    });
+  //   this._NursingStationService.getRefundofBillOPDList(m_data).subscribe(Visit => {
+  //     console.log(Visit);
+  //     //   this.dataSource3.data = Visit.data
+  //     //   console.log(this.dataSource3.data);
+  //     //   this.vOPIPId = this.dataSource3.data
+  //   });
 
 
-  }
+  // }
 
   data: any;
   getValidationMessages() {
@@ -421,7 +432,6 @@ export class NursingnoteComponent implements OnInit {
       this.getSchedulerlist();
       this.getMedicationList();
       this.getHandOverNotelist();
-
     }
     // this.getNoteTablelist(obj);
   }
@@ -437,11 +447,6 @@ export class NursingnoteComponent implements OnInit {
   
   }
 
-  getNoteList() {
-    // this._NursingStationService.getNoteList().subscribe(data => {
-    //   this.NoteList = data;
-    // })
-  }
   onClearPatientInfo() {
     this.vRegNo = '';
     this.vPatientName = '';
