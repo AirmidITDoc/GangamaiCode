@@ -128,7 +128,7 @@
 
                             <mat-card style="padding: 6px;">
                                 <mat-table matSort [dataSource]="dataSource" class="airmid-table h-260" 
-                                    [@animateStagger]="{value:'50'}">
+                                    [@animateStagger]="{value:'50'}" appTableKeyboardNavigation>
 
                                     <ng-container matColumnDef="TestName" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm

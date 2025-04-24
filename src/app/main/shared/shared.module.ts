@@ -57,11 +57,12 @@ import { AirmidTimePickerComponent } from './componets/airmid-time-picker/airmid
 import { PatientInfoComponent } from './componets/patient-info/patient-info.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { AirmidDateTimePickerComponent } from './componets/airmid-date-time-picker/airmid-date-time-picker.component';
+import { TableKeyboardNavigationDirective } from './directives/table-keyboard-navigation/table-keyboard-navigation.directive';
 
 
 @NgModule({
     declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-      AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent],
+      AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective],
     imports: [
         CommonModule,
         MatFormFieldModule,
@@ -118,7 +119,8 @@ import { AirmidDateTimePickerComponent } from './componets/airmid-date-time-pick
         FocusNextDirective,
         AirmidTimePickerComponent,
         PatientInfoComponent,
-        AirmidDateTimePickerComponent
+        AirmidDateTimePickerComponent,
+        TableKeyboardNavigationDirective
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
