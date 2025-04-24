@@ -1096,10 +1096,10 @@ debugger
         return IGSTAmt;
     }
     NetAmount: any;
-    getTotalAmt(element) {
+    getTotalAmt(element) { 
         let FinalRoundAmt = (element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
         this.NetAmount = FinalRoundAmt;
-
+        
         this.vTotalFinalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
         this.vFinalDisAmount = (element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0)).toFixed(2);
         this.vFinalDisAmount2 = (element.reduce((sum, { DiscAmt2 }) => sum += +(DiscAmt2 || 0), 0)).toFixed(2);
@@ -1111,10 +1111,12 @@ debugger
         let DebitAmount = this._GRNList.GRNFinalForm.get("DebitAmount").value || 0;
         FinalRoundAmt = (parseFloat(FinalRoundAmt) + parseFloat(DebitAmount));
 
-
+       
         let CreditAmount = this._GRNList.GRNFinalForm.get("CreditAmount").value || 0;
+        console.log(FinalRoundAmt)
+        console.log(CreditAmount)
         if(CreditAmount > 0){
-            if(CreditAmount > FinalRoundAmt){
+            if(CreditAmount > FinalRoundAmt && this.dsItemNameList.data.length > 0){
                 this.toastr.warning('check credit amount should not be greater than net amount', 'warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',
                 }); 

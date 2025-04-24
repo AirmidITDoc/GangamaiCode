@@ -31,7 +31,7 @@ export class AdministrationService {
     if(loader){
       this._loaderservice.show();
     }
-    return this._httpClient.post("Generic/GetByProc?procName=m_RecalcGST", emp)
+    return this._httpClient.post("Administration/InsertGSTReCalculProcess", emp)
   }
     //Hospital Combobox List
     public getHospitalCombo() {

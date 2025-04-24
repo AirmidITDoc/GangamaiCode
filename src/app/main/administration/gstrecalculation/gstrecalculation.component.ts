@@ -36,11 +36,15 @@ export class GSTRecalculationComponent implements OnInit {
       ToDate:[new Date()]
     })
   } 
+
   OnSave(){ 
- var vdata={
-  'FromDate':this.datepipe.transform(this.gstForm.get('FromDate').value,'MM/dd/yyyy') || '01/01/1999',
-  'ToDate':this.datepipe.transform(this.gstForm.get('ToDate').value, 'MM/dd/yyyy') || '01/01/1999', 
- }
+    var vdata ={
+      'insertGSTReCalculProcessParam':{
+        'fromDate':this.datepipe.transform(this.gstForm.get('FromDate').value,'MM/dd/yyyy') || '01/01/1999',
+        'toDate':this.datepipe.transform(this.gstForm.get('ToDate').value, 'MM/dd/yyyy') || '01/01/1999', 
+       }
+    }
+ 
  console.log(vdata)
  this._AdministrationService.getGSTRecalculate(vdata).subscribe(response=>{
   console.log(response)

@@ -68,7 +68,7 @@ getdebitAddNote(){
   var vdata={
     'SupplierId': this.registerObj.SupplierId ,    
     'StoreId':  this.accountService.currentUserValue.user.storeId,
-    'GrnID': 0
+    // 'GrnID': 0
   }
   console.log(vdata)
   this._GRNList.getdebitADDnote(vdata).subscribe(data=>{
