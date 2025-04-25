@@ -1,29 +1,43 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ServiceMasterService } from '../service-master.service';
 import { FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { MatTableDataSource } from '@angular/material/table';
+import Swal from 'sweetalert2';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
-  selector: 'app-editpackage',
-  templateUrl: './editpackage.component.html',
-  styleUrls: ['./editpackage.component.scss']
+    selector: 'app-editpackage',
+    templateUrl: './editpackage.component.html',
+    styleUrls: ['./editpackage.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class EditpackageComponent implements OnInit {
 
     serviceForm: FormGroup;;
     // isActive:boolean=true;
+    displayedColumnspackage = [
+        'ServiceName',
+        'PackageServiceName',
+        'action'
+    ];
 
-    autocompleteModegroupName:string = "Service";
+    autocompleteModegroupName: string = "Service";
+    dsPackageDet = new MatTableDataSource<PacakgeList>();
+    PacakgeList: any = [];
+    registerObj: any
 
     constructor(
         public _ServiceMasterService: ServiceMasterService,
         public dialogRef: MatDialogRef<EditpackageComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
-        public toastr: ToastrService
+        public toastr: ToastrService,
+        public _matDialog: MatDialog,
     ) { }
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
@@ -57,59 +71,154 @@ export class EditpackageComponent implements OnInit {
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
         ]
     }
-    
+
 
     ngOnInit(): void {
-        this.serviceForm=this._ServiceMasterService.createServicemasterForm();
-        if((this.data?.tariffId??0) > 0){
-            // this.isActive=this.data.isActive
-            this.serviceForm.patchValue(this.data);
+        this.serviceForm = this._ServiceMasterService.createServicemasterForm();
+        // if ((this.data?.tariffId ?? 0) > 0) {
+        //     // this.isActive=this.data.isActive
+        //     this.serviceForm.patchValue(this.data);
+        // }
+
+        if (this.data) {
+            this.registerObj = this.data.Obj;
+            console.log(this.registerObj)
+            this.getRtevPackageDetList(this.registerObj)
         }
     }
 
-    onSubmit(){
-        
-        if(!this.serviceForm.invalid)
-        {
-        
-            console.log("insert tariff:", this.serviceForm.value);
-            
-            this._ServiceMasterService.tariffMasterSave(this.serviceForm.value).subscribe((response)=>{
-            this.toastr.success(response.message);
-            this.onClear(true);
-            }, (error)=>{
-            this.toastr.error(error.message);
+    getRtevPackageDetList(obj) {
+        debugger
+        var vdata = {
+            "ServiceId": obj.ServiceId || 0
+        }
+        console.log(vdata)
+        setTimeout(() => {
+            //   this._ServiceMasterService.getRtevPackageDetList(vdata).subscribe(data=>{
+            //     this.dsPackageDet.data =  data as PacakgeList[];
+            //     this.PacakgeList = data as PacakgeList
+            //     console.log(this.dsPackageDet.data)  
+            //   }); 
+        }, 1000);
+    }
+
+
+    vSrvcName: any;
+    vServiceId: any;
+    selectChangeService(data) {
+        console.log(data)
+        if (this.dsPackageDet.data.length > 0) {
+            this.dsPackageDet.data.forEach((element) => {
+                if (data.value == element.ServiceId) {
+                    Swal.fire('Selected Item already added in the list ');
+                    this.serviceForm.get('ServiceName').setValue('')
+                }
             });
-        } 
-        else
-        {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
+        }
+
+        this.vServiceId = data.value
+        this.vSrvcName = data.text
+    }
+
+    onAddPackageService() {
+        debugger
+        if ((this.vServiceId == 0 || this.vServiceId == null || this.vServiceId == undefined)) {
+            this.toastr.warning('Please select Service', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
-        }   
+        }
+
+        const isDuplicate = this.PacakgeList.some(item => item.PackageServiceId === this.vServiceId);
+        if (isDuplicate) {
+            this.toastr.warning('This service is already added.', 'Duplicate Entry', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+
+        this.dsPackageDet.data = [];
+        this.PacakgeList.push(
+            {
+                ServiceId: 0, //this.registerObj.ServiceId || 0,
+                ServiceName: 'abc',//this.registerObj.ServiceName || '',
+                PackageServiceId: this.vServiceId || 0,
+                PackageServiceName: this.vSrvcName || 0,
+            });
+
+        console.log(this.PacakgeList)
+
+        this.dsPackageDet.data = this.PacakgeList;
+        this.serviceForm.reset();
+        // this.serviceForm.get('ServiceName').setValue(this.registerObj.ServiceName);
+        console.log(this.dsPackageDet.data)
+
+        this.vServiceId = null;
+        this.serviceForm.get('ServiceShortDesc').reset('')
+        this.vSrvcName = '';
     }
 
-    onAddTemplate() {
-        // console.log("event is :", event);
-        // if (!this.list) {
-        //     this.list = [];
-        // }    
-        // const newItem = {
-        //     templateId: this.DDtemplateId, //this.templatedetailsForm.get("TemplateId").value, // Ensure correct property name
-        //     templateName: this.DDtemplateName //this.templatedetailsForm.get("TemplateName").value, // Ensure correct property name
-        // };
-    
-        // this.list.push(newItem);
-    
-        // this.Templatetdatasource.data = [...this.Templatetdatasource.data, newItem];
-    
-        // console.log("Updated list:", this.list);
-        // console.log("Updated Templatetdatasource:", this.Templatetdatasource.data);
-    
-        // // Reset form fields
-        // this.templatedetailsForm.get("TemplateId").reset();
-        // this.templatedetailsForm.get("TemplateName").reset();
+    deleteTableRowPackage(element) {
+        let index = this.PacakgeList.indexOf(element);
+        if (index >= 0) {
+            this.PacakgeList.splice(index, 1);
+            this.dsPackageDet.data = [];
+            this.dsPackageDet.data = this.PacakgeList;
+        }
+        Swal.fire('Success !', 'PacakgeList Row Deleted Successfully', 'success');
+    }
+
+    onSubmit() {
+        debugger
+        if (this.dsPackageDet.data.length < 0) {
+            this.toastr.warning('Please add package Service Name in list', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+
+        let InsertPackageObj = [];
+        this.dsPackageDet.data.forEach(element => {
+            let InsertPackage = {
+                "serviceId": element.ServiceId || 0,
+                "packageServiceId": element.PackageServiceId || 0
+            }
+            InsertPackageObj.push(InsertPackage)
+        });
+
+        let delete_PackageDetails = {
+            "serviceId": this.registerObj.ServiceId || 0
+        }
+
+        let submitData = {
+            "insert_PackageDetails": InsertPackageObj,
+            "delete_PackageDetails": delete_PackageDetails
+        }
+
+        console.log(submitData)
+        this._ServiceMasterService.SavePackagedet(submitData).subscribe(reponse => {
+            if (reponse) {
+                this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                    toastClass: 'tostr-tost custom-toast-success',
+                });
+                this.onClose();
+            } else {
+                this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+                    toastClass: 'tostr-tost custom-toast-error',
+                });
+                this.onClose();
+            }
+        }, error => {
+            this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+                toastClass: 'tostr-tost custom-toast-error',
+            });
+        });
+    }
+
+    onClose() {
+        this._matDialog.closeAll();
+        this.PacakgeList.data = [];
+        this.serviceForm.reset();
     }
 
     onClear(val: boolean) {
@@ -117,10 +226,22 @@ export class EditpackageComponent implements OnInit {
         this.dialogRef.close(val);
     }
 
-    getValidationMessages(){
-        return{
+    getValidationMessages() {
+        return {
             ServiceShortDesc: [],
             ServiceName: [],
         }
+    }
+}
+export class PacakgeList {
+    ServiceId: number;
+    ServiceName: String;
+    PackageServiceId: any;
+    PacakgeServiceName: any;
+
+    constructor(PacakgeList) {
+        this.ServiceId = PacakgeList.ServiceId || '';
+        this.ServiceName = PacakgeList.ServiceName || '';
+        this.PacakgeServiceName = PacakgeList.PacakgeServiceName || '';
     }
 }

@@ -23,52 +23,87 @@
                         <form [formGroup]="serviceForm">
                             <div fxLayout="row wrap" fxLayoutGap="12px grid">
                                 <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox 
-                                        label="ServiceName" 
-                                        formControlName="ServiceName" 
-                                        [value]="data?.subGroupName"
-                                        [formGroup]="serviceForm"
-                                        [validations]="getValidationMessages().ServiceName"
-                                        [maxLength]="50">
+                                    <airmid-textbox label="ServiceName" formControlName="ServiceName"
+                                        [value]="data?.subGroupName" [formGroup]="serviceForm"
+                                        [validations]="getValidationMessages().ServiceName" [maxLength]="50">
                                     </airmid-textbox>
                                 </div>
                             </div>
-                            
+
                             <div fxLayout="row" fxLayoutGap="5px">
                                 <div fxFlex="60%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown 
-                                        label="PackageServiceName" 
-                                        formControlName="ServiceShortDesc"
-                                        [formGroup]="serviceForm"
+                                    <airmid-dropdown label="PackageServiceName" formControlName="ServiceShortDesc"
+                                        [formGroup]="serviceForm" (selectionChange)="selectChangeService($event)"
                                         [validations]="getValidationMessages().ServiceShortDesc"
                                         [mode]="autocompleteModegroupName">
                                     </airmid-dropdown>
                                 </div>
-                                <button (click)="onAddTemplate()"
-                                    class="btn btn-primary btn-with-icon py-8"
+                                <div>
+                                    <button (click)="onAddPackageService()" class="btn btn-primary btn-with-icon py-8"
                                         style="margin-left: 10px;">
-                                    <span class="btn-icon">
-                                        <mat-icon>add</mat-icon>
-                                    </span>
-                                </button>
+                                        <span class="btn-icon">
+                                            <mat-icon>add</mat-icon>
+                                        </span>
+                                    </button>
+                                </div>
                             </div>
                         </form>
                     </mat-card>
 
-                    <mat-card style="padding: 5px;">
-                        <div fxFlex.gt-sm="100%" fxFlex>
-                            <div fusePerfectScrollbar
-                                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                                dynamicTableHeight>
-                                <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
-                                    <ng-container filters>
-    
-                                    </ng-container>
-                                </airmid-table>
-                            </div>
-            
-                        </div>
-                    </mat-card>
+                    <mat-table #table1 matSort [dataSource]="dsPackageDet" [@animateStagger]="{value:'50'}"
+                        style="height:250px !important;overflow: auto;">
+
+                        <ng-container matColumnDef="ServiceName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                Service Name
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <span> {{contact.ServiceName}}</span>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="PackageServiceName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                Package Service Name
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <span> {{contact.PackageServiceName}}</span>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="action" stickyEnd>
+                            <mat-header-cell *matHeaderCellDef style="color: white;"> Action
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row">
+                                <button mat-icon-button (click)="deleteTableRowPackage(row)" color="warn">
+                                    <mat-icon>delete_outline</mat-icon>
+                                </button>
+                            </mat-cell>
+                        </ng-container>
+
+
+                        <ng-container matColumnDef="loading">
+                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                loading data...
+                            </mat-footer-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                <span>No Data Found</span>
+                            </mat-footer-cell>
+                        </ng-container>
+
+                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumnspackage; sticky: true">
+                        </mat-header-row>
+                        <mat-row *matRowDef="let contact; columns: displayedColumnspackage;"
+                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dsPackageDet!=null}">
+                        </mat-footer-row>
+                        <mat-footer-row *matFooterRowDef="['noData']"
+                            [ngClass]="{'hide':!(dsPackageDet!=null && dsPackageDet.data.length==0)}">
+                        </mat-footer-row>
+                    </mat-table>
 
                     <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
                         <div></div>

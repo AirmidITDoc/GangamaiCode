@@ -13,24 +13,13 @@
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <button mat-raised-button (click)="onTariff()">+ New Tariff
             </button>
-            <!-- <button mat-raised-button (click)="onPackageEdit()">+ OnEdit
-            </button> -->
+            <button mat-raised-button (click)="onPackageEdit()">+ OnEdit
+            </button>
             <button mat-raised-button (click)="onSave()">+ New Service
             </button>
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <!-- <ng-template #actionButtonTemplate let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-
-                <button mat-icon-button matTooltip="Edit" (click)="onSave(element)">
-                    <mat-icon>edit</mat-icon>
-                </button>
-                <button mat-icon-button matTooltip="Delete" (click)="deleteService(element.serviceId)">
-                    <mat-icon>delete</mat-icon>
-                </button>
-            </div>
-        </ng-template> -->
 
         <ng-template #iconcreditedtoDoctor let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
@@ -82,41 +71,27 @@
 
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
+                <form [formGroup]="_serviceMasterService.myformSearch" fxLayout="column">
+
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Service Name</mat-label>
-                    <input matInput placeholder="Search Service Name" autocomplete="off"
-                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                    <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[0].fieldValue='%'">
+                    <input matInput placeholder="Search Service Name" autocomplete="off"  (input)="onChangeFirst()"
+                        [formGroup]="_serviceMasterService.myformSearch" formControlName="ServiceNameSearch"/>
+                    <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('ServiceNameSearch')">
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
 
-                <!-- <airmid-dropdown label="Tariff" formControlName="TariffId"
-                    [formGroup]="_serviceMasterService.myform"
-                    [mode]="autocompleteModetariff"
-                    [(ngModel)]="gridConfig.filters[1].fieldValue"
-                    (selectDdlObject)="selectChangetariff($event)">
-                </airmid-dropdown>  -->
-
-                <!-- [validations]="getValidationtariffMessages.TariffId" -->
-                <form [formGroup]="_serviceMasterService.myformSearch">
                     <airmid-dropdown label="Tariff Name" formControlName="TariffId"
-                        [formGroup]="_serviceMasterService.myformSearch" [(ngModel)]="gridConfig.filters[1].fieldValue"
-                        [mode]="autocompleteModetariff" (selectDdlObject)="selectChangetariff($event)">
+                        [formGroup]="_serviceMasterService.myformSearch"
+                        [mode]="autocompleteModetariff" (selectionChange)="ListView1($event)">
                     </airmid-dropdown>
-                    <!-- [validations]="getValidationgroupMessages.GroupId" -->
+                    
                     <airmid-dropdown label="Group Name" formControlName="GroupId"
-                        [formGroup]="_serviceMasterService.myformSearch" [(ngModel)]="gridConfig.filters[2].fieldValue"
-                        [mode]="autocompleteModegroupName" (selectDdlObject)="selectChangegroup($event)">
+                        [formGroup]="_serviceMasterService.myformSearch"
+                        [mode]="autocompleteModegroupName" (selectionChange)="ListView2($event)">
                     </airmid-dropdown>
                 </form>
-
-                <!-- <airmid-dropdown label="Group Name" formControlName="GroupId"
-                    [formGroup]="_serviceMasterService.myform"
-                    [(ngModel)]="gridConfig.filters[2].fieldValue"
-                    [mode]="autocompleteModegroupName">
-                </airmid-dropdown> -->
-
 
             </ng-container>
         </airmid-table>

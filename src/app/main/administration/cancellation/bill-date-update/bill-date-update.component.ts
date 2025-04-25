@@ -17,6 +17,9 @@ export class BillDateUpdateComponent implements OnInit {
 
   dateTimeObj:any;
   BillNo:any;
+  AdvanceDetailId:any;
+  RefundId:any;
+  SalesId:any;
   screenFromString = 'billform-form';
 
   constructor(
@@ -31,18 +34,23 @@ export class BillDateUpdateComponent implements OnInit {
   ngOnInit(): void {
     if (this.data) {
       this.BillNo = this.data.billNo;
+      this.AdvanceDetailId=this.data.advanceDetailID
+      this.RefundId=this.data.refundId
+      this.SalesId=this.data.salesNo
       console.log(this.BillNo) 
+      console.log(this.AdvanceDetailId) 
+      console.log(this.RefundId) 
+      console.log(this.SalesId) 
     }
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj; 
     console.log(this.dateTimeObj)
   } 
-  BillDate() { 
-    debugger
-    const formattedDate = this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd");
-    const formattedTime = formattedDate+this.dateTimeObj.time;//this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd")+this.dateTimeObj.time;  
-    
+  BillDate() {
+    const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
+    const formattedTime = formattedDate + this.dateTimeObj.time;//this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd")+this.dateTimeObj.time;  
+
     Swal.fire({
       title: 'Do you want to Update Bill Date & Time ',
       text: "You won't be able to revert this!",
@@ -52,22 +60,68 @@ export class BillDateUpdateComponent implements OnInit {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Update it!"
     }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */ 
-      if (result.isConfirmed) { 
-        var data = {
-          'billNo': this.BillNo,
-          'billDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-          'billTime': formattedDate + this.dateTimeObj.time
+      debugger
+      if (result.isConfirmed) {
+
+        if (this.BillNo) {
+          var data = {
+            'billNo': this.BillNo,
+            'billDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+            'billTime': formattedDate + this.dateTimeObj.time
+          }
+          console.log(data);
+          this._CancellationService.getDateTimeChangeBill(data).subscribe(response => {
+            this.toastr.success(response);
+            this._matDialog.closeAll();
+          }, (error) => {
+            this.toastr.error(error.message);
+          });
+
+        } else if (this.AdvanceDetailId) {
+          var data1 = {
+            "date": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"), 
+            "time": formattedDate + this.dateTimeObj.time,
+            "advanceDetailId": this.AdvanceDetailId
+          }
+          console.log(data1);
+          this._CancellationService.getDateTimeChangeAdvanceDetId(data1).subscribe(response => {
+            this.toastr.success(response);
+            this._matDialog.closeAll();
+          }, (error) => {
+            this.toastr.error(error.message);
+          });
+
+        } else if(this.RefundId){
+          var data2 = {
+            "refundDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+            "refundTime": formattedDate + this.dateTimeObj.time,
+            "refundId": this.RefundId
+          }
+          console.log(data2);
+          this._CancellationService.getDateTimeChangeRefundId(data2).subscribe(response => {
+            this.toastr.success(response);
+            this._matDialog.closeAll();
+          }, (error) => {
+            this.toastr.error(error.message);
+          });
+
+        }else if(this.SalesId){
+          var data3 = {
+            "date": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+            "time": formattedDate + this.dateTimeObj.time,
+            "salesId": this.SalesId
+          }
+          console.log(data3);
+          this._CancellationService.getDateTimeChangeSalesId(data3).subscribe(response => {
+            this.toastr.success(response);
+            this._matDialog.closeAll();
+          }, (error) => {
+            this.toastr.error(error.message);
+          });
         }
-        console.log(data);
-     this._CancellationService.getDateTimeChange(data).subscribe(response => {
-          this.toastr.success(response);
-           this._matDialog.closeAll();
-      }, (error) => {
-          this.toastr.error(error.message);
-        });
+
       }
-    }); 
+    });
   }
   onClose(){
     this._matDialog.closeAll(); 
