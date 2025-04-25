@@ -14,23 +14,22 @@
     <form [formGroup]="serviceForm" style="padding-left: 10px; padding-right: 10px;">
         <input type="hidden" name="ServiceId" formControlName="ServiceId" [ngModel]="ServiceId">
 
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="b-service-master gap-6" style="padding-top: 10px;">
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="b-service-master gap-6"
+            style="padding-top: 10px;">
 
             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-            <airmid-dropdown label="Group Name" formControlName="groupId"
-             [formGroup]="serviceForm" (selectionChange)="selectChangegroupName($event)"
-             [validations]="getValidationMessages().groupId" 
-             [mode]="autocompleteModesubGroupName">
-            </airmid-dropdown>
+                <airmid-dropdown label="Group Name" formControlName="groupId" [formGroup]="serviceForm"
+                    (selectionChange)="selectChangegroupName($event)" [validations]="getValidationMessages().groupId"
+                    [mode]="autocompleteModesubGroupName">
+                </airmid-dropdown>
             </div>
 
             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-            <airmid-dropdown label="SubGroup Name" formControlName="SubGroupId"
-                [formGroup]="serviceForm" (selectionChange)="selectChangesubGroupName($event)"
-                [validations]="getValidationMessages().SubGroupId"
-                [mode]="autocompleteModegroupName">
-            </airmid-dropdown>
+                <airmid-dropdown label="SubGroup Name" formControlName="SubGroupId" [formGroup]="serviceForm"
+                    (selectionChange)="selectChangesubGroupName($event)"
+                    [validations]="getValidationMessages().SubGroupId" [mode]="autocompleteModegroupName">
+                </airmid-dropdown>
             </div>
 
         </div>
@@ -40,13 +39,11 @@
 
             <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Service Name</mat-label>
-                    <input name="ServiceName" formControlName="ServiceName" placeholder="ServiceName"
-                            matInput (keydown)="onEnterServiceName($event)" #ServiceName
-                            [(ngModel)]="vServiceName">
-                    <mat-error
-                        *ngIf="serviceForm.get('ServiceName').invalid && serviceForm.get('ServiceName').touched">
-                        service Name is required Enter only Alphabets
-                        </mat-error>
+                <input name="ServiceName" formControlName="ServiceName" placeholder="ServiceName" matInput
+                    (keydown)="onEnterServiceName($event)" #ServiceName [(ngModel)]="vServiceName">
+                <mat-error *ngIf="serviceForm.get('ServiceName').invalid && serviceForm.get('ServiceName').touched">
+                    service Name is required Enter only Alphabets
+                </mat-error>
             </mat-form-field>&nbsp;&nbsp;
 
             <mat-form-field appearance="outline" fxFlex>
@@ -54,10 +51,9 @@
                 <input name="Price" placeholder="Select Price" formControlName="Price" OnlyNumber
                     (keypress)="keyPressCharater($event)" [ngClass]="{ 'is-invalid': submitted && f.Price.errors }"
                     matInput required maxlength="5">
-                    <mat-error
-                        *ngIf="serviceForm.get('Price').invalid && serviceForm.get('Price').touched">
-                        Price is required Enter only Digits
-                        </mat-error>
+                <mat-error *ngIf="serviceForm.get('Price').invalid && serviceForm.get('Price').touched">
+                    Price is required Enter only Digits
+                </mat-error>
             </mat-form-field>&nbsp;&nbsp;
 
             <mat-form-field appearance="outline" fxFlex>
@@ -65,21 +61,20 @@
                 <input name="PrintOrder" placeholder="Select PrintOrder" formControlName="PrintOrder" matInput required
                     OnlyNumber (keypress)="keyPressCharater($event)"
                     [ngClass]="{ 'is-invalid': submitted && f.PrintOrder.errors }" min="0" maxlength="5">
-                    <mat-error
-                    *ngIf="serviceForm.get('PrintOrder').invalid && serviceForm.get('PrintOrder').touched">
+                <mat-error *ngIf="serviceForm.get('PrintOrder').invalid && serviceForm.get('PrintOrder').touched">
                     PrintOrder is required Enter only Digits
-                    </mat-error>
+                </mat-error>
             </mat-form-field>&nbsp;&nbsp;
 
             <mat-form-field appearance="outline" fxFlex>
                 <mat-label>ServiceShortDesc</mat-label>
-                    <input name="Service Short Desc" formControlName="ServiceShortDesc" placeholder="ServiceShortDesc"
-                            matInput (keydown)="onEnterServiceShortDesc($event)" #ServiceShortDesc
-                            [(ngModel)]="vServiceShortDesc">
-                    <mat-error
+                <input name="Service Short Desc" formControlName="ServiceShortDesc" placeholder="ServiceShortDesc"
+                    matInput (keydown)="onEnterServiceShortDesc($event)" #ServiceShortDesc
+                    [(ngModel)]="vServiceShortDesc">
+                <mat-error
                     *ngIf="serviceForm.get('ServiceShortDesc').invalid && serviceForm.get('ServiceShortDesc').touched">
                     ServiceShortDesc is required Enter only Alphabets
-                    </mat-error>
+                </mat-error>
             </mat-form-field>
 
 
@@ -89,12 +84,11 @@
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-6">
             <!-- [value]="TariffId" -->
             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                <airmid-dropdown label="TariffId" formControlName="tariffId"
-                    [formGroup]="serviceForm" (selectionChange)="selectChangetariff($event)"
-                    [validations]="getValidationMessages().tariffId"
+                <airmid-dropdown label="TariffId" formControlName="tariffId" [formGroup]="serviceForm"
+                    (selectionChange)="selectChangetariff($event)" [validations]="getValidationMessages().tariffId"
                     [mode]="autocompleteModetariff">
-                </airmid-dropdown>            
-            </div> 
+                </airmid-dropdown>
+            </div>
 
             <mat-form-field appearance="outline" fxFlex>
                 <input matInput [matDatepicker]="picker3" placeholder="Choose an Effective Date" name="EffectiveDate"
@@ -103,18 +97,6 @@
                 <mat-datepicker #picker3></mat-datepicker>
 
             </mat-form-field>
-
-            <!-- <mat-form-field appearance="outline" fxFlex>
-            <mat-label>Doctor Name</mat-label>
-            <mat-select placeholder="Select Doctor Name" name="DoctorId" formControlName="doctorId" required >
-
-                <mat-option *ngFor="let M of DoctorcmbList" [value]="M.DoctorID">
-                    {{ M.DoctorName }}
-                </mat-option>
-            </mat-select>
-            <mat-error>Please Select Doctor Name </mat-error>
-        </mat-form-field> -->
-
 
         </div>
     </form>
@@ -127,72 +109,59 @@
                 <div fxFlex="100%" fxFlex.gt-sm="100%">
                     <div style="min-width: 100%;">
 
-                        <div style="max-width:1800px; overflow-x: scroll; overflow-y: hidden;">
-                            <!-- <airmid-table [gridConfig]="gridConfig" class="content">
-                            </airmid-table> -->
-                            <mat-table #table matSort [dataSource]="DSServicedetailList"
-                            [@animateStagger]="{value:'50'}" style="overflow:auto;height: 300px;">
+                        <div style="max-width:1800px; overflow-x: scroll; overflow-y: hidden;"
+                            class="airmid-table-container">
+                            
+                            <mat-table #table matSort [dataSource]="DSServicedetailList" class="airmid-table"
+                                [@animateStagger]="{value:'50'}" style="overflow:auto;height: 300px;">
+
+                                <ng-container matColumnDef="classId">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.classId}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="className">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Class Name</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.className}}
+                                    </mat-cell>
+                                </ng-container>
 
 
-                            <ng-container matColumnDef="classId">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.classId}}
-                                </mat-cell>
-                            </ng-container>
+                                <ng-container matColumnDef="classRate">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ClassRate
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                        <mat-form-field appearance="fill">
+                                            <input matInput [(ngModel)]="element.classRate" OnlyNumber
+                                                (keyup)="gettableclassrate(element,$event.value)"
+                                                (keypress)="keyPressCharater($event)">
+                                        </mat-form-field>
+                                    </mat-cell>
+                                </ng-container>
 
-                            <ng-container matColumnDef="className">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header> Class Name</mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.className}}
-                                </mat-cell>
-                            </ng-container>
+                                <ng-container matColumnDef="loading">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        loading data...
+                                    </mat-footer-cell>
+                                </ng-container>
 
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        no data found...
+                                    </mat-footer-cell>
+                                </ng-container>
 
-                            <ng-container matColumnDef="classRate">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RefundAmt
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                <mat-form-field appearance="fill">
-                                                    <input matInput [(ngModel)]="element.classRate"  OnlyNumber 
-                                                    (keyup)="gettableclassrate(element,$event.value)"
-                                                    (keypress)="keyPressCharater($event)" >
-                                                </mat-form-field>
-                                            </mat-cell>
-                                        </ng-container>
-
-                            <!-- <ng-container matColumnDef="action" stickyEnd>
-                            <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
-                                Action
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let row">
-                                <button mat-icon-button (click)="onEdit(row)"><mat-icon
-                                        title="Edit Menu">launch</mat-icon></button>
-                                <button mat-icon-button (click)="onDeactive(row.BankId)"
-                                    color="warn"><mat-icon>delete_outline</mat-icon></button>
-                            </mat-cell>
-                        </ng-container> -->
-
-                            <ng-container matColumnDef="loading">
-                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                    loading data...
-                                </mat-footer-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="noData">
-                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                    no data found...
-                                </mat-footer-cell>
-                            </ng-container>
-
-                            <mat-header-row class="accent"
-                                *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                            <mat-footer-row *matFooterRowDef="['loading']"
-                                [ngClass]="{'hide':DSServicedetailList!=null}"></mat-footer-row>
-                            <mat-footer-row *matFooterRowDef="['noData']"
-                                [ngClass]="{'hide':!(DSServicedetailList!=null && DSServicedetailList.data.length==0)}"></mat-footer-row>
-                        </mat-table>
+                                <mat-header-row class="accent"
+                                    *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{'hide':DSServicedetailList!=null}"></mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(DSServicedetailList!=null && DSServicedetailList.data.length==0)}"></mat-footer-row>
+                            </mat-table>
 
                         </div>
                     </div>
@@ -204,134 +173,73 @@
     </div>
     <form [formGroup]="serviceForm">
         <div class="p-10 pb-24" fusePerfectScrollbar>
-            <!-- CONTENT -->
-            <div class="content-card">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div flex="100%">
-                        <div fxFlexFill fxLayout="row" class="checklist">
 
-                            <section class="example-section" style="margin-left: 40px;margin-right: 30px;">
-                                <mat-checkbox class="example-margin" name="IsDocEditable" (change)="onChange($event)"
-                                    formControlName="IsDocEditable">
-                                    Is Doc Editable For Service</mat-checkbox>
-                            </section>
+            <div fxLayout="row" fxLayoutAlign="space-between" style="padding: 0px 20px 0px 20px;">
 
-                            <section class="example-section" style="margin-right: 30px;">
-                                <mat-checkbox class="example-margin" name="IsEditable" formControlName="IsEditable"
-                                    value='true'>
-                                    IsEditable</mat-checkbox>
-                                    <!-- [(ngModel)]="registerObj.IsEditable" -->
-                            </section>
+                <mat-checkbox class="example-margin" name="IsDocEditable" (change)="onChange($event)" value='false'
+                    formControlName="IsDocEditable" [(ngModel)]="IsDocEditable">
+                    Is Doc Editable For Service</mat-checkbox>
 
-                            <section class="example-section" style="margin-right: 30px;">
-                                <mat-checkbox class="example-margin" name="IsPackage" formControlName="IsPackage"
-                                    value='false'>
-                                    IsPackage</mat-checkbox>
-                                    <!-- [(ngModel)]="registerObj.IsPackage" -->
-                            </section>
+                <mat-checkbox class="example-margin" name="IsEditable" formControlName="IsEditable"
+                [(ngModel)]="IsEditable"> IsEditable</mat-checkbox>
+
+                <mat-checkbox class="example-margin" name="IsPackage" formControlName="IsPackage" value='false'
+                [(ngModel)]="IsPackage"> IsPackage</mat-checkbox>
+
+                <mat-checkbox class="example-margin" name="IsRadiology" formControlName="IsRadiology" value='false'
+                [(ngModel)]="IsRadiology"> IsRadiology</mat-checkbox>
+
+                <mat-checkbox class="example-margin" name="IsPathology" formControlName="IsPathology" value='false'
+                [(ngModel)]="IsPathology"> IsPathology</mat-checkbox>
+
+            </div>
 
 
-                            <section class="example-section" style="margin-right: 30px;">
-                                <mat-checkbox class="example-margin" name="IsRadiology" formControlName="IsRadiology"
-                                    value='false'>
-                                    IsRadiology</mat-checkbox>
-                                    <!-- [(ngModel)]="registerObj.IsRadiology" -->
-                            </section>
+            <hr>
 
-                            <section class="example-section" style="margin-right: 30px;">
-                                <mat-checkbox class="example-margin" name="IsPathology" formControlName="IsPathology"
-                                    value='false'>
-                                    IsPathology</mat-checkbox>
-                                    <!-- [(ngModel)]="registerObj.IsPathology" -->
-                            </section>
-                            <section class="example-section" style="margin-right: 30px;">
-                                <mat-checkbox class="example-margin" name="IsEmergency" [(ngModel)]="showEmg"
-                                    value="true" formControlName="IsEmergency" (change)="emg_amt=''; emg_per=''">
-                                    IsEmergency</mat-checkbox>
-                            </section>
-                        </div>
+            <div fxLayout="row" fxLayoutAlign="space-between" style="padding: 0px 20px 0px 20px;">
+
+                <div fxFlex="40%" fxLayout="row" fxLayoutGap="6px" style="margin-right: 30px;">
+                    <mat-checkbox class="example-margin" name="CreditedtoDoctor" formControlName="CreditedtoDoctor"
+                        value='false' [(ngModel)]="showDoctor">
+                        CreditedtoDoctor</mat-checkbox>
+
+                    <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [value]="data?.doctorId"
+                        [formGroup]="serviceForm" [validations]="getValidationMessages().DoctorId" fxFlex="45%"
+                        [mode]="autocompleteModedoctor" *ngIf="showDoctor"  (selectionChange)="SelectionDoctor($event)">
+                    </airmid-dropdown>
+                </div>
+
+                <div fxFlex="60%" fxLayout="row" fxLayoutGap="6px">
+                    <mat-checkbox class="example-margin" name="IsEmergency" [(ngModel)]="showEmg" value="true"
+                        formControlName="IsEmergency" (change)="emg_amt=''; emg_per=''">
+                        IsEmergency</mat-checkbox>
+
+                    <div *ngIf="showEmg" class="emg-amt-input" style="margin-left: 40px;">
+                        <mat-form-field appearance="outline" fxFlex="35%">
+                            <input name="EmgAmt" placeholder="Select EmgAmt" [(ngModel)]="emg_amt"
+                                formControlName="EmgAmt" matInput>
+                            <mat-error *ngIf="serviceForm.get('EmgAmt').invalid && serviceForm.get('EmgAmt').touched">
+                                EmgAmt is required Enter only Digits
+                            </mat-error>
+                        </mat-form-field>&nbsp;
+
+                        <mat-form-field appearance="outline" fxFlex="35%">
+                            <input name="EmgPer" placeholder="Select EmgPer" [(ngModel)]="emg_per"
+                                formControlName="EmgPer" matInput>
+                            <mat-error *ngIf="serviceForm.get('EmgPer').invalid && serviceForm.get('EmgPer').touched">
+                                EmgAmt is required Enter only Digits
+                            </mat-error>
+                        </mat-form-field>
                     </div>
                 </div>
             </div>
-            <div class="content-card">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div flex="100%">
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xsf="column" class="checklist">
-                            <!-- -->
 
-                            <section class="example-section" style="margin-left: 40px;">
-                                <mat-checkbox class="example-margin" name="CreditedtoDoctor"
-                                    formControlName="CreditedtoDoctor" value='false' [(ngModel)]="showDoctor"
-                                    style="padding: 25px 0px">
-                                    CreditedtoDoctor</mat-checkbox>
-
-
-                                <!-- <divclass="emg-amt-input" style="margin-left: 30px;"> -->
-                                <!-- <mat-form-field appearance="outline" fxFlex
-                                    style="width: 24vw !important;margin-left: 20px;" *ngIf="showDoctor">
-                                    <mat-label>Doctor Name</mat-label>
-                                    <mat-select placeholder="Select Doctor Name" name="DoctorId"
-                                        formControlName="DoctorId">
-
-                                        <mat-option *ngFor="let M of DoctorcmbList" [value]="M.DoctorID">
-                                            {{ M.DoctorName }}
-                                        </mat-option>
-                                    </mat-select>
-                                    <mat-error>Please Select Doctor Name </mat-error>
-                                </mat-form-field> -->
-
-                                <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [value]="data?.doctorId"
-                                [formGroup]="serviceForm" [validations]="getValidationMessages().DoctorId"
-                                [mode]="autocompleteModedoctor" *ngIf="showDoctor">
-                            </airmid-dropdown>
-                                <!-- </div> -->
-
-                            </section>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="content-card">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div flex="100%">
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xsf="column" class="checklist">
-                            <!-- -->
-
-                            <section class="example-section">
-
-
-                                <div *ngIf="showEmg" class="emg-amt-input" style="margin-left: 40px;">
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <input name="EmgAmt" placeholder="Select EmgAmt" [(ngModel)]="emg_amt"
-                                            formControlName="EmgAmt" matInput>
-                                            <mat-error
-                                            *ngIf="serviceForm.get('EmgAmt').invalid && serviceForm.get('EmgAmt').touched">
-                                            EmgAmt is required Enter only Digits
-                                            </mat-error>
-                                    </mat-form-field>&nbsp;
-
-                                    <mat-form-field appearance="outline" fxFlex style="margin-left: 30px;">
-                                        <input name="EmgPer" placeholder="Select EmgPer" [(ngModel)]="emg_per"
-                                            formControlName="EmgPer" matInput>
-                                            <mat-error
-                                            *ngIf="serviceForm.get('EmgPer').invalid && serviceForm.get('EmgPer').touched">
-                                            EmgAmt is required Enter only Digits
-                                            </mat-error>
-                                    </mat-form-field>
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-
-        <hr>
 
         <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between">
 
-            <mat-checkbox aria-label="Is Active" formControlName="IsActive" (checked)=true
-                 style="font-weight: bold;">
+            <mat-checkbox aria-label="Is Active" formControlName="IsActive" (checked)=true style="font-weight: bold;">
                 IsActive
             </mat-checkbox>
             <!-- [(ngModel)]="registerObj.IsActive" -->

@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
@@ -7,6 +7,7 @@ import { ApiCaller } from "app/core/services/apiCaller";
 })
 export class ServiceMasterService {
     myform: FormGroup;
+    myTariffform: FormGroup;
     myformSearch: FormGroup;
     edit_data = {};
     constructor(
@@ -14,6 +15,7 @@ export class ServiceMasterService {
         private _formBuilder: UntypedFormBuilder
     ) {
         this.myform = this.createServicemasterForm();
+        this.myTariffform = this.createTariffmasterForm();
         this.myformSearch = this.createSearchForm();
     }
 
@@ -72,10 +74,26 @@ export class ServiceMasterService {
         });
     }
 
+    createTariffmasterForm(): FormGroup {
+        return this._formBuilder.group({
+            
+            tariffId1: ["",
+                [
+                    // Validators.required
+                ]
+            ],
+            tariffId2: ["",
+                [
+                    // Validators.required
+                ]
+            ],
+        });
+    }
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-            TariffId:[""],
-            GroupId:[""],
+            TariffId:["",notEmptyOrZeroValidator()],
+            GroupId:["",notEmptyOrZeroValidator()],
             ServiceNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
@@ -93,8 +111,11 @@ export class ServiceMasterService {
     
 
     public deactivateTheStatus(m_data) {
-        
         return this._httpClient.DeleteData("ServicDelete?Id=" + m_data.toString());
+    }
+
+    public SavePackagedet(param) {
+        return this._httpClient.PostData("Administration/InsertPackageDetails", param);
     }
 
     public ServiceMasterCancle(Id: any) {
@@ -128,4 +149,11 @@ export class ServiceMasterService {
         this.myform.get("IsEmergency").setValue(param.IsEmergency == "true" ? true : false);
         this.myform.get("IsPackage").setValue(param.IsPackage == "true" ? true : false);
     }
+}
+
+function notEmptyOrZeroValidator(): any {
+  return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      return value > 0 ? null : { greaterThanZero: { value: value } };
+    };
 }

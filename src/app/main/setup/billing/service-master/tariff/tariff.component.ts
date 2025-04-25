@@ -14,8 +14,8 @@ export class TariffComponent implements OnInit {
     serviceForm: FormGroup;;
     // isActive:boolean=true;
 
-    autocompleteModegroupName:string = "Tariff";
-    autocompleteModeName: string = "Tariff";
+    autocompleteModeName1:string = "Tariff";
+    autocompleteModeName2: string = "Tariff";
 
     constructor(
         public _ServiceMasterService: ServiceMasterService,
@@ -25,7 +25,7 @@ export class TariffComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.serviceForm=this._ServiceMasterService.createServicemasterForm();
+        this.serviceForm=this._ServiceMasterService.createTariffmasterForm();
         if((this.data?.tariffId??0) > 0){
             // this.isActive=this.data.isActive
             this.serviceForm.patchValue(this.data);

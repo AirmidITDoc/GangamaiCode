@@ -43,39 +43,12 @@ export class ServiceMasterFormComponent implements OnInit {
     autocompleteModetariff: string = "Tariff";
     autocompleteModedoctor: string = "ConDoctor";
     grid: any;
+    IsEditable:any=false;
+    IsDocEditable:any=false;
+    IsPackage:any=false;
+    IsRadiology:any=false;
+    IsPathology:any=false;
 
-    // gridConfig: gridModel = {
-    //     apiUrl: "ClassMaster/List",
-    //     columnsList: [
-    //         { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA', width: 160 },
-    //         { heading: "Billing Class Name", key: "class Name", sort: true, align: 'left', emptySign: 'NA', width: 700 },
-
-    //         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 160 },
-    //         {
-    //             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 160, actions: [
-    //                 {
-    //                     action: gridActions.edit, callback: (data: any) => {
-    //                         this.onSave(data);
-    //                     }
-    //                 }, {
-    //                     action: gridActions.delete, callback: (data: any) => {
-    //                         this._serviceMasterService.deactivateTheStatus(data.classId).subscribe((response: any) => {
-    //                             this.toastr.success(response.message);
-    //                             this.grid.bindGridData();
-    //                         });
-    //                     }
-    //                 }]
-    //         } //Action 1-view, 2-Edit,3-delete
-    //     ],
-    //     sortField: "classId",
-    //     sortOrder: 0,
-    //     filters: [
-    //         { fieldName: "className", fieldValue: "", opType: OperatorComparer.Contains },
-    //         { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-            
-    //     ],
-    //     row: 25
-    // }
     private _matDialog: any;
 
     constructor(public _serviceMasterService: ServiceMasterService,
@@ -98,7 +71,7 @@ export class ServiceMasterFormComponent implements OnInit {
         
         this.serviceForm = this._serviceMasterService.createServicemasterForm();
        
-        this.serviceForm = this._serviceMasterService.createServicemasterForm();
+        // this.serviceForm = this._serviceMasterService.createServicemasterForm();
         this.getClassList(this.registerObj.serviceId)
 
         this.serviceForm.get('EffectiveDate').setValue(new Date());
@@ -172,6 +145,7 @@ export class ServiceMasterFormComponent implements OnInit {
                     "opType": "Equals"
                 }
             ],
+            "Columns":[],
             "exportType": "JSON"
         }
         console.log(param)
@@ -194,8 +168,13 @@ export class ServiceMasterFormComponent implements OnInit {
         cls['ClassRate'] = parseInt(event.target.value);
     }
 
+    doctorId = 0;
+    SelectionDoctor(data){
+        this.doctorId=data.value
+    }
+
     onSubmit() {
-        
+        debugger
         if (this.showEmg) {
             this.serviceForm.get('EmgAmt').setValidators([Validators.required, Validators.min(0)]);
             this.serviceForm.get('EmgPer').setValidators([Validators.required, Validators.min(0)]);
@@ -207,45 +186,66 @@ export class ServiceMasterFormComponent implements OnInit {
         this.serviceForm.get('EmgAmt').updateValueAndValidity();
         this.serviceForm.get('EmgPer').updateValueAndValidity();
 
-        // if (this.serviceForm.invalid) {
-        //     this.toastr.warning('please check from is invalid', 'Warning !', {
-        //         toastClass: 'tostr-tost custom-toast-warning',
-        //     })
-        //     return;
-        // } else {
-
-        let subGroupId = 0;
-        if (this.serviceForm.get("SubGroupId").value)
-            subGroupId = this.serviceForm.get("SubGroupId").value
-
-        let doctorId = 0;
-        if (this.serviceForm.get("DoctorId").value)
-            doctorId = this.serviceForm.get("DoctorId").value
+        if (!this.groupId) {
+            this.toastr.warning('Please Select Group Name', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+          }
         
+          if (!this.serviceForm.get("ServiceName")?.value) {
+            this.toastr.warning('Please Enter ServiceName', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+          }
+
+          if (!this.serviceForm.get("Price")?.value) {
+            this.toastr.warning('Please Enter Price', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+          }
+
+          if (!this.serviceForm.get("PrintOrder")?.value) {
+            this.toastr.warning('Please Enter PrintOrder', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+          }
+
+          if (!this.serviceForm.get("ServiceShortDesc")?.value) {
+            this.toastr.warning('Please Enter Service Short Description', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+          }
+
+          if (!this.tariffId) {
+            this.toastr.warning('Please Select Tariff Name', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+          }
+
         if (this.serviceForm.get("ServiceId").value==0) {
             console.log(this.serviceForm.get("ServiceId").value);
-            var data1 = [];
-            var clas_d = [];
-            var class_det = {
-                "serviceId": parseInt(this.serviceForm.get("ServiceId").value || 0),
-                "tariffId": this.serviceForm.get("tariffId").value || 0,
-                "classId": 0,
-                "classRate": 0,
-                "effectiveDate": this.serviceForm.get("EffectiveDate").value || "01/01/1900",
-            }
-            console.log(this.DSServicedetailList.data)
+
+            let classDetailsArray = [];
+
             this.DSServicedetailList.data.forEach(element => {
-                
-                console.log(element);
-                let c = JSON.parse(JSON.stringify(class_det));
-                c['classId'] = element.classId;
-                c['classRate'] = element.classRate || 0;
-                clas_d.push(c)
-                console.log("C :- ",c);
-                console.log("class_d :-",clas_d)
+            let clas_d = {
+                serviceDetailId: 0,
+                serviceId: 0,
+                tariffId: element.tariffId || 0,
+                classId: element.classId || 0,
+                classRate: element.classRate || 0
+            };
+
+            classDetailsArray.push(clas_d);
             });
 
-            console.log("ServiceInsert data1:", data1);
+            console.log("ServiceInsert data1:", classDetailsArray);
 
             var mdata = {
                 "serviceId": 0,
@@ -260,12 +260,12 @@ export class ServiceMasterFormComponent implements OnInit {
                 "printOrder": parseInt(this.serviceForm.get("PrintOrder").value),
                 "isPackage": String(this.serviceForm.get("IsPackage").value) == 'false' ? 0 : 1,
                 "subGroupId": this.subGroupId || 0,
-                "doctorId": doctorId || 0,
+                "doctorId": this.doctorId || 0,
                 "isEmergency": this.serviceForm.get("IsEmergency").value,
                 "emgAmt": this.serviceForm.get("EmgAmt").value || 0,
                 "emgPer": this.serviceForm.get("EmgPer").value || 0,
                 "isDocEditable": String(this.serviceForm.get("IsDocEditable").value) == 'false' ? false : true,
-                "serviceDetails": clas_d
+                "serviceDetails": classDetailsArray
             }
             console.log("insert mdata:", mdata);
             this._serviceMasterService.serviceMasterInsert(mdata).subscribe((response) => {
@@ -278,25 +278,21 @@ export class ServiceMasterFormComponent implements OnInit {
         }
 
         else {
-           
-            var data1 = [];
-            var clas_d = [];
-            var class_det = {
-                "serviceId": parseInt(this.serviceForm.get("ServiceId").value || 0),
-                "tariffId": this.serviceForm.get("tariffId").value || 0,
-                "classId": 0,
-                "classRate": 0,
-                "effectiveDate": this.serviceForm.get("EffectiveDate").value || "01/01/1900",
-            }
-            this.DSServicedetailList.data.forEach(element => {
+            let classDetailsArray = [];
 
-                let c = JSON.parse(JSON.stringify(class_det));
-                c['classId'] = element.ClassId;
-                c['classRate'] = element.ClassRate || 0;
-                clas_d.push(c)
+            this.DSServicedetailList.data.forEach(element => {
+            let clas_d = {
+                serviceDetailId: 0,
+                serviceId: 0,
+                tariffId: element.tariffId || 0,
+                classId: element.classId || 0,
+                classRate: element.classRate || 0
+            };
+
+            classDetailsArray.push(clas_d);
             });
 
-            console.log("ServiceUpdate data1:", data1);
+            console.log("ServiceUpdate data1:", classDetailsArray);
 
             var mdata1 = {
                 "serviceId": this.serviceForm.get("ServiceId").value,
@@ -311,12 +307,12 @@ export class ServiceMasterFormComponent implements OnInit {
                 "printOrder": parseInt(this.serviceForm.get("PrintOrder").value),
                 "isPackage": String(this.serviceForm.get("IsPackage").value) == 'false' ? 0 : 1,
                 "subGroupId": this.subGroupId || 0,
-                "doctorId": doctorId || 0,
+                "doctorId": this.doctorId || 0,
                 "isEmergency": this.serviceForm.get("IsEmergency").value,
                 "emgAmt": this.serviceForm.get("EmgAmt").value || 0,
                 "emgPer": this.serviceForm.get("EmgPer").value || 0,
                 "isDocEditable": String(this.serviceForm.get("IsDocEditable").value) == 'false' ? false : true,
-                "serviceDetails": clas_d
+                "serviceDetails": classDetailsArray
             }
             console.log("Update mdata:", mdata1);
             this._serviceMasterService.serviceMasterUpdate(mdata1).subscribe((response) => {

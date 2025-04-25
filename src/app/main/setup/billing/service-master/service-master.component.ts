@@ -24,6 +24,7 @@ export class ServiceMasterComponent implements OnInit {
     autocompleteModegroupName: string = "GroupName";
     tariffId = "0";
     groupId = "0";
+    serviceName:any="";
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
      ngAfterViewInit() {
@@ -40,9 +41,7 @@ export class ServiceMasterComponent implements OnInit {
           @ViewChild('iconisRadiology') iconisRadiology!: TemplateRef<any>;
           @ViewChild('iconisPackage') iconisPackage!: TemplateRef<any>;
 
-    gridConfig: gridModel = {
-        apiUrl: "BillingService/BillingList",
-        columnsList: [
+          allColumns=[
             { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "ServiceShortDesc", key: "serviceShortDesc", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "GroupName", key: "groupName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -67,21 +66,58 @@ export class ServiceMasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             
-                            this._serviceMasterService.deactivateTheStatus(data.serviceId).subscribe((response: any) => {
+                            this._serviceMasterService.ServiceMasterCancle(data.serviceId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "ServiceId",
-        sortOrder: 0,
-        filters: [
+        ]
+
+        allFilters=[
             { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Equals },
             { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
             { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals }
         ]
+    gridConfig: gridModel = {
+        apiUrl: "BillingService/BillingList",
+        columnsList: this.allColumns,
+        sortField: "ServiceId",
+        sortOrder: 0,
+        filters: this.allFilters
+    }
+
+    Clearfilter(event) {
+        debugger
+        console.log(event)
+        if (event == 'ServiceNameSearch')
+            this._serviceMasterService.myformSearch.get('ServiceNameSearch').setValue("")
+       
+        this.onChangeFirst();
+      }
+      
+    onChangeFirst() {
+        debugger
+        this.serviceName = this._serviceMasterService.myformSearch.get('ServiceNameSearch').value + "%"
+        this.getfilterdata();
+    }
+
+    getfilterdata(){
+        debugger
+        this.gridConfig = {
+            apiUrl: "BillingService/BillingList",
+            columnsList:this.allColumns , 
+            sortField: "ServiceId",
+            sortOrder: 0,
+            filters:  [
+                { fieldName: "ServiceName", fieldValue: this.serviceName, opType: OperatorComparer.Equals },
+                { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
+                { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals }
+            ]
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData(); 
     }
 
     constructor(
@@ -97,18 +133,6 @@ export class ServiceMasterComponent implements OnInit {
     onSearch() {
 
     }
-    // deleteService(serviceId: number) {
-    //     
-    //     this._serviceMasterService.deactivateTheStatus(serviceId).subscribe(
-    //         (response: any) => {
-    //             this.toastr.success(response.message);
-    //             this.grid.bindGridData();
-    //         },
-    //         (error: any) => {
-    //             this.toastr.error("Failed to delete service.");
-    //         }
-    //     );
-    // }
 
     onSearchClear() {
         this._serviceMasterService.myformSearch.reset({
@@ -126,19 +150,26 @@ export class ServiceMasterComponent implements OnInit {
         this._serviceMasterService.initializeFormGroup();
     }
 
-    selectChangegroup(obj: any) {
-        this.groupId = String(obj);
-        this.gridConfig.filters = [{ fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
-        { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals }]
+    ListView2(value) {
+        
+        console.log(value)
+         if(value.value!==0)
+            this.groupId=value.value
+        else
+        this.groupId="0"
+
+        this.onChangeFirst();
     }
 
-    selectChangetariff(obj: any) {
-        console.log(obj);
-        this.tariffId = String(obj)
-        this.gridConfig.filters = [{ fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
-        { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals }]
+    ListView1(value) {
+        
+        console.log(value)
+         if(value.value!==0)
+            this.tariffId=value.value
+        else
+        this.tariffId="0"
+
+        this.onChangeFirst();
     }
 
     onSave(row: any = null) {
@@ -189,9 +220,9 @@ export class ServiceMasterComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(EditpackageComponent,
             {
-                maxWidth: "90vw",
-                height: '90%',
-                width: '90%',
+                // maxWidth: "90vw",
+                maxHeight: '70vh',
+                width: '70%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -290,7 +321,7 @@ export class Servicedetail {
     EffectiveDate: Date;
     ClassName: any;
     className: any;
-
+    tariffId:any;
     constructor(Servicedetail) {
         {
             this.ServiceDetailId = Servicedetail.ServiceDetailId || "";
@@ -302,6 +333,7 @@ export class Servicedetail {
             this.ClassName = Servicedetail.ClassName || "";
             this.className = Servicedetail.className || "";
             this.EffectiveDate = Servicedetail.EffectiveDate || "";
+            this.tariffId=Servicedetail.tariffId || ""
         }
     }
 }

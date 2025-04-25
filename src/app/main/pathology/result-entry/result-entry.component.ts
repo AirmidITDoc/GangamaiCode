@@ -756,42 +756,6 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
 
     OP_IP_Type:any;
 
-    // Printresultentry() {
-    //     debugger;
-    //     console.log(this.selection.selected);
-    
-    //     this.selection.selected.forEach((element) => {
-    //         const param = {
-    //             searchFields: [
-    //                 {
-    //                     fieldName: "OP_IP_Type",
-    //                     fieldValue: String(element.opdipdtype),
-    //                     opType: "Equals"
-    //                 }
-    //             ],
-    //             mode: "PathologyReport"
-    //         };
-    
-    //         console.log(param);
-    
-    //         this._SampleService.getReportView(param).subscribe(res => {
-    //             const matDialog = this._matDialog.open(PdfviewerComponent, {
-    //                 maxWidth: "85vw",
-    //                 height: '750px',
-    //                 width: '100%',
-    //                 data: {
-    //                     base64: res["base64"] as string,
-    //                     title: "Pathology Test Report Viewer"
-    //                 }
-    //             });
-    
-    //             matDialog.afterClosed().subscribe(result => {
-                    
-    //             });
-    //         });
-    //     });
-    // }
-
     selectedItem:any;
     // opiptype = this.selectedItem.opdipdtype;
     Printresultentry() {

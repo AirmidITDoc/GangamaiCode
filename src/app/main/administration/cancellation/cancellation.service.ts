@@ -46,7 +46,19 @@ export class CancellationService {
     
     return this._httpClient.PutData("BillCancellation/IPCancelBill", param) 
   }
-  public getDateTimeChange(m_data) {
+  public getDateTimeChangeBill(m_data) {
     return this._httpClient.PutData("Administration/UpdateBilldatetime" + m_data.billNo,m_data);
+}
+
+public getDateTimeChangeAdvanceDetId(m_data) {
+  return this._httpClient.PutData("Advance/UpdateAdvance" + m_data.advanceDetailID,m_data);
+}
+
+public getDateTimeChangeRefundId(m_data) {
+  return this._httpClient.PutData("Billing/UpdateRefund" + m_data.refundId,m_data);
+}
+
+public getDateTimeChangeSalesId(m_data) {
+  return this._httpClient.PutData("paymentpharmacy/UpdatePharmSales" + m_data.salesNo,m_data);
 }
 }
