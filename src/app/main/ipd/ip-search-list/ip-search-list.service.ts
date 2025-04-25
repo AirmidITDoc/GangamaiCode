@@ -630,6 +630,12 @@ public getPaymentPrint (paymentid){
   } 
   return this._httpClient1.PostData("IPBill/InsertLabRequest",employee)
   } 
+  public UpdateChargesDetails(employee,Id, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+  return this._httpClient1.PutData("IPBill/UpdateAddcharges/"+Id,employee) 
+  } 
   public InsertIPpacakgeAddCharges(employee, loader = true) {
     if (loader) {
       this._loaderService.show();

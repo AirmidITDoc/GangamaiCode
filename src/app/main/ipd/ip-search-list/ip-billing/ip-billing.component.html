@@ -491,7 +491,7 @@
                     <div class="patient-col">
                       <span class="patient-col-key font-weight-600">Bill Balance Amount</span>
                       <span>:</span>
-                      <span class="patient-col-value" style="background-color: aqua;">{{ BillBalAmount | currency : 'INR' }}</span>
+                      <span class="patient-col-value" style="background-color: rgb(0, 255, 204);">{{ BillBalAmount | currency : 'INR' }}</span>
                     </div>
                 
                     <div class="patient-col">
@@ -601,15 +601,16 @@
                         </ng-container>
 
                         <ng-container matColumnDef="ClassName">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="accent">ClassName</mat-header-cell>
-                          <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="accent" class="w-200"
+                          >ClassName</mat-header-cell>
+                          <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                             <span>{{ contact.className }}</span>
                           </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="ChargesAddedName">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ChargesAddedName</mat-header-cell>
-                          <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">ChargesAddedName</mat-header-cell>
+                          <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200"> 
                             <span>{{ contact.chargesAddedName }}</span>
                           </mat-cell>
                         </ng-container>
@@ -634,10 +635,10 @@
                           </mat-footer-cell>
                         </ng-container>
 
-                        <mat-header-row class="accent min-width-1600" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                        <mat-header-row class="accent min-width-1750" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                         <mat-row
                           *matRowDef="let contact; columns: displayedColumns"
-                          class="min-width-1600"
+                          class="min-width-1750"
                           [ngClass]="{'red-row': contact.isPathTestCompleted == '1' ||  contact.isRadTestCompleted == '1' }"
                           [@animate]="{ value: '*', params: { y: '100%' } }"
                         ></mat-row>

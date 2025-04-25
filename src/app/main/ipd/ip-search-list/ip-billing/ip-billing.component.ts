@@ -1593,6 +1593,7 @@ export class IPBillingComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+      this.getChargesList()
     });
   }
   keyPressAlphanumeric(event) {
