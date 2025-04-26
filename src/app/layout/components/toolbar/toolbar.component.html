@@ -77,15 +77,7 @@
                                 </button>
 
                                 <mat-menu #userMenu="matMenu" [overlapTrigger]="false">
-                                    <!-- <button mat-menu-item>
-                                        <mat-icon>account_circle</mat-icon>
-                                        <span (click) ="addNewProfile()">My Profile</span>
-                                    </button> -->
 
-                                    <!-- <button mat-menu-item class="">
-                            <mat-icon>mail</mat-icon>
-                            <span>Inbox</span>
-                        </button> -->
                                     <button mat-menu-item class="">
                                         <mat-icon>mail</mat-icon>
                                         <span (click)="Changepassword()">Change Password</span>
@@ -148,6 +140,31 @@
                                 </mat-menu>
                             </div>
 
+                            <div class="toolbar-separator"></div>
+                            <div class="nav-item seperator-right notification-container px-8">
+                                <button mat-icon-button [matMenuTriggerFor]="notificationMenu" class="notification-button ">
+                                    <mat-icon class="secondary-text">notifications</mat-icon>
+                                    <span class="notification-badge">{{notifications.length}}</span>
+                                </button>
+                                <mat-menu #notificationMenu="matMenu" [overlapTrigger]="false" class="notification-menu">
+                                    <div class="notification-header">
+                                        <mat-icon class="secondary-text">notifications</mat-icon>
+                                        <h3>Notifications</h3>
+                                    </div>
+                                    <div class="notification-list">
+                                        <div *ngFor="let notification of notifications" class="notification-item" >
+                                            <div class="notification-icon">
+                                                <mat-icon>assignment</mat-icon>
+                                            </div>
+                                            <div class="notification-content">
+                                                <div class="notification-title">{{notification.title}}</div>
+                                                <div class="notification-message">{{notification.message}}</div>
+                                                <div class="notification-time">{{notification.time}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-menu>
+                            </div>
                             <div class="toolbar-separator" fxHide fxShow.gt-xs></div>
                             <div class="nav-item seperator-right">
                                 <button mat-icon-button fxHide.gt-md class="chat-panel-toggle-button" (click)="toggleSidebarOpen('chatPanel')" aria-label="Toggle chat panel">

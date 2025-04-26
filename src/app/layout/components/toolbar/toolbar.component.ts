@@ -41,6 +41,25 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     user: any;
     currentDate: Date = new Date();
 
+    // Demo notification array
+    notifications = [
+        {
+            title: 'New Task Assigned',
+            message: 'You have been assigned a new task',
+            time: '2 minutes ago',
+        },
+        {
+            title: 'System Alert',
+            message: 'System maintenance scheduled for tomorrow',
+            time: '1 hour ago',
+        },
+        {
+            title: 'Meeting Reminder',
+            message: 'Team meeting in 30 minutes',
+            time: '2 hours ago',
+        },
+    ];
+
     // Private
     private _unsubscribeAll: Subject<any>;
 
