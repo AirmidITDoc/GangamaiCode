@@ -415,6 +415,7 @@ export class AdmissionComponent implements OnInit {
     this.m_name = this.myFilterform.get('MiddleName').value + "%"
     this.regNo = this.myFilterform.get('RegNo').value || "0"
     this.IPDNo = this.myFilterform.get('IPDNo').value || "0"
+    this.DoctorId= this.myFilterform.get('searchDoctorId').value || "0"
 
     this.getfilterdata();
   }
@@ -430,7 +431,7 @@ export class AdmissionComponent implements OnInit {
           { fieldName: "F_Name", fieldValue:  this.f_name, opType: OperatorComparer.Contains },
           { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
           { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-          { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "Doctor_Id", fieldValue:this.DoctorId, opType: OperatorComparer.Equals },
           { fieldName: "From_Dt", fieldValue: this.fromDate ||  "1900-01-01", opType: OperatorComparer.Equals },
           { fieldName: "To_Dt", fieldValue:this.toDate ||  "2100-12-31", opType: OperatorComparer.Equals },
           { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
@@ -469,7 +470,7 @@ export class AdmissionComponent implements OnInit {
         debugger
     console.log(value)
      if(value.value!==0)
-        this.DoctorId=value.value
+        this.DoctorId=String(value.value)
     else
     this.DoctorId="0"
 
