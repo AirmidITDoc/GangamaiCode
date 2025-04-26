@@ -31,6 +31,7 @@ export class EditpackageComponent implements OnInit {
     dsPackageDet = new MatTableDataSource<PacakgeList>();
     PacakgeList: any = [];
     registerObj: any
+    serviceName:any
 
     constructor(
         public _ServiceMasterService: ServiceMasterService,
@@ -81,24 +82,39 @@ export class EditpackageComponent implements OnInit {
         // }
 
         if (this.data) {
-            this.registerObj = this.data.Obj;
+            this.registerObj = this.data;
             console.log(this.registerObj)
+            this.serviceName=this.registerObj.serviceName
             this.getRtevPackageDetList(this.registerObj)
         }
     }
 
     getRtevPackageDetList(obj) {
         debugger
-        var vdata = {
-            "ServiceId": obj.ServiceId || 0
-        }
+        var vdata =
+        {
+            "first": 0,
+            "rows": 10,
+            "sortField": "ServiceId",
+            "sortOrder": 0,
+            "filters": [
+          {
+                "fieldName": "ServiceId",
+                "fieldValue": String(obj.serviceId),
+                "opType": "Equals"
+              }
+            ],
+            "exportType": "JSON",
+            "columns": []
+          }
         console.log(vdata)
         setTimeout(() => {
-            //   this._ServiceMasterService.getRtevPackageDetList(vdata).subscribe(data=>{
-            //     this.dsPackageDet.data =  data as PacakgeList[];
-            //     this.PacakgeList = data as PacakgeList
-            //     console.log(this.dsPackageDet.data)  
-            //   }); 
+              this._ServiceMasterService.getRtevPackageDetList(vdata).subscribe(data=>{
+                this.dsPackageDet.data =  data.data as PacakgeList[];
+                this.PacakgeList = data.data as PacakgeList
+                console.log(this.dsPackageDet.data)  
+                console.log(this.PacakgeList)  
+              }); 
         }, 1000);
     }
 
@@ -129,19 +145,19 @@ export class EditpackageComponent implements OnInit {
             return;
         }
 
-        const isDuplicate = this.PacakgeList.some(item => item.PackageServiceId === this.vServiceId);
-        if (isDuplicate) {
-            this.toastr.warning('This service is already added.', 'Duplicate Entry', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
+        // const isDuplicate = this.PacakgeList.some(item => item.PackageServiceId === this.vServiceId);
+        // if (isDuplicate) {
+        //     this.toastr.warning('This service is already added.', 'Duplicate Entry', {
+        //         toastClass: 'tostr-tost custom-toast-warning',
+        //     });
+        //     return;
+        // }
 
         this.dsPackageDet.data = [];
         this.PacakgeList.push(
             {
-                ServiceId: 0, //this.registerObj.ServiceId || 0,
-                ServiceName: 'abc',//this.registerObj.ServiceName || '',
+                ServiceId: this.registerObj.serviceId || 0,
+                ServiceName: this.registerObj.serviceName || '',
                 PackageServiceId: this.vServiceId || 0,
                 PackageServiceName: this.vSrvcName || 0,
             });
@@ -150,7 +166,7 @@ export class EditpackageComponent implements OnInit {
 
         this.dsPackageDet.data = this.PacakgeList;
         this.serviceForm.reset();
-        // this.serviceForm.get('ServiceName').setValue(this.registerObj.ServiceName);
+        this.serviceForm.get('ServiceName').setValue(this.registerObj.serviceName);
         console.log(this.dsPackageDet.data)
 
         this.vServiceId = null;

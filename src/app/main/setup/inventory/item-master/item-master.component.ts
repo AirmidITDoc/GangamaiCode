@@ -20,56 +20,95 @@ export class ItemMasterComponent implements OnInit {
     hasSelectedContacts: boolean;
     autocompleteModestoreName: string = "StoreName";
     myformSearch:FormGroup;
+    itemName:any="";
+    type:any="2"
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+
+    allColumns=[
+        { heading: "Code", key: "itemID", sort: true, align: 'left', emptySign: 'NA'},
+        { heading: "Hsncode", key: "hsNcode", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' , width: 200},
+        { heading: "TypeName", key: "itemTypeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Category Name", key: "itemCategoryName", sort: true, align: 'left', emptySign: 'NA' , width: 200},
+        { heading: "Class Name", key: "itemClassName", sort: true, align: 'left', emptySign: 'NA', width: 200},
+        { heading: "Generic Name", key: "itemGenericName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Puchase UOM", key: "puchaseUOM", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Stock UOM", key: "stockUOM", sort: true, align: 'left', emptySign: 'NA'},
+        { heading: "Conversion Factor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA'},
+        { heading: "Currency", key: "currencyName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Min Qty", key: "minQty", sort: true, align: 'left', emptySign: 'NA'},
+        { heading: "Max Qty", key: "maxQty", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "ReOrder", key: "reOrder", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "CGST", key: "cgst", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "SGST", key: "sgst", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IGST", key: "igst", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Manufacture Name", key: "manufId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Location", key: "prodLocation", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsBatchRequired", key: "isBatchRequired", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive",  type: gridColumnTypes.status, align: "center" },
+        { heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, 
+                {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._itemService.deactivateTheStatus(data.itemID).subscribe((response: any) => {
+                            this.toastr.success(response.message);
+                            this.grid.bindGridData();
+                        });
+                    }
+                }
+            ]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+
+    allFilters= [
+        { fieldName: "itemName", fieldValue: "%", opType: OperatorComparer.Equals },
+        { fieldName: "StoreID", fieldValue: "0", opType: OperatorComparer.Equals }
+    ]
+
     gridConfig: gridModel = {
         apiUrl: "ItemMaster/ItemMasterList",
-        columnsList: [
-            { heading: "Code", key: "itemID", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Hsncode", key: "hsNcode", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' , width: 200},
-            { heading: "TypeName", key: "itemTypeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Category Name", key: "itemCategoryName", sort: true, align: 'left', emptySign: 'NA' , width: 200},
-            { heading: "Class Name", key: "itemClassName", sort: true, align: 'left', emptySign: 'NA', width: 200},
-            { heading: "Generic Name", key: "itemGenericName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Puchase UOM", key: "puchaseUOM", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Stock UOM", key: "stockUOM", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Conversion Factor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Currency", key: "currencyName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Min Qty", key: "minQty", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Max Qty", key: "maxQty", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "ReOrder", key: "reOrder", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "CGST", key: "cgst", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "SGST", key: "sgst", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IGST", key: "igst", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Manufacture Name", key: "manufId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Location", key: "prodLocation", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsBatchRequired", key: "isBatchRequired", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive",  type: gridColumnTypes.status, align: "center" },
-            { heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, 
-                    {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._itemService.deactivateTheStatus(data.itemID).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }
-                ]
-            } //Action 1-view, 2-Edit,3-delete
-        ],
+        columnsList: this.allColumns,
         sortField: "ItemID",
         sortOrder: 0,
-        filters: [
-            { fieldName: "itemName", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "StoreID", fieldValue: "0", opType: OperatorComparer.Equals }
-        ]
+        filters: this.allFilters
+    }
+
+    Clearfilter(event) {
+        debugger
+        console.log(event)
+        if (event == 'ItemNameSearch')
+            this.myformSearch.get('ItemNameSearch').setValue("")
+       
+        this.onChangeFirst();
+      }
+      
+    onChangeFirst() {
+        debugger
+        this.itemName = this.myformSearch.get('ItemNameSearch').value + "%"
+        this.type = this.myformSearch.get('IsDeletedSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata(){
+        debugger
+        this.gridConfig = {
+            apiUrl: "ItemMaster/ItemMasterList",
+            columnsList:this.allColumns, 
+            sortField: "ItemID",
+            sortOrder: 0,
+            filters:  [
+                { fieldName: "itemName", fieldValue: this.itemName, opType: OperatorComparer.Equals },
+                { fieldName: "StoreID", fieldValue: "0", opType: OperatorComparer.Equals }
+            ]
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData(); 
     }
 
     constructor(
@@ -89,8 +128,9 @@ export class ItemMasterComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(ItemFormMasterComponent,
             {
-                maxHeight: '90vh',
-                width: '85%',
+                maxHeight: '95vh',
+                maxWidth: '95wh',
+                width:'95%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {

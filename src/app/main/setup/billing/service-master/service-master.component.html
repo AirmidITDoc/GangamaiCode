@@ -59,9 +59,10 @@
 
         <ng-template #iconisPackage let-element >
             <div>
-                <mat-icon *ngIf="element.isPackage == 1" (click)="onPackageEdit(element)" matTooltip="IsPackage">
-                    <img width="18px" height="14px" src="assets/images/logos/Package.png">
+                <mat-icon *ngIf="element.isPackage == 1" (click)="onPackageEdit(element)" matTooltip="EditPackage">
+                    <img width="18px" height="14px" src="assets/images/logos/package.png">
                 </mat-icon>
+                
                 <mat-icon *ngIf="element.isPackage != 1"
                     class="active-icon red-500 s-16">close
                 </mat-icon> 
@@ -83,14 +84,23 @@
                 </mat-form-field>
 
                     <airmid-dropdown label="Tariff Name" formControlName="TariffId"
-                        [formGroup]="_serviceMasterService.myformSearch"
-                        [mode]="autocompleteModetariff" (selectionChange)="ListView1($event)">
+                        [formGroup]="_serviceMasterService.myformSearch" [(ngModel)]="gridConfig.filters[1].fieldValue"
+                        [mode]="autocompleteModetariff" (selectionChange)="ListView1($event)"
+                        (keyup)="ListView1($event)">
                     </airmid-dropdown>
                     
                     <airmid-dropdown label="Group Name" formControlName="GroupId"
-                        [formGroup]="_serviceMasterService.myformSearch"
-                        [mode]="autocompleteModegroupName" (selectionChange)="ListView2($event)">
+                        [formGroup]="_serviceMasterService.myformSearch" [(ngModel)]="gridConfig.filters[2].fieldValue"
+                        [mode]="autocompleteModegroupName" (selectionChange)="ListView2($event)"
+                        (keyup)="ListView2($event)">
                     </airmid-dropdown>
+
+                    <mat-radio-group value=""  [formGroup]="_serviceMasterService.myformSearch" formControlName="IsDeletedSearch" 
+                    fxLayoutAlign="center center" (change)="onChangeFirst()">
+                        <mat-radio-button value="2">All</mat-radio-button>
+                        <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
+                        <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
+                    </mat-radio-group>
                 </form>
 
             </ng-container>

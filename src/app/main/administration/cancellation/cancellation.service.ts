@@ -51,14 +51,17 @@ export class CancellationService {
 }
 
 public getDateTimeChangeAdvanceDetId(m_data) {
-  return this._httpClient.PutData("Advance/UpdateAdvance" + m_data.advanceDetailID,m_data);
+  // return this._httpClient.PutData("Advance/UpdateAdvance" + m_data.advanceDetailId,m_data);
+  return this._httpClient.PutData("Advance/UpdateAdvance",m_data);
 }
 
 public getDateTimeChangeRefundId(m_data) {
-  return this._httpClient.PutData("Billing/UpdateRefund" + m_data.refundId,m_data);
+  // return this._httpClient.PutData("Billing/UpdateRefund" + m_data.refundId,m_data);
+  return this._httpClient.PutData("Billing/UpdateRefund",m_data);
 }
 
 public getDateTimeChangeSalesId(m_data) {
-  return this._httpClient.PutData("paymentpharmacy/UpdatePharmSales" + m_data.salesNo,m_data);
+  return this._httpClient.PutData("paymentpharmacy/UpdatePharmSales",m_data);
+  // return this._httpClient.PutData("paymentpharmacy/UpdatePharmSales" + m_data.salesNo,m_data);
 }
 }

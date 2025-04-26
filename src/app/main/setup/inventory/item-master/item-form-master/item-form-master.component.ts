@@ -51,6 +51,9 @@ export class ItemFormMasterComponent implements OnInit {
     vchkactive: any = true;
     grid: any;
     vHSNCode: any;
+    vCGST:any;
+    vIGST:any;
+    vSGST:any;
 
     constructor(
         public _itemService: ItemMasterService,
@@ -62,14 +65,21 @@ export class ItemFormMasterComponent implements OnInit {
 
     ngOnInit(): void {
         this.itemForm = this._itemService.createItemmasterForm();
+        this.itemForm.markAllAsTouched();
         
+        if(this.data){
+            console.log(this.data)
+            this.ItemId = this.data.itemID
+            this.vHSNCode = this.data.hsNcode
+            this.vchkactive = this.data.isActive
+            this.vCGST=this.data.cgst
+            this.vSGST=this.data.sgst
+            this.vIGST=this.data.igst
+        }
         if ((this.data?.itemID ?? 0) > 0) {
             this._itemService.getstoreById(this.data.itemID).subscribe((response) => {
                 this.registerObj = response;
                 console.log(response)
-                this.ItemId = this.registerObj.itemId
-                this.vHSNCode = this.registerObj.hsncode
-                this.vchkactive = this.registerObj.isActive
                 this.ddlStore.SetSelection(this.registerObj.mAssignItemToStores);
 
             }, (error) => {
@@ -135,23 +145,84 @@ export class ItemFormMasterComponent implements OnInit {
     //     this.menuId = obj.value
     // }
 
+    gstPerArray:any=[
+        {gstPer :0},
+        {gstPer :2.5},
+        {gstPer :6},
+        {gstPer :9},
+        {gstPer :14},
+    ]
+
+    validateGST(fieldValue, fieldName) {
+        if (parseFloat(fieldValue) > 0) {
+            if (!this.gstPerArray.some(item => item.gstPer == parseFloat(fieldValue))) {
+                this.toastr.warning(`Please enter ${fieldName} percentage as 2.5%, 6%, 9% or 14%`, 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    gstPerChecking() {
+        if (!this.validateGST(this.vCGST, 'CGST')) return;
+        if (!this.validateGST(this.vSGST, 'SGST')) return;
+        if (!this.validateGST(this.vIGST, 'IGST')) return;
+    }    
+
     onSubmit() {
+debugger
 
         if (!this.itemForm.invalid) {
             console.log("Item JSON :-", this.itemForm.value);
-            
-            this._itemService.insertItemMaster(this.itemForm.value).subscribe((data) => {
-                this.toastr.success(data.message);
-                this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
-            });
+        
+            if (this.ItemId) {
+                this.itemForm.get('itemID').setValue(this.ItemId)
+                this._itemService.updateItemMaster(this.itemForm.value).subscribe(
+                    (data) => {
+                        this.toastr.success(data.message);
+                        this.onClear(true);
+                    },
+                    (error) => {
+                        this.toastr.error(error.message);
+                    }
+                );
+            } else {
+                this._itemService.insertItemMaster(this.itemForm.value).subscribe(
+                    (data) => {
+                        this.toastr.success(data.message);
+                        this.onClear(true);
+                    },
+                    (error) => {
+                        this.toastr.error(error.message);
+                    }
+                );
+            }
         }
+        
         else {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
+            let invalidFields = [];
+
+            if (this.itemForm.invalid) {
+                for (const controlName in this.itemForm.controls) {
+                if (this.itemForm.controls[controlName].invalid) {
+                    invalidFields.push(`My Form: ${controlName}`);
+                }
+                }
+            }
+
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                  this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                  );
+                });
+              }
+
+            // this.toastr.warning('please check from is invalid', 'Warning !', {
+            //     toastClass: 'tostr-tost custom-toast-warning',
+            // });
+            // return;
         }
     }
 
@@ -176,7 +247,7 @@ export class ItemFormMasterComponent implements OnInit {
                 { name: "pattern", Message: "Special char not allowed." }
             ],
             itemShortName: [
-                { name: "required", Message: "Item Name is required" },
+                { name: "required", Message: "Item Short Name is required" },
                 { name: "maxlength", Message: "Item Name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
             ],

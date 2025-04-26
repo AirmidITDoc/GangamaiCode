@@ -27,7 +27,7 @@ export class ItemMasterService {
 
     createItemmasterForm(): FormGroup {
         return this._formBuilder.group({
-            itemId: 0,
+            itemID: [0],
             itemShortName: ["",
                 [
                     Validators.required,
@@ -85,6 +85,7 @@ export class ItemMasterService {
                 ]
             ],
             taxPer: ["0"],
+            isActive:[true],
             isBatchRequired: [true as boolean],
             minQty: ["",
                 [
@@ -118,21 +119,24 @@ export class ItemMasterService {
                 [
                     Validators.required,
                     Validators.maxLength(15),
-                    Validators.pattern('^[0-9]*$')
+                    Validators.pattern('^[0-9.]*$')
+
                 ]
             ],
             sgst: ["",
                 [
                     Validators.required,
                     Validators.maxLength(15),
-                    Validators.pattern('^[0-9]*$')
+                    Validators.pattern('^[0-9.]*$')
+
                 ]
             ],
             igst: ["",
                 [
                     Validators.required,
                     Validators.maxLength(15),
-                    Validators.pattern('^[0-9]*$')
+                    Validators.pattern('^[0-9.]*$')
+
                 ]
             ],
 
@@ -184,10 +188,13 @@ export class ItemMasterService {
 
     //insert update of item master
     public insertItemMaster(Param: any) {
-        if (Param.itemId) {
+        return this._httpClient.PostData("ItemMaster/InsertEDMX", Param);
+    }
 
-            return this._httpClient.PutData("ItemMaster/Edit/" + Param.itemId, Param);
-        } else return this._httpClient.PostData("ItemMaster/InsertEDMX", Param);
+    public updateItemMaster(Param: any) {
+        if (Param.itemID) {
+            return this._httpClient.PutData("ItemMaster/Edit/" + Param.itemID, Param);
+        } 
     }
 
     public deactivateTheStatus(m_data) {
