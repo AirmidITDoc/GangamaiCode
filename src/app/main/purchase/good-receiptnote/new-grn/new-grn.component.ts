@@ -528,8 +528,10 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     }
 
     IsDiscPer2:boolean=false;
+    GSTTypeID:any=0;
     onGSTTypeChange(event: { value: number, text: string }) {
         console.log(event)
+        this.GSTTypeID = event.value
         this.calculateGSTType(event.text as GSTType);
         if(event.text == "GST After TwoTime Disc"){
             this.IsDiscPer2 = true
@@ -677,12 +679,13 @@ export class NewGrnComponent implements OnInit, OnDestroy {
           })
     }
     OnSavenew() {  
+        debugger
         let grnSaveObj = {};
         grnSaveObj['grnid'] = 0;
         grnSaveObj['grnNumber'] = '0';
         grnSaveObj['grndate'] =this.datePipe.transform(this.dateTimeObj.date ,"yyyy-MM-dd") || '1900-01-01';
         grnSaveObj['grntime'] = this.dateTimeObj.time;
-        grnSaveObj['storeId'] = this.accountService.currentUserValue.storeId;
+        grnSaveObj['storeId'] = this.accountService.currentUserValue.storeId || 2;
         grnSaveObj['supplierId'] = this._GRNList.userFormGroup.get('SupplierId').value || 0;
         grnSaveObj['invoiceNo'] = this._GRNList.userFormGroup.get('InvoiceNo').value || '';
         grnSaveObj['deliveryNo'] = '';
@@ -705,9 +708,9 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         grnSaveObj['totCgstamt'] = this.CGSTFinalAmount || 0; 
         grnSaveObj['totSgstamt'] = this.SGSTFinalAmount || 0; 
         grnSaveObj['totIgstamt'] = this.IGSTFinalAmount || 0; 
-        grnSaveObj['tranProcessId'] = this._GRNList.userFormGroup.get('GSTType').value || 0;
+        grnSaveObj['tranProcessId'] = this.GSTTypeID;
         grnSaveObj['tranProcessMode'] = this._GRNList.userFormGroup.get('GSTType').value || '';
-        grnSaveObj['ewayBillNo'] = this._GRNList.GRNFinalForm.get('EwayBillNo').value || 0;
+        grnSaveObj['ewayBillNo'] = this._GRNList.GRNFinalForm.get('EwayBillNo').value || '';
         grnSaveObj['ewayBillDate'] = this.datePipe.transform(this._GRNList.GRNFinalForm.get('EwalBillDate').value, "yyyy-MM-dd") || '01/01/1099';
         grnSaveObj['billDiscAmt'] =   this._GRNList.GRNFinalForm.get('DiscAmount2').value || 0; 
         
@@ -758,10 +761,11 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             grnDetailSaveObj['igstper'] = element.IGST || 0;
             grnDetailSaveObj['igstamt'] = element.IGSTAmount || 0;
             grnDetailSaveObj['mrpStrip'] = element.MRP || 0;
-            grnDetailSaveObj['isVerified'] = element.IsVerified; 
-            grnDetailSaveObj['isVerifiedDatetime'] = element.IsVerifiedDatetime || 0;
-            grnDetailSaveObj['isVerifiedUserId'] = element.IsVerifiedUserId || 0;
             grnDetailSaveObj['stkId'] = element.StkID || 0; 
+            grnDetailSaveObj['isVerified'] = false; 
+            grnDetailSaveObj['isVerifiedDatetime'] = element.IsVerifiedDatetime || '1999-01-01';
+            grnDetailSaveObj['isVerifiedUserId'] = element.IsVerifiedUserId || 0;
+          
             SavegrnDetailObj.push(grnDetailSaveObj); 
         }); 
         grnSaveObj['tGrndetails'] = SavegrnDetailObj
@@ -770,14 +774,15 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         this.dsItemNameList.data.forEach((element) => {
             let updateItemMasterGSTPerObj = {};
             updateItemMasterGSTPerObj['itemId'] = element.ItemId || 0;
+            updateItemMasterGSTPerObj['hsNcode'] = element.HSNCode || "Ab";
             updateItemMasterGSTPerObj['cgst'] = element.CGST || 0;
             updateItemMasterGSTPerObj['sgst'] = element.SGST || 0;
             updateItemMasterGSTPerObj['igst'] = element.IGST || 0;
-            updateItemMasterGSTPerObj['hsNcode'] = element.HSNCode || "";
+         
             updateItemMasterGSTPerObjarray.push(updateItemMasterGSTPerObj);
         }); 
         let submitData = {
-            "grnSave": grnSaveObj,
+            "grn": grnSaveObj,
            //"grnDetailSave": SavegrnDetailObj,
             "grnItems": updateItemMasterGSTPerObjarray
         };
