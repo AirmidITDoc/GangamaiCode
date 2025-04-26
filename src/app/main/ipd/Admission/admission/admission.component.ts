@@ -591,13 +591,12 @@ export class AdmissionComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+      this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+      this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
 
+      this.onChangeFirst() 
     });
-    this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
-    this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
-debugger
-    this.onChangeFirst() 
-    this.grid.bindGridData();
+     
   }
 
   getEditCompany(row) {
@@ -720,8 +719,7 @@ debugger
       this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
 
       this.onChangeFirst() 
-      // console.log(this.gridConfig)
-      // this.grid.bindGridData();
+     
     });
    
   }

@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, Optional } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, Optional, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -126,14 +126,17 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     private commonService: PrintserviceService,
     public _AppointmentlistService: AppointmentBillService,
        private accountService: AuthenticationService,
-    // private dialogRef: MatDialogRef<AppointmentBillingComponent>,
+       public toastr: ToastrService,
     private formBuilder: FormBuilder, private toastrService: ToastrService,
     @Optional() public dialogRef: MatDialogRef<AppointmentBillingComponent>
   ) { };
   ApiURL: any;
+  @ViewChild('regIdfocus') regIdfocus: ElementRef;
   ngOnInit() {
     this.isModal = !!this.dialogRef;
     console.log("DATA : ", this.advanceDataStored.storage);
+    this.patientDetail.tariffId=1
+    this.patientDetail.classId=1
     this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 2 + "&ServiceName="
     if (this.data) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
@@ -157,6 +160,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     this.setupFormListener();
 
   }
+
   private setupFormListener(): void {
     this.handleChange('serviceName', () => this.filterServiceName());
     this.handleChange('price', () => this.calculateTotalCharge());
@@ -295,7 +299,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       totalDiscountAmount: [0, [Validators.required, Validators.min(0)]],
       totalNetAmount: [0, [Validators.min(0)]],
       paymentType: ['CashPay'],
-      concessionId: [1]
+      concessionId: [0]
 
     });
   }
@@ -335,7 +339,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
           DoctorName: this.doctorName || '-',
           ClassName: this.className || '-',
           DoctorId: formValue.DoctorID,
-          ChargesAddedName: formValue.chargesAddedName || '-',
+          ChargesAddedName: this.accountService.currentUserValue.userName,
           IsPathology: this.IsPathology,
           IsRadiology: this.IsRadiology,
           IsPackage: this.vIsPackage,
@@ -362,7 +366,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       } else {
         Swal.fire({
           title: 'Message',
-          text: "Can't Enter Invalid Data !",
+          text: "Please Enter Service Detail.. !",
           icon: "warning"
         });
       }
@@ -533,19 +537,18 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
   }
 
-  getApiUrl(): string {
-    const url = `VisitDetail/GetServiceListwithTraiff?TariffId=${this.patientDetail.tariffId}&ClassId=${this.patientDetail.classId}&ServiceName=`;
-    console.log('Generated API URL:', url);  // Add this line for debugging
-    return url;
-  }
+  // getApiUrl(): string {
+  //   const url = `VisitDetail/GetServiceListwithTraiff?TariffId=${this.patientDetail.tariffId}&ClassId=${this.patientDetail.classId}&ServiceName=`;
+  //   console.log('Generated API URL:', url);  // Add this line for debugging
+  //   return url;
+  // }
   serviceSelct = false
-
+  
   getSelectedserviceObj(obj) {
-    
+     
     const isItemAlreadyAdded = this.dsChargeList.data.some((element) => element.ServiceId === obj.serviceId);
     if (isItemAlreadyAdded) {
-      // If the item is already added, show the alert
-      Swal.fire({
+        Swal.fire({
         title: 'Message',
         text: "Selected Service already available in the list",
         icon: "warning"
@@ -634,11 +637,20 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
     }
   }
-  onScroll() {
-    // this.nextPage$.next();
-  }
+  // onScroll() {
+  //   // this.nextPage$.next();
+  // }
 
   onsave() {
+    
+    if (this.totalChargeForm.get('concessionId').value == 0 && this.Consessionres) {
+      if(!this.totalChargeForm.get('concessionId').value){
+        this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
     Swal.fire({
       title: 'Do you want to Generate the Bill',
       text: "You won't be able to revert this!",
@@ -649,7 +661,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       confirmButtonText: "Yes, Generate!"
 
     }).then((result) => {
-      if (result.isConfirmed) {
+            if (result.isConfirmed) {
         if (this.totalChargeForm.get('paymentType').value == 'CreditPay')
           this.saveCreditbill();
         else
@@ -663,7 +675,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
 
   saveCreditbill() {
-    let Billdetsarr = [];
+        let Billdetsarr = [];
     this.dsChargeList.data.forEach((element) => {
       let BillDetailsInsertObj = {};
       BillDetailsInsertObj['BillNo'] = 0;
@@ -756,16 +768,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       this.toastrService.error(error.message);
     });
 
-
-    // this.dsChargeList.data = []
-    // this.totalChargeForm.reset();
-    // this.dialogRef.close();
-    // this.patientDetail = [];
   }
 
 
   BillSave() {
-    debugger
+    
     let InsertAdddetArr = [];
     this.dsChargeList.data.forEach((element) => {
       let IsPathology, IsRadiology
@@ -986,18 +993,23 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     this.patientDetail = [];
     this.patientDetail.tariffId = 1;
     this.patientDetail.ClassId = 1;
-    this.totalChargeForm.reset();
-   this.totalChargeForm.get('paymentType').setValue('CashPay')
+      
+    this.totalChargeForm.reset({
+      totalAmount: 0,
+      totalDiscountPer: 0,
+      totalDiscountAmount: 0,
+      totalNetAmount: 0,
+      concessionId: 0,
+     
+    });
+    this.totalChargeForm.get('paymentType').setValue('CashPay')
 
   }
   viewgetCreditOPBillReportPdf(element) {
-
-    console.log('Third action clicked for:', element);
-    this.commonService.Onprint("BillNo", element, "OpBillReceipt");
+  this.commonService.Onprint("BillNo", element, "OpBillReceipt");
   }
   viewgetOPBillReportPdf(element) {
-    console.log('Third action clicked for:', element);
-    this.commonService.Onprint("BillNo", element, "OpBillReceipt");
+  this.commonService.Onprint("BillNo", element, "OpBillReceipt");
   }
 
   selectChangeConcession(event){

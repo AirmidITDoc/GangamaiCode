@@ -129,10 +129,10 @@
                                             (selectionChange)="selectChangedepartment($event)">
                                         </airmid-dropdown>
 
-
+                                        <!-- [mode]="autocompleteModedeptdoc"  [value]="data?.doctorId"-->
                                       
                                         <airmid-dropdown label="Doctor Name" formControlName="consultantDocId" fxFlex="30%"
-                                        [value]="data?.doctorId" [formGroup]="crossconForm"  [mode]="autocompleteModedeptdoc"
+                                        [formGroup]="crossconForm" 
                                         [validations]="getValidationMessages().consultantDocId" #ddldoctor>
                                     </airmid-dropdown>
 

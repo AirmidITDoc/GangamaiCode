@@ -141,12 +141,12 @@
                                             [mode]="autocompletedepartment"
                                             (selectionChange)="selectChangedepartment($event)">
                                         </airmid-dropdown>
-
+                                        <!-- [mode]="autocompleteModedeptdoc" -->
                                         <airmid-dropdown label="Doctor Name" formControlName="consultantDocId" fxFlex
                                             [value]="data?.doctorId" [formGroup]="ConsdrForm"
-                                            [mode]="autocompleteModedeptdoc"
-                                            [validations]="getValidationMessages().consultantDocId" #ddldoctor>
+                                           [validations]="getValidationMessages().consultantDocId" #ddldoctor>
                                         </airmid-dropdown>
+                                        
 
                                     </div>
                                 </div>

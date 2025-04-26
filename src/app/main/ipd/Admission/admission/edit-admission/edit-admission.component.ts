@@ -89,16 +89,27 @@ export class EditAdmissionComponent implements OnInit {
   autocompleteModeSubCompany: string = "SubCompany";
 
   ngOnInit(): void {
+
+    if (this.data) {
+      console.log(this.data)
+            setTimeout(() => {
+              this._AdmissionService.getDoctorsByDepartment(this.data.departmentId).subscribe((data: any) => {
+                this.ddlDoctor.options = data;
+                this.ddlDoctor.bindGridAutoComplete();
+              });
+            }, 500);
+          }
+
     this.admissionFormGroup = this._AdmissionService.createEditAdmissionForm();
     this.admissionFormGroup.markAllAsTouched();
-    console.log(this.data)
+  
     if ((this.data?.regId ?? 0) > 0) {
       setTimeout(() => {
         this._AdmissionService.getRegistraionById(this.data.regId).subscribe((response) => {
           this.registerObj = response;
 
         });
-debugger
+
         this._AdmissionService.getAdmissionById(this.data.admissionId).subscribe((response) => {
           this.registerObj1 = response;
           console.log(response)
@@ -116,7 +127,7 @@ debugger
         });
       }, 500);
     }
-
+ this.admissionFormGroup.get("DocNameId").setValue(this.data.docNameId)
   }
 
   selectChangedepartment(obj: any) {

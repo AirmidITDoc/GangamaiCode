@@ -30,7 +30,7 @@
                             <form [formGroup]="searchForm">
                                 <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px">
 
-                                    <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No"
+                                    <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No" #regIdfocus
                                         [formGroup]="searchForm" formControlName="regId"
                                         placeholderText="Enter Patient Name/RegId.." fxFlex
                                         ApiUrl="VisitDetail/search-patient?Keyword="
@@ -145,7 +145,7 @@
                                                 placeholderText="Enter Service Name"
                                                 fxFlex
                                                 [ApiUrl]="'VisitDetail/GetServiceListwithTraiff?TariffId='+patientDetail.tariffId+'&ClassId='+patientDetail.classId+'&ServiceName='"
-                                                (selectionChange)="getSelectedserviceObj($event)"
+                                                (selectionChange)="getSelectedserviceObj($event)" 
                                                 TextField="formattedText" 
                                                 ValueField="serviceId"></airmid-autocomplete>
 
@@ -708,14 +708,14 @@
             </div>
         </div>
 
-        <!-- Modal footer -->
+        <!-- Modal footer  || savebtn-->
         <div class="modal-footer">
             <div class="footer-navigation-container">
                 <div class="modal-footer-buttons">
                     <button type="button" class="btn btn-danger-outline" [mat-dialog-close]="true"
                         aria-label="Close dialog" matTooltip="Close">Close</button>
                     <button type="button" class="btn btn-primary"
-                        [disabled]="!totalChargeForm.valid || !chargeList.length || savebtn"
+                        [disabled]="!totalChargeForm.valid || !chargeList.length"
                         (click)="onsave()">Save</button>
                 </div>
             </div>

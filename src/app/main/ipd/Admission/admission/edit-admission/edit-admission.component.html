@@ -149,10 +149,10 @@
                   </airmid-dropdown>
 
                 </div>
-
+                <!-- [mode]="autocompleteModeDoctor" -->
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                   <airmid-dropdown label="Doctor Name" formControlName="DocNameId" [value]="registerObj1?.docNameId"
-                    [mode]="autocompleteModeDoctor" [formGroup]="admissionFormGroup"
+                    [formGroup]="admissionFormGroup"
                     [validations]="getValidationMessages().docNameId" #ddlDoctor>
                   </airmid-dropdown>
                 </div>

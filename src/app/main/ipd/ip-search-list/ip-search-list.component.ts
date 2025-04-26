@@ -430,15 +430,21 @@ export class IPSearchListComponent implements OnInit {
     IsDischarge:boolean=false
     onChangeFirst($event) {
         debugger 
+
+        if(this.myFilterform.get('fromDate').value==null){
+        this.fromDate = "1900-01-01"
+        this.toDate =  "1900-01-01"
+        }else{
+        this.fromDate =  this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
+        this.toDate =  this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
+        }
         if(this.myFilterform.get('IsDischarge').value == false){
         this.apiUrl =  "Admission/AdmissionList"
-        this.fromDate =  this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-        this.toDate =  this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
         this.status = '0'
         }else{
         this.apiUrl =  "Admission/AdmissionDischargeList" 
-        this.fromDate =  this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-        this.toDate =   this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") 
+        // this.fromDate =  this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
+        // this.toDate =   this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
         this.status = '1'
         }
         this.f_name = this.myFilterform.get('FirstName').value + "%"
@@ -451,7 +457,7 @@ export class IPSearchListComponent implements OnInit {
     }
   
     getfilterdata() {
-        
+        debugger
         this.gridConfig = {
             apiUrl:this.apiUrl ,
             columnsList: this.allcolumns,

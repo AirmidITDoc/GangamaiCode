@@ -180,9 +180,9 @@ export class NewAppointmentComponent implements OnInit {
             this.searchFormGroup.get('RegId').disable();
             this.isRegSearchDisabled = false;
 
-            // this.personalFormGroup = this.createPesonalForm();
+            this.personalFormGroup = this.createPesonalForm();
 
-            // this.VisitFormGroup = this.createVisitdetailForm();
+            this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
             // // this.Regdisplay = false;
             // this.showtable = false;
             this.Regflag = false;
@@ -190,20 +190,22 @@ export class NewAppointmentComponent implements OnInit {
 
         } else if (event.value == 'registrered') {
 
-            // this.personalFormGroup.get('RegId').enable();
-            // this.searchFormGroup.get('RegId').enable();
-            // this.searchFormGroup.get('RegId').reset();
-            // this.personalFormGroup.reset();
-            // this.Patientnewold = 2;
+            this.personalFormGroup.get('RegId').enable();
+            this.searchFormGroup.get('RegId').enable();
+            this.searchFormGroup.get('RegId').reset();
+            this.personalFormGroup.reset();
+            this.Patientnewold = 2;
 
-            // this.personalFormGroup = this.createPesonalForm();
-            // this.VisitFormGroup = this.createVisitdetailForm();
+            this.personalFormGroup = this.createPesonalForm();
+            this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
 
             this.Regflag = true;
             this.IsPhoneAppflag = false;
             this.isRegSearchDisabled = true;
         }
 
+        this.personalFormGroup.markAllAsTouched();
+        this.VisitFormGroup.markAllAsTouched();
 
     }
     OnViewReportPdf(element) {
@@ -309,10 +311,10 @@ export class NewAppointmentComponent implements OnInit {
         // this.IsLoading = false;
     }
 
-    getOptionText(option) {
-        if (!option) return '';
-        return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
-    }
+    // getOptionText(option) {
+    //     if (!option) return '';
+    //     return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
+    // }
 
     getSelectedObj(obj) {
         this.PatientName = obj.PatientName;

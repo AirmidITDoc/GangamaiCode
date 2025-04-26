@@ -64,10 +64,20 @@ export class EditRefranceDoctorComponent implements OnInit {
     this._AppointmentlistService.EditRefDoctor(this.RefrancedrForm.value).subscribe((response) => {
       this.toastr.success(response.message);
       this.onClear(true);
-    }, (error) => {
-      this.toastr.error(error.message);
     });
-    }
+    }else {
+      let invalidFields = [];
+      if (this.RefrancedrForm.invalid) {
+          for (const controlName in this.RefrancedrForm.controls) {
+              if (this.RefrancedrForm.controls[controlName].invalid) { invalidFields.push(`Edit Doctor Form: ${controlName}`); }
+          }
+      }
+    
+      if (invalidFields.length > 0) {
+          invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+      }
+
+  }
   }
   RefDoctorId=0;
   onCancleRefDoc() {

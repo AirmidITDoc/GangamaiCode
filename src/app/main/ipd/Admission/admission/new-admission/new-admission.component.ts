@@ -114,12 +114,14 @@ export class NewAdmissionComponent implements OnInit {
   autocompleteModehospital: string = "Hospital";
 
   ngOnInit(): void {
+    
     this.searchFormGroup = this.createSearchForm();
     this.personalFormGroup.markAllAsTouched();
     this.admissionFormGroup.markAllAsTouched();
 
     if (this.AdmissionId)
       this.searchFormGroup.get("regRadio").setValue("registrered")
+   
   }
 
 
@@ -170,11 +172,12 @@ export class NewAdmissionComponent implements OnInit {
       this.Regflag = true;
       this.searchFormGroup.get('RegId').enable();
       this.personalFormGroup = this._AdmissionService.createPesonalForm();
-      this.personalFormGroup.markAllAsTouched();
-      this.admissionFormGroup.markAllAsTouched();
+      // this.personalFormGroup.markAllAsTouched();
+      // this.admissionFormGroup.markAllAsTouched();
     }
 
-
+    this.personalFormGroup.markAllAsTouched();
+    this.admissionFormGroup.markAllAsTouched();
   }
 
   onNewSave() {
