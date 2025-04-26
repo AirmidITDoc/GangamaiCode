@@ -72,7 +72,7 @@ export class ServiceMasterFormComponent implements OnInit {
         this.serviceForm = this._serviceMasterService.createServicemasterForm();
        
         // this.serviceForm = this._serviceMasterService.createServicemasterForm();
-        this.getClassList(this.registerObj.serviceId)
+        this.getClassList()
 
         this.serviceForm.get('EffectiveDate').setValue(new Date());
 
@@ -81,27 +81,47 @@ export class ServiceMasterFormComponent implements OnInit {
             this.registerObj = this.data;
             this.vServiceName = this.registerObj.serviceName;
             this.vServiceShortDesc = this.registerObj.serviceShortDesc;            
-            this.getClassList(this.registerObj.serviceId)
+            // this.getClassList(this.registerObj.serviceId)
             this.ServiceId = this.registerObj.serviceId;
-            this.ServiceId = 0;
+            this.groupId=this.data?.groupId
+            this.tariffId=this.data?.tariffId
+
+            this.IsEditable=this.registerObj.isEditable
+            this.IsDocEditable=this.registerObj.isDocEditable
+            this.IsPackage=this.registerObj.isPackage
+            this.IsRadiology=this.registerObj.isRadiology
+            this.IsPathology=this.registerObj.isPathology
+
+            if(this.registerObj.creditedtoDoctor == true){
+                this.serviceForm.get('CreditedtoDoctor').setValue(true)
+                this.showDoctor = true;
+                this.serviceForm.get('DoctorId').setValue(this.registerObj.doctorId)
+              }
+
+              if(this.registerObj.isEmergency == true){
+                this.serviceForm.get('IsEmergency').setValue(true)
+                this.showEmg = true;
+                this.serviceForm.get('EmgAmt').setValue(this.registerObj.emgAmt)
+                this.serviceForm.get('EmgPer').setValue(this.registerObj.emgPer)
+              }
         }
       
         var mdata = {
-            ServiceId: this.data?.serviceId,
+            // ServiceId: this.data?.serviceId,
             groupId: this.data?.groupId,
             GroupName: this.data?.groupName,
             ServiceShortDesc: this.data?.serviceShortDesc,
             ServiceName: this.data?.serviceName,
             Price: this.data?.price,
-            IsEditable: this.data?.isEditable,
+            // IsEditable: this.data?.isEditable,
             CreditedtoDoctor: this.data?.creditedtoDoctor,
-            IsPathology: this.data?.isPathology,
-            IsRadiology: this.data?.isRadiology,
+            // IsPathology: this.data?.isPathology,
+            // IsRadiology: this.data?.isRadiology,
             IsDeleted: JSON.stringify(this.data?.isActive),
             PrintOrder: this.data?.printOrder,
             tariffId: this.data?.tariffId,
             IsEmergency: this.data?.isEmergency,
-            EmgAmt: this.data?.emgAmt,
+            // EmgAmt: this.data?.emgAmt,
         };
         
         this.serviceForm.patchValue(mdata);
@@ -131,42 +151,51 @@ export class ServiceMasterFormComponent implements OnInit {
         }
     }
 
-    getClassList(serviceId) {
+    getClassList() {
         
-        var param = {
-            "first": 0,
-            "rows": 20,
-            "sortField": "ServiceDetailId",
-            "sortOrder": 0,
-            "filters": [
-                {
-                    "fieldName": "ServiceId",
-                    "fieldValue": String(serviceId),
-                    "opType": "Equals"
-                }
-            ],
-            "Columns":[],
-            "exportType": "JSON"
-        }
-        console.log(param)
-        this._serviceMasterService.getClassMasterList(param).subscribe(Menu => {
+        if(this.ServiceId){
+            var param = {
+                "first": 0,
+                "rows": 20,
+                "sortField": "ServiceDetailId",
+                "sortOrder": 0,
+                "filters": [
+                    {
+                        "fieldName": "ServiceId",
+                        "fieldValue": String(this.ServiceId),
+                        "opType": "Equals"
+                    }
+                ],
+                "Columns":[],
+                "exportType": "JSON"
+            }
+            console.log(param)
+            this._serviceMasterService.getClassMasterListRetrive(param).subscribe(Menu => {
+    
+                this.DSServicedetailList.data = Menu.data as Servicedetail[];;
+                console.log(this.DSServicedetailList.data)
+            });
+        }else{
 
-            this.DSServicedetailList.data = Menu.data as Servicedetail[];;
+            var param1={
+                "first": 0,
+                "rows": 10,
+                "sortField": "ClassId",
+                "sortOrder": 0,
+                "filters": [
+                ],
+                "exportType": "JSON",
+                "columns": [
+                ]
+              }
+            this._serviceMasterService.getClassMasterList(param1).subscribe(Menu => {
+            this.DSServicedetailList.data = Menu.data as Servicedetail[];
             console.log(this.DSServicedetailList.data)
-        });
+            });
+        }
     }
-
-    gettableclassrate(element, ClassRate) {
-        console.log(element)
-        // this.DSServicedetailList[element.ClassId]["ClassRate"]=ClassRate;
-    }
-    classratearry = [];
 
     get f() { return this.serviceForm.controls; }
-
-    valuechange(event, cls) {
-        cls['ClassRate'] = parseInt(event.target.value);
-    }
 
     doctorId = 0;
     SelectionDoctor(data){
@@ -228,8 +257,7 @@ export class ServiceMasterFormComponent implements OnInit {
             return;
           }
 
-        if (this.serviceForm.get("ServiceId").value==0) {
-            console.log(this.serviceForm.get("ServiceId").value);
+        if (!this.ServiceId) {
 
             let classDetailsArray = [];
 
@@ -295,7 +323,7 @@ export class ServiceMasterFormComponent implements OnInit {
             console.log("ServiceUpdate data1:", classDetailsArray);
 
             var mdata1 = {
-                "serviceId": this.serviceForm.get("ServiceId").value,
+                "serviceId": this.ServiceId,
                 "groupId": this.groupId || 0,
                 "serviceShortDesc": this.serviceForm.get("ServiceShortDesc").value,
                 "serviceName": this.serviceForm.get("ServiceName").value,

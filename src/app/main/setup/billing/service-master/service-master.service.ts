@@ -118,6 +118,14 @@ export class ServiceMasterService {
         return this._httpClient.PostData("Administration/InsertPackageDetails", param);
     }
 
+    public getClassMasterList(param) {
+        return this._httpClient.PostData("ClassMaster/List",param);
+    }
+
+    public getRtevPackageDetList(param) {
+        return this._httpClient.PostData("BillingService/PackageServiceInfoList",param);
+    }
+
     public ServiceMasterCancle(Id: any) {
         
       return this._httpClient.DeleteData(`BillingService/ServicDelete?Id=${Id}`);
@@ -133,7 +141,7 @@ export class ServiceMasterService {
         }
     }
 
-    public getClassMasterList(param) {
+    public getClassMasterListRetrive(param) {
         return this._httpClient.PostData("Billing/ServiceClassdetaillList",param);
     }
 

@@ -25,6 +25,7 @@ export class ServiceMasterComponent implements OnInit {
     tariffId = "0";
     groupId = "0";
     serviceName:any="";
+    type:any="2"
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
      ngAfterViewInit() {
@@ -47,8 +48,8 @@ export class ServiceMasterComponent implements OnInit {
             { heading: "GroupName", key: "groupName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "PrintOrder", key: "printOrder", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "EmergencyAmt", key: "emgAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 100,type: gridColumnTypes.amount},
+            { heading: "EmergencyAmt", key: "emgAmt", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
             { heading: "IsEditable", key: "isEditable", sort: true, type: gridColumnTypes.status, align: 'left', width: 100 },
             { heading: "CreditedToDoctor", key: "creditedtoDoctor", sort: true, align: 'left', width: 150, type: gridColumnTypes.template },
             { heading: "IsPathology", key: "isPathology", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
@@ -76,10 +77,12 @@ export class ServiceMasterComponent implements OnInit {
         ]
 
         allFilters=[
-            { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
-            { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals }
+            { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+            { fieldName: "TariffId", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "GroupId", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "IsActive", fieldValue: "2", opType: OperatorComparer.Equals }
         ]
+
     gridConfig: gridModel = {
         apiUrl: "BillingService/BillingList",
         columnsList: this.allColumns,
@@ -100,6 +103,9 @@ export class ServiceMasterComponent implements OnInit {
     onChangeFirst() {
         debugger
         this.serviceName = this._serviceMasterService.myformSearch.get('ServiceNameSearch').value + "%"
+        this.type = this._serviceMasterService.myformSearch.get('IsDeletedSearch').value
+        // this.groupId="0"
+        // this.tariffId="0"
         this.getfilterdata();
     }
 
@@ -113,7 +119,8 @@ export class ServiceMasterComponent implements OnInit {
             filters:  [
                 { fieldName: "ServiceName", fieldValue: this.serviceName, opType: OperatorComparer.Equals },
                 { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
-                { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals }
+                { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals },
+            { fieldName: "IsActive", fieldValue: this.type, opType: OperatorComparer.Equals }
             ]
         }
         this.grid.gridConfig = this.gridConfig;
@@ -151,7 +158,7 @@ export class ServiceMasterComponent implements OnInit {
     }
 
     ListView2(value) {
-        
+        debugger
         console.log(value)
          if(value.value!==0)
             this.groupId=value.value
@@ -162,7 +169,7 @@ export class ServiceMasterComponent implements OnInit {
     }
 
     ListView1(value) {
-        
+        debugger
         console.log(value)
          if(value.value!==0)
             this.tariffId=value.value
