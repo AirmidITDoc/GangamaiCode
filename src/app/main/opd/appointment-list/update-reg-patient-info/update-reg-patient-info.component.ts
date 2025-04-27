@@ -87,7 +87,7 @@ export class UpdateRegPatientInfoComponent {
   autocompleteModerefdoc: string = "RefDoctor";
   autocompleteModepurpose: string = "Purpose";
 
-
+  @ViewChild('ddldoctor') ddldoctor: AirmidDropDownComponent;
   constructor(
     public _AppointmentlistService: AppointmentlistService,
 
@@ -108,12 +108,9 @@ export class UpdateRegPatientInfoComponent {
   }
   ngOnInit(): void {
 
-    this.personalFormGroup = this._AppointmentlistService.createPesonalForm();
-    this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
-    this.personalFormGroup.markAllAsTouched();
-    this.VisitFormGroup.markAllAsTouched();
-
+  
      console.log(this.data)
+   
       if ((this.data.value?? 0) > 0) {
       setTimeout(() => {
           this._AppointmentlistService.getRegistraionById(this.data.value).subscribe((response) => {
@@ -123,7 +120,11 @@ export class UpdateRegPatientInfoComponent {
            console.log(this.registerObj)
           });}, 500);
       }
-     
+      this.personalFormGroup = this._AppointmentlistService.createPesonalForm();
+      this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
+      this.personalFormGroup.markAllAsTouched();
+      this.VisitFormGroup.markAllAsTouched();
+  
 
     }
   
@@ -147,7 +148,7 @@ export class UpdateRegPatientInfoComponent {
       this.VisitFormGroup.get('visitTime').setValue(this.dateTimeObj.time)
 
     let submitData = {
-      "registration": this.personalFormGroup.value,
+      "appReistrationUpdate": this.personalFormGroup.value,
       "visit": this.VisitFormGroup.value
     };
     console.log(submitData);
@@ -264,8 +265,8 @@ this.patientDetail1.doctorID=this.PrevregisterObj.consultantDocId
     
     console.log(obj)
     this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
-      this.ddlDoctor.options = data;
-      this.ddlDoctor.bindGridAutoComplete();
+      this.ddldoctor.options = data;
+      this.ddldoctor.bindGridAutoComplete();
     });
   }
 

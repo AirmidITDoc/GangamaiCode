@@ -17,7 +17,8 @@ NewUseForm:FormGroup;
     public _httpClient:HttpClient,
     public _formbuilder:UntypedFormBuilder
   ) 
-  {this.UseFormGroup=this.createuseFormGroup() ,
+  {
+    // this.UseFormGroup=this.createsearchFormGroup() ,
   this.NewUseForm=this.createNewUseForm(),
     this.StoreForm = this.CreateStorForm();
 }
@@ -26,11 +27,11 @@ CreateStorForm() {
     StoreId: [''],
   })
 }
-  createuseFormGroup(){
+createsearchFormGroup(){
     return this._formbuilder.group({
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
-      StoreId:''
+      ToStoreId:['2']
     })
   }
 

@@ -94,6 +94,9 @@
                                             TextField="prefixName" (selectionChange)="onChangePrefix($event)"
                                             ApiUrl="Prefix/get-prefixs">
                                         </airmid-dropdown>
+                                        <app-form-validation
+                                        [control]="personalFormGroup.get('PrefixId')"></app-form-validation>
+
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -213,6 +216,9 @@
                                                 [value]="registerObj.mobileNo" [formGroup]="personalFormGroup"
                                                 [validations]="getValidationMessages().mobileNo" [maxLength]="10">
                                             </airmid-textbox>
+                                            <app-form-validation 
+                                            [control]="personalFormGroup.get('MobileNo')"></app-form-validation>
+    
 
                                             <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"
                                                 label="PhoneNo" formControlName="PhoneNo"

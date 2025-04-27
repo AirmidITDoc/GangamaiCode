@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { OpeningBalanceService } from './opening-balance.service';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
@@ -9,6 +9,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridColumnTypes } from 'app/core/models/tableActions';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-opening-balance',
@@ -19,147 +25,176 @@ import { MatPaginator } from '@angular/material/paginator';
 })
 
 export class OpeningBalanceComponent {
-  displayedColumns:string[] = [
-    'No',
-    'Date',
-    'StoreName',
-    'AddedByName' ,
-    'action'
-  ];
-  displayedColumns1:string[] = [
-    'ItemName',
-    'BatchNo',
-    'ExpDate',
-    'Qty',
-    'PurRate',
-    'MRP',
-    'GSTPer'
-  ]; 
-
-  sIsLoading: string = '';
-  isLoading = true;
-  StoreList:any=[]; 
-  dateTimeObj: any;
-
-  dsOpeningBalnceList=new MatTableDataSource<OpeningBalanceList>();
-  dsOpeningBalItemDetList=new MatTableDataSource<OpeningBalanceItemList>();
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
-  @ViewChild('SecondPaginator', { static: true }) public SecondPaginator: MatPaginator;
-  
-  constructor(
-    public _OpeningBalanceService:OpeningBalanceService,
-    private _fuseSidebarService: FuseSidebarService,
-    private _loggedService: AuthenticationService, 
-    public _matDialog: MatDialog,
-    public datePipe: DatePipe,
-  )
-   {}
-
-  ngOnInit(): void {
-    this.gePharStoreList();
-    this.getOpeningBalList();
-  }
-
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-  }
-  gePharStoreList() {
-    var vdata = {
-      Id: this._loggedService.currentUserValue.storeId
-    }
-    console.log(vdata);
-    this._OpeningBalanceService.getLoggedStoreList(vdata).subscribe(data => {
-      this.StoreList = data;
-      // console.log(this.StoreList);
-      this._OpeningBalanceService.UseFormGroup.get('StoreId').setValue(this.StoreList[0]);
-    });
-  }
-  getOpeningBalList(){ 
-    var vdata={
-      'StoreId':this._loggedService.currentUserValue.storeId,
-      'From_Dt':this.datePipe.transform(this._OpeningBalanceService.UseFormGroup.get('startdate').value ,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      'To_Dt':this.datePipe.transform(this._OpeningBalanceService.UseFormGroup.get('enddate').value ,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-    }
-    this._OpeningBalanceService.getOpeningBalList(vdata).subscribe(data =>{
-      this.dsOpeningBalnceList.data = data as OpeningBalanceList[];
-      console.log(this.dsOpeningBalnceList.data)
-      this.dsOpeningBalnceList.sort =this.sort;
-      this.dsOpeningBalnceList.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
-  getOpeningBalItemDetList(Param){ 
-    var vdata={
-      'OpeningHId':Param.OpeningHId
-     }
-     console.log(vdata)
-    this._OpeningBalanceService.getOpeningBalItemDetList(vdata).subscribe(data =>{
-      this.dsOpeningBalItemDetList.data = data as OpeningBalanceItemList[];
-      console.log(this.dsOpeningBalItemDetList.data)
-      this.dsOpeningBalItemDetList.sort =this.sort;
-      this.dsOpeningBalItemDetList.paginator = this.SecondPaginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
-  NewOpeningBal() {
-    const dialogRef = this._matDialog.open(NewOpeningBalanceComponent,
-      {
-        maxWidth: "100%",
-        height: '90%',
-        width: '95%' 
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      this.getOpeningBalList();
-    });
-    //this.getGRNLit();
-  }
-}
-export class OpeningBalanceList{
-  No:number;
-  Date:number;
-  StoreName:any;
-  AddedByName:any;
-
-  constructor(OpeningBalanceList){
-    {
-      this.No=OpeningBalanceList.No || 0;
-      this.Date=OpeningBalanceList.Date || 0;
-      this.StoreName=OpeningBalanceList.StoreName || "";
-      this.AddedByName=OpeningBalanceList.AddedByName || "";
-    }
-  }
-}
-export class OpeningBalanceItemList{
-  ItemName:string;
-  BatchNo:number;
-  ExpDate:number;
-  Qty:any;
-  PurRate:any;
-  MRP:any;
-  GSTPer:any;
-
-  constructor(OpeningBalanceItemList){
-    {
-      this.BatchNo=OpeningBalanceItemList.BatchNo || 0;
-      this.ExpDate=OpeningBalanceItemList.ExpDate || 0;
-      this.Qty=OpeningBalanceItemList.Qty || 0;
-      this.ItemName=OpeningBalanceItemList.ItemName || "";
-      this.PurRate=OpeningBalanceItemList.PurRate || 0;
-      this.MRP=OpeningBalanceItemList.MRP || 0;
-      this.GSTPer=OpeningBalanceItemList.GSTPer || 0;
-    }
-  }
-}
+  mysearchform: FormGroup;
+   autocompletestore: string = "Store";
+   autocompleteSupplier: string = "SupplierMaster"
+   StoreId = "2";
+   SupplierId = "0";
+   status= "0";
  
+   @ViewChild('grid') grid: AirmidTableComponent;
+   @ViewChild('grid1') grid1: AirmidTableComponent;
+ 
+   @ViewChild('iconisClosed') iconisClosed!: TemplateRef<any>;
+   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+ 
+   ngAfterViewInit() {
+    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+ 
+   }
+  
+   hasSelectedContacts: boolean;
+   fromDate = "2024-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+   toDate = "2025-04-27"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+ 
+   allcolumns = [
+ 
+     { heading: "OpeningHId", key: "openingHId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+     { heading: "OpeningDate", key: "openingDate", sort: true, align: 'left', emptySign: 'NA', width: 100 ,type:6},
+     { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 230 },
+     { heading: "AdddedByName", key: "adddedByName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+     {
+       heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+       template: this.actionButtonTemplate  // Assign ng-template to the column
+   } 
+   ];
+ 
+   gridConfig: gridModel = {
+     apiUrl: "Purchase/OpeningBalanceList",
+     columnsList: this.allcolumns,
+     sortField: "OpeningHId",
+     sortOrder: 0,
+     filters: [{ fieldName: "StoreId", fieldValue:  String(this.StoreId), opType: OperatorComparer.Equals },
+     { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
+     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals }
+    
+     ]
+   }
+   gridConfig1: gridModel = new gridModel();
+ 
+   isShowDetailTable: boolean = false;
+   GetDetails1(data: any): void {
+     debugger
+     console.log("detailList:", data)
+     let ID = data.openingHId;
+ 
+     this.gridConfig1 = {
+       apiUrl: "Purchase/OpeningBalnceItemDetailList",
+       columnsList: [
+         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+         { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
+         { heading: "Exp.Date", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA' ,tyoe:6},
+         { heading: "Qty", key: "discPer", sort: true, align: 'left', emptySign: 'NA' },
+         { heading: "Pure.Rate", key: "perUnitPurRate", sort: true, align: 'left', emptySign: 'NA' },
+       
+         { heading: "MRO", key: "perUnitMrp", sort: true, align: 'left', emptySign: 'NA' },
+         { heading: "GST(%)", key: "vatPer", sort: true, align: 'left', emptySign: 'NA' }
+       
+       ],
+       sortField: "OpeningHId",
+       sortOrder: 0,
+       filters: [
+         { fieldName: "OpeningHId", fieldValue: String(ID), opType: OperatorComparer.Equals }
+       ]
+     };
+     this.isShowDetailTable = true;
+     setTimeout(() => {
+       this.grid1.gridConfig = this.gridConfig1;
+       this.grid1.bindGridData();
+     }, 500);
+   }
+ 
+   constructor(public _OpeningBalanceService: OpeningBalanceService, public _matDialog: MatDialog,
+     public toastr: ToastrService, private commonService: PrintserviceService,
+     public datePipe: DatePipe,) { }
+ 
+   ngOnInit(): void {
+     this.mysearchform = this._OpeningBalanceService.createsearchFormGroup();
+   }
+ 
+ 
+   viewgetReportPdf(element) {
+     this.commonService.Onprint("PurchaseID", element.PurchaseID, "Purchaseorder");
+   }
+ 
+   onSave(row: any = null) {
+     let that = this;
+     const dialogRef = this._matDialog.open(NewOpeningBalanceComponent,
+       {  maxWidth: "100%",
+         height: '98%',
+         width: '98%',
+         data: row
+       });
+     dialogRef.afterClosed().subscribe(result => {
+       this.grid.gridConfig = this.gridConfig;
+       this.grid.bindGridData();
+ 
+     });
+   }
+ 
+ 
+    ListView(value) {
+     
+    //  console.log(value)
+    //       if (value.value !== 0)
+    //      this.StoreId = value.value
+    //    else
+    //      this.StoreId = "0"
+    this.onChangeFirst(value);
+   }
+ 
+ 
+   onChangeFirst(value) {
+     debugger
+     this.fromDate = this.datePipe.transform(this.mysearchform.get('startdate').value, "yyyy-MM-dd")
+     this.toDate = this.datePipe.transform(this.mysearchform.get('enddate').value, "yyyy-MM-dd")
+     this.StoreId = String(this.StoreId)
+       this.getfilterdata();
+   }
+ 
+   getfilterdata() {
+     debugger
+     this.gridConfig = {
+       apiUrl: "Purchase/OpeningBalanceList",
+       columnsList: this.allcolumns,
+       sortField: "OpeningHId",
+       sortOrder: 0,
+       filters: [
+        { fieldName: "StoreId", fieldValue:  String(this.StoreId), opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals }
+       ],
+       row: 25
+     }
+    
+     this.grid.gridConfig = this.gridConfig;
+     this.grid.bindGridData();
+ 
+   }
+   OnWhatsPoSend(){}
+  
+
+   chkNewGRN: any;
+   OnEdit(contact) {
+  
+              const dialogRef = this._matDialog.open(NewOpeningBalanceComponent,
+         {
+           maxWidth: "100%",
+           height: '95%',
+           width: '95%',
+           data: {
+             Obj: contact,
+             chkNewGRN: this.chkNewGRN
+           }
+         });
+       dialogRef.afterClosed().subscribe(result => {
+         console.log('The dialog was closed - Insert Action', result);
+        
+       });
+     
+    
+     }
+    
+    
+   
+  }

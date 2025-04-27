@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AppointmentlistService } from '../appointmentlist.service';
-import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
@@ -22,6 +22,8 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 })
 export class CrossConsultationComponent implements OnInit {
   crossconForm: FormGroup;
+  @Input() control: AbstractControl | null = null;
+  
   date = new Date().toISOString();
 
   screenFromString = 'appointment';
@@ -51,8 +53,7 @@ export class CrossConsultationComponent implements OnInit {
         this.ddldoctor.bindGridAutoComplete();
       });
     }, 500);
-    // console.log(this.data)
-
+   
     this.crossconForm = this.createCrossConForm();
     this.crossconForm.markAllAsTouched();
     this.crossconForm.get("consultantDocId").setValue(this.data.doctorId)

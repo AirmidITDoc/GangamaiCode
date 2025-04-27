@@ -31,7 +31,7 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatCardModule } from "@angular/material/card";
-import { ReactiveFormsModule } from "@angular/forms";
+import { AbstractControl, ReactiveFormsModule } from "@angular/forms";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { ScrollingModule } from "@angular/cdk/scrolling";
@@ -103,7 +103,8 @@ const routes: Routes = [
         MatSidenavModule,
         //NgxQRCodeModule,
         //NgxPrintModule,
-        MatButtonToggleModule
+        MatButtonToggleModule,
+        
     ],
     providers: [AppointmentlistService, DatePipe]
 })

@@ -284,7 +284,7 @@ export class DischargeSummaryComponent implements OnInit {
   onAdd() {
 
     if ((this.MedicineItemForm.get("ItemId").value == "" || this.MedicineItemForm.get("DoseId").value == "")) {
-      this.toastr.warning('Please select Item', 'Warning !', {
+      this.toastr.warning('Please select Item Details..', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;

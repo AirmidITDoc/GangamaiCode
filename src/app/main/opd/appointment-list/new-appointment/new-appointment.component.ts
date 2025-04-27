@@ -25,7 +25,8 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 
 @Component({
     selector: 'app-new-appointment',
-    templateUrl: './new-appointment.component.html',
+    templateUrl: './new-appointment.component.html',  //'<app-form-validation  [formGroup]="personalFormGroup"></app-form-validation >',
+
     styleUrls: ['./new-appointment.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
@@ -397,19 +398,19 @@ export class NewAppointmentComponent implements OnInit {
             }
 
         } else {
-            let invalidFields = [];
-            if (this.personalFormGroup.invalid) {
-                for (const controlName in this.personalFormGroup.controls) {
-                    if (this.personalFormGroup.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
-                }
-            }
-            if (this.VisitFormGroup.invalid) {
-                for (const controlName in this.VisitFormGroup.controls) { if (this.VisitFormGroup.controls[controlName].invalid) { invalidFields.push(`Visit Form: ${controlName}`); } }
-            }
+            // let invalidFields = [];
+            // if (this.personalFormGroup.invalid) {
+            //     for (const controlName in this.personalFormGroup.controls) {
+            //         if (this.personalFormGroup.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
+            //     }
+            // }
+            // if (this.VisitFormGroup.invalid) {
+            //     for (const controlName in this.VisitFormGroup.controls) { if (this.VisitFormGroup.controls[controlName].invalid) { invalidFields.push(`Visit Form: ${controlName}`); } }
+            // }
 
-            if (invalidFields.length > 0) {
-                invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
-            }
+            // if (invalidFields.length > 0) {
+            //     invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+            // }
 
         }
     }

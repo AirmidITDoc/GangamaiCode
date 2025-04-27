@@ -125,29 +125,7 @@ export class DischargeComponent implements OnInit {
 
     this.getchkConfigInitiate();
   }
-  // getdischargeIdbyadmission() {
-    
-  //   this._IpSearchListService.getDischargeId(this.data.admissionId).subscribe(data => {
-  //     console.log(data)
-
-  //     if (data) {
-  //       this.IsCancelled = data.isCancelled || 0
-  //       // if (this.IsCancelled == '1') {
-  //       // this.DischargeId = 0
-  //       // } else {
-  //       this.DischargeId = data.dischargeId || 0
-  //       // }
-
-
-  //       this.DischargeForm.get("dischargedDocId").setValue(data.dischargedDocId)
-  //       this.DischargeForm.get("dischargeTypeId").setValue(data.dischargeTypeId)
-  //       this.DischargeForm.get("dischargedRmoid").setValue(data.dischargedRmoid)
-
-  //     }
-
-  //   });
-  // }
-
+  
   docName(event){
 console.log(event)
   }
@@ -163,8 +141,8 @@ this.dischargeTypeId=event.value
       // admissionId: this.data.admissionId,
       dischargeDate: [(new Date()).toISOString()],
       dischargeTime: [(new Date()).toISOString()],
-      dischargeTypeId: ['', Validators.required, notEmptyOrZeroValidator()],
-      dischargedDocId: ['', Validators.required, notEmptyOrZeroValidator()],
+      dischargeTypeId: ['', [Validators.required, notEmptyOrZeroValidator()]],
+      dischargedDocId: ['', [Validators.required, notEmptyOrZeroValidator()]],
       dischargedRmoid: 0,
       modeOfDischargeId: 0,
       addedBy: this.accountService.currentUserValue.userId,
