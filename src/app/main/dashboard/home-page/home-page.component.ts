@@ -1,8 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home-page',
@@ -13,22 +11,16 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class HomePageComponent {
   username: any;
-  // private currentUserSubject: BehaviorSubject<User>;
-  // public currentUser: Observable<User>;
 
   constructor(
-        public _accountServices: AuthenticationService,
-        private router: Router,
-  ) { 
-    //  this.currentUserSubject = new BehaviorSubject<User>(
-    //             JSON.parse(localStorage.getItem("currentUser"))
-    //         );
+    public _accountServices: AuthenticationService,
+  ) {
   }
 
   ngOnInit(): void {
-    this.username = this._accountServices.currentUserValue.user
-    ? this._accountServices.currentUserValue.user.firstName + ' ' + this._accountServices.currentUserValue.user.lastName
-    : '';
+    this.username = this._accountServices.currentUserValue.userName
+      ? this._accountServices.currentUserValue.userName
+      : '';
   }
 
 }
