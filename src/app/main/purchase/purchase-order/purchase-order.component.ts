@@ -250,7 +250,7 @@ export class PurchaseOrderComponent implements OnInit {
       // console.log(contact)
       // this.advanceDataStored.storage = new SearchInforObj(contact);
      
-      const dialogRef = this._matDialog.open(UpdatePurchaseorderComponent,
+      const dialogRef = this._matDialog.open(NewPurchaseorderComponent,
         {
           maxWidth: "100%",
           height: '95%',
