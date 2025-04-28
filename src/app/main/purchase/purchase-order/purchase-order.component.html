@@ -1,424 +1,141 @@
-<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex class="page-layout" dynamicTableHeight>
-    <div class="center">
-        <mat-toolbar class="top-header accent">
-            <div fxLayout="row" class="top-header-info">
-                <button mat-icon-button class="sidebar-toggle" fxHide.gt-sm (click)="toggleSidebar('app-main')">
-                    <mat-icon>menu</mat-icon>
-                </button>
-                <mat-icon class="logo-icon " [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-                </mat-icon>
-                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Purchase Order List
-                </span>
-
-            </div>
-            <div fxLayout="row" fxLayoutGap="5px">
-                <button mat-raised-button (click)="newPurchaseorder()"
-                    style="background-color: aliceblue;color: brown;">New Purchase Order
-
-                </button>
-            </div>
-        </mat-toolbar>
-
-        <div style="width: 100%;">
-            <div style="width: 99%;">
-                <mat-tab-group>
-
-                    <mat-tab>
-                        <ng-template mat-tab-label style="color: black; font-size: 16px bold; height: 100px; ">
-                            Purchase Order List
-                        </ng-template>
-
-                        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-
-                            <div class="content">
-                                <!-- SIDEBAR -->
-                                <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm"
-                                    class="fuse-search-sidebar">
-                                    <div class="sidebar-content">
-                                        <!-- SIDEBAR HEADER -->
-                                        <div class="sidebar-header accent" fxLayout="row" fxLayoutAlign="start center">
-                                            <span class="h5 search-title" class="search-title">Search Facility</span>
-                                            <!-- / USER -->
-                                        </div>
-                                        <!-- / SIDEBAR HEADER -->
-                                        <!-- SIDEBAR CONTENT -->
-                                        <div class="sidebar-body">
-                                            <div class="nav material2 sidebar-form">
-
-                                                <form [formGroup]="_PurchaseOrder.PurchaseSearchGroup"
-                                                    fusePerfectScrollbar>
-                                                    <div fxLayout="column" fxLayoutAlign="start none">
-                                                        <mat-form-field appearance="outline">
-                                                            <mat-label>Enter a date range</mat-label>
-                                                            <mat-date-range-input [rangePicker]="picker">
-                                                                <input matStartDate formControlName="start"
-                                                                    placeholder="Start date">
-                                                                <input matEndDate formControlName="end"
-                                                                    placeholder="End date"
-                                                                    (dateChange)="getPurchaseOrderList()">
-                                                            </mat-date-range-input>
-                                                            <mat-datepicker-toggle matSuffix
-                                                                [for]="picker"></mat-datepicker-toggle>
-                                                            <mat-date-range-picker #picker></mat-date-range-picker>
-                                                        </mat-form-field>
-
-                                                        <!-- [disabled]="disableSelect.value" -->
-                                                        <mat-form-field appearance="outline" fxFlex>
-                                                            <mat-label>From Store</mat-label>
-                                                            <mat-select formControlName="FromStoreId"
-                                                                name="FromStoreId">
-                                                                <mat-option></mat-option>
-                                                                <mat-option *ngFor="let m of FromStoreList" [value]="m">
-                                                                    {{m.StoreName}}
-                                                                </mat-option>
-                                                            </mat-select>
-                                                        </mat-form-field>
-
-                                                        <mat-form-field appearance="outline" fxFlex="25%">
-                                                            <mat-label>Supplier Name</mat-label>
-                                                            <input matAutocompletePosition="below" type="text"
-                                                                placeholder="Select Supplier" matInput
-                                                                formControlName="SupplierId"
-                                                                [matAutocomplete]="autoMarital">
-                                                            <span matSuffix style="display: flex;">
-                                                                <mat-icon class="mat-icon-close"
-                                                                    (click)="_PurchaseOrder.PurchaseSearchGroup.get('SupplierId').setValue(''); isSupplierSelected = false;">close</mat-icon>
-                                                                <mat-icon class="mat-icon-close"
-                                                                    (click)="_PurchaseOrder.PurchaseSearchGroup.get('SupplierId').setValue(''); isSupplierSelected = false;">search</mat-icon>
-                                                            </span>
-                                                            <mat-autocomplete #autoMarital="matAutocomplete"
-                                                                [displayWith]="getOptionTextSupplier">
-                                                                <mat-option
-                                                                    *ngFor="let option of filteredoptionsSupplier | async"
-                                                                    [value]="option">
-                                                                    {{option.SupplierName}}
-                                                                </mat-option>
-                                                            </mat-autocomplete>
-                                                        </mat-form-field>
-
-                                                        <mat-radio-group name="Status" formControlName="Status"
-                                                            fxFlex="30%" value="0" style="padding-top: 12px;">
-                                                            <mat-label>Status:</mat-label>&nbsp;
-                                                            <mat-radio-button value="1" class="mr-sm-12"
-                                                                (keyup)="getPurchaseOrderList()">Verify
-                                                            </mat-radio-button>
-                                                            <mat-radio-button value="0" class="mr-sm-12"
-                                                                (keyup)="getPurchaseOrderList()">Pending
-                                                            </mat-radio-button>
-                                                        </mat-radio-group>
-
-                                                        <div style="margin-top: 10px;">
-                                                            <button mat-raised-button (click)="onClear()"
-                                                                class="clearbutton" matTooltip="close">
-                                                                <mat-icon class="cleariconbutton">close</mat-icon>
-                                                            </button>&nbsp;
-                                                            <button mat-raised-button class="searchButton"
-                                                                (click)="getPurchaseOrderList()" matTooltip="search">
-                                                                <mat-icon class="searchiconbutton">search</mat-icon>
-                                                            </button>
-                                                        </div>
-
-                                                    </div>
-
-                                                </form>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </fuse-sidebar>
-                                <!-- / SIDEBAR -->
-                                <!-- CENTER -->
-                                <!-- CENTER -->
-
-                                <div class="center p-12 pb-56" fxFlexAlign="start center">
-
-                                    <div class="content-card" style="overflow: hidden;border-radius:4px; ">
-
-                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
-                                            <div fxFlex.gt-sm="100%" fxFlex>
-
-                                                <div fxlayout="row">
-                                                    <div style="width: 100%;">
-                                                        <div matColumnDef="loading"
-                                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                                            class="backgroundBlur" style="height: 100%;">
-                                                            <div class="spinner-border text-danger"></div>
-                                                        </div>
-                                                        <!-- sppinner -->
-                                                        <mat-table #table class="table1" matSort
-                                                            [dataSource]="dsPurchaseOrder" 
-                                                            [@animateStagger]="{value:'50'}" style="overflow:auto;">
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" dynamicTableHeight>
 
 
-                                                            <ng-container matColumnDef="Status">
-                                                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                                                    style="color: white;">Verify</mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact">
-                                                                    <mat-icon *ngIf="contact.IsVerified"
-                                                                        matTooltip="Verified"
-                                                                        class="pill green-600 s-16">circle</mat-icon>
-                                                                    <mat-icon *ngIf="!contact.IsVerified"
-                                                                        matTooltip="Pending"
-                                                                        class="pill red-600 s-16">circle</mat-icon>
-                                                                </mat-cell>
-                                                            </ng-container>
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
 
-                                                            <ng-container matColumnDef="PurchaseNo">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>
-                                                                    PurchaseNo
-                                                                </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    <span>{{contact.PurchaseNo}}</span>
-                                                                </mat-cell>
-                                                            </ng-container>
+        <mat-tab label="  Purchase Order List">
+            <ng-template mat-tab-label>
+                Purchase Order List
+            </ng-template>
 
-                                                            <ng-container matColumnDef="PurchaseDate">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxShow.gt-sm>
-                                                                    Purchase Date </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    <span>{{contact.PurchaseDate |
-                                                                        date:'shortDate'}}</span>
-                                                                </mat-cell>
-                                                            </ng-container>
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
 
-                                                            <ng-container matColumnDef="SupplierName">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxShow.gt-sm class="">
-                                                                    SupplierName </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
-                                                                    [matTooltip]="contact.SupplierName" class="">
-                                                                    <span>{{contact.SupplierName}}</span>
-                                                                </mat-cell>
-                                                            </ng-container>
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-                                                            <ng-container matColumnDef="TotalAmount">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxShow.gt-sm>
-                                                                    Total Amt </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    <span>{{contact.TotalAmount |
-                                                                        number:'1.2-2'}}</span>
-                                                                </mat-cell>
-                                                            </ng-container>
+                    <div class="top-header">
+                        <div class="top-header-info">
 
-                                                            <ng-container matColumnDef="DiscAmount">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxShow.gt-sm>
-                                                                    DiscAmount</mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    <span>{{contact.DiscAmount  |
-                                                                        number:'1.2-2'}}</span>
-                                                                </mat-cell>
-                                                            </ng-container>
-
-                                                            <ng-container matColumnDef="GrandTotal">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxShow.gt-sm>
-                                                                    Net Amount</mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    <span>{{contact.GrandTotal}}</span>
-                                                                </mat-cell>
-                                                            </ng-container>
-
-                                                            <ng-container matColumnDef="Remarks">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    class="w-200" fxShow.gt-sm>
-                                                                    Remarks</mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
-                                                                    [matTooltip]="contact.Remarks" class="w-200">
-                                                                    <span>{{contact.Remarks}}
-                                                                    </span>
-                                                                </mat-cell>
-                                                            </ng-container>
-
-                                                            <ng-container matColumnDef="AddedByName">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxShow.gt-sm>
-                                                                    AddedByName</mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    <span>{{contact.AddedByName}}</span>
-                                                                </mat-cell>
-                                                            </ng-container>
-
-                                                            <ng-container matColumnDef="action" stickyEnd="">
-                                                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                                                    style="color: white;">Action
-                                                                </mat-header-cell>
-                                                                <mat-cell *matCellDef="let row">
-                                                                    <button mat-icon-button
-                                                                        (click)="viewgetPurchaseorderReportPdf(row)">
-                                                                        <mat-icon title="print Menu">print</mat-icon>
-                                                                    </button>
-
-                                                                    <button mat-icon-button (click)="onEdit(row)">
-                                                                        <mat-icon title="Edit Menu"
-                                                                            *ngIf="row.IsVerified==1"
-                                                                            [disabled]="row.disabled"
-                                                                            class="disabled-icon">
-                                                                            edit</mat-icon>
-                                                                        <mat-icon title="Edit Menu"
-                                                                            *ngIf="row.IsVerified==0">
-                                                                            edit</mat-icon>
-                                                                    </button>
-                                                                    <button mat-icon-button (click)="onVerify(row)">
-                                                                        <mat-icon *ngIf="row.IsVerified == 1"
-                                                                            [disabled]="row.disabled"
-                                                                            class="disabled-icon"
-                                                                            title="verify Menu">verified_user</mat-icon>
-                                                                        <mat-icon title="verify Menu"
-                                                                            *ngIf="row.IsVerified == 0">
-                                                                            verified_user</mat-icon>
-                                                                    </button>
-                                                                    <button mat-icon-button (click)="POEmail(row)">
-                                                                        <mat-icon *ngIf="row.IsVerified == 0"
-                                                                            [disabled]="row.disabled"
-                                                                            class="disabled-icon"
-                                                                            title="Email Menu">mail</mat-icon>
-                                                                        <mat-icon *ngIf="row.IsVerified == 1"
-                                                                            title="Email Menu">mail</mat-icon>
-                                                                    </button>
-                                                                    <button mat-icon-button class="p-4"
-                                                                        matTooltip="Send Bill On WhatsApp"
-                                                                        (click)="getWhatsappshareSales(row)">
-                                                                        <img width="100" height="20px"
-                                                                            src="assets/images/logos/WhatsApp.png">
-                                                                    </button>
-                                                                </mat-cell>
-                                                            </ng-container>
-
-                                                            <ng-container matColumnDef="loading">
-                                                                <mat-header-cell *matFooterCellDef colspan="6"
-                                                                    style="display: none;">
-                                                                </mat-header-cell>
-                                                            </ng-container>
-
-
-                                                            <ng-container matColumnDef="noData">
-                                                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                                                    no data found...
-                                                                </mat-footer-cell>
-                                                            </ng-container>
-
-                                                            <mat-header-row class="accent min-width-1500"
-                                                                *matHeaderRowDef="displayedColumns; sticky: true">
-                                                            </mat-header-row>
-                                                            <mat-row
-                                                                *matRowDef="let contact; columns: displayedColumns;"
-                                                                class="contact min-width-1500"
-                                                                [@animate]="{value:'*',params:{y:'100%'}}"
-                                                                (click)="getPurchaseItemList(contact)"
-                                                                appHighlight></mat-row>
-                                                            <mat-footer-row *matFooterRowDef="['loading']"
-                                                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                                            </mat-footer-row>
-                                                            <mat-footer-row *matFooterRowDef="['noData']"
-                                                                [ngClass]="{'hide':!(dsPurchaseOrder!=null && dsPurchaseOrder.data.length==0)}">
-                                                            </mat-footer-row>
-                                                        </mat-table>
-                                                        <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12" [length]="resultsLength"
-                                                        showFirstLastButtons (page)="getPurchaseOrderList()">
-                                                    </mat-paginator>
-                                                   
-                                                    </div>
-                                                </div>
-
-                                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
-                                                    fxLayoutGap="30px">
-                                                    <div fxFlex.gt-sm="100%" fxFlex>
-
-                                                        <div fxlayout="row">
-                                                            <div style="width: 100%;">
-                                                                <div matColumnDef="loading"
-                                                                    [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                                                    class="backgroundBlur">
-                                                                    <div class="spinner-border text-danger"></div>
-                                                                </div>
-                                                                <airmid-table [gridConfig]="gridConfig1" class="content">
-                                                                    <!-- <ng-container filters> -->
-                                                                        <!-- <form [formGroup]="myFilterform">
-                                                                            
-                                                                            <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
-                                                                            formEndControlName="enddate" [(fromValue)]="gridConfig.filters[3].fieldValue"
-                                                                            [(toValue)]="gridConfig.filters[4].fieldValue"></airmid-datepicker>
-                                                        
-                                                                            <mat-form-field appearance="outline">
-                                                                                <mat-label>ToStoreId</mat-label>
-                                                                                <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform"
-                                                                                    formControlName="FirstName" [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                                                                <button matSuffix mat-icon-button aria-label="Clear"
-                                                                                    (click)="gridConfig.filters[0].fieldValue='%'">
-                                                                                    <mat-icon>close</mat-icon>
-                                                                                </button>
-                                                                            </mat-form-field>
-                                                        
-                                                        
-                                                                            <mat-form-field appearance="outline">
-                                                                                <mat-label>Last Name</mat-label>
-                                                                                <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
-                                                                                    formControlName="LastName" [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                                                                                <button matSuffix mat-icon-button aria-label="Clear"
-                                                                                    (click)="gridConfig.filters[1].fieldValue='%'">
-                                                                                    <mat-icon>close</mat-icon>
-                                                                                </button>
-                                                                            </mat-form-field>
-                                                        
-                                                                            <mat-form-field appearance="outline">
-                                                                                <mat-label>RegNo</mat-label>
-                                                                                <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myFilterform"
-                                                                                    formControlName="RegNo" [(ngModel)]="gridConfig.filters[2].fieldValue" />
-                                                                                <button matSuffix mat-icon-button aria-label="Clear"
-                                                                                    (click)="gridConfig.filters[2].fieldValue='0'">
-                                                                                    <mat-icon>close</mat-icon>
-                                                                                </button>
-                                                                            </mat-form-field>
-                                                                           
-                                                                            <mat-form-field appearance="outline">
-                                                                                <mat-label>MobileNo</mat-label>
-                                                                                <input matInput placeholder="Search MobileNo" autocomplete="off" [formGroup]="myFilterform"  formControlName="MobileNo"
-                                                                                    [(ngModel)]="gridConfig.filters[5].fieldValue" [maxLength]="10" />
-                                                                                <button matSuffix mat-icon-button aria-label="Clear"
-                                                                                    (click)="gridConfig.filters[5].fieldValue='%'">
-                                                                                    <mat-icon>close</mat-icon>
-                                                                                </button>
-                                                                            </mat-form-field>
-                                                        
-                                                                        </form> -->
-                                                                    <!-- </ng-container> -->
-                                                                </airmid-table>
-
-                                                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
-                                                                    [pageSize]="16" showFirstLastButtons>
-                                                                </mat-paginator>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-                                <!-- CENTER -->
-
+                            <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                <span>Purchase Order</span>
                             </div>
-
-                            <!-- / USER -->
-                            <!-- / CENTER -->
-                            <!-- / CONTENT-->
                         </div>
-                    </mat-tab>
+                        <div class="top-header-right">
+                            <div class="header-add-button">
+                                <button mat-raised-button (click)="onSave()">Add Purchase Order</button>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-template #isVerifiedstatus let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="element.isVerified=='0'" matTooltip="Verified"
+                                class="pill green-600 s-16">circle</mat-icon>
+
+                            <mat-icon *ngIf="element.isVerified=='1'" matTooltip="NotVerified"
+                                class="pill orange-600 s-16">circle</mat-icon>
+                        </div>
+                    </ng-template>
+
+                    <ng-template #actionButtonTemplate let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <button mat-icon-button matTooltip="Print Purchase Order"
+                                (click)="viewgetPurchaseorderReportPdf(element)">
+                                <mat-icon> print</mat-icon>
+                            </button>
+
+                            <button mat-icon-button matTooltip="Edit Purchase order" (click)="OnEdit(element)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
 
 
+                            <button mat-icon-button (click)="onVerify(element)" *ngIf="element.isVerified">
+                                <mat-icon class="disabled-icon" title="verify Menu">verified_user</mat-icon>
 
-                </mat-tab-group>
+                            </button>
+
+                            <!-- <button mat-icon-button matTooltip="Send message On WhatsApp" (click)="POEmail(element)">
+                                <mat-icon *ngIf="element.isVerified == 0" [disabled]="element.disabled" class="disabled-icon"
+                                    title="Email Menu">mail</mat-icon>
+                                <mat-icon *ngIf="element.isVerified == 1" title="Email Menu">mail</mat-icon>
+                            </button> -->
+
+
+                            <button mat-icon-button matTooltip="Send message On WhatsApp"
+                                (click)="OnWhatsPoSend(element)">
+                                <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                            </button>
+
+
+                        </div>
+                    </ng-template>
+                    <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false"
+                        (onSelectRow)="GetDetails1($event)">
+                        <ng-container filters>
+                            <form [formGroup]="mysearchform" fxLayout="column">
+                                <airmid-datepicker [formGroup]="mysearchform" [isRangePicker]="true"
+                                    formStartControlName="startdate" formEndControlName="enddate"
+                                    [(fromValue)]="gridConfig.filters[0].fieldValue" (dateChange)="ListView($event)"
+                                    [(toValue)]="gridConfig.filters[1].fieldValue">
+                                </airmid-datepicker>
+
+                                <airmid-dropdown label="Store Name" formControlName="ToStoreId"
+                                    (selectionChange)="ListView($event)" [formGroup]="mysearchform"
+                                    [mode]="autocompletestore">
+                                </airmid-dropdown>
+
+                                <airmid-dropdown label="Supplier Name" formControlName="SupplierId"
+                                    (selectionChange)="ListView1($event)" [formGroup]="mysearchform"
+                                    [mode]="autocompleteSupplier">
+                                </airmid-dropdown>
+
+                                <div fxFlex fxLayout="row">
+                                    <!-- <mat-radio-group name="Status" fxLayout="row" value="1" [formGroup]="mysearchform"
+                             formControlName="Status"
+                                style="padding: 6px;" class="gap-4">
+                                <mat-label>Status:</mat-label>
+                                <div fxLayout="row">
+                                    <mat-radio-button value='0'>Close</mat-radio-button>
+                                    <mat-radio-button value='1'>Pending</mat-radio-button>
+                                </div>
+                            </mat-radio-group> -->
+
+                                    <mat-slide-toggle name="Status" (change)="onChangeFirst($event)"
+                                        formControlName="Status">
+                                        Status Verify / Pending
+                                    </mat-slide-toggle>
+                                </div>
+                            </form>
+                        </ng-container>
+                    </airmid-table>
+                </div>
+
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
+                    *ngIf="isShowDetailTable">
+
+                    <ng-template #iconisClosed let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+
+                            <mat-icon *ngIf="element.isClosed == false" matTooltip="Pending"
+                                class="active-icon red-500 s-16">hourglass_empty
+                            </mat-icon>
+
+                            <mat-icon *ngIf="element.isClosed == true" matTooltip="Accepted"
+                                class="active-icon green-500 s-16">check_circle
+                            </mat-icon>
+
+                        </div>
+                    </ng-template>
+
+                    <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false"
+                        [ShowButtons]="false">
+                    </airmid-table>
+                </div>
             </div>
-        </div>
 
-    </div>
+        </mat-tab>
+
+
+    </mat-tab-group>
+
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Renderer2, ViewEncapsulation, ChangeDetectorRef, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, Renderer2, ViewEncapsulation, ChangeDetectorRef, ElementRef, TemplateRef } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { PurchaseOrderService } from './purchase-order.service';
@@ -10,7 +10,7 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
-import { UntypedFormBuilder, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs';
 import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popup.component';
@@ -19,12 +19,14 @@ import { MatSelect } from '@angular/material/select';
 import { UpdatePurchaseorderComponent } from './update-purchaseorder/update-purchaseorder.component';
 import { SearchInforObj } from 'app/main/opd/op-search-list/opd-search-list/opd-search-list.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { ToastrService } from 'ngx-toastr'; 
+import { ToastrService } from 'ngx-toastr';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
 import { gridModel, gridModel1, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridColumnTypes } from 'app/core/models/tableActions';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { NewPurchaseorderComponent } from './new-purchaseorder/new-purchaseorder.component';
 
 
 
@@ -37,390 +39,177 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 
 })
 export class PurchaseOrderComponent implements OnInit {
-  // [x: string]: any;
+  mysearchform: FormGroup;
+  autocompletestore: string = "Store";
+  autocompleteSupplier: string = "SupplierMaster"
+  StoreId = "2";
+  SupplierId = "0";
+  status= "0";
 
-  sIsLoading: string = '';
-  isLoading = true;
-  ToStoreList: any = [];
-  StoreList: any = [];
-  Store1List: any = [];
-  StoreName: any;
-  FromStoreList: any;
-  SupplierList: any;
-  screenFromString = 'admission-form';
-  ItemID: any = 0;
-  labelPosition: 'before' | 'after' = 'after';
-  isSupplierSelected: boolean = false;
-  isPaymentSelected: boolean = false;
-  isItemNameSelected: boolean = false;
-  filteredOptions: any;
-  ItemnameList = [];
-  showAutocomplete = false;
-  noOptionFound: boolean = false;
-  chargeslist: any = [];
-  optionsMarital: any[] = [];
-  optionsPayment: any[] = [];
-  optionsItemName: any[] = [];
+  @ViewChild('grid') grid: AirmidTableComponent;
+  @ViewChild('grid1') grid1: AirmidTableComponent;
 
-  GSTAmt: any = 0.0;
-  CGSTAmount: any;
-  IGSTAmount: any;
-  SGSTAmount: any = 0.0;
-  grandTotalAmount: any = 0.0;
-  isItemIdSelected: boolean = false;
-  VatPercentage: any = 0.0;
-  state = false;
-  optionsInc = null;
+  @ViewChild('iconisClosed') iconisClosed!: TemplateRef<any>;
+  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
+  ngAfterViewInit() {
+    this.gridConfig.columnsList.find(col => col.key === 'isVerified')!.template = this.isVerifiedstatus;
+    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
-  BatchNo: any;
-  BatchExpDate: any;
-  UnitMRP: any;
-  Qty: any = 1;
-  IssQty: any;
-  Bal: any;
+  }
+  @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
+  hasSelectedContacts: boolean;
+  fromDate = "2025-04-21"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = "2025-04-27"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
-  GSTPer: any;
-  MRP: any;
-  DiscPer: any = 0;
-  DiscAmt: any = 0;
-  FinalDiscPer: any = 0;
-  FinalDiscAmt: any = 0;
-  NetAmt: any = 0;
-  TotalMRP: any = 0;
-  FinalTotalAmt: any;
-  FinalNetAmount: any = 0;
-  FinalGSTAmt: any = 0;
+  allcolumns = [
 
-  VatPer: any;
-  CgstPer: any;
-  SgstPer: any;
-  IgstPer: any;
-
-  VatAmount: any;
-  CGSTAmt: any;
-  SGSTAmt: any;
-  IGSTAmt: any;
-
-  PaymentTerm: any;
-  ItemObj: IndentList;
-  chkNewGRN: any;
-
-  TotalQty: any = 0;
-  SpinLoading:boolean=false;
-
-  Filepath: any;
-  loadingarry: any = [];
-  currentDate = new Date();
-  IsLoading: boolean = false;
-
-  dsPurchaseOrder = new MatTableDataSource<PurchaseOrder>();
-
-  dsPurchaseItemList = new MatTableDataSource<PurchaseItemList>();
-
-  // dsItemNameList = new MatTableDataSource<ItemNameList>();
-
-  displayedColumns = [
-    'Status',
-    'PurchaseNo',
-    'PurchaseDate',
-    'SupplierName',
-    'TotalAmount',
-    'DiscAmount',
-    'GrandTotal',
-    'Remarks',
-    'AddedByName',
-    'action',
+    { heading: "", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+    { heading: "purchaseNo", key: "purchaseNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "purchaseDate", key: "purchaseTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 130 },
+    { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "TotalAmt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "DiscAmount", key: "discAmount", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "NetAmount", key: "grandTotal", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Remark", key: "remarks", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "AddedByName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
+    {
+      heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate  // Assign ng-template to the column
+  } 
   ];
 
-  displayedColumns1 = [
-    'ItemName',
-    'Qty',
-    'Rate',
-    'DiscPer',
-    'DiscAmount',
-    'VatPer',
-    'VatAmount',
-    'TotalAmount',
-    'MRP',
-    'GrandTotalAmount',
-  ];
- 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  gridConfig: gridModel = {
+    apiUrl: "Purchase/PurchaseOrderList",
+    columnsList: this.allcolumns,
+    sortField: "PurchaseID",
+    sortOrder: 0,
+    filters: [{ fieldName: "ToStoreId", fieldValue:  String(this.StoreId), opType: OperatorComparer.Equals },
+    { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
+    { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+    { fieldName: "IsVerify", fieldValue: String(this.status), opType: OperatorComparer.Equals },
+    { fieldName: "Supplier_Id", fieldValue:  String(this.SupplierId), opType: OperatorComparer.Equals }
+    ]
+  }
+  gridConfig1: gridModel = new gridModel();
 
-  ItemName: any;
-  UOM: any;
-  BalanceQty: any;
-  Rate: any;
-  TotalAmount: any;
-  Dis: any = 0;
-  GST: any = 0;
-  NetAmount: any;
-  Specification: string;
-  renderer: any;
-  disableTextbox: boolean;
-  DiscAmount: any = 0;
-  GSTAmount: any = 0;
+  isShowDetailTable: boolean = false;
+  GetDetails1(data: any): void {
+    debugger
+    console.log("detailList:", data)
+    let ID = data.purchaseID;
 
-  selectedRowIndex: any;
-  filteredoptionsSupplier: Observable<string[]>;
-  filteredoptionsPayment: Observable<string[]>;
-  @ViewChild('PurchaseOrderTemplate') PurchaseOrderTemplate: ElementRef;
-  reportPrintObjList: PurchaseOrder[] = [];
-  printTemplate: any;
-  reportPrintObj: PurchaseOrder;
-  reportPrintObjTax: PurchaseOrder;
-  subscriptionArr: Subscription[] = [];
-  dateTimeObj: any;
+    this.gridConfig1 = {
+      apiUrl: "Purchase/PurchaseItemList",
+      columnsList: [
+        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "DiscPer", key: "discPer", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "DiscAmount", key: "discAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "GSTPer", key: "vatPer", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "SGTAmount", key: "vatAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "TotalAmount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "MRP", key: "mrp", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "NetAmount", key: "grandTotalAmount", sort: true, align: 'left', emptySign: 'NA' },
+      ],
+      sortField: "PurDetId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "PurchaseId", fieldValue: String(ID), opType: OperatorComparer.Equals }
+      ]
+    };
+    this.isShowDetailTable = true;
+    setTimeout(() => {
+      this.grid1.gridConfig = this.gridConfig1;
+      this.grid1.bindGridData();
+    }, 500);
+  }
 
-gridConfig1: gridModel1 = {
-  apiUrl: "Common",
-  columnsList: [
-    { heading: "PurchaseID", key: "PurchaseID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100 },
-    { heading: "PurchaseNo", key: "PurchaseNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 }
-    // { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 80 },
-    // { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-    // { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-    // { heading: "Date", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
-    // { heading: "DoctorName", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    // { heading: "RefDocName", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    // { heading: "IPDNo", key: "ipdno", sort: true, align: 'left', emptySign: 'NA' },
-    // { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
-    // { heading: "WardName", key: "roomName", sort: true, align: 'left', emptySign: 'NA', type: 14 },
-    // { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
-    // { heading: "ClassName", key: "className", sort: true, align: 'left', emptySign: 'NA' },
-    // { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    // { heading: "RelativeName", key: "relativeName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 14 },
-    // {
-    //   heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
-    //   template: this.actionButtonTemplate  // Assign ng-template to the column
-    // }
-  ],
-
-  sortField: "PurchaseID",
-  sortOrder: 0,
-  searchFields: [{ fieldName: "ToStoreId", fieldValue: "%", opType: OperatorComparer.Contains },
-  { fieldName: "From_Dt", fieldValue: "08/06/2022", opType: OperatorComparer.Contains },
-  { fieldName: "To_Dt", fieldValue: "08/06/2025", opType: OperatorComparer.Equals },
-  { fieldName: "IsVerify", fieldValue: "0", opType: OperatorComparer.Equals },
-  { fieldName: "Supplier_Id", fieldValue: "0", opType: OperatorComparer.Equals }
-
-  ],
- mode:"PurchaseOrder"
-
-}
-
-  constructor(
-    public _PurchaseOrder: PurchaseOrderService,
-    public _matDialog: MatDialog,
-    private _formBuilder: UntypedFormBuilder,
-    private _fuseSidebarService: FuseSidebarService,
-    public datePipe: DatePipe,
-    public toastr: ToastrService,
-    private accountService: AuthenticationService,
-    private advanceDataStored: AdvanceDataStored,
-
-  ) { }
+  constructor(public _PurchaseOrderService: PurchaseOrderService, public _matDialog: MatDialog,
+    public toastr: ToastrService, private commonService: PrintserviceService,
+    public datePipe: DatePipe,) { }
 
   ngOnInit(): void {
-    this.getFromStoreSearch();
-    this.getPurchaseOrderList();
-    this.getPurchaseOrderList1();
-  }
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-  }
-  resultsLength = 0;
-
-
-
-  getPurchaseOrderList() {
-    var Param = {
-      "ToStoreId": this.accountService.currentUserValue.storeId, //this._PurchaseOrder.PurchaseSearchGroup.get('FromStoreId').value.storeid || 0,
-      "From_Dt": this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000"), 
-      "To_Dt": this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") ,
-      "IsVerify": this._PurchaseOrder.PurchaseSearchGroup.get("Status").value || 0,
-      "Supplier_Id": this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0,
-      Start:(this.paginator?.pageIndex??1),
-      Length:(this.paginator?.pageSize??12),
-      // Sort:this.sort?.active??'VisitId',
-      // Order:this.sort?.direction??'asc'
-    }
-    console.log(Param);
-    this._PurchaseOrder.getPurchaseOrder(Param).subscribe(data => {
-      this.dsPurchaseOrder.data = data["Table1"]??[] as PurchaseOrder[];
-      this.dsPurchaseOrder.sort = this.sort;
-      this.resultsLength= data["Table"][0]["total_row"];
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
+    this.mysearchform = this._PurchaseOrderService.PurchaseSearchFrom();
   }
 
-  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-  getPurchaseOrderList1() {
-    var Param = {
-   
 
-  "searchFields": [
-    {
-      "fieldName": "ToStoreId",
-      "fieldValue": "2",
-      "opType": "Equals"
-    },
-  {
-      "fieldName": "From_Dt",
-      "fieldValue": "08/06/2022",
-      "opType": "Equals"
-    },
-{
-      "fieldName": "To_Dt",
-      "fieldValue": "08/06/2025",
-      "opType": "Equals"
-    },
-{
-      "fieldName": "IsVerify",
-      "fieldValue": "0",
-      "opType": "Equals"
-    },
-{
-      "fieldName": "Supplier_Id",
-      "fieldValue": "0",
-      "opType": "Equals"
-    }
-  ],
-  "mode": "PurchaseOrder"
-}
-    
-    console.log(Param);
-    this._PurchaseOrder.getPurchaseOrder(Param).subscribe(data => {
-      console.log(data)
-      this.dsPurchaseOrder.data = data  as PurchaseOrder[];
-      // this.grid.gridConfig = this.gridConfig1;
-      this.grid.bindGridData();
-    },
-      error => {
-        this.sIsLoading = '';
-      });
+  viewgetPurchaseorderReportPdf(element) {
+    this.commonService.Onprint("PurchaseID", element.PurchaseID, "Purchaseorder");
   }
 
-  getPurchaseItemList(Params) {
-
-    var Param = {
-      "PurchaseId": Params.PurchaseID
-    }
-    this._PurchaseOrder.getPurchaseItemList(Param).subscribe(data => {
-      this.dsPurchaseItemList.data = data as PurchaseItemList[];
-      this.dsPurchaseItemList.sort = this.sort;
-      this.dsPurchaseItemList.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
-  onVerify(row) {
-    let update_POVerify_Status = {};
-    update_POVerify_Status['purchaseID'] = row.PurchaseID;
-    update_POVerify_Status['isVerified'] = true;
-    update_POVerify_Status['isVerifiedId'] = 1;
-
-    let submitData = {
-      "update_POVerify_Status": update_POVerify_Status,
-    };
-   // console.log(submitData);
-    this._PurchaseOrder.getVerifyPurchaseOrdert(submitData).subscribe(response => {
-    //   if (response) {
-    //     this.toastr.success('Record Verified Successfully.', 'Verified !', {
-    //       toastClass: 'tostr-tost custom-toast-success',
-    //     });
-
-    //   } else {
-    //     this.toastr.error('Record Not Verified !, Please check error..', 'Error !', {
-    //       toastClass: 'tostr-tost custom-toast-error',
-    //     });
-    //   }
-    //   // this.isLoading = '';
-    },
-    success => {
-      this.toastr.success('Record Verified Successfully.', 'Verified !', {
-        toastClass: 'tostr-tost custom-toast-success',
-      });
-      this.getPurchaseOrderList();
-    });
-  }
-
- 
-  disableSelect = new FormControl(false);
- 
-  highlight(contact) {
-    this.selectedRowIndex = contact.ItemID;
-  }
-
-  toggleDisable() {
-    this.disableTextbox = !this.disableTextbox;
-  }
-  getFromStoreSearch() {
-
-    var data = {
-      Id: this.accountService.currentUserValue.storeId
-    }
-    this._PurchaseOrder.getFromStoreSearchList(data).subscribe(data => {
-      this.FromStoreList = data;
-      // console.log(data)
-      this._PurchaseOrder.PurchaseSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
-    });
-  }
-  filteredOptionssupplier:any;
-  noOptionFoundsupplier:any;
-  vSupplierId:any;
-  getSupplierSearchCombo() {
-    var m_data = {
-      'SupplierName': `${this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value}%`
-    }
-    //console.log(m_data)
-    this._PurchaseOrder.getSupplierSearchList(m_data).subscribe(data => {
-      this.filteredOptionssupplier = data;
-    //  console.log(this.filteredOptionssupplier)
-      if (this.filteredOptionssupplier.length == 0) {
-        this.noOptionFoundsupplier = true;
-      } else {
-        this.noOptionFoundsupplier = false;
-      }
-    });
-  }
-  getOptionTextSupplier(option) {
-    return option && option.SupplierName ? option.SupplierName : '';
-  }
- 
- 
-
-  newPurchaseorder() {
-    this.chkNewGRN = 1;
-    const dialogRef = this._matDialog.open(UpdatePurchaseorderComponent,
-      {
-        maxWidth: "100%",
-        height: '95%',
-        width: '95%',
-        data: {
-          chkNewGRN: this.chkNewGRN
-        }
+  onSave(row: any = null) {
+    let that = this;
+    const dialogRef = this._matDialog.open(NewPurchaseorderComponent,
+      {  maxWidth: "100%",
+        height: '98%',
+        width: '98%',
+        data: row
       });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      this.getPurchaseOrderList();
+      this.grid.gridConfig = this.gridConfig;
+      this.grid.bindGridData();
+
     });
-    this.getPurchaseOrderList();
   }
 
-  
+
+  vstoreId: any = '';
+   ListView(value) {
+    
+    console.log(value)
+         if (value.value !== 0)
+        this.StoreId = value.value
+      else
+        this.StoreId = "0"
+   this.onChangeFirst(value);
+  }
+
+  ListView1(value) {
+    
+    console.log(value)
+   
+      if (value.value !== 0)
+        this.SupplierId = value.value
+      else
+        this.SupplierId = "0"
+        this.onChangeFirst(value);
+  }
+
+  onChangeFirst(value) {
+    debugger
+    this.fromDate = this.datePipe.transform(this.mysearchform.get('startdate').value, "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(this.mysearchform.get('enddate').value, "yyyy-MM-dd")
+    this.StoreId = String(this.StoreId)
+    this.SupplierId = String(this.SupplierId)
+    this.status = String(this.status)
+    this.getfilterdata();
+  }
+
+  getfilterdata() {
+    debugger
+    this.gridConfig = {
+      apiUrl: "Purchase/PurchaseOrderList",
+      columnsList: this.allcolumns,
+      sortField: "PurchaseID",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "ToStoreId", fieldValue: this.StoreId, opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+        { fieldName: "IsVerify", fieldValue:  this.status, opType: OperatorComparer.Equals },
+        { fieldName: "Supplier_Id", fieldValue: this.SupplierId, opType: OperatorComparer.Equals }
+      ],
+      row: 25
+    }
+   
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData();
+
+  }
+  OnWhatsPoSend(){}
   POEmail(contact) {
-    console.log(contact)
+   
     const dialogRef = this._matDialog.open(EmailSendComponent,
       {
         maxWidth: "100%",
@@ -433,16 +222,35 @@ gridConfig1: gridModel1 = {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
     });
-    this.getPurchaseOrderList();
+    
   }
 
-  onEdit(contact) {
-    if(this._PurchaseOrder.PurchaseSearchGroup.get('Status').value == 0 ){
-      this.chkNewGRN = 2;
-      console.log(contact)
-      this.advanceDataStored.storage = new SearchInforObj(contact);
-      // this._PurchaseOrder.populateForm();
-      const dialogRef = this._matDialog.open(UpdatePurchaseorderComponent,
+  onVerify(row) {
+   
+    let submitData = {
+    
+      "purchaseId": row.PurchaseID,
+      "isVerifiedId": 1
+
+    };
+   console.log(submitData);
+    this._PurchaseOrderService.getVerifyPurchaseOrdert(submitData).subscribe(response => {
+      this.toastr.success(response);
+      if (response) {
+         this.viewgetPurchaseorderReportPdf(response)
+         this._matDialog.closeAll();
+       }
+ 
+     });
+  }
+  chkNewGRN: any;
+  OnEdit(contact) {
+    if(this.mysearchform.get('Status').value == 0 ){
+      // this.chkNewGRN = 2;
+      // console.log(contact)
+      // this.advanceDataStored.storage = new SearchInforObj(contact);
+     
+      const dialogRef = this._matDialog.open(NewPurchaseorderComponent,
         {
           maxWidth: "100%",
           height: '95%',
@@ -454,7 +262,7 @@ gridConfig1: gridModel1 = {
         });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
-        this.getPurchaseOrderList();
+       
       });
     }
     else{
@@ -466,96 +274,23 @@ gridConfig1: gridModel1 = {
    
   }
 
-
-
-  TotalAmt: any = 0;
-  TotalUnit: any = 0;
-  TotalRate: any = 0;
-  TotalNetAmt: any = 0;
-  TOtalDiscPer: any = 0;
-  TotalGSTAmt: any = 0;
-  finalamt:any;
-
-  
-  viewgetPurchaseorderReportPdf(row) {
-    this.sIsLoading = 'loading-data';
-    setTimeout(() => {
-      
-   this._PurchaseOrder.getPurchaseorderreportview(
-    row.PurchaseID
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "95vw",
-          height: '850px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "PURCHASE ORDER Viewer"
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.sIsLoading = ' ';
-        });
-       
-    });
-   
-    },100);
-  }
-
- 
-  
-  getWhatsappshareSales(el) {
-    var m_data = {
-      "insertWhatsappsmsInfo": {
-        "mobileNumber": 11,//el.RegNo,
-        "smsString": "Dear" + el.PatientName + ",Your Sales Bill has been successfully completed. UHID is " + el.SalesNo + " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
-        "isSent": 0,
-        "smsType": 'Purchase',
-        "smsFlag": 0,
-        "smsDate": this.currentDate,
-        "tranNo": el.PurchaseID,
-        "PatientType":2,//el.PatientType,
-        "templateId": 0,
-        "smSurl": "info@gmail.com",
-        "filePath": this.Filepath || '',
-        "smsOutGoingID": 0
-
-      }
-    }
-    console.log(m_data);
-    this._PurchaseOrder.InsertWhatsappPurchaseorder(m_data).subscribe(response => {
-      if (response) {
-        Swal.fire('Congratulations !', 'WhatsApp Sms  Data  save Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            this._matDialog.closeAll();
-
-          }
-        });
-      } else {
-        Swal.fire('Error !', 'Whatsapp Sms Data  not saved', 'error');
-      }
-
-    });
-    this.IsLoading = false;
-    el.button.disbled = false;
-  }
-
-  onClose() { }
-  onClear() { }
 }
+
+
+
+
 
 export class ItemNameList {
   Action: string;
   ItemID: any;
-  ItemId:any;
+  ItemId: any;
   ItemName: string;
   Qty: number;
   UOM: number;
   Rate: any;
   TotalAmount: any;
   Dis: any;
+  Disc: any;
   DiscAmount: any;
   GST: number;
   GSTAmount: any;
@@ -599,15 +334,45 @@ export class ItemNameList {
   HandlingCharges: any;
   ConstantId: number;
   roundVal: any;
-  DisAmount:any;
-  Mobile:any
-  taxAmount:any;
-  GSTAmt:any;
-  VatAmount:any;
-  VatPer:any;
-  DefRate:any;
-  SupplierName:any;
-  PurchaseDate:any;
+  DisAmount: any;
+  Mobile: any
+  taxAmount: any;
+  GSTAmt: any;
+  VatAmount: any;
+  VatPer: any;
+  DefRate: any;
+  SupplierName: any;
+  PurchaseDate: any;
+  GSTType: any;
+  ConversionFactor: number;
+  TotalQty: number;
+  purchaseID: any;
+  CGSTAmount: any;
+  SGSTAmount: any;
+  IGSTAmount: any;
+  CGST: any;
+  SGST: any;
+  IGST: any;
+
+  purDetId: any;
+  itemName: any;
+  qty: any;
+  rate: any;
+  totalAmount: any;
+  discAmount: any;
+  discPer: any;
+ grandTotalAmount: any;
+  mrp: any;
+ cgstPer: any;
+ cgstAmt: any;
+ sgstPer: any;
+ sgstAmt: any;
+ igstPer: any;
+ igstAmt: any;
+ defRate: any;
+ specification: any;
+ itemId: any;
+ uomid: any;
   /**
    * Constructor
    *
@@ -617,13 +382,15 @@ export class ItemNameList {
     {
       this.Action = ItemNameList.Action || "";
       this.ItemID = ItemNameList.ItemID || 0;
-      this.ItemId=ItemNameList.ItemId || 0;
+      this.ItemId = ItemNameList.ItemId || 0;
       this.ItemName = ItemNameList.ItemName || "";
       this.Qty = ItemNameList.Quantity || 0;
+      this.Qty = ItemNameList.Qty || 0;
       this.UOM = ItemNameList.UOM || 0;
       this.Rate = ItemNameList.Rate || 0;
       this.TotalAmount = ItemNameList.TotalAmount || 0;
       this.Dis = ItemNameList.Dis || 0;
+      this.Disc = ItemNameList.Disc || 0;
       this.DiscAmount = ItemNameList.DiscAmount || 0;
       this.GST = ItemNameList.GST || 0;
       this.GSTAmount = ItemNameList.GSTAmount || 0;
@@ -659,6 +426,35 @@ export class ItemNameList {
       this.DisAmount = ItemNameList.DisAmount || 0;
       this.taxAmount = ItemNameList.taxAmount || 0;
       this.DefRate = ItemNameList.DefRate || 0;
+      this.purchaseID = ItemNameList.purchaseID || 0;
+      this.GrandTotalAmount = ItemNameList.GrandTotalAmount || 0;
+      this.CGSTAmount = ItemNameList.CGSTAmount || 0;
+      this.SGSTAmount = ItemNameList.SGSTAmount || 0;
+      this.IGSTAmount = ItemNameList.IGSTAmount || 0;
+      this.CGST = ItemNameList.CGST || 0;
+      this.SGST = ItemNameList.SGST || 0;
+      this.IGST = ItemNameList.IGST || 0;
+      this.DiscPer= ItemNameList.DiscPer || 0;
+
+      this.purDetId= ItemNameList.purDetId || 0;
+      this.itemName= ItemNameList.itemName || "";
+      this.qty= ItemNameList.qty || 0;
+      this.rate= ItemNameList.rate || 0;
+      this.totalAmount= ItemNameList.totalAmount || 0;
+      this.discAmount= ItemNameList.discAmount || 0;
+      this.discPer= ItemNameList.discPer || 0;
+      this. grandTotalAmount= ItemNameList.grandTotalAmount || 0;
+      this.mrp= ItemNameList.mrp || 0;
+      this.cgstPer= ItemNameList.cgstPer || 0;
+      this.cgstAmt= ItemNameList.cgstAmt || 0;
+      this.sgstPer= ItemNameList.sgstPer || 0;
+      this.sgstAmt= ItemNameList.sgstAmt || 0;
+      this.igstPer= ItemNameList.igstPer || 0;
+      this.igstAmt= ItemNameList.igstAmt || 0;
+      this.defRate= ItemNameList.defRate || 0;
+      this.specification= ItemNameList.specification || 0;
+      this.itemId= ItemNameList.itemId || 0;
+      this.uomid= ItemNameList.uomid || 0;
     }
   }
 }
@@ -671,8 +467,8 @@ export class PurchaseItemList {
   StoreId: any;
   SupplierId: any;
   StoreName: any;
-  Remarks:any;
-  Mobile:any;
+  Remarks: any;
+  Mobile: any;
   /**
    * Constructor
    *
@@ -704,6 +500,7 @@ export class PurchaseOrder {
   ItemTotalAmount: any;
   ItemDiscAmount: any;
   DiscPer: any;
+  Disc: any;
   Address: any;
   Phone: any;
   Fax: any;
@@ -722,19 +519,19 @@ export class PurchaseOrder {
   SGSTAmt: any;
   IGSTAmt: any;
   VatPer: any;
-  Remarks:any;
-  Mobile:any;
-  PaymentTermId:any;
+  Remarks: any;
+  Mobile: any;
+  PaymentTermId: any;
   ModeOfPayment: any;
-  DiscAmount:any;
-  TaxAmount:any;
-  GrandTotal:any;
-  AddedByName:any;
-  VerifiedName:any;
-  TransportChanges:any
-  HandlingCharges:any;
-  FreightAmount:any;
-  OctriAmount:any;
+  DiscAmount: any;
+  TaxAmount: any;
+  GrandTotal: any;
+  AddedByName: any;
+  VerifiedName: any;
+  TransportChanges: any
+  HandlingCharges: any;
+  FreightAmount: any;
+  OctriAmount: any;
   constructor(PurchaseOrder) {
     {
       this.PurchaseNo = PurchaseOrder.PurchaseNo || 0;
@@ -743,12 +540,15 @@ export class PurchaseOrder {
       this.PurchaseTime = PurchaseOrder.PurchaseTime || "";
       this.StoreName = PurchaseOrder.StoreName || "";
       this.SupplierName = PurchaseOrder.SupplierName || 0;
-      this.TotalAmount = PurchaseOrder.TotalAmount ||  0;
+      this.TotalAmount = PurchaseOrder.TotalAmount || 0;
       this.PurchaseId = PurchaseOrder.PurchaseId || "";
       this.FromStoreId = PurchaseOrder.FromStoreId || "";
       this.ItemTotalAmount = PurchaseOrder.ItemTotalAmount || "";
       this.Remarks = PurchaseOrder.Remarks || '';
       this.Mobile = PurchaseOrder.Mobile || 0;
+      this.GrandTotalAmount = PurchaseOrder.GrandTotalAmount || 0;
+      this.Disc= PurchaseOrder.Disc || 0;
+      this.DiscAmount= PurchaseOrder.DiscAmount || 0;
     }
   }
 }
