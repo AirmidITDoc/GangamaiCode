@@ -127,7 +127,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     dsItemNameList1 = new MatTableDataSource<ItemNameList>();
     dsTempItemNameList = new MatTableDataSource<ItemNameList>();
     dsLastThreeItemList = new MatTableDataSource<LastThreeItemList>();
-
+    autocompletestore: string = "Store";
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
     filteredOptions: any;
@@ -157,9 +157,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     filteredoptionsToStore: Observable<string[]>;
     filteredoptionsSupplier: Observable<string[]>;
     filteredoptionsItemName: Observable<string[]>;
-    @ViewChild('picker') datePickerElement = MatDatepicker;
-    vCahchecked: any = 0;
-    vGrntypechecked: any;
+    @ViewChild('picker') datePickerElement = MatDatepicker; 
     selectedAdvanceObj: PODetailList;
     optionsToStore: any;
     optionsFrom: any;
@@ -218,8 +216,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         public toastr: ToastrService,
         private advanceDataStored: AdvanceDataStored,
         private newGRNService: NewGRNService
-    ) { }
-
+    ) { } 
     ngOnInit(): void {
         // Static data
         // this.dsItemNameList.data.push(
@@ -230,15 +227,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         }
         if (this.data.chkNewGRN == 2) {
             this.registerObj = this.data.Obj;
-            console.log(this.registerObj) 
-            if (this.registerObj.Cash_CreditType)
-                this.vCahchecked = true;
-            if (!this.registerObj.Cash_CreditType)
-                this.vCahchecked = false;
-            if (this.registerObj.GRNType)
-                this.vGrntypechecked = true;
-            if (!this.registerObj.GRNType)
-                this.vGrntypechecked = false;
+            console.log(this.registerObj)  
         }
         else if (this.data.chkNewGRN == 3) {
             // get full data from excell import.
@@ -265,6 +254,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             GST: item.cgstPer + item.sgstPer + item.igstPer
         });
         this.calculateTotalamt();
+      //  this.getLastThreeItemInfo(item)
     }
   //supplier det
     selectChangeSupplier(supplier: any): void {
@@ -893,7 +883,9 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             rate: [
                 // { name: "required", Message: "Rate is required" }
             ],
-            
+            StoreId: [
+                // { name: "required", Message: "StoreId is required" }
+            ],
         };
     }
     getDateTime(dateTimeObj) {
@@ -917,6 +909,11 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         });
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
+        });
+    }
+    getLastThreeItemInfo(Obj) { 
+        this._GRNList.getLastThreeItemInfo(Obj.itemId).subscribe(response => {
+            this.dsLastThreeItemList.data = response.data as LastThreeItemList[];  
         });
     }
 }

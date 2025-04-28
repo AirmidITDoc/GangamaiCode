@@ -145,34 +145,32 @@ export class IPPackageDetComponent implements OnInit {
 
     }
     this._IpSearchListService.getpackagedetList(vdata).subscribe((response) => {
-      this.dsPackageDet.data = response.data 
-      console.log(response)
+      this.PacakgeList = response.data  as [];
       console.log(this.newlist);
-      // this.newlist.forEach(element => {
-      //   debugger
-      //   this.PacakgeList.push(
-      //     {
-      //       ServiceId: element.packageServiceId,
-      //       serviceName: element.serviceName,
-      //       price: element.price || 0,
-      //       qty: element.qty || 1,
-      //       totalAmt: element.totalAmt || 0,
-      //       concessionPercentage: element.concessionPercentage || 0,
-      //       concessionAmount: element.concessionAmount || 0,
-      //       netAmount: element.netAmount || 0,
-      //       isPathology: element.isPathology,
-      //       isRadiology: element.isRadiology,
-      //       packageId: element.packageId,
-      //       PackageServiceId: element.serviceId,
-      //       PacakgeServiceName: element.pacakgeServiceName,
-      //       DoctorId: element.doctorId || 0,
-      //       DoctorName: element.doctorName || '',
-      //       ChargesId: element.chargesId || 0
-      //     })
-      // })
-      // this.dsPackageDet.data = this.PacakgeList
-      // console.log(this.dsPackageDet.data);
-
+      this.PacakgeList.forEach(element => { 
+        this.newlist.push(
+          {
+            ServiceId: element.packageServiceId,
+            serviceName: element.serviceName,
+            price: element.price || 0,
+            qty: element.qty || 1,
+            totalAmt: element.totalAmt || 0,
+            concessionPercentage: element.concessionPercentage || 0,
+            concessionAmount: element.concessionAmount || 0,
+            netAmount: element.netAmount || 0,
+            isPathology: element.isPathology,
+            isRadiology: element.isRadiology,
+            packageId: element.packageId,
+            PackageServiceId: element.serviceId,
+            PacakgeServiceName: element.pacakgeServiceName,
+            DoctorId: element.doctorId || 0,
+            DoctorName: element.doctorName || '',
+            ChargesId: element.chargesId || 0
+          })
+      })
+      this.dsPackageDet.data = this.newlist
+      this.PacakgeList = this.dsPackageDet.data
+      console.log(this.dsPackageDet.data); 
     });
   }
   // Service Add 

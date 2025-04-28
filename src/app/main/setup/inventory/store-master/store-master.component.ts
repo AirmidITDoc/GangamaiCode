@@ -7,6 +7,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { FormGroup } from "@angular/forms";
 
 @Component({
     selector: "app-store-master",
@@ -16,56 +17,98 @@ import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
     animations: fuseAnimations,
 })
 export class StoreMasterComponent implements OnInit {
-    
+    myformSearch:FormGroup;
+    storeName:any="";
+    type:any="2"
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+
+    allColumns=[
+        { heading: "Code", key: "storeId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "StoreShortName", key: "storeShortName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "IndentPrefix", key: "indentPrefix", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "IndentNo", key: "indentNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "PurchasePrefix", key: "purchasePrefix", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "PurchaseNo", key: "purchaseNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "GRNPrefix", key: "grnPrefix", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "GRNNo", key: "grnNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "GRNReturnPrefix", key: "grnreturnNoPrefix", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "GRNRetNo", key: "grnreturnNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "IssueToDeptPrefix", key: "issueToDeptPrefix", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+        { heading: "IssueToDeptNo", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA', width: 120},
+        { heading: "ReturnFromDeptPrefix", key: "returnFromDeptNoPrefix", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "ReturnFromDeptNo", key: "returnFromDeptNo", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+        { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+        {
+            heading: "Action", key: "action", width: 100 , align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._StoreMasterService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
+                            this.toastr.success(response.message);
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+
+    allFilters=[
+        { fieldName: "storeName", fieldValue: "", opType: OperatorComparer.Contains },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
+
     gridConfig: gridModel = {
         apiUrl: "StoreMaster/List",
-        columnsList: [
-            { heading: "Code", key: "storeId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "StoreShortName", key: "storeShortName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-            { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IndentPrefix", key: "indentPrefix", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IndentNo", key: "indentNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-            { heading: "PurchasePrefix", key: "purchasePrefix", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-            { heading: "PurchaseNo", key: "purchaseNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "GRNPrefix", key: "grnPrefix", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "GRNNo", key: "grnNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-            { heading: "GRNReturnPrefix", key: "grnreturnNoPrefix", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-            { heading: "GRNRetNo", key: "grnreturnNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IssueToDeptPrefix", key: "issueToDeptPrefix", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-            { heading: "IssueToDeptNo", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA', width: 120},
-            { heading: "ReturnFromDeptPrefix", key: "returnFromDeptNoPrefix", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "ReturnFromDeptNo", key: "returnFromDeptNo", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
-            {
-                heading: "Action", key: "action", width: 100 , align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._StoreMasterService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ],
+        columnsList: this.allColumns,
         sortField: "storeId",
         sortOrder: 0,
-        filters: [
-            { fieldName: "storeName", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
+        filters: this.allFilters
+    }
+
+    Clearfilter(event) {
+        debugger
+        console.log(event)
+        if (event == 'StoreNameSearch')
+            this.myformSearch.get('StoreNameSearch').setValue("")
+       
+        this.onChangeFirst();
+      }
+      
+    onChangeFirst() {
+        debugger
+        this.storeName = this.myformSearch.get('StoreNameSearch').value + "%"
+        this.type = this.myformSearch.get('IsDeletedSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata(){
+        debugger
+        this.gridConfig = {
+            apiUrl: "StoreMaster/List",
+            columnsList:this.allColumns, 
+            sortField: "storeId",
+            sortOrder: 0,
+            filters:  [
+                { fieldName: "storeName", fieldValue: this.storeName, opType: OperatorComparer.Equals },
+                { fieldName: "isActive", fieldValue: this.type, opType: OperatorComparer.Equals }
+            ]
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData(); 
     }
 
     constructor(public _StoreMasterService: StoreMasterService, public _matDialog: MatDialog,
         public toastr: ToastrService,) { }
         
-    ngOnInit(): void { }
+    ngOnInit(): void { 
+        this.myformSearch=this._StoreMasterService.createSearchForm();
+    }
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -112,6 +155,13 @@ export class StoreMaster {
     pharSalCountId:any;
     pharSalRecCountId:any;
     pharSalReturnCountId:any;
+    printStoreName:any
+    hospitalMobileNo:any
+    storeAddress:any
+    pharAdvId:any
+    pharAdvReptId:any
+    pharAdvRefId:any
+    pharAdvRefReptId:any
     /**
      * Constructor
      *
@@ -142,6 +192,16 @@ export class StoreMaster {
             this.pharSalCountId = StoreMaster.pharSalCountId || 0;
             this.pharSalRecCountId=StoreMaster.pharSalRecCountId || 0;
              this.pharSalReturnCountId = StoreMaster.pharSalReturnCountId || 0;
+
+             
+            this.printStoreName = StoreMaster.printStoreName || '';
+            this.hospitalMobileNo=StoreMaster.hospitalMobileNo || '';
+             this.storeAddress = StoreMaster.storeAddress || '';
+             this.pharAdvId = StoreMaster.pharAdvId || 0
+             this.pharAdvReptId = StoreMaster.pharAdvReptId || 0
+             this.pharAdvRefId = StoreMaster.pharAdvRefId || 0
+             this.pharAdvRefReptId = StoreMaster.pharAdvRefReptId || 0
         }
+
     }
 }

@@ -425,6 +425,7 @@ export class IPBillingComponent implements OnInit {
       this.Serviceform.get('DoctorID').disable();
       this.isDoctor = false;
     }
+    this.getpackagedetList(obj)
   } 
   //Doctor selected 
   getdocdetail(event) {
@@ -486,7 +487,8 @@ export class IPBillingComponent implements OnInit {
       const discountAmount = (totalAmount * formValue.discPer) / 100;
       const netAmount = totalAmount - discountAmount;
 
-      var m_data = {
+      var m_data =
+       {
         "chargesId": 0,
         "chargesDate": this.datePipe.transform(formValue.Date, "yyyy-MM-dd") || '1900-01-01',
         "opdIpdType": 1,
@@ -532,6 +534,71 @@ export class IPBillingComponent implements OnInit {
         "billNo": 1,
         "isHospMrk": 0
       }
+
+      // var m_data = {  
+      //   "adddCharges": {
+      //   "chargesId": 0,
+      //   "chargesDate": this.datePipe.transform(formValue.Date, "yyyy-MM-dd") || '1900-01-01',
+      //   "opdIpdType": 1,
+      //   "opdIpdId": this.opD_IPD_Id,
+      //   "serviceId": formValue.ServiceName.serviceId,
+      //   "price": formValue.price || 0,
+      //   "qty": formValue.qty || 0,
+      //   "totalAmt": totalAmount || 0,
+      //   "concessionPercentage":  formValue.discPer || 0,
+      //   "concessionAmount": discountAmount || 0,
+      //   "netAmount": netAmount || 0,
+      //   "doctorId": doctorid,
+      //   "docdiscPer": 0,
+      //   "docAmt": 0,
+      //   "hospitalAmt": 0,
+      //   "isGenerated": false,
+      //   "addedBy": this.accountService.currentUserValue.userId,
+      //   "isCancelled": false,
+      //   "isCancelledBy": 0,
+      //   "isCancelledDate": "1900-01-01",
+      //   "isPathology": formValue.ServiceName.isPathology,
+      //   "isRadiology": formValue.ServiceName.isRadiology,
+      //   "isPackage": formValue.ServiceName.isPackage,
+      //   "isSelfOrCompanyService": 0,
+      //   "packageId": 0,
+      //   "chargesTime": this.datePipe.transform(formValue.Date, "yyyy-MM-dd") || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+      //   "packageMainChargeId": 0,
+      //   "classId": formValue.ChargeClass
+      //   },
+
+      //   "addCharge": [
+      //     {
+      //       "chargesDate": "2025-04-21",
+      //   "opdIpdType": 1,
+      //   "opdIpdId": 1,
+      //   "serviceId": 23,
+      //   "price": 203,
+      //   "qty": 10,
+      //   "totalAmt": 100,
+      //   "concessionPercentage": 2,
+      //   "concessionAmount": 200,
+      //   "netAmount": 900,
+      //   "doctorId": 1,
+      //   "docPercentage": 3,
+      //   "docAmt": 122,
+      //   "hospitalAmt": 800,
+      //   "isGenerated": true,
+      //   "addedBy": 1,
+      //   "isCancelled": true,
+      //   "isCancelledBy": 1,
+      //   "isCancelledDate": "2025-04-21",
+      //   "isPathology": 1,
+      //   "isRadiology": 0,
+      //   "isPackage": 1,
+      //   "isSelfOrCompanyService": 12,
+      //   "packageId": 1,
+      //    "packageMainChargeId": 1,
+      //     "chargesTime": "2025-04-17 00:00:00.000"
+       
+      //     }
+      //   ]
+      // }
       console.log("Save JSON:", m_data);
       this._IpSearchListService.InsertIPAddCharges(m_data).subscribe(response => {
         console.log(response)
@@ -605,6 +672,75 @@ export class IPBillingComponent implements OnInit {
     });
 
   }
+   //IPD package list  
+      // this.newlist.forEach(element => {
+      //   debugger
+      //   this.PacakgeList.push(
+      //     {
+      //       ServiceId: element.packageServiceId,
+      //       serviceName: element.serviceName,
+      //       price: element.price || 0,
+      //       qty: element.qty || 1,
+      //       totalAmt: element.totalAmt || 0,
+      //       concessionPercentage: element.concessionPercentage || 0,
+      //       concessionAmount: element.concessionAmount || 0,
+      //       netAmount: element.netAmount || 0,
+      //       isPathology: element.isPathology,
+      //       isRadiology: element.isRadiology,
+      //       packageId: element.packageId,
+      //       PackageServiceId: element.serviceId,
+      //       PacakgeServiceName: element.pacakgeServiceName,
+      //       DoctorId: element.doctorId || 0,
+      //       DoctorName: element.doctorName || '',
+      //       ChargesId: element.chargesId || 0
+      //     })
+      // }) 
+      //package list 
+      PacakgeList:any=[];
+      PacakgeOptionlist:any=[];
+      getpackagedetList(obj) { 
+        var vdata = {
+          "first": 0,
+      "rows": 10,
+      "sortField": "ChargesId",
+      "sortOrder": 0,
+      "filters": [
+
+        {
+          "fieldName": "ChargesId",
+          "fieldValue": String(obj.chargesId),
+          "opType": "Equals"
+        }
+      ],
+      "columns": [],
+      "exportType": "JSON"
+        } 
+        this._IpSearchListService.getpackagedetList(vdata).subscribe((response) => {
+          this.PacakgeList = response.data  as [];
+          this.PacakgeList.forEach(element =>{
+            this.PacakgeOptionlist.data.push(
+              {  
+                ServiceId: element.packageServiceId,
+                ServiceName: element.serviceName,
+                Price: element.price || 0,
+                Qty: element.qty || 1,
+                TotalAmt:  element.totalAmt,
+                ConcessionAmt:   element.concessionAmount,
+                NetAmount:   element.netAmount,
+                IsPathology: element.isPathology,
+                IsRadiology: element.isRadiology, 
+                PackageId:element.packageId,
+                PackageServiceId:element.serviceId,
+                PacakgeServiceName:element.pacakgeServiceName,
+                DoctorName: element.doctorName || '',
+                DoctorId: element.doctorId || 0,
+              })
+          })
+          this.PackageDatasource.data = this.PacakgeOptionlist
+          this.PacakgeList = this.PackageDatasource.data
+          console.log(this.PackageDatasource.data); 
+        });
+      }
   getdata(opD_IPD_Id) {
     this.gridConfig1 = {
       apiUrl: "IPBill/IPPreviousBillList",

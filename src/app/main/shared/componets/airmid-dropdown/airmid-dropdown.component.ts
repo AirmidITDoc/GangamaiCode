@@ -210,7 +210,7 @@ export class AirmidDropDownComponent implements OnInit {
         event.stopPropagation();
         const control = this.formGroup.controls[this.formControlName];
         if (control) {
-            control.setValue("")
+            control.setValue(null)
             // control.setValue("0")
             // control.reset();
         }

@@ -138,7 +138,7 @@ export class AirmidAutoCompleteComponent implements OnInit {
         event.stopPropagation();
         const control = this.formGroup.controls[this.formControlName];
         if (control) {
-            control.setValue("0")
+            control.setValue('')
             // control.reset();
         }
         this.onClearSelection.emit();

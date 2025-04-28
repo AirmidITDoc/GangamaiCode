@@ -35,33 +35,43 @@
                                     </airmid-textbox>
                                 </div>
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="MobileNo" formControlName="mobile" [value]="registerObj.mobile" [formGroup]="supplierForm" [validations]="getValidationMessages().mobile" [maxLength]="10">
+                                    <airmid-textbox label="MobileNo" formControlName="mobile" [formGroup]="supplierForm" [validations]="getValidationMessages().mobile" [maxLength]="10">
                                     </airmid-textbox>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="PhoneNo" formControlName="phone" [validations]="getValidationMessages().phone" [value]="registerObj.phone" [formGroup]="supplierForm" [maxLength]="10">
+                                    <airmid-textbox label="PhoneNo" formControlName="phone" [validations]="getValidationMessages().phone" [formGroup]="supplierForm" [maxLength]="10">
                                     </airmid-textbox>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="Address" formControlName="address" [value]="registerObj?.address" [formGroup]="supplierForm" [validations]="getValidationMessages().address" [maxLength]="50">
+                                    <airmid-textbox label="Address" formControlName="address" [(ngModel)]="vAddress" [formGroup]="supplierForm" [validations]="getValidationMessages().address" [maxLength]="50">
                                     </airmid-textbox>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                    <airmid-dropdown label="City" formControlName="cityId" [formGroup]="supplierForm" [value]="registerObj.cityId" [validations]="getValidationMessages().cityId" [mode]="autocompleteModecity" (selectionChange)="selectChangecity($event)">
+                                    <airmid-dropdown label="City" formControlName="cityId"
+                                        [formGroup]="supplierForm" [value]="registerObj?.cityId"
+                                        [validations]="getValidationMessages().cityId" ValueField="cityId"
+                                        TextField="cityName" (selectionChange)="onChangecity($event)"
+                                        ApiUrl="CityMaster/get-cities">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="State" formControlName="stateId" [formGroup]="supplierForm" [value]="registerObj.stateId" [validations]="getValidationMessages().stateId" [mode]="autocompleteModestate" (selectionChange)="selectChangestate($event)">
+                                    <airmid-dropdown label="State" formControlName="stateId"
+                                        [formGroup]="supplierForm" [value]="registerObj?.stateId"
+                                        [validations]="getValidationMessages().stateId" ValueField="stateId"
+                                        TextField="stateName" (selectionChange)="onChangestate($event)"
+                                        ApiUrl="StateMaster/get-state">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Country" formControlName="countryId" [formGroup]="supplierForm" [value]="registerObj.countryId" [validations]="getValidationMessages().countryId" [mode]="autocompleteModecountry" (selectionChange)="selectChangecountry($event)">
+                                    <airmid-dropdown label="Country" formControlName="countryId"
+                                        [value]="registerObj?.countryId" [formGroup]="supplierForm"
+                                        [disabled]="true" [validations]="getValidationMessages().countryId"
+                                        #ddlCountry [mode]="autocompleteModecountry">
                                     </airmid-dropdown>
                                 </div>
 
@@ -103,17 +113,17 @@
                                     </airmid-textbox>
                                 </div>
 
-                                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Mode Of Payment" formControlName="modeofPayment" [formGroup]="supplierForm" [value]="registerObj.modeofPayment" [validations]="getValidationMessages().modeofPayment" [mode]="autocompleteModeofpayment" (selectionChange)="selectChangemodeofpayment($event)">
                                     </airmid-dropdown>
                                 </div>
 
-                                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Term Of Payment" formControlName="termofPayment" [formGroup]="supplierForm" [value]="registerObj.termofPayment" [validations]="getValidationMessages().termofPayment" [mode]="autocompleteModetermofpayment" (selectionChange)="selectChangetermofpayment($event)">
                                     </airmid-dropdown>
                                 </div>
 
-                                <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-textbox label="GST No" formControlName="gstNo" [value]="registerObj.gstNo" [formGroup]="supplierForm" [validations]="getValidationMessages().gstNo" [maxLength]="15">
                                     </airmid-textbox>
                                 </div>
@@ -130,21 +140,9 @@
                                 <span class="title">Store Details</span>
                             </div>
 
-                            <!-- <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
-                                <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-autocomplete label="Store" formControlName="mAssignSupplierToStores" [formGroup]="supplierForm" [IsMultiPle]="true" [value]="registerObj.mAssignSupplierToStores" [validations]="getValidationMessages().storeId" #ddlStore ValueField="storeId" TextField="storeName" ApiUrl="StoreMaster/get-store">
-                                    </airmid-autocomplete>
-                                </div>
-                                <mat-chip-listbox #chipList>
-                                    <mat-chip *ngFor="let item of supplierForm.value.mAssignSupplierToStores">
-                                        {{ item.storeName }} <mat-icon (click)="removestore(item)">close</mat-icon>
-                                    </mat-chip>
-                                </mat-chip-listbox>
-                                
-                            </div> -->
                             <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                    <airmid-dropdown label="Store" formControlName="mAssignSupplierToStores" [formGroup]="supplierForm" [IsMultiPle]="true" [value]="registerObj.mAssignSupplierToStores" [validations]="getValidationMessages().storeId" #ddlStore ValueField="storeId" TextField="storeName" ApiUrl="StoreMaster/get-store" [ReqFullObj]="true">
+                                    <airmid-dropdown label="Store" formControlName="mAssignSupplierToStores" [formGroup]="supplierForm" [IsMultiPle]="true" [value]="registerObj.mAssignSupplierToStores" [validations]="getValidationMessages().mAssignSupplierToStores" #ddlStore ValueField="storeId" TextField="storeName" ApiUrl="StoreMaster/get-store" [ReqFullObj]="true">
                                     </airmid-dropdown>
                                 </div>
                                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">

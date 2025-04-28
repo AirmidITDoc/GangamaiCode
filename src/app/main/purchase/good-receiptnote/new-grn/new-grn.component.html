@@ -49,6 +49,11 @@
                       </form>
                     </div> -->
 
+                    <airmid-dropdown label="Store Name" formControlName="StoreId" [formGroup]="_GRNList.userFormGroup"
+                    [validations]="getValidationMessages().StoreId" [value]="data?.StoreId"   fxFlex="11%"
+                    [mode]="autocompletestore">
+                     </airmid-dropdown>
+
                     <airmid-dropdown
                       label="Supplier Name | Code"
                       formControlName="SupplierId"
@@ -70,10 +75,10 @@
 
                     <airmid-textbox fxFlex="9%" label="Mobile" formControlName="Mobile" [(ngModel)]="vMobile" [formGroup]="_GRNList.userFormGroup" [readonly]="true"></airmid-textbox>
 
-                    <airmid-datepicker fxFlex="11%" [formGroup]="_GRNList.userFormGroup" formControlName="DateOfInvoice" [label]="'Invoice Date'" ></airmid-datepicker>
+                    <airmid-datepicker fxFlex="9%" [formGroup]="_GRNList.userFormGroup" formControlName="DateOfInvoice" [label]="'Invoice Date'" ></airmid-datepicker>
 
                     <airmid-textbox
-                      fxFlex="8%"
+                      fxFlex="6%"
                       label="Invoice No"
                       formControlName="InvoiceNo"
                       [(ngModel)]="registerObj.InvoiceNo"
@@ -83,7 +88,7 @@
                     ></airmid-textbox>
 
                     <airmid-textbox
-                      fxFlex="8%"
+                      fxFlex="6%"
                       label="Gate Entry No"
                       formControlName="GateEntryNo"
                       [(ngModel)]="registerObj.GrnNumber"
@@ -93,35 +98,32 @@
                     ></airmid-textbox>
 
                     <airmid-datepicker
-                      fxFlex="11%"
+                      fxFlex="9%"
                       [formGroup]="_GRNList.userFormGroup"
                       formControlName="PaymentDate"
                       [label]="'Payment due date'"
                     ></airmid-datepicker>
 
-                    <airmid-dropdown
-                      fxFlex="12%"
-                      label="Select GST Type"
-                      formControlName="GSTType"
-                      ValueField="text"
-                      [formGroup]="_GRNList.userFormGroup"
-                      [validations]="getValidationMessages().GSTType"
-                      (selectionChange)="onGSTTypeChange($event)"
-                      [mode]="autocompleteModeGSTType"
-                    ></airmid-dropdown>
+                    <airmid-dropdown   label="Select GST Type" formControlName="GSTType" [formGroup]="_GRNList.userFormGroup"
+                    [validations]="getValidationMessages().GSTType"   fxFlex="10%"
+                    [mode]="autocompleteModeGSTType"  (selectionChange)="onGSTTypeChange($event)">
+                     </airmid-dropdown> 
 
                     <div fxLayout="row" fxFlex="15%" class="ml-8">
-                      <mat-radio-group [(ngModel)]="vGrntypechecked" formControlName="GRNType" fxLayout="column" class="gap-4">
-                        <mat-radio-button [value]="true">Direct Purchase</mat-radio-button>
-                        <mat-radio-button [value]="false" (click)="purchaseOrderList()">Purchase Orders</mat-radio-button>
-                      </mat-radio-group>
+                      <mat-radio-group aria-label="Select an option" formControlName="GRNType1" fxLayout="column" class="gap-4">
+                      <mat-radio-button value="1">Direct Purchase</mat-radio-button>
+                        <mat-radio-button value="0">Purchase Orders</mat-radio-button>
+                       </mat-radio-group>
+                      
+                        <mat-radio-group aria-label="Select an option" formControlName="PaymentType1" fxLayout="column" class="gap-4">
+                      <mat-radio-button value="1">Cash</mat-radio-button>
+                      <mat-radio-button value="0">Credit</mat-radio-button>
+                    </mat-radio-group>
+                    </div> 
+                  </div> 
 
-                      <mat-radio-group [(ngModel)]="vCahchecked" formControlName="PaymentType" fxLayout="column" class="gap-4">
-                        <mat-radio-button [value]="true">Cash</mat-radio-button>
-                        <mat-radio-button [value]="false">Credit</mat-radio-button>
-                      </mat-radio-group>
-                    </div>
-                  </div>
+                 
+
                   <div fxLayout="row" class="gap-4">
                     <input type="hidden" name="PurchaseId" [(ngModel)]="vPurchaseId" formControlName="PurchaseId" />
                     <input type="hidden" name="poBalQty" [(ngModel)]="vpoBalQty" formControlName="poBalQty" />

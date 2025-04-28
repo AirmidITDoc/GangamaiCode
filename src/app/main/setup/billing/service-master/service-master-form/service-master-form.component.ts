@@ -31,8 +31,8 @@ export class ServiceMasterFormComponent implements OnInit {
     registerObj = new ServiceMaster({});
     butDisabled: boolean = false;
     msg: any;
-    emg_amt = "";
-    emg_per = "";
+    emg_amt :any;
+    emg_per :any;
     DSServicedetailList = new MatTableDataSource<Servicedetail>();
     vServiceName: any;
     vServiceShortDesc: any;
@@ -72,7 +72,6 @@ export class ServiceMasterFormComponent implements OnInit {
         this.serviceForm = this._serviceMasterService.createServicemasterForm();
        
         // this.serviceForm = this._serviceMasterService.createServicemasterForm();
-        this.getClassList()
 
         this.serviceForm.get('EffectiveDate').setValue(new Date());
 
@@ -91,6 +90,8 @@ export class ServiceMasterFormComponent implements OnInit {
             this.IsPackage=this.registerObj.isPackage
             this.IsRadiology=this.registerObj.isRadiology
             this.IsPathology=this.registerObj.isPathology
+            this.emg_amt = this.registerObj.emgAmt
+            this.emg_per = this.registerObj.emgPer
 
             if(this.registerObj.creditedtoDoctor == true){
                 this.serviceForm.get('CreditedtoDoctor').setValue(true)
@@ -101,10 +102,10 @@ export class ServiceMasterFormComponent implements OnInit {
               if(this.registerObj.isEmergency == true){
                 this.serviceForm.get('IsEmergency').setValue(true)
                 this.showEmg = true;
-                this.serviceForm.get('EmgAmt').setValue(this.registerObj.emgAmt)
-                this.serviceForm.get('EmgPer').setValue(this.registerObj.emgPer)
               }
+
         }
+        this.getClassList()
       
         var mdata = {
             // ServiceId: this.data?.serviceId,
@@ -265,7 +266,7 @@ export class ServiceMasterFormComponent implements OnInit {
             let clas_d = {
                 serviceDetailId: 0,
                 serviceId: 0,
-                tariffId: element.tariffId || 0,
+                tariffId: this.tariffId || 0,
                 classId: element.classId || 0,
                 classRate: element.classRate || 0
             };
@@ -312,7 +313,7 @@ export class ServiceMasterFormComponent implements OnInit {
             let clas_d = {
                 serviceDetailId: 0,
                 serviceId: 0,
-                tariffId: element.tariffId || 0,
+                tariffId: this.tariffId || 0,
                 classId: element.classId || 0,
                 classRate: element.classRate || 0
             };
