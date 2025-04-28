@@ -27,12 +27,14 @@ export class FixSupplierComponent implements OnInit {
     vchkactive: any = true;
     isActive: boolean = true;
     // new API
+    SupplierId: any = 0;
 
     autocompleteModecity: string = "City";
     autocompleteModestate: string = "State";
     autocompleteModecountry: string = "Country";
     autocompleteModeofpayment: string = "PaymentMode";
     autocompleteModetermofpayment: string = "TermofPayment";
+    @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
 
     constructor(
         public _supplierService: SupplierMasterService,
@@ -42,8 +44,26 @@ export class FixSupplierComponent implements OnInit {
         public dialogRef: MatDialogRef<SupplierMasterComponent>
     ) { }
 
+    vAddress:any;
+
     ngOnInit(): void {
         this.supplierForm = this._supplierService.createSuppliermasterForm();
+        this.supplierForm.markAllAsTouched();
+
+        if(this.data){
+            console.log(this.data)
+            this.SupplierId = this.data.supplierId
+            this.supplierForm.get('supplierName')?.setValue(this.data.supplierName.trim());
+            this.supplierForm.get('mobile')?.setValue(this.data.mobile.trim());
+            this.supplierForm.get('phone')?.setValue(this.data.phone.trim());
+            this.supplierForm.get('address')?.setValue(this.data.address.trim());
+            this.supplierForm.get('panNo')?.setValue(this.data.panNo.trim());
+
+            this.supplierForm.get('email')?.setValue(this.data.email.trim());
+            this.supplierForm.get('CreditPeriod')?.setValue(this.data.creditPeriod.trim());
+            this.supplierForm.get('gstNo')?.setValue(this.data.gstNo.trim());
+        }
+
         if ((this.data?.supplierId ?? 0) > 0) {
 
             this.isActive = this.data.isActive;
@@ -65,10 +85,38 @@ export class FixSupplierComponent implements OnInit {
         this.ddlStore.SetSelection(this.supplierForm.value.mAssignSupplierToStores.map(x => x.storeId));
     }
 
-    onSubmit() {
+    onChangecity(e) {
+        
+        this.registerObj.stateId = e.stateId
+        this._supplierService.getstateId(e.stateId).subscribe((Response) => {
+            console.log(Response)
+            this.ddlCountry.SetSelection(Response.countryId);
+        });
+    }
 
-        console.log(this.supplierForm.value);
-        this._supplierService.SupplierSave(this.supplierForm.value).subscribe((response) => {
+    onChangestate(e) {
+    }
+
+    onSubmit() {
+        debugger
+       if(!this.supplierForm.invalid){
+        const formData = { ...this.supplierForm.value };
+        const transformedStores = (formData.mAssignSupplierToStores || []).map((store: any) => {
+            return {
+                assignId: 0,
+                StoreId: store.storeId,
+                SupplierId: 0
+            };
+        });
+
+        formData.mAssignSupplierToStores = transformedStores;
+
+        // const id=this.supplierForm.get('supplierId').setValue(this.SupplierId)
+        formData.supplierId = this.SupplierId;
+
+        console.log("After transformation:", formData);
+
+        this._supplierService.SupplierSave(formData).subscribe((response) => {
             this.toastr.success(response.message);
             this.onClear(true);
         }, (error) => {
@@ -76,6 +124,24 @@ export class FixSupplierComponent implements OnInit {
         });
 
         this.onClose();
+       } else {
+        let invalidFields = [];
+
+        if (this.supplierForm.invalid) {
+            for (const controlName in this.supplierForm.controls) {
+            if (this.supplierForm.controls[controlName].invalid) {
+                invalidFields.push(`My Form: ${controlName}`);
+            }
+            }
+        }
+
+        if (invalidFields.length > 0) {
+            invalidFields.forEach(field => {
+              this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+              );
+            });
+          }
+    }
 
     }
 
@@ -194,7 +260,9 @@ export class FixSupplierComponent implements OnInit {
                 { name: "required", Message: "GST is required" },
                 { name: "maxLength", Message: "More than 15 digits not allowed." }
             ],
-            storeId: [],
+            mAssignSupplierToStores: [
+                { name: "required", Message: "Store is required" }
+            ],
         };
     }
 }

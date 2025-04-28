@@ -33,15 +33,36 @@
 
                                             <input type="hidden" name="storeId" formControlName="storeId">
                                             <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
-                                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-textbox label="Store Name" formControlName="storeName" [value]="registerObj?.storeName" [formGroup]="storeForm" [validations]="getValidationMessages().storeName" [maxLength]="50">
                                                     </airmid-textbox>
                                                 </div>
 
-                                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-textbox label="Store Short Name" formControlName="storeShortName" [value]="registerObj?.storeShortName" [formGroup]="storeForm" [validations]="getValidationMessages().storeShortName" [maxLength]="50">
                                                     </airmid-textbox>
                                                 </div>
+
+                                                <!-- added as per 8085 -->
+                                                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="hospitalMobileNo" formControlName="hospitalMobileNo" [value]="registerObj.hospitalMobileNo" [formGroup]="storeForm" [maxLength]="10">
+                                                    </airmid-textbox>
+                                                </div>
+
+                                                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Print ShortName" formControlName="printStoreName" [value]="registerObj?.printStoreName" [formGroup]="storeForm" [maxLength]="50">
+                                                    </airmid-textbox>
+                                                </div>
+
+                                                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Print ShortAddress" formControlName="storeAddress" [value]="registerObj?.storeAddress" [formGroup]="storeForm" [maxLength]="50">
+                                                    </airmid-textbox>
+                                                </div>
+
+                                                <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Print Terms&Conditions" formControlName="storeShortName" [value]="registerObj?.storeShortName" [formGroup]="storeForm" [validations]="getValidationMessages().storeShortName" [maxLength]="50">
+                                                    </airmid-textbox>
+                                                </div> -->
                                             </div>
                                         </div>
                                         <div class="detail-container">
@@ -54,15 +75,15 @@
                                                     </airmid-textbox>
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="Indent No" formControlName="indentNo" [value]="registerObj?.indentNo" [formGroup]="storeForm" [validations]="getValidationMessages().indentNo" [maxLength]="30">
+                                                    <airmid-textbox label="Indent No" formControlName="indentNo" [formGroup]="storeForm" [(ngModel)]="VindentNo" [validations]="getValidationMessages().indentNo" [maxLength]="30">
                                                     </airmid-textbox>
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="GRN Return No Prefix" formControlName="grnreturnNoPrefix" [value]="registerObj?.grnreturnNoPrefix" [formGroup]="storeForm" [validations]="getValidationMessages().grnreturnNoPrefix" [maxLength]="50">
+                                                    <airmid-textbox label="GRN Return No Prefix" formControlName="grnreturnNoPrefix" [value]="registerObj?.grnreturnNoPrefix.trim()" [formGroup]="storeForm" [validations]="getValidationMessages().grnreturnNoPrefix" [maxLength]="50">
                                                     </airmid-textbox>
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="GRN Return No" formControlName="grnreturnNo" [value]="registerObj?.grnreturnNo" [formGroup]="storeForm" [validations]="getValidationMessages().grnreturnNo" [maxLength]="30">
+                                                    <airmid-textbox label="GRN Return No" formControlName="grnreturnNo" [formGroup]="storeForm" [(ngModel)]="VgrnreturnNo" [validations]="getValidationMessages().grnreturnNo" [maxLength]="30">
                                                     </airmid-textbox>
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -70,7 +91,7 @@
                                                     </airmid-textbox>
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="Purchase No" formControlName="purchaseNo" [value]="registerObj?.purchaseNo" [formGroup]="storeForm" [validations]="getValidationMessages().purchaseNo" [maxLength]="30">
+                                                    <airmid-textbox label="Purchase No" formControlName="purchaseNo" [formGroup]="storeForm" [(ngModel)]="VpurchaseNo" [validations]="getValidationMessages().purchaseNo" [maxLength]="30">
                                                     </airmid-textbox>
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -78,7 +99,7 @@
                                                     </airmid-textbox>
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="Issue To Dept No" formControlName="issueToDeptNo" [value]="registerObj?.issueToDeptNo" [formGroup]="storeForm" [validations]="getValidationMessages().issueToDeptNo" [maxLength]="30">
+                                                    <airmid-textbox label="Issue To Dept No" formControlName="issueToDeptNo" [formGroup]="storeForm" [(ngModel)]="VissueToDeptNo" [validations]="getValidationMessages().issueToDeptNo" [maxLength]="30">
                                                     </airmid-textbox>
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -86,7 +107,7 @@
                                                     </airmid-textbox>
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="GRN No" formControlName="grnNo" [value]="registerObj?.grnNo" [formGroup]="storeForm" [validations]="getValidationMessages().grnNo" [maxLength]="30">
+                                                    <airmid-textbox label="GRN No" formControlName="grnNo" [formGroup]="storeForm" [(ngModel)]="VgrnNo" [validations]="getValidationMessages().grnNo" [maxLength]="30">
                                                     </airmid-textbox>
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -94,7 +115,7 @@
                                                     </airmid-textbox>
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="Return From Dept No" formControlName="returnFromDeptNo" [value]="registerObj?.returnFromDeptNo" [formGroup]="storeForm" [validations]="getValidationMessages().returnFromDeptNo" [maxLength]="30">
+                                                    <airmid-textbox label="Return From Dept No" formControlName="returnFromDeptNo" [formGroup]="storeForm" [(ngModel)]="VreturnFromDeptNo" [validations]="getValidationMessages().returnFromDeptNo" [maxLength]="30">
                                                     </airmid-textbox>
                                                 </div>
                                             </div>
@@ -106,22 +127,47 @@
                                             </div>
 
                                             <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
-                                                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-dropdown label="pharSalCountId" formControlName="pharSalCountId" [formGroup]="storeForm" [(value)]="registerObj.pharSalCountId" [validations]="getValidationMessages().pharSalCountId" [mode]="autocompleteModeCashcounter">
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-dropdown label="Phar Sales CashCounter" formControlName="pharSalCountId" [formGroup]="storeForm" [(value)]="registerObj.pharSalCountId" [validations]="getValidationMessages().pharSalCountId" [mode]="autocompleteModeCashcounter">
                                                     </airmid-dropdown>
 
                                                 </div>
-                                                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                                     <airmid-dropdown label="pharSalRecCountId" formControlName="pharSalRecCountId" [formGroup]="storeForm" [(value)]="registerObj.pharSalRecCountId" [validations]="getValidationMessages().pharSalRecCountId" [mode]="autocompleteModeCashcounter">
                                                     </airmid-dropdown>
 
                                                 </div>
-                                                <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                                     <airmid-dropdown label="pharSalReturnCountId" formControlName="pharSalReturnCountId" [formGroup]="storeForm" [(value)]="registerObj.pharSalReturnCountId" [validations]="getValidationMessages().pharSalReturnCountId" [mode]="autocompleteModeCashcounter">
                                                     </airmid-dropdown>
                                                 </div>
+
+                                                <!-- added as per 8085 -->
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-dropdown label="Phar Advance CashCounter" formControlName="pharAdvId" [formGroup]="storeForm" [(value)]="registerObj.pharAdvId" [validations]="getValidationMessages().pharAdvId" [mode]="autocompleteModeCashcounter">
+                                                    </airmid-dropdown>
+
+                                                </div>
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <airmid-dropdown label="Phar Advacne Receipt CashCounter" formControlName="pharAdvReptId" [formGroup]="storeForm" [(value)]="registerObj.pharAdvReptId" [validations]="getValidationMessages().pharAdvReptId" [mode]="autocompleteModeCashcounter">
+                                                    </airmid-dropdown>
+
+                                                </div>
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <airmid-dropdown label="Phar Advacne Refund CashCounter" formControlName="pharAdvRefId" [formGroup]="storeForm" [(value)]="registerObj.pharAdvRefId" [validations]="getValidationMessages().pharAdvRefId" [mode]="autocompleteModeCashcounter">
+                                                    </airmid-dropdown>
+                                                </div>
+
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <airmid-dropdown label="Phar Advacne Ref Rec CashCounter" formControlName="pharAdvRefReptId" [formGroup]="storeForm" [(value)]="registerObj.pharAdvRefReptId" [validations]="getValidationMessages().pharAdvRefReptId" [mode]="autocompleteModeCashcounter">
+                                                    </airmid-dropdown>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>

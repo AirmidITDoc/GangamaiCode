@@ -21,7 +21,8 @@ export class SupplierMasterService {
             supplierName: ["",
                 [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z ]*$")
                 ]
             ],
             ContactPerson: ["Hospital-Admin", [
@@ -30,17 +31,18 @@ export class SupplierMasterService {
                 // Validators.maxLength(100),
             ]],
             address: ["",
-                Validators.required,
-                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+               [ Validators.required,
+                Validators.pattern("^[A-Za-z0-9.,\\s]*$") 
+            ]
             ],
-            cityId: [0,
-                Validators.required
+            cityId: ['',
+               [ Validators.required]
             ],
-            stateId: [0,
-                Validators.required
+            stateId: ['',
+                [Validators.required]
             ],
-            countryId: [0,
-                Validators.required
+            countryId: ['',
+                [Validators.required]
             ],
             CreditPeriod: ["",
                 [
@@ -52,6 +54,7 @@ export class SupplierMasterService {
                     Validators.required,
                     Validators.maxLength(10),
                     Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                    // Validators.pattern("^[0-9 ]*$")
                 ]
             ],
             phone: ["",
@@ -59,6 +62,7 @@ export class SupplierMasterService {
                     Validators.required,
                     Validators.maxLength(10),
                     Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                    // Validators.pattern("^[0-9 ]*$")
                 ]
             ],
             fax: ["0",
@@ -72,6 +76,7 @@ export class SupplierMasterService {
                 [
                     Validators.required,
                     Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$")
+                    // Validators.pattern("^\\s*[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}\\s*$")
                 ]
             ],
             modeofPayment: ["",
@@ -82,7 +87,7 @@ export class SupplierMasterService {
             ],
             CurrencyId: [1],
             Octroi: [0],
-            Freight: [0,
+            Freight: ['0',
                 [
                     // Validators.required,
                     // Validators.pattern("^[0-9]*$"),
@@ -99,16 +104,17 @@ export class SupplierMasterService {
                 [
                     Validators.required,
                     Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")
+                    // Validators.pattern("^\\s*[A-Z]{5}[0-9]{4}[A-Z]{1}\\s*$")
                 ]
             ],
             supplierTime: [(new Date()).toISOString()],
-            isActive:[true,[Validators.required]],
+            // isActive:[true,[Validators.required]],
             mAssignSupplierToStores: [
                 {
                     assignId: 0,
                     storeId: 0,
                     supplierId: 0
-                }
+                },[ Validators.required]
             ]
         });
     }
@@ -151,6 +157,10 @@ export class SupplierMasterService {
     public SupplierMasterCancle(Id: any) {
         
       return this._httpClient.DeleteData(`Supplier/SupplierDelete?Id=${Id}`);
+    }
+
+    public getstateId(Id) {
+        return this._httpClient.GetData("StateMaster/" + Id);
     }
 }
 
