@@ -89,24 +89,31 @@ tableElementChecked(event, element) {
     }
   }
 }
+Det_Id:any = 0;
+selectAdd(element){
+  this.Det_Id = element.Det_Id
+}
 onReset(){
   this.vFinalNetAmt = 0
+  this.Det_Id = 0
   this.getdebitNote();
 }
 OnSave(){
-  if(this.vFinalNetAmt == 0 || this.vFinalNetAmt == null || this.vFinalNetAmt == undefined || this.vFinalNetAmt == ''){
-    this.toastr.warning('check final net amount is zero.', 'warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-  });
-  return
-  }
+  // if(this.vFinalNetAmt == 0 || this.vFinalNetAmt == null || this.vFinalNetAmt == undefined || this.vFinalNetAmt == ''){
+  //   this.toastr.warning('check final net amount is zero.', 'warning !', {
+  //     toastClass: 'tostr-tost custom-toast-warning',
+  // });
+  // return
+  // }
 this.dialogRef.close(
   {
     FinalNetAmt:this.vFinalNetAmt,
     SelectedList : this.selectedList,
+    Det_Id : this.Det_Id
  
   }
   )
+this.onReset();
 }
 
 

@@ -1113,10 +1113,8 @@ debugger
 
        
         let CreditAmount = this._GRNList.GRNFinalForm.get("CreditAmount").value || 0;
-        console.log(FinalRoundAmt)
-        console.log(CreditAmount)
-        if(CreditAmount > 0){
-            if(CreditAmount > FinalRoundAmt && this.dsItemNameList.data.length > 0){
+        if(CreditAmount > 0 && this.dsItemNameList.data.length > 0){
+            if(CreditAmount > FinalRoundAmt && !this.dsItemNameList.data.length){
                 this.toastr.warning('check credit amount should not be greater than net amount', 'warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',
                 }); 
@@ -1349,6 +1347,7 @@ debugger
     }
     OnReset() {
         this._GRNList.userFormGroup.reset();
+        this._GRNList.GRNFinalForm.reset();
         this.dsLastThreeItemList.data = [];
         this.dsItemNameList.data = [];
     }
@@ -2371,7 +2370,7 @@ debugger
         this.dialogRef.close();
     }
     selectedCreditNotelist:any=[];
-    CreditDetID:any=0;
+    CreditDetID:any=0; 
     getDebitnotelist() {
         let SupplierId = this._GRNList.userFormGroup.get('SupplierId').value
         if(SupplierId == '' || SupplierId == 0 || SupplierId == null || SupplierId == undefined){ 
@@ -2386,6 +2385,7 @@ debugger
             });
             return
         }
+        this._GRNList.GRNFinalForm.get('NetPayamt').setValue(this.NetAmount)
         const dialogRef = this._matDialog.open(CreditNoteComponent,
             {
                 maxWidth: "100%",
@@ -2398,8 +2398,18 @@ debugger
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
             this.selectedCreditNotelist = result.SelectedList;
-             this.CreditDetID = result.Det_ID;
-            this._GRNList.GRNFinalForm.get('CreditAmount').setValue(result.FinalNetAmt)
+            this.CreditDetID =  result.Det_Id; 
+            this._GRNList.GRNFinalForm.get('CreditAmount').setValue(result.FinalNetAmt) 
+        //   let CreditAmount = this._GRNList.GRNFinalForm.get("CreditAmount").value || 0; 
+        // if(CreditAmount > 0){
+        //     if(CreditAmount > 0 && this.dsItemNameList.data.length > 0){
+        //         this.toastr.warning('check credit amount should not be greater than net amount', 'warning !', {
+        //             toastClass: 'tostr-tost custom-toast-warning',
+        //         }); 
+        //     }else{
+        //         FinalRoundAmt = (parseFloat(FinalRoundAmt) - parseFloat(CreditAmount));
+        //     } 
+        // }
         });
     }
 

@@ -127,7 +127,7 @@
                     </mat-header-row>
             
                     <mat-row *matRowDef="let contact; columns: displayedColumnsADD;" class="contact"
-                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="selectAdd(contact)"></mat-row>
                     <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dsCreditADDnotelist!=null}"></mat-footer-row>
                     <mat-footer-row *matFooterRowDef="['noData']"
                         [ngClass]="{'hide':!(dsCreditADDnotelist!=null && dsCreditADDnotelist.data.length==0)}"></mat-footer-row>

@@ -252,13 +252,27 @@ export class NewGRNReturnComponent implements OnInit {
 interimArray: any = [];
 tableElementChecked(event, element) {
   if (event.checked) {
+    if(element.ReturnQty == 0 || element.ReturnQty == '' || element.ReturnQty == null){
+      this.toastr.warning('Return Qty is 0 ,Enter a Return Qty', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      this.chargeslist = [];
+      this.getGrnItemDetailList(this.GrnlistObj) 
+      return;
+    }
     this.interimArray.push(element);
+  }else{
+    let index = this.interimArray.indexOf(element);
+    if (index !== -1) {
+      this.interimArray.splice(index, 1);
+    }
   }
 }
  
  
 Savebtn:boolean=false;
 OnSave(){
+  debugger
   if ((!this.dsGrnItemList.data.length)) {
     this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
       toastClass: 'tostr-tost custom-toast-warning',
@@ -277,6 +291,7 @@ OnSave(){
     });
     return;
   } 
+ console.log(this.interimArray)
   this.Savebtn = true;
   let grnReturnSave = {};
   grnReturnSave['grnId'] = this.vGRNID || 0;
@@ -432,6 +447,7 @@ OnReset() {
  
   vGRNID:any=0;
   CashCredittype:any;
+  GrnlistObj:any;
   getGRNList() {  
     this.dsGrnItemList.data = [];
     this.chargeslist.data = [];
@@ -449,8 +465,9 @@ OnReset() {
       this.VsupplierName = this.dsNewGRNReturnItemList.data[0]['SupplierName']
       this.vGRNID = this.dsNewGRNReturnItemList.data[0].GRNID
       this.CashCredittype = this.dsNewGRNReturnItemList.data[0].Cash_CreditType
+      this.GrnlistObj = this.dsNewGRNReturnItemList.data[0]
       this.getSupplierSearchCombo();  
-      this.getGrnItemDetailList(this.dsNewGRNReturnItemList.data[0]) 
+      this.getGrnItemDetailList(this.GrnlistObj) 
       if(this.dsNewGRNReturnItemList.data[0].Cash_CreditType == false){
         this.isChecked = true;
       }else{

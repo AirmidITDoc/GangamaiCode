@@ -1,31 +1,35 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    <mat-toolbar style="width: 100%;height: 50px;justify-content: space-between;">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <button mat-icon-button class="user-icon">
-                <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                    style="color: white;">account_box
-                </mat-icon>
-            </button>
-            <div class="top-header-title">
-                <span class="logo-text" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                    style="color: white;">New GRN Return
-                </span>
+ 
+    <div class="page-layout modal-wrapper grid-container" dynamicTableHeight> 
+        <div class="modal-header accent">
+            <div class="modal-header-content">
+                <div class="modal-header-title" style="width: 100%;height: 50px;justify-content: space-between;">
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                            <mat-icon>menu</mat-icon>
+                        </button>
+                        <button mat-icon-button class="user-icon">
+                            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                                style="color: white;">account_box
+                            </mat-icon>
+                        </button>
+                        <div class="top-header-title">
+                            <span class="logo-text" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                                style="color: white;">New GRN Return
+                            </span>
+                        </div>
+            
+                    </div>
+                    <button mat-raised-button fxLayoutAlign="center center" class="py-8" (click)="getGRNList()">
+                        <span>GRN List</span>
+                    </button>
+                </div>
             </div>
-
         </div>
-        <button mat-raised-button fxLayoutAlign="center center" class="py-8" (click)="getGRNList()">
-            <span>GRN List</span>
-        </button>
-    </mat-toolbar>
+    
 
-    <div class="content">
+    <div class="modal-body">
 
-        <div class="center p-12 pb-56" fxFlexAlign="start center">
-
-            <div class="content-card" style="border-radius:4px;" fxLayoutGap="10px">
+        <div class="center p-12 pb-56" fxFlexAlign="start center"> 
 
                 <div fxLayout="column" fxLayoutAlign="start none" fxLayoutGap="10px">
                    
@@ -328,71 +332,70 @@
                                 </mat-paginator> 
                             </div>
                         </div>
-                    </div>
-                  
+                    </div> 
+                </div>  
+        </div>
+    </div>
 
-                    <form [formGroup]="_GRNReturnService.NewGRNRetFinalFrom" fxLayoutGap="10px"> 
+
+    <div class="modal-footer" fxLayout="column" fxLayoutGap="5px">
+        <form [formGroup]="_GRNReturnService.NewGRNRetFinalFrom" fxLayoutGap="10px"> 
                           
-                        <div style="padding-top: 10px;">
-                            <span class="net-amt-label"
-                                style="width: 200px;font-weight: bold;color:blue;font-size: medium;">
-                                Total Amount :</span>&nbsp;<span class="net-amt-value"
-                                style="margin-right: 10px;font-weight: bold">{{getTotalamt(dsGrnItemList.data)
-                                | currency:'INR' }}</span>
-                            <span class="net-amt-label"
-                                style="width: 200px;font-weight: bold;color:blue;font-size: medium;">
-                                Net Amount :</span>&nbsp;<span class="net-amt-value"
-                                style="margin-right: 10px;font-weight: bold">{{getNetamt(dsGrnItemList.data)
-                                | currency:'INR' }}</span>
-                        </div>
-                     
-                        <div fxlayout="row" fxLayoutGap="5px"> 
-
-                            <mat-form-field appearance="outline" fxFlex="40%">
-                                <mat-label>Remark</mat-label>
-                                <textarea rows="1" matInput name="Remark" formControlName="Remark"></textarea>
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex="12%">
-                                <mat-label>Total Amount</mat-label>
-                                <input matInput name="TotalAmount" formControlName="FinalTotalAmount"
-                                    [(ngModel)]="vFinalTotalAmount">
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex="12%">
-                                <mat-label>DiscAmount</mat-label>
-                                <input matInput name="DiscAmount" formControlName="FinalDiscAmountt"
-                                    placeholder="DiscAmount" [(ngModel)]="vFinalDiscAmount">
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex="12%">
-                                <mat-label>Vat Amount</mat-label>
-                                <input matInput name="VatAmount" formControlName="FinalVatAmount"
-                                    placeholder="VatAmount" [(ngModel)]="vFinalVatAmount">
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex="12%">
-                                <mat-label>Net Amount</mat-label>
-                                <input matInput name="NetAmount" formControlName="FinalNetAmount"
-                                    placeholder="NetAmount" [(ngModel)]="vFinalNetAmount">
-                            </mat-form-field> 
-
-                            <mat-form-field appearance="outline" fxFlex="11%">
-                                <mat-label>RoundingAmt</mat-label>
-                                <input matInput name="RoundingAmt" formControlName="RoundingAmt"
-                                    placeholder="RoundingAmt" [(ngModel)]="vRoundingAmt">
-                            </mat-form-field>  
-                          
-                        </div>  
-                    </form> 
-                    <div class="modal-footer">
-                        <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end">
-                            <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
-                            <button class="btn btn-primary " (click)="OnSave()" [disabled]="Savebtn">Save</button>
-                        </div>
-                    </div>
-                </div> 
+            <div style="padding-top: 10px;">
+                <span class="net-amt-label"
+                    style="width: 200px;font-weight: bold;color:blue;font-size: medium;">
+                    Total Amount :</span>&nbsp;<span class="net-amt-value"
+                    style="margin-right: 10px;font-weight: bold">{{getTotalamt(dsGrnItemList.data)
+                    | currency:'INR' }}</span>
+                <span class="net-amt-label"
+                    style="width: 200px;font-weight: bold;color:blue;font-size: medium;">
+                    Net Amount :</span>&nbsp;<span class="net-amt-value"
+                    style="margin-right: 10px;font-weight: bold">{{getNetamt(dsGrnItemList.data)
+                    | currency:'INR' }}</span>
             </div>
+         
+            <div fxlayout="row" fxLayoutGap="5px"> 
+
+                <mat-form-field appearance="outline" fxFlex="40%">
+                    <mat-label>Remark</mat-label>
+                    <textarea rows="1" matInput name="Remark" formControlName="Remark"></textarea>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="12%">
+                    <mat-label>Total Amount</mat-label>
+                    <input matInput name="TotalAmount" formControlName="FinalTotalAmount"
+                        [(ngModel)]="vFinalTotalAmount">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="12%">
+                    <mat-label>DiscAmount</mat-label>
+                    <input matInput name="DiscAmount" formControlName="FinalDiscAmountt"
+                        placeholder="DiscAmount" [(ngModel)]="vFinalDiscAmount">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="12%">
+                    <mat-label>Vat Amount</mat-label>
+                    <input matInput name="VatAmount" formControlName="FinalVatAmount"
+                        placeholder="VatAmount" [(ngModel)]="vFinalVatAmount">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="12%">
+                    <mat-label>Net Amount</mat-label>
+                    <input matInput name="NetAmount" formControlName="FinalNetAmount"
+                        placeholder="NetAmount" [(ngModel)]="vFinalNetAmount">
+                </mat-form-field> 
+
+                <mat-form-field appearance="outline" fxFlex="11%">
+                    <mat-label>RoundingAmt</mat-label>
+                    <input matInput name="RoundingAmt" formControlName="RoundingAmt"
+                        placeholder="RoundingAmt" [(ngModel)]="vRoundingAmt">
+                </mat-form-field>  
+              
+            </div>  
+        </form> 
+        <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end">
+            <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
+            <button class="btn btn-primary " (click)="OnSave()" [disabled]="Savebtn">Save</button>
         </div>
     </div>
 </div>
