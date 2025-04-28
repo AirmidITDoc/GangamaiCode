@@ -299,7 +299,7 @@ export class RegInsert {
     AdmissionID: any;
     VisitId: any;
     isSeniorCitizen: boolean
-    // addedBy:any;
+    // religionId:any;
     // updatedBy:any;
 
 
@@ -374,7 +374,7 @@ export class RegInsert {
             this.AdmissionID = RegInsert.AdmissionID || '';
             this.VisitId = RegInsert.VisitId || 0;
             this.isSeniorCitizen = RegInsert.isSeniorCitizen || 0
-            // this.addedBy = RegInsert.addedBy || 0 ;
+            this.maritalStatusId = RegInsert.maritalStatusId || 0 ;
             // this.updatedBy = RegInsert.updatedBy || 0 ;
 
         }

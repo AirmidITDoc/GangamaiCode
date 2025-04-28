@@ -43,10 +43,10 @@ export class NewAdmissionComponent implements OnInit {
   isCompanySelected: boolean = false;
   Regflag: boolean = false;
   Regdisplay: boolean = false;
-  // isAlive = false;
-  // savedValue: number = null;
-  // submitted = false;
-  // isLinear = true;
+  ageYear = 0
+  ageMonth = 0
+  ageDay = 0
+
   noOptionFound: boolean = false;
   isRegSearchDisabled: boolean = true;
   registredflag: boolean = true;
@@ -182,6 +182,8 @@ export class NewAdmissionComponent implements OnInit {
 
   onNewSave() {
 
+    if (this.ageYear != 0 || this.ageMonth != 0 || this.ageDay != 0) {
+
     if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid) {
 
       Swal.fire({
@@ -225,6 +227,9 @@ export class NewAdmissionComponent implements OnInit {
       }
 
     }
+  }else {
+    this.toastr.warning("Please Select Birthdate  ...");
+}
   }
 
 
@@ -247,24 +252,33 @@ export class NewAdmissionComponent implements OnInit {
 
 
   }
-  ageYear = "0"
-  ageMonth = "0"
-  ageDay = "0"
+
   OnSaveAdmission() {
     let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
     if (DateOfBirth1) {
       const todayDate = new Date();
       const dob = new Date(DateOfBirth1);
       const timeDiff = Math.abs(Date.now() - dob.getTime());
-      this.ageYear = String(Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25))
-      this.ageMonth = String(Math.abs(todayDate.getMonth() - dob.getMonth()))
-      this.ageDay = String(Math.abs(todayDate.getDate() - dob.getDate()))
+      this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
+      this.ageMonth = (todayDate.getMonth() - dob.getMonth());
+      this.ageDay = (todayDate.getDate() - dob.getDate());
 
+      if (this.ageDay < 0) {
+          (this.ageMonth)--;
+          const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+          this.ageDay += previousMonth.getDate(); // Days in previous month
+      }
+
+      if (this.ageMonth < 0) {
+          this.ageYear--;
+          this.ageMonth += 12;
+      }
     }
-    this.personalFormGroup.get('Age').setValue(this.ageYear)
-    this.personalFormGroup.get('AgeYear').setValue(this.ageYear)
-    this.personalFormGroup.get('AgeMonth').setValue(this.ageMonth)
-    this.personalFormGroup.get('AgeDay').setValue(this.ageDay)
+    this.personalFormGroup.get('Age').setValue(String(this.ageYear))
+    this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
+    this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
+    this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
+
     this.admissionFormGroup.get('hospitalId').setValue(this.searchFormGroup.get("HospitalId").value)
 
     this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
@@ -276,7 +290,7 @@ export class NewAdmissionComponent implements OnInit {
       });
       return;
     }
-
+    if (this.ageYear != 0 || this.ageMonth != 0 || this.ageDay != 0) {
 
     let submitData = {
       "AdmissionReg": this.personalFormGroup.value,
@@ -305,6 +319,7 @@ export class NewAdmissionComponent implements OnInit {
         this._matDialog.closeAll();
       });
     }
+  }
   }
 
 

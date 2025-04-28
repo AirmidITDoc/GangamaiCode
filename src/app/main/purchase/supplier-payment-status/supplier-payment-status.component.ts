@@ -24,16 +24,18 @@ import { error } from 'console';
   animations: fuseAnimations,
 })
 export class SupplierPaymentStatusComponent implements OnInit {
+    autocompletestore: string = "Store";
+  autocompleteSupplier: string = "SupplierMaster"
   displayedColumns = [
     'CheckBox',
-    'GRNNo',
-    'GRNDate',
-    'SupplierName',
-    'InvoiceNo',
-    'NetAmount',
-    'PaidAmount',
-    'BalAmount',
-    'InvDate',
+    'grnNumber',
+    'grnTime',
+    'supplierName',
+    'invoiceNo',
+    'netAmount',
+    'paidAmount',
+    'balAmount',
+    'invDate',
    // 'action',
   ];
   
@@ -98,17 +100,50 @@ export class SupplierPaymentStatusComponent implements OnInit {
   }
                                 
   getSupplierPayStatusList(){
-    this.sIsLoading = '';
-    var vdata={
-      'ToStoreId': this.accountService.currentUserValue.storeId || 0,
-      'From_Dt':this.datePipe.transform(this._SupplierPaymentStatusService.SearchFormGroup.get('start').value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      'To_Dt':this.datePipe.transform(this._SupplierPaymentStatusService.SearchFormGroup.get('end').value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      'IsPaymentProcess':this._SupplierPaymentStatusService.SearchFormGroup.get('Status').value || 0,
-      'Supplier_Id':this._SupplierPaymentStatusService.SearchFormGroup.get('SupplierId').value.SupplierId || 0,
+       var vdata={
+      "first": 0,
+      "rows": 10,
+      "sortField": "GRNID",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "ToStoreId",
+          "fieldValue": "2",
+          "opType": "Equals"
+        },
+    {
+          "fieldName": "From_Dt ",
+          "fieldValue": "2024-01-01",
+          "opType": "Equals"
+        },
+    {
+          "fieldName": "To_Dt",
+          "fieldValue": "2025-01-01",
+          "opType": "Equals"
+        },
+    {
+          "fieldName": "IsPaymentProcess ",
+          "fieldValue": "0",
+          "opType": "Equals"
+        },
+    {
+          "fieldName": "Supplier_Id",
+          "fieldValue": "1",
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": [
+        {
+          "data": "string",
+          "name": "string"
+        }
+      ]
     }
+
     console.log(vdata)
     this._SupplierPaymentStatusService.getSupplierPayStatusList(vdata).subscribe((data) =>{
-      this.dsSupplierpayList.data = data as SupplierPayStatusList[];
+      this.dsSupplierpayList.data = data.data as SupplierPayStatusList[];
       console.log(this.dsSupplierpayList)
       this.dsSupplierpayList.sort =this.sort;
       this.dsSupplierpayList.paginator = this.paginator;
@@ -251,6 +286,17 @@ export class SupplierPayStatusList{
   InvDate:any;
   Mobile:any;
   GRNID:any;
+
+  grnNumber:any;
+  grnTime:any;
+  supplierName:any;
+  invoiceNo:any;
+  netAmount:any;
+  paidAmount:any;
+  balAmount:any;
+  invDate:any;
+
+  
 constructor(SupplierPayStatusList){
   {
     this.GRNNo = SupplierPayStatusList.GRNNo || 0;
@@ -263,6 +309,15 @@ constructor(SupplierPayStatusList){
     this.InvDate = SupplierPayStatusList.InvDate || '';
     this.Mobile = SupplierPayStatusList.Mobile || 0;
     this.GRNID = SupplierPayStatusList.GRNID || 0;
+
+    this.grnNumber= SupplierPayStatusList.grnNumber || 0;
+    this.grnTime= SupplierPayStatusList.grnTime || 0;
+    this.supplierName= SupplierPayStatusList.supplierName || 0;
+    this.invoiceNo= SupplierPayStatusList.invoiceNo || 0;
+    this.netAmount= SupplierPayStatusList.netAmount || 0;
+    this.paidAmount= SupplierPayStatusList.paidAmount || 0;
+    this.balAmount= SupplierPayStatusList.balAmount || 0;
+    this.invDate= SupplierPayStatusList.invDate || 0;
   }
 }
 }

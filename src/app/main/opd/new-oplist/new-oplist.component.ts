@@ -278,7 +278,7 @@ export class NewOPListComponent implements OnInit {
 
     OngetRecord(element, m) {
         console.log(element)
-        // element.billNo = 2
+       
         console.log('Third action clicked for:', element);
         if (m == "Bill Print")
             this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");

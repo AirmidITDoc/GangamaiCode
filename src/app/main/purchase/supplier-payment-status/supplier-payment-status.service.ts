@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class SupplierPaymentStatusService {
   SearchFormGroup:FormGroup;
   SupplierListForm :FormGroup;
   constructor(
-    public _httpClient:HttpClient,
+    public _httpClient:HttpClient,  public _httpClient1:ApiCaller,
     public _formbuilder:UntypedFormBuilder,
     private _loaderService:LoaderService
   )
@@ -47,11 +48,8 @@ export class SupplierPaymentStatusService {
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
-  public getSupplierPayStatusList(param ,loader = true){ 
-    if (loader) {
-      this._loaderService.show();
-  }
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_GRNList_ForAccount_payment", param);
+  public getSupplierPayStatusList(param){ 
+       return this._httpClient1.PostData("Purchase/SupplierOaymnetStatusList", param);
   }
   public InsertSupplierPay(param ,loader = true){ 
     if (loader) {

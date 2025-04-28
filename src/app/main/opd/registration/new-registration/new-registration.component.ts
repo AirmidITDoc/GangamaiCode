@@ -23,7 +23,7 @@ export class NewRegistrationComponent implements OnInit {
 
     personalFormGroup: FormGroup;
     searchFormGroup: FormGroup;
-   
+
     screenFromString = 'registration';
     registerObj = new RegInsert({});
     now = Date.now();
@@ -31,8 +31,8 @@ export class NewRegistrationComponent implements OnInit {
     submitted = false;
     isRegSearchDisabled: boolean = true;
     Submitflag: boolean = false;
-    
-   
+
+
     newRegSelected: any = 'registration';
     minDate: Date;
     msg: any = [];
@@ -42,7 +42,7 @@ export class NewRegistrationComponent implements OnInit {
     matDialogRef: any;
     RegID: number = 0;
     isSaving: boolean = false;
-    
+
     autocompleteModegender: string = "Gender";
     autocompleteModearea: string = "Area";
     autocompleteModecity: string = "City";
@@ -62,7 +62,7 @@ export class NewRegistrationComponent implements OnInit {
         public dialogRef: MatDialogRef<NewRegistrationComponent>,
         public datePipe: DatePipe,
         private readonly changeDetectorRef: ChangeDetectorRef
-    ) {}
+    ) { }
 
     ngAfterViewChecked(): void {
         this.changeDetectorRef.detectChanges();
@@ -75,21 +75,21 @@ export class NewRegistrationComponent implements OnInit {
         this.personalFormGroup = this._registerService.createPesonalForm1();
         this.personalFormGroup.markAllAsTouched();
         this.minDate = new Date();
-        
-           if ((this.data?.regId?? 0) > 0) {
+
+        if ((this.data?.regId ?? 0) > 0) {
             setTimeout(() => {
                 this._registerService.getRegistraionById(this.data.regId).subscribe((response) => {
                     this.registerObj = response;
                     console.log(this.registerObj)
                     this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
-                   });
+                });
             }, 500);
         }
-      
+
     }
-    ageYear= "0";
-    ageMonth ="0";
-    ageDay = "0";
+    ageYear = 0;
+    ageMonth = 0;
+    ageDay = 0;
     OnSubmit() {
 
         console.log(this.registerObj.dateOfBirth)
@@ -99,47 +99,62 @@ export class NewRegistrationComponent implements OnInit {
             const todayDate = new Date();
             const dob = new Date(DateOfBirth1);
             const timeDiff = Math.abs(Date.now() - dob.getTime());
-            this.ageYear = String(Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25))
-            this.ageMonth = String(Math.abs(todayDate.getMonth() - dob.getMonth()))
-            this.ageDay = String(Math.abs(todayDate.getDate() - dob.getDate()))
+            this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
+            this.ageMonth = (todayDate.getMonth() - dob.getMonth());
+            this.ageDay = (todayDate.getDate() - dob.getDate());
 
+            if (this.ageDay < 0) {
+                (this.ageMonth)--;
+                const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+                this.ageDay += previousMonth.getDate(); // Days in previous month
+            }
+
+            if (this.ageMonth < 0) {
+                this.ageYear--;
+                this.ageMonth += 12;
+            }
         }
-        this.personalFormGroup.get('Age').setValue(this.ageYear)
-        this.personalFormGroup.get('AgeYear').setValue(this.ageYear)
-        this.personalFormGroup.get('AgeMonth').setValue(this.ageMonth)
-        this.personalFormGroup.get('AgeDay').setValue(this.ageDay)
+        this.personalFormGroup.get('Age').setValue(String(this.ageYear))
+        this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
+        this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
+        this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
 
         console.log(this.personalFormGroup.value)
         this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
-       
-        if (this.personalFormGroup.valid) {
-            this.isSaving = true;
-            this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
-               this.toastr.success(response.message);
-                this.onClear(true);
-                this.isSaving = false;
-            });
-        }  else {
-            let invalidFields = [];
-      
-        if (this.personalFormGroup.invalid) {
-                for (const controlName in this.personalFormGroup.controls) {
-                    if (this.personalFormGroup.controls[controlName].invalid) {
-                        invalidFields.push(`Registartion Form: ${controlName}`);
+        if (this.ageYear != 0 || this.ageMonth != 0 || this.ageDay != 0) {
+
+            if (this.personalFormGroup.valid) {
+                this.isSaving = true;
+                this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
+                    this.toastr.success(response.message);
+                    this.onClear(true);
+                    this.isSaving = false;
+                });
+            } else {
+                let invalidFields = [];
+
+                if (this.personalFormGroup.invalid) {
+                    for (const controlName in this.personalFormGroup.controls) {
+                        if (this.personalFormGroup.controls[controlName].invalid) {
+                            invalidFields.push(`Registartion Form: ${controlName}`);
+                        }
                     }
                 }
-            }
-      if (invalidFields.length > 0) {
-                invalidFields.forEach(field => {
-                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-                    );
-                });
-            }
-      
-        }
-    }
+                if (invalidFields.length > 0) {
+                    invalidFields.forEach(field => {
+                        this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                        );
+                    });
+                }
 
- 
+            }
+        }else {
+                this.toastr.warning("Please Select Birthdate...");
+            }
+        }
+    
+
+
     onClose() {
         this.dialogRef.close();
     }
@@ -164,7 +179,7 @@ export class NewRegistrationComponent implements OnInit {
 
     }
 
-   
+
     onChangestate(e) {
         this.ddlCountry.SetSelection(e.countryId);
     }
@@ -173,10 +188,10 @@ export class NewRegistrationComponent implements OnInit {
         console.log(e)
         this.ddlState.SetSelection(e.stateId);
         this.ddlCountry.SetSelection(this.personalFormGroup.get("StateId").value)
-      
+
     }
 
-    
+
     getValidationMessages() {
         return {
             firstName: [
@@ -185,7 +200,7 @@ export class NewRegistrationComponent implements OnInit {
                 { name: "pattern", Message: "only char allowed." }
             ],
             middleName: [
-             
+
                 { name: "pattern", Message: "only char allowed." }
             ],
             lastName: [

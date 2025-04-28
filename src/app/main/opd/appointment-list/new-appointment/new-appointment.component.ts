@@ -22,6 +22,7 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { PatientvitalInformationComponent } from './patientvital-information/patientvital-information.component';
 import { values } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
     selector: 'app-new-appointment',
@@ -46,23 +47,12 @@ export class NewAppointmentComponent implements OnInit {
     isRegSearchDisabled: boolean = false;
     Regdisplay: boolean = false;
     Regflag: boolean = false;
-    submitted = false;
-    isLinear = true;
     showtable: boolean = false;
-    isRateLimitReached = false;
-    isLoadings = false;
-    isOpen = false;
     savedValue: number = null;
-    noOptionFound: boolean = false;
-    noOptionFound1: boolean = false;
-    AdList: boolean = false;
-    chkprint: boolean = false;
     VisitFlagDisp: boolean = false;
     hasSelectedContacts: boolean;
     isCompanySelected: boolean = false;
     IsPhoneAppflag: boolean = true;
-
-    loadID = 0;
     VisitTime: String;
     AgeYear: any;
     AgeMonth: any;
@@ -99,9 +89,9 @@ export class NewAppointmentComponent implements OnInit {
     vDays: any = 0;
     HealthCardExpDate: any;
     followUpDate: string;
-    ageYear="0"
-    ageMonth="0"
-    ageDay="0"
+    ageYear = 0
+    ageMonth = 0
+    ageDay = 0
 
     screenFromString = 'appointment';
     @ViewChild('attachments') attachment: any;
@@ -149,6 +139,7 @@ export class NewAppointmentComponent implements OnInit {
         private accountService: AuthenticationService,
         public matDialog: MatDialog,
         private commonService: PrintserviceService,
+        private _FormvalidationserviceService: FormvalidationserviceService,
         public toastr: ToastrService, @Inject(MAT_DIALOG_DATA) public data: any
 
     ) {
@@ -258,7 +249,6 @@ export class NewAppointmentComponent implements OnInit {
         this.VFollowupcount = 0;
         this.VBillcount = 0;
         this.VCrossConscount = 0;
-
         this.Vtotalcount;
 
         for (var i = 0; i < data.length; i++) {
@@ -309,7 +299,7 @@ export class NewAppointmentComponent implements OnInit {
                 });
             }
         });
-       
+
     }
     getSelectedObj(obj) {
         this.PatientName = obj.PatientName;
@@ -351,63 +341,78 @@ export class NewAppointmentComponent implements OnInit {
         }
 
     }
-   
+
     onSave() {
-// console.log(this.registerObj.dateOfBirth)
+        // console.log(this.registerObj.dateOfBirth)
 
         let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
         if (DateOfBirth1) {
             const todayDate = new Date();
             const dob = new Date(DateOfBirth1);
             const timeDiff = Math.abs(Date.now() - dob.getTime());
-            this.ageYear = String(Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25))
-            this.ageMonth = String(Math.abs(todayDate.getMonth() - dob.getMonth()))
-            this.ageDay = String(Math.abs(todayDate.getDate() - dob.getDate()))
+            this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
+            this.ageMonth = (todayDate.getMonth() - dob.getMonth());
+            this.ageDay = (todayDate.getDate() - dob.getDate());
 
+            if (this.ageDay < 0) {
+                (this.ageMonth)--;
+                const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+                this.ageDay += previousMonth.getDate(); // Days in previous month
+            }
+
+            if (this.ageMonth < 0) {
+                this.ageYear--;
+                this.ageMonth += 12;
+            }
         }
-        if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
+        if (this.ageYear != 0 || this.ageMonth != 0 || this.ageDay != 0) {
 
-            if (this.isCompanySelected && this.VisitFormGroup.get('CompanyId').value == 0) {
-                this.toastr.warning('Please select valid Company ', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                });
-                return;
-            }
+            if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
 
-            this.personalFormGroup.get('Age').setValue(this.ageYear)
-            this.personalFormGroup.get('AgeYear').setValue(this.ageYear)
-            this.personalFormGroup.get('AgeMonth').setValue(this.ageMonth)
-            this.personalFormGroup.get('AgeDay').setValue(this.ageDay)
-
-            this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-            this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
-            this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-            this.VisitFormGroup.get('visitTime').setValue(this.dateTimeObj.time)
-
-            if (this.searchFormGroup.get('regRadio').value == "registration")
-                this.OnsaveNewRegister();
-            else if (this.searchFormGroup.get('regRadio').value == "registrered") {
-                this.onSaveRegistered();
-                this.onClose();
-            }
-
-        } else {
-            let invalidFields = [];
-            if (this.personalFormGroup.invalid) {
-                for (const controlName in this.personalFormGroup.controls) {
-                    if (this.personalFormGroup.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
+                if (this.isCompanySelected && this.VisitFormGroup.get('CompanyId').value == 0) {
+                    this.toastr.warning('Please select valid Company ', 'Warning !', {
+                        toastClass: 'tostr-tost custom-toast-warning',
+                    });
+                    return;
                 }
-            }
-            if (this.VisitFormGroup.invalid) {
-                for (const controlName in this.VisitFormGroup.controls) { if (this.VisitFormGroup.controls[controlName].invalid) { invalidFields.push(`Visit Form: ${controlName}`); } }
-            }
+                this.personalFormGroup.get('Age').setValue(String(this.ageYear))
+                this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
+                this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
+                this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
 
-            if (invalidFields.length > 0) {
-                invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
-            }
+                this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+                this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
+                this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+                this.VisitFormGroup.get('visitTime').setValue(this.dateTimeObj.time)
 
+                if (this.searchFormGroup.get('regRadio').value == "registration")
+                    this.OnsaveNewRegister();
+                else if (this.searchFormGroup.get('regRadio').value == "registrered") {
+                    this.onSaveRegistered();
+                    this.onClose();
+                }
+
+            } else {
+                let invalidFields = [];
+                if (this.personalFormGroup.invalid) {
+                    for (const controlName in this.personalFormGroup.controls) {
+                        if (this.personalFormGroup.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
+                    }
+                }
+                if (this.VisitFormGroup.invalid) {
+                    for (const controlName in this.VisitFormGroup.controls) { if (this.VisitFormGroup.controls[controlName].invalid) { invalidFields.push(`Visit Form: ${controlName}`); } }
+                }
+
+                if (invalidFields.length > 0) {
+                    invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+                }
+
+            }
+        } else {
+            this.toastr.warning("Please Select Birthdate  ...");
         }
     }
+
 
     OnsaveNewRegister() {
         console.log(this.personalFormGroup.value)
@@ -451,7 +456,7 @@ export class NewAppointmentComponent implements OnInit {
 
     }
 
-    
+
 
     chkHealthcard(event) {
         if (event.checked) {
@@ -471,7 +476,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onChangecity(e) {
-       this.registerObj.stateId = e.stateId
+        this.registerObj.stateId = e.stateId
         this._AppointmentlistService.getstateId(e.stateId).subscribe((Response) => {
             console.log(Response)
             this.ddlCountry.SetSelection(Response.countryId);
@@ -644,7 +649,7 @@ export class NewAppointmentComponent implements OnInit {
         return this._formBuilder.group({
             RegId: [0],
             RegNo: "0",
-            PrefixId:[0, [Validators.required, notEmptyOrZeroValidator()]],
+            PrefixId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             FirstName: ['', [
                 Validators.required,
                 // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"), 
@@ -659,27 +664,35 @@ export class NewAppointmentComponent implements OnInit {
                 // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
                 Validators.pattern("^[A-Za-z/() ]*$")
             ]],
-            GenderId: new FormControl('', [Validators.required, notEmptyOrZeroValidator()]),
+            // GenderId: new FormControl('', [Validators.required, this._FormvalidationserviceService.dropdownvalidation()]),
+            GenderId: new FormControl('', [Validators.required]),
+          
             Address: '',
             DateOfBirth: [(new Date()).toISOString()],
             Age: ['0'],
-            AgeYear: ['0', [
-                // Validators.required,
+            AgeYear: ['', [
+                Validators.required,
                 Validators.maxLength(3),
                 Validators.pattern("^[0-9]*$")]],
-            AgeMonth: ['0', [
-                Validators.pattern("^[0-9]*$")]],
-            AgeDay: ['0', [
-                Validators.pattern("^[0-9]*$")]],
+            AgeMonth: ['', [Validators.required,
+            Validators.pattern("^[0-9]*$")]],
+            AgeDay: ['', [Validators.required,
+            Validators.pattern("^[0-9]*$")]],
             PhoneNo: ['', [Validators.minLength(10),
             Validators.maxLength(10),
-            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                // this._FormvalidationserviceService.inputFieldValidator(),
+                // Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
             ]],
+            // MobileNo: ['', [Validators.required, this._FormvalidationserviceService.inputFieldValidator(),
+            // Validators.minLength(10),
+            // Validators.maxLength(10),
+            // Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            // ]],
             MobileNo: ['', [Validators.required,
-            Validators.minLength(10),
-            Validators.maxLength(10),
-            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-            ]],
+                Validators.minLength(10),
+                Validators.maxLength(10),
+                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                ]],
             aadharCardNo: ['', [
                 Validators.minLength(12),
                 Validators.maxLength(12),
@@ -690,10 +703,10 @@ export class NewAppointmentComponent implements OnInit {
             MaritalStatusId: 0,
             ReligionId: 0,
             AreaId: 0,
-            CityId:[0, [Validators.required, notEmptyOrZeroValidator()]],
+            CityId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             City: [''],
-            StateId:[0, [Validators.required, notEmptyOrZeroValidator()]],
-            CountryId:[0, [Validators.required, notEmptyOrZeroValidator()]],
+            StateId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            CountryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             IsCharity: false,
             IsSeniorCitizen: false,
             AddedBy: this.accountService.currentUserValue.userId,
@@ -706,11 +719,21 @@ export class NewAppointmentComponent implements OnInit {
         });
 
     }
+    keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
 
 }
-function notEmptyOrZeroValidator(): any {
-    return (control: AbstractControl): ValidationErrors | null => {
-        const value = control.value;
-        return value > 0 ? null : { greaterThanZero: { value: value } };
-      };
-}
+
+// function notEmptyOrZeroValidator(): any {
+//     return (control: AbstractControl): ValidationErrors | null => {
+//         const value = control.value;
+//         return value > 0 ? null : { greaterThanZero: { value: value } };
+//       };
+// }

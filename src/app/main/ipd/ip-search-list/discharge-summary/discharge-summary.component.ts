@@ -516,8 +516,8 @@ export class DischargeSummaryComponent implements OnInit {
             this._IpSearchListService.insertIPDDischargSummary(data).subscribe(response => {
               this.toastr.success(response.message);
               console.log(response)
-              // this.getPrint(response)
-              this.viewgetDischargesummaryPdf(response)
+              this.getPrint(response)
+              // this.viewgetDischargesummaryPdf(response)
               this._matDialog.closeAll();
             }, (error) => {
               this.toastr.error(error.message);
@@ -538,8 +538,8 @@ export class DischargeSummaryComponent implements OnInit {
             this._IpSearchListService.updateIPDDischargSummary(data1).subscribe(response => {
               this.toastr.success(response);
               console.log(response[0].opdIpdId)
-              // this.getPrint(response)
-              this.viewgetDischargesummaryPdf(response[0].opdIpdId)
+              this.getPrint(response)
+              // this.viewgetDischargesummaryPdf(response[0].opdIpdId)
               this._matDialog.closeAll();
             }, (error) => {
               this.toastr.error(error.message);
@@ -563,14 +563,14 @@ export class DischargeSummaryComponent implements OnInit {
             confirmButtonColor: "#3085d6",
             denyButtonColor: "#6c757d",
             cancelButtonColor: "#d33",
-            confirmButtonText: "With Template",
-            denyButtonText: "Without Template",
+            confirmButtonText: "With Header",
+            denyButtonText: "Without Header",
         }).then((result) => {
             debugger
             if (result.isConfirmed) {
                 this.viewgetDischargesummaryPdf(contact);
             } else if (result.isDenied) {
-                this.viewgetDischargesummaryTempPdf(contact);
+                this.viewgetDischargesummaryHeaderPdf(contact);
             }
         });
   }
@@ -582,8 +582,8 @@ export class DischargeSummaryComponent implements OnInit {
   }
 
 
-  viewgetDischargesummaryTempPdf(AdmId) {
-    // this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryReportWithoutHeader");
+  viewgetDischargesummaryHeaderPdf(AdmId) {
+    this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryReportWithoutHeader");
   }
 
 

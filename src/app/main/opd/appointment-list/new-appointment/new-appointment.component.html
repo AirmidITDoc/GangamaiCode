@@ -21,7 +21,13 @@
             </div>
         </div>
     </div>
+    <div *ngIf="personalFormGroup.get('GenderId')?.hasError('invalidDropdownValue')">
+        Please select a valid option.
+      </div>
 
+      <div *ngIf="personalFormGroup.get('MobileNo')?.hasError('invalidInput')">
+        Please select a valid option.
+      </div>
 
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
@@ -212,7 +218,7 @@
                                         <div fxLayout="row" class="gap-8">
 
                                             <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"
-                                                label="MobileNo" formControlName="MobileNo"
+                                                label="MobileNo" formControlName="MobileNo"  (keypress)="keyPressAlphanumeric($event)"
                                                 [value]="registerObj.mobileNo" [formGroup]="personalFormGroup"
                                                 [validations]="getValidationMessages().mobileNo" [maxLength]="10">
                                             </airmid-textbox>

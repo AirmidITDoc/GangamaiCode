@@ -21,6 +21,7 @@ import { SearchInforObj } from '../../op-search-list/opd-search-list/opd-search-
 import { AppointmentBillService } from './appointment-bill.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { OpPaymentComponent } from '../../op-search-list/op-payment/op-payment.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-appointment-billing',
@@ -127,6 +128,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     public _AppointmentlistService: AppointmentBillService,
        private accountService: AuthenticationService,
        public toastr: ToastrService,
+         private _FormvalidationserviceService :FormvalidationserviceService,
     private formBuilder: FormBuilder, private toastrService: ToastrService,
     @Optional() public dialogRef: MatDialogRef<AppointmentBillingComponent>
   ) { };
@@ -282,7 +284,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   createChargeForm() {
     return this.formBuilder.group({
       serviceName: ['', Validators.required],
-      price: [0, [Validators.required, Validators.min(0)]],
+      price: [0, [Validators.required, Validators.min(0),this._FormvalidationserviceService.inputFieldValidator()]],
       qty: [1, [Validators.required, Validators.min(1)]],
       totalAmount: [0,],
       discountPer: [0, [Validators.min(0), Validators.max(100)]],
