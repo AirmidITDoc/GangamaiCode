@@ -98,11 +98,12 @@ export class GoodReceiptnoteService {
       Mobile: '',
       InvoiceNo: [''],
       DateOfInvoice: [new Date()],
-      GateEntryNo: [''],
-      GRNType: [true],
-      GSTType: ['2'],
-      PaymentType: [true],
-      PaymentDate: [new Date()]
+      GateEntryNo: [''], 
+      GSTType: ['2'], 
+      PaymentDate: [new Date()],
+      GRNType1:['1'], 
+      PaymentType1:['0'],
+      StoreId:['2']
     });
   }
 
@@ -141,8 +142,8 @@ export class GoodReceiptnoteService {
       Body: [''],
     })
   }
-  public getLastThreeItemInfo(Param) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_LastThreeItemInfo", Param);
+  public getLastThreeItemInfo(ID) {
+    return this._httpClient1.GetData("GRN/"+ID);
   }
   public getGSTtypeList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Constants", Param);
