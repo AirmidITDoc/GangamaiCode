@@ -64,10 +64,25 @@ export class StoreFormMasterComponent implements OnInit {
         public toastr: ToastrService
     ) { }
 
+    VindentNo:any;
+    VgrnreturnNo:any;
+    VpurchaseNo:any;
+    VissueToDeptNo:any;
+    VgrnNo:any;
+    VreturnFromDeptNo:any;
     ngOnInit(): void {
         this.storeForm = this._StoreMasterService.createStoremasterForm();
+        this.storeForm.markAllAsTouched();
 
+       if(this.data){
         console.log(this.data)
+        this.VindentNo=this.data.indentNo.trim()
+        this.VgrnreturnNo=this.data.grnreturnNo.trim()
+        this.VpurchaseNo=this.data.purchaseNo.trim()
+        this.VissueToDeptNo=this.data.issueToDeptNo.trim()
+        this.VgrnNo=this.data.grnNo.trim()
+        this.VreturnFromDeptNo=this.data.returnFromDeptNo.trim()
+       }
         if((this.data?.storeId??0) > 0)
         {
             this.isActive =this.data.isActive
@@ -87,7 +102,7 @@ export class StoreFormMasterComponent implements OnInit {
 
     onSubmit() {
         
-        // if (!this.storeForm.invalid) {
+        if (!this.storeForm.invalid) {
             console.log("StoreCategoryMaster Insert:", this.storeForm.value)
             
             this._StoreMasterService.storeMasterSave(this.storeForm.value).subscribe((response) => {
@@ -96,15 +111,25 @@ export class StoreFormMasterComponent implements OnInit {
             }, (error) => {
                 this.toastr.error(error.message);
             });
-        // }
-        // else {
-        //     console.log("StoreCategoryMaster Insert:", this.storeForm.value)
+        }
+        else {
+            let invalidFields = [];
 
-        //     this.toastr.warning('please check from is invalid', 'Warning !', {
-        //         toastClass: 'tostr-tost custom-toast-warning',
-        //     });
-        //     return;
-        // }
+            if (this.storeForm.invalid) {
+                for (const controlName in this.storeForm.controls) {
+                if (this.storeForm.controls[controlName].invalid) {
+                    invalidFields.push(`My Form: ${controlName}`);
+                }
+                }
+            }
+
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                  this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                  );
+                });
+              }
+        }
     }
 
     onClear(val: boolean) {
@@ -134,12 +159,12 @@ export class StoreFormMasterComponent implements OnInit {
     getValidationMessages() {
         return {
             storeName: [
-                { name: "required", Message: "storeName  is required" },
+                { name: "required", Message: "StoreName  is required" },
                 { name: "maxlength", Message: "storeName  should not be greater than 50 char." },
                 { name: "pattern", Message: "Only Characters Allowed." }
             ],
             storeShortName: [
-                { name: "required", Message: "storeShortName is required" },
+                { name: "required", Message: "StoreShortName is required" },
                 { name: "maxlength", Message: "storeShortName should not be greater than 50 char." },
                 { name: "pattern", Message: "Only Characters Allowed." }
             ],
@@ -212,7 +237,18 @@ export class StoreFormMasterComponent implements OnInit {
             pharSalReturnCountId: [
                 { name: "required", Message: "Phar Sales Return Cash Counter is required" }
             ],
-
+            pharAdvId:[
+                { name: "required", Message: "Phar Advance Cash Counter is required" }
+            ],
+            pharAdvRefId:[
+                { name: "required", Message: "Phar Advance Refund Cash Counter is required" }
+            ],
+            pharAdvReptId:[
+                { name: "required", Message: "Phar Advance Receipt Cash Counter is required" }
+            ],
+            pharAdvRefReptId:[
+                { name: "required", Message: "Phar Advance Refund Receipt Cash Counter is required" }
+            ]
         };
     }
     

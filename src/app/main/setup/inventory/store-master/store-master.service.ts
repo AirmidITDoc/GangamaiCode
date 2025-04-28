@@ -24,21 +24,24 @@ export class StoreMasterService {
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z ]*$")
                 ]
             ],
             storeName: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z ]*$")
                 ]
             ],
             indentPrefix: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z ]*$")
                 ]
             ],
             indentNo: ["",
@@ -46,13 +49,15 @@ export class StoreMasterService {
                     Validators.required,
                     Validators.maxLength(30),
                     Validators.pattern('^[0-9]*$')
+                    // Validators.pattern("^[0-9 ]*$")
                 ]
             ],
             purchasePrefix: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z ]*$")
                 ]
             ],
             purchaseNo: ["",
@@ -60,13 +65,15 @@ export class StoreMasterService {
                     Validators.required,
                     Validators.maxLength(30),
                     Validators.pattern('^[0-9]*$')
+                    // Validators.pattern("^[0-9 ]*$")
                 ]
             ],
             grnPrefix: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z ]*$")
                 ]
             ],
             grnNo: ["",
@@ -74,48 +81,55 @@ export class StoreMasterService {
                     Validators.required,
                     Validators.maxLength(30),
                     Validators.pattern('^[0-9]*$')
+                    // Validators.pattern("^[0-9 ]*$")
                 ]
             ],
             grnreturnNoPrefix: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z ]*$")
                 ]
             ],
             grnreturnNo: ["",
                 [
                     Validators.required,
                     Validators.maxLength(30),
-                    Validators.pattern('^[0-9]*$')
+                    // Validators.pattern('^[0-9]*$')
+                    Validators.pattern("^[0-9 ]*$")
                 ]
             ],
             issueToDeptPrefix: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z ]*$")
                 ]
             ],
             issueToDeptNo: ["",
                 [
                     Validators.required,
                     Validators.maxLength(30),
-                    Validators.pattern('^[0-9]*$')
+                    // Validators.pattern('^[0-9]*$')
+                    Validators.pattern("^[0-9 ]*$")
                 ]
             ],
             returnFromDeptNoPrefix: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z ]*$")
                 ]
             ],
             returnFromDeptNo: ["",
                 [
                     Validators.required,
                     Validators.maxLength(30),
-                    Validators.pattern('^[0-9]*$')
+                    // Validators.pattern('^[0-9]*$')
+                    Validators.pattern("^[0-9 ]*$")
                 ]
             ],
             // isDeleted: ["true"],
@@ -140,15 +154,37 @@ export class StoreMasterService {
             isActive: [true, [Validators.required]],
             workOrderPrefix: "0",
             workOrderNo: "0",
-            pharAdvId: 0,
-            pharAdvReptId: 0,
-            pharAdvRefId: 0,
-            pharAdvRefReptId: 0,
-            printStoreName: ["trying"],
-            dlNo: ["try"],
-            gstin: ["try"],
-            storeAddress: ["trying"],
-            hospitalMobileNo: "1111111110",
+            pharAdvId: ["",
+                [
+                    Validators.required
+                ]
+            ],
+            pharAdvReptId: ["",
+                [
+                    Validators.required
+                ]
+            ],
+            pharAdvRefId: ["",
+                [
+                    Validators.required
+                ]
+            ],
+            pharAdvRefReptId: ["",
+                [
+                    Validators.required
+                ]
+            ],
+            printStoreName: [""],
+            dlNo: ["0"],
+            gstin: ["0"],
+            storeAddress: [""],
+            hospitalMobileNo: ["",
+                [
+                    // Validators.required,
+                Validators.minLength(10),
+                Validators.maxLength(10),
+                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            ]],
             hospitalEmailId: ["try@gmail.com"],
             printStoreUnitName: ["trying"],
             isPharStore: true,

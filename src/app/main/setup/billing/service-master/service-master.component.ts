@@ -192,9 +192,7 @@ export class ServiceMasterComponent implements OnInit {
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
+            this.grid.bindGridData();
             console.log('The dialog was closed - Action', result);
         });
     }

@@ -21,14 +21,14 @@
 
                 <airmid-dropdown label="Group Name" formControlName="groupId" [formGroup]="serviceForm"
                     (selectionChange)="selectChangegroupName($event)" [validations]="getValidationMessages().groupId"
-                    [mode]="autocompleteModesubGroupName">
+                    [mode]="autocompleteModegroupName">
                 </airmid-dropdown>
             </div>
 
             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <airmid-dropdown label="SubGroup Name" formControlName="SubGroupId" [formGroup]="serviceForm"
                     (selectionChange)="selectChangesubGroupName($event)"
-                    [validations]="getValidationMessages().SubGroupId" [mode]="autocompleteModegroupName">
+                    [validations]="getValidationMessages().SubGroupId" [mode]="autocompleteModesubGroupName">
                 </airmid-dropdown>
             </div>
 

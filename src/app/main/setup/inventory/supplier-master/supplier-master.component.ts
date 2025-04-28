@@ -22,50 +22,87 @@ export class SupplierMasterComponent implements OnInit {
     myformSearch:FormGroup;
     autocompleteModestoreName: string = "Store";
     // new code
+    supplierName:any="";
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
+    allColumns=[
+        { heading: "Code", key: "supplierId", sort: true, align: 'left', emptySign: 'NA', width:80 },
+        { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+        { heading: "ContactPerson", key: "contactPerson", sort: true, align: 'left', emptySign: 'NA', width: 140 },
+        { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "CityName", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "StateName", key: "stateName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "CreditPeriod", key: "creditPeriod", sort: true, align: 'left', emptySign: 'NA', width: 90 },
+        { heading: "Mobile", key: "mobile", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Email", key: "email", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "GSTNo", key: "gstNo", sort: true, align: 'left', emptySign: 'NA', width: 140 },
+        { heading: "PanNo", key: "panNo", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 80 },
+        {
+            heading: "Action", key: "action", width: 100 , align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, 
+                {
+                    action: gridActions.delete, callback: (data: any) => {
+                        
+                        this._supplierService.SupplierMasterCancle(data.supplierId).subscribe((response: any) => {
+                            this.toastr.success(response.message);
+                            this.grid.bindGridData();
+                        });
+                    }
+                }
+            ]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+
+    allFilters=[
+        { fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "StoreID", fieldValue: "2", opType: OperatorComparer.Equals }
+    ]
+
     gridConfig: gridModel = {
         apiUrl: "Supplier/SupplierList",
-        columnsList: [
-            { heading: "Code", key: "supplierId", sort: true, align: 'left', emptySign: 'NA', width:80 },
-            { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-            { heading: "ContactPerson", key: "contactPerson", sort: true, align: 'left', emptySign: 'NA', width: 140 },
-            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "CityName", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            // { heading: "StateName", key: "stateName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "CreditPeriod", key: "creditPeriod", sort: true, align: 'left', emptySign: 'NA', width: 90 },
-            { heading: "Mobile", key: "mobile", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Email", key: "email", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "GSTNo", key: "gstNo", sort: true, align: 'left', emptySign: 'NA', width: 140 },
-            { heading: "PanNo", key: "panNo", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 80 },
-            {
-                heading: "Action", key: "action", width: 100 , align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, 
-                    {
-                        action: gridActions.delete, callback: (data: any) => {
-                            
-                            this._supplierService.SupplierMasterCancle(data.supplierId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }
-                ]
-            } //Action 1-view, 2-Edit,3-delete
-        ],
+        columnsList: this.allColumns,
         sortField: "SupplierId", //SupplierName
         sortOrder: 0,
-        filters: [
-            { fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "StoreID", fieldValue: "2", opType: OperatorComparer.Equals }
-        ]
+        filters: this.allFilters
+    }
+
+    Clearfilter(event) {
+        debugger
+        console.log(event)
+        if (event == 'SupplierNameSearch')
+            this.myformSearch.get('SupplierNameSearch').setValue("")
+       
+        this.onChangeFirst();
+      }
+      
+    onChangeFirst() {
+        debugger
+        this.supplierName = this.myformSearch.get('SupplierNameSearch').value + "%"
+        // this.type = this.myformSearch.get('IsDeletedSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata(){
+        debugger
+        this.gridConfig = {
+            apiUrl: "Supplier/SupplierList",
+            columnsList:this.allColumns, 
+            sortField: "SupplierId",
+            sortOrder: 0,
+            filters:  [
+                { fieldName: "SupplierName", fieldValue: this.supplierName, opType: OperatorComparer.Contains },
+                { fieldName: "StoreID", fieldValue: "2", opType: OperatorComparer.Equals }
+            ]
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData(); 
     }
 
     constructor(public _supplierService: SupplierMasterService, public _matDialog: MatDialog,
@@ -100,9 +137,7 @@ export class SupplierMasterComponent implements OnInit {
                 data: obj
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
+                this.grid.bindGridData();
             console.log('The dialog was closed - Action', result);
         });
     }
