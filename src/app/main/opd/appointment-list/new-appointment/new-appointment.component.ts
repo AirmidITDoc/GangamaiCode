@@ -309,14 +309,8 @@ export class NewAppointmentComponent implements OnInit {
                 });
             }
         });
-        // this.IsLoading = false;
+       
     }
-
-    // getOptionText(option) {
-    //     if (!option) return '';
-    //     return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
-    // }
-
     getSelectedObj(obj) {
         this.PatientName = obj.PatientName;
         this.RegId = obj.value;
@@ -398,19 +392,19 @@ export class NewAppointmentComponent implements OnInit {
             }
 
         } else {
-            // let invalidFields = [];
-            // if (this.personalFormGroup.invalid) {
-            //     for (const controlName in this.personalFormGroup.controls) {
-            //         if (this.personalFormGroup.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
-            //     }
-            // }
-            // if (this.VisitFormGroup.invalid) {
-            //     for (const controlName in this.VisitFormGroup.controls) { if (this.VisitFormGroup.controls[controlName].invalid) { invalidFields.push(`Visit Form: ${controlName}`); } }
-            // }
+            let invalidFields = [];
+            if (this.personalFormGroup.invalid) {
+                for (const controlName in this.personalFormGroup.controls) {
+                    if (this.personalFormGroup.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
+                }
+            }
+            if (this.VisitFormGroup.invalid) {
+                for (const controlName in this.VisitFormGroup.controls) { if (this.VisitFormGroup.controls[controlName].invalid) { invalidFields.push(`Visit Form: ${controlName}`); } }
+            }
 
-            // if (invalidFields.length > 0) {
-            //     invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
-            // }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+            }
 
         }
     }
