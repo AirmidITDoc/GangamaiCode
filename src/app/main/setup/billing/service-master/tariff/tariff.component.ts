@@ -26,6 +26,7 @@ export class TariffComponent implements OnInit {
 
     ngOnInit(): void {
         this.serviceForm=this._ServiceMasterService.createTariffmasterForm();
+        this.serviceForm.markAllAsTouched();
         if((this.data?.tariffId??0) > 0){
             // this.isActive=this.data.isActive
             this.serviceForm.patchValue(this.data);
@@ -36,10 +37,9 @@ export class TariffComponent implements OnInit {
         
         if(!this.serviceForm.invalid)
         {
-        
             console.log("insert tariff:", this.serviceForm.value);
             
-            this._ServiceMasterService.tariffMasterSave(this.serviceForm.value).subscribe((response)=>{
+            this._ServiceMasterService.SaveTariff(this.serviceForm.value).subscribe((response)=>{
             this.toastr.success(response.message);
             this.onClear(true);
             }, (error)=>{
@@ -48,10 +48,21 @@ export class TariffComponent implements OnInit {
         } 
         else
         {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
+            let invalidFields = [];
+
+            if (this.serviceForm.invalid) {
+                for (const controlName in this.serviceForm.controls) {
+                    if (this.serviceForm.controls[controlName].invalid) {
+                        invalidFields.push(`Service Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
         }   
     }
 

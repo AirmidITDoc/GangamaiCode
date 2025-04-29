@@ -584,7 +584,6 @@ ClearfilterRefundAd(event) {
 
   resultsLength = 0;
 
-  isLoading123: boolean = false;
   BillCancelOP(contact) {
     console.log("Data:",contact)
     Swal.fire({
@@ -655,6 +654,45 @@ ClearfilterRefundAd(event) {
       }
     })
   }
+
+  CancelAdvance(contact){ 
+    console.log("Data:",contact)
+
+    Swal.fire({
+      title: 'Do you want to cancel the Advance',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!" 
+    }).then((result) => {
+      debugger
+      if (result.isConfirmed) {  
+        let SubmitDate ={
+            "advanceId": contact.advanceId || 0,
+            "advanceDetailId": contact.advanceDetailID || 0,
+            "addedBy": contact.addedBy || 0,
+            "advanceAmount": contact.advanceAmount || 0
+          }
+
+        console.log(SubmitDate)
+        this._CancellationService.SaveCancelAdvance(SubmitDate).subscribe(response => {
+          if (response) {
+            this.toastr.success('Record Successfully Updated', 'Updated !', {
+              toastClass: 'tostr-tost custom-toast-success',
+            });
+          } else {
+            this.toastr.error('Record not Updated Successfully!', 'Error !', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+          } 
+          this.grid1.bindGridData();
+        });  
+      }
+    })
+  }
+
   getRecord(contact, m): void {
     if (this._CancellationService.UserFormGroup.get('OP_IP_Type').value == '1') {
       if (!contact.InterimOrFinal) {
@@ -667,7 +705,6 @@ ClearfilterRefundAd(event) {
     }
   }
   Billdateupdate(contact) {
-    this.isLoading123 = true;
     const dialogRef = this._matDialog.open(BillDateUpdateComponent,
       {
         height: "35%",
@@ -678,7 +715,6 @@ ClearfilterRefundAd(event) {
       });
     dialogRef.afterClosed().subscribe(result => {
       // this.getSearchList();
-      this.isLoading123 = false;
     });
   }
 

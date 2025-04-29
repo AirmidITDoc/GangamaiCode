@@ -20,6 +20,7 @@ export class BillDateUpdateComponent implements OnInit {
   AdvanceDetailId:any;
   RefundId:any;
   SalesId:any;
+  PaymentId:any;
   screenFromString = 'billform-form';
 
   constructor(
@@ -36,11 +37,13 @@ export class BillDateUpdateComponent implements OnInit {
       this.BillNo = this.data.billNo;
       this.AdvanceDetailId=this.data.advanceDetailID
       this.RefundId=this.data.refundId
-      this.SalesId=this.data.salesNo
+      this.SalesId=this.data.salesId
+      this.PaymentId=this.data.paymentId
       console.log(this.BillNo) 
       console.log(this.AdvanceDetailId) 
       console.log(this.RefundId) 
       console.log(this.SalesId) 
+      console.log(this.PaymentId)
     }
   }
   getDateTime(dateTimeObj) {
@@ -113,6 +116,20 @@ export class BillDateUpdateComponent implements OnInit {
           }
           console.log(data3);
           this._CancellationService.getDateTimeChangeSalesId(data3).subscribe(response => {
+            this.toastr.success(response);
+            this._matDialog.closeAll();
+          }, (error) => {
+            this.toastr.error(error.message);
+          });
+
+        }else if(this.PaymentId){
+          var data4 = {
+            "paymentDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+            "paymentTime": formattedDate + this.dateTimeObj.time,
+            "paymentId": this.PaymentId
+          }
+          console.log(data4);
+          this._CancellationService.getDateTimeChangePaymentId(data4).subscribe(response => {
             this.toastr.success(response);
             this._matDialog.closeAll();
           }, (error) => {

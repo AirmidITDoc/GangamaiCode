@@ -22,7 +22,7 @@
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-dropdown 
                             label="Old Tariff Name" 
-                            formControlName="tariffId1"
+                            formControlName="oldTariffId"
                             [formGroup]="serviceForm"
                             [validations]="getValidationMessages().tariffId"
                             [mode]="autocompleteModeName1">
@@ -31,7 +31,7 @@
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-dropdown 
                             label="New Tariff Name" 
-                            formControlName="tariffId2"
+                            formControlName="newTariffId"
                             [formGroup]="serviceForm"
                             [validations]="getValidationMessages().tariffId"
                             [mode]="autocompleteModeName2">

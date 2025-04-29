@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
+import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Injectable()
 
@@ -11,7 +12,8 @@ export class ItemMasterService {
 
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: UntypedFormBuilder
+        private _formBuilder: UntypedFormBuilder,
+        private _loggedService: AuthenticationService,
     ) {
         this.itemForm = this.createItemmasterForm();
         // this.myformSearch = this.createSearchForm();
@@ -162,7 +164,8 @@ export class ItemMasterService {
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z ]*$")
+                    
                 ]
             ],
             itemCompnayId: ["",
@@ -171,13 +174,19 @@ export class ItemMasterService {
                 ]
             ],
             itemTime: [(new Date()).toISOString()],
-            mAssignItemToStores: [
-                {
-                    assignId: 0,
-                    storeId: 0,
-                    itemId: 0
-                }
-            ]
+            // mAssignItemToStores: [
+            //     {
+            //         assignId: 0,
+            //         storeId: 0,
+            //         itemId: 0
+            //     },[Validators.required]
+            // ]
+            addedby: this._loggedService.currentUserValue.userId,
+            upDatedBy: this._loggedService.currentUserValue.userId,
+            doseName: "",
+            doseDay: 0,
+            instruction: "",
+            mAssignItemToStores: [[], Validators.required] // empty array, not an object
 
         });
     }

@@ -70,7 +70,7 @@ export class ServiceMasterFormComponent implements OnInit {
     ngOnInit(): void {
         
         this.serviceForm = this._serviceMasterService.createServicemasterForm();
-       
+        this.serviceForm.markAllAsTouched();
         // this.serviceForm = this._serviceMasterService.createServicemasterForm();
 
         this.serviceForm.get('EffectiveDate').setValue(new Date());
@@ -216,48 +216,7 @@ export class ServiceMasterFormComponent implements OnInit {
         this.serviceForm.get('EmgAmt').updateValueAndValidity();
         this.serviceForm.get('EmgPer').updateValueAndValidity();
 
-        if (!this.groupId) {
-            this.toastr.warning('Please Select Group Name', 'Warning !', {
-              toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-          }
-        
-          if (!this.serviceForm.get("ServiceName")?.value) {
-            this.toastr.warning('Please Enter ServiceName', 'Warning !', {
-              toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-          }
-
-          if (!this.serviceForm.get("Price")?.value) {
-            this.toastr.warning('Please Enter Price', 'Warning !', {
-              toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-          }
-
-          if (!this.serviceForm.get("PrintOrder")?.value) {
-            this.toastr.warning('Please Enter PrintOrder', 'Warning !', {
-              toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-          }
-
-          if (!this.serviceForm.get("ServiceShortDesc")?.value) {
-            this.toastr.warning('Please Enter Service Short Description', 'Warning !', {
-              toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-          }
-
-          if (!this.tariffId) {
-            this.toastr.warning('Please Select Tariff Name', 'Warning !', {
-              toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-          }
-
+          if (!this.serviceForm.invalid) {
         if (!this.ServiceId) {
 
             let classDetailsArray = [];
@@ -351,9 +310,27 @@ export class ServiceMasterFormComponent implements OnInit {
                 this.toastr.error(error.message);
             })
         }
+        this.dialogRef.close();
+    }else{
+        let invalidFields = [];
+
+                if (this.serviceForm.invalid) {
+                    for (const controlName in this.serviceForm.controls) {
+                        if (this.serviceForm.controls[controlName].invalid) {
+                            invalidFields.push(`Service Form: ${controlName}`);
+                        }
+                    }
+                }
+                if (invalidFields.length > 0) {
+                    invalidFields.forEach(field => {
+                        this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                        );
+                    });
+                }
+    }
         
 
-        this.dialogRef.close();
+        // this.dialogRef.close();
 
     }
 

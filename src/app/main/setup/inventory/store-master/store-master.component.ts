@@ -60,11 +60,11 @@ export class StoreMasterComponent implements OnInit {
 
     allFilters=[
         { fieldName: "storeName", fieldValue: "", opType: OperatorComparer.Contains },
-        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
     ]
 
     gridConfig: gridModel = {
-        apiUrl: "StoreMaster/List",
+        apiUrl: "StoreMaster/StoreMasterList",
         columnsList: this.allColumns,
         sortField: "storeId",
         sortOrder: 0,
@@ -90,13 +90,13 @@ export class StoreMasterComponent implements OnInit {
     getfilterdata(){
         debugger
         this.gridConfig = {
-            apiUrl: "StoreMaster/List",
+            apiUrl: "StoreMaster/StoreMasterList",
             columnsList:this.allColumns, 
             sortField: "storeId",
             sortOrder: 0,
             filters:  [
-                { fieldName: "storeName", fieldValue: this.storeName, opType: OperatorComparer.Equals },
-                { fieldName: "isActive", fieldValue: this.type, opType: OperatorComparer.Equals }
+                { fieldName: "storeName", fieldValue: this.storeName, opType: OperatorComparer.StartsWith },
+                // { fieldName: "isActive", fieldValue: this.type, opType: OperatorComparer.Equals }
             ]
         }
         this.grid.gridConfig = this.gridConfig;

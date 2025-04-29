@@ -32,7 +32,7 @@ export class SupplierMasterService {
             ]],
             address: ["",
                [ Validators.required,
-                Validators.pattern("^[A-Za-z0-9.,\\s]*$") 
+                // Validators.pattern("^[A-Za-z0-9.,\\s]*$") 
             ]
             ],
             cityId: ['',

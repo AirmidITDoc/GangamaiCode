@@ -192,58 +192,13 @@ export class NursingnoteComponent implements OnInit {
       sortField: "AdmissionID",
       sortOrder: 0,
       filters: [
-        { fieldName: "AdmId", fieldValue: String(this.OP_IP_Id), opType: OperatorComparer.Equals } //91024
+        { fieldName: "AdmId", fieldValue: '1', opType: OperatorComparer.Equals } //String(this.OP_IP_Id)
       ]
     }
     console.log(this.gridConfig1)
     this.grid2.gridConfig = this.gridConfig1;
     this.grid2.bindGridData();
   }
-
-  // allColumnMed1=[
-  //   { heading: "()", key: "logo", sort: true, align: 'left', emptySign: 'NA' },
-  //   { heading: "DrugName", key: "drugname", sort: true, align: 'left', emptySign: 'NA' },
-  //   { heading: "DoseName", key: "dosename", sort: true, align: 'left', emptySign: 'NA' },
-  //   { heading: "Route", key: "route", sort: true, align: 'left', emptySign: 'NA' },
-  //   { heading: "Frequency", key: "frequency", sort: true, align: 'left', emptySign: 'NA' },
-  //   { heading: "NurseName", key: "nursename", sort: true, align: 'left', emptySign: 'NA' },
-  //   {
-  //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-  //       {
-  //           action: gridActions.edit, callback: ($event,contact: any) => {
-  //               this.deleteTableRow($event ,contact)
-  //           }
-  //       }]
-  //   }
-  // ]
-
-  // allfilterMed1=[
-  //   { fieldName: "AdmissionId", fieldValue: "0", opType: OperatorComparer.Equals }
-  // ]
-
-  // gridConfig2: gridModel = {
-  //   apiUrl: "Nursing/NursingMedicationList",
-  //   columnsList: this.allColumnMed1,
-  //   sortField: "MedChartId",
-  //   sortOrder: 0,
-  //   filters: this.allfilterMed1
-  // }
-
-  // getMedicationList1() {
-  //   debugger
-  //   this.gridConfig2 = {
-  //     apiUrl: "Nursing/NursingMedicationList",
-  //     columnsList: this.allColumnMed1,
-  //     sortField: "MedChartId",
-  //     sortOrder: 0,
-  //     filters: [
-  //       { fieldName: "AdmissionId", fieldValue: String(this.OP_IP_Id), opType: OperatorComparer.Equals } //20001
-  //     ]
-  //   }
-  //   console.log(this.gridConfig2)
-  //   this.grid3.gridConfig = this.gridConfig2;
-  //   this.grid3.bindGridData();
-  // }
 
   allColumnOfHandOver=[
     { heading: "Date", key: "vDate", sort: true, align: 'left', emptySign: 'NA'},

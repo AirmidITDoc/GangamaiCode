@@ -177,9 +177,24 @@ debugger
         if (!this.itemForm.invalid) {
             console.log("Item JSON :-", this.itemForm.value);
         
+            const formData = { ...this.itemForm.value };
+        const transformedStores = (formData.mAssignItemToStores || []).map((store: any) => {
+            return {
+                assignId: 0,
+                StoreId: store.storeId,
+                itemId: 0
+            };
+        });
+
+        formData.mAssignItemToStores = transformedStores;
+
+        console.log("Item JSON :-", formData);
+
             if (this.ItemId) {
-                this.itemForm.get('itemID').setValue(this.ItemId)
-                this._itemService.updateItemMaster(this.itemForm.value).subscribe(
+
+                formData.itemID=this.ItemId
+                
+                this._itemService.updateItemMaster(formData).subscribe(
                     (data) => {
                         this.toastr.success(data.message);
                         this.onClear(true);
@@ -189,7 +204,7 @@ debugger
                     }
                 );
             } else {
-                this._itemService.insertItemMaster(this.itemForm.value).subscribe(
+                this._itemService.insertItemMaster(formData).subscribe(
                     (data) => {
                         this.toastr.success(data.message);
                         this.onClear(true);
@@ -322,7 +337,7 @@ debugger
             itemCompnayId: [
                 { name: "required", Message: "Company Name is required" }
             ],
-            storeId: [
+            mAssignItemToStores: [
                 { name: "required", Message: "Store Name is required" }
             ],
         };

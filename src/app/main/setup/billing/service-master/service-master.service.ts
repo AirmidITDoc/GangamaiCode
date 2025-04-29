@@ -22,18 +22,18 @@ export class ServiceMasterService {
     createServicemasterForm(): FormGroup {
         return this._formBuilder.group({
             ServiceId: 0,
-            groupId: [""],
+            groupId: [0,[Validators.required, notEmptyOrZeroValidator()]],
             GroupName: [""],
             ServiceShortDesc: ["", 
                 [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z0-9]+$")
+                    Validators.pattern("^[A-Za-z0-9 ]+$")
                 ]
             ],
             ServiceName: ["",
                 [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z0-9]+$")
+                    Validators.pattern("^[A-Za-z0-9 ]+$")
                 ]
             ],
             Price: ["",[Validators.required, Validators.pattern("[0-9]+")]],
@@ -63,11 +63,7 @@ export class ServiceMasterService {
                 }
             ],
             DoctorId:[""],
-            tariffId: ["",
-                [
-                    // Validators.required
-                ]
-            ],
+            tariffId: [0,[Validators.required, notEmptyOrZeroValidator()]],
             // classId: ["0"],
             // classRate: ["0"],
             EffectiveDate: [""],
@@ -75,18 +71,9 @@ export class ServiceMasterService {
     }
 
     createTariffmasterForm(): FormGroup {
-        return this._formBuilder.group({
-            
-            tariffId1: ["",
-                [
-                    // Validators.required
-                ]
-            ],
-            tariffId2: ["",
-                [
-                    // Validators.required
-                ]
-            ],
+        return this._formBuilder.group({            
+            oldTariffId: [0,[Validators.required, notEmptyOrZeroValidator()]],
+            newTariffId: [0,[Validators.required, notEmptyOrZeroValidator()]],
         });
     }
 
@@ -103,10 +90,8 @@ export class ServiceMasterService {
         this.createServicemasterForm();
     }
 
-    public tariffMasterSave(Param: any) {
-        if (Param.tariffId) {
-            return this._httpClient.PutData("TarrifMaster/" + Param.tariffId, Param);
-        } else return this._httpClient.PostData("TarrifMaster", Param);
+    public SaveTariff(Param: any) {
+        return this._httpClient.PutData("BillingService/UpdateDifferTariff", Param);
     }
     
 
