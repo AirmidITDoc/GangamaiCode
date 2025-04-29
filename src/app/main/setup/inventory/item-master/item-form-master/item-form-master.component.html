@@ -124,24 +124,19 @@
   
                 <mat-card>
                     <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px" fxLayoutAlign="start center">
-                        <!-- <airmid-textbox label="C-GST" formControlName="cgst" [(ngModel)]="vCGST" [formGroup]="itemForm" [validations]="getValidationMessages().cgst" [maxLength]="10">
-                                            </airmid-textbox> -->
+
                         <mat-form-field appearance="outline" fxFlex="25%">
                             <mat-label>CGST</mat-label>
                             <input name="CGST" placeholder="Enter CGST" [(ngModel)]="vCGST" formControlName="cgst" matInput
                                 type="number" step="0.01" (keyup)="gstPerChecking()">
                         </mat-form-field>
                 
-                        <!-- <airmid-textbox label="S-GST" formControlName="sgst" [(ngModel)]="vSGST" [formGroup]="itemForm" [validations]="getValidationMessages().sgst" [maxLength]="10">
-                                            </airmid-textbox> -->
                         <mat-form-field appearance="outline" fxFlex="25%">
                             <mat-label>SGST</mat-label>
                             <input name="SGST" placeholder="Enter SGST" [(ngModel)]="vSGST" formControlName="sgst" matInput
                                 type="number" step="0.01" (keyup)="gstPerChecking()">
                         </mat-form-field>
                 
-                        <!-- <airmid-textbox label="I-GST" formControlName="igst" [(ngModel)]="vIGST" [formGroup]="itemForm" [validations]="getValidationMessages().igst" [maxLength]="10">
-                                            </airmid-textbox> -->
                         <mat-form-field appearance="outline" fxFlex="25%">
                             <mat-label>IGST</mat-label>
                             <input name="IGST" placeholder="Enter IGST" [(ngModel)]="vIGST" formControlName="igst" matInput
@@ -168,7 +163,7 @@
                     <!-- Dropdown -->
                     <airmid-dropdown 
                       label="Store" formControlName="mAssignItemToStores" [formGroup]="itemForm" [IsMultiPle]="true" 
-                      [value]="registerObj.mAssignItemToStores" [validations]="getValidationMessages().storeId" #ddlStore 
+                      [value]="registerObj.mAssignItemToStores" [validations]="getValidationMessages().mAssignItemToStores" #ddlStore 
                       ValueField="storeId" TextField="storeName" ApiUrl="StoreMaster/get-store" [ReqFullObj]="true" fxFlex="25">
                     </airmid-dropdown>
                 

@@ -24,7 +24,6 @@ export class StoreMasterService {
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                     Validators.pattern("^[A-Za-z ]*$")
                 ]
             ],
@@ -32,7 +31,6 @@ export class StoreMasterService {
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                     Validators.pattern("^[A-Za-z ]*$")
                 ]
             ],
@@ -40,7 +38,6 @@ export class StoreMasterService {
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                     Validators.pattern("^[A-Za-z ]*$")
                 ]
             ],
@@ -49,14 +46,12 @@ export class StoreMasterService {
                     Validators.required,
                     Validators.maxLength(30),
                     Validators.pattern('^[0-9]*$')
-                    // Validators.pattern("^[0-9 ]*$")
                 ]
             ],
             purchasePrefix: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                     Validators.pattern("^[A-Za-z ]*$")
                 ]
             ],
@@ -65,14 +60,12 @@ export class StoreMasterService {
                     Validators.required,
                     Validators.maxLength(30),
                     Validators.pattern('^[0-9]*$')
-                    // Validators.pattern("^[0-9 ]*$")
                 ]
             ],
             grnPrefix: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                     Validators.pattern("^[A-Za-z ]*$")
                 ]
             ],
@@ -81,14 +74,12 @@ export class StoreMasterService {
                     Validators.required,
                     Validators.maxLength(30),
                     Validators.pattern('^[0-9]*$')
-                    // Validators.pattern("^[0-9 ]*$")
                 ]
             ],
             grnreturnNoPrefix: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                     Validators.pattern("^[A-Za-z ]*$")
                 ]
             ],
@@ -96,7 +87,6 @@ export class StoreMasterService {
                 [
                     Validators.required,
                     Validators.maxLength(30),
-                    // Validators.pattern('^[0-9]*$')
                     Validators.pattern("^[0-9 ]*$")
                 ]
             ],
@@ -104,7 +94,6 @@ export class StoreMasterService {
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                     Validators.pattern("^[A-Za-z ]*$")
                 ]
             ],
@@ -112,7 +101,6 @@ export class StoreMasterService {
                 [
                     Validators.required,
                     Validators.maxLength(30),
-                    // Validators.pattern('^[0-9]*$')
                     Validators.pattern("^[0-9 ]*$")
                 ]
             ],
@@ -120,7 +108,6 @@ export class StoreMasterService {
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                     Validators.pattern("^[A-Za-z ]*$")
                 ]
             ],
@@ -128,14 +115,13 @@ export class StoreMasterService {
                 [
                     Validators.required,
                     Validators.maxLength(30),
-                    // Validators.pattern('^[0-9]*$')
                     Validators.pattern("^[0-9 ]*$")
                 ]
             ],
             // isDeleted: ["true"],
             // UpdatedBy: ["0"],
             // AddedByName: ["0"],
-            // Header: [""],
+            header: [""],
             pharSalCountId: ["",
                 [
                     Validators.required

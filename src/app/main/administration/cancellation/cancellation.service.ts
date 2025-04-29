@@ -42,26 +42,31 @@ export class CancellationService {
     
     return this._httpClient.PutData("BillCancellation/OPCancelBill", param) 
   }
-  public IpCancelBill(param) {
-    
+  public IpCancelBill(param) {    
     return this._httpClient.PutData("BillCancellation/IPCancelBill", param) 
   }
+
+  public SaveCancelAdvance(param) {    
+    return this._httpClient.PostData("Advance/Cancel", param) 
+  }
+  
   public getDateTimeChangeBill(m_data) {
     return this._httpClient.PutData("Administration/UpdateBilldatetime" + m_data.billNo,m_data);
 }
 
 public getDateTimeChangeAdvanceDetId(m_data) {
-  // return this._httpClient.PutData("Advance/UpdateAdvance" + m_data.advanceDetailId,m_data);
-  return this._httpClient.PutData("Advance/UpdateAdvance",m_data);
+  return this._httpClient.PutData("Advance/UpdateAdvanceDate",m_data);
 }
 
 public getDateTimeChangeRefundId(m_data) {
-  // return this._httpClient.PutData("Billing/UpdateRefund" + m_data.refundId,m_data);
   return this._httpClient.PutData("Billing/UpdateRefund",m_data);
 }
 
 public getDateTimeChangeSalesId(m_data) {
   return this._httpClient.PutData("paymentpharmacy/UpdatePharmSales",m_data);
-  // return this._httpClient.PutData("paymentpharmacy/UpdatePharmSales" + m_data.salesNo,m_data);
+}
+
+public getDateTimeChangePaymentId(m_data) {
+  return this._httpClient.PutData("paymentpharmacy/paymentpharUpdateDate",m_data);
 }
 }

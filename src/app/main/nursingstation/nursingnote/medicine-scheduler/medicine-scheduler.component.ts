@@ -255,7 +255,7 @@ export class MedicineSchedulerComponent {
     })
 
     let submitData = {
-      "saveTNursingMedicationChartParams": saveTNursingMedicationChartParamsObj
+      "nursingMedicationChart": saveTNursingMedicationChartParamsObj
     };
     console.log(submitData);
     this._NursingStationService.insertMedicationChart(submitData).subscribe(response => {
