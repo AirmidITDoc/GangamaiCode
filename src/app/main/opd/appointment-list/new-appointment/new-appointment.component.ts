@@ -671,12 +671,12 @@ export class NewAppointmentComponent implements OnInit {
             DateOfBirth: [(new Date()).toISOString()],
             Age: ['0'],
             AgeYear: ['', [
-                Validators.required,
+                // Validators.required,
                 Validators.maxLength(3),
                 Validators.pattern("^[0-9]*$")]],
-            AgeMonth: ['', [Validators.required,
+            AgeMonth: ['', [
             Validators.pattern("^[0-9]*$")]],
-            AgeDay: ['', [Validators.required,
+            AgeDay: ['', [
             Validators.pattern("^[0-9]*$")]],
             PhoneNo: ['', [Validators.minLength(10),
             Validators.maxLength(10),

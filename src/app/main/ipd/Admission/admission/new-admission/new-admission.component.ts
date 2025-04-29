@@ -182,8 +182,7 @@ export class NewAdmissionComponent implements OnInit {
 
   onNewSave() {
 
-    if (this.ageYear != 0 || this.ageMonth != 0 || this.ageDay != 0) {
-
+   
     if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid) {
 
       Swal.fire({
@@ -196,8 +195,7 @@ export class NewAdmissionComponent implements OnInit {
         confirmButtonText: "Yes, Save!"
 
       }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
+      if (result.isConfirmed) {
           this.OnSaveAdmission();
         }
       })
@@ -227,9 +225,7 @@ export class NewAdmissionComponent implements OnInit {
       }
 
     }
-  }else {
-    this.toastr.warning("Please Select Birthdate  ...");
-}
+ 
   }
 
 
@@ -319,7 +315,9 @@ export class NewAdmissionComponent implements OnInit {
         this._matDialog.closeAll();
       });
     }
-  }
+  } else {
+    this.toastr.warning("Please Select Birthdate  ...");
+}
   }
 
 
@@ -530,5 +528,13 @@ export class NewAdmissionComponent implements OnInit {
 
   }
 
-
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+        return true;
+    } else {
+        event.preventDefault();
+        return false;
+    }
+}
 }

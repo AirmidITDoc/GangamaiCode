@@ -154,7 +154,15 @@ export class NewRegistrationComponent implements OnInit {
         }
     
 
-
+        keyPressAlphanumeric(event) {
+            var inp = String.fromCharCode(event.keyCode);
+            if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+                return true;
+            } else {
+                event.preventDefault();
+                return false;
+            }
+        }
     onClose() {
         this.dialogRef.close();
     }

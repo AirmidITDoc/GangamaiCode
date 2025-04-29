@@ -172,7 +172,7 @@
                                         <div fxLayout="row" class="gap-8">
 
                                             <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"
-                                                label="MobileNo" formControlName="MobileNo"
+                                                label="MobileNo" formControlName="MobileNo" (keypress)="keyPressAlphanumeric($event)"
                                                 [value]="registerObj.mobileNo" [formGroup]="personalFormGroup"
                                                 [validations]="getValidationMessages().mobileNo" [maxLength]="10">
                                             </airmid-textbox>

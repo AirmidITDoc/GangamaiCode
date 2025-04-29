@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MenuMasterService } from './menu-master.service';
 import { NewMenuComponent } from './new-menu/new-menu.component';
 import { fuseAnimations } from '@fuse/animations';
+import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-menu-master',
@@ -17,42 +18,50 @@ import { fuseAnimations } from '@fuse/animations';
     animations: fuseAnimations,
 })
 export class MenuMasterComponent implements OnInit {
+    mysearchform:FormGroup;
+    MenuId="0";
+    LinkName="%"
+    autocompletemenu: string = "MenuMain"
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+
+     allcolumns = [
+    
+        { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "UpId", key: "upId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "MenuName", key: "linkName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Icon", key: "icon", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Action", key: "linkAction", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Sort Order", key: "sortOrder", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsBlock", key: "isDisplay", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Permission Code", key: "permissionCode", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Table Names", key: "tableNames", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._MenuMasterService.deactivateTheStatus(data.id).subscribe((response: any) => {
+                            this.toastr.success(response.message);
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+
     gridConfig: gridModel = {
         apiUrl: "MenuMaster/MenuMasterList",
-        columnsList: [
-            { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UpId", key: "upId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "MenuName", key: "linkName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Icon", key: "icon", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Action", key: "linkAction", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-            { heading: "Sort Order", key: "sortOrder", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsBlock", key: "isDisplay", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Permission Code", key: "permissionCode", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Table Names", key: "tableNames", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._MenuMasterService.deactivateTheStatus(data.id).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "MenuId", //UpId
+        columnsList: this.allcolumns,
+        sortField: "MenuId", 
         sortOrder: 0,
         filters: [
-            // { fieldName: "Id", fieldValue: "217", opType: OperatorComparer.Equals },
-            // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            // { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+        { fieldName: "Id", fieldValue: this.MenuId, opType: OperatorComparer.Equals },
+        { fieldName: "LinkName", fieldValue: this.LinkName, opType: OperatorComparer.Contains }
+        
         ]
     }
 
@@ -61,8 +70,58 @@ export class MenuMasterComponent implements OnInit {
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 
-    ngOnInit(): void { }
+    ngOnInit(): void { 
+      this.mysearchform= this._MenuMasterService.createSearchForm()
+    }
 
+
+    ListView(value) {
+            if (value.value !== 0)
+            this.MenuId = value.value
+          else
+            this.MenuId = "0"
+            this.onChangeFirst(value);
+      }
+    
+      onChangeFirst(value) {
+        
+        this.MenuId = String(this.MenuId)
+        this.LinkName = this.mysearchform.get("LinkSearch").value + "%"
+       
+        this.getfilterdata();
+      }
+    
+      getfilterdata() {
+        debugger
+        this.gridConfig = {
+            apiUrl: "MenuMaster/MenuMasterList",
+            columnsList: this.allcolumns,
+            sortField: "MenuId", 
+          sortOrder: 0,
+          filters: [
+            { fieldName: "Id", fieldValue: this.MenuId, opType: OperatorComparer.Equals },
+            { fieldName: "LinkName", fieldValue: this.LinkName, opType: OperatorComparer.Contains }
+        
+          ],
+          row: 25
+        }
+       
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    
+      }
+
+        
+
+Clearfilter(event) {
+    console.log(event)
+    if (event == 'LinkSearch')
+        this.mysearchform.get('LinkSearch').setValue("%")
+   
+    this.onChangeFirst(event);
+  }
+
+      
     onSave(row: any = null) {
         let that = this;
         const dialogRef = this._matDialog.open(NewMenuComponent,

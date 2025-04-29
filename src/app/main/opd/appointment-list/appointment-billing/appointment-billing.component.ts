@@ -446,9 +446,13 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       row.DiscPer = 0;
       this.toastrService.error("Enter discount % between 0-100");
     }
+    
     this.Consessionres = true
-    if (discountPer == 0)
+    if (discountPer == 0){
       this.Consessionres = false
+      this.totalChargeForm.get("concessionId").setValue(0)
+    }
+
     row.DiscAmt = parseFloat(((totalAmount * discountPer) / 100).toFixed(2));
     row.TotalAmt = totalAmount;
     row.NetAmount = totalAmount - row.DiscAmt;
@@ -465,9 +469,12 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       discountAmt = 0;
       this.toastrService.error("Discount must be between 0 and the total amount.");
     }
+    
     this.Consessionres = true
-    if (discountAmt == 0)
+    if (discountAmt == 0){
       this.Consessionres = false
+      this.totalChargeForm.get("concessionId").setValue(0)
+    }
     row.DiscPer = totalAmount ? parseFloat(((discountAmt / totalAmount) * 100).toFixed(2)) : 0;
     row.TotalAmt = totalAmount;
     row.NetAmount = totalAmount - discountAmt;
@@ -477,14 +484,17 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   updateTotalDiscountAmt(): void {
     if (this.isUpdating) return; // Stop recursion
     this.isUpdating = true;
-
+debugger
     const totalDiscountPer = +this.totalChargeForm.get("totalDiscountPer").value;
-    if (totalDiscountPer < 0 || totalDiscountPer > 100) {
+    if(totalDiscountPer==0)
+      this.totalChargeForm.get("concessionId").setValue(0)
+    if (totalDiscountPer < 0 || totalDiscountPer > 100 ) {
       this.totalChargeForm.get("totalDiscountPer").setValue(0);
       this.totalChargeForm.get("totalDiscountAmount").setValue(0);
 
       this.isUpdating = false;
       this.Consessionres = false;
+     
       this.toastrService.error("Discount must be between 0 to 100.");
       return;
     }
@@ -507,6 +517,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     const totalDiscountAmount = +this.totalChargeForm.get("totalDiscountAmount").value;
     const totalChargeAmount = +this.totalChargeForm.get("totalAmount").value;
 
+    if(totalDiscountAmount==0)
+      this.totalChargeForm.get("concessionId").setValue(0)
+    
     if (totalDiscountAmount < 0 || totalDiscountAmount > totalChargeAmount) {
       this.totalChargeForm.get("totalDiscountPer").setValue(0);
       this.totalChargeForm.get("totalDiscountAmount").setValue(0);

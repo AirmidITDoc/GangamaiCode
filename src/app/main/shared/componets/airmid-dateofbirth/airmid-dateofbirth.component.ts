@@ -64,7 +64,6 @@ export class AirmidDateofbirthComponent implements OnInit {
             this.ageMonth =(todayDate.getMonth() - dob.getMonth());
             this.ageDay = (todayDate.getDate() - dob.getDate());
          
-            debugger
             if ( this.ageDay < 0) {
                 this.ageMonth--;
                 const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
