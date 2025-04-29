@@ -35,19 +35,7 @@
               </mat-expansion-panel-header>
               <div fxLayout="column" fxLayout="row" fxLayoutAlign="start none">
                 <form [formGroup]="_GRNList.userFormGroup" class="pt-4" style="overflow: auto">
-                  <div fxLayout="row" class="gap-4">
-                    <!-- <div>
-                      <form [formGroup]="_GRNList.GRNStoreForm" class="p-0">
-                        <mat-form-field appearance="outline">
-                          <mat-select formControlName="StoreId" name="StoreId">
-                            <mat-option></mat-option>
-                            <mat-option *ngFor="let m of StoreList" [value]="m">
-                              {{ m.StoreName }}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </form>
-                    </div> -->
+                  <div fxLayout="row" class="gap-4"> 
 
                     <airmid-dropdown label="Store Name" formControlName="StoreId" [formGroup]="_GRNList.userFormGroup"
                     [validations]="getValidationMessages().StoreId" [value]="data?.StoreId"   fxFlex="11%"
@@ -61,19 +49,20 @@
                       [validations]="getValidationMessages().supplierId"
                       [mode]="dropdownMode.supplierMaster"
                       (selectionChange)="selectChangeSupplier($event)"
+                      [value]="registerObj.supplierId"
                     ></airmid-dropdown>
 
                     <airmid-textbox
                       fxFlex="11%"
                       label="Contact Persion"
                       formControlName="Contact"
-                      [(ngModel)]="vContact"
+                      [value]="vContact"
                       [formGroup]="_GRNList.userFormGroup"
                       [readonly]="true"
                       [disabled]="true"
                     ></airmid-textbox>
 
-                    <airmid-textbox fxFlex="9%" label="Mobile" formControlName="Mobile" [(ngModel)]="vMobile" [formGroup]="_GRNList.userFormGroup" [readonly]="true"></airmid-textbox>
+                    <airmid-textbox fxFlex="9%" label="Mobile" formControlName="Mobile" [(value)]="vMobile" [formGroup]="_GRNList.userFormGroup" [readonly]="true"></airmid-textbox>
 
                     <airmid-datepicker fxFlex="9%" [formGroup]="_GRNList.userFormGroup" formControlName="DateOfInvoice" [label]="'Invoice Date'" ></airmid-datepicker>
 
@@ -81,7 +70,7 @@
                       fxFlex="6%"
                       label="Invoice No"
                       formControlName="InvoiceNo"
-                      [(ngModel)]="registerObj.InvoiceNo"
+                      [value]="registerObj.invoiceNo"
                       [formGroup]="_GRNList.userFormGroup"
                       placeholder="Invoice No"
                       [validations]="getValidationMessages().invoiceNo"
@@ -91,7 +80,7 @@
                       fxFlex="6%"
                       label="Gate Entry No"
                       formControlName="GateEntryNo"
-                      [(ngModel)]="registerObj.GrnNumber"
+                      [value]="registerObj.grnNumber"
                       [formGroup]="_GRNList.userFormGroup"
                       placeholder="GateEntryNo"
                       [validations]="getValidationMessages().gateEntryNo"
@@ -120,9 +109,7 @@
                       <mat-radio-button value="0">Credit</mat-radio-button>
                     </mat-radio-group>
                     </div> 
-                  </div> 
-
-                 
+                  </div>  
 
                   <div fxLayout="row" class="gap-4">
                     <input type="hidden" name="PurchaseId" [(ngModel)]="vPurchaseId" formControlName="PurchaseId" />
@@ -135,8 +122,7 @@
                       placeholderText="Item Name (enter 2 char)"
                       fxFlex="14%"
                       ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
-                      (selectionChange)="getSelectedItem($event)"
-                      TextField="formattedText"
+                      (selectionChange)="getSelectedItem($event)" 
                       ValueField="itemId"
                       (onClearSelection)="resetFormItem()"
                     ></airmid-autocomplete>
@@ -806,22 +792,22 @@
                         <span class="net-amt-value text-primary" style="margin-left: 10px; font-weight: bolder">{{ getTotalAmount() | currency : 'INR' }}</span>
                       </div>
                       <div fxLayout="row" class="gap-4">
-                        <airmid-textbox fxFlex="17%" label="Remark" formControlName="Remark" [(ngModel)]="registerObj.Remark"
+                        <airmid-textbox fxFlex="17%" label="Remark" formControlName="Remark"  [value]="registerObj.remark"
                           [formGroup]="_GRNList.GRNFinalForm" type="text"></airmid-textbox>
                       
-                        <airmid-textbox fxFlex="14%" label="Received By" formControlName="ReceivedBy" [(ngModel)]="registerObj.ReceivedBy"
+                        <airmid-textbox fxFlex="14%" label="Received By" formControlName="ReceivedBy"  [value]="registerObj.receivedBy"
                           [formGroup]="_GRNList.GRNFinalForm" type="text"></airmid-textbox>
                       
-                        <airmid-textbox fxFlex="12%" label="Debit Amt" formControlName="DebitAmount" [(ngModel)]="registerObj.DebitAmount"
+                        <airmid-textbox fxFlex="12%" label="Debit Amt" formControlName="DebitAmount"  [value]="registerObj.debitNote"
                           [formGroup]="_GRNList.GRNFinalForm" type="number"></airmid-textbox>
                       
-                        <airmid-textbox fxFlex="12%" label="Credit Amt" formControlName="CreditAmount" [(ngModel)]="registerObj.CreditNote"
+                        <airmid-textbox fxFlex="12%" label="Credit Amt" formControlName="CreditAmount"  [value]="registerObj.creditNote"
                           [formGroup]="_GRNList.GRNFinalForm" type="number"></airmid-textbox>
                       
-                        <airmid-textbox fxFlex="12%" label="Other Charges" formControlName="OtherCharge" [(ngModel)]="registerObj.OtherCharge"
+                        <airmid-textbox fxFlex="12%" label="Other Charges" formControlName="OtherCharge"  [value]="registerObj.otherCharge"
                           [formGroup]="_GRNList.GRNFinalForm" type="number"></airmid-textbox>
                       
-                        <airmid-textbox fxFlex="12%" label="EwayBillNo" formControlName="Contact" [(ngModel)]="registerObj.EwayBillNo"
+                        <airmid-textbox fxFlex="12%" label="EwayBillNo" formControlName="Contact"   
                           [formGroup]="_GRNList.GRNFinalForm" type="number"></airmid-textbox>
                       
                         <airmid-datepicker fxFlex="17%" [formGroup]="_GRNList.GRNFinalForm" formControlName="EwalBillDate"
@@ -830,22 +816,22 @@
                       </div>
                       <div fxLayout="row" class="gap-4">
 
-                        <airmid-textbox fxFlex="18%" label="Total Amt" formControlName="TotalAmt" [(ngModel)]="registerObj.TotalAmount"
+                        <airmid-textbox fxFlex="18%" label="Total Amt" formControlName="TotalAmt"  [value]="registerObj.totalAmount"
                           [formGroup]="_GRNList.GRNFinalForm" type="number"   [readonly]="true"></airmid-textbox>
 
-                          <airmid-textbox fxFlex="15%" label="Disc Amt" formControlName="DiscAmount" [(ngModel)]="registerObj.TotalDiscAmount"
+                          <airmid-textbox fxFlex="15%" label="Disc Amt" formControlName="DiscAmount"  [value]="registerObj.totalDiscAmount"
                           [formGroup]="_GRNList.GRNFinalForm" type="number"   [readonly]="true"></airmid-textbox>
 
-                          <airmid-textbox fxFlex="15%" label="DiscAmt2" formControlName="DiscAmount2" [(ngModel)]="vFinalDisAmount2"
+                          <airmid-textbox fxFlex="15%" label="DiscAmt2" formControlName="DiscAmount2"  [value]="registerObj.DiscAmt2"
                           [formGroup]="_GRNList.GRNFinalForm" type="number"   [readonly]="true"></airmid-textbox>
                       
-                          <airmid-textbox fxFlex="15%" label="GST Amt" formControlName="VatAmount" [(ngModel)]="registerObj.totalVATAmount"
+                          <airmid-textbox fxFlex="15%" label="GST Amt" formControlName="VatAmount"  [value]="registerObj.totalVatamount" 
                           [formGroup]="_GRNList.GRNFinalForm" type="number"   [readonly]="true"></airmid-textbox>
 
-                          <airmid-textbox fxFlex="18%" label="Net Amt" formControlName="NetPayamt" [(ngModel)]="registerObj.NetAmount"
+                          <airmid-textbox fxFlex="18%" label="Net Amt" formControlName="NetPayamt"  [value]="registerObj.netAmount"
                           [formGroup]="_GRNList.GRNFinalForm" type="number"   [readonly]="true"></airmid-textbox>
 
-                          <airmid-textbox fxFlex="15%" label="Rounding Amt" formControlName="RoundingAmt" [(ngModel)]="vDiffNetRoundAmt"
+                          <airmid-textbox fxFlex="15%" label="Rounding Amt" formControlName="RoundingAmt"  [value]="registerObj.roundingAmt"
                           [formGroup]="_GRNList.GRNFinalForm" type="number"   [readonly]="true"></airmid-textbox>  
                       </div>
                     </div>

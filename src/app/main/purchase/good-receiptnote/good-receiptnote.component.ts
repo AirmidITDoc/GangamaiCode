@@ -261,7 +261,6 @@ export class GoodReceiptnoteComponent implements OnInit {
  
  
     getSelectedRow(event){
-        console.log(event)
         this.isShowDetailTable = true; 
         this.gridConfig1 = {
             apiUrl: "GRN/GRNDetailsList",
@@ -633,7 +632,7 @@ selectChangeSupplier(value){
     onEdit(contact) {
         this.chkNewGRN = 2;
         console.log(contact)
-        const dialogRef = this._matDialog.open(UpdateGRNComponent,
+        const dialogRef = this._matDialog.open(NewGrnComponent,
             {
                 maxWidth: "100%",
                 height: '95%',
@@ -863,7 +862,7 @@ export class ItemNameList {
     VatPer: any;
     VatAmt: any;
     MRP_Strip: any;
-    GRNId: any;
+    grnid: any;
     GRNID: any;
     InvoiceNo: any;
     GateEntryNo: any;
@@ -938,6 +937,75 @@ export class ItemNameList {
     SrNo: number;
     DebitAmount:any;
     GSTType: GSTType | null;
+
+
+
+    itemId:any;
+    itemName:any;
+    uomId: any;
+    unitofMeasurementName: any;
+    receiveQty:any;
+    freeQty:any;
+    unitMRP:any;
+    mrp:any;
+    mrP_Strip:any;  
+    rate:any;
+    conversionFactor:any;
+    vatPercentage:any;
+    vatAmount:any;
+    totalQty:any;  
+    landedRate:any;
+    poNo:any;
+    grnDetID:any;
+    batchNo:any;
+    batchExpDate:any;
+    purDetId:any;
+
+    totalAmount: any;
+    totalDiscAmount: any
+    netAmount: any;
+    totalVatamount: any;
+    remark: any;
+    receivedBy: any;  
+    debitNote: any;
+    creditNote: any;
+    otherCharge: any;
+    roundingAmt: any;
+    grnNumber:any;
+    supplierId:any; 
+    supplierName: any
+    storeId: any; 
+    grndate: any;
+    grntime: any;  
+    invoiceNo: any;
+    deliveryNo: any;
+    gateEntryNo: any;
+    grntype: any;
+    isVerified:any;
+    totSGSTAmt:any;
+    totIGSTAmt:any;
+    billDiscAmt:any;
+    mobile:any;
+    email:any;  
+         
+    poQty: any;
+    purchaseId: any;  
+    poBalQty: any;
+    purUnitRate: any;
+    purUnitRateWf: any;
+    cgstper: any;
+    cgstamt:any;
+    sgstper:any;
+    sgstamt:any;
+    igstper:any;
+    igstamt:any;
+    hsncode:any;  
+    stkID:any;
+    cash_CreditType:any;
+    grnType:any;
+    isVerifiedDatetime:any;
+    isVerifiedUserId:any; 
+    discAmt2:any;   
     /**
      * Constructor
      *
@@ -976,7 +1044,7 @@ export class ItemNameList {
             this.VatPer = ItemNameList.VatPer || 0;
             this.VatAmt = ItemNameList.VatAmt || 0;
             this.MRP_Strip = ItemNameList.MRP_Strip || 0;
-            this.GRNId = ItemNameList.GRNId || 0;
+            this.grnid = ItemNameList.grnid || 0;
             this.GRNID = ItemNameList.GRNID || 0;
             this.InvoiceNo = ItemNameList.InvoiceNo || 0;
             this.GateEntryNo = ItemNameList.GateEntryNo || 0;

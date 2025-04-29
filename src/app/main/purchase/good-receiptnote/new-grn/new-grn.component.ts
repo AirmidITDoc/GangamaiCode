@@ -26,6 +26,7 @@ import { GRNFinalFormModel, GRNFormModel, GRNItemResponseType, GSTCalculation, G
 import { NewGRNService } from './new-grn.service';
 import { values } from 'lodash';
 import Swal from 'sweetalert2';
+import { element } from 'protractor';
 
 
 const moment = _rollupMoment || _moment;
@@ -254,7 +255,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             GST: item.cgstPer + item.sgstPer + item.igstPer
         });
         this.calculateTotalamt();
-      //  this.getLastThreeItemInfo(item)
+        this.getLastThreeItemInfo(item)
     }
   //supplier det
     selectChangeSupplier(supplier: any): void {
@@ -799,18 +800,61 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             "filters": [
               {
                 "fieldName": "GRNID",
-                "fieldValue": String(this.registerObj.GRNId),
+                "fieldValue": String(this.registerObj.grnid),
                 "opType": "Equals"
               }
             ],
+            "Columns":[],
             "exportType": "JSON"
           } 
          console.log(vdata);
         this._GRNList.getGRNrtrvItemlist(vdata).subscribe(response => {
-          this.chargeslist = response
-          console.log(response)
-          this.dsItemNameList.data = this.chargeslist;
-          console.log(this.dsItemNameList.data)  
+          this.dsItemNameList.data = response.data 
+          this.dsItemNameList.data.forEach(element=>{
+            this.chargeslist.push(
+                {  
+                    ItemId:element.itemId,
+                    ItemName: element.itemName,
+                    ConversionFactor: element.conversionFactor, 
+                    UOMId:element.uomId,
+                    BatchNo: element.batchNo,
+                    ExpDate: element.batchExpDate, 
+                    Qty: element.receiveQty,
+                    FreeQty:element.freeQty,
+                    TotalQty: element.totalQty,
+                    MRP: element.mrp,
+                    Rate:element.rate,
+                    TotalAmount: element.totalAmount,
+                    Disc:element.discPercentage,
+                    DisAmount:element.discAmount,
+                    Disc2:0,
+                    DiscAmt2: element.discAmt2,
+                    GST:element.vatPercentage,
+                    GSTAmount: element.vatAmount,
+                    CGST: element.cgstper,
+                    CGSTAmount:element.cgstamt,
+                    SGST: element.sgstper,
+                    SGSTAmount: element.sgstamt, 
+                    IGST:element.igstper,
+                    IGSTAmount: element.igstamt, 
+                    NetAmount: element.netAmount, 
+                    PurchaseId:element.purchaseId,
+                    PurDetId: element.purDetId,
+                    POBalQty: element.poBalQty, 
+                    POQty: element.poQty, 
+                    LandedRate:element.landedRate, 
+                    purUnitRate: element.purUnitRate,      //Purchaserate
+                    PurUnitRateWF: element.purUnitRateWf, 
+                    //unitmrp
+                    unitMRP: element.unitMRP, 
+                    IsVerifiedUserId: element.isVerifiedUserId, 
+                    IsVerified: element.isVerified, 
+                    IsVerifiedDatetime: element.isVerifiedDatetime, 
+                    StkID:element.stkID
+                }
+            )
+          })
+          this.dsItemNameList.data = this.chargeslist; 
         });  
       } 
     // Handlers
@@ -912,8 +956,10 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         });
     }
     getLastThreeItemInfo(Obj) { 
+        console.log(Obj.itemId)
         this._GRNList.getLastThreeItemInfo(Obj.itemId).subscribe(response => {
-            this.dsLastThreeItemList.data = response.data as LastThreeItemList[];  
+            this.dsLastThreeItemList.data = response.data as LastThreeItemList[]; 
+            console.log(response) 
         });
     }
 }

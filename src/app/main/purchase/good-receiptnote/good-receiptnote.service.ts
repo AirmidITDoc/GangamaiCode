@@ -69,18 +69,18 @@ export class GoodReceiptnoteService {
     return this._formBuilder.group({
       PurchaseId: [''],
       poBalQty: [''],
-      ItemName: ['', [Validators.required]],
-      UOMId: [''],
+      itemName: ['', [Validators.required]],
+      uomId: [''],
       HSNCode: [''],
-      BatchNo: ['', [Validators.required]],
-      ConversionFactor: [''],
-      Qty: [0, [Validators.required, Validators.min(1)]],
+      batchNo: ['', [Validators.required]],
+      conversionFactor: [''],
+      receiveQty: [1, [Validators.required,]],
       ExpDate: [''],
-      MRP: [0, [Validators.required]],
-      FreeQty: [0],
-      Rate: [0, [Validators.required]],
-      TotalAmount: [0],
-      Disc: [0],
+      mrp: [0, [Validators.required]],
+      freeQty: [0],
+      rate: [0, [Validators.required]],
+      totalAmount: [0],
+      discPercentage: [0],
       Disc2: [0],
       DisAmount: [0],
       DisAmount2: [0],
@@ -94,8 +94,8 @@ export class GoodReceiptnoteService {
       IGSTAmount: [0],
       NetAmount: [0],
       SupplierId: [''],
-      Contact: '',
-      Mobile: '',
+      Contact: [''],
+      Mobile: [''],
       InvoiceNo: [''],
       DateOfInvoice: [new Date()],
       GateEntryNo: [''], 
@@ -212,7 +212,7 @@ export class GoodReceiptnoteService {
     if (loader) {
       this._loaderService.show();
     }
-    return this._httpClient.post("GRN/GRNUpdateList", Param);
+    return this._httpClient1.PostData("GRN/GRNUpdateList", Param);
   }
   public getLoggedStoreList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
