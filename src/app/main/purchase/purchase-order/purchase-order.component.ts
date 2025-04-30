@@ -51,28 +51,28 @@ export class PurchaseOrderComponent implements OnInit {
 
   @ViewChild('iconisClosed') iconisClosed!: TemplateRef<any>;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-
+  // @ViewChild('actionsTemplate4') actionsTemplate4!: TemplateRef<any>;
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'isVerified')!.template = this.isVerifiedstatus;
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-
+    // this.gridConfig.columnsList.find(col => col.key === 'isVerified1')!.template = this.actionsTemplate4;
   }
   @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
   hasSelectedContacts: boolean;
-  fromDate = "2025-04-21"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  toDate = "2025-04-27"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
   allcolumns = [
 
-    { heading: "", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-    { heading: "purchaseNo", key: "purchaseNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "purchaseDate", key: "purchaseTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 130 },
-    { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "TotalAmt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "DiscAmount", key: "discAmount", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "NetAmount", key: "grandTotal", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Verify", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+    { heading: "PurchaseNo", key: "purchaseNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Date", key: "pDate", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+    { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    { heading: "TotalAmt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA' , width: 100 },
+    { heading: "DiscAmount", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', width: 100  },
+    { heading: "NetAmount", key: "grandTotal", sort: true, align: 'left', emptySign: 'NA', width: 100  },
     { heading: "Remark", key: "remarks", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "AddedByName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "AddedByName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA', width: 100  },
     {
       heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -104,10 +104,11 @@ export class PurchaseOrderComponent implements OnInit {
       columnsList: [
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Rate", key: "rate", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "DiscPer", key: "discPer", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "DiscAmount", key: "discAmount", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "GSTPer", key: "vatPer", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "SGTAmount", key: "vatAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "GSTAmount", key: "vatAmount", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "TotalAmount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "MRP", key: "mrp", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "NetAmount", key: "grandTotalAmount", sort: true, align: 'left', emptySign: 'NA' },
@@ -153,12 +154,8 @@ export class PurchaseOrderComponent implements OnInit {
     });
   }
 
-
-  vstoreId: any = '';
    ListView(value) {
-    
-    console.log(value)
-         if (value.value !== 0)
+    if (value.value !== 0)
         this.StoreId = value.value
       else
         this.StoreId = "0"
@@ -166,10 +163,7 @@ export class PurchaseOrderComponent implements OnInit {
   }
 
   ListView1(value) {
-    
-    console.log(value)
-   
-      if (value.value !== 0)
+        if (value.value !== 0)
         this.SupplierId = value.value
       else
         this.SupplierId = "0"
@@ -177,7 +171,8 @@ export class PurchaseOrderComponent implements OnInit {
   }
 
   onChangeFirst(value) {
-    debugger
+    
+    this.isShowDetailTable = false;
     this.fromDate = this.datePipe.transform(this.mysearchform.get('startdate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.mysearchform.get('enddate').value, "yyyy-MM-dd")
     this.StoreId = String(this.StoreId)
@@ -228,16 +223,14 @@ export class PurchaseOrderComponent implements OnInit {
   onVerify(row) {
    
     let submitData = {
-    
-      "purchaseId": row.PurchaseID,
+      "purchaseId": row.purchaseID,
       "isVerifiedId": 1
 
     };
-   console.log(submitData);
-    this._PurchaseOrderService.getVerifyPurchaseOrdert(submitData).subscribe(response => {
+   this._PurchaseOrderService.getVerifyPurchaseOrdert(submitData).subscribe(response => {
       this.toastr.success(response);
       if (response) {
-         this.viewgetPurchaseorderReportPdf(response)
+        this.commonService.Onprint("PurchaseID", row.purchaseID, "Purchaseorder");
          this._matDialog.closeAll();
        }
  
@@ -245,6 +238,7 @@ export class PurchaseOrderComponent implements OnInit {
   }
   chkNewGRN: any;
   OnEdit(contact) {
+    console.log(contact)
     if(this.mysearchform.get('Status').value == 0 ){
       // this.chkNewGRN = 2;
       // console.log(contact)
@@ -373,6 +367,7 @@ export class ItemNameList {
  specification: any;
  itemId: any;
  uomid: any;
+ 
   /**
    * Constructor
    *

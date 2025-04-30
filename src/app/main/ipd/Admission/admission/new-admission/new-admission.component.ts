@@ -18,6 +18,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { fuseAnimations } from '@fuse/animations';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-new-admission',
@@ -81,6 +82,7 @@ export class NewAdmissionComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private router: Router,
     private commonService: PrintserviceService,
+    private _FormvalidationserviceService: FormvalidationserviceService,
     public toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -129,7 +131,7 @@ export class NewAdmissionComponent implements OnInit {
     return this.formBuilder.group({
       regRadio: ['registration'],
       RegId: [{ value: '', disabled: this.isRegSearchDisabled }],
-      HospitalId: 1
+      HospitalId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
   }
 
@@ -172,8 +174,7 @@ export class NewAdmissionComponent implements OnInit {
       this.Regflag = true;
       this.searchFormGroup.get('RegId').enable();
       this.personalFormGroup = this._AdmissionService.createPesonalForm();
-      // this.personalFormGroup.markAllAsTouched();
-      // this.admissionFormGroup.markAllAsTouched();
+     
     }
 
     this.personalFormGroup.markAllAsTouched();
@@ -284,6 +285,7 @@ export class NewAdmissionComponent implements OnInit {
     this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
     this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
 
+console.log(this.searchFormGroup.get("HospitalId").value)
     this.admissionFormGroup.get('hospitalId').setValue(this.searchFormGroup.get("HospitalId").value)
 
     this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))

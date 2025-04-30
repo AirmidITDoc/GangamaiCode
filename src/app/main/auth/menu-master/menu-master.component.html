@@ -20,10 +20,14 @@
             <ng-container filters>
 
                 <form [formGroup]="mysearchform" fxLayout="column">
-                <airmid-dropdown label="Menu Name" formControlName="MenuNameSearch"
-                (selectionChange)="ListView($event)" [formGroup]="mysearchform" 
-                [mode]="autocompletemenu">
-               </airmid-dropdown>
+                
+
+               <airmid-dropdown label="Menu Name" formControlName="MenuNameSearch"
+               [formGroup]="mysearchform"
+               [(ngModel)]="gridConfig.filters[0].fieldValue" 
+               [mode]="autocompletemenu" (selectionChange)="ListView($event)"
+               (keyup)="ListView($event)" >
+              </airmid-dropdown>
                
                <mat-form-field appearance="outline">
                 <mat-label>Link Name</mat-label>

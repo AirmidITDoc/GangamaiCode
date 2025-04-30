@@ -43,16 +43,7 @@ export class PurchaseOrderService {
   constructor(
     public _httpClient: HttpClient, public _httpClient1: ApiCaller, private toastr: ToastrService,
     private _formBuilder: UntypedFormBuilder
-  ) {
-    // this.userFormGroup = this.getPurchaseOrderForm();
-    // this.PurchaseSearchGroup = this.PurchaseSearchFrom();
-    // this.FinalPurchaseform = this.getPurchaseOrderFinalForm();
-    // this.StoreFormGroup = this.createStoreFrom();
-    // this.POEmailFrom = this.createPOEmailFrom();
-    // this.PurchaseOrderHeader=this.createHeaderFrom();
-  }
-
-   
+  ) {}
 
   PurchaseSearchFrom() {
     return this._formBuilder.group({
@@ -62,21 +53,21 @@ export class PurchaseOrderService {
       SupplierId: "0",
       startdate: [new Date().toISOString()],
       enddate: [new Date().toISOString()],
-      Status: [0],
+      Status: ['0'],
     });
   }
 
-  createStoreFrom() {
-    return this._formBuilder.group({
-      StoreId: [''],
-      ToStoreId: '',
-      FromStoreId: '',
-      SupplierId: '',
-      start: [new Date().toISOString()],
-      end: [new Date().toISOString()],
-      Status: ['1'],
-    });
-  }
+  // createStoreFrom() {
+  //   return this._formBuilder.group({
+  //     StoreId: [''],
+  //     ToStoreId: '',
+  //     FromStoreId: '',
+  //     SupplierId: '',
+  //     start: [new Date().toISOString()],
+  //     end: [new Date().toISOString()],
+  //     Status: ['1'],
+  //   });
+  // }
   // createHeaderFrom(){
   //   return this._formBuilder.group({
   //     Status3: [''],
@@ -92,24 +83,24 @@ export class PurchaseOrderService {
 
   getPurchaseOrderForm() {
     return this._formBuilder.group({
-      // purchaseId: [''],
-      // purchaseNo: [''],
-      // StoreId: [1],
-      // SupplierId: [''],
-      // TotalAmount: [''],
-      // DiscAmount: [''],
-      // Disc:[''],
+      purchaseId: [''],
+      purchaseNo: [''],
+      StoreId: [2, [Validators.required]],
+      SupplierId: ['', [Validators.required]],
+      TotalAmount: [''],
+      DiscAmount: [''],
+      Disc:[''],
       // taxAmount: [''],
       // freightAmount: [''],
       // octriAmount: [''],
-      // grandTotal: [''],
+      grandTotal: [''],
       // isclosed: [''],
       // isVerified: [''],
-      // remarks: [''],
+      remarks: [''],
       // taxId: [''],
-      // paymentTermId: ['14'],
-      // modeofPayment: ['1'],
-      // worrenty: [''],
+      paymentTermId: [''],// [Validators.required]],
+      modeofPayment: [''],// [Validators.required]],
+      worrenty: [''],
       // roundVal: [''],
       // prefix: [''],
       // isVerifiedId: [''],
@@ -121,75 +112,75 @@ export class PurchaseOrderService {
       // handlingCharges: [''],
       // freightCharges: [''],
 
-      // ItemName:   ['', [Validators.required]],
-      // ConversionFactor: [''],
-      // Qty:   [1, [Validators.required]],
-      // UOM: [''],
-      // Rate:  ['', [Validators.required]],
-
-      // HSNcode: '',
-      // GST: [''],
-      // GSTPer: [''],
-      // GSTAmount: [''],
-      // NetAmount: [''],
-      // MRP: [''],
-      // Specification: [''],
-      // SupplierID: '',
-      // Address: '',
-      // Mobile: '',
-      // Contact: '',
-      // GSTNo: '',
-      // Email: '',
-      // PurchaseDate: [new Date()],
-      // DefRate: '',
-      
-      // CGSTPer: [''],
-      // CGSTAmount: [''],
-      // SGSTPer: [''],
-      // SGSTAmount: [''],
-      // IGSTPer: [''],
-      // IGSTAmount: [''],
-      // GSTType: [''],
-      // UOMId:['']
-
-      PurchaseId:[0],
-      UOMId:[''],
-      Disc:[''],
-      // GSt:[''],
-      StoreId: [2, [Validators.required]],
-      ItemName:  ['', [Validators.required]],
+      ItemName:   ['', [Validators.required]],
       ConversionFactor: [''],
-      Qty:  ['', [Validators.required]],
+      Qty:   [1, [Validators.required]],
       UOM: [''],
       Rate:  ['', [Validators.required]],
-      TotalAmount: ['', [Validators.required]],
-      HSNcode:'',
-      Dis: [''],
-      DiscAmount: [''],
+
+      HSNcode: '',
       GST: [''],
       GSTPer: [''],
       GSTAmount: [''],
-      NetAmount: ['', [Validators.required]],
+      NetAmount: [''],
       MRP: [''],
       Specification: [''],
-      purchaseId: [''],
-      Status3: [''],
-      SupplierId: [''],
-      SupplierID:'',
-      Address:'',
-      Mobile:'',
-      Contact:'',
-      GSTNo:'',
-      Email:'',
+      SupplierID: '',
+      Address: '',
+      Mobile: '',
+      Contact: '',
+      GSTNo: '',
+      Email: '',
       PurchaseDate: [new Date()],
-      DefRate:'',
+      DefRate: '',
+      
       CGSTPer: [''],
       CGSTAmount: [''],
       SGSTPer: [''],
       SGSTAmount: [''],
       IGSTPer: [''],
       IGSTAmount: [''],
-      GSTType: [16]
+      GSTType: [0],
+      UOMId:[''],
+
+      PurchaseId:[0],
+      // UOMId:[''],
+      // Disc:[''],
+      // // GSt:[''],
+      // StoreId: [2, [Validators.required]],
+      // ItemName:  ['', [Validators.required]],
+      // ConversionFactor: [''],
+      // Qty:  ['', [Validators.required]],
+      // UOM: [''],
+      // Rate:  ['', [Validators.required]],
+      // TotalAmount: ['', [Validators.required]],
+      // HSNcode:'',
+      // Dis: [''],
+      // DiscAmount: [''],
+      // GST: [''],
+      // GSTPer: [''],
+      // GSTAmount: [''],
+      // NetAmount: ['', [Validators.required]],
+      // MRP: [''],
+      // Specification: [''],
+      // purchaseId: [''],
+      // Status3: [''],
+      // SupplierId: [''],
+      // SupplierID:'',
+      // Address:'',
+      // Mobile:'',
+      // Contact:'',
+      // GSTNo:'',
+      // Email:'',
+      // PurchaseDate: [new Date()],
+      // DefRate:'',
+      // CGSTPer: [''],
+      // CGSTAmount: [''],
+      // SGSTPer: [''],
+      // SGSTAmount: [''],
+      // IGSTPer: [''],
+      // IGSTAmount: [''],
+      // GSTType: [16]
     });
 
   }
@@ -204,8 +195,8 @@ export class PurchaseOrderService {
       Worrenty: [''],
       roundVal: [''],
       Remark: [''],
-      PaymentMode: [''],
-      PaymentTerm: [''],
+      PaymentMode: ['0'],
+      PaymentTerm: ['0'],
 
     });
   }
@@ -219,37 +210,15 @@ export class PurchaseOrderService {
     })
   }
 
-  PurchaseOrder() {
-    return this._formBuilder.group({
 
-    });
-  }
   public getLastThreeItemInfo(Param) {
     return this._httpClient1.PostData("Purchase/LastThreeItemList", Param);
   }
-  public getPaymentTermList() {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_termsofpaymentMaster", {});
-  }
-  public getModeOfPaymentList() {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_modeofpaymentForcombo", {});
-  }
-  public getGSTtypeList(Param) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Constants", Param);
-  }
-  public getSupplierSearchList(param) {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SupplierName_list", param);
-  }
-  public getLoggedStoreList(Param) {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
-  }
+  
   public getPurchaseOrderDetail(Param) {
     return this._httpClient1.PostData("Purchase/OldPurchaseOrderList", Param);
   }
-  public getItemList(Param) {
-    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemNameList_GRN", Param);
-  }
-
-
+  
   public InsertPurchaseSave(Param) {
        
     if (Param.purchaseId) {
@@ -261,30 +230,11 @@ export class PurchaseOrderService {
   public InsertPurchaseUpdate(Param) {
     return this._httpClient1.PutData("Purchase/Edit/" + Param.purchaseId, Param)
   }
-  public getPrintPurchaseOrdert(Param) {
-    return this._httpClient.post("Generic/GetByProc?procName=rptPrintPurchaseOrder", Param);
-  }
   public getVerifyPurchaseOrdert(Param) {
     return this._httpClient1.PostData("Purchase/Verify", Param)
   }
-
-  public getItemNameList(Param) {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemName_GRN", Param);
-  }
-
   public getSupplierRateList(data) {
     return this._httpClient1.PostData("Purchase/SupplierrateList", data);
-  }
-
-
-  public getPurchaseorderreportview(PurchaseID) {
-    return this._httpClient.get("Pharmacy/view-Purchaseorder?PurchaseID=" + PurchaseID);
-  }
-
-
-
-  public InsertWhatsappPurchaseorder(emp) {
-    return this._httpClient.post("WhatsappEmail/WhatsappSalesSave", emp);
   }
 
   public EmailSendInsert(emp) {
@@ -355,52 +305,52 @@ export class PurchaseOrderService {
           }
           return calculation;
       }
-      public calculateItemTotalValues(contact: ItemNameList): GSTCalculationResult {
-          // Calculate total quantity with free qty
-          const finalTotalQty = this.calculateTotalQuantity(
-              Number(contact.Qty || 0),
-              // Number(contact.FreeQty || 0),
-              Number(contact.ConversionFactor || 1)
-          );
+      // public calculateItemTotalValues(contact: ItemNameList): GSTCalculationResult {
+      //     // Calculate total quantity with free qty
+      //     const finalTotalQty = this.calculateTotalQuantity(
+      //         Number(contact.Qty || 0),
+      //         // Number(contact.FreeQty || 0),
+      //         Number(contact.ConversionFactor || 1)
+      //     );
   
-          // Calculate total amount
-          const totalAmount = Number(contact.Qty || 0) * Number(contact.Rate || 0);
+      //     // Calculate total amount
+      //     const totalAmount = Number(contact.Qty || 0) * Number(contact.Rate || 0);
   
-          // Calculate discount
-          const discAmount = (totalAmount * Number(contact.DiscPer || 0)) / 100;
+      //     // Calculate discount
+      //     const discAmount = (totalAmount * Number(contact.DiscPer || 0)) / 100;
   
-          return {
-              totalAmount,
-              discAmount,
-              cgst: Number(contact.CGSTPer || 0),
-              sgst: Number(contact.SGSTPer || 0),
-              igst: Number(contact.IGSTPer || 0),
-              gst: Number(contact.CGSTPer || 0) + Number(contact.SGSTPer || 0) + Number(contact.IGSTPer || 0),
-              finalTotalQty,
-              conversionFactor: Number(contact.ConversionFactor || 1),
-              mrp: Number(contact.MRP || 0),
-              rate: Number(contact.Rate || 0)
-          };
-      }
+      //     return {
+      //         totalAmount,
+      //         discAmount,
+      //         cgst: Number(contact.CGSTPer || 0),
+      //         sgst: Number(contact.SGSTPer || 0),
+      //         igst: Number(contact.IGSTPer || 0),
+      //         gst: Number(contact.CGSTPer || 0) + Number(contact.SGSTPer || 0) + Number(contact.IGSTPer || 0),
+      //         finalTotalQty,
+      //         conversionFactor: Number(contact.ConversionFactor || 1),
+      //         mrp: Number(contact.MRP || 0),
+      //         rate: Number(contact.Rate || 0)
+      //     };
+      // }
       public calculateBasicValues(contact: ItemNameList): void {
         debugger
           contact.TotalQty = (Number(contact.Qty || 0)) * Number(contact.ConversionFactor || 1);
           this.calculateCellTotalAmount(contact);
-          const discountAmount = (Number(contact.TotalAmount || 0) * Number(contact.DiscPer || 0)) / 100;
+          const discountAmount = ((Number(contact.TotalAmount || 0) * Number(contact.DiscPer || 0)) / 100).toFixed(2);
           contact.DiscAmount = discountAmount;
           
       }
       public calculateCellTotalAmount(contact: ItemNameList): void {
-          contact.TotalAmount = Number(contact.Qty || 0) * Number(contact.Rate || 0);
+          contact.TotalAmount = (Number(contact.Qty || 0) * Number(contact.Rate || 0)).toFixed(2);
       }
 
-      calculateTotalQuantity(receiveQty: number,conversionFactor: number): number {
-        if (!conversionFactor || conversionFactor <= 0) {
-            this.showToast('Packing cannot be 0', ToastType.WARNING);
-            conversionFactor = 1;
-        }
-        return ((receiveQty || 0) ) * conversionFactor;
-    }
+    //   calculateTotalQuantity(receiveQty: number,conversionFactor: number): number {
+    //     if (!conversionFactor || conversionFactor <= 0) {
+    //         this.showToast('Packing cannot be 0', ToastType.WARNING);
+    //         conversionFactor = 1;
+    //     }
+    //     return ((receiveQty || 0) ) * conversionFactor;
+    // }
 
     public calculateGSTAfterDisc(values: GSTCalculationResult): GSTCalculation {
         const baseAmount = values.totalAmount - values.discAmount;

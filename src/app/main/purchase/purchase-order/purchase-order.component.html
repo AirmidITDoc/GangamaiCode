@@ -1,13 +1,7 @@
 <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" dynamicTableHeight>
 
 
-    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
-
-        <mat-tab label="  Purchase Order List">
-            <ng-template mat-tab-label>
-                Purchase Order List
-            </ng-template>
-
+    
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
@@ -48,18 +42,11 @@
                                 <mat-icon>edit</mat-icon>
                             </button>
 
-
-                            <button mat-icon-button (click)="onVerify(element)" *ngIf="element.isVerified">
+                            <!-- *ngIf="element.isVerified" -->
+                            <button mat-icon-button (click)="onVerify(element)">
                                 <mat-icon class="disabled-icon" title="verify Menu">verified_user</mat-icon>
 
                             </button>
-
-                            <!-- <button mat-icon-button matTooltip="Send message On WhatsApp" (click)="POEmail(element)">
-                                <mat-icon *ngIf="element.isVerified == 0" [disabled]="element.disabled" class="disabled-icon"
-                                    title="Email Menu">mail</mat-icon>
-                                <mat-icon *ngIf="element.isVerified == 1" title="Email Menu">mail</mat-icon>
-                            </button> -->
-
 
                             <button mat-icon-button matTooltip="Send message On WhatsApp"
                                 (click)="OnWhatsPoSend(element)">
@@ -90,20 +77,19 @@
                                 </airmid-dropdown>
 
                                 <div fxFlex fxLayout="row">
-                                    <!-- <mat-radio-group name="Status" fxLayout="row" value="1" [formGroup]="mysearchform"
-                             formControlName="Status"
-                                style="padding: 6px;" class="gap-4">
-                                <mat-label>Status:</mat-label>
-                                <div fxLayout="row">
-                                    <mat-radio-button value='0'>Close</mat-radio-button>
-                                    <mat-radio-button value='1'>Pending</mat-radio-button>
-                                </div>
-                            </mat-radio-group> -->
+                                    <mat-radio-group name="Status" fxLayout="row" value="1"
+                                        formControlName="Status" style="padding: 6px;" class="gap-4">
+                                        <mat-label>Status:</mat-label>
+                                        <div fxLayout="row">
+                                            <mat-radio-button value='1' (keyup)="onChangeFirst($event)">Status Verify</mat-radio-button>
+                                            <mat-radio-button value='0' (keyup)="onChangeFirst($event)">Pending</mat-radio-button>
+                                        </div>
+                                    </mat-radio-group>
 
-                                    <mat-slide-toggle name="Status" (change)="onChangeFirst($event)"
+                                    <!-- <mat-slide-toggle name="Status" (change)="onChangeFirst($event)"
                                         formControlName="Status">
                                         Status Verify / Pending
-                                    </mat-slide-toggle>
+                                    </mat-slide-toggle> -->
                                 </div>
                             </form>
                         </ng-container>
@@ -133,9 +119,5 @@
                 </div>
             </div>
 
-        </mat-tab>
-
-
-    </mat-tab-group>
 
 </div>

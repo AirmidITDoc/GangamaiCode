@@ -343,8 +343,9 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onSave() {
-        // console.log(this.registerObj.dateOfBirth)
-
+        if(this.Patientnewold ==2 && this.RegId==0)
+            this.toastr.warning("Please Select Registered Patient  ...");
+        else{
         let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
         if (DateOfBirth1) {
             const todayDate = new Date();
@@ -412,7 +413,7 @@ export class NewAppointmentComponent implements OnInit {
             this.toastr.warning("Please Select Birthdate  ...");
         }
     }
-
+    }
 
     OnsaveNewRegister() {
         console.log(this.personalFormGroup.value)

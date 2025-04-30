@@ -4,6 +4,7 @@ import { UntypedFormBuilder, FormGroup, Validators, FormControl } from '@angular
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
     providedIn: 'root'
@@ -15,26 +16,22 @@ export class AppointmentlistService {
     VisitFormGroup: FormGroup;
 
     constructor(public _httpClient1: ApiCaller, private _formBuilder: UntypedFormBuilder, private _loaderService: LoaderService,
-        public _httpClient: HttpClient,  private accountService: AuthenticationService
+        public _httpClient: HttpClient,  private accountService: AuthenticationService , private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myformSearch = this.filterForm();
-        // this.myCrossConsulteForm = this.createConsultatDrForm();
+       
     }
 
-
-    // new APi
 
     filterForm(): FormGroup {
         return this._formBuilder.group({
             RegNo: '',
             FirstName: ['', [
-                //    Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
-                Validators.pattern("^[A-Za-z/() ]*$")
+             Validators.pattern("^[A-Za-z / () ]*$")
                 
             ]],
             LastName: ['', [
-                // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
-                Validators.pattern("^[A-Za-z/() ]*$")
+           Validators.pattern("^[A-Za-z / () ]*$")
             ]],
             DoctorId: '',
             fromDate: [(new Date()).toISOString()],
@@ -121,21 +118,21 @@ export class AppointmentlistService {
             regId: 0,
             visitDate: [(new Date()).toISOString()],
             visitTime: [(new Date()).toISOString()],
-            UnitId: 1,
-            PatientTypeId: [1, Validators.required],
-            ConsultantDocId: ['',Validators.required],
+            UnitId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            PatientTypeId:  [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            ConsultantDocId:  [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             RefDocId: [0],
-            TariffId: [1, Validators.required],
+            TariffId:  [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             CompanyId: 0,
             SubCompanyId:0,
-            addedBy: 0,
-            updatedBy: 0,
+            addedBy: this.accountService.currentUserValue.userId,
+            updatedBy: this.accountService.currentUserValue.userId,
             isCancelledBy: 0,
             isCancelled: true,
             isCancelledDate: [(new Date()).toISOString()],
-            ClassId: 1,
-            DepartmentId: ['',Validators.required],
-            patientOldNew: 1,
+            ClassId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            DepartmentId:  [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            patientOldNew: 0,
             firstFollowupVisit: 0,
             AppPurposeId: [0],
             followupDate: [(new Date()).toISOString()],
@@ -187,8 +184,6 @@ export class AppointmentlistService {
 
     }
 
-    
-    // new API?
 
     public getAppointmentList(employee) {
         return this._httpClient1.PostData("VisitDetail/Insert", employee)

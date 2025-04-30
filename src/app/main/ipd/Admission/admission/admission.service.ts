@@ -5,6 +5,7 @@ import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +19,7 @@ export class AdmissionService {
     }
 
     constructor(public _httpClient: HttpClient, public _httpClient1: ApiCaller,  private accountService: AuthenticationService,
-        public _formBuilder: UntypedFormBuilder, private _loaderService: LoaderService,
+        public _formBuilder: UntypedFormBuilder, private _loaderService: LoaderService, private _FormvalidationserviceService: FormvalidationserviceService
     ) {this.myFilterform = this.filterForm();}
 
     filterForm(): FormGroup {
@@ -60,7 +61,7 @@ export class AdmissionService {
         return this._formBuilder.group({
             RegId: [0],
             RegNo: "0",
-            PrefixId:[0, [Validators.required, notEmptyOrZeroValidator()]],
+            PrefixId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             FirstName: ['', [
                 Validators.required,
                 // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
@@ -75,7 +76,7 @@ export class AdmissionService {
                 // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
                 Validators.pattern("^[A-Za-z/() ]*$")
             ]],
-            GenderId: new FormControl('', [Validators.required, notEmptyOrZeroValidator()]),
+            GenderId: new FormControl('', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]),
             Address: '',
             DateOfBirth: [(new Date()).toISOString()],
             Age: ['0'],
@@ -104,10 +105,10 @@ export class AdmissionService {
             MaritalStatusId:0,
             ReligionId: 0,
             AreaId: 0,
-            CityId:[0, [Validators.required, notEmptyOrZeroValidator()]],
+            CityId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             City: [''],
-            StateId:[0, [Validators.required, notEmptyOrZeroValidator()]],
-            CountryId:[0, [Validators.required, notEmptyOrZeroValidator()]],
+            StateId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            CountryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             IsCharity: false,
             IsSeniorCitizen: false,
             AddedBy: this.accountService.currentUserValue.userId,
@@ -125,21 +126,21 @@ export class AdmissionService {
             RegId: 0,
             AdmissionDate: [(new Date()).toISOString()],
             AdmissionTime: [(new Date()).toISOString()],
-            PatientTypeId: 0,
-            hospitalId: 0,
-            DocNameId:[0, [Validators.required, notEmptyOrZeroValidator()]],
+            PatientTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            hospitalId: [0],// [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            DocNameId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             RefDocNameId: 0,
             DischargeDate: "1900-01-01",
             DischargeTime: "1900-01-01T11:24:02.655Z",
             IsDischarged: 0,
             IsBillGenerated: 0,
             CompanyId: 0,
-            TariffId:[1, [Validators.required, notEmptyOrZeroValidator()]],
-            ClassId:[0, [Validators.required, notEmptyOrZeroValidator()]],
-            wardId:[0, [Validators.required, notEmptyOrZeroValidator()]],
-            bedId:[0, [Validators.required, notEmptyOrZeroValidator()]],
+            TariffId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            ClassId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            wardId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            bedId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
 
-            DepartmentId:[0, [Validators.required, notEmptyOrZeroValidator()]],
+            DepartmentId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             RelativeName: "",
             RelativeAddress: "",
             PhoneNo: ['', [
@@ -187,19 +188,19 @@ export class AdmissionService {
             AdmissionTime: [(new Date()).toISOString()],
             PatientTypeId: 0,
             hospitalId: 0,
-            DocNameId:[0, [Validators.required, notEmptyOrZeroValidator()]],
+            DocNameId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             RefDocNameId: 0,
             DischargeDate: "1900-01-01",
             DischargeTime: "1900-01-01T11:24:02.655Z",
             IsDischarged: 0,
             IsBillGenerated: 0,
             CompanyId: 0,
-            TariffId: [1, [Validators.required]],
+            TariffId: [0, [Validators.required]],
             ClassId: [0],
             wardId: [0],
             bedId: [0],
 
-            DepartmentId:[0, [Validators.required, notEmptyOrZeroValidator()]],
+            DepartmentId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             RelativeName: "",
             RelativeAddress: "",
             PhoneNo: ['', [
@@ -318,9 +319,9 @@ export class AdmissionService {
 }
 
 
-function notEmptyOrZeroValidator(): any {
-    return (control: AbstractControl): ValidationErrors | null => {
-        const value = control.value;
-        return value > 0 ? null : { greaterThanZero: { value: value } };
-      };
-}
+// function notEmptyOrZeroValidator(): any {
+//     return (control: AbstractControl): ValidationErrors | null => {
+//         const value = control.value;
+//         return value > 0 ? null : { greaterThanZero: { value: value } };
+//       };
+// }
