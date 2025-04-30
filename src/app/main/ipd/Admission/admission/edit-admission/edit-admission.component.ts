@@ -6,24 +6,10 @@ import { AdmissionService } from '../admission.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe, Time } from '@angular/common';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { Router } from '@angular/router';
-import { map, startWith, takeUntil } from 'rxjs/operators';
-import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
-import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
-import { MatSelect } from '@angular/material/select';
 import { ToastrService } from 'ngx-toastr';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatStepper } from '@angular/material/stepper';
-import { MatTableDataSource } from '@angular/material/table';
-import { RegistrationService } from 'app/main/opd/registration/registration.service';
-import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AdmissionPersonlModel, Bed, RegInsert } from '../admission.component';
-import { Console } from 'console';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
@@ -92,17 +78,17 @@ export class EditAdmissionComponent implements OnInit {
 
     if (this.data) {
       console.log(this.data)
-            setTimeout(() => {
-              this._AdmissionService.getDoctorsByDepartment(this.data.departmentId).subscribe((data: any) => {
-                this.ddlDoctor.options = data;
-                this.ddlDoctor.bindGridAutoComplete();
-              });
-            }, 500);
-          }
+      setTimeout(() => {
+        this._AdmissionService.getDoctorsByDepartment(this.data.departmentId).subscribe((data: any) => {
+          this.ddlDoctor.options = data;
+          this.ddlDoctor.bindGridAutoComplete();
+        });
+      }, 500);
+    }
 
     this.admissionFormGroup = this._AdmissionService.createEditAdmissionForm();
     this.admissionFormGroup.markAllAsTouched();
-  
+
     if ((this.data?.regId ?? 0) > 0) {
       setTimeout(() => {
         this._AdmissionService.getRegistraionById(this.data.regId).subscribe((response) => {
@@ -127,7 +113,7 @@ export class EditAdmissionComponent implements OnInit {
         });
       }, 500);
     }
- this.admissionFormGroup.get("DocNameId").setValue(this.data.docNameId)
+    this.admissionFormGroup.get("DocNameId").setValue(this.data.docNameId)
   }
 
   selectChangedepartment(obj: any) {
@@ -177,27 +163,27 @@ export class EditAdmissionComponent implements OnInit {
 
       this._AdmissionService.AdmissionUpdate(this.registerObj1.admissionId, submitData).subscribe(response => {
         this.toastr.success(response.message);
-      this.getAdmittedPatientCasepaperview(response);
+        this.getAdmittedPatientCasepaperview(response);
         this._matDialog.closeAll();
       });
-    }  else {
+    } else {
       let invalidFields = [];
 
-  if (this.admissionFormGroup.invalid) {
-          for (const controlName in this.admissionFormGroup.controls) {
-              if (this.admissionFormGroup.controls[controlName].invalid) {
-                  invalidFields.push(`Admission Form: ${controlName}`);
-              }
+      if (this.admissionFormGroup.invalid) {
+        for (const controlName in this.admissionFormGroup.controls) {
+          if (this.admissionFormGroup.controls[controlName].invalid) {
+            invalidFields.push(`Admission Form: ${controlName}`);
           }
+        }
       }
-if (invalidFields.length > 0) {
-          invalidFields.forEach(field => {
-              this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-              );
-          });
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
       }
 
-  }
+    }
 
   }
   getAdmittedPatientCasepaperview(AdmissionId) {
@@ -257,12 +243,10 @@ if (invalidFields.length > 0) {
       ],
     };
   }
-  Close() {
+  OnClose() {
     this._matDialog.closeAll();
   }
-  onClear() { }
-
-
+ 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     console.log('dateTimeObj==', dateTimeObj);
@@ -277,8 +261,6 @@ if (invalidFields.length > 0) {
     this.admissionFormGroup.get('SubCompanyId').clearValidators();
     this.admissionFormGroup.get('CompanyId').updateValueAndValidity();
     this.admissionFormGroup.get('SubCompanyId').updateValueAndValidity();
-
-
   }
 
 }
