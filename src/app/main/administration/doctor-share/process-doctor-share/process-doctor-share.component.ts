@@ -25,14 +25,14 @@ export class ProcessDoctorShareComponent implements OnInit {
       ngOnInit(): void {
       }
     
-      OnSave(){   
-        let processDoctorShareParamObj = {};
-        processDoctorShareParamObj['fromDate'] = this.datePipe.transform(this._DoctorShareService.DocPrecessForm.get("startdate").value,"MM-dd-yyyy") || "01/01/1900",
-        processDoctorShareParamObj['toDate'] = this.datePipe.transform(this._DoctorShareService.DocPrecessForm.get("enddate").value,"MM-dd-yyyy") || "01/01/1900"
-       
+      OnSave(){ 
+        debugger  
         let submitData={
-          'processDoctorShareParam':processDoctorShareParamObj
+          "fromDate": this.datePipe.transform(this._DoctorShareService.DocPrecessForm.get("startdate").value,"yyyy-MM-dd") || "1900/01/01",
+          "toDate": this.datePipe.transform(this._DoctorShareService.DocPrecessForm.get("enddate").value,"yyyy-MM-dd") || "1900/01/01",
         }
+
+        console.log(submitData)
         this._DoctorShareService.SaveProcessdocShare(submitData).subscribe((response)=>{
           if (response) {
             this.toastr.success('Process Doctor Share Saved Successfully', 'Save !', {

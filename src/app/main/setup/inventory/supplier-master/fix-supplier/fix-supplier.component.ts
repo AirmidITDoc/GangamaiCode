@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SupplierMaster, SupplierMasterComponent } from '../supplier-master.component';
 import { SupplierMasterService } from '../supplier-master.service';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-fix-supplier',
@@ -28,12 +28,14 @@ export class FixSupplierComponent implements OnInit {
     isActive: boolean = true;
     // new API
     SupplierId: any = 0;
+    vtaluka:any;
 
     autocompleteModecity: string = "City";
     autocompleteModestate: string = "State";
     autocompleteModecountry: string = "Country";
     autocompleteModeofpayment: string = "PaymentMode";
     autocompleteModetermofpayment: string = "TermofPayment";
+    autocompleteModeofBank:string='Bank'
     @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
 
     constructor(
@@ -49,7 +51,7 @@ export class FixSupplierComponent implements OnInit {
     ngOnInit(): void {
         this.supplierForm = this._supplierService.createSuppliermasterForm();
         this.supplierForm.markAllAsTouched();
-
+        
         if(this.data){
             console.log(this.data)
             this.SupplierId = this.data.supplierId
@@ -78,6 +80,13 @@ export class FixSupplierComponent implements OnInit {
         }
     }
 
+    onChangeMsm(event) {
+        
+        if(event.checked==true)
+        this.msmflag=true;
+       else
+       this.msmflag=false;
+      }
 
     removestore(item) {
         let removedIndex = this.supplierForm.value.mAssignSupplierToStores.findIndex(x => x.storeId == item.storeId);
@@ -94,11 +103,26 @@ export class FixSupplierComponent implements OnInit {
         });
     }
 
+    bankId=0
+    bankName=''
+    selectChangemodeofBank(obj:any){
+        this.bankId=obj.value
+        this.bankName=obj.text
+    }
+
     onChangestate(e) {
     }
 
     onSubmit() {
         debugger
+        // const isPhar = this.supplierForm.get('isPharStore')?.value;
+                if (this.msmflag=false) {
+                    this.supplierForm.get('MSMNo')?.setValidators([Validators.required]);
+                } else {
+                    this.supplierForm.get('MSMNo')?.clearValidators();
+                }        
+                this.supplierForm.get('MSMNo')?.updateValueAndValidity();
+
        if(!this.supplierForm.invalid){
         const formData = { ...this.supplierForm.value };
         const transformedStores = (formData.mAssignSupplierToStores || []).map((store: any) => {
@@ -113,6 +137,7 @@ export class FixSupplierComponent implements OnInit {
 
         // const id=this.supplierForm.get('supplierId').setValue(this.SupplierId)
         formData.supplierId = this.SupplierId;
+        formData.bankName = this.bankName;
 
         console.log("After transformation:", formData);
 
@@ -145,14 +170,6 @@ export class FixSupplierComponent implements OnInit {
 
     }
 
-    onChangeMsm(event) {
-
-        if (event.checked == true)
-            this.msmflag = true;
-        else
-            this.msmflag = false;
-    }
-
     onChangeMode(event) {
 
     }
@@ -175,7 +192,6 @@ export class FixSupplierComponent implements OnInit {
     countryId = 0;
     modeOfPaymentId = 0;
     termOfPaymentId = 0;
-    bankId = 0;
     storeId = 0;
     supplierId = 0;
 
@@ -263,6 +279,14 @@ export class FixSupplierComponent implements OnInit {
             mAssignSupplierToStores: [
                 { name: "required", Message: "Store is required" }
             ],
+            taxNature:[],
+            licNo:[],
+            dlno:[],
+            taluka:[],
+            bankId:[],
+            BankBranch:[],
+            bankNo:[],
+            IFSCcode:[],
         };
     }
 }

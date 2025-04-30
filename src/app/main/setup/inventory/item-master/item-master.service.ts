@@ -214,6 +214,10 @@ export class ItemMasterService {
         return this._httpClient.GetData("ItemMaster/" + Id);
     }
 
+    public getItemGenericById(Id) {
+        return this._httpClient.GetData("ItemType/" + Id);
+      }
+
     // public ItemMasterCancle(Param: any) {
         
     //   return this._httpClient.PostData("ItemMaster/ItemCanceled", Param);

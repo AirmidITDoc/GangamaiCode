@@ -30,6 +30,7 @@ export class ItemFormMasterComponent implements OnInit {
     companyId = 0;
     storeId = 0;
     drugId = 0;
+    drugName=''
     menuId = 0;
 
     // new api
@@ -138,9 +139,10 @@ export class ItemFormMasterComponent implements OnInit {
     // selectChangeStore(obj: any) {
     //     this.storeId = obj.value
     // }
-    // selectChangeDrugType(obj: any) {
-    //     this.drugId = obj.value
-    // }
+    selectChangeDrugType(obj: any) {
+        this.drugId = obj.value
+        this.drugName=obj.text
+    }
     // selectChangeMenu(obj: any) {
     //     this.menuId = obj.value
     // }
@@ -204,6 +206,7 @@ debugger
                     }
                 );
             } else {
+                formData.drugTypeName=this.drugName
                 this._itemService.insertItemMaster(formData).subscribe(
                     (data) => {
                         this.toastr.success(data.message);

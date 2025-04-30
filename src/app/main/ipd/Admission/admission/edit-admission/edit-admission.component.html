@@ -12,7 +12,7 @@
               (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
           </div>
           <div class="close-icon">
-            <button mat-icon-button tabIndex="-1" (click)="Close()" aria-label="Close dialog">
+            <button mat-icon-button tabIndex="-1" (click)="OnClose()" aria-label="Close dialog">
               <mat-icon>close</mat-icon>
             </button>
           </div>
@@ -157,21 +157,21 @@
                   </airmid-dropdown>
                 </div>
 
-                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="25%">
                   <airmid-dropdown label="AdmittedDoctor1" formControlName="AdmittedDoctor1"
                     [value]="registerObj1?.admittedDoctor1" [formGroup]="admissionFormGroup"
                     [validations]="getValidationMessages().AdmittedDoctor1" [mode]="autocompleteModeDoctor">
                   </airmid-dropdown>
                 </div>
 
-                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="25%">
                   <airmid-dropdown label="AdmittedDoctor2" formControlName="AdmittedDoctor2"
                     [value]="registerObj1?.admittedDoctor2" [formGroup]="admissionFormGroup"
                     [validations]="getValidationMessages().AdmittedDoctor2" [mode]="autocompleteModeDoctor">
                   </airmid-dropdown>
                 </div>
 
-                <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="25%">
 
                   <airmid-dropdown label="Ref.Doctor Name" formControlName="RefDocNameId"
                     [value]="registerObj1?.refDocNameId" [formGroup]="admissionFormGroup"
@@ -181,7 +181,7 @@
 
                 <ng-container *ngIf="isCompanySelected">
 
-                  <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
+                  <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="25%">
 
                     <airmid-dropdown label="Company Name" formControlName="CompanyId" [value]="registerObj1?.companyId"
                       [formGroup]="admissionFormGroup" [validations]="getValidationMessages().CompanyId"
@@ -190,7 +190,7 @@
 
                   </div>
 
-                  <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
+                  <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="25%">
 
                     <airmid-dropdown label="SubTpaCom" formControlName="SubTpaComId" [value]="registerObj1?.subTpaComId"
                       [formGroup]="admissionFormGroup" [validations]="getValidationMessages().SubTpaComId"
@@ -215,27 +215,27 @@
               </div>
               <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
                   <airmid-textbox label="Relative Name" formControlName="RelativeName"
                     [value]="registerObj1.relativeName" [formGroup]="admissionFormGroup"
                     [validations]="getValidationMessages().RelativeName" [maxLength]="50">
                   </airmid-textbox>
                 </div>
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
                   <airmid-textbox label="RelativeAddress" formControlName="RelativeAddress"
                     [value]="registerObj1.relativeAddress" [formGroup]="admissionFormGroup"
                     [validations]="getValidationMessages().RelativeAddress" [maxLength]="50">
                   </airmid-textbox>
                 </div>
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
                   <airmid-textbox label="PhoneNo" formControlName="PhoneNo" [value]="registerObj1.phoneNo"
                     [formGroup]="admissionFormGroup" [validations]="getValidationMessages().phoneNo" [maxLength]="10">
                   </airmid-textbox>
                 </div>
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
                   <airmid-dropdown label="Relationship" formControlName="RelationshipId"
                     [value]="registerObj1?.relationshipId" [formGroup]="admissionFormGroup"
                     [validations]="getValidationMessages().RelationshipId" [mode]="autocompleteModerelationship">
@@ -245,13 +245,12 @@
               </div>
             </mat-card-content>
           </mat-card>
-          <div class="next-div button-row-group" style="margin-left: 1350px;margin-top: 10px;">
-            <button class="btn btn-danger-outline" (click)="onReset()">Close</button>
-            <button class="btn btn-primary" color="accent" (click)="OnSaveAdmission()">
-              <span>Save</span>
-            </button>
-
-          </div>
+          <div fxLayoutAlign="end">
+            <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px"  style="margin: 10px 20px 0px 20px;">
+                <button class="btn btn-danger-outline" (click)="OnClose()">Close</button>
+                <button class="btn btn-primary" (click)="OnSaveAdmission()">Save</button>
+            </div>
+        </div> 
         </form>
       </div>
 

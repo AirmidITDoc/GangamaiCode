@@ -64,7 +64,7 @@ export class StoreMasterComponent implements OnInit {
     ]
 
     gridConfig: gridModel = {
-        apiUrl: "StoreMaster/StoreMasterList",
+        apiUrl: "StoreMaster/List", //StoreMasterList
         columnsList: this.allColumns,
         sortField: "storeId",
         sortOrder: 0,
@@ -90,7 +90,7 @@ export class StoreMasterComponent implements OnInit {
     getfilterdata(){
         debugger
         this.gridConfig = {
-            apiUrl: "StoreMaster/StoreMasterList",
+            apiUrl: "StoreMaster/List", //StoreMasterList
             columnsList:this.allColumns, 
             sortField: "storeId",
             sortOrder: 0,
@@ -118,7 +118,7 @@ export class StoreMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(StoreFormMasterComponent,
             {
                 maxHeight: '95vh',
-                width: '90%',
+                width: '95%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -162,6 +162,11 @@ export class StoreMaster {
     pharAdvReptId:any
     pharAdvRefId:any
     pharAdvRefReptId:any
+    hospitalEmailId:any
+    printStoreUnitName:any
+    workOrderPrefix:any
+    workOrderNo:any
+    termsAndCondition:any;
     /**
      * Constructor
      *
@@ -192,8 +197,9 @@ export class StoreMaster {
             this.pharSalCountId = StoreMaster.pharSalCountId || 0;
             this.pharSalRecCountId=StoreMaster.pharSalRecCountId || 0;
              this.pharSalReturnCountId = StoreMaster.pharSalReturnCountId || 0;
-
-             
+            this.hospitalEmailId = StoreMaster.hospitalEmailId || ''
+            this.printStoreUnitName = StoreMaster.printStoreUnitName || ''
+             this.termsAndCondition = StoreMaster.termsAndCondition || ''
             this.printStoreName = StoreMaster.printStoreName || '';
             this.hospitalMobileNo=StoreMaster.hospitalMobileNo || '';
              this.storeAddress = StoreMaster.storeAddress || '';
@@ -201,6 +207,8 @@ export class StoreMaster {
              this.pharAdvReptId = StoreMaster.pharAdvReptId || 0
              this.pharAdvRefId = StoreMaster.pharAdvRefId || 0
              this.pharAdvRefReptId = StoreMaster.pharAdvRefReptId || 0
+             this.workOrderPrefix = StoreMaster.workOrderPrefix || 0
+             this.workOrderNo = StoreMaster.workOrderNo || 0
         }
 
     }
