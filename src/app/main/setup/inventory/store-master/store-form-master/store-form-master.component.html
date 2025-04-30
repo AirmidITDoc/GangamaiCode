@@ -33,36 +33,47 @@
 
                                             <input type="hidden" name="storeId" formControlName="storeId">
                                             <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
-                                                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-textbox label="Store Name" formControlName="storeName" [value]="registerObj?.storeName" [formGroup]="storeForm" [validations]="getValidationMessages().storeName" [maxLength]="50">
                                                     </airmid-textbox>
                                                 </div>
 
-                                                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-textbox label="Store Short Name" formControlName="storeShortName" [value]="registerObj?.storeShortName" [formGroup]="storeForm" [validations]="getValidationMessages().storeShortName" [maxLength]="50">
                                                     </airmid-textbox>
                                                 </div>
 
                                                 <!-- added as per 8085 -->
-                                                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="hospitalMobileNo" formControlName="hospitalMobileNo" [value]="registerObj.hospitalMobileNo" [formGroup]="storeForm" [maxLength]="10">
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Hospital MobileNo" formControlName="hospitalMobileNo" [value]="registerObj.hospitalMobileNo" [formGroup]="storeForm" [maxLength]="10">
                                                     </airmid-textbox>
                                                 </div>
 
-                                                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-textbox label="Print ShortName" formControlName="printStoreName" [value]="registerObj?.printStoreName" [formGroup]="storeForm" [maxLength]="50">
                                                     </airmid-textbox>
                                                 </div>
 
-                                                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-textbox label="Print ShortAddress" formControlName="storeAddress" [value]="registerObj?.storeAddress" [formGroup]="storeForm" [maxLength]="50">
                                                     </airmid-textbox>
                                                 </div>
 
-                                                <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="Print Terms&Conditions" formControlName="storeShortName" [value]="registerObj?.storeShortName" [formGroup]="storeForm" [validations]="getValidationMessages().storeShortName" [maxLength]="50">
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> 
+                                                    <airmid-textbox label="Hospital EmailId" formControlName="hospitalEmailId" [value]="registerObj?.hospitalEmailId" [formGroup]="storeForm" [maxLength]="50">
                                                     </airmid-textbox>
-                                                </div> -->
+                                                </div>
+                                                
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <airmid-textbox label="Print Store UnitName" formControlName="printStoreUnitName" [value]="registerObj?.printStoreUnitName" [formGroup]="storeForm" [maxLength]="50">
+                                                    </airmid-textbox>
+                                                </div>
+
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Print Terms&Conditions" formControlName="termsAndCondition" [value]="registerObj?.termsAndCondition" [formGroup]="storeForm" [maxLength]="50">
+                                                    </airmid-textbox>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="detail-container">
@@ -71,11 +82,19 @@
                                             </div>
                                             <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="WorkOrderPrefix" formControlName="workOrderPrefix" [value]="registerObj?.workOrderPrefix" [formGroup]="storeForm" [validations]="getValidationMessages().workOrderPrefix" [maxLength]="50">
+                                                    </airmid-textbox>
+                                                </div>
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="WorkOrderNo" formControlName="workOrderNo" [value]="registerObj?.workOrderNo" [formGroup]="storeForm" [validations]="getValidationMessages().workOrderNo" [maxLength]="50">
+                                                    </airmid-textbox>
+                                                </div>
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-textbox label="Indent Prefix" formControlName="indentPrefix" [value]="registerObj?.indentPrefix" [formGroup]="storeForm" [validations]="getValidationMessages().indentPrefix" [maxLength]="50">
                                                     </airmid-textbox>
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="Indent No" formControlName="indentNo" [formGroup]="storeForm" [(ngModel)]="VindentNo" [validations]="getValidationMessages().indentNo" [maxLength]="30">
+                                                    <airmid-textbox label="Indent No" formControlName="indentNo" [formGroup]="storeForm" [(ngModel)]="VindentNo" [validations]="getValidationMessages().indentNo" [maxLength]="30" [readonly]="updated">
                                                     </airmid-textbox>
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -83,7 +102,7 @@
                                                     </airmid-textbox>
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="GRN Return No" formControlName="grnreturnNo" [formGroup]="storeForm" [(ngModel)]="VgrnreturnNo" [validations]="getValidationMessages().grnreturnNo" [maxLength]="30">
+                                                    <airmid-textbox label="GRN Return No" formControlName="grnreturnNo" [formGroup]="storeForm" [(ngModel)]="VgrnreturnNo" [validations]="getValidationMessages().grnreturnNo" [maxLength]="30" [readonly]="updated">
                                                     </airmid-textbox>
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -170,6 +189,30 @@
 
                                             </div>
                                         </div>
+
+                                        <!-- demo -->
+                                        <div class="detail-container" *ngIf="storeForm.get('isPharStore')?.value">
+
+                                            <div class="top-header accent heading-container h-40 border-radius-4 mb-3">
+                                                <span class="title">Pharmacy Store</span>
+                                            </div>
+
+                                            <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="DL_No" formControlName="dlNo" [formGroup]="storeForm" [(ngModel)]="VdlNo" [validations]="getValidationMessages().dlNo" [maxLength]="30">
+                                                    </airmid-textbox>
+
+                                                </div>
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <airmid-textbox label="GSTIN" formControlName="gstin" [formGroup]="storeForm" [(ngModel)]="Vgstin" [validations]="getValidationMessages().gstin" [maxLength]="30">
+                                                    </airmid-textbox>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <!-- demo end -->
                                     </div>
                                 </mat-card>
                             </div>
@@ -190,8 +233,7 @@
                                                 <mat-label>Template Details</mat-label>
                                                     <!-- <airmid-editor label="Template Details" formControlName="templateDesc" [(value)]="vTemplateDesc" [formGroup]="storeForm"></airmid-editor> -->
                                                     <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                                    style="height:400px;" [(ngModel)]="vTemplateDesc" required
-                                                    formControlName="header">
+                                                    style="height:400px;" [(ngModel)]="vTemplateDesc" formControlName="header">
                                                 </angular-editor>
                                                 </div>
                                             </div>
@@ -212,10 +254,15 @@
     <!-- Modal footer -->
     <div class="modal-footer">
         <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="space-between center">
-            <div class="modal-footer-actions">
-                <form [formGroup]="storeForm">
+            <div class="modal-footer-actions" fxLayout="row">
+                <form [formGroup]="storeForm" fxLayout="row">
                     <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="storeForm" [(ngModel)]="isActive"></app-airmid-slider>
+
+                    <mat-checkbox aria-label="IsPharStore" formControlName="isPharStore" style="font-weight: bold;">
+                        IsPharStore
+                      </mat-checkbox>
                 </form>
+
             </div>
             <div class="modal-footer-buttons">
                 <button type="button" class="btn btn-danger-outline" (click)="onClear(false)">Close</button>

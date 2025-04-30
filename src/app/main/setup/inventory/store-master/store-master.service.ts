@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
+import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Injectable({
     providedIn: "root",
@@ -11,7 +12,8 @@ export class StoreMasterService {
 
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: UntypedFormBuilder
+        private _formBuilder: UntypedFormBuilder,
+        private _loggedService: AuthenticationService,
     ) {
         this.myformSearch = this.createSearchForm();
         this.myform = this.createStoremasterForm();
@@ -161,8 +163,18 @@ export class StoreMasterService {
                 ]
             ],
             printStoreName: [""],
-            dlNo: ["0"],
-            gstin: ["0"],
+            dlNo: ["0",
+                [
+                    Validators.required,
+                    Validators.pattern("^[0-9 ]*$")
+                ]
+            ],
+            gstin: ["0",
+                [
+                    Validators.required,
+                    Validators.pattern("^[0-9 ]*$")
+                ]
+            ],
             storeAddress: [""],
             hospitalMobileNo: ["",
                 [
@@ -171,13 +183,16 @@ export class StoreMasterService {
                 Validators.maxLength(10),
                 Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
             ]],
-            hospitalEmailId: ["try@gmail.com"],
-            printStoreUnitName: ["trying"],
-            isPharStore: true,
+            hospitalEmailId: ["",[Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]],
+            printStoreUnitName: [""],
+            termsAndCondition:[''],
+            addedBy:this._loggedService.currentUserValue.userId,
+            updatedBy:this._loggedService.currentUserValue.userId,
+            isPharStore: false,
             isWhatsAppMsg: true,
-            whatsAppTemplateId: ["try"],
+            whatsAppTemplateId: [""],
             isSmsmsg: true,
-            smstemplateId: ["try"],
+            smstemplateId: [""],
         });
     }
 

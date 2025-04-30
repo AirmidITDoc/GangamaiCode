@@ -521,7 +521,8 @@ export class NewCasepaperComponent implements OnInit {
           "opType": "Equals"
         }
     ],
-      "exportType": "JSON"
+    "Columns":[],
+    "exportType": "JSON"
     }
     console.log("VisitId:", m_data2)
     this._CasepaperService.RtrvPreviousprescriptionDetailsdemo(m_data2).subscribe(Visit => {
@@ -612,6 +613,7 @@ export class NewCasepaperComponent implements OnInit {
       "filters": [
         { "fieldName": "VisitId", "fieldValue": String(obj.visitId), "opType": "Equals" }
       ],
+      "Columns":[],
       "exportType": "JSON"
     };
 
@@ -893,6 +895,7 @@ export class NewCasepaperComponent implements OnInit {
           "opType": "Equals"
         }
       ],
+      "Columns":[],
       "exportType": "JSON"
     }
     this._CasepaperService.getRtrvTestService(m_data2).subscribe(response => {
@@ -1154,6 +1157,7 @@ export class NewCasepaperComponent implements OnInit {
             "opType": "Equals"
           }
         ],
+        "Columns":[],
         "exportType": "JSON"
       }
       console.log(vdata)

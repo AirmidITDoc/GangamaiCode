@@ -50,6 +50,11 @@
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Taluka" formControlName="taluka" [(ngModel)]="vtaluka" [formGroup]="supplierForm" [validations]="getValidationMessages().taluka" [maxLength]="50">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="City" formControlName="cityId"
                                         [formGroup]="supplierForm" [value]="registerObj?.cityId"
                                         [validations]="getValidationMessages().cityId" ValueField="cityId"
@@ -79,6 +84,11 @@
                                     <airmid-textbox label="Pan No" formControlName="panNo" [value]="registerObj.panNo" [formGroup]="supplierForm" [validations]="getValidationMessages().panNo">
                                     </airmid-textbox>
                                 </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Pin Code" formControlName="pinCode" [value]="registerObj.pinCode" [formGroup]="supplierForm" [maxLength]="6">
+                                    </airmid-textbox>
+                                </div>
                             </div>
                         </mat-card-content>
                     </mat-card>
@@ -86,7 +96,6 @@
                 <div class="detail-container">
                     <mat-card>
                         <mat-card-content>
-
 
                             <div class="detail-header">
                                 <span class="title">Business Details</span>
@@ -124,24 +133,90 @@
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Tax Nature" formControlName="taxNature" [value]="registerObj.taxNature" [formGroup]="supplierForm" [validations]="getValidationMessages().taxNature" [maxLength]="15">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-textbox label="GST No" formControlName="gstNo" [value]="registerObj.gstNo" [formGroup]="supplierForm" [validations]="getValidationMessages().gstNo" [maxLength]="15">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Lic No" formControlName="licNo" [value]="registerObj.licNo" [formGroup]="supplierForm" [validations]="getValidationMessages().licNo" [maxLength]="30">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <form [formGroup]="supplierForm">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <input matInput [matDatepicker]="picker3" name="expDate"
+                                                formControlName="expDate">
+                                            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker3></mat-datepicker>
+                                        </mat-form-field>
+                                    </form>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="DlNo" formControlName="dlno" [value]="registerObj.dlno" [formGroup]="supplierForm" [validations]="getValidationMessages().dlno" [maxLength]="30">
                                     </airmid-textbox>
                                 </div>
                             </div>
                         </mat-card-content>
                     </mat-card>
                 </div>
+
                 <div class="detail-container">
                     <mat-card>
                         <mat-card-content>
 
+                            <div class="detail-header">
+                                <span class="title">Bank Details</span>
+                            </div>
+                            <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Bank Name" formControlName="bankId" [formGroup]="supplierForm" [value]="registerObj.bankId" [validations]="getValidationMessages().bankId" [mode]="autocompleteModeofBank" (selectionChange)="selectChangemodeofBank($event)">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Bank Branch" formControlName="BankBranch" [value]="registerObj.BankBranch" [formGroup]="supplierForm" [validations]="getValidationMessages().BankBranch">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Bank No" formControlName="bankNo" [value]="registerObj.bankNo" [formGroup]="supplierForm" [validations]="getValidationMessages().bankNo">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="IFSCcode" formControlName="IFSCcode" [value]="registerObj.IFSCcode" [formGroup]="supplierForm" [validations]="getValidationMessages().IFSCcode">
+                                    </airmid-textbox>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+
+                <div class="detail-container">
+                    <mat-card>
+                        <mat-card-content>
 
                             <div class="detail-header">
                                 <span class="title">Store Details</span>
                             </div>
 
                             <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
-                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+
+                                
+                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="OpeningBal" formControlName="OpeningBal" [value]="registerObj.OpeningBal" [formGroup]="supplierForm" >
+                                </airmid-textbox>
+                            </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="100%">
                                     <airmid-dropdown label="Store" formControlName="mAssignSupplierToStores" [formGroup]="supplierForm" [IsMultiPle]="true" [value]="registerObj.mAssignSupplierToStores" [validations]="getValidationMessages().mAssignSupplierToStores" #ddlStore ValueField="storeId" TextField="storeName" ApiUrl="StoreMaster/get-store" [ReqFullObj]="true">
                                     </airmid-dropdown>
                                 </div>
@@ -151,6 +226,11 @@
                                             {{ item.storeName }} <mat-icon (click)="removestore(item)">close</mat-icon>
                                         </mat-chip>
                                     </mat-chip-listbox>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="msmflag">
+                                    <airmid-textbox label="MSMNo" formControlName="MSMNo" [value]="registerObj.MSMNo" [formGroup]="supplierForm" >
+                                    </airmid-textbox>
                                 </div>
                             </div>
                         </mat-card-content>
@@ -167,7 +247,16 @@
             <form [formGroup]="supplierForm">
 
                 <div class="modal-footer-container">
-                    <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="supplierForm" [(ngModel)]="isActive"></app-airmid-slider>
+                    <!-- <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="supplierForm" [(ngModel)]="isActive"></app-airmid-slider> -->
+                    <div class="sales-radio-buttons gap-2" fxLayout="row">
+                        <mat-checkbox aria-label="Msm" formControlName="MsmNo" (checked)=true (change)="onChangeMsm($event)"
+                            style="font-weight: bold;margin-right: 20px;">MSME
+                        </mat-checkbox>
+                        <mat-checkbox aria-label="Mode" formControlName="CreateApproval" (checked)=true
+                            (change)="onChangeMode($event)" style="font-weight: bold;margin-right: 20px;">Create / Approval
+                        </mat-checkbox>
+                    </div>
+
                     <div class="modal-footer-buttons">
                         <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                         <button class="btn btn-primary " color="accent" (click)="onSubmit()">

@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
 import { ToastrService } from "ngx-toastr";
 import { AngularEditorConfig } from "@kolkov/angular-editor";
-import { FormGroup } from "@angular/forms";
+import { FormGroup, Validators } from "@angular/forms";
 import { StoreMaster } from "../store-master.component";
 
 
@@ -52,6 +52,8 @@ export class StoreFormMasterComponent implements OnInit {
     VpurchaseNo:any;
     VissueToDeptNo:any;
     VgrnNo:any;
+    VdlNo:any;
+    Vgstin:any;
     VreturnFromDeptNo:any;
     ngOnInit(): void {
         this.storeForm = this._StoreMasterService.createStoremasterForm();
@@ -65,12 +67,13 @@ export class StoreFormMasterComponent implements OnInit {
         this.VissueToDeptNo=this.data.issueToDeptNo.trim()
         this.VgrnNo=this.data.grnNo.trim()
         this.VreturnFromDeptNo=this.data.returnFromDeptNo.trim()
+        this.vTemplateDesc = this.data.header;
        }
         if((this.data?.storeId??0) > 0)
         {
+            this.updated = true;
             this.isActive =this.data.isActive
             this.storeForm.patchValue(this.data);
-            this.vTemplateDesc = this.data.templateDesc;
             
             setTimeout(() => {
                 this._StoreMasterService.getStoreById(this.data.storeId).subscribe((response) => {
@@ -81,11 +84,24 @@ export class StoreFormMasterComponent implements OnInit {
         }
 
     }
-
+    updated: boolean = false;
 
     onSubmit() {
-        
+        debugger
+        const isPhar = this.storeForm.get('isPharStore')?.value;
+        if (isPhar) {
+            this.storeForm.get('dlNo')?.setValidators([Validators.required]);
+            this.storeForm.get('gstin')?.setValidators([Validators.required]);
+        } else {
+            this.storeForm.get('dlNo')?.clearValidators();
+            this.storeForm.get('gstin')?.clearValidators();
+        }
+
+        this.storeForm.get('dlNo')?.updateValueAndValidity();
+        this.storeForm.get('gstin')?.updateValueAndValidity();
+
         if (!this.storeForm.invalid) {
+            
             console.log("StoreCategoryMaster Insert:", this.storeForm.value)
             
             this._StoreMasterService.storeMasterSave(this.storeForm.value).subscribe((response) => {
@@ -231,7 +247,19 @@ export class StoreFormMasterComponent implements OnInit {
             ],
             pharAdvRefReptId:[
                 { name: "required", Message: "Phar Advance Refund Receipt Cash Counter is required" }
-            ]
+            ],
+            dlNo:[
+                { name: "required", Message: "DL_No is required" }
+            ],
+            gstin:[
+                { name: "required", Message: "GSTIN is required" }
+            ],
+            workOrderPrefix:[
+                { name: "required", Message: "workOrderPrefix is required" }
+            ],
+            workOrderNo:[
+                { name: "required", Message: "workOrderNO is required" }
+            ],
         };
     }
     
