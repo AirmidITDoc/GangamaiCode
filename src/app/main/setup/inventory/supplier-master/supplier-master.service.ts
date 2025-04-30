@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
+import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Injectable()
 export class SupplierMasterService {
@@ -9,7 +10,8 @@ export class SupplierMasterService {
 
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: UntypedFormBuilder
+        private _formBuilder: UntypedFormBuilder,
+        private _loggedService: AuthenticationService,
     ) {
         this.myformSearch = this.createSearchForm();
         this.supplierForm = this.createSuppliermasterForm();
@@ -31,12 +33,12 @@ export class SupplierMasterService {
                 // Validators.maxLength(100),
             ]],
             address: ["",
-               [ Validators.required,
-                // Validators.pattern("^[A-Za-z0-9.,\\s]*$") 
-            ]
+                [Validators.required,
+                    // Validators.pattern("^[A-Za-z0-9.,\\s]*$") 
+                ]
             ],
             cityId: ['',
-               [ Validators.required]
+                [Validators.required]
             ],
             stateId: ['',
                 [Validators.required]
@@ -99,7 +101,7 @@ export class SupplierMasterService {
                     Validators.required,
                     Validators.maxLength(15)
                 ]
-            ], 
+            ],
             panNo: ["",
                 [
                     Validators.required,
@@ -108,13 +110,35 @@ export class SupplierMasterService {
                 ]
             ],
             supplierTime: [(new Date()).toISOString()],
-            // isActive:[true,[Validators.required]],
+            // 
+            taxNature: [''],
+            licNo: [''],
+            dlno: [''],
+            taluka: [''],
+            bankName: [],
+            bankId: [''],
+            BankBranch: [''],
+            bankNo: ['', [Validators.pattern("[0-9]{9,18}")]],
+            IFSCcode: ["", [Validators.pattern("^[A-Z]{4}0[A-Z0-9]{6}$")]],
+            expDate: [new Date()],
+            OpeningBal: ['', [Validators.pattern("^[0-9]*$"),
+            Validators.minLength(1),
+            Validators.maxLength(10),]],
+            MsmNo: [0],
+            MSMNo: ['', Validators.required],
+            CreateApproval: [true],
+            pinCode: ['', [Validators.pattern("^[0-9]*$"),
+                Validators.minLength(6),
+                Validators.maxLength(6),]],
+            isActive: [true, [Validators.required]],
+            addedby: this._loggedService.currentUserValue.userId,
+            // 
             mAssignSupplierToStores: [
                 {
                     assignId: 0,
                     storeId: 0,
                     supplierId: 0
-                },[ Validators.required]
+                }, [Validators.required]
             ]
         });
     }
@@ -155,8 +179,8 @@ export class SupplierMasterService {
     }
 
     public SupplierMasterCancle(Id: any) {
-        
-      return this._httpClient.DeleteData(`Supplier/SupplierDelete?Id=${Id}`);
+
+        return this._httpClient.DeleteData(`Supplier/SupplierDelete?Id=${Id}`);
     }
 
     public getstateId(Id) {

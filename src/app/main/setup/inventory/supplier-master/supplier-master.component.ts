@@ -271,6 +271,15 @@ export class SupplierMaster {
     supplierTime:any;
     mAssignSupplierToStores: any[];
     Freight: any;
+    taxNature:any;
+    licNo:any;
+    dlno:any;
+    bankId:any;
+    BankBranch:any;
+    bankNo:any;
+    IFSCcode:any;
+    OpeningBal:any;
+    pinCode:any;
     /**
      * Constructor
      *
@@ -294,7 +303,7 @@ export class SupplierMaster {
             this.countryId = SupplierMaster.countryId || "";
             this.CreditPeriod = SupplierMaster.CreditPeriod || "";
             this.creditPeriod = SupplierMaster.creditPeriod || "";
-
+            this.taxNature=SupplierMaster.taxNature || ''
             this.Mobile = SupplierMaster.Mobile || "";
             this.mobile = SupplierMaster.mobile || "";
             this.Phone = SupplierMaster.Phone || "";
@@ -315,14 +324,15 @@ export class SupplierMaster {
             this.panNo = SupplierMaster.panNo || "";
             this.ExpDate = SupplierMaster.ExpDate || this.currentDate;
             this.IsDeletedSearch = SupplierMaster.IsDeletedSearch || "";
-
+            this.licNo = SupplierMaster.licNo || 0
             this.BankId = SupplierMaster.BankId || "";
             this.BankNo = SupplierMaster.BankNo || "";
             this.Bankbranch = SupplierMaster.Bankbranch || "";
             this.Ifsccode = SupplierMaster.Ifsccode || "";
             this.StoreId = SupplierMaster.StoreId || 0;
-
-
+            this.dlno=SupplierMaster.dlno || 0
+            this.bankId=SupplierMaster.bankId || 0
+            this.BankBranch=SupplierMaster.BankBranch || ''
             this.PinCode = SupplierMaster.PinCode || 0;
             this.Taluka = SupplierMaster.Taluka || 0;
             this.LicNo = SupplierMaster.LicNo || 0;
@@ -333,7 +343,10 @@ export class SupplierMaster {
             this.OpeningBalance = SupplierMaster.OpeningBalance || 0;
             this.supplierTime=SupplierMaster.supplierTime || this.currentDate;
             this.mAssignSupplierToStores = SupplierMaster.mAssignSupplierToStores || [];
-
+            this.bankNo = SupplierMaster.bankNo || 0
+            this.IFSCcode = SupplierMaster.IFSCcode || 0
+            this.OpeningBal = SupplierMaster.OpeningBal || 0
+            this.pinCode=SupplierMaster.pinCode || 0
         }
     }
 }

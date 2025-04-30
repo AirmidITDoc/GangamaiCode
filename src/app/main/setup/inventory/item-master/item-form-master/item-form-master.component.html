@@ -95,7 +95,8 @@
                     <airmid-textbox label="Storage Location" formControlName="prodLocation" [value]="registerObj?.prodLocation" [formGroup]="itemForm" [validations]="getValidationMessages().prodLocation" [maxLength]="50" fxFlex="25%">
                     </airmid-textbox>
   
-                    <airmid-dropdown label="Drug Type" formControlName="drugType" [value]="registerObj?.drugType" [formGroup]="itemForm" [validations]="getValidationMessages().drugType" [mode]="autocompleteModeDrugType" fxFlex="25%">
+                    <airmid-dropdown label="Drug Type" formControlName="drugType" [value]="registerObj?.drugType" [formGroup]="itemForm" [validations]="getValidationMessages().drugType" [mode]="autocompleteModeDrugType" 
+                    (selectionChange)="selectChangeDrugType($event)" fxFlex="25%">
                     </airmid-dropdown>
   
                     <!-- 5th row -->
