@@ -54,12 +54,8 @@ export class GoodReceiptnoteService {
   GRNSearchFrom() {
     return this._formBuilder.group({
       ToStoreId: [2], 
-      SupplierId: '',
-      Status: 0,
-      Status1: [0],
-      Status2: [true],
-      Status3: 0,
-      Verify: 0,
+      SupplierId: '', 
+      Status1: [0],   
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
 
@@ -69,18 +65,18 @@ export class GoodReceiptnoteService {
     return this._formBuilder.group({
       PurchaseId: [''],
       poBalQty: [''],
-      itemName: ['', [Validators.required]],
-      uomId: [''],
+      ItemName: ['', [Validators.required]],
+       UOMId: [''], 
       HSNCode: [''],
-      batchNo: ['', [Validators.required]],
-      conversionFactor: [''],
-      receiveQty: [1, [Validators.required,]],
+      BatchNo: ['', [Validators.required]],
+      ConversionFactor: [''],
+      Qty: [0, [Validators.required, Validators.min(1)]],
       ExpDate: [''],
-      mrp: [0, [Validators.required]],
-      freeQty: [0],
-      rate: [0, [Validators.required]],
-      totalAmount: [0],
-      discPercentage: [0],
+      MRP: [0, [Validators.required]],
+      FreeQty: [0],
+      Rate: [0, [Validators.required]],
+      TotalAmount: [0],
+      Disc: [0],
       Disc2: [0],
       DisAmount: [0],
       DisAmount2: [0],
@@ -101,8 +97,8 @@ export class GoodReceiptnoteService {
       GateEntryNo: [''], 
       GSTType: ['2'], 
       PaymentDate: [new Date()],
-      GRNType1:['1'], 
-      PaymentType1:['0'],
+      GRNType:['true'], 
+      PaymentType:['false'],
       StoreId:['2']
     });
   }
@@ -143,7 +139,7 @@ export class GoodReceiptnoteService {
     })
   }
   public getLastThreeItemInfo(ID) {
-    return this._httpClient1.GetData("GRN/"+ID);
+    return this._httpClient1.PostData("Purchase/LastThreeItemList",ID);
   }
   public getGSTtypeList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Constants", Param);
@@ -200,14 +196,13 @@ export class GoodReceiptnoteService {
       this._loaderService.show();
     }
     return this._httpClient.post("Pharmacy/UpdateGRNPurchase", Param);
-  }
-
-  public GRNEdit(Param, loader = true) {
+  } 
+  public GRNEdit(employee,Id, loader = true) {
     if (loader) {
       this._loaderService.show();
-    }
-    return this._httpClient.post("Pharmacy/updateGRN", Param);
-  }
+  } 
+  return this._httpClient1.PutData("GRN/Edit/"+Id,employee) 
+  } 
   public getGRNrtrvItemlist(Param, loader = true) {
     if (loader) {
       this._loaderService.show();

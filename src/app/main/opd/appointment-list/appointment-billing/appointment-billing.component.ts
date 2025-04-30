@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnDestroy, OnInit, Optional, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -119,8 +119,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   public isModal = false;
   selectedAdvanceObj: SearchInforObj;
   dateTimeObj: any;
-
+  @ViewChild('serviceTable') serviceTable!: TemplateRef<any>;
   constructor(private _matDialog: MatDialog,
+
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
@@ -172,7 +173,12 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     this.handleChange('totalDiscountPer', () => this.updateTotalDiscountAmt(), this.totalChargeForm);
     this.handleChange('totalDiscountAmount', () => this.updateTotalDiscountPer(), this.totalChargeForm);
   }
-
+  openServiceTable():void{
+    this._matDialog.open(this.serviceTable, {
+      width: '50%',
+      height: '60%',
+    })
+  }
   calculateTotalCharge(row: any = null): void {
     let qty = +this.chargeForm.get("qty").value;
     let price = +this.chargeForm.get("price").value;

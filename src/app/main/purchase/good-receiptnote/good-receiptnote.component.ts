@@ -178,7 +178,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         { heading: "Status", key: "Status", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate},
       { heading: "GRN No", key: "grnNumber", sort: true, align: 'left', emptySign: 'NA' , width: 100},
-      { heading: "GRN Date", key: "grndate", sort: true, align: 'left', emptySign: 'NA',width: 130,},
+      { heading: "Date", key: "grndate", sort: true, align: 'left', emptySign: 'NA',width: 130,},
       { heading: "Invoice No", key: "invoiceNo", sort: true, align: 'left', emptySign: 'NA',width: 100},
       { heading: "supplier Name", key: "supplierName", sort: true, align: 'left', emptySign: 'NA',width: 200},
       { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA',width: 150, type: gridColumnTypes.amount},
@@ -209,12 +209,12 @@ export class GoodReceiptnoteComponent implements OnInit {
       { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA',width: 120, type: gridColumnTypes.amount },
       { heading: "GST Amt", key: "vatPercentage", sort: true, align: 'left', emptySign: 'NA', width: 120 , type: gridColumnTypes.amount }, 
       { heading: "Disc Amt", key: "discPercentage", sort: true, align: 'left', emptySign: 'NA', width: 120 , type: gridColumnTypes.amount }, 
-      { heading: "LandedRate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA',width: 120 , type: gridColumnTypes.amount},
+      { heading: "Landed Rate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA',width: 120 , type: gridColumnTypes.amount},
       { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 130 , type: gridColumnTypes.amount }, 
-      { heading: "TotalQty", key: "totalQty", sort: true, align: 'left', emptySign: 'NA' , width: 100},
+      { heading: "Total Qty", key: "totalQty", sort: true, align: 'left', emptySign: 'NA' , width: 100},
       { heading: "StockId", key: "stockid", sort: true, align: 'left', emptySign: 'NA' , width: 100},
-      { heading: "IsVerified", key: "isVerified", sort: true, align: 'left', emptySign: 'NA',width: 100 ,},
-      { heading: "SsVerifiedDatetime", key: "isVerifiedDatetime", sort: true, align: 'left', emptySign: 'NA',width: 160, type:9}
+      { heading: "Verified", key: "isVerified", sort: true, align: 'left', emptySign: 'NA',width: 100 ,},
+      { heading: "VerifiedDatetime", key: "isVerifiedDatetime", sort: true, align: 'left', emptySign: 'NA',width: 160, type:9}
     ]    
     
     isShowDetailTable:boolean=false;

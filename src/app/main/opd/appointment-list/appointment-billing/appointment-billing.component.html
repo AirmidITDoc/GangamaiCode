@@ -1,3 +1,82 @@
+<ng-template #serviceTable>
+    <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+          style="color: white;">account_box
+        </mat-icon>
+        <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Nursing Request list</span>
+      </div>
+      <!-- <div class="close-icon">
+        <button mat-icon-button tabIndex="-1" (click)="openServiceTable()" aria-label="Close dialog">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div> -->
+    </mat-toolbar>
+   
+     <div class="service-table1 p-12" fxFlex="100%" >
+        <div class="table-body">
+            <div class="airmid-table">
+                <mat-table matSort [dataSource]="dsServiceList"
+                    [@animateStagger]="{value:'50'}">
+
+                    <ng-container matColumnDef="ServiceName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                            class="w-180">
+                            Item Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact" class="w-180">
+                            <span> {{contact.ServiceName}}</span>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Price">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Price
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact">
+                            <span> {{contact.Price | currency:'INR' }}</span>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Qty">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Qty
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact">
+                            <span> {{contact.Qty}}</span>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="TotalAmt">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                            class="w-110">
+                            Total Amt
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact" class="w-110">
+                            <span> {{contact.TotalAmt | currency:'INR' }}</span>
+                        </mat-cell>
+                    </ng-container>
+
+
+                    <ng-container matColumnDef="NoData">
+                        <mat-footer-cell *matFooterCellDef>
+                            <span>No Data Found</span>
+                        </mat-footer-cell>
+                    </ng-container>
+
+                    <mat-header-row class="accent"
+                        *matHeaderRowDef="displayedPrescriptionColumns; sticky: true">
+                    </mat-header-row>
+                    <mat-row
+                        *matRowDef="let contact; columns: displayedPrescriptionColumns;"
+                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                    <mat-footer-row *matFooterRowDef="['NoData']"
+                        [ngClass]="{'hide':dsServiceList.data.length > 0}"></mat-footer-row>
+                </mat-table>
+            </div>
+        </div>
+    </div>
+  </ng-template>
+
 <div class="modal-page page-layout inner-scroll">
     <div class="modal-wrapper grid-container">
         <!-- Modal header -->
@@ -134,7 +213,7 @@
                     </div>
                     <div class="modal-card-container">
                         <mat-card fxFlex.gt-sm="100%" fxFlex>
-                            <mat-card-content>
+                            <mat-card-content >
                                 <form [formGroup]="chargeForm">
                                     <div fxLayout="row" fxLayoutGap="5px">
 
@@ -218,8 +297,16 @@
                                                 </button>
                                             </div>
                                         </div>
-                                    </div>
+
+                                        <div  fxFlex="5%" fxFlex.xs="5%" fxFlex.sm="5%" style="margin-left: 30px;" fxLayoutAlign="end">
+                                            <button mat-icon-button (click)="openServiceTable()" style="padding: 0px;">
+                                                <mat-icon>notifications_none</mat-icon>
+                                            </button>
+                                        </div>
+                                    </div>  
+                                  
                                 </form>
+                               
                             </mat-card-content>
                         </mat-card>
                     </div>
@@ -227,7 +314,7 @@
                         <mat-card fxFlex.gt-sm="100%" fxFlex>
                             <mat-card-content class="py-4 h-100-p">
                                 <div fxLayout="row" fxLayoutGap="6px" class="h-100-p">
-                                    <div fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="70%">
+                                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                                         <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start"
                                             class="dynamic-table-wrapper">
                                             <mat-tab label="Charges List">
@@ -578,7 +665,7 @@
                                             </mat-tab>
                                         </mat-tab-group>
                                     </div>
-                                    <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="70%">
+                                    <!-- <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="70%">
                                         <div class="airmid-table-container">
                                             <div class="table-header mt-8 mb-3">
                                                 <span class="fw-600 h3">Service List</span>
@@ -645,7 +732,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
 
                             </mat-card-content>
