@@ -337,3 +337,59 @@ export class BalAvaListStore {
     }
   }
 }
+export interface SalesItemModel {
+  storeId: number;
+  itemId: number;
+  itemName: string;
+  balanceQty: number;
+  landedRate: number;
+  unitMRP: number;
+  purchaseRate: number;
+  cgstPer: number;
+  sgstPer: number;
+  igstPer: number;
+  uom: string;
+}
+export interface SalesBatchItemModel{
+  stockId: number;
+  storeId: number;
+  itemId: number;
+  itemName: string;
+  balanceQty: number;
+  landedRate: number;
+  unitMRP: number;
+  purchaseRate: number;
+  cgstPer: number;
+  sgstPer: number;
+  igstPer: number;
+  converFactor: string;
+  batchNo: string;
+  batchExpDate: string;
+  grnRetQty: number;
+  drugTypeName: string;
+  manufactureName: string;
+  formattedText: string;
+}
+
+export interface SalesFormModel {
+  Barcode: string;
+  StoreId: string;
+  ItemId: string;
+  ItemName: string;
+  BatchNo: string;
+  BatchExpDate: string;
+  BalanceQty: string;
+  UnitMRP: string;
+  Qty: string;
+  IssQty: string;
+  Bal: string;
+  StoreName: string;
+  GSTPer: string;
+  GSTAmt: string;
+  MRP: string;
+  TotalMrp: string;
+  DiscAmt: string;
+  NetAmt: string;
+  DiscPer: string;
+  MarginAmt: string;
+}

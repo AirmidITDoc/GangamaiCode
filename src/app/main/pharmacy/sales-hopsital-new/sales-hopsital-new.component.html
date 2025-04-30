@@ -207,7 +207,7 @@
                                 formControlName="RegID"
                                 placeholderText="OP-RegNo / First Name / Last Name / Mobile No"
                                 fxFlex
-                                ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
+                                ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName="
                                 (selectionChange)="getSearchListIP($event)"
                                 TextField="formattedText"
                                 ValueField="itemId"
@@ -221,7 +221,7 @@
                                 formControlName="RegID"
                                 placeholderText="IP RegNo / First Name / Last Name / Mobile No"
                                 fxFlex
-                                ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
+                                ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName="
                                 (selectionChange)="getSearchListIP($event)"
                                 TextField="formattedText"
                                 ValueField="itemId"
@@ -249,7 +249,7 @@
                                 formControlName="PatientName"
                                 placeholderText="Patient Name"
                                 fxFlex
-                                ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
+                                ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName="
                                 (selectionChange)="onPatientChange($event)"
                                 TextField="formattedText"
                                 ValueField="itemId"
@@ -265,7 +265,7 @@
                                 formControlName="DoctorName"
                                 placeholderText="DoctorName"
                                 fxFlex
-                                ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
+                                ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName="
                                 (selectionChange)="getSearchListIP($event)"
                                 TextField="formattedText"
                                 ValueField="itemId"
@@ -344,13 +344,13 @@
                   </mat-card>
                 </div>
               </div>
-              <div class="modal-card-container">
+              <div class="modal-card-container input-error-hidden">
                 <mat-card>
                   <mat-card-content>
                     <form [formGroup]="_salesService.IndentSearchGroup">
                       <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fusePerfectScrollbar>
                         <div fxFlex="100%" fxFlex.gt-sm="8%">
-                          <airmid-textbox label="Barcode No" [(ngModel)]="MobileNo" formControlName="Barcode" [(ngModel)]="vBarcode" [formGroup]="_salesService.IndentSearchGroup"></airmid-textbox>
+                          <airmid-textbox label="Barcode No" formControlName="Barcode" [(ngModel)]="vBarcode" [formGroup]="_salesService.IndentSearchGroup"></airmid-textbox>
                         </div>
                         <div fxFlex="100%">
                           <airmid-autocomplete
@@ -359,9 +359,11 @@
                             formControlName="ItemId"
                             placeholderText="Item Name (enter 2 char)"
                             fxFlex
-                            ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
-                            TextField="formattedText"
+                            ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName="
+                            TextField="itemName"
                             ValueField="itemId"
+                            (selectionChange)="onItemChange($event)"
+                            #itemid
                           ></airmid-autocomplete>
                           <!-- (selectionChange)="getSelectedObj($event)" -->
                         </div>
@@ -377,8 +379,6 @@
                             #qty
                             type="number"
                             (valueChange)="calculateTotalAmt()"
-                            (keydown)="onEnterqty($event)"
-                            (keypress)="keyPressAlphanumeric($event)"
                             [formGroup]="_salesService.IndentSearchGroup"
                           ></airmid-textbox>
                         </div>
@@ -394,7 +394,8 @@
                             label="Disc %"
                             [(ngModel)]="DiscPer"
                             formControlName="DiscPer"
-                            (valueChange)="onEnterdiscper($event)"
+                            type="number"
+                            (valueChange)="onEnterdiscper()"
                             [formGroup]="_salesService.IndentSearchGroup"
                           ></airmid-textbox>
                         </div>
@@ -404,8 +405,9 @@
                             label="Disc Amt"
                             [(ngModel)]="DiscAmt"
                             formControlName="DiscAmt"
+                            type="number"
                             [disabled]="chkdiscper"
-                            (valueChange)="onEnterdiscAmount($event)"
+                            (valueChange)="onEnterdiscAmount()"
                             [formGroup]="_salesService.IndentSearchGroup"
                           ></airmid-textbox>
                         </div>
@@ -413,14 +415,13 @@
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
                           <airmid-textbox label="Net Amount" [(ngModel)]="NetAmt" formControlName="NetAmt" [readonly]="true" [formGroup]="_salesService.IndentSearchGroup"></airmid-textbox>
                         </div>
-
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
                           <airmid-textbox label="Margin Amount" [(ngModel)]="v_marginamt" formControlName="MarginAmt" [readonly]="true" [formGroup]="_salesService.IndentSearchGroup"></airmid-textbox>
                         </div>
 
-                        <!-- [disabled]="!add" -->
+                        <!-- [disabled]="!add" --> 
                         <div matTooltip="Select  name to enable this button!!" [matTooltipDisabled]="!_salesService.IndentSearchGroup.invalid" [matTooltipPosition]="'above'">
-                          <button (click)="OnAddUpdate($event)" class="btn btn-primary btn-with-icon py-8" [disabled]="!add" #addbutton>
+                          <button (click)="OnAddUpdate($event)" class="btn btn-primary btn-with-icon py-8" [disabled]="!this._salesService.IndentSearchGroup.valid"  #addbutton> <!-- [disabled]="!add" -->
                             <span class="btn-icon">
                               <mat-icon>add</mat-icon>
                             </span>
@@ -445,22 +446,22 @@
                     <ng-container matColumnDef="BatchNo">
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Batch No</mat-header-cell>
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                        {{ contact.BatchNo }}
+                      <span>  {{ contact.BatchNo }}</span>
                       </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="BatchExpDate">
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Exp.Date</mat-header-cell>
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                        {{ contact.BatchExpDate }}
+                      <span>  {{ contact.BatchExpDate }}</span>
                       </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="Qty">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">Qty</mat-header-cell>
-                      <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
-                        <mat-form-field appearance="legacy">
-                          <input matInput [(ngModel)]="contact.Qty" type="text" OnlyNumber (keyup)="getCellCalculation(contact, contact.Qty)" (keypress)="keyPressAlphanumeric($event)" />
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">Qty</mat-header-cell>
+                      <mat-cell class="w-100" *matCellDef="let contact" fxShow.gt-sm>
+                        <mat-form-field appearance="fill">
+                          <input matInput [(ngModel)]="contact.Qty" type="number" (keyup)="getCellCalculation(contact)" />
                         </mat-form-field>
                       </mat-cell>
                     </ng-container>
@@ -468,58 +469,58 @@
                     <ng-container matColumnDef="UnitMRP">
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Unit MRP</mat-header-cell>
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                        {{ contact.UnitMRP }}
+                      <span>  {{ contact.UnitMRP }}</span>
                       </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="TotalMRP">
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Total MRP</mat-header-cell>
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                        {{ contact.TotalMRP | currency : 'INR' }}
+                      <span>  {{ contact.TotalMRP | currency : 'INR' }}</span>
                       </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="GSTPer">
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>GST %</mat-header-cell>
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                        {{ contact.GSTPer }}
+                      <span>  {{ contact.GSTPer }}</span>
                       </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="GSTAmount">
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>GST Amt</mat-header-cell>
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                        {{ contact.GSTAmount | currency : 'INR' }}
+                      <span>  {{ contact.GSTAmount | currency : 'INR' }}</span>
                       </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="DiscPer">
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc %</mat-header-cell>
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                        <mat-form-field appearance="legacy">
-                          <input matInput [(ngModel)]="contact.DiscPer" (keyup)="getDiscountCellCal(contact, contact.DiscPer)" (keypress)="keyPressAlphanumeric($event)" />
+                        <mat-form-field appearance="fill">
+                          <input matInput [(ngModel)]="contact.DiscPer" type="number" (keyup)="updateCellDiscount(contact)"/>
                         </mat-form-field>
                       </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="DiscAmt">
-                      <mat-header-cell class="" *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc.Amount</mat-header-cell>
+                      <mat-header-cell class="" *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc Amount</mat-header-cell>
                       <mat-cell class="" *matCellDef="let contact" fxShow.gt-sm>
-                        {{ contact.DiscAmt | currency : 'INR' }}
+                      <span>  {{ contact.DiscAmt | currency : 'INR' }}</span>
                       </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="NetAmt">
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Net Amount</mat-header-cell>
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                        {{ contact.NetAmt | currency : 'INR' }}
+                      <span>  {{ contact.NetAmt | currency : 'INR' }}</span>
                       </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="MarginAmt">
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>MarginAmt</mat-header-cell>
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                        {{ contact.MarginAmt | currency : 'INR' }}
+                      <span>  {{ contact.MarginAmt | currency : 'INR' }}</span>
                       </mat-cell>
                     </ng-container>
 
@@ -527,9 +528,6 @@
                       <mat-header-cell *matHeaderCellDef class="table-actions">Action</mat-header-cell>
                       <mat-cell *matCellDef="let contact">
                         <ng-container class="actions">
-                          <!-- <span class="material-icons" style="cursor: pointer;color: #5b5858;">
-                                                                  edit
-                                                              </span> -->
                           <span class="material-icons" style="cursor: pointer; color: #5b5858" (click)="deleteTableRow($event, contact)">delete</span>
                         </ng-container>
                       </mat-cell>
@@ -546,8 +544,8 @@
                       </mat-footer-cell>
                     </ng-container>
 
-                    <mat-header-row class="accent" *matHeaderRowDef="selectedSaleDisplayedCol; sticky: true"></mat-header-row>
-                    <mat-row *matRowDef="let contact; columns: selectedSaleDisplayedCol" [ngClass]="{ 'row-yellow': QtyBalchk == 0 }" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                    <mat-header-row class="accent min-width-1500" *matHeaderRowDef="selectedSaleDisplayedCol; sticky: true"></mat-header-row>
+                    <mat-row *matRowDef="let contact; columns: selectedSaleDisplayedCol" class="min-width-1500" [ngClass]="{ 'row-yellow': QtyBalchk == 0 }" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
                     <!-- (click)="deleteTableRow($event,contact)"  -->
                     <!-- <button class="btn btn-default btn-primary" style="float:right;" (click)="deleteRow(pto)" 
                                                        (onDelete)="onDelete($event)"><i class="fa fa-trash" aria-hidden="true"></i></button> -->

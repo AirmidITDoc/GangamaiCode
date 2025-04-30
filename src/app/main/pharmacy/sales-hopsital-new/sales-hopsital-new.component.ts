@@ -37,7 +37,7 @@ import { SubstitutesComponent } from '../sales/substitutes/substitutes.component
 import { SalesHospitalService } from './sales-hospital-new.service';
 import { PrescriptionComponent } from '../sales/prescription/prescription.component';
 import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component';
-import { BalAvaListStore, DraftSale, IndentList, PatientType, Printsal } from './types';
+import { BalAvaListStore, DraftSale, IndentList, PatientType, Printsal, SalesBatchItemModel, SalesFormModel, SalesItemModel } from './types';
 
 @Component({
   selector: 'app-sales-hospital',
@@ -296,6 +296,7 @@ export class SalesHospitalNewComponent implements OnInit {
   neftNo: any;
   paytmAmt: any;
   UTRNO: any;
+  selectedItem: SalesBatchItemModel;
 
   constructor(
     public _BrowsSalesBillService: BrowsSalesBillService,
@@ -453,9 +454,6 @@ export class SalesHospitalNewComponent implements OnInit {
     return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
   }
 
-  getSelectedObj(obj) {
-  }
-
   gePharStoreList() {
     var vdata = {
       Id: this._loggedService.currentUserValue.storeId,
@@ -605,22 +603,27 @@ export class SalesHospitalNewComponent implements OnInit {
 
   onClear() {}
   calculateTotalAmt() {
-    let Qty = this._salesService.IndentSearchGroup.get('Qty').value;
-    if (Qty > this.BalanceQty) {
+    let qty = +this._salesService.IndentSearchGroup.get('Qty').value;
+    if (qty > this.BalanceQty) {
       Swal.fire('Enter Qty less than Balance');
+      // this._salesService.IndentSearchGroup.patchValue({
+      //   Qty: 0,
+      //   TotalMrp: 0,
+      //   NetAmt: 0,
+      // });
       this.ItemFormreset();
     }
 
-    if (Qty && this.MRP) {
-      this.TotalMRP = (parseInt(Qty) * this._salesService.IndentSearchGroup.get('MRP').value).toFixed(2);
-      this.LandedRateandedTotal = (parseInt(Qty) * this.LandedRate).toFixed(2);
+    if (qty && this.MRP) {
+      this.TotalMRP = (qty * this._salesService.IndentSearchGroup.get('MRP').value).toFixed(2);
+      this.LandedRateandedTotal = (qty * this.LandedRate).toFixed(2);
       this.v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
-      this.PurTotAmt = (parseInt(Qty) * this.PurchaseRate).toFixed(2);
+      this.PurTotAmt = (qty * this.PurchaseRate).toFixed(2);
 
-      this.GSTAmount = (((this.UnitMRP * this.GSTPer) / 100) * parseInt(Qty)).toFixed(2);
-      this.CGSTAmt = (((this.UnitMRP * this.CgstPer) / 100) * parseInt(Qty)).toFixed(2);
-      this.SGSTAmt = (((this.UnitMRP * this.SgstPer) / 100) * parseInt(Qty)).toFixed(2);
-      this.IGSTAmt = (((this.UnitMRP * this.IgstPer) / 100) * parseInt(Qty)).toFixed(2);
+      this.GSTAmount = (((this.UnitMRP * this.GSTPer) / 100) * qty).toFixed(2);
+      this.CGSTAmt = (((this.UnitMRP * this.CgstPer) / 100) * qty).toFixed(2);
+      this.SGSTAmt = (((this.UnitMRP * this.SgstPer) / 100) * qty).toFixed(2);
+      this.IGSTAmt = (((this.UnitMRP * this.IgstPer) / 100) * qty).toFixed(2);
 
       this.getDiscPer();
     }
@@ -705,6 +708,7 @@ export class SalesHospitalNewComponent implements OnInit {
     if (!this.vBarcodeflag) {
       this.sIsLoading = 'save';
       let Qty = this._salesService.IndentSearchGroup.get('Qty').value;
+      this.Qty = parseInt(Qty);
       if (this.ItemName && parseInt(Qty) != 0 && this.MRP > 0 && this.NetAmt > 0) {
         this.Itemchargeslist = this.saleSelectedDatasource.data;
         this.Itemchargeslist.push({
@@ -742,13 +746,12 @@ export class SalesHospitalNewComponent implements OnInit {
         this.saleSelectedDatasource.data = this.Itemchargeslist;
         this.ItemFormreset();
       }
-      this.itemid.nativeElement.focus();
       this.add = false;
     }
   }
 
   getBatch() {
-    this.Quantity.nativeElement.focus();
+    // this.Quantity.nativeElement.focus();
     const dialogRef = this._matDialog.open(SalePopupComponent, {
       maxWidth: '800px',
       minWidth: '800px',
@@ -756,52 +759,60 @@ export class SalesHospitalNewComponent implements OnInit {
       height: '380px',
       disableClose: true,
       data: {
-        ItemId: this._salesService.IndentSearchGroup.get('ItemId').value.ItemId,
-        StoreId: this._salesService.IndentSearchGroup.get('StoreId').value.storeid,
+        ItemId: this._salesService.IndentSearchGroup.get('ItemId').value.itemId,
+        StoreId: this._salesService.IndentSearchGroup.get('ItemId').value.storeId,
       },
     });
     dialogRef.afterClosed().subscribe((result1) => {
-      let result = result1.selectedData;
-      let vescflag = result1.vEscflag;
-      console.log(result);
+      let isEscaped = result1.vEscflag;
 
-      if (vescflag) {
+      if (isEscaped) {
         this._salesService.IndentSearchGroup.get('ItemId').setValue('');
-        this.itemid.nativeElement.focus();
-      } else if (!vescflag) {
-        this.Quantity.nativeElement.focus();
-
-        this.BatchNo = result.BatchNo;
-        this.BatchExpDate = this.datePipe.transform(result.BatchExpDate, 'MM-dd-yyyy');
-        this.MRP = result.UnitMRP;
-        this.Qty = '';
-        this.Bal = result.BalanceAmt;
-        this.GSTPer = result.VatPercentage;
-
-        this.TotalMRP = this.Qty * this.MRP;
-        this.DiscPer = result.DiscPer;
-        this.DiscAmt = 0;
-        this.NetAmt = this.TotalMRP;
-        this.BalanceQty = result.BalanceQty;
-        this.ItemObj = result;
-
-        this.VatPer = result.VatPercentage;
-        this.CgstPer = result.CGSTPer;
-        this.SgstPer = result.SGSTPer;
-        this.IgstPer = result.IGSTPer;
-
-        this.VatAmount = result.VatPercentage;
-        this.StockId = result.StockId;
-        this.StoreId = result.StoreId;
-        this.LandedRate = result.LandedRate;
-        this.PurchaseRate = result.PurchaseRate;
-        this.UnitMRP = result.UnitMRP;
+        return;
+        // this.itemid.nativeElement.focus();
       }
+      // this.Quantity.nativeElement.focus();
+      let result = result1.selectedData as SalesBatchItemModel;
+
+      const isAlreadyExists = this.Itemchargeslist.find((i) => i.StockId === result.stockId && i.ItemId === result.itemId);
+      if (isAlreadyExists) {
+        this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        this.ItemFormreset();
+        return;
+      }
+
+      this.BatchNo = result.batchNo;
+      this.BatchExpDate = this.datePipe.transform(result.batchExpDate, 'MM-dd-yyyy');
+      this.MRP = result.unitMRP;
+      this.Qty = 0;
+      // this.Bal = result.BalanceAmt;
+      this.GSTPer = result.sgstPer + result.cgstPer + result.igstPer;
+
+      this.TotalMRP = this.Qty * this.MRP;
+      this.DiscPer = 0;
+      this.DiscAmt = 0;
+      this.NetAmt = this.TotalMRP;
+      this.BalanceQty = result.balanceQty;
+
+      // this.VatPer = result.VatPercentage;
+      this.CgstPer = result.cgstPer;
+      this.SgstPer = result.sgstPer;
+      this.IgstPer = result.igstPer;
+
+      // this.VatAmount = result.VatPercentage;
+      this.StockId = result.stockId;
+      this.StoreId = result.storeId;
+      this.LandedRate = result.landedRate;
+      this.PurchaseRate = result.purchaseRate;
+      this.UnitMRP = result.unitMRP;
+
+      this.selectedItem = result;
     });
   }
 
-  focusNextService() {
-  }
+  focusNextService() {}
 
   Colorchange() {}
 
@@ -921,14 +932,13 @@ export class SalesHospitalNewComponent implements OnInit {
       this.ItemSubform.get('FinalDiscPer').disable();
       this.chkdiscper = true;
       this.DiscAmt = ((this.TotalMRP * this.DiscPer) / 100).toFixed(2);
-      this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
       this.ItemSubform.get('DiscAmt').disable();
     } else {
       this.chkdiscper = false;
       this.DiscAmt = 0;
       this.ItemSubform.get('DiscAmt').enable();
-      this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
     }
+    this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
   }
 
   getFinalDiscperAmt() {
@@ -1113,38 +1123,6 @@ export class SalesHospitalNewComponent implements OnInit {
   Paymentobj = {};
 
   chargeslist1: any = [];
-  // onCheckBalQty() {
-
-  //   this.saleSelectedDatasource.data.forEach((element) => {
-
-  //     let SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + element.ItemId + ""
-  //     // and LandedRate = " & dgvSales.Item(10, J).Value & " and PurUnitRateWF = " & dgvSales.Item(13, J).Value & ""
-
-  //     // console.log(SelectQuery);
-
-  //     this._salesService.getchargesList(SelectQuery).subscribe(data => {
-
-  //       this.chargeslist1 = data;
-  //       if (this.chargeslist1.length > 0) {
-  //         if (this.chargeslist1[0].BalanceQty >= element.Qty) {
-
-  //           this.QtyBalchk = 1;
-
-  //         }
-  //         else {
-  //           Swal.fire("Balance Qty is :", this.chargeslist1[0].BalanceQty)
-  //           this.QtyBalchk = 0;
-  //           Swal.fire("Balance Qty is Less than Selected Item Qty for Item :", element.ItemId + "Balance Qty:",)
-  //         }
-  //       }
-
-  //     },
-  //       (error) => {
-  //         Swal.fire("No Item Found!!")
-  //       });
-
-  //   });
-  // }
 
   DeleteDraft() {
     let Query = 'delete T_SalesDraftHeader where DSalesId=' + this.DraftID + '';
@@ -1845,140 +1823,140 @@ export class SalesHospitalNewComponent implements OnInit {
     popupWin.document.close();
   }
 
-  getDiscountCellCal(contact, DiscPer) {
-    //
+  // getDiscountCellCal(contact, DiscPer) {
+  //   //
 
-    // let DiscOld=DiscPer;
-    let DiscAmt;
-    let TotalMRP = contact.TotalMRP;
+  //   // let DiscOld=DiscPer;
+  //   let DiscAmt;
+  //   let TotalMRP = contact.TotalMRP;
 
-    if (DiscPer > 0) {
-      this.ItemSubform.get('ConcessionId').reset();
-      this.ItemSubform.get('ConcessionId').setValidators([Validators.required]);
-      this.ItemSubform.get('ConcessionId').enable();
-      this.ConShow = true;
+  //   if (DiscPer > 0) {
+  //     this.ItemSubform.get('ConcessionId').reset();
+  //     this.ItemSubform.get('ConcessionId').setValidators([Validators.required]);
+  //     this.ItemSubform.get('ConcessionId').enable();
+  //     this.ConShow = true;
 
-      DiscAmt = ((contact.TotalMRP * DiscPer) / 100).toFixed(2);
-      let NetAmt = (parseFloat(contact.TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
+  //     DiscAmt = ((contact.TotalMRP * DiscPer) / 100).toFixed(2);
+  //     let NetAmt = (parseFloat(contact.TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
 
-      if (parseFloat(DiscAmt) > parseFloat(NetAmt)) {
-        Swal.fire('Check Discount Amount !');
-        this.ConShow = false;
-        this.ItemSubform.get('ConcessionId').clearValidators();
-        this.ItemSubform.get('ConcessionId').updateValueAndValidity();
-      }
+  //     if (parseFloat(DiscAmt) > parseFloat(NetAmt)) {
+  //       Swal.fire('Check Discount Amount !');
+  //       this.ConShow = false;
+  //       this.ItemSubform.get('ConcessionId').clearValidators();
+  //       this.ItemSubform.get('ConcessionId').updateValueAndValidity();
+  //     }
 
-      (contact.DiscAmt = DiscAmt || 0), (contact.NetAmt = NetAmt);
-    } else {
-      let DiscAmt = 0;
-      let NetAmt = parseFloat(contact.TotalMRP).toFixed(2);
+  //     (contact.DiscAmt = DiscAmt || 0), (contact.NetAmt = NetAmt);
+  //   } else {
+  //     let DiscAmt = 0;
+  //     let NetAmt = parseFloat(contact.TotalMRP).toFixed(2);
 
-      (contact.DiscAmt = DiscAmt || 0), (contact.NetAmt = NetAmt);
-    }
+  //     (contact.DiscAmt = DiscAmt || 0), (contact.NetAmt = NetAmt);
+  //   }
 
-    let ItemDiscAmount = DiscAmt; // this._salesService.IndentSearchGroup.get('DiscAmt').value;
-    // let PurTotalAmount = this.PurTotAmt;
-    let LandedTotalAmount = (parseInt(contact.Qty) * contact.LandedRate).toFixed(2);
-    // this.LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
-    let m_marginamt = (parseFloat(contact.TotalMRP) - parseFloat(ItemDiscAmount)).toFixed(2);
-    let v_marginamt = (parseFloat(contact.TotalMRP) - parseFloat(ItemDiscAmount) - parseFloat(LandedTotalAmount)).toFixed(2);
+  //   let ItemDiscAmount = DiscAmt; // this._salesService.IndentSearchGroup.get('DiscAmt').value;
+  //   // let PurTotalAmount = this.PurTotAmt;
+  //   let LandedTotalAmount = (parseInt(contact.Qty) * contact.LandedRate).toFixed(2);
+  //   // this.LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
+  //   let m_marginamt = (parseFloat(contact.TotalMRP) - parseFloat(ItemDiscAmount)).toFixed(2);
+  //   let v_marginamt = (parseFloat(contact.TotalMRP) - parseFloat(ItemDiscAmount) - parseFloat(LandedTotalAmount)).toFixed(2);
 
-    if (parseFloat(DiscAmt) > 0 && parseFloat(DiscAmt) < parseFloat(TotalMRP)) {
-      if (parseFloat(m_marginamt) <= parseFloat(LandedTotalAmount)) {
-        Swal.fire('Discount amount greater than Purchase amount, Please check !');
+  //   if (parseFloat(DiscAmt) > 0 && parseFloat(DiscAmt) < parseFloat(TotalMRP)) {
+  //     if (parseFloat(m_marginamt) <= parseFloat(LandedTotalAmount)) {
+  //       Swal.fire('Discount amount greater than Purchase amount, Please check !');
 
-        contact.DiscPer = this.DiscOld;
-        DiscAmt = 0; // ((contact.TotalMRP * (this.DiscOld)) / 100).toFixed(2);
-        let NetAmt = parseFloat(contact.TotalMRP);
+  //       contact.DiscPer = this.DiscOld;
+  //       DiscAmt = 0; // ((contact.TotalMRP * (this.DiscOld)) / 100).toFixed(2);
+  //       let NetAmt = parseFloat(contact.TotalMRP);
 
-        (contact.DiscAmt = DiscAmt || 0), (contact.NetAmt = NetAmt);
-      } else {
-        // this.NetAmt = (this.TotalMRP - (this._salesService.IndentSearchGroup.get('DiscAmt').value)).toFixed(2);
-      }
-    }
-  }
+  //       (contact.DiscAmt = DiscAmt || 0), (contact.NetAmt = NetAmt);
+  //     } else {
+  //       // this.NetAmt = (this.TotalMRP - (this._salesService.IndentSearchGroup.get('DiscAmt').value)).toFixed(2);
+  //     }
+  //   }
+  // }
 
-  getCellCalculation(contact, Qty) {
-    //
-    let Qtyfinal = this.Qty;
-    console.log(contact);
-    this.StockId = contact.StockId;
-    this.Qty = Qty;
-    if (contact.Qty != 0 && contact.Qty != null) {
-      // console.log(contact.Qty);
-      this.BalChkList = [];
-      this.StoreId = this._loggedService.currentUserValue.storeId;
+  // getCellCalculation(contact, Qty) {
+  //   //
+  //   let Qtyfinal = this.Qty;
+  //   console.log(contact);
+  //   this.StockId = contact.StockId;
+  //   this.Qty = Qty;
+  //   if (contact.Qty != 0 && contact.Qty != null) {
+  //     // console.log(contact.Qty);
+  //     this.BalChkList = [];
+  //     this.StoreId = this._loggedService.currentUserValue.storeId;
 
-      // let SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + contact.ItemId + " AND  BatchNo='" + contact.BatchNo + "' AND  StockId=" + contact.StockId + ""
-      let SelectQuery = 'select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = ' + this.StoreId + ' AND ItemId = ' + contact.ItemId + '';
+  //     // let SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + contact.ItemId + " AND  BatchNo='" + contact.BatchNo + "' AND  StockId=" + contact.StockId + ""
+  //     let SelectQuery = 'select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = ' + this.StoreId + ' AND ItemId = ' + contact.ItemId + '';
 
-      console.log(SelectQuery);
-      this._salesService.getchargesList(SelectQuery).subscribe(
-        (data) => {
-          this.BalChkList = data;
-          console.log(this.BalChkList);
+  //     console.log(SelectQuery);
+  //     this._salesService.getchargesList(SelectQuery).subscribe(
+  //       (data) => {
+  //         this.BalChkList = data;
+  //         console.log(this.BalChkList);
 
-          // if (this.BalChkList.length > 0) {
+  //         // if (this.BalChkList.length > 0) {
 
-          //   if (this.BalChkList[0].BalanceQty >= contact.Qty) {
-          //     this.QtyBalchk = 1;
+  //         //   if (this.BalChkList[0].BalanceQty >= contact.Qty) {
+  //         //     this.QtyBalchk = 1;
 
-          //     this.tblCalucation(contact,contact.Qty)
-          //   }
-          //   else {
-          //     this.QtyBalchk = 1;
-          //     Swal.fire("Please Enter Qty Less than Balance Qty :" + contact.ItemName + " . Available Balance Qty :" + this.BalChkList[0].BalanceQty)
-          //     contact.Qty = parseInt(this.BalChkList[0].BalanceQty);
-          //     contact.Qty=this.Qty;
-          //     this.tblCalucation(contact,contact.Qty)
-          //   }
-          // }
+  //         //     this.tblCalucation(contact,contact.Qty)
+  //         //   }
+  //         //   else {
+  //         //     this.QtyBalchk = 1;
+  //         //     Swal.fire("Please Enter Qty Less than Balance Qty :" + contact.ItemName + " . Available Balance Qty :" + this.BalChkList[0].BalanceQty)
+  //         //     contact.Qty = parseInt(this.BalChkList[0].BalanceQty);
+  //         //     contact.Qty=this.Qty;
+  //         //     this.tblCalucation(contact,contact.Qty)
+  //         //   }
+  //         // }
 
-          //
-          if (this.BalChkList.length > 0) {
-            let AllQty = 0;
-            this.BalChkList.forEach((element) => {
-              AllQty += element.BalanceQty;
-              console.log(AllQty);
-            });
+  //         //
+  //         if (this.BalChkList.length > 0) {
+  //           let AllQty = 0;
+  //           this.BalChkList.forEach((element) => {
+  //             AllQty += element.BalanceQty;
+  //             console.log(AllQty);
+  //           });
 
-            if (AllQty >= contact.Qty) {
-              this.QtyBalchk = 1;
+  //           if (AllQty >= contact.Qty) {
+  //             this.QtyBalchk = 1;
 
-              this.tblCalucation(contact, contact.Qty);
-              this.getDiscountCellCal(contact, contact.DiscPer);
-            } else {
-              // this.QtyBalchk = 1;
-              Swal.fire('Please Enter Qty Less than Balance Qty :' + contact.ItemName + ' . Available Balance Qty :' + this.BalChkList[0].BalanceQty);
-              //     contact.Qty = parseInt(this.BalChkList[0].BalanceQty);
-              //     contact.Qty=this.Qty;
-              //     this.tblCalucation(contact,contact.Qty)
-              contact.Qty = 1;
-            }
-          }
-        },
-        (error) => {
-          Swal.fire('No Item Found!!');
-        }
-      );
-    } else {
-      Swal.fire('Please enter Qty!!');
+  //             this.tblCalucation(contact, contact.Qty);
+  //             this.getDiscountCellCal(contact, contact.DiscPer);
+  //           } else {
+  //             // this.QtyBalchk = 1;
+  //             Swal.fire('Please Enter Qty Less than Balance Qty :' + contact.ItemName + ' . Available Balance Qty :' + this.BalChkList[0].BalanceQty);
+  //             //     contact.Qty = parseInt(this.BalChkList[0].BalanceQty);
+  //             //     contact.Qty=this.Qty;
+  //             //     this.tblCalucation(contact,contact.Qty)
+  //             contact.Qty = 1;
+  //           }
+  //         }
+  //       },
+  //       (error) => {
+  //         Swal.fire('No Item Found!!');
+  //       }
+  //     );
+  //   } else {
+  //     Swal.fire('Please enter Qty!!');
 
-      contact.GSTAmount = 0;
-      contact.TotalMRP = 0;
-      (contact.DiscAmt = 0), (contact.NetAmt = 0);
-      contact.RoundNetAmt = 0;
-      (contact.StockId = this.StockId), (contact.VatAmount = 0);
-      contact.LandedRateandedTotal = 0;
-      contact.CGSTAmt = 0;
-      contact.SGSTAmt = 0;
-      contact.IGSTAmt = 0;
-      (contact.PurchaseRate = this.PurchaseRate), (contact.PurTotAmt = this.PurTotAmt), (contact.MarginAmt = 0);
-    }
+  //     contact.GSTAmount = 0;
+  //     contact.TotalMRP = 0;
+  //     (contact.DiscAmt = 0), (contact.NetAmt = 0);
+  //     contact.RoundNetAmt = 0;
+  //     (contact.StockId = this.StockId), (contact.VatAmount = 0);
+  //     contact.LandedRateandedTotal = 0;
+  //     contact.CGSTAmt = 0;
+  //     contact.SGSTAmt = 0;
+  //     contact.IGSTAmt = 0;
+  //     (contact.PurchaseRate = this.PurchaseRate), (contact.PurTotAmt = this.PurTotAmt), (contact.MarginAmt = 0);
+  //   }
 
-    // this.DiscOld=contact.DiscPer;
-    this.ItemFormreset();
-  }
+  //   // this.DiscOld=contact.DiscPer;
+  //   this.ItemFormreset();
+  // }
 
   tblCalucation(contact, Qty) {
     let TotalMRP;
@@ -2327,9 +2305,64 @@ export class SalesHospitalNewComponent implements OnInit {
       this.calculateTotalAmt();
     }
   }
-  public onEnterdiscper(event): void {
-    if (event.which === 13) {
-      this.discamount.nativeElement.focus();
+  public onEnterdiscper(): void {
+    const formValue = this._salesService.IndentSearchGroup.value;
+    const discPer = Number(formValue.DiscPer);
+
+    if (discPer < 0 || discPer > 100) {
+      this.toastr.error('Enter discount between 0 - 100', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      this._salesService.IndentSearchGroup.patchValue({
+        DiscAmt: 0,
+        DiscPer: 0,
+      });
+      return;
+    }
+    if (formValue.TotalMrp) {
+      // Calculate discount amount from percentage
+      this.DiscAmt = ((formValue.TotalMrp * discPer) / 100).toFixed(2);
+      this._salesService.IndentSearchGroup.patchValue({
+        DiscAmt: this.DiscAmt,
+      });
+      this.calculateNetAmount();
+      // this.discamount.nativeElement.focus();
+    }
+  }
+
+  public onEnterdiscAmount(): void {
+    const formValue = this._salesService.IndentSearchGroup.value;
+    const discAmt = Number(formValue.DiscAmt);
+
+    if (discAmt < 0 || discAmt > Number(formValue.TotalMrp)) {
+      this.toastr.error('Discount amount should less then Total MRP', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+      this._salesService.IndentSearchGroup.patchValue({
+        DiscAmt: 0,
+        DiscPer: 0,
+      });
+      return;
+    }
+
+    if (formValue.TotalMrp && discAmt) {
+      // Calculate discount percentage from amount
+      this.DiscPer = ((formValue.DiscAmt / formValue.TotalMrp) * 100).toFixed(2);
+      this._salesService.IndentSearchGroup.patchValue({
+        DiscPer: this.DiscPer,
+      });
+      this.calculateNetAmount();
+      // this.NetAmt.nativeElement.focus();
+    }
+  }
+
+  private calculateNetAmount(): void {
+    const formValue = this._salesService.IndentSearchGroup.value;
+    if (formValue.TotalMrp) {
+      this.NetAmt = (formValue.TotalMrp - (formValue.DiscAmt || 0)).toFixed(2);
+      this._salesService.IndentSearchGroup.patchValue({
+        NetAmt: this.NetAmt,
+      });
     }
   }
 
@@ -2343,12 +2376,6 @@ export class SalesHospitalNewComponent implements OnInit {
     if (this.ItemSubform.get('MobileNo').value && this.ItemSubform.get('MobileNo').value.length == 10) {
       this.getTopSalesDetailsList(this.MobileNo);
       this.patientname.nativeElement.focus();
-    }
-  }
-  public onEnterdiscAmount(event): void {
-    if (event.which === 13) {
-      // this.addbutton.focus();
-      this.addbutton.nativeElement.focus();
     }
   }
 
@@ -2846,12 +2873,12 @@ export class SalesHospitalNewComponent implements OnInit {
   getValidationMessages() {
     return {
       mobileNo: [
-        { name: "required", Message: "Mobile no required" },
-        { name: "pattern", Message: "only Number allowed." }
+        { name: 'required', Message: 'Mobile no required' },
+        { name: 'pattern', Message: 'only Number allowed.' },
       ],
-    }
+    };
   }
-  onPatientChange(event:any):void{
+  onPatientChange(event: any): void {
     // console.log(event);
   }
 
@@ -2869,5 +2896,59 @@ export class SalesHospitalNewComponent implements OnInit {
   keyPressAlphanumeric(event) {
     // ... existing code ...
   }
+  onItemChange(event: SalesItemModel): void {
+    console.log('Event: ', event);
+    this.ItemName = event.itemName;
+    this.ItemId = event.itemId;
+    this.getBatch();
+  }
+  updateCellDiscount(item: IndentList): void {
+    let discPer = +item.DiscPer;
+    let totalMrp = +item.TotalMRP;
 
+    if (discPer < 0 || discPer > 100) {
+      this.toastr.error('Enter discount between 0 - 100', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      item.DiscPer = 0;
+      item.DiscAmt = 0;
+      this.calculateCellNetAmount(item);
+      return;
+    }
+    item.DiscAmt = ((totalMrp * discPer) / 100).toFixed(2);
+    this.calculateCellNetAmount(item);
+  }
+  calculateCellNetAmount(item: IndentList): void {
+    const discAmt = +item.DiscAmt;
+    const totalMrp = +item.TotalMRP;
+
+    const netAmount = (totalMrp - discAmt).toFixed(2);
+    item.NetAmt = netAmount;
+    this.updateItemSubForm();
+  }
+
+  updateItemSubForm(): void {
+    // this.FinalDiscPer = this.Itemchargeslist.reduce((sum, item) => sum + (+item.TotalAmt), 0);
+    this.FinalDiscPer = ((this.FinalDiscAmt * 100) / this.FinalTotalAmt).toFixed(2);
+  }
+  getCellCalculation(item: IndentList) {
+    // Check validation of quantity
+    const qty = +item.Qty;
+    const gstPer = +item.GSTPer;
+    const unitMrp = +item.UnitMRP;
+    const totalMrp = qty * unitMrp;
+    const gstAmount = (totalMrp * gstPer) / 100;
+
+    const landedRateandedTotal = qty * item.LandedRate;
+    const marginAmt = totalMrp - landedRateandedTotal;
+
+    const updatedItem = {
+      GSTAmount: gstAmount.toFixed(2),
+      TotalMRP: totalMrp.toFixed(2),
+      MarginAmt: marginAmt.toFixed(2),
+    } as IndentList;
+
+    Object.assign(item, updatedItem);
+    this.calculateCellNetAmount(item);
+  }
 }
