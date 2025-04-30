@@ -161,9 +161,9 @@ export class IPSearchListComponent implements OnInit {
             this.menuActions.push('Refund of Bill');
           }
         else if (this._ActRoute.url == '/ipd/add-billing') {
-            // this.menuActions.push('Advance');
+            this.menuActions.push('Advance');
             this.menuActions.push('Bill');
-          // this.menuActions.push('Payment');
+            this.menuActions.push('Payment');
             this.menuActions.push('Update Company Information');
         }
         else if (this._ActRoute.url == '/ipd/ip-refund-browse') {
@@ -518,16 +518,6 @@ export class IPSearchListComponent implements OnInit {
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
     }
-
-    // onClear() {
-
-    //     this._IpSearchListService.myFilterform.reset();
-    //     this._IpSearchListService.myFilterform.get("IsDischarge").setValue(0);
-    //     this._IpSearchListService.myFilterform.get("FirstName").setValue('');
-    //     this._IpSearchListService.myFilterform.get("MiddleName").setValue('');
-    //     this._IpSearchListService.myFilterform.get("LastName").setValue('');
-
-    // }
 
     getValidationdeptDocMessages() {
         return {
