@@ -181,8 +181,36 @@ export class NewAdmissionComponent implements OnInit {
   }
 
   onNewSave() {
+    let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
+    if (DateOfBirth1) {
+      const todayDate = new Date();
+      const dob = new Date(DateOfBirth1);
+      const timeDiff = Math.abs(Date.now() - dob.getTime());
+      this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
+      this.ageMonth = (todayDate.getMonth() - dob.getMonth());
+      this.ageDay = (todayDate.getDate() - dob.getDate());
 
-   
+      if (this.ageDay < 0) {
+        (this.ageMonth)--;
+        const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+        this.ageDay += previousMonth.getDate(); // Days in previous month
+      }
+
+      if (this.ageMonth < 0) {
+        this.ageYear--;
+        this.ageMonth += 12;
+      }
+    }
+    if (
+      (!this.ageYear || this.ageYear == 0) &&
+      (!this.ageMonth || this.ageMonth == 0) &&
+      (!this.ageDay || this.ageDay == 0)
+    ) {
+      this.toastr.warning('Please select Date of Birth', 'Warning!', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid) {
 
       Swal.fire({
@@ -250,26 +278,7 @@ export class NewAdmissionComponent implements OnInit {
   }
 
   OnSaveAdmission() {
-    let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
-    if (DateOfBirth1) {
-      const todayDate = new Date();
-      const dob = new Date(DateOfBirth1);
-      const timeDiff = Math.abs(Date.now() - dob.getTime());
-      this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
-      this.ageMonth = (todayDate.getMonth() - dob.getMonth());
-      this.ageDay = (todayDate.getDate() - dob.getDate());
-
-      if (this.ageDay < 0) {
-          (this.ageMonth)--;
-          const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
-          this.ageDay += previousMonth.getDate(); // Days in previous month
-      }
-
-      if (this.ageMonth < 0) {
-          this.ageYear--;
-          this.ageMonth += 12;
-      }
-    }
+    
     this.personalFormGroup.get('Age').setValue(String(this.ageYear))
     this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
     this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
@@ -286,38 +295,27 @@ export class NewAdmissionComponent implements OnInit {
       });
       return;
     }
-    if (this.ageYear != 0 || this.ageMonth != 0 || this.ageDay != 0) {
-
-    let submitData = {
-      "AdmissionReg": this.personalFormGroup.value,
-      "ADMISSION": this.admissionFormGroup.value
-    };
-    console.log(submitData);
-    if (this.searchFormGroup.get('regRadio').value == "registration" && this.AdmissionId == 0) {
-
-      this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
-
-        this.toastr.success(response.message);
-        this.getAdmittedPatientCasepaperview(response);
-        this.onClear();
-        this._matDialog.closeAll();
-
-      });
-
-    }
-    else {
+      let submitData = {
+        "AdmissionReg": this.personalFormGroup.value,
+        "ADMISSION": this.admissionFormGroup.value
+      };
       console.log(submitData);
-
-      this._AdmissionService.AdmissionRegisteredInsert(submitData).subscribe(response => {
-        this.toastr.success(response.message);
-        this.getAdmittedPatientCasepaperview(response);
-        this.onClear();
-        this._matDialog.closeAll();
-      });
-    }
-  } else {
-    this.toastr.warning("Please Select Birthdate  ...");
-}
+      if (this.searchFormGroup.get('regRadio').value == "registration" && this.AdmissionId == 0) {
+        this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
+          this.getAdmittedPatientCasepaperview(response);
+          this.onClear();
+          this._matDialog.closeAll();
+        });
+      }
+      else {
+          console.log(submitData);
+          this._AdmissionService.AdmissionRegisteredInsert(submitData).subscribe(response => {
+          this.toastr.success(response.message);
+          this.getAdmittedPatientCasepaperview(response);
+          this.onClear();
+          this._matDialog.closeAll();
+        });
+      }
   }
 
 
