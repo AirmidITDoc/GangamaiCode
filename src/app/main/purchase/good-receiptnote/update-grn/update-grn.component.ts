@@ -1947,7 +1947,7 @@ chekgstper(obj){
             "grnDetailSave": SavegrnDetailObj,
         };
         console.log(submitData);
-        this._GRNList.GRNEdit(submitData).subscribe(response => {
+        this._GRNList.GRNEdit(submitData,this.registerObj.GRNID).subscribe(response => {
             if (response) {
                 this.toastr.success('Record Updated Successfully.', 'Updated !', {
                     toastClass: 'tostr-tost custom-toast-success',

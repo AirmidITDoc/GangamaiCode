@@ -76,7 +76,7 @@
 
         <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)">
             <ng-container filters>
-
+                <form [formGroup]="_GRNService.GRNSearchGroup" fxLayout="column">
                 <airmid-datepicker [formGroup]="_GRNService.GRNSearchGroup" [isRangePicker]="true"
                     formStartControlName="start" formEndControlName="end"
                     [(fromValue)]="gridConfig.filters[1].fieldValue" [(toValue)]="gridConfig.filters[2].fieldValue"
@@ -94,8 +94,8 @@
                     [mode]="autocompleteSupplier" (selectionChange)="selectChangeSupplier($event)"  (keyup)="selectChangeSupplier($event)"
                     [(ngModel)]="gridConfig.filters[4].fieldValue"></airmid-dropdown>
 
-                <form [formGroup]="_GRNService.GRNSearchGroup">
-                    <mat-radio-group name="Status1" formControlName="Status1" fxLayout="column" class="gap-4 "  
+              
+                    <!-- <mat-radio-group name="Status1" formControlName="Status1" fxLayout="column" class="gap-4 "  
                     [(ngModel)]="gridConfig.filters[3].fieldValue" (change)="onChangeFirst()">
                         <mat-label>Status:</mat-label>
                         <mat-radio-button value="2" >All
@@ -104,7 +104,17 @@
                         </mat-radio-button>
                         <mat-radio-button value="0">Pending
                         </mat-radio-button>
-                    </mat-radio-group>
+                    </mat-radio-group> -->
+
+                    <div fxLayout="row" class="gap-4 ">
+                        <span style="font-weight: bold;">Status :</span>
+                        <mat-slide-toggle name="Status1" (change)="onChangeFirst()"
+                        formControlName="Status1">
+                         Verify / Pending
+                        </mat-slide-toggle>
+                    </div>
+
+                   
                 </form>  
             </ng-container>
         </airmid-table>
