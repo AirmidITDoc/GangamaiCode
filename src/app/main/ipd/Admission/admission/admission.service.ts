@@ -125,8 +125,8 @@ export class AdmissionService {
             RegId: 0,
             AdmissionDate: [(new Date()).toISOString()],
             AdmissionTime: [(new Date()).toISOString()],
-            PatientTypeId: 1,
-            hospitalId: 1,
+            PatientTypeId: 0,
+            hospitalId: 0,
             DocNameId:[0, [Validators.required, notEmptyOrZeroValidator()]],
             RefDocNameId: 0,
             DischargeDate: "1900-01-01",
@@ -166,7 +166,7 @@ export class AdmissionService {
             compDOd: [(new Date()).toISOString()],
             IsOpToIpconv: false,
             RefDoctorDept: "",
-            AdmissionType: 1,
+            AdmissionType: 0,
           
             // unitId:1,
             // IsMLC: [false],
@@ -185,8 +185,8 @@ export class AdmissionService {
             RegId: 0,
             AdmissionDate: [(new Date()).toISOString()],
             AdmissionTime: [(new Date()).toISOString()],
-            PatientTypeId: 1,
-            hospitalId: 1,
+            PatientTypeId: 0,
+            hospitalId: 0,
             DocNameId:[0, [Validators.required, notEmptyOrZeroValidator()]],
             RefDocNameId: 0,
             DischargeDate: "1900-01-01",
@@ -226,7 +226,7 @@ export class AdmissionService {
             compDOd: [(new Date()).toISOString()],
             IsOpToIpconv: false,
             RefDoctorDept: "",
-            AdmissionType: 1,
+            AdmissionType: 0,
           
        
         });
