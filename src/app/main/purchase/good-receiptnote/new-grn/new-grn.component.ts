@@ -287,29 +287,70 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     maxDate = new Date(2024, 4, 1);
     calculateLastDay() {
         const inputDate = this.userFormGroup.get("ExpDate").value;
-        if (inputDate && inputDate.length === 6) {
+        
+        // Reset values if input is empty
+        if (!inputDate) {
+            this.vlastDay = '';
+            this.lastDay2 = '';
+            return;
+        }
+
+        // If input is already in DD/MM/YYYY format, just update the variables
+        if (inputDate.length === 10 && inputDate.includes('/')) {
+            const [day, month, year] = inputDate.split('/');
+            this.vlastDay = inputDate;
+            this.lastDay2 = `${year}/${month}/${day}`;
+            return;
+        }
+
+        // Handle MMYYYY format
+        if (inputDate.length === 6) {
+            // Check if input contains only numbers
+            if (!/^\d+$/.test(inputDate)) {
+                this.resetDateAndShowError('Please enter only numbers in MMYYYY format');
+                return;
+            }
+
             const month = +inputDate.substring(0, 2);
             const year = +inputDate.substring(2, 6);
 
-            if (month >= 1 && month <= 12) {
-                const lastDay = this.getLastDayOfMonth(month, year);
-                this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
-                this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
-                this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
-            } else {
-                this.vlastDay = '';
-                this.newGRNService.showToast('Invalid month in Expiry Date. Use format MMYYYY', ToastType.WARNING);
+            // Validate month range
+            if (month < 1 || month > 12) {
+                this.resetDateAndShowError('Invalid month. Month should be between 01 and 12');
+                return;
             }
+
+            // Validate year (assuming reasonable year range)
+            if (year < 1900) {
+                this.resetDateAndShowError('Invalid year. Please enter a valid year');
+                return;
+            }
+
+            // Calculate last day of the month
+            const lastDay = this.getLastDayOfMonth(month, year);
+            this.vlastDay = `${this.pad(lastDay)}/${this.pad(month)}/${year}`;
+            this.lastDay2 = `${year}/${this.pad(month)}/${this.pad(lastDay)}`;
+            this.userFormGroup.get('ExpDate').setValue(this.vlastDay);
         } else {
-            this.vlastDay = '';
-        } 
-    } 
-    getLastDayOfMonth(month: number, year: number): number {
+            this.resetDateAndShowError('Please enter date in MMYYYY format');
+        }
+    }
+
+    private resetDateAndShowError(message: string): void {
+        this.vlastDay = '';
+        this.lastDay2 = '';
+        this.userFormGroup.get('ExpDate').setValue('');
+        this.newGRNService.showToast(message, ToastType.WARNING);
+    }
+
+    private pad(num: number): string {
+        return num.toString().padStart(2, '0');
+    }
+
+    private getLastDayOfMonth(month: number, year: number): number {
         return new Date(year, month, 0).getDate();
     }
-    pad(n: number): string {
-        return n < 10 ? '0' + n : n.toString();
-    }
+
     //Table Exp Date change
     lastDay1: any;
     CellcalculateLastDay(contact: ItemNameList, inputDate: string) {
@@ -912,7 +953,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             grnDetailSaveObj['sgstamt'] = element.SGSTAmount || 0;
             grnDetailSaveObj['igstper'] = element.IGST || 0;
             grnDetailSaveObj['igstamt'] = element.IGSTAmount || 0;
-            grnDetailSaveObj['mrpStrip'] = element.unitMRP || 0;
+            grnDetailSaveObj['mrpStrip'] = element.MRP || 0;
             grnDetailSaveObj['stkId'] = element.StkID || 0; 
             grnDetailSaveObj['isVerified'] = element.IsVerified || false; 
             grnDetailSaveObj['isVerifiedDatetime'] =this.datePipe.transform(element.IsVerifiedDatetime, "yyyy-MM-dd") || '1900-01-01';  
