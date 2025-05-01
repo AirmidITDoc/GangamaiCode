@@ -27,21 +27,22 @@ export class SupplierMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
     allColumns=[
-        { heading: "Code", key: "supplierId", sort: true, align: 'left', emptySign: 'NA', width:80 },
-        { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-        { heading: "ContactPerson", key: "contactPerson", sort: true, align: 'left', emptySign: 'NA', width: 140 },
+        { heading: "Code", key: "supplierId", sort: true, align: 'left', emptySign: 'NA', width:80,sticky: true },
+        { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 200,sticky: true },
+        { heading: "ContactPerson", key: "contactPerson", sort: true, align: 'left', emptySign: 'NA', width: 150,sticky: true },
         { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "CityName", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        // { heading: "StateName", key: "stateName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "CreditPeriod", key: "creditPeriod", sort: true, align: 'left', emptySign: 'NA', width: 90 },
+        { heading: "CityName", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "CreditPeriod", key: "creditPeriod", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Mobile", key: "mobile", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Email", key: "email", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "GSTNo", key: "gstNo", sort: true, align: 'left', emptySign: 'NA', width: 140 },
-        { heading: "PanNo", key: "panNo", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-        { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 80 },
+        { heading: "Phone", key: "phone", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Fax", key: "fax", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Email", key: "email", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "GSTNo", key: "gstNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "PanNo", key: "panNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
         {
-            heading: "Action", key: "action", width: 100 , align: "right", type: gridColumnTypes.action, actions: [
+            heading: "Action", key: "action", width: 100, sticky: true, align: "right", type: gridColumnTypes.action, actions: [
                 {
                     action: gridActions.edit, callback: (data: any) => {
                         this.onSave(data);

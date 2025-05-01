@@ -10,7 +10,7 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { request } from 'http';
@@ -34,57 +34,48 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 
 export class StockAdjustmentComponent implements OnInit {
     hasSelectedContacts: boolean;
+    StoreFrom: FormGroup;
 
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig: gridModel = {
-        apiUrl: "StockAdjustment/StockAdjustmentList",
-        columnsList: [
-            { heading: "StockId", key: "stockId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "ItemId", key: "itemId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "BatchExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "UnitMRP", key: "unitMRP", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "LandedRate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "PurUnitRateWF", key: "purUnitRateWF", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "BalanceQty", key: "balanceQty", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "VatPercentage", key: "vatPercentage", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "BarCodeSeqNo", key: "barCodeSeqNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "BatchEdit", key: "batchEdit", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "ExpDateEdit", key: "expDateEdit", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "ConversionFactor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._StockAdjustmentService.deactivateTheStatus(data.stockId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "stockId",
-        sortOrder: 0,
-        filters: [
-            { fieldName: "StoreId", fieldValue: "2", opType: OperatorComparer.Equals },
-            { fieldName: "ItemId", fieldValue: "14645", opType: OperatorComparer.Equals }
-        ]
-    }
+    autocompletestore: string = "Store";
+    autocompleteitem: string = "ItemType";
+
+    displayedColumns = [
+        'BatchNo',
+        'BatchEdit',
+        'ExpDate',
+        'ExpDateEdit',
+        'UnitMRP',
+        'PurchaseRate',
+        'LandedRate',
+        'BalQty',
+        'Addition',
+        'Deduction',
+        'GST',
+        'ConversionFactor'
+    ];
+
+    dsStockAdjList = new MatTableDataSource<StockAdjList>();
 
     constructor(
         public _StockAdjustmentService: StockAdjustmentService,
-        public toastr: ToastrService, public _matDialog: MatDialog
+        public toastr: ToastrService,
+        public _matDialog: MatDialog,
+        private accountService: AuthenticationService,
+        public datePipe: DatePipe,
     ) { }
 
     ngOnInit(): void {
+        this.StoreFrom = this._StockAdjustmentService.CreateStoreFrom();
+    }
+
+    selectChangeStore(obj: any) {
 
     }
+
+    selectChangeItem(obj: any) {
+
+    }
+
     onSave(row: any = null) {
         let that = this;
         // const dialogRef = this._matDialog.open(,
@@ -117,21 +108,7 @@ export class StockAdjustmentComponent implements OnInit {
 12.expDateEdit
 13.conversionFactor
     */
-    //   displayedColumns = [
-    //     'stockId',
-    //     'itemId',
-    //     'batchNo',
-    //     'batchExpDate',
-    //     'UnitMRP',
-    //     'landedRate',
-    //     'purUnitRateWF',
-    //     'balanceQty',
-    //     'vatPercentage',
-    //     'barCodeSeqNo',
-    //     'batchEdit',
-    //     'expDateEdit',
-    //     'conversionFactor'
-    //   ];
+
 
     //   sIsLoading: string = '';
     //   isLoading = true;
@@ -150,20 +127,6 @@ export class StockAdjustmentComponent implements OnInit {
     //   vUpdatedQty: any;
     //   vBalQty: any;
 
-
-    //   dsStockAdjList = new MatTableDataSource<StockAdjList>();
-    //   @ViewChild(MatSort) sort: MatSort;
-    //   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
-
-
-    //   constructor(
-    //     public _StockAdjustment: StockAdjustmentService,
-    //     private _loggedService: AuthenticationService,
-    //     private accountService: AuthenticationService,
-    //     public datePipe: DatePipe,
-    //     public _matDialog: MatDialog,
-    //     public toastr: ToastrService,
-    //   ) { }
 
     //   ngOnInit(): void {
     //     this.gePharStoreList();
@@ -535,37 +498,38 @@ export class StockAdjustmentComponent implements OnInit {
     //     row.Landededitable = false;
     //   }
     // }
-    // export class StockAdjList {
-    //   BalQty: any;
-    //   BatchNo: number;
-    //   ExpDate: number;
-    //   UnitMRP: number;
-    //   Landedrate: any;
-    //   PurchaseRate: any;
-    //   UpdatedQty: any;
-    //   LandedRate: any;
-    //   AddQty: any;
-    //   DeduQty: any;
-    //   BatchEdit: any;
-    //   ExpDateEdit: any;
-    //   Addeditable: boolean = false;
-    //   Dedueditable: boolean = false;
-    //   Rateeditable: boolean = false;
-    //   Batcheditable: boolean = false;
-    //   Expeditable: boolean = false;
-    //   Landededitable: boolean = false;
-    //   GSTeditable:boolean=false;
+}
+export class StockAdjList {
+    BalQty: any;
+    BatchNo: number;
+    ExpDate: number;
+    UnitMRP: number;
+    Landedrate: any;
+    PurchaseRate: any;
+    UpdatedQty: any;
+    LandedRate: any;
+    AddQty: any;
+    DeduQty: any;
+    BatchEdit: any;
+    ExpDateEdit: any;
+    Addeditable: boolean = false;
+    Dedueditable: boolean = false;
+    Rateeditable: boolean = false;
+    Batcheditable: boolean = false;
+    Expeditable: boolean = false;
+    Landededitable: boolean = false;
+    GSTeditable: boolean = false;
 
-    //   constructor(StockAdjList) {
-    //     {
-    //       this.BalQty = StockAdjList.BalQty || 0;
-    //       this.BatchNo = StockAdjList.BatchNo || 0;
-    //       this.ExpDate = StockAdjList.ExpDate || 0;
-    //       this.UnitMRP = StockAdjList.UnitMRP || 0;
-    //       this.Landedrate = StockAdjList.Landedrate || 0;
-    //       this.PurchaseRate = StockAdjList.PurchaseRate || 0;
-    //       this.UpdatedQty = StockAdjList.UpdatedQty || 0;
-    //       this.LandedRate = StockAdjList.LandedRate || 0;
-    //     }
-    //   }
+    constructor(StockAdjList) {
+        {
+            this.BalQty = StockAdjList.BalQty || 0;
+            this.BatchNo = StockAdjList.BatchNo || 0;
+            this.ExpDate = StockAdjList.ExpDate || 0;
+            this.UnitMRP = StockAdjList.UnitMRP || 0;
+            this.Landedrate = StockAdjList.Landedrate || 0;
+            this.PurchaseRate = StockAdjList.PurchaseRate || 0;
+            this.UpdatedQty = StockAdjList.UpdatedQty || 0;
+            this.LandedRate = StockAdjList.LandedRate || 0;
+        }
+    }
 }

@@ -105,6 +105,7 @@ this.myformSearch=this._SampleCollectionService.createSearchForm()
     }
 
     getSelectedRow(row: any): void {
+        debugger
         console.log("selectedRow:",row)
         let billNo = row.billNo;
 

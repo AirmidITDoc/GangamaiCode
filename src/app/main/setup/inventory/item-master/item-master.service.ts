@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Injectable()
 
@@ -14,6 +15,7 @@ export class ItemMasterService {
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
         private _loggedService: AuthenticationService,
+        private _FormvalidationserviceService: FormvalidationserviceService        
     ) {
         this.itemForm = this.createItemmasterForm();
         // this.myformSearch = this.createSearchForm();
@@ -44,24 +46,28 @@ export class ItemMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            itemTypeId: ["",
+            itemTypeId: [0,
                 [
                     Validators.required,
+                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ]
             ],
-            itemCategaryId: ["",
+            itemCategaryId: [0,
                 [
                     Validators.required,
+                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ]
             ],
-            itemGenericNameId: ["",
+            itemGenericNameId: [0,
                 [
                     Validators.required,
+                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ]
             ],
-            itemClassId: ["",
+            itemClassId: [0,
                 [
                     Validators.required,
+                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ]
             ],
             purchaseUomid: [0,
@@ -81,9 +87,10 @@ export class ItemMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            currencyId: ["",
+            currencyId: [0,
                 [
                     Validators.required,
+                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ]
             ],
             taxPer: ["0"],
@@ -142,9 +149,10 @@ export class ItemMasterService {
                 ]
             ],
 
-            manufId: ["",
+            manufId: [0,
                 [
                     Validators.required,
+                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ]
             ],
             isNarcotic: true,
@@ -168,9 +176,10 @@ export class ItemMasterService {
                     
                 ]
             ],
-            itemCompnayId: ["",
+            itemCompnayId: [0,
                 [
                     Validators.required,
+                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ]
             ],
             itemTime: [(new Date()).toISOString()],

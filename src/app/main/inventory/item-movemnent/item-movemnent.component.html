@@ -305,81 +305,56 @@
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
-                <!-- <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-                    fxLayoutAlign.gt-xs="space-between center ">
-                    <div class="top-header-info">
-                        <div class="top-header-title">
-                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                Stock Adjustment List
-                            </span>
-                        </div>
-                    </div>
-                </div> -->
+                                
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                     <airmid-table [gridConfig]="gridConfig" class="content">
                         <ng-container filters>
-                            <mat-form-field appearance="outline">
-                                <mat-label>Enter a date range</mat-label>
-                                <mat-date-range-input [rangePicker]="picker">
-                                    <input matStartDate formControlName="start" placeholder="Start date">
-                                    <input matEndDate formControlName="end" placeholder="End date">
-                                    <!-- (dateChange)="getMaterialConList()" -->
-                                </mat-date-range-input>
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-date-range-picker #picker></mat-date-range-picker>
-                            </mat-form-field>
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>From Store </mat-label>
-                                <input matInput placeholder="Search StoreName " autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                    <mat-select formControlName="ToStoreId" name="StoreId2">
-                                        <mat-option></mat-option>
-                                        <mat-option *ngFor="let m of StoreList" [value]="m">
-                                            {{m.StoreName}}
-                                        </mat-option>
-                                    </mat-select>
-                                <!-- <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[0].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button> -->
-                            </mat-form-field>
                             
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>To Store</mat-label>
-                                <input matInput placeholder="Search To Store" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                                <!-- <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[1].fieldValue=''">
+                            <form [formGroup]="_ItemMovemnentService.ItemSearchGroup">
+                                <airmid-datepicker [formGroup]="_ItemMovemnentService.ItemSearchGroup" [isRangePicker]="true"
+                                    formStartControlName="start" formEndControlName="end">
+                                </airmid-datepicker>
+                                <!--  [(fromValue)]="gridConfig.filters[2].fieldValue"
+                                    [(toValue)]="gridConfig.filters[3].fieldValue" -->    
+                            
+                                    <airmid-dropdown label="From Store" formControlName="ToStoreId"
+                                    [formGroup]="_ItemMovemnentService.ItemSearchGroup" [mode]="autocompletestore"
+                                    (selectionChange)="selectChangeStore($event)">
+                                </airmid-dropdown>
+                            
+                                <airmid-dropdown label="To Store" formControlName="StoreId"
+                                [formGroup]="_ItemMovemnentService.ItemSearchGroup" [mode]="autocompletestore"
+                                (selectionChange)="selectChangeStore($event)">
+                            </airmid-dropdown>
+
+                            <airmid-dropdown label="Item Name" formControlName="ItemCategory"
+                                [formGroup]="_ItemMovemnentService.ItemSearchGroup"
+                                 [mode]="autocompleteitem"
+                                (selectionChange)="selectChangeItem($event)">
+                                <!--  [(ngModel)]="gridConfig.filters[1].fieldValue" -->
+                            </airmid-dropdown>
+                            
+                            <mat-form-field appearance="outline">
+                                <mat-label>BatchNo</mat-label>
+                                <input matInput placeholder="Search Batch" autocomplete="off" [formGroup]="_ItemMovemnentService.ItemSearchGroup" 
+                                formControlName="BatchNo"/>
+                                <button matSuffix mat-icon-button aria-label="Clear">
                                     <mat-icon>close</mat-icon>
-                                </button> -->
-                                <mat-select formControlName="ToStoreId" name="StoreId2">
-                                    <mat-option></mat-option>
-                                    <mat-option *ngFor="let m of Store1List" [value]="m">
-                                        {{m.StoreName}}
-                                    </mat-option>
-                                </mat-select>
+                                </button>
                             </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Item Name</mat-label>
-                                <input matInput placeholder="Search ItemName" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[1].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-                            
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Batch No</mat-label>
-                                <input matInput placeholder="Search Batch No" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[1].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-                        
+                            <div fxLayout="row">
+                                <button
+                                matTooltip="Pdf" style="width: 45px;border-color: white;">
+                                <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
+                            </button>&nbsp;
+
+                            <button 
+                                style="background-color: white;color: white;width: 45px;">
+                                <img width="32" height="10px" src="assets/images/logos/xls.png">
+                            </button>
+                            </div>
+                        </form>
                         </ng-container>
                     </airmid-table>
                 </div>

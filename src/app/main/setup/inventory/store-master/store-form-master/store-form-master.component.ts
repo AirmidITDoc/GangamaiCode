@@ -67,6 +67,8 @@ export class StoreFormMasterComponent implements OnInit {
         this.VissueToDeptNo=this.data.issueToDeptNo.trim()
         this.VgrnNo=this.data.grnNo.trim()
         this.VreturnFromDeptNo=this.data.returnFromDeptNo.trim()
+        this.VdlNo=this.data.dlNo.trim()
+        this.Vgstin=this.data.gstin.trim()
         this.vTemplateDesc = this.data.header;
        }
         if((this.data?.storeId??0) > 0)

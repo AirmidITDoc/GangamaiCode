@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
 import { StoreFormMasterComponent } from "./store-form-master/store-form-master.component";
 import { StoreMasterService } from "./store-master.service";
 import { fuseAnimations } from "@fuse/animations";
@@ -22,20 +22,26 @@ export class StoreMasterComponent implements OnInit {
     type:any="2"
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    @ViewChild('actionsPharStore') actionsPharStore!: TemplateRef<any>;
+
+    ngAfterViewInit() {
+        this.gridConfig.columnsList.find(col => col.key === 'isPharStore')!.template = this.actionsPharStore;
+    }
 
     allColumns=[
-        { heading: "Code", key: "storeId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "StoreShortName", key: "storeShortName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-        { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "IndentPrefix", key: "indentPrefix", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "IndentNo", key: "indentNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-        { heading: "PurchasePrefix", key: "purchasePrefix", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "-", key: "isPharStore", sort: true, align: 'left', type: gridColumnTypes.template, width: 60,sticky: true },
+        { heading: "Code", key: "storeId", sort: true, align: 'left', emptySign: 'NA', width: 100 ,sticky: true},
+        { heading: "StoreShortName", key: "storeShortName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "IndentPrefix", key: "indentPrefix", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "IndentNo", key: "indentNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "PurchasePrefix", key: "purchasePrefix", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "PurchaseNo", key: "purchaseNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "GRNPrefix", key: "grnPrefix", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "GRNNo", key: "grnNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-        { heading: "GRNReturnPrefix", key: "grnreturnNoPrefix", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "GRNPrefix", key: "grnPrefix", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "GRNNo", key: "grnNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "GRNReturnPrefix", key: "grnreturnNoPrefix", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "GRNRetNo", key: "grnreturnNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "IssueToDeptPrefix", key: "issueToDeptPrefix", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+        { heading: "IssueToDeptPrefix", key: "issueToDeptPrefix", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "IssueToDeptNo", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA', width: 120},
         { heading: "ReturnFromDeptPrefix", key: "returnFromDeptNoPrefix", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "ReturnFromDeptNo", key: "returnFromDeptNo", sort: true, align: 'left', emptySign: 'NA', width: 130 },

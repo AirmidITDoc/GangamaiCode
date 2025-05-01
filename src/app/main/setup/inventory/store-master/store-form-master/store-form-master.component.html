@@ -33,45 +33,13 @@
 
                                             <input type="hidden" name="storeId" formControlName="storeId">
                                             <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
-                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-textbox label="Store Name" formControlName="storeName" [value]="registerObj?.storeName" [formGroup]="storeForm" [validations]="getValidationMessages().storeName" [maxLength]="50">
                                                     </airmid-textbox>
                                                 </div>
 
-                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-textbox label="Store Short Name" formControlName="storeShortName" [value]="registerObj?.storeShortName" [formGroup]="storeForm" [validations]="getValidationMessages().storeShortName" [maxLength]="50">
-                                                    </airmid-textbox>
-                                                </div>
-
-                                                <!-- added as per 8085 -->
-                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="Hospital MobileNo" formControlName="hospitalMobileNo" [value]="registerObj.hospitalMobileNo" [formGroup]="storeForm" [maxLength]="10">
-                                                    </airmid-textbox>
-                                                </div>
-
-                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="Print ShortName" formControlName="printStoreName" [value]="registerObj?.printStoreName" [formGroup]="storeForm" [maxLength]="50">
-                                                    </airmid-textbox>
-                                                </div>
-
-                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="Print ShortAddress" formControlName="storeAddress" [value]="registerObj?.storeAddress" [formGroup]="storeForm" [maxLength]="50">
-                                                    </airmid-textbox>
-                                                </div>
-
-                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> 
-                                                    <airmid-textbox label="Hospital EmailId" formControlName="hospitalEmailId" [value]="registerObj?.hospitalEmailId" [formGroup]="storeForm" [maxLength]="50">
-                                                    </airmid-textbox>
-                                                </div>
-                                                
-                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                                    <airmid-textbox label="Print Store UnitName" formControlName="printStoreUnitName" [value]="registerObj?.printStoreUnitName" [formGroup]="storeForm" [maxLength]="50">
-                                                    </airmid-textbox>
-                                                </div>
-
-                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="Print Terms&Conditions" formControlName="termsAndCondition" [value]="registerObj?.termsAndCondition" [formGroup]="storeForm" [maxLength]="50">
                                                     </airmid-textbox>
                                                 </div>
                                             </div>
@@ -198,16 +166,46 @@
                                             </div>
 
                                             <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-textbox label="DL_No" formControlName="dlNo" [formGroup]="storeForm" [(ngModel)]="VdlNo" [validations]="getValidationMessages().dlNo" [maxLength]="30">
                                                     </airmid-textbox>
-
                                                 </div>
-                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-textbox label="GSTIN" formControlName="gstin" [formGroup]="storeForm" [(ngModel)]="Vgstin" [validations]="getValidationMessages().gstin" [maxLength]="30">
                                                     </airmid-textbox>
+                                                </div>
 
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Hospital MobileNo" formControlName="hospitalMobileNo" [value]="registerObj.hospitalMobileNo" [formGroup]="storeForm" [maxLength]="10">
+                                                    </airmid-textbox>
+                                                </div>
+
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Print ShortName" formControlName="printStoreName" [value]="registerObj?.printStoreName" [formGroup]="storeForm" [maxLength]="50">
+                                                    </airmid-textbox>
+                                                </div>
+
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Print ShortAddress" formControlName="storeAddress" [value]="registerObj?.storeAddress" [formGroup]="storeForm" [maxLength]="50">
+                                                    </airmid-textbox>
+                                                </div>
+
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> 
+                                                    <airmid-textbox label="Hospital EmailId" formControlName="hospitalEmailId" [value]="registerObj?.hospitalEmailId" [formGroup]="storeForm" [maxLength]="50">
+                                                    </airmid-textbox>
+                                                </div>
+                                                
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <airmid-textbox label="Print Store UnitName" formControlName="printStoreUnitName" [value]="registerObj?.printStoreUnitName" [formGroup]="storeForm" [maxLength]="50">
+                                                    </airmid-textbox>
+                                                </div>
+
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Print Terms&Conditions" formControlName="termsAndCondition" [value]="registerObj?.termsAndCondition" [formGroup]="storeForm" [maxLength]="50">
+                                                    </airmid-textbox>
                                                 </div>
 
                                             </div>

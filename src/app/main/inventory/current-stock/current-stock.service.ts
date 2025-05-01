@@ -28,9 +28,10 @@ export class CurrentStockService {
 
   createSearchFrom() {
     return this._formBuilder.group({
-      // start: [(new Date()).toISOString()],
-      // end: [(new Date()).toISOString()],
-      StoreId:'',
+      start: [(new Date()).toISOString()],
+      Onlystart: [new Date()],
+      end: [(new Date()).toISOString()],
+      StoreId:'2',
       ItemCategory:'',
       IsDeleted:['2']
     });

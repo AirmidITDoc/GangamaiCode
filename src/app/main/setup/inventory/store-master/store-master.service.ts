@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Injectable({
     providedIn: "root",
@@ -14,6 +15,7 @@ export class StoreMasterService {
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
         private _loggedService: AuthenticationService,
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myformSearch = this.createSearchForm();
         this.myform = this.createStoremasterForm();
@@ -124,42 +126,49 @@ export class StoreMasterService {
             // UpdatedBy: ["0"],
             // AddedByName: ["0"],
             header: [""],
-            pharSalCountId: ["",
+            pharSalCountId: [0,
                 [
-                    Validators.required
+                    Validators.required,
+                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ]
             ],
-            pharSalRecCountId: ["",
+            pharSalRecCountId: [0,
                 [
-                    Validators.required
+                    Validators.required,
+                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ]
             ],
-            pharSalReturnCountId: ["",
+            pharSalReturnCountId: [0,
                 [
-                    Validators.required
+                    Validators.required,
+                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ]
             ],
             isActive: [true, [Validators.required]],
             workOrderPrefix: "0",
             workOrderNo: "0",
-            pharAdvId: ["",
+            pharAdvId: [0,
                 [
-                    Validators.required
+                    Validators.required,
+                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ]
             ],
-            pharAdvReptId: ["",
+            pharAdvReptId: [0,
                 [
-                    Validators.required
+                    Validators.required,
+                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ]
             ],
-            pharAdvRefId: ["",
+            pharAdvRefId: [0,
                 [
-                    Validators.required
+                    Validators.required,
+                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ]
             ],
-            pharAdvRefReptId: ["",
+            pharAdvRefReptId: [0,
                 [
-                    Validators.required
+                    Validators.required,
+                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ]
             ],
             printStoreName: [""],

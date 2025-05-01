@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Injectable()
 export class SupplierMasterService {
@@ -12,6 +13,7 @@ export class SupplierMasterService {
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
         private _loggedService: AuthenticationService,
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myformSearch = this.createSearchForm();
         this.supplierForm = this.createSuppliermasterForm();
@@ -23,7 +25,6 @@ export class SupplierMasterService {
             supplierName: ["",
                 [
                     Validators.required,
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                     Validators.pattern("^[A-Za-z ]*$")
                 ]
             ],
@@ -32,19 +33,16 @@ export class SupplierMasterService {
                 // Validators.pattern("^[a-zA-Z._ -]+$"),
                 // Validators.maxLength(100),
             ]],
-            address: ["",
-                [Validators.required,
-                    // Validators.pattern("^[A-Za-z0-9.,\\s]*$") 
-                ]
+            address: ["", [Validators.required]
             ],
-            cityId: ['',
-                [Validators.required]
+            cityId: [0,
+                [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
-            stateId: ['',
-                [Validators.required]
+            stateId: [0,
+                [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
-            countryId: ['',
-                [Validators.required]
+            countryId: [0,
+                [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
             CreditPeriod: ["",
                 [
@@ -56,7 +54,6 @@ export class SupplierMasterService {
                     Validators.required,
                     Validators.maxLength(10),
                     Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-                    // Validators.pattern("^[0-9 ]*$")
                 ]
             ],
             phone: ["",
@@ -64,7 +61,6 @@ export class SupplierMasterService {
                     Validators.required,
                     Validators.maxLength(10),
                     Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-                    // Validators.pattern("^[0-9 ]*$")
                 ]
             ],
             fax: ["0",
@@ -78,14 +74,13 @@ export class SupplierMasterService {
                 [
                     Validators.required,
                     Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$")
-                    // Validators.pattern("^\\s*[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}\\s*$")
                 ]
             ],
-            modeofPayment: ["",
-                Validators.required
+            modeofPayment: [0,
+               [ Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
-            termofPayment: ["",
-                Validators.required
+            termofPayment: [0,
+               [ Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
             CurrencyId: [1],
             Octroi: [0],

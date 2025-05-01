@@ -657,7 +657,7 @@ opipType:any="2";
             confirmButtonText: 'Yes, deactivate!'
 
         }).then((flag) => {
-debugger
+// debugger
             if (flag.isConfirmed) {
 
                 let submitData = {
@@ -682,7 +682,7 @@ debugger
     }
 
 viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
-    debugger;
+    
     setTimeout(() => {
         const param = {
             searchFields: [
@@ -716,7 +716,7 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
 }
 
     getPrint(contact) {
-        debugger
+        
         console.log(contact)
 
         if (contact.isTemplateTest)
@@ -733,7 +733,7 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
             confirmButtonText: "With Header",
             denyButtonText: "Without Header",
         }).then((result) => {
-            debugger
+          
             if (result.isConfirmed) {
                 this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplateWithHeader");
             } else if (result.isDenied) {
@@ -759,7 +759,7 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
     selectedItem:any;
     // opiptype = this.selectedItem.opdipdtype;
     Printresultentry() {
-        debugger
+        
         console.log(this.selection.selected);
         let pathologyDelete = [];
 
@@ -777,14 +777,12 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
     
         this._SampleService.PathPrintResultentryInsert(submitData).subscribe(res => {
             if (res) {
-                debugger
                 this.viewgetPathologyTestReportPdf(this.selectedItem)
             }
         });
     }
 
     viewgetPathologyTestReportPdf(data) {
-        debugger
     
         // this.selection.selected.forEach((element) => {
             const param = {
@@ -819,7 +817,7 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
     }
     
     Printresultentrywithheader() {
-        debugger
+        
         console.log(this.selection.selected);
         let pathologyDelete = [];
     
@@ -837,14 +835,13 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
     
         this._SampleService.PathPrintResultentryInsert(submitData).subscribe(res => {
             if (res) {
-                debugger
                 this.viewgetPathologyTestReportwithheaderPdf(this.selectedItem)
             }
         });
     }
 
     viewgetPathologyTestReportwithheaderPdf(data) {
-        debugger;
+    
         console.log(this.selection.selected);
     
         // this.selection.selected.forEach((element) => {

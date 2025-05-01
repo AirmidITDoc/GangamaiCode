@@ -11,7 +11,6 @@ export class ItemMovemnentService {
   userFormGroup: FormGroup;
   ItemSearchGroup :FormGroup;
 
-
   constructor(
     public _httpClient: HttpClient, public _httpClient1: ApiCaller,
     private _formBuilder: UntypedFormBuilder
@@ -22,7 +21,7 @@ export class ItemMovemnentService {
 
   createSearchFrom() {
     return this._formBuilder.group({
-      ToStoreId: '',
+      ToStoreId: '2',
       StoreId:'',
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],

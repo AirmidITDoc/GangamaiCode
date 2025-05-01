@@ -1,1358 +1,223 @@
 <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
     dynamicTableHeight>
-
     <mat-toolbar class="top-header accent">
         <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
-            <button mat-icon-button class="sidebar-toggle ">
-                <mat-icon>menu</mat-icon>
-            </button>
             <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
             </mat-icon>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                Current Stock List
+                Current Stock
             </span>
         </div>
     </mat-toolbar>
 
     <mat-tab-group>
 
-        <!-- <mat-tab label="OP Browse Bill List">
-
+        <!-- Current Stock -->
+        <mat-tab label="Current Stock">
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
-                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-                    fxLayoutAlign.gt-xs="space-between center ">
-                    <div class="top-header-info">
-                        <div class="top-header-title">
-                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                Day Wise Report List
-                            </span>
-                        </div>
-                    </div>
 
-                </div>
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <airmid-table [gridConfig]="gridConfig" class="content">
-                        <ng-container filters> -->
+                    <airmid-table [gridConfig]="gridConfig" class="content" #CurrentStock>
 
-                            <!-- <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>First Name</mat-label>
-                                <input matInput placeholder="Search First Name" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[0].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Last Name</mat-label>
-                                <input matInput placeholder="Search Last Name" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[1].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
+                        <ng-container filters>
 
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>From Date</mat-label>
-                                <input matInput placeholder="Search From Date" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[2].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[2].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
+                            <form [formGroup]="_CurrentStockService.SearchGroup">
+                            <!-- <airmid-datepicker [formGroup]="_CurrentStockService.SearchGroup" [isRangePicker]="true"
+                                formStartControlName="start" formEndControlName="end">
+                            </airmid-datepicker> -->
+                            <!--  [(fromValue)]="gridConfig.filters[2].fieldValue"
+                                [(toValue)]="gridConfig.filters[3].fieldValue" -->
 
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>To Date</mat-label>
-                                <input matInput placeholder="Search To Date" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[3].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[3].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field> -->
+                            <airmid-dropdown label="From Store" formControlName="StoreId"
+                                [formGroup]="_CurrentStockService.SearchGroup" [mode]="autocompletestore"
+                                (selectionChange)="selectChangeStore($event)">
+                            </airmid-dropdown>
+                            <!-- [(ngModel)]="gridConfig.filters[0].fieldValue" -->
 
+                            <airmid-dropdown label="Item Name" formControlName="ItemCategory"
+                                [formGroup]="_CurrentStockService.SearchGroup"
+                                 [mode]="autocompleteitem"
+                                (selectionChange)="selectChangeItem($event)">
+                                <!--  [(ngModel)]="gridConfig.filters[1].fieldValue" -->
+                            </airmid-dropdown>
 
+                            <div fxLayout="row">
+                                <button
+                                matTooltip="Pdf" style="width: 45px;border-color: white;">
+                                <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
+                            </button>&nbsp;
 
-                            <mat-tab label="Day Wise Current Stock ">
-                                <div fusePerfectScrollbar
-                                    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                                    dynamicTableHeight>
-                                    <!-- <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-                                        fxLayoutAlign.gt-xs="space-between center ">
-                                        <div class="top-header-info">
-                                            <div class="top-header-title">
-                                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                                    Stock Report Day Wise List
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                                        <airmid-table [gridConfig]="gridConfig" class="content">
-                                            <ng-container filters>
-                    
-                                                <mat-form-field appearance="outline">
-                                                    <mat-label>Enter a LedgerDate</mat-label>
-                                                    <mat-date-range-input [rangePicker]="picker">
-                                                        <input matStartDate formControlName="start"  [(ngModel)]="gridConfig.filters[0].fieldValue" 
-                                                            placeholder="Start date">
-                                                        <input matEndDate formControlName="end" placeholder="End date"
-                                                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                                    </mat-date-range-input>
-                                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                                    <mat-date-range-picker #picker></mat-date-range-picker>
-                                                </mat-form-field> 
-                                                
-                                                <mat-form-field appearance="outline" fxFlex>
-                                                    <mat-label>StoreId</mat-label>
-                                                    <input matInput placeholder="Search StoreId" autocomplete="off"
-                                                        [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                                        (click)="gridConfig.filters[1].fieldValue=''">
-                                                        <mat-icon>close</mat-icon>
-                                                    </button>
-                                                </mat-form-field>
-                                                
-                                                <mat-form-field appearance="outline" fxFlex>
-                                                    <mat-label>ItemId</mat-label>
-                                                    <input matInput placeholder="Search ItemId" autocomplete="off"
-                                                        [(ngModel)]="gridConfig.filters[2].fieldValue" />
-                                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                                        (click)="gridConfig.filters[2].fieldValue=''">
-                                                        <mat-icon>close</mat-icon>
-                                                    </button>
-                                                </mat-form-field>
-                    
-                                                <mat-form-field appearance="outline" fxFlex>
-                                                    <mat-label>Start</mat-label>
-                                                    <input matInput placeholder="Search Start" autocomplete="off"
-                                                        [(ngModel)]="gridConfig.filters[3].fieldValue" />
-                                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                                        (click)="gridConfig.filters[3].fieldValue=''">
-                                                        <mat-icon>close</mat-icon>
-                                                    </button>
-                                                </mat-form-field>
-                    
-                                                <mat-form-field appearance="outline" fxFlex>
-                                                    <mat-label>Length</mat-label>
-                                                    <input matInput placeholder="Search To Length" autocomplete="off"
-                                                        [(ngModel)]="gridConfig.filters[4].fieldValue" />
-                                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                                        (click)="gridConfig.filters[4].fieldValue=''">
-                                                        <mat-icon>close</mat-icon>
-                                                    </button>
-                                                </mat-form-field>
-
-
-
-                            <!-- <mat-form-field appearance="outline">
-                                <mat-label>Enter a date range</mat-label>
-                                <mat-date-range-input [rangePicker]="picker">
-                                    <input matStartDate formControlName="start"  [(ngModel)]="gridConfig.filters[0].fieldValue" 
-                                        placeholder="Start date">
-                                    <input matEndDate formControlName="end" placeholder="End date"
-                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                </mat-date-range-input>
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-date-range-picker #picker></mat-date-range-picker>
-                            </mat-form-field> -->
-
-                            <!-- <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>PBillNo</mat-label>
-                                <input matInput placeholder="Search PBillNo" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[4].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[4].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>RegNo</mat-label>
-                                <input matInput placeholder="Search RegNo" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[5].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[5].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-
-
-                            <mat-radio-group value="" [(ngModel)]="gridConfig.filters[4].fieldValue"
-                                fxLayoutAlign="center center">
-                                <mat-radio-button value="">All</mat-radio-button>
-                                <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
-                                <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                            </mat-radio-group> -->
+                            <button 
+                                style="background-color: white;color: white;width: 45px;">
+                                <img width="32" height="10px" src="assets/images/logos/xls.png">
+                            </button>
+                            </div>
+                        </form>
                         </ng-container>
                     </airmid-table>
                 </div>
+
             </div>
 
         </mat-tab>
 
-
-
-
-        <!-- <mat-tab-group style="width: 100%;" #tabGroup dynamicTableHeight>
-        ] <mat-tab label="Current Stock">
-        <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-            <mat-toolbar class="accent"
-                style="height:50px; justify-content: space-between;width: 100%;">
-                <div fxLayout="row" fxLayoutAlign="start center">
-                    <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                        <mat-icon>menu</mat-icon>
-                    </button>
-                    <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                        style="color: white;">account_box
-                    </mat-icon>
-                    <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                        style="color: white;">
-                        Current Stock
-                    </span>
-                </div> 
-            </mat-toolbar> 
-
-
-            <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main> 
-
-
-            <div class="content"> -->
-                <!-- SIDEBAR -->
-                <!-- <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-                          margin-left:12px; background-color: white;height:100%;">
-                    <div> -->
-                        <!-- SIDEBAR HEADER -->
-                        <!-- <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center"
-                            style="margin-top: 3%">
-                            <span class="search-title">Search Facility</span>
-                            / USER -->
-                        <!-- </div> -->
-                        <!-- / SIDEBAR HEADER -->
-                        <!-- SIDEBAR CONTENT -->
-                        <!-- <div>
-                            <div class="nav material2">
-
-                                <form [formGroup]="_CurrentStockService.SearchGroup" style="padding: 6px 6px 5px 5px;"
-                                    fusePerfectScrollbar>
-                                    <div fxLayout="column" fxLayoutAlign="start none">
-                            -->
-
-                                        <!-- <mat-form-field appearance="outline" style="margin-left: 2%;">
-                                    <mat-label>Enter a date range</mat-label>
-                                    <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="start" placeholder="Start date">
-                                        <input matEndDate formControlName="end" placeholder="End date">
-                                    </mat-date-range-input>
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-date-range-picker #picker></mat-date-range-picker>
-                                </mat-form-field> -->
-
-                                        <!-- <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>From Store</mat-label>
-                                            <mat-select name="StoreId" formControlName="StoreId">
-
-                                                <mat-option *ngFor="let m of Store1List" [value]="m">
-                                                    {{m.StoreName}}
-                                                </mat-option>
-
-                                            </mat-select>
-                                        </mat-form-field>
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>ItemName</mat-label>
-                                            <input name="ItemCategory" formControlName="ItemCategory" matInput>
-                                        </mat-form-field>&nbsp; -->
-
-                                        <!-- <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>ItemName</mat-label>
-                                            <input matAutocompletePosition="below" type="text"  
-                                                placeholder="Select Item" matInput formControlName="ItemCategory"
-                                                [matAutocomplete]="auto2" (input)="getStockItemList()">
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_CurrentStockService.SearchGroup.get('ItemCategory').setValue(''); isItemSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_CurrentStockService.SearchGroup.get('ItemCategory').setValue(''); isItemSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #auto2="matAutocomplete"
-                                                [displayWith]="getOptionTextItemList">
-                                                <mat-option *ngFor="let option of ItemListfilteredOptions"
-                                                    [value]="option">
-                                                    {{option.ItemName}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field> --> 
-
-
-
-                                        <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                    <mat-radio-group name="IsDeleted" formControlName="IsDeleted"
-                                        style="margin-left: 15px;">
-                                        <mat-radio-button value="2" fxFlex>All</mat-radio-button>
-                                        <mat-radio-button value="0" fxFlex
-                                            style="margin-left: 43px;">IsNarcotic</mat-radio-button>
-                                    </mat-radio-group>
-                                </div>&nbsp;
-
-                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                    <mat-radio-group name="IsDeleted" formControlName="IsDeleted"
-                                        style="margin-left: 15px;">
-                                        <mat-radio-button value="0" fxFlex>IsH1Drug</mat-radio-button>
-                                        <mat-radio-button value="0" fxFlex
-                                            style="margin-left: 5px;">IsScheduleH</mat-radio-button>
-                                    </mat-radio-group>
-                                </div>&nbsp;
-                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                    <mat-radio-group name="IsDeleted" formControlName="IsDeleted"
-                                        style="margin-left: 15px;">
-                                        <mat-radio-button value="0" fxFlex>IsHighRisk</mat-radio-button>
-                                        <mat-radio-button value="0" fxFlex>IsScheduleX</mat-radio-button>
-                                    </mat-radio-group>&nbsp;&nbsp;
-                                </div>&nbsp;&nbsp;&nbsp;&nbsp; -->
-
-                                        <!-- <div>
-                                            <button mat-raised-button (click)="onClear()" class="clearbutton"
-                                                matTooltip="close" style="margin-top: 10px;">
-                                                <mat-icon class="cleariconbutton">close</mat-icon>
-                                            </button>&nbsp;
-                                            <button mat-raised-button class="searchButton" style="margin-top: 10px;"
-                                                (click)="getCurrentStockList()" matTooltip="search">
-                                                <mat-icon class="searchiconbutton">search</mat-icon>
-                                            </button>&nbsp;
-
-                                            <button  (click)="viewgetCurrentstockReportPdf()"
-                                                matTooltip="Pdf" style="width: 45px;border-color: white;">
-                                                <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
-                                            </button>&nbsp;
-
-                                            <button  (click)="exportCurrentStockReportExcel()"
-                                                [disabled]="! (dsCurrentStock.data.length > 0)"
-                                                style="background-color: white;color: white;width: 45px;">
-                                                <img width="32" height="10px" src="assets/images/logos/xls.png">
-                                            </button>&nbsp;
-                                        </div>
-
-                                    </div>
-
-                                </form>
-
-                            </div>
-                        </div>
-                    </div>
-                </fuse-sidebar> -->
-
-
-                <!-- <div class="center p-12 pb-56" fxFlexAlign="start center">
-
-                    <div class="content-card" style="border-radius:4px; ">
-
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
-                            <div fxFlex.gt-sm="100%" fxFlex>
-
-                                <div fxlayout="row">
-                                    <div style="width: 100%;">
-                                        <div matColumnDef="loading"
-                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                            class="backgroundBlur">
-                                            <div class="spinner-border text-danger"></div>
-
-                                        </div>
-
-                                        <mat-table #table class="table1" matSort [dataSource]="dsCurrentStock"
-                                            [@animateStagger]="{value:'50'}" style="overflow:auto;width: 100%;">
-
-                                            <ng-container matColumnDef="ItemName">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    ItemName </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <mat-icon (click)="getItemdetails(contact)" >visibility</mat-icon> {{contact.ItemName}} 
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="ReceivedQty">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    ReceivedQty
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <mat-icon (click)="getIssueSummery(contact)" >visibility</mat-icon>  
-                                                    <span>
-                                                        {{contact.ReceivedQty}}  
-                                                    </span>
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="IssueQty">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    IssueQty
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <mat-icon (click)="getSalesSummery(contact)" >visibility</mat-icon> {{contact.IssueQty}}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="BalanceQty">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    BalanceQty
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.BalanceQty}}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="ReturnQty">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    ReturnQty
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <mat-icon (click)="getSalesReturnSummery(contact)" >visibility</mat-icon>  {{contact.ReturnQty}}  
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="loading">
-                                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                                </mat-header-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="noData">
-                                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                                    <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
-                                                </mat-footer-cell>
-                                            </ng-container>
-
-                                            <mat-header-row class="accent"
-                                                *matHeaderRowDef="displayedColumns; sticky: true">
-                                            </mat-header-row>
-                                            <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                                class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                                               appHighlight></mat-row>
-                                            <mat-footer-row *matFooterRowDef="['loading']"
-                                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                            </mat-footer-row>
-                                            <mat-footer-row *matFooterRowDef="['noData']"
-                                                [ngClass]="{'hide':!(dsCurrentStock!=null && dsCurrentStock.data.length==0)}">
-                                            </mat-footer-row>
-                                        </mat-table>
-                                        <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
-                                            showFirstLastButtons>
-                                        </mat-paginator>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-                <!-- CENTER -->
-            <!-- </div>
-        </div>
-    </mat-tab> --> 
-
-    <!-- <mat-tab-group> -->
-        <!-- <mat-tab label="Day Wise Current Stock ">
+        <!-- Day Wise Current Stock -->
+        <mat-tab label="Day Wise Current Stock">
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
-                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-                    fxLayoutAlign.gt-xs="space-between center ">
-                    <div class="top-header-info">
-                        <div class="top-header-title">
-                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                Stock Report Day Wise List
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <airmid-table [gridConfig]="gridConfig" class="content">
+                    <airmid-table [gridConfig]="gridConfig1" class="content" #DayWise>
+
                         <ng-container filters>
 
-                            <mat-form-field appearance="outline">
-                                <mat-label>Enter a LedgerDate</mat-label>
-                                <mat-date-range-input [rangePicker]="picker">
-                                    <input matStartDate formControlName="start"  [(ngModel)]="gridConfig.filters[0].fieldValue" 
-                                        placeholder="Start date">
-                                    <input matEndDate formControlName="end" placeholder="End date"
-                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                </mat-date-range-input>
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-date-range-picker #picker></mat-date-range-picker>
-                            </mat-form-field> 
-                            
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>StoreId</mat-label>
-                                <input matInput placeholder="Search StoreId" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[1].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-                            
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>ItemId</mat-label>
-                                <input matInput placeholder="Search ItemId" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[2].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[2].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
+                            <form [formGroup]="_CurrentStockService.SearchGroup">
+                            <airmid-datepicker [formGroup]="_CurrentStockService.SearchGroup" [isRangePicker]="false"
+                                formStartControlName="Onlystart">
+                            </airmid-datepicker>
+                            <!--  [(fromValue)]="gridConfig.filters[2].fieldValue"
+                                [(toValue)]="gridConfig.filters[3].fieldValue" -->
 
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Start</mat-label>
-                                <input matInput placeholder="Search Start" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[3].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[3].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
+                            <airmid-dropdown label="From Store" formControlName="StoreId"
+                                [formGroup]="_CurrentStockService.SearchGroup" [mode]="autocompletestore"
+                                (selectionChange)="selectChangeStore($event)">
+                            </airmid-dropdown>
+                            <!-- [(ngModel)]="gridConfig.filters[0].fieldValue" -->
 
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Length</mat-label>
-                                <input matInput placeholder="Search To Length" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[4].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[4].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field> -->
+                            <airmid-dropdown label="Item Name" formControlName="ItemCategory"
+                                [formGroup]="_CurrentStockService.SearchGroup"
+                                 [mode]="autocompleteitem"
+                                (selectionChange)="selectChangeItem($event)">
+                                <!--  [(ngModel)]="gridConfig.filters[1].fieldValue" -->
+                            </airmid-dropdown>
 
-                           
+                            <div fxLayout="row">
+                                <button
+                                matTooltip="Pdf" style="width: 45px;border-color: white;">
+                                <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
+                            </button>&nbsp;
 
-                            <!-- <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>PBillNo</mat-label>
-                                <input matInput placeholder="Search PBillNo" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[4].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[4].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-                           
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>RegNo</mat-label>
-                                <input matInput placeholder="Search RegNo" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[5].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[5].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-
-
-                            <mat-radio-group value="" [(ngModel)]="gridConfig.filters[4].fieldValue"
-                                fxLayoutAlign="center center">
-                                <mat-radio-button value="">All</mat-radio-button>
-                                <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
-                                <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                            </mat-radio-group> -->
-                        
-                        <!-- </ng-container>
+                            <button 
+                                style="background-color: white;color: white;width: 45px;">
+                                <img width="32" height="10px" src="assets/images/logos/xls.png">
+                            </button>
+                            </div>
+                        </form>
+                        </ng-container>
                     </airmid-table>
                 </div>
+
             </div>
 
-        </mat-tab>    -->
+        </mat-tab>
 
-    <!-- <mat-tab label="Day Wise Current Stock">
-        <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-            <mat-toolbar class="accent"
-                style="height:50px; justify-content: space-between;width: 100%;">
-                <div fxLayout="row" fxLayoutAlign="start center">
-                    <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                        <mat-icon>menu</mat-icon>
-                    </button>
-                    <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                        style="color: white;">account_box
-                    </mat-icon>
-                    <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                        style="color: white;">
-                        Day Wise Stock
-                    </span>
+        <!-- Item Wise Sales Summery -->
+        <mat-tab label="Item Wise Sales Summery">
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+                
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <airmid-table [gridConfig]="gridConfig2" class="content" #SaleSummery>
+
+                        <ng-container filters>
+
+                            <form [formGroup]="_CurrentStockService.SearchGroup">
+                            <airmid-datepicker [formGroup]="_CurrentStockService.SearchGroup" [isRangePicker]="true"
+                                formStartControlName="start" formEndControlName="end">
+                            </airmid-datepicker>
+                            <!--  [(fromValue)]="gridConfig.filters[2].fieldValue"
+                                [(toValue)]="gridConfig.filters[3].fieldValue" -->
+
+                            <airmid-dropdown label="From Store" formControlName="StoreId"
+                                [formGroup]="_CurrentStockService.SearchGroup" [mode]="autocompletestore"
+                                (selectionChange)="selectChangeStore($event)">
+                            </airmid-dropdown>
+                            <!-- [(ngModel)]="gridConfig.filters[0].fieldValue" -->
+
+                            <airmid-dropdown label="Item Name" formControlName="ItemCategory"
+                                [formGroup]="_CurrentStockService.SearchGroup"
+                                 [mode]="autocompleteitem"
+                                (selectionChange)="selectChangeItem($event)">
+                                <!--  [(ngModel)]="gridConfig.filters[1].fieldValue" -->
+                            </airmid-dropdown>
+
+                            <div fxLayout="row">
+                                <button
+                                matTooltip="Pdf" style="width: 45px;border-color: white;">
+                                <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
+                            </button>&nbsp;
+
+                            <button 
+                                style="background-color: white;color: white;width: 45px;">
+                                <img width="32" height="10px" src="assets/images/logos/xls.png">
+                            </button>
+                            </div>
+                        </form>
+                        </ng-container>
+                    </airmid-table>
                 </div>
 
-            </mat-toolbar>  
- 
-            <div class="content"> -->
-                <!-- SIDEBAR -->
-                <!-- <fuse-sidebar name="app-main1" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-                              margin-left:12px; background-color: white;height:100%;">
-                    <div>  -->
-                        <!-- SIDEBAR HEADER -->
-                        <!-- <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center"
-                            style="margin-top: 3%">
-                            <span class="search-title">Search Facility</span> 
-                            / USER -->
-                        <!-- </div> --> 
-                        <!-- / SIDEBAR HEADER -->
-                        <!-- SIDEBAR CONTENT -->
-                        <!-- <div>
-                            <div class="nav material2">
-
-                                <form [formGroup]="_CurrentStockService.userFormGroup"
-                                    style="padding: 10px 6px 5px 5px;" fusePerfectScrollbar>
-                                    <div fxLayout="column" fxLayoutAlign="start none">
-
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <input matInput [matDatepicker]="picker1" placeholder="Choose a date"
-                                                formControlName="start">
-                                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker1></mat-datepicker>
-                                        </mat-form-field>
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>From Store</mat-label>
-                                            <mat-select name="StoreId" formControlName="StoreId">
-
-                                                <mat-option *ngFor="let m of Store1List" [value]="m">
-                                                    {{m.StoreName}}
-                                                </mat-option>
-
-                                            </mat-select>
-                                        </mat-form-field>  
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>ItemName</mat-label>
-                                            <input matAutocompletePosition="below" type="text" required
-                                                placeholder="Select Item" matInput formControlName="ItemCategory"
-                                                [matAutocomplete]="auto3">
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_CurrentStockService.userFormGroup.get('ItemCategory').setValue(''); isItemSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_CurrentStockService.userFormGroup.get('ItemCategory').setValue(''); isItemSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #auto3="matAutocomplete"
-                                                [displayWith]="getOptionTextDaywiseItemList">
-                                                <mat-option *ngFor="let option of filteredOptionsDaywiseItem | async"
-                                                    [value]="option">
-                                                    {{option.ItemName}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>ItemName</mat-label>
-                                            <input matAutocompletePosition="below" type="text"   
-                                                placeholder="Select Item" matInput formControlName="ItemCategory"
-                                                [matAutocomplete]="auto3" (input)="getDaywiseStockItemList()">
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_CurrentStockService.userFormGroup.get('ItemCategory').setValue(''); isItemSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_CurrentStockService.userFormGroup.get('ItemCategory').setValue(''); isItemSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #auto3="matAutocomplete"
-                                                [displayWith]="getOptionTextDaywiseItemList">
-                                                <mat-option *ngFor="let option of DaywiseItemListfilteredOptions"
-                                                    [value]="option">
-                                                    {{option.ItemName}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>
-
-                                        <div style="margin-top: 10px;">
-                                            <button mat-raised-button (click)="onClear()" class="clearbutton"
-                                                matTooltip="close">
-                                                <mat-icon class="cleariconbutton">close</mat-icon>
-                                            </button>&nbsp;
-                                            <button mat-raised-button class="searchButton"
-                                                (click)="getDayWiseStockList()" matTooltip="search">
-                                                <mat-icon class="searchiconbutton">search</mat-icon>
-                                            </button>&nbsp;
-
-                                            <button (click)="viewgetDaywisestockReportPdf()"
-                                            matTooltip="Pdf" style="width: 45px;border-color: white;">
-                                            <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
-                                            </button>&nbsp;
-
-                                            <button  (click)="exportDayReportExcel()"
-                                                [disabled]="! (dsDaywiseStock.data.length > 0)"
-                                                style="background-color: white;color: white;width: 45px;">
-                                                <img width="32" height="10px" src="assets/images/logos/xls.png">
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                </form>
-
-                            </div>
-                        </div>
-                    </div>
-                </fuse-sidebar> 
- -->
-                 <!-- <div class="center p-12 pb-56" fxFlexAlign="start center">
-
-                    <div class="content-card" style="border-radius:4px; ">
-
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
-                            <div fxFlex.gt-sm="100%" fxFlex>
-
-                                <div fxlayout="row">
-                                    <div style="width: 100%;">
-                                        <div matColumnDef="loading"
-                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                            class="backgroundBlur">
-                                            <div class="spinner-border text-danger"></div>
-
-                                        </div>
-
-                                        <mat-table #table class="table2" matSort [dataSource]="dsDaywiseStock"
-                                            [@animateStagger]="{value:'50'}" style="overflow:auto;width: 100%;">
-
-                                            <ng-container matColumnDef="LedgerDate">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    LedgerDate
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.LedgerDate | date: 'dd/MM/yyyy' }}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="ItemName">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    ItemName </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.ItemName}}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="BatchNo">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    Batch No
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.BatchNo }}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="BatchExpDate">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    Batch ExpDate
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.BatchExpDate | date: 'dd/MM/yyyy'}}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="UnitMRP">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    Unit MRP
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.UnitMRP | currency:'INR':'symbol-narrow':'0.2' }}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="PurUnitRate">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    PurUnitRate
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.PurUnitRate | currency:'INR':'symbol-narrow':'0.2'}}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="LandedRate">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    LandedRate
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.LandedRate | currency:'INR':'symbol-narrow':'0.2'}}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="ReceivedQty">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    ReceivedQty
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.ReceivedQty}}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="IssueQty">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    IssueQty
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.IssueQty}}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="BalanceQty">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    BalanceQty
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.BalanceQty}}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="loading">
-                                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                                </mat-header-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="noData">
-                                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                                    <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
-                                                </mat-footer-cell>
-                                            </ng-container>
-
-
-                                            <mat-header-row class="accent"
-                                                *matHeaderRowDef="displayedColumns; sticky: true">
-                                            </mat-header-row>
-                                            <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                                class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                                                appHighlight></mat-row>
-                                            <mat-footer-row *matFooterRowDef="['loading']"
-                                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                            </mat-footer-row>
-                                            <mat-footer-row *matFooterRowDef="['noData']"
-                                                [ngClass]="{'hide':!(dsDaywiseStock!=null && dsDaywiseStock.data.length==0)}">
-                                            </mat-footer-row>
-
-                                        </mat-table>
-
-                                        <mat-paginator #thirdPaginator [pageSizeOptions]="[5, 10, 25, 100]"
-                                            [pageSize]="15" showFirstLastButtons>
-                                        </mat-paginator>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-        </div>
-    </mat-tab>  -->
 
-    <mat-tab label="Item Wise Sales Summary">
-        <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-            <!-- <mat-toolbar class="accent"
-                style="height:50px; justify-content: space-between;width: 100%;">
-                <div fxLayout="row" fxLayoutAlign="start center">
-                    <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                        <mat-icon>menu</mat-icon>
-                    </button>
-                    <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                        style="color: white;">account_box
-                    </mat-icon>
-                    <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                        style="color: white;">
-                        Item Wise Sales
-                    </span>
-                </div>
-            </mat-toolbar> -->
+        </mat-tab>
 
-            <div class="content">
-                <!-- SIDEBAR -->
-                <fuse-sidebar name="app-main2" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-                              margin-left:12px; background-color: white;height:100%;">
-                    <div>
-                        <!-- SIDEBAR HEADER -->
-                        <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center"
-                            style="margin-top: 3%">
-                            <span class="search-title">Search Facility</span>
-                            <!-- / USER -->
-                        </div>
-                        <!-- / SIDEBAR HEADER -->
-                        <!-- SIDEBAR CONTENT -->
-                        <div>
-                            <div class="nav material2">
+        <!-- Item Wise Item Summery -->
 
-                                <form [formGroup]="_CurrentStockService.ItemWiseFrom" style="padding: 10px 6px 5px 5px;"
-                                    fusePerfectScrollbar>
-                                    <div fxLayout="column" fxLayoutAlign="start none">
+        <mat-tab label="Item Wise Item Summery">
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+                
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <airmid-table [gridConfig]="gridConfig3" class="content" #ItemSummery>
 
-                                        <mat-form-field appearance="outline" style="margin-left: 2%;">
-                                            <mat-label>Enter a date range</mat-label>
-                                            <mat-date-range-input [rangePicker]="picker">
-                                                <input matStartDate formControlName="start1" placeholder="Start date"
-                                                    required>
-                                                <input matEndDate formControlName="end1" placeholder="End date"
-                                                    required>
-                                            </mat-date-range-input>
-                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                            <mat-date-range-picker #picker></mat-date-range-picker>
-                                        </mat-form-field>
+                        <ng-container filters>
 
+                            <form [formGroup]="_CurrentStockService.SearchGroup">
+                            <airmid-datepicker [formGroup]="_CurrentStockService.SearchGroup" [isRangePicker]="true"
+                                formStartControlName="start" formEndControlName="end">
+                            </airmid-datepicker>
+                            <!--  [(fromValue)]="gridConfig.filters[2].fieldValue"
+                                [(toValue)]="gridConfig.filters[3].fieldValue" -->
 
+                            <airmid-dropdown label="From Store" formControlName="StoreId"
+                                [formGroup]="_CurrentStockService.SearchGroup" [mode]="autocompletestore"
+                                (selectionChange)="selectChangeStore($event)">
+                            </airmid-dropdown>
+                            <!-- [(ngModel)]="gridConfig.filters[0].fieldValue" -->
 
-                                        <!-- <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>From Store</mat-label>
-                                            <mat-select name="StoreId" formControlName="StoreId">
+                            <airmid-dropdown label="Item Name" formControlName="ItemCategory"
+                                [formGroup]="_CurrentStockService.SearchGroup"
+                                 [mode]="autocompleteitem"
+                                (selectionChange)="selectChangeItem($event)">
+                                <!--  [(ngModel)]="gridConfig.filters[1].fieldValue" -->
+                            </airmid-dropdown>
 
-                                                <mat-option *ngFor="let m of Store1List" [value]="m">
-                                                    {{m.StoreName}}
-                                                </mat-option>
+                            <div fxLayout="row">
+                                <button
+                                matTooltip="Pdf" style="width: 45px;border-color: white;">
+                                <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
+                            </button>&nbsp;
 
-                                            </mat-select>
-                                        </mat-form-field> -->
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Store Name</mat-label>
-                                            <input matAutocompletePosition="below" type="text"
-                                                placeholder="Select RoleName" matInput #role formControlName="StoreId"
-                                                [matAutocomplete]="autoStoreName" required>
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_CurrentStockService.ItemWiseFrom.get('StoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_CurrentStockService.ItemWiseFrom.get('StoreId').setValue(''); isStoreSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #autoStoreName="matAutocomplete"
-                                                [displayWith]="getOptionTextStoreName">
-                                                <mat-option *ngFor="let option of filteredOptionsStorename| async"
-                                                    [value]="option">
-                                                    {{option.StoreName}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>
-
-                                        <!-- <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>ItemName</mat-label>
-                                            <input matAutocompletePosition="below" type="text" required
-                                                placeholder="Select Item" matInput formControlName="ItemCategory"
-                                                [matAutocomplete]="auto4">
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_CurrentStockService.ItemWiseFrom.get('ItemCategory').setValue(''); isItemSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_CurrentStockService.ItemWiseFrom.get('ItemCategory').setValue(''); isItemSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #auto4="matAutocomplete"
-                                                [displayWith]="getOptionTextItemwiseItemList">
-                                                <mat-option *ngFor="let option of filteredOptionsItemwiseItem | async"
-                                                    [value]="option">
-                                                    {{option.ItemName}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field> -->
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>ItemName</mat-label>
-                                            <input matAutocompletePosition="below" type="text"  
-                                                placeholder="Select Item" matInput formControlName="ItemCategory"
-                                                [matAutocomplete]="auto4" (input)="getitemwiseStockItemList()">
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_CurrentStockService.ItemWiseFrom.get('ItemCategory').setValue(''); isItemSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_CurrentStockService.ItemWiseFrom.get('ItemCategory').setValue(''); isItemSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #auto4="matAutocomplete"
-                                                [displayWith]="getOptionTextItemwiseItemList">
-                                                <mat-option *ngFor="let option of ItemwiseItemListfilteredOptions"
-                                                    [value]="option">
-                                                    {{option.ItemName}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>
-
-
-                                        <div style="margin-top: 10px;">
-                                            <button mat-raised-button (click)="onClear()" class="clearbutton"
-                                                matTooltip="close">
-                                                <mat-icon class="cleariconbutton">close</mat-icon>
-                                            </button>&nbsp;
-                                            <button mat-raised-button class="searchButton"
-                                                (click)="getItemWiseStockList()" matTooltip="search">
-                                                <mat-icon class="searchiconbutton">search</mat-icon>
-                                            </button>&nbsp;
-
-                                            <button  (click)="viewgetItemwisestockReportPdf()"
-                                                matTooltip="Pdf" style="width: 45px;border-color: white;">
-                                                <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
-                                            </button>&nbsp;
-
-                                            <button  (click)="exportItemReportExcel()"
-                                                [disabled]="! (dsItemwiseStock.data.length > 0)"
-                                                style="background-color: white;color: white;width: 45px;">
-                                                <img width="32" height="10px" src="assets/images/logos/xls.png">
-                                            </button>
-
-                                        </div>
-
-
-                                    </div>
-
-                                </form>
-
+                            <button 
+                                style="background-color: white;color: white;width: 45px;">
+                                <img width="32" height="10px" src="assets/images/logos/xls.png">
+                            </button>
                             </div>
-                        </div>
-                    </div>
-                </fuse-sidebar>
-
-                <div class="center p-12 pb-56" fxFlexAlign="start center">
-
-                    <div class="content-card" style="border-radius:4px; ">
-
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
-                            <div fxFlex.gt-sm="100%" fxFlex>
-
-                                <div fxlayout="row">
-                                    <div style="width: 100%;">
-                                        <div matColumnDef="loading"
-                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                            class="backgroundBlur">
-                                            <div class="spinner-border text-danger"></div>
-
-                                        </div>
-
-                                        <mat-table #table class="table3" matSort [dataSource]="dsItemwiseStock"
-                                            [@animateStagger]="{value:'50'}" style="overflow:auto;width: 100%;">
-
-
-                                            <ng-container matColumnDef="ItemName">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    ItemName </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.ItemName}}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="ConversionFactor">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    Conversion Factor
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.ConversionFactor }}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="Current_BalQty">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    Current BalQty
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.Current_BalQty}}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="Received_Qty">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    ReceivedQty
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.Received_Qty}}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="Sales_Qty">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    Sales Qty
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.Sales_Qty }}
-                                                </mat-cell>
-                                            </ng-container>
-
-
-
-                                            <ng-container matColumnDef="loading">
-                                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                                </mat-header-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="noData">
-                                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                                    <!-- <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'"
-                                                        [diameter]='30'>
-                                                    </mat-spinner> -->
-                                                    <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
-                                                </mat-footer-cell>
-                                            </ng-container>
-
-                                            <mat-header-row class="accent"
-                                                *matHeaderRowDef="displayedColumnsItemWise; sticky: true">
-                                            </mat-header-row>
-                                            <mat-row *matRowDef="let contact; columns: displayedColumnsItemWise;"
-                                                class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                                                appHighlight></mat-row>
-                                            <mat-footer-row *matFooterRowDef="['loading']"
-                                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                            </mat-footer-row>
-                                            <mat-footer-row *matFooterRowDef="['noData']"
-                                                [ngClass]="{'hide':!(dsItemwiseStock!=null && dsItemwiseStock.data.length==0)}">
-                                            </mat-footer-row>
-
-                                        </mat-table>
-
-                                        <mat-paginator #secondPaginator [pageSizeOptions]="[10, 25, 100]"
-                                            [pageSize]="10" showFirstLastButtons>
-                                        </mat-paginator>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
+                        </form>
+                        </ng-container>
+                    </airmid-table>
                 </div>
+
             </div>
-        </div>
-    </mat-tab>
+
+        </mat-tab>
+       
+    </mat-tab-group>
 
 
-    <mat-tab label="Issue Wise Item Summary">
-        <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-            <!-- <mat-toolbar class="accent"
-                style="height:50px; justify-content: space-between;width: 100%;">
-                <div fxLayout="row" fxLayoutAlign="start center">
-                    <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                        <mat-icon>menu</mat-icon>
-                    </button>
-                    <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                        style="color: white;">account_box
-                    </mat-icon>
-                    <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                        style="color: white;">
-                        Issue Wise Item  Summary
-                    </span>
-                </div>
-            </mat-toolbar> -->
-
-            <div class="content">
-                <!-- SIDEBAR -->
-                <fuse-sidebar name="app-main2" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-                              margin-left:12px; background-color: white;height:100%;">
-                    <div>
-                        <!-- SIDEBAR HEADER -->
-                        <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center"
-                            style="margin-top: 3%">
-                            <span class="search-title">Search Facility</span>
-                            <!-- / USER -->
-                        </div>
-                        <!-- / SIDEBAR HEADER -->
-                        <!-- SIDEBAR CONTENT -->
-                        <div>
-                            <div class="nav material2">
-
-                                <form [formGroup]="_CurrentStockService.PurchaseItem" style="padding: 10px 6px 5px 5px;"
-                                    fusePerfectScrollbar>
-                                    <div fxLayout="column" fxLayoutAlign="start none">
-
-                                        <mat-form-field appearance="outline" style="margin-left: 2%;">
-                                            <mat-label>Enter a date range</mat-label>
-                                            <mat-date-range-input [rangePicker]="picker">
-                                                <input matStartDate formControlName="start1" placeholder="Start date"
-                                                    required>
-                                                <input matEndDate formControlName="end1" placeholder="End date"
-                                                    required>
-                                            </mat-date-range-input>
-                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                            <mat-date-range-picker #picker></mat-date-range-picker>
-                                        </mat-form-field>
-
-
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>From Store</mat-label>
-                                            <mat-select name="StoreId" formControlName="StoreId">
-
-                                                <mat-option *ngFor="let m of Store1List" [value]="m">
-                                                    {{m.StoreName}}
-                                                </mat-option>
-
-                                            </mat-select>
-                                        </mat-form-field>
-
-                                        <!-- <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>ItemName</mat-label>
-                                            <input matAutocompletePosition="below" type="text" required
-                                                placeholder="Select Item" matInput formControlName="ItemCategory"
-                                                [matAutocomplete]="auto5">
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_CurrentStockService.PurchaseItem.get('ItemCategory').setValue(''); isItemSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_CurrentStockService.PurchaseItem.get('ItemCategory').setValue(''); isItemSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #auto5="matAutocomplete"
-                                                [displayWith]="getOptionTextPurchaseItemList">
-                                                <mat-option *ngFor="let option of filteredOptionsPurchaseItem | async"
-                                                    [value]="option">
-                                                    {{option.ItemName}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field> -->
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>ItemName</mat-label>
-                                            <input matAutocompletePosition="below" type="text"  
-                                                placeholder="Select Item" matInput formControlName="ItemCategory"
-                                                [matAutocomplete]="auto5" (input)="getissuwiseStockItemList()">
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_CurrentStockService.PurchaseItem.get('ItemCategory').setValue(''); isItemSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_CurrentStockService.PurchaseItem.get('ItemCategory').setValue(''); isItemSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #auto5="matAutocomplete"
-                                                [displayWith]="getOptionTextPurchaseItemList">
-                                                <mat-option *ngFor="let option of IssuewiseItemListfilteredOptions"
-                                                    [value]="option">
-                                                    {{option.ItemName}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>
-
-                                        <div style="margin-top: 10px;">
-                                            <button mat-raised-button (click)="onClear()" class="clearbutton"
-                                                matTooltip="close">
-                                                <mat-icon class="cleariconbutton">close</mat-icon>
-                                            </button>&nbsp;
-                                            <button mat-raised-button class="searchButton" 
-                                                (click)="getIssueWiseItemStockList()" matTooltip="search">
-                                                <mat-icon class="searchiconbutton">search</mat-icon>
-                                            </button>&nbsp;
-
-                                            <button  (click)="viewgetItemWisePurchaseReportPdf()"
-                                            matTooltip="Pdf"style="width: 45px;border-color: white;">
-                                            <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
-                                             </button>&nbsp;
-
-                                            <button  (click)="exportIssuewiseItemReportExcel()"
-                                                [disabled]="! (dsIssuewissueItemStock.data.length > 0)"
-                                                style="background-color: white;color: white;width: 45px;">
-                                                <img width="32" height="10px" src="assets/images/logos/xls.png">
-                                            </button>
-
-                                        </div>
-
-
-                                    </div>
-
-                                </form>
-
-                            </div>
-                        </div>
-                    </div>
-                </fuse-sidebar>
-
-                <div class="center p-12 pb-56" fxFlexAlign="start center">
-
-                    <div class="content-card" style="border-radius:4px; ">
-
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
-                            <div fxFlex.gt-sm="100%" fxFlex>
-
-                                <div fxlayout="row">
-                                    <div style="width: 100%;">
-                                        <div matColumnDef="loading"
-                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                            class="backgroundBlur">
-                                            <div class="spinner-border text-danger"></div>
-
-                                        </div>
-
-                                        <mat-table #table class="table3" matSort [dataSource]="dsIssuewissueItemStock"
-                                            [@animateStagger]="{value:'50'}" style="overflow:auto;width: 100%;">
-
-
-                                            <ng-container matColumnDef="ItemName">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    ItemName </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.ItemName}}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="ConversionFactor">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    Conversion Factor
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.ConversionFactor }}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="Current_BalQty">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    Current BalQty
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.Current_BalQty}}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="Received_Qty">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    ReceivedQty
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.Received_Qty}}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="Sales_Qty">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    Sales Qty
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.Sales_Qty }}
-                                                </mat-cell>
-                                            </ng-container>
-
-
-
-                                            <ng-container matColumnDef="loading">
-                                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                                </mat-header-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="noData">
-                                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                                    <!-- <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'"
-                                                        [diameter]='30'>
-                                                    </mat-spinner> -->
-                                                    <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
-                                                </mat-footer-cell>
-                                            </ng-container>
-
-                                            <mat-header-row class="accent"
-                                                *matHeaderRowDef="displayedColumnsIssueWiseItem; sticky: true">
-                                            </mat-header-row>
-                                            <mat-row *matRowDef="let contact; columns: displayedColumnsIssueWiseItem;"
-                                                class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                                                appHighlight></mat-row>
-                                            <mat-footer-row *matFooterRowDef="['loading']"
-                                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                            </mat-footer-row>
-                                            <mat-footer-row *matFooterRowDef="['noData']"
-                                                [ngClass]="{'hide':!(dsIssuewissueItemStock!=null && dsIssuewissueItemStock.data.length==0)}">
-                                            </mat-footer-row>
-
-                                        </mat-table>
-
-                                        <mat-paginator #secondPaginator [pageSizeOptions]="[10, 25, 100]"
-                                            [pageSize]="10" showFirstLastButtons>
-                                        </mat-paginator>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </mat-tab>
-
-    <!-- 
-    <div class="loading" *ngIf="_loaderShow">Loading</div>
-    <  i class="fa fa-spinner fa-spin fa-1x"></> -->
-    
-</mat-tab-group>
 </div>
- 
-

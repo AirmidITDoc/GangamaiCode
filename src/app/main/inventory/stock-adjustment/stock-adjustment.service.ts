@@ -24,7 +24,8 @@ export class StockAdjustmentService {
   }
   CreateStoreFrom(){
     return this._formBuilder.group({
-      StoreId: [''],
+      StoreId: ['2'],
+      ItemID: [''],
     });
   }
   createUserForm() {

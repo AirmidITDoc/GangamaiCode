@@ -252,12 +252,15 @@
                     <form [formGroup]="otherForm">
                         <mat-card style="padding: 6px;">
                             <div fxLayout="column" fxLayout="row" fxLayout="4px">
+
                                 <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Suggestion Note </mat-label>
-                                    <textarea rows="3" name="suggestionNotes" formControlName="suggestionNotes" matInput
-                                        [(ngModel)]="vsuggation" (keydown)="onEnterSugg($event)"></textarea>
-                                    <mat-error>Please enter Suggestion </mat-error>
-                                </mat-form-field>
+                                    <mat-label>Suggestion Note</mat-label>
+                                    <textarea matInput rows="3" name="suggestionNotes" formControlName="suggestionNotes"
+                                      [(ngModel)]="vsuggation" (keydown)="onEnterSugg($event)" maxlength="500">
+                                    </textarea>
+                                    <mat-hint align="end">{{ vsuggation?.length || 0 }}/500</mat-hint>
+                                  </mat-form-field>
+                                  
                             </div>
 
                             <div fxLayout="column" fxLayout="row" fxLayout="4px">

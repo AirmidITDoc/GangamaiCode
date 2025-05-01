@@ -333,7 +333,7 @@ export class ResultEntryOneComponent implements OnInit {
     }
 
     getResultList1(rbj) {
-        // debugger
+        debugger
         if (this.OP_IPType == 0) {
             var param =  {
                 "searchFields": [          
@@ -361,6 +361,7 @@ export class ResultEntryOneComponent implements OnInit {
        
         console.log(param)
         this._SampleService.getPathologyResultListforOP(param).subscribe(Visit => {
+            debugger
             this.dataSource.data = Visit as Pthologyresult[];
             console.log(this.dataSource.data)
             // this.Pthologyresult = Visit as Pthologyresult[];
@@ -630,7 +631,7 @@ export class ResultEntryOneComponent implements OnInit {
     // }
 
     Printresultentry() {
-        debugger
+        // debugger
         let pathologyDelete = [];
     
         this.data.RIdData.forEach((element) => {
@@ -645,14 +646,13 @@ export class ResultEntryOneComponent implements OnInit {
     
         this._SampleService.PathPrintResultentryInsert(submitData).subscribe(res => {
             if (res) {
-                debugger
                 this.viewgetPathologyTestReportPdf()
             }
         });
     }
 
     viewgetPathologyTestReportPdf() {
-        debugger;
+        // debugger;
             const param = {
                 searchFields: [
                     {
@@ -768,12 +768,20 @@ export class ResultEntryOneComponent implements OnInit {
     @ViewChild('RefDoctorID') RefDoctorID: ElementRef;
     @ViewChild('helpinput') helpinput: ElementRef;
 
-    public onEnterSugg(event): void {
-        if (event.which === 13) {
+    // public onEnterSugg(event:KeyboardEvent): void {
+    //     if (event.which === 13) {
+    //         this.PathResultDoctorId.nativeElement.focus();
+    //     }
+    // }
+
+    public onEnterSugg(event: KeyboardEvent): void {
+        if (event.key === 'Enter' && event.ctrlKey) {
             this.PathResultDoctorId.nativeElement.focus();
+            event.preventDefault(); // optional, to avoid newline on Ctrl+Enter
         }
     }
 
+    
     public onEnterPathResultDoctorId(event, value): void {
 
         if (event.which === 13) {
