@@ -141,7 +141,7 @@ export class NewOPListComponent implements OnInit {
         { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "Bill Amount", key: "neftpayAmount", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount },
+        { heading: "Bill Amount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount },
         { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
         { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
         { heading: "CashPay", key: "cashPayAmount", sort: true, align: "center" , type: gridColumnTypes.amount},

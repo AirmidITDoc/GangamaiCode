@@ -85,7 +85,6 @@ export class IndentComponent implements OnInit {
             columnsList: [
                 { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Issue Qty", key: "qtyIssue", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Pending Qty", key: "qtyPending", sort: true, align: 'left', emptySign: 'NA' },
             ],

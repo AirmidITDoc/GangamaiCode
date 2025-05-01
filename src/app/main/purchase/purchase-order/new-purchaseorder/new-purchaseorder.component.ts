@@ -47,11 +47,11 @@ export class NewPurchaseorderComponent {
     'TotalAmount',
     'DiscPer',
     'DiscAmount',
-    'CGST',
+    'CGSTPer',
     'CGSTAmount',
-    'SGST',
+    'SGSTPer',
     'SGSTAmount',
-    'IGST',
+    'IGSTPer',
     'IGSTAmount',
     // 'GST',
     'GSTAmount',
@@ -66,8 +66,8 @@ export class NewPurchaseorderComponent {
     'freeQty',
     'mrp',
     'rate',
-    // 'discpercentage',
-    // 'DiscAmount',
+    'discpercentage',
+    'DiscAmount',
     'vatPercentage'
   ]
 
@@ -198,7 +198,7 @@ export class NewPurchaseorderComponent {
   SGSTFinalAmount: any;
   IGSTFinalAmount: any;
   RoundingAmt = 0
-
+  lastsupplierflag:boolean=false;
   dsPurchaseItemList = new MatTableDataSource<PurchaseItemList>();
 
   dsItemNameList = new MatTableDataSource<ItemNameList>();
@@ -229,7 +229,7 @@ export class NewPurchaseorderComponent {
     this.userFormGroup.markAllAsTouched();
     this.FinalPurchaseform.markAllAsTouched();
 
-    this.userFormGroup.get("GSTType").setValue('GST_BEFORE_DISC')
+    // this.userFormGroup.get("GSTType").setValue('GST_BEFORE_DISC')
     console.log(this.data)
 
     // if (this.data.chkNewGRN == 2) {
@@ -312,7 +312,7 @@ export class NewPurchaseorderComponent {
       });
       return;
     }
-    debugger
+    
     const isDuplicate = this.dsItemNameList.data.some(item => item.ItemId === this.userFormGroup.get('ItemName').value.itemId);
 
     if (!isDuplicate) {
@@ -332,11 +332,11 @@ export class NewPurchaseorderComponent {
           TotalAmount: formValues.TotalAmount || 0,
           DiscPer: formValues.Disc || 0,
           DiscAmount: formValues.DiscAmount || 0,
-          CGST: formValues.CGSTPer || 0,
+          CGSTPer: formValues.CGSTPer || 0,
           CGSTAmount: formValues.CGSTAmount || 0,
           CGSTAmt: formValues.CGSTAmount || 0,
 
-          SGST: formValues.SGSTPer || 0,
+          SGSTPer: formValues.SGSTPer || 0,
           SGSTAmount: formValues.SGSTAmount || 0,
           SGSTAmt: formValues.SGSTAmount || 0,
 
@@ -352,7 +352,7 @@ export class NewPurchaseorderComponent {
           Specification: formValues.Specification || '',
         });
         console.log(newItem)
-
+        this.lastsupplierflag = false;
         this.dsItemNameList.data = [...this.dsItemNameList.data, newItem];
         this.updatePurchaseFinalForm();
       }
@@ -364,7 +364,7 @@ export class NewPurchaseorderComponent {
       });
     }
     // this.itemid.nativeElement.focus();
-    this.add = false;
+    // this.add = false;
     this.resetFormItem();
   }
 
@@ -386,17 +386,16 @@ export class NewPurchaseorderComponent {
     });
   }
 
-  deleteTableRow(element) {
-    let index = this.chargeslist.indexOf(element);
-    if (index >= 0) {
-      this.chargeslist.splice(index, 1);
-      this.dsItemNameList.data = [];
-      this.dsItemNameList.data = this.chargeslist;
-    }
-    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
-      toastClass: 'tostr-tost custom-toast-success',
-    });
-  }
+
+    deleteTableRow(row: ItemNameList) {
+          //  if (row.IsVerifiedUserId == 1) {
+          //      this.newGRNService.showToast('Verified Record should not be Deleted .', ToastType.SUCCESS);
+          //  } else {
+               this.dsItemNameList.data = this.dsItemNameList.data.filter(item => item !== row);
+               this._PurchaseOrder.showToast('Record Deleted Successfully.', ToastType.SUCCESS);
+               this.updatePurchaseFinalForm();
+          //  }
+       }
 
   getOldPurchaseOrder(Id) {
 
@@ -446,9 +445,9 @@ export class NewPurchaseorderComponent {
           element.GSTAmt = element.vatAmount,
           element.NetAmount = element.grandTotalAmount,
           element.MRP = element.mrp
-          element.CGST = element.cgstPer,
+          element.CGSTPer = element.cgstPer,
           element.CGSTAmount = element.cgstAmt,
-          element.SGST = element.sgstPer,
+          element.SGSTPer = element.sgstPer,
           element.SGSTAmount = element.sgstAmt,
           element.IGST = element.igstPer,
           element.IGSTAmount = element.igstAmt
@@ -603,11 +602,11 @@ export class NewPurchaseorderComponent {
       purchaseDetailInsertObj['grandTotalAmount'] = element.NetAmount;
       purchaseDetailInsertObj['mrp'] = element.MRP;
       purchaseDetailInsertObj['specification'] = element.Specification;
-      purchaseDetailInsertObj['cgstper'] = element.CGST;
+      purchaseDetailInsertObj['cgstper'] = element.CGSTPer;
       purchaseDetailInsertObj['cgstamt'] = element.CGSTAmount;
-      purchaseDetailInsertObj['sgstper'] = element.SGST;
+      purchaseDetailInsertObj['sgstper'] = element.SGSTPer;
       purchaseDetailInsertObj['sgstamt'] = element.SGSTAmount;
-      purchaseDetailInsertObj['igstper'] = element.IGST;
+      purchaseDetailInsertObj['igstper'] = element.IGSTPer;
       purchaseDetailInsertObj['igstamt'] = element.IGSTAmount;
       purchaseDetailInsertObj['defRate'] = element.DefRate;
       purchaseDetailInsertObj['vendDiscPer'] = 0;
@@ -666,6 +665,9 @@ export class NewPurchaseorderComponent {
     this._PurchaseOrder.validateCellData(item);
     this._PurchaseOrder.calculateBasicValues(item);
     this._PurchaseOrder.validateGSTRates(item);
+    this._PurchaseOrder.validateGSTRates(item);
+    // this._PurchaseOrder.C(item);
+
 
     const updatedItem = this.calculateCellGSTType(item);
     Object.assign(item, updatedItem);
@@ -701,7 +703,7 @@ export class NewPurchaseorderComponent {
     }
 
   }
-
+  onKeydown(e, data) {}
   // calculateTotalAmt() {
   //   let Qty = this.userFormGroup.get('Qty').value
   //   if (Qty > 0 && this.vRate > 0) {
@@ -820,141 +822,6 @@ export class NewPurchaseorderComponent {
     }
   }
 
-  @ViewChild('SupplierId') SupplierId: MatSelect;
-  @ViewChild('gsttype') gsttype: ElementRef;
-  @ViewChild('Freight1') Freight1: ElementRef;
-  @ViewChild('DeliveryDate1') DeliveryDate1: ElementRef;
-  @ViewChild('PaymentMode') PaymentMode: MatSelect;
-  @ViewChild('Status3') Status3: MatSelect;
-  @ViewChild('PaymentTerm') PaymentTerm: MatSelect;
-  @ViewChild('TaxNature1') TaxNature1: MatSelect;
-  @ViewChild('itemid') itemid: ElementRef;
-  @ViewChild('qty') qty: ElementRef;
-  @ViewChild('uom') uom: ElementRef;
-  @ViewChild('rate') rate: ElementRef;
-  @ViewChild('totalamt') totalamt: ElementRef;
-  @ViewChild('dis') dis: ElementRef;
-  @ViewChild('gst') gst: ElementRef;
-  @ViewChild('mrp') mrp: ElementRef;
-  @ViewChild('specification') specification: ElementRef;
-  add: boolean = false;
-  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
-  @ViewChild('Schedule') Schedule: MatSelect;
-  @ViewChild('Remark') Remark: ElementRef;
-  @ViewChild('Worrenty') Worrenty: ElementRef;
-  @ViewChild('roundVal') roundVal: ElementRef;
-  @ViewChild('OctriAmount') OctriAmount: ElementRef;
-  @ViewChild('TransportCharges') TransportCharges: ElementRef;
-  @ViewChild('HandlingCharges') HandlingCharges: ElementRef;
-  @ViewChild('ConversionFactor') ConversionFactor: ElementRef;
-  @ViewChild('HSNcode') HSNcode: ElementRef;
-  @ViewChild('PurchaseDate') PurchaseDate: ElementRef;
-
-  // public onEnterSupplier(event): void {
-  //   if (event.which === 13) {
-  //     this.PurchaseDate.nativeElement.focus();
-  //   }
-  // }
-  // public onEnterGSTType(event): void {
-  //   if (event.which === 13) {
-  //     this.itemid.nativeElement.focus();
-  //   }
-  // }
-
-  // public onEnterItemName(event): void {
-  //   if (event.which === 13) {
-  //     this.qty.nativeElement.focus();
-  //   }
-  // }
-  // public onEnterQty(event): void {
-  //   if (event.which === 13) {
-  //     this.mrp.nativeElement.focus();
-  //     //this.add = false;
-  //   }
-  // }
-  // public onEnterMRP(event): void {
-  //   if (event.which === 13) {
-  //     this.rate.nativeElement.focus();
-  //     //this.add = false;
-  //   }
-  // }
-  // public onEnterRate(event): void {
-  //   if (event.which === 13) {
-  //     this.dis.nativeElement.focus();
-  //     // this.add = false;
-  //     this.vDis.setValue('');
-  //   }
-  // }
-  // public onEnterTotal(event): void {
-  //   if (event.which === 13) {
-  //     this.dis.nativeElement.focus();
-  //     // this.add = false;
-  //   }
-  // }
-  // public onEnterDis(event): void {
-  //   if (event.which === 13) {
-  //     this.gst.nativeElement.focus();
-  //     // this.add = false;
-  //   }
-  // }
-  // public onEnterGST(event): void {
-  //   if (event.which === 13) {
-  //     this.specification.nativeElement.focus();
-  //     //this.add = false;
-  //   }
-  // }
-
-  // public onEnterSpecification(event): void {
-  //   if (event.which === 13) {
-  //     //this.add = false;
-  //   }
-  // }
-
-  public onEnterPaymentTerm(event): void {
-    if (event.which === 13) {
-      if (this.PaymentMode) this.PaymentMode.focus();
-    }
-  }
-  public onEnterPaymentMode(event): void {
-    if (event.which === 13) {
-      this.Remark.nativeElement.focus();
-    }
-  }
-  public onEnterRemark(event): void {
-    if (event.which === 13) {
-      this.HandlingCharges.nativeElement.focus();
-    }
-  }
-  public onEnterHandlingcharge(event): void {
-    if (event.which === 13) {
-      this.TransportCharges.nativeElement.focus();
-    }
-  }
-  public onEnterTransportcharge(event): void {
-    if (event.which === 13) {
-      this.Freight1.nativeElement.focus();
-    }
-  }
-  public onEnterFreight(event): void {
-    if (event.which === 13) {
-      this.OctriAmount.nativeElement.focus();
-    }
-  }
-
-  public onEnterOctriAmount(event): void {
-    if (event.which === 13) {
-      this.Worrenty.nativeElement.focus();
-    }
-  }
-  public onEnterWorrenty(event): void {
-    if (event.which === 13) {
-      this.OctriAmount.nativeElement.focus();
-    }
-
-    if (this.dsItemNameList.data.length > 0) {
-      this.vsaveflag = false
-    }
-  }
   IsDiscPer2: boolean = false;
   onGSTTypeChange(event: { value: number, text: string }) {
     console.log(event)
@@ -969,7 +836,7 @@ export class NewPurchaseorderComponent {
 
   getSelectedItem(item: GRNItemResponseType): void {
     console.log(item)
-
+    this.lastsupplierflag = true
     this.ItemID = item.itemId
     // if (this.mock) {
     //     return;
@@ -999,7 +866,7 @@ export class NewPurchaseorderComponent {
     const qty = +form.get('Qty').value || 0;
     // const freeqty = +form.get('FreeQty').value || 0;
     const rate = +form.get('Rate').value || 0;
-    const conversionFactor = +form.get('ConversionFactor').value || 1;
+    // const conversionFactor = +form.get('ConversionFactor').value || 1;
 
     let totalAmount = 0;
     let netAmount = 0;
@@ -1065,6 +932,8 @@ export class NewPurchaseorderComponent {
     const form = this.userFormGroup;
     const formValues = form.getRawValue() as PurchaseFormModel;
     const values = this._PurchaseOrder.normalizeValues(formValues);
+
+    
     const calculation = this._PurchaseOrder.getGSTCalculation(formValues.GSTType || type, values);
 
     // Update form with calculated values
@@ -1100,7 +969,7 @@ export class NewPurchaseorderComponent {
   calculateCellGSTType(item: ItemNameList): ItemNameList {
     // Validate input
     if (!item) return item;
-
+debugger
     try {
       const values = this._PurchaseOrder.normalizeValues(item);
       const calculation = this._PurchaseOrder.getGSTCalculation(item.GSTType, values);
@@ -1111,6 +980,8 @@ export class NewPurchaseorderComponent {
         SGSTAmount: Number(calculation.sgstAmount.toFixed(2)),
         IGSTAmount: Number(calculation.igstAmount.toFixed(2)),
         VatAmount: Number(calculation.totalGSTAmount.toFixed(2)),
+        // GST: Number(calculation.totalGSTAmount.toFixed(2)),
+        GSTAmount: Number(calculation.totalGSTAmount.toFixed(2)),
         NetAmount: Number(calculation.netAmount.toFixed(2)),
       };
     } catch (error) {
@@ -1181,6 +1052,8 @@ export class NewPurchaseorderComponent {
       });
     }
   }
+
+  
 
   resetForm() {
     this.userFormGroup.reset();

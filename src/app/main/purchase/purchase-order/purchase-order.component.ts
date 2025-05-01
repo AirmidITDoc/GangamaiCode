@@ -42,7 +42,7 @@ export class PurchaseOrderComponent implements OnInit {
   mysearchform: FormGroup;
   autocompletestore: string = "Store";
   autocompleteSupplier: string = "SupplierMaster"
-  StoreId = "2";
+  StoreId = "0";
   SupplierId = "0";
   status= "0";
 
@@ -72,7 +72,7 @@ export class PurchaseOrderComponent implements OnInit {
     { heading: "DiscAmount", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', width: 100  },
     { heading: "NetAmount", key: "grandTotal", sort: true, align: 'left', emptySign: 'NA', width: 100  },
     { heading: "Remark", key: "remarks", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "AddedByName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA', width: 100  },
+    { heading: "AddedByName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA', width: 150  },
     {
       heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -171,7 +171,7 @@ export class PurchaseOrderComponent implements OnInit {
   }
 
   onChangeFirst(value) {
-    
+    debugger
     this.isShowDetailTable = false;
     this.fromDate = this.datePipe.transform(this.mysearchform.get('startdate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.mysearchform.get('enddate').value, "yyyy-MM-dd")
@@ -231,7 +231,8 @@ export class PurchaseOrderComponent implements OnInit {
       this.toastr.success(response);
       if (response) {
         this.commonService.Onprint("PurchaseID", row.purchaseID, "Purchaseorder");
-         this._matDialog.closeAll();
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
        }
  
      });
@@ -256,7 +257,8 @@ export class PurchaseOrderComponent implements OnInit {
         });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
-       
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
       });
     }
     else{

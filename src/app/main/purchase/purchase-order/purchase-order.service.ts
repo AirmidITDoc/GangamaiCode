@@ -33,6 +33,7 @@ export class PurchaseOrderService {
         sgst: Number(obj.SGSTPer || 0),
         igst: Number(obj.IGSTPer || 0),
         gst: Number(obj.GSTAmount || 0),
+
         finalTotalQty,
         conversionFactor: Number(obj.ConversionFactor || 1),
         mrp: Number(obj.MRP || 0),
@@ -40,6 +41,10 @@ export class PurchaseOrderService {
     };
     return values;
 }
+IgstPercentage=0
+CgstPercentage=0
+SgstPercentage=0
+
   constructor(
     public _httpClient: HttpClient, public _httpClient1: ApiCaller, private toastr: ToastrService,
     private _formBuilder: UntypedFormBuilder
@@ -57,30 +62,7 @@ export class PurchaseOrderService {
     });
   }
 
-  // createStoreFrom() {
-  //   return this._formBuilder.group({
-  //     StoreId: [''],
-  //     ToStoreId: '',
-  //     FromStoreId: '',
-  //     SupplierId: '',
-  //     start: [new Date().toISOString()],
-  //     end: [new Date().toISOString()],
-  //     Status: ['1'],
-  //   });
-  // }
-  // createHeaderFrom(){
-  //   return this._formBuilder.group({
-  //     Status3: [''],
-  //     SupplierId: [''],
-  //     SupplierID:'',
-  //     Address:'',
-  //     Mobile:'',
-  //     Contact:'',
-  //     GSTNo:'',
-  //     Email:''
-  //   })
-  // }
-
+  
   getPurchaseOrderForm() {
     return this._formBuilder.group({
       purchaseId: [''],
@@ -140,7 +122,7 @@ export class PurchaseOrderService {
       SGSTAmount: [''],
       IGSTPer: [''],
       IGSTAmount: [''],
-      GSTType: [0],
+      GSTType: [16],
       UOMId:[''],
 
       PurchaseId:[0],
@@ -194,6 +176,7 @@ export class PurchaseOrderService {
       OctriAmount: [''],
       Worrenty: [''],
       roundVal: [''],
+      NetAmount: [''],
       Remark: [''],
       PaymentMode: ['0'],
       PaymentTerm: ['0'],
@@ -382,7 +365,7 @@ export class PurchaseOrderService {
 
         const totalGSTAmount = cgstAmount + sgstAmount + igstAmount;
         const netAmount = baseAmount - values.discAmount + totalGSTAmount;
-        debugger
+        
         return {
             baseAmount,
             cgstAmount,
@@ -435,6 +418,59 @@ export class PurchaseOrderService {
         };
     }
 
+
+    getCellGSTCalculation(contact, Qty) {
+    // debugger
+       
+    //     if (contact.Qty > 0 && contact.Rate > 0) {
+         
+    //       this.IgstPercentage =  contact.IGSTPer;
+    //       this.CgstPercentage = contact.CGSTPer;
+    //       this.SgstPercentage = contact.SGSTPer;
+    //       if (this._PurchaseOrder.userFormGroup.get('GSTType').value.Name == 'GST After Disc') {
+    //         //total amt
+    //         contact.TotalAmount = (contact.Qty * contact.Rate);
+    //         //disc
+    //         contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
+    //         let TotalAmt: any=0;
+    //         TotalAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount)).toFixed(2);
+    //         //Gst
+    //         contact.GST = (parseFloat(this.CgstPercentage ) + parseFloat(this.SgstPercentage) + parseFloat(this.IgstPercentage)).toFixed(2);
+    //         contact.CGSTAmount = ((parseFloat(TotalAmt) * parseFloat(this.CgstPercentage)) / 100).toFixed(2);
+    //         contact.SGSTAmount = ((parseFloat(TotalAmt) * parseFloat(this.SgstPercentage)) / 100).toFixed(2);
+    //         contact.IGSTAmount = ((parseFloat(TotalAmt) * parseFloat(this.IgstPercentage)) / 100).toFixed(2);
+    //         contact.GSTAmount = ((parseFloat(TotalAmt) * parseFloat(contact.VatPer)) / 100).toFixed(2);
+    //         contact.GrandTotalAmount = ((TotalAmt) + (contact.VatAmount)).toFixed(2);
+    //       }
+    //       else if (this._PurchaseOrder.userFormGroup.get('GSTType').value.Name == 'GST Before Disc') {
+    //         //total amt
+    //         contact.TotalAmount = (contact.Qty * contact.Rate);
+    //         //Gst
+    //         contact.VatPer = (parseFloat(this.CgstPercentage ) + parseFloat(this.SgstPercentage) + parseFloat(this.IgstPercentage)).toFixed(2);
+    //         contact.CGSTAmount = ((parseFloat(contact.TotalAmount) * parseFloat(this.CgstPercentage)) / 100).toFixed(2);
+    //         contact.SGSTAmount = ((parseFloat(contact.TotalAmount) * parseFloat(this.SgstPercentage)) / 100).toFixed(2);
+    //         contact.IGSTAmount = ((parseFloat(contact.TotalAmount) * parseFloat(this.IgstPercentage)) / 100).toFixed(2);
+    //         contact.GSTAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.VatPer)) / 100).toFixed(2);
+    //         let totalAmt:any=0
+    //         totalAmt = (parseFloat(contact.TotalAmount) + parseFloat(contact.VatAmount)).toFixed(2);
+    //         //disc
+    //         contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
+    //         contact.GrandTotalAmount = (parseFloat(totalAmt) - parseFloat(contact.DiscAmount)).toFixed(2);
+    //       }
+          
+    //     }
+    //     else {
+    //       contact.TotalAmount = 0;
+    //       contact.DiscAmount = 0;
+    //       contact.CGSTAmt = 0;
+    //       contact.SGSTAmt = 0;
+    //       contact.IGSTAmt = 0;
+    //       contact.VatAmount = 0;
+    //       contact.GrandTotalAmount = 0;
+    //     }
+      
+      }
+
     //Cell Cal
        validateCellData(item: ItemNameList): boolean {
             if (+item.Disc < 0 || +item.Disc > 100) {
@@ -475,11 +511,11 @@ export class PurchaseOrderService {
           return this.GST_VALIDATION.VALID_GST_RATES.includes(parseFloat(rate?.toString()));
       }
          validateGSTRates(item: ItemNameList): boolean {
-                item.GST = Number(item.CGST) + Number(item.SGST) + Number(item.IGST);
+                item.GST = Number(item.CGSTPer) + Number(item.SGSTPer) + Number(item.IGST);
                 const rates = [
-                    { value: item.CGST, type: 'CGST' },
-                    { value: item.SGST, type: 'SGST' },
-                    { value: item.IGST, type: 'IGST' }
+                    { value: item.CGSTPer, type: 'CGST' },
+                    { value: item.SGSTPer, type: 'SGST' },
+                    { value: item.IGSTPer, type: 'IGST' }
                 ];
         
                 for (const rate of rates) {

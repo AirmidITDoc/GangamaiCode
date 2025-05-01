@@ -33,44 +33,19 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 })
 export class IssueToDepartmentComponent implements OnInit {
     hasSelectedContacts: boolean;
-    vVatPer: any;
-    vCgstPer: any;
-    vSgstPer: any;
-    vIgstPer: any;
-    vStockId: any;
-    vPurchaseRate: any;
-    chargeslist: any = [];
-    vItemID: any;
-    vFinalTotalAmount: any;
-    vFinalNetAmount: any;
-    vFinalGSTAmount: any;
-    vAgainstIndet: boolean = false;
-    vBarcode:any;
-    vBatchNo:any;
-    vBalanceQty: any;
-    vQty:any;
-    vLandedRate: any;
-    vTotalAmount: any;
+   
     dsNewIssueList1 = new MatTableDataSource<IssueItemList>();
-    dsNewIssueList3 = new MatTableDataSource<NewIssueList3>();
+    
     dsTempItemNameList = new MatTableDataSource<NewIssueList3>();
     tempdata: any = [];
     ItemSamelist: any = [];
     BatchSamelist: any = [];
-    MRPSamelist: any = [];
-    vBarcodeflag: boolean = false;
-    vUnitMRP: any;
-    vBatchExpDate:any;
-    vsaveflag: boolean = true;
-    ItemName: any;
-    vremark:any;
-    savebtn: boolean = false;
-    
+       
     autocompletestore: string = "Store";
     autocompleteitem: string = "ItemType"; //Item
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-
+    dsNewIssueList3 = new MatTableDataSource<NewIssueList3>();
     displayedNewIssuesList3: string[] = [
         'ItemId',
         'ItemName',
@@ -101,7 +76,6 @@ export class IssueToDepartmentComponent implements OnInit {
             { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "From Store Name", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "To StoreName", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "From StoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "AddedBy", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Total Amount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "GST Amount", key: "gstAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -213,194 +187,6 @@ export class IssueToDepartmentComponent implements OnInit {
     onAddBarcodeItemList(contact, DraftQty) {
       
     }
-
-    onAdd($event) {
-        if (this.vBarcode == 0) {
-
-            if (!this._IssueToDep.NewIssueGroup.get('ItemID')?.value) {
-                this.toastr.warning('Please enter a item', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                });
-                return;
-            }
-            if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
-                this.toastr.warning('Please enter a Qty', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                });
-                return;
-            }
-        }
-
-        this.ItemSamelist = this.dsNewIssueList3.data.filter(item => item.ItemId === this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId)
-        if (this.ItemSamelist) {
-            if (this.ItemSamelist.some(item => item.BatchNo === this.vBatchNo) && this.ItemSamelist.some(item => item.LandedRate === this.vLandedRate)) {
-                this.toastr.warning('Selected Item already added with same Batch & same MRP in the list', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                });
-                return;
-            }
-        }
-        this.BatchSamelist = this.dsNewIssueList3.data.filter(item => item.BatchNo === this.vBatchNo)
-        if (this.BatchSamelist) {
-            if (this.BatchSamelist.some(item => item.ItemId === this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId) && this.BatchSamelist.some(item => item.LandedRate === this.vLandedRate)) {
-                this.toastr.warning('Selected Item already added with same Batch & same MRP in the list', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                });
-                return;
-            }
-        }
-        this.MRPSamelist = this.dsNewIssueList3.data.filter(item => item.LandedRate === this.vLandedRate)
-        if (this.MRPSamelist) {
-            if (this.MRPSamelist.some(item => item.ItemId === this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId) && this.MRPSamelist.some(item => item.BatchNo === this.vBatchNo)) {
-                this.toastr.warning('Selected Item already added with same Batch &  same MRP in the list', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                });
-                return;
-            }
-        }
-
-        if (!this.vBarcodeflag) {
-
-            let gstper = ((this.vCgstPer) + (this.vSgstPer) + (this.vIgstPer));
-
-            this.chargeslist = this.dsTempItemNameList.data;
-
-            let TotalMRP = this.vUnitMRP * this.vQty
-            let PurTotAmt = this.vPurchaseRate * this.vQty
-
-            let LandedRateandedTotal = this.vLandedRate * this.vQty
-
-            let GSTAmount = (((this.vUnitMRP) * (this.vVatPer) / 100) * parseInt(this.vQty)).toFixed(2);
-
-            this.chargeslist.push(
-                {
-                    ItemId: this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId || 0,
-                    ItemName: this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemName || '',
-                    BatchNo: this.vBatchNo,
-                    BatchExpDate: this.vBatchExpDate || '01/01/1900',
-                    BalanceQty: this.vBalanceQty || 0,
-                    Qty: this.vQty || 0,
-                    LandedRate: this.vLandedRate || 0,
-                    UnitMRP: this.vUnitMRP || 0,
-                    VatPer: gstper || 0,
-                    VatAmount: (((this.vTotalAmount) * (gstper)) / 100).toFixed(2),
-                    TotalAmount: this.vTotalAmount || 0,
-                    StockId: this.vStockId,
-
-                    TotalMRP: TotalMRP,
-                    DiscPer: 0,// contact.DiscPer || 0,
-                    DiscAmt: 0,
-                    NetAmt: LandedRateandedTotal,
-                    RoundNetAmt: Math.round(LandedRateandedTotal),// Math.round(TotalNet),
-                    mrpTotalAmount: TotalMRP,
-
-                    //LandedRate: this.vLandedRate,
-                    LandedRateandedTotal: LandedRateandedTotal,
-                    CgstPer: this.vCgstPer,
-                    //   CGSTAmt: CGSTAmt,
-                    SgstPer: this.vSgstPer,
-                    //   SGSTAmt: SGSTAmt,
-                    IgstPer: this.vIgstPer,
-                    //   IGSTAmt: IGSTAmt,
-                    PurchaseRate: this.vPurchaseRate,
-                    PurTotAmt: PurTotAmt,
-                    purTotalAmount: PurTotAmt,
-                    //   MarginAmt: v_marginamt,
-                    SalesDraftId: 1
-                });
-            console.log(this.chargeslist);
-            this.dsNewIssueList3.data = this.chargeslist
-        }
-
-        this.ItemReset();
-        // this.itemid.nativeElement.focus();
-        this._IssueToDep.NewIssueGroup.get('ItemID').setValue('');
-        this.Addflag = false;
-
-        if (!(this._IssueToDep.NewIssueGroup.invalid) && this.dsNewIssueList3.data.length > 0) {
-            this.vsaveflag = false;
-        }
-    }
-
-    deleteTableRow(element) {
-        let index = this.chargeslist.indexOf(element);
-        if (index >= 0) {
-            this.chargeslist.splice(index, 1);
-            this.dsNewIssueList3.data = [];
-            this.dsNewIssueList3.data = this.chargeslist;
-        }
-        this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
-            toastClass: 'tostr-tost custom-toast-success',
-        });
-    }
-
-    getTotalamt(element) {
-        this.vFinalTotalAmount = (element.reduce((sum, { LandedRateandedTotal }) => sum += +(LandedRateandedTotal || 0), 0)).toFixed(2);
-        this.vFinalGSTAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
-        this.vFinalNetAmount = (parseFloat(this.vFinalGSTAmount) + parseFloat(this.vFinalTotalAmount)).toFixed(2);
-        return this.vFinalTotalAmount;
-    }
-
-    getCellCalculation(contact, Qty) {
-
-        /// this.Indbalqty = parseInt(contact.TotalIndQty) - parseInt(contact.Qty);
-
-        if (parseFloat(contact.Qty) > parseFloat(contact.BalanceQty)) {
-            this.toastr.warning('Issue Qty cannot be greater than BalanceQty.', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            contact.Qty = 0;
-            contact.Qty = '';
-            contact.VatAmount = 0;
-            contact.LandedRateandedTotal = 0;
-        }
-        else {
-            if (contact.Qty > 0) {
-                contact.LandedRateandedTotal = (parseFloat(contact.Qty) * parseFloat(contact.LandedRate)).toFixed(2);
-                contact.VatAmount = ((parseFloat(contact.VatPer) * parseFloat(contact.LandedRateandedTotal)) / 100).toFixed(2);
-            }
-            else {
-                contact.Qty = 0;
-                contact.Qty = '';
-                contact.VatAmount = 0;
-                contact.LandedRateandedTotal = 0;
-            }
-        }
-    }
-
-    keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
-        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-            return true;
-        } else {
-            event.preventDefault();
-            return false;
-        }
-    }
-
-    OnReset() {
-        this._IssueToDep.NewIssueGroup.reset();
-        this.dsNewIssueList1.data = [];
-        this.dsNewIssueList3.data = [];
-        this.chargeslist.data = [];
-        this.dsTempItemNameList.data = [];
-        this._IssueToDep.IssueFinalForm.reset();
-    }
-
-    ItemReset() {
-        this.ItemName = " ";
-        this.vItemID = 0;
-        this.vBatchNo = " ";
-        this.vBalanceQty = 0;
-        this.vQty = 0;
-        this.vLandedRate = 0;
-        this.vTotalAmount = 0;
-    }
-
-    OnSave(){
-
-    }
-
     selectChangeStore(obj: any) {
         console.log(obj)
     }
@@ -410,8 +196,8 @@ export class IssueToDepartmentComponent implements OnInit {
         const dialogRef = this._matDialog.open(IssueToDeparmentAgainstIndentComponent,
             {
                 maxWidth: "95vw",
-                height: '95%',
-                width: '70%',
+                height: '80%',
+                width: '95%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -421,24 +207,7 @@ export class IssueToDepartmentComponent implements OnInit {
         });
     }
 
-    OnIndent() {
-        const dialogRef = this._matDialog.open(IssueToDeparmentAgainstIndentComponent,
-            {
-                maxWidth: "100%",
-                height: '95%',
-                width: '95%',
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed - Insert Action', result);
-            // this.dsNewIssueList1.data = result;
-            console.log(result)
-            // this.vIndentId = result[0].IndentId;
-
-            // const toSelectToStoreId = this.ToStoreList1.find(c => c.StoreId == result[0].FromStoreId);
-            // this._IssueToDep.NewIssueGroup.get('ToStoreId').setValue(toSelectToStoreId);
-            // console.log(this.vIndentId)
-        });
-    }
+ 
 
 }
 
