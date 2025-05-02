@@ -284,9 +284,9 @@ export class FixSupplierComponent implements OnInit {
             dlno:[],
             taluka:[],
             bankId:[],
-            BankBranch:[],
+            branch:[],
             bankNo:[],
-            IFSCcode:[],
+            ifsccode:[],
         };
     }
 }
