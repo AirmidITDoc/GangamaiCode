@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,8 @@ export class GrnReturnService {
   constructor(
     public _httpClient: HttpClient,
     public _httpClient1: ApiCaller,
-    private _formBuilder: UntypedFormBuilder
+    private _formBuilder: UntypedFormBuilder,
+    private _FormvalidationserviceService: FormvalidationserviceService
   ) { 
     this.NewGRNRetFinalFrom = this.NewGRNReturnFinal();
     this.GRNReturnSearchFrom= this.GRNSearchFrom();
@@ -28,13 +30,13 @@ export class GrnReturnService {
   }
   createStoreForm() {
     return this._formBuilder.group({
-      ToStoreId:2,
+      ToStoreId:[2,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
   }
   GRNSearchFrom() {
     return this._formBuilder.group({ 
-      ToStoreId: 2,
-      SupplierId:'',
+      ToStoreId: [2,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      SupplierId:['',[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       Status:['1'],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],

@@ -165,6 +165,8 @@ export class GoodReceiptnoteComponent implements OnInit {
     IsLoading: boolean = false;
     autocompletestore: string = "Store";
     autocompleteSupplier: string = "SupplierMaster";
+    FromDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
+    ToDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
     
       @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;  
       @ViewChild('actionButtonTemplateStatus') actionButtonTemplateStatus!: TemplateRef<any>;
@@ -172,7 +174,7 @@ export class GoodReceiptnoteComponent implements OnInit {
           ngAfterViewInit() { 
             this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate; 
             this.gridConfig.columnsList.find(col => col.key === 'Status')!.template = this.actionButtonTemplateStatus; 
-            this.gridConfig1.columnsList.find(col => col.key === 'check')!.template = this.actionButtonTemplateCheck;  
+            // this.gridConfig1.columnsList.find(col => col.key === 'check')!.template = this.actionButtonTemplateCheck;  
           } 
      AllColumns= [
         { heading: "Status", key: "Status", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
@@ -226,8 +228,8 @@ export class GoodReceiptnoteComponent implements OnInit {
           sortOrder: 0,
           filters: [
               { fieldName: "ToStoreId", fieldValue: "0", opType: OperatorComparer.Equals },
-              { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.Equals },
-              { fieldName: "To_Dt", fieldValue: "", opType: OperatorComparer.Equals },
+              { fieldName: "From_Dt", fieldValue: this.FromDate, opType: OperatorComparer.Equals },
+              { fieldName: "To_Dt", fieldValue: this.ToDate, opType: OperatorComparer.Equals },
               { fieldName: "IsVerify", fieldValue: "0", opType: OperatorComparer.Equals },
               { fieldName: "Supplier_Id", fieldValue: "0", opType: OperatorComparer.Equals } 
           ], 
@@ -295,19 +297,24 @@ export class GoodReceiptnoteComponent implements OnInit {
 
     fromDate:any = "";
     toDate:any = "";
-    StoreId:any = 0;
-    SupplierId:any = 0;
+    StoreId:any = "0";
+    SupplierId:any = "0";
     IsVerify:any;
     onChangeFirst() {
         debugger  
         this.isShowDetailTable = false;
+        if(this._GRNService.GRNSearchGroup.get('Status1').value == true){
+            this.IsVerify = "1"
+        }else{
+            this.IsVerify = "0"
+        }
         this.fromDate =  this.datePipe.transform(this._GRNService.GRNSearchGroup.get('start').value, "yyyy-MM-dd")
-        this.toDate =   this.datePipe.transform(this._GRNService.GRNSearchGroup.get('end').value, "yyyy-MM-dd")   
-        this.IsVerify = this._GRNService.GRNSearchGroup.get('Status1').value || "0" 
+        this.toDate =   this.datePipe.transform(this._GRNService.GRNSearchGroup.get('end').value, "yyyy-MM-dd") 
         this.getfilterdata();
     }
     
     getfilterdata() {
+        debugger
         this.gridConfig = {
             apiUrl: "GRN/GRNHeaderList",
             columnsList:this.AllColumns,
@@ -322,18 +329,15 @@ export class GoodReceiptnoteComponent implements OnInit {
             ], 
         } 
     }
-    selectChangeStore(value) { 
-        debugger
-    console.log(value)
+    selectChangeStore(value) {   
      if(value.value!==0)
         this.StoreId=value.value
     else
-    this.StoreId="0"
+    this.StoreId="0" 
 
     this.onChangeFirst();
 }
-selectChangeSupplier(value){
-    console.log(value)
+selectChangeSupplier(value){ 
     if(value.value!==0)
        this.SupplierId=value.value
    else
@@ -648,33 +652,16 @@ selectChangeSupplier(value){
         });
     }
 
-    onVerify(row) {
-        let updateGRNVerifyStatusobj = {};
-        updateGRNVerifyStatusobj['GRNID'] = row.GRNID;
-        updateGRNVerifyStatusobj['IsVerifiedUserId'] = this.accountService.currentUserValue.userId;
-        let submitObj = {
-            "updateGRNVerifyStatus": updateGRNVerifyStatusobj
-        }
-        this._GRNService.getVerifyGRN(submitObj).subscribe(response => {
-            if (response) {
-                this.toastr.success('Record Verified Successfully.', 'Verified !', {
-                    toastClass: 'tostr-tost custom-toast-success',
-                });
+    onVerify(row) { 
+        let GRNVerifyObj = {};
+        GRNVerifyObj['grnid'] = row.grnid;
+        GRNVerifyObj['isVerifiedUserId'] = this.accountService.currentUserValue.userId;
+  
+        this._GRNService.getVerifyGRN(GRNVerifyObj).subscribe(response => {
+            if (response) { 
                 this.grid.bindGridData();
-            } else {
-                this.toastr.error('Record Not Verified !, Please check error..', 'Error !', {
-                    toastClass: 'tostr-tost custom-toast-error',
-                });
-            }
-            // this.isLoading = '';
-        },
-            success => {
-                this.toastr.success('Record Verified Successfully.', 'Verified !', {
-                    toastClass: 'tostr-tost custom-toast-success',
-                });
-
-            });
-            this.grid.bindGridData();
+            }  
+        });  
     }
 
 

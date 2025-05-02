@@ -61,14 +61,12 @@
                     <mat-icon *ngIf="element.isVerified" title="Email Menu">mail</mat-icon>
                 </button>
                 <button mat-icon-button matTooltip="Send Bill On WhatsApp" class="p-4"
-                    (click)="getWhatsappshareSales(row)">
+                    (click)="getWhatsappshareSales(element)">
                     <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
                 </button>
 
-                <button mat-icon-button (click)="deleteRow(row)">
-                    <mat-icon *ngIf="element.isVerified == 1" [disabled]="row.disabled" class="disabled-icon"
-                        title="Cancle">highlight_off</mat-icon>
-                    <mat-icon *ngIf="element.isVerified == 0" title="Cancle">highlight_off</mat-icon>
+                <button mat-icon-button (click)="deleteRow(element)"> 
+                    <mat-icon *ngIf="!element.isVerified" title="Cancle">highlight_off</mat-icon>
                 </button>
             </div>
         </ng-template>
@@ -84,27 +82,16 @@
 
 
                 <airmid-dropdown label="Store Name" formControlName="ToStoreId" [formGroup]="_GRNService.GRNSearchGroup"
-                    [validations]="getValidationMessages().ToStoreId" fxFlex [mode]="autocompletestore"
-                    (selectionChange)="selectChangeStore($event)" (keyup)="selectChangeStore($event)"
-                    [(ngModel)]="gridConfig.filters[0].fieldValue">
-                </airmid-dropdown>
+                    [validations]="getValidationMessages().ToStoreId"     fxFlex [mode]="autocompletestore"
+                    (selectionChange)="selectChangeStore($event)" (keyup)="selectChangeStore($event)" >
+                </airmid-dropdown>  
+
 
                 <airmid-dropdown label="Supplier Name | Code" formControlName="SupplierId"
                     [formGroup]="_GRNService.GRNSearchGroup" [validations]="getValidationMessages().supplierId"
                     [mode]="autocompleteSupplier" (selectionChange)="selectChangeSupplier($event)"  (keyup)="selectChangeSupplier($event)"
                     [(ngModel)]="gridConfig.filters[4].fieldValue"></airmid-dropdown>
-
-              
-                    <!-- <mat-radio-group name="Status1" formControlName="Status1" fxLayout="column" class="gap-4 "  
-                    [(ngModel)]="gridConfig.filters[3].fieldValue" (change)="onChangeFirst()">
-                        <mat-label>Status:</mat-label>
-                        <mat-radio-button value="2" >All
-                        </mat-radio-button>
-                        <mat-radio-button value="1">Close
-                        </mat-radio-button>
-                        <mat-radio-button value="0">Pending
-                        </mat-radio-button>
-                    </mat-radio-group> -->
+ 
 
                     <div fxLayout="row" class="gap-4 ">
                         <span style="font-weight: bold;">Status :</span>
@@ -124,10 +111,7 @@
 
         <ng-template #actionButtonTemplateCheck let-element>
 
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-checkbox>
-               </mat-checkbox>
-            </div>
+           
 
         </ng-template>
 

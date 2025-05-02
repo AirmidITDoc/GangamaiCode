@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormGroup} from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators} from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,9 @@ export class GRNReturnWithoutGRNService {
   ReturnFinalForm:FormGroup;
   constructor(
     private _formBuilder: UntypedFormBuilder,
-    public _httpClient:HttpClient
+    public _httpClient:HttpClient,
+    public _httpClient1: ApiCaller,
+    private _FormvalidationserviceService: FormvalidationserviceService
   )
    {
    this.GRNReturnSearchFrom = this.CreateReturnSearchForm();
@@ -22,8 +26,8 @@ export class GRNReturnWithoutGRNService {
   }
   CreateReturnSearchForm() {
     return this._formBuilder.group({
-      ToStoreId: 2,
-      SupplierId:[''],
+      ToStoreId: [2,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      SupplierId:['',[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       Status:['1'],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
@@ -31,13 +35,14 @@ export class GRNReturnWithoutGRNService {
   }
   CreateStoreForm() {
     return this._formBuilder.group({
-      ToStoreId: 2,
+      ToStoreId: [2,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
   }
   CreateNewGRNReturnForm() {
     return this._formBuilder.group({
-      ToStoreId: 2,
+      ToStoreId: [2,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       SupplierName:'',
+      SupplierId:['',[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       GSTType:['GST Return'],
       ReturnDate: [(new Date()).toISOString()],
       ItemName:[''],
@@ -86,7 +91,7 @@ export class GRNReturnWithoutGRNService {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemName_GRN", Param);
   }
   public GRNReturnSave(Param){
-    return this._httpClient.post("Pharmacy/InsertGRNReturn", Param);
+    return this._httpClient1.PostData("GRNReturn/Insert", Param);
   }
   public getVerifyGRNReturn(Param) {
     return this._httpClient.post("Pharmacy/VerifyGRNReturn", Param)

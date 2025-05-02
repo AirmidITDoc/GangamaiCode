@@ -80,7 +80,7 @@
                       fxFlex="6%"
                       label="Gate Entry No"
                       formControlName="GateEntryNo"
-                      [(ngModel)]="registerObj.grnNumber"
+                      [(ngModel)]="registerObj.gateEntryNo"
                       [formGroup]="userFormGroup"
                       placeholder="GateEntryNo"
                       [validations]="getValidationMessages().gateEntryNo"
@@ -249,7 +249,7 @@
                       autocomplete="off"
                       [min]="1"
                       OnlyNumber
-                      [disabled]="contact.IsVerifiedUserId > 0"
+                      [disabled]="contact.isVerified"
                       [id]="'Packing_' + index"
                       (keydown.arrowdown)="setFocus('Packing_' + (index + 1))"
                       (keydown.arrowup)="setFocus('Packing_' + (index - 1))"
@@ -279,7 +279,7 @@
                     <input
                       matInput
                       [(ngModel)]="contact.BatchNo"
-                      [disabled]="contact.IsVerifiedUserId > 0"
+                      [disabled]="contact.isVerified"
                       [id]="'BatchNo_' + index"
                       (keydown.arrowdown)="setFocus('BatchNo_' + (index + 1))"
                       (keydown.arrowup)="setFocus('BatchNo_' + (index - 1))"
@@ -298,7 +298,7 @@
                       (change)="CellcalculateLastDay(contact, inputField.value)"
                       [(ngModel)]="contact.ExpDate"
                       placeholder="mmyyyy"
-                      [disabled]="contact.IsVerifiedUserId > 0"
+                      [disabled]="contact.isVerified"
                     />
                   </mat-form-field>
                 </mat-cell>
@@ -326,7 +326,7 @@
                       (input)="getCellCalculation(contact)"
                       (keydown.arrowdown)="setFocus('FreeQty_' + (index + 1))"
                       (keydown.arrowup)="setFocus('FreeQty_' + (index - 1))"
-                      [disabled]="contact.IsVerifiedUserId > 0"
+                      [disabled]="contact.isVerified"
                       [min]="0"
                     />
                   </mat-form-field>
@@ -353,7 +353,7 @@
                       OnlyNumber
                       [id]="'MRP_' + index"
                       autocomplete="off"
-                      [disabled]="contact.IsVerifiedUserId > 0"
+                      [disabled]="contact.isVerified"
                       (keydown.arrowdown)="setFocus('MRP_' + (index + 1))"
                       (keydown.arrowup)="setFocus('MRP_' + (index - 1))"
                       (keypress)="keyPressCharater($event)"
@@ -376,7 +376,7 @@
                       [id]="'Rate_' + index"
                       autocomplete="off"
                       OnlyNumber
-                      [disabled]="contact.IsVerifiedUserId > 0"
+                      [disabled]="contact.isVerified"
                       (input)="getCellCalculation(contact)"
                       (keydown.arrowdown)="setFocus('Rate_' + (index + 1))"
                       (keydown.arrowup)="setFocus('Rate_' + (index - 1))"
@@ -402,7 +402,7 @@
                       matInput
                       [(ngModel)]="contact.Disc"
                       [id]="'DiscPer_' + index"
-                      [disabled]="contact.IsVerifiedUserId > 0"
+                      [disabled]="contact.isVerified"
                       (input)="getCellCalculation(contact)"
                       (keydown.arrowdown)="setFocus('DiscPer_' + (index + 1))"
                       (keydown.arrowup)="setFocus('DiscPer_' + (index - 1))"
@@ -433,7 +433,7 @@
                       matInput
                       [(ngModel)]="contact.Disc2"
                       [id]="'DiscPer2_' + index"
-                      [disabled]="contact.IsVerifiedUserId > 0"
+                      [disabled]="contact.isVerified"
                       (input)="getCellCalculation(contact)"
                       [min]="0"
                       [max]="100"
@@ -489,7 +489,7 @@
                       step="0.1"
                       type="text"
                       OnlyNumber
-                      [disabled]="contact.IsVerifiedUserId > 0"
+                      [disabled]="contact.isVerified"
                       (change)="getCellCalculation(contact)"
                       (keydown.arrowdown)="setFocus('CGSTPer_' + (index + 1))"
                       (keydown.arrowup)="setFocus('CGSTPer_' + (index - 1))"
@@ -518,7 +518,7 @@
                       step="0.1"
                       type="text"
                       OnlyNumber
-                      [disabled]="contact.IsVerifiedUserId > 0"
+                      [disabled]="contact.isVerified"
                       (change)="getCellCalculation(contact)"
                       (keydown.arrowdown)="setFocus('SGSTPer_' + (index + 1))"
                       (keydown.arrowup)="setFocus('SGSTPer_' + (index - 1))"
@@ -547,7 +547,7 @@
                       step="0.1"
                       type="text"
                       OnlyNumber
-                      [disabled]="contact.IsVerifiedUserId > 0"
+                      [disabled]="contact.isVerified"
                       (change)="getCellCalculation(contact)"
                       autocomplete="off"
                       (keydown.arrowdown)="setFocus('IGSTPer_' + (index + 1))"
@@ -648,15 +648,23 @@
               <ng-container matColumnDef="Status">
                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white">Verify</mat-header-cell>
                 <mat-cell *matCellDef="let contact">
-                  <mat-icon *ngIf="contact.IsVerifiedUserId" matTooltip="Verified" class="pill green-600 s-16">circle</mat-icon>
-                  <mat-icon *ngIf="!contact.IsVerifiedUserId" matTooltip="Pending" class="pill red-600 s-16">circle</mat-icon>
+                  <mat-icon *ngIf="contact.IsVerified" matTooltip="Verified" class="pill green-600 s-16">check_circle</mat-icon>
+                  <mat-icon *ngIf="!contact.IsVerified" matTooltip="Pending" class="red-600 s-16">hourglass_empty</mat-icon>
                 </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="IsVerified">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsVerified</mat-header-cell>
-                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                  {{ contact.IsVerified }}
+                <mat-cell *matCellDef="let contact" fxShow.gt-sm> 
+                  <mat-icon *ngIf="contact.IsVerified" matTooltip="GRN IsVerified" 
+                  class="active-icon green-500 s-16">
+                      check_circle
+                  </mat-icon>
+                  
+                  <mat-icon *ngIf="contact.IsVerified" matTooltip="GRN Not IsVerified" 
+                  class="active-icon red-500 s-16">
+                      hourglass_empty
+                  </mat-icon>
                 </mat-cell>
               </ng-container>
 

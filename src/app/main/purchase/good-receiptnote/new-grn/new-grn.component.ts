@@ -742,8 +742,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         grnSaveObj['grnNumber'] = '0';
         grnSaveObj['grndate'] =this.datePipe.transform(this.dateTimeObj.date ,"yyyy-MM-dd") || '1900-01-01';
         grnSaveObj['grntime'] = this.dateTimeObj.time;
-        grnSaveObj['storeId'] = this.accountService.currentUserValue.storeId || 2;
-        grnSaveObj['supplierId'] = this.userFormGroup.get('SupplierId').value || 0;
+        grnSaveObj['storeId'] = this.userFormGroup.get('StoreId').value || 0;
+        grnSaveObj['supplierId'] = this.userFormGroup.get('StoreId').value || 0;
         grnSaveObj['invoiceNo'] = this.userFormGroup.get('InvoiceNo').value || '';
         grnSaveObj['deliveryNo'] = '';
         grnSaveObj['gateEntryNo'] = this.userFormGroup.get('GateEntryNo').value || ''; 
@@ -839,7 +839,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         this.dsItemNameList.data.forEach((element) => {
             let updateItemMasterGSTPerObj = {};
             updateItemMasterGSTPerObj['itemId'] = element.ItemId || 0;
-            updateItemMasterGSTPerObj['hsNcode'] = element.HSNCode || "Ab";
+            updateItemMasterGSTPerObj['hsNcode'] = element.HSNCode || "";
             updateItemMasterGSTPerObj['cgst'] = element.CGST || 0;
             updateItemMasterGSTPerObj['sgst'] = element.SGST || 0;
             updateItemMasterGSTPerObj['igst'] = element.IGST || 0;
@@ -862,55 +862,22 @@ export class NewGrnComponent implements OnInit, OnDestroy {
           });
     }
     OnEditSave() {  
-        debugger
-        let grnUpdateObj = {};
-        grnUpdateObj['grnid'] = this.registerObj.grnid;
-        grnUpdateObj['grnNumber'] = this.registerObj.grnNumber;
-        grnUpdateObj['grndate'] =this.datePipe.transform(this.dateTimeObj.date ,"yyyy-MM-dd") || '1900-01-01';
-        grnUpdateObj['grntime'] = this.dateTimeObj.time;
-        grnUpdateObj['storeId'] = this.accountService.currentUserValue.storeId || 2;
-        grnUpdateObj['supplierId'] = this.userFormGroup.get('SupplierId').value || 0;
-        grnUpdateObj['invoiceNo'] = this.userFormGroup.get('InvoiceNo').value || '';
-        grnUpdateObj['deliveryNo'] = '';
-        grnUpdateObj['gateEntryNo'] = this.userFormGroup.get('GateEntryNo').value || ''; 
+        debugger  
+ 
+         let cashCreditType,grntype
         if(this.userFormGroup.get('PaymentType').value == true){
-            grnUpdateObj['cashCreditType'] =true;
+            cashCreditType =true;
         }else{
-            grnUpdateObj['cashCreditType'] = false;  
+            cashCreditType= false;  
         }
         if(this.userFormGroup.get('GRNType').value == true){
-            grnUpdateObj['grntype'] =true;
+            grntype = true;
         }else{
-            grnUpdateObj['grntype'] = false;  
-        }
-        grnUpdateObj['cashCreditType'] = this.userFormGroup.get('PaymentType').value;
-        grnUpdateObj['grntype'] = this.userFormGroup.get('GRNType').value;
-        grnUpdateObj['totalAmount'] = this._GRNList.GRNFinalForm.get('TotalAmt').value || 0;
-        grnUpdateObj['totalDiscAmount'] = this._GRNList.GRNFinalForm.get('DiscAmount').value || 0;
-        grnUpdateObj['totalVatamount'] = this._GRNList.GRNFinalForm.get('VatAmount').value || 0;
-        grnUpdateObj['netAmount'] = this._GRNList.GRNFinalForm.get('NetPayamt').value || 0;
-        grnUpdateObj['remark'] = this._GRNList.GRNFinalForm.get('Remark').value || '';
-        grnUpdateObj['receivedBy'] = this._GRNList.GRNFinalForm.get('ReceivedBy').value || '';
-        grnUpdateObj['isVerified'] = false;
-        grnUpdateObj['isClosed'] = false;  
-        grnUpdateObj['invDate'] = this.datePipe.transform(this.userFormGroup.get('DateOfInvoice').value, "yyyy-MM-dd") || '1900-01-01';
-        grnUpdateObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
-        grnUpdateObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
-        grnUpdateObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharge').value || 0;
-        grnUpdateObj['roundingAmt'] = this._GRNList.GRNFinalForm.get('RoundingAmt').value || 0;
-        grnUpdateObj['totCgstamt'] = this.CGSTFinalAmount || 0; 
-        grnUpdateObj['totSgstamt'] = this.SGSTFinalAmount || 0; 
-        grnUpdateObj['totIgstamt'] = this.IGSTFinalAmount || 0; 
-        grnUpdateObj['tranProcessId'] = this.GSTTypeID;
-        grnUpdateObj['tranProcessMode'] = this.userFormGroup.get('GSTType').value || '';
-        grnUpdateObj['ewayBillNo'] = this._GRNList.GRNFinalForm.get('EwayBillNo').value || '';
-        grnUpdateObj['ewayBillDate'] = this.datePipe.transform(this._GRNList.GRNFinalForm.get('EwalBillDate').value, "yyyy-MM-dd") || '01/01/1099';
-        grnUpdateObj['billDiscAmt'] =   this._GRNList.GRNFinalForm.get('DiscAmount2').value || 0; 
-        
-   
+            grntype = false;  
+        } 
+
         let SavegrnDetailObj = [];
-        this.dsItemNameList.data.forEach((element) => {
-            console.log(element); 
+        this.dsItemNameList.data.forEach((element) => { 
             let grnDetailSaveObj = {};
             grnDetailSaveObj['grndetId'] = 0;
             grnDetailSaveObj['grnId'] = this.registerObj.grnid; 
@@ -957,26 +924,60 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             grnDetailSaveObj['stkId'] = element.StkID || 0; 
             grnDetailSaveObj['isVerified'] = element.IsVerified || false; 
             grnDetailSaveObj['isVerifiedDatetime'] =this.datePipe.transform(element.IsVerifiedDatetime, "yyyy-MM-dd") || '1900-01-01';  
-            grnDetailSaveObj['isVerifiedUserId'] = element.IsVerifiedUserId || 0;
-          
+            grnDetailSaveObj['isVerifiedUserId'] = element.IsVerifiedUserId || 0; 
             SavegrnDetailObj.push(grnDetailSaveObj); 
-        }); 
-        grnUpdateObj['tGrndetails'] = SavegrnDetailObj
+        });  
+        
+        let grnUpdateObj = {
+            "grnid": this.registerObj.grnid,
+            "grnNumber": this.registerObj.grnNumber,
+            "grndate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',
+            "grntime": this.dateTimeObj.time,
+            "storeId": this.userFormGroup.get('StoreId').value || 0,
+            "supplierId": this.userFormGroup.get('SupplierId').value || 0,
+            "invoiceNo": this.userFormGroup.get('InvoiceNo').value || '',
+            "deliveryNo": "",
+            "gateEntryNo": this.userFormGroup.get('GateEntryNo').value || '',
+            "cashCreditType": cashCreditType,
+            "grntype": grntype,
+            "totalAmount": this._GRNList.GRNFinalForm.get('TotalAmt').value || 0,
+            "totalDiscAmount": this._GRNList.GRNFinalForm.get('DiscAmount').value || 0,
+            "totalVatamount": this._GRNList.GRNFinalForm.get('VatAmount').value || 0,
+            "netAmount": this._GRNList.GRNFinalForm.get('NetPayamt').value || 0,
+            "remark": this._GRNList.GRNFinalForm.get('Remark').value || '',
+            "receivedBy": this._GRNList.GRNFinalForm.get('ReceivedBy').value || '',
+            "isVerified": false,
+            "isClosed": false,
+            "debitNote": this._GRNList.GRNFinalForm.get('DebitAmount').value || 0,
+            "creditNote": this._GRNList.GRNFinalForm.get('CreditAmount').value || 0,
+            "otherCharge": this._GRNList.GRNFinalForm.get('OtherCharge').value || 0,
+            "roundingAmt": this._GRNList.GRNFinalForm.get('RoundingAmt').value || 0,
+            "totCgstamt": this.CGSTFinalAmount || 0,
+            "totSgstamt": this.SGSTFinalAmount || 0,
+            "totIgstamt": this.IGSTFinalAmount || 0,
+            "tranProcessId": this.GSTTypeID,
+            "tranProcessMode": this.userFormGroup.get('GSTType').value || '',
+            "ewayBillNo": this._GRNList.GRNFinalForm.get('EwayBillNo').value || '',
+            "ewayBillDate": this.datePipe.transform(this._GRNList.GRNFinalForm.get('EwalBillDate').value, "yyyy-MM-dd") || '01/01/1099',
+            "billDiscAmt": this._GRNList.GRNFinalForm.get('DiscAmount2').value || 0,
+            "tGrndetails": SavegrnDetailObj
 
-        let updateItemMasterGSTPerObjarray = [];
+        }
+        var updateItemMasterGSTPerObjarray1 = [];
         this.dsItemNameList.data.forEach((element) => {
-            let updateItemMasterGSTPerObj = {};
-            updateItemMasterGSTPerObj['itemId'] = element.ItemId || 0;
-            updateItemMasterGSTPerObj['hsNcode'] = element.HSNCode || "Ab";
-            updateItemMasterGSTPerObj['cgst'] = element.CGST || 0;
-            updateItemMasterGSTPerObj['sgst'] = element.SGST || 0;
-            updateItemMasterGSTPerObj['igst'] = element.IGST || 0;
-         
-            updateItemMasterGSTPerObjarray.push(updateItemMasterGSTPerObj);
-        }); 
+            let updateItemMasterGSTPerObj = {
+                "itemId": element.ItemId || 0,
+                "hsNcode": element.HSNCode || "",
+                "cgst": element.CGST || 0,
+                "sgst": element.SGST || 0,
+                "igst": element.IGST || 0
+            }
+            updateItemMasterGSTPerObjarray1.push(updateItemMasterGSTPerObj);
+        });   
+
         let submitData = {
             "grn": grnUpdateObj, 
-            "grnItems": updateItemMasterGSTPerObjarray
+            "grnItems": updateItemMasterGSTPerObjarray1
         };
         console.log(submitData); 
         this._GRNList.GRNEdit(submitData,this.registerObj.grnid).subscribe(response => {

@@ -32,7 +32,7 @@
 
                             <airmid-dropdown label="Supplier Name" formControlName="SupplierId" fxFlex="25%"
                             [formGroup]="_GRNReturnService.NewGRNReturnFrom" [(ngModel)]="VsupplierId"
-                               [mode]="autocompleteSupplier">
+                               [mode]="autocompleteSupplier" (selectionChange)="selectChangeSupplier($event)">
                            </airmid-dropdown>
 
                             <mat-radio-group name="GSTType" formControlName="GSTType"  value="GST Return" 
@@ -123,8 +123,7 @@
                             class="backgroundBlur">
                             <div class="spinner-border text-danger"></div>
                         </div>
-                        <mat-table #table matSort [dataSource]="dsItemList" [@animateStagger]="{value:'50'}"
-                            >
+                        <mat-table #table matSort [dataSource]="dsItemList" [@animateStagger]="{value:'50'}" >
 
                             <ng-container matColumnDef="buttons" stickyEnd>
                                 <mat-header-cell *matHeaderCellDef style="color: white;"> Action
@@ -137,18 +136,18 @@
                             </ng-container>
 
                             <ng-container matColumnDef="ItemName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-150">
                                     ItemName
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                                     {{contact.ItemName}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="BatchNo">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>BatchNo
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">BatchNo
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                     {{contact.BatchNo}}
                                 </mat-cell>
                             </ng-container>
@@ -162,9 +161,9 @@
                             </ng-container>
 
                             <ng-container matColumnDef="ExpDate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ExpDate
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">ExpDate
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                     {{contact.ExpDate}}
                                 </mat-cell>
                             </ng-container>
@@ -257,50 +256,6 @@
                                 </mat-cell>
                             </ng-container>
 
-                            <!-- <ng-container matColumnDef="IsVerifiedUserId">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    IsVerifiedUserId</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.IsVerifiedUserId}}
-                                </mat-cell>
-                            </ng-container> -->
-
-                            <!-- <ng-container matColumnDef="Status">
-                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                    style="color: white;">Verify</mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                    <mat-icon *ngIf="contact.IsVerifiedUserId" matTooltip="Verified"
-                                        class="pill green-600 s-16">circle</mat-icon>
-                                    <mat-icon *ngIf="!contact.IsVerifiedUserId" matTooltip="Pending"
-                                        class="pill red-600 s-16">circle</mat-icon>
-                                </mat-cell>
-                            </ng-container> -->
-
-                            <!-- <ng-container matColumnDef="IsVerified">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    IsVerified</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.IsVerified}}
-                                </mat-cell>
-                            </ng-container> -->
-
-                            <!-- <ng-container matColumnDef="IsVerifiedDatetime">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    IsVerifiedDatetime</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.IsVerifiedDatetime | date:'dd/MM/YYYY'}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="stockid">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    StockId</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.StkID}}
-                                </mat-cell>
-                            </ng-container> -->
-
-
                             <ng-container matColumnDef="loading">
                                 <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                 </mat-header-cell>
@@ -363,54 +318,42 @@
                                             currency:'INR' }}</span>
 
                                     </div>
-                                    <div fxLayout="row" class="gap-4">
-                                        <mat-form-field appearance="outline" fxFlex="60%">
-                                            <mat-label>Remark</mat-label>
-                                            <input matInput placeholder="Placeholder" formControlName="Remark" #Remark
-                                                type="text"  >
+                                    
+                                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px" style="width: 100%;">
+  
+                                        <mat-form-field appearance="outline" fxFlex="30%">
+                                          <mat-label>Remark</mat-label>
+                                          <input matInput placeholder="Enter remark" formControlName="Remark">
                                         </mat-form-field>
-
-                                        <mat-form-field appearance="outline" fxFlex="12%">
-                                            <mat-label>Total Amount</mat-label>
-                                            <input matInput placeholder="Placeholder" formControlName="FinalTotalAmt"
-                                                [(ngModel)]="vTotalFinalAmount" type="number"
-                                                 readonly>
+                                      
+                                        <mat-form-field appearance="outline" fxFlex="15%">
+                                          <mat-label>Total Amount</mat-label>
+                                          <input matInput formControlName="FinalTotalAmt" [(ngModel)]="vTotalFinalAmount" type="number" readonly>
                                         </mat-form-field>
-
-                                        <!-- <mat-form-field appearance="outline" fxFlex="10%">
-                                            <mat-label>DiscAmt</mat-label>
-                                            <input matInput placeholder="Placeholder" formControlName="FinalDiscAmount"
-                                                [(ngModel)]="vFinalDisAmount" #DiscAmount type="number"
-                                               readonly>
-                                        </mat-form-field> -->
-
-                                        <mat-form-field appearance="outline" fxFlex="12%">
-                                            <mat-label>GST Amt</mat-label>
-                                            <input matInput placeholder="Placeholder" formControlName="FinalVatAmount"
-                                                [(ngModel)]="vFinalVatAmount" #VatAmount
-                                                 readonly type="number">
+                                      
+                                        <mat-form-field appearance="outline" fxFlex="15%">
+                                          <mat-label>GST Amt</mat-label>
+                                          <input matInput formControlName="FinalVatAmount" [(ngModel)]="vFinalVatAmount" type="number" readonly>
                                         </mat-form-field>
-
-                                        <mat-form-field appearance="outline" fxFlex="12%">
-                                            <mat-label>Net Pay Amt</mat-label>
-                                            <input matInput placeholder="Placeholder" formControlName="FinalNetPayamt"
-                                                type="number" readonly [(ngModel)]="vFinalNetAmount"
-                                                #NetPayamt>
+                                      
+                                        <mat-form-field appearance="outline" fxFlex="15%">
+                                          <mat-label>Net Pay Amt</mat-label>
+                                          <input matInput formControlName="FinalNetPayamt" [(ngModel)]="vFinalNetAmount" type="number" readonly>
                                         </mat-form-field>
-
-                                        <mat-form-field appearance="outline" fxFlex="12%">
-                                            <mat-label>Rounding Amt</mat-label>
-                                            <input matInput placeholder="Placeholder" formControlName="RoundingAmt"
-                                                #RoundingAmt [(ngModel)]="vNetRoundAmt" readonly>
+                                      
+                                        <mat-form-field appearance="outline" fxFlex="15%">
+                                          <mat-label>Rounding Amt</mat-label>
+                                          <input matInput formControlName="RoundingAmt" [(ngModel)]="vNetRoundAmt" type="number" readonly>
                                         </mat-form-field>
-
-                                            <div class="modal-footer-buttons gap-8" fxLayout="row" style="margin-left: 190px;">
-                                                <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
-                                                <button class="btn btn-primary " (click)="OnSave()" [disabled]="Savebtn">Save</button>
-                                                
-                                            </div>
-                                       
-                                    </div>
+                                      
+                                        <div fxFlex="auto" fxLayout="row" fxLayoutAlign="end center">
+                                          <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
+                                          <button class="btn btn-primary" (click)="OnSave()" style="margin-left: 8px;">Save</button>
+                                        </div>
+                                        <!-- [disabled]="Savebtn" -->
+                                      
+                                      </div>
+                                      
                                 </div>
                             
                         </div>

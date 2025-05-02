@@ -42,7 +42,7 @@
                                </airmid-dropdown>
                             </form>
 
-                            <airmid-dropdown label="Supplier Name" formControlName="SupplierId"
+                            <airmid-dropdown label="Supplier Name" formControlName="SupplierId" fxFlex="20%"
                             [formGroup]="_GRNReturnService.NewGRNReturnFrom" [(ngModel)]="VsupplierId"
                                [mode]="autocompleteSupplier">
                            </airmid-dropdown>
@@ -154,7 +154,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="ReturnQty" sticky>
+                                    <!-- <ng-container matColumnDef="ReturnQty" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                             class="w-100">ReturnQty
                                         </mat-header-cell>
@@ -162,6 +162,19 @@
                                             <mat-form-field appearance="fill">
                                                 <input matInput [(ngModel)]="contact.ReturnQty" type="text" OnlyNumber
                                                     (keyup)="getCellCalculation(contact,contact.ReturnQty)"
+                                                    (keypress)="keyPressAlphanumeric($event)">
+                                            </mat-form-field>
+                                        </mat-cell>
+                                    </ng-container> -->
+
+                                    <ng-container matColumnDef="ReturnQty" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                            class="w-100">ReturnQty
+                                        </mat-header-cell>
+                                        <mat-cell class="w-100" *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-form-field appearance="fill">
+                                                <input matInput [(ngModel)]="contact.ReturnQty" type="text" OnlyNumber
+                                                    (ngModelChange)="getCellCalculation(contact,contact.ReturnQty)"
                                                     (keypress)="keyPressAlphanumeric($event)">
                                             </mat-form-field>
                                         </mat-cell>
