@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
+import { RouterModule, Routes } from "@angular/router"; 
 
 const appRoutes: Routes = [
     {
@@ -52,6 +52,13 @@ const appRoutes: Routes = [
         loadChildren: () =>
             import("./inventory/inventory.module").then(
                 (m) => m.InventoryModule
+            ),
+    },
+    {
+        path: "otmanagment",
+        loadChildren: () =>
+            import("./OTManagement/otmanagement.module").then(
+                (m) => m.OTManagementModule
             ),
     },
 ];
