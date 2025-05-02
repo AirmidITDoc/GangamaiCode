@@ -55,11 +55,15 @@
                                     [mode]="autocompleteitem" (selectionChange)="selectChangeItem($event)">
                                 </airmid-dropdown>
 
-                                <mat-form-field appearance="outline" fxFlex="10%">
+                                <!-- <mat-form-field appearance="outline" fxFlex="10%">
                                     <mat-label>Qty</mat-label>
                                     <input name="Qty" formControlName="Qty" matInput [(ngModel)]="vQty"
                                         (keydown)="onEnterqty($event)" required #qty type="text" OnlyNumber>
-                                </mat-form-field>&nbsp;&nbsp;
+                                </mat-form-field>&nbsp;&nbsp; -->
+
+                                <airmid-textbox fxFlex="10%" label="Qty" formControlName="Qty"
+                                [formGroup]="_IndentService.newIndentFrom" placeholder="Qty" type="number"></airmid-textbox>
+
 
                                 <div matTooltip="Select All Value to enable this button!!" style="padding: 2px;">
                                     <button class="btn btn-primary" (click)="onAdd()">

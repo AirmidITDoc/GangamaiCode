@@ -1,103 +1,133 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" fusePerfectScrollbar>
-    <mat-toolbar>
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">account_box
-            </mat-icon>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-                New Issue To Department List
-            </span>
-        </div>
-        <span class="material-icons" style="cursor: pointer;color: #fff;" (click)="onClose()">close</span>
-
-    </mat-toolbar>
-
-    <div class="content">
-
-        <div class="center p-12 pb-56" fxFlexAlign="start center">
-            <div class="content-card" style="border-radius:4px; ">
-                <div fxLayout="column" fxLayoutAlign="start none">
-
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                        <form [formGroup]="StoreFrom">
-                            <airmid-dropdown label="Store Name" formControlName="FromStoreId" [formGroup]="StoreFrom"
-                                [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)">
-                            </airmid-dropdown>
-                        </form>
-                        <form [formGroup]="NewIssueGroup">
-                            <airmid-dropdown label="Store Name" formControlName="ToStoreId" [formGroup]="StoreFrom"
-                                fxFlex="50%" [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)">
-                            </airmid-dropdown>
-                            <div style="padding-top: 15px;">
-                                <mat-checkbox fxFlex="15%" [(ngModel)]="vAgainstIndet" [checked]
-                                    formControlName="AgainstIndent" (change)="getAgainstIndet($event)">Against Indent
-                                </mat-checkbox>
-                            </div>
-                        </form>
-
-                    </div>
-                    <form [formGroup]="NewIssueGroup">
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-
-
-                            <airmid-textbox fxFlex="12%" label="Barcode" formControlName="Barcode"
-                                [formGroup]="NewIssueGroup" placeholder="Barcode"
-                                [(ngModel)]="vBarcode"></airmid-textbox>
-
-
-                            <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="NewIssueGroup"
-                                formControlName="ItemName" placeholderText="Item Name (enter 2 char)" fxFlex="22%"
-                                ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
-                                (selectionChange)="getSelectedItem($event)" TextField="formattedText"
-                                ValueField="itemId" (onClearSelection)="OnReset()"></airmid-autocomplete>
-
-
-                            <airmid-textbox fxFlex="12%" label="BatchNO" formControlName="BatchNO"
-                                [formGroup]="NewIssueGroup" placeholder="BatchNO"
-                                [(ngModel)]="vBatchNo"></airmid-textbox>
-
-
-                            <airmid-textbox fxFlex="12%" label="BalanceQty" formControlName="BalanceQty"
-                                [formGroup]="NewIssueGroup" placeholder="BalanceQty"
-                                [(ngModel)]="vBalanceQty"></airmid-textbox>
-
-                            <airmid-textbox fxFlex="12%" label="Qty" formControlName="Qty" [formGroup]="NewIssueGroup"
-                                placeholder="Qty" [(ngModel)]="vQty"></airmid-textbox>
-
-
-                            <airmid-textbox fxFlex="12%" label="UnitRate" formControlName="UnitRate"
-                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
-                                [formGroup]="NewIssueGroup" placeholder="UnitRate"
-                                [(ngModel)]="vLandedRate"></airmid-textbox>
-
-
-                            <airmid-textbox fxFlex="12%" label="TotalAmount" formControlName="TotalAmount"
-                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
-                                [formGroup]="NewIssueGroup" placeholder="TotalAmount"
-                                [(ngModel)]="vTotalAmount"></airmid-textbox>
-
-                            <div>
-                                <button (click)="onAdd($event)" class="btn btn-primary btn-with-icon py-8"
-                                    [disabled]="!Addflag" #addbutton>
-                                    <span class="btn-icon">
-                                        <mat-icon> add </mat-icon>
-                                    </span>
-                                </button>
-                            </div>
+<!-- NEW -->
+<div class="modal-page page-layout inner-scroll">
+    <div class="modal-wrapper grid-container">
+        <!-- Modal header -->
+        <div class="modal-header accent">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }"> New Issue To Department
+                    </span>
+                </div>
+                <div class="modal-header-right">
+                    <div class="comman-date-container">
+                        <app-common-date [screenFrom]="'OP-billing'"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                        <div class="close-icon">
+                            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                                matTooltip="Close">
+                                <mat-icon>close</mat-icon>
+                            </button>
                         </div>
-                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="modal-body-container">
+                <div fxLayout="column" class="h-100-p">
+                    <mat-accordion>
+                        <mat-expansion-panel expanded>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <div class="panel-title" fxLayout="row" fxLayoutAlign="space-between center">
+                                        <span>Issue To Department</span>
+                                    </div>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                                <div fxFlex.gt-sm="100%" fxFlex>
+
+                                    <div fxlayout="row">
+
+                                        <form [formGroup]="NewIssueGroup">
+                                            <airmid-dropdown label="Store Name" formControlName="FromStoreId"
+                                                fxFlex="30%" [formGroup]="NewIssueGroup" [mode]="autocompletestore"
+                                                (selectionChange)="selectChangeStore($event)">
+                                            </airmid-dropdown>
+                                            <!-- </form>
+                                        <form [formGroup]="NewIssueGroup"> -->
+                                            <airmid-dropdown label="Store Name" formControlName="ToStoreId"
+                                                [formGroup]="StoreFrom" fxFlex="30%" [mode]="autocompletestore"
+                                                (selectionChange)="selectChangeStore($event)">
+                                            </airmid-dropdown>
+                                            <div style="padding-top: 15px;">
+                                                <mat-checkbox fxFlex="25%" [(ngModel)]="vAgainstIndet" [checked]
+                                                    formControlName="AgainstIndent"
+                                                    (change)="getAgainstIndet($event)">Against Indent
+                                                </mat-checkbox>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <div fxLayout="row" class="gap-2">
+                                        <form [formGroup]="NewIssueGroup">
+                                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+
+                                                <airmid-textbox fxFlex="10%" label="Barcode" formControlName="Barcode"
+                                                    [formGroup]="NewIssueGroup" placeholder="Barcode"
+                                                    [(ngModel)]="vBarcode"></airmid-textbox>
+
+                                                <airmid-autocomplete label="Item Name (enter 2 char)"
+                                                    [formGroup]="NewIssueGroup" formControlName="ItemName"
+                                                    placeholderText="Item Name (enter 2 char)" fxFlex="20%"
+                                                    ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
+                                                    (selectionChange)="getSelectedItem($event)"
+                                                    TextField="formattedText" ValueField="itemId"
+                                                    (onClearSelection)="OnReset()"></airmid-autocomplete>
 
 
+                                                <airmid-textbox fxFlex="12%" label="BatchNO" formControlName="BatchNO"
+                                                    [formGroup]="NewIssueGroup" placeholder="BatchNO"
+                                                    [(ngModel)]="vBatchNo"></airmid-textbox>
+
+
+                                                <airmid-textbox fxFlex="12%" label="BalanceQty"
+                                                    formControlName="BalanceQty" [formGroup]="NewIssueGroup"
+                                                    placeholder="BalanceQty" [(ngModel)]="vBalanceQty"></airmid-textbox>
+
+                                                <airmid-textbox fxFlex="12%" label="Qty" formControlName="Qty"
+                                                    [formGroup]="NewIssueGroup" placeholder="Qty"
+                                                    [(ngModel)]="vQty"></airmid-textbox>
+
+
+                                                <airmid-textbox fxFlex="10%" label="UnitRate" formControlName="UnitRate"
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
+                                                    [formGroup]="NewIssueGroup" placeholder="UnitRate"
+                                                    [(ngModel)]="vLandedRate"></airmid-textbox>
+
+
+                                                <airmid-textbox fxFlex="10%" label="TotalAmount"
+                                                    formControlName="TotalAmount"
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
+                                                    [formGroup]="NewIssueGroup" placeholder="TotalAmount"
+                                                    [(ngModel)]="vTotalAmount"></airmid-textbox>
+
+                                                <div>
+                                                    <!-- [disabled]="!Addflag" -->
+                                                    <button (click)="onAdd($event)"
+                                                        class="btn btn-primary btn-with-icon py-8" #addbutton>
+                                                        <span class="btn-icon">
+                                                            <mat-icon> add </mat-icon>
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                         <div fxFlex.gt-sm="100%" fxFlex>
 
                             <div fxlayout="row">
 
-                                <div style="width: 100%;">
-
+                                <div fxFlex.gt-sm="74%">
 
                                     <mat-table #table class="tab3" matSort [dataSource]="dsNewIssueList3"
                                         [@animateStagger]="{value:'50'}" style="overflow:auto;">
@@ -224,13 +254,9 @@
                                             [ngClass]="{'hide':!(dsNewIssueList3!=null && dsNewIssueList3.data.length==0)}">
                                         </mat-footer-row>
                                     </mat-table>
-                                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
-                                        showFirstLastButtons>
-                                    </mat-paginator>
 
                                 </div>
-                                <div fxFlex.gt-sm="27%" fxFlex style="padding: 0;margin-left:10px;">
-
+                                <div fxFlex.gt-sm="25%" fxFlex style="padding: 0;margin-left:10px;">
 
                                     <mat-table class="tab1" matSort [dataSource]="dsNewIssueList1"
                                         [@animateStagger]="{value:'50'}" style="overflow:auto;">
@@ -293,46 +319,60 @@
                         </div>
                     </div>
                 </div>
+                <mat-accordion>
+                    <mat-expansion-panel expanded>
 
-                <form [formGroup]="IssueFinalForm">
+                        <div fxLayout="column" fxLayout.gt-xs="row" class="gap-12">
 
-                    <div fxLayout="row" fxLayoutGap="10px" style="margin-top: 10px;">
+                            <div fxFlex fxFlex.gt-xs="100%" fxFlex.xs="100%" fxLayout="row" fxLayoutGap="10px">
+                                <div fxFlex fxFlex.gt-xs="90%" fxFlex.xs="100%" class="airmid-table-container">
+                                    <form [formGroup]="IssueFinalForm">
 
-                        <mat-form-field appearance="outline" fxFlex="30%">
-                            <mat-label>Remark</mat-label>
-                            <input type="text" name="Remark" formControlName="Remark" matInput #remark
-                                [(ngModel)]="vremark" required>
-                        </mat-form-field>
+                                        <div fxLayout="row" fxLayoutGap="10px" style="margin-top: 10px;">
 
-                        <mat-form-field appearance="outline" fxFlex="10%">
-                            <mat-label>GST Amount</mat-label>
-                            <input type="text" name="GST Amount" formControlName="GSTAmount" matInput #GSTAmount
-                                [(ngModel)]="vFinalGSTAmount">
-                        </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>Remark</mat-label>
+                                                <input type="text" name="Remark" formControlName="Remark" matInput
+                                                    #remark [(ngModel)]="vremark" required>
+                                            </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex="10%">
-                            <mat-label>Total Amount</mat-label>
-                            <input type="text" name="Total Amount" formControlName="FinalTotalAmount" #FinalTotalAmount
-                                matInput [(ngModel)]="vFinalTotalAmount" readonly>
-                        </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="10%">
+                                                <mat-label>GST Amount</mat-label>
+                                                <input type="text" name="GST Amount" formControlName="GSTAmount"
+                                                    matInput #GSTAmount [(ngModel)]="vFinalGSTAmount">
+                                            </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex="10%">
-                            <mat-label>Net Amount</mat-label>
-                            <input type="text" name="NetAmount" formControlName="FinalNetAmount" #FinalTotalAmount
-                                matInput [(ngModel)]="vFinalNetAmount" readonly>
-                        </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="10%">
+                                                <mat-label>Total Amount</mat-label>
+                                                <input type="text" name="Total Amount"
+                                                    formControlName="FinalTotalAmount" #FinalTotalAmount matInput
+                                                    [(ngModel)]="vFinalTotalAmount" readonly>
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" fxFlex="10%">
+                                                <mat-label>Net Amount</mat-label>
+                                                <input type="text" name="NetAmount" formControlName="FinalNetAmount"
+                                                    #FinalTotalAmount matInput [(ngModel)]="vFinalNetAmount" readonly>
+                                            </mat-form-field>
+
+                                            <div style="padding: 15px;">
+
+                                                <span class="net-amt-label"
+                                                    style="width: 200px;font-weight: bold;color:blue;">
+                                                    Total Amount :</span>&nbsp;<span class="net-amt-value"
+                                                    style="margin-right: 10px;font-weight: bold;width: 150px;">{{getTotalamt(dsNewIssueList3.data)
+                                                    | currency:'INR' }}</span>
+
+                                            </div>
 
 
+                                        </div>
+                                    </form>
 
-                        <div style="padding: 15px;">
+                                </div>
 
-                            <span class="net-amt-label" style="width: 200px;font-weight: bold;color:blue;">
-                                Total Amount :</span>&nbsp;<span class="net-amt-value"
-                                style="margin-right: 10px;font-weight: bold;width: 150px;">{{getTotalamt(dsNewIssueList3.data)
-                                | currency:'INR' }}</span>
-
+                            </div>
                         </div>
-
                         <div class="modal-footer">
                             <div class="footer-navigation-container">
                                 <div class="modal-footer-buttons">
@@ -342,10 +382,12 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </form>
+                    </mat-expansion-panel>
+                </mat-accordion>
             </div>
         </div>
+
     </div>
+    <!-- Modal footer -->
 
 </div>

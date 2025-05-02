@@ -23,33 +23,24 @@
             <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="GetDetails1($event)" #grid>
 
                 <ng-container filters>
-                    <airmid-datepicker [formGroup]="_ReturnToDepartmentList.ReturnSearchGroup" [isRangePicker]="true"
-                        formStartControlName="start" formEndControlName="end"
-                        [(fromValue)]="gridConfig.filters[2].fieldValue" [(toValue)]="gridConfig.filters[3].fieldValue">
-                    </airmid-datepicker>
+                    <form [formGroup]="ReturnSearchGroup" fxLayout="column">
+
+                        <airmid-datepicker [formGroup]="ReturnSearchGroup" [isRangePicker]="true"
+                            formStartControlName="startdate" formEndControlName="enddate"
+                            [(fromValue)]="gridConfig.filters[2].fieldValue"
+                            [(toValue)]="gridConfig.filters[3].fieldValue">
+                        </airmid-datepicker>
 
                     <airmid-dropdown label="From Store" formControlName="StoreId"
-                        [(ngModel)]="gridConfig.filters[0].fieldValue" [formGroup]="_ReturnToDepartmentList.ReturnSearchGroup"
+                        [(ngModel)]="gridConfig.filters[0].fieldValue" [formGroup]="ReturnSearchGroup"
                         [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)">
                     </airmid-dropdown>
 
                     <airmid-dropdown label="To Store" formControlName="StoreId"
-                        [formGroup]="_ReturnToDepartmentList.ReturnSearchGroup" [(ngModel)]="gridConfig.filters[1].fieldValue"
+                        [formGroup]="ReturnSearchGroup" [(ngModel)]="gridConfig.filters[1].fieldValue"
                         [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)">
                     </airmid-dropdown>
-
-                    <div fxLayout="row">
-                        <button
-                        matTooltip="Pdf" style="width: 45px;border-color: white;">
-                        <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
-                    </button>&nbsp;
-
-                    <button 
-                        style="background-color: white;color: white;width: 45px;">
-                        <img width="32" height="10px" src="assets/images/logos/xls.png">
-                    </button>
-                    </div>
-                    
+                    </form>
                 </ng-container>
             </airmid-table>
         </div>

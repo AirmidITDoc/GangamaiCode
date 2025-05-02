@@ -19,6 +19,7 @@ import { ExcelDownloadService } from 'app/main/shared/services/excel-download.se
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { FormGroup } from '@angular/forms';
 
 @Component({
 
@@ -30,7 +31,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 
 })
 export class ReturnFromDepartmentComponent implements OnInit {
-
+  ReturnSearchGroup:FormGroup;
   SpinLoading: boolean = false;
   ToStoreList: any = [];
   StoreList: any = [];
@@ -128,14 +129,7 @@ export class ReturnFromDepartmentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.getToStoreSearchList();
-    // this.getReturnToDepartmentList();
-    // this.gePharStoreList();
-
-    // this.filteredOptionsStore = this._ReturnToDepartmentList.ReturnSearchGroup.get('ToStoreId').valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterToStore(value)),
-    // );
+  this.ReturnSearchGroup=this._ReturnToDepartmentList.ReturnSearchFrom();
   }
 
   toggleSidebar(name): void {

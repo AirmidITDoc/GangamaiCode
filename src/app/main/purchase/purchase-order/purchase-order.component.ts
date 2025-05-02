@@ -42,7 +42,7 @@ export class PurchaseOrderComponent implements OnInit {
   mysearchform: FormGroup;
   autocompletestore: string = "Store";
   autocompleteSupplier: string = "SupplierMaster"
-  StoreId = "0";
+  StoreId:any = "0";
   SupplierId = "0";
   status= "0";
 
@@ -84,7 +84,7 @@ export class PurchaseOrderComponent implements OnInit {
     columnsList: this.allcolumns,
     sortField: "PurchaseID",
     sortOrder: 0,
-    filters: [{ fieldName: "ToStoreId", fieldValue:  String(this.StoreId), opType: OperatorComparer.Equals },
+    filters: [{ fieldName: "ToStoreId", fieldValue:  this.StoreId, opType: OperatorComparer.Equals },
     { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
     { fieldName: "IsVerify", fieldValue: String(this.status), opType: OperatorComparer.Equals },
@@ -171,13 +171,17 @@ export class PurchaseOrderComponent implements OnInit {
   }
 
   onChangeFirst(value) {
-    debugger
+    
+    if(this.mysearchform.get('Status').value)
+      this.status="0"
+    else
+    this.status="1"
     this.isShowDetailTable = false;
     this.fromDate = this.datePipe.transform(this.mysearchform.get('startdate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.mysearchform.get('enddate').value, "yyyy-MM-dd")
-    this.StoreId = String(this.StoreId)
-    this.SupplierId = String(this.SupplierId)
-    this.status = String(this.status)
+    this.StoreId = this.mysearchform.get("StoreId").value || this.StoreId
+    this.SupplierId = this.SupplierId
+   
     this.getfilterdata();
   }
 
@@ -197,7 +201,7 @@ export class PurchaseOrderComponent implements OnInit {
       ],
       row: 25
     }
-   
+   console.log( this.gridConfig)
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
 

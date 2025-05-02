@@ -16,16 +16,14 @@ export class ReturnFromDepartmentService {
     public _httpClient: HttpClient,
     private _formBuilder: UntypedFormBuilder
   ) { 
-    this.ReturnSearchGroup= this.ReturnSearchFrom();
-    this.userFormGroup = this.CreateNewReturnForm();
-    this.NewReturnFinalForm = this.createFinalForm();
+   
   }
 
   ReturnSearchFrom() {
     return this._formBuilder.group({
       ToStoreId: '',
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
+      startdate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
       StoreId: '' 
     });
   }

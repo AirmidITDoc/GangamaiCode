@@ -64,7 +64,7 @@
                                     [(toValue)]="gridConfig.filters[1].fieldValue">
                                 </airmid-datepicker>
 
-                                <airmid-dropdown label="Store Name" formControlName="ToStoreId"
+                                <airmid-dropdown label="Store Name" formControlName="StoreId"
                                     (selectionChange)="ListView($event)" [formGroup]="mysearchform"
                                     [mode]="autocompletestore">
                                 </airmid-dropdown>
@@ -75,19 +75,20 @@
                                 </airmid-dropdown>
 
                                 <div fxFlex fxLayout="row">
-                                    <mat-radio-group name="Status" fxLayout="row" value="1"
+                                    <!-- <mat-radio-group name="Status" fxLayout="row" value="1"
                                         formControlName="Status" style="padding: 6px;" class="gap-4">
                                         <mat-label>Status:</mat-label>
                                         <div fxLayout="row">
                                             <mat-radio-button value='1' (keyup)="onChangeFirst($event)">Status Verify</mat-radio-button>
                                             <mat-radio-button value='0' (keyup)="onChangeFirst($event)">Pending</mat-radio-button>
                                         </div>
-                                    </mat-radio-group>
+                                    </mat-radio-group> -->
 
-                                    <!-- <mat-slide-toggle name="Status" (change)="onChangeFirst($event)"
-                                        formControlName="Status">
-                                        Status Verify / Pending
-                                    </mat-slide-toggle> -->
+                                   
+                                    <mat-slide-toggle name="Status" (change)="onChangeFirst($event)"
+                                    formControlName="Status"  [(ngModel)]="status">
+                                     Verify / Pending
+                                    </mat-slide-toggle>
                                 </div>
                             </form>
                         </ng-container>

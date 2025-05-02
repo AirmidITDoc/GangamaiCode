@@ -38,7 +38,7 @@ export class NewPurchaseorderComponent {
   displayedColumns2 = [
     // 'ItemID',
     'ItemName',
-'UOM',
+    'UOM',
     'Qty',
     
     'MRP',
@@ -148,7 +148,7 @@ export class NewPurchaseorderComponent {
   ModeOfPaymentList: any = [];
   GSTTypeList: any = [];
   // SupplierID: any;
-  vAddress: any;
+  vAddress: any=" ";
   vMobile: any;
   vContact: any;
   vGSTNo: any;
@@ -257,7 +257,7 @@ export class NewPurchaseorderComponent {
           SupplierRate = this.supplierRateList[0].SupplierRate;
           this.vDefRate = SupplierRate;
 
-          this.getSupplierRate();
+          // this.getSupplierRate();
 
         });
         this.userFormGroup.get('SupplierId').setValue(this.data.Obj.supplierID);
@@ -547,7 +547,7 @@ export class NewPurchaseorderComponent {
     this._PurchaseOrder.getSupplierRateList(data).subscribe(data => {
       console.log(data);
       debugger
-      if(data){
+      if(data.data[0]){
       // this.supplierRateList = data.data[0]
       let SupplierRate =data.data[0].supplierRate;
       this.vDefRate = SupplierRate;
@@ -932,8 +932,6 @@ export class NewPurchaseorderComponent {
     const form = this.userFormGroup;
     const formValues = form.getRawValue() as PurchaseFormModel;
     const values = this._PurchaseOrder.normalizeValues(formValues);
-
-    
     const calculation = this._PurchaseOrder.getGSTCalculation(formValues.GSTType || type, values);
 
     // Update form with calculated values

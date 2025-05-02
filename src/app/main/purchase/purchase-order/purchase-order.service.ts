@@ -16,12 +16,14 @@ export class PurchaseOrderService {
         VALID_GST_RATES: [2.5, 6, 9, 14],
         GST_ERROR_MESSAGE: 'Please enter GST percentage as 2.5%, 6%, 9% or 14%'
     };
-  userFormGroup: FormGroup;
-  PurchaseSearchGroup: FormGroup;
-  FinalPurchaseform: FormGroup;
-  StoreFormGroup: FormGroup;
+  // userFormGroup: FormGroup;
+  // PurchaseSearchGroup: FormGroup;
+  // FinalPurchaseform: FormGroup;
+  // StoreFormGroup: FormGroup;
   POEmailFrom: FormGroup;
-  //PurchaseOrderHeader:FormGroup;
+  IgstPercentage=0
+  CgstPercentage=0
+  SgstPercentage=0
   normalizeValues(obj: ItemNameList | PurchaseFormModel): GSTCalculationResult {
     debugger
     // Get all required values with proper type conversion
@@ -41,9 +43,7 @@ export class PurchaseOrderService {
     };
     return values;
 }
-IgstPercentage=0
-CgstPercentage=0
-SgstPercentage=0
+
 
   constructor(
     public _httpClient: HttpClient, public _httpClient1: ApiCaller, private toastr: ToastrService,
@@ -52,8 +52,8 @@ SgstPercentage=0
 
   PurchaseSearchFrom() {
     return this._formBuilder.group({
-      StoreId: [0],
-      ToStoreId: "2",
+      StoreId: ["0"],
+      // ToStoreId: "0",
       // FromStoreId: 0,
       SupplierId: "0",
       startdate: [new Date().toISOString()],
@@ -72,9 +72,7 @@ SgstPercentage=0
       TotalAmount: [''],
       DiscAmount: [''],
       Disc:[''],
-      // taxAmount: [''],
-      // freightAmount: [''],
-      // octriAmount: [''],
+    
       grandTotal: [''],
       // isclosed: [''],
       // isVerified: [''],
@@ -83,16 +81,7 @@ SgstPercentage=0
       paymentTermId: [''],// [Validators.required]],
       modeofPayment: [''],// [Validators.required]],
       worrenty: [''],
-      // roundVal: [''],
-      // prefix: [''],
-      // isVerifiedId: [''],
-      // verifiedDateTime: [''],
-      // totCgstamt: [''],
-      // totSgstamt: [''],
-      // totIgstamt: [''],
-      // transportChanges: [''],
-      // handlingCharges: [''],
-      // freightCharges: [''],
+     
 
       ItemName:   ['', [Validators.required]],
       ConversionFactor: [''],
@@ -108,7 +97,7 @@ SgstPercentage=0
       MRP: [''],
       Specification: [''],
       SupplierID: '',
-      Address: '',
+      Address:[" "],
       Mobile: '',
       Contact: '',
       GSTNo: '',
@@ -126,43 +115,7 @@ SgstPercentage=0
       UOMId:[''],
 
       PurchaseId:[0],
-      // UOMId:[''],
-      // Disc:[''],
-      // // GSt:[''],
-      // StoreId: [2, [Validators.required]],
-      // ItemName:  ['', [Validators.required]],
-      // ConversionFactor: [''],
-      // Qty:  ['', [Validators.required]],
-      // UOM: [''],
-      // Rate:  ['', [Validators.required]],
-      // TotalAmount: ['', [Validators.required]],
-      // HSNcode:'',
-      // Dis: [''],
-      // DiscAmount: [''],
-      // GST: [''],
-      // GSTPer: [''],
-      // GSTAmount: [''],
-      // NetAmount: ['', [Validators.required]],
-      // MRP: [''],
-      // Specification: [''],
-      // purchaseId: [''],
-      // Status3: [''],
-      // SupplierId: [''],
-      // SupplierID:'',
-      // Address:'',
-      // Mobile:'',
-      // Contact:'',
-      // GSTNo:'',
-      // Email:'',
-      // PurchaseDate: [new Date()],
-      // DefRate:'',
-      // CGSTPer: [''],
-      // CGSTAmount: [''],
-      // SGSTPer: [''],
-      // SGSTAmount: [''],
-      // IGSTPer: [''],
-      // IGSTAmount: [''],
-      // GSTType: [16]
+      
     });
 
   }
@@ -249,8 +202,6 @@ SgstPercentage=0
     return this._httpClient1.GetData("Supplier/" + Id);
   }
 
-
-
   populateForm(employee) {
     // this.PurchaseStoreFrom.patchValue(employee);
   }
@@ -288,33 +239,7 @@ SgstPercentage=0
           }
           return calculation;
       }
-      // public calculateItemTotalValues(contact: ItemNameList): GSTCalculationResult {
-      //     // Calculate total quantity with free qty
-      //     const finalTotalQty = this.calculateTotalQuantity(
-      //         Number(contact.Qty || 0),
-      //         // Number(contact.FreeQty || 0),
-      //         Number(contact.ConversionFactor || 1)
-      //     );
-  
-      //     // Calculate total amount
-      //     const totalAmount = Number(contact.Qty || 0) * Number(contact.Rate || 0);
-  
-      //     // Calculate discount
-      //     const discAmount = (totalAmount * Number(contact.DiscPer || 0)) / 100;
-  
-      //     return {
-      //         totalAmount,
-      //         discAmount,
-      //         cgst: Number(contact.CGSTPer || 0),
-      //         sgst: Number(contact.SGSTPer || 0),
-      //         igst: Number(contact.IGSTPer || 0),
-      //         gst: Number(contact.CGSTPer || 0) + Number(contact.SGSTPer || 0) + Number(contact.IGSTPer || 0),
-      //         finalTotalQty,
-      //         conversionFactor: Number(contact.ConversionFactor || 1),
-      //         mrp: Number(contact.MRP || 0),
-      //         rate: Number(contact.Rate || 0)
-      //     };
-      // }
+     
       public calculateBasicValues(contact: ItemNameList): void {
         debugger
           contact.TotalQty = (Number(contact.Qty || 0)) * Number(contact.ConversionFactor || 1);
@@ -327,15 +252,7 @@ SgstPercentage=0
           contact.TotalAmount = (Number(contact.Qty || 0) * Number(contact.Rate || 0)).toFixed(2);
       }
 
-    //   calculateTotalQuantity(receiveQty: number,conversionFactor: number): number {
-    //     if (!conversionFactor || conversionFactor <= 0) {
-    //         this.showToast('Packing cannot be 0', ToastType.WARNING);
-    //         conversionFactor = 1;
-    //     }
-    //     return ((receiveQty || 0) ) * conversionFactor;
-    // }
-
-    public calculateGSTAfterDisc(values: GSTCalculationResult): GSTCalculation {
+      public calculateGSTAfterDisc(values: GSTCalculationResult): GSTCalculation {
         const baseAmount = values.totalAmount - values.discAmount;
 
         const cgstAmount = (baseAmount * values.cgst) / 100;
@@ -419,59 +336,6 @@ SgstPercentage=0
     }
 
 
-    getCellGSTCalculation(contact, Qty) {
-    // debugger
-       
-    //     if (contact.Qty > 0 && contact.Rate > 0) {
-         
-    //       this.IgstPercentage =  contact.IGSTPer;
-    //       this.CgstPercentage = contact.CGSTPer;
-    //       this.SgstPercentage = contact.SGSTPer;
-    //       if (this._PurchaseOrder.userFormGroup.get('GSTType').value.Name == 'GST After Disc') {
-    //         //total amt
-    //         contact.TotalAmount = (contact.Qty * contact.Rate);
-    //         //disc
-    //         contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
-    //         let TotalAmt: any=0;
-    //         TotalAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount)).toFixed(2);
-    //         //Gst
-    //         contact.GST = (parseFloat(this.CgstPercentage ) + parseFloat(this.SgstPercentage) + parseFloat(this.IgstPercentage)).toFixed(2);
-    //         contact.CGSTAmount = ((parseFloat(TotalAmt) * parseFloat(this.CgstPercentage)) / 100).toFixed(2);
-    //         contact.SGSTAmount = ((parseFloat(TotalAmt) * parseFloat(this.SgstPercentage)) / 100).toFixed(2);
-    //         contact.IGSTAmount = ((parseFloat(TotalAmt) * parseFloat(this.IgstPercentage)) / 100).toFixed(2);
-    //         contact.GSTAmount = ((parseFloat(TotalAmt) * parseFloat(contact.VatPer)) / 100).toFixed(2);
-    //         contact.GrandTotalAmount = ((TotalAmt) + (contact.VatAmount)).toFixed(2);
-    //       }
-    //       else if (this._PurchaseOrder.userFormGroup.get('GSTType').value.Name == 'GST Before Disc') {
-    //         //total amt
-    //         contact.TotalAmount = (contact.Qty * contact.Rate);
-    //         //Gst
-    //         contact.VatPer = (parseFloat(this.CgstPercentage ) + parseFloat(this.SgstPercentage) + parseFloat(this.IgstPercentage)).toFixed(2);
-    //         contact.CGSTAmount = ((parseFloat(contact.TotalAmount) * parseFloat(this.CgstPercentage)) / 100).toFixed(2);
-    //         contact.SGSTAmount = ((parseFloat(contact.TotalAmount) * parseFloat(this.SgstPercentage)) / 100).toFixed(2);
-    //         contact.IGSTAmount = ((parseFloat(contact.TotalAmount) * parseFloat(this.IgstPercentage)) / 100).toFixed(2);
-    //         contact.GSTAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.VatPer)) / 100).toFixed(2);
-    //         let totalAmt:any=0
-    //         totalAmt = (parseFloat(contact.TotalAmount) + parseFloat(contact.VatAmount)).toFixed(2);
-    //         //disc
-    //         contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
-    //         contact.GrandTotalAmount = (parseFloat(totalAmt) - parseFloat(contact.DiscAmount)).toFixed(2);
-    //       }
-          
-    //     }
-    //     else {
-    //       contact.TotalAmount = 0;
-    //       contact.DiscAmount = 0;
-    //       contact.CGSTAmt = 0;
-    //       contact.SGSTAmt = 0;
-    //       contact.IGSTAmt = 0;
-    //       contact.VatAmount = 0;
-    //       contact.GrandTotalAmount = 0;
-    //     }
-      
-      }
-
-    //Cell Cal
        validateCellData(item: ItemNameList): boolean {
             if (+item.Disc < 0 || +item.Disc > 100) {
                 this.showToast('Discount percentage should be between 0 and 100', ToastType.WARNING);

@@ -25,8 +25,8 @@ export class IndentService {
     return this._formBuilder.group({
       ToStoreId: '',
       FromStoreId:'',
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
+      startdate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
       Status:['0'],
     });
   }

@@ -192,12 +192,12 @@ registerObj:any;
       });
       return;
     }
-    if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
-      this.toastr.warning('Please enter a qty', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    // if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
+    //   this.toastr.warning('Please enter a qty', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
     const selectedItem = this._IndentService.newIndentFrom.get('ItemName').value;
     const iscekDuplicate = this.dsIndentNameList.data.some(item => item.ItemID == this.itemid)
     if(!iscekDuplicate){

@@ -33,69 +33,69 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 })
 export class IndentComponent implements OnInit {
     hasSelectedContacts: boolean;
+    IndentSearchGroup: FormGroup;
     autocompletestore: string = "Store";
-    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    Status="0"
+    FromStore:any="0"
+    Tostore:any="0"
+    fromDate = "1900-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate ="1900-01-01"// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
 
+
+    allcolumns = [
+
+        { heading: "Verify", key: "verify", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IndentNo", key: "indentNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Indent Date", key: "indentDate", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "From Store Name", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "To Store Name", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Added By", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._IndentService.deactivateTheStatus(data.IndentId).subscribe((response: any) => {
+                            this.toastr.success(response.message);
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } 
+    ]
+
     gridConfig: gridModel = {
         apiUrl: "Indent/IndentList",
-        columnsList: [
-            { heading: "Verify", key: "verify", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IndentNo", key: "indentNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Indent Date", key: "indentDate", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "From Store Name", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "To Store Name", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Added By", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._IndentService.deactivateTheStatus(data.IndentId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ],
+        columnsList: this.allcolumns,
         sortField: "IndentId",
         sortOrder: 0,
         filters: [
-            { fieldName: "FromStoreId", fieldValue: "10009", opType: OperatorComparer.Equals },
-            { fieldName: "ToStoreId", fieldValue: "10003", opType: OperatorComparer.Equals },
+            { fieldName: "FromStoreId", fieldValue: this.FromStore, opType: OperatorComparer.Equals },
+            { fieldName: "ToStoreId", fieldValue: this.Tostore, opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Status", fieldValue: "1", opType: OperatorComparer.Equals }
+            { fieldName: "Status", fieldValue: this.Status, opType: OperatorComparer.Equals }
         ]
     }
 
     gridConfig1: gridModel = new gridModel();
     isShowDetailTable: boolean = false;
     GetDetails1(data) {
-        
+        let IndentId = data.indentId
         this.gridConfig1 = {
-            apiUrl: "IssueToDepartment/IssueToDepttList",
-            columnsList: [
-                { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Issue Qty", key: "qtyIssue", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Pending Qty", key: "qtyPending", sort: true, align: 'left', emptySign: 'NA' },
-            ],
-            sortField: "IssueId",
+            apiUrl: "Indent/IndentList",
+            columnsList: this.allcolumns,
+            sortField: "IndentId",
             sortOrder: 0,
             filters: [
-                // { fieldName: "FromStoreId", fieldValue: "10009", opType: OperatorComparer.Equals },
-                // { fieldName: "ToStoreId", fieldValue: "10003", opType: OperatorComparer.Equals },
-                // { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-                // { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-                // { fieldName: "Status", fieldValue: "1", opType: OperatorComparer.Equals }
+                { fieldName: "IndentId", fieldValue:IndentId, opType: OperatorComparer.Equals },
+              
             ]
         }
         this.isShowDetailTable = true;
@@ -109,13 +109,68 @@ export class IndentComponent implements OnInit {
         public datePipe: DatePipe
     ) { }
 
-    ngOnInit(): void { }
+    ngOnInit(): void {
+        this.IndentSearchGroup = this._IndentService.IndentSearchFrom();
+    }
+
+    ListView(value) {
+        if (value.value !== 0)
+            this.FromStore = value.value
+        else
+            this.FromStore = "0"
+        this.onChangeFirst(value);
+    }
+
+    ListView1(value) {
+        if (value.value !== 0)
+            this.Tostore = value.value
+        else
+            this.Tostore = "0"
+        this.onChangeFirst(value);
+    }
+
+    onChangeFirst(value) {
+        if(this.IndentSearchGroup.get('Status').value)
+            this.Status="0"
+          else
+          this.Status="1"
+        this.isShowDetailTable = false;
+        this.fromDate = this.datePipe.transform(this.IndentSearchGroup.get('startdate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.IndentSearchGroup.get('enddate').value, "yyyy-MM-dd")
+        this.FromStore = this.IndentSearchGroup.get("FromStoreId").value || this.FromStore
+        this.Tostore = this.IndentSearchGroup.get("ToStoreId").value || this.Tostore
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        this.gridConfig = {
+            apiUrl: "IssueToDepartment/IssueToDeptList",
+            columnsList: this.allcolumns,
+            sortField: "IssueId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "FromStoreId", fieldValue: this.FromStore, opType: OperatorComparer.Equals },
+                { fieldName: "ToStoreId", fieldValue: this.Tostore, opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                { fieldName: "Status", fieldValue: this.Status, opType: OperatorComparer.Equals }
+            ],
+            row: 25
+        }
+
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+
+    }
+
+
     onSave(row: any = null) {
         let that = this;
         const dialogRef = this._matDialog.open(NewIndentComponent,
             {
                 // maxWidth: "95vw",
-                maxHeight: '95vh',
+                maxHeight: '75vh',
                 width: '100%',
                 data: row
             });
