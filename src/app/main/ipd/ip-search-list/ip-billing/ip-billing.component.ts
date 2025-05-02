@@ -603,7 +603,7 @@ export class IPBillingComponent implements OnInit {
       this._IpSearchListService.InsertIPAddCharges(m_data).subscribe(response => {
         console.log(response)
         this.toastr.success(response.message);
-        this.getChargesList();
+        this.getChargesList(); 
       }, (error) => {
         this.toastr.error(error.message);
       });
@@ -627,8 +627,7 @@ export class IPBillingComponent implements OnInit {
     this.Serviceform.get('discAmount').reset();
     this.Serviceform.get('netAmount').reset();
   }
-  deletecharges(contact) {
-    debugger
+  deletecharges(contact) { 
     if (contact.isPathTestCompleted == 1) {
       this.toastr.warning('Selected Service Test is Already Completed you cannot delete !', 'warning', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -791,26 +790,32 @@ export class IPBillingComponent implements OnInit {
       setTimeout(() => {
         this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
           this.SelectedAdvancelist = response.data;
-          if (this.SelectedAdvancelist.length > 0)
+          if (this.SelectedAdvancelist.length > 0) 
             this.vAdvanceId = this.SelectedAdvancelist[0].advanceId
           this.SelectedAdvancelist.forEach(element => {
             this.TotalAdvanceAmt += element.advanceAmount
-          })
-          let netAmt = this.Ipbillform.get('FinalAmount').value || 0
-          if (this.TotalAdvanceAmt < netAmt) {
-            this.BillBalAmount = netAmt - this.TotalAdvanceAmt
-          } else {
-            this.BillBalAmount = netAmt
-          }
-
+          }) 
+          this.getbillbalamt();
         });
-      }, 500);
+      }, 500); 
+    }
+  }
+
+  getbillbalamt(){
+    if(this.TotalAdvanceAmt > 0){
+      let netAmt = this.Ipbillform.get('FinalAmount').value || 0
+      if (netAmt > this.TotalAdvanceAmt) {
+        this.BillBalAmount = netAmt - this.TotalAdvanceAmt
+      }else if(this.TotalAdvanceAmt > netAmt){
+        this.BillBalAmount = this.TotalAdvanceAmt - netAmt
+      } else {
+        this.BillBalAmount = netAmt
+      }
     }
   }
   //Charge list 
   chargeDate='01/01/1900'
-  getChargesList() {
-    debugger
+  getChargesList() { 
     this.chargeslist = [];
     this.dataSource.data = []; 
     var vdata = {
@@ -841,6 +846,7 @@ export class IPBillingComponent implements OnInit {
       this.dataSource.data = this.chargeslist;
       this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
       this.getNetAmtSum()
+      this.getbillbalamt();
     },
       (error) => {
         this.isLoading = 'list-loaded';
@@ -1067,8 +1073,7 @@ export class IPBillingComponent implements OnInit {
     }
   }
    //Save
-   onSave() {
-    debugger
+   onSave() { 
     if(this.dataSource.data.length > 0 && this.Ipbillform.invalid){
       this.toastr.warning('Please check form is invalid.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -1296,8 +1301,7 @@ export class IPBillingComponent implements OnInit {
       }
     } 
   }
-  IPCreditBill() {
-    debugger
+  IPCreditBill() { 
     if (this.Ipbillform.get('CreditBill').value) {
       let InsertBillUpdateBillNoObj = {}; 
       InsertBillUpdateBillNoObj['billNo'] = 0;
@@ -1428,8 +1432,7 @@ export class IPBillingComponent implements OnInit {
       console.log('============== Save IP Draft Bill Json ===========',submitData)
       this._IpSearchListService.InsertIPDraftBilling(submitData).subscribe(response => {
         //console.log(response)
-        this.toastr.success(response.message);
-        debugger
+        this.toastr.success(response.message); 
         if(this.Ipbillform.get("BillType").value==1)
         this.viewgetDraftBillReportPdf(response.drbno);  
       else
@@ -1462,8 +1465,7 @@ export class IPBillingComponent implements OnInit {
     }
   }
   //Intrim bill popup 
-  getInterimData() {
-    debugger
+  getInterimData() { 
     if (this.interimArray.length > 0) {
       console.log('this.interimArray==', this.interimArray);
       this._matDialog.open(InterimBillComponent,
@@ -1671,8 +1673,7 @@ export class IPBillingComponent implements OnInit {
       this.isFilteredDateDisabled = false;
     }
   }
-  getDatewiseChargesList(param) {
-    debugger
+  getDatewiseChargesList(param) { 
     this.chargeslist = [];
     this.dataSource.data = [];
     this.chargeDate  = this.datePipe.transform(this.Ipbillform.get('ChargeDate').value,"MM/dd/yyyy")

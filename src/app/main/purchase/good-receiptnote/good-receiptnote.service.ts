@@ -53,7 +53,7 @@ export class GoodReceiptnoteService {
 
   GRNSearchFrom() {
     return this._formBuilder.group({
-      ToStoreId: [2], 
+      ToStoreId: ['2'], 
       SupplierId: '', 
       Status1: [0],   
       start: [new Date().toISOString()],
@@ -216,7 +216,7 @@ export class GoodReceiptnoteService {
     return this._httpClient.post("Generic/GetByProc?procName=rptPrintGRN", Param);
   }
   public getVerifyGRN(Param) {
-    return this._httpClient.post("Pharmacy/VerifyGRN", Param)
+    return this._httpClient1.PostData("GRN/Verify", Param)
   }
   public getGRNreportview(GRNID) {
     return this._httpClient.get("Pharmacy/view-GRNReport?GRNID=" + GRNID);
