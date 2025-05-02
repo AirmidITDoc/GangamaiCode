@@ -258,7 +258,7 @@ export class SupplierMaster {
     BankId: any;
     BankNo: any;
     Bankbranch: any;
-    Ifsccode: any;
+    ifsccode: any;
     StoreId: any;
 
     PinCode: any;
@@ -268,7 +268,7 @@ export class SupplierMaster {
     Bankname: any;
     Branch: any;
     VenderType: any;
-    OpeningBalance: any;
+    openingBalance: any;
     supplierTime:any;
     mAssignSupplierToStores: any[];
     Freight: any;
@@ -276,7 +276,7 @@ export class SupplierMaster {
     licNo:any;
     dlno:any;
     bankId:any;
-    BankBranch:any;
+    branch:any;
     bankNo:any;
     IFSCcode:any;
     OpeningBal:any;
@@ -329,11 +329,11 @@ export class SupplierMaster {
             this.BankId = SupplierMaster.BankId || "";
             this.BankNo = SupplierMaster.BankNo || "";
             this.Bankbranch = SupplierMaster.Bankbranch || "";
-            this.Ifsccode = SupplierMaster.Ifsccode || "";
+            this.ifsccode = SupplierMaster.ifsccode || "";
             this.StoreId = SupplierMaster.StoreId || 0;
             this.dlno=SupplierMaster.dlno || 0
             this.bankId=SupplierMaster.bankId || 0
-            this.BankBranch=SupplierMaster.BankBranch || ''
+            this.branch=SupplierMaster.branch || ''
             this.PinCode = SupplierMaster.PinCode || 0;
             this.Taluka = SupplierMaster.Taluka || 0;
             this.LicNo = SupplierMaster.LicNo || 0;
@@ -341,7 +341,7 @@ export class SupplierMaster {
             this.Bankname = SupplierMaster.Bankname || 0;
             this.Branch = SupplierMaster.Branch || 0;
             this.VenderType = SupplierMaster.VenderType || 0;
-            this.OpeningBalance = SupplierMaster.OpeningBalance || 0;
+            this.openingBalance = SupplierMaster.openingBalance || 0;
             this.supplierTime=SupplierMaster.supplierTime || this.currentDate;
             this.mAssignSupplierToStores = SupplierMaster.mAssignSupplierToStores || [];
             this.bankNo = SupplierMaster.bankNo || 0

@@ -62,7 +62,7 @@ export class NewGRNReturnComponent implements OnInit {
   isChecked: boolean = true;
   chargeslist: any = [];
   dateTimeObj: any;
-  screenFromString = 'admission-form';
+  screenFromString = 'GrnReturn-Form';
   labelPosition: 'before' | 'after' = 'after';
   sIsLoading: string;
   filteredoptionsToStore: Observable<string[]>;
@@ -154,6 +154,7 @@ export class NewGRNReturnComponent implements OnInit {
             ItemName: element.itemName || '',
             BatchNo: element.batchNo || 0,
             BatchExpDate: element.batchExpDate,
+            // BatchExpDate: new Date(element.batchExpDate.split("-").reverse().join("-") + "T00:00:00").toISOString(),
             ConversionFactor: element.conversionFactor,
             BalanceQty: element.balanceQty,
             ReturnQty: 0,
@@ -297,20 +298,7 @@ OnSave(){
     });
     return;
   } 
-  this.Savebtn = true;
-  let grnReturnSave = {};
-  grnReturnSave['grnId'] = this.vGRNID || 0;
-  grnReturnSave['grnReturnDate'] = this.dateTimeObj.date;
-  grnReturnSave['grnReturnTime'] =this.dateTimeObj.time;
-  grnReturnSave['storeId'] =this._loggedService.currentUserValue.storeId || this.vStoreId;
-  grnReturnSave['supplierID'] =this.VsupplierId;
-  grnReturnSave['totalAmount'] = this.vFinalTotalAmount || 0;
-  grnReturnSave['grnReturnAmount'] = this.vFinalTotalAmount || 0;
-  grnReturnSave['totalDiscAmount'] = this.vFinalDiscAmount || 0;
-  grnReturnSave['totalVATAmount'] = this.vFinalVatAmount || 0;
-  grnReturnSave['totalOtherTaxAmount'] =0;
-  grnReturnSave['totalOctroiAmount'] = 0;
-  grnReturnSave['netAmount'] = this.vFinalNetAmount || 0;
+
   let checkcashtype
   if(this.CashCredittype == false){
     checkcashtype = false; 
@@ -318,27 +306,22 @@ OnSave(){
     checkcashtype = true;
   }
 
-  grnReturnSave['cash_Credit'] = checkcashtype;
-  grnReturnSave['remark'] = this._GRNReturnService.NewGRNRetFinalFrom.get('Remark').value || '';
-  grnReturnSave['isVerified'] = false;
-  grnReturnSave['isClosed'] = false;
-  grnReturnSave['addedby'] =this._loggedService.currentUserValue.userId || 0;
-  grnReturnSave['isCancelled'] =false;
-  grnReturnSave['grnType'] = 0, 
-  grnReturnSave['isGrnTypeFlag'] = true;
-  grnReturnSave['grnReturnId'] =0;
+  this.Savebtn = true;
 
   let grnReturnDetailSavearray=[];
   this.interimArray.forEach((element) => {
-  //console.log(element)  
+  console.log(element)  
   let mrpTotal = element.ReturnQty * element.MRP;
   let PurchaseTotalAmt =element.ReturnQty * element.Rate;
 
     let grnDetailSaveObj = {};
+    grnDetailSaveObj['grnreturnDetailId'] = 0;
     grnDetailSaveObj['grnReturnId'] = 0;
+    grnDetailSaveObj['grnId'] = element.GRNID || 0
     grnDetailSaveObj['itemId'] = element.ItemId || 0;
     grnDetailSaveObj['batchNo'] = element.BatchNo || 0;
-    grnDetailSaveObj['batchExpiryDate'] = element.BatchExpDate || 0;
+    grnDetailSaveObj['batchExpiryDate'] = new Date(element.BatchExpDate.split(" ")[0].split("-").reverse().join("-") + "T00:00:00").toISOString().split('T')[0];
+    // grnDetailSaveObj['batchExpiryDate'] = element.BatchExpDate || 0;
     grnDetailSaveObj['returnQty'] = element.ReturnQty || 0;
     grnDetailSaveObj['landedRate'] =  element.LandedRate ||  0;
     grnDetailSaveObj['mrp'] = element.MRP || 0;
@@ -357,10 +340,33 @@ OnSave(){
     grnDetailSaveObj['stkId'] = element.StkID || 0;
     grnDetailSaveObj['cf'] = element.ConversionFactor || 0;
     grnDetailSaveObj['totalQty'] = element.TotalQty || 0;
-    grnDetailSaveObj['grnId'] = element.GRNID || 0
     grnReturnDetailSavearray.push(grnDetailSaveObj);
-
   });
+
+  let grnReturnSave ={
+    "grnreturnId": 0,
+    "grnreturnNo": "string",
+    "grnid": this.vGRNID || 0,
+    "grnreturnDate":new Date(this.dateTimeObj.date).toISOString().split('T')[0],
+    "grnreturnTime": this.dateTimeObj.time,
+    "storeId": this._loggedService.currentUserValue.storeId || this.vStoreId,
+    "supplierId": this.VsupplierId || 0,
+    "totalAmount": this.vFinalTotalAmount || 0,
+    "grnReturnAmount": this.vFinalTotalAmount || 0,
+    "totalDiscAmount": this.vFinalDiscAmount || 0,
+    "totalVatAmount": this.vFinalVatAmount || 0,
+    "totalOtherTaxAmount": 0,
+    "totalOctroiAmount": 0,
+    "netAmount": this.vFinalNetAmount || 0,
+    "cashCredit": checkcashtype,
+    "remark": this._GRNReturnService.NewGRNRetFinalFrom.get('Remark').value || '',
+    "isVerified": false,
+    "isClosed": false,
+    "isCancelled": false,
+    "grnType": "string",
+    "isGrnTypeFlag": true,
+    "tGrnreturnDetails": grnReturnDetailSavearray
+  };
 
   let grnReturnUpdateCurrentStockarray = [];
   this.interimArray.forEach((element) => {
@@ -368,7 +374,7 @@ OnSave(){
     let issueqty = element.BalanceQty - element.ReturnQty
     grnReturnUpdateCurrentStockObj['itemId'] = element.ItemId || 0;
     grnReturnUpdateCurrentStockObj['issueQty'] =element.ReturnQty || 0;
-    grnReturnUpdateCurrentStockObj['stkId'] = element.StkID || 0;
+    grnReturnUpdateCurrentStockObj['istkId'] = element.StkID || 0;
     grnReturnUpdateCurrentStockObj['storeID'] = this._loggedService.currentUserValue.storeId || this.vStoreId;
     grnReturnUpdateCurrentStockarray.push(grnReturnUpdateCurrentStockObj);
   });
@@ -377,16 +383,15 @@ OnSave(){
   this.interimArray.forEach((element) => { 
     let grnReturnUpateReturnQty = {};
     let issueqty = element.BalanceQty - element.ReturnQty
-    grnReturnUpateReturnQty['grnDetID'] = element.GRNDetID || 0
+    grnReturnUpateReturnQty['grndetId'] = element.GRNDetID || 0
     grnReturnUpateReturnQty['returnQty'] =element.issueqty || 0;
     grnReturnUpateReturnQtyarray.push(grnReturnUpateReturnQty);
   });
 
   let submitdata={
-    'grnReturnSave':grnReturnSave,
-    'grnReturnDetailSave':grnReturnDetailSavearray,
-    'grnReturnUpdateCurrentStock':grnReturnUpdateCurrentStockarray,
-    'grnReturnUpateReturnQty':grnReturnUpateReturnQtyarray
+    'grnReturn':grnReturnSave,
+    'grnReturnCurrentStock':grnReturnUpdateCurrentStockarray,
+    'grnReturnReturnQt':grnReturnUpateReturnQtyarray
   }
   console.log(submitdata)
   this._GRNReturnService.GRNReturnSave(submitdata).subscribe(response => {

@@ -70,6 +70,7 @@ export class SupplierMasterService {
                     // Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
                 ]
             ],
+            isActive: [true, [Validators.required]],
             email: ["",
                 [
                     Validators.required,
@@ -104,37 +105,42 @@ export class SupplierMasterService {
                     // Validators.pattern("^\\s*[A-Z]{5}[0-9]{4}[A-Z]{1}\\s*$")
                 ]
             ],
-            supplierTime: [(new Date()).toISOString()],
-            // 
-            taxNature: [''],
-            licNo: [''],
-            dlno: [''],
             taluka: [''],
-            bankName: [],
-            bankId: [''],
-            BankBranch: [''],
-            bankNo: ['', [Validators.pattern("[0-9]{9,18}")]],
-            IFSCcode: ["", [Validators.pattern("^[A-Z]{4}0[A-Z0-9]{6}$")]],
-            expDate: [new Date()],
-            OpeningBal: ['', [Validators.pattern("^[0-9]*$"),
-            Validators.minLength(1),
-            Validators.maxLength(10),]],
-            MsmNo: [0],
-            MSMNo: ['', Validators.required],
-            CreateApproval: [true],
+            licNo: [''],
             pinCode: ['', [Validators.pattern("^[0-9]*$"),
                 Validators.minLength(6),
                 Validators.maxLength(6),]],
-            isActive: [true, [Validators.required]],
-            addedby: this._loggedService.currentUserValue.userId,
-            // 
+            taxNature: ['', Validators.pattern("^[0-9]*$")],
+            expDate: [new Date()],
+            dlno: [''],
+            bankId: [''],
+            bankName: [],
+            branch: [''],
+            bankNo: ['', [Validators.pattern("[0-9]{9,18}")]],
+            ifsccode: ["", [Validators.pattern("^[A-Z]{4}0[A-Z0-9]{6}$")]],
+            venderTypeId:[0],
+            openingBalance: ['', [Validators.pattern("^[0-9]*$"),
+                Validators.minLength(1),
+                Validators.maxLength(10),]],
+            supplierTime: [(new Date()).toISOString()],
             mAssignSupplierToStores: [
                 {
                     assignId: 0,
                     storeId: 0,
                     supplierId: 0
                 }, [Validators.required]
-            ]
+            ],
+
+            // 
+            
+           
+            MsmNo: [0],
+            MSMNo: ['', Validators.required],
+            CreateApproval: [true],
+            
+            addedby: this._loggedService.currentUserValue.userId,
+            // 
+           
         });
     }
 
