@@ -78,7 +78,7 @@
                 <airmid-datepicker [formGroup]="_GRNService.GRNSearchGroup" [isRangePicker]="true"
                     formStartControlName="start" formEndControlName="end"
                     [(fromValue)]="gridConfig.filters[1].fieldValue" [(toValue)]="gridConfig.filters[2].fieldValue"
-                    (change)="onChangeFirst()"></airmid-datepicker>
+                    (dateChange)="onChangeFirst()"></airmid-datepicker>
 
 
                 <airmid-dropdown label="Store Name" formControlName="ToStoreId" [formGroup]="_GRNService.GRNSearchGroup"

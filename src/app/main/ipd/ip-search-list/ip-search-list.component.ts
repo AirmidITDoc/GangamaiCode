@@ -777,10 +777,13 @@ export class ChargesList {
     BalanceQty: any;
     IsStatus: any;
     extMobileNo: any;
+    doctorName:any;
     ConcessionPercentage: any;
+    EditDoctor: any;
     constructor(ChargesList) {
         this.chargesId = ChargesList.chargesId || '';
         this.ServiceId = ChargesList.ServiceId || '';
+        this.doctorName = ChargesList.doctorName || '';
         this.ServiceName = ChargesList.ServiceName || '';
         this.Price = ChargesList.Price || '';
         this.Qty = ChargesList.Qty || '';

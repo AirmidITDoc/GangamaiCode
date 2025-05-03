@@ -45,6 +45,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         'SrNo',
         'ItemName',
         'UOMId',
+        'HSNCode',
         'BatchNo',
         'ExpDate',
         'Qty',
@@ -92,7 +93,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     ToStoreList: any = [];
     FromStoreList: any;
     SupplierList: any;
-    screenFromString = 'admission-form';
+    screenFromString = 'grn-form';
     isPaymentSelected: boolean = false;
     isSupplierSelected: boolean = false;
     isItemNameSelected: boolean = false;
@@ -384,6 +385,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             this.newGRNService.showToast('Item already added in the list', ToastType.WARNING);
             return;
         }
+        debugger
         const formValues = this.userFormGroup.getRawValue() as GRNFormModel;
         const totalQty = (Number(formValues.Qty) + Number(formValues.FreeQty)) * (Number(formValues.ConversionFactor) || 1);
         if (formValues.ItemName) {
@@ -598,6 +600,9 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     }
     getTotalAmount() {
         return this.dsItemNameList.data.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0);
+    }
+    getNetAmount() {
+        return this.dsItemNameList.data.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
     }
     getCellCalculation(item: ItemNameList) {
         // Validate PO Quantity

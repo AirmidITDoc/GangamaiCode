@@ -398,7 +398,8 @@ export class IPBillingComponent implements OnInit {
       GenerateBill: [1],
       CreditBill: [''],
       ChargeDate:[new Date()],
-      BillType:['1']
+      BillType:['1'],
+      EditDoctor:['']
     });
   }
   //service selected data
@@ -806,8 +807,6 @@ export class IPBillingComponent implements OnInit {
       let netAmt = this.Ipbillform.get('FinalAmount').value || 0
       if (netAmt > this.TotalAdvanceAmt) {
         this.BillBalAmount = netAmt - this.TotalAdvanceAmt
-      }else if(this.TotalAdvanceAmt > netAmt){
-        this.BillBalAmount = this.TotalAdvanceAmt - netAmt
       } else {
         this.BillBalAmount = netAmt
       }
@@ -1733,6 +1732,66 @@ export class IPBillingComponent implements OnInit {
       this.getChargesList()
     });
   }
+  OnSaveEditedValue(element){
+    debugger
+    if (element.qty == 0) {
+      element.qty = 1;
+      this.toastr.warning('Qty is connot be Zero By default Qty is 1', 'error!', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }  
+
+    let DoctorId = 0
+    if (this.Ipbillform.get('EditDoctor').value) {
+      DoctorId = this.Ipbillform.get('EditDoctor').value
+    } else {
+      DoctorId = element.doctorId
+    }
+
+    let addCharge = {
+      "chargesId": element.chargesId,
+      "price": element.price,
+      "qty": element.qty || 1,
+      "totalAmt": element.totalAmt || 0,
+      "concessionPercentage": element.concessionPercentage || 0,
+      "concessionAmount": element.concessionAmount || 0,
+      "netAmount": element.netAmount || 0,
+      "doctorId": DoctorId || 0
+    }
+    console.log(addCharge)
+    this._IpSearchListService.UpdateChargesDetails(addCharge,element.chargesId).subscribe(response => {
+      if (response) {
+        this.getChargesList()
+      }
+    });
+  }
+   EditDoctor: boolean = false;
+    DocenableEditing(row: ChargesList) {
+      row.EditDoctor = true;
+      row.doctorName = '';
+    }
+    DoctorisableEditing(row: ChargesList) {
+      row.EditDoctor = false;
+      this.Ipbillform.get('EditDoctor').setValue('')
+      this.getChargesList()
+    }
+    SelectedDocName: any = [];
+    DropDownValue(Obj) {
+      console.log(Obj) 
+    }
+    gettablecalculation(element) {  
+     if (element.price > 0 && element.qty > 0) {
+        element.totalAmt = element.qty * element.price || 0;
+        element.DiscAmt = (element.ConcessionPercentage * element.totalAmt) / 100 || 0;
+        element.netAmount = element.totalAmt - element.DiscAmt
+      }
+      else if (element.price == 0 || element.price == '' || element.qty == '' || element.qty == 0) {
+        element.totalAmt = 0;
+        element.DiscAmt = 0;
+        element.netAmount = 0;
+      }
+    }
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {

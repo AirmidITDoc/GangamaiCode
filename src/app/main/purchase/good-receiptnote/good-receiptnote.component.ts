@@ -167,6 +167,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     autocompleteSupplier: string = "SupplierMaster";
     FromDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
     ToDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
+    StoreId1 = this._GRNService.GRNSearchGroup.get('ToStoreId').value || 0;
     
       @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;  
       @ViewChild('actionButtonTemplateStatus') actionButtonTemplateStatus!: TemplateRef<any>;
@@ -179,19 +180,19 @@ export class GoodReceiptnoteComponent implements OnInit {
      AllColumns= [
         { heading: "Status", key: "Status", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate},
-      { heading: "GRN No", key: "grnNumber", sort: true, align: 'left', emptySign: 'NA' , width: 100},
       { heading: "Date", key: "grndate", sort: true, align: 'left', emptySign: 'NA',width: 130,},
+      { heading: "GRN No", key: "grnNumber", sort: true, align: 'left', emptySign: 'NA' , width: 100}, 
       { heading: "Invoice No", key: "invoiceNo", sort: true, align: 'left', emptySign: 'NA',width: 100},
-      { heading: "supplier Name", key: "supplierName", sort: true, align: 'left', emptySign: 'NA',width: 200},
+      { heading: "Supplier Name", key: "supplierName", sort: true, align: 'left', emptySign: 'NA',width: 200},
       { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA',width: 150, type: gridColumnTypes.amount},
-      { heading: "Total DiscAmt", key: "totalDiscAmount", sort: true, align: 'left', emptySign: 'NA',width: 140 , type: gridColumnTypes.amount}, 
-      { heading: "Total GSTAmt", key: "totalVatamount", sort: true, align: 'left', emptySign: 'NA',width: 140, type: gridColumnTypes.amount },
+      { heading: "Disc Amt", key: "totalDiscAmount", sort: true, align: 'left', emptySign: 'NA',width: 140 , type: gridColumnTypes.amount}, 
+      { heading: "GST Amt", key: "totalVatamount", sort: true, align: 'left', emptySign: 'NA',width: 140, type: gridColumnTypes.amount },
       { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 , type: gridColumnTypes.amount }, 
       { heading: "Rounding Amt", key: "roundingAmt", sort: true, align: 'left', emptySign: 'NA',width: 140 , type: gridColumnTypes.amount},
       { heading: "Debit Note", key: "debitNote", sort: true, align: 'left', emptySign: 'NA',width: 130 , type: gridColumnTypes.amount},
       { heading: "Credit Note", key: "creditNote", sort: true, align: 'left', emptySign: 'NA',width: 130,type: gridColumnTypes.amount },
       { heading: "Received By", key: "receivedBy", sort: true, align: 'left', emptySign: 'NA',width: 180}, 
-      { heading: "isClosed", key: "isClosed", sort: true, align: 'left', emptySign: 'NA',width: 100 ,},
+      { heading: "IsClosed", key: "isClosed", sort: true, align: 'left', emptySign: 'NA',width: 100 ,},
        { heading: "Action", key: "action", align: "right", width: 160, sticky: true, type: gridColumnTypes.template,
         template: this.actionButtonTemplate  // Assign ng-template to the column
       }
@@ -227,7 +228,7 @@ export class GoodReceiptnoteComponent implements OnInit {
           sortField: "GRNID",
           sortOrder: 0,
           filters: [
-              { fieldName: "ToStoreId", fieldValue: "0", opType: OperatorComparer.Equals },
+              { fieldName: "ToStoreId", fieldValue: String(this.StoreId1), opType: OperatorComparer.Equals },
               { fieldName: "From_Dt", fieldValue: this.FromDate, opType: OperatorComparer.Equals },
               { fieldName: "To_Dt", fieldValue: this.ToDate, opType: OperatorComparer.Equals },
               { fieldName: "IsVerify", fieldValue: "0", opType: OperatorComparer.Equals },
@@ -258,6 +259,8 @@ export class GoodReceiptnoteComponent implements OnInit {
         // this.getToStoreSearchList();
         // this.getToStoreSearchCombo();
         // this.getGRNList();
+        this._GRNService.GRNSearchGroup.get('ToStoreId').setValue(this.accountService.currentUserValue.user.storeId)
+        // console.log(this.accountService.currentUserValue.user.storeId)
     }
 
  
@@ -300,8 +303,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     StoreId:any = "0";
     SupplierId:any = "0";
     IsVerify:any;
-    onChangeFirst() {
-        debugger  
+    onChangeFirst() { 
         this.isShowDetailTable = false;
         if(this._GRNService.GRNSearchGroup.get('Status1').value == true){
             this.IsVerify = "1"
@@ -313,8 +315,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         this.getfilterdata();
     }
     
-    getfilterdata() {
-        debugger
+    getfilterdata() { 
         this.gridConfig = {
             apiUrl: "GRN/GRNHeaderList",
             columnsList:this.AllColumns,
@@ -328,6 +329,8 @@ export class GoodReceiptnoteComponent implements OnInit {
                 { fieldName: "Supplier_Id", fieldValue: this.SupplierId, opType: OperatorComparer.Equals } 
             ], 
         } 
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
     }
     selectChangeStore(value) {   
      if(value.value!==0)
@@ -1011,7 +1014,8 @@ export class ItemNameList {
             this.MRP = ItemNameList.MRP || 0;
             this.Rate = ItemNameList.Rate || 0;
             this.TotalAmount = ItemNameList.TotalAmount || 0;
-            this.Disc = ItemNameList.Disc || '';
+            this.Disc = ItemNameList.Disc || 0;
+            this.Disc2 = ItemNameList.Disc2 || 0;
             this.DisAmount = ItemNameList.DisAmount || 0;
             this.DiscPer2 = ItemNameList.DiscPer2 || 0;
             this.DiscAmt2 = ItemNameList.DiscAmt2 || 0;
@@ -1023,6 +1027,7 @@ export class ItemNameList {
             this.SGST = ItemNameList.SGST || 0;
             this.SGSTAmount = ItemNameList.SGSTAmount || 0;
             this.IGST = ItemNameList.IGST || 0;
+            this.poBalQty = ItemNameList.poBalQty || 0;
             this.IGSTAmount = ItemNameList.IGSTAmount || 0;
             this.DisAmount2 = ItemNameList.DisAmount2 || 0;
             this.NetAmount = ItemNameList.NetAmount || 0;

@@ -555,16 +555,48 @@
                         <ng-container matColumnDef="Price">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            <span>{{ contact.price }}</span>
+                            <!-- <span>{{ contact.price }}</span> -->
+                            <mat-form-field floatLabel="never">
+                              <input matInput [(ngModel)]="contact.price" type="text" OnlyNumber
+                                    placeholder="price" (keyup)="gettablecalculation(contact)"
+                                  (keypress)="keyPressCharater($event)"  >
+                          </mat-form-field>
                           </mat-cell>
                         </ng-container>
+
+                        <!-- <ng-container matColumnDef="EditQty">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                            </mat-header-cell>
+                          <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100"> 
+                              <ng-container *ngIf="!contact.QtyEditable; else showInput">
+                                  <button mat-icon-button (click)="QtyenableEditing(contact)" class="clear-button">
+                                      <mat-icon>edit</mat-icon></button>
+                              </ng-container>
+                              <ng-template #showInput> 
+                                <mat-form-field appearance="legacy" class="w-50">
+                                  <input matInput  type="text" OnlyNumber (keyup)="getQtytable(contact,contact.Qty)"
+                                  (keypress)="keyPressCharater($event)" autocomplete="off" [(ngModel)]="contact.Qty">
+                              </mat-form-field>
+                                  <mat-icon matTooltip="Close" (click)="QtydisableEditing(contact)">cancel</mat-icon> 
+                                  <buttom mati-icon-button (click)="OnSaveEditedValue(contact)" matTooltip="Save">
+                                      <mat-icon class="active-icon green-600 s-16">check</mat-icon>
+                                  </buttom> 
+                              </ng-template>
+                          </mat-cell>
+                      </ng-container>    -->
 
                         <ng-container matColumnDef="Qty">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            <span>{{ contact.qty }}</span>
+                            <!-- <span>{{ contact.qty }}</span> -->
+                            <mat-form-field floatLabel="never">
+                              <input matInput [(ngModel)]="contact.qty" type="text" OnlyNumber
+                                    placeholder="qty" (keyup)="gettablecalculation(contact)"
+                                  (keypress)="keyPressCharater($event)"  >
+                          </mat-form-field> 
                           </mat-cell>
                         </ng-container>
+
                         <ng-container matColumnDef="TotalAmt">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Total Amt</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -596,10 +628,25 @@
                         <ng-container matColumnDef="DoctorName">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">ChargeDoctorName</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
-                            <span>{{ contact.doctorName || '--' }}</span>
+                            <span>{{ contact.doctorName}}</span>
+                            <ng-container *ngIf="!contact.EditDoctor; else showInput">
+                              <button mat-icon-button (click)="DocenableEditing(contact)"
+                                  class="clear-button">
+                                  <mat-icon>edit</mat-icon></button>
+                          </ng-container>
+                          <ng-template #showInput>
+                              <form [formGroup]="Ipbillform" fxLayout="row" fxLayoutGap="2px">
+                                  <airmid-dropdown  label="DoctorName" formControlName="EditDoctor" class="w-150"
+                                      [formGroup]="Ipbillform" [mode]="autocompleteModedeptdoc"
+                                      [validations]="getValidationMessages().DoctorId"
+                                      (selectionChange)="DropDownValue($event)"></airmid-dropdown> 
+                              </form>
+                              <mat-icon matTooltip="Close"
+                              (click)="DoctorisableEditing(contact)">cancel</mat-icon>
+                          </ng-template>
                           </mat-cell>
                         </ng-container>
-
+ 
                         <ng-container matColumnDef="ClassName">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="accent" class="w-200"
                           >ClassName</mat-header-cell>
@@ -618,6 +665,9 @@
                         <ng-container matColumnDef="buttons" stickyEnd>
                           <mat-header-cell *matHeaderCellDef class="table-actions" class="w-70">Action</mat-header-cell>
                           <mat-cell *matCellDef="let contact" class="w-70">
+                            <buttom mati-icon-button (click)="OnSaveEditedValue(contact)" matTooltip="Save">
+                            <mat-icon class="active-icon green-600 s-16">check</mat-icon>
+                           </buttom>
                             <ng-container class="actions">
                               <span class="material-icons" style="cursor: pointer; color: #c95a5a" (click)="deletecharges(contact)">delete</span>
                             </ng-container>
