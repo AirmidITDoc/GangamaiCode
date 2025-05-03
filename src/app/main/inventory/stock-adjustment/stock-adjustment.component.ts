@@ -66,14 +66,32 @@ export class StockAdjustmentComponent implements OnInit {
 
     ngOnInit(): void {
         this.StoreFrom = this._StockAdjustmentService.CreateStoreFrom();
+        this.getStockList();
     }
 
+    storeId=0
     selectChangeStore(obj: any) {
-
+        this.storeId=obj.value
     }
 
+    itemId=0
     selectChangeItem(obj: any) {
+        this.itemId=obj.value
+        this.getStockList();
+    }
 
+    getStockList() {
+    var Param = {
+        "StoreId": this.storeId || 0,
+        "ItemId": this.itemId || 0,
+    }
+    //console.log(Param)
+    this._StockAdjustmentService.getStockList(Param).subscribe(data => {
+        this.dsStockAdjList.data = data.data as StockAdjList[];
+        console.log(this.dsStockAdjList)
+    },
+        error => {
+        });
     }
 
     onSave(row: any = null) {
@@ -171,24 +189,6 @@ export class StockAdjustmentComponent implements OnInit {
     //   getSelectedObj(obj) {
     //     //console.log(obj);
     //     this.getStockList();
-    //   }
-
-    //   getStockList() {
-    //     var Param = {
-    //       "StoreId": this._loggedService.currentUserValue.storeId || 0,
-    //       "ItemId": this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0, //56784
-    //     }
-    //     //console.log(Param)
-    //     this._StockAdjustment.getStockList(Param).subscribe(data => {
-    //       this.dsStockAdjList.data = data as StockAdjList[];
-    //      console.log(this.dsStockAdjList)
-    //       this.dsStockAdjList.sort = this.sort;
-    //       this.dsStockAdjList.paginator = this.paginator;
-    //       this.sIsLoading = '';
-    //     },
-    //       error => {
-    //         this.sIsLoading = '';
-    //       });
     //   }
 
     //   OnSelect(param) {

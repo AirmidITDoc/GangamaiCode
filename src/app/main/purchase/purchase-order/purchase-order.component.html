@@ -1,81 +1,84 @@
 <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" dynamicTableHeight>
 
-            <div fusePerfectScrollbar
-                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                dynamicTableHeight>
+    <div fusePerfectScrollbar
+        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+        dynamicTableHeight>
 
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-                    <div class="top-header">
-                        <div class="top-header-info">
+            <div class="top-header">
+                <div class="top-header-info">
 
-                            <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                <span>Purchase Order</span>
-                            </div>
-                        </div>
-                        <div class="top-header-right">
-                            <div class="header-add-button">
-                                <button mat-raised-button (click)="onSave()">Add Purchase Order</button>
-                            </div>
-                        </div>
+                    <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                        <span>Purchase Order</span>
                     </div>
-                    <ng-template #isVerifiedstatus let-element>
-                        <div fxLayout="row" fxLayoutAlign="center center">
-                            <mat-icon *ngIf="element.isVerified=='0'" matTooltip="Verified"
-                                class="pill green-600 s-16">circle</mat-icon>
+                </div>
+                <div class="top-header-right">
+                    <div class="header-add-button">
+                        <button mat-raised-button (click)="onSave()">Add Purchase Order</button>
+                    </div>
+                </div>
+            </div>
+            <ng-template #isVerifiedstatus let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isVerified=='0'" matTooltip="Verified"
+                        class="pill green-600 s-16">circle</mat-icon>
 
-                            <mat-icon *ngIf="element.isVerified=='1'" matTooltip="NotVerified"
-                                class="pill orange-600 s-16">circle</mat-icon>
-                        </div>
-                    </ng-template>
+                    <mat-icon *ngIf="element.isVerified=='1'" matTooltip="NotVerified"
+                        class="pill orange-600 s-16">circle</mat-icon>
+                </div>
+            </ng-template>
 
-                    <ng-template #actionButtonTemplate let-element>
-                        <div fxLayout="row" fxLayoutAlign="center center">
-                            <button mat-icon-button matTooltip="Print Purchase Order"
-                                (click)="viewgetPurchaseorderReportPdf(element)">
-                                <mat-icon> print</mat-icon>
-                            </button>
+            <ng-template #actionButtonTemplate let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <button mat-icon-button matTooltip="Print Purchase Order"
+                        (click)="viewgetPurchaseorderReportPdf(element)">
+                        <mat-icon> print</mat-icon>
+                    </button>
 
-                            <button mat-icon-button matTooltip="Edit Purchase order" (click)="OnEdit(element)">
-                                <mat-icon>edit</mat-icon>
-                            </button>
+                    <button mat-icon-button matTooltip="Edit Purchase order" (click)="OnEdit(element)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
 
-                            <!-- *ngIf="element.isVerified" -->
-                            <button mat-icon-button (click)="onVerify(element)">
-                                <mat-icon class="disabled-icon" title="verify Menu">verified_user</mat-icon>
+                    <!-- *ngIf="element.isVerified" -->
+                    <button mat-icon-button (click)="onVerify(element)">
+                        <mat-icon class="disabled-icon" title="verify Menu">verified_user</mat-icon>
 
-                            </button>
+                    </button>
 
-                            <button mat-icon-button matTooltip="Send message On WhatsApp"
-                                (click)="OnWhatsPoSend(element)">
-                                <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
-                            </button>
+                    <button mat-icon-button matTooltip="Send message On WhatsApp" (click)="OnWhatsPoSend(element)">
+                        <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                    </button>
 
 
-                        </div>
-                    </ng-template>
-                    <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false"
-                        (onSelectRow)="GetDetails1($event)">
-                        <ng-container filters>
-                            <form [formGroup]="mysearchform" fxLayout="column">
-                                <airmid-datepicker [formGroup]="mysearchform" [isRangePicker]="true"
-                                    formStartControlName="startdate" formEndControlName="enddate"
-                                    [(fromValue)]="gridConfig.filters[0].fieldValue" (dateChange)="ListView($event)"
-                                    [(toValue)]="gridConfig.filters[1].fieldValue">
-                                </airmid-datepicker>
+                </div>
+            </ng-template>
+            <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false"
+                (onSelectRow)="GetDetails1($event)">
+                <ng-container filters>
+                    <form [formGroup]="mysearchform" fxLayout="column">
+                        <airmid-datepicker [formGroup]="mysearchform" [isRangePicker]="true"
+                            formStartControlName="startdate" formEndControlName="enddate"
+                            [(fromValue)]="gridConfig.filters[0].fieldValue" (dateChange)="ListView($event)"
+                            [(toValue)]="gridConfig.filters[1].fieldValue">
+                        </airmid-datepicker>
 
-                                <airmid-dropdown label="Store Name" formControlName="StoreId"
-                                    (selectionChange)="ListView($event)" [formGroup]="mysearchform"
-                                    [mode]="autocompletestore">
-                                </airmid-dropdown>
+                        <!-- <airmid-dropdown label="Store Name" formControlName="StoreId"
+                            (selectionChange)="ListView($event)" [formGroup]="mysearchform" [mode]="autocompletestore">
+                        </airmid-dropdown> -->
 
-                                <airmid-dropdown label="Supplier Name" formControlName="SupplierId"
-                                    (selectionChange)="ListView1($event)" [formGroup]="mysearchform"
-                                    [mode]="autocompleteSupplier">
-                                </airmid-dropdown>
+                        <airmid-dropdown label="Store Name" formControlName="StoreId" [formGroup]="mysearchform"
+                            fxFlex [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)"
+                            (keyup)="selectChangeStore($event)">
+                        </airmid-dropdown>
 
-                                <div fxFlex fxLayout="row">
-                                    <!-- <mat-radio-group name="Status" fxLayout="row" value="1"
+                        <airmid-dropdown label="Supplier Name" formControlName="SupplierId"
+                            (selectionChange)="ListView1($event)" [formGroup]="mysearchform"
+                            [mode]="autocompleteSupplier">
+                        </airmid-dropdown>
+
+                        <div fxFlex fxLayout="row">
+                            <!-- <mat-radio-group name="Status" fxLayout="row" value="1"
                                         formControlName="Status" style="padding: 6px;" class="gap-4">
                                         <mat-label>Status:</mat-label>
                                         <div fxLayout="row">
@@ -84,39 +87,37 @@
                                         </div>
                                     </mat-radio-group> -->
 
-                                   
-                                    <mat-slide-toggle name="Status" (change)="onChangeFirst($event)"
-                                    formControlName="Status"  [(ngModel)]="status">
-                                     Verify / Pending
-                                    </mat-slide-toggle>
-                                </div>
-                            </form>
-                        </ng-container>
-                    </airmid-table>
-                </div>
 
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
-                    *ngIf="isShowDetailTable">
-
-                    <ng-template #iconisClosed let-element>
-                        <div fxLayout="row" fxLayoutAlign="center center">
-
-                            <mat-icon *ngIf="element.isClosed == false" matTooltip="Pending"
-                                class="active-icon red-500 s-16">hourglass_empty
-                            </mat-icon>
-
-                            <mat-icon *ngIf="element.isClosed == true" matTooltip="Accepted"
-                                class="active-icon green-500 s-16">check_circle
-                            </mat-icon>
-
+                            <mat-slide-toggle name="Status" (change)="onChangeFirst($event)" formControlName="Status"
+                                [(ngModel)]="status">
+                                Verify / Pending
+                            </mat-slide-toggle>
                         </div>
-                    </ng-template>
+                    </form>
+                </ng-container>
+            </airmid-table>
+        </div>
 
-                    <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false"
-                        [ShowButtons]="false">
-                    </airmid-table>
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
+
+            <ng-template #iconisClosed let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+
+                    <mat-icon *ngIf="element.isClosed == false" matTooltip="Pending"
+                        class="active-icon red-500 s-16">hourglass_empty
+                    </mat-icon>
+
+                    <mat-icon *ngIf="element.isClosed == true" matTooltip="Accepted"
+                        class="active-icon green-500 s-16">check_circle
+                    </mat-icon>
+
                 </div>
-            </div>
+            </ng-template>
+
+            <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false" [ShowButtons]="false">
+            </airmid-table>
+        </div>
+    </div>
 
 
 </div>

@@ -281,6 +281,7 @@ export class SupplierMaster {
     IFSCcode:any;
     OpeningBal:any;
     pinCode:any;
+    taluka:any;
     /**
      * Constructor
      *
@@ -348,6 +349,7 @@ export class SupplierMaster {
             this.IFSCcode = SupplierMaster.IFSCcode || 0
             this.OpeningBal = SupplierMaster.OpeningBal || 0
             this.pinCode=SupplierMaster.pinCode || 0
+            this.taluka=SupplierMaster.taluka || 0
         }
     }
 }

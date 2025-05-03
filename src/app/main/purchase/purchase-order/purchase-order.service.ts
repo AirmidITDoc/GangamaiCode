@@ -6,6 +6,8 @@ import {  GSTCalculation, GSTCalculationResult, GSTType, GSTValidation, ToastTyp
 import { ToastrService } from 'ngx-toastr';
 import { ItemNameList } from './purchase-order.component';
 import { PurchaseFormModel } from './update-purchaseorder/types';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Injectable({
   providedIn: 'root'
@@ -47,12 +49,12 @@ export class PurchaseOrderService {
 
   constructor(
     public _httpClient: HttpClient, public _httpClient1: ApiCaller, private toastr: ToastrService,
-    private _formBuilder: UntypedFormBuilder
+    private _formBuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService, private accountService: AuthenticationService,
   ) {}
 
   PurchaseSearchFrom() {
     return this._formBuilder.group({
-      StoreId: ["0"],
+      StoreId: [this.accountService.currentUserValue.user.storeId],
       // ToStoreId: "0",
       // FromStoreId: 0,
       SupplierId: "0",
@@ -67,7 +69,7 @@ export class PurchaseOrderService {
     return this._formBuilder.group({
       purchaseId: [''],
       purchaseNo: [''],
-      StoreId: [2, [Validators.required]],
+      StoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required]],
       SupplierId: ['', [Validators.required]],
       TotalAmount: [''],
       DiscAmount: [''],
@@ -76,10 +78,10 @@ export class PurchaseOrderService {
       grandTotal: [''],
       // isclosed: [''],
       // isVerified: [''],
-      remarks: [''],
+      // remarks: ['', [Validators.required]],
       // taxId: [''],
-      paymentTermId: [''],// [Validators.required]],
-      modeofPayment: [''],// [Validators.required]],
+      // paymentTermId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      // modeofPayment: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       worrenty: [''],
      
 
@@ -130,9 +132,9 @@ export class PurchaseOrderService {
       Worrenty: [''],
       roundVal: [''],
       NetAmount: [''],
-      Remark: [''],
-      PaymentMode: ['0'],
-      PaymentTerm: ['0'],
+      Remark: ['', [Validators.required]],
+      PaymentTerm:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      PaymentMode: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
 
     });
   }

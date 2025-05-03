@@ -64,13 +64,13 @@ export class PurchaseOrderComponent implements OnInit {
 
   allcolumns = [
 
-    { heading: "Verify", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+    { heading: "Verify", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:70 },
     { heading: "PurchaseNo", key: "purchaseNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Date", key: "pDate", sort: true, align: 'left', emptySign: 'NA', width: 130 },
     { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-    { heading: "TotalAmt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA' , width: 100 },
-    { heading: "DiscAmount", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', width: 100  },
-    { heading: "NetAmount", key: "grandTotal", sort: true, align: 'left', emptySign: 'NA', width: 100  },
+    { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA' , width: 100, type: gridColumnTypes.amount },
+    { heading: "Disc Amt", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 , type: gridColumnTypes.amount },
+    { heading: "Net Amt", key: "grandTotal", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
     { heading: "Remark", key: "remarks", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "AddedByName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA', width: 150  },
     {
@@ -104,14 +104,26 @@ export class PurchaseOrderComponent implements OnInit {
       columnsList: [
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Rate", key: "rate", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "MRP", key: "mrp", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Rate", key: "rate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "DiscPer", key: "discPer", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "DiscAmount", key: "discAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "DiscAmount", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+      
+        { heading: "CGSTPer", key: "cgstPer", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "CGSTAmount", key: "cgstAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+       
+        { heading: "SGSTPer", key: "sgstPer", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "SGSTAmount", key: "sgstAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
+        { heading: "IGSTPer", key: "igstPer", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IGSTAmount", key: "igstAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+
         { heading: "GSTPer", key: "vatPer", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "GSTAmount", key: "vatAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "GSTAmount", key: "vatAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+       
+
         { heading: "TotalAmount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "MRP", key: "mrp", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "NetAmount", key: "grandTotalAmount", sort: true, align: 'left', emptySign: 'NA' },
+     
+        { heading: "NetAmount", key: "grandTotalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
       ],
       sortField: "PurDetId",
       sortOrder: 0,
@@ -148,12 +160,19 @@ export class PurchaseOrderComponent implements OnInit {
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {
-      this.grid.gridConfig = this.gridConfig;
-      this.grid.bindGridData();
+      this.onChangeFirst(event);
 
     });
   }
 
+  selectChangeStore(value) {   
+    if(value.value!==0)
+       this.StoreId=value.value
+   else
+   this.StoreId="0" 
+
+   this.onChangeFirst(event);
+}
    ListView(value) {
     if (value.value !== 0)
         this.StoreId = value.value
@@ -176,6 +195,7 @@ export class PurchaseOrderComponent implements OnInit {
       this.status="0"
     else
     this.status="1"
+  debugger
     this.isShowDetailTable = false;
     this.fromDate = this.datePipe.transform(this.mysearchform.get('startdate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.mysearchform.get('enddate').value, "yyyy-MM-dd")
@@ -235,8 +255,7 @@ export class PurchaseOrderComponent implements OnInit {
       this.toastr.success(response);
       if (response) {
         this.commonService.Onprint("PurchaseID", row.purchaseID, "Purchaseorder");
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
+        this.onChangeFirst(event);
        }
  
      });
@@ -412,7 +431,7 @@ export class ItemNameList {
       this.ModeOfPayment = ItemNameList.ModeOfPayment || '';
       this.TaxNatureId = ItemNameList.TaxNatureId || 0;
       this.Status3Id = ItemNameList.Status3Id || 0;
-      this.Worrenty = ItemNameList.Worrenty || '';
+      this.Worrenty = ItemNameList.Worrenty || "";
       this.Remark = ItemNameList.Remark || '';
       this.Schedule = ItemNameList.Schedule || '';
       this.roundVal = ItemNameList.roundVal || 0;

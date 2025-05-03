@@ -152,7 +152,7 @@ export class GRNReturnComponent implements OnInit {
     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
     { fieldName: "ToStoreId", fieldValue: "2", opType: OperatorComparer.Equals },
     { fieldName: "SupplierId", fieldValue: "1", opType: OperatorComparer.Equals },
-    { fieldName: "IsVerify", fieldValue: "1", opType: OperatorComparer.Equals }
+    { fieldName: "IsVerify", fieldValue: "0", opType: OperatorComparer.Equals }
   ]
   gridConfig: gridModel = {
     apiUrl: "Purchase/GRNReturnlistbynameList",
@@ -164,14 +164,14 @@ export class GRNReturnComponent implements OnInit {
 
   ToStoreId: any = "2"
   Supplier: any = "1"
-  Status: any = "1";
+  Status: any = "0";
   onChangeFirst() {
     // debugger
     this.fromDate = this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get('start').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get('end').value, "yyyy-MM-dd")
     // this.ToStoreId = this.vstoreId || '2'
     // this.Supplier = this.vSupplier || "1"
-    this.Status = this._GRNReturnService.GRNReturnSearchFrom.get('Status').value || "1"
+    this.Status = this._GRNReturnService.GRNReturnSearchFrom.get('Status').value || "0"
     this.getfilterdata();
   }
 
@@ -264,66 +264,19 @@ export class GRNReturnComponent implements OnInit {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  // getStoreList() {
-  //   var vdata = {
-  //     Id: this.accountService.currentUserValue.storeId
-  //   }
-  //   this._GRNReturnService.getLoggedStoreList(vdata).subscribe(data => {
-  //     this.ToStoreList = data;
-  //     this._GRNReturnService.GRNReturnSearchFrom.get('ToStoreId').setValue(this.ToStoreList[0]);
-  //   });
-  // }
-
-
-  // getGRNReturnList() {
-  //   this.sIsLoading = 'loading-data';
-  //   var Param = {
-  //     "ToStoreId": this.accountService.currentUserValue.storeId || 0,
-  //     "From_Dt": this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-  //     "To_Dt": this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-  //     "SupplierId": this._GRNReturnService.GRNReturnSearchFrom.get('SupplierId').value.SupplierId || 0,
-  //     "IsVerify": this._GRNReturnService.GRNReturnSearchFrom.get("Status").value || 0,
-  //   }
-  //   console.log(Param);
-  //   this._GRNReturnService.getGRNReturnList(Param).subscribe(data => {
-  //     this.dsGRNReturnList.data = data as GRNReturnList[];
-  //     // console.log(this.dsGRNReturnList);
-  //     this.dsGRNReturnList.sort = this.sort;
-  //     this.dsGRNReturnList.paginator = this.paginator;
-  //     this.sIsLoading = '';
-  //   },
-  //     error => {
-  //       this.sIsLoading = '';
-  //     });
-  // }
-  // getGRNReturnItemDetList(Params) {
-  //   this.sIsLoading = 'loading-data';
-  //   var Param = {
-  //     "GRNReturnId": Params.GRNReturnId
-  //   }
-  //   this._GRNReturnService.getGRNReturnItemDetList(Param).subscribe(data => {
-  //     this.dsGRNReturnItemDetList.data = data as GRNReturnItemDetList[];
-  //     this.dsGRNReturnItemDetList.sort = this.sort;
-  //     this.dsGRNReturnItemDetList.paginator = this.paginator1;
-  //     this.sIsLoading = '';
-  //     // console.log(this.dsGRNReturnItemDetList.data)
-  //   },
-  //     error => {
-  //       this.sIsLoading = '';
-  //     });
-  // }
 
   onClear() { }
   getVerify(row) {
-
-    let updateGRNReturnVerifyStatus = {};
-    updateGRNReturnVerifyStatus['grnReturnId'] = row.GRNReturnId;
-    updateGRNReturnVerifyStatus['isVerifiedUserId'] = this.accountService.currentUserValue.userId;
+    debugger
+    // let updateGRNReturnVerifyStatus = {};
+    // updateGRNReturnVerifyStatus['grnReturnId'] = row.GRNReturnId;
+    // updateGRNReturnVerifyStatus['isVerifiedUserId'] = this.accountService.currentUserValue.userId;
 
     let submitObj = {
-      "updateGRNReturnVerifyStatus": updateGRNReturnVerifyStatus
+      // "updateGRNReturnVerifyStatus": updateGRNReturnVerifyStatus
+      "grnreturnId": row.grnReturnId
     }
-    // console.log(submitObj)
+    console.log(submitObj)
     this._GRNReturnService.getVerifyGRNReturn(submitObj).subscribe(response => {
       if (response) {
         this.toastr.success('Record Verified Successfully.', 'Verified !', {
@@ -334,7 +287,6 @@ export class GRNReturnComponent implements OnInit {
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
-      // this.isLoading = '';
     },
       success => {
         this.toastr.success('Record Verified Successfully.', 'Verified !', {
@@ -342,7 +294,7 @@ export class GRNReturnComponent implements OnInit {
         });
 
       });
-    // this.getGRNReturnList();
+    this.getfilterdata();
   }
 
   getNewGRNRet() {
@@ -354,7 +306,7 @@ export class GRNReturnComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      // this.getGRNReturnList();
+      this.getfilterdata();
     });
   }
 

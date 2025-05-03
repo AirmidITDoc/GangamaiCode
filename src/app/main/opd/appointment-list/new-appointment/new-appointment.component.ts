@@ -144,6 +144,9 @@ export class NewAppointmentComponent implements OnInit {
 
     ) {
 
+console.log(this.accountService.currentUserValue.user.storeId)
+console.log(this.accountService.currentUserValue.user.unitId)
+// console.log(this.accountService.currentUserValue.user.storeId)
     }
     ngOnInit(): void {
 
@@ -161,7 +164,7 @@ export class NewAppointmentComponent implements OnInit {
             regRadio1: ['registration1'],
             RegId: [''],
             PhoneRegId: [''],
-            UnitId: [1]
+            UnitId: [this.accountService.currentUserValue.user.unitId]
         });
     }
     onChangeReg(event) {
