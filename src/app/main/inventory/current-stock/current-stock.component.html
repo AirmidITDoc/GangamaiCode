@@ -24,23 +24,18 @@
                         <ng-container filters>
 
                             <form [formGroup]="_CurrentStockService.SearchGroup">
-                            <!-- <airmid-datepicker [formGroup]="_CurrentStockService.SearchGroup" [isRangePicker]="true"
-                                formStartControlName="start" formEndControlName="end">
-                            </airmid-datepicker> -->
-                            <!--  [(fromValue)]="gridConfig.filters[2].fieldValue"
-                                [(toValue)]="gridConfig.filters[3].fieldValue" -->
 
                             <airmid-dropdown label="From Store" formControlName="StoreId"
                                 [formGroup]="_CurrentStockService.SearchGroup" [mode]="autocompletestore"
-                                (selectionChange)="selectChangeStore($event)">
+                                (selectionChange)="selectChangeStore($event)"
+                                [(ngModel)]="gridConfig.filters[0].fieldValue">
                             </airmid-dropdown>
-                            <!-- [(ngModel)]="gridConfig.filters[0].fieldValue" -->
 
                             <airmid-dropdown label="Item Name" formControlName="ItemCategory"
                                 [formGroup]="_CurrentStockService.SearchGroup"
                                  [mode]="autocompleteitem"
-                                (selectionChange)="selectChangeItem($event)">
-                                <!--  [(ngModel)]="gridConfig.filters[1].fieldValue" -->
+                                (selectionChange)="selectChangeItem($event)"
+                                [(ngModel)]="gridConfig.filters[1].fieldValue">
                             </airmid-dropdown>
 
                             <div fxLayout="row">
@@ -75,23 +70,31 @@
                         <ng-container filters>
 
                             <form [formGroup]="_CurrentStockService.SearchGroup">
-                            <airmid-datepicker [formGroup]="_CurrentStockService.SearchGroup" [isRangePicker]="false"
-                                formStartControlName="Onlystart">
-                            </airmid-datepicker>
-                            <!--  [(fromValue)]="gridConfig.filters[2].fieldValue"
-                                [(toValue)]="gridConfig.filters[3].fieldValue" -->
+                            <!-- <airmid-datepicker [formGroup]="_CurrentStockService.SearchGroup" [isRangePicker]="false"
+                                formStartControlName="start" [(fromValue)]="gridConfig.filters[0].fieldValue">
+                            </airmid-datepicker> -->
+
+                            <mat-form-field appearance="outline">
+                                <input matInput [matDatepicker]="validFromPicker"
+                                    formControllName="start"
+                                    (dateChange)="onChangeDateofBirth($event.value)">
+                                <mat-datepicker-toggle matSuffix
+                                    [for]="validFromPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #validFromPicker></mat-datepicker>
+                            </mat-form-field>
 
                             <airmid-dropdown label="From Store" formControlName="StoreId"
                                 [formGroup]="_CurrentStockService.SearchGroup" [mode]="autocompletestore"
-                                (selectionChange)="selectChangeStore($event)">
+                                (selectionChange)="selectChangeStore1($event)"
+                                [(ngModel)]="gridConfig1.filters[1].fieldValue">
                             </airmid-dropdown>
-                            <!-- [(ngModel)]="gridConfig.filters[0].fieldValue" -->
 
                             <airmid-dropdown label="Item Name" formControlName="ItemCategory"
                                 [formGroup]="_CurrentStockService.SearchGroup"
                                  [mode]="autocompleteitem"
-                                (selectionChange)="selectChangeItem($event)">
-                                <!--  [(ngModel)]="gridConfig.filters[1].fieldValue" -->
+                                (selectionChange)="selectChangeItem1($event)"
+                                [(ngModel)]="gridConfig1.filters[2].fieldValue">
+                    
                             </airmid-dropdown>
 
                             <div fxLayout="row">

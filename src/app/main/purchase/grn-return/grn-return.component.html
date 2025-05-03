@@ -32,9 +32,11 @@
                         <button mat-icon-button matTooltip="Print">
                             <mat-icon>print</mat-icon>
                         </button>
-                        <button mat-icon-button matTooltip="Verify">
-                            <mat-icon>verified_user</mat-icon>
-                        </button>                       
+                        <button mat-icon-button matTooltip="Verify" (click)="getVerify(element)">
+                            <!-- <mat-icon>verified_user</mat-icon> -->
+                        <mat-icon title="verify Menu" *ngIf="row.isVerified==false">verified_user</mat-icon>
+                        </button>        
+                        
                     </div>
                 </ng-template>
 
@@ -63,8 +65,8 @@
                                 style="padding: 6px;" class="gap-4">
                                 <mat-label>Status:</mat-label>
                                 <div fxLayout="row">
-                                    <mat-radio-button value='0'>Close</mat-radio-button>
-                                    <mat-radio-button value='1'>Pending</mat-radio-button>
+                                    <mat-radio-button value='1'>Close</mat-radio-button>
+                                    <mat-radio-button value='0'>Pending</mat-radio-button>
                                 </div>
                             </mat-radio-group>
                         </div>

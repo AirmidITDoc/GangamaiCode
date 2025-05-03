@@ -156,10 +156,10 @@ export class EditpackageComponent implements OnInit {
         this.dsPackageDet.data = [];
         this.PacakgeList.push(
             {
-                ServiceId: this.registerObj.serviceId || 0,
-                ServiceName: this.registerObj.serviceName || '',
-                PackageServiceId: this.vServiceId || 0,
-                PackageServiceName: this.vSrvcName || 0,
+                ServiceId: this.registerObj.serviceId || this.registerObj.ServiceId || 0,
+                ServiceName: this.registerObj.serviceName || this.registerObj.ServiceName,
+                PackageServiceId: this.vServiceId || this.registerObj.PackageServiceId || 0,
+                PackageServiceName: this.vSrvcName || this.registerObj.PackageServiceName,
             });
 
         console.log(this.PacakgeList)
@@ -196,19 +196,21 @@ export class EditpackageComponent implements OnInit {
         let InsertPackageObj = [];
         this.dsPackageDet.data.forEach(element => {
             let InsertPackage = {
+                "packageId": 0,
                 "serviceId": element.ServiceId || 0,
-                "packageServiceId": element.PackageServiceId || 0
+                "packageServiceId": element.PackageServiceId || 0,
+                "price": 0
             }
             InsertPackageObj.push(InsertPackage)
         });
 
-        let delete_PackageDetails = {
-            "serviceId": this.registerObj.ServiceId || 0
-        }
+        // let delete_PackageDetails={
+        //     "serviceId": this.registerObj.serviceId || 0
+        //   }
 
         let submitData = {
-            "insert_PackageDetails": InsertPackageObj,
-            "delete_PackageDetails": delete_PackageDetails
+            "packageDetail": InsertPackageObj,
+            // "delete_PackageDetails":delete_PackageDetails
         }
 
         console.log(submitData)

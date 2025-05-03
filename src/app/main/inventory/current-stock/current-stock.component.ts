@@ -6,7 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
@@ -73,19 +73,18 @@ export class CurrentStockComponent implements OnInit {
     SpinLoading: boolean = false;
     isItemSelected: boolean = false;
 
-    dsCurrentStock = new MatTableDataSource<CurrentStockList>();
-    dsDaywiseStock = new MatTableDataSource<DayWiseStockList>();
-    dsItemwiseStock = new MatTableDataSource<ItemWiseStockList>();
-    dsIssuewissueItemStock = new MatTableDataSource<ItemWiseStockList>();
-    printflag: boolean = false;
+    storeId = "0";
+    itemId = "0";
 
-    // @ViewChild(MatSort) sort: MatSort;
-    // @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
-    // @ViewChild('secondPaginator', { static: true }) public secondPaginator: MatPaginator;
-    // @ViewChild('thirdPaginator', { static: true }) public thirdPaginator: MatPaginator;
+    // dsCurrentStock = new MatTableDataSource<CurrentStockList>();
+    // dsDaywiseStock = new MatTableDataSource<DayWiseStockList>();
+    // dsItemwiseStock = new MatTableDataSource<ItemWiseStockList>();
+    // dsIssuewissueItemStock = new MatTableDataSource<ItemWiseStockList>();
+    printflag: boolean = false;
 
     autocompletestore: string = "Store";
     autocompleteitem: string = "ItemType";
+    formattedDate: string;
 
     constructor(
         public _CurrentStockService: CurrentStockService,
@@ -102,53 +101,148 @@ export class CurrentStockComponent implements OnInit {
     ngOnInit(): void {
         // this.gePharStoreList();
         //this.getCrrentStkItemSearchList();
-        this._CurrentStockService.SearchGroup.get('Onlystart')?.setValue(new Date());
     }
+
+    allcurrentColumn=[
+        { heading: "ItemName", key: "isAcc", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "ReceivedQty", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "IssueQty", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "BalanceQty", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "ReturnQty", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    ]
+    allcurrentFilters=[
+        { fieldName: "StoreId", fieldValue: this.storeId, opType: OperatorComparer.Equals },
+        { fieldName: "ItemName", fieldValue: this.itemId, opType: OperatorComparer.StartsWith }
+    ]
 
     gridConfig: gridModel = {
-        apiUrl: "IssueToDepartment/IssueToDeptList",
-        columnsList: [
-            { heading: "ItemName", key: "isAcc", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "ReceivedQty", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IssueQty", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "BalanceQty", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "ReturnQty", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        ],
-        sortField: "IssueId",
+        apiUrl: "CurrentStock/StorewiseCurrentStockList",
+        columnsList: this.allcurrentColumn,
+        sortField: "StoreId",
         sortOrder: 0,
-        filters: [
-            { fieldName: "FromStoreId", fieldValue: "10009", opType: OperatorComparer.Equals },
-            { fieldName: "Item", fieldValue: "10003", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        ]
+        filters: this.allcurrentFilters
     }
 
+    getfiltercurrentStock(){
+        debugger
+            this.gridConfig = {
+                apiUrl: "CurrentStock/StorewiseCurrentStockList",
+                columnsList:this.allcurrentColumn , 
+                sortField: "StoreId",
+                sortOrder: 0,
+                filters:  [
+                    { fieldName: "StoreId", fieldValue: this.storeId, opType: OperatorComparer.Equals },
+                    { fieldName: "ItemName", fieldValue: this.itemId, opType: OperatorComparer.StartsWith },
+                ]
+            }
+            console.log(this.gridConfig)
+            this.grid1.gridConfig = this.gridConfig;
+            this.grid1.bindGridData(); 
+        }
+
+        selectChangeStore(obj:any){
+            console.log(obj)
+             if(obj.value!==0)
+                this.storeId=obj.value
+            else
+            this.storeId="0"
+    
+            this.getfiltercurrentStock();
+        }
+        selectChangeItem(obj:any){
+            console.log(obj)
+             if(obj.value!==0)
+                this.itemId=obj.value
+            else
+            this.itemId="0"
+    
+            this.getfiltercurrentStock();
+        }
+
+    onChangeDateofBirth(DateOfBirth) {
+        debugger
+        console.log(DateOfBirth)
+        const date = new Date(DateOfBirth);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); 
+        const day = String(date.getDate()).padStart(2, '0');
+        this.formattedDate = `${year}-${month}-${day}`;
+        console.log(this.formattedDate);
+
+        this.alldayWiseFilter[0].fieldValue = this.formattedDate;
+    }
+
+    alldayWiseColumn= [
+        { heading: "LedgerDate", key: "isAcc", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "ItemName", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "BatchNo", key: "batch", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Batch ExpDate", key: "batchEx", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Unit MRP", key: "unit", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "PurUnitRate", key: "PurUnitRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "LandedRate", key: "LandedRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "ReceivedQty", key: "recevideqty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "IssueQty", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "BalanceQty", key: "balance", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    ]
+    alldayWiseFilter=[
+        { fieldName: "LedgerDate", fieldValue: '', opType: OperatorComparer.StartsWith },
+        { fieldName: "StoreId", fieldValue: this.storeId, opType: OperatorComparer.Equals },
+        { fieldName: "ItemId", fieldValue: this.itemId, opType: OperatorComparer.Equals },
+    ]
+
     gridConfig1: gridModel = {
-        apiUrl: "IssueToDepartment/IssueToDeptList",
-        columnsList: [
-            { heading: "LedgerDate", key: "isAcc", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "ItemName", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "BatchNo", key: "batch", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Batch ExpDate", key: "batchEx", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Unit MRP", key: "unit", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "PurUnitRate", key: "PurUnitRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "LandedRate", key: "LandedRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "ReceivedQty", key: "recevideqty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IssueQty", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "BalanceQty", key: "balance", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        ],
-        sortField: "IssueId",
+        apiUrl: "CurrentStock/DayWiseCurrentStockList",
+        columnsList:this.alldayWiseColumn,
+        sortField: "StoreId",
         sortOrder: 0,
-        filters: [
-            { fieldName: "FromStoreId", fieldValue: "10009", opType: OperatorComparer.Equals },
-            { fieldName: "Item", fieldValue: "10003", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-        ]
+        filters: this.alldayWiseFilter
+    }
+
+    onChangedayWise() {
+        debugger
+        this.fromDate = this.formattedDate
+        // this.getfilterdayWise();
+    }
+
+    getfilterdayWise(){
+    debugger
+        this.gridConfig1 = {
+            apiUrl: "CurrentStock/DayWiseCurrentStockList",
+            columnsList:this.alldayWiseColumn , 
+            sortField: "StoreId",
+            sortOrder: 0,
+            filters:  [
+                { fieldName: "LedgerDate", fieldValue: this.formattedDate, opType: OperatorComparer.StartsWith },
+                { fieldName: "StoreId", fieldValue: this.storeId, opType: OperatorComparer.Equals },
+                { fieldName: "ItemId", fieldValue: this.itemId, opType: OperatorComparer.Equals },
+            ]
+        }
+        console.log(this.gridConfig1)
+        this.grid2.gridConfig = this.gridConfig1;
+        this.grid2.bindGridData(); 
+    }
+
+    selectChangeStore1(obj:any){
+        console.log(obj)
+         if(obj.value!==0)
+            this.storeId=obj.value
+        else
+        this.storeId="0"
+
+        this.onChangedayWise();
+    }
+    selectChangeItem1(obj:any){
+        console.log(obj)
+         if(obj.value!==0)
+            this.itemId=obj.value
+        else
+        this.itemId="0"
+
+        this.onChangedayWise();
     }
 
     gridConfig2: gridModel = {
-        apiUrl: "IssueToDepartment/IssueToDeptList",
+        apiUrl: "CurrentStock/ItemWiseSalesSummaryList",
         columnsList: [
             { heading: "ItemName", key: "isAcc", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Conversion Factor", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -201,45 +295,12 @@ export class CurrentStockComponent implements OnInit {
     IssuewiseItemListfilteredOptions: any;
 
     onClear() {
-
         this._CurrentStockService.SearchGroup.get('start').reset();
         this._CurrentStockService.SearchGroup.get('end').reset();
         this._CurrentStockService.SearchGroup.get('StoreId').reset();
         this._CurrentStockService.SearchGroup.get('IsDeleted').reset();
         this._CurrentStockService.SearchGroup.get('ItemCategory').reset();
-
     }
-
-    selectChangeStore(onj:any){
-
-    }
-    selectChangeItem(onj:any){
-        
-    }
-    // getDayWiseStockList() {
-    //     this.sIsLoading = 'loading-data';
-    //     var vdata = {
-    //         "LedgerDate": this.datePipe.transform(this._CurrentStockService.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-    //         "StoreId": this._loggedService.currentUserValue.storeId || 0,
-    //         "ItemId": this._CurrentStockService.userFormGroup.get('ItemCategory').value.ItemID || 0,
-    //     }
-    //     setTimeout(() => {
-    //         this._CurrentStockService.getDayWiseStockList(vdata).subscribe(
-    //             (Visit) => {
-    //                 this.dsDaywiseStock.data = Visit as DayWiseStockList[];
-    //                 console.log(this.dsDaywiseStock.data)
-    //                 this.dsDaywiseStock.sort = this.sort;
-    //                 this.dsDaywiseStock.paginator = this.thirdPaginator;
-    //                 this.sIsLoading = '';
-    //                 this.isLoadingStr = this.dsDaywiseStock.data.length == 0 ? 'no-data' : '';
-    //             },
-    //             (error) => {
-    //                 this.isLoadingStr = 'no-data';
-    //             }
-    //         );
-    //     }, 1000);
-
-    // }
 
     // getItemWiseStockList() {
     //     this.sIsLoading = 'loading-data';
@@ -365,41 +426,41 @@ export class CurrentStockComponent implements OnInit {
 
 
     _loaderShow: boolean = true;
-    exportItemReportExcel() {
-        this.sIsLoading == 'loading-data'
-        let exportHeaders = ['ItemName', 'ConversionFactor', 'Current_BalQty', 'Received_Qty', 'Sales_Qty'];
-        this.reportDownloadService.getExportJsonData(this.dsItemwiseStock.data, exportHeaders, 'ItemWise Report');
+    // exportItemReportExcel() {
+    //     this.sIsLoading == 'loading-data'
+    //     let exportHeaders = ['ItemName', 'ConversionFactor', 'Current_BalQty', 'Received_Qty', 'Sales_Qty'];
+    //     this.reportDownloadService.getExportJsonData(this.dsItemwiseStock.data, exportHeaders, 'ItemWise Report');
 
-        this.dsItemwiseStock.data = [];
-        this.sIsLoading = '';
-    }
-
-
-    exportDayReportExcel() {
-        this.sIsLoading == 'loading-data'
-        let exportHeaders = ['LedgerDate', 'ItemName', 'BatchNo', 'BalanceQty', 'ReceivedQty', 'IssueQty', 'UnitMRP', 'PurUnitRate', 'LandedRate', 'VatPercentage'];
-        this.reportDownloadService.getExportJsonData(this.dsDaywiseStock.data, exportHeaders, 'Day Wise Report');
-        this.dsDaywiseStock.data = [];
-        this.sIsLoading = '';
-    }
-
-    exportCurrentStockReportExcel() {
-        this.sIsLoading == 'loading-data'
-        let exportHeaders = ['ItemName', 'ReceivedQty', 'IssueQty', 'BalanceQty', 'ReturnQty'];
-        this.reportDownloadService.getExportJsonData(this.dsCurrentStock.data, exportHeaders, 'CurrentStock');
-        console.log(this.dsCurrentStock.data)
-        this.dsCurrentStock.data = [];
-        this.sIsLoading = '';
-    }
+    //     this.dsItemwiseStock.data = [];
+    //     this.sIsLoading = '';
+    // }
 
 
-    exportIssuewiseItemReportExcel() {
-        this.sIsLoading == 'loading-data'
-        let exportHeaders = ['StoreName', 'ItemName', 'Received_Qty', 'Sales_Qty', 'Current_BalQty'];
-        this.reportDownloadService.getExportJsonData(this.dsIssuewissueItemStock.data, exportHeaders, 'Issuw Wise Item Stock');
-        this.dsCurrentStock.data = [];
-        this.sIsLoading = '';
-    }
+    // exportDayReportExcel() {
+    //     this.sIsLoading == 'loading-data'
+    //     let exportHeaders = ['LedgerDate', 'ItemName', 'BatchNo', 'BalanceQty', 'ReceivedQty', 'IssueQty', 'UnitMRP', 'PurUnitRate', 'LandedRate', 'VatPercentage'];
+    //     this.reportDownloadService.getExportJsonData(this.dsDaywiseStock.data, exportHeaders, 'Day Wise Report');
+    //     this.dsDaywiseStock.data = [];
+    //     this.sIsLoading = '';
+    // }
+
+    // exportCurrentStockReportExcel() {
+    //     this.sIsLoading == 'loading-data'
+    //     let exportHeaders = ['ItemName', 'ReceivedQty', 'IssueQty', 'BalanceQty', 'ReturnQty'];
+    //     this.reportDownloadService.getExportJsonData(this.dsCurrentStock.data, exportHeaders, 'CurrentStock');
+    //     console.log(this.dsCurrentStock.data)
+    //     this.dsCurrentStock.data = [];
+    //     this.sIsLoading = '';
+    // }
+
+
+    // exportIssuewiseItemReportExcel() {
+    //     this.sIsLoading == 'loading-data'
+    //     let exportHeaders = ['StoreName', 'ItemName', 'Received_Qty', 'Sales_Qty', 'Current_BalQty'];
+    //     this.reportDownloadService.getExportJsonData(this.dsIssuewissueItemStock.data, exportHeaders, 'Issuw Wise Item Stock');
+    //     this.dsCurrentStock.data = [];
+    //     this.sIsLoading = '';
+    // }
 
     viewgetDaywisestockReportPdf() {
         this.sIsLoading == 'loading-data'

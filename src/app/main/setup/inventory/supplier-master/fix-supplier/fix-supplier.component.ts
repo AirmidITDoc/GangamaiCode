@@ -35,6 +35,7 @@ export class FixSupplierComponent implements OnInit {
     autocompleteModecountry: string = "Country";
     autocompleteModeofpayment: string = "PaymentMode";
     autocompleteModetermofpayment: string = "TermofPayment";
+    autocompleteModeoftaluka:string="Taluka"
     autocompleteModeofBank:string='Bank'
     @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
 
@@ -108,6 +109,11 @@ export class FixSupplierComponent implements OnInit {
     selectChangemodeofBank(obj:any){
         this.bankId=obj.value
         this.bankName=obj.text
+    }
+
+    talukaId=0
+    selectChangemodeoftaluka(obj:any){
+        this.talukaId=obj.value
     }
 
     onChangestate(e) {

@@ -50,8 +50,12 @@
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="Taluka" formControlName="taluka" [(ngModel)]="vtaluka" [formGroup]="supplierForm" [validations]="getValidationMessages().taluka" [maxLength]="50">
-                                    </airmid-textbox>
+                                    <!-- <airmid-textbox label="Taluka" formControlName="taluka" [(ngModel)]="vtaluka" [formGroup]="supplierForm" [validations]="getValidationMessages().taluka" [maxLength]="50">
+                                    </airmid-textbox> -->
+
+                                    <airmid-dropdown label="Taluka" formControlName="taluka" [formGroup]="supplierForm" [value]="registerObj.taluka" [validations]="getValidationMessages().taluka"
+                                     [mode]="autocompleteModeoftaluka" (selectionChange)="selectChangemodeoftaluka($event)">
+                                    </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">

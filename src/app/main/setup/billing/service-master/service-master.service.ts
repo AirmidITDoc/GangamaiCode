@@ -100,7 +100,7 @@ export class ServiceMasterService {
     }
 
     public SavePackagedet(param) {
-        return this._httpClient.PostData("Administration/InsertPackageDetails", param);
+        return this._httpClient.PostData("Administration/PackageDetailsInsert", param);
     }
 
     public getClassMasterList(param) {

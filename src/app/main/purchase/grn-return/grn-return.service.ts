@@ -37,7 +37,7 @@ export class GrnReturnService {
     return this._formBuilder.group({ 
       ToStoreId: [2,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       SupplierId:['',[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      Status:['1'],
+      Status:['0'],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
     });
@@ -94,7 +94,7 @@ export class GrnReturnService {
   }
 
   public getVerifyGRNReturn(Param) {
-    return this._httpClient.post("Pharmacy/VerifyGRNReturn", Param)
+    return this._httpClient1.PostData("GRNReturn/Verify", Param)
   }
   
 

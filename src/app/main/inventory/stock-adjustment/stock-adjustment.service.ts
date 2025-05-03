@@ -61,7 +61,7 @@ export class StockAdjustmentService {
   }
    
   public getStockList(Param){//Retrieve_BatchNoForMrpAdj
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_BatchNoForMrpAdj",Param);
+    return this._httpClient1.PostData("StockAdjustment/ItemWiseStockList",Param);
   }
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);

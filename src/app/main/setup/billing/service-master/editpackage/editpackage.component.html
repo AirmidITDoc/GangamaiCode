@@ -58,7 +58,7 @@
                                 Service Name
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                <span> {{contact.ServiceName}}</span>
+                                <span> {{contact.ServiceName || contact.serviceName}}</span>
                             </mat-cell>
                         </ng-container>
 
@@ -67,7 +67,7 @@
                                 Package Service Name
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                <span> {{contact.PackageServiceName}}</span>
+                                <span> {{contact.PackageServiceName || contact.packageServiceName}}</span>
                             </mat-cell>
                         </ng-container>
 
