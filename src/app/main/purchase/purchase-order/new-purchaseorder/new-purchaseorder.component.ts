@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, Inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ItemNameList, PurchaseItemList } from '../purchase-order.component';
 import { SupplierMaster } from 'app/main/setup/inventory/supplier-master/supplier-master.component';
@@ -17,11 +17,14 @@ import { FinalFormModel, GRNItemResponseType, GSTType, PurchaseFormModel, ToastT
 import { MatSelect } from '@angular/material/select';
 import Swal from 'sweetalert2';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-new-purchaseorder',
   templateUrl: './new-purchaseorder.component.html',
-  styleUrls: ['./new-purchaseorder.component.scss']
+  styleUrls: ['./new-purchaseorder.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewPurchaseorderComponent {
 
@@ -225,11 +228,10 @@ export class NewPurchaseorderComponent {
 
   ngOnInit(): void {
     this.userFormGroup = this._PurchaseOrder.getPurchaseOrderForm();
-    this.FinalPurchaseform = this._PurchaseOrder.getPurchaseOrderFinalForm()
+        this.FinalPurchaseform = this._PurchaseOrder.getPurchaseOrderFinalForm()
     this.userFormGroup.markAllAsTouched();
     this.FinalPurchaseform.markAllAsTouched();
 
-    // this.userFormGroup.get("GSTType").setValue('GST_BEFORE_DISC')
     console.log(this.data)
 
     // if (this.data.chkNewGRN == 2) {
@@ -286,7 +288,9 @@ export class NewPurchaseorderComponent {
     setTimeout(() => {
       this._PurchaseOrder.getSupplierById(obj.value).subscribe((response) => {
         this.SupplierObj = response;
+        console.log(response)
         this.vSupplierId = this.SupplierObj.supplierId
+        debugger
         this.vAddress = this.SupplierObj.address;
         this.vMobile = this.SupplierObj.mobile;
         this.vContact = this.SupplierObj.contactPerson;
@@ -395,6 +399,12 @@ export class NewPurchaseorderComponent {
                this._PurchaseOrder.showToast('Record Deleted Successfully.', ToastType.SUCCESS);
                this.updatePurchaseFinalForm();
           //  }
+          debugger
+          if(this.dsItemNameList.data.length==0){
+            this.FinalPurchaseform.get("TransportCharges").setValue(0)
+            this.FinalPurchaseform.get("Freight").setValue(0)
+            this.FinalPurchaseform.get("OctriAmount").setValue(0)
+          }
        }
 
   getOldPurchaseOrder(Id) {
@@ -578,6 +588,8 @@ export class NewPurchaseorderComponent {
       });
       return;
     }
+
+    console.log(this.FinalPurchaseform.value)
     if (this.FinalPurchaseform.invalid) {
       this.toastr.warning('please check from is invalid', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -631,7 +643,7 @@ export class NewPurchaseorderComponent {
       "taxId": 0,
       "paymentTermId": this.paymentterm,// this.FinalPurchaseform.get('PaymentTerm').value.value || 0,
       "modeofPayment": this.paymentmode,// this.FinalPurchaseform.get('PaymentMode').value.value || 0,
-      "worrenty": this.FinalPurchaseform.get('Worrenty').value || 0,
+      "worrenty": this.FinalPurchaseform.get('Worrenty').value || " ",
       "roundVal": Math.round(this.FinalNetAmount),
       "prefix": "",
       "isVerifiedId": 0,
@@ -654,8 +666,6 @@ export class NewPurchaseorderComponent {
 
     });
 
-
-    // validation
   }
   viewgetPurchaseorderReportPdf(PurchaseID) {
     this.commonService.Onprint("PurchaseID", PurchaseID, "Purchaseorder");
