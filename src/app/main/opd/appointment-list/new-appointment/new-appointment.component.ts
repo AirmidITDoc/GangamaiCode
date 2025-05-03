@@ -346,76 +346,76 @@ console.log(this.accountService.currentUserValue.user.unitId)
     }
 
     onSave() {
-        if(this.Patientnewold ==2 && this.RegId==0)
+        if (this.Patientnewold == 2 && this.RegId == 0)
             this.toastr.warning("Please Select Registered Patient  ...");
-        else{
-        let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
-        if (DateOfBirth1) {
-            const todayDate = new Date();
-            const dob = new Date(DateOfBirth1);
-            const timeDiff = Math.abs(Date.now() - dob.getTime());
-            this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
-            this.ageMonth = (todayDate.getMonth() - dob.getMonth());
-            this.ageDay = (todayDate.getDate() - dob.getDate());
+        else {
+            let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
+            if (DateOfBirth1) {
+                const todayDate = new Date();
+                const dob = new Date(DateOfBirth1);
+                const timeDiff = Math.abs(Date.now() - dob.getTime());
+                this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
+                this.ageMonth = (todayDate.getMonth() - dob.getMonth());
+                this.ageDay = (todayDate.getDate() - dob.getDate());
 
-            if (this.ageDay < 0) {
-                (this.ageMonth)--;
-                const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
-                this.ageDay += previousMonth.getDate(); // Days in previous month
-            }
-
-            if (this.ageMonth < 0) {
-                this.ageYear--;
-                this.ageMonth += 12;
-            }
-        }
-        if (this.ageYear != 0 || this.ageMonth != 0 || this.ageDay != 0) {
-
-            if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
-
-                if (this.isCompanySelected && this.VisitFormGroup.get('CompanyId').value == 0) {
-                    this.toastr.warning('Please select valid Company ', 'Warning !', {
-                        toastClass: 'tostr-tost custom-toast-warning',
-                    });
-                    return;
-                }
-                this.personalFormGroup.get('Age').setValue(String(this.ageYear))
-                this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
-                this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
-                this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
-
-                this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-                this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
-                this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-                this.VisitFormGroup.get('visitTime').setValue(this.dateTimeObj.time)
-
-                if (this.searchFormGroup.get('regRadio').value == "registration")
-                    this.OnsaveNewRegister();
-                else if (this.searchFormGroup.get('regRadio').value == "registrered") {
-                    this.onSaveRegistered();
-                    this.onClose();
+                if (this.ageDay < 0) {
+                    (this.ageMonth)--;
+                    const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+                    this.ageDay += previousMonth.getDate(); // Days in previous month
                 }
 
-            } else {
-                let invalidFields = [];
-                if (this.personalFormGroup.invalid) {
-                    for (const controlName in this.personalFormGroup.controls) {
-                        if (this.personalFormGroup.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
+                if (this.ageMonth < 0) {
+                    this.ageYear--;
+                    this.ageMonth += 12;
+                }
+            }
+            if (this.ageYear != 0 || this.ageMonth != 0 || this.ageDay != 0) {
+
+                if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
+
+                    if (this.isCompanySelected && this.VisitFormGroup.get('CompanyId').value == 0) {
+                        this.toastr.warning('Please select valid Company ', 'Warning !', {
+                            toastClass: 'tostr-tost custom-toast-warning',
+                        });
+                        return;
                     }
-                }
-                if (this.VisitFormGroup.invalid) {
-                    for (const controlName in this.VisitFormGroup.controls) { if (this.VisitFormGroup.controls[controlName].invalid) { invalidFields.push(`Visit Form: ${controlName}`); } }
-                }
+                    this.personalFormGroup.get('Age').setValue(String(this.ageYear))
+                    this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
+                    this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
+                    this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
 
-                if (invalidFields.length > 0) {
-                    invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
-                }
+                    this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+                    this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
+                    this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+                    this.VisitFormGroup.get('visitTime').setValue(this.dateTimeObj.time)
 
+                    if (this.searchFormGroup.get('regRadio').value == "registration")
+                        this.OnsaveNewRegister();
+                    else if (this.searchFormGroup.get('regRadio').value == "registrered") {
+                        this.onSaveRegistered();
+                        this.onClose();
+                    }
+
+                } else {
+                    let invalidFields = [];
+                    if (this.personalFormGroup.invalid) {
+                        for (const controlName in this.personalFormGroup.controls) {
+                            if (this.personalFormGroup.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
+                        }
+                    }
+                    if (this.VisitFormGroup.invalid) {
+                        for (const controlName in this.VisitFormGroup.controls) { if (this.VisitFormGroup.controls[controlName].invalid) { invalidFields.push(`Visit Form: ${controlName}`); } }
+                    }
+
+                    if (invalidFields.length > 0) {
+                        invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+                    }
+
+                }
+            } else {
+                this.toastr.warning("Please Select Birthdate  ...");
             }
-        } else {
-            this.toastr.warning("Please Select Birthdate  ...");
         }
-    }
     }
 
     OnsaveNewRegister() {
@@ -670,7 +670,7 @@ console.log(this.accountService.currentUserValue.user.unitId)
             ]],
             // GenderId: new FormControl('', [Validators.required, this._FormvalidationserviceService.dropdownvalidation()]),
             GenderId: new FormControl('', [Validators.required]),
-          
+
             Address: '',
             DateOfBirth: [(new Date()).toISOString()],
             Age: ['0'],
@@ -679,9 +679,9 @@ console.log(this.accountService.currentUserValue.user.unitId)
                 Validators.maxLength(3),
                 Validators.pattern("^[0-9]*$")]],
             AgeMonth: ['', [
-            Validators.pattern("^[0-9]*$")]],
+                Validators.pattern("^[0-9]*$")]],
             AgeDay: ['', [
-            Validators.pattern("^[0-9]*$")]],
+                Validators.pattern("^[0-9]*$")]],
             PhoneNo: ['', [Validators.minLength(10),
             Validators.maxLength(10),
                 // this._FormvalidationserviceService.inputFieldValidator(),
@@ -693,10 +693,10 @@ console.log(this.accountService.currentUserValue.user.unitId)
             // Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
             // ]],
             MobileNo: ['', [Validators.required,
-                Validators.minLength(10),
-                Validators.maxLength(10),
-                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-                ]],
+            Validators.minLength(10),
+            Validators.maxLength(10),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            ]],
             aadharCardNo: ['', [
                 Validators.minLength(12),
                 Validators.maxLength(12),
