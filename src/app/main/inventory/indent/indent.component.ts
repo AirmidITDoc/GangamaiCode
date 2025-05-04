@@ -35,11 +35,11 @@ export class IndentComponent implements OnInit {
     hasSelectedContacts: boolean;
     IndentSearchGroup: FormGroup;
     autocompletestore: string = "Store";
-    Status="0"
+    Status="1"
     FromStore:any="0"
     Tostore:any="0"
-    fromDate = "1900-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    toDate ="1900-01-01"// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    fromDate = "2025-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate =this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
@@ -47,12 +47,12 @@ export class IndentComponent implements OnInit {
 
     allcolumns = [
 
-        { heading: "Verify", key: "verify", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Verify", key: "isverify", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "IndentNo", key: "indentNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Indent Date", key: "indentDate", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Indent Date", key: "indentDate", sort: true, align: 'left', emptySign: 'NA',type:6 },
         { heading: "From Store Name", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "To Store Name", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Added By", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Added By", key: "addedby", sort: true, align: 'left', emptySign: 'NA' },
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                 {
@@ -145,9 +145,9 @@ export class IndentComponent implements OnInit {
     getfilterdata() {
         debugger
         this.gridConfig = {
-            apiUrl: "IssueToDepartment/IssueToDeptList",
+            apiUrl: "Indent/IndentList",
             columnsList: this.allcolumns,
-            sortField: "IssueId",
+            sortField: "IndentId",
             sortOrder: 0,
             filters: [
                 { fieldName: "FromStoreId", fieldValue: this.FromStore, opType: OperatorComparer.Equals },

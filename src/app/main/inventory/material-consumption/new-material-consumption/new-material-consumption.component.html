@@ -73,20 +73,13 @@
                         <div fxLayout="row wrap" fxLayoutGap="12px grid">
 
                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                               
-                                <!-- <airmid-autocomplete lbl="Item" [formGroup]="ItemFormGroup" label="Search Item Name"
-                                    formControlName="ItemName" placeholderText="Enter Item Name" fxFlex
-                                    ApiUrl="VisitDetail/GetServiceListwithTraiff?TariffId=1&ClassId=2&ServiceName="
-                                    (selectionChange)="getSelectedserviceObj($event)" TextField="serviceName"
-                                    ValueField="serviceId"></airmid-autocomplete> -->
 
-                                    <airmid-autocomplete lbl="Item" [formGroup]="ItemFormGroup" label="Search Item Name"
-                                    formControlName="ItemName" placeholderText="Enter Item Name" fxFlex
-                                    ApiUrl="ItemMaster/GetItemListBatchPopItemwise?StoreId=2&ItemName="
-                                    (selectionChange)="getSelectedserviceObj($event)" TextField="itemName"
-                                    ValueField="itemId"></airmid-autocomplete>
+                                <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="ItemFormGroup"
+                                    formControlName="ItemName" placeholderText="Item Name (enter 2 char)"
+                                    ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
+                                    (selectionChange)="getSelectedItem($event)" TextField="formattedText"
+                                    ValueField="itemId" (onClearSelection)="ItemReset()"></airmid-autocomplete>
 
-                                   
 
                             </div>
 
@@ -110,7 +103,9 @@
                                     [maxLength]="50">
                                 </airmid-textbox>
                             </div>
-                            <airmid-datepicker [formGroup]="ItemFormGroup" [isRangePicker]="true" formStartControlName="start" formEndControlName="end" [(fromValue)]="fromDate" [(toValue)]="todate"></airmid-datepicker>
+                            <airmid-datepicker [formGroup]="ItemFormGroup" [isRangePicker]="true"
+                                formStartControlName="start" formEndControlName="end" [(fromValue)]="fromDate"
+                                [(toValue)]="todate"></airmid-datepicker>
 
                             <!-- <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-datepicker [formGroup]="userFormGroup" [isRangePicker]="true"

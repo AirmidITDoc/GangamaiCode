@@ -44,12 +44,12 @@ export class IssueToDepartmentComponent implements OnInit {
     Addflag: boolean = false;
    
     DraftQty: any = 0;  
-    Tostore="2"
-    FromStore="4"
+    Tostore="4"
+    FromStore="0"
     Status="1"
     autocompletestore: string = "Store";
     autocompleteitem: string = "ItemType"; //Item
-    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    fromDate ="2025-01-01"// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
    
   
@@ -95,7 +95,7 @@ export class IssueToDepartmentComponent implements OnInit {
     gridConfig1: gridModel = new gridModel();
     isShowDetailTable: boolean = false;
     GetDetails1(data) {
-        
+        let IssueId=data.issueId
         this.gridConfig1 = {
             apiUrl: "IssueToDepartment/IssueToDeptdetailList",
             columnsList: [
@@ -111,7 +111,7 @@ export class IssueToDepartmentComponent implements OnInit {
             sortField: "IssueId",
             sortOrder: 0,
             filters: [
-                { fieldName: "IssueId", fieldValue: "10009", opType: OperatorComparer.Equals },
+                { fieldName: "IssueId", fieldValue: IssueId, opType: OperatorComparer.Equals },
                 
             ]
         }

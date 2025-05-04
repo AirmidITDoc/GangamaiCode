@@ -28,11 +28,13 @@
                 <ng-container filters>
                     <form [formGroup]="IndentSearchGroup" fxLayout="column">
 
+                       
+
                         <airmid-datepicker [formGroup]="IndentSearchGroup" [isRangePicker]="true"
-                            formStartControlName="startdate" formEndControlName="enddate"
-                            [(fromValue)]="gridConfig.filters[2].fieldValue"
-                            [(toValue)]="gridConfig.filters[3].fieldValue">
-                        </airmid-datepicker>
+                        formStartControlName="startdate" formEndControlName="enddate"
+                        [(fromValue)]="gridConfig.filters[2].fieldValue" (dateChange)="ListView($event)"
+                        [(toValue)]="gridConfig.filters[3].fieldValue">
+                    </airmid-datepicker>
 
                         <airmid-dropdown label="From Store Name" formControlName="FromStoreId"
                             (selectionChange)="ListView($event)" [formGroup]="IndentSearchGroup"

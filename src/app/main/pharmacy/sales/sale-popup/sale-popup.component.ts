@@ -85,6 +85,8 @@ vEscflag:boolean=false;
       "ItemId": this.data.ItemId,
       "StoreId": this.data.StoreId
     }
+
+    
     this.salesService.getBatchList(reqData).subscribe((res: any) => {
       console.log(res)
       if (res && res.length > 0) {

@@ -24,8 +24,8 @@ export class MaterialConsumptionService {
   createSearchFrom() {
     return this._formBuilder.group({
       ToStoreId: ['2'],
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
+      fromDate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
     });
   }
   

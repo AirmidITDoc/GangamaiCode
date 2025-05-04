@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,20 +17,20 @@ export class IssueToDepartmentService {
   
 
   constructor(
-    public _httpClient: HttpClient,  public _httpClient1: ApiCaller,
+    public _httpClient: HttpClient,  public _httpClient1: ApiCaller,private accountService: AuthenticationService,
     private _formBuilder: UntypedFormBuilder
   ) { 
-    this.NewIssueGroup = this.getNewIssueForm();
-    this.IssueSearchGroup= this.IssueSearchFrom();
-    this.StoreFrom = this.CreateStoreFrom();
-    this.IndentFrom = this.createIndentFrom();
-    this.IssueFinalForm = this.createfinal();
+    // this.NewIssueGroup = this.getNewIssueForm();
+    // this.IssueSearchGroup= this.IssueSearchFrom();
+    // this.StoreFrom = this.CreateStoreFrom();
+    // this.IndentFrom = this.createIndentFrom();
+    // this.IssueFinalForm = this.createfinal();
   }
 
   IssueSearchFrom() {
     return this._formBuilder.group({
       ToStoreId: '',
-      FromStoreId:'',
+      FromStoreId:this.accountService.currentUserValue.user.storeId,
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
      
@@ -38,7 +39,7 @@ export class IssueToDepartmentService {
   getNewIssueForm() {
     return this._formBuilder.group({
       ToStoreId: '',
-      FromStoreId:'',
+      FromStoreId:this.accountService.currentUserValue.user.storeId,
       Barcode:[''],
       ItemName:  [''],
       ItemID:[''],
@@ -107,10 +108,10 @@ export class IssueToDepartmentService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BatchNoForMrpAdj",Param);
   }
   public IssuetodepSave(Param){
-    return this._httpClient.post("InventoryTransaction/IssuetoDepartmentSave",Param);
+    return this._httpClient1.PostData("IssueToDeptIndent/Insert",Param);
   }
   public IssuetodepAgaintIndetSave(Param){
-    return this._httpClient.post("InventoryTransaction/IssueToDepartmentIndentUpdate",Param);
+    return this._httpClient1.PostData("InventoryTransaction/IssueToDepartmentIndentUpdate",Param);
   }
 
   public updateStockToMainStock(Param){

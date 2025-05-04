@@ -106,8 +106,6 @@ export class SalesService {
     debugger
     return this._httpClient1.GetData("ItemMaster/GetItemListForSalesBatchPop?StoreId="+Param.StoreId+"&ItemId="+Param.ItemId);
 
-
-    // return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode=" + mode + "&Id=" + Id);
   }
   public getConcessionCombo()
   {

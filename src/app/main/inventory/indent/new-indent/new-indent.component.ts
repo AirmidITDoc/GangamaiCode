@@ -26,40 +26,33 @@ export class NewIndentComponent implements OnInit {
     'IndentQuantity',
     'Action'
   ];
-  
+
   vsaveflag: boolean = true;
+
   
-  isItemIdSelected: boolean = false;
-  sIsLoading: string = '';
-  isLoading = true;
-  ToStoreList: any = [];
-  FromStoreList: any = [];
-  screenFromString = 'admission-form';
   Status: boolean = false;
-  filteredOptions: any;
-  ItemnameList = [];
+  
   showAutocomplete = false;
-  noOptionFound: boolean = false;
+  
   vItemId: any;
   ItemName: any;
   vQty: any;
   chargeslist: any = [];
-  ToStoreList1: any = [];
-  isStoreSelected: boolean = false;
-  filteredOptionsStore: Observable<string[]>; 
   vRemark: any;
   vIndentId: any;
-vprintflag:boolean=false;
-vToStoreId:any=0;
-vItemNamekit:any;
-vQtykit:any;
-registerObj:any;
+  vprintflag: boolean = false;
+  vToStoreId: any = 0;
+  vItemNamekit: any;
+  vQtykit: any;
+  registerObj: any;
+
+  dateTimeObj: any;
 
   dsIndentNameList = new MatTableDataSource<IndentNameList>();
   dsTempItemNameList = new MatTableDataSource<IndentNameList>();
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  
+
   autocompletestore: string = "Store";
   autocompleteitem: string = "ItemType"; //Item
 
@@ -74,118 +67,27 @@ registerObj:any;
   ) { }
 
   ngOnInit(): void {
-    
-    // this.filteredOptionsStore = this._IndentService.newIndentFrom.get('ToStoreId').valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterToStore(value)),
-    // );
-    // this.getTostoreListCombobox();
-    // this.getFromStoreSearchList();
-    if(this.data){
+
+    if (this.data) {
       this.registerObj = this.data;
       console.log(this.registerObj);
-      this.getupdateIndentList(this.registerObj);
+      this._IndentService.StoreFrom.get("ToStoreId").setValue(this.registerObj.toStoreId)
+      this._IndentService.newIndentFrom.get("Remark").setValue(this.registerObj.remarks)
+      this.getupdateIndentList(this.registerObj.indentId);
     }
 
   }
-  // getFromStoreSearchList() {
-  //   var data = {
-  //     "Id": this._loggedService.currentUserValue.storeId
-  //   }
-  //   this._IndentService.getFromStoreNameSearch(data).subscribe(data => {
-  //     this.FromStoreList = data;
-  //     this._IndentService.StoreFrom.get('FromStoreId').setValue(this.FromStoreList[0]);
-  //   });
-  // }
-  // getTostoreListCombobox() {
-  //   this._IndentService.getToStoreNameSearch().subscribe(data => {
-  //     this.ToStoreList = data;
-  //     console.log(this.ToStoreList)
-  //     if (this.data) {
-  //       const ddValue = this.ToStoreList.filter(c => c.StoreId == this.vToStoreId);
-  //       this._IndentService.newIndentFrom.get('ToStoreId').setValue(ddValue[0]);
-  //     } 
-  //   });
-    
-  // }
-  // private _filterToStore(value: any): string[] {
-  //   if (value) {
-  //     const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-  //     return this.ToStoreList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
-  //   }
-  // }
-  // getOptionTextStores(option) {
-  //   return option && option.StoreName ? option.StoreName : '';
-  // }
-  getIndentItemName() {
-    var Param = {
-      "ItemName": `${this._IndentService.newIndentFrom.get('ItemName').value}%`,
-      "StoreId": this._IndentService.newIndentFrom.get('ToStoreId').value.StoreId
-    }
-    this._IndentService.getIndentNameList(Param).subscribe(data => {
-      this.filteredOptions = data;
-      console.log(this.filteredOptions)
-      if (this.filteredOptions.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
-    });
-  }
-  // getOptionText(option) {
-  //   if (!option)
-  //     return '';
-  //   return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
-  // }
-  // getSelectedObj(obj) {
-  //   this.vItemId = obj.ItemID,
-  //     this.ItemName = obj.ItemName;
-  //     this.vQty = '' ; //obj.BalQty;
-  // }
 
-  itemid=0;
-  itemName='';
-  selectChangeItem(data){
-    this.itemid=data.value
-    this.itemName=data.text
+  itemid = 0;
+  itemName = '';
+  selectChangeItem(data) {
+    this.itemid = data.value
+    this.itemName = data.text
   }
 
-  // onAdd() {
-  //   if (!this._IndentService.newIndentFrom.get('ItemName')?.value) {
-  //     this.toastr.warning('Please enter a item', 'Warning !', {
-  //       toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
-  //   }
-  //   if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
-  //     this.toastr.warning('Please enter a Qty', 'Warning !', {
-  //       toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
-  //   }
-  //   const isDuplicate = this.dsIndentNameList.data.some(item => item.ItemID === this._IndentService.newIndentFrom.get('ItemName').value.ItemID);
-  //   if (!isDuplicate) {
-  //     this.chargeslist = this.dsIndentNameList.data;
-  //     this.chargeslist.push(
-  //       {
-  //         ItemId: this.itemid || 0,
-  //         ItemName: this.itemName || '',
-  //         // ItemId: this._IndentService.newIndentFrom.get('ItemName').value.ItemID || 0,
-  //         // ItemName: this._IndentService.newIndentFrom.get('ItemName').value.ItemName,
-  //         Qty: this._IndentService.newIndentFrom.get('Qty').value || 0,
-  //       });
-  //     this.dsIndentNameList.data = this.chargeslist;
-  //   } else {
-  //     this.toastr.warning('Selected Item already added in the list', 'Warning !', {
-  //       toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //   }
-  //   this.ItemReset();
-  //   this.itemname.nativeElement.focus();
-  // }
 
   onAdd() {
-    
+
     if (!this._IndentService.newIndentFrom.get('ItemName')?.value) {
       this.toastr.warning('Please select Item', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -200,24 +102,24 @@ registerObj:any;
     // }
     const selectedItem = this._IndentService.newIndentFrom.get('ItemName').value;
     const iscekDuplicate = this.dsIndentNameList.data.some(item => item.ItemID == this.itemid)
-    if(!iscekDuplicate){
-    this.dsIndentNameList.data = [];
-    this.chargeslist.push(
-      {
-        ItemID: this.itemid || 0,
-        ItemName: this.itemName || '',
-        Qty:  this._IndentService.newIndentFrom.get('Qty').value || this.vQty,
-      });
-    this.dsIndentNameList.data = this.chargeslist
-    //console.log(this.dsItemList.data); 
-    }else{
+    if (!iscekDuplicate) {
+      this.dsIndentNameList.data = [];
+      this.chargeslist.push(
+        {
+          ItemID: this.itemid || 0,
+          ItemName: this.itemName || '',
+          Qty: this._IndentService.newIndentFrom.get('Qty').value || this.vQty,
+        });
+      this.dsIndentNameList.data = this.chargeslist
+      //console.log(this.dsItemList.data); 
+    } else {
       this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
     this._IndentService.newIndentFrom.get('ItemName').reset('');
-    this._IndentService.newIndentFrom.get('Qty').reset(''); 
+    this._IndentService.newIndentFrom.get('Qty').reset('');
   }
 
   deleteTableRow(element) {
@@ -248,18 +150,11 @@ registerObj:any;
       this.chargeslist = data as IndentNameList[];
       this.dsIndentNameList.sort = this.sort;
       this.dsIndentNameList.paginator = this.paginator;
-      this.sIsLoading = '';
       console.log(this.dsIndentNameList)
-    },
-      error => {
-        this.sIsLoading = '';
-      });
+    });
   }
   OnSave() {
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'shortTime');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+   
     if ((!this.dsIndentNameList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -273,17 +168,10 @@ registerObj:any;
       return;
     }
     if (!this._IndentService.newIndentFrom.get('IndentId').value) {
-      let InsertIndentObj = {};
-      InsertIndentObj['indentDate'] = formattedDate;
-      InsertIndentObj['indentTime'] = formattedTime;
-      InsertIndentObj['fromStoreId'] = this._loggedService.currentUserValue.storeId;
-      InsertIndentObj['toStoreId'] = this._IndentService.newIndentFrom.get('ToStoreId').value.StoreId;
-      InsertIndentObj['addedby'] = this._loggedService.currentUserValue.userId;
-      InsertIndentObj['comments'] = '';
-
+     
       let InsertIndentDetObj = [];
       this.dsIndentNameList.data.forEach((element) => {
-        
+        console.log(element)
         let IndentDetInsertObj = {};
         IndentDetInsertObj['indentId'] = 0;
         IndentDetInsertObj['itemId'] = element.ItemId;
@@ -292,33 +180,27 @@ registerObj:any;
       });
 
       let submitData = {
-        "insertIndent": InsertIndentObj,
-        "insertIndentDetail": InsertIndentDetObj,
+        "indentId": 0,
+        "indentDate":this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
+        "indentTime": this.datePipe.transform(this.dateTimeObj.date, 'shortTime'),
+        "fromStoreId": this._loggedService.currentUserValue.user.storeId,
+        "toStoreId": this._IndentService.newIndentFrom.get('ToStoreId').value,
+        "comments": this._IndentService.newIndentFrom.get("Remark").value || "",
+        "insertIndentDetail": InsertIndentDetObj
       };
 
       console.log(submitData);
 
       this._IndentService.InsertIndentSave(submitData).subscribe(response => {
-        if (response) {
-          this.toastr.success('Record New Indent Saved Successfully.', 'Saved !', {
-            toastClass: 'tostr-tost custom-toast-success',
-          });
-          this.OnReset();
-          this.onClose();
-          this.viewgetIndentReportPdf(response,this.vprintflag);
-           
-        } else {
-          this.toastr.error('New Issue Indent Data not saved !, Please check API error..', 'Error !', {
-            toastClass: 'tostr-tost custom-toast-error',
-          });
-        }
-      }, error => {
-        this.toastr.error('New Issue Indent Data not saved !, Please check API error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      });
+        this.toastr.success(response.message);
+      if (response) {
+        // this.viewgetPurchaseorderReportPdf(response)
+        this._matDialog.closeAll();
+      }
+
+    });
     } else {
-      
+
       let updateIndent = {};
       updateIndent['indentId'] = this.vIndentId;
       updateIndent['fromStoreId'] = this._loggedService.currentUserValue.storeId;
@@ -326,7 +208,7 @@ registerObj:any;
 
       let insertIndentDetail = [];
       this.dsIndentNameList.data.forEach((element) => {
-        
+
         let insertIndentDetailobj = {};
         insertIndentDetailobj['indentId'] = this.vIndentId;
         insertIndentDetailobj['itemId'] = element.ItemId;
@@ -353,8 +235,8 @@ registerObj:any;
           });
           this.OnReset();
           this.onClose();
-        //  this.viewgetIndentReportPdf(response,this.vprintflag);
-           
+          //  this.viewgetIndentReportPdf(response,this.vprintflag);
+
         } else {
           this.toastr.error(' Issue Indent Data not saved !, Please check API error..', 'Error !', {
             toastClass: 'tostr-tost custom-toast-error',
@@ -369,15 +251,20 @@ registerObj:any;
 
   }
 
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
+    console.log(this.dateTimeObj)
+  }
+
   getValidationMessages() {
     return {
       FromStoreId: [
-            // { name: "required", Message: "Store Name is required" }
-        ],
-        ToStoreId: [
-          // { name: "required", Message: "Ward Name is required" }
+        // { name: "required", Message: "Store Name is required" }
       ],
-      ItemName:[]
+      ToStoreId: [
+        // { name: "required", Message: "Ward Name is required" }
+      ],
+      ItemName: []
     };
   }
 
@@ -387,7 +274,7 @@ registerObj:any;
     this.chargeslist.data = [];
     this.dsTempItemNameList.data = [];
   }
-  onClose(){
+  onClose() {
     this._matDialog.closeAll();
   }
 
@@ -421,72 +308,18 @@ registerObj:any;
       //this.itemid.nativeElement.focus();
     }
   }
-  
-  
-  SpinLoading: boolean = false;
-      
-  viewgetIndentReportPdf(contact,vprintflag) {
-    let IndentId
 
-    if(vprintflag){
-       IndentId=contact.IndentId
-    }else{
-      IndentId=contact
-    }
-    console.log(contact)
-    this.sIsLoading == 'loading-data'
+  viewgetIndentReportPdf(contact, vprintflag) {
   
-    setTimeout(() => {
-    this.SpinLoading =true;
-    //  this.AdList=true;
-    this._IndentService.getIndentwiseview(IndentId).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "95vw",
-          height: '850px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Indent Report Viewer"
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          this.sIsLoading = '';
-        });
-    });
-    },1000);
   }
-  
+
   viewgetIndentVerifyReportPdf(contact) {
-  
-    console.log(contact)
-    this.sIsLoading == 'loading-data'
-  
-    setTimeout(() => {
-    this.SpinLoading =true;
-   
-    this._IndentService.getIndentVerifyview(contact.IndentId).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "95vw",
-          height: '850px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Indent Verify Report Viewer"
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          this.sIsLoading = '';
-        });
-    });
-    },1000);
   }
 }
 export class IndentNameList {
   Action: any;
   ItemID: any;
-  ItemId:any;
+  ItemId: any;
   ItemName: string;
   Qty: number;
   HospitalBalance: number;

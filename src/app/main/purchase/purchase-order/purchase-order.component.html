@@ -67,8 +67,8 @@
                             (selectionChange)="ListView($event)" [formGroup]="mysearchform" [mode]="autocompletestore">
                         </airmid-dropdown> -->
 
-                        <airmid-dropdown label="Store Name" formControlName="StoreId" [formGroup]="mysearchform"
-                            fxFlex [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)"
+                        <airmid-dropdown label="Store Name" formControlName="StoreId" [formGroup]="mysearchform" fxFlex
+                            [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)"
                             (keyup)="selectChangeStore($event)">
                         </airmid-dropdown>
 

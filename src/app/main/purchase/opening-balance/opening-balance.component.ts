@@ -45,13 +45,13 @@ export class OpeningBalanceComponent {
   
    hasSelectedContacts: boolean;
    fromDate = "2024-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-   toDate = "2025-04-27"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
  
    allcolumns = [
  
      { heading: "OpeningHId", key: "openingHId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
      { heading: "OpeningDate", key: "openingDate", sort: true, align: 'left', emptySign: 'NA', width: 100 ,type:6},
-     { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 230 },
+     { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
      { heading: "AdddedByName", key: "adddedByName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
      {
        heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,

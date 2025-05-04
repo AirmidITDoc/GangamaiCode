@@ -1,4 +1,6 @@
-<div fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto" dynamicTableHeight>
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
     <div class="top-header header accent p-16">
         <div class="top-header-info">
             <div class="top-header-title">
@@ -23,23 +25,23 @@
             <ng-template #actionButtonTemplate let-element>
 
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    
-                    <button mat-icon-button  matTooltip="Print Material Consumption" (click)="onPrint(element)">
+
+                    <button mat-icon-button matTooltip="Print Material Consumption" (click)="onPrint(element)">
                         <mat-icon>print</mat-icon>
                     </button>
 
                 </div>
-             
+
             </ng-template>
 
 
             <ng-template #Status let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                 
+
                     <mat-icon *ngIf="element.admId" class="pill orange-600 s-16"
-                    matTooltip="PatientWise Material Comsumption">circle</mat-icon>
-                <mat-icon  *ngIf="!element.admId" class="pill green s-16"
-                    matTooltip="DepartmentWise Material Comsumption">circle</mat-icon>
+                        matTooltip="PatientWise Material Comsumption">circle</mat-icon>
+                    <mat-icon *ngIf="!element.admId" class="pill green s-16"
+                        matTooltip="DepartmentWise Material Comsumption">circle</mat-icon>
 
                 </div>
             </ng-template>
@@ -50,14 +52,16 @@
 
                 <ng-container filters>
                     <form [formGroup]="myFilterform">
-                    <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
-                        formEndControlName="enddate" [(fromValue)]="gridConfig.filters[1].fieldValue"
-                        [(toValue)]="gridConfig.filters[2].fieldValue"></airmid-datepicker>
 
-                  
+                        <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true"
+                            formStartControlName="fromDate" formEndControlName="enddate"
+                            [(fromValue)]="gridConfig.filters[0].fieldValue" (dateChange)="ListView1($event)"
+                            [(toValue)]="gridConfig.filters[1].fieldValue">
+                        </airmid-datepicker>
 
-                    <airmid-dropdown label="Store Name" formControlName="ToStoreId" [formGroup]="myFilterform" [(ngModel)]="gridConfig.filters[0].fieldValue" [validations]="getValidationMessages().ToStoreId" [mode]="autocompleteModeStoreName" >
-                    </airmid-dropdown>
+                        <airmid-dropdown label=" Store Name" formControlName="ToStoreId"
+                            (selectionChange)="ListView1($event)" [formGroup]="myFilterform" [mode]="autocompletestore">
+                        </airmid-dropdown>
                     </form>
                 </ng-container>
             </airmid-table>

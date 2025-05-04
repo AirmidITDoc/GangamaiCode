@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class IndentService {
 
   constructor(
     public _httpClient: HttpClient,   public _httpClient1: ApiCaller,
-    private _formBuilder: UntypedFormBuilder
+    private _formBuilder: UntypedFormBuilder, private accountService: AuthenticationService
   ) { 
     this.IndentSearchGroup= this.IndentSearchFrom();
     this.newIndentFrom = this.createnewindentfrom();
@@ -23,8 +24,8 @@ export class IndentService {
 
   IndentSearchFrom() {
     return this._formBuilder.group({
-      ToStoreId: '',
-      FromStoreId:'',
+      ToStoreId: 0,
+      FromStoreId:this.accountService.currentUserValue.user.storeId,
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
       Status:['0'],
@@ -51,31 +52,8 @@ export class IndentService {
   }
 
   
-  public getIndentID(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IndentList_by_ID",Param);
-  }
-
-  public getIndentList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_IndentItemList",Param);
-  }
-  public getupdateIndentList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemDetailsForIndentUpdate",Param);
-  }
-  
-  public getIndentNameList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=RtrvItemName_Indent",Param);
-  }
-
-  public getFromStoreNameSearch(Params){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Params);
-  }
-  
-  public getToStoreNameSearch(){//Retrieve_ToStoreName
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForCombo",{});
-  }
-
   public InsertIndentSave(Param){
-    return this._httpClient.post("InventoryTransaction/IndentSave", Param)
+    return this._httpClient1.PostData("Indent/Insert", Param)
   }
 
   public InsertIndentUpdate(Param){
@@ -93,7 +71,9 @@ export class IndentService {
     return this._httpClient.get("InventoryTransaction/view-IndentWise?IndentId=" + IndentId);
   }
 
-
+  public getIndentList(Param){
+    return this._httpClient1.PostData("InventoryTransaction/IndentVerify", Param)
+  }
 
   populateForm(employee) {
     this.newIndentFrom.patchValue(employee);

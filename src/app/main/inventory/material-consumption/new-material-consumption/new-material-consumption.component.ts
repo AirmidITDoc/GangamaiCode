@@ -14,6 +14,7 @@ import { element } from 'protractor';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import Swal from 'sweetalert2';
 import { FormGroup } from '@angular/forms';
+import { GRNItemResponseType } from 'app/main/purchase/good-receiptnote/new-grn/types';
 
 @Component({
   selector: 'app-new-material-consumption',
@@ -222,7 +223,7 @@ console.log(result)
       this.chargeslist.push(
         {
           ItemId: this.ItemID,//this._MaterialConsumptionService.userFormGroup.get('ItemID').value.ItemId || 0,
-          ItemName: this.ItemName, //this._MaterialConsumptionService.userFormGroup.get('ItemID').value.ItemName || '',
+          ItemName: this.ItemFormGroup.get('ItemName').value.formattedText || '',
           BatchNo: this.vbatchNo || " ",
           BatchExpDate: this.datePipe.transform(this.vbatchExpDate, "yyyy-MM-dd") || '01/01/1900',
           StartDate: this.datePipe.transform(this.ItemFormGroup.get("start").value, "yyyy-MM-dd") || '01/01/1900',
@@ -274,14 +275,6 @@ console.log(result)
   }
   ItemReset() {
    
-    // this.ItemFormGroup.reset({
-    //   ItemName: "",
-    //   balqty: 0,
-    //   usedqty: 0,
-    //   remark: 0,
-
-    // });
-    debugger
 this.ItemFormGroup.get("ItemName").reset("")
 this.ItemFormGroup.get("BalQty").reset(0)
 this.ItemFormGroup.get("UsedQty").reset(0)
@@ -399,6 +392,27 @@ this.ItemFormGroup.get("Remark").reset('')
 
   }
 
+  
+    getSelectedItem(item: GRNItemResponseType): void {
+      console.log(item)
+       this.ItemID = item.itemId
+      // if (this.mock) {
+      //     return;
+      // }
+      this.userFormGroup.patchValue({
+        UOMId: item.umoId,
+        ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
+        Qty: item.balanceQty,
+        CGSTPer: item.cgstPer,
+        SGSTPer: item.sgstPer,
+        IGSTPer: item.igstPer,
+        GST: item.cgstPer + item.sgstPer + item.igstPer,
+        HSNcode: item.hsNcode
+  
+      });
+     
+    }
+  
   getSelectedObjIP() { }
 
   getValidationMessages() {

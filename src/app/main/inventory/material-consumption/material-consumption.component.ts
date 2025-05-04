@@ -29,51 +29,49 @@ import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 export class MaterialConsumptionComponent implements OnInit {
     hasSelectedContacts: boolean;
     myFilterform: FormGroup;
-    autocompleteModeStoreName: string = "Store";
+    autocompletestore: string = "Store";
     gridConfig1: gridModel = new gridModel();
     isShowDetailTable: boolean = false;
+     ToStoreId="0"
+        StoreId="0"
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
-@ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
- @ViewChild('Status') Status!: TemplateRef<any>;
-//  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('Status') Status!: TemplateRef<any>;
+ fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
+ allcolumns = [
+    { heading: "-", key: "admId", sort: true, align: 'left', type: gridColumnTypes.template , width: 30},
+    { heading: "DateTime", key: "consumptionTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
+    { heading: "StoteName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "LandedTotalAmount", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+    {
+        heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+        template: this.actionButtonTemplate  // Assign ng-template to the column
+    }
+     ]
 
   ngAfterViewInit() {
          this.gridConfig.columnsList.find(col => col.key === 'admId')!.template = this.Status;
-        //  this.gridConfig.columnsList.find(col => col.key === 'companyName')!.template = this.iconcompanyName;
-        //  this.gridConfig.columnsList.find(col => col.key === 'isSampleCollection')!.template = this.iconisSampleCollection;
-        //  // this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.iconisCompeleted;
-         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
      }
 
 
     gridConfig: gridModel = {
         apiUrl: "MaterialConsumption/MaterialConsumptionList",
-        columnsList: [
-             { heading: "-", key: "admId", sort: true, align: 'left', type: gridColumnTypes.template , width: 30},
-            { heading: "DateTime", key: "consumptionTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
-            { heading: "StoteName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-            { heading: "LandedTotalAmount", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-            { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            {
-                heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
-                template: this.actionButtonTemplate  // Assign ng-template to the column
-            }
-        ],
+        columnsList:this.allcolumns,
         sortField: "materialConsumptionId",
         sortOrder: 0,
         filters: [
-            { fieldName: "ToStoreId", fieldValue: "2", opType: OperatorComparer.Equals },
+            { fieldName: "ToStoreId", fieldValue: this.StoreId, opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: "2025-01-01", opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals }
         ]
     }
    
-  
-    dsMaterialConLList: any;
    
     constructor(
         public _MaterialConsumptionService: MaterialConsumptionService, public _formBuilder: UntypedFormBuilder,
@@ -108,7 +106,7 @@ export class MaterialConsumptionComponent implements OnInit {
     }
 
     getSelectedRow(row: any): void {
-        debugger
+        
         console.log("selectedRow:", row)
         let materialConsumptionId =row.materialConsumptionId//row.materialConsumptionId;
     
@@ -145,6 +143,46 @@ export class MaterialConsumptionComponent implements OnInit {
             this.grid1.bindGridData();
         });
     }
+
+
+      ListView1(value) {
+            if (value.value !== 0)
+                this.StoreId = value.value
+            else
+                this.StoreId = "0"
+            this.onChangeFirst(value);
+        }
+       
+        onChangeFirst(value) {
+            debugger
+            this.isShowDetailTable = false;
+            this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+            this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+            this.ToStoreId = this.myFilterform.get("ToStoreId").value || this.StoreId
+           
+            this.getfilterdata();
+        }
+    
+        getfilterdata() {
+            debugger
+            this.gridConfig = {
+                apiUrl: "MaterialConsumption/MaterialConsumptionList",
+                columnsList:this.allcolumns,
+                sortField: "materialConsumptionId",
+                sortOrder: 0,
+                filters: [
+                    { fieldName: "ToStoreId", fieldValue: this.ToStoreId, opType: OperatorComparer.Equals },
+                    { fieldName: "From_Dt", fieldValue: "2025-01-01", opType: OperatorComparer.Equals },
+                     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals }
+                ],
+                row: 25
+            }
+            console.log( this.gridConfig)
+            this.grid.gridConfig = this.gridConfig;
+            this.grid.bindGridData();
+    
+        }
+    
     onPrint(data){}
 
     getValidationMessages() {

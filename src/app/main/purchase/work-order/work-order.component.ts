@@ -38,9 +38,9 @@ export class WorkOrderComponent implements OnInit {
   autocompleteSupplier: string = "SupplierMaster"
 
   SupplierId="0";
-  StoreId="0";
+  StoreId="2";
   fromDate = "2025-04-21"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  toDate = "2025-04-27"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
   ngAfterViewInit() {
@@ -52,7 +52,7 @@ export class WorkOrderComponent implements OnInit {
   allcolumns = [
 
     { heading: "WO No", key: "woNo", sort: true, align: 'left', emptySign: 'NA',width: 50 },
-    { heading: "Date", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 100,type:6 },
+    { heading: "Date", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 100},
     { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "TotalAmt", key: "woTotalAmount", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "GstAmount", key: "woVatAmount", sort: true, align: 'left', emptySign: 'NA' },
@@ -69,7 +69,7 @@ export class WorkOrderComponent implements OnInit {
    
       
      constructor(public _WorkOrderService: WorkOrderService, public _matDialog: MatDialog,public datePipe: DatePipe,
-             public toastr: ToastrService,private _formBuilder: UntypedFormBuilder,)
+             public toastr: ToastrService,private _formBuilder: UntypedFormBuilder, private accountService: AuthenticationService,)
                  { }
          @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
          gridConfig: gridModel = {
@@ -92,15 +92,15 @@ export class WorkOrderComponent implements OnInit {
  
           createseacrhform(): FormGroup {
              return this._formBuilder.group({
-                ToStoreId: [2],
-                SupplierId:[1],
+                ToStoreId: [this.accountService.currentUserValue.user.storeId],
+                SupplierId:[0],
                      fromDate: [(new Date()).toISOString()],
                      enddate: [(new Date()).toISOString()]
                        
              });
          }
  
-         OnEdit(row: any = null) {
+         onSave(row: any = null) {
              const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
              buttonElement.blur(); // Remove focus from the button
      
@@ -124,22 +124,27 @@ export class WorkOrderComponent implements OnInit {
          }
 
          ListView(value) {
-    
-            console.log(value)
-           
+          if (value.value !== 0)
+              this.StoreId = value.value
+            else
+              this.StoreId = "0"
+         this.onChangeFirst(value);
+        }
+      
+        ListView1(value) {
               if (value.value !== 0)
-                this.SupplierId = value.value
-              else
-                this.SupplierId = "0"
-                this.onChangeFirst(value);
-          }
+              this.SupplierId = value.value
+            else
+              this.SupplierId = "0"
+              this.onChangeFirst(value);
+        }
         
           onChangeFirst(value) {
             debugger
             this.fromDate = this.datePipe.transform(this.myform.get('fromDate').value, "yyyy-MM-dd")
             this.toDate = this.datePipe.transform(this.myform.get('enddate').value, "yyyy-MM-dd")
             this.StoreId = String(this.StoreId)
-            this.SupplierId = String(this.SupplierId)
+            this.SupplierId = this.SupplierId
           
             this.getfilterdata();
           }

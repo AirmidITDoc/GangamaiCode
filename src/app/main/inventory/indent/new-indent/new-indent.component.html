@@ -1,18 +1,26 @@
-<div id="content" class="simple inner-scroll inner-sidebar page-layout right-sidebar" fusePerfectScrollbar>
-    <mat-toolbar>
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">account_box
-            </mat-icon>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-                New Indent
-            </span>
+<!-- NEW -->
+<div class="modal-page page-layout inner-scroll">
+    <div class="modal-wrapper grid-container">
+        <!-- Modal header -->
+        <div class="modal-header accent">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Indent</span>
+                </div>
+                <div class="modal-header-right">
+                    <div class="comman-date-container">
+                        <app-common-date [screenFrom]="'OP-billing'"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                        <div class="close-icon">
+                            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                                matTooltip="Close">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <span class="material-icons" style="cursor: pointer;color: #fff;" (click)="onClose()">close</span>
-    </mat-toolbar>
     <div class="content">
         <div class="center p-12 pb-56" fxFlexAlign="start center">
 

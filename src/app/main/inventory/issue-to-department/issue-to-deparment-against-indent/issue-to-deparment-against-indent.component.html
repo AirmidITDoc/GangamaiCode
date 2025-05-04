@@ -46,9 +46,7 @@
                                                 fxFlex="30%" [formGroup]="NewIssueGroup" [mode]="autocompletestore"
                                                 (selectionChange)="selectChangeStore($event)">
                                             </airmid-dropdown>
-                                            <!-- </form>
-                                        <form [formGroup]="NewIssueGroup"> -->
-                                            <airmid-dropdown label="Store Name" formControlName="ToStoreId"
+                                             <airmid-dropdown label="Store Name" formControlName="ToStoreId"
                                                 [formGroup]="StoreFrom" fxFlex="30%" [mode]="autocompletestore"
                                                 (selectionChange)="selectChangeStore($event)">
                                             </airmid-dropdown>
@@ -84,24 +82,22 @@
 
 
                                                 <airmid-textbox fxFlex="12%" label="BalanceQty"
-                                                    formControlName="BalanceQty" [formGroup]="NewIssueGroup"
+                                                    formControlName="BalanceQty" [formGroup]="NewIssueGroup" type="number"
                                                     placeholder="BalanceQty" [(ngModel)]="vBalanceQty"></airmid-textbox>
 
-                                                <airmid-textbox fxFlex="12%" label="Qty" formControlName="Qty"
+                                                <airmid-textbox fxFlex="12%" label="Qty" formControlName="Qty" (valueChange)="CalculateTotalAmt()"
                                                     [formGroup]="NewIssueGroup" placeholder="Qty"
                                                     [(ngModel)]="vQty"></airmid-textbox>
 
 
-                                                <airmid-textbox fxFlex="10%" label="UnitRate" formControlName="UnitRate"
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
-                                                    [formGroup]="NewIssueGroup" placeholder="UnitRate"
+                                                <airmid-textbox fxFlex="10%" label="UnitRate" formControlName="UnitRate" type="number"
+                                                 [formGroup]="NewIssueGroup" placeholder="UnitRate" (valueChange)="CalculateTotalAmt()"
                                                     [(ngModel)]="vLandedRate"></airmid-textbox>
 
 
-                                                <airmid-textbox fxFlex="10%" label="TotalAmount"
+                                                <airmid-textbox fxFlex="10%" label="TotalAmount" [readonly]="true"
                                                     formControlName="TotalAmount"
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
-                                                    [formGroup]="NewIssueGroup" placeholder="TotalAmount"
+                                                  [formGroup]="NewIssueGroup" placeholder="TotalAmount"
                                                     [(ngModel)]="vTotalAmount"></airmid-textbox>
 
                                                 <div>

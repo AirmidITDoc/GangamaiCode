@@ -1,7 +1,8 @@
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +15,11 @@ NewUseForm:FormGroup;
 
    
   constructor(
-    public _httpClient:HttpClient,
+    public _httpClient:HttpClient, public _httpClient1:ApiCaller,
     public _formbuilder:UntypedFormBuilder
   ) 
   {
-    // this.UseFormGroup=this.createsearchFormGroup() ,
-  this.NewUseForm=this.createNewUseForm(),
-    this.StoreForm = this.CreateStorForm();
+   
 }
 CreateStorForm() {
   return this._formbuilder.group({
@@ -35,15 +34,15 @@ createsearchFormGroup(){
     })
   }
 
-  createNewUseForm(){
+  createNewItemForm(){
     return this._formbuilder.group({ 
-      ItemName:'',
-      BatchNo:'',
+      ItemName:['', [Validators.required]],
+      BatchNo:['', [Validators.required]],
       ExpDate:'',
-      BalanceQty:'',
-      GST:'',
-      MRP:'',
-      RatePerUnit:'', 
+      BalanceQty:[0, [Validators.required]],
+      GST:[0, [Validators.required]],
+      MRP:[0, [Validators.required]],
+      RatePerUnit:[0, [Validators.required]],
       Remark:''
 
     })
@@ -63,6 +62,6 @@ createsearchFormGroup(){
   }
   
   public InsertOpeningBalSave(Param){
-    return this._httpClient.post("Inventory/OpeningTransactionSave", Param)
+    return this._httpClient1.PostData("Inventory/OpeningTransactionSave", Param)
   }
 }

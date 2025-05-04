@@ -7,6 +7,8 @@ import { OpeningBalanceService } from '../opening-balance.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { element } from 'protractor';
+import { FormGroup } from '@angular/forms';
+import { GRNItemResponseType } from '../../good-receiptnote/new-grn/types';
 
 @Component({
   selector: 'app-new-opening-balance',
@@ -16,6 +18,8 @@ import { element } from 'protractor';
   animations: fuseAnimations,
 })
 export class NewOpeningBalanceComponent implements OnInit {
+  StoreForm:FormGroup;
+  OPeningtemForm:FormGroup;
   displayedColumns = [ 
     'ItemName',
     'BatchNo',
@@ -27,7 +31,7 @@ export class NewOpeningBalanceComponent implements OnInit {
     'buttons',
   ];
 
-  StoreList:any=[];
+  autocompletestore: string = "Store";
   dateTimeObj: any;
   screenFromString:'addmission-form';
   vBalQty:any;
@@ -38,7 +42,12 @@ export class NewOpeningBalanceComponent implements OnInit {
   vExpDate:any;
   sIsLoading:string='';
   chargeslist:any=[];
-
+StoreId=0
+vRemark:any;
+Savebtn:boolean=false;
+vItemName:any;
+vItemId:any; 
+vExpDate1:any='';
 
   dsItemNameList = new MatTableDataSource<dsItemNameList>();
   dsTempItemNameList = new MatTableDataSource<dsItemNameList>();
@@ -54,48 +63,36 @@ export class NewOpeningBalanceComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.gePharStoreList();
+    this.StoreForm=this._OpeningBalanceService.CreateStorForm();
+    this.OPeningtemForm=this._OpeningBalanceService.createNewItemForm();
+
   }
 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  gePharStoreList() {
-    var vdata = {
-      Id: this._loggedService.currentUserValue.storeId
+   getSelectedItem(item: GRNItemResponseType): void {
+      console.log(item)
+      // if (this.mock) {
+      //     return;
+      // }
+      this.OPeningtemForm.patchValue({
+        UOMId: item.umoId,
+        ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
+        Qty: item.balanceQty,
+        CGSTPer: item.cgstPer,
+        SGSTPer: item.sgstPer,
+        IGSTPer: item.igstPer,
+        GST: item.cgstPer + item.sgstPer + item.igstPer,
+        HSNcode: item.hsNcode
+  
+      });
+      // this.calculateTotalamt();
     }
-    console.log(vdata);
-    this._OpeningBalanceService.getLoggedStoreList(vdata).subscribe(data => {
-      this.StoreList = data;
-      // console.log(this.StoreList);
-      this._OpeningBalanceService.StoreForm.get('StoreId').setValue(this.StoreList[0]); 
-    });
-  }
-  isItemIdSelected:boolean=false;
-  filteredOptions:any;
-  noOptionFound:any;
-  getItemList() {
-    var m_data = {
-      "ItemName": `${this._OpeningBalanceService.NewUseForm.get('ItemName').value}%`,
-      "StoreId": this._OpeningBalanceService.StoreForm.get('StoreId').value.storeid
+
+    StoreSelction(event){
+      this.StoreId=event.value
     }
-    this._OpeningBalanceService.getItemNameList(m_data).subscribe(data => {
-      this.filteredOptions = data;
-      if (this.filteredOptions.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
-    });
-  }
-  getSelectedObj(obj) {
-     console.log(obj)
-  }
-  getOptionText(option) {
-    if (!option)
-      return '';
-    return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
-  }
   vlastDay: string = '';
   lastDay2: string = '';
   calculateLastDay(inputDate: string) {
@@ -111,7 +108,7 @@ export class NewOpeningBalanceComponent implements OnInit {
         // console.log(this.vlastDay)
 
         this._OpeningBalanceService.NewUseForm.get('ExpDate').setValue(this.vlastDay)
-        this.BalanceQty.nativeElement.focus() 
+        // this.BalanceQty.nativeElement.focus() 
       } else {
         this.vlastDay = 'Invalid month';
       }
@@ -132,36 +129,36 @@ export class NewOpeningBalanceComponent implements OnInit {
   }
  
   Onadd(){
-    if ((this.vBatchNo == '' || this.vBatchNo == null || this.vBatchNo == undefined)) {
-      this.toastr.warning('Please enter a Batch No', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if ((this.vlastDay == '' || this.vlastDay == null || this.vlastDay == undefined)) {
-      this.toastr.warning('Please enter a Expairy Date', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if ((this.vBalQty == '' || this.vBalQty == null || this.vBalQty == undefined)) {
-      this.toastr.warning('Please enter a BalQty', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if ((this.vMRP == '' || this.vMRP == null || this.vMRP == undefined)) {
-      this.toastr.warning('Please enter a MRP', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if ((this.vRatePerUnit == '' || this.vRatePerUnit == null || this.vRatePerUnit == undefined)) {
-      this.toastr.warning('Please enter a RatePerUnit', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    } 
+    // if ((this.vBatchNo == '' || this.vBatchNo == null || this.vBatchNo == undefined)) {
+    //   this.toastr.warning('Please enter a Batch No', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    // if ((this.vlastDay == '' || this.vlastDay == null || this.vlastDay == undefined)) {
+    //   this.toastr.warning('Please enter a Expairy Date', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    // if ((this.vBalQty == '' || this.vBalQty == null || this.vBalQty == undefined)) {
+    //   this.toastr.warning('Please enter a BalQty', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    // if ((this.vMRP == '' || this.vMRP == null || this.vMRP == undefined)) {
+    //   this.toastr.warning('Please enter a MRP', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    // if ((this.vRatePerUnit == '' || this.vRatePerUnit == null || this.vRatePerUnit == undefined)) {
+    //   this.toastr.warning('Please enter a RatePerUnit', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // } 
     const isDuplicate = this.dsItemNameList.data.some(item => item.BatchNo === this.vBatchNo);
 
     if (!isDuplicate) {
@@ -169,8 +166,8 @@ export class NewOpeningBalanceComponent implements OnInit {
       this.chargeslist = this.dsTempItemNameList.data;
       this.chargeslist.push(
         {
-          ItemID: this._OpeningBalanceService.NewUseForm.get('ItemName').value.ItemID || 0,
-          ItemName: this._OpeningBalanceService.NewUseForm.get('ItemName').value.ItemName || '',
+          ItemID: this.OPeningtemForm.get('ItemName').value || 0,
+          ItemName: this.OPeningtemForm.get('ItemName').value.formattedText || '',
           BatchNo: this.vBatchNo,
           ExpDate: this.vlastDay, 
           BalQty: this.vBalQty|| 0,
@@ -181,7 +178,7 @@ export class NewOpeningBalanceComponent implements OnInit {
       this.dsItemNameList.data = this.chargeslist
       this.ItemFromReset();
       console.log(this.chargeslist)
-      this.itemid.nativeElement.focus(); 
+      // this.itemid.nativeElement.focus(); 
     }
     else {
       this.toastr.warning('Selected Item already added in the list', 'Warning !', {
@@ -190,7 +187,7 @@ export class NewOpeningBalanceComponent implements OnInit {
   }
 }
 ItemFromReset(){
-  this._OpeningBalanceService.NewUseForm.get('ItemName').setValue('');
+  this.OPeningtemForm.get('ItemName').setValue('');
   this.vBatchNo = '';
   this.vlastDay = '';
   this.vBalQty = 0;
@@ -209,10 +206,7 @@ deleteTableRow(element) {
       toastClass: 'tostr-tost custom-toast-success',
     }); 
 }
-Savebtn:boolean=false;
-vItemName:any;
-vItemId:any; 
-vExpDate1:any='';
+
   OnSave() {
     
     if ((!this.dsItemNameList.data.length)) {
@@ -263,27 +257,16 @@ vExpDate1:any='';
     };
     console.log(submitData);
     this._OpeningBalanceService.InsertOpeningBalSave(submitData).subscribe(response => {
+      this.toastr.success(response);
       if (response) {
-        this.toastr.success('Record Opening Balance Data Saved Successfully.', 'Saved !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-        this.OnReset();
+        // this.viewgetPurchaseorderReportPdf(response)
         this._matDialog.closeAll();
-        this.Savebtn = false;
-      } else {
-        this.toastr.error(' Opening Balance Data not Saved !, Please check error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
       }
-    }, error => {
-      this.toastr.error(' Opening Balance Data not Saved !, Please check API error..', 'Error !', {
-        toastClass: 'tostr-tost custom-toast-error',
-      });
     });
   }
 
   OnReset() {
-    this._OpeningBalanceService.NewUseForm.reset();
+    this.OPeningtemForm.reset();
     this.dsItemNameList.data = [];
     this.dsTempItemNameList.data = [];
     this.chargeslist = [];
@@ -291,55 +274,7 @@ vExpDate1:any='';
   onClose(){
     this._matDialog.closeAll();
   }
-  @ViewChild('itemid') itemid: ElementRef;
-  @ViewChild('BatchNo') BatchNo: ElementRef;
-  @ViewChild('expdate') expdate: ElementRef;
-  @ViewChild('BalanceQty') BalanceQty: ElementRef;
-  @ViewChild('GST') GST: ElementRef;
-  @ViewChild('MRP') MRP: ElementRef;
-  @ViewChild('RatePerUnit') RatePerUnit: ElementRef;  
-  @ViewChild('addbutton') addbutton: ElementRef; 
-
-  public onEnterItemName(event): void {
-    if (event.which === 13) {
-      this.BatchNo.nativeElement.focus()
-    }
-  }
-
-  public onEnterBatchno(event): void {
-    if (event.which === 13) {
-      this.expdate.nativeElement.focus()
-    }
-  }
-  public onEnterExpDate(event): void {
-    if (event.which === 13) {
-      this.BalanceQty.nativeElement.focus()
-      this._OpeningBalanceService.NewUseForm.get('BalanceQty').setValue('');
-    }
-  }
-  public onEnterbalQty(event): void {
-    if (event.which === 13) {
-      this.GST.nativeElement.focus()
-      this._OpeningBalanceService.NewUseForm.get('GST').setValue('');
-    }
-  }
-  public onEntergst(event): void {
-    if (event.which === 13) {
-      this.MRP.nativeElement.focus()
-      this._OpeningBalanceService.NewUseForm.get('MRP').setValue('');
-    }
-  }
-  public onEntermrp(event): void {
-    if (event.which === 13) {
-      this.RatePerUnit.nativeElement.focus()
-      this._OpeningBalanceService.NewUseForm.get('RatePerUnit').setValue('');
-    }
-  }
-  public onEnterRatePerUnit(event): void {
-    if (event.which === 13) {
-      this.addbutton.nativeElement.focus()
-    }
-  } 
+ 
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {

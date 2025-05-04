@@ -33,12 +33,12 @@
                             [(toValue)]="gridConfig.filters[1].fieldValue">
                         </airmid-datepicker>
 
-                        <airmid-dropdown label="From Store Name" formControlName="ToStoreId"
+                        <airmid-dropdown label="From Store Name" formControlName="FromStoreId"
                             (selectionChange)="ListView($event)" [formGroup]="IssueSearchGroup"
                             [mode]="autocompletestore">
                         </airmid-dropdown>
 
-                        <airmid-dropdown label="To Store Name" formControlName="FromStoreId"
+                        <airmid-dropdown label="To Store Name" formControlName="ToStoreId"
                             (selectionChange)="ListView1($event)" [formGroup]="IssueSearchGroup"
                             [mode]="autocompletestore">
                         </airmid-dropdown>
