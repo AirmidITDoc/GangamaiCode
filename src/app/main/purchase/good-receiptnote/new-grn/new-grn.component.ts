@@ -754,8 +754,12 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         grnSaveObj['gateEntryNo'] = this.userFormGroup.get('GateEntryNo').value || ''; 
         if(this.userFormGroup.get('PaymentType').value == true){
             grnSaveObj['cashCreditType'] =true;
+            grnSaveObj['paidAmount'] =  this._GRNList.GRNFinalForm.get('NetPayamt').value;  
+            grnSaveObj['balAmount'] = 0;  
         }else{
-            grnSaveObj['cashCreditType'] = false;  
+            grnSaveObj['cashCreditType'] = false; 
+            grnSaveObj['paidAmount'] =  0;
+            grnSaveObj['balAmount'] = this._GRNList.GRNFinalForm.get('NetPayamt').value;  
         }
         if(this.userFormGroup.get('GRNType').value == true){
             grnSaveObj['grntype'] =true;
@@ -770,6 +774,13 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         grnSaveObj['receivedBy'] = this._GRNList.GRNFinalForm.get('ReceivedBy').value || '';
         grnSaveObj['isVerified'] = false;
         grnSaveObj['isClosed'] = false;  
+        grnSaveObj['addedBy'] = this.accountService.currentUserValue.user.userId;
+        grnSaveObj['updatedBy'] = 0;  
+        grnSaveObj['prefix'] = 'GRN';
+        grnSaveObj['isCancelled'] = false;  
+        grnSaveObj['isPaymentProcess'] = true;
+        grnSaveObj['paymentPrcDate'] = this.datePipe.transform(new Date(), "yyyy-MM-dd") || '1900-01-01';;  
+        grnSaveObj['processDes'] = ''; 
         grnSaveObj['invDate'] = this.datePipe.transform(this.userFormGroup.get('DateOfInvoice').value, "yyyy-MM-dd") || '1900-01-01';
         grnSaveObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
         grnSaveObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
@@ -782,9 +793,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         grnSaveObj['tranProcessMode'] = this.userFormGroup.get('GSTType').value || '';
         grnSaveObj['ewayBillNo'] = this._GRNList.GRNFinalForm.get('EwayBillNo').value || '';
         grnSaveObj['ewayBillDate'] = this.datePipe.transform(this._GRNList.GRNFinalForm.get('EwalBillDate').value, "yyyy-MM-dd") || '01/01/1099';
-        grnSaveObj['billDiscAmt'] =   this._GRNList.GRNFinalForm.get('DiscAmount2').value || 0; 
-        
-   
+        grnSaveObj['billDiscAmt'] =   this._GRNList.GRNFinalForm.get('DiscAmount2').value || 0;   
+     
         let SavegrnDetailObj = [];
         this.dsItemNameList.data.forEach((element) => {
             console.log(element); 
@@ -867,13 +877,18 @@ export class NewGrnComponent implements OnInit, OnDestroy {
           });
     }
     OnEditSave() {  
-        debugger  
- 
+        debugger   
+         let PaidAmt = 0;
+         let balAmount = 0;
          let cashCreditType,grntype
         if(this.userFormGroup.get('PaymentType').value == true){
             cashCreditType =true;
+            PaidAmt = this._GRNList.GRNFinalForm.get('NetPayamt').value; 
+            balAmount = 0
         }else{
-            cashCreditType= false;  
+            cashCreditType= false;
+            PaidAmt =  0
+            balAmount = this._GRNList.GRNFinalForm.get('NetPayamt').value;
         }
         if(this.userFormGroup.get('GRNType').value == true){
             grntype = true;
@@ -953,6 +968,16 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             "receivedBy": this._GRNList.GRNFinalForm.get('ReceivedBy').value || '',
             "isVerified": false,
             "isClosed": false,
+            "addedBy": 0,
+            "updatedBy": this.accountService.currentUserValue.user.userId,
+            "prefix": 'GRN',
+            "isCancelled": false, 
+            "isPaymentProcess": true,
+            "paymentPrcDate": this.datePipe.transform(new Date(), "yyyy-MM-dd") || '1900-01-01',
+            "processDes": '',
+            'invDate' :this.datePipe.transform(this.userFormGroup.get('DateOfInvoice').value, "yyyy-MM-dd") || '1900-01-01',
+            "paidAmount": PaidAmt,
+            "balAmount": balAmount, 
             "debitNote": this._GRNList.GRNFinalForm.get('DebitAmount').value || 0,
             "creditNote": this._GRNList.GRNFinalForm.get('CreditAmount').value || 0,
             "otherCharge": this._GRNList.GRNFinalForm.get('OtherCharge').value || 0,
@@ -1014,6 +1039,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
           }  
         this._GRNList.getGRNrtrvItemlist(vdata).subscribe(response => {
           this.dsItemNameList.data = response.data 
+          console.log(this.dsItemNameList.data)
           this.dsItemNameList.data.forEach(element=>{
             this.chargeslist.push(
                 {  

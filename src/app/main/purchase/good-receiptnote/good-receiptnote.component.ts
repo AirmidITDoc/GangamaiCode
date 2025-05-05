@@ -168,6 +168,8 @@ export class GoodReceiptnoteComponent implements OnInit {
     FromDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
     ToDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
     StoreId1 = this._GRNService.GRNSearchGroup.get('ToStoreId').value || 0;
+    @ViewChild('grid') grid: AirmidTableComponent;
+    @ViewChild('grid1') grid1: AirmidTableComponent;
     
       @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;  
       @ViewChild('actionButtonTemplateStatus') actionButtonTemplateStatus!: TemplateRef<any>;
@@ -220,8 +222,7 @@ export class GoodReceiptnoteComponent implements OnInit {
       { heading: "VerifiedDatetime", key: "isVerifiedDatetime", sort: true, align: 'left', emptySign: 'NA',width: 160, type:9}
     ]    
     
-    isShowDetailTable:boolean=false;
-      @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    isShowDetailTable:boolean=false; 
       gridConfig: gridModel = {
           apiUrl: "GRN/GRNHeaderList",
           columnsList:this.AllColumns,
@@ -266,6 +267,7 @@ export class GoodReceiptnoteComponent implements OnInit {
  
  
     getSelectedRow(event){
+        debugger
         this.isShowDetailTable = true; 
         this.gridConfig1 = {
             apiUrl: "GRN/GRNDetailsList",
@@ -276,6 +278,8 @@ export class GoodReceiptnoteComponent implements OnInit {
                 { fieldName: "GrnId", fieldValue: String(event.grnid), opType: OperatorComparer.Equals }
              ], 
     }
+    this.grid1.gridConfig = this.gridConfig1;
+    this.grid1.bindGridData();
 }
     getValidationMessages() {
         return {
