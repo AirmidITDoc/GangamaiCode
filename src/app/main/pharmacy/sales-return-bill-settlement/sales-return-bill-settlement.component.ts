@@ -494,7 +494,14 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-  
+
+    if(!this.SelectedList.length){
+      this.toastr.warning('Select Check box !', 'warning', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      }); 
+      return
+    } 
+    
     let PatientHeaderObj = {}; 
     
     PatientHeaderObj['Date'] = formattedDate;
