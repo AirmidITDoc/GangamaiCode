@@ -10,6 +10,7 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { Row } from "jspdf-autotable";
 import { FixSupplierComponent } from "./fix-supplier/fix-supplier.component";
 import { FormGroup } from "@angular/forms";
+import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Component({
     selector: "app-supplier-master",
@@ -26,6 +27,8 @@ export class SupplierMasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
+    storeId=0 //this.accountService.currentUserValue.user.storeId 
+    
     allColumns=[
         { heading: "Code", key: "supplierId", sort: true, align: 'left', emptySign: 'NA', width:80,sticky: true },
         { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 200,sticky: true },
@@ -63,7 +66,7 @@ export class SupplierMasterComponent implements OnInit {
 
     allFilters=[
         { fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "StoreID", fieldValue: "2", opType: OperatorComparer.Equals }
+        { fieldName: "StoreID", fieldValue: String(this.storeId), opType: OperatorComparer.Equals }
     ]
 
     gridConfig: gridModel = {
@@ -99,7 +102,7 @@ export class SupplierMasterComponent implements OnInit {
             sortOrder: 0,
             filters:  [
                 { fieldName: "SupplierName", fieldValue: this.supplierName, opType: OperatorComparer.Contains },
-                { fieldName: "StoreID", fieldValue: "2", opType: OperatorComparer.Equals }
+                { fieldName: "StoreID", fieldValue: String(this.storeId), opType: OperatorComparer.Equals }
             ]
         }
         this.grid.gridConfig = this.gridConfig;
@@ -107,6 +110,7 @@ export class SupplierMasterComponent implements OnInit {
     }
 
     constructor(public _supplierService: SupplierMasterService, public _matDialog: MatDialog,
+        private accountService: AuthenticationService,
         public toastr: ToastrService,) { }
 
     ngOnInit(): void {
@@ -142,18 +146,15 @@ export class SupplierMasterComponent implements OnInit {
             console.log('The dialog was closed - Action', result);
         });
     }
-    storeId = "0";
+    // storeId = "0";
     selectChangestoreName(obj: any) {
         
         this.storeId = obj.value;
         this.gridConfig.filters = [
         { fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "StoreID", fieldValue: this.storeId, opType: OperatorComparer.Equals }
+        { fieldName: "StoreID", fieldValue: String(this.storeId), opType: OperatorComparer.Equals }
         ]
     }
-
-
-
 
     onEdit(row) {
         var m_data = {

@@ -99,7 +99,7 @@ export class PurchaseOrderService {
       MRP: [''],
       Specification: [''],
       SupplierID: '',
-      Address:[" "],
+      Address:[''],
       Mobile: '',
       Contact: '',
       GSTNo: '',

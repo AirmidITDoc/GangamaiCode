@@ -151,7 +151,7 @@ export class NewPurchaseorderComponent {
   ModeOfPaymentList: any = [];
   GSTTypeList: any = [];
   // SupplierID: any;
-  vAddress: any=" ";
+  vAddress: any;
   vMobile: any;
   vContact: any;
   vGSTNo: any;

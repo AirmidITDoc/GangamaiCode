@@ -20,11 +20,12 @@
                              padding: 5px 10px 5px 10px;">
                             <form [formGroup]="templateForm">
                                 <div class="dialog-content-wrapper">
-                                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
 
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="column">
                                         <input type="hidden" name="certificateId" formControlName="certificateId">
-
-                                        <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                                    
+                                        <div fxLayout="column" fxFlex>
+                                            <!-- Textbox -->
                                             <div fxFlex>
                                                 <airmid-textbox 
                                                     label="TemplateName" 
@@ -34,13 +35,25 @@
                                                     [validations]="getValidationMessages().certificateName"
                                                     [maxLength]="50">
                                                 </airmid-textbox>
+                                            </div>
+                                    
+                                                <!-- <airmid-editor label="Template Details" formControlName="certificateDesc" [(value)]="vTemplateDesc" [formGroup]="templateForm"></airmid-editor> -->
 
-                                                <airmid-editor label="Template Details" formControlName="certificateDesc" [(value)]="vTemplateDesc" [formGroup]="templateForm"></airmid-editor>
-
+                                            <!-- Editor -->
+                                            <div fxFlex>
+                                                <mat-label>Template Details</mat-label>
+                                                <angular-editor 
+                                                    (blur)="onBlur($event)" 
+                                                    [config]="editorConfig"
+                                                    style="height:400px;" 
+                                                    [(ngModel)]="vTemplateDesc" 
+                                                    required
+                                                    formControlName="certificateDesc">
+                                                </angular-editor>
                                             </div>
                                         </div>
-
                                     </div>
+                                    
                                 </div>
                                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
                                     <div>

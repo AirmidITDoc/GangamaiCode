@@ -156,6 +156,11 @@ export class CasepaperService {
   public getRegistraionById(Id) {
     return this._httpClient1.GetData("OutPatient/" + Id);
 }
+
+public getDemo() {
+  return this._httpClient1.GetData("OPDPrescriptionMedical/get-ChiefComplaint/");
+}
+
 public getVisitById(Id) {
   return this._httpClient1.GetData("VisitDetail/" + Id);
 }

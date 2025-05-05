@@ -74,6 +74,9 @@ export class CurrentStockComponent implements OnInit {
     isItemSelected: boolean = false;
 
     storeId = "0";
+    storeDayWise = "0";
+    storeSales = "0";
+    storeItem = "0";
     itemId = "0";
 
     // dsCurrentStock = new MatTableDataSource<CurrentStockList>();
@@ -159,6 +162,8 @@ export class CurrentStockComponent implements OnInit {
             this.getfiltercurrentStock();
         }
 
+        // Day wise current stock
+
     onChangeDateofBirth(DateOfBirth) {
         debugger
         console.log(DateOfBirth)
@@ -186,7 +191,7 @@ export class CurrentStockComponent implements OnInit {
     ]
     alldayWiseFilter=[
         { fieldName: "LedgerDate", fieldValue: '', opType: OperatorComparer.StartsWith },
-        { fieldName: "StoreId", fieldValue: this.storeId, opType: OperatorComparer.Equals },
+        { fieldName: "StoreId", fieldValue: this.storeDayWise, opType: OperatorComparer.Equals },
         { fieldName: "ItemId", fieldValue: this.itemId, opType: OperatorComparer.Equals },
     ]
 
@@ -201,7 +206,7 @@ export class CurrentStockComponent implements OnInit {
     onChangedayWise() {
         debugger
         this.fromDate = this.formattedDate
-        // this.getfilterdayWise();
+        this.getfilterdayWise();
     }
 
     getfilterdayWise(){
@@ -213,7 +218,7 @@ export class CurrentStockComponent implements OnInit {
             sortOrder: 0,
             filters:  [
                 { fieldName: "LedgerDate", fieldValue: this.formattedDate, opType: OperatorComparer.StartsWith },
-                { fieldName: "StoreId", fieldValue: this.storeId, opType: OperatorComparer.Equals },
+                { fieldName: "StoreId", fieldValue: this.storeDayWise, opType: OperatorComparer.Equals },
                 { fieldName: "ItemId", fieldValue: this.itemId, opType: OperatorComparer.Equals },
             ]
         }
@@ -225,9 +230,9 @@ export class CurrentStockComponent implements OnInit {
     selectChangeStore1(obj:any){
         console.log(obj)
          if(obj.value!==0)
-            this.storeId=obj.value
+            this.storeDayWise=obj.value
         else
-        this.storeId="0"
+        this.storeDayWise="0"
 
         this.onChangedayWise();
     }
@@ -241,40 +246,139 @@ export class CurrentStockComponent implements OnInit {
         this.onChangedayWise();
     }
 
+    // item wise sales summery
+
+    allSalesColumn=[
+        { heading: "ItemName", key: "isAcc", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Conversion Factor", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Current BalQty", key: "balQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "ReceivedQty", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Sales Qty", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    ]
+    allSalesFilter=[
+        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "StoreId", fieldValue: this.storeSales, opType: OperatorComparer.Equals }, //2
+        { fieldName: "ItemId", fieldValue: "0", opType: OperatorComparer.Equals }, //1
+    ]
+
     gridConfig2: gridModel = {
         apiUrl: "CurrentStock/ItemWiseSalesSummaryList",
-        columnsList: [
-            { heading: "ItemName", key: "isAcc", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Conversion Factor", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Current BalQty", key: "balQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "ReceivedQty", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Sales Qty", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        ],
-        sortField: "IssueId",
+        columnsList: this.allSalesColumn,
+        sortField: "ItemId",
         sortOrder: 0,
-        filters: [
-            { fieldName: "FromStoreId", fieldValue: "10009", opType: OperatorComparer.Equals },
-            { fieldName: "Item", fieldValue: "10003", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-        ]
+        filters: this.allSalesFilter
+    }
+    
+    onChangeSales() {
+        debugger
+        this.fromDate = this.datePipe.transform(this._CurrentStockService.SearchGroup.get('start').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this._CurrentStockService.SearchGroup.get('end').value, "yyyy-MM-dd")
+        this.getfilterSales();
     }
 
+    getfilterSales(){
+    debugger
+        this.gridConfig2 = {
+            apiUrl: "CurrentStock/ItemWiseSalesSummaryList",
+            columnsList:this.allSalesColumn , 
+            sortField: "ItemId",
+            sortOrder: 0,
+            filters:  [
+                { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+                { fieldName: "todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+                { fieldName: "StoreId", fieldValue: this.storeSales, opType: OperatorComparer.Equals }, //2
+                { fieldName: "ItemId", fieldValue: this.itemId, opType: OperatorComparer.Equals }, //1
+            ]
+        }
+        console.log(this.gridConfig2)
+        this.grid3.gridConfig = this.gridConfig2;
+        this.grid3.bindGridData(); 
+    }
+
+    selectChangeStore2(obj:any){
+        console.log(obj)
+         if(obj.value!==0)
+            this.storeSales=obj.value
+        else
+        this.storeSales="0"
+        this.onChangeSales();
+    }
+    
+    selectChangeItem2(obj:any){
+        console.log(obj)
+         if(obj.value!==0)
+            this.itemId=obj.value
+        else
+        this.itemId="0"
+        this.onChangeSales();
+    }
+
+    // Issue wise item summery
+    allItemColumn=[
+        { heading: "ItemName", key: "isAcc", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Conversion Factor", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Current BalQty", key: "balQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "ReceivedQty", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Sales Qty", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    ]
+    allItemFilter=[
+        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "StoreId", fieldValue:this.storeItem, opType: OperatorComparer.Equals }, //2
+        { fieldName: "ItemId", fieldValue: "0", opType: OperatorComparer.Equals }, //1
+    ]
     gridConfig3: gridModel = {
-        apiUrl: "IssueToDepartment/IssueToDeptList",
-        columnsList: [
-            { heading: "ItemName", key: "isAcc", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Conversion Factor", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Current BalQty", key: "balQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "ReceivedQty", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Sales Qty", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        ],
-        sortField: "IssueId",
+        apiUrl: "CurrentStock/IssueWiseItemSummaryList",
+        columnsList: this.allItemColumn,
+        sortField: "StoreId",
         sortOrder: 0,
-        filters: [
-            { fieldName: "FromStoreId", fieldValue: "10009", opType: OperatorComparer.Equals },
-            { fieldName: "Item", fieldValue: "10003", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-        ]
+        filters: this.allItemFilter
+    }
+    
+    onChangeItem() {
+        debugger
+        this.fromDate = this.datePipe.transform(this._CurrentStockService.SearchGroup.get('start').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this._CurrentStockService.SearchGroup.get('end').value, "yyyy-MM-dd")
+        this.getfilterItem();
+    }
+
+    getfilterItem(){
+    debugger
+        this.gridConfig3 = {
+            apiUrl: "CurrentStock/IssueWiseItemSummaryList",
+            columnsList:this.allItemColumn , 
+            sortField: "StoreId",
+            sortOrder: 0,
+            filters:  [
+                { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+                { fieldName: "todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+                { fieldName: "StoreId", fieldValue: this.storeItem, opType: OperatorComparer.Equals }, //2
+                { fieldName: "ItemId", fieldValue: this.itemId, opType: OperatorComparer.Equals }, //1
+            ]
+        }
+        console.log(this.gridConfig3)
+        this.grid4.gridConfig = this.gridConfig3;
+        this.grid4.bindGridData(); 
+    }
+
+    selectChangeStore3(obj:any){
+        console.log(obj)
+         if(obj.value!==0)
+            this.storeItem=obj.value
+        else
+        this.storeItem="0"
+
+        this.onChangeItem();
+    }
+    selectChangeItem3(obj:any){
+        console.log(obj)
+         if(obj.value!==0)
+            this.itemId=obj.value
+        else
+        this.itemId="0"
+
+        this.onChangeItem();
     }
 
     toggleSidebar(name): void {
