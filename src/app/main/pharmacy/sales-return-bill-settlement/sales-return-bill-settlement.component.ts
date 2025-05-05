@@ -633,6 +633,10 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result); 
       this.getIpSalesList();
+      this.SelectedList = [];
+      this.vBalanceAmount = 0;
+      this.vPaidAmount = 0;
+       this.vNetAmount = 0;
     });
   } 
   @ViewChild('doctorname') doctorname: ElementRef;

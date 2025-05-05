@@ -991,7 +991,7 @@ debugger
         this.FinalLandedrate = (parseInt(this.vNetAmount) / parseInt(this.FinalTotalQty)) || 0,
             this.FinalpurUnitRate = (parseInt(this.vTotalAmount) / (parseInt(this.vQty) * parseInt(this.vConversionFactor))) || 0
         this.FinalpurUnitrateWF = (parseInt(this.vTotalAmount) / parseInt(this.FinalTotalQty)) || 0
-        this.FinalUnitMRP = (parseInt(this.vMRP) / parseInt(this.vConversionFactor)) || 0
+        this.FinalUnitMRP = (this.vMRP / this.vConversionFactor) || 0
         // this.add = true
         // this.addbutton.nativeElement.focus();
     }
