@@ -252,6 +252,39 @@
                                                         </div>
                                                     </form>
 
+                                                    <!-- <div fxLayout="row" class="gap-8">
+                                                        <form [formGroup]="caseFormGroup">
+                                                        <mat-form-field appearance="outline" class="example-chip-list"
+                                                            fxFlex>
+                                                            <mat-label>ChiefComplaint</mat-label>
+                                                            <mat-chip-list #chipList aria-label="ChiefComplaint selection">
+                                                                <mat-chip *ngFor="let item of addCheiflist"
+                                                                    [selectable]="selectable" [removable]="removable"
+                                                                    (removed)="removeChiefComplaint(item)">
+                                                                    {{item}}
+                                                                    <mat-icon *ngIf="removable"
+                                                                        (click)="removeChiefComplaint(item)">close</mat-icon>
+                                                                </mat-chip>
+                                                                <input style="height: 30px;"
+                                                                    placeholder="New ChiefComplaint..."
+                                                                    [formControl]="CheifComplaintControl"
+                                                                    [formGroup]="caseFormGroup"
+                                                                    [matAutocomplete]="autoChips"
+                                                                    [matChipInputFor]="chipList"
+                                                                    (matChipInputTokenEnd)="addCheif($event)" />
+                                                            </mat-chip-list>
+                                                            <mat-autocomplete #autoChips="matAutocomplete"
+                                                                (optionSelected)="selectedobjCheif($event.option.value)">
+                                                                <mat-option
+                                                                *ngFor="let option of filteredCheifComplaint | async"
+                                                                [value]="option">
+                                                                {{option.DescriptionName}}
+                                                            </mat-option>
+                                                            </mat-autocomplete>
+                                                        </mat-form-field>
+                                                        </form>
+                                                    </div> -->
+
                                                     <form [formGroup]="caseFormGroup">
                                                         <div class="investigation-title">
                                                             <span style="font-weight: 700;">
@@ -451,8 +484,8 @@
 
                                                                     <!-- Show dropdown and save button when in edit mode -->
                                                                     <div *ngIf="editingIndex1 === in"
-                                                                        style="display: flex; align-items: center; gap: 10px;">
-                                                                        <airmid-dropdown label="ItemGeneric Name"
+                                                                        style="display: flex; align-items: center; gap: 10px; width: 300px;">
+                                                                        <airmid-dropdown label="ItemGeneric Name" fxFlex="80%"
                                                                             formControlName="ItemGenericNameId"
                                                                             [formGroup]="MedicineItemForm"
                                                                             [mode]="autocompleteModeItemGeneric"
@@ -493,8 +526,8 @@
                                                                     </span>
 
                                                                     <div *ngIf="editingIndex === i"
-                                                                        style="display: flex; align-items: center; gap: 5px;">
-                                                                        <airmid-dropdown formControlName="DoseId1"
+                                                                        style="display: flex; align-items: center; gap: 5px; width: 300px;">
+                                                                        <airmid-dropdown formControlName="DoseId1" fxFlex="50%"
                                                                             [formGroup]="MedicineItemForm"
                                                                             [mode]="autocompleteModeDose"
                                                                             (selectionChange)="selectChangeDoseName($event)">

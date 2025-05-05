@@ -19,16 +19,21 @@ export class NewCertificateComponent implements OnInit {
     vTemplateName:any;
     isActive:boolean=true;
     editorConfig: AngularEditorConfig = {
-        editable: true,
-        spellcheck: true,
-        height: '20rem',
-        minHeight: '20rem',
-        translate: 'yes',
-        placeholder: 'Enter text here...',
-        enableToolbar: true,
-        showToolbar: true,
-    };
-
+            editable: true,
+            spellcheck: true,
+            height: '20rem',
+            minHeight: '20rem',
+            translate: 'yes',
+            placeholder: 'Enter text here...',
+            enableToolbar: true,
+            showToolbar: true,
+        
+          };
+                     
+    onBlur(e: any) {
+        this.vTemplateDesc = e.target.innerHTML;
+        throw new Error('Method not implemented.');
+    }
 
   constructor(
       public _CertificateserviceService: CertificateserviceService,
@@ -83,9 +88,6 @@ export class NewCertificateComponent implements OnInit {
     onClose(){
         this.templateForm.reset();
         this.dialogRef.close();
-    }
-    onBlur(e: any) {
-        this.vTemplateDesc = e.target.innerHTML;
     }
 
     onClear(val: boolean) {

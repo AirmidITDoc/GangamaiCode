@@ -171,6 +171,8 @@ export class NewCasepaperComponent implements OnInit {
   vItemGenericName: any;
   vItemGenericNameId: any;
   PatientReferDocId: any;
+  selectable = true;
+  removable = true;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -246,6 +248,7 @@ export class NewCasepaperComponent implements OnInit {
       this.getnewVisistListDemo(this.regObj);
       this.getRtrvTestServiceList(this.regObj);  //retrive list
       this.getRtrvCheifComplaintList(this.regObj); // retrive list
+      this.getCheifComplaintList();
     }
   }
 
@@ -339,8 +342,14 @@ export class NewCasepaperComponent implements OnInit {
         console.log("Updated selectedItems after removal:", this.selectedItems);
     }
 }
+filteredCheifComplaint:Observable<string[]>
 
-
+getCheifComplaintList() { 
+  this._CasepaperService.getDemo().subscribe((response) => {
+    this.filteredCheifComplaint = response;
+    console.log(this.patientDetail)
+  });
+}
 
   vDays: any = 10;
   followUpDate: string;
@@ -1780,8 +1789,6 @@ export class NewCasepaperComponent implements OnInit {
   // ExaminationControl = new FormControl();
   // DiagnosisControl = new FormControl();
   filteredHistory: Observable<string[]>;
-  selectable = true;
-  removable = true;
 
   getItemMaster() {
     const dialogRef = this._matDialog.open(AddItemComponent,
