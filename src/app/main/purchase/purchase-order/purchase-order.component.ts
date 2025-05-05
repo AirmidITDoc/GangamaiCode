@@ -42,7 +42,7 @@ export class PurchaseOrderComponent implements OnInit {
   mysearchform: FormGroup;
   autocompletestore: string = "Store";
   autocompleteSupplier: string = "SupplierMaster"
-  StoreId:any = "0";
+  StoreId:any = "2";
   SupplierId = "0";
   status= "0";
 
@@ -160,7 +160,8 @@ export class PurchaseOrderComponent implements OnInit {
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {
-      this.onChangeFirst(event);
+    this.grid.bindGridData();
+  
 
     });
   }
