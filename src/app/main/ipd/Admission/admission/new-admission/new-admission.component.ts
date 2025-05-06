@@ -131,7 +131,7 @@ export class NewAdmissionComponent implements OnInit {
     return this.formBuilder.group({
       regRadio: ['registration'],
       RegId: [{ value: '', disabled: this.isRegSearchDisabled }],
-      HospitalId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      HospitalId:[this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
   }
 

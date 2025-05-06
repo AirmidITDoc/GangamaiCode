@@ -117,7 +117,9 @@
             <mat-card-content>
               <div class="detail-header">
                 Hospital Details
+
               </div>
+
               <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -125,6 +127,10 @@
                     [(ngModel)]="registerObj1.admissionId">
                   <input type="hidden" name="RegId" formControlName="RegId" [(ngModel)]="registerObj.regId">
 
+                  <airmid-dropdown label="Hospital" formControlName="hospitalId" [formGroup]="admissionFormGroup"
+                    [mode]="autocompleteModehospital"> </airmid-dropdown>
+                </div>
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                   <airmid-dropdown label="PatientType" formControlName="PatientTypeId"
                     [value]="registerObj1?.patientTypeId" [formGroup]="admissionFormGroup"
                     [validations]="getValidationMessages().PatientTypeId" [mode]="autocompleteModepatienttype"
@@ -152,26 +158,25 @@
                 <!-- [mode]="autocompleteModeDoctor" -->
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                   <airmid-dropdown label="Doctor Name" formControlName="DocNameId" [value]="registerObj1?.docNameId"
-                    [formGroup]="admissionFormGroup"
-                    [validations]="getValidationMessages().docNameId" #ddlDoctor>
+                    [formGroup]="admissionFormGroup" [validations]="getValidationMessages().docNameId" #ddlDoctor>
                   </airmid-dropdown>
                 </div>
 
-                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="25%">
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
                   <airmid-dropdown label="AdmittedDoctor1" formControlName="AdmittedDoctor1"
                     [value]="registerObj1?.admittedDoctor1" [formGroup]="admissionFormGroup"
                     [validations]="getValidationMessages().AdmittedDoctor1" [mode]="autocompleteModeDoctor">
                   </airmid-dropdown>
                 </div>
 
-                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="25%">
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
                   <airmid-dropdown label="AdmittedDoctor2" formControlName="AdmittedDoctor2"
                     [value]="registerObj1?.admittedDoctor2" [formGroup]="admissionFormGroup"
                     [validations]="getValidationMessages().AdmittedDoctor2" [mode]="autocompleteModeDoctor">
                   </airmid-dropdown>
                 </div>
 
-                <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="25%">
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
 
                   <airmid-dropdown label="Ref.Doctor Name" formControlName="RefDocNameId"
                     [value]="registerObj1?.refDocNameId" [formGroup]="admissionFormGroup"
@@ -202,7 +207,7 @@
               </div>
             </mat-card-content>
           </mat-card>
-         
+
         </form>
       </div>
 
@@ -240,17 +245,21 @@
                     [value]="registerObj1?.relationshipId" [formGroup]="admissionFormGroup"
                     [validations]="getValidationMessages().RelationshipId" [mode]="autocompleteModerelationship">
                   </airmid-dropdown>
+                  <input type="hidden" name="BedId" formControlName="bedId" [(ngModel)]="registerObj1.bedId">
+                  <input type="hidden" name="ClassId" formControlName="ClassId" [(ngModel)]="registerObj1.classId">
+                  <input type="hidden" name="WardId" formControlName="wardId" [(ngModel)]="registerObj1.wardId">
+                  <input type="hidden" name="TariffId" formControlName="TariffId" [(ngModel)]="registerObj1.tariffId">
 
                 </div>
               </div>
             </mat-card-content>
           </mat-card>
           <div fxLayoutAlign="end">
-            <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px"  style="margin: 10px 20px 0px 20px;">
-                <button class="btn btn-danger-outline" (click)="OnClose()">Close</button>
-                <button class="btn btn-primary" (click)="OnSaveAdmission()">Save</button>
+            <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px" style="margin: 10px 20px 0px 20px;">
+              <button class="btn btn-danger-outline" (click)="OnClose()">Close</button>
+              <button class="btn btn-primary" (click)="OnSaveAdmission()">Save</button>
             </div>
-        </div> 
+          </div>
         </form>
       </div>
 

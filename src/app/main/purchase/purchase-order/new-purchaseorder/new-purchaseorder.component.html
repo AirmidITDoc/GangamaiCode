@@ -111,13 +111,13 @@
                                             (valueChange)="calculateTotalamt()" type="number"></airmid-textbox>
 
                                         <airmid-textbox fxFlex="5%" label="MRP" formControlName="MRP"
-                                            [formGroup]="userFormGroup" placeholder="MRP" type="number"
+                                            [formGroup]="userFormGroup" placeholder="MRP" type="number" [(ngModel)]="vMRP"
                                             [validations]="getValidationMessages().mrp"
                                             (valueChange)="calculateTotalamt()"></airmid-textbox>
-
-                                        <airmid-textbox fxFlex="5%" label="Rate" formControlName="Rate"
+                                            <!-- (keyup)="OnchekPurchaserateValidation()" -->
+                                        <airmid-textbox fxFlex="6%" label="Rate" formControlName="Rate" [(ngModel)]="vRate"
                                             [formGroup]="userFormGroup" placeholder="Rate" type="number" [min]="0"
-                                            (valueChange)="calculateTotalamt()" (keyup)="OnchekPurchaserateValidation()"
+                                            (valueChange)="OnchekPurchaserateValidation()"
                                             [validations]="getValidationMessages().rate"></airmid-textbox>
 
                                         <airmid-textbox fxFlex="5%" label="Total Amount" formControlName="TotalAmount"

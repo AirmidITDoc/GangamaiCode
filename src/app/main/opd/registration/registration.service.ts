@@ -147,6 +147,11 @@ export class RegistrationService {
         return this._httpClient1.PostData("Report/NewViewReport", mode);
 
     }
+
+    
+    public getstateId(Id) {
+        return this._httpClient1.GetData("StateMaster/" + Id);
+    }
 }
 
 

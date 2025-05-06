@@ -189,13 +189,23 @@ export class NewRegistrationComponent implements OnInit {
 
 
     onChangestate(e) {
-        this.ddlCountry.SetSelection(e.countryId);
     }
 
+    // onChangecity(e) {
+    //     debugger
+    //     console.log(e)
+    //     this.ddlState.SetSelection(e.stateId);
+    //     // this.ddlCountry.SetSelection(e.stateId)
+
+    //     // this.ddlCountry.SetSelection(this.personalFormGroup.get("StateId").value)
+
+    // }
     onChangecity(e) {
-        console.log(e)
-        this.ddlState.SetSelection(e.stateId);
-        this.ddlCountry.SetSelection(this.personalFormGroup.get("StateId").value)
+        this.registerObj.stateId = e.stateId
+        this._registerService.getstateId(e.stateId).subscribe((Response) => {
+            console.log(Response)
+            this.ddlCountry.SetSelection(Response.countryId);
+        });
 
     }
 

@@ -663,7 +663,9 @@ debugger
   // }
 
   onsave() {
-    
+    if ( this.vOPIPId==0)
+      this.toastr.warning("Please Select Registered Patient  ...");
+    else{
     if (this.totalChargeForm.get('concessionId').value == 0 && this.Consessionres) {
       if(!this.totalChargeForm.get('concessionId').value){
         this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
@@ -689,7 +691,9 @@ debugger
           this.BillSave();
       }
     })
+  }
 
+  
     this.searchForm.get("regId").setValue("")
     this.patientDetail = []
   }

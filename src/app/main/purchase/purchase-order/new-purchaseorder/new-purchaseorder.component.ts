@@ -23,8 +23,8 @@ import { fuseAnimations } from '@fuse/animations';
   selector: 'app-new-purchaseorder',
   templateUrl: './new-purchaseorder.component.html',
   styleUrls: ['./new-purchaseorder.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations,
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class NewPurchaseorderComponent {
 
@@ -43,7 +43,7 @@ export class NewPurchaseorderComponent {
     'ItemName',
     'UOM',
     'Qty',
-    
+
     'MRP',
     'Rate',
     'DefRate',
@@ -165,9 +165,8 @@ export class NewPurchaseorderComponent {
   dateTimeObj: any;
   ItemId: any;
   vDisc: any = 0;
-  vDisc2: any = 0;
+
   vDisAmount: any = 0;
-  vDisAmount2: any;
   vCGST: any;
   vCGSTAmount: any;
   vSGST: any;
@@ -178,13 +177,11 @@ export class NewPurchaseorderComponent {
   vGSTAmount: any = 0;
   FinalLandedrate: any;
   FinalpurUnitRate: any;
-  FinalpurUnitrateWF: any;
+
   FinalUnitMRP: any;
   FinalTotalQty: any;
   vPurchaseId: any = 0;
-  IgstPercentage: any = 0;
-  CgstPercentage: any = 0;
-  SgstPercentage: any = 0;
+
   PurchaseID = 0;
   vSupplierId: any = 0;
   vsupplierName: any;
@@ -201,7 +198,7 @@ export class NewPurchaseorderComponent {
   SGSTFinalAmount: any;
   IGSTFinalAmount: any;
   RoundingAmt = 0
-  lastsupplierflag:boolean=false;
+  lastsupplierflag: boolean = false;
   dsPurchaseItemList = new MatTableDataSource<PurchaseItemList>();
 
   dsItemNameList = new MatTableDataSource<ItemNameList>();
@@ -228,7 +225,7 @@ export class NewPurchaseorderComponent {
 
   ngOnInit(): void {
     this.userFormGroup = this._PurchaseOrder.getPurchaseOrderForm();
-        this.FinalPurchaseform = this._PurchaseOrder.getPurchaseOrderFinalForm()
+    this.FinalPurchaseform = this._PurchaseOrder.getPurchaseOrderFinalForm()
     this.userFormGroup.markAllAsTouched();
     this.FinalPurchaseform.markAllAsTouched();
 
@@ -259,8 +256,6 @@ export class NewPurchaseorderComponent {
           SupplierRate = this.supplierRateList[0].SupplierRate;
           this.vDefRate = SupplierRate;
 
-          // this.getSupplierRate();
-
         });
         this.userFormGroup.get('SupplierId').setValue(this.data.Obj.supplierID);
 
@@ -273,7 +268,7 @@ export class NewPurchaseorderComponent {
         this.FinalPurchaseform.get('OctriAmount').setValue(this.data.Obj.octriAmount);
         this.FinalPurchaseform.get('Worrenty').setValue(this.data.Obj.worrenty);
 
-      }, 500);
+      }, 100);
       this.getOldPurchaseOrder(this.data.Obj.purchaseID);
     }
     if (this.data) {
@@ -300,7 +295,7 @@ export class NewPurchaseorderComponent {
 
       });
 
-    }, 500);
+    }, 100);
   }
 
   onAdd() {
@@ -316,7 +311,7 @@ export class NewPurchaseorderComponent {
       });
       return;
     }
-    
+
     const isDuplicate = this.dsItemNameList.data.some(item => item.ItemId === this.userFormGroup.get('ItemName').value.itemId);
 
     if (!isDuplicate) {
@@ -391,21 +386,21 @@ export class NewPurchaseorderComponent {
   }
 
 
-    deleteTableRow(row: ItemNameList) {
-          //  if (row.IsVerifiedUserId == 1) {
-          //      this.newGRNService.showToast('Verified Record should not be Deleted .', ToastType.SUCCESS);
-          //  } else {
-               this.dsItemNameList.data = this.dsItemNameList.data.filter(item => item !== row);
-               this._PurchaseOrder.showToast('Record Deleted Successfully.', ToastType.SUCCESS);
-               this.updatePurchaseFinalForm();
-          //  }
-          debugger
-          if(this.dsItemNameList.data.length==0){
-            this.FinalPurchaseform.get("TransportCharges").setValue(0)
-            this.FinalPurchaseform.get("Freight").setValue(0)
-            this.FinalPurchaseform.get("OctriAmount").setValue(0)
-          }
-       }
+  deleteTableRow(row: ItemNameList) {
+    //  if (row.IsVerifiedUserId == 1) {
+    //      this.newGRNService.showToast('Verified Record should not be Deleted .', ToastType.SUCCESS);
+    //  } else {
+    this.dsItemNameList.data = this.dsItemNameList.data.filter(item => item !== row);
+    this._PurchaseOrder.showToast('Record Deleted Successfully.', ToastType.SUCCESS);
+    this.updatePurchaseFinalForm();
+    //  }
+    debugger
+    if (this.dsItemNameList.data.length == 0) {
+      this.FinalPurchaseform.get("TransportCharges").setValue(0)
+      this.FinalPurchaseform.get("Freight").setValue(0)
+      this.FinalPurchaseform.get("OctriAmount").setValue(0)
+    }
+  }
 
   getOldPurchaseOrder(Id) {
 
@@ -448,22 +443,22 @@ export class NewPurchaseorderComponent {
           element.TotalAmount = element.totalAmount,
           element.DiscAmount = element.discAmount,
           element.DiscPer = element.discPer,
-          element.VatPer= element.vatPer,
+          element.VatPer = element.vatPer,
           element.VatAmount = element.vatAmount,
-          element.GST= element.vatPer,
+          element.GST = element.vatPer,
           element.GSTAmount = element.vatAmount,
           element.GSTAmt = element.vatAmount,
           element.NetAmount = element.grandTotalAmount,
           element.MRP = element.mrp
-          element.CGSTPer = element.cgstPer,
+        element.CGSTPer = element.cgstPer,
           element.CGSTAmount = element.cgstAmt,
           element.SGSTPer = element.sgstPer,
           element.SGSTAmount = element.sgstAmt,
           element.IGST = element.igstPer,
           element.IGSTAmount = element.igstAmt
-          element.DefRate = element.defRate,
+        element.DefRate = element.defRate,
           element.Specification = element.specification
-          element.UOM = element.uomid
+        element.UOM = element.uomid
 
       });
     });
@@ -485,7 +480,7 @@ export class NewPurchaseorderComponent {
     this.vCGSTPer = obj.cgstPer
     this.vSGSTPer = obj.sgstPer
     this.vIGSTPer = obj.igstPer
- 
+
     this.vTotalAmount = (parseInt(this.vQty) * parseFloat(this.vRate)).toFixed(2);
     this.vNetAmount = this.vTotalAmount;
     this.vGSTPer = (obj.SGSTPer + obj.CGSTPer + obj.IGSTPer);
@@ -541,7 +536,7 @@ export class NewPurchaseorderComponent {
         },
         {
           "fieldName": "SupplierId",
-          "fieldValue":  String(this.vSupplierId),
+          "fieldValue": String(this.vSupplierId),
           "opType": "Equals"
         }
       ],
@@ -557,11 +552,11 @@ export class NewPurchaseorderComponent {
     this._PurchaseOrder.getSupplierRateList(data).subscribe(data => {
       console.log(data);
       debugger
-      if(data.data[0]){
-      // this.supplierRateList = data.data[0]
-      let SupplierRate =data.data[0].supplierRate;
-      this.vDefRate = SupplierRate;
-      console.log(  this.vDefRate)
+      if (data.data[0]) {
+        // this.supplierRateList = data.data[0]
+        let SupplierRate = data.data[0].supplierRate;
+        this.vDefRate = SupplierRate;
+        console.log(this.vDefRate)
       }
     });
   }
@@ -596,7 +591,7 @@ export class NewPurchaseorderComponent {
       });
       return;
     }
-    
+
     let InsertpurchaseDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
       // console.log(element)
@@ -634,7 +629,7 @@ export class NewPurchaseorderComponent {
       "totalAmount": this.FinalTotalAmt,
       "discAmount": this.DiscAmount,
       "taxAmount": (parseFloat(this.GSTAmount)),
-      "freightAmount": this.FinalPurchaseform.get('Freight').value|| 0,
+      "freightAmount": this.FinalPurchaseform.get('Freight').value || 0,
       "octriAmount": this.FinalPurchaseform.get('OctriAmount').value || 0,
       "grandTotal": this.FinalNetAmount,
       "isclosed": true,
@@ -651,7 +646,7 @@ export class NewPurchaseorderComponent {
       "totCgstamt": (parseFloat(this.CGSTFinalAmount)),
       "totSgstamt": (parseFloat(this.SGSTFinalAmount)),
       "totIgstamt": (parseFloat(this.IGSTFinalAmount)),
-      "transportChanges": this.FinalPurchaseform.get('TransportCharges').value|| 0,
+      "transportChanges": this.FinalPurchaseform.get('TransportCharges').value || 0,
       "handlingCharges": this.FinalPurchaseform.get('HandlingCharges').value || 0,
       "freightCharges": this.FinalPurchaseform.get('Freight').value || 0,
       "tPurchaseDetails": InsertpurchaseDetailObj
@@ -684,36 +679,25 @@ export class NewPurchaseorderComponent {
 
     this.updatePurchaseFinalForm();
   }
-  OnchekPurchaserateValidation() {
-    if (this.vRate) {
-      if (parseFloat(this.vRate) <= parseFloat(this.vMRP)) {
-        this.calculateTotalamt();
-      } else {
-        this.toastr.warning('Enter Purchase Rate lessthan MRP', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        this.vRate=this.vMRP;
-      }
-      this.calculateTotalamt();
-    }
-    else if (this.vDefRate) {
-      if (parseFloat(this.vRate) > parseFloat(this.vDefRate)) {
-        Swal.fire("Please Check defined Supplier Rate for product ...!!!");
-        this.calculateTotalamt();
-      }
-      if (this.vDefRate == '' || this.vDefRate == 0) {
-        this.toastr.warning('Defined rate is not defined for this Item.', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        }); 
-      } else {
-        if (parseFloat(this.vRate) > parseFloat(this.vDefRate)) {
-          Swal.fire("Please Check defined Supplier Rate for product ...!!!");
-        }
-      }
-    }
 
+
+  OnchekPurchaserateValidation() {
+
+    if (this.vDefRate) {
+      if (parseFloat(this.userFormGroup.get("Rate").value) > parseFloat(this.vDefRate)) {
+        Swal.fire("Please Check defined Supplier Rate for product ...!!!");
+        this.vRate = 0
+      } else { this.calculateTotalamt(); }
+
+    } else if (this.vDefRate == 0) {
+      if (this.userFormGroup.get("Rate").value) {
+        this.calculateTotalamt();
+      }
+    }
   }
-  onKeydown(e, data) {}
+
+
+  onKeydown(e, data) { }
   // calculateTotalAmt() {
   //   let Qty = this.userFormGroup.get('Qty').value
   //   if (Qty > 0 && this.vRate > 0) {
@@ -797,8 +781,8 @@ export class NewPurchaseorderComponent {
 
   getTotalDisc(element) {
     this.DiscAmount = element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0);
-    if(this.DiscAmount > 0)
-      this.DiscAmount=this.DiscAmount.toFixed(2);
+    if (this.DiscAmount > 0)
+      this.DiscAmount = this.DiscAmount.toFixed(2);
     return this.DiscAmount;
   }
 
@@ -977,7 +961,7 @@ export class NewPurchaseorderComponent {
   calculateCellGSTType(item: ItemNameList): ItemNameList {
     // Validate input
     if (!item) return item;
-debugger
+    debugger
     try {
       const values = this._PurchaseOrder.normalizeValues(item);
       const calculation = this._PurchaseOrder.getGSTCalculation(item.GSTType, values);
@@ -1061,7 +1045,7 @@ debugger
     }
   }
 
-  
+
 
   resetForm() {
     this.userFormGroup.reset();
@@ -1110,7 +1094,8 @@ debugger
       TotalAmount: "",
       NetAmount: "",
       FinalTotalQty: 0,
-      HSNcode: ''
+      HSNcode: '',
+      DefRate: 0
     });
     this.userFormGroup.markAsUntouched();
   }

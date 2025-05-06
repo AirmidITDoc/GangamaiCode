@@ -119,7 +119,7 @@ export class AdmissionService {
             PinNo: [''],
         });
     }
-
+    // this.accountService.currentUserValue.user.unitId
     createAdmissionForm() {
         return this._formBuilder.group({
             AdmissionId: 0,
@@ -127,7 +127,7 @@ export class AdmissionService {
             AdmissionDate: [(new Date()).toISOString()],
             AdmissionTime: [(new Date()).toISOString()],
             PatientTypeId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            hospitalId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            hospitalId: [0],
             DocNameId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             RefDocNameId: 0,
             DischargeDate: "1900-01-01",
@@ -180,58 +180,7 @@ export class AdmissionService {
         });
     }
    
-    createEditAdmissionForm() {
-        return this._formBuilder.group({
-            AdmissionId: 0,
-            RegId: 0,
-            AdmissionDate: [(new Date()).toISOString()],
-            AdmissionTime: [(new Date()).toISOString()],
-            PatientTypeId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            hospitalId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            DocNameId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            RefDocNameId: 0,
-            DischargeDate: "1900-01-01",
-            DischargeTime: "1900-01-01T11:24:02.655Z",
-            IsDischarged: 0,
-            IsBillGenerated: 0,
-            CompanyId: 0,
-            TariffId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            ClassId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            wardId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            bedId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-
-            DepartmentId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            RelativeName: "",
-            RelativeAddress: "",
-            PhoneNo: ['', [
-                Validators.minLength(10),
-                Validators.maxLength(10),
-                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-                ]],
-            MobileNo: ['', [
-            Validators.minLength(10),
-            Validators.maxLength(10),
-            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-            ]],
-            RelationshipId: 0,
-            AddedBy:this.accountService.currentUserValue.userId,
-            IsMlc: [false],
-            MotherName: "",
-            AdmittedDoctor1:0,
-            AdmittedDoctor2: 0,
-            RefByTypeId: 0,
-            RefByName: 0,
-            SubTpaComId: 0,
-            PolicyNo: "",
-            AprovAmount: 0,
-            compDOd: [(new Date()).toISOString()],
-            IsOpToIpconv: false,
-            RefDoctorDept: "",
-            AdmissionType: 0,
-          
-       
-        });
-    }
+  
     public AdmissionNewInsert(employee) {
         return this._httpClient1.PostData("Admission/AdmissionInsertSP", employee);
     }

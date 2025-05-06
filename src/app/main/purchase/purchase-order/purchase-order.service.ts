@@ -60,7 +60,7 @@ export class PurchaseOrderService {
       SupplierId: "0",
       startdate: [new Date().toISOString()],
       enddate: [new Date().toISOString()],
-      Status: ['0'],
+      Status: ['1'],
     });
   }
 

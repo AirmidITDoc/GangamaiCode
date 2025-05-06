@@ -449,7 +449,7 @@ if (this.vOPIPId !== 0 && this.TotalRefundAmount !== "0.00") {
 
 
 
-        const dialogRef = this._matDialog.open(OpPaymentNewComponent,
+        const dialogRef = this._matDialog.open(OpPaymentComponent,
           {
             maxWidth: "90vw",
             height: '650px',

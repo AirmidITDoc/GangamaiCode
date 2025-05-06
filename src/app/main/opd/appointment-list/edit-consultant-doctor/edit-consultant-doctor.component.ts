@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { VisitMaster1 } from '../appointment-list.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-edit-consultant-doctor',
@@ -34,7 +35,7 @@ export class EditConsultantDoctorComponent implements OnInit {
   constructor(
     public _AppointmentlistService: AppointmentlistService,
     public dialogRef: MatDialogRef<EditConsultantDoctorComponent>,
-    private _formBuilder: UntypedFormBuilder,
+    private _formBuilder: UntypedFormBuilder,private _FormvalidationserviceService: FormvalidationserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public datePipe: DatePipe,
     public toastr: ToastrService
@@ -58,8 +59,9 @@ export class EditConsultantDoctorComponent implements OnInit {
     return this._formBuilder.group({
         visitId:  this.data.visitId,
         regId: this.data.regId,
-        consultantDocId: [this.data.doctorId,Validators.required],// this.data.doctorId,
-        departmentId: [this.data.departmentId,Validators.required]//this.data.departmentId,
+        consultantDocId:[this.data.doctorId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],// this.data.doctorId,
+        departmentId:  [this.data.departmentId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],//
+       
     });
 }
 
