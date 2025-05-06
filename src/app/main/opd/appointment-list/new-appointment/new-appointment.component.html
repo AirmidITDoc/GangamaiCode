@@ -227,7 +227,7 @@
      -->
 
                                             <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"
-                                                label="PhoneNo" formControlName="PhoneNo"
+                                                label="PhoneNo" formControlName="PhoneNo" (keypress)="keyPressAlphanumeric($event)"
                                                 [validations]="getValidationMessages().phoneNo"
                                                 [value]="registerObj.phoneNo" [formGroup]="personalFormGroup"
                                                 [maxLength]="10">

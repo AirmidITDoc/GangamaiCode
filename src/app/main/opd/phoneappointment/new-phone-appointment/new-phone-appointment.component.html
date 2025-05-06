@@ -85,7 +85,7 @@
                         </div>
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="MobileNo" formControlName="mobileNo" [value]="registerObj.mobileNo"
-                                [formGroup]="phoneappForm" [validations]="getValidationMessages().mobileNo"
+                                [formGroup]="phoneappForm" [validations]="getValidationMessages().mobileNo" (keypress)="keyPressAlphanumeric($event)"
                                 [maxLength]="10">
                             </airmid-textbox>
                         </div>

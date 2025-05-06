@@ -235,7 +235,7 @@
                 </div>
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
-                  <airmid-textbox label="PhoneNo" formControlName="PhoneNo" [value]="registerObj1.phoneNo"
+                  <airmid-textbox label="PhoneNo" formControlName="PhoneNo" [value]="registerObj1.phoneNo" (keypress)="keyPressAlphanumeric($event)"
                     [formGroup]="admissionFormGroup" [validations]="getValidationMessages().phoneNo" [maxLength]="10">
                   </airmid-textbox>
                 </div>

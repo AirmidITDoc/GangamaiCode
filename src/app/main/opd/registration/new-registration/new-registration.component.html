@@ -123,7 +123,7 @@
                                         <airmid-textbox  label="MobileNo" formControlName="MobileNo" [value]="registerObj.mobileNo" [formGroup]="personalFormGroup" [validations]="getValidationMessages().mobileNo" (keypress)="keyPressAlphanumeric($event)" [maxLength]="10" >
                                         </airmid-textbox>
 
-                                        <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" label="PhoneNo" formControlName="PhoneNo" [validations]="getValidationMessages().phoneNo" [value]="registerObj.phoneNo" [formGroup]="personalFormGroup" [maxLength]="10">
+                                        <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" label="PhoneNo" formControlName="PhoneNo" [validations]="getValidationMessages().phoneNo" [value]="registerObj.phoneNo" [formGroup]="personalFormGroup" [maxLength]="10" (keypress)="keyPressAlphanumeric($event)">
                                         </airmid-textbox>
                                     </div>
                                 </div>
