@@ -408,8 +408,8 @@ export class AdmissionComponent implements OnInit {
 
   onChangeFirst() {
     debugger
-    this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-    this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+    this.fromDate = "1900-01-01",//this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+    this.toDate = "1900-01-01",//this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
     this.f_name = this.myFilterform.get('FirstName').value + "%"
     this.l_name = this.myFilterform.get('LastName').value + "%"
     this.m_name = this.myFilterform.get('MiddleName').value + "%"
@@ -940,6 +940,8 @@ export class AdmissionPersonlModel {
   isSampleCollection: any;
   isTemplateTest: any;
   isDischarge:any;
+  HospitalID:any;
+  hospitalID:any;
   /**
 * Constructor
 *
@@ -1142,6 +1144,8 @@ export class AdmissionPersonlModel {
       this.opdipdtype=AdmissionPersonl.opdipdtype || ''
       this.opdipdid=AdmissionPersonl.opdipdid || ''
       this.isDischarge=AdmissionPersonl.isDischarge 
+      this.HospitalID=AdmissionPersonl.HospitalID || 1
+      this.hospitalID=AdmissionPersonl.hospitalID || 1
     }
   }
 }

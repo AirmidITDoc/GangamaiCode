@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { NewCertificateComponent } from './new-certificate/new-certificate.component';
+import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-certificatemaster',
@@ -18,36 +19,69 @@ import { NewCertificateComponent } from './new-certificate/new-certificate.compo
 export class CertificatemasterComponent implements OnInit {
     
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    TemplateName:any="";
+    searchFormGroup: FormGroup;
+
+    allColumn= [
+        { heading: "TemplateCode", key: "certificateId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "TemplateName", key: "certificateName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "TemplateDesc", key: "certificateDesc", width: 300, sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+            {
+                action: gridActions.edit, callback: (data: any) => {
+                    this.onSave(data);
+                }
+            }, 
+            {
+                action: gridActions.delete, callback: (data: any) => {
+                    this._CertificateserviceService.deactivateTheStatus(data.templateId).subscribe((response: any) => {
+                        this.toastr.success(response.message);
+                        this.grid.bindGridData();
+                    });
+                }
+            }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+    allFilters=[
+        // { fieldName: "CertificateName", fieldValue: "%", opType: OperatorComparer.Equals }
+    ]
 
     gridConfig: gridModel = {
         apiUrl: "PrescriptionCertificateMaster/List",
-        columnsList: [
-            { heading: "TemplateCode", key: "certificateId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "TemplateName", key: "certificateName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "TemplateDesc", key: "certificateDesc", width: 300, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                {
-                    action: gridActions.edit, callback: (data: any) => {
-                        this.onSave(data);
-                    }
-                }, 
-                {
-                    action: gridActions.delete, callback: (data: any) => {
-                        this._CertificateserviceService.deactivateTheStatus(data.templateId).subscribe((response: any) => {
-                            this.toastr.success(response.message);
-                            this.grid.bindGridData();
-                        });
-                    }
-                }]
-            } //Action 1-view, 2-Edit,3-delete
-        ],
+        columnsList:this.allColumn,
         sortField: "CertificateId",
         sortOrder: 0,
-        filters: [
-            { fieldName: "CertificateName", fieldValue: "%", opType: OperatorComparer.Equals }
-        ]
+        filters:this.allFilters 
+    }
+
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'TemplateNameSearch')
+            this.searchFormGroup.get('TemplateNameSearch').setValue("")
+       
+        this.onChangeFirst();
+      }
+      
+    onChangeFirst() {
+        this.TemplateName = this.searchFormGroup.get('TemplateNameSearch').value + "%"
+        this.getfilterdata();
+    }
+
+    getfilterdata(){        
+        this.gridConfig = {
+            apiUrl: "PrescriptionCertificateMaster/List",
+            columnsList:this.allColumn , 
+            sortField: "CertificateId",
+            sortOrder: 0,
+            filters:  [
+                // { fieldName: "CertificateName", fieldValue: this.TemplateName , opType: OperatorComparer.Contains }
+            ]
+        }
+        console.log(this.gridConfig)
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData(); 
     }
 
     constructor(
@@ -56,7 +90,9 @@ export class CertificatemasterComponent implements OnInit {
         public toastr: ToastrService,
     ) { }
 
-    ngOnInit(): void { }
+    ngOnInit(): void {
+        this.searchFormGroup=this._CertificateserviceService.createSearchForm();
+     }
     
     onSave(row: any = null) {
         

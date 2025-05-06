@@ -41,10 +41,12 @@
                     </button>
 
                     <!-- *ngIf="element.isVerified" -->
-                    <button mat-icon-button (click)="onVerify(element)">
+                    <!-- <button mat-icon-button (click)="onVerify(element)">
                         <mat-icon class="disabled-icon" title="verify Menu">verified_user</mat-icon>
-
-                    </button>
+                    </button> -->
+                    <button *ngIf="!element.isVerified" mat-icon-button (click)="onVerify(element)">
+                        <mat-icon class="disabled-icon" title="verify Menu">verified_user</mat-icon>
+                      </button>                                           
 
                     <button mat-icon-button matTooltip="Send message On WhatsApp" (click)="OnWhatsPoSend(element)">
                         <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
@@ -53,7 +55,7 @@
 
                 </div>
             </ng-template>
-            <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false"
+            <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false" #grid
                 (onSelectRow)="GetDetails1($event)">
                 <ng-container filters>
                     <form [formGroup]="mysearchform" fxLayout="column">
@@ -90,7 +92,7 @@
 
                             <mat-slide-toggle name="Status" (change)="onChangeFirst($event)" formControlName="Status"
                                 [(ngModel)]="status">
-                                Verify / Pending
+                               Pending / Verify 
                             </mat-slide-toggle>
                         </div>
                     </form>

@@ -98,7 +98,7 @@ Age=0;
         PatientHeaderObj['NetPayAmount'] = contact.netPayableAmt;
 
                
-        const dialogRef = this._matDialog.open(OpPaymentNewComponent,
+        const dialogRef = this._matDialog.open(OpPaymentComponent,
             {
                 maxWidth: "80vw",
                width: '70%',

@@ -42,7 +42,7 @@ export class PurchaseOrderComponent implements OnInit {
   mysearchform: FormGroup;
   autocompletestore: string = "Store";
   autocompleteSupplier: string = "SupplierMaster"
-  StoreId:any = "2";
+  StoreId:any = String(this.accountService.currentUserValue.user.storeId);
   SupplierId = "0";
   status= "0";
 
@@ -51,11 +51,11 @@ export class PurchaseOrderComponent implements OnInit {
 
   @ViewChild('iconisClosed') iconisClosed!: TemplateRef<any>;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-  // @ViewChild('actionsTemplate4') actionsTemplate4!: TemplateRef<any>;
+  
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'isVerified')!.template = this.isVerifiedstatus;
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-    // this.gridConfig.columnsList.find(col => col.key === 'isVerified1')!.template = this.actionsTemplate4;
+   
   }
   @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
   hasSelectedContacts: boolean;
@@ -135,11 +135,11 @@ export class PurchaseOrderComponent implements OnInit {
     setTimeout(() => {
       this.grid1.gridConfig = this.gridConfig1;
       this.grid1.bindGridData();
-    }, 500);
+    }, 100);
   }
 
   constructor(public _PurchaseOrderService: PurchaseOrderService, public _matDialog: MatDialog,
-    public toastr: ToastrService, private commonService: PrintserviceService,
+    public toastr: ToastrService, private commonService: PrintserviceService,private accountService: AuthenticationService,
     public datePipe: DatePipe,) { }
 
   ngOnInit(): void {
@@ -161,9 +161,7 @@ export class PurchaseOrderComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
     this.grid.bindGridData();
-  
-
-    });
+  });
   }
 
   selectChangeStore(value) {   

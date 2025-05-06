@@ -118,8 +118,6 @@ export class PatientvitalInformationComponent {
     this.toastr.success(response.message);
     console.log(response)
    this._matDialog.closeAll();
-}, (error) => {
-    this.toastr.error(error.message);
 });
 
 }  

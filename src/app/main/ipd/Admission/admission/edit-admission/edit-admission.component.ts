@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AdmissionPersonlModel, Bed, RegInsert } from '../admission.component';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 
 @Component({
@@ -41,13 +42,11 @@ export class EditAdmissionComponent implements OnInit {
   bedObj = new Bed({});
   newRegSelected: any = 'registration';
   filteredOptionsRegSearch: Observable<string[]>;
-
-
   currentDate = new Date();
   public now: Date = new Date();
   isLoading: string = '';
   screenFromString = 'admission-form';
-
+  autocompleteModehospital: string = "Hospital";
 
   constructor(public _AdmissionService: AdmissionService,
     private accountService: AuthenticationService,
@@ -57,6 +56,8 @@ export class EditAdmissionComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private router: Router,
     public toastr: ToastrService,
+    public _formBuilder: UntypedFormBuilder,
+    private _FormvalidationserviceService: FormvalidationserviceService,
     private commonService: PrintserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -75,6 +76,8 @@ export class EditAdmissionComponent implements OnInit {
   autocompleteModeSubCompany: string = "SubCompany";
 
   ngOnInit(): void {
+    this.admissionFormGroup = this.createEditAdmissionForm();
+    this.admissionFormGroup.markAllAsTouched();
 
     if (this.data) {
       console.log(this.data)
@@ -86,9 +89,7 @@ export class EditAdmissionComponent implements OnInit {
       }, 500);
     }
 
-    this.admissionFormGroup = this._AdmissionService.createEditAdmissionForm();
-    this.admissionFormGroup.markAllAsTouched();
-
+   
     if ((this.data?.regId ?? 0) > 0) {
       setTimeout(() => {
         this._AdmissionService.getRegistraionById(this.data.regId).subscribe((response) => {
@@ -113,9 +114,82 @@ export class EditAdmissionComponent implements OnInit {
         });
       }, 500);
     }
+    this.admissionFormGroup = this.createEditAdmissionForm();
+
     this.admissionFormGroup.get("DocNameId").setValue(this.data.docNameId)
+    this.admissionFormGroup.get("hospitalID").setValue(this.accountService.currentUserValue.user.unitId)
+    this.AdmissionFormSet()
+   
   }
 
+  createEditAdmissionForm() {
+    
+    return this._formBuilder.group({
+        AdmissionId: 0,
+        RegId: 0,
+        AdmissionDate: [(new Date()).toISOString()],
+        AdmissionTime: [(new Date()).toISOString()],
+        PatientTypeId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        hospitalId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        DocNameId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        RefDocNameId: 0,
+        DischargeDate: "1900-01-01",
+        DischargeTime: "1900-01-01T11:24:02.655Z",
+        IsDischarged: 0,
+        IsBillGenerated: 0,
+        CompanyId: 0,
+        TariffId:[this.registerObj1.tariffId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        ClassId:[this.registerObj1.classId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        wardId:[this.registerObj1.wardId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        bedId:[this.registerObj1.bedId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+
+        DepartmentId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        RelativeName: "",
+        RelativeAddress: "",
+        PhoneNo: ['', [
+            Validators.minLength(10),
+            Validators.maxLength(10),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            ]],
+        MobileNo: ['', [
+        Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+        ]],
+        RelationshipId: 0,
+        AddedBy:this.accountService.currentUserValue.userId,
+        IsMlc: [false],
+        MotherName: "",
+        AdmittedDoctor1:0,
+        AdmittedDoctor2: 0,
+        RefByTypeId: 0,
+        RefByName: 0,
+        SubTpaComId: 0,
+        PolicyNo: "",
+        AprovAmount: 0,
+        compDOd: [(new Date()).toISOString()],
+        IsOpToIpconv: false,
+        RefDoctorDept: "",
+        AdmissionType: 0,
+      
+   
+    });
+}
+
+AdmissionFormSet(){
+  this.admissionFormGroup.reset({
+    serviceName: "a",
+    price: 0,
+    qty: 0,
+    totalAmount: 0,
+    discountPer: 0,
+    discountAmount: 0,
+    netAmount: 0,
+    DoctorID: 0,
+    DoctorName: ''
+  });
+
+}
   selectChangedepartment(obj: any) {
     this._AdmissionService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
       this.ddlDoctor.options = data;

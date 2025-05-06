@@ -114,7 +114,7 @@ getfilterdata(){
     const dialogRef = this._matDialog.open(TestFormMasterComponent,
       {
         maxWidth: "100vw",
-        height: '100%',
+        height: '95%',
         width: '90%',
         data: row
       });

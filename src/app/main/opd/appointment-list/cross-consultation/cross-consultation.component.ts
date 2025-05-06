@@ -11,6 +11,7 @@ import { OperatorComparer } from 'app/core/models/gridRequest';
 import { VisitMaster1 } from '../appointment-list.component';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 
 @Component({
@@ -40,7 +41,7 @@ export class CrossConsultationComponent implements OnInit {
   isdocSelected: boolean = false;
   regId = 0;
   constructor(public _AppointmentlistService: AppointmentlistService, private formBuilder: UntypedFormBuilder,
-    private accountService: AuthenticationService,
+    private accountService: AuthenticationService,private _FormvalidationserviceService: FormvalidationserviceService,
     public dialogRef: MatDialogRef<CrossConsultationComponent>, public datePipe: DatePipe, @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog, public toastr: ToastrService
   ) { }
@@ -69,7 +70,7 @@ export class CrossConsultationComponent implements OnInit {
       visitTime: " ",// this.datePipe.transform(new Date(),'yyyy-MM-ddTHH:mm'),
       unitId: 1,// this.data.unitId,
       patientTypeId: this.data.patientTypeId,
-      consultantDocId: ['', Validators.required],
+      consultantDocId:   [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       refDocId: this.data.refDocId,
       tariffId: this.data.tariffId,
       companyId: this.data.companyId,
@@ -79,7 +80,7 @@ export class CrossConsultationComponent implements OnInit {
       isCancelledBy: 0,
       isCancelledDate: new Date(),
       classId: this.data.classId,
-      departmentId: [this.data.departmentId, Validators.required],
+      departmentId: [this.data.departmentId, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       patientOldNew: this.data.patientOldNew,
       firstFollowupVisit: 0,
       appPurposeId: 0,//this.registerObj1.VisitDate,

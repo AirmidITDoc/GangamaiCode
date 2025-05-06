@@ -18,16 +18,18 @@
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
+                <form [formGroup]="searchFormGroup" fxLayout="column">
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Template Name</mat-label>
                     <input matInput placeholder="Search Template Name" autocomplete="off"
-                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                    [formGroup]="searchFormGroup" formControlName="TemplateNameSearch"
+                    (input)="onChangeFirst()"/>
                     <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="gridConfig.filters[0].fieldValue=''">
+                    (click)="Clearfilter('TemplateNameSearch')">
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
-
+                </form>
                 <!-- <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center">
                     <mat-radio-button value="">All</mat-radio-button>
                     <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>

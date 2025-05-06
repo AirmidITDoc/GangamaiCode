@@ -277,7 +277,20 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['TransactionType'] = 0;
       this.selectedPaymnet1 = 'cash';
     }
-
+    if (this.data.FromName == "OP-RefundOfBill") {
+      this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
+      this.amount1 = parseInt(this.advanceData.NetPayAmount) ;
+      this.PatientName = this.advanceData.PatientName;
+      this.RegNo = this.advanceData.RegNo;
+      this.DoctorName = this.advanceData.Doctorname;
+      this.CompanyName = this.advanceData.CompanyName;
+      this.Date = this.advanceData.Date;
+      this.Age = this.advanceData.Age;
+      this.OPD_IPD_Id = this.advanceData.OPD_IPD_Id;
+      this.DepartmentName = this.advanceData.DepartmentName;
+      this.Paymentobj['TransactionType'] = 2;
+      this.selectedPaymnet1 = 'cash';
+    }
   }
 
   ngOnInit(): void {
@@ -577,7 +590,7 @@ export class OpPaymentComponent implements OnInit {
       
       
     }
-    else if (this.data.FromName == "OP-Bill") {
+    else if (this.data.FromName == "OP-Bill" || this.data.FromName == "OP-RefundOfBill" ) {
       this.Paymentobj['BillNo'] = this.data.billNo;
       this.Paymentobj['PaymentId'] = 0;
       this.Paymentobj['PaymentDate'] = formattedDate
@@ -597,6 +610,8 @@ export class OpPaymentComponent implements OnInit {
       let TransactionType;
       if (this.data.FromName == "OP-Bill") {
         TransactionType = 0;
+      }  else if (this.data.FromName == "OP-RefundOfBill" || this.data.FromName == "IP-RefundOfBill" || this.data.FromName == "IP-RefundOfAdvance") {
+        TransactionType = 2;
       } 
       this.Paymentobj['TransactionType'] = TransactionType;
       this.Paymentobj['Remark'] = " ";
