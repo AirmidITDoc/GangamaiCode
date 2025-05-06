@@ -376,7 +376,7 @@
                         </div>
 
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
-                          <airmid-textbox label="Qty" [(ngModel)]="Qty" formControlName="Qty" #qty type="number" min="0"
+                          <airmid-textbox label="Qty" [(ngModel)]="Qty" formControlName="Qty" #qtyInputRef type="number" min="0"
                             (valueChange)="calculateTotalAmt()" [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div> 
 

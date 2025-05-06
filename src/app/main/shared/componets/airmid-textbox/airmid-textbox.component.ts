@@ -1,5 +1,5 @@
 import { coerceBooleanProperty } from "@angular/cdk/coercion";
-import { Component, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Optional, Output, Self, forwardRef } from "@angular/core";
+import { Component, ElementRef, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Optional, Output, Self, forwardRef } from "@angular/core";
 import {
     ControlValueAccessor,
     FormControl,
@@ -16,7 +16,7 @@ import { takeUntil } from "rxjs/operators";
     selector: "airmid-textbox",
     templateUrl: "./airmid-textbox.component.html",
     styleUrls: ["./airmid-textbox.component.scss"],
-    // providers: [
+        // providers: [
     //     {
     //         provide: NG_VALUE_ACCESSOR,
     //         useExisting: forwardRef(() => AirmidTextboxComponent),
@@ -34,11 +34,7 @@ import { takeUntil } from "rxjs/operators";
         '(focusout)': 'onTouched()',
     },
 })
-export class AirmidTextboxComponent implements
-    //ControlValueAccessor,
-    //MatFormFieldControl<string>,
-    OnInit,
-    OnDestroy {
+export class AirmidTextboxComponent implements ControlValueAccessor, OnInit, OnDestroy {
     static nextId: number = 0;
 
     private _disabled: boolean = false;
@@ -137,16 +133,14 @@ export class AirmidTextboxComponent implements
         }
 
     }
-    constructor(@Optional() @Self() public ngControl: NgControl | null) {
+    constructor(
+        @Optional() @Self() public ngControl: NgControl | null,
+        private el: ElementRef
+    ) {
         if (ngControl) {
-            // Set the value accessor directly (instead of providing NG_VALUE_ACCESSOR) to avoid running into a circular import
             this.ngControl.valueAccessor = this;
-            ngControl.valueAccessor = this;
         }
     }
-
-    //   ngOnInit(): void {
-    //   }
 
     ngOnDestroy(): void {
         this.destroy.next();
@@ -214,42 +208,6 @@ export class AirmidTextboxComponent implements
         this.change.emit(input.value);
     }
 
-    //constructor() { }
-    // @Input() label: string = ""; // Dynamic placeholder
-    // @Input() placeholder: string = "Enter text"; // Dynamic placeholder
-    // @Input() maxLength: number = 50; // Maximum length
-    // @Input() formGroup: FormGroup;
-    // @Input() fieldName: string = '';
-    // @Input() validations: [] = [];
-    // @Input() disabled: boolean = false;
-
-    //control: FormControl = new FormControl(""); // Form control to manage value
-
-    // onChange: any = () => {};
-    //onTouched: any = () => { };
-
-    // Called when Angular wants to write a value to the control
-    // writeValue(value: any): void {
-    //     this.control.setValue(value);
-    // }
-
-    // // Registers a callback function to be called when the control's value changes
-    // registerOnChange(fn: any): void {
-    //     this.onChange = fn;
-    //     this.control.valueChanges.subscribe(fn); // Emit value changes
-    // }
-
-    // // Registers a callback function to be called when the control is touched
-    // registerOnTouched(fn: any): void {
-    //     this.onTouched = fn;
-    // }
-
-    // Set component's disabled state
-    // setDisabledState?(isDisabled: boolean): void {
-    //     isDisabled ? this.control.disable() : this.control.enable();
-    // }
-
-    // Handle custom validation if required is enabled
     ngOnInit() {
         //this.control.setValidators(this.formGroup.get(formControlName))
         // if (this.required) {

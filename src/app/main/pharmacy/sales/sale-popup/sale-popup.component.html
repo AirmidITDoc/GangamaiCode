@@ -24,7 +24,7 @@ fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
 </div>
 
 <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8 sale-table" matSort [@animateStagger]="{value:'50'}"
-    style="overflow:auto;margin-top: 10px;" (click)="onTableClick()">
+    style="overflow:auto;margin-top: 10px;" >
     <ng-container matColumnDef="batchNo">
         <mat-header-cell *matHeaderCellDef> Batch No </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.batchNo}} </mat-cell>
@@ -87,13 +87,9 @@ fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
     </ng-container> -->
 
     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;" [@animate]="{value:'*',params:{y:'100%'}}"
-        [ngClass]="{'highlight': selectedRowIndex == row.position}"
-        (click)="selectedRow('', row)"
-        tabindex="999"
-        (keydown.arrowdown)="arrowDownEvent(row, selectedRowIndex)"
-        (keydown.arrowup)="arrowUpEvent(row, selectedRowIndex)"
-        (keyup.enter)="selectedRow(selectedRowIndex, '')" id="ele-{{row.position}}"></mat-row>
+    <mat-row *matRowDef="let row;let i=index columns: displayedColumns;" [@animate]="{value:'*',params:{y:'100%'}}"
+        [ngClass]="{'grey-200-bg': row === selectedRow}"
+        tabindex="999" [id]="'row' + i" (click)="selectNewRow(i)"></mat-row>
     <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
     <mat-footer-row *matFooterRowDef="['noData']"
         [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row> -->

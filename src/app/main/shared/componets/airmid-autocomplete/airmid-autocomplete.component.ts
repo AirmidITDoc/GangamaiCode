@@ -122,7 +122,7 @@ export class AirmidAutoCompleteComponent implements OnInit {
         this.value=e;
     }
     displayFn(user: any): string {  
-        return user[this["ariaLabel"]];
+        return user?.[this["ariaLabel"]];
     }
     selectedOption(e: any) {
         this.selectionChange.emit(e);
