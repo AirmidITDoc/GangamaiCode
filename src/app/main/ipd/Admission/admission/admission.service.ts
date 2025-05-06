@@ -170,10 +170,10 @@ export class AdmissionService {
             AdmissionType: 0,
           
             // unitId:1,
-            // IsMLC: [false],
-            // OPIPChange: [false],
-            // IsCharity: [false],
-            // IsSenior: [false],
+            IsMLC: [false],
+            OPIPChange: [false],
+            IsCharity: [false],
+            IsSenior: [false],
             // Citizen: [false],
             // Emergancy: [false],
             // template: [false]

@@ -55,12 +55,10 @@ export class PurchaseOrderService {
   PurchaseSearchFrom() {
     return this._formBuilder.group({
       StoreId: [this.accountService.currentUserValue.user.storeId],
-      // ToStoreId: "0",
-      // FromStoreId: 0,
       SupplierId: "0",
       startdate: [new Date().toISOString()],
       enddate: [new Date().toISOString()],
-      Status: ['1'],
+      Status: [0],
     });
   }
 
@@ -76,15 +74,6 @@ export class PurchaseOrderService {
       Disc:[''],
     
       grandTotal: [''],
-      // isclosed: [''],
-      // isVerified: [''],
-      // remarks: ['', [Validators.required]],
-      // taxId: [''],
-      // paymentTermId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      // modeofPayment: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      worrenty: [''],
-     
-
       ItemName:   ['', [Validators.required]],
       ConversionFactor: [''],
       Qty:   [1, [Validators.required]],

@@ -88,7 +88,7 @@ export class NewPurchaseorderComponent {
   optionsMarital: any[] = [];
   optionsPayment: any[] = [];
   optionsItemName: any[] = [];
-  vDefRate: any;
+  vDefRate: any = 0;
   vGSTAmt: any = 0.0;
   CGSTAmount: any;
   IGSTAmount: any;
@@ -233,6 +233,7 @@ export class NewPurchaseorderComponent {
 
     // if (this.data.chkNewGRN == 2) {
     if (this.data) {
+      this.registerObj = this.data.Obj
       this.PurchaseID = this.data.Obj.purchaseID
       this.vSupplierId = this.data.Obj.supplierID
       this.vstoreId = this.data.Obj.storeId
@@ -240,62 +241,59 @@ export class NewPurchaseorderComponent {
       this.FinalTotalAmt = this.data.Obj.totalAmount
       this.DiscAmount = this.data.Obj.discAmount
       this.GSTAmount = this.data.Obj.taxAmount
+      this.paymentterm = this.data.Obj.paymentTermId
+      this.paymentmode = this.data.Obj.modeOfPayment
 
-      setTimeout(() => {
-        this._PurchaseOrder.getSupplierById(this.data.Obj.supplierID).subscribe((response) => {
-          console.log(response)
-          this.SupplierObj = response;
-
-          this.vAddress = this.SupplierObj.address;
-          this.vMobile = this.SupplierObj.mobile;
-          this.vContact = this.SupplierObj.contactPerson;
-          this.vGSTNo = this.SupplierObj.gstNo;
-          this.vEmail = this.SupplierObj.email;
-
-          let SupplierRate = 0;
-          SupplierRate = this.supplierRateList[0].SupplierRate;
-          this.vDefRate = SupplierRate;
-
-        });
-        this.userFormGroup.get('SupplierId').setValue(this.data.Obj.supplierID);
-
-        this.FinalPurchaseform.get('PaymentTerm').setValue(this.data.Obj.paymentTermId);
-        this.FinalPurchaseform.get('PaymentMode').setValue(this.data.Obj.modeOfPayment);
-        this.FinalPurchaseform.get('Remark').setValue(this.data.Obj.remarks);
-        this.FinalPurchaseform.get('HandlingCharges').setValue(this.data.Obj.handlingCharges);
-        this.FinalPurchaseform.get('TransportCharges').setValue(this.data.Obj.transportChanges);
-        this.FinalPurchaseform.get('Freight').setValue(this.data.Obj.freightAmount);
-        this.FinalPurchaseform.get('OctriAmount').setValue(this.data.Obj.octriAmount);
-        this.FinalPurchaseform.get('Worrenty').setValue(this.data.Obj.worrenty);
-
-      }, 100);
-      this.getOldPurchaseOrder(this.data.Obj.purchaseID);
-    }
-    if (this.data) {
-      this.userFormGroup.get('PurchaseDate').setValue(this.registerObj.PurchaseDate);
-    } else {
-      this.userFormGroup.get('PurchaseDate').setValue(new Date());
-    }
-
-  }
-
-  getSelectedSupplierObj(obj) {
-    setTimeout(() => {
-      this._PurchaseOrder.getSupplierById(obj.value).subscribe((response) => {
-        this.SupplierObj = response;
+      // setTimeout(() => {
+      this._PurchaseOrder.getSupplierById(this.data.Obj.supplierID).subscribe((response) => {
         console.log(response)
-        this.vSupplierId = this.SupplierObj.supplierId
-        debugger
+        this.SupplierObj = response;
+
         this.vAddress = this.SupplierObj.address;
         this.vMobile = this.SupplierObj.mobile;
         this.vContact = this.SupplierObj.contactPerson;
         this.vGSTNo = this.SupplierObj.gstNo;
         this.vEmail = this.SupplierObj.email;
-        this.getSupplierRate();
+
+        let SupplierRate = 0;
+        SupplierRate = this.supplierRateList[0].SupplierRate;
+        this.vDefRate = SupplierRate;
 
       });
+      this.userFormGroup.get('SupplierId').setValue(this.data.Obj.supplierID);
 
-    }, 100);
+      this.FinalPurchaseform.get('PaymentTerm').setValue(this.data.Obj.paymentTermId);
+      this.FinalPurchaseform.get('PaymentMode').setValue(this.data.Obj.modeOfPayment);
+      this.FinalPurchaseform.get('Remark').setValue(this.data.Obj.remarks);
+      this.FinalPurchaseform.get('HandlingCharges').setValue(this.data.Obj.handlingCharges);
+      this.FinalPurchaseform.get('TransportCharges').setValue(this.data.Obj.transportChanges);
+      this.FinalPurchaseform.get('Freight').setValue(this.data.Obj.freightAmount);
+      this.FinalPurchaseform.get('OctriAmount').setValue(this.data.Obj.octriAmount);
+      this.FinalPurchaseform.get('Worrenty').setValue(this.data.Obj.worrenty);
+
+      // }, 100);
+      this.getOldPurchaseOrder(this.data.Obj.purchaseID);
+    }
+
+  }
+
+  getSelectedSupplierObj(obj) {
+    // setTimeout(() => {
+    this._PurchaseOrder.getSupplierById(obj.value).subscribe((response) => {
+      this.SupplierObj = response;
+      console.log(response)
+      this.vSupplierId = this.SupplierObj.supplierId
+      debugger
+      this.vAddress = this.SupplierObj.address;
+      this.vMobile = this.SupplierObj.mobile;
+      this.vContact = this.SupplierObj.contactPerson;
+      this.vGSTNo = this.SupplierObj.gstNo;
+      this.vEmail = this.SupplierObj.email;
+      this.getSupplierRate();
+
+    });
+
+    // }, 100);
   }
 
   onAdd() {
@@ -418,12 +416,7 @@ export class NewPurchaseorderComponent {
         }
       ],
       "exportType": "JSON",
-      "columns": [
-        {
-          "data": "string",
-          "name": "string"
-        }
-      ]
+      "columns": []
     }
 
 
@@ -570,13 +563,9 @@ export class NewPurchaseorderComponent {
   //   this.OnSaveEdit();
   // }
   // }
+
+
   OnSave() {
-    this.vsaveflag = true
-    this.OnSavenew();
-
-  }
-
-  OnSavenew() {
     if ((!this.dsItemNameList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -624,6 +613,8 @@ export class NewPurchaseorderComponent {
     let submitData = {
       "purchaseId": this.PurchaseID,
       "purchaseNo": this.PurchaseNo,
+      "purchaseDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',
+      "purchaseTime": this.dateTimeObj.time,
       "storeId": this.vstoreId,
       "supplierId": this.vSupplierId,// this.userFormGroup.get('SupplierId').value || 0,
       "totalAmount": this.FinalTotalAmt,
@@ -683,16 +674,16 @@ export class NewPurchaseorderComponent {
 
   OnchekPurchaserateValidation() {
 
-    if (this.vDefRate) {
+    if (this.vDefRate > 0) {
       if (parseFloat(this.userFormGroup.get("Rate").value) > parseFloat(this.vDefRate)) {
         Swal.fire("Please Check defined Supplier Rate for product ...!!!");
         this.vRate = 0
       } else { this.calculateTotalamt(); }
 
-    } else if (this.vDefRate == 0) {
-      if (this.userFormGroup.get("Rate").value) {
-        this.calculateTotalamt();
-      }
+      // } else if (this.vDefRate == 0) {
+      //   if (this.userFormGroup.get("Rate").value) {
+      //     this.calculateTotalamt();
+      //   }
     }
   }
 
@@ -846,7 +837,6 @@ export class NewPurchaseorderComponent {
       HSNcode: item.hsNcode
 
     });
-    // this.calculateTotalamt();
 
     this.getLastThreeItemInfo();
     // this.qty.nativeElement.focus();
@@ -854,46 +844,48 @@ export class NewPurchaseorderComponent {
   }
 
   calculateTotalamt() {
-    this.validateFormValues();
-    const form = this.userFormGroup;
-    // Get values with proper type conversion
-    const qty = +form.get('Qty').value || 0;
-    // const freeqty = +form.get('FreeQty').value || 0;
-    const rate = +form.get('Rate').value || 0;
-    // const conversionFactor = +form.get('ConversionFactor').value || 1;
+    // if (this.vDefRate == 0) {
+      this.validateFormValues();
+      const form = this.userFormGroup;
+      const qty = +form.get('Qty').value || 0;
+      const rate = +form.get('Rate').value || 0;
 
-    let totalAmount = 0;
-    let netAmount = 0;
+      let totalAmount = 0;
+      let netAmount = 0;
 
-    if (qty > 0 && rate > 0) {
-      totalAmount = rate * qty;
-      netAmount = totalAmount;
-      form.patchValue({
-        TotalAmount: totalAmount,
-        NetAmount: netAmount,
-        // FinalTotalQty: totalQty
-      });
+      if (qty > 0 && rate > 0) {
+        totalAmount = rate * qty;
+        netAmount = totalAmount;
+        form.patchValue({
+          TotalAmount: totalAmount,
+          NetAmount: netAmount,
+        });
+      } else {
+        form.patchValue({
+          TotalAmount: 0,
+          DiscAmount: 0,
+          DiscAmount2: 0,
+          CGSTAmount: 0,
+          SGSTAmount: 0,
+          IGSTAmount: 0,
+          GSTAmount: 0,
+          NetAmount: 0,
 
-      // Trigger discount and GST calculations
-      // this.calculateDiscperAmount();
-    } else {
-      // Reset all calculated values
-      form.patchValue({
-        TotalAmount: 0,
-        DiscAmount: 0,
-        DiscAmount2: 0,
-        CGSTAmount: 0,
-        SGSTAmount: 0,
-        IGSTAmount: 0,
-        GSTAmount: 0,
-        NetAmount: 0,
-        // FinalTotalQty: totalQty
-      });
-    }
-    this.calculateDiscountAmount();
-    this.calculateGSTType();
+        });
+      }
+      this.calculateDiscountAmount();
+      this.calculateGSTType();
+    // }
+    // else {
+    //   if (this.vDefRate > 0) {
+    //     if (parseFloat(this.userFormGroup.get("Rate").value) > parseFloat(this.vDefRate)) {
+    //       Swal.fire("Please Check defined Supplier Rate for product ...!!!");
+    //       this.vRate = 0
+    //     } else { this.calculateTotalamt(); }
+
+    //   }
+    // }
   }
-
 
   calculateDiscountAmount() {
 

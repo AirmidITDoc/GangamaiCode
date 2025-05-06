@@ -132,10 +132,10 @@ export class PurchaseOrderComponent implements OnInit {
       ]
     };
     this.isShowDetailTable = true;
-    setTimeout(() => {
+    // setTimeout(() => {
       this.grid1.gridConfig = this.gridConfig1;
       this.grid1.bindGridData();
-    }, 100);
+    // }, 100);
   }
 
   constructor(public _PurchaseOrderService: PurchaseOrderService, public _matDialog: MatDialog,
@@ -190,10 +190,12 @@ export class PurchaseOrderComponent implements OnInit {
 
   onChangeFirst(value) {
     
-    if(this.mysearchform.get('Status').value)
-      this.status="0"
-    else
-    this.status="1"
+  if(this.mysearchform.get('Status').value == true){
+      this.status = "1"
+  }else{
+      this.status = "0"
+  }
+
   debugger
     this.isShowDetailTable = false;
     this.fromDate = this.datePipe.transform(this.mysearchform.get('startdate').value, "yyyy-MM-dd")
@@ -391,7 +393,12 @@ export class ItemNameList {
  specification: any;
  itemId: any;
  uomid: any;
- 
+ freightAmount: any;
+ transportChanges: any;
+ handlingCharges: any;
+ octriAmount: any;
+ worrenty: any;
+ remarks: any;
   /**
    * Constructor
    *
@@ -474,6 +481,13 @@ export class ItemNameList {
       this.specification= ItemNameList.specification || 0;
       this.itemId= ItemNameList.itemId || 0;
       this.uomid= ItemNameList.uomid || 0;
+      this.freightAmount= ItemNameList.freightAmount || 0;
+      this.transportChanges= ItemNameList.transportChanges || 0;
+      this.handlingCharges= ItemNameList.handlingCharges || 0;
+      this.octriAmount= ItemNameList.octriAmount || 0;
+      this.worrenty= ItemNameList.worrenty || 0;
+      this.remarks= ItemNameList.remarks || 0;
+
     }
   }
 }
