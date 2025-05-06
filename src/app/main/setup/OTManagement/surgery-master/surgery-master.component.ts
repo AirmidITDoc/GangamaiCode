@@ -22,10 +22,10 @@ msg: any;
         apiUrl: "VillageMaster/List",
         columnsList: [
             { heading: "Code", key: "villageId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "VillageName", key: "villageName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "TalukaName", key: "talukaName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UserName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "SurgeryName", key: "villageName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "DepartmentName", key: "talukaName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "SurgeryCategoryName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "SiteDescriptionName", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
