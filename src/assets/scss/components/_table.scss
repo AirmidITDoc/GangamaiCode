@@ -208,6 +208,14 @@
   .airmid-table-container {
     .airmid-table {
       height: 100%;
+      &.one-column-table{
+        mat-header-cell{
+          padding: 10px 10px;
+        }
+        mat-cell{
+          padding: 3px 10px;
+        }
+      }
       .action-list {
         display: flex;
         gap: 8px;
