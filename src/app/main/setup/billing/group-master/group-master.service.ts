@@ -22,7 +22,8 @@ export class GroupMasterService {
             groupName: ["", 
                 [
                     Validators.required, Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z\s]+$")
+                  //  Validators.pattern("^[A-Za-z\s]+$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
             isconsolidated: true,

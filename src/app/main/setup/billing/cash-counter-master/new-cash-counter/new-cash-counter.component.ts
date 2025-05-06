@@ -26,6 +26,8 @@ export class NewCashCounterComponent implements OnInit {
  
     ngOnInit(): void {
         this.cashcounterForm = this._CashCounterMasterService.createcashcounterForm();
+        this.cashcounterForm.markAllAsTouched();
+
         if((this.data?.cashCounterId??0) > 0)
         {
             this.isActive=this.data.isActive

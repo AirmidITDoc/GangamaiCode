@@ -30,6 +30,8 @@ export class NewAreaComponent implements OnInit {
 
     ngOnInit(): void {
       this.areaForm = this._AreaMasterService.createAreaForm();
+      this.areaForm.markAllAsTouched();
+
       if((this.data?.areaId??0) > 0) 
         {
             this.isActive=this.data.isActive

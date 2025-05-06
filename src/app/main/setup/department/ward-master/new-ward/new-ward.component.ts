@@ -30,6 +30,7 @@ export class NewWardComponent implements OnInit {
 
     ngOnInit(): void {
         this.roomForm = this._WardMasterService.createWardForm();
+        this.roomForm.markAllAsTouched();
         if((this.data?.roomId??0) > 0)
         {
             this.isActive=this.data.isActive;

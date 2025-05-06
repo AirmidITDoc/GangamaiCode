@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Injectable({
     providedIn: "root",
@@ -11,7 +12,8 @@ export class CashCounterMasterService {
 
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: UntypedFormBuilder
+        private _formBuilder: UntypedFormBuilder,
+         private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myform = this.createcashcounterForm();
         this.myformSearch = this.createSearchForm();
@@ -23,20 +25,23 @@ export class CashCounterMasterService {
             cashCounterName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z0-9]+$")
+                   // Validators.pattern("^[A-Za-z0-9]+$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
             prefix: ["",
-                [
-                    Validators.required, Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z0-9]+$")
-                ]
+                // [
+                //     Validators.required, Validators.maxLength(50),
+                //     Validators.pattern("^[A-Za-z0-9]+$")
+                // ]
+                [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
             billNo: ["", 
-                [
-                    Validators.required, 
-                    Validators.pattern("^[0-9]*$")
-                ]
+                // [
+                //     Validators.required, 
+                //     Validators.pattern("^[0-9]*$")
+                // ]
+                [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
             isActive:[true,[Validators.required]]
         });
