@@ -409,8 +409,8 @@ export class CurrentStockComponent implements OnInit {
     // getItemWiseStockList() {
     //     this.sIsLoading = 'loading-data';
     //     var vdata = {
-    //         "FromDate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-    //         "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+    //         "FromDate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+    //         "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
     //         "StoreId": this._loggedService.currentUserValue.storeId || 0,
     //         "ItemId": this._CurrentStockService.ItemWiseFrom.get('ItemCategory').value.ItemID || 0
     //     }
@@ -436,10 +436,10 @@ export class CurrentStockComponent implements OnInit {
     // getIssueWiseItemStockList() {
     //     this.sIsLoading = 'loading-data';
     //     var vdata = {
-    //         "FromDate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-    //         "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+    //         "FromDate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+    //         "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
     //         "StoreId": this._loggedService.currentUserValue.storeId || 0,
-    //         "ItemId": this._CurrentStockService.PurchaseItem.get('ItemCategory').value.ItemID || 0
+    //         "ItemId": this._CurrentStockService.IssueItem.get('ItemCategory').value.ItemID || 0
     //     }
     //     setTimeout(() => {
     //         this._CurrentStockService.getIssueWiseItemStockList(vdata).subscribe(
@@ -568,8 +568,8 @@ export class CurrentStockComponent implements OnInit {
 
     viewgetDaywisestockReportPdf() {
         this.sIsLoading == 'loading-data'
-        let LedgerDate = this.datePipe.transform(this._CurrentStockService.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-        let StoreId = this._loggedService.currentUserValue.storeId || this._CurrentStockService.userFormGroup.get("StoreId").value.StoreId || 0
+        let LedgerDate = this.datePipe.transform(this._CurrentStockService.dayWiseForm.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+        let StoreId = this._loggedService.currentUserValue.storeId || this._CurrentStockService.dayWiseForm.get("StoreId").value.StoreId || 0
         setTimeout(() => {
             this.SpinLoading = true;
             //  this.AdList=true;
@@ -627,8 +627,8 @@ export class CurrentStockComponent implements OnInit {
 
     viewgetItemwisestockReportPdf() {
         this.sIsLoading == 'loading-data'
-        let FromDate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-        let todate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+        let FromDate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+        let todate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
         let StoreId = this._loggedService.currentUserValue.storeId || this._CurrentStockService.ItemWiseFrom.get("StoreId").value.StoreId || 0
         setTimeout(() => {
             this.SpinLoading = true;
@@ -654,9 +654,9 @@ export class CurrentStockComponent implements OnInit {
 
     viewgetItemWisePurchaseReportPdf() {
         this.sIsLoading == 'loading-data'
-        let FromDate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-        let todate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-        let StoreId = this._loggedService.currentUserValue.storeId || this._CurrentStockService.userFormGroup.get("StoreId").value.StoreId || 0
+        let FromDate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+        let todate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+        let StoreId = this._loggedService.currentUserValue.storeId || this._CurrentStockService.dayWiseForm.get("StoreId").value.StoreId || 0
         setTimeout(() => {
             this.SpinLoading = true;
             //  this.AdList=true;

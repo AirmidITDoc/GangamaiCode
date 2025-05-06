@@ -196,7 +196,7 @@ autocompletestore: string = "Store";
   ]
 
   gridConfig: gridModel = {
-    apiUrl: "Purchase/GRNReturnlistbynameList",
+    apiUrl: "GRNReturn/GRNReturnlistbynameList",
     columnsList: this.allColumns,
     sortField: "GRNReturnId",
     sortOrder: 0,
@@ -219,7 +219,7 @@ autocompletestore: string = "Store";
   getfilterdata() {
     // debugger
     this.gridConfig = {
-      apiUrl: "Purchase/GRNReturnlistbynameList",
+      apiUrl: "GRNReturn/GRNReturnlistbynameList",
       columnsList: this.allColumns,
       sortField: "GRNReturnId",
       sortOrder: 0,
@@ -269,7 +269,7 @@ autocompletestore: string = "Store";
     let grnReturnId = data.grnReturnId;
 
     this.gridConfig1 = {
-      apiUrl: "Purchase/GRNReturnList",
+      apiUrl: "GRNReturn/GRNReturnList",
       columnsList: [
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },

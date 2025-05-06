@@ -30,6 +30,7 @@ export class NewVillageComponent implements OnInit {
     
     ngOnInit(): void {
         this.myForm = this._VillageMasterService.createVillageForm();
+        this.myForm.markAllAsTouched();
         
         console.log(this.data)
         if ((this.data?.villageId??0) > 0) 

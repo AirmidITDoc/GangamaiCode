@@ -22,9 +22,9 @@ msg: any;
         apiUrl: "VillageMaster/List",
         columnsList: [
             { heading: "Code", key: "villageId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "abs", key: "villageName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "bvd", key: "talukaName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UserName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "SystemName", key: "villageName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "AddedBy", key: "talukaName", sort: true, align: 'left', emptySign: 'NA' },
+            //{ heading: "UserName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [

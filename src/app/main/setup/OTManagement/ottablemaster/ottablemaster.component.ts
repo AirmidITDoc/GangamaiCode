@@ -23,9 +23,9 @@ msg: any;
         apiUrl: "VillageMaster/List",
         columnsList: [
             { heading: "Code", key: "villageId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "VillageName", key: "villageName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "TalukaName", key: "talukaName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UserName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "OT Room Name", key: "villageName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Location Name", key: "talukaName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "AddedBy", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [

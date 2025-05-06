@@ -30,6 +30,7 @@ export class NewTalukaComponent implements OnInit {
     
     ngOnInit(): void {
         this.myForm = this._TalukaMasterService.createTalukaForm();
+        this.myForm.markAllAsTouched();
         
         console.log(this.data)
         if ((this.data?.talukaId??0) > 0) 

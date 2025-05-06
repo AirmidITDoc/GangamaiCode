@@ -69,8 +69,8 @@
 
                         <ng-container filters>
 
-                            <form [formGroup]="_CurrentStockService.SearchGroup">
-                            <!-- <airmid-datepicker [formGroup]="_CurrentStockService.SearchGroup" [isRangePicker]="false"
+                            <form [formGroup]="_CurrentStockService.dayWiseForm">
+                            <!-- <airmid-datepicker [formGroup]="_CurrentStockService.dayWiseForm" [isRangePicker]="false"
                                 formStartControlName="start" [(fromValue)]="gridConfig.filters[0].fieldValue">
                             </airmid-datepicker> -->
 
@@ -84,13 +84,13 @@
                             </mat-form-field>
 
                             <airmid-dropdown label="From Store" formControlName="StoreId"
-                                [formGroup]="_CurrentStockService.SearchGroup" [mode]="autocompletestore"
+                                [formGroup]="_CurrentStockService.dayWiseForm" [mode]="autocompletestore"
                                 (selectionChange)="selectChangeStore1($event)"
                                 [(ngModel)]="gridConfig1.filters[1].fieldValue">
                             </airmid-dropdown>
 
                             <airmid-dropdown label="Item Name" formControlName="ItemCategory"
-                                [formGroup]="_CurrentStockService.SearchGroup"
+                                [formGroup]="_CurrentStockService.dayWiseForm"
                                  [mode]="autocompleteitem"
                                 (selectionChange)="selectChangeItem1($event)"
                                 [(ngModel)]="gridConfig1.filters[2].fieldValue">
@@ -128,21 +128,21 @@
 
                         <ng-container filters>
 
-                            <form [formGroup]="_CurrentStockService.SearchGroup">
-                            <airmid-datepicker [formGroup]="_CurrentStockService.SearchGroup" [isRangePicker]="true"
+                            <form [formGroup]="_CurrentStockService.ItemWiseFrom">
+                            <airmid-datepicker [formGroup]="_CurrentStockService.ItemWiseFrom" [isRangePicker]="true"
                                 formStartControlName="start" formEndControlName="end"
                                 [(fromValue)]="gridConfig2.filters[0].fieldValue"
                                 [(toValue)]="gridConfig2.filters[1].fieldValue">
                             </airmid-datepicker>
 
                             <airmid-dropdown label="From Store" formControlName="StoreId"
-                                [formGroup]="_CurrentStockService.SearchGroup" [mode]="autocompletestore"
+                                [formGroup]="_CurrentStockService.ItemWiseFrom" [mode]="autocompletestore"
                                 (selectionChange)="selectChangeStore2($event)"
                                 [(ngModel)]="gridConfig2.filters[2].fieldValue">
                             </airmid-dropdown>
 
                             <airmid-dropdown label="Item Name" formControlName="ItemCategory"
-                                [formGroup]="_CurrentStockService.SearchGroup"
+                                [formGroup]="_CurrentStockService.ItemWiseFrom"
                                  [mode]="autocompleteitem"
                                 (selectionChange)="selectChangeItem2($event)"
                                 [(ngModel)]="gridConfig2.filters[3].fieldValue">
@@ -180,21 +180,21 @@
 
                         <ng-container filters>
 
-                            <form [formGroup]="_CurrentStockService.SearchGroup">
-                            <airmid-datepicker [formGroup]="_CurrentStockService.SearchGroup" [isRangePicker]="true"
+                            <form [formGroup]="_CurrentStockService.IssueItem">
+                            <airmid-datepicker [formGroup]="_CurrentStockService.IssueItem" [isRangePicker]="true"
                                 formStartControlName="start" formEndControlName="end"
                                 [(fromValue)]="gridConfig3.filters[0].fieldValue"
                                 [(toValue)]="gridConfig3.filters[1].fieldValue">
                             </airmid-datepicker>
 
                             <airmid-dropdown label="From Store" formControlName="StoreId"
-                                [formGroup]="_CurrentStockService.SearchGroup" [mode]="autocompletestore"
+                                [formGroup]="_CurrentStockService.IssueItem" [mode]="autocompletestore"
                                 (selectionChange)="selectChangeStore3($event)"
                                 [(ngModel)]="gridConfig3.filters[2].fieldValue">
                             </airmid-dropdown>
 
                             <airmid-dropdown label="Item Name" formControlName="ItemCategory"
-                                [formGroup]="_CurrentStockService.SearchGroup"
+                                [formGroup]="_CurrentStockService.IssueItem"
                                  [mode]="autocompleteitem"
                                 (selectionChange)="selectChangeItem3($event)"
                                 [(ngModel)]="gridConfig3.filters[3].fieldValue">
