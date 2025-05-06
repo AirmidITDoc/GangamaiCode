@@ -37,7 +37,7 @@ export class DoctorMasterComponent implements OnInit {
             { heading: "FirstName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "MiddleName", key: "middleName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA', width: 200,type:6 },
             { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Pin", key: "pin", sort: true, align: 'left', emptySign: 'NA' },
@@ -46,16 +46,16 @@ export class DoctorMasterComponent implements OnInit {
             { heading: "Education", key: "education", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsConsultant", key: "isConsultant", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsRefDoc", key: "isRefDoc", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Doctor Type", key: "doctorTypeName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Doctor Type", key: "doctorTypeName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
             { heading: "Age Year", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Age Month", key: "ageMonth", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Age Day", key: "ageDay", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PassportNo", key: "passportNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Esino", key: "esino", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Reg Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Reg Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA',width: 150, type:6},
             { heading: "Mah RegNo", key: "mahRegNo", type: gridColumnTypes.status, align: "center" },
-            { heading: "Mah RegDate ", key: "mahRegDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Mah RegDate ", key: "mahRegDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type:6 },
             { heading: "RefDocHospitalName", key: "refDocHospitalName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsInHouseDoctor", key: "isInHouseDoctor", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsOnCallDoctor", key: "isOnCallDoctor", sort: true, align: 'left', emptySign: 'NA' },
@@ -65,17 +65,18 @@ export class DoctorMasterComponent implements OnInit {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            let that = this;
-                            const dialogRef = this._matDialog.open(NewDoctorComponent,
-                                {
-                                    maxWidth: "95vw",
-                                    height: '95%',
-                                    width: '70%',
-                                    data: { doctorId: data.doctorId }
-                                });
-                            dialogRef.afterClosed().subscribe(result => {
-                                that.grid.bindGridData();
-                            });
+                        this.onEdit(data);
+                            // let that = this;
+                            // const dialogRef = this._matDialog.open(NewDoctorComponent,
+                            //     {
+                            //         maxWidth: "95vw",
+                            //         height: '95%',
+                            //         width: '70%',
+                            //         data: { doctorId: data.doctorId }
+                            //     });
+                            // dialogRef.afterClosed().subscribe(result => {
+                            //     that.grid.bindGridData();
+                            // });
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
@@ -144,28 +145,21 @@ export class DoctorMasterComponent implements OnInit {
 
     onEdit(row) {
         console.log(row)
-        this._doctorService.populateForm(row);
+        // this._doctorService.populateForm(row);
         const dialogRef = this._matDialog.open(
             NewDoctorComponent,
             {
-                // maxWidth: "85vw",
-                // maxHeight: "95vh",
-                // width: "100%",
+                maxWidth: "95vw",
+                maxHeight: "98vh",
+                width: "100%",
                 // height: "100%",
-
-                maxWidth: "100vw",
-                // height: '95%',
-                maxHeight: '95vh',
-                width: '70%',
-                data: {
-                    registerObj: row,
-                }
+                data: row
             }
         );
 
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
-
+            this.grid.bindGridData();
         });
     }
     changeStatus(status: any) {
@@ -221,16 +215,16 @@ export class DoctorMasterComponent implements OnInit {
 
 
         const dialogRef = this._matDialog.open(NewDoctorComponent, {
-            maxWidth: "85vw",
+            maxWidth: "95vw",
             maxHeight: "98vh",
             width: "100%",
-            height: "100%",
+            // height: "100%",
             autoFocus: false,
             ariaModal: true,
         });
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
-
+            this.grid.bindGridData();
         });
     }
 

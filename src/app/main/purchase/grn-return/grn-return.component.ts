@@ -155,7 +155,7 @@ export class GRNReturnComponent implements OnInit {
     { fieldName: "IsVerify", fieldValue: "0", opType: OperatorComparer.Equals }
   ]
   gridConfig: gridModel = {
-    apiUrl: "Purchase/GRNReturnlistbynameList",
+    apiUrl: "GRNReturn/GRNReturnlistbynameList",
     columnsList: this.allColumns,
     sortField: "GRNReturnId",
     sortOrder: 0,
@@ -178,7 +178,7 @@ export class GRNReturnComponent implements OnInit {
   getfilterdata() {
     // debugger
     this.gridConfig = {
-      apiUrl: "Purchase/GRNReturnlistbynameList",
+      apiUrl: "GRNReturn/GRNReturnlistbynameList",
       columnsList: this.allColumns,
       sortField: "GRNReturnId",
       sortOrder: 0,
@@ -228,7 +228,7 @@ export class GRNReturnComponent implements OnInit {
     let grnReturnId = data.grnReturnId;
 
     this.gridConfig1 = {
-      apiUrl: "Purchase/GRNReturnList",
+      apiUrl: "GRNReturn/GRNReturnList",
       columnsList: [
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA',width: 150 },
         { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },

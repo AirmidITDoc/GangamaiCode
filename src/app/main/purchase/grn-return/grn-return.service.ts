@@ -75,7 +75,7 @@ export class GrnReturnService {
     return this._httpClient.post("Generic/GetByProc?procName=getGRNReturnList",Param);
   }
   public getGRNList(Param){
-    return this._httpClient1.PostData("Purchase/GRNListBynameforGrnReturn",Param);
+    return this._httpClient1.PostData("GRNReturn/GRNListBynameforGrnReturn",Param);
   }
   public getSupplierSearchList(param){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SupplierName_list",param);
@@ -86,7 +86,7 @@ export class GrnReturnService {
   }
  
   public getGrnItemList(Param){
-    return this._httpClient1.PostData("Purchase/ItemListBYSupplierName",Param);
+    return this._httpClient1.PostData("GRNReturn/ItemListBYSupplierName",Param);
   }
 
   public GRNReturnSave(Param){

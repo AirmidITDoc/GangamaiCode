@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Injectable()
 export class DoctorMasterService {
@@ -10,67 +11,79 @@ export class DoctorMasterService {
 
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: UntypedFormBuilder
+        private _formBuilder: UntypedFormBuilder,
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
-        this.myform = this.createdDoctormasterForm();
-        this.myformSearch = this.createSearchForm();
+        // this.myform = this.createdDoctormasterForm();
+        // this.myformSearch = this.createSearchForm();
     }
 
     createdDoctormasterForm(): FormGroup {
         return this._formBuilder.group({
-            DoctorId: [0],
-            PrefixID: ["", Validators.required],
-            PrefixName: [""],
-            FirstName: ['', [
+            doctorId: [0],
+            prefixId: [0,[ Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            // PrefixName: [""],
+            firstName: ['', [
                 Validators.required,
                 Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                Validators.pattern("^[A-Za-z ]*$")
             ]],
-            MiddleName: ['', [
+            middleName: ['', [
                 Validators.required,
                 Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                Validators.pattern("^[A-Za-z ]*$")
             ]],
-            LastName: ['', [
+            lastName: ['', [
                 Validators.required,
                 Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                Validators.pattern("^[A-Za-z ]*$")
             ]],
-            DateOfBirth: [{ value: new Date() }],
-            Address: ["", Validators.required],
-            Phone: [
+            // DateOfBirth: [{ value: new Date() }],
+            dateofBirth: [(new Date()).toISOString()],
+            address: ["", Validators.required],
+            city: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            pin:["0"],
+            phone: [
                 "",
                 [
                     Validators.required,
-                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+                    Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),                    
                     Validators.minLength(10),
-                    Validators.maxLength(15),
+                    Validators.maxLength(10),
                 ],
             ],
-            GenderId: ["", Validators.required],
-            GenderName: [""],
-            Education: ["",
+            mobile:["0"],
+            genderId: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            // GenderName: [""],
+            education: ["",
                 [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z ]*$")
                 ]
             ],
-            IsConsultant: [true],
-            IsRefDoc: [false],
+            isConsultant: [true],
+            isRefDoc: [false],
             isActive: [true],
-            DoctorTypeId: ["", Validators.required],
-            DoctorType: [""],
-            PassportNo: [""],
+            doctorTypeId: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            // DoctorType: [""],
+            ageYear: ['0', [
+                Validators.maxLength(3),
+                Validators.pattern("^[0-9]*$")]],
+            ageMonth: ['0', [
+                Validators.pattern("^[0-9]*$")]],
+            ageDay: ['0', [
+                Validators.pattern("^[0-9]*$")]],
+            passportNo: ["0"],
             esino: [
                 "",
                 [
                     Validators.required,
-                    // Validators.pattern("'^[a-zA-Z0-9]*$'"),
+                    Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
                     Validators.minLength(10),
                     Validators.maxLength(10),
                 ],
             ],
-            RegNo: [
+            regNo: [
                 "",
                 [
                     Validators.required,
@@ -79,8 +92,10 @@ export class DoctorMasterService {
                     Validators.maxLength(10),
                 ],
             ],
-            RegDate: [{ value: new Date() }],
-            MahRegNo: [
+            // RegDate: [{ value: new Date() }],
+            regDate: [(new Date()).toISOString()],
+            // RegDate: [new Date()],
+            mahRegNo: [
                 "",
                 [
                     Validators.required,
@@ -89,21 +104,17 @@ export class DoctorMasterService {
                     Validators.maxLength(10),
                 ],
             ],
-            MahRegDate: [{ value: new Date() }],
-            RefDocHospitalName: [
+            mahRegDate: [(new Date()).toISOString()],
+            refDocHospitalName: [
                 "",
                 [
                     Validators.required
                 ]
             ],
-            
-            MDoctorDepartmentDets: ["", Validators.required],
-            DepartmentName: [""],
-            AddedBy: [""],
-            UpdatedBy: [""],
-            AddedByName: [""],
-            Pancardno: ["", Validators.required],
-            AadharCardNo: ["",
+            isInHouseDoctor: true,
+            isOnCallDoctor: true,
+            panCardNo: ["", [Validators.required,Validators.pattern('[A-Z]{5}[0-9]{4}[A-Z]{1}')]],
+            aadharCardNo: ["",
                 [
                     Validators.required,
                     Validators.pattern("^[0-9]*$"),
@@ -111,7 +122,12 @@ export class DoctorMasterService {
                     Validators.maxLength(12),
                 ]
             ],
-            City: ["", Validators.required]
+            signature:"",
+            mDoctorDepartmentDets: [[], Validators.required],
+            // DepartmentName: [""],
+            // AddedBy: [""],
+            // UpdatedBy: [""],
+            // AddedByName: [""],
         });
     }
 
@@ -175,8 +191,8 @@ export class DoctorMasterService {
     }
 
     public doctortMasterInsert(Param: any) {
-        if (Param.DoctorId) {
-            return this._httpClient.PutData("Doctor/Edit/" + Param.DoctorId, Param);
+        if (Param.doctorId) {
+            return this._httpClient.PutData("Doctor/Edit/" + Param.doctorId, Param);
         } else return this._httpClient.PostData("Doctor/InsertEDMX", Param);
     }
 

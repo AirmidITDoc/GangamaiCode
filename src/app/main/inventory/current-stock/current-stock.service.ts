@@ -7,10 +7,10 @@ import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 })
 export class CurrentStockService {
 
-  userFormGroup: FormGroup;
+  dayWiseForm: FormGroup;
   SearchGroup :FormGroup;
   ItemWiseFrom:FormGroup;
-  PurchaseItem:FormGroup;
+  IssueItem:FormGroup;
   ItemSummeryFrom:FormGroup;
   BatchExpWiseFrom:FormGroup;
 
@@ -18,10 +18,10 @@ export class CurrentStockService {
     public _httpClient: HttpClient,
     private _formBuilder: UntypedFormBuilder
   ) { 
-    this.userFormGroup = this.createUserForm();
+    this.dayWiseForm = this.createUserForm();
     this.SearchGroup= this.createSearchFrom();
     this.ItemWiseFrom = this.createItemWiseFrom();
-    this.PurchaseItem=this.PurchaseItemWiseFrom();
+    this.IssueItem=this.PurchaseItemWiseFrom();
     this.ItemSummeryFrom =this.createItemSummeryFrom();
     this.BatchExpWiseFrom =this.createBatchExpwiseFrom();
   }
@@ -29,7 +29,6 @@ export class CurrentStockService {
   createSearchFrom() {
     return this._formBuilder.group({
       start: [(new Date()).toISOString()],
-      Onlystart: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
       StoreId:'2',
       ItemCategory:'',
@@ -40,25 +39,25 @@ export class CurrentStockService {
   createUserForm() {
     return this._formBuilder.group({
       start: [(new Date()).toISOString()],
-      StoreId:'',
+      StoreId:'2',
       ItemCategory:'',
       
     });
   }
   createItemWiseFrom(){
     return this._formBuilder.group({
-      start1: [(new Date()).toISOString()],
-      end1: [(new Date()).toISOString()],
-      StoreId:'',
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+      StoreId:'2',
       ItemCategory:'',
     })
   }
  
   PurchaseItemWiseFrom(){
     return this._formBuilder.group({
-      start1: [(new Date()).toISOString()],
-      end1: [(new Date()).toISOString()],
-      StoreId:'',
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+      StoreId:'2',
       ItemCategory:'',
     })
   }
