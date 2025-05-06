@@ -31,6 +31,7 @@ export class NewCityComponent implements OnInit {
 
     ngOnInit(): void {
         this.cityForm = this._CityMasterService.createCityForm();
+    this.cityForm.markAllAsTouched();
         if ((this.data?.cityId??0) > 0) {
             this.isActive=this.data.isActive
             this.cityForm.patchValue(this.data);

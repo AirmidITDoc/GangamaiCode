@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Injectable()
 export class CityMasterService {
@@ -8,7 +9,8 @@ export class CityMasterService {
     myformSearch: FormGroup;
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: UntypedFormBuilder
+        private _formBuilder: UntypedFormBuilder,
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myform = this.createCityForm();
         this.myformSearch = this.createSearchForm();
@@ -20,11 +22,12 @@ export class CityMasterService {
             cityName: ["",
                 [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ] 
             ],
             stateId: ["", 
-                Validators.required
+                [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
             isActive:[true,[Validators.required]]
         });
