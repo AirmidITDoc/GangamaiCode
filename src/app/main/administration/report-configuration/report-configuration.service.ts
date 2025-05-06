@@ -3,7 +3,7 @@ import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class ReportConfigurationService {
     myformSearch: FormGroup;
@@ -12,99 +12,99 @@ export class ReportConfigurationService {
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder
-    )  {
-            this.myformSearch = this.createSearchForm();
-            this.myform = this.createForm();
-        }
-    
+    ) {
+        this.myformSearch = this.createSearchForm();
+        this.myform = this.createForm();
+    }
+
 
     createForm(): FormGroup {
         return this._formBuilder.group({
-            reportId:[0],
+            reportId: [0],
             menuId: [1],
-            reportSection:["",
+            reportSection: ["",
                 [
-                    Validators.required, 
+                    Validators.required,
                     Validators.maxLength(500),
                     Validators.pattern("^[A-Za-z @#&]+$") //include space 
                 ]
             ],
-            reportName:["",
+            reportName: ["",
                 [
-                    Validators.required, 
+                    Validators.required,
                     Validators.maxLength(500),
                     Validators.pattern("^[A-Za-z @#&]+$")
                 ]
             ],
-            parentid:["",
+            parentid: ["",
                 [
                     Validators.required,
                     Validators.maxLength(10),
                     Validators.pattern('^[0-9]*$')
                 ]
             ],
-            reportMode:["",
+            reportMode: ["",
                 [
-                    Validators.required, 
+                    Validators.required,
                     Validators.maxLength(500),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            reportTitle:["",
+            reportTitle: ["",
                 [
-                    Validators.required, 
+                    Validators.required,
                     Validators.maxLength(500),
                     Validators.pattern("^[A-Za-z @#&]+$")
                 ]
             ],
-            reportHeader:["",
+            reportHeader: ["",
                 [
-                    Validators.required, 
+                    Validators.required,
                     // Validators.maxLength(2000),
                 ]
             ],
-            reportColumn:["",
+            reportColumn: ["",
                 [
-                    Validators.required, 
+                    Validators.required,
                 ]
             ],
 
-            reportTotalField:[""],
-            reportGroupByLabel:["",
+            reportTotalField: [""],
+            reportGroupByLabel: ["",
             ],
-            reportHeaderFile:["",
+            reportHeaderFile: ["",
                 [
-                    Validators.required, 
+                    Validators.required,
                     Validators.maxLength(500),
                     Validators.pattern("^[A-Za-z .,@$&]+$") //.html
                 ]
             ],
-            reportBodyFile:["", 
+            reportBodyFile: ["",
                 [
-                    Validators.required, 
+                    Validators.required,
                     Validators.maxLength(500),
                 ]
             ],
-            reportFolderName:["",
+            reportFolderName: ["",
                 [
-                    Validators.required, 
+                    Validators.required,
                     Validators.maxLength(500),
                 ]
             ],
-            reportFileName:["",
+            reportFileName: ["",
                 [
-                    Validators.required, 
+                    Validators.required,
                     Validators.maxLength(500),
                 ]
             ],
-            reportSpname:["",
+            reportSpname: ["",
                 [
-                    Validators.required, 
+                    Validators.required,
                     Validators.maxLength(500),
                 ]
             ],
-            reportPageOrientation:["",[Validators.required]],
-            reportPageSize:["",[Validators.required]],
+            reportPageOrientation: ["", [Validators.required]],
+            reportPageSize: ["", [Validators.required]],
             // isActive:[true,[Validators.required]],
             reportFilter: ["",
                 [
@@ -125,12 +125,11 @@ export class ReportConfigurationService {
         this.createForm();
     }
 
-     //insert update of Report Configuration
+    //insert update of Report Configuration
     public insertReportConfig(Param: any) {
-        
         if (Param.reportId) {
             return this._httpClient.PutData("ReportConfig/" + Param.reportId, Param);
-        } else return this._httpClient.PostData("ReportConfig",Param);
+        } else return this._httpClient.PostData("ReportConfig", Param);
     }
 
     public deactivateTheStatus(m_data) {

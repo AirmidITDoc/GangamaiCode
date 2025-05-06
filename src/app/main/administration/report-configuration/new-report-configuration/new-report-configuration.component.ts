@@ -44,7 +44,7 @@ export class NewReportConfigurationComponent implements OnInit{
         {
             console.log("Report-Config JSON :-", this.myform.value);
             this._ReportConfigurationService.insertReportConfig(this.myform.value).subscribe((data) => {
-          console.log(data)
+                console.log(data)
                 this.toastr.success(data.message);
                 this.onClear(true);
             }, (error) => {
