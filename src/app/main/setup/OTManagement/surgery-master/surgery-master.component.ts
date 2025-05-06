@@ -5,18 +5,17 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
-import { OttablemasterService } from './ottablemaster.service';
-import { NewOTTablemasterComponent } from './new-ottablemaster/new-ottablemaster.component';
-
+import { SurgeryMasterService } from './surgery-master.service';
+import { NewSurgeryMasterComponent } from './new-surgery-master/new-surgery-master.component';
 
 @Component({
-  selector: 'app-ottablemaster',
-  templateUrl: './ottablemaster.component.html',
-  styleUrls: ['./ottablemaster.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-      animations: fuseAnimations,
+  selector: 'app-surgery-master',
+  templateUrl: './surgery-master.component.html',
+  styleUrls: ['./surgery-master.component.scss'],
+   encapsulation: ViewEncapsulation.None,
+          animations: fuseAnimations,
 })
-export class OTTablemasterComponent implements OnInit{
+export class SurgeryMasterComponent implements OnInit {
 msg: any;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
@@ -35,7 +34,7 @@ msg: any;
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this._OttablemasterService.deactivateTheStatus(data.villageId).subscribe((response: any) => {
+                            this._SurgeryMasterService.deactivateTheStatus(data.villageId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
@@ -43,16 +42,16 @@ msg: any;
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "tableName",
+        sortField: "search facility",
         sortOrder: 0,
         filters: [
-            { fieldName: "TableName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "surgeryName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     }
 
     constructor(
-        public _OttablemasterService: OttablemasterService,
+        public _SurgeryMasterService: SurgeryMasterService,
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 
@@ -63,7 +62,7 @@ msg: any;
         buttonElement.blur(); // Remove focus from the button
 
         let that = this;
-        const dialogRef = this._matDialog.open(NewOTTablemasterComponent,
+        const dialogRef = this._matDialog.open(NewSurgeryMasterComponent,
             {
                 maxWidth: "50vw",
                 maxHeight: '50%',

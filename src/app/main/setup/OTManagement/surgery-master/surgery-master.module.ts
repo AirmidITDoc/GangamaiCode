@@ -24,48 +24,46 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { NotificationServiceService } from "app/core/notification-service.service"; 
 import { MatDialogModule } from "@angular/material/dialog";
 import { SharedModule } from "app/main/shared/shared.module"; 
-import { OTTablemasterComponent } from "./ottablemaster.component";
-import { NewOTTablemasterComponent } from './new-ottablemaster/new-ottablemaster.component';
+import { SurgeryMasterComponent } from "./surgery-master.component";
+import { NewSurgeryMasterComponent } from './new-surgery-master/new-surgery-master.component';
 
 
 const routes: Routes = [
     {
         path: "**",
-        component: OTTablemasterComponent,
+        component: SurgeryMasterComponent,
     },
 ];
 
 @NgModule({
-    declarations: [
-      OTTablemasterComponent,
-      NewOTTablemasterComponent],
-    imports: [
-        RouterModule.forChild(routes),
-        SharedModule,
-        MatDialogModule,
-        MatButtonModule,
-        MatCheckboxModule,
-        MatDatepickerModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatMenuModule,
-        MatRippleModule,
-        MatTableModule,
-        MatToolbarModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatSelectModule,
-        MatRadioModule,
-        MatSnackBarModule,
-        FuseSharedModule,
-        FuseConfirmDialogModule,
-        FuseSidebarModule,
-        CommonModule,
-        MatExpansionModule,
-        MatCardModule,
-        MatSlideToggleModule,
-    ],
-    providers: [DatePipe]
-})  
-export class OTTablemasterModule { }
+  declarations: [SurgeryMasterComponent,NewSurgeryMasterComponent],
+ imports: [
+    RouterModule.forChild(routes),
+    SharedModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatMenuModule,
+    MatRippleModule,
+    MatTableModule,
+    MatToolbarModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatSnackBarModule,
+    FuseSharedModule,
+    FuseConfirmDialogModule,
+    FuseSidebarModule,
+    CommonModule,
+    MatExpansionModule,
+    MatCardModule,
+    MatSlideToggleModule,
+  ],
+  providers: [DatePipe]
+})
+export class SurgeryMasterModule {}
