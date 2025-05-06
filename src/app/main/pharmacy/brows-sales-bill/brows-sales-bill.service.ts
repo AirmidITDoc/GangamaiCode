@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,15 +11,18 @@ export class BrowsSalesBillService {
 
   userForm: FormGroup;
   formReturn: FormGroup;
+  SalesPatientForm: FormGroup;
 
 
   constructor(
     public _httpClient: HttpClient,
     private _formBuilder: UntypedFormBuilder,
     private _loaderService: LoaderService,
+    private _loggedService: AuthenticationService
   ) {
     this.userForm = this.SearchFilter();
     this.formReturn = this.SearchFilterReturn();
+    this.SalesPatientForm = this.SearchFilterReturn();
   }
 
   SearchFilter(): FormGroup {
@@ -26,11 +30,11 @@ export class BrowsSalesBillService {
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
       RegNo: '',
-      F_Name: '',
-      L_Name: '',
+      F_Name: ['', [ Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
+      L_Name: ['', [ Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
       SalesNo: '',
       OP_IP_Type: ['3'],
-      StoreId: '',
+      StoreId: [this._loggedService.currentUserValue.user.storeId],
       IPNo: '',
       UserId:'',
       PaymentMode:''
@@ -42,16 +46,27 @@ export class BrowsSalesBillService {
       startdate1: [(new Date()).toISOString()],
       enddate1: [(new Date()).toISOString()],
       RegNo: '',
-      F_Name: '',
-      L_Name: '',
+      F_Name: ['', [ Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
+      L_Name: ['', [ Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
       SalesNo: '',
       OP_IP_Types: ['3'],
-      StoreId: ''
+      StoreId: [this._loggedService.currentUserValue.user.storeId]
 
     })
   }
 
-
+  filterForm(): FormGroup {
+    return this._formBuilder.group({
+      RegNo: '',
+      fromDate: [],
+      enddate: [], 
+      IPDNo: '',
+      F_Name:['', [ Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
+      M_Name:['', [ Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
+      L_Name:['', [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]], 
+      IsDischarge:[0],  
+    });
+  }
 
 
   public getStoreFromList() {

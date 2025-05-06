@@ -102,10 +102,8 @@ export class SalesService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty",Param);
   }
   // ItemMaster/GetItemListForSalesBatchPop?StoreId=2&ItemId=0
-  public getBatchList(Param){
-    debugger
-    return this._httpClient1.GetData("ItemMaster/GetItemListForSalesBatchPop?StoreId="+Param.StoreId+"&ItemId="+Param.ItemId);
-
+  public getBatchList(Param){ 
+    return this._httpClient1.GetData("ItemMaster/GetItemListForSalesBatchPop?StoreId="+Param.StoreId+"&ItemId="+Param.ItemId); 
   }
   public getConcessionCombo()
   {
