@@ -6,7 +6,6 @@ import { OTManagementServiceService } from '../../ot-management-service.service'
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { NotificationServiceService } from 'app/core/notification-service.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { map, startWith, takeUntil } from 'rxjs/operators';
@@ -111,7 +110,7 @@ export class NewRequestComponent implements OnInit {
     public _OtManagementService: OTManagementServiceService,
     private formBuilder: UntypedFormBuilder,
     private accountService: AuthenticationService,
-    // public notification: NotificationServiceService,
+    // public notification: NotificationService,
     public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NewRequestComponent>,

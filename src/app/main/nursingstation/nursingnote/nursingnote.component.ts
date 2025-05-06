@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { NursingnoteService } from './nursingnote.service';
-import { NotificationServiceService } from 'app/core/notification-service.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';

@@ -3,7 +3,7 @@ import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { NotificationServiceService } from 'app/core/notification-service.service';
+import { NotificationService } from 'app/core/notification.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 // import { AdmissionPersonlModel } from 'app/main/ipd/admission/admission.model';
 // import { AdmissionService } from 'app/main/ipd/admission/admission.service';
@@ -42,7 +42,7 @@ export class SmsEmailTemplateComponent implements OnInit {
     // public _BrowseOPDBillsService: OpSearchListService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private accountService: AuthenticationService,
-    public notification: NotificationServiceService,
+    public notification: NotificationService,
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
     // public dialogRef: MatDialogRef<ListComponent>,

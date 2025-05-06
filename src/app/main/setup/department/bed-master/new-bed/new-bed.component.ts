@@ -29,6 +29,8 @@ export class NewBedComponent implements OnInit {
 
   ngOnInit(): void {
     this.bedForm = this._BedMasterService.createBedForm();
+    this.bedForm.markAllAsTouched();
+
     if((this.data?.bedId??0) > 0)
     {
         this.isActive=this.data.isActive;

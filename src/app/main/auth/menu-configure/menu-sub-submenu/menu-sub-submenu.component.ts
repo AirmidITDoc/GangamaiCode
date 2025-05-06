@@ -3,9 +3,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { NotificationServiceService } from 'app/core/notification-service.service';
 import { MenuConfigureService } from '../menu-configure.service';
 import { Sub_SubMenuMaster } from '../menu.model';
+import { NotificationService } from 'app/core/notification.service';
 
 @Component({
   selector: 'app-menu-sub-submenu',
@@ -39,7 +39,7 @@ export class MenuSubSubmenuComponent implements OnInit {
   dataSource = new MatTableDataSource<Sub_SubMenuMaster>();
   
   constructor(public _MenuService: MenuConfigureService,
-    public notification:NotificationServiceService) { }
+    public notification:NotificationService) { }
 
   ngOnInit(): void {
     this._MenuService.initializeFormMenuSub_SubMenuMaster();

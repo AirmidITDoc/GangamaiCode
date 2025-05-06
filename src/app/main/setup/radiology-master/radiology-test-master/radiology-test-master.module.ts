@@ -12,7 +12,6 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatRadioModule } from "@angular/material/radio";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
-import { NotificationServiceService } from "app/core/notification-service.service";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { RadiologyTestMasterComponent } from "./radiology-test-master.component";
 import { RadiologyTestMasterService } from "./radiology-test-master.service";

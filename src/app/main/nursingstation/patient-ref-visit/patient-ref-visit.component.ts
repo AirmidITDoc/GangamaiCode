@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { NotificationServiceService } from 'app/core/notification-service.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { PatientrefvisitService } from './patientrefvisit.service';
@@ -95,7 +94,7 @@ export class PatientRefVisitComponent implements OnInit {
     public _NursingStationService:PatientrefvisitService,
     public _AdmissionService:AdmissionService,
     private accountService: AuthenticationService,
-    // public notification:NotificationServiceService,
+    // public notification:NotificationService,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,public toastr: ToastrService,

@@ -35,10 +35,10 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { MrdService } from './mrd.service';
-import { NotificationServiceService } from 'app/core/notification-service.service';
 import { MatBadgeModule } from '@angular/material/badge';
 import { SharedModule } from '../shared/shared.module';
 import { NewCertificateComponent } from './certificate/new-certificate/new-certificate.component';
+import { NotificationService } from 'app/core/notification.service';
 
 
 
@@ -103,6 +103,6 @@ const approutes : Routes =[
    providers:[MrdService,
     DatePipe,
     {provide: MatDialogRef, useValue: {}},
-    NotificationServiceService]
+    NotificationService]
 })
 export class MrdModule { }

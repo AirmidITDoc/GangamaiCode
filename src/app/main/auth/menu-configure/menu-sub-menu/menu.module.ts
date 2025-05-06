@@ -17,7 +17,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { MatRadioModule } from '@angular/material/radio';
-// import { NotificationServiceService } from 'app/APIs/notification-service.service';
+// import { NotificationService } from 'app/APIs/notification.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 // import { menuservice } from './menu.service';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -62,7 +62,7 @@ const appRoutes: Routes = [
     ]
     ,providers: [
            MenuConfigureService,
-        // NotificationServiceService
+        // NotificationService
     ],
     entryComponents: [
         MenuSubMenuComponent,

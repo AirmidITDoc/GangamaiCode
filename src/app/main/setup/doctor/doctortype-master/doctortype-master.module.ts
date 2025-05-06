@@ -23,7 +23,7 @@ import { CommonModule, DatePipe } from "@angular/common";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatCardModule } from "@angular/material/card";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
-import { NotificationServiceService } from "app/core/notification-service.service";
+import { NotificationService } from "app/core/notification.service";
 import { DoctortypeMasterService } from "./doctortype-master.service";
 import { NewDoctorTypeComponent } from './new-doctor-type/new-doctor-type.component';
 import { MatDialogModule } from "@angular/material/dialog";

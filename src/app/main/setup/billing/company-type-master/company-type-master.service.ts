@@ -22,7 +22,8 @@ export class CompanyTypeMasterService {
             typeName: ["", 
                 [
                     Validators.required, Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z0-9]+$")
+                   // Validators.pattern("^[A-Za-z0-9]+$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
             isActive:[true,[Validators.required]],

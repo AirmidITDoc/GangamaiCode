@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Injectable({
     providedIn: "root",
@@ -10,7 +11,8 @@ export class TalukaMasterService {
     myformSearch: FormGroup;
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: UntypedFormBuilder
+        private _formBuilder: UntypedFormBuilder,
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myForm = this.createTalukaForm();
         this.myformSearch = this.createSearchForm();
@@ -19,8 +21,12 @@ export class TalukaMasterService {
     createTalukaForm(): FormGroup {
         return this._formBuilder.group({
             talukaId: [0],
-            talukaName: [""],
-            cityId: [""],
+            talukaName: ["",
+               [ Validators.required,
+                Validators.pattern('^[a-zA-Z0-9 ]*$')
+               ]
+            ],
+            cityId: ["",[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             isActive:[true,[Validators.required]]
         });
     }

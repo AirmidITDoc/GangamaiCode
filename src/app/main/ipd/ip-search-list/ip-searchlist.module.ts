@@ -21,8 +21,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
 
-
-import { NotificationServiceService } from 'app/core/notification-service.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -147,7 +145,7 @@ const routes: Routes = [
     providers: [
         IPSearchListService,
         DatePipe
-        // NotificationServiceService
+        // NotificationService
     ]
 })
 export class IPSearchlistModule { }

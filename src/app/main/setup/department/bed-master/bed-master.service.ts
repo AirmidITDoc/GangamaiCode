@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Injectable()
 export class BedMasterService {
@@ -10,7 +11,8 @@ export class BedMasterService {
 
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: UntypedFormBuilder
+        private _formBuilder: UntypedFormBuilder,
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myform = this.createBedForm();
         this.myformSearch = this.createSearchForm();
@@ -22,11 +24,12 @@ export class BedMasterService {
             bedName: ["",
                 [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                   // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
             roomId: ["",
-                Validators.required
+                [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
             isAvailible: true,
             isActive:[true,[Validators.required]]

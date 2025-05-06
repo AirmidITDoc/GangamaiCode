@@ -27,6 +27,9 @@ import { Router } from '@angular/router';
 import { IPSearchListService } from 'app/main/ipd/ip-search-list/ip-search-list.service';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { gridColumnTypes } from 'app/core/models/tableActions';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 
 @Component({
   selector: 'app-brows-sales-bill',
@@ -148,7 +151,66 @@ export class BrowsSalesBillComponent implements OnInit {
     // 'RelativeName',
     'buttons'
   ];
+      autocompletestore: string = "Store";
+      @ViewChild('grid') grid: AirmidTableComponent;
+      @ViewChild('grid1') grid1: AirmidTableComponent;
 
+      @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;  
+      @ViewChild('actionButtonTemplateStatus') actionButtonTemplateStatus!: TemplateRef<any>;
+      @ViewChild('actionButtonTemplateCheck') actionButtonTemplateCheck!: TemplateRef<any>;   
+          ngAfterViewInit() { 
+            this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate; 
+            this.gridConfig.columnsList.find(col => col.key === 'Status')!.template = this.actionButtonTemplateStatus; 
+            // this.gridConfig1.columnsList.find(col => col.key === 'check')!.template = this.actionButtonTemplateCheck;  
+          } 
+     AllColumns= [
+        { heading: "Status", key: "Status", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate},
+      { heading: "Date", key: "grndate", sort: true, align: 'left', emptySign: 'NA',width: 130,},
+      { heading: "GRN No", key: "grnNumber", sort: true, align: 'left', emptySign: 'NA' , width: 100}, 
+      { heading: "Invoice No", key: "invoiceNo", sort: true, align: 'left', emptySign: 'NA',width: 100},
+      { heading: "Supplier Name", key: "supplierName", sort: true, align: 'left', emptySign: 'NA',width: 200},
+      { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA',width: 150, type: gridColumnTypes.amount},
+      { heading: "Disc Amt", key: "totalDiscAmount", sort: true, align: 'left', emptySign: 'NA',width: 140 , type: gridColumnTypes.amount}, 
+      { heading: "GST Amt", key: "totalVatamount", sort: true, align: 'left', emptySign: 'NA',width: 140, type: gridColumnTypes.amount },
+      { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 , type: gridColumnTypes.amount }, 
+      { heading: "Rounding Amt", key: "roundingAmt", sort: true, align: 'left', emptySign: 'NA',width: 140 , type: gridColumnTypes.amount},
+      { heading: "Debit Note", key: "debitNote", sort: true, align: 'left', emptySign: 'NA',width: 130 , type: gridColumnTypes.amount},
+      { heading: "Credit Note", key: "creditNote", sort: true, align: 'left', emptySign: 'NA',width: 130,type: gridColumnTypes.amount },
+      { heading: "Received By", key: "receivedBy", sort: true, align: 'left', emptySign: 'NA',width: 180}, 
+      { heading: "IsClosed", key: "isClosed", sort: true, align: 'left', emptySign: 'NA',width: 100 ,},
+       { heading: "Action", key: "action", align: "right", width: 160, sticky: true, type: gridColumnTypes.template,
+        template: this.actionButtonTemplate  // Assign ng-template to the column
+      }
+    ]  
+
+   gridConfig: gridModel = {
+          apiUrl: "Sales/SalesList",
+          columnsList:this.AllColumns,
+          sortField: "GRNID",
+          sortOrder: 0,
+          filters: [
+              { fieldName: "ToStoreId", fieldValue: "", opType: OperatorComparer.Equals },
+              { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.Equals },
+              { fieldName: "To_Dt", fieldValue: "", opType: OperatorComparer.Equals },
+              { fieldName: "IsVerify", fieldValue: "0", opType: OperatorComparer.Equals },
+              { fieldName: "Supplier_Id", fieldValue: "0", opType: OperatorComparer.Equals } 
+          ], 
+      } 
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
   StoreList: any = [];
   Store1List: any = [];
   hasSelectedContacts: boolean;
@@ -199,7 +261,44 @@ export class BrowsSalesBillComponent implements OnInit {
  
   }
 
+  onChangeFirst(){
 
+  }
+  StoreId:any=0;
+  selectChangeStore(value) {   
+    if(value.value!==0)
+       this.StoreId=value.value
+   else
+   this.StoreId="0" 
+
+   this.onChangeFirst();
+}
+getValidationMessages() {
+  return {
+    RegNo: [
+          // { name: "required", Message: "SupplierId is required" }
+      ],
+      IPDNo: [
+          // { name: "required", Message: "SupplierId is required" }
+      ],
+      F_Name: [
+          // { name: "required", Message: "Item Name is required" }
+      ],
+      M_Name: [
+          // { name: "required", Message: "Batch No is required" }
+      ],
+      L_Name: [
+          // { name: "required", Message: "Invoice No is required" }
+      ],
+      SalesNo: [
+        // { name: "required", Message: "Invoice No is required" }
+    ],
+    StoreId: [
+      // { name: "required", Message: "Invoice No is required" }
+  ]
+      
+  };
+}
   resultsLength = 0;
   // getAdmittedPatientList_1() {
   //   var Param = {

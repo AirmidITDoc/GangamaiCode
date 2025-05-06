@@ -6,7 +6,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { NotificationServiceService } from 'app/core/notification-service.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { PatientwiseMaterialConsumptionService } from './patientwise-material-consumption.service';

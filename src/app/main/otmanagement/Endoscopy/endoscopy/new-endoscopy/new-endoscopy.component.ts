@@ -113,7 +113,7 @@ public dateValue: Date = new Date();
     public _OtManagementService: OTManagementServiceService,
     private formBuilder: UntypedFormBuilder,
     private accountService: AuthenticationService,
-    // public notification: NotificationServiceService,
+    // public notification: NotificationService,
     public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NewEndoscopyComponent>,

@@ -30,7 +30,8 @@ export class NewStateMasterComponent implements OnInit {
 
     ngOnInit(): void {
       this.stateForm = this._StateMasterService.createStateForm();
-      
+      this.stateForm.markAllAsTouched();
+
       console.log(this.data)
       if ((this.data?.stateId??0) > 0) 
       {

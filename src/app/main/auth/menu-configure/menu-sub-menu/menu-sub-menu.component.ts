@@ -4,7 +4,7 @@ import { MenuMaster } from '../menu.model';
 import { ActivatedRoute } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { MenuConfigureService } from '../menu-configure.service';
-import { NotificationServiceService } from 'app/core/notification-service.service';
+import { NotificationService } from 'app/core/notification.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MenuSubSubmenuComponent } from '../menu-sub-submenu/menu-sub-submenu.component';
 import { MatSort } from '@angular/material/sort';
@@ -37,7 +37,7 @@ export class MenuSubMenuComponent implements OnInit {
   
   constructor(private _Activatedroute:ActivatedRoute,
     public _MenuService: MenuConfigureService,
-    public notification:NotificationServiceService,
+    public notification:NotificationService,
     public _matDialog: MatDialog
     ) { 
     this.MenuMasterid=this._Activatedroute.snapshot.paramMap.get("id");

@@ -5,7 +5,6 @@ import { CathLabBookingDetail } from '../cath-lab.component';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { NotificationServiceService } from 'app/core/notification-service.service';
 import { OTManagementServiceService } from 'app/main/otmanagement/ot-management-service.service';
 import { Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -117,7 +116,7 @@ export class NewCathLabComponent implements OnInit {
     public _CathLabService :CathLabService,
     private formBuilder: UntypedFormBuilder,
     private accountService: AuthenticationService,
-    // public notification: NotificationServiceService,
+    // public notification: NotificationService,
     public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NewCathLabComponent>,

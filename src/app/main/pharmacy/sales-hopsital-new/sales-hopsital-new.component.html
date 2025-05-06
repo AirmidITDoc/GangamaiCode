@@ -161,7 +161,7 @@
       <div class="modal-header-content">
         <div class="modal-header-title">
           <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
-            Sales:
+            Sales:  
             <b>{{ StoreName }}</b>
           </span>
         </div>
@@ -207,8 +207,8 @@
                                 formControlName="RegID"
                                 placeholderText="OP-RegNo / First Name / Last Name / Mobile No"
                                 fxFlex
-                                ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName="
-                                (selectionChange)="getSearchListIP($event)"
+                                ApiUrl="Admission/search-patient?Keyword="
+                                (selectionChange)="getSelectedObjOP($event)"
                                 TextField="formattedText"
                                 ValueField="itemId"
                               ></airmid-autocomplete>
@@ -221,11 +221,11 @@
                                 formControlName="RegID"
                                 placeholderText="IP RegNo / First Name / Last Name / Mobile No"
                                 fxFlex
-                                ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName="
-                                (selectionChange)="getSearchListIP($event)"
+                                ApiUrl="Admission/search-patient?Keyword="
+                                (selectionChange)="getSelectedObjRegIP($event)"
                                 TextField="formattedText"
                                 ValueField="itemId"
-                              ></airmid-autocomplete>
+                              ></airmid-autocomplete> 
                             </div>
 
                             <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('PatientType').value == 'External'">
@@ -266,7 +266,7 @@
                                 placeholderText="DoctorName"
                                 fxFlex
                                 ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName="
-                                (selectionChange)="getSearchListIP($event)"
+                                (selectionChange)="onPatientChange($event)"
                                 TextField="formattedText"
                                 ValueField="itemId"
                               ></airmid-autocomplete>
@@ -320,16 +320,23 @@
                                             <span>:</span>
                                             <span class="patient-col-value">Dr.{{ DoctorName }}</span>
                                           </div>
+
+                                          <div class="patient-col">
+                                            <span class="patient-col-key">Ward | Bed Name</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{ WardName }} | {{BedName}}</span>
+                                          </div>
+
                                           <div class="patient-col">
                                             <span class="patient-col-key">Tariff Name</span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{ TariffName }}</span>
                                           </div>
-                                          <div class="patient-col">
+                                          <!-- <div class="patient-col">
                                             <span class="patient-col-key">Company Name</span>
                                             <span>:</span>
                                             <span class="patient-col-value" style="color: #e26d14">{{ CompanyName }}</span>
-                                          </div>
+                                          </div> -->
                                         </div>
                                       </div>
                                     </div>
@@ -347,86 +354,73 @@
               <div class="modal-card-container input-error-hidden">
                 <mat-card>
                   <mat-card-content>
-                    <form [formGroup]="_salesService.IndentSearchGroup">
+                    <form [formGroup]="_salesService.ItemSearchGroup">
                       <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fusePerfectScrollbar>
+                    
                         <div fxFlex="100%" fxFlex.gt-sm="8%">
-                          <airmid-textbox label="Barcode No" formControlName="Barcode" [(ngModel)]="vBarcode" [formGroup]="_salesService.IndentSearchGroup"></airmid-textbox>
+                          <airmid-textbox label="Barcode No" formControlName="Barcode" [(ngModel)]="vBarcode"
+                            [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
+                    
                         <div fxFlex="100%">
-                          <airmid-autocomplete
-                            label="Item Name (enter 2 char)"
-                            [formGroup]="_salesService.IndentSearchGroup"
-                            formControlName="ItemId"
-                            placeholderText="Item Name (enter 2 char)"
-                            fxFlex
-                            ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName="
-                            TextField="itemName"
-                            ValueField="itemId"
-                            (selectionChange)="onItemChange($event)"
-                            #itemid
-                          ></airmid-autocomplete>
+                          <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="_salesService.ItemSearchGroup"
+                            formControlName="ItemId" placeholderText="Item Name (enter 2 char)" fxFlex
+                            ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName=" TextField="itemName" ValueField="itemId"
+                            (selectionChange)="onItemChange($event)" #itemid></airmid-autocomplete>
                           <!-- (selectionChange)="getSelectedObj($event)" -->
                         </div>
-
+                    
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
-                          <airmid-textbox label="Batch No" [(ngModel)]="BatchNo" formControlName="BatchNo" [readonly]="true" [formGroup]="_salesService.IndentSearchGroup"></airmid-textbox>
-                        </div>
-                        <div fxFlex="100%" fxFlex.gt-sm="7%">
-                          <airmid-textbox
-                            label="Qty"
-                            [(ngModel)]="Qty"
-                            formControlName="Qty"
-                            #qty
-                            type="number"
-                            (valueChange)="calculateTotalAmt()"
-                            [formGroup]="_salesService.IndentSearchGroup"
-                          ></airmid-textbox>
-                        </div>
-                        <div fxFlex="100%" fxFlex.gt-sm="7%">
-                          <airmid-textbox label="MRP" [(ngModel)]="MRP" formControlName="MRP" type="number" [readonly]="true" [formGroup]="_salesService.IndentSearchGroup"></airmid-textbox>
-                        </div>
-                        <div fxFlex="100%" fxFlex.gt-sm="7%">
-                          <airmid-textbox label="Total MRP" [(ngModel)]="TotalMRP" formControlName="TotalMrp" [readonly]="true" [formGroup]="_salesService.IndentSearchGroup"></airmid-textbox>
+                          <airmid-textbox label="Batch No" [(ngModel)]="BatchNo" formControlName="BatchNo" [readonly]="true"
+                            [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
 
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
-                          <airmid-textbox
-                            label="Disc %"
-                            [(ngModel)]="DiscPer"
-                            formControlName="DiscPer"
-                            type="number"
-                            (valueChange)="onEnterdiscper()"
-                            [formGroup]="_salesService.IndentSearchGroup"
-                          ></airmid-textbox>
+                          <airmid-textbox label="Qty" [(ngModel)]="Qty" formControlName="Qty" #qty type="number" min="0"
+                            (valueChange)="calculateTotalAmt()" [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
+                        </div> 
+
+                        <div fxFlex="100%" fxFlex.gt-sm="7%">
+                          <airmid-textbox label="MRP" [(ngModel)]="MRP" formControlName="MRP" type="number" [readonly]="true"
+                            [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
 
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
-                          <airmid-textbox
-                            label="Disc Amt"
-                            [(ngModel)]="DiscAmt"
-                            formControlName="DiscAmt"
-                            type="number"
-                            [disabled]="chkdiscper"
-                            (valueChange)="onEnterdiscAmount()"
-                            [formGroup]="_salesService.IndentSearchGroup"
-                          ></airmid-textbox>
+                          <airmid-textbox label="Total MRP" [(ngModel)]="TotalMRP" formControlName="TotalMrp" [readonly]="true"
+                            [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
+                        </div>
+                    
+                        <div fxFlex="100%" fxFlex.gt-sm="7%">
+                          <airmid-textbox label="Disc %" [(ngModel)]="DiscPer" formControlName="DiscPer" type="number"
+                            (valueChange)="discperCal()" [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
+                        </div>
+                    
+                        <div fxFlex="100%" fxFlex.gt-sm="7%">
+                          <airmid-textbox label="Disc Amt" [(ngModel)]="DiscAmt" formControlName="DiscAmt" type="number"
+                            [disabled]="chkdiscper" (valueChange)="CaldiscAmount()"
+                            [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
+                        </div>
+                    
+                        <div fxFlex="100%" fxFlex.gt-sm="7%">
+                          <airmid-textbox label="Net Amount" [(ngModel)]="NetAmt" formControlName="NetAmt" [readonly]="true"
+                            [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
 
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
-                          <airmid-textbox label="Net Amount" [(ngModel)]="NetAmt" formControlName="NetAmt" [readonly]="true" [formGroup]="_salesService.IndentSearchGroup"></airmid-textbox>
+                          <airmid-textbox label="Margin Amount" [(ngModel)]="v_marginamt" formControlName="MarginAmt" [readonly]="true"
+                            [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
-                        <div fxFlex="100%" fxFlex.gt-sm="7%">
-                          <airmid-textbox label="Margin Amount" [(ngModel)]="v_marginamt" formControlName="MarginAmt" [readonly]="true" [formGroup]="_salesService.IndentSearchGroup"></airmid-textbox>
-                        </div>
-
-                        <!-- [disabled]="!add" --> 
-                        <div matTooltip="Select  name to enable this button!!" [matTooltipDisabled]="!_salesService.IndentSearchGroup.invalid" [matTooltipPosition]="'above'">
-                          <button (click)="OnAddUpdate($event)" class="btn btn-primary btn-with-icon py-8" [disabled]="!this._salesService.IndentSearchGroup.valid"  #addbutton> <!-- [disabled]="!add" -->
+                    
+                        <!-- [disabled]="!add" -->
+                        <div matTooltip="Select  name to enable this button!!" [matTooltipDisabled]="!_salesService.ItemSearchGroup.invalid"
+                          [matTooltipPosition]="'above'">
+                          <button (click)="OnAddUpdate()" class="btn btn-primary btn-with-icon py-8"
+                            [disabled]="!this._salesService.ItemSearchGroup.valid" #addbutton> <!-- [disabled]="!add" -->
                             <span class="btn-icon">
                               <mat-icon>add</mat-icon>
                             </span>
                           </button>
-                          <!-- [disabled]="_salesService.IndentSearchGroup.invalid" -->
+                          <!-- [disabled]="_salesService.ItemSearchGroup.invalid" -->
                         </div>
                       </div>
                     </form>
@@ -461,7 +455,7 @@
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">Qty</mat-header-cell>
                       <mat-cell class="w-100" *matCellDef="let contact" fxShow.gt-sm>
                         <mat-form-field appearance="fill">
-                          <input matInput [(ngModel)]="contact.Qty" type="number" (keyup)="getCellCalculation(contact)" />
+                          <input matInput [(ngModel)]="contact.Qty" type="number" (keyup)="getCellCalculation(contact)" min="0"/>
                         </mat-form-field>
                       </mat-cell>
                     </ng-container>
@@ -481,8 +475,8 @@
                     </ng-container>
 
                     <ng-container matColumnDef="GSTPer">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>GST %</mat-header-cell>
-                      <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">GST %</mat-header-cell>
+                      <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
                       <span>  {{ contact.GSTPer }}</span>
                       </mat-cell>
                     </ng-container>
@@ -498,7 +492,8 @@
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc %</mat-header-cell>
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                         <mat-form-field appearance="fill">
-                          <input matInput [(ngModel)]="contact.DiscPer" type="number" (keyup)="updateCellDiscount(contact)"/>
+                          <input matInput [(ngModel)]="contact.DiscPer" type="number" (keyup)="updateCellDiscount(contact)"
+                          min="0"/>
                         </mat-form-field>
                       </mat-cell>
                     </ng-container>
@@ -663,7 +658,7 @@
                                 ></airmid-textbox>
                               </div>
                               <div class="sales-radio-buttons gap-8" fxLayout="row" fxLayoutAlign="space-between center">
-                                <mat-radio-group aria-label="Select an option" formControlName="CashPay" (change)="onChangePaymentMode($event)">
+                                <mat-radio-group aria-label="Select an option" formControlName="CashPay"  >
                                   <mat-radio-button value="Credit" *ngIf="paymethod">Credit</mat-radio-button>
                                   <mat-radio-button value="CashPay">Cash</mat-radio-button>
                                   <mat-radio-button value="Online">Online</mat-radio-button>

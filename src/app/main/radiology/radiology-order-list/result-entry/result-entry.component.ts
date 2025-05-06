@@ -4,7 +4,7 @@ import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { RadioloyOrderlistService } from '../radioloy-orderlist.service';
-import { NotificationServiceService } from 'app/core/notification-service.service';
+import { NotificationService } from 'app/core/notification.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AdvanceDataStored } from 'app/main/ipd/advance';

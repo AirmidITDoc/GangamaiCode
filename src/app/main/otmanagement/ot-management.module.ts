@@ -33,7 +33,6 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
-import { NotificationServiceService } from 'app/core/notification-service.service';
 import { MatBadgeModule } from '@angular/material/badge';
 import { SharedModule } from '../shared/shared.module';
 import { NewReservationComponent } from './ot-reservation/new-reservation/new-reservation.component';

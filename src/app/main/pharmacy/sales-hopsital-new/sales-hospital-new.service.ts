@@ -1,6 +1,7 @@
   import { HttpClient } from '@angular/common/http';
   import { Injectable } from '@angular/core';
   import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
   
   @Injectable({
     providedIn: 'root'
@@ -8,20 +9,21 @@
   export class SalesHospitalService {
   
     userFormGroup: FormGroup;
-    IndentSearchGroup :FormGroup;
+    ItemSearchGroup :FormGroup;
     PrescriptionFrom:FormGroup;
   
   
     constructor(
       public _httpClient: HttpClient,
-      private _formBuilder: UntypedFormBuilder
+      private _formBuilder: UntypedFormBuilder,
+      public _httpClient1 :ApiCaller
     ) { 
       this.userFormGroup = this.IndentID();
-      this.IndentSearchGroup= this.IndentSearchFrom();
+      this.ItemSearchGroup= this.ItemSearchFrom();
       this.PrescriptionFrom = this.CreatePrescriptionFrom();
     }
   
-    IndentSearchFrom() {
+    ItemSearchFrom() {
       return this._formBuilder.group({
         Barcode:'',
         StoreId: '',
@@ -31,7 +33,7 @@
         BatchExpDate:'',
         BalanceQty:'',
         UnitMRP:'',
-        Qty: [0, [Validators.pattern("^^[1-9]+[0-9]*$")] ],
+        Qty: [1, [Validators.pattern("^-?[0-9]\\d*(\\.\\d{1,2})?$")] ],
         IssQty:'',
         Bal:'',
         StoreName:'',
@@ -77,8 +79,9 @@
     public getIndentID(Param){
       return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Indent_by_ID",Param);
     }
-  
-  
+    public getstoreDetails(Param){
+      return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode="+ Param);
+    } 
     public getIndentList(Param){
       return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IndentItemList",Param);
     }
