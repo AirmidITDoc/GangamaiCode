@@ -21,7 +21,6 @@ import { CommonModule, DatePipe } from "@angular/common";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatCardModule } from "@angular/material/card";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
-import { NotificationServiceService } from "app/core/notification-service.service"; 
 import { MatDialogModule } from "@angular/material/dialog";
 import { SharedModule } from "app/main/shared/shared.module"; 
 import { CategoryMasterComponent } from "./category-master.component";

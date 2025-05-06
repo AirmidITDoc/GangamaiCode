@@ -32,7 +32,7 @@ export class StockManagementComponent implements OnInit {
 
   constructor(public _StockmangeService: StockManagementService,
     private accountService: AuthenticationService,
-    // public notification: NotificationServiceService,
+    // public notification: NotificationService,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
     private formBuilder: FormBuilder,

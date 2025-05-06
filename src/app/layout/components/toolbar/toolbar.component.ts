@@ -13,12 +13,12 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { NotificationServiceService } from 'app/core/notification-service.service';
 // import { MatPaginatorModule } from '@angular/material/paginator';
 // import { ProfieComponent } from '../../../main/administration/profie/profie.component';
 // import { ChangePasswordComponent } from '../../../main/administration/change-password/change-password.component';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { ChangePasswordComponent } from "app/main/administration/create-user/change-password/change-password.component";
+import { NotificationService } from "app/core/notification.service";
 // import { CreateUserComponent } from "app/main/administration/create-user/create-user.component";
 // import { UserDetailsComponent } from "app/main/administration/user-details/user-details.component";
 // import { MyprofileComponent } from "app/main/administration/myprofile/myprofile.component";
@@ -42,23 +42,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     currentDate: Date = new Date();
 
     // Demo notification array
-    notifications = [
-        {
-            title: 'New Task Assigned',
-            message: 'You have been assigned a new task',
-            time: '2 minutes ago',
-        },
-        {
-            title: 'System Alert',
-            message: 'System maintenance scheduled for tomorrow',
-            time: '1 hour ago',
-        },
-        {
-            title: 'Meeting Reminder',
-            message: 'Team meeting in 30 minutes',
-            time: '2 hours ago',
-        },
-    ];
+    notifications = [];
+    unreadCount=0;
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -76,7 +61,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         private _translateService: TranslateService,
         private accountService: AuthenticationService,
         private router: Router,
-        public _matDialog: MatDialog,
+        public _matDialog: MatDialog, public _notificationService: NotificationService
     ) {
         // Set the defaults
         this.userStatusOptions = [
@@ -154,6 +139,10 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
         this.user = this.accountService.currentUserValue;
         this.accountService.currentUser.subscribe((x) => (this.user = x));
+        this._notificationService.getNotifications().subscribe((data)=>{
+            this.notifications=data.list;
+            this.unreadCount=data.count;
+        });
     }
 
     logout() {
@@ -243,16 +232,16 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     //     });
     //   }
 
-      addchangePassword() {
+    addchangePassword() {
         const dialogRef = this._matDialog.open(ChangePasswordComponent,
-          {
-            maxWidth: "50vw",
-            maxHeight: "60vh", 
-          });
+            {
+                maxWidth: "50vw",
+                maxHeight: "60vh",
+            });
         dialogRef.afterClosed().subscribe(result => {
 
         });
-      }
+    }
 
     Changepassword() {
         const dialogRef = this._matDialog.open(ChangePasswordComponent,

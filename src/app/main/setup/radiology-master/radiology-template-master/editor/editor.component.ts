@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { NotificationServiceService } from 'app/core/notification-service.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { RadiologyTemplateMasterService } from '../radiology-template-master.service';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { NotificationService } from 'app/core/notification.service';
 
 @Component({
   selector: 'app-editor',
@@ -53,7 +53,7 @@ export class EditorComponent implements OnInit {
   constructor(
     public _radiologytemplateService: RadiologyTemplateMasterService,
     private accountService: AuthenticationService,
-    public notification: NotificationServiceService,
+    public notification: NotificationService,
     private advanceDataStored: AdvanceDataStored,
     public dialogRef: MatDialogRef<EditorComponent>,
   ) { }

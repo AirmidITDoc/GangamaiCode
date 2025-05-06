@@ -26,7 +26,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule, Routes } from '@angular/router';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
-import { NotificationServiceService } from 'app/core/notification-service.service';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { EditorComponent } from './editor/editor.component';
 

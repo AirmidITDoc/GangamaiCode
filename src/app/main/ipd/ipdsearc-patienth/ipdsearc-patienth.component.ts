@@ -11,8 +11,6 @@ import { EditAdmissionComponent } from '../Admission/admission/edit-admission/ed
 import { fuseAnimations } from '@fuse/animations';
 import { AdmissionService } from '../Admission/admission/admission.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { NotificationServiceService } from 'app/core/notification-service.service';
-import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
 
 import Swal from 'sweetalert2';
 import { AdmissionPersonlModel, RegInsert } from '../Admission/admission/admission.component';

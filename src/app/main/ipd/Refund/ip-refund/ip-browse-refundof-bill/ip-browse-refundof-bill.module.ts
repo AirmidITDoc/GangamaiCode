@@ -20,7 +20,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
-import { NotificationServiceService } from 'app/core/notification-service.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { IPBrowseRefundofBillComponent } from './ip-browse-refundof-bill.component';
 import { IPBrowseRefundofBillService } from './ip-browse-refundof-bill.service';
@@ -68,7 +67,7 @@ const routes: Routes = [
     ],
     providers: [
         IPBrowseRefundofBillService,
-        // NotificationServiceService,
+        // NotificationService,
         DatePipe
     ]
 })

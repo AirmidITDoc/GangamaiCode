@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe} from '@angular/common';
-import { NotificationServiceService } from 'app/core/notification-service.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -44,6 +43,7 @@ import { PathTemplateViewComponent } from './path-template-view/path-template-vi
 import { SharedModule } from 'app/main/shared/shared.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { NotificationService } from 'app/core/notification.service';
 
 
 const routes: Routes = [
@@ -111,7 +111,7 @@ const routes: Routes = [
         //  HtmlEditorService,
         //  TableService,
         DatePipe,
-        NotificationServiceService,
+        NotificationService,
     ]
 })
 export class ResultEntryModule { }

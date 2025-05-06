@@ -3,7 +3,6 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { NotificationServiceService } from 'app/core/notification-service.service';
 //import { BrowseOpdRefundListComponent } from './browse-opd-refund-list/browse-opd-refund-list.component';
 //import { BrowseOpdRefundSidebarComponent } from './browse-opd-refund-sidebar/browse-opd-refund-sidebar.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -110,7 +109,7 @@ const routes: Routes = [
     ],
     providers: [
         CasepaperService,
-        // NotificationServiceService ,
+        // NotificationService ,
         DatePipe
     ],
      exports: [

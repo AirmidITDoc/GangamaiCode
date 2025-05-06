@@ -5,7 +5,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
-import { NotificationServiceService } from "app/core/notification-service.service";
+import { NotificationService } from "app/core/notification.service";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { DoctorMasterService } from "./doctor-master.service";
 import { NewDoctorComponent } from "./new-doctor/new-doctor.component";

@@ -23,9 +23,9 @@ import { MenuMasterComponent } from './menu-master/menu-master.component';
 import { MenuConfigureComponent } from './menu-configure.component';
 import { MenuConfigureService } from './menu-configure.service';
 import { MatCardModule } from '@angular/material/card';
-import { NotificationServiceService } from 'app/core/notification-service.service';
 import { MenuSubSubmenuComponent } from './menu-sub-submenu/menu-sub-submenu.component';
 import { MenuMainComponent } from './menu-main/menu-main.component';
+import { NotificationService } from 'app/core/notification.service';
 
 const appRoutes: Routes = [
     {
@@ -76,7 +76,7 @@ const appRoutes: Routes = [
     ]
     ,providers: [
         MenuConfigureService,
-        NotificationServiceService
+        NotificationService
     ],
     entryComponents: [
         MenuMainComponent,

@@ -21,7 +21,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 
 import { MatChipsModule } from '@angular/material/chips';
-import { NotificationServiceService } from 'app/core/notification-service.service';
+import { NotificationService } from 'app/core/notification.service';
 import { MatProgressSpinnerModule, MatSpinner } from '@angular/material/progress-spinner';
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -114,7 +114,7 @@ import { NRefundComponent } from './nrefund/nrefund.component';
 providers: [
   IPSearchListService,
     DatePipe
-    // NotificationServiceService
+    // NotificationService
 ]
 })
 export class IpdModule { }

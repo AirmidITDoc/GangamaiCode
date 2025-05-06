@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { NotificationServiceService } from 'app/core/notification-service.service';
+import { NotificationService } from 'app/core/notification.service';
 import { RouterModule, Routes } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -85,7 +85,7 @@ const routes: Routes = [
     providers: [
         SampleCollectionService,
         DatePipe,
-        NotificationServiceService,
+        NotificationService,
     ]
 })
 export class SampleCollectionModule { }

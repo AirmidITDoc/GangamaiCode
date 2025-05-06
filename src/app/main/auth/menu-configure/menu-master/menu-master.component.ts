@@ -5,9 +5,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
-import { NotificationServiceService } from 'app/core/notification-service.service';
 import { MenuConfigureService } from '../menu-configure.service';
 import { MenuMaster } from '../menu.model';
+import { NotificationService } from 'app/core/notification.service';
 
 @Component({
   selector: 'app-menu-master',
@@ -37,7 +37,7 @@ export class MenuMasterComponent implements OnInit {
   dataSource = new MatTableDataSource<MenuMaster>();
   constructor(public _MenuService: MenuConfigureService, public _matDialog: MatDialog,
     private router: Router,
-    public notification: NotificationServiceService
+    public notification: NotificationService
     ) { }
 
   ngOnInit(): void {
