@@ -66,8 +66,7 @@ export class SalesHospitalNewComponent implements OnInit {
   @ViewChild('addbutton') addbutton: ElementRef;
 
   // Form Groups
-  ItemSubform: FormGroup;
-  patientDetailsFormGrp: FormGroup;
+  ItemSubform: FormGroup; 
 
   // Data Sources
   dsIndentList = new MatTableDataSource<IndentList>();
@@ -136,31 +135,18 @@ export class SalesHospitalNewComponent implements OnInit {
   v_marginamt: any = 0;
   TotalMarginAmt: any = 0;
 
-  // Payment Related
-  paidamt: number;
+  // Payment Related 
   balanceamt: number = 0;
   BalAmount: any = 0;
   v_PaidbyPatient: any = 0;
   v_PaidbacktoPatient: any = 0;
-  roundoffAmt: any;
-  paidAmt: number;
-  balanceAmt: number = 0;
+  roundoffAmt: any;  
   TotalCreditAmt: any = 0;
   TotalAdvanceAmt: any = 0;
   TotalBalanceAmt: any = 0;
   netPayAmt: number = 0;
   isPaymentSuccess: boolean = false;
-  nowDate: Date;
-  amount1: any;
-  amount2: any;
-  amount3: any;
-  amount4: any;
-  amount5: any;
-  selectedPaymnet1: string = '';
-  selectedPaymnet2: string = '';
-  selectedPaymnet3: string = '';
-  selectedPaymnet4: string = '';
-  selectedPaymnet5: string = '';
+  nowDate: Date;  
   PatientHeaderObj: any;
   data: any;
 
@@ -179,8 +165,7 @@ export class SalesHospitalNewComponent implements OnInit {
   isPatienttypeDisabled: boolean = true;
   chkdiscper: boolean = true;
   stockidflag: boolean = true;
-  deleteflag: boolean = true;
-  isPaymentSelected: boolean = false;
+  deleteflag: boolean = true; 
   Creditflag: boolean = false;
   IsCreditflag: boolean = false;
   drafttable: boolean = false;
@@ -242,25 +227,10 @@ export class SalesHospitalNewComponent implements OnInit {
   vSalesDetails: Printsal[] = [];
   vSalesIdList: any = [];
   screenFromString = 'payment-form';
-  vextAddress: any = '';
-  paymentRowObj = {
-    cash: false,
-    cheque: false,
-    card: false,
-    upi: false,
-    neft: false,
-  };
+  vextAddress: any = ''; 
 
   // Lists
-  ConcessionReasonList: any = [];
-  paymentArr1: any[] = [];
-  paymentArr2: any[] = [];
-  paymentArr3: any[] = [];
-  paymentArr4: any[] = [];
-  paymentArr5: any[] = [];
-  BankNameList2: any = [];
-  BankNameList3: any = [];
-  BankNameList4: any = [];
+  ConcessionReasonList: any = []; 
 
   // Print Related
   reportPrintObj: Printsal;
@@ -318,14 +288,10 @@ export class SalesHospitalNewComponent implements OnInit {
     this.PatientHeaderObj = this.data;
   }
 
-  ngOnInit(): void {
-    this.BindPaymentTypes(); 
+  ngOnInit(): void { 
     this.getItemSubform();
     this.getConcessionReasonList();
-    this.getStoredet();
-    this.selectedPaymnet1 = this.paymentArr1[0]?.value;
-    this.amount1 = this.FinalNetAmount;
-    this.paidAmt = 0;
+    this.getStoredet();  
     this.getDraftorderList();
 
     if (this.vPharExtOpt == true) {
@@ -352,6 +318,7 @@ export class SalesHospitalNewComponent implements OnInit {
       this.vCondition = true;
     }
   }
+
 
   RegNo: any;
   WardName:any;
@@ -807,23 +774,7 @@ getStoredet(){
 
  
  
-
-  secondAddEnable() {
-    return parseInt(this.amount1.toString()) + parseInt(this.amount2.toString()) < this.netPayAmt ? true : false;
-  }
-
-  thirdAddEnable() {
-    return parseInt(this.amount1.toString()) + parseInt(this.amount2.toString()) + parseInt(this.amount3.toString()) < this.netPayAmt ? true : false;
-  }
-
-  fourthAddEnable() {
-    if (parseInt(this.amount1.toString()) + parseInt(this.amount2.toString()) + parseInt(this.amount3.toString()) + parseInt(this.amount4.toString()) < this.netPayAmt) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
+ 
   getItemSubform() {
     this.ItemSubform = this.formBuilder.group({
       PatientName: '',
@@ -1381,8 +1332,7 @@ getStoredet(){
             this.Itemchargeslist = [];
             this._matDialog.closeAll();
             this.ItemFormreset();
-            this.isLoading123 = false;
-            // this.patientDetailsFormGrp.reset();
+            this.isLoading123 = false; 
             this.ItemSubform.reset();
             this.Formreset();
             this.ItemSubform.get('ConcessionId').reset();
@@ -1600,8 +1550,7 @@ getStoredet(){
             }
           );
 
-          this.ItemFormreset();
-          this.patientDetailsFormGrp.reset();
+          this.ItemFormreset(); 
           this.Formreset();
           this.ItemSubform.get('ConcessionId').reset();
           this.saleSelectedDatasource.data = [];
@@ -2267,8 +2216,7 @@ getStoredet(){
       }
     );
 
-    this.ItemFormreset();
-    this.patientDetailsFormGrp.reset();
+    this.ItemFormreset(); 
     this.Formreset();
     this.ItemSubform.get('ConcessionId').reset();
     this.PatientName = '';
@@ -2351,8 +2299,7 @@ getStoredet(){
 
   onClose() {
     this.Itemchargeslist = [];
-    this.ItemFormreset();
-    // this.patientDetailsFormGrp.reset();
+    this.ItemFormreset(); 
     this.ItemSubform.reset();
     this.Formreset();
     this.ItemSubform.get('ConcessionId').reset();
@@ -2690,17 +2637,6 @@ getStoredet(){
     };
   }
 
-
-  // Methods
-  BindPaymentTypes() {
-    this.opService.getPaymentModes().subscribe((data) => {
-      this.paymentArr1 = data;
-      this.paymentArr2 = data;
-      this.paymentArr3 = data;
-      this.paymentArr4 = data;
-      this.paymentArr5 = data;
-    });
-  }
 
   keyPressAlphanumeric(event) {
     // ... existing code ...

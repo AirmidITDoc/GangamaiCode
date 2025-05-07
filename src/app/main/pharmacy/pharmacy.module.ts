@@ -5,7 +5,8 @@ import { RouterModule, Routes } from '@angular/router';
 const appRoutes: Routes = [
     {
     path: "sales",
-    loadChildren: () => import("./sales/sales.module").then((m) =>m.SalesModule),
+    loadChildren :() =>import("./sales-hopsital-new/sales-hopsital-new.module").then ((m)=>m.SalesHospitalNewModule),
+
   },
   {
     path: "browsesalesbill",
@@ -38,7 +39,9 @@ const appRoutes: Routes = [
   },
   {
     path:"saleshospital", 
-    loadChildren :() =>import("./sales-hopsital-new/sales-hopsital-new.module").then ((m)=>m.SalesHospitalNewModule),
+    loadChildren: () => import("./sales/sales.module").then((m) =>m.SalesModule),
+
+   // loadChildren :() =>import("./sales-hopsital-new/sales-hopsital-new.module").then ((m)=>m.SalesHospitalNewModule),
   },
   {
     path:"issuetracker",
