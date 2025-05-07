@@ -53,7 +53,8 @@
       <ng-container matColumnDef="Action" sticky="end">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">Action</mat-header-cell>
         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
-          <button mat-icon-button matTooltip="Add Service" (dblclick)="AddList(contact)">
+          <button mat-icon-button matTooltip="Add Service" (dblclick)="AddList(contact)"
+          *ngIf="!contact.isStatus">
             <mat-icon color="warn">add</mat-icon>
           </button>
         </mat-cell>
@@ -68,7 +69,9 @@
       </ng-container>
 
       <mat-header-row class="accent" *matHeaderRowDef="NurReqColumns; sticky: true"></mat-header-row>
-      <mat-row *matRowDef="let contact; columns: NurReqColumns" [ngClass]="{'red-row': contact.IsStatus == 1}" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+      <mat-row *matRowDef="let contact; columns: NurReqColumns"
+       [ngClass]="{'red-row': contact.isStatus == true}"
+        [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
       <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{ hide: dataSource1 != null }"></mat-footer-row>
       <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{ hide: !(dataSource1 != null && dataSource1.data.length == 0) }"></mat-footer-row>
     </mat-table>

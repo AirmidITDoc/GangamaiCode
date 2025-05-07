@@ -286,55 +286,123 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     date = new FormControl(new Date());
     minDate = new Date();
     maxDate = new Date(2024, 4, 1);
+    followUpDate: string;
+    NxtMonths:any=3;
     calculateLastDay() {
-        const inputDate = this.userFormGroup.get("ExpDate").value;
-        
-        // Reset values if input is empty
-        if (!inputDate) {
-            this.vlastDay = '';
-            this.lastDay2 = '';
-            return;
-        }
+        const inputDate = this.userFormGroup.get("ExpDate").value; 
+        // // Reset values if input is empty
+        // if (!inputDate) {
+        //     this.vlastDay = '';
+        //     this.lastDay2 = '';
+        //     return;
+        // } 
+        // // If input is already in DD/MM/YYYY format, just update the variables
+        // if (inputDate.length === 10 && inputDate.includes('/')) {
+        //     const [day, month, year] = inputDate.split('/');
+        //     this.vlastDay = inputDate;
+        //     this.lastDay2 = `${year}/${month}/${day}`;
+        //     return;
+        // } 
+        // // Handle MMYYYY format
+        // if (inputDate.length === 6) {
+        //     // Check if input contains only numbers
+        //     if (!/^\d+$/.test(inputDate)) {
+        //         this.resetDateAndShowError('Please enter only numbers in MMYYYY format');
+        //         return;
+        //     } 
+        //     const month = +inputDate.substring(0, 2);
+        //     const year = +inputDate.substring(2, 6); 
+        //     // Validate month range
+        //     if (month < 1 || month > 12) {
+        //         this.resetDateAndShowError('Invalid month. Month should be between 01 and 12');
+        //         return;
+        //     }
 
-        // If input is already in DD/MM/YYYY format, just update the variables
-        if (inputDate.length === 10 && inputDate.includes('/')) {
-            const [day, month, year] = inputDate.split('/');
-            this.vlastDay = inputDate;
-            this.lastDay2 = `${year}/${month}/${day}`;
-            return;
-        }
+        //     // Validate year (assuming reasonable year range)
+        //     if (year < 1900) {
+        //         this.resetDateAndShowError('Invalid year. Please enter a valid year');
+        //         return;
+        //     }
 
-        // Handle MMYYYY format
-        if (inputDate.length === 6) {
-            // Check if input contains only numbers
-            if (!/^\d+$/.test(inputDate)) {
-                this.resetDateAndShowError('Please enter only numbers in MMYYYY format');
-                return;
-            }
-
+        //     // Calculate last day of the month
+        //     const lastDay = this.getLastDayOfMonth(month, year);
+        //     this.vlastDay = `${this.pad(lastDay)}/${this.pad(month)}/${year}`;
+        //     this.lastDay2 = `${year}/${this.pad(month)}/${this.pad(lastDay)}`;
+        //     this.userFormGroup.get('ExpDate').setValue(this.vlastDay);
+        // } else {
+        //     this.resetDateAndShowError('Please enter date in MMYYYY format');
+        // } 
+    
+            const Months = 3
+            const CurrentDate = new Date(); 
+            const Currentmonths = new Date(); 
+            const currentMonth = Currentmonths.getMonth();
+            console.log(currentMonth)
+            const currentYear = CurrentDate.getFullYear();
+            console.log(currentYear)  
+           let  NxtMonths = ((currentMonth) + (Months));  
+    
+           const NextExpiryDate = new Date();
+           NextExpiryDate.setMonth((CurrentDate.getMonth()) + parseInt(this.NxtMonths));
+            const newNextDate  = this.datePipe.transform(NextExpiryDate , 'dd/MM/YYYY') 
+    
+        if (inputDate && inputDate.length === 6) {
             const month = +inputDate.substring(0, 2);
             const year = +inputDate.substring(2, 6);
+            if (year <= currentYear) {
+                if (month <= currentMonth) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "This item is already expired",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    this.userFormGroup.get("ExpDate").setValue('')
+                    
+                } else {
+                    if (month >= 1 && month <= 12) {
+                        const lastDay = this.getLastDayOfMonth(month, year);
+                        this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
+                        this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
+                        const newuserDate = this.datePipe.transform(this.lastDay2, 'dd/MM/YYYY')
+                        console.log(newuserDate)
+                        console.log(newNextDate)
+                        console.log(this.vlastDay)
+                        console.log(lastDay)
+                        this.userFormGroup.get("ExpDate").setValue(this.vlastDay)
+                        const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+                        if (QtyElement) {
+                            QtyElement.focus();
+                        }
 
-            // Validate month range
-            if (month < 1 || month > 12) {
-                this.resetDateAndShowError('Invalid month. Month should be between 01 and 12');
-                return;
+                    } else {
+                        this.vlastDay = 'Invalid month';
+                    }
+                }
+            } else {
+
+                if (month >= 1 && month <= 12) {
+                    const lastDay = this.getLastDayOfMonth(month, year);
+                    this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
+                    this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
+                    console.log(this.vlastDay)
+                    console.log(lastDay)
+                    this.userFormGroup.get("ExpDate").setValue(this.vlastDay)
+                    const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+                    if (QtyElement) {
+                        QtyElement.focus();
+                    }
+                } else {
+                    this.vlastDay = 'Invalid month';
+                }
             }
-
-            // Validate year (assuming reasonable year range)
-            if (year < 1900) {
-                this.resetDateAndShowError('Invalid year. Please enter a valid year');
-                return;
-            }
-
-            // Calculate last day of the month
-            const lastDay = this.getLastDayOfMonth(month, year);
-            this.vlastDay = `${this.pad(lastDay)}/${this.pad(month)}/${year}`;
-            this.lastDay2 = `${year}/${this.pad(month)}/${this.pad(lastDay)}`;
-            this.userFormGroup.get('ExpDate').setValue(this.vlastDay);
         } else {
-            this.resetDateAndShowError('Please enter date in MMYYYY format');
-        }
+            const ExpDateElement = document.querySelector(`[name='ExpDate']`) as HTMLElement;
+                    if (ExpDateElement) {
+                        ExpDateElement.focus();
+                    }
+        } 
+    
     }
 
     private resetDateAndShowError(message: string): void {
@@ -355,23 +423,66 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     //Table Exp Date change
     lastDay1: any;
     CellcalculateLastDay(contact: ItemNameList, inputDate: string) {
+        // if (inputDate && inputDate.length === 6) {
+        //     const month = +inputDate.substring(0, 2);
+        //     const year = +inputDate.substring(2, 6);
+
+        //     if (month >= 1 && month <= 12) {
+        //         const lastDay1 = this.getLastDayOfMonth(month, year);
+        //         this.lastDay1 = `${lastDay1}/${this.pad(month)}/${year}`;
+        //         this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`;
+        //         //console.log(this.lastDay2)
+        //         contact.ExpDate = this.lastDay1;
+        //     } else {
+        //         this.vlastDay = '';
+        //         this.newGRNService.showToast('Invalid month in Expiry Date. Use format MMYYYY', ToastType.WARNING);
+        //     }
+        // } else {
+        //     this.vlastDay = '';
+        // }
+
+        
+        const CurrentDate = new Date(); 
+        const Currentmonths = new Date(); 
+        const currentMonth = Currentmonths.getMonth(); 
+        const currentYear = CurrentDate.getFullYear();  
+
         if (inputDate && inputDate.length === 6) {
             const month = +inputDate.substring(0, 2);
             const year = +inputDate.substring(2, 6);
-
-            if (month >= 1 && month <= 12) {
-                const lastDay1 = this.getLastDayOfMonth(month, year);
-                this.lastDay1 = `${lastDay1}/${this.pad(month)}/${year}`;
-                this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`;
-                //console.log(this.lastDay2)
-                contact.ExpDate = this.lastDay1;
-            } else {
-                this.vlastDay = '';
-                this.newGRNService.showToast('Invalid month in Expiry Date. Use format MMYYYY', ToastType.WARNING);
+            if (year <= currentYear) {
+                if (month <= currentMonth) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "This item is already expired",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    contact.ExpDate = '';  
+                } else {
+                    if (month >= 1 && month <= 12) {
+                        const lastDay = this.getLastDayOfMonth(month, year);
+                        this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
+                        this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
+                        const newuserDate = this.datePipe.transform(this.lastDay2, 'dd/MM/YYYY')  
+                        contact.ExpDate = this.vlastDay; 
+                    } else {
+                        this.vlastDay = '';
+                    }
+                }
+            } else { 
+                if (month >= 1 && month <= 12) {
+                    const lastDay = this.getLastDayOfMonth(month, year);
+                    this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
+                    this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`; 
+                    contact.ExpDate = this.vlastDay; 
+                } else {
+                    this.vlastDay = '';
+                }
             }
         } else {
             this.vlastDay = '';
-        }
+        } 
     } 
  //Add item list
     onAddGRNItem() {
