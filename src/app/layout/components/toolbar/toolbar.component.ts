@@ -19,6 +19,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { ChangePasswordComponent } from "app/main/administration/create-user/change-password/change-password.component";
 import { NotificationService } from "app/core/notification.service";
+import { SignalRService } from "app/core/services/signalr.service";
 // import { CreateUserComponent } from "app/main/administration/create-user/create-user.component";
 // import { UserDetailsComponent } from "app/main/administration/user-details/user-details.component";
 // import { MyprofileComponent } from "app/main/administration/myprofile/myprofile.component";
@@ -43,7 +44,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
     // Demo notification array
     notifications = [];
-    unreadCount=0;
+    unreadCount = 0;
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -60,7 +61,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         private _fuseSidebarService: FuseSidebarService,
         private _translateService: TranslateService,
         private accountService: AuthenticationService,
-        private router: Router,
+        private router: Router, private signalRService: SignalRService,
         public _matDialog: MatDialog, public _notificationService: NotificationService
     ) {
         // Set the defaults
@@ -122,6 +123,13 @@ export class ToolbarComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
+        this.signalRService.addReceiveMessageListener((data, user) => {
+            debugger
+            if (JSON.parse(localStorage.getItem("currentUser")).userId == user) {
+                this.notifications.unshift({ notiTitle: data.NotiTitle, notiBody: data.NotiBody, id: data.Id, createdDate: data.CreatedDate });
+                this.unreadCount++;
+            }
+        });
         // Subscribe to the config changes
         this._fuseConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
@@ -139,9 +147,9 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
         this.user = this.accountService.currentUserValue;
         this.accountService.currentUser.subscribe((x) => (this.user = x));
-        this._notificationService.getNotifications().subscribe((data)=>{
-            this.notifications=data.list;
-            this.unreadCount=data.count;
+        this._notificationService.getNotifications().subscribe((data) => {
+            this.notifications = data.list;
+            this.unreadCount = data.count;
         });
     }
 
