@@ -24,6 +24,7 @@ export class NewInstructionMasterComponent implements OnInit {
 
     ngOnInit(): void {
         this.instructionForm=this._InstructionMasterService.createInstructionForm();
+        this.instructionForm.markAllAsTouched();
         if((this.data?.instructionId??0) > 0)
             {
             this.isActive=this.data.isActive

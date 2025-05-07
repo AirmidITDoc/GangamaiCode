@@ -18,27 +18,22 @@ export class RadiologyTemplateFormComponent implements OnInit {
     vTemplateDesc:any;
     vTemplateName:any;
     isActive:boolean=true;
-    // editorConfig: AngularEditorConfig = {
-    //     editable: true,
-    //     spellcheck: true,
-    //     height: '20rem',
-    //     minHeight: '20rem',
-    //     translate: 'yes',
-    //     placeholder: 'Enter text here...',
-    //     enableToolbar: true,
-    //     showToolbar: true,
-    // };
     editorConfig: AngularEditorConfig = {
         editable: true,
         spellcheck: true,
-        height: '24rem',
-        minHeight: '24rem',
+        height: '20rem',
+        minHeight: '20rem',
         translate: 'yes',
         placeholder: 'Enter text here...',
         enableToolbar: true,
         showToolbar: true,
+    
       };
-
+             
+    onBlur(e: any) {
+        this.vTemplateDesc = e.target.innerHTML;
+        throw new Error('Method not implemented.');
+    }
 
   constructor(
       public _TemplateServieService: RadiologyTemplateMasterService,
@@ -59,9 +54,11 @@ export class RadiologyTemplateFormComponent implements OnInit {
 
     ngOnInit(): void {
         this.templateForm = this._TemplateServieService.createRadiologytemplateForm();
+        this.templateForm.markAllAsTouched();
         if((this.data?.templateId??0) > 0)
         {
             this.isActive = this.data.isActive
+            this.vTemplateDesc=this.data.templateDesc;
             this.templateForm.patchValue(this.data);
         }
     }
@@ -105,10 +102,6 @@ export class RadiologyTemplateFormComponent implements OnInit {
         this.dialogRef.close();
     }
     
-    onBlur(e: any) {
-        this.vTemplateDesc = e.target.innerHTML;
-    }
-
     onClear(val: boolean) {
         this.templateForm.reset();
         this.dialogRef.close(val);

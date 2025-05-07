@@ -27,6 +27,8 @@ export class NewCategoryComponent implements OnInit {
  
   ngOnInit(): void {
       this.categoryForm = this._CategorymasterService.createCategorymasterForm();
+      this.categoryForm.markAllAsTouched();
+
       if((this.data?.categoryId??0) > 0)
         {
         this.isActive=this.data.isActive

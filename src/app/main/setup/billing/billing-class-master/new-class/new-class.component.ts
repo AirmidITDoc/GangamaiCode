@@ -26,6 +26,7 @@ export class NewClassComponent implements OnInit {
  
   ngOnInit(): void {
       this.classForm = this._BillingClassMasterService.createClassForm();
+      this.classForm.markAllAsTouched();
       if((this.data?.classId??0) > 0)
         {
             this.isActive=this.data.isActive

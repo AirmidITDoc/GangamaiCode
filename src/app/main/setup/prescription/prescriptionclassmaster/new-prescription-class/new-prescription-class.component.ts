@@ -26,6 +26,8 @@ export class NewPrescriptionClassComponent implements OnInit {
 
   ngOnInit(): void {
     this.prescriptionForm=this._PrescriptionclassService.createPrescriptionclassForm();
+    this.prescriptionForm.markAllAsTouched();
+
     if((this.data?.classId??0) > 0)
     {
         this.isActive=this.data.isActive

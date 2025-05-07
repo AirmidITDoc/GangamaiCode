@@ -28,14 +28,16 @@ export class StoreMasterService {
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z ]*$")
+                    //Validators.pattern("^[A-Za-z ]*$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
             storeName: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z ]*$")
+                  //  Validators.pattern("^[A-Za-z ]*$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
             indentPrefix: ["",

@@ -23,6 +23,7 @@ export class NewLocationComponent implements OnInit {
 
     ngOnInit(): void {
         this.locationForm = this._LocationMasterService.createLocationForm();
+        this.locationForm.markAllAsTouched();
         if((this.data?.locationId??0) > 0)
         {
             this.isActive=this.data.isActive

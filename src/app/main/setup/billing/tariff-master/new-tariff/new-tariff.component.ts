@@ -26,6 +26,7 @@ export class NewTariffComponent implements OnInit {
 
     ngOnInit(): void {
         this.tariffForm=this._TariffMasterService.createTariffForm();
+        this.tariffForm.markAllAsTouched();
         if((this.data?.tariffId??0) > 0){
             this.isActive=this.data.isActive
             this.tariffForm.patchValue(this.data);

@@ -30,7 +30,7 @@
                                                 <airmid-textbox 
                                                     label="TemplateName" 
                                                     formControlName="certificateName" 
-                                                    [value]="data?.certificateName"
+                                                    [(ngModel)]="vcertificateName"
                                                     [formGroup]="templateForm"
                                                     [validations]="getValidationMessages().certificateName"
                                                     [maxLength]="50">
