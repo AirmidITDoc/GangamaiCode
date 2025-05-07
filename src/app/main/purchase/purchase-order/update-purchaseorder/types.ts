@@ -58,6 +58,9 @@ export interface PurchaseFormModel {
   IGSTPer: [''],
   IGSTAmount: [''],
 
+  CGST: [''],
+  SGST: [''],
+  IGST: [''],
   // Final Amount
   NetAmount: number;
 
