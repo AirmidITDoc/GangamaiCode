@@ -30,13 +30,15 @@ export class ManufactureMasterService {
             manufName: ["",
                 [
                     Validators.required,Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z @#&]+$")
+                    //Validators.pattern("^[A-Za-z @#&]+$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
             manufShortName: ["",
                 [
                     Validators.required,Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z @#&]+$")
+                   // Validators.pattern("^[A-Za-z @#&]+$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
             isDeleted: false,

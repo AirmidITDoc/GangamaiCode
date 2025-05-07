@@ -45,6 +45,7 @@ export class NewCertificateComponent implements OnInit {
 
     ngOnInit(): void {
         this.templateForm = this._CertificateserviceService.createRadiologytemplateForm();
+        this.templateForm.markAllAsTouched();
         if((this.data?.templateId??0) > 0)
         {
             this.isActive = this.data.isActive

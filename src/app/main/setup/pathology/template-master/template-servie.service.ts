@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
@@ -19,7 +19,10 @@ export class TemplateServieService {
 
    createSearchForm():FormGroup{
     return this._formBuilder.group({
-      TemplateNameSearch: [""],
+      TemplateNameSearch: ["",
+         [ Validators.required,
+         Validators.pattern('^[a-zA-Z0-9 ]*$')],
+      ],
         IsDeletedSearch: ["2"],
     });
 }

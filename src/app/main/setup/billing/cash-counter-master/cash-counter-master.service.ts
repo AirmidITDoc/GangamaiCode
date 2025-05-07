@@ -13,7 +13,7 @@ export class CashCounterMasterService {
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
-         private _FormvalidationserviceService: FormvalidationserviceService
+    
     ) {
         this.myform = this.createcashcounterForm();
         this.myformSearch = this.createSearchForm();
@@ -30,18 +30,19 @@ export class CashCounterMasterService {
                 ]
             ],
             prefix: ["",
-                // [
-                //     Validators.required, Validators.maxLength(50),
-                //     Validators.pattern("^[A-Za-z0-9]+$")
-                // ]
-                [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
+                [
+                    Validators.required, Validators.maxLength(50),
+                   // Validators.pattern("^[A-Za-z0-9]+$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                ]
             ],
             billNo: ["", 
-                // [
-                //     Validators.required, 
-                //     Validators.pattern("^[0-9]*$")
-                // ]
-                [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
+                [
+                    Validators.required, 
+                  //  Validators.pattern("^[0-9]*$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                ]
+    
             ],
             isActive:[true,[Validators.required]]
         });

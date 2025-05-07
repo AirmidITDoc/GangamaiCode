@@ -24,6 +24,7 @@ export class NewCurrencyComponent implements OnInit {
 
     ngOnInit(): void {
       this.currencyForm = this._CurrencymasterService.createCurrencyForm();
+      this.currencyForm.markAllAsTouched();
       if((this.data?.currencyId??0) > 0)
         {
         this.isActive=this.data.isActive

@@ -49,6 +49,7 @@ export class TemplateFormComponent implements OnInit {
 
     ngOnInit(): void {
         this.templateForm = this.createTemplateForm();
+        this.templateForm.markAllAsTouched();
 
         console.log(this.data)
         if (this.data) {

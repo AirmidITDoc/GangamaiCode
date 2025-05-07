@@ -65,11 +65,11 @@ export class NewVillageComponent implements OnInit {
         getValidationMessages() {
             return {
                 talukaName: [
-                    { name: "required", Message: "City Name is required" }
+                    { name: "required", Message: "Taluka Name is required" }
                 ],
                 villageName: [
-                    { name: "required", Message: "Taluka Name is required" },
-                    { name: "maxlength", Message: "Taluka Name should not be greater than 50 char." },
+                    { name: "required", Message: "village Name is required" },
+                    { name: "maxlength", Message: "village Name should not be greater than 50 char." },
                     { name: "pattern", Message: "Only char allowed." }
                 ]
             };
