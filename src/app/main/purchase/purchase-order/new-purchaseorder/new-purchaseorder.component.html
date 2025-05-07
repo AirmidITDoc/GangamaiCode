@@ -117,7 +117,7 @@
                                             <!-- (keyup)="OnchekPurchaserateValidation()" -->
                                         <airmid-textbox fxFlex="6%" label="Rate" formControlName="Rate" [(ngModel)]="vRate"
                                             [formGroup]="userFormGroup" placeholder="Rate" type="number" [min]="0"
-                                            (valueChange)="calculateTotalamt()"
+                                            (valueChange)="OnchekPurchaserateValidation()"
                                             [validations]="getValidationMessages().rate"></airmid-textbox>
 
                                         <airmid-textbox fxFlex="5%" label="Total Amount" formControlName="TotalAmount" 

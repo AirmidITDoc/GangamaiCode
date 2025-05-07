@@ -680,10 +680,10 @@ export class NewPurchaseorderComponent {
         this.vRate = 0
       } else { this.calculateTotalamt(); }
 
-      // } else if (this.vDefRate == 0) {
-      //   if (this.userFormGroup.get("Rate").value) {
-      //     this.calculateTotalamt();
-      //   }
+    } else if (this.vDefRate == 0) {
+      if (this.userFormGroup.get("Rate").value) {
+        this.calculateTotalamt();
+      }
     }
   }
 
@@ -845,36 +845,36 @@ export class NewPurchaseorderComponent {
 
   calculateTotalamt() {
     // if (this.vDefRate == 0) {
-      this.validateFormValues();
-      const form = this.userFormGroup;
-      const qty = +form.get('Qty').value || 0;
-      const rate = +form.get('Rate').value || 0;
+    this.validateFormValues();
+    const form = this.userFormGroup;
+    const qty = +form.get('Qty').value || 0;
+    const rate = +form.get('Rate').value || 0;
 
-      let totalAmount = 0;
-      let netAmount = 0;
+    let totalAmount = 0;
+    let netAmount = 0;
 
-      if (qty > 0 && rate > 0) {
-        totalAmount = rate * qty;
-        netAmount = totalAmount;
-        form.patchValue({
-          TotalAmount: totalAmount,
-          NetAmount: netAmount,
-        });
-      } else {
-        form.patchValue({
-          TotalAmount: 0,
-          DiscAmount: 0,
-          DiscAmount2: 0,
-          CGSTAmount: 0,
-          SGSTAmount: 0,
-          IGSTAmount: 0,
-          GSTAmount: 0,
-          NetAmount: 0,
+    if (qty > 0 && rate > 0) {
+      totalAmount = rate * qty;
+      netAmount = totalAmount;
+      form.patchValue({
+        TotalAmount: totalAmount,
+        NetAmount: netAmount,
+      });
+    } else {
+      form.patchValue({
+        TotalAmount: 0,
+        DiscAmount: 0,
+        DiscAmount2: 0,
+        CGSTAmount: 0,
+        SGSTAmount: 0,
+        IGSTAmount: 0,
+        GSTAmount: 0,
+        NetAmount: 0,
 
-        });
-      }
-      this.calculateDiscountAmount();
-      this.calculateGSTType();
+      });
+    }
+    this.calculateDiscountAmount();
+    this.calculateGSTType();
     // }
     // else {
     //   if (this.vDefRate > 0) {

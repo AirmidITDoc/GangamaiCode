@@ -486,7 +486,7 @@ export class ItemNameList {
       this.handlingCharges= ItemNameList.handlingCharges || 0;
       this.octriAmount= ItemNameList.octriAmount || 0;
       this.worrenty= ItemNameList.worrenty || 0;
-      this.remarks= ItemNameList.remarks || 0;
+      this.remarks= ItemNameList.remarks || "";
 
     }
   }
