@@ -12,11 +12,11 @@
 
     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
         <div fxLayout="row" fxLayoutGap="12px">
-            <airmid-textbox label="Age (Y)" appearance="outline" fxFlex="30%" *ngIf="dateStyle=='Year'" [(value)]="ageYear" [formGroup]="formGroup" [maxLength]="2" (keyup)="CalcDOB('Year',$event)">
+            <airmid-textbox label="Age (Y)" appearance="outline" fxFlex="30%" *ngIf="dateStyle=='Year'" [(value)]="ageYear" [formGroup]="formGroup" [maxLength]="2" (keyup)="CalcDOB('Year',$event)" type="number">
             </airmid-textbox>
-            <airmid-textbox label="Age (M)" appearance="outline" fxFlex="30%" *ngIf="dateStyle=='Month'" [value]="ageMonth" [formGroup]="formGroup" [maxLength]="2" (keyup)="CalcDOB('Month',$event)">
+            <airmid-textbox label="Age (M)" appearance="outline" fxFlex="30%" *ngIf="dateStyle=='Month'" [value]="ageMonth" [formGroup]="formGroup" [maxLength]="2" (keyup)="CalcDOB('Month',$event)" type="number">
             </airmid-textbox>
-            <airmid-textbox label="Age (D)" appearance="outline" fxFlex="30%" *ngIf="dateStyle=='Day'" [value]="ageDay" [formGroup]="formGroup" [maxLength]="2" (keyup)="CalcDOB('Day',$event)">
+            <airmid-textbox label="Age (D)" appearance="outline" fxFlex="30%" *ngIf="dateStyle=='Day'" [value]="ageDay" [formGroup]="formGroup" [maxLength]="2" (keyup)="CalcDOB('Day',$event)" type="number">
             </airmid-textbox>
             <mat-form-field appearance="outline" fxFlex="100%">
                 <input matInput [matDatepicker]="validFromPicker" formControllName="DateOfBirth" #bday [value]="value" [disabled]="dateStyle!='Date'" (dateChange)="onChangeDateofBirth($event.value)" placeholder="mm/dd/yyyy">

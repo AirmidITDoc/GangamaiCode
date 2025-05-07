@@ -54,7 +54,7 @@ export class AirmidTextboxComponent implements
     @Output() valueChange = new EventEmitter<string>();
     @Input() formGroup: FormGroup;
     @Input() formControlName: string;
-    @Input() maxLength: number = 50;
+    @Input() maxLength: number = 200;
     @Input() validations: [] = [];
     @Input() label: string = "";
     @Input() type: string = "text";
