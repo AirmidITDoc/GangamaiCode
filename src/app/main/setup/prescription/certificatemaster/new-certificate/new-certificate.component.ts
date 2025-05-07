@@ -17,6 +17,7 @@ export class NewCertificateComponent implements OnInit {
     templateForm: FormGroup;
     vTemplateDesc:any;
     vTemplateName:any;
+    vcertificateName:any;
     isActive:boolean=true;
     editorConfig: AngularEditorConfig = {
             editable: true,
@@ -45,9 +46,11 @@ export class NewCertificateComponent implements OnInit {
 
     ngOnInit(): void {
         this.templateForm = this._CertificateserviceService.createRadiologytemplateForm();
-        if((this.data?.templateId??0) > 0)
+        if((this.data?.certificateId??0) > 0)
         {
             this.isActive = this.data.isActive
+            this.vTemplateDesc=this.data.certificateDesc
+            this.vcertificateName=this.data.certificateName
             this.templateForm.patchValue(this.data);
         }
     }

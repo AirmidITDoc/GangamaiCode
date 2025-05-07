@@ -18,6 +18,7 @@ import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { MatDialogRef } from "@angular/material/dialog";
 import { ToastrService } from "ngx-toastr";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { FormGroup } from "@angular/forms";
 
 @Component({
     selector: "app-doctor-master",
@@ -27,73 +28,77 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class DoctorMasterComponent implements OnInit {
+        myformSearch: FormGroup;
+    
+    f_name:any = "" 
+    l_name:any="" 
+    active:any="2"
+    isCon:any="1"
+    isRef:any="0"
+
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+
+    allColumns=[
+        { heading: "Code", key: "doctorId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Prefix", key: "prefixName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "FirstName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "MiddleName", key: "middleName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA', width: 200,type:6 },
+        { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Pin", key: "pin", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Phone", key: "phone", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Mobile", key: "mobile", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Education", key: "education", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsConsultant", key: "isConsultant", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsRefDoc", key: "isRefDoc", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Doctor Type", key: "doctorTypeName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
+        { heading: "Age Year", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Age Month", key: "ageMonth", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Age Day", key: "ageDay", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PassportNo", key: "passportNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Esino", key: "esino", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Reg Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA',width: 150, type:6},
+        { heading: "Mah RegNo", key: "mahRegNo", type: gridColumnTypes.status, align: "center" },
+        { heading: "Mah RegDate ", key: "mahRegDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type:6 },
+        { heading: "RefDocHospitalName", key: "refDocHospitalName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsInHouseDoctor", key: "isInHouseDoctor", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsOnCallDoctor", key: "isOnCallDoctor", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Pan CardNo", key: "panCardNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Aadhar CardNo", key: "aadharCardNo", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                    this.onEdit(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._doctorService.deactivateTheStatus(data.doctorId).subscribe((response: any) => {
+                            this.toastr.success(response.message);
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+
+    allFilters=[
+        { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "FlagActive", fieldValue: this.active, opType: OperatorComparer.Equals },
+        { fieldName: "ConsultantDoc_All", fieldValue: this.isCon, opType: OperatorComparer.Equals },
+        { fieldName: "ReferDoc_All", fieldValue: this.isRef, opType: OperatorComparer.Equals }
+    ]
     gridConfig: gridModel = {
-        apiUrl: "DoctoreMaster/List",
-        columnsList: [
-            { heading: "Code", key: "doctorId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Prefix", key: "prefixName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "FirstName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "MiddleName", key: "middleName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA', width: 200,type:6 },
-            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Pin", key: "pin", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Phone", key: "phone", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Mobile", key: "mobile", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Education", key: "education", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsConsultant", key: "isConsultant", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsRefDoc", key: "isRefDoc", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Doctor Type", key: "doctorTypeName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
-            { heading: "Age Year", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Age Month", key: "ageMonth", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Age Day", key: "ageDay", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "PassportNo", key: "passportNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Esino", key: "esino", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Reg Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA',width: 150, type:6},
-            { heading: "Mah RegNo", key: "mahRegNo", type: gridColumnTypes.status, align: "center" },
-            { heading: "Mah RegDate ", key: "mahRegDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type:6 },
-            { heading: "RefDocHospitalName", key: "refDocHospitalName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsInHouseDoctor", key: "isInHouseDoctor", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsOnCallDoctor", key: "isOnCallDoctor", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Pan CardNo", key: "panCardNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Aadhar CardNo", key: "aadharCardNo", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                        this.onEdit(data);
-                            // let that = this;
-                            // const dialogRef = this._matDialog.open(NewDoctorComponent,
-                            //     {
-                            //         maxWidth: "95vw",
-                            //         height: '95%',
-                            //         width: '70%',
-                            //         data: { doctorId: data.doctorId }
-                            //     });
-                            // dialogRef.afterClosed().subscribe(result => {
-                            //     that.grid.bindGridData();
-                            // });
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._doctorService.deactivateTheStatus(data.doctorId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "doctorId",
+        apiUrl: "Doctor/DoctorList",
+        columnsList: this.allColumns,
+        sortField: "DoctorId",
         sortOrder: 0,
-        filters: [
-            { fieldName: "FirstName", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
+        filters: this.allFilters
     }
 
     constructor(
@@ -105,13 +110,53 @@ export class DoctorMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-
+        this.myformSearch=this._doctorService.createSearchForm();
     }
     
     onClear() {
         this._doctorService.myform.reset({ IsDeleted: "false" });
         this._doctorService.initializeFormGroup();
     }
+
+    onChangeFirst() {
+        debugger
+            this.f_name = this.myformSearch.get('firstName').value + "%"
+            this.l_name = this.myformSearch.get('lastName').value + "%"
+            this.active = this.myformSearch.get('FlagActive').value 
+            this.isCon = this.myformSearch.get('IsConsultant').value 
+            this.isRef = this.myformSearch.get('IsRef').value 
+            this.getfilterdata();
+        }
+    
+    getfilterdata(){
+        debugger
+        this.gridConfig = {
+            apiUrl: "Doctor/DoctorList",
+            columnsList:this.allColumns , 
+            sortField: "DoctorId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "F_Name", fieldValue:this.f_name, opType: OperatorComparer.Contains },
+                { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+                { fieldName: "FlagActive", fieldValue: this.active, opType: OperatorComparer.Equals },
+                { fieldName: "ConsultantDoc_All", fieldValue: this.isCon, opType: OperatorComparer.Equals },
+                { fieldName: "ReferDoc_All", fieldValue: this.isRef, opType: OperatorComparer.Equals }
+            ]
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData(); 
+    }
+      
+    
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'firstName')
+            this.myformSearch.get('firstName').setValue("")
+        else
+            if (event == 'lastName')
+                this.myformSearch.get('lastName').setValue("")
+        this.onChangeFirst();
+      }
 
     onSearch() {
 

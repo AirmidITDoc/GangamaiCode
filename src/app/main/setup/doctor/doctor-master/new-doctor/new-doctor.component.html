@@ -204,6 +204,7 @@
                                     </div>
                 
                                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Reg date</mat-label>
                                             <input name="regDate" matInput [matDatepicker]="picker1" formControlName="regDate"
@@ -307,10 +308,10 @@
                             <form [formGroup]="myForm">
                                 <div class="sales-radio-buttons gap-2" fxLayout="row">
                                     <mat-slide-toggle name="isConsultant" formControlName="isConsultant"
-                                        [(ngModel)]="registerObj.isConsultant">
+                                        [(ngModel)]="visConsultant">
                                         IsConsultant
                                     </mat-slide-toggle>
-                                    <mat-slide-toggle name="isRefDoc" formControlName="isRefDoc" [(ngModel)]="registerObj.isRefDoc">
+                                    <mat-slide-toggle name="isRefDoc" formControlName="isRefDoc" [(ngModel)]="visRefDoc">
                                         IsRefDoctor
                                     </mat-slide-toggle>
                                     <mat-checkbox aria-label="Is Active" formControlName="isActive" (checked)=true

@@ -14,8 +14,8 @@ export class DoctorMasterService {
         private _formBuilder: UntypedFormBuilder,
         private _FormvalidationserviceService: FormvalidationserviceService
     ) {
-        // this.myform = this.createdDoctormasterForm();
-        // this.myformSearch = this.createSearchForm();
+        this.myform = this.createdDoctormasterForm();
+        this.myformSearch = this.createSearchForm();
     }
 
     createdDoctormasterForm(): FormGroup {
@@ -93,8 +93,8 @@ export class DoctorMasterService {
                 ],
             ],
             // RegDate: [{ value: new Date() }],
-            regDate: [(new Date()).toISOString()],
-            // RegDate: [new Date()],
+            // regDate: [(new Date()).toISOString()],
+            regDate: [new Date()],
             mahRegNo: [
                 "",
                 [
@@ -133,9 +133,12 @@ export class DoctorMasterService {
 
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-            DoctorNameSearch: [""],
+            firstName: [""],
+            lastName: [""],
             IsDeletedSearch: ["2"],
-            IsConsultant: [true]
+            IsConsultant: ["2"],
+            IsRef: ["1"],
+            FlagActive:["2"]
         });
     }
 

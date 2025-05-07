@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { UntypedFormBuilder, FormGroup, Validators, Form } from "@angular/forms";
 import { LoaderService } from "app/core/components/loader/loader.service";
 import { ApiCaller } from "app/core/services/apiCaller";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Injectable({
     providedIn: "root",
@@ -20,7 +21,8 @@ export class TestmasterService {
     constructor(
         private _httpClient: ApiCaller,
         private _loaderService: LoaderService,
-        private _formBuilder: UntypedFormBuilder
+        private _formBuilder: UntypedFormBuilder,
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myformSearch = this.createSearchForm();
         this.myform = this.createPathtestForm();
@@ -35,7 +37,7 @@ export class TestmasterService {
             TestId: [0],
             TestName: ["", [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
             PrintTestName: ["", [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
-            CategoryId: ["",[Validators.required]],
+            CategoryId: ["",[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             IsSubTest: true,
             TechniqueName: [""],
             MachineName: [""],

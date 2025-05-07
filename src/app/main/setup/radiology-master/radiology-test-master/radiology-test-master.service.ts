@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { gridRequest } from 'app/core/models/gridRequest';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,9 @@ export class RadiologyTestMasterService {
     myformSearch: FormGroup;
     AddParameterFrom: FormGroup;
 
-    constructor( private _httpClient: ApiCaller, private _formBuilder: UntypedFormBuilder) {
+    constructor( private _httpClient: ApiCaller,
+         private _formBuilder: UntypedFormBuilder,
+         private _FormvalidationserviceService: FormvalidationserviceService) {
         this.myform = this.createRadiologytestForm();
         this.myformSearch = this.createSearchForm();
         this.AddParameterFrom = this.createAddparaFrom();
@@ -21,10 +24,10 @@ export class RadiologyTestMasterService {
     createRadiologytestForm(): FormGroup {
         return this._formBuilder.group({
             testId: [0],
-            testName: [""],
-            printTestName: [""],
-            categoryId: [""],
-            serviceId: [""],
+            testName: ["", [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
+            printTestName: ["", [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
+            categoryId: ["",[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            serviceId: ["",[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             templateName:[""],
             mRadiologyTemplateDetails: [
                 {
