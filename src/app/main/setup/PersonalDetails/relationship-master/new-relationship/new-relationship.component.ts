@@ -25,6 +25,7 @@ export class NewRelationshipComponent implements OnInit {
 
   ngOnInit(): void {
     this.relationshipForm = this._RelationshipMasterService.createRelationshipForm();
+    this.relationshipForm.markAllAsTouched();
     if ((this.data?.relationshipId ?? 0) > 0){
         this.isActive=this.data.isActive
         this.relationshipForm.patchValue(this.data);

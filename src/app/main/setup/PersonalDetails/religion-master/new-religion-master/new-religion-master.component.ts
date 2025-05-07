@@ -24,6 +24,7 @@ export class NewReligionMasterComponent implements OnInit {
 
     ngOnInit(): void {
         this.religionForm = this._ReligionMasterService.CreateReligionForm();
+        this.religionForm.markAllAsTouched();
         console.log(this.data)
         if ((this.data?.religionId??0) > 0) 
         {   

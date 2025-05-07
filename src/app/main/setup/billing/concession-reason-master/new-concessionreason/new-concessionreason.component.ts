@@ -28,6 +28,7 @@ export class NewConcessionreasonComponent implements OnInit {
 
   ngOnInit(): void {
       this.concessionForm = this._ConcessionReasonMasterService.createConcessionreasonForm();
+      this.concessionForm.markAllAsTouched();
       if((this.data?.concessionId??0) > 0){
         this.isActive=this.data.isActive
         this.concessionForm.patchValue(this.data);

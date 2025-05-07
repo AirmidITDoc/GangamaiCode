@@ -23,6 +23,8 @@ export class NewCountryMasterComponent implements OnInit {
 
   ngOnInit(): void {
     this.countryForm = this._CountryMasterService.createCountryForm();
+    this.countryForm.markAllAsTouched();
+    
     if ((this.data?.countryId??0) > 0) 
         {
             this.isActive=this.data.isActive

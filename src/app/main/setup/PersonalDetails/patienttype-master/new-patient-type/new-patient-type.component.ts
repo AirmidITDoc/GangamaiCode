@@ -27,6 +27,7 @@ export class NewPatientTypeComponent implements OnInit {
 
   ngOnInit(): void {
       this.patienttypeForm = this._PatienttypeMasterService.createPatientTypeForm();
+      this.patienttypeForm.markAllAsTouched();
       if((this.data?.patientTypeId??0) > 0)
       {
         this.isActive=this.data.isActive
