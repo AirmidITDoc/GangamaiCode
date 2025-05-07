@@ -26,6 +26,7 @@ export class NewCompanyTypeComponent implements OnInit {
  
   ngOnInit(): void {
       this.companttypeForm = this._CompanyTypeMasterService.createcompanytypeForm();
+      this.companttypeForm.markAllAsTouched();
       if((this.data?.companyTypeId??0) > 0){
         this.isActive=this.data.isActive
         this.companttypeForm.patchValue(this.data);

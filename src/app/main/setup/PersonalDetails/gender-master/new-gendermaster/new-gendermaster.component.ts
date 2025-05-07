@@ -26,6 +26,8 @@ export class NewGendermasterComponent implements OnInit {
 
     ngOnInit(): void {
         this.genderForm = this._GenderMasterService.createGenderForm();
+        this.genderForm.markAllAsTouched();
+        
         if((this.data?.genderId??0) > 0)
         {
             this.isActive=this.data.isActive

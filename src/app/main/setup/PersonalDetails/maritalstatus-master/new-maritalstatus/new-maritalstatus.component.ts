@@ -23,6 +23,7 @@ export class NewMaritalstatusComponent implements OnInit {
 
   ngOnInit(): void {
     this.maritalForm = this._MaritalstatusMasterService.createMaritalForm();
+    this.maritalForm.markAllAsTouched();
    
     if ((this.data?.maritalStatusId??0) > 0) {
         this.isActive=this.data.isActive

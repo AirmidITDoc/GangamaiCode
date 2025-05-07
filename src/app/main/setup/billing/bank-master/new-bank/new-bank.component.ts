@@ -29,6 +29,7 @@ export class NewBankComponent implements OnInit {
   ngOnInit(): void {
     
     this.bankForm = this._BankMasterService.createBankForm();
+    this.bankForm.markAllAsTouched();
 
     if ((this.data?.bankId ?? 0) > 0) {
 
