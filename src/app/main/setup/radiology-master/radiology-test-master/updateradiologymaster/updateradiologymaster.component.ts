@@ -74,6 +74,7 @@ export class UpdateradiologymasterComponent implements OnInit {
     ngOnInit(): void {
         
         this.testForm=this._radiologytestService.createRadiologytestForm();
+        this.testForm.markAllAsTouched();
         this.AddParameterFrom = this._radiologytestService.createAddparaFrom();
         if((this.data?.testId??0) > 0) 
         {  
@@ -114,36 +115,8 @@ export class UpdateradiologymasterComponent implements OnInit {
         return option && option.TemplateName ? option.TemplateName : '';
     }
 
-
-    private _filtercategory(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.CategoryName ? value.CategoryName.toLowerCase() : value.toLowerCase();
-            return this.optionscategory.filter(option => option.CategoryName.toLowerCase().includes(filterValue));
-        }
-
-    }
-
-    getOptionTextCategory(option) {
-        return option && option.CategoryName ? option.CategoryName : " ";
-    }
-
-
-
-    private _filterservice(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.ServiceName ? value.ServiceName.toLowerCase() : value.toLowerCase();
-            return this.optionsservice.filter(option => option.ServiceName.toLowerCase().includes(filterValue));
-        }
-
-    }
-    getOptionTextService(option) {
-        return option && option.ServiceName ? option.ServiceName : " ";
-    }
-
-
-
-
     OnAdd(event) {
+        debugger
         this.DSTestList.data = [];
         this.ChargeList = this.dsTemparoryList.data;
         
@@ -181,51 +154,68 @@ export class UpdateradiologymasterComponent implements OnInit {
     }
     
     onSubmit() {
+        debugger
+        if (!this.testForm.invalid) {
+            if(!this.testForm.get("testId").value){
+                    let mRadiologyTemplateDetails = this.DSTestList.data.map((row: any) => ({
+                        "ptemplateId": 0,
+                        "testId": 0,
+                        "templateId": row.templateId || 0
+                    }));
     
-        if (this.testForm.invalid) {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-            toastClass:'tostr-tost custom-toast-warning',
-        })
-        return;
+                console.log("Insert data1:",mRadiologyTemplateDetails);
+    
+                var mdata={
+                    "testId": 0,
+                    "testName": this.testForm.get("testName").value,
+                    "printTestName": this.testForm.get("printTestName").value,
+                    "categoryId": this.testForm.get("categoryId").value || 0,
+                    "serviceId": this.testForm.get("serviceId").value || 0,
+                    "mRadiologyTemplateDetails": mRadiologyTemplateDetails
+                }
+    
+                    console.log("json of Test:", mdata)
+                    this._radiologytestService.testMasterSave(mdata).subscribe((response) => {
+                    this.toastr.success(response.message);
+                    this.onClear(true);
+                }, (error) => {
+                    this.toastr.error(error.message);
+                });
+            } 
         }else{
-        if(!this.testForm.get("testId").value){
-            var data1=[];
-                let mRadiologyTemplateDetails = {};
-                mRadiologyTemplateDetails["ptemplateId"]=0,
-                mRadiologyTemplateDetails['testId'] = 0, 
-                mRadiologyTemplateDetails['templateId'] = 0
-                data1.push(mRadiologyTemplateDetails);
+            let invalidFields = [];
 
-            console.log("Insert data1:",data1);
-
-            var mdata={
-                "testId": 0,
-                "testName": this.testForm.get("testName").value,
-                "printTestName": this.testForm.get("printTestName").value,
-                "categoryId": this.testForm.get("categoryId").value || 0,
-                "serviceId": this.testForm.get("serviceId").value || 0,
-                "mRadiologyTemplateDetails": data1
+            if (this.testForm.invalid) {
+                for (const controlName in this.testForm.controls) {
+                if (this.testForm.controls[controlName].invalid) {
+                    invalidFields.push(`My Form: ${controlName}`);
+                }
+                }
             }
 
-                console.log("json of Test:", mdata)
-                this._radiologytestService.testMasterSave(mdata).subscribe((response) => {
-                this.toastr.success(response.message);
-                this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
-            });
-        } else{
-            
-        }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                  this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                  );
+                });
+              }
         }
     }
 
     getValidationMessages() {
         return {
-            testName: [],
-            categoryId:[],
-            printTestName:[],
-            serviceId:[],
+            testName: [
+                { name: "required", Message: "TestName is required" },
+            ],
+            categoryId:[
+                { name: "required", Message: "Category is required" },
+            ],
+            printTestName:[
+                { name: "required", Message: "PrintTestName is required" },
+            ],
+            serviceId:[
+                { name: "required", Message: "Service is required" },
+            ],
             templateName:[],
         };
     }

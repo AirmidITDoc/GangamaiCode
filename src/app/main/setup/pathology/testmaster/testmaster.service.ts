@@ -35,15 +35,9 @@ export class TestmasterService {
     createPathtestForm(): FormGroup {
         return this._formBuilder.group({
             TestId: [0],
-            TestName: ["", [Validators.required,
-                // Validators.pattern('^[a-zA-Z ]*$')
-                 Validators.pattern('^[a-zA-Z0-9 ]*$')
-                ]],
-            PrintTestName: ["", [Validators.required, 
-               // Validators.pattern('^[a-zA-Z ]*$')
-                Validators.pattern('^[a-zA-Z0-9 ]*$')
-            ]],
-            CategoryId: ["",[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            TestName: ["", [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
+            PrintTestName: ["", [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
+            CategoryId: ["",[Validators.required]],
             IsSubTest: true,
             TechniqueName: [""],
             MachineName: [""],

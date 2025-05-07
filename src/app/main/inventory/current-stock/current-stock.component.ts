@@ -73,10 +73,10 @@ export class CurrentStockComponent implements OnInit {
     SpinLoading: boolean = false;
     isItemSelected: boolean = false;
 
-    storeId = "0";
-    storeDayWise = "0";
-    storeSales = "0";
-    storeItem = "0";
+    storeId = "2";
+    storeDayWise = "2";
+    storeSales = "2";
+    storeItem = "2";
     itemId = "0";
 
     // dsCurrentStock = new MatTableDataSource<CurrentStockList>();
@@ -259,7 +259,7 @@ export class CurrentStockComponent implements OnInit {
         { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
         { fieldName: "todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
         { fieldName: "StoreId", fieldValue: this.storeSales, opType: OperatorComparer.Equals }, //2
-        { fieldName: "ItemId", fieldValue: "0", opType: OperatorComparer.Equals }, //1
+        { fieldName: "ItemId", fieldValue: this.itemId, opType: OperatorComparer.Equals }, //1
     ]
 
     gridConfig2: gridModel = {
@@ -326,7 +326,7 @@ export class CurrentStockComponent implements OnInit {
         { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
         { fieldName: "todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
         { fieldName: "StoreId", fieldValue:this.storeItem, opType: OperatorComparer.Equals }, //2
-        { fieldName: "ItemId", fieldValue: "0", opType: OperatorComparer.Equals }, //1
+        { fieldName: "ItemId", fieldValue: this.itemId, opType: OperatorComparer.Equals }, //1
     ]
     gridConfig3: gridModel = {
         apiUrl: "CurrentStock/IssueWiseItemSummaryList",
