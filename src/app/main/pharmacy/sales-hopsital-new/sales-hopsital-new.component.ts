@@ -48,7 +48,7 @@ import { BalAvaListStore, DraftSale, IndentList, PatientType, Printsal, SalesBat
 })
 export class SalesHospitalNewComponent implements OnInit {
   // View Children
-  @ViewChild('Quantity') Quantity: ElementRef;
+  @ViewChild('qtyInputRef') qtyInputRef: ElementRef;
   @ViewChild('discAmount') discAmount: ElementRef;
   @ViewChild('ConseId') ConseId: ElementRef;
   @ViewChild('drawer') public drawer: MatDrawer;
@@ -2737,7 +2737,11 @@ getStoredet(){
   }
   getCellCalculation(item: IndentList) {
     // Check validation of quantity
-    const qty = +item.Qty;
+    let qty = +item.Qty;
+    if (this.isNagative(qty)) {
+      Swal.fire('Enter valid qty');
+      qty = 0;
+    }
     const gstPer = +item.GSTPer;
     const unitMrp = +item.UnitMRP;
     const totalMrp = qty * unitMrp;
@@ -2750,9 +2754,16 @@ getStoredet(){
       GSTAmount: gstAmount.toFixed(2),
       TotalMRP: totalMrp.toFixed(2),
       MarginAmt: marginAmt.toFixed(2),
+      Qty: qty,
     } as IndentList;
 
     Object.assign(item, updatedItem);
     this.calculateCellNetAmount(item);
+  }
+  focusNext(ref: ElementRef): void {
+    ((ref as any).el?.nativeElement as HTMLElement)?.querySelector('input')?.focus();
+  }
+  isNagative(value: number) {
+    return value < 0;
   }
 }
