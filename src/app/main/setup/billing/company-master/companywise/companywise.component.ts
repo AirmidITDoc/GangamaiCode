@@ -60,6 +60,8 @@ export class CompanywiseComponent {
     
       ngOnInit(): void {
         this.myFormGroup = this.CreateServCompForm();
+        this.myFormGroup.markAllAsTouched();
+        
         if(this.data){
           this.registerObj = this.data.Obj
           console.log(this.registerObj)

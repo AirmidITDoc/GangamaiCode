@@ -47,6 +47,7 @@ export class SuppliertestingComponent implements OnInit {
 
   ngOnInit(): void {
     this.supplierForm = this._supplierService.createSuppliermasterForm();
+    this.supplierForm.markAllAsTouched();
 
 
     if (this.data.supplierId > 0) {

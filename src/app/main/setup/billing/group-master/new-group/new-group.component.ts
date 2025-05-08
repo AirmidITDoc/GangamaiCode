@@ -24,6 +24,7 @@ export class NewGroupComponent implements OnInit {
  
     ngOnInit(): void {
         this.groupForm = this._GroupMasterService.createGroupForm();
+        this.groupForm.markAllAsTouched();
         if((this.data?.groupId??0) > 0){
             this.isActive=this.data.isActive
             this.isconsolidated = this.data.isconsolidated

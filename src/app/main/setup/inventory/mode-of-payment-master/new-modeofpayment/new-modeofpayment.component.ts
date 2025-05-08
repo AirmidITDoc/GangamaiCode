@@ -28,6 +28,7 @@ export class NewModeofpaymentComponent implements OnInit {
 
   ngOnInit(): void {
       this.modeofpayForm = this._ModeOfPaymentMasterService.createModeofpaymentForm();
+      this.modeofpayForm.markAllAsTouched();
       if((this.data?.id??0) > 0)
         {
         this.isActive=this.data.isActive

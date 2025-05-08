@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Injectable({
     providedIn: 'root'
@@ -11,7 +12,8 @@ export class DosemasterService {
 
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: UntypedFormBuilder
+        private _formBuilder: UntypedFormBuilder,
+        
     ) {
         this.myForm = this.createDoseForm();
         this.myformSearch = this.createSearchForm();
@@ -23,20 +25,23 @@ export class DosemasterService {
             doseName: ["", 
                 [
                     Validators.required, Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z0-9\\-/]*$")
+                  //  Validators.pattern("^[A-Za-z0-9\\-/]*$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
             doseNameInEnglish: ["", 
                 [
                     Validators.required, Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z0-9\\-/]*$")
+                   // Validators.pattern("^[A-Za-z0-9\\-/]*$")
+                   Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
             doseNameInMarathi :["0",
-                [
-                    // Validators.required, Validators.maxLength(50),
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                ]
+              
+                // [
+                //     Validators.required, Validators.maxLength(50),
+                //      Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                // ]
             ],
             doseQtyPerDay: ["",
                 [

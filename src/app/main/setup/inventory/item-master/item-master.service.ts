@@ -36,14 +36,16 @@ export class ItemMasterService {
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                  //  Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
             itemName: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                  //  Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
             itemTypeId: [0,
@@ -72,19 +74,20 @@ export class ItemMasterService {
             ],
             purchaseUomid: [0,
                 [
-                    Validators.required,
+                    Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ]
             ],
             stockUomid: [0,
                 [
-                    Validators.required,
+                    Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ]
             ],
             conversionFactor: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    //Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
             currencyId: [0,
@@ -167,7 +170,12 @@ export class ItemMasterService {
                     Validators.required,
                 ]
             ],
-            drugTypeName: [""],
+            drugTypeName: [""
+                [
+                    Validators.required,
+                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
+                ]
+            ],
             prodLocation: ["",
                 [
                     Validators.required,

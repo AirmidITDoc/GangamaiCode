@@ -9,6 +9,7 @@ import { SignatureViewComponent } from "../signature-view/signature-view.compone
 import { AirmidDropDownComponent } from "app/main/shared/componets/airmid-dropdown/airmid-dropdown.component";
 import { AirmidTextboxComponent } from "app/main/shared/componets/airmid-textbox/airmid-textbox.component";
 import { DatePipe } from "@angular/common";
+import { debug } from "console";
 
 @Component({
     selector: "app-new-doctor",
@@ -29,7 +30,9 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     autocompleteModecity: string = "City";
     autocompleteModedoctorty: string = "DoctorType";
     sanitizeImagePreview: any;
-    doctorId:any=0;
+    visConsultant = true;
+    visRefDoc = false;
+    doctorId: any = 0;
     constructor(
         public _doctorService: DoctorMasterService,
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -37,7 +40,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         public toastr: ToastrService,
         public dialogRef: MatDialogRef<NewDoctorComponent>,
         private readonly changeDetectorRef: ChangeDetectorRef,
-        public datePipe: DatePipe,        
+        public datePipe: DatePipe,
     ) { }
 
     ngAfterViewChecked(): void {
@@ -48,9 +51,10 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         this.myForm = this._doctorService.createdDoctormasterForm();
         console.log(this.myForm.value)
         this.myForm.markAllAsTouched();
-        if(this.data){
-            console.log("info:",this.data)
-            this.doctorId=this.data.doctorId
+        if (this.data) {
+            debugger
+            console.log("info:", this.data)
+            this.doctorId = this.data.doctorId
             this.myForm.get('firstName').setValue(this.data.firstName)
             this.myForm.get('middleName').setValue(this.data.middleName)
             this.myForm.get('lastName').setValue(this.data.lastName)
@@ -67,19 +71,34 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             this.myForm.get('genderId').setValue(this.data.genderId)
             this.myForm.get('doctorTypeId').setValue(this.data.doctorTypeId)
             this.myForm.get('isActive').setValue(this.data.isActive)
+            this.visConsultant = this.data.isConsultant
+            this.visRefDoc = this.data.isRefDoc
+            // this.myForm.get('regDate')?.setValue(new Date(this.registerObj.regDate));
         }
         if ((this.data?.doctorId ?? 0) > 0) {
             this._doctorService.getDoctorById(this.data.doctorId).subscribe((response) => {
                 this.registerObj = response;
-                this.ddlDepartment.SetSelection(this.registerObj.mDoctorDepartmentDets);
-                if (this.registerObj.signature) {
-                    this._doctorService.getSignature(this.registerObj.signature).subscribe(data => {
-                        this.sanitizeImagePreview = data;
-                        this.myForm.value.signature = data;
-                    });
-                }
-                this.myForm.controls["mahRegDate"].setValue(this.registerObj.mahRegDate);
-                this.myForm.controls["regDate"].setValue(this.registerObj.regDate);
+                // this.ddlDepartment.SetSelection(this.registerObj.mDoctorDepartmentDets);
+                // if (this.registerObj.signature) {
+                //     this._doctorService.getSignature(this.registerObj.signature).subscribe(data => {
+                //         this.sanitizeImagePreview = data;
+                //         this.myForm.value.signature = data;
+                //     });
+                // }
+                // this.myForm.controls["mahRegDate"].setValue(this.registerObj.mahRegDate);
+                // this.myForm.controls["regDate"].setValue(this.registerObj.regDate);
+
+                setTimeout(() => {
+                    this.ddlDepartment.SetSelection(this.registerObj.mDoctorDepartmentDets);
+                    if (this.registerObj.signature) {
+                        this._doctorService.getSignature(this.registerObj.signature).subscribe(data => {
+                            this.sanitizeImagePreview = data;
+                            this.myForm.value.signature = data;
+                        });
+                    }
+                    this.myForm.controls["mahRegDate"].setValue(this.registerObj.mahRegDate);
+                    this.myForm.controls["regDate"].setValue(this.registerObj.regDate);
+                }, 500);
             }, (error) => {
                 this.toastr.error(error.message);
             });
@@ -112,7 +131,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     toggleSelectAll() {
 
     }
-    
+
     removeDepartment(item) {
         let removedIndex = this.myForm.value.mDoctorDepartmentDets.findIndex(x => x.departmentId == item.departmentId);
         this.myForm.value.mDoctorDepartmentDets.splice(removedIndex, 1);
@@ -146,9 +165,9 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         this.myForm.get('ageYear').setValue(String(this.ageYear))
         this.myForm.get('ageMonth').setValue(String(this.ageMonth))
         this.myForm.get('ageDay').setValue(String(this.ageDay))
-        
-        // const regDateValue = this.myForm.get('regDate')?.value;
-        // console.log('regDateValue:', regDateValue);
+
+        const regDateValue = this.myForm.get('regDate')?.value;
+        console.log('regDateValue:', regDateValue);
 
         // const regDateformatted = this.datePipe.transform(regDateValue, 'yyyy-MM-dd');
         // console.log('Formatted Reg Date:', regDateformatted);
@@ -172,9 +191,9 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
                     departmentId: dep.departmentId
                 };
             });
-    
+
             formData.mDoctorDepartmentDets = transformedDep;
-            formData.doctorId=this.doctorId
+            formData.doctorId = this.doctorId
             console.log(formData)
 
             this._doctorService.doctortMasterInsert(formData).subscribe((response) => {
@@ -183,23 +202,23 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             }, (error) => {
                 this.toastr.error(error.message);
             });
-        }else {
+        } else {
             let invalidFields = [];
 
             if (this.myForm.invalid) {
                 for (const controlName in this.myForm.controls) {
-                if (this.myForm.controls[controlName].invalid) {
-                    invalidFields.push(`My Form: ${controlName}`);
-                }
+                    if (this.myForm.controls[controlName].invalid) {
+                        invalidFields.push(`My Form: ${controlName}`);
+                    }
                 }
             }
 
             if (invalidFields.length > 0) {
                 invalidFields.forEach(field => {
-                  this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-                  );
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
                 });
-              }
+            }
         }
     }
 

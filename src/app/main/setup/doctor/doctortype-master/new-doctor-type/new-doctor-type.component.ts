@@ -23,6 +23,7 @@ export class NewDoctorTypeComponent implements OnInit {
     
     ngOnInit(): void {
         this.doctortypeForm = this._DoctortypeMasterService.createDoctortypeForm();
+        this.doctortypeForm.markAllAsTouched();
         if((this.data?.id??0) > 0)
         {
             this.isActive=this.data.isActive

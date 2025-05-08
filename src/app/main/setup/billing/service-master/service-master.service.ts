@@ -27,13 +27,15 @@ export class ServiceMasterService {
             ServiceShortDesc: ["", 
                 [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z0-9 ]+$")
+                    //Validators.pattern("^[A-Za-z0-9 ]+$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
             ServiceName: ["",
                 [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z0-9 ]+$")
+                   // Validators.pattern("^[A-Za-z0-9 ]+$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
             Price: ["",[Validators.required, Validators.pattern("[0-9]+")]],
@@ -45,7 +47,10 @@ export class ServiceMasterService {
             PrintOrder: ["",[Validators.required, Validators.pattern("[0-9]+")]],
             IsPackage: ["0"],
             SubGroupId: [""],
-            FirstName: ["", Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
+            FirstName: ["",
+                 //Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                 Validators.pattern('^[a-zA-Z0-9 ]*$')
+                ],
             IsEmergency: true,
             EmgAmt: ["",[Validators.required, Validators.pattern("[0-9]+")]],
             EmgPer: ["",[Validators.required, Validators.pattern("[0-9]+")]],

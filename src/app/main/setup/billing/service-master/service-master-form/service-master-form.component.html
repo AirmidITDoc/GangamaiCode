@@ -1,254 +1,317 @@
-<div class="dialog-content-wrapper">
-    <mat-toolbar class="accent top-header" fusePerfectScrollbar>
-        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-            <h3>{{serviceForm.controls.ServiceId.value?"Modify Service Master":"New
-                Service Master"}}</h3>
-            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
-                <mat-icon>close</mat-icon>
-            </button>
-        </mat-toolbar-row>
+<ng-template #serviceTable>
+    <mat-toolbar class="accent" style="width: 100%; height: 40px; justify-content: space-between">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="logo-icon mr-16" [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }" style="color: white">account_box</mat-icon>
+            <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Nursing Request list</span>
+        </div>
+        <!-- <div class="close-icon">
+        <button mat-icon-button tabIndex="-1" (click)="openServiceTable()" aria-label="Close dialog">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div> -->
     </mat-toolbar>
-</div>
 
-<mat-card>
-    <form [formGroup]="serviceForm" style="padding-left: 10px; padding-right: 10px;">
-        <input type="hidden" name="ServiceId" formControlName="ServiceId" [ngModel]="ServiceId">
+    <div class="service-table1 p-12" fxFlex="100%">
+        <div class="table-body">
+            <div class="airmid-table">
+                <mat-table matSort [dataSource]="dsServiceList" [@animateStagger]="{ value: '50' }">
+                    <ng-container matColumnDef="ServiceName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-180">Item Name</mat-header-cell>
+                        <mat-cell *matCellDef="let contact" class="w-180">
+                            <span>{{ contact.ServiceName }}</span>
+                        </mat-cell>
+                    </ng-container>
 
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="b-service-master gap-6"
-            style="padding-top: 10px;">
+                    <ng-container matColumnDef="Price">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
+                        <mat-cell *matCellDef="let contact">
+                            <span>{{ contact.Price | currency : 'INR' }}</span>
+                        </mat-cell>
+                    </ng-container>
 
-            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <ng-container matColumnDef="Qty">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Qty</mat-header-cell>
+                        <mat-cell *matCellDef="let contact">
+                            <span>{{ contact.Qty }}</span>
+                        </mat-cell>
+                    </ng-container>
 
-                <airmid-dropdown label="Group Name" formControlName="groupId" [formGroup]="serviceForm"
-                    (selectionChange)="selectChangegroupName($event)" [validations]="getValidationMessages().groupId"
-                    [mode]="autocompleteModegroupName">
-                </airmid-dropdown>
-            </div>
+                    <ng-container matColumnDef="TotalAmt">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-110">Total Amt</mat-header-cell>
+                        <mat-cell *matCellDef="let contact" class="w-110">
+                            <span>{{ contact.TotalAmt | currency : 'INR' }}</span>
+                        </mat-cell>
+                    </ng-container>
 
-            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                <airmid-dropdown label="SubGroup Name" formControlName="SubGroupId" [formGroup]="serviceForm"
-                    (selectionChange)="selectChangesubGroupName($event)"
-                    [validations]="getValidationMessages().SubGroupId" [mode]="autocompleteModesubGroupName">
-                </airmid-dropdown>
-            </div>
+                    <ng-container matColumnDef="NoData">
+                        <mat-footer-cell *matFooterCellDef>
+                            <span>No Data Found</span>
+                        </mat-footer-cell>
+                    </ng-container>
 
-        </div>
-
-
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-
-            <mat-form-field appearance="outline" fxFlex>
-                <mat-label>Service Name</mat-label>
-                <input name="ServiceName" formControlName="ServiceName" placeholder="ServiceName" matInput
-                    (keydown)="onEnterServiceName($event)" #ServiceName [(ngModel)]="vServiceName">
-                <mat-error *ngIf="serviceForm.get('ServiceName').invalid && serviceForm.get('ServiceName').touched">
-                    service Name is required Enter only Alphabets
-                </mat-error>
-            </mat-form-field>&nbsp;&nbsp;
-
-            <mat-form-field appearance="outline" fxFlex>
-                <mat-label>Price</mat-label>
-                <input name="Price" placeholder="Select Price" formControlName="Price" OnlyNumber
-                    (keypress)="keyPressCharater($event)" [ngClass]="{ 'is-invalid': submitted && f.Price.errors }"
-                    matInput required maxlength="5">
-                <mat-error *ngIf="serviceForm.get('Price').invalid && serviceForm.get('Price').touched">
-                    Price is required Enter only Digits
-                </mat-error>
-            </mat-form-field>&nbsp;&nbsp;
-
-            <mat-form-field appearance="outline" fxFlex>
-                <mat-label>PrintOrder</mat-label>
-                <input name="PrintOrder" placeholder="Select PrintOrder" formControlName="PrintOrder" matInput required
-                    OnlyNumber (keypress)="keyPressCharater($event)"
-                    [ngClass]="{ 'is-invalid': submitted && f.PrintOrder.errors }" min="0" maxlength="5">
-                <mat-error *ngIf="serviceForm.get('PrintOrder').invalid && serviceForm.get('PrintOrder').touched">
-                    PrintOrder is required Enter only Digits
-                </mat-error>
-            </mat-form-field>&nbsp;&nbsp;
-
-            <mat-form-field appearance="outline" fxFlex>
-                <mat-label>ServiceShortDesc</mat-label>
-                <input name="Service Short Desc" formControlName="ServiceShortDesc" placeholder="ServiceShortDesc"
-                    matInput (keydown)="onEnterServiceShortDesc($event)" #ServiceShortDesc
-                    [(ngModel)]="vServiceShortDesc">
-                <mat-error
-                    *ngIf="serviceForm.get('ServiceShortDesc').invalid && serviceForm.get('ServiceShortDesc').touched">
-                    ServiceShortDesc is required Enter only Alphabets
-                </mat-error>
-            </mat-form-field>
-
-
-        </div>
-
-
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-6">
-            <!-- [value]="TariffId" -->
-            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                <airmid-dropdown label="TariffId" formControlName="tariffId" [formGroup]="serviceForm"
-                    (selectionChange)="selectChangetariff($event)" [validations]="getValidationMessages().tariffId"
-                    [mode]="autocompleteModetariff">
-                </airmid-dropdown>
-            </div>
-
-            <mat-form-field appearance="outline" fxFlex>
-                <input matInput [matDatepicker]="picker3" placeholder="Choose an Effective Date" name="EffectiveDate"
-                    formControlName="EffectiveDate">
-                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-                <mat-datepicker #picker3></mat-datepicker>
-
-            </mat-form-field>
-
-        </div>
-    </form>
-    <hr>
-    <div class="center p-24 pb-24" fusePerfectScrollbar>
-        <!-- CONTENT -->
-        <div class="content-card">
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-
-                <div fxFlex="100%" fxFlex.gt-sm="100%">
-                    <div style="min-width: 100%;">
-
-                        <div style="max-width:1800px; overflow-x: scroll; overflow-y: hidden;"
-                            class="airmid-table-container">
-                            
-                            <mat-table #table matSort [dataSource]="DSServicedetailList" class="airmid-table"
-                                [@animateStagger]="{value:'50'}" style="overflow:auto;height: 300px;">
-
-                                <ng-container matColumnDef="classId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.classId}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="className">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Class Name</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.className}}
-                                    </mat-cell>
-                                </ng-container>
-
-
-                                <ng-container matColumnDef="classRate">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ClassRate
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                        <mat-form-field appearance="fill">
-                                            <input matInput [(ngModel)]="element.classRate" OnlyNumber
-                                                (keyup)="gettableclassrate(element,$event.value)"
-                                                (keypress)="keyPressCharater($event)">
-                                        </mat-form-field>
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="loading">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        loading data...
-                                    </mat-footer-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="noData">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        no data found...
-                                    </mat-footer-cell>
-                                </ng-container>
-
-                                <mat-header-row class="accent"
-                                    *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                <mat-footer-row *matFooterRowDef="['loading']"
-                                    [ngClass]="{'hide':DSServicedetailList!=null}"></mat-footer-row>
-                                <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(DSServicedetailList!=null && DSServicedetailList.data.length==0)}"></mat-footer-row>
-                            </mat-table>
-
-                        </div>
-                    </div>
-
-                </div>
-
+                    <mat-header-row class="accent" *matHeaderRowDef="displayedPrescriptionColumns; sticky: true"></mat-header-row>
+                    <mat-row *matRowDef="let contact; columns: displayedPrescriptionColumns" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                    <mat-footer-row *matFooterRowDef="['NoData']" [ngClass]="{ hide: dsServiceList.data.length > 0 }"></mat-footer-row>
+                </mat-table>
             </div>
         </div>
     </div>
-    <form [formGroup]="serviceForm">
-        <div class="p-10 pb-24" fusePerfectScrollbar>
+</ng-template>
 
-            <div fxLayout="row" fxLayoutAlign="space-between" style="padding: 0px 20px 0px 20px;">
-
-                <mat-checkbox class="example-margin" name="IsDocEditable" (change)="onChange($event)" value='false'
-                    formControlName="IsDocEditable" [(ngModel)]="IsDocEditable">
-                    Is Doc Editable For Service</mat-checkbox>
-
-                <mat-checkbox class="example-margin" name="IsEditable" formControlName="IsEditable"
-                [(ngModel)]="IsEditable"> IsEditable</mat-checkbox>
-
-                <mat-checkbox class="example-margin" name="IsPackage" formControlName="IsPackage" value='false'
-                [(ngModel)]="IsPackage"> IsPackage</mat-checkbox>
-
-                <mat-checkbox class="example-margin" name="IsRadiology" formControlName="IsRadiology" value='false'
-                [(ngModel)]="IsRadiology"> IsRadiology</mat-checkbox>
-
-                <mat-checkbox class="example-margin" name="IsPathology" formControlName="IsPathology" value='false'
-                [(ngModel)]="IsPathology"> IsPathology</mat-checkbox>
-
-            </div>
-
-
-            <hr>
-
-            <div fxLayout="row" fxLayoutAlign="space-between" style="padding: 0px 20px 0px 20px;">
-
-                <div fxFlex="40%" fxLayout="row" fxLayoutGap="6px" style="margin-right: 30px;">
-                    <mat-checkbox class="example-margin" name="CreditedtoDoctor" formControlName="CreditedtoDoctor"
-                        value='false' [(ngModel)]="showDoctor">
-                        CreditedtoDoctor</mat-checkbox>
-
-                    <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [value]="data?.doctorId"
-                        [formGroup]="serviceForm" [validations]="getValidationMessages().DoctorId" fxFlex="45%"
-                        [mode]="autocompleteModedoctor" *ngIf="showDoctor"  (selectionChange)="SelectionDoctor($event)">
-                    </airmid-dropdown>
+<div class="modal-page page-layout inner-scroll">
+    <div class="modal-wrapper grid-container">
+        <!-- Modal header -->
+        <div class="modal-header accent">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
+                        {{ serviceForm.controls.ServiceId.value ? 'Modify Service Master' : 'NewService Master' }}
+                    </span>
                 </div>
-
-                <div fxFlex="60%" fxLayout="row" fxLayoutGap="6px">
-                    <mat-checkbox class="example-margin" name="IsEmergency" [(ngModel)]="showEmg" value="true"
-                        formControlName="IsEmergency" (change)="emg_amt=''; emg_per=''">
-                        IsEmergency</mat-checkbox>
-
-                    <div *ngIf="showEmg" class="emg-amt-input" style="margin-left: 40px;">
-                        <mat-form-field appearance="outline" fxFlex="35%">
-                            <input name="EmgAmt" placeholder="Select EmgAmt" [(ngModel)]="emg_amt"
-                                formControlName="EmgAmt" matInput>
-                            <mat-error *ngIf="serviceForm.get('EmgAmt').invalid && serviceForm.get('EmgAmt').touched">
-                                EmgAmt is required Enter only Digits
-                            </mat-error>
-                        </mat-form-field>&nbsp;
-
-                        <mat-form-field appearance="outline" fxFlex="35%">
-                            <input name="EmgPer" placeholder="Select EmgPer" [(ngModel)]="emg_per"
-                                formControlName="EmgPer" matInput>
-                            <mat-error *ngIf="serviceForm.get('EmgPer').invalid && serviceForm.get('EmgPer').touched">
-                                EmgAmt is required Enter only Digits
-                            </mat-error>
-                        </mat-form-field>
+                <div class="modal-header-right">
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
                     </div>
                 </div>
             </div>
-
         </div>
 
-        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between">
+        <!-- Modal body -->
+        <div class="modal-body" fusePerfectScrollbar>
+            <div class="modal-body-container">
+                <div fxLayout="column" class="gap-8 h-100-p">
+                    <div class="modal-card-container">
+                        <mat-card>
+                            <mat-card-content class="p-4">
+                                <form [formGroup]="serviceForm" style="padding-left: 10px; padding-right: 10px">
+                                    <input type="hidden" name="ServiceId" formControlName="ServiceId" [ngModel]="ServiceId" />
 
-            <mat-checkbox aria-label="Is Active" formControlName="IsActive" (checked)=true style="font-weight: bold;">
-                IsActive
-            </mat-checkbox>
-            <!-- [(ngModel)]="registerObj.IsActive" -->
-            <div class="sales-footer-buttons gap-8" fxLayout="row">
-                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button class="btn btn-primary" color="accent" (click)="onSubmit()" #savebutton>
-                    <span>Save</span>
-                </button>
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="b-service-master gap-6" style="padding-top: 10px">
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown
+                                                label="Group Name"
+                                                formControlName="groupId"
+                                                [formGroup]="serviceForm"
+                                                (selectionChange)="selectChangegroupName($event)"
+                                                [validations]="getValidationMessages().groupId"
+                                                [mode]="autocompleteModegroupName"
+                                            ></airmid-dropdown>
+                                        </div>
+
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown
+                                                label="SubGroup Name"
+                                                formControlName="SubGroupId"
+                                                [formGroup]="serviceForm"
+                                                (selectionChange)="selectChangesubGroupName($event)"
+                                                [validations]="getValidationMessages().SubGroupId"
+                                                [mode]="autocompleteModesubGroupName"
+                                            ></airmid-dropdown>
+                                        </div>
+                                    </div>
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Service Name</mat-label>
+                                            <input
+                                                name="ServiceName"
+                                                formControlName="ServiceName"
+                                                placeholder="ServiceName"
+                                                matInput
+                                                (keydown)="onEnterServiceName($event)"
+                                                #ServiceName
+                                                [(ngModel)]="vServiceName"
+                                            />
+                                            <mat-error *ngIf="serviceForm.get('ServiceName').invalid && serviceForm.get('ServiceName').touched">
+                                                service Name is required Enter only Alphabets
+                                            </mat-error>
+                                        </mat-form-field>
+                                        &nbsp;&nbsp;
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Price</mat-label>
+                                            <input
+                                                name="Price"
+                                                placeholder="Select Price"
+                                                formControlName="Price"
+                                                OnlyNumber
+                                                (keypress)="keyPressCharater($event)"
+                                                [ngClass]="{ 'is-invalid': submitted && f.Price.errors }"
+                                                matInput
+                                                required
+                                                maxlength="5"
+                                            />
+                                            <mat-error *ngIf="serviceForm.get('Price').invalid && serviceForm.get('Price').touched">Price is required Enter only Digits</mat-error>
+                                        </mat-form-field>
+                                        &nbsp;&nbsp;
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>PrintOrder</mat-label>
+                                            <input
+                                                name="PrintOrder"
+                                                placeholder="Select PrintOrder"
+                                                formControlName="PrintOrder"
+                                                matInput
+                                                required
+                                                OnlyNumber
+                                                (keypress)="keyPressCharater($event)"
+                                                [ngClass]="{ 'is-invalid': submitted && f.PrintOrder.errors }"
+                                                min="0"
+                                                maxlength="5"
+                                            />
+                                            <mat-error *ngIf="serviceForm.get('PrintOrder').invalid && serviceForm.get('PrintOrder').touched">PrintOrder is required Enter only Digits</mat-error>
+                                        </mat-form-field>
+                                        &nbsp;&nbsp;
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>ServiceShortDesc</mat-label>
+                                            <input
+                                                name="Service Short Desc"
+                                                formControlName="ServiceShortDesc"
+                                                placeholder="ServiceShortDesc"
+                                                matInput
+                                                (keydown)="onEnterServiceShortDesc($event)"
+                                                #ServiceShortDesc
+                                                [(ngModel)]="vServiceShortDesc"
+                                            />
+                                            <mat-error *ngIf="serviceForm.get('ServiceShortDesc').invalid && serviceForm.get('ServiceShortDesc').touched">
+                                                ServiceShortDesc is required Enter only Alphabets
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-6">
+                                        <!-- [value]="TariffId" -->
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown
+                                                label="TariffId"
+                                                formControlName="tariffId"
+                                                [formGroup]="serviceForm"
+                                                (selectionChange)="selectChangetariff($event)"
+                                                [validations]="getValidationMessages().tariffId"
+                                                [mode]="autocompleteModetariff"
+                                            ></airmid-dropdown>
+                                        </div>
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <input matInput [matDatepicker]="picker3" placeholder="Choose an Effective Date" name="EffectiveDate" formControlName="EffectiveDate" />
+                                            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker3></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                </form>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <div class="modal-card-container airmid-table-container overflow-auto" fxFlex>
+                        <mat-table #table matSort [dataSource]="DSServicedetailList" class="airmid-table" [@animateStagger]="{ value: '50' }">
+                            <ng-container matColumnDef="classId">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>{{ element.classId }}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="className">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Class Name</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.className }}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="classRate">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ClassRate</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                    <mat-form-field appearance="fill">
+                                        <input matInput [(ngModel)]="element.classRate" OnlyNumber (keyup)="gettableclassrate(element, $event.value)" (keypress)="keyPressCharater($event)" />
+                                    </mat-form-field>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns" class="element" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{ hide: DSServicedetailList != null }"></mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{ hide: !(DSServicedetailList != null && DSServicedetailList.data.length == 0) }"></mat-footer-row>
+                        </mat-table>
+                    </div>
+                    <div class="modal-card-container">
+                        <form [formGroup]="serviceForm">
+                            <div class="p-10 pb-24">
+                                <div fxLayout="row" fxLayoutAlign="space-between" >
+                                    <mat-checkbox class="example-margin" name="IsDocEditable" (change)="onChange($event)" value="false" formControlName="IsDocEditable" [(ngModel)]="IsDocEditable">
+                                        Is Doc Editable For Service
+                                    </mat-checkbox>
+
+                                    <mat-checkbox class="example-margin" name="IsEditable" formControlName="IsEditable" [(ngModel)]="IsEditable">IsEditable</mat-checkbox>
+
+                                    <mat-checkbox class="example-margin" name="IsPackage" formControlName="IsPackage" value="false" [(ngModel)]="IsPackage">IsPackage</mat-checkbox>
+
+                                    <mat-checkbox class="example-margin" name="IsRadiology" formControlName="IsRadiology" value="false" [(ngModel)]="IsRadiology">IsRadiology</mat-checkbox>
+
+                                    <mat-checkbox class="example-margin" name="IsPathology" formControlName="IsPathology" value="false" [(ngModel)]="IsPathology">IsPathology</mat-checkbox>
+                                </div>
+
+                                <hr />
+
+                                <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="12px">
+                                    <div fxLayout="row" fxLayoutGap="6px">
+                                        <mat-checkbox class="example-margin" name="CreditedtoDoctor" formControlName="CreditedtoDoctor" value="false" [(ngModel)]="showDoctor">
+                                            CreditedtoDoctor
+                                        </mat-checkbox>
+
+                                        <airmid-dropdown
+                                            label="Doctor Name"
+                                            formControlName="DoctorId"
+                                            [value]="data?.doctorId"
+                                            [formGroup]="serviceForm"
+                                            [validations]="getValidationMessages().DoctorId"
+                                            fxFlex="100%"
+                                            [mode]="autocompleteModedoctor"
+                                            *ngIf="showDoctor"
+                                            (selectionChange)="SelectionDoctor($event)"
+                                        ></airmid-dropdown>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayoutGap="6px" fxFlex>
+                                        <mat-checkbox class="example-margin" name="IsEmergency" [(ngModel)]="showEmg" value="true" formControlName="IsEmergency" (change)="emg_amt = ''; emg_per = ''">
+                                            IsEmergency
+                                        </mat-checkbox>
+
+                                        <div *ngIf="showEmg" class="emg-amt-input w-100-p" >
+                                            <mat-form-field appearance="outline" fxFlex="50%">
+                                                <input name="EmgAmt" placeholder="Select EmgAmt" [(ngModel)]="emg_amt" formControlName="EmgAmt" matInput />
+                                                <mat-error *ngIf="serviceForm.get('EmgAmt').invalid && serviceForm.get('EmgAmt').touched">EmgAmt is required Enter only Digits</mat-error>
+                                            </mat-form-field>
+                                            &nbsp;
+
+                                            <mat-form-field appearance="outline" fxFlex="50%">
+                                                <input name="EmgPer" placeholder="Select EmgPer" [(ngModel)]="emg_per" formControlName="EmgPer" matInput />
+                                                <mat-error *ngIf="serviceForm.get('EmgPer').invalid && serviceForm.get('EmgPer').touched">EmgAmt is required Enter only Digits</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-    </form>
-</mat-card>
+
+        <!-- Modal footer  || savebtn-->
+        <div class="modal-footer">
+            <div class="footer-navigation-container">
+                <div class="modal-footer-buttons">
+                    <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                    <button type="button" class="btn btn-primary" (click)="onSubmit()" #savebutton>Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

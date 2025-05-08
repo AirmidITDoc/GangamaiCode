@@ -19,6 +19,8 @@ export class CertificateserviceService {
     return this._formBuilder.group({
             certificateId:[0],
             certificateName:["",
+               [ Validators.required,
+                Validators.pattern('^[a-zA-Z0-9 ]*$')],
                     [
                     //  Validators.required, Validators.maxLength(50),
                     //  Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")

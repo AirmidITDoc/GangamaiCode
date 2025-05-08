@@ -53,6 +53,7 @@ export class SupplierFormMasterComponent implements OnInit {
 
   ngOnInit(): void {
     this.supplierForm = this._supplierService.createSuppliermasterForm();
+    this.supplierForm.markAllAsTouched();
 
     // setTimeout(() => {
     //   this.supplierForm = this._supplierService.createSuppliermasterForm();

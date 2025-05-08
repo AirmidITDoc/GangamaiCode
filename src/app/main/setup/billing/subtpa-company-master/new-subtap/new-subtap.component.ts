@@ -33,6 +33,8 @@ export class NewSubtapComponent implements OnInit {
     ngOnInit(): void {
         
         this.subTpaForm=this._subTpaServiceMaster.createsubtpacompanyForm();
+        this.subTpaForm.markAllAsTouched();
+
         if((this.data?.subCompanyId??0) > 0){
             console.log(this.data)
             this.isActive=this.data.isActive

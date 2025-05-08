@@ -26,6 +26,7 @@ export class NewTermofpaymentComponent implements OnInit {
 
     ngOnInit(): void {
       this.termsofpaymentForm = this._TermsOfPaymentMasterService.createtermsofpaymentForm();
+      this.termsofpaymentForm.markAllAsTouched();
       
       if((this.data?.id??0) > 0)
         {

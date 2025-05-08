@@ -45,14 +45,11 @@
                 <button mat-icon-button matTooltip="print" (click)="viewgetGRNReportPdf(element)">
                     <mat-icon>print</mat-icon>
                 </button>
-                <button mat-icon-button (click)="onEdit(element)" matTooltip="Edit">
-                    <mat-icon title="Edit Menu" *ngIf="element.isVerified == 1" [disabled]="element.disabled"
-                        class="disabled-icon">
-                        edit</mat-icon>
-                    <mat-icon title="Edit Menu" *ngIf="element.isVerified == 0">
-                        edit</mat-icon>
+                <button mat-icon-button (click)="onEdit(element)" matTooltip="Edit" *ngIf="!element.isVerified"  >
+                    <mat-icon title="Edit Menu">edit</mat-icon> 
                 </button>
-                <button mat-icon-button (click)="onVerify(element)" matTooltip="Verify">
+                <button mat-icon-button (click)="onVerify(element)" matTooltip="Verify"
+                *ngIf="!element.isVerified">
                     <mat-icon title="verify Menu">verified_user</mat-icon>
                 </button>
                 <button mat-icon-button (click)="GRNEmail(element)">

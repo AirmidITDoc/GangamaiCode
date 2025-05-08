@@ -76,8 +76,8 @@ export class NewCashCounterComponent implements OnInit {
                 { name: "pattern", Message: "Special char not allowed." }
             ],
             billNo: [
-                { name: "required", Message: "BillNo Name is required" },
-                { name: "maxlength", Message: "BillNo name should not be greater than 50 char." },
+                { name: "required", Message: "BillNo No is required" },
+                { name: "maxlength", Message: "BillNo no should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed, only digits." }
             ],
         };

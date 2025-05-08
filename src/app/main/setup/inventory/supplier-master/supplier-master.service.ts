@@ -25,7 +25,8 @@ export class SupplierMasterService {
             supplierName: ["",
                 [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z ]*$")
+                   // Validators.pattern("^[A-Za-z ]*$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
             ContactPerson: ["Hospital-Admin", [

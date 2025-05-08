@@ -27,6 +27,7 @@ export class NewItemClassComponent implements OnInit {
 
   ngOnInit(): void {
       this.classForm = this._ItemClassMasterService.createItemclassForm();
+      this.classForm.markAllAsTouched();
       if((this.data?.itemClassId??0) > 0)
         {
         this.isActive=this.data.isActive

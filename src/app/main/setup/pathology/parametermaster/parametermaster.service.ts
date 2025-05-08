@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { LoaderService } from "app/core/components/loader/loader.service";
 import { ApiCaller } from "app/core/services/apiCaller";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Injectable({
     providedIn: "root",
@@ -23,6 +24,7 @@ export class ParametermasterService {
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
         private _loaderService: LoaderService,
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myformSearch = this.createSearchForm();
         this.myform = this.createParameterForm();
@@ -38,28 +40,27 @@ export class ParametermasterService {
             parameterShortName: [
                 "",
                 [
-                    // Validators.required,
-                    // Validators.pattern("^[A-Za-z ]*$")
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z ]*$")
                 ],
             ],
             parameterName: [
                 "",
                 [
-                    // Validators.required,
-                    // Validators.pattern("^[A-Za-z ]*$")
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z ]*$")
                 ],
             ],
             
             printParameterName: [
                 "",
                 [
-                    // Validators.required,
-                    // Validators.pattern("^[A-Za-z ]*$")
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z ]*$")
                 ],
             ],
             unitId: ["",
-                // Validators.required
-            ],
+                [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             isNumeric: ["1"],
             isPrintDisSummary: true,
             IsBold: [true],

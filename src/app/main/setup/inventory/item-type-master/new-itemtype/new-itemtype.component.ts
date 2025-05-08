@@ -24,6 +24,7 @@ export class NewItemtypeComponent implements OnInit {
 
   ngOnInit(): void {
       this.itemtypeForm = this._ItemTypeMasterService.createItemtypeForm();
+      this.itemtypeForm.markAllAsTouched();
       if((this.data?.itemTypeId??0) > 0)
         {
         this.isActive=this.data.isActive

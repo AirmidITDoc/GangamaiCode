@@ -32,6 +32,8 @@ export class CompanyMasterListComponent implements OnInit {
     ngOnInit(): void {
         
         this.companyForm = this._CompanyMasterService.createCompanymasterForm();
+        this.companyForm.markAllAsTouched();
+
         if ((this.data?.companyId?? 0) > 0) {
 
             this.isActive=this.data.isActive
