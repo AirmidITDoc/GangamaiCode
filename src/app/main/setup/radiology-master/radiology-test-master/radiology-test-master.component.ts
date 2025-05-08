@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { RadiologyTestMasterService } from './radiology-test-master.service';
@@ -10,6 +10,8 @@ import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { values } from 'lodash';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -22,48 +24,78 @@ import { values } from 'lodash';
 export class RadiologyTestMasterComponent implements OnInit {
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    testName:any="";
+    searchFormGroup: FormGroup;
     
+    allColumns=[
+        { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "TestName", key: "testName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PrintTestName", key: "printTestName",width: 200, sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "CategoryName", key: "categoryId",width: 150, sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "ServiceName", key: "serviceId",width: 150, sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "AddedBy", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "IsActive", key: "isActive",width: 100, type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action",width: 100, align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data) // EDIT Records
+                    }
+                }, 
+                {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._radiologytestService.deactivateTheStatus(data.testId).subscribe((response: any) => {
+                            this.toastr.success(response.message);
+                            this.grid.bindGridData();
+                        });
+                    }
+                },
+            ]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+
+    allFilters=[
+        { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains }
+    ]
+
     gridConfig: gridModel = {
         apiUrl: "RadiologyTest/RadiologyTestList",
-        columnsList: [
-            { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "TestName", key: "testName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "PrintTestName", key: "printTestName",width: 200, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "CategoryName", key: "categoryId",width: 150, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "ServiceName", key: "serviceId",width: 150, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "AddedBy", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IsActive", key: "isActive",width: 100, type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action",width: 100, align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data) // EDIT Records
-                        }
-                    }, 
-                    // {
-                    //     action: gridActions.delete, callback: (data: any) => {
-                    //         this.onDeactive(data.testId); // DELETE Records
-                    //     }
-                    // },
-                    {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._radiologytestService.deactivateTheStatus(data.testId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    },
-                ]
-            } //Action 1-view, 2-Edit,3-delete
-        ],
+        columnsList: this.allColumns,
         sortField: "TestId",
         sortOrder: 0,
-        filters: [
-            { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
+        filters: this.allFilters
     }
-    grid: any;
+
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'TestNameSearch')
+            this.searchFormGroup.get('TestNameSearch').setValue("")
+       
+        this.onChangeFirst();
+      }
+      
+    onChangeFirst() {
+        debugger
+        this.testName = this.searchFormGroup.get('TestNameSearch').value + "%"
+        this.getfilterdata();
+    }
+
+    getfilterdata(){
+        debugger
+        this.gridConfig = {
+            apiUrl: "RadiologyTest/RadiologyTestList",
+            columnsList:this.allColumns , 
+            sortField: "TestId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "ServiceName", fieldValue: this.testName, opType: OperatorComparer.Contains }
+            ]
+        }
+        console.log(this.gridConfig)
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData(); 
+    }
 
     constructor(
         public _radiologytestService: RadiologyTestMasterService,
@@ -73,7 +105,9 @@ export class RadiologyTestMasterComponent implements OnInit {
         private _fuseSidebarService: FuseSidebarService,
     ) { }
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.searchFormGroup = this._radiologytestService.createSearchForm();
+    }
     onSearch() {}
 
     onSave(row:any = null) {
@@ -85,10 +119,7 @@ export class RadiologyTestMasterComponent implements OnInit {
             data: row
         });
         dialogRef.afterClosed().subscribe(result => {
-            if(result){
-                // this.getGenderMasterList();
-                // How to refresh Grid.
-            }
+            this.grid.bindGridData()
             console.log('The dialog was closed - Action', result);
         });
     }
@@ -129,6 +160,7 @@ export class RadiologyTestMasterComponent implements OnInit {
             }
         });
         dialogRef.afterClosed().subscribe((result) => {
+            this.grid.bindGridData()
             console.log("The dialog was closed - Insert Action", result);
             
         });

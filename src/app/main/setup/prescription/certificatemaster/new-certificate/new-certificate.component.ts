@@ -46,7 +46,8 @@ export class NewCertificateComponent implements OnInit {
 
     ngOnInit(): void {
         this.templateForm = this._CertificateserviceService.createRadiologytemplateForm();
-        if((this.data?.templateId??0) > 0)
+        this.templateForm.markAllAsTouched();
+        if((this.data?.certificateId??0) > 0)
         {
             this.isActive = this.data.isActive
             this.vTemplateDesc=this.data.certificateDesc
@@ -81,7 +82,7 @@ export class NewCertificateComponent implements OnInit {
     getValidationMessages(){
         return{
             certificateName: [
-                { name: "required", Message: "templateName Name is required" },
+                { name: "required", Message: "TemplateName is required" },
                 { name: "maxlength", Message: "templateName name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
             ]

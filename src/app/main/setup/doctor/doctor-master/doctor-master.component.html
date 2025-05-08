@@ -18,39 +18,43 @@
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
         <airmid-table [gridConfig]="gridConfig" (status)="changeStatus($event)" class="content">
             <ng-container filters>
-                <form [formGroup]="myformSearch" fxLayout="column" >
-                
-                <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>First Name</mat-label>
-                    <input matInput placeholder="Search First Name" autocomplete="off"
-                    [formGroup]="myformSearch" formControlName="firstName" (input)="onChangeFirst()"/>
-                    <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('firstName')">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
+                <form [formGroup]="myformSearch" fxLayout="column">
 
-                <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Last Name</mat-label>
-                    <input matInput placeholder="Search Last Name" autocomplete="off"
-                    [formGroup]="myformSearch" formControlName="lastName" (input)="onChangeFirst()"/>
-                    <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('lastName')">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>First Name</mat-label>
+                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myformSearch"
+                            formControlName="firstName" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('firstName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
 
-                <mat-radio-group value="2" [formGroup]="myformSearch" formControlName="IsConsultant" 
-                 (change)="onChangeFirst()" fxLayoutAlign="center center">
-                    <mat-radio-button value="2">All</mat-radio-button>
-                    <mat-radio-button mat-fab value="1">IsConsultant</mat-radio-button>
-                    <mat-radio-button mat-fab value="0">IsRefDoc</mat-radio-button>
-                </mat-radio-group>
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Last Name</mat-label>
+                        <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myformSearch"
+                            formControlName="lastName" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('lastName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                   
+                    <mat-radio-group value="2" [formGroup]="myformSearch" formControlName="FlagActive"
+                        (change)="onChangeFirst()" fxLayoutAlign="center center">
+                        <mat-radio-button value="2">All</mat-radio-button>
+                        <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
+                        <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
+                    </mat-radio-group>
 
-                <mat-radio-group value="2" [formGroup]="myformSearch" formControlName="FlagActive" 
-                 (change)="onChangeFirst()" fxLayoutAlign="center center">
-                    <mat-radio-button value="2">All</mat-radio-button>
-                    <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
-                    <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                </mat-radio-group>
+                    <div fxLayout="column" class="gap-4 ">
+                        <span style="font-weight: bold;">Doctor Type :</span>
+                        <mat-slide-toggle name="IsConsultant" (change)="onChangeFirst()" formControlName="IsConsultant">
+                            IsConsultant
+                        </mat-slide-toggle>
+
+                        <mat-slide-toggle name="IsRef" formControlName="IsRef">
+                            IsRefDoctor
+                        </mat-slide-toggle>
+                    </div>
 
                 </form>
             </ng-container>

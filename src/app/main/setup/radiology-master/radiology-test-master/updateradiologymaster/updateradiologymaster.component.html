@@ -38,7 +38,7 @@
                             [value]="data?.categoryId"
                             [formGroup]="testForm"
                             [validations]="getValidationMessages().categoryId"
-                            (selectDdlObject)="selectChangeCategory($event)"
+                            (selectionChange)="selectChangeCategory($event)"
                             [mode]="autocompleteModeCategory">
                         </airmid-dropdown>
                     </div>
@@ -58,24 +58,23 @@
                         <airmid-dropdown 
                             label="ServiceName" 
                             formControlName="serviceId" 
-                            [value]="data?.serviceId"
                             [formGroup]="testForm"
                             [validations]="getValidationMessages().serviceId"
-                            (selectDdlObject)="selectChangeservice($event)"
+                            (selectionChange)="selectChangeservice($event)"
                             [mode]="autocompleteModeService">
                         </airmid-dropdown>
                     </div>
                 </div>
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox 
+                        <airmid-dropdown 
                             label="TemplateName" 
                             formControlName="templateName" 
-                            [value]="data?.templateName"
                             [formGroup]="testForm"
                             [validations]="getValidationMessages().templateName"
-                            [maxLength]="50">
-                        </airmid-textbox>
+                            (selectionChange)="selectChangetemplate($event)"
+                            [mode]="autocompleteModeRadioTemp">
+                        </airmid-dropdown>
                     </div>
 
                     <div matTooltip="Select All Value to enable this button!!">

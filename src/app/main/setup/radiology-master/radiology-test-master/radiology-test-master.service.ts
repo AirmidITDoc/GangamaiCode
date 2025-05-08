@@ -6,16 +6,16 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class RadiologyTestMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
     AddParameterFrom: FormGroup;
 
-    constructor( private _httpClient: ApiCaller,
-         private _formBuilder: UntypedFormBuilder,
-         private _FormvalidationserviceService: FormvalidationserviceService) {
+    constructor(private _httpClient: ApiCaller,
+        private _formBuilder: UntypedFormBuilder,
+        private _FormvalidationserviceService: FormvalidationserviceService) {
         this.myform = this.createRadiologytestForm();
         this.myformSearch = this.createSearchForm();
         this.AddParameterFrom = this.createAddparaFrom();
@@ -26,9 +26,9 @@ export class RadiologyTestMasterService {
             testId: [0],
             testName: ["", [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
             printTestName: ["", [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
-            categoryId: ["",[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            serviceId: ["",[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            templateName:[""],
+            categoryId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            serviceId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            templateName: [""],
             mRadiologyTemplateDetails: [
                 {
                     ptemplateId: 0,
@@ -36,14 +36,14 @@ export class RadiologyTestMasterService {
                     templateId: 0
                 }
             ],
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
 
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-        TestNameSearch: [""],
-        IsDeletedSearch: ["2"],
+            TestNameSearch: [""],
+            IsDeletedSearch: ["2"],
         });
     }
 
@@ -58,18 +58,24 @@ export class RadiologyTestMasterService {
         this.createRadiologytestForm();
         this.createSearchForm();
     }
-    
+
 
     public testMasterSave(Param: any) {
-    if (Param.testId) {
-        return this._httpClient.PutData("RadiologyTest/Edit/" + Param.testId, Param);
-    } else return this._httpClient.PostData("RadiologyTest/InsertEDMX", Param);
+        if (Param.testId) {
+            return this._httpClient.PutData("RadiologyTest/Edit/" + Param.testId, Param);
+        } else return this._httpClient.PostData("RadiologyTest/InsertEDMX", Param);
+    }
+
+    public gettemplateMasterComboList(param) {
+        return this._httpClient.PostData(
+            "RadiologyTest/TemplateMasterList", param
+        );
     }
 
     populateForm(employee) {
         this.myform.patchValue(employee);
     }
-    
+
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("RadiologyTest?Id=" + m_data.toString());
     }

@@ -136,8 +136,8 @@ export class DoctorMasterService {
             firstName: [""],
             lastName: [""],
             IsDeletedSearch: ["2"],
-            IsConsultant: ["2"],
-            IsRef: ["1"],
+            IsConsultant: [true],
+            IsRef: [false],
             FlagActive:["2"]
         });
     }
