@@ -371,11 +371,11 @@ export class NewPurchaseorderComponent {
     const itemList = this.dsItemNameList.data;
     const netAmount = itemList.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
     const updatableFormValues: FinalFormModel = {
-      TotalAmt: itemList.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0).toFixed(2),
-      VatAmount: itemList.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0).toFixed(2),
-      NetPayamt: netAmount.toFixed(2),
+      TotalAmt: itemList.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0).toFixed(4),
+      VatAmount: itemList.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0).toFixed(4),
+      NetPayamt: netAmount.toFixed(4),
       RoundingAmt: Math.round(netAmount),
-      DiscAmount: itemList.reduce((sum, { DisAmount }) => sum += +(DisAmount || 0), 0).toFixed(2)
+      DiscAmount: itemList.reduce((sum, { DisAmount }) => sum += +(DisAmount || 0), 0).toFixed(4)
     } as FinalFormModel;
     this.RoundingAmt = Math.round(netAmount)
     form.patchValue({
@@ -474,7 +474,7 @@ export class NewPurchaseorderComponent {
     this.vSGSTPer = obj.sgstPer
     this.vIGSTPer = obj.igstPer
 
-    this.vTotalAmount = (parseInt(this.vQty) * parseFloat(this.vRate)).toFixed(2);
+    this.vTotalAmount = (parseInt(this.vQty) * parseFloat(this.vRate)).toFixed(4);
     this.vNetAmount = this.vTotalAmount;
     this.vGSTPer = (obj.SGSTPer + obj.CGSTPer + obj.IGSTPer);
     this.vSpecification = obj.Specification || '';
@@ -580,7 +580,7 @@ export class NewPurchaseorderComponent {
       });
       return;
     }
-
+if(!this.FinalPurchaseform.invalid){
     let InsertpurchaseDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
       // console.log(element)
@@ -623,7 +623,7 @@ export class NewPurchaseorderComponent {
       "freightAmount": this.FinalPurchaseform.get('Freight').value || 0,
       "octriAmount": this.FinalPurchaseform.get('OctriAmount').value || 0,
       "grandTotal": this.FinalNetAmount,
-      "isclosed": true,
+      "isclosed": false,
       "isVerified": false,
       "remarks": this.FinalPurchaseform.get('Remark').value || '',
       "taxId": 0,
@@ -651,7 +651,18 @@ export class NewPurchaseorderComponent {
       }
 
     });
+  }else {
+    let invalidFields = [];
+    if (this.FinalPurchaseform.invalid) {
+        for (const controlName in this.FinalPurchaseform.controls) {
+            if (this.FinalPurchaseform.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
+        }
+    }
+    if (invalidFields.length > 0) {
+        invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+    }
 
+}
   }
   viewgetPurchaseorderReportPdf(PurchaseID) {
     this.commonService.Onprint("PurchaseID", PurchaseID, "Purchaseorder");
@@ -693,10 +704,10 @@ export class NewPurchaseorderComponent {
   //   let Qty = this.userFormGroup.get('Qty').value
   //   if (Qty > 0 && this.vRate > 0) {
   //     if (Qty && this.vRate) {
-  //       this.vTotalAmount = ((this.vRate) * (this.vQty)).toFixed(2);
+  //       this.vTotalAmount = ((this.vRate) * (this.vQty)).toFixed(4);
   //       this.vNetAmount = this.vTotalAmount;
   //       //Dicount calculation
-  //       this.vDiscAmt = ((this.vTotalAmount * this.vDis) / 100).toFixed(2);
+  //       this.vDiscAmt = ((this.vTotalAmount * this.vDis) / 100).toFixed(4);
   //       let totalamt = this.vTotalAmount - this.userFormGroup.get('DiscAmount').value;
   //       //GST Calculation 
   //     }
@@ -718,26 +729,26 @@ export class NewPurchaseorderComponent {
   //   }
   //   if (disc) {
   //     let disc = this.userFormGroup.get('Disc').value
-  //     this.vNetAmount = ((this.vTotalAmount) - (this.userFormGroup.get('DiscAmount').value)).toFixed(2);
+  //     this.vNetAmount = ((this.vTotalAmount) - (this.userFormGroup.get('DiscAmount').value)).toFixed(4);
   //     if (this.userFormGroup.get('GSTType').value.Name == "GST After Disc") {
 
-  //       this.vDiscAmt = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) / 100).toFixed(2);
-  //       let totalamt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDiscAmt)).toFixed(2);
-  //       this.vSGSTAmt = ((parseFloat(totalamt) * parseFloat(this.vSGSTPer)) / 100).toFixed(2);
-  //       this.vCGSTAmt = ((parseFloat(totalamt) * parseFloat(this.vCGSTPer)) / 100).toFixed(2);
-  //       this.vIGSTAmt = ((parseFloat(totalamt) * parseFloat(this.vIGSTPer)) / 100).toFixed(2);
-  //       this.vGSTAmt = ((parseFloat(totalamt) * parseFloat(this.vGSTPer)) / 100).toFixed(2);
-  //       this.vNetAmount = (parseFloat(totalamt) + parseFloat(this.vGSTAmt)).toFixed(2);
+  //       this.vDiscAmt = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) / 100).toFixed(4);
+  //       let totalamt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDiscAmt)).toFixed(4);
+  //       this.vSGSTAmt = ((parseFloat(totalamt) * parseFloat(this.vSGSTPer)) / 100).toFixed(4);
+  //       this.vCGSTAmt = ((parseFloat(totalamt) * parseFloat(this.vCGSTPer)) / 100).toFixed(4);
+  //       this.vIGSTAmt = ((parseFloat(totalamt) * parseFloat(this.vIGSTPer)) / 100).toFixed(4);
+  //       this.vGSTAmt = ((parseFloat(totalamt) * parseFloat(this.vGSTPer)) / 100).toFixed(4);
+  //       this.vNetAmount = (parseFloat(totalamt) + parseFloat(this.vGSTAmt)).toFixed(4);
 
   //     } else {
-  //       this.vDiscAmt = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) / 100).toFixed(2);
-  //       this.vSGSTAmt = ((parseFloat(this.vTotalAmount) * parseFloat(this.vSGSTPer)) / 100).toFixed(2);
-  //       this.vCGSTAmt = ((parseFloat(this.vTotalAmount) * parseFloat(this.vCGSTPer)) / 100).toFixed(2);
-  //       this.vIGSTAmt = ((parseFloat(this.vTotalAmount) * parseFloat(this.vIGSTPer)) / 100).toFixed(2);
-  //       this.vGSTAmt = ((parseFloat(this.vTotalAmount) * parseFloat(this.vGSTPer)) / 100).toFixed(2);
-  //       let totalamt = (parseFloat(this.vTotalAmount) + (parseFloat(this.vGSTAmt))).toFixed(2);
+  //       this.vDiscAmt = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) / 100).toFixed(4);
+  //       this.vSGSTAmt = ((parseFloat(this.vTotalAmount) * parseFloat(this.vSGSTPer)) / 100).toFixed(4);
+  //       this.vCGSTAmt = ((parseFloat(this.vTotalAmount) * parseFloat(this.vCGSTPer)) / 100).toFixed(4);
+  //       this.vIGSTAmt = ((parseFloat(this.vTotalAmount) * parseFloat(this.vIGSTPer)) / 100).toFixed(4);
+  //       this.vGSTAmt = ((parseFloat(this.vTotalAmount) * parseFloat(this.vGSTPer)) / 100).toFixed(4);
+  //       let totalamt = (parseFloat(this.vTotalAmount) + (parseFloat(this.vGSTAmt))).toFixed(4);
 
-  //       this.vNetAmount = ((parseFloat(totalamt)) - parseFloat(this.vDiscAmt)).toFixed(2);
+  //       this.vNetAmount = ((parseFloat(totalamt)) - parseFloat(this.vDiscAmt)).toFixed(4);
   //     }
   //   }
   // }
@@ -747,38 +758,38 @@ export class NewPurchaseorderComponent {
     this.FinalNetAmount = element.reduce((sum, { NetAmount }) => sum += +(NetAmount), 0);
 
     let handlingCharges = this.FinalPurchaseform.get('HandlingCharges').value || 0;
-    this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(handlingCharges)).toFixed(2);
+    this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(handlingCharges)).toFixed(4);
 
     let transportChanges = this.FinalPurchaseform.get('TransportCharges').value || 0;
-    this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(transportChanges)).toFixed(2);
+    this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(transportChanges)).toFixed(4);
 
     let Freight = this.FinalPurchaseform.get('Freight').value || 0;
-    this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(Freight)).toFixed(2);
+    this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(Freight)).toFixed(4);
 
     let OctriAmt = this.FinalPurchaseform.get('OctriAmount').value || 0;
-    this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(OctriAmt)).toFixed(2);
+    this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(OctriAmt)).toFixed(4);
 
     return this.FinalNetAmount;
   }
 
   getTotalGST(element) {
-    this.GSTAmount = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(2);
+    this.GSTAmount = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(4);
 
     return this.GSTAmount;
-    this.CGSTAmount = (element.reduce((sum, { CGSTAmt }) => sum += +(CGSTAmt || 0), 0)).toFixed(2);
-    this.SGSTAmount = (element.reduce((sum, { SGSTAmt }) => sum += +(SGSTAmt || 0), 0)).toFixed(2);
-    this.IGSTAmount = (element.reduce((sum, { IGSTAmt }) => sum += +(IGSTAmt || 0), 0)).toFixed(2);
+    this.CGSTAmount = (element.reduce((sum, { CGSTAmt }) => sum += +(CGSTAmt || 0), 0)).toFixed(4);
+    this.SGSTAmount = (element.reduce((sum, { SGSTAmt }) => sum += +(SGSTAmt || 0), 0)).toFixed(4);
+    this.IGSTAmount = (element.reduce((sum, { IGSTAmt }) => sum += +(IGSTAmt || 0), 0)).toFixed(4);
   }
 
   getTotalDisc(element) {
     this.DiscAmount = element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0);
     if (this.DiscAmount > 0)
-      this.DiscAmount = this.DiscAmount.toFixed(2);
+      this.DiscAmount = this.DiscAmount.toFixed(4);
     return this.DiscAmount;
   }
 
   getTotalAmt(element) {
-    this.FinalTotalAmt = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
+    this.FinalTotalAmt = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(4);
     return this.FinalTotalAmt;
   }
   highlight(contact) {
@@ -903,7 +914,7 @@ export class NewPurchaseorderComponent {
 
     // Calculate discount amount
     const totalAmount = Number(values.TotalAmount || 0);
-    const discountAmount = Number(((totalAmount * discountPercentage) / 100).toFixed(2));
+    const discountAmount = Number(((totalAmount * discountPercentage) / 100).toFixed(4));
 
     // Update form with new discount amount
     form.patchValue({
@@ -923,11 +934,11 @@ export class NewPurchaseorderComponent {
     // Update form with calculated values
     form.patchValue({
       IGST: type === GSTType.GST_AFTER_DISC ? 0 : values.igst,
-      CGSTAmount: calculation.cgstAmount.toFixed(2),
-      SGSTAmount: calculation.sgstAmount.toFixed(2),
-      IGSTAmount: calculation.igstAmount.toFixed(2),
-      GSTAmount: calculation.totalGSTAmount.toFixed(2),
-      NetAmount: calculation.netAmount.toFixed(2)
+      CGSTAmount: calculation.cgstAmount.toFixed(4),
+      SGSTAmount: calculation.sgstAmount.toFixed(4),
+      IGSTAmount: calculation.igstAmount.toFixed(4),
+      GSTAmount: calculation.totalGSTAmount.toFixed(4),
+      NetAmount: calculation.netAmount.toFixed(4)
     }, { emitEvent: false });
   }
 
@@ -960,13 +971,13 @@ export class NewPurchaseorderComponent {
       return {
         ...item,
         IGST: item.GSTType === GSTType.GST_AFTER_DISC ? 0 : values.igst,
-        CGSTAmount: Number(calculation.cgstAmount.toFixed(2)),
-        SGSTAmount: Number(calculation.sgstAmount.toFixed(2)),
-        IGSTAmount: Number(calculation.igstAmount.toFixed(2)),
-        VatAmount: Number(calculation.totalGSTAmount.toFixed(2)),
-        // GST: Number(calculation.totalGSTAmount.toFixed(2)),
-        GSTAmount: Number(calculation.totalGSTAmount.toFixed(2)),
-        NetAmount: Number(calculation.netAmount.toFixed(2)),
+        CGSTAmount: Number(calculation.cgstAmount.toFixed(4)),
+        SGSTAmount: Number(calculation.sgstAmount.toFixed(4)),
+        IGSTAmount: Number(calculation.igstAmount.toFixed(4)),
+        VatAmount: Number(calculation.totalGSTAmount.toFixed(4)),
+        // GST: Number(calculation.totalGSTAmount.toFixed(4)),
+        GSTAmount: Number(calculation.totalGSTAmount.toFixed(4)),
+        NetAmount: Number(calculation.netAmount.toFixed(4)),
       };
     } catch (error) {
       console.error('Error calculating GST:', error);

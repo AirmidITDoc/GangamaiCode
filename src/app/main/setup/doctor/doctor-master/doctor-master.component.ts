@@ -123,8 +123,18 @@ export class DoctorMasterComponent implements OnInit {
             this.f_name = this.myformSearch.get('firstName').value + "%"
             this.l_name = this.myformSearch.get('lastName').value + "%"
             this.active = this.myformSearch.get('FlagActive').value 
-            this.isCon = this.myformSearch.get('IsConsultant').value 
-            this.isRef = this.myformSearch.get('IsRef').value 
+            // this.isCon = this.myformSearch.get('IsConsultant').value 
+            // this.isRef = this.myformSearch.get('IsRef').value 
+            if(this.myformSearch.get('IsConsultant').value == true){
+                this.isCon = "1"
+            }else{
+                this.isCon = "0"
+            }
+            if(this.myformSearch.get('IsRef').value == true){
+                this.isRef = "1"
+            }else{
+                this.isRef = "0"
+            }
             this.getfilterdata();
         }
     

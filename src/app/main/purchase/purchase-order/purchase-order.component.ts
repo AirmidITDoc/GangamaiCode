@@ -70,6 +70,13 @@ export class PurchaseOrderComponent implements OnInit {
     { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
     { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA' , width: 100, type: gridColumnTypes.amount },
     { heading: "Disc Amt", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 , type: gridColumnTypes.amount },
+    { heading: "GST Amt", key: "taxAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 , type: gridColumnTypes.amount },
+    { heading: "Handling Amt", key: "handlingCharges", sort: true, align: 'left', emptySign: 'NA', width: 100 , type: gridColumnTypes.amount },
+    { heading: "Freight Amt", key: "freightAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 , type: gridColumnTypes.amount },
+    { heading: "Octri Amt", key: "octriAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 , type: gridColumnTypes.amount },
+    { heading: "Transport Amt", key: "transportChanges", sort: true, align: 'left', emptySign: 'NA', width: 100 , type: gridColumnTypes.amount },
+  
+  
     { heading: "Net Amt", key: "grandTotal", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
     { heading: "Remark", key: "remarks", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "AddedByName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA', width: 150  },
@@ -121,7 +128,7 @@ export class PurchaseOrderComponent implements OnInit {
         { heading: "GSTAmount", key: "vatAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
        
 
-        { heading: "TotalAmount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "TotalAmount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
      
         { heading: "NetAmount", key: "grandTotalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
       ],
@@ -148,7 +155,7 @@ export class PurchaseOrderComponent implements OnInit {
 
 
   viewgetPurchaseorderReportPdf(element) {
-    this.commonService.Onprint("PurchaseID", element.PurchaseID, "Purchaseorder");
+    this.commonService.Onprint("PurchaseID", element.purchaseID, "Purchaseorder");
   }
 
   onSave(row: any = null) {

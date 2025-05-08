@@ -34,6 +34,12 @@
                                     <airmid-textbox label="Supplier Name" formControlName="supplierName" [value]="registerObj?.supplierName" [formGroup]="supplierForm" [validations]="getValidationMessages().supplierName" [maxLength]="50">
                                     </airmid-textbox>
                                 </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Contact Person" formControlName="ContactPerson" [value]="registerObj?.contactPerson" [formGroup]="supplierForm" [maxLength]="50">
+                                    </airmid-textbox>
+                                </div>
+
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-textbox label="MobileNo" formControlName="mobile" [formGroup]="supplierForm" [validations]="getValidationMessages().mobile" [maxLength]="10">
                                     </airmid-textbox>

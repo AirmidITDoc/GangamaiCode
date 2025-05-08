@@ -29,7 +29,7 @@ export class SupplierMasterService {
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
-            ContactPerson: ["Hospital-Admin", [
+            ContactPerson: ["", [
                 // Validators.required,
                 // Validators.pattern("^[a-zA-Z._ -]+$"),
                 // Validators.maxLength(100),
@@ -86,7 +86,7 @@ export class SupplierMasterService {
             ],
             CurrencyId: [1],
             Octroi: [0],
-            Freight: ['0',
+            Freight: [0,
                 [
                     // Validators.required,
                     // Validators.pattern("^[0-9]*$"),
@@ -106,21 +106,22 @@ export class SupplierMasterService {
                     // Validators.pattern("^\\s*[A-Z]{5}[0-9]{4}[A-Z]{1}\\s*$")
                 ]
             ],
-            taluka: [''],
+            taluka: [0],
             licNo: [''],
             pinCode: ['', [Validators.pattern("^[0-9]*$"),
                 Validators.minLength(6),
                 Validators.maxLength(6),]],
-            taxNature: ['', Validators.pattern("^[0-9]*$")],
+            taxNature: [0, Validators.pattern("^[0-9]*$")],
             expDate: [new Date()],
             dlno: [''],
-            bankId: [''],
-            bankName: [],
+            bankId: [0],
+            bankName: [''],
             branch: [''],
-            bankNo: ['', [Validators.pattern("[0-9]{9,18}")]],
+            bankNo: [0, [Validators.pattern("[0-9]{9,18}")]],
+            // bankNo: [0, [Validators.pattern("[0-9]{9,18}"), Validators.minLength(9), Validators.maxLength(18)]],
             ifsccode: ["", [Validators.pattern("^[A-Z]{4}0[A-Z0-9]{6}$")]],
             venderTypeId:[0],
-            openingBalance: ['', [Validators.pattern("^[0-9]*$"),
+            openingBalance: [0, [Validators.pattern("^[0-9]*$"),
                 Validators.minLength(1),
                 Validators.maxLength(10),]],
             supplierTime: [(new Date()).toISOString()],
