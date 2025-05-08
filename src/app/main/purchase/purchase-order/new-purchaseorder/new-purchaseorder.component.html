@@ -39,8 +39,8 @@
                                 <form [formGroup]="userFormGroup" class="p-0" style="overflow: auto;">
                                     <div fxLayout="row" class="gap-2">
 
-                                        <airmid-dropdown label="Store Name" formControlName="StoreId" fxFlex="16%"
-                                            [formGroup]="userFormGroup" [mode]="autocompletestore"
+                                        <airmid-dropdown label="Store Name" formControlName="StoreId" fxFlex="16%" 
+                                            [formGroup]="userFormGroup" [mode]="autocompletestore" [disabled]="true"
                                             (selectionChange)="selectChangeStore($event)">
                                         </airmid-dropdown>
 
@@ -55,10 +55,9 @@
                                         <airmid-textbox fxFlex="13%" label="Contact Person" formControlName="Contact"
                                             [(ngModel)]="vContact" [formGroup]="userFormGroup"
                                             [readonly]="true"></airmid-textbox>
-                                        <!-- [readonly]="true" -->
-
+                                       
                                         <airmid-textbox label="Address" formControlName="Address" [(ngModel)]="vAddress"
-                                            [formGroup]="userFormGroup">
+                                            [formGroup]="userFormGroup" [readonly]="true">
                                         </airmid-textbox>
 
                                         <airmid-textbox fxFlex="6%" label="Mobile No" formControlName="Mobile"
@@ -433,7 +432,7 @@
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="Action">
+                            <ng-container matColumnDef="Action" stickyEnd>
                                 <mat-header-cell *matHeaderCellDef style="color: white;" class="w-70">
                                     Action
                                 </mat-header-cell>

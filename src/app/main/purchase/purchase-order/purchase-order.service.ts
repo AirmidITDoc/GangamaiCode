@@ -235,12 +235,12 @@ export class PurchaseOrderService {
         debugger
           contact.TotalQty = (Number(contact.Qty || 0)) * Number(contact.ConversionFactor || 1);
           this.calculateCellTotalAmount(contact);
-          const discountAmount = ((Number(contact.TotalAmount || 0) * Number(contact.DiscPer || 0)) / 100).toFixed(2);
+          const discountAmount = ((Number(contact.TotalAmount || 0) * Number(contact.DiscPer || 0)) / 100).toFixed(4);
           contact.DiscAmount = discountAmount;
           
       }
       public calculateCellTotalAmount(contact: ItemNameList): void {
-          contact.TotalAmount = (Number(contact.Qty || 0) * Number(contact.Rate || 0)).toFixed(2);
+          contact.TotalAmount = (Number(contact.Qty || 0) * Number(contact.Rate || 0)).toFixed(4);
       }
 
       public calculateGSTAfterDisc(values: GSTCalculationResult): GSTCalculation {

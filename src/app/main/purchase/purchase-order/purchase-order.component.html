@@ -36,7 +36,7 @@
                         <mat-icon> print</mat-icon>
                     </button>
 
-                    <button mat-icon-button matTooltip="Edit Purchase order" (click)="OnEdit(element)">
+                    <button mat-icon-button matTooltip="Edit Purchase order" (click)="OnEdit(element)" *ngIf="!element.isVerified">
                         <mat-icon>edit</mat-icon>
                     </button>
 
@@ -65,10 +65,7 @@
                             [(toValue)]="gridConfig.filters[1].fieldValue">
                         </airmid-datepicker>
 
-                        <!-- <airmid-dropdown label="Store Name" formControlName="StoreId"
-                            (selectionChange)="ListView($event)" [formGroup]="mysearchform" [mode]="autocompletestore">
-                        </airmid-dropdown> -->
-
+                  
                         <airmid-dropdown label="Store Name" formControlName="StoreId" [formGroup]="mysearchform" fxFlex
                             [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)"
                             (keyup)="selectChangeStore($event)">
@@ -79,22 +76,7 @@
                             [mode]="autocompleteSupplier">
                         </airmid-dropdown>
 
-                        <div fxFlex fxLayout="row">
-                            <!-- <mat-radio-group name="Status" fxLayout="row" value="1"
-                                        formControlName="Status" style="padding: 6px;" class="gap-4">
-                                        <mat-label>Status:</mat-label>
-                                        <div fxLayout="row">
-                                            <mat-radio-button value='1' (keyup)="onChangeFirst($event)">Status Verify</mat-radio-button>
-                                            <mat-radio-button value='0' (keyup)="onChangeFirst($event)">Pending</mat-radio-button>
-                                        </div>
-                                    </mat-radio-group> -->
-
-
-                            <!-- <mat-slide-toggle name="Status" (change)="onChangeFirst($event)" formControlName="Status"
-                                [(ngModel)]="status">
-                               Pending / Verify 
-                            </mat-slide-toggle> -->
-
+                      
                             <div fxLayout="row" class="gap-4 ">
                                 <span style="font-weight: bold;">Status :</span>
                                 <mat-slide-toggle name="Status" (change)="onChangeFirst($event)"
@@ -102,7 +84,7 @@
                                     Verify / Pending
                                 </mat-slide-toggle>
                             </div>
-                        </div>
+                     
                     </form>
                 </ng-container>
             </airmid-table>
