@@ -66,7 +66,7 @@ export class SalesHospitalNewComponent implements OnInit {
   @ViewChild('addbutton') addbutton: ElementRef;
 
   // Form Groups
-  ItemSubform: FormGroup; 
+  ItemSubform: FormGroup;
 
   // Data Sources
   dsIndentList = new MatTableDataSource<IndentList>();
@@ -135,18 +135,18 @@ export class SalesHospitalNewComponent implements OnInit {
   v_marginamt: any = 0;
   TotalMarginAmt: any = 0;
 
-  // Payment Related 
+  // Payment Related
   balanceamt: number = 0;
   BalAmount: any = 0;
   v_PaidbyPatient: any = 0;
   v_PaidbacktoPatient: any = 0;
-  roundoffAmt: any;  
+  roundoffAmt: any;
   TotalCreditAmt: any = 0;
   TotalAdvanceAmt: any = 0;
   TotalBalanceAmt: any = 0;
   netPayAmt: number = 0;
   isPaymentSuccess: boolean = false;
-  nowDate: Date;  
+  nowDate: Date;
   PatientHeaderObj: any;
   data: any;
 
@@ -165,7 +165,7 @@ export class SalesHospitalNewComponent implements OnInit {
   isPatienttypeDisabled: boolean = true;
   chkdiscper: boolean = true;
   stockidflag: boolean = true;
-  deleteflag: boolean = true; 
+  deleteflag: boolean = true;
   Creditflag: boolean = false;
   IsCreditflag: boolean = false;
   drafttable: boolean = false;
@@ -227,10 +227,10 @@ export class SalesHospitalNewComponent implements OnInit {
   vSalesDetails: Printsal[] = [];
   vSalesIdList: any = [];
   screenFromString = 'payment-form';
-  vextAddress: any = ''; 
+  vextAddress: any = '';
 
   // Lists
-  ConcessionReasonList: any = []; 
+  ConcessionReasonList: any = [];
 
   // Print Related
   reportPrintObj: Printsal;
@@ -267,6 +267,7 @@ export class SalesHospitalNewComponent implements OnInit {
   paytmAmt: any;
   UTRNO: any;
   selectedItem: SalesBatchItemModel;
+  selectedTableRowItem: IndentList;
 
   constructor(
     public _BrowsSalesBillService: BrowsSalesBillService,
@@ -288,10 +289,10 @@ export class SalesHospitalNewComponent implements OnInit {
     this.PatientHeaderObj = this.data;
   }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     this.getItemSubform();
     this.getConcessionReasonList();
-    this.getStoredet();  
+    this.getStoredet();
     this.getDraftorderList();
 
     if (this.vPharExtOpt == true) {
@@ -319,15 +320,14 @@ export class SalesHospitalNewComponent implements OnInit {
     }
   }
 
-
   RegNo: any;
-  WardName:any;
-  BedName:any;
+  WardName: any;
+  BedName: any;
   DoctorNamecheck: boolean = false;
   IPDNocheck: boolean = false;
   OPDNoCheck: boolean = false;
-  autocompletestore: string = "Store";
-  //New code 
+  autocompletestore: string = 'Store';
+  //New code
 
   onChangePatientType(event) {
     if (event.value == 'OP') {
@@ -360,17 +360,17 @@ export class SalesHospitalNewComponent implements OnInit {
   }
 
   getSelectedObjRegIP(obj) {
-    console.log(obj)
+    console.log(obj);
     let IsDischarged = 0;
     IsDischarged = obj.isDischarged;
     if (IsDischarged == 1) {
-      Swal.fire('Selected Patient is already discharged'); 
+      Swal.fire('Selected Patient is already discharged');
       this.RegId = '';
     } else {
       console.log(obj);
       this.DoctorNamecheck = true;
       this.IPDNocheck = true;
-      this.OPDNoCheck = false; 
+      this.OPDNoCheck = false;
       this.PatientName = obj.firstName + ' ' + obj.lastName;
       this.RegId = obj.regID;
       this.OP_IP_Id = obj.admissionID;
@@ -380,17 +380,17 @@ export class SalesHospitalNewComponent implements OnInit {
       this.TariffName = obj.tariffName;
       this.CompanyName = obj.CompanyName;
       this.Age = obj.age;
-      this.WardName = obj.roomName
-      this.BedName = obj.bedName
+      this.WardName = obj.roomName;
+      this.BedName = obj.bedName;
     }
     this.getBillSummary();
-  } 
+  }
 
   getSelectedObjOP(obj) {
-    console.log(obj); 
+    console.log(obj);
     this.OPDNoCheck = true;
     this.DoctorNamecheck = false;
-    this.IPDNocheck = false; 
+    this.IPDNocheck = false;
     this.PatientName = obj.firstName + ' ' + obj.lastName;
     this.RegId = obj.regID;
     this.OP_IP_Id = obj.VisitId;
@@ -400,11 +400,11 @@ export class SalesHospitalNewComponent implements OnInit {
     this.TariffName = obj.tariffName;
     this.CompanyName = obj.CompanyName;
     this.Age = obj.age;
-    this.WardName = obj.roomName
-    this.BedName = obj.bedName 
-     
+    this.WardName = obj.roomName;
+    this.BedName = obj.bedName;
+
     this.getBillSummary();
-  } 
+  }
   onPatientChange(event: any): void {
     console.log(event);
   }
@@ -413,9 +413,13 @@ export class SalesHospitalNewComponent implements OnInit {
     console.log('Event: ', event);
     this.ItemName = event.itemName;
     this.ItemId = event.itemId;
-    this.getBatch(); 
+    this.StoreId = event.storeId;
+    this.getBatch(event.itemId, event.storeId);
   }
-  getBatch() {  
+
+  // NOTE: If `isEditable` true then it means this popup will open for table row data
+
+  getBatch(itemId: number, storeId: number, isEditable = false) {
     const dialogRef = this._matDialog.open(SalePopupComponent, {
       maxWidth: '800px',
       minWidth: '800px',
@@ -423,37 +427,66 @@ export class SalesHospitalNewComponent implements OnInit {
       height: '380px',
       disableClose: true,
       data: {
-        ItemId: this._salesService.ItemSearchGroup.get('ItemId').value.itemId,
-        StoreId: this._salesService.ItemSearchGroup.get('ItemId').value.storeId,
+        ItemId: itemId || this._salesService.ItemSearchGroup.get('ItemId').value.itemId,
+        StoreId: storeId || this._salesService.ItemSearchGroup.get('ItemId').value.storeId,
       },
     });
     dialogRef.afterClosed().subscribe((result1) => {
       let isEscaped = result1.vEscflag;
 
-      if (isEscaped) {
+      if (isEscaped && !isEditable) {
         this._salesService.ItemSearchGroup.get('ItemId').setValue('a');
         return;
         // this.itemid.nativeElement.focus();
       }
-      const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
-      if (QtyElement) {
-        QtyElement.focus();
-      }
       let result = result1.selectedData as SalesBatchItemModel;
- 
       const isAlreadyExists = this.Itemchargeslist.find((i) => i.StockId === result.stockId && i.ItemId === result.itemId);
       if (isAlreadyExists) {
         this.toastr.warning('Selected Item already added in the list', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
-        const ItemIdElement = document.querySelector(`[name='ItemId']`) as HTMLElement;
-        if (ItemIdElement) {
-          ItemIdElement.focus();
+
+        if (!isEditable) {
+          const ItemIdElement = document.querySelector(`[name='ItemId']`) as HTMLElement;
+          if (ItemIdElement) {
+            ItemIdElement.focus();
+          }
+          this.ItemFormreset();
+        } else {
+          // Focus table item name textbox
         }
-        this.ItemFormreset(); 
         return;
       }
 
+      const QtyElement = this.getElementByName(isEditable ? 'tableQty' : 'Qty') as HTMLElement;
+      if (QtyElement) {
+        QtyElement.focus();
+      }
+
+
+      this.selectedItem = result;
+      if (isEditable) {
+        // If it is table row then update new values
+        const updatedItem = {
+          ItemName: result.itemName,
+          BatchNo: result.batchNo,
+          BatchExpDate: this.datePipe.transform(result.batchExpDate, 'MM-dd-yyyy'),
+          GSTPer: result.cgstPer + result.sgstPer + result.igstPer,
+          UnitMRP: result.unitMRP,
+          CgstPer: result.cgstPer,
+          SgstPer: result.sgstPer,
+          IgstPer: result.igstPer,
+          StockId: result.stockId,
+          LandedRate: result.landedRate,
+          PurchaseRate: result.purchaseRate,
+        } as IndentList;
+
+        Object.assign(this.selectedTableRowItem, updatedItem);
+        this.calculateCellNetAmount(this.selectedTableRowItem);
+        this.getCellCalculation(this.selectedTableRowItem);
+        this.selectedTableRowItem = null;
+        return;
+      }
       this.BatchNo = result.batchNo;
       this.BatchExpDate = this.datePipe.transform(result.batchExpDate, 'MM-dd-yyyy');
       this.MRP = result.unitMRP;
@@ -478,9 +511,7 @@ export class SalesHospitalNewComponent implements OnInit {
       this.LandedRate = result.landedRate;
       this.PurchaseRate = result.purchaseRate;
       this.UnitMRP = result.unitMRP;
-
-      this.selectedItem = result;
-    }); 
+    });
   }
   calculateTotalAmt() {
     let qty = +this._salesService.ItemSearchGroup.get('Qty').value;
@@ -504,7 +535,7 @@ export class SalesHospitalNewComponent implements OnInit {
       this.CGSTAmt = (((this.UnitMRP * this.CgstPer) / 100) * qty).toFixed(2);
       this.SGSTAmt = (((this.UnitMRP * this.SgstPer) / 100) * qty).toFixed(2);
       this.IGSTAmt = (((this.UnitMRP * this.IgstPer) / 100) * qty).toFixed(2);
- 
+
       this.getDiscPer();
     }
   }
@@ -624,157 +655,141 @@ export class SalesHospitalNewComponent implements OnInit {
       this._salesService.ItemSearchGroup.patchValue({
         DiscPer: this.DiscPer,
       });
-      this.calculateNetAmount(); 
+      this.calculateNetAmount();
     }
   }
-//Add Item list
-OnAddUpdate() {
-  debugger
-  if (this.saleSelectedDatasource.data.length > 0) {
-    this.saleSelectedDatasource.data.forEach((element) => {
-      if (element.StockId == this.StockId) {
-        this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+  //Add Item list
+  OnAddUpdate() {
+    debugger;
+    if (this.saleSelectedDatasource.data.length > 0) {
+      this.saleSelectedDatasource.data.forEach((element) => {
+        if (element.StockId == this.StockId) {
+          this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          this.ItemFormreset();
+          return;
+        }
+      });
+    }
+    if (this.vBarcode == 0) {
+      if (this.ItemId == 0 || this.Qty == null || this.MRP == '' || this.TotalMRP == 0) {
+        this.toastr.warning('Please select Item Detail', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
-        this.ItemFormreset();
-        return
+        return;
       }
-    });
-  }  
-  if (this.vBarcode == 0) {
-    if (this.ItemId == 0 || this.Qty == null || this.MRP == '' || this.TotalMRP == 0) {
-      this.toastr.warning('Please select Item Detail', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
+    }
+    if (!this.vBarcodeflag) {
+      let Qty = this._salesService.ItemSearchGroup.get('Qty').value;
+      this.Qty = parseInt(Qty);
+      if (this.ItemName && parseInt(Qty) != 0 && this.MRP > 0 && this.NetAmt > 0) {
+        this.Itemchargeslist = this.saleSelectedDatasource.data;
+        this.Itemchargeslist.push({
+          ItemId: this.ItemId,
+          ItemName: this.ItemName,
+          BatchNo: this.BatchNo,
+          BatchExpDate: this.BatchExpDate || '01/01/1900',
+          Qty: this.Qty,
+          UnitMRP: this.MRP,
+          GSTPer: this.GSTPer || 0,
+          GSTAmount: this.GSTAmount || 0,
+          TotalMRP: this.TotalMRP,
+          DiscPer: this._salesService.ItemSearchGroup.get('DiscPer').value || 0,
+          DiscAmt: this._salesService.ItemSearchGroup.get('DiscAmt').value || 0,
+          NetAmt: this.NetAmt,
+          RoundNetAmt: Math.round(this.NetAmt),
+          StockId: this.StockId,
+          VatPer: this.VatPer,
+          VatAmount: this.GSTAmount,
+          LandedRate: this.LandedRate,
+          LandedRateandedTotal: this.LandedRateandedTotal,
+          CgstPer: this.CgstPer,
+          CGSTAmt: this.CGSTAmt,
+          SgstPer: this.SgstPer,
+          SGSTAmt: this.SGSTAmt,
+          IgstPer: this.IgstPer,
+          IGSTAmt: this.IGSTAmt,
+          PurchaseRate: this.PurchaseRate,
+          PurTotAmt: this.PurTotAmt,
+          MarginAmt: this.v_marginamt,
+          BalanceQty: this.BalQty,
+          SalesDraftId: 1,
+          StoreId: this.StoreId,
+        });
+        this.sIsLoading = '';
+        this.saleSelectedDatasource.data = this.Itemchargeslist;
+        this.ItemFormreset();
+      }
+      this.add = false;
     }
   }
-  if (!this.vBarcodeflag) { 
-    let Qty = this._salesService.ItemSearchGroup.get('Qty').value;
-    this.Qty = parseInt(Qty);
-    if (this.ItemName && parseInt(Qty) != 0 && this.MRP > 0 && this.NetAmt > 0) {
-      this.Itemchargeslist = this.saleSelectedDatasource.data;
-      this.Itemchargeslist.push({
-        ItemId: this.ItemId,
-        ItemName: this.ItemName,
-        BatchNo: this.BatchNo,
-        BatchExpDate: this.BatchExpDate || '01/01/1900',
-        Qty: this.Qty,
-        UnitMRP: this.MRP,
-        GSTPer: this.GSTPer || 0,
-        GSTAmount: this.GSTAmount || 0,
-        TotalMRP: this.TotalMRP,
-        DiscPer: this._salesService.ItemSearchGroup.get('DiscPer').value || 0,
-        DiscAmt: this._salesService.ItemSearchGroup.get('DiscAmt').value || 0,
-        NetAmt: this.NetAmt,
-        RoundNetAmt: Math.round(this.NetAmt),
-        StockId: this.StockId,
-        VatPer: this.VatPer,
-        VatAmount: this.GSTAmount,
-        LandedRate: this.LandedRate,
-        LandedRateandedTotal: this.LandedRateandedTotal,
-        CgstPer: this.CgstPer,
-        CGSTAmt: this.CGSTAmt,
-        SgstPer: this.SgstPer,
-        SGSTAmt: this.SGSTAmt,
-        IgstPer: this.IgstPer,
-        IGSTAmt: this.IGSTAmt,
-        PurchaseRate: this.PurchaseRate,
-        PurTotAmt: this.PurTotAmt,
-        MarginAmt: this.v_marginamt,
-        BalanceQty: this.BalQty,
-        SalesDraftId: 1,
-      });
-      this.sIsLoading = '';
-      this.saleSelectedDatasource.data = this.Itemchargeslist;
-      this.ItemFormreset();
-    }
-    this.add = false;
+
+  ItemFormreset() {
+    this.BatchNo = '';
+    this.BatchExpDate = '01/01/1900';
+    this.MRP = 0;
+    this.Qty = '';
+    this.Bal = 0;
+    this.GSTPer = 0;
+    this.DiscPer = 0;
+    this.DiscAmt = 0;
+    this.TotalMRP = 0;
+    this.NetAmt = 0;
+    this.v_marginamt = 0;
+    this._salesService.ItemSearchGroup.get('ItemId').reset('a');
+    this.filteredOptions = [];
+    this.dsBalAvaListStore.data = [];
   }
-}
 
-ItemFormreset() {
-  this.BatchNo = '';
-  this.BatchExpDate = '01/01/1900';
-  this.MRP = 0;
-  this.Qty = '';
-  this.Bal = 0;
-  this.GSTPer = 0;
-  this.DiscPer = 0;
-  this.DiscAmt = 0;
-  this.TotalMRP = 0;
-  this.NetAmt = 0;
-  this.v_marginamt = 0;
-  this._salesService.ItemSearchGroup.get('ItemId').reset('a');
-  this.filteredOptions = [];
-  this.dsBalAvaListStore.data = []; 
-}
+  Formreset() {
+    this.FinalTotalAmt = 0;
+    this.FinalDiscPer = 0;
+    this.FinalDiscAmt = 0;
+    this.BalAmount = 0;
+    this.FinalGSTAmt = 0;
+    this.FinalNetAmount = 0;
+    this.ItemSubform.reset();
+    this.RegId = '';
+    this.PatientName = '';
+    this.DoctorName = '';
+    this.ItemSubform.get('PatientType').setValue('External');
+    this.ItemSubform.get('CashPay').setValue('CashPay');
 
-Formreset() {
-  this.FinalTotalAmt = 0;
-  this.FinalDiscPer = 0;
-  this.FinalDiscAmt = 0;
-  this.BalAmount = 0;
-  this.FinalGSTAmt = 0;
-  this.FinalNetAmount = 0;
-  this.ItemSubform.reset();
-  this.RegId = '';
-  this.PatientName = '';
-  this.DoctorName = '';
-  this.ItemSubform.get('PatientType').setValue('External');
-  this.ItemSubform.get('CashPay').setValue('CashPay');
+    this.IsOnlineRefNo = false;
+    this.ItemSubform.get('referanceNo').reset('');
+    this.ItemSubform.get('MobileNo').reset('');
+    this.ItemSubform.get('PatientName').reset('');
+    this.ItemSubform.get('DoctorName').reset('');
+    this.ConShow = false;
+    this.ItemSubform.get('ConcessionId').clearValidators();
+    this.ItemSubform.get('ConcessionId').updateValueAndValidity();
+    this.ItemSubform.get('ConcessionId').disable();
 
-  this.IsOnlineRefNo = false;
-  this.ItemSubform.get('referanceNo').reset('');
-  this.ItemSubform.get('MobileNo').reset('');
-  this.ItemSubform.get('PatientName').reset('');
-  this.ItemSubform.get('DoctorName').reset('');
-  this.ConShow = false;
-  this.ItemSubform.get('ConcessionId').clearValidators();
-  this.ItemSubform.get('ConcessionId').updateValueAndValidity();
-  this.ItemSubform.get('ConcessionId').disable();
-
-  this.saleSelectedDatasource.data = [];
-  this.getDraftorderList();
-  this.TotalAdvanceAmt = 0;
-  this.TotalBalanceAmt = 0;
-  this.TotalCreditAmt = 0;
-}
-deleteTableRow(event, element) {
-  // if (this.key == "Delete") {
-  let index = this.Itemchargeslist.indexOf(element);
-  if (index >= 0) {
-    this.Itemchargeslist.splice(index, 1);
     this.saleSelectedDatasource.data = [];
-    this.saleSelectedDatasource.data = this.Itemchargeslist;
+    this.getDraftorderList();
+    this.TotalAdvanceAmt = 0;
+    this.TotalBalanceAmt = 0;
+    this.TotalCreditAmt = 0;
   }
-  Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success'); 
-}
-getStoredet(){ 
-  this._salesService.getstoreDetails(this.autocompletestore).subscribe(data=>{
-    const storename = data
-    this.StoreName = storename[1].text
-    console.log( this.StoreName)
-  })
+  deleteTableRow(event, element) {
+    // if (this.key == "Delete") {
+    let index = this.Itemchargeslist.indexOf(element);
+    if (index >= 0) {
+      this.Itemchargeslist.splice(index, 1);
+      this.saleSelectedDatasource.data = [];
+      this.saleSelectedDatasource.data = this.Itemchargeslist;
+    }
+    Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
+  }
+  getStoredet() {
+    this._salesService.getstoreDetails(this.autocompletestore).subscribe((data) => {
+      const storename = data;
+      this.StoreName = storename[1].text;
+      console.log(this.StoreName);
+    });
+  }
 
-
-
-  
-}
-
-
-
-
-
-
-
-
-
-
-
- 
- 
- 
   getItemSubform() {
     this.ItemSubform = this.formBuilder.group({
       PatientName: '',
@@ -803,7 +818,7 @@ getStoredet(){
       PaidbyPatient: '',
       PaidbacktoPatient: '',
       roundoffAmt: '0',
-      StoreId:[this._loggedService.currentUserValue.user.storeId]
+      StoreId: [this._loggedService.currentUserValue.user.storeId],
     });
   }
 
@@ -817,10 +832,6 @@ getStoredet(){
     this.dateTimeObj = dateTimeObj;
   }
 
- 
- 
-
- 
   salesIdWiseObj: any;
   getTopSalesDetailsList(MobileNo) {
     var vdata = {
@@ -958,8 +969,6 @@ getStoredet(){
   }
 
   onClear() {}
-
- 
 
   Addrepeat(row) {
     console.log(row);
@@ -1122,6 +1131,11 @@ getStoredet(){
   }
 
   onSave(event) {
+    if (!this.isValidForm()) {
+      Swal.fire('Please enter valid table data.');
+      return;
+    }
+
     event.srcElement.setAttribute('disabled', true);
     let patientTypeValue1 = this.ItemSubform.get('PatientType').value;
     if (this.ItemSubform.get('PatientType').value == 'External') {
@@ -1332,7 +1346,7 @@ getStoredet(){
             this.Itemchargeslist = [];
             this._matDialog.closeAll();
             this.ItemFormreset();
-            this.isLoading123 = false; 
+            this.isLoading123 = false;
             this.ItemSubform.reset();
             this.Formreset();
             this.ItemSubform.get('ConcessionId').reset();
@@ -1550,7 +1564,7 @@ getStoredet(){
             }
           );
 
-          this.ItemFormreset(); 
+          this.ItemFormreset();
           this.Formreset();
           this.ItemSubform.get('ConcessionId').reset();
           this.saleSelectedDatasource.data = [];
@@ -1809,8 +1823,6 @@ getStoredet(){
     popupWin.document.close();
   }
 
- 
-
   // getCellCalculation(contact, Qty) {
   //   //
   //   let Qtyfinal = this.Qty;
@@ -2048,7 +2060,6 @@ getStoredet(){
         });
       }
     });
- 
   }
 
   getFinalCalculation(contact, DraftQty) {
@@ -2117,7 +2128,7 @@ getStoredet(){
 
     // this.Itemchargeslist=[];
   }
- 
+
   onSaveDraftBill() {
     let NetAmt = this.ItemSubform.get('FinalNetAmount').value;
     let ConcessionId = 0;
@@ -2216,14 +2227,14 @@ getStoredet(){
       }
     );
 
-    this.ItemFormreset(); 
+    this.ItemFormreset();
     this.Formreset();
     this.ItemSubform.get('ConcessionId').reset();
     this.PatientName = '';
     this.MobileNo = '';
     this.saleSelectedDatasource.data = [];
   }
-  
+
   public onEnterpatientname(event): void {
     if (event.which === 13) {
       // this.itemid.nativeElement.focus();
@@ -2299,7 +2310,7 @@ getStoredet(){
 
   onClose() {
     this.Itemchargeslist = [];
-    this.ItemFormreset(); 
+    this.ItemFormreset();
     this.ItemSubform.reset();
     this.Formreset();
     this.ItemSubform.get('ConcessionId').reset();
@@ -2311,7 +2322,7 @@ getStoredet(){
   getOptionTextReg(option) {
     if (!option) return '';
     return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
-  } 
+  }
 
   PatientInformRest() {
     this.PatientName = '';
@@ -2633,10 +2644,9 @@ getStoredet(){
       ],
       StoreId: [
         // { name: "required", Message: "Invoice No is required" }
-    ]
+      ],
     };
   }
-
 
   keyPressAlphanumeric(event) {
     // ... existing code ...
@@ -2675,7 +2685,6 @@ getStoredet(){
     // Check validation of quantity
     let qty = +item.Qty;
     if (this.isNagative(qty)) {
-      Swal.fire('Enter valid qty');
       qty = 0;
     }
     const gstPer = +item.GSTPer;
@@ -2696,10 +2705,23 @@ getStoredet(){
     Object.assign(item, updatedItem);
     this.calculateCellNetAmount(item);
   }
+  onEnterItemName(item: IndentList): void {
+    const itemId = item.ItemId;
+    const storeId = item.StoreId;
+    this.selectedTableRowItem = item;
+    this.getBatch(itemId, storeId, true);
+  }
+
   focusNext(ref: ElementRef): void {
     ((ref as any).el?.nativeElement as HTMLElement)?.querySelector('input')?.focus();
   }
   isNagative(value: number) {
     return value < 0;
+  }
+  isValidForm(): boolean {
+    return this.saleSelectedDatasource.data.every((i) => i.Qty > 0 && i.UnitMRP > 0);
+  }
+  getElementByName(name: string): HTMLElement {
+    return document.querySelector(`[name=${name}]`) as HTMLElement;
   }
 }
