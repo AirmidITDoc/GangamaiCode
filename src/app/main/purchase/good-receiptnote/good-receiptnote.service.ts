@@ -89,10 +89,10 @@ export class GoodReceiptnoteService {
       IGST: [0],
       IGSTAmount: [0],
       NetAmount: [0],
-      SupplierId: [''],
-      Contact: [''],
+      SupplierId: ['', [Validators.required]],
+      Contact:  ['', [Validators.required]],
       Mobile: [''],
-      InvoiceNo: [''],
+      InvoiceNo: ['', [Validators.required]],
       DateOfInvoice: [new Date()],
       GateEntryNo: [''], 
       GSTType: [16], // 16 is a value of first GST Type   

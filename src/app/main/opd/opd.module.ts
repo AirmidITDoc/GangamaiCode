@@ -4,6 +4,7 @@ import { NewOPListComponent } from './new-oplist/new-oplist.component';
 import { CompanysettlementComponent } from './companysettlement/companysettlement.component';
 import { SharedModule } from "../shared/shared.module";
 import { RefundbillComponent } from './refundbill/refundbill.component';
+import { PhysiotherapistScheduleComponent } from './physiotherapist-schedule/physiotherapist-schedule.component';
 
 
 const appRoutes: Routes = [
@@ -53,13 +54,16 @@ const appRoutes: Routes = [
   path: "payment",
     loadChildren: () =>import("./companysettlement/companysettlement.module").then((m) => m.CompanysettlementModule),
 },
+{
+  path: "physiotherapistSchedule",
+    loadChildren: () =>import("./physiotherapist-schedule/physiotherapist-schedule.module").then((m) => m.PhysiotherapistScheduleModule),
+},
 
 
 ];
 
 @NgModule({
   declarations: [ 
-    
   ],
   imports: [
     RouterModule.forChild(appRoutes),

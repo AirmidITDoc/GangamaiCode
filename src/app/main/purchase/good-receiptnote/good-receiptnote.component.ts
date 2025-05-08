@@ -16,6 +16,7 @@ import { GSTType } from './new-grn/types';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
     selector: 'app-good-receiptnote',
@@ -137,6 +138,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         public datePipe: DatePipe,
         public toastr: ToastrService,
         private accountService: AuthenticationService,
+        private commonService: PrintserviceService,
 
     ) { }
 
@@ -144,8 +146,8 @@ export class GoodReceiptnoteComponent implements OnInit {
         this._GRNService.GRNSearchGroup.get('ToStoreId').setValue(this.accountService.currentUserValue.user.storeId)
     }
 
-    getSelectedRow(event) {
-        debugger
+    getSelectedRow(event) { 
+        console.log(event)
         this.isShowDetailTable = true;
         this.gridConfig1 = {
             apiUrl: "GRN/GRNDetailsList",
@@ -486,6 +488,9 @@ export class GoodReceiptnoteComponent implements OnInit {
     //         .filter(i => i !== elm)
     //         .map((i, idx) => (i.position = (idx + 1), i));
     // }
+    viewgetGRNReportPdf(data) { 
+        this.commonService.Onprint("GRNID", data.grnid, "Good Receipt Note");
+      }
 }
 
 export class GRNList {

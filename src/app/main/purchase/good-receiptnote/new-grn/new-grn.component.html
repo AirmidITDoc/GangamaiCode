@@ -99,7 +99,8 @@
                     </airmid-dropdown>
 
                     <div fxLayout="row" fxFlex="15%" class="ml-8">
-                      <mat-radio-group aria-label="Select an option" formControlName="GRNType" fxLayout="column" class="gap-4">
+                      <mat-radio-group aria-label="Select an option" formControlName="GRNType" fxLayout="column" class="gap-4"
+                      [(ngModel)]="vGRNType">
                       <mat-radio-button value="true">Direct Purchase</mat-radio-button>
                         <mat-radio-button value="false">Purchase Orders</mat-radio-button>
                        </mat-radio-group>

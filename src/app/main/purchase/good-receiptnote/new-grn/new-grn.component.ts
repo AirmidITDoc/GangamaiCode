@@ -27,6 +27,7 @@ import { NewGRNService } from './new-grn.service';
 import { values } from 'lodash';
 import Swal from 'sweetalert2';
 import { element } from 'protractor';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 
 const moment = _rollupMoment || _moment;
@@ -200,7 +201,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     userFormGroup:FormGroup
     // Make it true when you want to use mock data.
     mock = false;
-
+    vGRNType:any='true';
     // Bind dropdown mode
     dropdownMode = {
         gstCalcType: "GstCalcType",
@@ -219,7 +220,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         private snackBarService: SnackBarService,
         public toastr: ToastrService,
         private advanceDataStored: AdvanceDataStored,
-        private newGRNService: NewGRNService
+        private newGRNService: NewGRNService,
+            private commonService: PrintserviceService,
     ) { } 
     ngOnInit(): void {
         // Static data
@@ -231,10 +233,17 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             this.setMockData(); 
         }
         if (this.data.chkNewGRN == 2) {
+            //Edit GRN 
+            debugger
             this.registerObj = this.data.Obj;
-            console.log(this.registerObj)
-            this.selectChangeSupplier(this.registerObj);  
+            console.log(this.registerObj) 
             this.getGRNrtrvItemlist();
+            this.selectChangeSupplier(this.registerObj);
+            if(this.registerObj.grntype == true){
+                this.vGRNType = 'true' 
+            }else{
+                this.vGRNType = 'false' 
+            }   
         }
         else if (this.data.chkNewGRN == 3) {
             // get full data from excell import.
@@ -978,13 +987,10 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             "grnItems": updateItemMasterGSTPerObjarray
         };
         console.log(submitData); 
-        this._GRNList.GRNSave(submitData).subscribe(response => { 
-            console.log(response)
-            this.toastr.success(response.message);  
+        this._GRNList.GRNSave(submitData).subscribe(response => {  
             this._matDialog.closeAll();
+            this.viewgetGRNReportPdf(response)
             this.OnReset();
-          }, (error) => {
-            this.toastr.error(error.message);
           });
     }
     OnEditSave() {  
@@ -1123,11 +1129,15 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         console.log(submitData); 
         this._GRNList.GRNEdit(submitData,this.registerObj.grnid).subscribe(response => {
             if (response) {
+                this.viewgetGRNReportPdf(response)
                 this.OnReset();
             }
           }); 
     }
-
+    viewgetGRNReportPdf(data) {
+        this.commonService.Onprint("GRNID", data.grnid, "Good Receipt Note");
+      }
+ 
     OnReset() {
         this._matDialog.closeAll();
         this.resetForm();

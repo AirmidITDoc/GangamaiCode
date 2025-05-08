@@ -1,0 +1,105 @@
+
+    <div fusePerfectScrollbar
+        class="page-layout simple left-sidebar inner-sidebar inner-scroll "
+        dynamicTableHeight>
+        <div class="top-header header accent p-16">
+            <div class="top-header-info">
+                <div class="top-header-title" fxLayoutAlign="space-between">
+                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                        Phsiotherapist Patient List
+                    </span>
+                    
+                </div>
+            </div>
+            <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+                <button  mat-raised-button  (click)="NewScheduler()" matTooltip="New Scheduler">
+                    <mat-icon>add</mat-icon>New Scheduler
+                   </button> 
+            </div> 
+        </div>
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+            <ng-template #actionsTemplate1 let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.patientType=='1'" matTooltip="Patient Category Self">account_box
+                    </mat-icon>
+                    <mat-icon *ngIf="!element.patientType=='1'" matTooltip="Patient Category other">business
+                    </mat-icon>
+                </div>
+        
+            </ng-template>
+        
+            <ng-template #actionsTemplate2 let-element>
+                <div>
+                    <mat-icon title="Bill Cancelled" *ngIf="element.isCancelled==1" [disabled]="element.disabled"
+                        class="disabled-icon">
+                        close</mat-icon>
+                </div>
+            </ng-template>
+        
+            <ng-template #actionsTemplate3 let-element>
+                <div>
+                    <mat-icon title="Refund" *ngIf="!element.refundAmount==0" [disabled]="element.disabled"
+                        class="disabled-icon">
+                        redo</mat-icon>
+                </div>
+            </ng-template>
+
+            <ng-template #actionsTemplate4 let-element>
+                <div> 
+                    <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement"
+                        *ngIf="element.balanceAmt!='0'">
+                        <mat-icon title="Settlement" *ngIf="element.balanceAmt!=0" class="disabled-icon">receipt</mat-icon>
+                        <mat-icon title="paid" *ngIf="element.balanceAmt==0" [disabled]="element.disabled"
+                            class="disabled-icon">payment</mat-icon>
+                    </button>
+                </div>
+            </ng-template>
+
+            <ng-template #actionButtonTemplate let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+        
+                    <button mat-icon-button matTooltip="Edit" (click)="EditScheduler(element)">
+                        <mat-icon>edit</mat-icon>
+                    </button> 
+
+                    <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">
+                        <mat-icon>print</mat-icon>
+                    </button> 
+                
+                    <button mat-icon-button matTooltip="Send message On WhatsApp" (click)="getWhatsappshareBill(element)">
+                        <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                    </button>
+         
+                </div>
+            </ng-template>
+
+            <airmid-table [gridConfig]="gridConfig" class="content">
+                <ng-container filters>
+                    <form [formGroup]="_PhysiotherapistScheduleService.SearchForm" fxLayout="column">
+                
+                        <airmid-datepicker [formGroup]="_PhysiotherapistScheduleService.SearchForm" [isRangePicker]="true"
+                            formStartControlName="fromDate" formEndControlName="enddate"
+                            [(fromValue)]="gridConfig.filters[1].fieldValue" [(toValue)]="gridConfig.filters[2].fieldValue"
+                            (dateChange)="onChangeFirst()"></airmid-datepicker>
+                
+                
+                        <airmid-textbox fxFlex label="Search RegNo" formControlName="RegNo"
+                            [formGroup]="_PhysiotherapistScheduleService.SearchForm" (keyup)="onChangeFirst()"
+                            [validations]="getValidationMessages().RegNo"></airmid-textbox>
+                
+                        <airmid-textbox fxFlex label="Search First Name" formControlName="FirstName"
+                            [formGroup]="_PhysiotherapistScheduleService.SearchForm" (keyup)="onChangeFirst()"
+                            [validations]="getValidationMessages().FirstName"></airmid-textbox>
+                
+                        <airmid-textbox fxFlex label="Search Last Name" formControlName="LastName"
+                            [formGroup]="_PhysiotherapistScheduleService.SearchForm" (keyup)="onChangeFirst()"
+                            [validations]="getValidationMessages().LastName"></airmid-textbox>
+                
+                        <airmid-textbox fxFlex label="Search PBillNo" formControlName="PBillNo"
+                            [formGroup]="_PhysiotherapistScheduleService.SearchForm" (keyup)="onChangeFirst()"
+                            [validations]="getValidationMessages().PBillNo"></airmid-textbox>
+                    </form>
+                </ng-container>
+            </airmid-table>
+        </div>
+    </div> 
