@@ -73,7 +73,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewSubtapComponent,
             {
                 maxWidth: "70vw",
-                height: '60%',
+                maxHeight: '60%',
                 width: '70%',
                 data: row
             });

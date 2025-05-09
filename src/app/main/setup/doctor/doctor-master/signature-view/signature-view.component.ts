@@ -32,6 +32,7 @@ export class SignatureViewComponent implements OnInit {
 
 
     onImageChange(event) {
+        debugger
         let Imgflag = "";
         if (!event.target.files.length) return;
         const file = event.target.files[0];

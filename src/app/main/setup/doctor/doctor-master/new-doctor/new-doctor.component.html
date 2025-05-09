@@ -31,17 +31,13 @@
                             <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                                 <div fxFlex="83%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
-                                    <input type="hidden" name="doctorId" formControlName="doctorId">
-                                    <input type="hidden" name="ageYear" formControlName="ageYear">
-                                    <input type="hidden" name="ageMonth" formControlName="ageMonth">
-                                    <input type="hidden" name="ageDay" formControlName="ageDay">
-
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-dropdown 
                                             label="Prefix" 
-                                            formControlName="prefixId" 
+                                            formControlName="PrefixID" 
                                             [formGroup]="myForm"
-                                            [validations]="getValidationMessages().prefixId"
+                                            [(value)]="registerObj.prefixId" 
+                                            [validations]="getValidationMessages().PrefixID"
                                             ValueField="prefixId" TextField="prefixName" 
                                             (selectionChange)="onChangePrefix($event)"
                                             ApiUrl="Prefix/get-prefixs" #ddlPrefix>
@@ -51,9 +47,10 @@
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox 
                                             label="First Name" 
-                                            formControlName="firstName"
+                                            formControlName="FirstName"
+                                            [value]="registerObj.firstName" 
                                             [formGroup]="myForm"
-                                            [validations]="getValidationMessages().firstName" 
+                                            [validations]="getValidationMessages().FirstName" 
                                             [maxLength]="50">
                                         </airmid-textbox>
                                     </div>
@@ -61,9 +58,10 @@
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox 
                                             label="Middle Name" 
-                                            formControlName="middleName" 
+                                            formControlName="MiddleName"
+                                            [value]="registerObj.middleName" 
                                             [formGroup]="myForm"
-                                            [validations]="getValidationMessages().middleName" 
+                                            [validations]="getValidationMessages().MiddleName" 
                                             [maxLength]="50">
                                         </airmid-textbox>
                                     </div>
@@ -71,43 +69,39 @@
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox 
                                             label="Last Name" 
-                                            formControlName="lastName" 
+                                            formControlName="LastName" 
+                                            [value]="registerObj.lastName"
                                             [formGroup]="myForm" 
-                                            [validations]="getValidationMessages().lastName" 
+                                            [validations]="getValidationMessages().LastName" 
                                             [maxLength]="50">
                                         </airmid-textbox>
                                     </div>
-
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-dropdown 
                                             label="Gender" 
-                                            formControlName="genderId" 
+                                            formControlName="GenderId" 
                                             [formGroup]="myForm"
-                                            [validations]="getValidationMessages().genderId"
+                                            [(value)]="registerObj.genderId" 
+                                            [validations]="getValidationMessages().GenderId"
                                             [mode]="autocompleteModegender" 
                                             [disabled]="true" #ddlGender>
                                         </airmid-dropdown>
                                     </div>
-
                                     <div fxFlex="74%" fxFlex.xs="100%" fxFlex.sm="100%">
-
-                                        <!-- <form [formGroup]="myForm">
-                                            <app-airmid-dateofbirth formControlName="dateofBirth"></app-airmid-dateofbirth>
-                                          </form>                                           -->
-                                    <app-airmid-dateofbirth 
-                                    [formGroup]="myForm"
-                                     formControlName="dateofBirth"
-                                      [(value)]="registerObj.dateofBirth">
-                                    </app-airmid-dateofbirth>
-
+                                        <app-airmid-dateofbirth 
+                                            [formGroup]="myForm" 
+                                            formControlName="DateOfBirth"
+                                            [(value)]="registerObj.dateofBirth">
+                                        </app-airmid-dateofbirth>
                                     </div>
-                                    
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox 
                                             label="Pan Card No" 
-                                            formControlName="panCardNo"
+                                            placeholder="Enter PAN (e.g., ABCDE1234F)" 
+                                            formControlName="Pancardno"
+                                            [value]="registerObj.panCardNo" 
                                             [formGroup]="myForm"
-                                            [validations]="getValidationMessages().panCardNo" 
+                                            [validations]="getValidationMessages().Pancardno" 
                                             [maxLength]="10">
                                         </airmid-textbox>
                                     </div>
@@ -115,9 +109,10 @@
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox 
                                             label="Aadhar Card No" 
-                                            formControlName="aadharCardNo" 
+                                            formControlName="AadharCardNo"
+                                            [value]="registerObj.aadharCardNo" 
                                             [formGroup]="myForm"
-                                            [validations]="getValidationMessages().aadharCardNo" 
+                                            [validations]="getValidationMessages().AadharCardNo" 
                                             [maxLength]="12">
                                         </airmid-textbox>
                                     </div>
@@ -125,9 +120,10 @@
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox 
                                             label="Phone" 
-                                            formControlName="phone" 
+                                            formControlName="Phone" 
+                                            [value]="registerObj.phone"
                                             [formGroup]="myForm" 
-                                            [validations]="getValidationMessages().phone" 
+                                            [validations]="getValidationMessages().Phone" 
                                             [maxLength]="10">
                                         </airmid-textbox>
                                     </div>
@@ -135,14 +131,16 @@
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox 
                                             label="Address" 
-                                            formControlName="address" 
+                                            formControlName="Address" 
+                                            [value]="registerObj.address"
                                             [formGroup]="myForm" 
-                                            [validations]="getValidationMessages().address">
+                                            [validations]="getValidationMessages().Address">
                                         </airmid-textbox>
                                     </div>
                                 </div>
 
                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="20%">
+                                    <!-- <mat-card style="padding: 6px;height: 200px;"> -->
                                         <div class="photo-capture p-16 border border-radius-4 gap-12" fxLayout="column">
                                             <div class="photp-capture-image">
                                                 <img class="h-100-p w-100-p border-radius-4" style="height:100px !important;"
@@ -158,6 +156,7 @@
                                                 </label>
                                             </div>
                                         </div>
+                                    <!-- </mat-card> -->
                                 </div>
 
                             </div>
@@ -175,10 +174,10 @@
                                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-dropdown 
                                             label="City" 
-                                            formControlName="city" 
+                                            formControlName="City" 
                                             [formGroup]="myForm"
                                             [(value)]="registerObj.city" 
-                                            [validations]="getValidationMessages().city"
+                                            [validations]="getValidationMessages().City"
                                             [mode]="autocompleteModecity">
                                         </airmid-dropdown>
                                     </div>
@@ -187,6 +186,7 @@
                                         <airmid-textbox 
                                             label="ESINO" 
                                             formControlName="esino" 
+                                            [value]="registerObj.esino"
                                             [formGroup]="myForm" 
                                             [validations]="getValidationMessages().esino" 
                                             [maxLength]="10">
@@ -196,18 +196,18 @@
                                     <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox 
                                             label="RegNo" 
-                                            formControlName="regNo" 
+                                            formControlName="RegNo" 
+                                            [value]="registerObj.regNo"
                                             [formGroup]="myForm" 
-                                            [validations]="getValidationMessages().regNo" 
+                                            [validations]="getValidationMessages().RegNo" 
                                             [maxLength]="10">
                                         </airmid-textbox>
                                     </div>
                 
                                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Reg date</mat-label>
-                                            <input name="regDate" matInput [matDatepicker]="picker1" formControlName="regDate"
+                                            <input name="RegDate" matInput [matDatepicker]="picker1" formControllName="RegDate"
                                                 [value]="registerObj.regDate">
                                             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                             <mat-datepicker #picker1></mat-datepicker>
@@ -217,17 +217,19 @@
                                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox 
                                             label="Education" 
-                                            formControlName="education" 
+                                            formControlName="Education" 
+                                            [value]="registerObj.education"
                                             [formGroup]="myForm" 
-                                            [validations]="getValidationMessages().education" 
-                                            [maxLength]="10">
+                                            [validations]="getValidationMessages().Education" 
+                                            [maxLength]="200">
                                         </airmid-textbox>
                                     </div>
                 
                                     <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox 
                                             label="MahRegNo" 
-                                            formControlName="mahRegNo" 
+                                            formControlName="MahRegNo" 
+                                            [value]="registerObj.mahRegNo"
                                             [formGroup]="myForm" 
                                             [validations]="getValidationMessages().mahRegNo" 
                                             [maxLength]="10">
@@ -237,7 +239,7 @@
                                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>MahReg date</mat-label>
-                                            <input name="mahRegDate" matInput [matDatepicker]="picker2" formControlName="mahRegDate"
+                                            <input name="MahRegDate" matInput [matDatepicker]="picker2" formControllName="MahRegDate"
                                                 [value]="registerObj.mahRegDate">
                                             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                             <mat-datepicker #picker2></mat-datepicker>
@@ -247,9 +249,10 @@
                                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox 
                                             label="Hospital Name" 
-                                            formControlName="refDocHospitalName"
+                                            formControlName="RefDocHospitalName"
+                                            [value]="registerObj.refDocHospitalName" 
                                             [formGroup]="myForm"
-                                            [validations]="getValidationMessages().refDocHospitalName" 
+                                            [validations]="getValidationMessages().RefDocHospitalName" 
                                             [maxLength]="100">
                                         </airmid-textbox>
                                     </div>
@@ -257,9 +260,10 @@
                                     <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-dropdown 
                                             label="DoctorTypeId" 
-                                            formControlName="doctorTypeId" 
+                                            formControlName="DoctorTypeId" 
                                             [formGroup]="myForm"
-                                            [validations]="getValidationMessages().doctorTypeId"
+                                            [(value)]="registerObj.doctorTypeId" 
+                                            [validations]="getValidationMessages().DoctorTypeId"
                                             [mode]="autocompleteModedoctorty">
                                         </airmid-dropdown>
                                     </div>
@@ -268,7 +272,7 @@
                     </mat-card>
 
                     <!-- 3rd -->
-                     <mat-card>
+                    <mat-card>
                         <mat-card-content>
                             <div class="detail-header">
                                 <span class="title">Department Details</span>
@@ -278,8 +282,8 @@
                                 <div fxFlex>
                                     <form [formGroup]="myForm">
                                         <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
-                                            <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-dropdown label="Department" formControlName="mDoctorDepartmentDets"
+                                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="Department" formControlName="MDoctorDepartmentDets"
                                                     [formGroup]="myForm" [IsMultiPle]="true"
                                                     [value]="registerObj.mDoctorDepartmentDets"
                                                     [validations]="getValidationMessages().Departmentid" #ddlDepartment
@@ -288,7 +292,7 @@
                                                 </airmid-dropdown>
                                             </div>
                                             <mat-chip-listbox #chipList>
-                                                <mat-chip *ngFor="let item of myForm.value.mDoctorDepartmentDets">
+                                                <mat-chip *ngFor="let item of myForm.value.MDoctorDepartmentDets">
                                                     {{ item.departmentName }} <mat-icon
                                                         (click)="removeDepartment(item)">close</mat-icon>
                                                 </mat-chip>
@@ -298,7 +302,7 @@
                                 </div>
                             </div>
                         </mat-card-content>
-                    </mat-card> 
+                    </mat-card>
 
                 </div>
 
@@ -307,11 +311,11 @@
                         <div class="modal-footer-actions" fxLayout="row">
                             <form [formGroup]="myForm">
                                 <div class="sales-radio-buttons gap-2" fxLayout="row">
-                                    <mat-slide-toggle name="isConsultant" formControlName="isConsultant"
+                                    <mat-slide-toggle name="IsConsultant" formControlName="IsConsultant"
                                         [(ngModel)]="visConsultant">
                                         IsConsultant
                                     </mat-slide-toggle>
-                                    <mat-slide-toggle name="isRefDoc" formControlName="isRefDoc" [(ngModel)]="visRefDoc">
+                                    <mat-slide-toggle name="IsRefDoc" formControlName="IsRefDoc" [(ngModel)]="visRefDoc">
                                         IsRefDoctor
                                     </mat-slide-toggle>
                                     <mat-checkbox aria-label="Is Active" formControlName="isActive" (checked)=true
@@ -327,6 +331,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

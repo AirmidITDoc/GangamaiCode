@@ -283,6 +283,7 @@ export class SupplierMaster {
     OpeningBal:any;
     pinCode:any;
     taluka:any;
+    bankname:any;
     /**
      * Constructor
      *
@@ -351,6 +352,7 @@ export class SupplierMaster {
             this.OpeningBal = SupplierMaster.OpeningBal || 0
             this.pinCode=SupplierMaster.pinCode || 0
             this.taluka=SupplierMaster.taluka || 0
+            this.bankname=SupplierMaster.bankname || ''
         }
     }
 }

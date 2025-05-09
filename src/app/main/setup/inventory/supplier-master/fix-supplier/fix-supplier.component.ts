@@ -65,6 +65,7 @@ export class FixSupplierComponent implements OnInit {
             this.supplierForm.get('email')?.setValue(this.data.email.trim());
             this.supplierForm.get('CreditPeriod')?.setValue(this.data.creditPeriod.trim());
             this.supplierForm.get('gstNo')?.setValue(this.data.gstNo.trim());
+            this.supplierForm.get('ContactPerson')?.setValue(this.data.contactPerson.trim());
         }
 
         if ((this.data?.supplierId ?? 0) > 0) {

@@ -35,28 +35,16 @@ export class DrugmasterComponent implements OnInit {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
-                    }, {
+                    }, 
+                    {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage ="Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                
-                                if (result) {
-                                    let that=this;
-                                    this._drugService.deactivateTheStatus(data.drugId).subscribe((data: any) => {
-                                        this.toastr.success(data.message)
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._drugService.deactivateTheStatus(data.drugId).subscribe((data: any) => {
+                                this.toastr.success(data.message)
+                                this.grid.bindGridData();
                             });
                         }
-                    }]
+                    }
+                ]
             } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "drugId",

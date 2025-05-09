@@ -238,10 +238,10 @@
                                     </mat-chip-listbox>
                                 </div>
 
-                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="msmflag">
+                                <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="msmflag">
                                     <airmid-textbox label="MSMNo" formControlName="MSMNo" [value]="registerObj.MSMNo" [formGroup]="supplierForm" >
                                     </airmid-textbox>
-                                </div>
+                                </div> -->
                             </div>
                         </mat-card-content>
                     </mat-card>
@@ -259,9 +259,9 @@
                 <div class="modal-footer-container">
                     <!-- <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="supplierForm" [(ngModel)]="isActive"></app-airmid-slider> -->
                     <div class="sales-radio-buttons gap-2" fxLayout="row">
-                        <mat-checkbox aria-label="Msm" formControlName="MsmNo" (checked)=true (change)="onChangeMsm($event)"
+                        <!-- <mat-checkbox aria-label="Msm" formControlName="MsmNo" (checked)=true (change)="onChangeMsm($event)"
                             style="font-weight: bold;margin-right: 20px;">MSME
-                        </mat-checkbox>
+                        </mat-checkbox> -->
                         <mat-checkbox aria-label="Mode" formControlName="CreateApproval" (checked)=true
                             (change)="onChangeMode($event)" style="font-weight: bold;margin-right: 20px;">Create / Approval
                         </mat-checkbox>

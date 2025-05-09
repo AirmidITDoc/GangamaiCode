@@ -78,9 +78,7 @@ export class TemplateMasterComponent implements OnInit {
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
+            this.grid.bindGridData();
         });
     }
 }

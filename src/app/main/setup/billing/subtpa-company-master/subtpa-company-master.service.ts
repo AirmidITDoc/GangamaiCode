@@ -42,12 +42,9 @@ export class SubtpaCompanyMasterService {
                     Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ],
             ],
-            pinNo: ["", 
-                [
-                    Validators.required,Validators.maxLength(10),
-                    Validators.pattern("^[0-9\s\-]{3,10}$")
-                ]
-            ],
+            pinNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
+                Validators.minLength(6),
+                Validators.maxLength(6),]],
             phoneNo: [
                 "",
                 [

@@ -87,14 +87,16 @@ export class DoctorMasterComponent implements OnInit {
     ]
 
     allFilters=[
-        { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "FlagActive", fieldValue: this.active, opType: OperatorComparer.Equals },
-        { fieldName: "ConsultantDoc_All", fieldValue: this.isCon, opType: OperatorComparer.Equals },
-        { fieldName: "ReferDoc_All", fieldValue: this.isRef, opType: OperatorComparer.Equals }
+        // { fieldName: "FirstName", fieldValue:'%', opType: OperatorComparer.StartsWith },
+        // { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        // { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        // { fieldName: "FlagActive", fieldValue: this.active, opType: OperatorComparer.Equals },
+        // { fieldName: "ConsultantDoc_All", fieldValue: this.isCon, opType: OperatorComparer.Equals },
+        // { fieldName: "ReferDoc_All", fieldValue: this.isRef, opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
-        apiUrl: "Doctor/DoctorList",
+        apiUrl: "Doctor/ListLinq",
+        // apiUrl: "Doctor/DoctorList",
         columnsList: this.allColumns,
         sortField: "DoctorId",
         sortOrder: 0,
@@ -123,8 +125,6 @@ export class DoctorMasterComponent implements OnInit {
             this.f_name = this.myformSearch.get('firstName').value + "%"
             this.l_name = this.myformSearch.get('lastName').value + "%"
             this.active = this.myformSearch.get('FlagActive').value 
-            // this.isCon = this.myformSearch.get('IsConsultant').value 
-            // this.isRef = this.myformSearch.get('IsRef').value 
             if(this.myformSearch.get('IsConsultant').value == true){
                 this.isCon = "1"
             }else{
@@ -141,16 +141,18 @@ export class DoctorMasterComponent implements OnInit {
     getfilterdata(){
         debugger
         this.gridConfig = {
-            apiUrl: "Doctor/DoctorList",
+        apiUrl: "Doctor/ListLinq",
+        // apiUrl: "Doctor/DoctorList",
             columnsList:this.allColumns , 
             sortField: "DoctorId",
             sortOrder: 0,
             filters: [
-                { fieldName: "F_Name", fieldValue:this.f_name, opType: OperatorComparer.Contains },
-                { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
-                { fieldName: "FlagActive", fieldValue: this.active, opType: OperatorComparer.Equals },
-                { fieldName: "ConsultantDoc_All", fieldValue: this.isCon, opType: OperatorComparer.Equals },
-                { fieldName: "ReferDoc_All", fieldValue: this.isRef, opType: OperatorComparer.Equals }
+                // { fieldName: "FirstName", fieldValue:this.f_name, opType: OperatorComparer.StartsWith },
+                // { fieldName: "F_Name", fieldValue:this.f_name, opType: OperatorComparer.StartsWith },
+                // { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
+                // { fieldName: "FlagActive", fieldValue: this.active, opType: OperatorComparer.Equals },
+                // { fieldName: "ConsultantDoc_All", fieldValue: this.isCon, opType: OperatorComparer.Equals },
+                // { fieldName: "ReferDoc_All", fieldValue: this.isRef, opType: OperatorComparer.Equals }
             ]
         }
         this.grid.gridConfig = this.gridConfig;
@@ -291,8 +293,8 @@ export class DoctorMasterComponent implements OnInit {
 export class DoctorMaster {
     doctorId: number;
     prefixId: number;
-    firstName: string;
-    middleName: string;
+    firstName: any;
+    middleName: any;
     lastName: string;
     dateofBirth: any;
     address: string;

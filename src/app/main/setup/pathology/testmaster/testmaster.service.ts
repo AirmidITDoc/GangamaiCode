@@ -37,7 +37,7 @@ export class TestmasterService {
             TestId: [0],
             TestName: ["", [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
             PrintTestName: ["", [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
-            CategoryId: ["",[Validators.required]],
+            CategoryId: ["",[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             IsSubTest: true,
             TechniqueName: [""],
             MachineName: [""],
