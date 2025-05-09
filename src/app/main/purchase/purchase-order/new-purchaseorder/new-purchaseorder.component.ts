@@ -311,7 +311,7 @@ export class NewPurchaseorderComponent {
     }
 
     const isDuplicate = this.dsItemNameList.data.some(item => item.ItemId === this.userFormGroup.get('ItemName').value.itemId);
-
+    debugger
     if (!isDuplicate) {
 
       const formValues = this.userFormGroup.getRawValue() as PurchaseFormModel;
@@ -360,8 +360,10 @@ export class NewPurchaseorderComponent {
         toastClass: 'tostr-tost custom-toast-warning',
       });
     }
-    // this.itemid.nativeElement.focus();
-    // this.add = false;
+    const itemNameElement = document.querySelector(`[name='ItemName']`) as HTMLElement;
+    if (itemNameElement) {
+        itemNameElement.focus();
+    }
     this.resetFormItem();
   }
 
@@ -574,95 +576,92 @@ export class NewPurchaseorderComponent {
     }
 
     console.log(this.FinalPurchaseform.value)
-    if (this.FinalPurchaseform.invalid) {
-      this.toastr.warning('please check from is invalid', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
+   
+    debugger
+    if (!this.FinalPurchaseform.invalid) {
+      let InsertpurchaseDetailObj = [];
+      this.dsItemNameList.data.forEach((element) => {
+        // console.log(element)
+        let purchaseDetailInsertObj = {};
+        purchaseDetailInsertObj['purchaseId'] = this.PurchaseID;
+        purchaseDetailInsertObj['itemId'] = element.ItemId;
+        purchaseDetailInsertObj['uomid'] = element.UOM;
+        purchaseDetailInsertObj['qty'] = element.Qty || 0;
+        purchaseDetailInsertObj['rate'] = element.Rate || 0;
+        purchaseDetailInsertObj['totalAmount'] = element.TotalAmount
+        purchaseDetailInsertObj['discAmount'] = element.DiscAmount;
+        purchaseDetailInsertObj['discPer'] = element.DiscPer;
+        purchaseDetailInsertObj['vatAmount'] = element.GSTAmount;
+        purchaseDetailInsertObj['vatPer'] = element.GST;;
+        purchaseDetailInsertObj['grandTotalAmount'] = element.NetAmount;
+        purchaseDetailInsertObj['mrp'] = element.MRP;
+        purchaseDetailInsertObj['specification'] = element.Specification;
+        purchaseDetailInsertObj['cgstper'] = element.CGSTPer;
+        purchaseDetailInsertObj['cgstamt'] = element.CGSTAmount;
+        purchaseDetailInsertObj['sgstper'] = element.SGSTPer;
+        purchaseDetailInsertObj['sgstamt'] = element.SGSTAmount;
+        purchaseDetailInsertObj['igstper'] = element.IGSTPer;
+        purchaseDetailInsertObj['igstamt'] = element.IGSTAmount;
+        purchaseDetailInsertObj['defRate'] = element.DefRate;
+        purchaseDetailInsertObj['vendDiscPer'] = 0;
+        purchaseDetailInsertObj['vendDiscAm'] = 0;
+        InsertpurchaseDetailObj.push(purchaseDetailInsertObj);
       });
-      return;
-    }
-if(!this.FinalPurchaseform.invalid){
-    let InsertpurchaseDetailObj = [];
-    this.dsItemNameList.data.forEach((element) => {
-      // console.log(element)
-      let purchaseDetailInsertObj = {};
-      purchaseDetailInsertObj['purchaseId'] = this.PurchaseID;
-      purchaseDetailInsertObj['itemId'] = element.ItemId;
-      purchaseDetailInsertObj['uomid'] = element.UOM;
-      purchaseDetailInsertObj['qty'] = element.Qty || 0;
-      purchaseDetailInsertObj['rate'] = element.Rate || 0;
-      purchaseDetailInsertObj['totalAmount'] = element.TotalAmount
-      purchaseDetailInsertObj['discAmount'] = element.DiscAmount;
-      purchaseDetailInsertObj['discPer'] = element.DiscPer;
-      purchaseDetailInsertObj['vatAmount'] = element.GSTAmount;
-      purchaseDetailInsertObj['vatPer'] = element.GST;;
-      purchaseDetailInsertObj['grandTotalAmount'] = element.NetAmount;
-      purchaseDetailInsertObj['mrp'] = element.MRP;
-      purchaseDetailInsertObj['specification'] = element.Specification;
-      purchaseDetailInsertObj['cgstper'] = element.CGSTPer;
-      purchaseDetailInsertObj['cgstamt'] = element.CGSTAmount;
-      purchaseDetailInsertObj['sgstper'] = element.SGSTPer;
-      purchaseDetailInsertObj['sgstamt'] = element.SGSTAmount;
-      purchaseDetailInsertObj['igstper'] = element.IGSTPer;
-      purchaseDetailInsertObj['igstamt'] = element.IGSTAmount;
-      purchaseDetailInsertObj['defRate'] = element.DefRate;
-      purchaseDetailInsertObj['vendDiscPer'] = 0;
-      purchaseDetailInsertObj['vendDiscAm'] = 0;
-      InsertpurchaseDetailObj.push(purchaseDetailInsertObj);
-    });
 
-    let submitData = {
-      "purchaseId": this.PurchaseID,
-      "purchaseNo": this.PurchaseNo,
-      "purchaseDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',
-      "purchaseTime": this.dateTimeObj.time,
-      "storeId": this.vstoreId,
-      "supplierId": this.vSupplierId,// this.userFormGroup.get('SupplierId').value || 0,
-      "totalAmount": this.FinalTotalAmt,
-      "discAmount": this.DiscAmount,
-      "taxAmount": (parseFloat(this.GSTAmount)),
-      "freightAmount": this.FinalPurchaseform.get('Freight').value || 0,
-      "octriAmount": this.FinalPurchaseform.get('OctriAmount').value || 0,
-      "grandTotal": this.FinalNetAmount,
-      "isclosed": false,
-      "isVerified": false,
-      "remarks": this.FinalPurchaseform.get('Remark').value || '',
-      "taxId": 0,
-      "paymentTermId": this.paymentterm,// this.FinalPurchaseform.get('PaymentTerm').value.value || 0,
-      "modeofPayment": this.paymentmode,// this.FinalPurchaseform.get('PaymentMode').value.value || 0,
-      "worrenty": this.FinalPurchaseform.get('Worrenty').value || " ",
-      "roundVal": Math.round(this.FinalNetAmount),
-      "prefix": "",
-      "isVerifiedId": 0,
-      "verifiedDateTime": this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
-      "totCgstamt": (parseFloat(this.CGSTFinalAmount)),
-      "totSgstamt": (parseFloat(this.SGSTFinalAmount)),
-      "totIgstamt": (parseFloat(this.IGSTFinalAmount)),
-      "transportChanges": this.FinalPurchaseform.get('TransportCharges').value || 0,
-      "handlingCharges": this.FinalPurchaseform.get('HandlingCharges').value || 0,
-      "freightCharges": this.FinalPurchaseform.get('Freight').value || 0,
-      "tPurchaseDetails": InsertpurchaseDetailObj
-    };
-    console.log(submitData);
-    this._PurchaseOrder.InsertPurchaseSave(submitData).subscribe(response => {
-      this.toastr.success(response.message);
-      if (response) {
-        this.viewgetPurchaseorderReportPdf(response)
-        this._matDialog.closeAll();
+      let submitData = {
+        "purchaseId": this.PurchaseID,
+        "purchaseNo": this.PurchaseNo,
+        "purchaseDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',
+        "purchaseTime": this.dateTimeObj.time,
+        "storeId": this.vstoreId,
+        "supplierId": this.vSupplierId,// this.userFormGroup.get('SupplierId').value || 0,
+        "totalAmount": this.FinalTotalAmt,
+        "discAmount": this.DiscAmount,
+        "taxAmount": (parseFloat(this.GSTAmount)),
+        "freightAmount": this.FinalPurchaseform.get('Freight').value || 0,
+        "octriAmount": this.FinalPurchaseform.get('OctriAmount').value || 0,
+        "grandTotal": this.FinalNetAmount,
+        "isclosed": false,
+        "isVerified": false,
+        "remarks": this.FinalPurchaseform.get('Remark').value || '',
+        "taxId": 0,
+        "paymentTermId": this.paymentterm,// this.FinalPurchaseform.get('PaymentTerm').value.value || 0,
+        "modeofPayment": this.paymentmode,// this.FinalPurchaseform.get('PaymentMode').value.value || 0,
+        "worrenty": this.FinalPurchaseform.get('Worrenty').value || " ",
+        "roundVal": Math.round(this.FinalNetAmount),
+        "prefix": "",
+        "isVerifiedId": 0,
+        "verifiedDateTime": this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
+        "totCgstamt": (parseFloat(this.CGSTFinalAmount)),
+        "totSgstamt": (parseFloat(this.SGSTFinalAmount)),
+        "totIgstamt": (parseFloat(this.IGSTFinalAmount)),
+        "transportChanges": this.FinalPurchaseform.get('TransportCharges').value || 0,
+        "handlingCharges": this.FinalPurchaseform.get('HandlingCharges').value || 0,
+        "freightCharges": this.FinalPurchaseform.get('Freight').value || 0,
+        "isCancelled": false,
+        "tPurchaseDetails": InsertpurchaseDetailObj
+      };
+      console.log(submitData);
+      this._PurchaseOrder.InsertPurchaseSave(submitData).subscribe(response => {
+        this.toastr.success(response.message);
+        if (response) {
+          this.viewgetPurchaseorderReportPdf(response)
+          this._matDialog.closeAll();
+        }
+
+      });
+    } else {
+      let invalidFields = [];
+      if (this.FinalPurchaseform.invalid) {
+        for (const controlName in this.FinalPurchaseform.controls) {
+          if (this.FinalPurchaseform.controls[controlName].invalid) { invalidFields.push(`Purchase Form: ${controlName}`); }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
       }
 
-    });
-  }else {
-    let invalidFields = [];
-    if (this.FinalPurchaseform.invalid) {
-        for (const controlName in this.FinalPurchaseform.controls) {
-            if (this.FinalPurchaseform.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
-        }
     }
-    if (invalidFields.length > 0) {
-        invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
-    }
-
-}
   }
   viewgetPurchaseorderReportPdf(PurchaseID) {
     this.commonService.Onprint("PurchaseID", PurchaseID, "Purchaseorder");
