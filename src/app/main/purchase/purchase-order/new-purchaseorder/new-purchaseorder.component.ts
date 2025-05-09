@@ -360,8 +360,10 @@ export class NewPurchaseorderComponent {
         toastClass: 'tostr-tost custom-toast-warning',
       });
     }
-    // this.itemid.nativeElement.focus();
-    // this.add = false;
+    const itemNameElement = document.querySelector(`[name='ItemName']`) as HTMLElement;
+    if (itemNameElement) {
+        itemNameElement.focus();
+    }
     this.resetFormItem();
   }
 
@@ -636,6 +638,7 @@ export class NewPurchaseorderComponent {
         "transportChanges": this.FinalPurchaseform.get('TransportCharges').value || 0,
         "handlingCharges": this.FinalPurchaseform.get('HandlingCharges').value || 0,
         "freightCharges": this.FinalPurchaseform.get('Freight').value || 0,
+        "isCancelled": false,
         "tPurchaseDetails": InsertpurchaseDetailObj
       };
       console.log(submitData);
