@@ -924,7 +924,7 @@ export class NewPurchaseorderComponent {
     this.calculateGSTType();
   }
   calculateGSTType(type: GSTType = GSTType.GST_BEFORE_DISC) {
-
+debugger
     const form = this.userFormGroup;
     const formValues = form.getRawValue() as PurchaseFormModel;
     const values = this._PurchaseOrder.normalizeValues(formValues);

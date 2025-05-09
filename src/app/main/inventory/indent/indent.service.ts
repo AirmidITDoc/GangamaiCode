@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 
@@ -17,9 +17,9 @@ export class IndentService {
     public _httpClient: HttpClient,   public _httpClient1: ApiCaller,
     private _formBuilder: UntypedFormBuilder, private accountService: AuthenticationService
   ) { 
-    this.IndentSearchGroup= this.IndentSearchFrom();
-    this.newIndentFrom = this.createnewindentfrom();
-    this.StoreFrom = this.CreateStoreFrom();
+    // this.IndentSearchGroup= this.IndentSearchFrom();
+    // this.newIndentFrom = this.createnewindentfrom();
+    // this.StoreFrom = this.CreateStoreFrom();
   }
 
   IndentSearchFrom() {
@@ -28,17 +28,17 @@ export class IndentService {
       FromStoreId:this.accountService.currentUserValue.user.storeId,
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
-      Status:['0'],
+      Status:[0],
     });
   }
   createnewindentfrom() {
     return this._formBuilder.group({
       IndentId:[''],
       ToStoreId: '',
-      FromStoreId:'',
+      FromStoreId:this.accountService.currentUserValue.user.storeId,
       IsUrgent:['0'],
-      ItemName:[''],
-      Qty:[''],
+      ItemName: ['', [Validators.required]],
+      Qty:   [1, [Validators.required]],
       Remark:[''],
       ItemNameKit:[''],
       Qtykit:['']
@@ -47,7 +47,9 @@ export class IndentService {
   
   CreateStoreFrom(){
     return this._formBuilder.group({
-      FromStoreId:'',
+      FromStoreId:this.accountService.currentUserValue.user.storeId,
+      ToStoreId:'',
+      IsUrgent: 0
     });
   }
 
@@ -57,10 +59,10 @@ export class IndentService {
   }
 
   public InsertIndentUpdate(Param){
-    return this._httpClient.post("InventoryTransaction/IndentUpdate", Param)
+    return this._httpClient1.PostData("InventoryTransaction/IndentUpdate", Param)
   }
-  public VerifyIndent(Param){
-    return this._httpClient.post("InventoryTransaction/IndentVerify", Param)
+  public getVerifyIndent(Param){
+    return this._httpClient1.PostData("Indent/Verify", Param)
   }
   
   public getIndentwiseview(IndentId){
@@ -72,7 +74,7 @@ export class IndentService {
   }
 
   public getIndentList(Param){
-    return this._httpClient1.PostData("InventoryTransaction/IndentVerify", Param)
+    return this._httpClient1.PostData("Indent/IndentDetailsList", Param)
   }
 
   populateForm(employee) {

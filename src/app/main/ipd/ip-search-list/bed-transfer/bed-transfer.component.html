@@ -1,5 +1,4 @@
 <div class="modal-wrapper grid-container">
-
     <!-- Modal header -->
     <div class="modal-header accent">
         <div class="modal-header-content">
@@ -22,21 +21,14 @@
             </div>
         </div>
     </div>
-
-    <div class="content">
-        <div class="center p-12 pb-56" style="border-radius: 4px;">
-            <div class="content-card">
-                <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
-                    <mat-card style="padding: 5px;">
-                        <div class="patient-info-sales my-8">
-                            <div class="sales-patient-info-title">
-                                <span style="font-weight: 700;">
-                                    Patient Information
-                                </span>
-                            </div>
-                            <hr>
-                            <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
-                                class="patient-info">
+    <!-- Modal body -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+           
+                <div fxLayout="column" class="gap-12">
+                    <div class="modal-card-container">
+                        <mat-card>
+                            <div class="patient-info-container">
                                 <div class="patient-sub">
                                     <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
                                         fxLayoutAlign="space-between">
@@ -122,66 +114,72 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </mat-card>
-
-                    <form [formGroup]="Bedtransfer" fxLayout="column">
-                        <input type="hidden" name="admissionId" formControlName="admissionId" [(ngModel)]="AdmissionId">
-                        <!-- <input type="hidden" name="fromWardId" formControlName="fromWardId" [(ngModel)]="vWardId">
-                        <input type="hidden" name="fromBedId" formControlName="fromBedId" [(ngModel)]="vBedId">
-                        <input type="hidden" name="fromClassId" formControlName="fromClassId" [(ngModel)]="vClassId"> -->
-
-
-                        <mat-card style="padding: 8px;">
-                            <div fxLayout="column" fxLayoutGap="4px">
-                                <div class="sales-patient-info-title">
-                                    <span style="font-weight: 700;">
-                                        Bed Transfer
-                                    </span>
+                        </mat-card>
+                    </div>
+                    <div class="modal-card-container">
+                        <mat-card>
+                            <div fxLayout="column" class="gap-8">
+                                <div class="form-title mb-2 border-bottom pb-2">
+                                    <span class="h3 font-weight-600">Cross Consultation Information</span>
                                 </div>
-                                <hr>
-                                <div fxLayout="row" fxLayoutGap="8px">
-
-                                    <airmid-dropdown label="Ward Name" formControlName="toWardId" fxFlex="25%"
-                                        [formGroup]="Bedtransfer" [validations]="getValidationMessages().toWardId"
-                                        ValueField="roomId" TextField="roomName"
-                                        (selectionChange)="onChangeWard($event)" ApiUrl="WardMaster/get-WardClass"
-                                        #ddlWard>
-                                    </airmid-dropdown>
-
-
-                                    <airmid-dropdown label="Bed Name" formControlName="toBedId" fxFlex="25%"
-                                        [formGroup]="Bedtransfer" [validations]="getValidationMessages().toBedId"
-                                        [mode]="autocompletebed">
-                                    </airmid-dropdown>
-
-                                   
-                                    <airmid-dropdown label="Class Name" formControlName="toClassId" fxFlex="25%"
-                                        [formGroup]="Bedtransfer" [validations]="getValidationMessages().ClassId"
-                                        [mode]="autocompleteclass" [disabled]="true" #ddlClassName>
-                                    </airmid-dropdown>
-
-                                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="25%">
-                                        <textarea name="Remark" matInput rows="1" cols="5" placeholder="Enter Remark"
-                                            formControlName="remark">
-                                    </textarea>
-                                    </mat-form-field>
-
-                                </div>
+                                <form [formGroup]="Bedtransfer" fxLayout="column">
+                                    <input type="hidden" name="admissionId" formControlName="admissionId" [(ngModel)]="AdmissionId">
+                
+                                    <mat-card style="padding: 8px;">
+                                        <div fxLayout="column" fxLayoutGap="4px">
+                                            <div class="sales-patient-info-title">
+                                                <span style="font-weight: 700;">
+                                                    Bed Transfer
+                                                </span>
+                                            </div>
+                                            <hr>
+                                            <div fxLayout="row" fxLayoutGap="8px">
+                
+                                              
+                                                <airmid-dropdown label="Ward Name" formControlName="toWardId" [formGroup]="Bedtransfer"
+                                                    [validations]="getValidationMessages().toWardId" ValueField="roomId"
+                                                    TextField="roomName" (selectionChange)="onChangeWard($event)" fxFlex="25%"
+                                                    ApiUrl="WardMaster/get-WardClass" #ddlWard>
+                                                </airmid-dropdown>
+                
+                
+                                                <airmid-dropdown label="Bed Name" formControlName="toBedId" fxFlex="25%"
+                                                    [formGroup]="Bedtransfer" [validations]="getValidationMessages().toBedId"
+                                                    [mode]="autocompletebed">
+                                                </airmid-dropdown>
+                
+                                                <airmid-dropdown label="Class Name" formControlName="toClassId"
+                                                     [formGroup]="Bedtransfer" fxFlex="25%"
+                                                    [validations]="getValidationMessages().ClassId" [mode]="autocompleteclass"
+                                                    [disabled]="true"  #ddlClassName>
+                                                </airmid-dropdown>
+                
+                
+                                                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="25%">
+                                                    <textarea name="Remark" matInput rows="1" cols="5" placeholder="Enter Remark"
+                                                        formControlName="remark">
+                                                </textarea>
+                                                </mat-form-field>
+                
+                                            </div>
+                                        </div>
+                                    </mat-card>
+                                    <div class="modal-footer" fxLayout="row" fxLayoutAlign="end center" style="margin-top: 10px">
+                                        <div class="footer-navigation-container">
+                                            <div class="modal-footer-buttons" fxLayoutGap="10px">
+                                                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                                <button class="btn btn-primary" (click)="onBedtransfer()">Transfer</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                
+                                </form>
                             </div>
                         </mat-card>
-                        <div class="modal-footer" fxLayout="row" fxLayoutAlign="end center" style="margin-top: 10px">
-                            <div class="footer-navigation-container">
-                                <div class="modal-footer-buttons" fxLayoutGap="10px">
-                                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                    <button class="btn btn-primary" (click)="onBedtransfer()">Transfer</button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </form>
+                    </div>
                 </div>
-            </div>
+          
         </div>
     </div>
+
 </div>

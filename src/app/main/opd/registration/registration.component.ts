@@ -359,6 +359,7 @@ export class RegInsert {
             this.CityId = RegInsert.CityId || 0;
             this.cityId = RegInsert.cityId || 0;
             this.MaritalStatusId = RegInsert.MaritalStatusId || 0;
+            
             this.IsCharity = RegInsert.IsCharity || false;
             this.ReligionId = RegInsert.ReligionId || 0;
             this.religionId = RegInsert.religionId || 0;

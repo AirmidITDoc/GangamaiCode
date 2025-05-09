@@ -73,14 +73,6 @@ export class NewSettlementComponent {
       this.advanceData = this.data.vPatientHeaderObj;
       console.log(this.advanceData)
 
-    //   setTimeout(() => {
-    //     this._CompanysettlementService.getRegistraionById(this.advanceData.RegNo).subscribe((response) => {
-    //         this.registerObj = response;
-    //         console.log(this.registerObj)
-    //        });
-    // }, 500);
-
-      
     }
     if (this.data.FromName == "Advance") {
 

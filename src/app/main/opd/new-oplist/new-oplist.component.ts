@@ -31,10 +31,7 @@ export class NewOPListComponent implements OnInit {
     myFilterpayform: FormGroup;
     myFilterrefundform: FormGroup;
     menuActions: Array<string> = [];
-    // @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    // @ViewChild(AirmidTableComponent) grid1: AirmidTableComponent;
-    // @ViewChild(AirmidTableComponent) grid2: AirmidTableComponent;
-
+   
     @ViewChild('opBillGrid', { static: false }) grid: AirmidTableComponent;
 @ViewChild('opPaymentGrid', { static: false }) grid1: AirmidTableComponent;
 @ViewChild('opRefundGrid', { static: false }) grid2: AirmidTableComponent;
@@ -335,11 +332,7 @@ export class NewOPListComponent implements OnInit {
                     this.toastr.success(response.message);
                     this.grid.gridConfig = this.gridConfig;
                     this.grid.bindGridData();
-
-                    let Res = response.message
-                    let ID = Res.split('.')
-                    let Id = ID[1]
-                    this.viewgetOPPayemntPdf(Id, true);
+                    this.viewgetOPPayemntPdf(response, true);
 
                 }, (error) => {
                     this.toastr.error(error.message);

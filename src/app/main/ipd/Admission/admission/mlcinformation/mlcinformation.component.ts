@@ -27,21 +27,21 @@ export class MLCInformationComponent implements OnInit {
   MlcInfoFormGroup: FormGroup;
   dateTimeObj: any;
   screenFromString = 'advance';
-  Personaldata=new AdmissionPersonlModel({});
+  Personaldata = new AdmissionPersonlModel({});
   registerObj = new MlcDetail({})
- AdmissionId: any;
+  AdmissionId: any;
   public value = new Date();
   date: string;
   dateValue: any = new Date().toISOString();
   mlcid = 0;
- 
+
 
   // DetailGiven: any;
   // Remark: any;
   Mlcdate: any;
   isTimeChanged: boolean = false;
   minDate: Date;
-  timeflag=0;
+  timeflag = 0;
   public now: Date = new Date();
   dateTimeString: any;
   phdatetime: any;
@@ -51,7 +51,7 @@ export class MLCInformationComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
-     private commonService: PrintserviceService,
+    private commonService: PrintserviceService,
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,
     public dialogRef: MatDialogRef<MLCInformationComponent>,
@@ -63,21 +63,23 @@ export class MLCInformationComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.data);
     this.MlcInfoFormGroup = this.createmlcForm();
+    this.MlcInfoFormGroup.markAllAsTouched();
+
     if (this.data) {
       this.Personaldata = this.data;
       this.AdmissionId = this.Personaldata.admissionId;
-   
-      if ((this.data?.admissionId?? 0) > 0) {
+
+      if ((this.data?.admissionId ?? 0) > 0) {
         setTimeout(() => {
-            this._AdmissionService.getMLCById(this.data.admissionId).subscribe((response) => {
-              if(response.mlcid>0)
-                this.registerObj = response;
-               console.log(this.registerObj)
-              
-               });
+          this._AdmissionService.getMLCById(this.data.admissionId).subscribe((response) => {
+            if (response.mlcid > 0)
+              this.registerObj = response;
+            console.log(this.registerObj)
+
+          });
         }, 500);
-    }
-   
+      }
+
     }
     setInterval(() => {
       this.now = new Date();
@@ -95,12 +97,17 @@ export class MLCInformationComponent implements OnInit {
 
       mlcid: 0,
       admissionId: 0,
-      mlcno: "",
-      reportingDate:  [(new Date()).toISOString()],
-      reportingTime:[""],
-      authorityName: "",
-      buckleNo: "",
-      policeStation: "",
+      mlcno: ['', [
+        Validators.required]],
+      reportingDate: [(new Date()).toISOString()],
+      reportingTime: ['', [
+        Validators.required]],
+      authorityName: ['', [
+        Validators.required]],
+      buckleNo: ['', [
+        Validators.required]],
+      policeStation: ['', [
+        Validators.required]],
       // Given:"",
       // Remark:""
 
@@ -108,18 +115,18 @@ export class MLCInformationComponent implements OnInit {
   }
 
   onSubmit() {
-console.log(this.MlcInfoFormGroup.value)
-this.MlcInfoFormGroup.get('reportingDate').setValue(this.datePipe.transform(this.MlcInfoFormGroup.get('reportingDate').value, 'yyyy-MM-dd'))
-if(!this.MlcInfoFormGroup.invalid){
-    this._AdmissionService.MlcInsert(this.MlcInfoFormGroup.value).subscribe((response) => {
+    console.log(this.MlcInfoFormGroup.value)
+    this.MlcInfoFormGroup.get('reportingDate').setValue(this.datePipe.transform(this.MlcInfoFormGroup.get('reportingDate').value, 'yyyy-MM-dd'))
+    if (!this.MlcInfoFormGroup.invalid) {
+      this._AdmissionService.MlcInsert(this.MlcInfoFormGroup.value).subscribe((response) => {
         this.toastr.success(response.message);
-      this.getMLCdetailview(response)
+        this.getMLCdetailview(response)
         this._matDialog.closeAll();
-      
+
       });
-    }else {
+    } else {
       let invalidFields = [];
-  
+
       if (this.MlcInfoFormGroup.invalid) {
         for (const controlName in this.MlcInfoFormGroup.controls) {
           if (this.MlcInfoFormGroup.controls[controlName].invalid) {
@@ -133,7 +140,7 @@ if(!this.MlcInfoFormGroup.invalid){
           );
         });
       }
-  }
+    }
   }
   getValidationMessages() {
     return {
@@ -151,42 +158,42 @@ if(!this.MlcInfoFormGroup.invalid){
       ]
     };
   }
-  getMLCdetailview(AdmissionId=10){
+  getMLCdetailview(AdmissionId = 10) {
     this.commonService.Onprint("AdmissionID", AdmissionId, "IpMLCCasePaperPrint");
   }
 
 
   @Output() dateTimeEventEmitter = new EventEmitter<{}>();
-    isDatePckrDisabled: boolean = false;
-  
-    onChangeDate(value) {
-      if (value) {
-        const dateOfReg = new Date(value);
-        let splitDate = dateOfReg.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-        let splitTime = this.MlcInfoFormGroup.get('reportingDate').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-       this.eventEmitForParent(splitDate[0], splitTime[1]);
-      }
+  isDatePckrDisabled: boolean = false;
+
+  onChangeDate(value) {
+    if (value) {
+      const dateOfReg = new Date(value);
+      let splitDate = dateOfReg.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      let splitTime = this.MlcInfoFormGroup.get('reportingDate').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      this.eventEmitForParent(splitDate[0], splitTime[1]);
     }
-   
-    onChangeTime(event) {
-      this.timeflag=1
-      if (event) {
-  
-        let selectedDate = new Date(this.MlcInfoFormGroup.get('reportingTime').value);
-        let splitDate = selectedDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-        let splitTime = this.MlcInfoFormGroup.get('reportingTime').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-        this.isTimeChanged = true;
-        this.phdatetime=splitTime[1]
-        console.log(this.phdatetime)
-        this.eventEmitForParent(splitDate[0], splitTime[1]);
-          }
+  }
+
+  onChangeTime(event) {
+    this.timeflag = 1
+    if (event) {
+
+      let selectedDate = new Date(this.MlcInfoFormGroup.get('reportingTime').value);
+      let splitDate = selectedDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      let splitTime = this.MlcInfoFormGroup.get('reportingTime').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      this.isTimeChanged = true;
+      this.phdatetime = splitTime[1]
+      console.log(this.phdatetime)
+      this.eventEmitForParent(splitDate[0], splitTime[1]);
     }
-  
-    eventEmitForParent(actualDate, actualTime) {
-      let localaDateValues = actualDate.split('/');
-      let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
-      this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
-    }
+  }
+
+  eventEmitForParent(actualDate, actualTime) {
+    let localaDateValues = actualDate.split('/');
+    let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
+    this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
+  }
   onClear() { }
 
   getDateTime(dateTimeObj) {
@@ -205,7 +212,7 @@ export class MlcDetail {
   mlcid: any;
   admissionId: any;
   mlcno: any;
-  reportingDate:any;
+  reportingDate: any;
   reportingTime: any;
   authorityName: any;
   buckleNo: any;

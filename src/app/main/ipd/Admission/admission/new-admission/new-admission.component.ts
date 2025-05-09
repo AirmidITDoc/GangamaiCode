@@ -47,7 +47,7 @@ export class NewAdmissionComponent implements OnInit {
   ageYear = 0
   ageMonth = 0
   ageDay = 0
-
+  CityName=""
   noOptionFound: boolean = false;
   isRegSearchDisabled: boolean = true;
   registredflag: boolean = true;
@@ -58,7 +58,7 @@ export class NewAdmissionComponent implements OnInit {
   filteredOptionsRegSearch: Observable<string[]>;
   registerObj1 = new AdmissionPersonlModel({});
   registerObj = new RegInsert({});
-
+  RegId=0;
   currentDate = new Date();
   public now: Date = new Date();
   // isLoading: string = '';
@@ -137,8 +137,7 @@ export class NewAdmissionComponent implements OnInit {
 
   getSelectedObj(obj) {
     console.log(obj)
-    // this.RegOrPhoneflag = 'Entry from Registration';
-
+    this.RegId = obj.value;
     if ((obj.value ?? 0) > 0) {
 
       console.log(this.data)
@@ -155,7 +154,7 @@ export class NewAdmissionComponent implements OnInit {
   }
 
   chkHealthcard(e) { }
-
+  Patientnewold: any = 1;
   onChangeReg(event) {
     if (event.value == 'registration') {
       this.Regflag = false;
@@ -164,6 +163,7 @@ export class NewAdmissionComponent implements OnInit {
       // this.isRegSearchDisabled = true;
       this.registerObj1 = new AdmissionPersonlModel({});
       this.personalFormGroup.reset();
+      this.Patientnewold = 1;
 
       this.personalFormGroup = this._AdmissionService.createPesonalForm();
       this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
@@ -174,7 +174,8 @@ export class NewAdmissionComponent implements OnInit {
       this.Regflag = true;
       this.searchFormGroup.get('RegId').enable();
       this.personalFormGroup = this._AdmissionService.createPesonalForm();
-     
+      this.Patientnewold = 2;
+
     }
 
     this.personalFormGroup.markAllAsTouched();
@@ -182,6 +183,9 @@ export class NewAdmissionComponent implements OnInit {
   }
 
   onNewSave() {
+    if (this.Patientnewold == 2 && this.RegId == 0)
+      this.toastr.warning("Please Select Registered Patient  ...");
+  else {
     let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
     if (DateOfBirth1) {
       const todayDate = new Date();
@@ -254,7 +258,7 @@ export class NewAdmissionComponent implements OnInit {
       }
 
     }
- 
+  }
   }
 
 
@@ -284,8 +288,9 @@ export class NewAdmissionComponent implements OnInit {
     this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
     this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
     this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
-
-console.log(this.searchFormGroup.get("HospitalId").value)
+    this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value,"yyyy-MM-dd"))
+    this.personalFormGroup.get('City').setValue(this.CityName)
+   console.log(this.searchFormGroup.get("HospitalId").value)
     this.admissionFormGroup.get('hospitalId').setValue(this.searchFormGroup.get("HospitalId").value)
 
     this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
@@ -350,6 +355,7 @@ console.log(this.searchFormGroup.get("HospitalId").value)
   }
 
   onChangecity(e) {
+    this.CityName=e.cityName
     this.registerObj.stateId = e.stateId
     this._AdmissionService.getstateId(e.stateId).subscribe((Response) => {
       console.log(Response)

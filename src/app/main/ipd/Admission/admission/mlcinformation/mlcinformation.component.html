@@ -1,26 +1,34 @@
-<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex fxLayoutGap="5px">
-    <div class="header-container accent" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
-        fxLayoutAlign="space-between">
-        <span style="font-size: 22px; font-weight: 500; color: #fff;">MLC Information</span>
-        <span class="material-icons" style="cursor: pointer; margin-left: 24px; color: #fff;" (click)="onClose()">
-        close
-      </span>
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">MLC Update</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div style="padding:3px;">
-
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-            <div fxFlex.gt-sm="100%" fxFlex>
-                <div fxlayout="row" fxLayoutGap="5px">
-                    <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 6px;">
-                        <div class="patient-info-sales my-8">
-                            <div class="sales-patient-info-title">
-                                <span style="font-weight: 700;">
-                                    Patient Information
-                                </span>
-                            </div>
-                            <hr>
-                            <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
-                                class="patient-info">
+    <!-- Modal body -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            
+                <div fxLayout="column" class="gap-12">
+                    <div class="modal-card-container">
+                        <mat-card>
+                            <div class="patient-info-container">
                                 <div class="patient-sub">
                                     <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
                                         fxLayoutAlign="space-between">
@@ -102,108 +110,110 @@
                                             </div>
                                         </div>
                                     </div>
+                            </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                    <div class="modal-card-container">
+                        <mat-card>
+                            <div fxLayout="column" class="gap-8">
+                                <div class="form-title mb-2 border-bottom pb-2">
+                                    <span class="h3 font-weight-600">MLC Information</span>
                                 </div>
+                                <form [formGroup]="MlcInfoFormGroup" style="border: blue;">
+                                    <h3 style="font-weight:bold ;">Medico Legal Case Information</h3>
+                                    <div fxLayoutGap="5px">
+                                        <input type="hidden" name="mlcid" formControlName="mlcid" [(ngModel)]="registerObj.mlcid">
+                                        <input type="hidden" name="admissionId" formControlName="admissionId" [(ngModel)]="Personaldata.admissionId">
+                
+                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-textbox label="Mlcno" formControlName="mlcno" [value]="registerObj.mlcno"
+                                                [formGroup]="MlcInfoFormGroup" [validations]="getValidationMessages().mlcno"
+                                                [maxLength]="50">
+                                            </airmid-textbox>
+                                        </div>
+                                        <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Reporting Collection Date / Time</mat-label>
+                                                <input matInput type="datetime-local" placeholder="start date" [value]="date"
+                                                    [(ngModel)]="Mlcdate" (change)="date=$event.target.value"
+                                                    formControlName="reportingDate">
+                                            </mat-form-field>
+                                        </div> -->
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <mat-form-field appearance="outline" class="dateField">
+                                                    <mat-label>Report Date</mat-label>
+                                                    <input matInput [matDatepicker]="picker1" [min]="minDate"
+                                                        formControlName="reportingDate" (dateChange)="onChangeDate($event.value)">
+                                                    <mat-datepicker-toggle matSuffix [for]="picker1"
+                                                        [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker1></mat-datepicker>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <mat-form-field appearance="outline" class="timeField">
+                                                    <mat-label>ReportTime</mat-label>
+                                                    <input matTimepicker #t="matTimepicker" mode="12h" formControlName="reportingTime"
+                                                        (timeChange)="onChangeTime($event)"
+                                                        [disableDialogOpenOnClick]="isDatePckrDisabled">
+                                                    <mat-icon matSuffix
+                                                        (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                                                </mat-form-field>
+                
+                                            </div>
+                
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="authorityName" formControlName="authorityName"
+                                                    [value]="registerObj.authorityName" [formGroup]="MlcInfoFormGroup"
+                                                    [validations]="getValidationMessages().authorityName" [maxLength]="50">
+                                                </airmid-textbox>
+                                            </div>
+                
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="buckleNo" formControlName="buckleNo"
+                                                    [value]="registerObj.buckleNo" [formGroup]="MlcInfoFormGroup"
+                                                    [validations]="getValidationMessages().buckleNo" [maxLength]="50">
+                                                </airmid-textbox>
+                                            </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="policeStation" formControlName="policeStation"
+                                                    [value]="registerObj.policeStation" [formGroup]="MlcInfoFormGroup"
+                                                    [validations]="getValidationMessages().policeStation" [maxLength]="50">
+                                                </airmid-textbox>
+                                            </div>
+                                        </div>
+                
+                
+                                        <div fxLayoutGap="5px" fxlayout="column">
+                
+                                            <!-- <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Detail Given</mat-label>
+                                                <textarea matInput name="Given" formControlName="Given" cols="200" rows="5"
+                                                    [(ngModel)]="DetailGiven"></textarea>
+                                            </mat-form-field>
+                
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Remark</mat-label>
+                                                <textarea matInput name="Remark" formControlName="Remark" cols="200" rows="5"
+                                                    [(ngModel)]="Remark"></textarea>
+                                            </mat-form-field> -->
+                                        </div>
+                
+                                        <div class="next-div button-row-group" style="margin-left: 1250px;">
+                                           
+                                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                            <button class="btn btn-primary" color="accent" (click)="onSubmit()">
+                                                <span>Save</span>
+                                            </button>
+                                        </div>
+                                </form>
                             </div>
-                        </div>
-                    </mat-card>
-
+                        </mat-card>
+                    </div>
                 </div>
-            </div>
-
+           
         </div>
-
-        <mat-card class="example-card" name="m1">
-            <div fxFlexFill fxLayout="column">
-                <form [formGroup]="MlcInfoFormGroup" style="border: blue;">
-                    <h3 style="font-weight:bold ;">Medico Legal Case Information</h3>
-                    <div fxLayoutGap="5px">
-                        <input type="hidden" name="mlcid" formControlName="mlcid" [(ngModel)]="registerObj.mlcid">
-                        <input type="hidden" name="admissionId" formControlName="admissionId" [(ngModel)]="Personaldata.admissionId">
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox label="Mlcno" formControlName="mlcno" [value]="registerObj.mlcno"
-                                [formGroup]="MlcInfoFormGroup" [validations]="getValidationMessages().mlcno"
-                                [maxLength]="50">
-                            </airmid-textbox>
-                        </div>
-                        <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                            <mat-form-field appearance="outline">
-                                <mat-label>Reporting Collection Date / Time</mat-label>
-                                <input matInput type="datetime-local" placeholder="start date" [value]="date"
-                                    [(ngModel)]="Mlcdate" (change)="date=$event.target.value"
-                                    formControlName="reportingDate">
-                            </mat-form-field>
-                        </div> -->
-                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <mat-form-field appearance="outline" class="dateField">
-                                    <mat-label>Report Date</mat-label>
-                                    <input matInput [matDatepicker]="picker1" [min]="minDate"
-                                        formControlName="reportingDate" (dateChange)="onChangeDate($event.value)">
-                                    <mat-datepicker-toggle matSuffix [for]="picker1"
-                                        [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker1></mat-datepicker>
-                                </mat-form-field>
-                            </div>
-                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <mat-form-field appearance="outline" class="timeField">
-                                    <mat-label>ReportTime</mat-label>
-                                    <input matTimepicker #t="matTimepicker" mode="12h" formControlName="reportingTime"
-                                        (timeChange)="onChangeTime($event)"
-                                        [disableDialogOpenOnClick]="isDatePckrDisabled">
-                                    <mat-icon matSuffix
-                                        (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
-                                </mat-form-field>
-
-                            </div>
-
-                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="authorityName" formControlName="authorityName"
-                                    [value]="registerObj.authorityName" [formGroup]="MlcInfoFormGroup"
-                                    [validations]="getValidationMessages().authorityName" [maxLength]="50">
-                                </airmid-textbox>
-                            </div>
-
-                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="buckleNo" formControlName="buckleNo"
-                                    [value]="registerObj.buckleNo" [formGroup]="MlcInfoFormGroup"
-                                    [validations]="getValidationMessages().buckleNo" [maxLength]="50">
-                                </airmid-textbox>
-                            </div>
-                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="policeStation" formControlName="policeStation"
-                                    [value]="registerObj.policeStation" [formGroup]="MlcInfoFormGroup"
-                                    [validations]="getValidationMessages().policeStation" [maxLength]="50">
-                                </airmid-textbox>
-                            </div>
-                        </div>
-
-
-                        <div fxLayoutGap="5px" fxlayout="column">
-
-                            <!-- <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Detail Given</mat-label>
-                                <textarea matInput name="Given" formControlName="Given" cols="200" rows="5"
-                                    [(ngModel)]="DetailGiven"></textarea>
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Remark</mat-label>
-                                <textarea matInput name="Remark" formControlName="Remark" cols="200" rows="5"
-                                    [(ngModel)]="Remark"></textarea>
-                            </mat-form-field> -->
-                        </div>
-
-                        <div class="next-div button-row-group" style="margin-left: 1250px;">
-                           
-                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                            <button class="btn btn-primary" color="accent" (click)="onSubmit()">
-                                <span>Save</span>
-                            </button>
-                        </div>
-                </form>
-            </div>
-        </mat-card>
-
     </div>
+
 </div>

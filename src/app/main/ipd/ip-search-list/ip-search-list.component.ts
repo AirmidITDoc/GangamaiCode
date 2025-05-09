@@ -54,12 +54,12 @@ export class IPSearchListComponent implements OnInit {
     l_name: any = ""
     m_name: any = ""
     IPDNo: any = ""
-    status="0"
-        
-  fromDate = '' ;// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  toDate ='' ; // this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+    status = "0"
 
-   
+    fromDate = '';// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = ''; // this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+
+
     dataSource1 = new MatTableDataSource<AdvanceDetailObj>();
     autocompleteModedeptdoc: string = "ConDoctor";
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
@@ -67,7 +67,7 @@ export class IPSearchListComponent implements OnInit {
     @ViewChild('iconBillCancle') iconBillCancle!: TemplateRef<any>;
     @ViewChild('iconMlc') iconMlc!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-    
+
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.iconPatientCategory;
         this.gridConfig.columnsList.find(col => col.key === 'isBillGenerated')!.template = this.iconBillCancle;
@@ -86,10 +86,10 @@ export class IPSearchListComponent implements OnInit {
         { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Ref Doc Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', type: 10, width: 350 },
-        { heading: "Adv Amount", key: "AdvanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount},
-        { heading: "Charges Amount", key: "ChargesAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount},
+        { heading: "Adv Amount", key: "AdvanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Charges Amount", key: "ChargesAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         {
-            heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,width:200,
+            heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template, width: 200,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
 
@@ -111,7 +111,7 @@ export class IPSearchListComponent implements OnInit {
             { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
             { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
-                  ],
+        ],
         row: 25
     }
 
@@ -122,17 +122,16 @@ export class IPSearchListComponent implements OnInit {
         public _matDialog: MatDialog,
         private _fuseSidebarService: FuseSidebarService,
         private _ActRoute: Router,
-         private commonService: PrintserviceService,
+        private commonService: PrintserviceService,
         public datePipe: DatePipe,
-        private _configue:ConfigService,
+        private _configue: ConfigService,
         public toastr: ToastrService,
-        private advanceDataStored: AdvanceDataStored) 
-        { }
+        private advanceDataStored: AdvanceDataStored) { }
 
     ngOnInit(): void {
         this.myFilterform = this._IpSearchListService.filterForm();
         this.myFilterform.get('fromDate').setValue('');
-        this.myFilterform.get('enddate').setValue('');   
+        this.myFilterform.get('enddate').setValue('');
 
         console.log(this._configue.configParams)
 
@@ -141,25 +140,25 @@ export class IPSearchListComponent implements OnInit {
             this.menuActions.push('Bed Transfer');
         }
         else if (this._ActRoute.url == '/ipd/discharge') {
-                this.menuActions.push('Discharge');  
+            this.menuActions.push('Discharge');
         }
         else if (this._ActRoute.url == '/ipd/dischargesummary') {
-         
-            if(this._configue.configParams.IsDischargeTemplate)
-              this.menuActions.push('Discharge Summary Template');
+
+            if (this._configue.configParams.IsDischargeTemplate)
+                this.menuActions.push('Discharge Summary Template');
             else
-              this.menuActions.push('Discharge Summary');
-            
+                this.menuActions.push('Discharge Summary');
+
         }
         else if (this._ActRoute.url == '/ipd/refund/iprefundofadvance') {
 
             this.menuActions.push('Refund of Advance');
-            
+
         }
         else if (this._ActRoute.url == '/ipd/refundofbill') {
 
             this.menuActions.push('Refund of Bill');
-          }
+        }
         else if (this._ActRoute.url == '/ipd/add-billing') {
             this.menuActions.push('Advance');
             this.menuActions.push('Bill');
@@ -187,7 +186,7 @@ export class IPSearchListComponent implements OnInit {
 
 
     OngetRecord(element, m) {
-        
+
         console.log('Third action clicked for:', element);
         if (m == "Discharge") {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -201,9 +200,9 @@ export class IPSearchListComponent implements OnInit {
                     data: element
                 });
             dialogRef.afterClosed().subscribe(result => {
-                   this.status="1"
-                   this.onChangeFirst(m);
-                
+                this.status = "1"
+                this.onChangeFirst(m);
+
             });
         }
         else if (m == "Discharge Summary") {
@@ -232,7 +231,7 @@ export class IPSearchListComponent implements OnInit {
             const dialogRef = this._matDialog.open(DischargeSummaryTemplateComponent,
                 {
                     height: '95%',
-                    width:"80%",
+                    width: "80%",
                     data: element
                 });
             dialogRef.afterClosed().subscribe(result => {
@@ -300,7 +299,7 @@ export class IPSearchListComponent implements OnInit {
 
             this.advanceDataStored.storage = new AdvanceDetailObj(element);
             this._IpSearchListService.populateForm2(element);
-           
+
             const dialogRef = this._matDialog.open(CompanyInformationComponent,
                 {
                     maxWidth: "75vw",
@@ -312,11 +311,11 @@ export class IPSearchListComponent implements OnInit {
 
         }
         else if (m == "Bill") {
-            if(element.isBillGenerated == '1'){
+            if (element.isBillGenerated == '1') {
                 this.toastr.warning('Final Bill already Generated', 'warning !', {
                     toastClass: 'tostr-tost custom-toast-error',
-                  });
-                  return  
+                });
+                return
             }
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
@@ -357,7 +356,7 @@ export class IPSearchListComponent implements OnInit {
             });
         }
         else if (m == "Advance") {
-         this.advanceDataStored.storage = new AdvanceDetailObj(element);
+            this.advanceDataStored.storage = new AdvanceDetailObj(element);
             let Advflag: boolean = false;
             if (element.IsBillGenerated) {
                 Advflag = true;
@@ -380,7 +379,7 @@ export class IPSearchListComponent implements OnInit {
                     console.log('The dialog was closed - Insert Action', result);
                 });
             } else {
-               
+
                 Swal.fire({
                     title: 'Selected Patient Bill Is Already Generated',
                     icon: "warning",
@@ -392,20 +391,20 @@ export class IPSearchListComponent implements OnInit {
             }
         }
 
-      
+
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
     }
 
-    
+
 
     getValidationdoctorMessages() {
         return {
-          searchDoctorId: [
-            { name: "required", Message: "Doctor Name is required" }
-          ]
+            searchDoctorId: [
+                { name: "required", Message: "Doctor Name is required" }
+            ]
         };
-      }
+    }
     SubMenu(contact) {
         let xx = {
             RegNo: contact.RegNo,
@@ -426,10 +425,10 @@ export class IPSearchListComponent implements OnInit {
         this._ActRoute.navigate(['ipd/add-billing/new-appointment']);
     }
 
-    apiUrl:any;
-    IsDischarge:boolean=false
+    apiUrl: any;
+    IsDischarge: boolean = false
     onChangeFirst(event) {
-        debugger 
+        debugger
         console.log(event)
         // if(this.myFilterform.get('fromDate').value==null || this.myFilterform.get('fromDate').value== ''){
         // this.fromDate = "1900-01-01"
@@ -438,20 +437,20 @@ export class IPSearchListComponent implements OnInit {
         // this.fromDate =  this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
         // this.toDate =  this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
         // }
-        if(this.myFilterform.get('IsDischarge').value == false){
-        this.myFilterform.get('fromDate').setValue('')
-        this.myFilterform.get('enddate').setValue('')
-        this.apiUrl =  "Admission/AdmissionList"
-        this.status = '0'
-        this.fromDate = "1900-01-01"
-        this.toDate =  "1900-01-01"
-        }else{
-        this.myFilterform.get('fromDate').setValue(new Date())
-        this.myFilterform.get('enddate').setValue(new Date())
-        this.apiUrl =  "Admission/AdmissionDischargeList" 
-        this.fromDate =  this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
-        this.toDate =   this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
-        this.status = '1'
+        if (this.myFilterform.get('IsDischarge').value == false) {
+            this.myFilterform.get('fromDate').setValue('')
+            this.myFilterform.get('enddate').setValue('')
+            this.apiUrl = "Admission/AdmissionList"
+            this.status = '0'
+            this.fromDate = "1900-01-01"
+            this.toDate = "1900-01-01"
+        } else {
+            this.myFilterform.get('fromDate').setValue(new Date())
+            this.myFilterform.get('enddate').setValue(new Date())
+            this.apiUrl = "Admission/AdmissionDischargeList"
+            this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
+            this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
+            this.status = '1'
         }
         this.f_name = this.myFilterform.get('FirstName').value + "%"
         this.l_name = this.myFilterform.get('LastName').value + "%"
@@ -461,11 +460,11 @@ export class IPSearchListComponent implements OnInit {
 
         this.getfilterdata();
     }
-  
+
     getfilterdata() {
         debugger
         this.gridConfig = {
-            apiUrl:this.apiUrl ,
+            apiUrl: this.apiUrl,
             columnsList: this.allcolumns,
             sortField: "AdmissionId",
             sortOrder: 0,
@@ -479,14 +478,14 @@ export class IPSearchListComponent implements OnInit {
                 { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
                 { fieldName: "M_Name", fieldValue: this.m_name, opType: OperatorComparer.Equals },
                 { fieldName: "IPNo", fieldValue: this.IPDNo, opType: OperatorComparer.Equals }
-               
+
             ],
             row: 25
         }
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
 
-        
+
     }
     Clearfilter(event) {
         console.log(event)
@@ -510,10 +509,10 @@ export class IPSearchListComponent implements OnInit {
         debugger
         console.log(event)
         if (event.value == "1")
-            this.status="0"
-            else if (event.value == "0")
-            this.status="1"
-            
+            this.status = "0"
+        else if (event.value == "0")
+            this.status = "1"
+
         console.log(this.gridConfig)
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
@@ -531,8 +530,9 @@ export class IPSearchListComponent implements OnInit {
 
         const dialogRef = this._matDialog.open(MLCInformationComponent,
             {
-                maxWidth: '85vw',
-                height: '400px', width: '100%',
+                maxWidth: "100%",
+                height: '60%',
+                width: '90%',
                 data: contact
             });
 
@@ -545,17 +545,17 @@ export class IPSearchListComponent implements OnInit {
     printDischargesummaryWithoutletterhead(event) { }
     printDischargesummary(event) { }
     printDischargeslip(data) {
-      this.commonService.Onprint("AdmId", data.admissionId, "IpDischargeReceipt");
-        
-     }
+        this.commonService.Onprint("AdmId", data.admissionId, "IpDischargeReceipt");
+
+    }
     getSelectedRow(row: any): void {
         console.log("Selected row : ", row);
     }
 
-    
-getMLCdetailview(element){
-    this.commonService.Onprint("AdmissionID", element, "IpMLCCasePaperPrint");
-}
+
+    getMLCdetailview(element) {
+        this.commonService.Onprint("AdmissionID", element, "IpMLCCasePaperPrint");
+    }
 }
 
 
@@ -669,7 +669,7 @@ export class AdvanceDetailObj {
     DepartmentName: any;
     RefDocName: any;
     GenderName: any;
-    DocNameID: any; 
+    DocNameID: any;
     PolicyNo: any;
     MemberNo: any;
     ClaimNo: any;
@@ -694,7 +694,7 @@ export class AdvanceDetailObj {
     H_PaidAmt: any;
     H_BalAmt: any;
     mobileNo: any;
-    MobileNo:any;
+    MobileNo: any;
     PatientAge: any;
     AdvTotalAmount: any;
     IsInitinatedDischarge: any;
@@ -756,7 +756,7 @@ export class AdvanceDetailObj {
 
 
 export class ChargesList {
-    ChargesId:any
+    ChargesId: any
     chargesId: number;
     ServiceId: number;
     ServiceName: String;
@@ -777,7 +777,7 @@ export class ChargesList {
     BalanceQty: any;
     IsStatus: any;
     extMobileNo: any;
-    doctorName:any;
+    doctorName: any;
     ConcessionPercentage: any;
     EditDoctor: any;
     constructor(ChargesList) {
@@ -993,4 +993,3 @@ export class Bedtransfer {
         }
     }
 }
- 

@@ -16,6 +16,7 @@ import { AdmissionPersonlModel, RegInsert } from '../../Admission/admission/admi
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-bed-transfer',
@@ -52,6 +53,7 @@ export class BedTransferComponent implements OnInit {
     private accountService: AuthenticationService,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
+     private _FormvalidationserviceService: FormvalidationserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,
@@ -64,11 +66,12 @@ export class BedTransferComponent implements OnInit {
       this.registerObj1 = this.data
       console.log("Data:", this.registerObj1);
       this.Bedtransfer = this.bedsaveForm();
+      this.Bedtransfer.markAllAsTouched();
 
       this.AdmissionId = this.data.admissionId;
-      this.Bedtransfer.get("toWardId").setValue(this.registerObj1.wardId)
-      this.Bedtransfer.get("toBedId").setValue(this.registerObj1.bedId)
-      this.Bedtransfer.get("toClassId").setValue(this.registerObj1.classId)
+      // this.Bedtransfer.get("toWardId").setValue(this.registerObj1.wardId)
+      // this.Bedtransfer.get("toBedId").setValue(this.registerObj1.bedId)
+      // this.Bedtransfer.get("toClassId").setValue(this.registerObj1.classId)
     }
 
     if ((this.data?.regId ?? 0) > 0) {
@@ -107,9 +110,9 @@ export class BedTransferComponent implements OnInit {
       fromClassId: this.registerObj1.classId,
       toDate: [(new Date()).toISOString()],
       toTime: [(new Date()).toISOString()],
-      toWardId: ['', Validators.required],
-      toBedId: ['', Validators.required],
-      toClassId:['', Validators.required],
+      toWardId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      toBedId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      toClassId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       remark: "",
       addedBy:this.accountService.currentUserValue.userId,
       isCancelled: 0,

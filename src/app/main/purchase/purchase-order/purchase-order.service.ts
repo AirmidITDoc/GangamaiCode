@@ -204,7 +204,7 @@ export class PurchaseOrderService {
 
 
    public getGSTCalculation(type: GSTType, values: GSTCalculationResult): GSTCalculation {
-    
+    debugger
           let calculation: GSTCalculation;
           switch (type) {
               case GSTType.GST_AFTER_DISC: {
@@ -244,6 +244,7 @@ export class PurchaseOrderService {
       }
 
       public calculateGSTAfterDisc(values: GSTCalculationResult): GSTCalculation {
+        debugger
         const baseAmount = values.totalAmount - values.discAmount;
 
         const cgstAmount = (baseAmount * values.cgst) / 100;
@@ -264,7 +265,7 @@ export class PurchaseOrderService {
     }
 
     public calculateGSTBeforeDisc(values: GSTCalculationResult): GSTCalculation {
-      
+      debugger
         const baseAmount = values.totalAmount;
 
         const cgstAmount = (baseAmount * values.cgst) / 100;

@@ -95,7 +95,7 @@ export class PurchaseOrderComponent implements OnInit {
     { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
     { fieldName: "IsVerify", fieldValue: String(this.status), opType: OperatorComparer.Equals },
-    { fieldName: "Supplier_Id", fieldValue:  String(this.SupplierId), opType: OperatorComparer.Equals }
+    { fieldName: "IsVerify", fieldValue:  String(this.SupplierId), opType: OperatorComparer.Equals }
     ]
   }
   gridConfig1: gridModel = new gridModel();

@@ -76,7 +76,7 @@ export class NewAppointmentComponent implements OnInit {
     VFollowupcount = 0;
     VBillcount = 0;
     VCrossConscount = 0;
-
+    CityName=""
     RegOrPhoneflag = '';
     vPhoneFlage = 0;
     vPhoneAppId: any;
@@ -174,6 +174,7 @@ console.log(this.accountService.currentUserValue.user.unitId)
             this.personalFormGroup.get('RegId').reset();
             this.searchFormGroup.get('RegId').disable();
             this.isRegSearchDisabled = false;
+            this.Patientnewold = 1;
 
             this.personalFormGroup = this.createPesonalForm();
 
@@ -334,10 +335,12 @@ console.log(this.accountService.currentUserValue.user.unitId)
                     this.registerObj = response;
                     console.log(this.registerObj)
                     this.registerObj.religionId = 0;
+                    this.registerObj.maritalStatusId = 0;
                     this.registerObj.areaId = 0
                     this.registerObj.regId = 0
                     this.registerObj.phoneNo = ''
                     this.registerObj.aadharCardNo = ''
+                    this.registerObj.dateOfBirth = new Date();
                     this.registerObj.mobileNo = this.registerObj.mobileNo.trim()
                 });
             }, 500);
@@ -346,6 +349,7 @@ console.log(this.accountService.currentUserValue.user.unitId)
     }
 
     onSave() {
+        
         if (this.Patientnewold == 2 && this.RegId == 0)
             this.toastr.warning("Please Select Registered Patient  ...");
         else {
@@ -362,6 +366,7 @@ console.log(this.accountService.currentUserValue.user.unitId)
                     (this.ageMonth)--;
                     const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
                     this.ageDay += previousMonth.getDate(); // Days in previous month
+                    // this.ageDay = this.ageDay+1
                 }
 
                 if (this.ageMonth < 0) {
@@ -379,11 +384,14 @@ console.log(this.accountService.currentUserValue.user.unitId)
                         });
                         return;
                     }
+                    this.personalFormGroup.get('City').setValue(this.CityName)
+      
                     this.personalFormGroup.get('Age').setValue(String(this.ageYear))
                     this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
                     this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
                     this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
-
+                    this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value,"yyyy-MM-dd"))
+      
                     this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
                     this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
                     this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
@@ -420,6 +428,7 @@ console.log(this.accountService.currentUserValue.user.unitId)
 
     OnsaveNewRegister() {
         console.log(this.personalFormGroup.value)
+        debugger
         this.personalFormGroup.get("RegId").setValue(0)
         this.VisitFormGroup.get("regId").setValue(0)
         if (this.vPhoneAppId)
@@ -428,7 +437,7 @@ console.log(this.accountService.currentUserValue.user.unitId)
         let submitData = {
             "registration": this.personalFormGroup.value,
             "visit": this.VisitFormGroup.value
-        };
+        }
         console.log(submitData);
 
         this._AppointmentlistService.NewappointmentSave(submitData).subscribe((response) => {
@@ -480,6 +489,7 @@ console.log(this.accountService.currentUserValue.user.unitId)
     }
 
     onChangecity(e) {
+        this.CityName=e.cityName
         this.registerObj.stateId = e.stateId
         this._AppointmentlistService.getstateId(e.stateId).subscribe((Response) => {
             console.log(Response)
@@ -684,14 +694,9 @@ console.log(this.accountService.currentUserValue.user.unitId)
                 Validators.pattern("^[0-9]*$")]],
             PhoneNo: ['', [Validators.minLength(10),
             Validators.maxLength(10),
-                // this._FormvalidationserviceService.inputFieldValidator(),
-                // Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+             
             ]],
-            // MobileNo: ['', [Validators.required, this._FormvalidationserviceService.inputFieldValidator(),
-            // Validators.minLength(10),
-            // Validators.maxLength(10),
-            // Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-            // ]],
+          
             MobileNo: ['', [Validators.required,
             Validators.minLength(10),
             Validators.maxLength(10),

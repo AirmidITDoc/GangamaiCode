@@ -107,6 +107,7 @@ export class NewRegistrationComponent implements OnInit {
                 (this.ageMonth)--;
                 const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
                 this.ageDay += previousMonth.getDate(); // Days in previous month
+                // this.ageDay = this.ageDay+1
             }
 
             if (this.ageMonth < 0) {
@@ -114,6 +115,11 @@ export class NewRegistrationComponent implements OnInit {
                 this.ageMonth += 12;
             }
         }
+        debugger
+        let Bdate = this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd")
+        this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
+        this.personalFormGroup.get('City').setValue(this.CityName)
+      
         this.personalFormGroup.get('Age').setValue(String(this.ageYear))
         this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
         this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
@@ -148,21 +154,21 @@ export class NewRegistrationComponent implements OnInit {
                 }
 
             }
-        }else {
-                this.toastr.warning("Please Select Birthdate...");
-            }
+        } else {
+            this.toastr.warning("Please Select Birthdate...");
         }
-    
+    }
 
-        keyPressAlphanumeric(event) {
-            var inp = String.fromCharCode(event.keyCode);
-            if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-                return true;
-            } else {
-                event.preventDefault();
-                return false;
-            }
+
+    keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
         }
+    }
     onClose() {
         this.dialogRef.close();
     }
@@ -187,7 +193,7 @@ export class NewRegistrationComponent implements OnInit {
 
     }
 
-
+    CityName=""
     onChangestate(e) {
     }
 
@@ -201,6 +207,8 @@ export class NewRegistrationComponent implements OnInit {
 
     // }
     onChangecity(e) {
+        console.log(e)
+        this.CityName=e.cityName
         this.registerObj.stateId = e.stateId
         this._registerService.getstateId(e.stateId).subscribe((Response) => {
             console.log(Response)

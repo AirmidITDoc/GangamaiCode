@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { IndentService } from './indent.service';
@@ -23,6 +23,7 @@ import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/conf
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
     selector: 'app-indent',
@@ -35,39 +36,34 @@ export class IndentComponent implements OnInit {
     hasSelectedContacts: boolean;
     IndentSearchGroup: FormGroup;
     autocompletestore: string = "Store";
-    Status="1"
-    FromStore:any="0"
+    Status="0"
+    FromStore:any = String(this.accountService.currentUserValue.user.storeId);
     Tostore:any="0"
-    fromDate = "2025-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    fromDate = "2024-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate =this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
-
+    @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
+    ngAfterViewInit() {
+        this.gridConfig.columnsList.find(col => col.key === 'isInchargeVerify')!.template = this.isVerifiedstatus;
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+       
+      }
 
     allcolumns = [
 
-        { heading: "Verify", key: "isverify", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Verify", key: "isInchargeVerify", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "IndentNo", key: "indentNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Indent Date", key: "indentDate", sort: true, align: 'left', emptySign: 'NA',type:6 },
-        { heading: "From Store Name", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "To Store Name", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "From Store Name", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "To Store Name", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Added By", key: "addedby", sort: true, align: 'left', emptySign: 'NA' },
         {
-            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                {
-                    action: gridActions.edit, callback: (data: any) => {
-                        this.onSave(data);
-                    }
-                }, {
-                    action: gridActions.delete, callback: (data: any) => {
-                        this._IndentService.deactivateTheStatus(data.IndentId).subscribe((response: any) => {
-                            this.toastr.success(response.message);
-                            this.grid.bindGridData();
-                        });
-                    }
-                }]
-        } 
+             heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+             template: this.actionButtonTemplate  // Assign ng-template to the column
+         } 
     ]
 
     gridConfig: gridModel = {
@@ -89,8 +85,13 @@ export class IndentComponent implements OnInit {
     GetDetails1(data) {
         let IndentId = data.indentId
         this.gridConfig1 = {
-            apiUrl: "Indent/IndentList",
-            columnsList: this.allcolumns,
+            apiUrl: "Indent/IndentDetailsList",
+            columnsList:[
+                { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "QTY", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Issue QTY", key: "issQty", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Pending QTY", key: "bal", sort: true, align: 'left', emptySign: 'NA' }
+               ],
             sortField: "IndentId",
             sortOrder: 0,
             filters: [
@@ -104,8 +105,8 @@ export class IndentComponent implements OnInit {
     }
 
     constructor(
-        public _IndentService: IndentService,
-        public toastr: ToastrService, public _matDialog: MatDialog,
+        public _IndentService: IndentService,  private commonService: PrintserviceService,
+        public toastr: ToastrService, public _matDialog: MatDialog,private accountService: AuthenticationService,
         public datePipe: DatePipe
     ) { }
 
@@ -130,10 +131,13 @@ export class IndentComponent implements OnInit {
     }
 
     onChangeFirst(value) {
-        if(this.IndentSearchGroup.get('Status').value)
-            this.Status="0"
-          else
-          this.Status="1"
+debugger
+        if(this.IndentSearchGroup.get('Status').value == true){
+            this.Status = "1"
+        }else{
+            this.Status = "0"
+        }
+
         this.isShowDetailTable = false;
         this.fromDate = this.datePipe.transform(this.IndentSearchGroup.get('startdate').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.IndentSearchGroup.get('enddate').value, "yyyy-MM-dd")
@@ -169,8 +173,8 @@ export class IndentComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(NewIndentComponent,
             {
-                // maxWidth: "95vw",
-                maxHeight: '75vh',
+                maxWidth: "90vw",
+                height: '700px',
                 width: '100%',
                 data: row
             });
@@ -181,6 +185,59 @@ export class IndentComponent implements OnInit {
         });
     }
 
+     OnEdit(contact) {
+        console.log(contact)
+        if(this.IndentSearchGroup.get('Status').value == 0 ){
+        
+          const dialogRef = this._matDialog.open(NewIndentComponent,
+            {
+                maxWidth: "90vw",
+                height: '700px',
+                width: '100%',
+              data: {
+                Obj: contact,
+                // chkNewGRN: this.chkNewGRN
+              }
+            });
+          dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.grid.gridConfig = this.gridConfig;
+            this.grid.bindGridData();
+          });
+        }
+        else{
+          this.toastr.warning('Verified Record connot be edited', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+        }
+       
+       
+      }
+
+      
+  onVerify(row) {
+   
+    let submitData = {
+      "indentId": row.indentId,
+      "isInchargeVerifyId": this.accountService.currentUserValue.userId
+
+    };
+   this._IndentService.getVerifyIndent(submitData).subscribe(response => {
+      this.toastr.success(response);
+      if (response) {
+        this.commonService.Onprint("IndentId", row.indentId, "IndentwiseReport");
+        this.onChangeFirst(event);
+       }
+ 
+     });
+  }
+    viewgetIndentReportPdf(contact) {
+        this.commonService.Onprint("IndentId", contact.indentId, "IndentwiseReport");
+      }
+    
+      viewgetIndentVerifyReportPdf(contact) {
+        this.commonService.Onprint("IndentId", contact, "IndentWiseReport");
+      }
     selectChangeStore(obj: any) {
         this.gridConfig.filters[2].fieldValue = obj.value
     }
