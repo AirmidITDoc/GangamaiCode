@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PhysiotherapistScheduleComponent } from './physiotherapist-schedule/physiotherapist-schedule.component';
 
 const appRoutes: Routes = [
   {
@@ -65,7 +66,10 @@ const appRoutes: Routes = [
     loadChildren: () =>
     import("./browse-refund-list/browserefund.module").then((m) => m.browserefundModule),
 },
-
+{
+  path: "physiotherapistSchedule",
+    loadChildren: () =>import("./physiotherapist-schedule/physiotherapist-schedule.module").then((m) => m.PhysiotherapistScheduleModule),
+},
 ];
 
 @NgModule({

@@ -78,25 +78,30 @@ export class AppointmentComponent implements OnInit {
         this.dateStyle = e.value;
     }
     CalcDOB(mode, e) {
+        debugger
         let d = new Date();
         if (mode == "Day") {
             d.setDate(d.getDate() - Number(e.target.value));
             this.registerObj.DateofBirth = d;
+            this.personalFormGroup.get('AgeDay').setValue(e.target.value)
             //this.personalFormGroup.get('DateOfBirth').setValue(moment().add(Number(e.target.value), 'days').format("DD-MMM-YYYY"));
         }
         else if (mode == "Month") {
             d.setMonth(d.getMonth() - Number(e.target.value));
             this.registerObj.DateofBirth = d;
+            this.personalFormGroup.get('AgeMonth').setValue(e.target.value)
         }
         else if (mode == "Year") {
             d.setFullYear(d.getFullYear() - Number(e.target.value));
             this.registerObj.DateofBirth = d;
+            this.personalFormGroup.get('AgeYear').setValue(e.target.value)
         }
-        let todayDate = new Date();
-        const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
-        this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-        this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
-        this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
+      
+        // let todayDate = new Date();
+        // const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
+        // this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+        // this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
+        // this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
     }
     msg: any;
     // isLoading = true;

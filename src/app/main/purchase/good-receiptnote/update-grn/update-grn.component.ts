@@ -295,82 +295,70 @@ export class UpdateGRNComponent implements OnInit {
         const Months = 3
         const CurrentDate = new Date(); 
         const Currentmonths = new Date(); 
-        const currentMonth = Currentmonths.getMonth();
-        console.log(currentMonth)
-        const currentYear = CurrentDate.getFullYear();
-        console.log(currentYear)  
-       let  NxtMonths = ((currentMonth) + (Months));  
+        const currentMonth = Currentmonths.getMonth(); 
+        const currentYear = CurrentDate.getFullYear(); 
+       let  NxtMonths = ((currentMonth) + (Months));
 
+       const numericPattern = /^[0-9]+$/; 
        const NextExpiryDate = new Date();
        NextExpiryDate.setMonth((CurrentDate.getMonth()) + parseInt(this.NxtMonths));
         const newNextDate  = this.datePipe.transform(NextExpiryDate , 'dd/MM/YYYY') 
+ 
 
-        if (inputDate && inputDate.length === 6) {
+        if ((inputDate && inputDate.length === 6) && numericPattern.test(inputDate)) {
             const month = +inputDate.substring(0, 2);
-            const year = +inputDate.substring(2, 6); 
+            const year = +inputDate.substring(2, 6);  
         
             if (year <= currentYear) {
                 if (month <= currentMonth) {
-                    Swal.fire({ 
+                    Swal.fire({
                         icon: "warning",
                         title: "This item is already expired",
                         showConfirmButton: false,
                         timer: 1500
-                      });
+                    });
                     this.vlastDay = '';
-                }else{ 
-                    if (month >= 1 && month <= 12) {
-                        const lastDay = this.getLastDayOfMonth(month, year);
-                        this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
-                        this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
-                        const newuserDate  = this.datePipe.transform(this.lastDay2 , 'dd/MM/YYYY') 
-                        console.log(newuserDate)
-                        console.log(newNextDate)
-                          console.log(this.vlastDay)
-                          console.log(lastDay)
-                        this._GRNList.userFormGroup.get('ExpDatess').setValue(this.vlastDay)
-                        this.setFocus('Qty'); 
-                        // if(newuserDate < newNextDate){
-                        //     Swal.fire({ 
-                        //         icon: "warning",
-                        //         title: "This item is expired in 3 Months",
-                        //         showConfirmButton: false,
-                        //         timer: 1500
-                        //       });  
-                        // } 
+                    return
+                }
+                if (month > 12 && month <= 0) {
+                    this.vlastDay = '';
+                    this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !', {
+                        toastClass: 'tostr-tost custom-toast-warning',
+                    });
+                    return;
+                }
+                const lastDay = this.getLastDayOfMonth(month, year);
+                this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
+                this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
+                const newuserDate = this.datePipe.transform(this.lastDay2, 'dd/MM/YYYY')
+                this._GRNList.userFormGroup.get('ExpDatess').setValue(this.vlastDay) 
+                this.setFocus('Qty'); 
 
-                    } else {
-                        this.vlastDay = 'Invalid month';
-                    }
+            } else {
+                if (month > 12 && month <= 0) {
+                    this.vlastDay = '';
+                    this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !', {
+                        toastClass: 'tostr-tost custom-toast-warning',
+                    });
+                    return;
                 }
-            } else{
-                // if(month < NxtMonths){
-                //     Swal.fire({ 
-                //         icon: "warning",
-                //         title: "This item is expired in 3 Months",
-                //         showConfirmButton: false,
-                //         timer: 1500
-                //       });  
-                // }
-                if (month >= 1 && month <= 12) {
-                    const lastDay = this.getLastDayOfMonth(month, year);
-                    this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
-                    this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
-                      console.log(this.vlastDay)
-                      console.log(lastDay)
-                   this._GRNList.userFormGroup.get('ExpDatess').setValue(this.vlastDay)
-                    this.setFocus('Qty');
-                } else {
-                    this.vlastDay = 'Invalid month';
-                }
+                const lastDay = this.getLastDayOfMonth(month, year);
+                this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
+                this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
+                this._GRNList.userFormGroup.get('ExpDatess').setValue(this.vlastDay)
+                this.setFocus('Qty'); 
+                 
             } 
-        } else {
-           // this.vlastDay = '';
-          // this._GRNList.userFormGroup.get('ExpDatess').setValue(this.vlastDay)
-           this.setFocus('Qty');
+        } else {  
+            this.vlastDay = '';
+            this.toastr.warning('Please enter only numbers in MMYYYY format', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
         }
+        
     }
-
+    
     getLastDayOfMonth(month: number, year: number): number {
         return new Date(year, month, 0).getDate();
     }
@@ -379,7 +367,8 @@ export class UpdateGRNComponent implements OnInit {
     }
     lastDay1: any;
     CellcalculateLastDay(contact, inputDate: string) {
-        if (inputDate && inputDate.length === 6) {
+        const numericPattern = /^[0-9]+$/; 
+        if ((inputDate && inputDate.length === 6) && numericPattern.test(inputDate)) {
             const month = +inputDate.substring(0, 2);
             const year = +inputDate.substring(2, 6);
 
@@ -390,10 +379,18 @@ export class UpdateGRNComponent implements OnInit {
                 //console.log(this.lastDay2)
                 contact.BatchExpDate = this.lastDay1;
             } else {
-                this.vlastDay = 'Invalid month';
+                this.vlastDay = '';
+                this.toastr.warning('Please enter date in MMYYYY format', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return; 
             }
         } else {
             this.vlastDay = ' ';
+            this.toastr.warning('Please enter date in MMYYYY format', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return; 
         }
     }
 
@@ -553,6 +550,14 @@ export class UpdateGRNComponent implements OnInit {
             });
             return;
         }
+        const expDatePattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+        if (!expDatePattern.test(this._GRNList.userFormGroup.get('ExpDatess').value)) {
+            this.toastr.warning('Invalid Expiry Date format. Expected MMYYYY', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return; 
+        }  
+
         if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
             this.toastr.warning('Please enter a Qty', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -1421,6 +1426,16 @@ debugger
             });
             return;
         } 
+        const expDatePattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+        this.dsItemNameList.data.forEach(element=>{
+            if (!expDatePattern.test(element.BatchExpDate)) {
+                this.toastr.warning('Invalid Expiry Date format. Expected MMYYYY', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return; 
+            }  
+        })
+
        
         const checkTotalQty = this.dsItemNameList.data.some(item => item.TotalQty === this.vTotalQty && item.TotalQty == null);
         //this.isLoading123 = true;
