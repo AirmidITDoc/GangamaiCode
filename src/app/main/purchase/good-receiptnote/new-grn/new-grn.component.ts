@@ -696,6 +696,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
 
     IsDiscPer2:boolean=false;
     GSTTypeID:any=0;
+    itemlist:any=[];
     onGSTTypeChange(event: { value: number, text: string }) {
         console.log(event)
         this.GSTTypeID = event.value
@@ -705,7 +706,17 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         }else{
             this.IsDiscPer2 = false
         }
+
+         if (this.dsItemNameList.data.length > 0) {
+            //this.itemlist = this.dsItemNameList.data
+            // for (let i = 0; i < this.dsItemNameList.data.length; i++) {
+            //       const values =  this.dsItemNameList.data[i];
+            //     this.newGRNService.getGSTCalculation(event.text as GSTType , this.dsItemNameList.data[i]); 
+            // }
+          //  this.dsItemNameList.data  =   this.itemlist 
+        }
     } 
+       
     getCGSTAmt() {
         this.CGSTFinalAmount = this.dsItemNameList.data.reduce((sum, { CGSTAmount }) => sum += +(CGSTAmount || 0), 0);
         return this.CGSTFinalAmount
@@ -832,6 +843,10 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             });
             return;
         }
+           if (!this.isValidForm()) {
+              Swal.fire('Please enter valid table data.');
+              return;
+            }
 
         if ((this._GRNList.GRNFinalForm.get('ReceivedBy').value == '' || this._GRNList.GRNFinalForm.get('ReceivedBy').value == null)) {
             this.toastr.warning('Please enter a ReceivedBy Name', 'Warning !', {
@@ -1333,6 +1348,9 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             console.log(response) 
         });
     }
+    isValidForm(): boolean {
+    return this.dsItemNameList.data.every((i) => i.ConversionFactor > 0  && i.Qty > 0 && i.TotalQty > 0);
+  }
 }
 export class LastThreeItemList {
     ItemID: any;

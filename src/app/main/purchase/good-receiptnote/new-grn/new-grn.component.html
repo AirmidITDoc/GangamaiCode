@@ -203,8 +203,9 @@
 
                     <airmid-textbox fxFlex="5%" label="Net Amount" formControlName="NetAmount" [formGroup]="userFormGroup" [readonly]="true"></airmid-textbox>
                     <div [matTooltip]="!userFormGroup.valid ? 'Select All Value to enable this button!!' : ''">
-                      <!-- Temporary disabled false -->
-                      <button type="button" class="btn btn-primary btn-with-icon py-8" (click)="onAddGRNItem()" [disabled]="!userFormGroup.valid" #addbutton id="btnAdd">
+                      <!-- Temporary disabled false 
+                        [disabled]="!userFormGroup.valid"-->
+                      <button type="button" class="btn btn-primary btn-with-icon py-8" (click)="onAddGRNItem()" #addbutton id="btnAdd">
                         <mat-icon>add</mat-icon>
                       </button>
                     </div>

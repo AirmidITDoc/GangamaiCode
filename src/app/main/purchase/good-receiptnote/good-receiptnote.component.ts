@@ -718,7 +718,11 @@ export class ItemNameList {
     DebitAmount: any;
     GSTType: GSTType | null;
 
-
+  cgst: number;
+  sgst: number;
+  igst: number;
+  gst: number;
+  finalTotalQty: number;
 
     itemId: any;
     itemName: any;
