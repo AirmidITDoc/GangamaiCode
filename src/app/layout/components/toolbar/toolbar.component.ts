@@ -124,7 +124,6 @@ export class ToolbarComponent implements OnInit, OnDestroy {
      */
     ngOnInit(): void {
         this.signalRService.addReceiveMessageListener((data, user) => {
-            debugger
             if (JSON.parse(localStorage.getItem("currentUser")).userId == user) {
                 this.notifications.unshift({ notiTitle: data.NotiTitle, notiBody: data.NotiBody, id: data.Id, createdDate: data.CreatedDate });
                 this.unreadCount++;
@@ -147,10 +146,12 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
         this.user = this.accountService.currentUserValue;
         this.accountService.currentUser.subscribe((x) => (this.user = x));
-        this._notificationService.getNotifications().subscribe((data) => {
-            this.notifications = data.list;
-            this.unreadCount = data.count;
-        });
+        if (JSON.parse(localStorage.getItem("currentUser"))?.userId > 0) {
+            this._notificationService.getNotifications().subscribe((data) => {
+                this.notifications = data.list;
+                this.unreadCount = data.count;
+            });
+        }
     }
 
     logout() {
