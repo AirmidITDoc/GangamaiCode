@@ -372,11 +372,14 @@
                         <ng-container matColumnDef="action" stickyEnd>
                             <mat-header-cell *matHeaderCellDef class="w-130">Action
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" class="w-130">
-                        
-                                <button mat-icon-button (click)="EditScheduler(contact)" matTooltip="print">
-                                    <mat-icon>edit</mat-icon>
-                                </button>
+                            <mat-cell *matCellDef="let contact" class="w-130"> 
+                                
+                                        <button mat-icon-button  (click)="EditScheduler(contact)"  
+                                            matTooltip="Physiotherapy Scheduler">
+                                            <mat-icon>
+                                                <img width="14px" height="4px" src="assets/images/logos/physio-therapy.webp" style="background-color: transparent;">
+                                            </mat-icon> 
+                                        </button>
                         
                                 <button mat-icon-button (click)="viewgetOPBillReportPdf(contact)" matTooltip="print">
                                     <mat-icon>print</mat-icon>

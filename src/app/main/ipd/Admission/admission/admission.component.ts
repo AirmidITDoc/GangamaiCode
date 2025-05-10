@@ -1350,11 +1350,31 @@ export class AdmissionComponent implements OnInit {
       const todayDate = new Date();
       const dob = new Date(DateOfBirth);
       const timeDiff = Math.abs(Date.now() - dob.getTime());
-      this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-      this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-      this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
-      this.registerObj.DateofBirth = DateOfBirth;
+      // this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+      // this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
+      // this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
+      // this.registerObj.DateofBirth = DateOfBirth;
+      // this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
+
+
+      this.registerObj.AgeYear = todayDate.getFullYear() - dob.getFullYear();
+      this.registerObj.AgeMonth = (todayDate.getMonth() - dob.getMonth());
+      this.registerObj.AgeDay = (todayDate.getDate() - dob.getDate());
+
+      if (this.registerObj.AgeDay < 0) {
+        this.registerObj.AgeMonth--;
+        const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+        this.registerObj.AgeDay += previousMonth.getDate(); // Days in previous month
+      }
+
+      if (this.registerObj.AgeMonth < 0) {
+        this.registerObj.AgeYear--;
+        this.registerObj.AgeMonth += 12;
+      }
+      //  this.value = DateOfBirth;
       this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
+      if (this.registerObj.AgeYear > 110)
+        Swal.fire("Please Enter Valid BirthDate..")
     }
 
   }
@@ -2791,21 +2811,24 @@ this.getAdmittedPatientList_1()
       if (mode == "Day") {
           d.setDate(d.getDate() - Number(e.target.value));
           this.registerObj.DateofBirth = d;
+          this.personalFormGroup.get('AgeDay').setValue(e.target.value)
           //this.personalFormGroup.get('DateOfBirth').setValue(moment().add(Number(e.target.value), 'days').format("DD-MMM-YYYY"));
       }
       else if (mode == "Month") {
           d.setMonth(d.getMonth() - Number(e.target.value));
           this.registerObj.DateofBirth = d;
+           this.personalFormGroup.get('AgeMonth').setValue(e.target.value)
       }
       else if (mode == "Year") {
           d.setFullYear(d.getFullYear() - Number(e.target.value));
           this.registerObj.DateofBirth = d;
+           this.personalFormGroup.get('AgeYear').setValue(e.target.value)
       }
-      let todayDate=new Date();
-      const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
-      this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-      this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
-      this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
+      // let todayDate=new Date();
+      // const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
+      // this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+      // this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
+      // this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
   }
   
   feedback(contact){

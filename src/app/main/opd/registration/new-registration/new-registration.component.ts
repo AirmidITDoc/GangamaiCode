@@ -169,6 +169,7 @@ export class NewRegistrationComponent implements OnInit {
 
         this.onChangeCityList(this.registerObj.CityId);
         this.setDropdownObjs();
+        this.onChangeDateofBirth(this.registerObj.DateofBirth)
     
     }
 
@@ -780,11 +781,31 @@ debugger
       const todayDate = new Date();
       const dob = new Date(DateOfBirth);
       const timeDiff = Math.abs(Date.now() - dob.getTime());
-      this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-      this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-      this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
-      this.registerObj.DateofBirth = DateOfBirth;
+      // this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+      // this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
+      // this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
+      // this.registerObj.DateofBirth = DateOfBirth;
+      // this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
+
+
+      this.registerObj.Age = todayDate.getFullYear() - dob.getFullYear();
+      this.registerObj.AgeMonth = (todayDate.getMonth() - dob.getMonth());
+      this.registerObj.AgeDay = (todayDate.getDate() - dob.getDate());
+
+      if (this.registerObj.AgeDay < 0) {
+        this.registerObj.AgeMonth--;
+        const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+        this.registerObj.AgeDay += previousMonth.getDate(); // Days in previous month
+      }
+
+      if (this.registerObj.AgeMonth < 0) {
+        this.registerObj.Age--;
+        this.registerObj.AgeMonth += 12;
+      }
+      //  this.value = DateOfBirth;
       this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
+      if (this.registerObj.Age > 110)
+        Swal.fire("Please Enter Valid BirthDate..")
     }
 
   }
