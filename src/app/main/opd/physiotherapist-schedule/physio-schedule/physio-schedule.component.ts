@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { PhysiotherapistScheduleService } from '../physiotherapist-schedule.service';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-physio-schedule',
@@ -24,18 +25,28 @@ displayingcolumns = [
   'Action'
 ]
   vNOIntervals: any;
+  selectedAdvanceObj:any;
 
   dsSchedulerList = new MatTableDataSource 
   constructor(
     public _PhysiotherapistScheduleService: PhysiotherapistScheduleService,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
-    public datePipe: DatePipe,
+    public datePipe: DatePipe, 
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public dialogRef: MatDialogRef<PhysioScheduleComponent>,
+         private router: Router,
   ) { }
 
   ngOnInit(): void {
+    if(this.data){
+      this.selectedAdvanceObj = this.data
+      console.log(this.selectedAdvanceObj)
+    }
   }
-
+viewPhoneAppointment(){
+    this.router.navigate(['/opd/view-phone-appointment']);
+}
 
   startDate: string = '';
   intervalInput: string = '';
@@ -81,7 +92,34 @@ displayingcolumns = [
 
 
 
+ 
 
+
+
+  totalDays: number = 20;
+  vNOSessions: number = 0;
+  vNoDays: number = 0;
+
+ 
+  
+  scheduleDates: Date[] = [];
+ 
+
+  generateSchedule1(): void {
+    const startdate = this._PhysiotherapistScheduleService.SchedulerForm.get('StartDate').value
+    this.scheduleDates = [];
+    const interval = this.vNoDays / this.vNOSessions;
+
+    for (let i = 0; i < this.vNOSessions; i++) {
+      const sessionDate = new Date(startdate);
+      sessionDate.setDate(startdate.getDate() + Math.round(i * interval));
+      this.scheduleDates.push(sessionDate);
+    }
+
+    // Calculate end date
+    this.specificDate = new Date(startdate);
+    this.specificDate.setDate(startdate.getDate() + this.totalDays);
+  }
 
 
 

@@ -40,7 +40,9 @@ CreateSchedulerForm(){
   return this._formBuilder.group({
     StartDate:[new Date()],
     EndDate:[new Date()],
-    NoIntervals:['']
+    NoIntervals:[''],
+    NoDays:[''],
+    NoSessions:['']
   })
 }
 
