@@ -40,18 +40,39 @@ CreateSchedulerForm(){
   return this._formBuilder.group({
     StartDate:[new Date()],
     EndDate:[new Date()],
-    NoIntervals:[''],
-    NoDays:[''],
-    NoSessions:['']
+    NoIntervals:['',  Validators.pattern("^[- +()]*[0-9][- +()0-9]*$")], 
+    NoSessions:['',  Validators.pattern("^[- +()]*[0-9][- +()0-9]*$")],
+    RegId:['']
   })
 }
-
+  public getPatientVisitedListSearch(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
+  }
 public getBillsList(param, loader = true) {
   if (loader) {
     this._loaderService.show();
 }
   return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_BrowseOPDBill_Pagi", param) 
 }  
+public getallschedulerlist(loader = true) {
+  if (loader) {
+    this._loaderService.show();
+}
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PhysioScheduleHeaderList", {}) 
+}  
+public getschedulerdetlist(param,loader = true) {
+  if (loader) {
+    this._loaderService.show();
+}
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PhysioScheduleDetailList", param) 
+}  
+public getVisitWiseschedulerlist(param,loader = true) {
+  if (loader) {
+    this._loaderService.show();
+}
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PhysioScheduleHeadervisitwiseList", param) 
+}  
+
 public getBillReceipt(BillNo, loader = true) {
   if (loader) {
     this._loaderService.show();

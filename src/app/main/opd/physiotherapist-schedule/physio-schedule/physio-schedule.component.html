@@ -21,10 +21,32 @@
     <div class="modal-body p-12">
         <div class="modal-body-container">
             <mat-tab-group>
-                <mat-tab label="Scheduler">
-            
-                    <div fxLayout="column" class="h-100-p" fxLayoutGap="10px">
-                        <mat-card fxFlex.gt-sm="74%" fxFlex style="padding: 6px;">
+                <mat-tab label="Scheduler"> 
+                    <div fxLayout="column" class="p-4" fxLayoutGap="10px">
+
+                        <div fxLayout="row" fxLayout.xs="column">
+                             <mat-form-field class=searchRegId appearance="outline" fxFlex="50%">
+                                <input type="text" name="RegId" formControlName="RegId"
+                                    placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No " matInput
+                                    [matAutocomplete]="autoReg" (input)="getSearchList()" maxlength="10">
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_PhysiotherapistScheduleService.SchedulerForm.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_PhysiotherapistScheduleService.SchedulerForm.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #autoReg="matAutocomplete" [displayWith]="getOptionText"
+                                    (optionSelected)='getSelectedObj($event.option.value)'>
+                                    <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
+                                        {{option.RegNo}} |{{option.FirstName}} {{option.MiddleName}}
+                                        {{option.LastName}} |
+                                        {{option.MobileNo}} | {{option.DoctorName}} | {{option.OPDNo}}
+                                    </mat-option>
+                                </mat-autocomplete>
+
+                            </mat-form-field>
+                        </div>
+                        <mat-card fxFlex.gt-sm="74%" fxFlex style="padding: 5px;">
                             <div class="patient-info-sales my-8">
                                 <div class="patient-info-title border-bottom pb-2">
                                     <span class="h1">Patient Information</span>
@@ -39,23 +61,23 @@
                                                     <span class="patient-col-key">UHID No
                                                     </span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.RegNo}}</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj?.RegNo}}</span>
                                                 </div>
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Patient Name
                                                     </span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
+                                                    <span class="patient-col-value">{{PatientName}}</span>
                                                 </div>
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Doctor Name</span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.DoctorName}}</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj?.DoctorName}}</span>
                                                 </div>
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Department</span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj?.DepartmentName}}</span>
                                                 </div>
                                             </div>
                                             <div fxLayout="column" fxLayoutGap="6px">
@@ -63,26 +85,26 @@
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Mobile No.</span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.MobileNo}}</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj?.MobileNo}}</span>
                                                 </div>
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">OPD No</span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj?.OPDNo}}</span>
                                                 </div>
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Age | Sex
                                                     </span>
                                                     <span>:</span>
                                                     <span
-                                                        class="patient-col-value">{{selectedAdvanceObj.PatientAge}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}}
-                                                        D | {{selectedAdvanceObj.GenderName}}</span>
+                                                        class="patient-col-value">{{selectedAdvanceObj?.AgeYear}}Y|{{selectedAdvanceObj?.AgeMonth}}M|{{selectedAdvanceObj?.AgeDay}}
+                                                        D | {{selectedAdvanceObj?.GenderName}}</span>
                                                 </div>
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Ref-Doctor Name
                                                     </span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.RefDoctorName}}</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj?.RefDoctorName}}</span>
                                                 </div>
             
                                             </div>
@@ -92,26 +114,26 @@
                                                     </span>
                                                     <span>:</span>
                                                     <span class="patient-col-value" 
-                                                    style="color: orange;">{{selectedAdvanceObj.PaidAmt}} </span>
+                                                    style="color: orange;">{{selectedAdvanceObj?.PaidAmt || 0.00}} </span>
                                                 </div>
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Balance Amt
                                                     </span>
                                                     <span>:</span>
                                                     <span class="patient-col-value"
-                                                    style="color: orange;">{{selectedAdvanceObj.BalanceAmt}}</span>
+                                                    style="color: orange;">{{selectedAdvanceObj?.BalanceAmt || 0.00}}</span>
                                                 </div>
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Tarrif Name
                                                     </span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj?.TariffName}}</span>
                                                 </div>
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Company Name</span>
                                                     <span>:</span>
                                                     <span class="patient-col-value"
-                                                        style="color: orange;">{{selectedAdvanceObj.CompanyName}}</span>
+                                                        style="color: orange;">{{selectedAdvanceObj?.CompanyName}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -132,25 +154,25 @@
                                             <mat-datepicker #picker></mat-datepicker>
                                         </mat-form-field>
             
-                                        <!-- <mat-form-field appearance="outline">
+                                        <mat-form-field appearance="outline">
                                             <mat-label>No. Of Intervals</mat-label>
                                             <input matInput formControlName="NoIntervals" placeholder="Enter No. Of Intervals"
-                                                [(ngModel)]="intervalInput" (keyup)="onDaysChange()">
-                                        </mat-form-field> -->
+                                                [(ngModel)]="vNOIntervals"  type="number" min="1" >
+                                        </mat-form-field>
 
-                                         <mat-form-field appearance="outline">
-                                            <mat-label>No. Of Days</mat-label>
+                                         <!-- <mat-form-field appearance="outline">
+                                            <mat-label>Intervals</mat-label>
                                             <input matInput formControlName="NoDays" placeholder="Enter No. Of Days"
                                                 [(ngModel)]="vNoDays" (keyup)="onDaysChange()">
-                                        </mat-form-field>
+                                        </mat-form-field> -->
 
                                           <mat-form-field appearance="outline">
-                                            <mat-label>No. Of Schedules</mat-label>
+                                            <mat-label>No. Of Sessions</mat-label>
                                             <input matInput formControlName="NoSessions" placeholder="Enter No. Of Sessions"
-                                                [(ngModel)]="vNOSessions" (keyup)="onDaysChange()">
+                                                [(ngModel)]="vNOSessions"  type="number" min="1" >
                                         </mat-form-field>
                                         
-                                        <!--     type="number" min="1" -->
+                                        <!--     -->
             
                                         <mat-form-field appearance="outline">
                                             <mat-label>End Date</mat-label>
@@ -168,17 +190,8 @@
             
                                 </mat-card>
                             </div>
-                        </form>
+                        </form> 
 
-                        <div *ngIf="scheduleDates.length">
-                            <h3>Scheduled Dates:</h3>
-                            <ul>
-                                <li *ngFor="let date of scheduleDates">
-                                    {{ date | date: 'fullDate' }}
-                                </li>
-                            </ul>
-                        </div>
-            
                         <mat-card style="padding: 8px;">
                             <div fxLayout="column">
                                 <div class="prescription-title">
@@ -192,61 +205,102 @@
                                         [@animateStagger]="{ value: '50' }">
             
                                         <ng-container matColumnDef="Action" stickyEnd>
-                                            <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
-                                            <mat-cell *matCellDef="let row">
+                                            <mat-header-cell *matHeaderCellDef class="w-100">Action</mat-header-cell>
+                                            <mat-cell *matCellDef="let row" class="w-100">
+                                                   <button mat-icon-button  (click)="getphysiodetlist(row)">
+                                                    <mat-icon>visibility</mat-icon>
+                                                </button>
                                                 <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
                                                     <mat-icon>delete_outline</mat-icon>
                                                 </button>
                                             </mat-cell>
-                                        </ng-container>
-            
-                                        <ng-container matColumnDef="SrNo">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-60">Sr.No</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact; let index = index" class="w-60">
-                                                <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)">
-                                                </mat-checkbox>&nbsp;&nbsp;
-                                                <span>{{ index + 1 }}</span>
+                                        </ng-container> 
+                                        
+                                        <ng-container matColumnDef="PhysioDate" sticky>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-140">
+                                                Date</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140">
+                                               {{ contact.PhysioDate | date : 'dd/MM/YYYY'}}-{{ contact.PhysioTime | date : 'hh:mm'}}
                                             </mat-cell>
-                                        </ng-container>
-                                        <ng-container matColumnDef="PatientName">
+                                        </ng-container> 
+
+                                        <ng-container matColumnDef="RegNo" sticky>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-90">UHID No</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
+                                                <span>{{ contact.RegNo }}</span>
+                                            </mat-cell>
+                                        </ng-container> 
+                                        
+                                        <ng-container matColumnDef="PatientName" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
                                                 class="w-200">Patient
                                                 Name</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact; let i = index" fxShow.gt-sm class="w-200">
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                                 <span>{{ contact.PatientName }}</span>
                                             </mat-cell>
                                         </ng-container>
+
+                                          <ng-container matColumnDef="Age">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                                class="w-140">Age</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140">
+                                                <span>Y{{contact.AgeYear}}|M{{contact.AgeMonth}}|D{{contact.AgeDay}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                           <ng-container matColumnDef="OPDNo">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">OPD No</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                                <span>{{ contact.OPDNo }}</span>
+                                            </mat-cell>
+                                        </ng-container> 
             
                                         <ng-container matColumnDef="DoctorName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
                                                 class="w-200">Doctor
                                                 Name</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact; let i = index" fxShow.gt-sm class="w-200">
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                                 <span>{{ contact.DoctorName }}</span>
                                             </mat-cell>
                                         </ng-container>
             
                                         <ng-container matColumnDef="StartDate">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">Start
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">Start
                                                 Date</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
-                                                {{ contact.StartDate}}
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                               {{ contact.Startdate | date : 'dd/MM/YYYY'}}
                                             </mat-cell>
                                         </ng-container>
             
                                         <ng-container matColumnDef="EndDate">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">End
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">End
                                                 Date</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                                 {{ contact.EndDate | date : 'dd/MM/YYYY' }}
                                             </mat-cell>
                                         </ng-container>
             
                                         <ng-container matColumnDef="Intervals">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                fxShow.gt-sm>Intervals</mat-header-cell>
+                                                fxShow.gt-sm class="w-100">Intervals</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                                {{ contact.Interval }}
+                                            </mat-cell>
+                                        </ng-container> 
+                                        
+                                        <ng-container matColumnDef="NoSessions">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                fxShow.gt-sm class="w-120">No.Sessions</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                                {{ contact.NoSession }}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                          <ng-container matColumnDef="AddedBy">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                fxShow.gt-sm>AddedBy</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{ contact.Intervals }}
+                                                {{ contact.CreatedBy }}
                                             </mat-cell>
                                         </ng-container>
             
@@ -258,9 +312,9 @@
                                             <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
                                         </ng-container>
             
-                                        <mat-header-row class="accent"
+                                        <mat-header-row class="accent min-width-1500"
                                             *matHeaderRowDef="displayingcolumns; sticky: true"></mat-header-row>
-                                        <mat-row *matRowDef="let contact; columns: displayingcolumns;" class="contact"
+                                        <mat-row *matRowDef="let contact; columns: displayingcolumns;" class="contact min-width-1500"
                                             [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{ hide: !(sIsLoading == 'loading-data') }"></mat-footer-row>
@@ -273,205 +327,87 @@
             
                     </div>
                 </mat-tab>
-                <mat-tab label="new">
-            
-                    <div fxLayout="column" class="h-100-p" fxLayoutGap="10px">
-                        <mat-card fxFlex.gt-sm="74%" fxFlex style="padding: 6px;">
-                            <div class="patient-info-sales my-8">
-                                <div class="patient-info-title border-bottom pb-2">
-                                    <span class="h1">Patient Information</span>
-                                </div>
-                                <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
-                                    class="patient-info">
-                                    <div class="patient-sub">
-                                      <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                            fxLayoutAlign="space-between">
-                                            <div fxLayout="column" fxLayoutGap="6px">
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">UHID No
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.RegNo}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Patient Name
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Doctor Name</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.DoctorName}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Department</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span>
-                                                </div>
-                                            </div>
-                                            <div fxLayout="column" fxLayoutGap="6px">
-            
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Mobile No.</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.MobileNo}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">OPD No</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Age | Sex
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{selectedAdvanceObj.PatientAge}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}}
-                                                        D | {{selectedAdvanceObj.GenderName}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Ref-Doctor Name
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.RefDoctorName}}</span>
-                                                </div>
-            
-                                            </div>
-                                            <div fxLayout="column" fxLayoutGap="6px">
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Paid Amt
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value" 
-                                                    style="color: orange;">{{selectedAdvanceObj.PaidAmt}} </span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Balance Amt
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value"
-                                                    style="color: orange;">{{selectedAdvanceObj.BalanceAmt}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Tarrif Name
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Company Name</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value"
-                                                        style="color: orange;">{{selectedAdvanceObj.CompanyName}}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </mat-card>
-                        <form [formGroup]="_PhysiotherapistScheduleService.SchedulerForm">
-                            <div fxLayout="column" fxLayoutGap="10px">
-                                <mat-card style="padding: 8px;">
-                                    <div fxLayout="row" fxLayoutGap="6px">
-            
-                                        <!-- <mat-form-field appearance="outline">
-                                            <mat-label>Start Date</mat-label>
-                                            <input matInput [matDatepicker]="picker" placeholder="Choose a date"
-                                                formControlName="StartDate" [(ngModel)]="startDate">
-                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker></mat-datepicker>
-                                        </mat-form-field>
-            
-                                        <mat-form-field appearance="outline">
-                                            <mat-label>No. Of Intervals</mat-label>
-                                            <input matInput formControlName="NoIntervals" placeholder="Enter No. Of Intervals"
-                                                [(ngModel)]="intervalInput" (keyup)="onDaysChange()">
-                                        </mat-form-field>
-                                       
-            
-                                        <mat-form-field appearance="outline">
-                                            <mat-label>End Date</mat-label>
-                                            <input matInput [matDatepicker]="picker1" placeholder="Choose a date"
-                                                formControlName="EndDate" [(ngModel)]="specificDate">
-                                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker1></mat-datepicker>
-                                        </mat-form-field> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-            
-                                         <!--     type="number" min="1" -->
-                                        <button type="button" class="btn btn-primary" (click)="viewPhoneAppointment()">  
-                                           Select Schedule
-                                        </button>
-                                        <button type="button" class="btn btn-primary" (click)="generateSchedule()"> Generate
-                                            Schedule
-                                        </button>
-            
-                                    </div>
-            
-                                </mat-card>
-                            </div>
-                        </form>
-            
-                        <mat-card style="padding: 8px;">
-                            <div fxLayout="column">
-                                <div class="prescription-title">
-                                    <span style="font-weight: 700;margin: 6px 10px 0px 5px">
-                                        Scheduled Appointments
-                                    </span>
-                                </div>
-                                <hr>
+
+                <mat-tab label="Physiotherapy Scheduled list">
+                    <div fxLayout="column" class="p-12" fxLayoutGap="10px"> 
+                
+                        <mat-card style="padding: 8px;"> 
                                 <div fxFlex="100%">
-                                    <mat-table #table class="table3 max-h-700" matSort [dataSource]="dsSchedulerList"
+                                    <mat-table #table class="table4 max-h-700" matSort [dataSource]="dspatientSchedulerList"
                                         [@animateStagger]="{ value: '50' }">
-            
+                
                                         <ng-container matColumnDef="Action" stickyEnd>
                                             <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
                                             <mat-cell *matCellDef="let row">
+                                                   <button mat-icon-button  (click)="getphysiodetlist(row)" >
+                                                    <mat-icon>visibility</mat-icon>
+                                                </button>
                                                 <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
                                                     <mat-icon>delete_outline</mat-icon>
                                                 </button>
                                             </mat-cell>
-                                        </ng-container>
-            
-                                        <ng-container matColumnDef="SrNo">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-60">Sr.No</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact; let index = index" class="w-60">
-                                                <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)">
-                                                </mat-checkbox>&nbsp;&nbsp;
-                                                <span>{{ index + 1 }}</span>
+                                        </ng-container> 
+                                        
+                                        <ng-container matColumnDef="PhysioDate" sticky>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-140">
+                                                Date</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140">
+                                               {{ contact.PhysioDate | date : 'dd/MM/YYYY'}}-{{ contact.PhysioTime | date : 'hh:mm'}}
                                             </mat-cell>
-                                        </ng-container>
-                                        <ng-container matColumnDef="PatientName">
+                                        </ng-container> 
+
+                                        <ng-container matColumnDef="RegNo" sticky>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-90">UHID No</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
+                                                <span>{{ contact.RegNo }}</span>
+                                            </mat-cell>
+                                        </ng-container> 
+                                        
+                                        <ng-container matColumnDef="PatientName" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
                                                 class="w-200">Patient
                                                 Name</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact; let i = index" fxShow.gt-sm class="w-200">
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                                 <span>{{ contact.PatientName }}</span>
                                             </mat-cell>
                                         </ng-container>
+
+                                          <ng-container matColumnDef="Age">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                                class="w-150">Age</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
+                                                <span>Y{{contact.AgeYear}}|M{{contact.AgeMonth}}|D{{contact.AgeDay}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                           <ng-container matColumnDef="OPDNo">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">OPD No</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                                <span>{{ contact.OPDNo }}</span>
+                                            </mat-cell>
+                                        </ng-container> 
             
                                         <ng-container matColumnDef="DoctorName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
                                                 class="w-200">Doctor
                                                 Name</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact; let i = index" fxShow.gt-sm class="w-200">
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                                 <span>{{ contact.DoctorName }}</span>
                                             </mat-cell>
                                         </ng-container>
             
                                         <ng-container matColumnDef="StartDate">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">Start
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">Start
                                                 Date</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
-                                                {{ contact.StartDate}}
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                               {{ contact.Startdate | date : 'dd/MM/YYYY'}}
                                             </mat-cell>
                                         </ng-container>
             
                                         <ng-container matColumnDef="EndDate">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">End
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">End
                                                 Date</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                                 {{ contact.EndDate | date : 'dd/MM/YYYY' }}
                                             </mat-cell>
                                         </ng-container>
@@ -480,7 +416,23 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header
                                                 fxShow.gt-sm>Intervals</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{ contact.Intervals }}
+                                                {{ contact.Interval }}
+                                            </mat-cell>
+                                        </ng-container> 
+                                        
+                                        <ng-container matColumnDef="NoSessions">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                fxShow.gt-sm>No.Sessions</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{ contact.NoSession }}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                          <ng-container matColumnDef="AddedBy">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                fxShow.gt-sm>AddedBy</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{ contact.CreatedBy }}
                                             </mat-cell>
                                         </ng-container>
             
@@ -492,21 +444,21 @@
                                             <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
                                         </ng-container>
             
-                                        <mat-header-row class="accent"
+                                        <mat-header-row class="accent min-width-1600"
                                             *matHeaderRowDef="displayingcolumns; sticky: true"></mat-header-row>
-                                        <mat-row *matRowDef="let contact; columns: displayingcolumns;" class="contact"
+                                        <mat-row *matRowDef="let contact; columns: displayingcolumns;" class="contact min-width-1600"
                                             [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{ hide: !(sIsLoading == 'loading-data') }"></mat-footer-row>
                                         <mat-footer-row *matFooterRowDef="['noData']"
-                                            [ngClass]="{ hide: !(dsSchedulerList != null && dsSchedulerList.data.length == 0) }"></mat-footer-row>
+                                            [ngClass]="{ hide: !(dspatientSchedulerList != null && dspatientSchedulerList.data.length == 0) }"></mat-footer-row>
                                     </mat-table>
-                                </div>
-                            </div>
+                                </div> 
                         </mat-card>
-            
+                
                     </div>
                 </mat-tab>
+ 
             </mat-tab-group>
         </div>
     </div>

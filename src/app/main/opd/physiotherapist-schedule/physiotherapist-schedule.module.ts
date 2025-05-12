@@ -37,6 +37,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";  
 import { PhysiotherapistScheduleComponent } from "./physiotherapist-schedule.component";
 import { PhysioScheduleComponent } from "./physio-schedule/physio-schedule.component";
+import { PhysioScheduleDetailComponent } from './physio-schedule-detail/physio-schedule-detail.component';
 
 const routes: Routes = [
     {
@@ -46,7 +47,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [PhysiotherapistScheduleComponent, PhysioScheduleComponent],
+    declarations: [PhysiotherapistScheduleComponent, PhysioScheduleComponent, PhysioScheduleDetailComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,

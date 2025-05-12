@@ -96,7 +96,7 @@ export class PhysiotherapistScheduleComponent implements OnInit {
       {
         maxWidth: "100%",
         width: '80%',
-        height: '80%'
+        height: '95%'
       }
     )
     dialogRef.afterClosed().subscribe(result => {
@@ -107,7 +107,7 @@ export class PhysiotherapistScheduleComponent implements OnInit {
       {
         maxWidth: "100%",
         width: '80%',
-        height: '80%',
+        height: '95%',
         data: row
       }
     )

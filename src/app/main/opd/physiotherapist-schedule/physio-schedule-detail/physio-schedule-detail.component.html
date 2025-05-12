@@ -1,0 +1,110 @@
+<div class="page-layout modal-wrapper inner-sidebar inner-scroll" dynamicTableHeight>
+    <div class="top-header header accent p-16">
+        <div class="top-header-info">
+            <div class="top-header-title" fxLayoutAlign="space-between">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Scheduled detail list
+                </span>
+
+            </div>
+        </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <div class="close-icon">
+                <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                    matTooltip="Close">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body p-12">
+        <div class="modal-body-container">
+            <div fxLayout="column">
+                <div fxFlex="100%">
+                    <mat-table #table class="table max-h-700" matSort [dataSource]="dSchedulerDetList"
+                        [@animateStagger]="{ value: '50' }">
+            
+                        <ng-container matColumnDef="Action" stickyEnd>
+                            <mat-header-cell *matHeaderCellDef class="w-100">Action</mat-header-cell>
+                            <mat-cell *matCellDef="let row" class="w-100"> 
+                                <button mat-icon-button>
+                                    <mat-icon class="green-600 s-16" >check</mat-icon>
+                                </button>
+                            </mat-cell>
+                        </ng-container> 
+            
+                        <ng-container matColumnDef="SessionStartdate" sticky>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  >
+                                Session Startdate</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm >
+                                {{ contact.SessionStartdate | date : 'dd/MM/YYYY'}}
+                            </mat-cell>
+                        </ng-container>
+            
+                        <ng-container matColumnDef="Intervals" sticky>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Intervals</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                {{ contact.Interval }}
+                            </mat-cell>
+                        </ng-container>
+            
+                        <ng-container matColumnDef="NoSessions">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>No.Sessions</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                {{ contact.NoSession }}
+                            </mat-cell>
+                        </ng-container>
+            
+                        <ng-container matColumnDef="SessionEndDate">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm   >
+                                Session Enddate</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm  >
+                                {{ contact.SessionEndDate | date : 'dd/MM/YYYY'}}
+                            </mat-cell>
+                        </ng-container>
+            
+                        <ng-container matColumnDef="IsCompleted">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                 >IsCompleted</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm  >
+                                <span>{{ contact.IsCompleted }}</span>
+                            </mat-cell>
+                        </ng-container>
+            
+                        <ng-container matColumnDef="Comments">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">Comments
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                <span>{{ contact.Comments || '-'}}</span>
+                            </mat-cell>
+                        </ng-container>
+            
+                        <ng-container matColumnDef="AddedBy">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>AddedBy</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                {{ contact.CreatedBy }}
+                            </mat-cell>
+                        </ng-container>
+            
+                        <ng-container matColumnDef="loading">
+                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none"></mat-header-cell>
+                        </ng-container>
+            
+                        <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
+                        </ng-container>
+            
+                        <mat-header-row class="accent" *matHeaderRowDef="displayingcolumns; sticky: true"></mat-header-row>
+                        <mat-row *matRowDef="let contact; columns: displayingcolumns;" class="contact"
+                            [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                        <mat-footer-row *matFooterRowDef="['loading']"
+                            [ngClass]="{ hide: !(sIsLoading == 'loading-data') }"></mat-footer-row>
+                        <mat-footer-row *matFooterRowDef="['noData']"
+                            [ngClass]="{ hide: !(dSchedulerDetList != null && dSchedulerDetList.data.length == 0) }"></mat-footer-row>
+                    </mat-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
