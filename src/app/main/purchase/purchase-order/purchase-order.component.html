@@ -66,10 +66,15 @@
                         </airmid-datepicker>
 
                   
-                        <airmid-dropdown label="Store Name" formControlName="StoreId" [formGroup]="mysearchform" fxFlex
+                        <!-- <airmid-dropdown label="Store Name" formControlName="StoreId" [formGroup]="mysearchform" fxFlex
                             [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)"
                             (keyup)="selectChangeStore($event)">
-                        </airmid-dropdown>
+                        </airmid-dropdown> -->
+
+                        <airmid-dropdown label="Store Name" formControlName="StoreId"
+                        (selectionChange)="ListView($event)" [formGroup]="mysearchform"
+                        [mode]="autocompletestore">
+                         </airmid-dropdown>
 
                         <airmid-dropdown label="Supplier Name" formControlName="SupplierId"
                             (selectionChange)="ListView1($event)" [formGroup]="mysearchform"
