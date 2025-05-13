@@ -28,9 +28,10 @@
                         <ng-container matColumnDef="Action" stickyEnd>
                             <mat-header-cell *matHeaderCellDef class="w-100">Action</mat-header-cell>
                             <mat-cell *matCellDef="let row" class="w-100"> 
-                                <button mat-icon-button>
-                                    <mat-icon class="green-600 s-16" >check</mat-icon>
-                                </button>
+                           
+                                     <button mat-icon-button (click)="UpdateScheduledet(row)"  matTooltip="edit Scheduled details">
+                                            <mat-icon>edit</mat-icon>
+                                        </button>
                             </mat-cell>
                         </ng-container> 
             
@@ -65,10 +66,14 @@
                         </ng-container>
             
                         <ng-container matColumnDef="IsCompleted">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                 >IsCompleted</mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm  >
-                                <span>{{ contact.IsCompleted }}</span>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>IsCompleted</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <button mat-icon-button>
+                                    <mat-icon matTooltip="Session Close" *ngIf="contact.IsCompleted==true"
+                                        class="active-icon green-500 s-16">check_circle</mat-icon>
+                                    <mat-icon matTooltip="Session Pending" *ngIf="contact.IsCompleted==false"
+                                        class="active-icon red-500 s-16">hourglass_empty</mat-icon>
+                                </button>
                             </mat-cell>
                         </ng-container>
             
@@ -103,6 +108,9 @@
                         <mat-footer-row *matFooterRowDef="['noData']"
                             [ngClass]="{ hide: !(dSchedulerDetList != null && dSchedulerDetList.data.length == 0) }"></mat-footer-row>
                     </mat-table>
+                     <mat-paginator #Firstpaginator [pageSizeOptions]="[15, 24, 35, 100]" [pageSize]="15"
+                                showFirstLastButtons>
+                            </mat-paginator>
                 </div>
             </div>
         </div>

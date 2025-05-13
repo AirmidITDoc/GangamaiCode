@@ -1,0 +1,88 @@
+<div class="page-layout modal-wrapper grid-container" dynamicTableHeight>
+    <div class="modal-header accent">
+        <div class="modal-header-content" fxLayout="row"
+            style="height:50px; justify-content: space-between;width: 100%;">
+
+            <div class="top-header-info">
+                <div class="modal-header-title">
+                    <span class="logo-text h2" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                        Update Scheduled Details
+                    </span>
+                </div>
+            </div>
+            <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="modal-body p-12">
+        <div fxLayout="column" class="p-4" fxLayoutGap="10px">
+            <form [formGroup]="updateForm">
+                <div fxLayout="column" fxLayoutGap="10px">
+                    <div fxLayout="row" fxLayoutGap="6px">
+
+                        <mat-form-field appearance="outline" fxFlex="15%">
+                            <mat-label>Start Date</mat-label>
+                            <input matInput [matDatepicker]="picker" placeholder="Choose a date"
+                                formControlName="StartDate" [(ngModel)]="registerObj.SessionStartdate">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="15%">
+                            <mat-label>No. Of Intervals</mat-label>
+                            <input matInput formControlName="NoIntervals" placeholder="Enter No. Of Intervals"
+                                type="number" min="1" [(ngModel)]="registerObj.Interval" readonly>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="15%">
+                            <mat-label>No. Of Sessions</mat-label>
+                            <input matInput formControlName="NoSessions" placeholder="Enter No. Of Sessions"
+                                type="number" min="1" [(ngModel)]="registerObj.NoSession" readonly>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="15%">
+                            <mat-label>End Date</mat-label>
+                            <input matInput [matDatepicker]="picker1" placeholder="Choose a date"
+                                formControlName="EndDate" [(ngModel)]="registerObj.SessionEndDate">
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Comment</mat-label>
+                            <input matInput formControlName="Comment" type="text" [(ngModel)]="registerObj.Comments">
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutGap="6px">
+                        <div class="slide-toggle mb-2" style="padding: 10px 10px 0px 10px">
+                            <mat-slide-toggle name="IsCompleted" (change)="onChangeIsactive($event)"
+                                formControlName="IsCompleted" [(ngModel)]="registerObj.IsCompleted">
+                                IsCompleted
+                            </mat-slide-toggle>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="modal-footer-buttons">
+            <button class="btn btn-danger-outline" (click)="getReset()">Close</button>
+            <button type="button" class="btn btn-primary" (click)="UpdateSchedule()"> Update Schedule </button>
+        </div>
+    </div>
+</div>

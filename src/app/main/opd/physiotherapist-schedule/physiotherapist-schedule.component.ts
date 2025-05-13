@@ -3,13 +3,14 @@ import { fuseAnimations } from '@fuse/animations';
 import { PhysiotherapistScheduleService } from './physiotherapist-schedule.service';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { PhysioScheduleComponent } from './physio-schedule/physio-schedule.component';
+import { PhysioScheduleComponent, scheduleList } from './physio-schedule/physio-schedule.component';
 import { ToastrService } from 'ngx-toastr';
 import { MatTableDataSource } from '@angular/material/table';
 import { BrowseOPDBill } from '../browse-opbill/browse-opbill.component';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { PhysioScheduleDetailComponent } from './physio-schedule-detail/physio-schedule-detail.component';
 
 @Component({
   selector: 'app-physiotherapist-schedule',
@@ -50,12 +51,28 @@ export class PhysiotherapistScheduleComponent implements OnInit {
     'DepartmentName',
     'action'
   ];
-
+  displayingcolumns = [ 
+    'PhysioDate',
+    'RegNo',
+    'PatientName',
+    'Age',
+    'OPDNo',
+    'StartDate',
+    'EndDate',
+    'Intervals',
+    'NoSessions', 
+    'DoctorName',
+    'AddedBy',
+    'Action'
+  ]
   sIsLoading: string = ''
   resultsLength = 0;
-  dsbillList = new MatTableDataSource<BrowseOPDBill>();
+  dsbillList = new MatTableDataSource<BrowseOPDBill>(); 
+  dspatientSchedulerList = new MatTableDataSource<scheduleList>();
+  
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+   @ViewChild('Secondpaginator', { static: true }) public Secondpaginator: MatPaginator;
 
   constructor(
     public _PhysiotherapistScheduleService: PhysiotherapistScheduleService,
@@ -66,7 +83,8 @@ export class PhysiotherapistScheduleComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.getBillsList(); 
+    this.getBillsList();
+    this.getallschedulerlist(); 
   } 
 
   getBillsList() {
@@ -90,7 +108,14 @@ export class PhysiotherapistScheduleComponent implements OnInit {
         this.sIsLoading = '';
       });
   } 
-
+  getallschedulerlist() {
+    this._PhysiotherapistScheduleService.getallschedulerlist().subscribe((data) => { 
+      this.dspatientSchedulerList.data = data as scheduleList[];
+         this.dspatientSchedulerList.sort = this.sort;
+         this.dspatientSchedulerList.paginator = this.Secondpaginator
+      console.log(this.dspatientSchedulerList.data)
+    })
+  }
   NewScheduler() {
     const dialogRef = this._matDialog.open(PhysioScheduleComponent,
       {
@@ -100,6 +125,8 @@ export class PhysiotherapistScheduleComponent implements OnInit {
       }
     )
     dialogRef.afterClosed().subscribe(result => {
+          this.getBillsList();
+    this.getallschedulerlist(); 
     });
   }
   EditScheduler(row) {
@@ -112,6 +139,22 @@ export class PhysiotherapistScheduleComponent implements OnInit {
       }
     )
     dialogRef.afterClosed().subscribe(result => {
+          this.getBillsList();
+    this.getallschedulerlist(); 
+    });
+  }
+    getphysiodetlist(row) {
+    const dialogRef = this._matDialog.open(PhysioScheduleDetailComponent,
+      {
+        maxHeight: "100%",
+        width: "70%",
+        height: "80%",
+        data: row
+      }
+    )
+    dialogRef.afterClosed().subscribe(result => {
+    this.getBillsList();
+    this.getallschedulerlist(); 
     });
   }
   keyPressCharater(event) {
@@ -156,6 +199,7 @@ export class PhysiotherapistScheduleComponent implements OnInit {
   getWhatsappshareSales(Obj) {
 
   }
+  
 }
 
 

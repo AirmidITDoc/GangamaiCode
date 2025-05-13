@@ -38,7 +38,7 @@ export class PhysiotherapistScheduleService {
 }
 CreateSchedulerForm(){
   return this._formBuilder.group({
-    StartDate:[new Date()],
+    StartDate:[new Date(),Validators.required],
     EndDate:[new Date()],
     NoIntervals:['',  Validators.pattern("^[- +()]*[0-9][- +()0-9]*$")], 
     NoSessions:['',  Validators.pattern("^[- +()]*[0-9][- +()0-9]*$")],
@@ -66,17 +66,24 @@ public getschedulerdetlist(param,loader = true) {
 }
   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PhysioScheduleDetailList", param) 
 }  
-public getVisitWiseschedulerlist(param,loader = true) {
-  if (loader) {
-    this._loaderService.show();
-}
-  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PhysioScheduleHeadervisitwiseList", param) 
-}  
-
+ 
 public getBillReceipt(BillNo, loader = true) {
   if (loader) {
     this._loaderService.show();
 }
   return this._httpClient.get("OutPatient/view-Op-BillReceipt?BillNo="+BillNo);
 }
+public SavePhysio(param, loader = true) {
+  if (loader) {
+    this._loaderService.show();
+}
+  return this._httpClient.post("Physiotherapy/InsertPhysiotherapy" ,param);
+}
+ public UpdatePhysio(param, loader = true) {
+  if (loader) {
+    this._loaderService.show();
+}
+  return this._httpClient.post("Physiotherapy/UpdatePhysiotherapy" ,param);
+}
+ 
 }

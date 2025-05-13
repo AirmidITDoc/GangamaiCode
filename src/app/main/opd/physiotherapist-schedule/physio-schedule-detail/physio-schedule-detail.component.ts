@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { PhysiotherapistScheduleService } from '../physiotherapist-schedule.service';
 import { ToastrService } from 'ngx-toastr';
@@ -7,6 +7,9 @@ import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { scheduleList } from '../physio-schedule/physio-schedule.component';
+import { UpdatePhysioScheduleDetailComponent } from '../update-physio-schedule-detail/update-physio-schedule-detail.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-physio-schedule-detail',
@@ -30,6 +33,10 @@ registerObj:any;
 
     dSchedulerDetList = new MatTableDataSource<scheduleList>()
     
+      
+      @ViewChild(MatSort) sort: MatSort; 
+       @ViewChild('Firstpaginator', { static: true }) public Firstpaginator: MatPaginator;
+
   constructor(
      public _PhysiotherapistScheduleService: PhysiotherapistScheduleService,
         public _matDialog: MatDialog,
@@ -46,16 +53,29 @@ registerObj:any;
       console.log(this.registerObj)
       this.getschedulerdetlist();
     }
-  }
-
-
+  }  
    getschedulerdetlist(){
     var vdata={
       "PhysioId":this.registerObj.PhysioId
     }
     this._PhysiotherapistScheduleService.getschedulerdetlist(vdata).subscribe(data=>{
-      this.dSchedulerDetList.data = data as scheduleList[]
+      this.dSchedulerDetList.data = data as scheduleList[];
+       this.dSchedulerDetList.sort = this.sort;
+        this.dSchedulerDetList.paginator = this.Firstpaginator;
       console.log(this.dSchedulerDetList.data)
     })
   }
+    UpdateScheduledet(row) {
+      const dialogRef = this._matDialog.open(UpdatePhysioScheduleDetailComponent,
+        {
+          maxWidth: "100%",
+          width: '60%',
+          height: '35%',
+          data: row
+        }
+      )
+      dialogRef.afterClosed().subscribe(result => {
+         this.getschedulerdetlist();
+      });
+    }
 }

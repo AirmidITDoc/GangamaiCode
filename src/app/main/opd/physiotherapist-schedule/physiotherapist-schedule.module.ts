@@ -38,6 +38,7 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { PhysiotherapistScheduleComponent } from "./physiotherapist-schedule.component";
 import { PhysioScheduleComponent } from "./physio-schedule/physio-schedule.component";
 import { PhysioScheduleDetailComponent } from './physio-schedule-detail/physio-schedule-detail.component';
+import { UpdatePhysioScheduleDetailComponent } from './update-physio-schedule-detail/update-physio-schedule-detail.component';
 
 const routes: Routes = [
     {
@@ -47,7 +48,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [PhysiotherapistScheduleComponent, PhysioScheduleComponent, PhysioScheduleDetailComponent],
+    declarations: [PhysiotherapistScheduleComponent, PhysioScheduleComponent, PhysioScheduleDetailComponent, UpdatePhysioScheduleDetailComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,
