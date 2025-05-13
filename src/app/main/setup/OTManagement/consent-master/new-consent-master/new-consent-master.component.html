@@ -2,7 +2,8 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Surgery Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> New Consent Master
+</span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -21,7 +22,7 @@
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox 
-                            label="TableName" 
+                            label="consent Name" 
                             formControlName="villageName" 
                             [value]="data?.villageName"
                             [formGroup]="myForm" 
@@ -32,7 +33,7 @@
 
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-dropdown 
-                            label="LocationName" 
+                            label="Department" 
                             [value]="data?.talukaName" 
                             formControlName="talukaName"
                             [formGroup]="myForm" 
@@ -60,4 +61,5 @@
         </div>
     </div>
 </div>
+
 
