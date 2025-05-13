@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
 
+
 const appRoutes: Routes = [
   {
     path: "ottablemaster",
@@ -23,11 +24,28 @@ const appRoutes: Routes = [
       import("./surgery-master/surgery-master.module").then((m) => m.SurgeryMasterModule
       ), 
   },
+   {
+    path: "typemaster",
+    loadChildren: () =>
+      import("./type-master/type-master.module").then((m) => m.TypeMasterModule
+      ), 
+  },
+   {
+    path: "sitediscriptionmaster",
+    loadChildren: () =>
+      import("./site-description/site-description.module").then((m) => m.SiteDescriptionModule
+      ), 
+  },
+  {
+    path: "consentmaster",
+    loadChildren: () =>
+      import("./consent-master/consent-master.module").then((m) => m.ConsentMasterModule
+      ), 
+  },
 ];
 
 @NgModule({
   declarations: [
-    
   ],
   imports: [RouterModule.forChild(appRoutes)],
 })

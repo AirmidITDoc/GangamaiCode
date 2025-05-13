@@ -24,7 +24,7 @@ export class IndentService {
 
   IndentSearchFrom() {
     return this._formBuilder.group({
-      ToStoreId: 0,
+      ToStoreId:['', [Validators.required]],
       FromStoreId:this.accountService.currentUserValue.user.storeId,
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
@@ -34,11 +34,11 @@ export class IndentService {
   createnewindentfrom() {
     return this._formBuilder.group({
       IndentId:[''],
-      ToStoreId: '',
-      FromStoreId:this.accountService.currentUserValue.user.storeId,
-      IsUrgent:['0'],
+      // ToStoreId:  ['', [Validators.required]],
+      // FromStoreId:this.accountService.currentUserValue.user.storeId,
+      // IsUrgent:['0'],
       ItemName: ['', [Validators.required]],
-      Qty:   [1, [Validators.required]],
+      Qty:   ['', [Validators.required]],
       Remark:[''],
       ItemNameKit:[''],
       Qtykit:['']
@@ -48,19 +48,20 @@ export class IndentService {
   CreateStoreFrom(){
     return this._formBuilder.group({
       FromStoreId:this.accountService.currentUserValue.user.storeId,
-      ToStoreId:'',
-      IsUrgent: 0
+      ToStoreId: ['', [Validators.required]],
+      IsUrgent: ['0'],
     });
   }
 
   
   public InsertIndentSave(Param){
-    return this._httpClient1.PostData("Indent/Insert", Param)
+   
+    if (Param.indentId) {
+      return this._httpClient1.PutData("Indent/Edit/" + Param.indentId, Param)
+      } else return this._httpClient1.PostData("Indent/Insert", Param);
   }
 
-  public InsertIndentUpdate(Param){
-    return this._httpClient1.PostData("InventoryTransaction/IndentUpdate", Param)
-  }
+  
   public getVerifyIndent(Param){
     return this._httpClient1.PostData("Indent/Verify", Param)
   }

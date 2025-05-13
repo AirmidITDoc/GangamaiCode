@@ -2,7 +2,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Surgery Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New OtType Name</span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -19,9 +19,9 @@
             <form [formGroup]="myForm">
                 <input type="hidden" name="villageId" formControlName="villageId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox 
-                            label="TableName" 
+                            label="OTTypeName" 
                             formControlName="villageName" 
                             [value]="data?.villageName"
                             [formGroup]="myForm" 
@@ -30,7 +30,7 @@
                         </airmid-textbox>
                     </div>
 
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-dropdown 
                             label="LocationName" 
                             [value]="data?.talukaName" 
@@ -39,7 +39,7 @@
                             [validations]="getValidationMessages().talukaName"
                             [mode]="autocompleteModetaluka">
                         </airmid-dropdown>
-                    </div>
+                    </div> -->
 
                 </div>
             
@@ -60,4 +60,5 @@
         </div>
     </div>
 </div>
+
 

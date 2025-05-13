@@ -147,11 +147,11 @@
                                                     [formGroup]="Bedtransfer" [validations]="getValidationMessages().toBedId"
                                                     [mode]="autocompletebed">
                                                 </airmid-dropdown>
-                
+                                                <!-- [readonly]="true" -->
                                                 <airmid-dropdown label="Class Name" formControlName="toClassId"
                                                      [formGroup]="Bedtransfer" fxFlex="25%"
                                                     [validations]="getValidationMessages().ClassId" [mode]="autocompleteclass"
-                                                    [disabled]="true"  #ddlClassName>
+                                                    [disabled]="true"  #ddlClassName  >
                                                 </airmid-dropdown>
                 
                 

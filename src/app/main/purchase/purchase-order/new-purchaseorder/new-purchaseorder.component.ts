@@ -568,6 +568,12 @@ export class NewPurchaseorderComponent {
 
 
   OnSave() {
+        if (!this.isValidForm()) {
+          Swal.fire('Please enter valid table data.');
+          return;
+        }
+    
+        
     if ((!this.dsItemNameList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -816,10 +822,14 @@ export class NewPurchaseorderComponent {
       return false;
     }
   }
-
+  GSTTypeID:any=0;
+  GSTTypetext:any=0;
   IsDiscPer2: boolean = false;
   onGSTTypeChange(event: { value: number, text: string }) {
+    debugger
     console.log(event)
+    this.GSTTypetext=event.text
+    this.GSTTypeID = event.value
     this.calculateGSTType(event.text as GSTType);
     if (event.text == "GST After TwoTime Disc") {
       this.IsDiscPer2 = true
@@ -928,7 +938,7 @@ debugger
     const form = this.userFormGroup;
     const formValues = form.getRawValue() as PurchaseFormModel;
     const values = this._PurchaseOrder.normalizeValues(formValues);
-    const calculation = this._PurchaseOrder.getGSTCalculation(formValues.GSTType || type, values);
+    const calculation = this._PurchaseOrder.getGSTCalculation(this.GSTTypetext || type, values);
 
     // Update form with calculated values
     form.patchValue({
@@ -1133,6 +1143,10 @@ debugger
       ],
 
     };
+  }
+
+  isValidForm(): boolean {
+    return this.dsItemNameList.data.every((i) => i.Qty > 0 && i.MRP > 0);
   }
 }
 

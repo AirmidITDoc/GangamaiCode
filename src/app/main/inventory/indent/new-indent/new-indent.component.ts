@@ -14,6 +14,7 @@ import { map, startWith } from 'rxjs/operators';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { FormGroup } from '@angular/forms';
 import { GRNItemResponseType } from 'app/main/purchase/good-receiptnote/new-grn/types';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-new-indent',
@@ -23,8 +24,8 @@ import { GRNItemResponseType } from 'app/main/purchase/good-receiptnote/new-grn/
   animations: fuseAnimations,
 })
 export class NewIndentComponent implements OnInit {
-  StoreFrom:FormGroup;
-  IndentForm:FormGroup;
+  StoreFrom: FormGroup;
+  IndentForm: FormGroup;
   displayedColumns2 = [
     'ItemID',
     'ItemName',
@@ -41,12 +42,12 @@ export class NewIndentComponent implements OnInit {
   vQty: any;
   chargeslist: any = [];
   vRemark: any;
-  vIndentId: any;
+  IndentId: any=0;
   vToStoreId: any = 0;
   vItemNamekit: any;
   vQtykit: any;
   registerObj: any;
-  ItemID=0;
+  ItemID = 0;
   dateTimeObj: any;
 
   dsIndentNameList = new MatTableDataSource<IndentNameList>();
@@ -61,7 +62,7 @@ export class NewIndentComponent implements OnInit {
     public _IndentService: IndentService,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
-     private commonService: PrintserviceService,
+    private commonService: PrintserviceService,
     public toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NewIndentComponent>,
@@ -69,16 +70,19 @@ export class NewIndentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-this.StoreFrom=this._IndentService.CreateStoreFrom();
-this.IndentForm=this._IndentService.createnewindentfrom();
+    this.StoreFrom = this._IndentService.CreateStoreFrom();
+    this.IndentForm = this._IndentService.createnewindentfrom();
+     this.StoreFrom.markAllAsTouched();
+    this.IndentForm.markAllAsTouched();
+
 
     if (this.data) {
-      this.registerObj = this.data;
+      this.registerObj = this.data.Obj;
+      this.IndentId=this.data.Obj.indentId
       console.log(this.registerObj);
       this.StoreFrom.get("ToStoreId").setValue(this.registerObj.toStoreId)
       this.IndentForm.get("Remark").setValue(this.registerObj.remarks)
-      debugger
-      this.getupdateIndentList(this.registerObj.indentId);
+            this.getupdateIndentList(this.registerObj.indentId);
     }
 
   }
@@ -91,6 +95,14 @@ this.IndentForm=this._IndentService.createnewindentfrom();
       });
       return;
     }
+
+    if (!this.IndentForm.get('Qty')?.value) {
+      this.toastr.warning('Please select Qty', 'Warning!', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+
     debugger
     const selectedItem = this.IndentForm.get('ItemName').value;
     const iscekDuplicate = this.dsIndentNameList.data.some(item => item.ItemID == this.IndentForm.get('ItemName').value.itemId)
@@ -98,12 +110,12 @@ this.IndentForm=this._IndentService.createnewindentfrom();
       this.dsIndentNameList.data = [];
       this.chargeslist.push(
         {
-          ItemID: this.IndentForm.get("ItemName").value || 0,
-          ItemName:this.IndentForm.get("ItemName").value.formattedText  || '',
+          ItemID: this.IndentForm.get("ItemName").value.itemId || 0,
+          ItemName: this.IndentForm.get("ItemName").value.formattedText || '',
           Qty: this.IndentForm.get('Qty').value || this.vQty,
         });
       this.dsIndentNameList.data = this.chargeslist
-      
+
     } else {
       this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -113,9 +125,9 @@ this.IndentForm=this._IndentService.createnewindentfrom();
 
     const itemNameElement = document.querySelector(`[name='ItemName']`) as HTMLElement;
     if (itemNameElement) {
-        itemNameElement.focus();
+      itemNameElement.focus();
     }
-    
+
     this.IndentForm.get('ItemName').reset('');
     this.IndentForm.get('Qty').reset('');
   }
@@ -143,11 +155,11 @@ this.IndentForm=this._IndentService.createnewindentfrom();
     const form = this.IndentForm;
 
     form.patchValue({
-         ItemName: "",
-            Qty: 0,
-            Remark:"",
-            ItemNameKit:"",
-            Qtykit:0
+      ItemName: "",
+      Qty: 0,
+      Remark: "",
+      ItemNameKit: "",
+      Qtykit: 0
     });
     this.IndentForm.markAsUntouched();
   }
@@ -168,121 +180,103 @@ this.IndentForm=this._IndentService.createnewindentfrom();
       "exportType": "JSON",
       "columns": []
     }
-    console.log(Param)
+    // console.log(Param)
     this._IndentService.getIndentList(Param).subscribe(data => {
       this.dsIndentNameList.data = data.data as IndentNameList[];
       console.log(data)
-      this.chargeslist = data as IndentNameList[];
-      this.dsIndentNameList.sort = this.sort;
-      this.dsIndentNameList.paginator = this.paginator;
-      console.log(this.dsIndentNameList)
+      this.chargeslist = data.data as IndentNameList[];
+     debugger
+      this.dsIndentNameList.data.forEach(element => {
+       console.log(element)
+        element.indentId = element.indentId,
+          element.ItemName = element.itemName,
+          element.ItemID = element.itemId,
+          element.Qty = element.qty,
+          element.indQty = element.qty,
+          element.issQty = 0,//element.issQty,
+          element.bal = element.bal
+
+      });
     });
+
+    console.log(this.dsIndentNameList)
   }
   OnSave() {
-   
+    debugger
+     if (this.StoreFrom.invalid) {
+         Swal.fire('Please enter To Store');
+         return;
+       }
+
     if ((!this.dsIndentNameList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if (this.IndentForm.invalid) {
-      this.toastr.warning('please check from is invalid', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if (!this.IndentForm.get('IndentId').value) {
-     
-      let InsertIndentDetObj = [];
-      this.dsIndentNameList.data.forEach((element) => {
-        console.log(element)
-        let IndentDetInsertObj = {};
-        IndentDetInsertObj['indentId'] = 0;
-        IndentDetInsertObj['itemId'] = element.ItemID;
-        IndentDetInsertObj['qty'] = element.Qty;
-        InsertIndentDetObj.push(IndentDetInsertObj);
-      });
 
-      let submitData = {
-        "indentId": 0,
-        "indentDate":this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
-        "indentTime": this.datePipe.transform(this.dateTimeObj.date, 'shortTime'),
-        "fromStoreId": this._loggedService.currentUserValue.user.storeId,
-        "toStoreId": this.StoreFrom.get('ToStoreId').value,
-        "comments": this.IndentForm.get("Remark").value || "",
-        "tIndentDetails": InsertIndentDetObj
-      };
+  
+    let InsertIndentDetObj = [];
+    this.dsIndentNameList.data.forEach((element) => {
+      console.log(element)
+      let IndentDetInsertObj = {};
+      IndentDetInsertObj['indentId'] = this.IndentId;
+      IndentDetInsertObj['itemId'] = element.ItemID;
+      IndentDetInsertObj['qty'] = element.Qty;
+      IndentDetInsertObj['isclosed'] = false;
+      IndentDetInsertObj['indQty'] = element.Qty;
+      IndentDetInsertObj['issQty'] = 0;
+      InsertIndentDetObj.push(IndentDetInsertObj);
+    });
 
-      console.log(submitData);
+    let submitData = {
+      "indentId":this.IndentId,
+      // "indentNo": "",
+      "indentDate": this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
+      "indentTime": this.datePipe.transform(this.dateTimeObj.date, 'shortTime'),
+      "fromStoreId": this.StoreFrom.get('FromStoreId').value,
+      "toStoreId": this.StoreFrom.get('ToStoreId').value,
+      "isdeleted": 0,
+      "isverify": false,
+      "isclosed": false,
+      "comments": this.IndentForm.get("Remark").value || "",
+      "tIndentDetails": InsertIndentDetObj
+    };
 
-      this._IndentService.InsertIndentSave(submitData).subscribe(response => {
-        this.toastr.success(response.message);
-      if (response) {
+    console.log(submitData);
+
+    this._IndentService.InsertIndentSave(submitData).subscribe(response => {
+      this.toastr.success(response.message);
+      console.log(response)
+    if (response) {
         this.viewgetIndentReportPdf(response)
         this._matDialog.closeAll();
       }
 
     });
-    } else {
-
-      let updateIndent = {};
-      updateIndent['indentId'] = this.vIndentId;
-      updateIndent['fromStoreId'] = this._loggedService.currentUserValue.storeId;
-      updateIndent['toStoreId'] = this.IndentForm.get('ToStoreId').value.StoreId;
-
-      let insertIndentDetail = [];
-      this.dsIndentNameList.data.forEach((element) => {
-
-        let insertIndentDetailobj = {};
-        insertIndentDetailobj['indentId'] = this.vIndentId;
-        insertIndentDetailobj['itemId'] = element.ItemId;
-        insertIndentDetailobj['qty'] = element.Qty;
-        insertIndentDetail.push(insertIndentDetailobj);
-      });
-
-      let deleteIndent = {};
-      deleteIndent['indentId'] = this.vIndentId;
-
-      let submitData = {
-        "updateIndent": updateIndent,
-        "insertIndentDetail": insertIndentDetail,
-        "deleteIndent": deleteIndent
-      };
-
-      console.log(submitData);
-
-      this._IndentService.InsertIndentUpdate(submitData).subscribe(response => {
-        this.toastr.success(response.message);
-        if (response) {
-          this.viewgetIndentReportPdf(response)
-          this._matDialog.closeAll();
-        }
-  
-      });
-    }
+ 
 
   }
 
-  
-    getSelectedItem(item: GRNItemResponseType): void {
-     
-      this.ItemID = item.itemId
-     
-      this.IndentForm.patchValue({
-        UOMId: item.umoId,
-        ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
-        Qty: item.balanceQty,
-        CGSTPer: item.cgstPer,
-        SGSTPer: item.sgstPer,
-        IGSTPer: item.igstPer,
-        GST: item.cgstPer + item.sgstPer + item.igstPer,
-        HSNcode: item.hsNcode
-  
-      });
-  
-    }
-    
+
+  getSelectedItem(item: GRNItemResponseType): void {
+
+    this.ItemID = item.itemId
+
+    this.IndentForm.patchValue({
+      UOMId: item.umoId,
+      ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
+      Qty:0,// item.balanceQty,
+      CGSTPer: item.cgstPer,
+      SGSTPer: item.sgstPer,
+      IGSTPer: item.igstPer,
+      GST: item.cgstPer + item.sgstPer + item.igstPer,
+      HSNcode: item.hsNcode
+
+    });
+
+  }
+
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
     console.log(this.dateTimeObj)
@@ -310,14 +304,19 @@ this.IndentForm=this._IndentService.createnewindentfrom();
     this._matDialog.closeAll();
   }
 
- 
+
   viewgetIndentReportPdf(Id) {
-    this.commonService.Onprint("IndentId", Id, "IndentWiseReport");
+    this.commonService.Onprint("IndentId", Id, "IndentwiseReport");
   }
 
   viewgetIndentVerifyReportPdf(Id) {
     this.commonService.Onprint("IndentId", Id, "IndentWiseReport");
   }
+
+  // isValidForm(): boolean {
+  //   console.log(this.dsIndentNameList.data)
+  //   return this.dsIndentNameList.data.every((i) => i.Qty > 0);
+  // }
 }
 export class IndentNameList {
   Action: any;
@@ -329,7 +328,14 @@ export class IndentNameList {
   IndentQuantity: number;
   CurrentBalance: number;
   position: number;
-
+  indentId: any;
+  indentDetailsId
+  itemId: any;
+  qty: any;
+  indQty: any;
+  issQty: any;
+  bal: any;
+  itemName: any;
   /**
    * Constructor
    *
@@ -345,7 +351,14 @@ export class IndentNameList {
       this.HospitalBalance = IndentNameList.HospitalBalance || 0;
       this.IndentQuantity = IndentNameList.IndentQuantity || 0;
       this.CurrentBalance = IndentNameList.CurrentBalance || 0;
-
+      this.indentId = IndentNameList.indentId || 0;
+      this.indentDetailsId = IndentNameList.indentDetailsId || 0;
+      this.itemId = IndentNameList.itemId || 0;
+      this.qty = IndentNameList.qty || 0;
+      this.indQty = IndentNameList.indQty || 0;
+      this.issQty = IndentNameList.issQty || 0;
+      this.bal = IndentNameList.bal || 0;
+      this.itemName = IndentNameList.itemName || "";
     }
   }
 }

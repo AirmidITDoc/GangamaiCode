@@ -32,12 +32,12 @@
 
 
                                 <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
-                                    <airmid-dropdown label="Store Name" formControlName="FromStoreId"  fxFlex="30%"
+                                    <airmid-dropdown label="From Store Name" formControlName="FromStoreId"  fxFlex="30%"
                                         [formGroup]="StoreFrom" [validations]="getValidationMessages().FromStoreId"
                                         [value]="data?.FromStoreId" [mode]="autocompletestore">
                                     </airmid-dropdown>
 
-                                    <airmid-dropdown label="Store Name" formControlName="ToStoreId"  fxFlex="30%"
+                                    <airmid-dropdown label="To Store Name" formControlName="ToStoreId"  fxFlex="30%"
                                         [formGroup]="StoreFrom" [validations]="getValidationMessages().ToStoreId"
                                         [value]="data?.ToStoreId" [mode]="autocompletestore">
                                     </airmid-dropdown>

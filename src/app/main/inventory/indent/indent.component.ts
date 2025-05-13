@@ -44,7 +44,7 @@ export class IndentComponent implements OnInit {
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    @ViewChild('grid1') grid1: AirmidTableComponent;
+     @ViewChild('grid1') grid1: AirmidTableComponent;
     @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'isInchargeVerify')!.template = this.isVerifiedstatus;
@@ -83,10 +83,12 @@ export class IndentComponent implements OnInit {
     gridConfig1: gridModel = new gridModel();
     isShowDetailTable: boolean = false;
     GetDetails1(data) {
+        debugger
         let IndentId = data.indentId
         this.gridConfig1 = {
             apiUrl: "Indent/IndentDetailsList",
             columnsList:[
+                { heading: "Item", key: "itemId", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "QTY", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Issue QTY", key: "issQty", sort: true, align: 'left', emptySign: 'NA' },
@@ -95,7 +97,7 @@ export class IndentComponent implements OnInit {
             sortField: "IndentId",
             sortOrder: 0,
             filters: [
-                { fieldName: "IndentId", fieldValue:IndentId, opType: OperatorComparer.Equals },
+                { fieldName: "IndentId", fieldValue:String(IndentId), opType: OperatorComparer.Equals }
               
             ]
         }
@@ -174,14 +176,14 @@ debugger
         const dialogRef = this._matDialog.open(NewIndentComponent,
             {
                 maxWidth: "90vw",
-                height: '700px',
-                width: '100%',
+                height: '650px',
+                width: '90%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
+            // if (result) {
                 that.grid.bindGridData();
-            }
+            // }
         });
     }
 
@@ -201,7 +203,7 @@ debugger
             });
           dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
-            this.grid.gridConfig = this.gridConfig;
+            // this.grid.gridConfig = this.gridConfig;
             this.grid.bindGridData();
           });
         }
@@ -232,7 +234,7 @@ debugger
      });
   }
     viewgetIndentReportPdf(contact) {
-        this.commonService.Onprint("IndentId", contact.indentId, "IndentwiseReport");
+         this.commonService.Onprint("IndentId", contact.indentId, "IndentwiseReport");
       }
     
       viewgetIndentVerifyReportPdf(contact) {

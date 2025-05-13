@@ -26,7 +26,7 @@ export class AirmidDateofbirthComponent implements OnInit {
         this.ageDay = 0;
     }
     CalcDOB(mode, e) {
-        debugger
+        
         let d = new Date();
         if (mode == "Day") {
             d.setDate(d.getDate() - Number(e.target.value));
@@ -45,8 +45,10 @@ export class AirmidDateofbirthComponent implements OnInit {
         }
         this.formGroup.controls[this.formControlName].setValue(d);
 
-        if(this.ageYear > 110)
+        if(this.ageYear > 110){
+            this.ageYear=0
             Swal.fire("Please Enter Valid BirthDate..")
+        }
     }
     onChangeDateofBirth(DateOfBirth: Date) {
         
@@ -68,6 +70,7 @@ export class AirmidDateofbirthComponent implements OnInit {
                 this.ageMonth--;
                 const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
                 this.ageDay  += previousMonth.getDate(); // Days in previous month
+                // this.ageDay =this.ageDay +1;
               }
             
               if (this.ageMonth < 0) {
