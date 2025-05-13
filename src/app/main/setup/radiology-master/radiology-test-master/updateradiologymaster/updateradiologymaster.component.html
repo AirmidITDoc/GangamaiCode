@@ -22,66 +22,43 @@
 
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox 
-                            label="TestName" 
-                            formControlName="testName" 
-                            [value]="data?.testName"
-                            [formGroup]="testForm"
-                            [validations]="getValidationMessages().testName"
-                            [maxLength]="50">
+                        <airmid-textbox label="TestName" formControlName="testName" [value]="data?.testName"
+                            [formGroup]="testForm" [validations]="getValidationMessages().testName" [maxLength]="50">
                         </airmid-textbox>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-dropdown 
-                            label="CategoryName" 
-                            formControlName="categoryId"
-                            [value]="data?.categoryId"
-                            [formGroup]="testForm"
-                            [validations]="getValidationMessages().categoryId"
-                            (selectionChange)="selectChangeCategory($event)"
-                            [mode]="autocompleteModeCategory">
+                        <airmid-dropdown label="CategoryName" formControlName="categoryId" [value]="data?.categoryId"
+                            [formGroup]="testForm" [validations]="getValidationMessages().categoryId"
+                            (selectionChange)="selectChangeCategory($event)" [mode]="autocompleteModeCategory">
                         </airmid-dropdown>
                     </div>
                 </div>
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox 
-                            label="PrintTestName" 
-                            formControlName="printTestName" 
-                            [value]="data?.printTestName"
-                            [formGroup]="testForm"
-                            [validations]="getValidationMessages().printTestName"
-                            [maxLength]="50">
+                        <airmid-textbox label="PrintTestName" formControlName="printTestName"
+                            [value]="data?.printTestName" [formGroup]="testForm"
+                            [validations]="getValidationMessages().printTestName" [maxLength]="50">
                         </airmid-textbox>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-dropdown 
-                            label="ServiceName" 
-                            formControlName="serviceId" 
-                            [formGroup]="testForm"
+                        <airmid-dropdown label="ServiceName" formControlName="serviceId" [formGroup]="testForm"
                             [validations]="getValidationMessages().serviceId"
-                            (selectionChange)="selectChangeservice($event)"
-                            [mode]="autocompleteModeService">
+                            (selectionChange)="selectChangeservice($event)" [mode]="autocompleteModeService">
                         </airmid-dropdown>
                     </div>
                 </div>
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-dropdown 
-                            label="TemplateName" 
-                            formControlName="templateName" 
-                            [formGroup]="testForm"
+                        <airmid-dropdown label="TemplateName" formControlName="templateName" [formGroup]="testForm"
                             [validations]="getValidationMessages().templateName"
-                            (selectionChange)="selectChangetemplate($event)"
-                            [mode]="autocompleteModeRadioTemp">
+                            (selectionChange)="selectChangetemplate($event)" [mode]="autocompleteModeRadioTemp">
                         </airmid-dropdown>
                     </div>
 
                     <div matTooltip="Select All Value to enable this button!!">
-                        
-                        <button (click)="OnAdd($event)"  [disabled]="testForm.invalid"
-                            class="btn btn-primary btn-with-icon py-8"
-                            style="margin-left: 10px;">
+                        <!--  [disabled]="testForm.invalid" -->
+                        <button (click)="OnAdd($event)"
+                            class="btn btn-primary btn-with-icon py-8" style="margin-left: 10px;">
                             <span class="btn-icon">
                                 <mat-icon> add </mat-icon>
                             </span>
@@ -89,8 +66,7 @@
                     </div>
 
                     <mat-card style="height:300px;width:100%;">
-                        <mat-table  matSort [dataSource]="DSTestList"
-                            [@animateStagger]="{value:'50'}"
+                        <mat-table matSort [dataSource]="DSTestList" [@animateStagger]="{value:'50'}"
                             style="overflow:auto; width: 100%;">
 
                             <ng-container matColumnDef="ParameterName">
@@ -98,10 +74,18 @@
                                     Template Name
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                    {{element.TemplateName}}
+                                    {{element.templateName}}
                                 </mat-cell>
                             </ng-container>
 
+                            <ng-container matColumnDef="Action" stickyEnd>
+                                <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    <button mat-icon-button color="warn" (click)="onDeleteRow(element)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
 
                             <ng-container matColumnDef="loading">
                                 <mat-footer-cell *matFooterCellDef colspan="6">
@@ -117,8 +101,7 @@
 
                             <mat-header-row class="accent"
                                 *matHeaderRowDef="displayedColumns1; sticky: true"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayedColumns1;"
-                                class="element"
+                            <mat-row *matRowDef="let row; columns: displayedColumns1;" class="element"
                                 [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
 
                             <mat-footer-row *matFooterRowDef="['loading']"
@@ -131,20 +114,21 @@
 
                 </div>
 
-                        
+
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
 
                     <div>
-                        <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="testForm" [(ngModel)]="isActive" ></app-airmid-slider>
+                        <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="testForm"
+                            [(ngModel)]="isActive"></app-airmid-slider>
                     </div>
-            
+
                     <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
                         <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                         <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                             <span>Save</span>
                         </button>
                     </div>
-            
+
                 </div>
 
             </form>

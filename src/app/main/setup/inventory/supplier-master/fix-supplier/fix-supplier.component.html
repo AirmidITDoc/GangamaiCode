@@ -123,7 +123,7 @@
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="Freight" formControlName="Freight" [value]="registerObj.Freight" [formGroup]="supplierForm" [validations]="getValidationMessages().Freight">
+                                    <airmid-textbox label="Freight" formControlName="Freight" [value]="registerObj.freight" [formGroup]="supplierForm" [validations]="getValidationMessages().Freight">
                                     </airmid-textbox>
                                 </div>
 
@@ -262,9 +262,9 @@
                         <!-- <mat-checkbox aria-label="Msm" formControlName="MsmNo" (checked)=true (change)="onChangeMsm($event)"
                             style="font-weight: bold;margin-right: 20px;">MSME
                         </mat-checkbox> -->
-                        <mat-checkbox aria-label="Mode" formControlName="CreateApproval" (checked)=true
+                        <!-- <mat-checkbox aria-label="Mode" formControlName="CreateApproval" (checked)=true
                             (change)="onChangeMode($event)" style="font-weight: bold;margin-right: 20px;">Create / Approval
-                        </mat-checkbox>
+                        </mat-checkbox> -->
                     </div>
 
                     <div class="modal-footer-buttons">

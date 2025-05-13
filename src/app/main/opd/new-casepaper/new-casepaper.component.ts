@@ -1629,7 +1629,8 @@ getCheifComplaintList() {
           "opType": "Equals"
         }
       ],
-      "exportType": "JSON"
+        "Columns":[],
+        "exportType": "JSON"
     }
     console.log(D_data);
     this._CasepaperService.getRtrvVisitedListdemo(D_data).subscribe(Visit => {

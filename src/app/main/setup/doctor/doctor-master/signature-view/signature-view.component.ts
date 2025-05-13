@@ -20,6 +20,47 @@ import { ImageViewComponent } from 'app/main/opd/appointment-list/image-view/ima
 })
 export class SignatureViewComponent implements OnInit {
     sanitizeImagePreview = "";
+    constructor(
+        public dialogRef: MatDialogRef<ImageViewComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public matDialog: MatDialog,
+        // public safe: SafePipesPipe
+
+    ) {
+    }
+    // onImageChange(event) {
+    //     let Imgflag = "";
+    //     if (!event.target.files.length) return;
+    //     const file = event.target.files[0];
+    //     this.matDialog.open(ImageCropComponent, { data: { file } }).afterClosed().subscribe(
+    //         (event: ImageCroppedEvent) => (this.sanitizeImagePreview = event.base64,
+    //             Imgflag = event.base64
+    //         )
+    //     );
+    // }
+
+   onImageChange(event: any) {
+    debugger
+  if (!event.target.files.length) return;
+  const file = event.target.files[0];
+
+  const dialogRef = this.matDialog.open(ImageCropComponent, {
+    width: '600px',
+    data: { file }
+  });
+
+  dialogRef.afterClosed().subscribe((croppedBase64) => {
+    debugger
+    console.log("Dialog closed. Received:", croppedBase64);
+    if (croppedBase64) {
+      this.sanitizeImagePreview = croppedBase64;
+    } else {
+      console.warn("Dialog returned empty or null.");
+    }
+  });
+}
+
+
     @ViewChild("testPad", { static: true })
     signaturePadElement: any;// NgxSignaturePadComponent;
 
@@ -30,38 +71,16 @@ export class SignatureViewComponent implements OnInit {
     // };
     config:any;
 
-
-    onImageChange(event) {
-        debugger
-        let Imgflag = "";
-        if (!event.target.files.length) return;
-        const file = event.target.files[0];
-        this.matDialog.open(ImageCropComponent, { data: { file } }).afterClosed().subscribe(
-            (event: ImageCroppedEvent) => (this.sanitizeImagePreview = event.base64,
-                Imgflag = event.base64
-            )
-        );
-    }
-    
     public clear() {
         this.signaturePadElement.clear();
     }
-
-    constructor(
-        public dialogRef: MatDialogRef<ImageViewComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: any,
-        public matDialog: MatDialog,
-        // public safe: SafePipesPipe
-
-    ) {  }
-    
     ngOnInit(): void {
     }
     onClose() {
         this.dialogRef.close();
     }
     OnSubmit(){
-        
+        debugger
         if(this.sanitizeImagePreview){
             this.dialogRef.close(this.sanitizeImagePreview)
         }

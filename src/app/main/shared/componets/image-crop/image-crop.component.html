@@ -3,25 +3,23 @@
 <div mat-dialog-content>
   <div class="row p-5">
     <div class="col-12">
-      <image-cropper #abc
+      <!-- <image-cropper #abc
         [imageFile]="data.file"
         [autoCrop]="false"
         [transform]="transform"
        
-      ></image-cropper>
+      ></image-cropper> -->
+      <image-cropper #abc [imageFile]="data.file" outputType="blob"
+        (imageCropped)="onImageCropped($event)"> <!-- Event binding -->
+      </image-cropper>
+
     </div>
   </div>
 </div>
 
 <div mat-dialog-actions class="d-flex justify-content-center">
-  <mat-slider
-    class="zoom-slider"
-    [min]="max * -1"
-    [max]="max"
-    step="0.1"
-    [value]="zoom"
-    (input)="onSliderChange($event.value)"
-  ></mat-slider>
+  <mat-slider class="zoom-slider" [min]="max * -1" [max]="max" step="0.1" [value]="zoom" *ngIf="sliderReady"
+    (input)="onSliderChange($event.value)"></mat-slider>
 </div>
 
 <div mat-dialog-actions class="d-flex justify-content-end">

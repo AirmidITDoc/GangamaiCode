@@ -1,5 +1,4 @@
 <div class="modal-wrapper grid-container">
-    <!-- Modal header -->
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
@@ -16,138 +15,104 @@
         </div>
     </div>
 
-    <!-- Modal body -->
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <div fxLayout="column" fxLayoutGap="8px">
-                <div class="detail-container">
-                    <!-- 1st -->
-                    <mat-card>
-                        <mat-card-content>
-                            <div class="detail-header">
-                                <span class="title">Personal Details</span>
-                            </div>
+                <!-- <mat-card> -->
+                    <form [formGroup]="myForm" fxLayout="column" style="padding: 5px 5px 0px 5px;">
+                        <input type="hidden" name="DoctorId" formControlName="DoctorId"
+                            [(ngModel)]="registerObj.doctorId">
 
-                            <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
-                                <div fxFlex="83%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
+                            class="top-header accent heading-container h-40 border-radius-4">
+                            <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Personal
+                                Details</span>
+                        </div>
+
+                        <mat-card>
+                            <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid">
+                                <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown 
-                                            label="Prefix" 
-                                            formControlName="PrefixID" 
-                                            [formGroup]="myForm"
-                                            [(value)]="registerObj.prefixId" 
-                                            [validations]="getValidationMessages().PrefixID"
-                                            ValueField="prefixId" TextField="prefixName" 
-                                            (selectionChange)="onChangePrefix($event)"
+                                        <airmid-dropdown label="Prefix" formControlName="PrefixID" [formGroup]="myForm"
+                                            [(value)]="registerObj.prefixId"
+                                            [validations]="getValidationMessages().PrefixID" ValueField="prefixId"
+                                            TextField="prefixName" (selectionChange)="onChangePrefix($event)"
                                             ApiUrl="Prefix/get-prefixs" #ddlPrefix>
                                         </airmid-dropdown>
                                     </div>
-            
+
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox 
-                                            label="First Name" 
-                                            formControlName="FirstName"
-                                            [value]="registerObj.firstName" 
-                                            [formGroup]="myForm"
-                                            [validations]="getValidationMessages().FirstName" 
-                                            [maxLength]="50">
+                                        <airmid-textbox label="First Name" formControlName="FirstName"
+                                            [value]="registerObj.firstName" [formGroup]="myForm"
+                                            [validations]="getValidationMessages().FirstName" [maxLength]="50">
                                         </airmid-textbox>
                                     </div>
-            
+
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox 
-                                            label="Middle Name" 
-                                            formControlName="MiddleName"
-                                            [value]="registerObj.middleName" 
-                                            [formGroup]="myForm"
-                                            [validations]="getValidationMessages().MiddleName" 
-                                            [maxLength]="50">
+                                        <airmid-textbox label="Middle Name" formControlName="MiddleName"
+                                            [value]="registerObj.middleName" [formGroup]="myForm"
+                                            [validations]="getValidationMessages().MiddleName" [maxLength]="50">
                                         </airmid-textbox>
                                     </div>
-            
+
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox 
-                                            label="Last Name" 
-                                            formControlName="LastName" 
-                                            [value]="registerObj.lastName"
-                                            [formGroup]="myForm" 
-                                            [validations]="getValidationMessages().LastName" 
-                                            [maxLength]="50">
+                                        <airmid-textbox label="Last Name" formControlName="LastName"
+                                            [value]="registerObj.lastName" [formGroup]="myForm"
+                                            [validations]="getValidationMessages().LastName" [maxLength]="50">
                                         </airmid-textbox>
                                     </div>
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown 
-                                            label="Gender" 
-                                            formControlName="GenderId" 
-                                            [formGroup]="myForm"
-                                            [(value)]="registerObj.genderId" 
+                                        <airmid-dropdown label="Gender" formControlName="GenderId" [formGroup]="myForm"
+                                            [(value)]="registerObj.genderId"
                                             [validations]="getValidationMessages().GenderId"
-                                            [mode]="autocompleteModegender" 
-                                            [disabled]="true" #ddlGender>
+                                            [mode]="autocompleteModegender" [disabled]="true" #ddlGender>
                                         </airmid-dropdown>
                                     </div>
-                                    <div fxFlex="74%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                        <app-airmid-dateofbirth 
-                                            [formGroup]="myForm" 
-                                            formControlName="DateOfBirth"
-                                            [(value)]="registerObj.dateofBirth">
-                                        </app-airmid-dateofbirth>
+                                    <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="67%">
+                                        <app-airmid-dateofbirth [formGroup]="myForm" formControlName="DateOfBirth"
+                                            [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
                                     </div>
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox 
-                                            label="Pan Card No" 
-                                            placeholder="Enter PAN (e.g., ABCDE1234F)" 
-                                            formControlName="Pancardno"
-                                            [value]="registerObj.panCardNo" 
-                                            [formGroup]="myForm"
-                                            [validations]="getValidationMessages().Pancardno" 
-                                            [maxLength]="10">
+                                        <airmid-textbox label="Pan Card No" formControlName="Pancardno"
+                                            [value]="registerObj.panCardNo" [formGroup]="myForm"
+                                            [validations]="getValidationMessages().Pancardno" [maxLength]="10">
                                         </airmid-textbox>
                                     </div>
-            
+
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox 
-                                            label="Aadhar Card No" 
-                                            formControlName="AadharCardNo"
-                                            [value]="registerObj.aadharCardNo" 
-                                            [formGroup]="myForm"
-                                            [validations]="getValidationMessages().AadharCardNo" 
-                                            [maxLength]="12">
+                                        <airmid-textbox label="Aadhar Card No" formControlName="AadharCardNo"
+                                            [value]="registerObj.aadharCardNo" [formGroup]="myForm"
+                                            [validations]="getValidationMessages().AadharCardNo" [maxLength]="12">
                                         </airmid-textbox>
                                     </div>
-            
+
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox 
-                                            label="Phone" 
-                                            formControlName="Phone" 
-                                            [value]="registerObj.phone"
-                                            [formGroup]="myForm" 
-                                            [validations]="getValidationMessages().Phone" 
-                                            [maxLength]="10">
+                                        <airmid-textbox label="Phone" formControlName="Phone"
+                                            [value]="registerObj.phone" [formGroup]="myForm"
+                                            [validations]="getValidationMessages().Phone" [maxLength]="12">
                                         </airmid-textbox>
                                     </div>
-            
+
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox 
-                                            label="Address" 
-                                            formControlName="Address" 
-                                            [value]="registerObj.address"
-                                            [formGroup]="myForm" 
+                                        <airmid-textbox label="Address" formControlName="Address"
+                                            [value]="registerObj.address" [formGroup]="myForm"
                                             [validations]="getValidationMessages().Address">
                                         </airmid-textbox>
                                     </div>
                                 </div>
 
                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="20%">
-                                    <!-- <mat-card style="padding: 6px;height: 200px;"> -->
+                                    <mat-card style="padding: 6px;height: 200px;">
                                         <div class="photo-capture p-16 border border-radius-4 gap-12" fxLayout="column">
                                             <div class="photp-capture-image">
-                                                <img class="h-100-p w-100-p border-radius-4" style="height:100px !important;"
+                                                <img class="h-100-p w-100-p border-radius-4"
+                                                    style="height:100px !important;"
                                                     [src]="sanitizeImagePreview ? sanitizeImagePreview:'/assets/images/noimage.jpg'" />
                                             </div>
                                             <div class="photo-capture-button ">
-                                                <label class="btn btn-primary-outline btn-hover btn-with-icon w-100-p m-0 "
+                                                <label
+                                                    class="btn btn-primary-outline btn-hover btn-with-icon w-100-p m-0 "
                                                     (click)="onViewSignature()">
                                                     <span class="btn-icon">
                                                         <mat-icon>camera_enhance</mat-icon>
@@ -156,136 +121,113 @@
                                                 </label>
                                             </div>
                                         </div>
-                                    <!-- </mat-card> -->
+                                    </mat-card>
                                 </div>
 
                             </div>
-                        </mat-card-content>
-                    </mat-card>
+                        </mat-card>
+                    </form>
 
-                    <!-- 2nd -->
-                    <mat-card>
-                        <mat-card-content>
-                            <div class="detail-header">
-                                <span class="title">Education Details</span>
+                    <form [formGroup]="myForm" fxLayout="column" style="padding: 0px 5px 0px 5px;">
+                        <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
+                            class="top-header accent heading-container h-40 border-radius-4">
+                            <span style="font-size:15px;font-weight: bolder; color:white;padding:7px;">Education
+                                Details</span>
+                        </div>
+                        <mat-card>
+
+                            <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="City" formControlName="City" [formGroup]="myForm"
+                                        [(value)]="registerObj.city" [validations]="getValidationMessages().City"
+                                        [mode]="autocompleteModecity">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="ESINO" formControlName="esino" [value]="registerObj.esino"
+                                        [formGroup]="myForm" [validations]="getValidationMessages().esino"
+                                        [maxLength]="10">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="RegNo" formControlName="RegNo" [value]="registerObj.regNo"
+                                        [formGroup]="myForm" [validations]="getValidationMessages().RegNo"
+                                        [maxLength]="10">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Reg date</mat-label>
+                                        <input name="RegDate" matInput [matDatepicker]="picker1"
+                                            formControllName="RegDate" [value]="registerObj.regDate">
+                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker1></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Education" formControlName="Education"
+                                        [value]="registerObj.education" [formGroup]="myForm"
+                                        [validations]="getValidationMessages().Education" [maxLength]="10">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="MahRegNo" formControlName="MahRegNo"
+                                        [value]="registerObj.mahRegNo" [formGroup]="myForm"
+                                        [validations]="getValidationMessages().mahRegNo" [maxLength]="10">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>MahReg date</mat-label>
+                                        <input name="MahRegDate" matInput [matDatepicker]="picker2"
+                                            formControllName="MahRegDate" [value]="registerObj.mahRegDate">
+                                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker2></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Hospital Name" formControlName="RefDocHospitalName"
+                                        [value]="registerObj.refDocHospitalName" [formGroup]="myForm"
+                                        [validations]="getValidationMessages().RefDocHospitalName" [maxLength]="100">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                    <airmid-dropdown label="DoctorTypeId" formControlName="DoctorTypeId"
+                                        [formGroup]="myForm" [(value)]="registerObj.doctorTypeId"
+                                        [validations]="getValidationMessages().DoctorTypeId"
+                                        [mode]="autocompleteModedoctorty">
+                                    </airmid-dropdown>
+                                </div>
                             </div>
+                        </mat-card>
+                    </form>
 
-                            <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
-                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown 
-                                            label="City" 
-                                            formControlName="City" 
-                                            [formGroup]="myForm"
-                                            [(value)]="registerObj.city" 
-                                            [validations]="getValidationMessages().City"
-                                            [mode]="autocompleteModecity">
-                                        </airmid-dropdown>
-                                    </div>
-                
-                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox 
-                                            label="ESINO" 
-                                            formControlName="esino" 
-                                            [value]="registerObj.esino"
-                                            [formGroup]="myForm" 
-                                            [validations]="getValidationMessages().esino" 
-                                            [maxLength]="10">
-                                        </airmid-textbox>
-                                    </div>
-                
-                                    <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox 
-                                            label="RegNo" 
-                                            formControlName="RegNo" 
-                                            [value]="registerObj.regNo"
-                                            [formGroup]="myForm" 
-                                            [validations]="getValidationMessages().RegNo" 
-                                            [maxLength]="10">
-                                        </airmid-textbox>
-                                    </div>
-                
-                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Reg date</mat-label>
-                                            <input name="RegDate" matInput [matDatepicker]="picker1" formControllName="RegDate"
-                                                [value]="registerObj.regDate">
-                                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker1></mat-datepicker>
-                                        </mat-form-field>
-                                    </div>
-                
-                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox 
-                                            label="Education" 
-                                            formControlName="Education" 
-                                            [value]="registerObj.education"
-                                            [formGroup]="myForm" 
-                                            [validations]="getValidationMessages().Education" 
-                                            [maxLength]="200">
-                                        </airmid-textbox>
-                                    </div>
-                
-                                    <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox 
-                                            label="MahRegNo" 
-                                            formControlName="MahRegNo" 
-                                            [value]="registerObj.mahRegNo"
-                                            [formGroup]="myForm" 
-                                            [validations]="getValidationMessages().mahRegNo" 
-                                            [maxLength]="10">
-                                        </airmid-textbox>
-                                    </div>
-                
-                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>MahReg date</mat-label>
-                                            <input name="MahRegDate" matInput [matDatepicker]="picker2" formControllName="MahRegDate"
-                                                [value]="registerObj.mahRegDate">
-                                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker2></mat-datepicker>
-                                        </mat-form-field>
-                                    </div>
-                
-                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox 
-                                            label="Hospital Name" 
-                                            formControlName="RefDocHospitalName"
-                                            [value]="registerObj.refDocHospitalName" 
-                                            [formGroup]="myForm"
-                                            [validations]="getValidationMessages().RefDocHospitalName" 
-                                            [maxLength]="100">
-                                        </airmid-textbox>
-                                    </div>
-                
-                                    <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown 
-                                            label="DoctorTypeId" 
-                                            formControlName="DoctorTypeId" 
-                                            [formGroup]="myForm"
-                                            [(value)]="registerObj.doctorTypeId" 
-                                            [validations]="getValidationMessages().DoctorTypeId"
-                                            [mode]="autocompleteModedoctorty">
-                                        </airmid-dropdown>
-                                    </div>
-                            </div>
-                        </mat-card-content>
-                    </mat-card>
+                    <form [formGroup]="myForm" fxLayout="column" style="padding: 0px 5px 0px 5px;">
 
-                    <!-- 3rd -->
-                    <mat-card>
-                        <mat-card-content>
-                            <div class="detail-header">
-                                <span class="title">Department Details</span>
-                            </div>
+                        <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
+                            class="top-header accent heading-container h-40 border-radius-4">
+                            <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Department
+                                Details</span>
+                        </div>
+                        <div fxLayout="row">
 
-                            <div fxLayout="row">
-                                <div fxFlex>
+                            <div fxFlex>
+                                <mat-card>
                                     <form [formGroup]="myForm">
-                                        <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
-                                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-dropdown label="Department" formControlName="MDoctorDepartmentDets"
-                                                    [formGroup]="myForm" [IsMultiPle]="true"
-                                                    [value]="registerObj.mDoctorDepartmentDets"
+                                        <div fxLayout="row">
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="Department"
+                                                    formControlName="MDoctorDepartmentDets" [formGroup]="myForm"
+                                                    [IsMultiPle]="true" [value]="registerObj.mDoctorDepartmentDets"
                                                     [validations]="getValidationMessages().Departmentid" #ddlDepartment
                                                     ValueField="departmentId" TextField="departmentName"
                                                     ApiUrl="DepartmentMaster/get-departments" [ReqFullObj]="true">
@@ -299,354 +241,26 @@
                                             </mat-chip-listbox>
                                         </div>
                                     </form>
-                                </div>
+                                </mat-card>
                             </div>
-                        </mat-card-content>
-                    </mat-card>
-
-                </div>
-
-                <div class="modal-footer">
-                    <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="space-between center">
-                        <div class="modal-footer-actions" fxLayout="row">
-                            <form [formGroup]="myForm">
-                                <div class="sales-radio-buttons gap-2" fxLayout="row">
-                                    <mat-slide-toggle name="IsConsultant" formControlName="IsConsultant"
-                                        [(ngModel)]="visConsultant">
-                                        IsConsultant
-                                    </mat-slide-toggle>
-                                    <mat-slide-toggle name="IsRefDoc" formControlName="IsRefDoc" [(ngModel)]="visRefDoc">
-                                        IsRefDoctor
-                                    </mat-slide-toggle>
-                                    <mat-checkbox aria-label="Is Active" formControlName="isActive" (checked)=true
-                                        style="font-weight: bold;">
-                                        IsActive
-                                    </mat-checkbox>
-                                </div>
-                            </form>
                         </div>
-                        <div class="modal-footer-buttons">
-                            <button type="button" class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                            <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+                    </form>
+                    <div class="row row-container" style="width: 100%;">
+                        <div class="sales-radio-buttons gap-8" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="modal-footer-actions" fxLayout="row">
+
+                            </div>
+                            <div class="sales-footer-buttons gap-8" fxLayout="row">
+                                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                <button class="btn btn-primary" color="accent" (click)="onSubmit()" #savebutton>
+                                    <span>Save</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <!-- </mat-card> -->
 
             </div>
         </div>
     </div>
 </div>
-    <!-- <mat-card> -->
-        <!-- <form [formGroup]="myForm" fxLayout="column" style="padding: 5px 5px 0px 5px;">
-            <input type="hidden" name="DoctorId" formControlName="DoctorId" [(ngModel)]="registerObj.doctorId">
-
-            <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                class="top-header accent heading-container h-40 border-radius-4">
-                <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Personal
-                    Details</span>
-            </div>
-
-            <mat-card>
-                <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid">
-                    <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap">
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-dropdown 
-                                label="Prefix" 
-                                formControlName="PrefixID" 
-                                [formGroup]="myForm"
-                                [(value)]="registerObj.prefixId" 
-                                [validations]="getValidationMessages().PrefixID"
-                                ValueField="prefixId" TextField="prefixName" 
-                                (selectionChange)="onChangePrefix($event)"
-                                ApiUrl="Prefix/get-prefixs" #ddlPrefix>
-                            </airmid-dropdown>
-                        </div>
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="First Name" 
-                                formControlName="FirstName"
-                                [value]="registerObj.firstName" 
-                                [formGroup]="myForm"
-                                [validations]="getValidationMessages().FirstName" 
-                                [maxLength]="50">
-                            </airmid-textbox>
-                        </div>
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="Middle Name" 
-                                formControlName="MiddleName"
-                                [value]="registerObj.middleName" 
-                                [formGroup]="myForm"
-                                [validations]="getValidationMessages().MiddleName" 
-                                [maxLength]="50">
-                            </airmid-textbox>
-                        </div>
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="Last Name" 
-                                formControlName="LastName" 
-                                [value]="registerObj.lastName"
-                                [formGroup]="myForm" 
-                                [validations]="getValidationMessages().LastName" 
-                                [maxLength]="50">
-                            </airmid-textbox>
-                        </div>
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-dropdown 
-                                label="Gender" 
-                                formControlName="GenderId" 
-                                [formGroup]="myForm"
-                                [(value)]="registerObj.genderId" 
-                                [validations]="getValidationMessages().GenderId"
-                                [mode]="autocompleteModegender" 
-                                [disabled]="true" #ddlGender>
-                            </airmid-dropdown>
-                        </div>
-                        <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="67%">
-                            <app-airmid-dateofbirth [formGroup]="myForm" formControlName="DateOfBirth"
-                                [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
-                        </div>
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="Pan Card No" 
-                                formControlName="Pancardno"
-                                [value]="registerObj.panCardNo" 
-                                [formGroup]="myForm"
-                                [validations]="getValidationMessages().Pancardno" 
-                                [maxLength]="10">
-                            </airmid-textbox>
-                        </div>
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="Aadhar Card No" 
-                                formControlName="AadharCardNo"
-                                [value]="registerObj.aadharCardNo" 
-                                [formGroup]="myForm"
-                                [validations]="getValidationMessages().AadharCardNo" 
-                                [maxLength]="12">
-                            </airmid-textbox>
-                        </div>
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="Phone" 
-                                formControlName="Phone" 
-                                [value]="registerObj.phone"
-                                [formGroup]="myForm" 
-                                [validations]="getValidationMessages().Phone" 
-                                [maxLength]="12">
-                            </airmid-textbox>
-                        </div>
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="Address" 
-                                formControlName="Address" 
-                                [value]="registerObj.address"
-                                [formGroup]="myForm" 
-                                [validations]="getValidationMessages().Address">
-                            </airmid-textbox>
-                        </div>
-                    </div>
-
-                    <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="20%">
-                        <mat-card style="padding: 6px;height: 200px;">
-                            <div class="photo-capture p-16 border border-radius-4 gap-12" fxLayout="column">
-                                <div class="photp-capture-image">
-                                    <img class="h-100-p w-100-p border-radius-4" style="height:100px !important;"
-                                        [src]="sanitizeImagePreview ? sanitizeImagePreview:'/assets/images/noimage.jpg'" />
-                                </div>
-                                <div class="photo-capture-button ">
-                                    <label class="btn btn-primary-outline btn-hover btn-with-icon w-100-p m-0 "
-                                        (click)="onViewSignature()">
-                                        <span class="btn-icon">
-                                            <mat-icon>camera_enhance</mat-icon>
-                                        </span>
-                                        <span>Capture Signature</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </mat-card>
-                    </div>
-
-                </div>
-            </mat-card>
-        </form> -->
-
-        <!-- 2nd -->
-        <!-- <form [formGroup]="myForm" fxLayout="column" style="padding: 0px 5px 0px 5px;">
-            <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                class="top-header accent heading-container h-40 border-radius-4">
-                <span style="font-size:15px;font-weight: bolder; color:white;padding:7px;">Education
-                    Details</span>
-            </div>
-            <mat-card>
-
-                <div fxFlex="100" fxLayout="row wrap">
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-dropdown 
-                            label="City" 
-                            formControlName="City" 
-                            [formGroup]="myForm"
-                            [(value)]="registerObj.city" 
-                            [validations]="getValidationMessages().City"
-                            [mode]="autocompleteModecity">
-                        </airmid-dropdown>
-                    </div>
-
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox 
-                            label="ESINO" 
-                            formControlName="esino" 
-                            [value]="registerObj.esino"
-                            [formGroup]="myForm" 
-                            [validations]="getValidationMessages().esino" 
-                            [maxLength]="10">
-                        </airmid-textbox>
-                    </div>
-
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox 
-                            label="RegNo" 
-                            formControlName="RegNo" 
-                            [value]="registerObj.regNo"
-                            [formGroup]="myForm" 
-                            [validations]="getValidationMessages().RegNo" 
-                            [maxLength]="10">
-                        </airmid-textbox>
-                    </div>
-
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>Reg date</mat-label>
-                            <input name="RegDate" matInput [matDatepicker]="picker1" formControllName="RegDate"
-                                [value]="registerObj.regDate">
-                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                            <mat-datepicker #picker1></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox 
-                            label="Education" 
-                            formControlName="Education" 
-                            [value]="registerObj.education"
-                            [formGroup]="myForm" 
-                            [validations]="getValidationMessages().Education" 
-                            [maxLength]="10">
-                        </airmid-textbox>
-                    </div>
-
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox 
-                            label="MahRegNo" 
-                            formControlName="MahRegNo" 
-                            [value]="registerObj.mahRegNo"
-                            [formGroup]="myForm" 
-                            [validations]="getValidationMessages().mahRegNo" 
-                            [maxLength]="10">
-                        </airmid-textbox>
-                    </div>
-
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>MahReg date</mat-label>
-                            <input name="MahRegDate" matInput [matDatepicker]="picker2" formControllName="MahRegDate"
-                                [value]="registerObj.mahRegDate">
-                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                            <mat-datepicker #picker2></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox 
-                            label="Hospital Name" 
-                            formControlName="RefDocHospitalName"
-                            [value]="registerObj.refDocHospitalName" 
-                            [formGroup]="myForm"
-                            [validations]="getValidationMessages().RefDocHospitalName" 
-                            [maxLength]="100">
-                        </airmid-textbox>
-                    </div>
-
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                        <airmid-dropdown 
-                            label="DoctorTypeId" 
-                            formControlName="DoctorTypeId" 
-                            [formGroup]="myForm"
-                            [(value)]="registerObj.doctorTypeId" 
-                            [validations]="getValidationMessages().DoctorTypeId"
-                            [mode]="autocompleteModedoctorty">
-                        </airmid-dropdown>
-                    </div>
-                </div>
-            </mat-card>
-        </form> -->
-
-        <!-- 3rd -->
-        <!-- <form [formGroup]="myForm" fxLayout="column" style="padding: 0px 5px 0px 5px;">
-
-            <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                class="top-header accent heading-container h-40 border-radius-4">
-                <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Department Details</span>
-            </div>
-            <div fxLayout="row">
-
-                <div fxFlex>
-                    <mat-card>
-                        <form [formGroup]="myForm">
-                            <div fxLayout="row">
-                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Department" formControlName="MDoctorDepartmentDets"
-                                        [formGroup]="myForm" [IsMultiPle]="true"
-                                        [value]="registerObj.mDoctorDepartmentDets"
-                                        [validations]="getValidationMessages().Departmentid" #ddlDepartment
-                                        ValueField="departmentId" TextField="departmentName"
-                                        ApiUrl="DepartmentMaster/get-departments" [ReqFullObj]="true">
-                                    </airmid-dropdown>
-                                </div>
-                                <mat-chip-listbox #chipList>
-                                    <mat-chip *ngFor="let item of myForm.value.MDoctorDepartmentDets">
-                                        {{ item.departmentName }} <mat-icon
-                                            (click)="removeDepartment(item)">close</mat-icon>
-                                    </mat-chip>
-                                </mat-chip-listbox>
-                            </div>
-                        </form>
-                    </mat-card>
-                </div>
-            </div>
-        </form> -->
-
-        <!-- <div class="row row-container" style="width: 100%;">
-            <div class="sales-radio-buttons gap-8" fxLayout="row" fxLayoutAlign="space-between center">
-                <div class="sales-footer-buttons gap-8" fxLayout="row">
-                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                    <button class="btn btn-primary" color="accent" (click)="onSubmit()" #savebutton>
-                        <span>Save</span>
-                    </button>
-                </div>
-            </div>
-        </div> -->
-    <!-- </mat-card> -->
-    <!-- Modal footer -->
-    <!-- <div class="modal-footer">
-    <div class="footer-navigation-container">
-
-            <div class="modal-footer-container">
-                <div class="modal-footer-buttons">
-                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                    <button class="btn btn-primary" color="accent" (click)="onSubmit()" #savebutton>
-                        <span>Save</span>
-                    </button>
-                </div>
-            </div>
-    </div>
-    </div> -->
-<!-- </div> -->

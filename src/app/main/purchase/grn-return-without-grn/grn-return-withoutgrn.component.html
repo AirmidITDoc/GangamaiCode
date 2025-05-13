@@ -52,29 +52,31 @@
                         <form [formGroup]="_GRNReturnService.GRNReturnSearchFrom" fxLayout="column">
                             <airmid-datepicker [formGroup]="_GRNReturnService.GRNReturnSearchFrom" [isRangePicker]="true"
                             formStartControlName="start" formEndControlName="end"
-                            [(fromValue)]="gridConfig.filters[0].fieldValue"
-                            [(toValue)]="gridConfig.filters[1].fieldValue">
+                            [(fromValue)]="gridConfig.filters[1].fieldValue"
+                            [(toValue)]="gridConfig.filters[2].fieldValue">
                         </airmid-datepicker>
 
                         <airmid-dropdown label="Store Name" formControlName="ToStoreId"
                          [formGroup]="_GRNReturnService.GRNReturnSearchFrom"
+                         [(ngModel)]="gridConfig.filters[0].fieldValue"
                             [mode]="autocompletestore" (selectionChange)="ListView($event)">
                         </airmid-dropdown>
 
                         <airmid-dropdown label="Supplier Name" formControlName="SupplierId"
                          [formGroup]="_GRNReturnService.GRNReturnSearchFrom"
+                         [(ngModel)]="gridConfig.filters[3].fieldValue"
                             [mode]="autocompleteSupplier" (selectionChange)="ListView1($event)">
                         </airmid-dropdown>
 
                         <div fxFlex fxLayout="row">
-                            <mat-radio-group name="Status" fxLayout="row" value="1" [formGroup]="_GRNReturnService.GRNReturnSearchFrom"
+                            <mat-radio-group name="Status" fxLayout="row" value="0" [formGroup]="_GRNReturnService.GRNReturnSearchFrom"
                              formControlName="Status" (change)="onChangeFirst()"
                                 style="padding: 6px;" class="gap-4">
                                 <mat-label>Status:</mat-label>
                                 <div fxLayout="row">
-                                    <mat-radio-button value='2'>All</mat-radio-button>
-                                    <mat-radio-button value='0'>Close</mat-radio-button>
-                                    <mat-radio-button value='1'>Pending</mat-radio-button>
+                                    <!-- <mat-radio-button value='2'>All</mat-radio-button> -->
+                                    <mat-radio-button value='1'>Close</mat-radio-button>
+                                    <mat-radio-button value='0'>Pending</mat-radio-button>
                                 </div>
                             </mat-radio-group>
                         </div>

@@ -102,7 +102,6 @@ export class GRNReturnComponent implements OnInit {
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
-    private _loggedService: AuthenticationService,
     private accountService: AuthenticationService,
     public toastr: ToastrService,
   ) { }
@@ -129,6 +128,10 @@ export class GRNReturnComponent implements OnInit {
     this.gridConfig.columnsList.find(col => col.key === 'isVerified')!.template = this.ColorCode; 
 
   }
+  
+  ToStoreId: any = this.accountService.currentUserValue.user.storeId
+  Supplier: any = "0"
+  Status: any = "0";
 
   allColumns = [
         { heading: "-", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
@@ -148,10 +151,10 @@ export class GRNReturnComponent implements OnInit {
     }
   ]
   allFilters = [
+    { fieldName: "ToStoreId", fieldValue: String(this.ToStoreId), opType: OperatorComparer.Equals },
     { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    { fieldName: "ToStoreId", fieldValue: "2", opType: OperatorComparer.Equals },
-    { fieldName: "SupplierId", fieldValue: "1", opType: OperatorComparer.Equals },
+    { fieldName: "SupplierId", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "IsVerify", fieldValue: "0", opType: OperatorComparer.Equals }
   ]
   gridConfig: gridModel = {
@@ -162,11 +165,8 @@ export class GRNReturnComponent implements OnInit {
     filters: this.allFilters
   }
 
-  ToStoreId: any = "2"
-  Supplier: any = "1"
-  Status: any = "0";
   onChangeFirst() {
-    // debugger
+    debugger
     this.fromDate = this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get('start').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get('end').value, "yyyy-MM-dd")
     // this.ToStoreId = this.vstoreId || '2'
@@ -176,14 +176,14 @@ export class GRNReturnComponent implements OnInit {
   }
 
   getfilterdata() {
-    // debugger
+    debugger
     this.gridConfig = {
       apiUrl: "GRNReturn/GRNReturnlistbynameList",
       columnsList: this.allColumns,
       sortField: "GRNReturnId",
       sortOrder: 0,
       filters: [
-        { fieldName: "ToStoreId", fieldValue: this.vstoreId, opType: OperatorComparer.Equals },
+        { fieldName: "ToStoreId", fieldValue: String(this.ToStoreId), opType: OperatorComparer.Equals },
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "SupplierId", fieldValue: this.vSupplier, opType: OperatorComparer.Equals },
@@ -195,15 +195,15 @@ export class GRNReturnComponent implements OnInit {
     this.grid.bindGridData();
   }
 
-  vSupplier: any = '1';
-  vstoreId: any = '2';
+  vSupplier: any = '0';
+  // vstoreId: any = '2';
   ListView(value) {
     // debugger
     console.log(value)
     if (value.value !== 0)
-      this.vstoreId = value.value
+      this.ToStoreId = value.value
     else
-      this.vstoreId = "0"
+      this.ToStoreId = "0"
 
     this.onChangeFirst();
   }

@@ -31,7 +31,8 @@ export class UpdateradiologymasterComponent implements OnInit {
     vPrintName: any;
 
     displayedColumns1: string[] = [
-        "ParameterName"
+        "ParameterName",
+        "Action"
     ];
     ChargeList: any = [];
     RadiologytestMasterList: any;
@@ -47,7 +48,7 @@ export class UpdateradiologymasterComponent implements OnInit {
     filteredOptionsCategory: Observable<string[]>;
     optionscategory: any[] = [];
     iscategorySelected: boolean = false;
-    testId:any;
+    testId: any;
 
     filteredOptionsService: Observable<string[]>;
     optionsservice: any[] = [];
@@ -81,7 +82,7 @@ export class UpdateradiologymasterComponent implements OnInit {
         if ((this.data?.testId ?? 0) > 0) {
             // this.registerObj=this.data.Obj;
             this.isActive = this.data.isActive
-            this.testId=this.data.testId
+            this.testId = this.data.testId
             this.testForm.get("serviceId").setValue(this.data.serviceId)
             this.gettemplateMasterServicewise(this.data);
             this.testForm.patchValue(this.data);
@@ -109,19 +110,83 @@ export class UpdateradiologymasterComponent implements OnInit {
         this.templateName = obj.text
     }
 
-    OnAdd(event) {
-        debugger
-        this.DSTestList.data = [];
-        this.ChargeList = this.dsTemparoryList.data;
+    // OnAdd(event) {
+    //     debugger
 
-        this.ChargeList.push(
-            {
-                TemplateName: this.templateName,
-                TemplateId: this.templateId,
-            });
-        this.DSTestList.data = this.ChargeList
-        this.testForm.get('templateName').reset();
+    //     //  if (this.DSTestList.data.length === 0) {
+    //     //     this.toastr.warning('List cannot be empty.', 'Warning !', {
+    //     //         toastClass: 'tostr-tost custom-toast-warning',
+    //     //     });
+    //     //     return;
+    //     // }
+
+    //     this.DSTestList.data = [];
+    //     this.ChargeList = this.dsTemparoryList.data;
+
+    //     this.ChargeList.push(
+    //         {
+    //             templateName: this.templateName,
+    //             templateId: this.templateId,
+    //         });
+    //     this.DSTestList.data = this.ChargeList
+
+    //     this.testForm.get('templateName').reset();
+    // }
+
+//     OnAdd(event) {
+//     debugger;
+
+//     if (!this.templateName || !this.templateId) {
+//         this.toastr.warning('Select Template Name.', 'Warning!', {
+//             toastClass: 'tostr-tost custom-toast-warning',
+//         });
+//         return;
+//     }
+
+//     this.ChargeList = [...this.dsTemparoryList.data];
+
+//     this.ChargeList.push({
+//         templateName: this.templateName,
+//         templateId: this.templateId,
+//     });
+
+//     this.DSTestList.data = this.ChargeList;
+
+//     this.testForm.get('templateName').reset();
+// }
+
+OnAdd(event) {
+    debugger;
+
+    if (!this.templateName || !this.templateId) {
+        this.toastr.warning('Select Template Name.', 'Warning!', {
+            toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
     }
+
+    // Copy existing list from DSTestList (not dsTemparoryList)
+    this.ChargeList = [...this.DSTestList.data];
+
+    // Optionally prevent duplicates
+    const exists = this.ChargeList.some(item => item.templateId === this.templateId);
+    if (exists) {
+        this.toastr.warning('Template already added.', 'Warning!');
+        return;
+    }
+
+    // Add new item
+    this.ChargeList.push({
+        templateName: this.templateName,
+        templateId: this.templateId,
+    });
+
+    // Update both lists
+    this.DSTestList.data = this.ChargeList;
+    this.dsTemparoryList.data = this.ChargeList;
+
+    this.testForm.get('templateName').reset();
+}
 
     gettemplateMasterServicewise(row) {
         debugger
@@ -137,15 +202,29 @@ export class UpdateradiologymasterComponent implements OnInit {
                     "opType": "Equals"
                 }
             ],
-            "Columns":[],
+            "Columns": [],
             "exportType": "JSON"
         }
         console.log(param)
-        this._radiologytestService.gettemplateMasterComboList([param]).subscribe(data =>{
-          this.DSTestList.data = data.data as TestList[];
-          this.ChargeList = data as TestList[];
+        this._radiologytestService.gettemplateMasterComboList(param).subscribe(data => {
+            this.DSTestList.data = data.data as TestList[];
+            this.dsTemparoryList.data = data.data as TestList[]; 
+            console.log(this.DSTestList.data)
+            this.ChargeList = data as TestList[];
+            console.log(this.ChargeList)
+
         })
     }
+
+    onDeleteRow(element: any) {
+        debugger;
+        this.DSTestList.data = this.DSTestList.data.filter(item => item !== element);
+
+        this.dsTemparoryList.data = this.dsTemparoryList.data.filter(item => item !== element);
+
+        this.toastr.success('Item deleted successfully', 'Deleted');
+    }
+
 
     onClear(val: boolean) {
         this.testForm.reset({ IsDeleted: 'false' });
@@ -159,14 +238,30 @@ export class UpdateradiologymasterComponent implements OnInit {
         this._radiologytestService.myform.reset();
     }
 
+    invalidFields1 = [];
+
     onSubmit() {
         debugger
         if (!this.testForm.invalid) {
+
+            this.invalidFields1 = [];
+
+            if (this.DSTestList.data.length === 0) {
+                this.invalidFields1.push('No data in the Template list!');
+            }
+
+            if (this.invalidFields1.length > 0) {
+                this.invalidFields1.forEach(field => {
+                    this.toastr.warning(field, 'Warning!');
+                });
+                return;
+            }
+
             if (!this.testForm.get("testId").value) {
                 let mRadiologyTemplateDetails = this.DSTestList.data.map((row: any) => ({
                     "ptemplateId": 0,
                     "testId": 0,
-                    "templateId": row.TemplateId || 0
+                    "templateId": row.templateId || 0
                 }));
 
                 console.log("Insert data1:", mRadiologyTemplateDetails);
@@ -191,7 +286,7 @@ export class UpdateradiologymasterComponent implements OnInit {
                 let mRadiologyTemplateDetails = this.DSTestList.data.map((row: any) => ({
                     "ptemplateId": 0,
                     "testId": 0,
-                    "templateId": row.TemplateId || 0
+                    "templateId": row.templateId || 0
                 }));
 
                 console.log("Insert data1:", mRadiologyTemplateDetails);
@@ -270,7 +365,9 @@ export class UpdateradiologymasterComponent implements OnInit {
 
 export class TestList {
     TemplateName: any;
+    templateName: any;
     TemplateId: any;
+    templateId: any;
     TestId: number;
     /**
      * Constructor
@@ -280,7 +377,9 @@ export class TestList {
     constructor(TestList) {
         {
             this.TemplateName = TestList.TemplateName || "";
+            this.templateName = TestList.templateName || "";
             this.TemplateId = TestList.TemplateId || 0;
+            this.templateId = TestList.templateId || 0;
             this.TestId = TestList.TestId || 0;
         }
     }

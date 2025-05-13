@@ -145,7 +145,7 @@ export class NewGRNReturnComponent implements OnInit {
         this.vBalQty = result.balanceQty;
         this.vLandedRate = result.landedRate;
         this.vTotalAmount = 0;
-        this.vGST = result.VatPercentage || 1;
+        this.vGST = result.vatPercentage; //|| 1;
         this.vGSTAmount = 0;
         this.vNetAmount = 0; 
         this.vUnitMRP = result.unitMRP;

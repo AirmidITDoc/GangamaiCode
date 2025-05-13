@@ -53,20 +53,20 @@ export class FixSupplierComponent implements OnInit {
         this.supplierForm = this._supplierService.createSuppliermasterForm();
         this.supplierForm.markAllAsTouched();
         
-        if(this.data){
-            console.log(this.data)
-            this.SupplierId = this.data.supplierId
-            this.supplierForm.get('supplierName')?.setValue(this.data.supplierName.trim());
-            this.supplierForm.get('mobile')?.setValue(this.data.mobile.trim());
-            this.supplierForm.get('phone')?.setValue(this.data.phone.trim());
-            this.supplierForm.get('address')?.setValue(this.data.address.trim());
-            this.supplierForm.get('panNo')?.setValue(this.data.panNo.trim());
+        // if(this.data){
+        //     console.log(this.data)
+        //     this.SupplierId = this.data.supplierId
+        //     this.supplierForm.get('supplierName')?.setValue(this.data.supplierName.trim());
+        //     this.supplierForm.get('mobile')?.setValue(this.data.mobile.trim());
+        //     this.supplierForm.get('phone')?.setValue(this.data.phone.trim());
+        //     this.supplierForm.get('address')?.setValue(this.data.address.trim());
+        //     this.supplierForm.get('panNo')?.setValue(this.data.panNo.trim());
 
-            this.supplierForm.get('email')?.setValue(this.data.email.trim());
-            this.supplierForm.get('CreditPeriod')?.setValue(this.data.creditPeriod.trim());
-            this.supplierForm.get('gstNo')?.setValue(this.data.gstNo.trim());
-            this.supplierForm.get('ContactPerson')?.setValue(this.data.contactPerson.trim());
-        }
+        //     this.supplierForm.get('email')?.setValue(this.data.email.trim());
+        //     this.supplierForm.get('CreditPeriod')?.setValue(this.data.creditPeriod.trim());
+        //     this.supplierForm.get('gstNo')?.setValue(this.data.gstNo.trim());
+        //     this.supplierForm.get('ContactPerson')?.setValue(this.data.contactPerson.trim());
+        // }
 
         if ((this.data?.supplierId ?? 0) > 0) {
 
@@ -74,6 +74,20 @@ export class FixSupplierComponent implements OnInit {
             this._supplierService.getsupplierId(this.data.supplierId).subscribe((response) => {
                 this.registerObj = response;
                 console.log(this.registerObj)
+                this.SupplierId = this.registerObj.supplierId
+            this.supplierForm.get('supplierName')?.setValue(this.registerObj.supplierName.trim());
+            this.supplierForm.get('mobile')?.setValue(this.registerObj.mobile.trim());
+            this.supplierForm.get('phone')?.setValue(this.registerObj.phone.trim());
+            this.supplierForm.get('address')?.setValue(this.registerObj.address.trim());
+            this.supplierForm.get('panNo')?.setValue(this.registerObj.panNo.trim());
+            this.supplierForm.get('pinCode')?.setValue(this.registerObj.pinCode.trim());
+            this.supplierForm.get('fax')?.setValue(this.registerObj.fax.trim());
+            this.supplierForm.get('Freight')?.setValue(this.registerObj.freight);
+            this.supplierForm.get('email')?.setValue(this.registerObj.email.trim());
+            this.supplierForm.get('CreditPeriod')?.setValue(this.registerObj.creditPeriod.trim());
+            this.supplierForm.get('gstNo')?.setValue(this.registerObj.gstNo.trim());
+            this.supplierForm.get('ContactPerson')?.setValue(this.registerObj.contactPerson.trim());
+            this.supplierForm.get('bankNo')?.setValue(this.registerObj.bankNo.trim());
                 this.ddlStore.SetSelection(this.registerObj.mAssignSupplierToStores);
 
             }, (error) => {

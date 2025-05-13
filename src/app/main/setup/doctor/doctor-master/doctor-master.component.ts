@@ -293,8 +293,8 @@ export class DoctorMasterComponent implements OnInit {
 export class DoctorMaster {
     doctorId: number;
     prefixId: number;
-    firstName: any;
-    middleName: any;
+    firstName: string;
+    middleName: string;
     lastName: string;
     dateofBirth: any;
     address: string;

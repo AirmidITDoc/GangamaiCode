@@ -168,6 +168,9 @@ autocompletestore: string = "Store";
   //     });
   // }
 
+  ToStoreId: any = this._loggedService.currentUserValue.user.storeId
+  Supplier: any = "0"
+  Status: any = "0";
   allColumns = [
     {
       heading: "-", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
@@ -188,11 +191,11 @@ autocompletestore: string = "Store";
     }
   ]
   allFilters = [
+    { fieldName: "ToStoreId", fieldValue: String(this.ToStoreId), opType: OperatorComparer.Equals },
     { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    { fieldName: "ToStoreId", fieldValue: "2", opType: OperatorComparer.Equals },
-    { fieldName: "SupplierId", fieldValue: "1", opType: OperatorComparer.Equals },
-    { fieldName: "IsVerify", fieldValue: "1", opType: OperatorComparer.Equals }
+    { fieldName: "SupplierId", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "IsVerify", fieldValue: "0", opType: OperatorComparer.Equals }
   ]
 
   gridConfig: gridModel = {
@@ -203,16 +206,11 @@ autocompletestore: string = "Store";
     filters: this.allFilters
   }
 
-  ToStoreId: any = "2"
-  Supplier: any = "1"
-  Status: any = "1";
   onChangeFirst() {
     // debugger
     this.fromDate = this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get('start').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get('end').value, "yyyy-MM-dd")
-    // this.ToStoreId = this.vstoreId || '2'
-    // this.Supplier = this.vSupplier || "1"
-    this.Status = this._GRNReturnService.GRNReturnSearchFrom.get('Status').value || "1"
+    this.Status = this._GRNReturnService.GRNReturnSearchFrom.get('Status').value || "0"
     this.getfilterdata();
   }
 
@@ -224,10 +222,10 @@ autocompletestore: string = "Store";
       sortField: "GRNReturnId",
       sortOrder: 0,
       filters: [
-        { fieldName: "ToStoreId", fieldValue: this.vstoreId, opType: OperatorComparer.Equals },
+        { fieldName: "ToStoreId", fieldValue: String(this.ToStoreId), opType: OperatorComparer.Equals },
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        { fieldName: "SupplierId", fieldValue: this.vSupplier, opType: OperatorComparer.Equals },
+        { fieldName: "SupplierId", fieldValue: this.Supplier, opType: OperatorComparer.Equals },
         { fieldName: "IsVerify", fieldValue: this.Status, opType: OperatorComparer.Equals }
       ]
     }
@@ -236,15 +234,15 @@ autocompletestore: string = "Store";
     this.grid.bindGridData();
   }
 
-  vSupplier: any = '1';
-  vstoreId: any = '2';
+  // vSupplier: any = '1';
+  // vstoreId: any = '2';
   ListView(value) {
     // debugger
     console.log(value)
     if (value.value !== 0)
-      this.vstoreId = value.value
+      this.ToStoreId = value.value
     else
-      this.vstoreId = "0"
+      this.ToStoreId = "0"
 
     this.onChangeFirst();
   }
@@ -253,9 +251,9 @@ autocompletestore: string = "Store";
     // debugger
     console.log(value)
     if (value.value !== 0)
-      this.vSupplier = value.value
+      this.Supplier = value.value
     else
-      this.vSupplier = "0"
+      this.Supplier = "0"
 
     this.onChangeFirst();
   }

@@ -36,7 +36,7 @@ export class DoctorMasterService {
                 Validators.maxLength(50),
                 Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
             ]],
-            DateOfBirth: [new Date()],
+            DateOfBirth: [{ value: new Date() }],
             Address: ["", Validators.required],
             Phone: [
                 "",
@@ -44,7 +44,7 @@ export class DoctorMasterService {
                     Validators.required,
                     Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
                     Validators.minLength(10),
-                    Validators.maxLength(10),
+                    Validators.maxLength(15),
                 ],
             ],
             GenderId: ["", Validators.required],
@@ -52,7 +52,7 @@ export class DoctorMasterService {
             Education: ["",
                 [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z .()\\[\\]]*$")
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             IsConsultant: [true],
@@ -96,19 +96,13 @@ export class DoctorMasterService {
                     Validators.required
                 ]
             ],
-            ageYear: ['0', [
-                Validators.maxLength(3),
-                Validators.pattern("^[0-9]*$")]],
-            ageMonth: ['0', [
-                Validators.pattern("^[0-9]*$")]],
-            ageDay: ['0', [
-                Validators.pattern("^[0-9]*$")]],
+            
             MDoctorDepartmentDets: ["", Validators.required],
             DepartmentName: [""],
             AddedBy: [""],
             UpdatedBy: [""],
             AddedByName: [""],
-            Pancardno: ["", [Validators.required,Validators.pattern('[A-Z]{5}[0-9]{4}[A-Z]{1}')]],
+            Pancardno: ["", Validators.required],
             AadharCardNo: ["",
                 [
                     Validators.required,
@@ -117,7 +111,14 @@ export class DoctorMasterService {
                     Validators.maxLength(12),
                 ]
             ],
-            City: ["", Validators.required]
+            City: ["", Validators.required],
+            ageYear: ['0', [
+                Validators.maxLength(3),
+                Validators.pattern("^[0-9]*$")]],
+            ageMonth: ['0', [
+                Validators.pattern("^[0-9]*$")]],
+            ageDay: ['0', [
+                Validators.pattern("^[0-9]*$")]],
         });
     }
 

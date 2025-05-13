@@ -67,9 +67,7 @@ export class RadiologyTestMasterService {
     }
 
     public gettemplateMasterComboList(param) {
-        return this._httpClient.PostData(
-            "RadiologyTest/TemplateMasterList", param
-        );
+        return this._httpClient.PostData("RadiologyTest/RetriveTemplateMasterList",param);
     }
 
     populateForm(employee) {

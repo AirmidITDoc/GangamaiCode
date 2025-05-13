@@ -64,7 +64,7 @@ export class SupplierMasterService {
                     Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
                 ]
             ],
-            fax: ["0",
+            fax: ["",
                 [
                     // Validators.required,
                     // Validators.maxLength(10),
@@ -84,7 +84,7 @@ export class SupplierMasterService {
             termofPayment: [0,
                [ Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
-            CurrencyId: [1],
+            CurrencyId: [0],
             Octroi: [0],
             Freight: [0,
                 [
@@ -107,17 +107,17 @@ export class SupplierMasterService {
                 ]
             ],
             taluka: [0],
-            licNo: [''],
-            pinCode: ['', [Validators.pattern("^[0-9]*$"),
+            licNo: [""],
+            pinCode: ["", [Validators.pattern("^[0-9]*$"),
                 Validators.minLength(6),
                 Validators.maxLength(6),]],
             taxNature: [0, Validators.pattern("^[0-9]*$")],
             expDate: [new Date()],
-            dlno: [''],
+            dlno: [""],
             bankId: [0],
-            bankName: [''],
-            branch: [''],
-            bankNo: [0, [Validators.pattern("[0-9]{9,18}")]],
+            bankName: [""],
+            branch: [""],
+            bankNo: [0, [Validators.pattern("^[0-9]*$")]],
             // bankNo: [0, [Validators.pattern("[0-9]{9,18}"), Validators.minLength(9), Validators.maxLength(18)]],
             ifsccode: ["", [Validators.pattern("^[A-Z]{4}0[A-Z0-9]{6}$")]],
             venderTypeId:[0],
@@ -138,9 +138,9 @@ export class SupplierMasterService {
            
             // MsmNo: [0],
             // MSMNo: ['', Validators.required],
-            CreateApproval: [true],
+            // CreateApproval: [true],
             
-            addedby: this._loggedService.currentUserValue.userId,
+            // addedby: this._loggedService.currentUserValue.userId,
             // 
            
         });
