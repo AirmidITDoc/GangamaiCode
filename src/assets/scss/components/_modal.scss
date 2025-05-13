@@ -112,6 +112,9 @@ $modalHeader: 60px;
                         }
                     }
                 }
+                &.modal-body-light{
+                    background-color: $primary-25;
+                }
             }
             .modal-footer {
                 padding: 0 $modal-gap $modal-gap $modal-gap;

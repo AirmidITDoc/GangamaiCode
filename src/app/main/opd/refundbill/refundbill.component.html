@@ -1,430 +1,340 @@
-<div class="page-layout">
-    <div class="top-header accent">
-        <div class="top-header-info">
-            <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                <span>OPD REFUND OF BILL </span>
-            </div>
+<ng-template #serviceTable>
+  <mat-toolbar class="accent" style="width: 100%; height: 40px; justify-content: space-between">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <mat-icon class="logo-icon mr-16" [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }" style="color: white">account_box</mat-icon>
+      <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Nursing Request list</span>
+    </div>
+    <!-- <div class="close-icon">
+        <button mat-icon-button tabIndex="-1" (click)="openServiceTable()" aria-label="Close dialog">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div> -->
+  </mat-toolbar>
+
+  <div class="service-table1 p-12" fxFlex="100%">
+    <div class="table-body">
+      <div class="airmid-table">
+        <mat-table matSort [dataSource]="dsServiceList" [@animateStagger]="{ value: '50' }">
+          <ng-container matColumnDef="ServiceName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-180">Item Name</mat-header-cell>
+            <mat-cell *matCellDef="let contact" class="w-180">
+              <span>{{ contact.ServiceName }}</span>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Price">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
+            <mat-cell *matCellDef="let contact">
+              <span>{{ contact.Price | currency : 'INR' }}</span>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Qty">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Qty</mat-header-cell>
+            <mat-cell *matCellDef="let contact">
+              <span>{{ contact.Qty }}</span>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="TotalAmt">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-110">Total Amt</mat-header-cell>
+            <mat-cell *matCellDef="let contact" class="w-110">
+              <span>{{ contact.TotalAmt | currency : 'INR' }}</span>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="NoData">
+            <mat-footer-cell *matFooterCellDef>
+              <span>No Data Found</span>
+            </mat-footer-cell>
+          </ng-container>
+
+          <mat-header-row class="accent" *matHeaderRowDef="displayedPrescriptionColumns; sticky: true"></mat-header-row>
+          <mat-row *matRowDef="let contact; columns: displayedPrescriptionColumns" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+          <mat-footer-row *matFooterRowDef="['NoData']" [ngClass]="{ hide: dsServiceList.data.length > 0 }"></mat-footer-row>
+        </mat-table>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<div class="modal-page page-layout inner-scroll">
+  <div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+      <div class="modal-header-content">
+        <div class="modal-header-title">
+          <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">OPD REFUND OF BILL</span>
         </div>
         <div class="modal-header-right">
-            <div class="comman-date-container">
-                <app-common-date [screenFrom]="'OP-billing'"
-                    (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                <div class="close-icon" *ngIf="isModal">
-                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                        matTooltip="Close">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </div>
+          <div class="comman-date-container">
+            <app-common-date [screenFrom]="'OP-billing'" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+            <div class="close-icon" *ngIf="isModal">
+              <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                <mat-icon>close</mat-icon>
+              </button>
             </div>
+          </div>
         </div>
+      </div>
     </div>
 
-    <!--Middle Data-->
-    <div class="layout-body" fusePerfectScrollbar>
-
-        <!-- CENTER -->
-        <div class="layout-body-container">
-            <div fxLayout="column" class="gap-12">
-                <div class="layout-card-container">
-                    <form [formGroup]="searchFormGroup">
-
-                        <div class="patient-search">
-                            <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
-
-                                <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
-
-                                    <!-- <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No" [formGroup]="searchFormGroup" formControlName="RegId"
-                                            placeholderText="Enter Patient Name/RegId.." fxFlex="50%"
-                                            ApiUrl="OutPatient/auto-complete?Keyword="
-                                            (selectionChange)="getSelectedObj($event)" TextField="formattedText"
-                                            ValueField="regId"></airmid-autocomplete>
-         -->
-                                    <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No"
-                                        [formGroup]="searchFormGroup" fxFlex="40%" formControlName="RegId"
-                                        placeholderText="Search Reg No / Patient Name / Mobile No"
-                                        ApiUrl="OutPatient/auto-complete?Keyword="
-                                        (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
-
-                                </div>
-                            </div>
-                        </div>
-
-                    </form>
+    <!-- Modal body -->
+    <div class="modal-body modal-body-light" fusePerfectScrollbar>
+      <div class="modal-body-container">
+        <div fxLayout="column" class="gap-8 h-100-p">
+          <div class="modal-card-container">
+            <form [formGroup]="searchFormGroup">
+              <div class="patient-search">
+                <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+                  <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
+                    <airmid-autocomplete
+                      class="w-350"
+                      label="Search Reg No / Patient Name / Mobile No"
+                      [formGroup]="searchFormGroup"
+                      fxFlex="40%"
+                      formControlName="RegId"
+                      placeholderText="Search Reg No / Patient Name / Mobile No"
+                      ApiUrl="OutPatient/auto-complete?Keyword="
+                      (selectionChange)="getSelectedObj($event)"
+                    ></airmid-autocomplete>
+                  </div>
                 </div>
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-                    <div fxFlex.gt-sm="100%" fxFlex>
-                        <div fxlayout="row" style="background-color: white;padding: 5px;">
-                            <div class="patient-info-sales my-8">
-                                <div class="sales-patient-info-title">
-                                    <span style="font-weight: 700;">
-                                        Patient Information
-                                    </span>
-                                </div>
-                                <hr>
-                                <div class="sales-patient-info" fxFlexFill fxLayout="row"
-                                    fxLayoutAlign="space-between center" class="patient-info">
-                                    <div class="patient-sub">
-                                        <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                            fxLayoutGap="200px">
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">UHID No
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{registerObj.regId}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Patient Name
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{registerObj.firstName}}
-                                                    {{registerObj.lastName}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Age | Gender</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{registerObj.ageYear}}Y |
-                                                    {{registerObj.genderId}}</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-card-container">
+            <mat-card fxFlex.gt-sm="100%" fxFlex>
+              <mat-card-content class="py-4">
+                <div class="patient-search-container input-error-hidden">
+                  <div class="patient-info-sales my-8">
+                    <div class="sales-patient-info-title">
+                      <span style="font-weight: 700">Patient Information</span>
                     </div>
-                </div>
-
-                <div class="layout-card-container table-container">
-                    <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
-                        <!-- Table 1 -->
-                        <div class="table-left" fxFlex="99%" fxFlex.xs="100%" fxFlex.sm="70%">
-                            <mat-card>
-                                <div fxLayout="column" class="h-100-p">
-                                <div class="airmid-table-container">
-                                    <mat-table class="h-200" matSort [dataSource]="dataSource3"
-                                        [@animateStagger]="{value:'50'}">
-
-                                        <ng-container matColumnDef="billNo">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                BillNo
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element">
-                                                <span> {{element.billNo}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="billDate">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                BillDate </mat-header-cell>
-                                            <mat-cell *matCellDef="let element">
-                                                <span> {{element.billDate | date:'shortDate'}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="netPayableAmt">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                BillAmount </mat-header-cell>
-                                            <mat-cell *matCellDef="let element">
-                                                <span> {{element.netPayableAmt}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="refundAmount">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                RefundAmount </mat-header-cell>
-                                            <mat-cell *matCellDef="let element">
-                                                <span> {{element.refundAmount}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <!-- <ng-container matColumnDef="action" stickyEnd>
-                                            <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;"> Action
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let row">
-                                                <button mat-icon-button (click)="onEdit(row)">
-                                                    <mat-icon title="Edit Menu">launch</mat-icon>
-                                                </button>
-                                            </mat-cell>
-                                        </ng-container> -->
-
-                                        <ng-container matColumnDef="loading">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                loading data...
-                                            </mat-footer-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="noData">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-
-                                                <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
-                                                </mat-spinner>
-                                                <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
-                                            </mat-footer-cell>
-                                        </ng-container>
-
-                                        <mat-header-row class="accent min-width-600"
-                                            *matHeaderRowDef="displayedColumns; sticky: true">
-                                        </mat-header-row>
-                                        <mat-row *matRowDef="let row; columns: displayedColumns;"
-                                            class="element min-width-600" [@animate]="{value:'*',params:{y:'100%'}}"
-                                            (click)="onEdit(row)">
-                                        </mat-row>
-
-                                    </mat-table>
-
-                                    <div class="net-amt-section mt-8">
-                                        <div class="net-amt">
-                                            <div class="net-amt-box">
-                                                <span class="net-amt-label">Total Refund : </span>
-                                                <span class="net-amt-value">{{getRefundtotSum1(dataSource3.data)}}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </mat-card>
+                    <hr />
+                    <div class="sales-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
+                      <div class="patient-sub">
+                        <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row" fxLayoutGap="200px">
+                          <div class="patient-col">
+                            <span class="patient-col-key">UHID No</span>
+                            <span>:</span>
+                            <span class="patient-col-value">{{ registerObj.regId }}</span>
+                          </div>
+                          <div class="patient-col">
+                            <span class="patient-col-key">Patient Name</span>
+                            <span>:</span>
+                            <span class="patient-col-value">{{ registerObj.firstName }} {{ registerObj.lastName }}</span>
+                          </div>
+                          <div class="patient-col">
+                            <span class="patient-col-key">Age | Gender</span>
+                            <span>:</span>
+                            <span class="patient-col-value">{{ registerObj.ageYear }}Y | {{ registerObj.genderId }}</span>
+                          </div>
                         </div>
-                        <!-- Table 2 -->
-                        <!-- <div class="table-right" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="30%">
-                            <mat-card>
-                                <div class="table-wrapper">
-                                    <mat-table class="h-200" matSort [dataSource]="dataSource1"
-                                        [@animateStagger]="{value:'50'}">
-
-                                        <ng-container matColumnDef="RefundDate">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                Date
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element">
-                                                {{element.RefundDate | date:'shortDate'}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="RefundAmount">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                RefundAmount </mat-header-cell>
-                                            <mat-cell *matCellDef="let element">
-                                                {{element.RefundAmount | currency:'INR'}} </mat-cell>
-                                        </ng-container>
-
-
-
-                                        <ng-container matColumnDef="loading">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                loading data...
-                                            </mat-footer-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="noData">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
-                                                </mat-spinner>
-                                                <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
-                                            </mat-footer-cell>
-                                        </ng-container>
-
-                                        <mat-header-row class="accent"
-                                            *matHeaderRowDef="displayedColumns2; sticky: true">
-                                        </mat-header-row>
-                                        <mat-row *matRowDef="let row; columns: displayedColumns2;" class="element"
-                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                        <mat-footer-row *matFooterRowDef="['loading']"
-                                            [ngClass]="{'hide':dataSource1!=null}"></mat-footer-row>
-                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                            [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
-                                        </mat-footer-row>
-                                    </mat-table>
-                                    <div class="net-amt-section mt-8">
-                                        <div class="net-amt">
-                                            <div class="net-amt-box">
-                                                <span class="net-amt-label">Already Refund Amount : </span>
-                                                <span class="net-amt-value">{{getRefundtotSum(dataSource1.data) |
-                                                    currency:'INR' }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </mat-card>
-                        </div> -->
+                      </div>
                     </div>
+                  </div>
                 </div>
-                <div class="layout-card-container table-container">
-                    <div class="table-row gap-12" fxLayout="column" fxLayout.gt-md="row">
-                        <!-- Table 1 -->
-                        <div class="table-main" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-                            <mat-card>
-                                <div fxLayout="column" class="h-100-p">
-                                <div class="airmid-table-container">
-                                    <mat-table class="h-200" matSort [dataSource]="dataSource2"
-                                        [@animateStagger]="{value:'50'}" class="airmid-table">
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div class="modal-card-container airmid-table-container overflow-auto" fxFlex>
+            <mat-table matSort [dataSource]="dataSource3" [@animateStagger]="{ value: '50' }" class="airmid-table">
+              <ng-container matColumnDef="billNo">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>BillNo</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <span>{{ element.billNo }}</span>
+                </mat-cell>
+              </ng-container>
 
+              <ng-container matColumnDef="billDate">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>BillDate</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <span>{{ element.billDate | date : 'shortDate' }}</span>
+                </mat-cell>
+              </ng-container>
 
-                                        <ng-container matColumnDef="serviceName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                ServiceName </mat-header-cell>
-                                            <mat-cell *matCellDef="let element">
-                                                <span> {{element.serviceName}}</span>
-                                            </mat-cell>
-                                        </ng-container>
+              <ng-container matColumnDef="netPayableAmt">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>BillAmount</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <span>{{ element.netPayableAmt }}</span>
+                </mat-cell>
+              </ng-container>
 
-                                        <ng-container matColumnDef="qty">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                Qty </mat-header-cell>
-                                            <mat-cell *matCellDef="let element">
-                                                <span> {{element.qty}}</span>
-                                            </mat-cell>
-                                        </ng-container>
+              <ng-container matColumnDef="refundAmount">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>RefundAmount</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <span>{{ element.refundAmount }}</span>
+                </mat-cell>
+              </ng-container>
 
-                                        <ng-container matColumnDef="price">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header>Price
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element">
-                                                <span> {{element.price}}</span>
-                                            </mat-cell>
-                                        </ng-container>
+              <!-- <ng-container matColumnDef="action" stickyEnd>
+                                <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;"> Action
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row">
+                                    <button mat-icon-button (click)="onEdit(row)">
+                                        <mat-icon title="Edit Menu">launch</mat-icon>
+                                    </button>
+                                </mat-cell>
+                            </ng-container> -->
 
-                                        <ng-container matColumnDef="totalAmt">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                TotalAmt </mat-header-cell>
-                                            <mat-cell *matCellDef="let element">
-                                                <span> {{element.totalAmt | currency:'INR'}}</span>
-                                            </mat-cell>
-                                        </ng-container>
+              <ng-container matColumnDef="loading">
+                <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
+              </ng-container>
 
-                                        <ng-container matColumnDef="netAmount">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                NetAmount </mat-header-cell>
-                                            <mat-cell *matCellDef="let element">
-                                                <span> {{element.netAmount | currency:'INR'}}</span>
-                                            </mat-cell>
-                                        </ng-container>
+              <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef colspan="6">
+                  <mat-spinner *ngIf="isLoadingStr == 'loading'" [diameter]="30"></mat-spinner>
+                  <span *ngIf="isLoadingStr == 'no-data'">No data found...</span>
+                </mat-footer-cell>
+              </ng-container>
 
-                                        <ng-container matColumnDef="chargesDocName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                ChargesDocName </mat-header-cell>
-                                            <mat-cell *matCellDef="let element">
-                                                <span> {{element.chargesDocName}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="refAmount">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RefundAmt
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                <mat-form-field appearance="fill">
-                                                    <!-- <mat-form-field appearance="legacy"> -->
-                                                    <input matInput [(ngModel)]="element.RefundAmt" type="text"
-                                                        OnlyNumber
-                                                        (keyup)="gettablecalculation(element,element.RefundAmt)"
-                                                        (keypress)="keyPressCharater($event)">
-                                                </mat-form-field>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="balanceAmount">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                Bal Amount </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <span>{{element.balanceAmount}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="refundAmount">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                Prev.Ref Amt </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <span>{{element.refundAmount | currency:'INR'}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="loading">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                loading data...
-                                            </mat-footer-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="noData">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-
-                                                <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
-                                                </mat-spinner>
-                                                <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
-                                            </mat-footer-cell>
-                                        </ng-container>
-
-                                        <mat-header-row class="accent min-width-1100"
-                                            *matHeaderRowDef="displayedColumns1; sticky: true">
-                                        </mat-header-row>
-                                        <mat-row *matRowDef="let row; columns: displayedColumns1;"
-                                            class="element min-width-1100" [@animate]="{value:'*',params:{y:'100%'}}">
-                                        </mat-row>
-                                        <mat-footer-row *matFooterRowDef="['loading']"
-                                            [ngClass]="{'hide':dataSource2!=null}">
-                                        </mat-footer-row>
-                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                            [ngClass]="{'hide':!(dataSource2!=null && dataSource.data.length==0)}">
-                                        </mat-footer-row>
-
-                                    </mat-table>
-                                    <div class="net-amt-section mt-8">
-                                        <div class="net-amt">
-                                            <div class="net-amt-box">
-                                                <span class="net-amt-label">Total of Items : </span>
-                                                <span class="net-amt-value">{{getServicetotSum(dataSource2.data) |
-                                                    currency:'INR' }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </mat-card>
-                        </div>
-                    </div>
+              <mat-header-row class="accent min-width-600" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns" class="element min-width-600" [@animate]="{ value: '*', params: { y: '100%' } }" (click)="onEdit(row)"></mat-row>
+            </mat-table>
+          </div>
+          <div class="modal-card-container">
+            <div class="net-amt-section mt-8">
+              <div class="net-amt">
+                <div class="net-amt-box">
+                  <span class="net-amt-label">Total Refund :</span>
+                  <span class="net-amt-value">{{ getRefundtotSum1(dataSource3.data) }}</span>
                 </div>
-                <div class="layout-card-container">
-                    <form [formGroup]="RefundOfBillFormGroup">
-                        <mat-card style="padding: 6px;">
-                            <div class="net-amt-form">
-                                <div fxLayout="row" class="gap-8">
-                                    <mat-form-field appearance="outline">
-                                        <mat-label>Total Refund Amount</mat-label>
-                                        <input matInput [(ngModel)]="TotalRefundAmount" readonly
-                                            formControlName="TotalRefundAmount" name="TotalRefundAmount"
-                                            (keyup)="calculateTotalRefund()" required>
-                                    </mat-form-field>
-
-                                    <mat-form-field appearance="outline">
-                                        <mat-label>Refund Bal Amount</mat-label>
-                                        <input matInput [(ngModel)]="RefundBalAmount" formControlName="RefundBalAmount"
-                                            name="RefundBalAmount" [value]="BalanceAmount" readonly>
-                                    </mat-form-field>
-
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Remark</mat-label>
-                                        <input matInput [(ngModel)]="Remark" formControlName="Remark" name="Remark">
-                                    </mat-form-field>
-                                    <!-- [disabled]="!TotalRefundAmount || dataSource2.data.length==0" -->
-                                    <div class="layout-footer">
-                                        <div class="footer-navigation-container">
-                                            <div class="layout-footer-buttons">
-                                                <button type="button" class="btn btn-danger-outline"
-                                                    (click)="onClose()">Close</button>
-                                                <button type="button" class="btn btn-primary"
-                                                    (click)="onSave()">Save</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </mat-card>
-                    </form>
-                </div>
+              </div>
             </div>
+          </div>
+
+          <div class="modal-card-container airmid-table-container overflow-auto" fxFlex>
+            <mat-table matSort [dataSource]="dataSource2" [@animateStagger]="{ value: '50' }" class="airmid-table">
+              <ng-container matColumnDef="serviceName">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>ServiceName</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <span>{{ element.serviceName }}</span>
+                </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="qty">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Qty</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <span>{{ element.qty }}</span>
+                </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="price">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <span>{{ element.price }}</span>
+                </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="totalAmt">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>TotalAmt</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <span>{{ element.totalAmt | currency : 'INR' }}</span>
+                </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="netAmount">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>NetAmount</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <span>{{ element.netAmount | currency : 'INR' }}</span>
+                </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="chargesDocName">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>ChargesDocName</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <span>{{ element.chargesDocName }}</span>
+                </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="refAmount">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RefundAmt</mat-header-cell>
+                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                  <mat-form-field appearance="fill">
+                    <!-- <mat-form-field appearance="legacy"> -->
+                    <input matInput [(ngModel)]="element.RefundAmt" type="text" OnlyNumber (keyup)="gettablecalculation(element, element.RefundAmt)" (keypress)="keyPressCharater($event)" />
+                  </mat-form-field>
+                </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="balanceAmount">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Bal Amount</mat-header-cell>
+                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                  <span>{{ element.balanceAmount }}</span>
+                </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="refundAmount">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Prev.Ref Amt</mat-header-cell>
+                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                  <span>{{ element.refundAmount | currency : 'INR' }}</span>
+                </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="loading">
+                <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef colspan="6">
+                  <mat-spinner *ngIf="isLoadingStr == 'loading'" [diameter]="30"></mat-spinner>
+                  <span *ngIf="isLoadingStr == 'no-data'">No data found...</span>
+                </mat-footer-cell>
+              </ng-container>
+
+              <mat-header-row class="accent min-width-1100" *matHeaderRowDef="displayedColumns1; sticky: true"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns1" class="element min-width-1100" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+              <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{ hide: dataSource2 != null }"></mat-footer-row>
+              <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{ hide: !(dataSource2 != null && dataSource.data.length == 0) }"></mat-footer-row>
+            </mat-table>
+          </div>
+          <div class="modal-card-container">
+            <div class="net-amt-section mt-8">
+              <div class="net-amt">
+                <div class="net-amt-box">
+                  <span class="net-amt-label">Total of Items :</span>
+                  <span class="net-amt-value">{{ getServicetotSum(dataSource2.data) | currency : 'INR' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- / CONTENT -->
+      </div>
     </div>
 
-    <!-- / CENTER -->
+    <div class="modal-footer">
+      <form [formGroup]="RefundOfBillFormGroup">
+        <mat-card>
+          <mat-card-content>
+            <div class="net-amt-form input-error-hidden">
+              <div fxLayout="row" class="gap-8" fxLayoutAlign="end center">
+                <mat-form-field appearance="outline">
+                  <mat-label>Total Refund Amount</mat-label>
+                  <input matInput [(ngModel)]="TotalRefundAmount" readonly formControlName="TotalRefundAmount" name="TotalRefundAmount" (keyup)="calculateTotalRefund()" required />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Refund Bal Amount</mat-label>
+                  <input matInput [(ngModel)]="RefundBalAmount" formControlName="RefundBalAmount" name="RefundBalAmount" [value]="BalanceAmount" readonly />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex>
+                  <mat-label>Remark</mat-label>
+                  <input matInput [(ngModel)]="Remark" formControlName="Remark" name="Remark" />
+                </mat-form-field>
+                <!-- [disabled]="!TotalRefundAmount || dataSource2.data.length==0" -->
+                <div class="footer-navigation-container">
+                  <div class="modal-footer-buttons">
+                    <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                    <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </form>
+    </div>
+  </div>
 </div>
-<!--End of Middle Data-->
