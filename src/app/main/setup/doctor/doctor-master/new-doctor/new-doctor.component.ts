@@ -56,7 +56,6 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             }
         );
         dialogRef.afterClosed().subscribe(result => {
-            debugger
             this.sanitizeImagePreview = result;
             this.signature = this.sanitizeImagePreview;
             this.myForm.value.signature = this.sanitizeImagePreview;

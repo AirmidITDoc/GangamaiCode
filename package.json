@@ -38,6 +38,7 @@
     "@swimlane/ngx-charts": "21.1.2",
     "@techiediaries/ngx-qrcode": "9.1.0",
     "@types/prismjs": "1.16.0",
+    "@types/signature_pad": "4.0.0",
     "angular-in-memory-web-api": "0.19.0",
     "chart.js": "3.9.1",
     "crypto-js": "4.2.0",
@@ -65,6 +66,7 @@
     "prismjs": "1.19.0",
     "rxjs": "7.8.1",
     "rxjs-take-while-inclusive": "2.1.1",
+    "signature_pad": "5.0.7",
     "sweetalert2": "11.4.4",
     "xlsx": "0.18.5",
     "zone.js": "~0.13.3"

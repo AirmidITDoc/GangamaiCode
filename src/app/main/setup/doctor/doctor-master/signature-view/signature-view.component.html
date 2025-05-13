@@ -41,8 +41,9 @@
                 <div class="webcam-result p-12 gap-12" fxLayout="column">
                     <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="20%">
                         <div class="photo-capture p-16 border border-radius-4 gap-12" fxLayout="column">
-                            <div class="photp-capture-image" style="border:1px solid grey;border-radius: 5px;">
+                            <div class="photp-capture-image signature-pad-container" style="border:1px solid grey;border-radius: 5px;">
                                 <!-- <ngx-signature-pad [config]="config" #testPad></ngx-signature-pad> -->
+                                 <canvas #signaturePad class="signature-pad"></canvas>
                             </div>
                             <div class="img-container">
                                 <label class="file-lable1" (click)="clear()">
