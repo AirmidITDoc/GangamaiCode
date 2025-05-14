@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
@@ -20,6 +21,7 @@ export class GrnReturnService {
     public _httpClient: HttpClient,
     public _httpClient1: ApiCaller,
     private _formBuilder: UntypedFormBuilder,
+        private accountService: AuthenticationService,
     private _FormvalidationserviceService: FormvalidationserviceService
   ) { 
     this.NewGRNRetFinalFrom = this.NewGRNReturnFinal();
@@ -30,13 +32,13 @@ export class GrnReturnService {
   }
   createStoreForm() {
     return this._formBuilder.group({
-      ToStoreId:[2,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      ToStoreId:[this.accountService.currentUserValue.user.storeId,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
   }
   GRNSearchFrom() {
     return this._formBuilder.group({ 
-      ToStoreId: [2,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      SupplierId:['',[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      ToStoreId: [this.accountService.currentUserValue.user.storeId,[Validators.required]],
+      SupplierId:['',[Validators.required]],
       Status:['0'],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],

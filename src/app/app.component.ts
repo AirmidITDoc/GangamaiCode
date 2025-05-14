@@ -189,7 +189,7 @@ export class AppComponent implements OnInit, OnDestroy {
      * On init
      */
     async ngOnInit(): Promise<void> {
-        debugger
+        // debugger
         this.signalRService.startConnection();
         //this.signalRService.addReceiveMessageListener();
 

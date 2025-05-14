@@ -10,6 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { ToastrService } from 'ngx-toastr';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-grn-list',
@@ -36,6 +37,7 @@ export class GrnListComponent implements OnInit {
   Onsave:boolean = true;
   autocompleteSupplier:string="SupplierMaster"
   vSupplier=0;
+  vStoreId=this.accountService.currentUserValue.user.storeId
 
   dsGRNList = new MatTableDataSource<GRNList>();
   @ViewChild(MatSort) sort: MatSort;
@@ -64,8 +66,8 @@ export class GrnListComponent implements OnInit {
 
   getGRNList() {
     // debugger;
-    const fromDate = this._GRNReturnHeaderList.GRNListFrom.get('start').value;
-    const toDate = this._GRNReturnHeaderList.GRNListFrom.get('end').value;
+    const fromDate = this.datePipe.transform(this._GRNReturnHeaderList.GRNListFrom.get('start').value, "yyyy-MM-dd")
+    const toDate = this.datePipe.transform(this._GRNReturnHeaderList.GRNListFrom.get('end').value, "yyyy-MM-dd")
   
     const Param = {
       first: 0,
@@ -90,7 +92,7 @@ export class GrnListComponent implements OnInit {
         },
         {
           fieldName: "StoreId",
-          fieldValue: "2",
+          fieldValue: String(this.vStoreId),
           opType: "Equals"
         }
       ],
@@ -124,16 +126,72 @@ export class GrnListComponent implements OnInit {
   
     return null;
   }  
-  
-  SelectedArray: any = [];
-  tableElementChecked(event, element) {
-    // debugger
-    if (event.checked) {
+
+  SelectedArray: any[] = [];
+supplierId: any = null;
+selection = new SelectionModel<GRNList>(true, []);
+
+// dont delete this comment code
+
+// tableElementChecked(event, element) {
+//   debugger
+//   if (event.checked) {
+//     if (this.SelectedArray.length === 0) {
+//       this.supplierId = element.supplierId;
+//       this.SelectedArray.push(element);
+//     } else {
+//       if (element.supplierId === this.supplierId) {
+//         this.SelectedArray.push(element);
+//       } else {
+//         this.toastr.warning('Please select rows with the same SupplierName.', 'warning!', {
+//           toastClass: 'tostr-tost custom-toast-error',
+//         });
+//         event.source.checked = false;
+//       }
+//     }
+//   } else {
+//     this.SelectedArray = this.SelectedArray.filter(item => item !== element);
+
+//     if (this.SelectedArray.length === 0) {
+//       this.supplierId = null;
+//     }
+//   }
+//   this.Onsave = false;
+// }
+
+tableElementChecked(event, element) {
+  // debugger
+  if (event.checked) {
+    if (this.SelectedArray.length === 0) {
+      this.supplierId = element.supplierId;
       this.SelectedArray.push(element);
+      this.selection.select(element);
+    } else {
+      if (element.supplierId === this.supplierId) {
+        this.SelectedArray.push(element);
+        this.selection.select(element);
+      } else {
+        this.toastr.warning('Please select rows with the same SupplierName.', 'Warning!', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+        event.source.checked = false;
+        this.selection.clear(); 
+
+        this.SelectedArray = [];
+        this.supplierId = null;
+      }
     }
-    console.log(this.SelectedArray)
-    this.Onsave=false;
+  } else {
+    this.SelectedArray = this.SelectedArray.filter(item => item !== element);
+    this.selection.deselect(element);
+
+    if (this.SelectedArray.length === 0) {
+      this.supplierId = null;
+    }
   }
+
+  this.Onsave = false;
+}
 
   onClear(){
     this._GRNReturnHeaderList.GRNListFrom.reset();
@@ -145,24 +203,47 @@ export class GrnListComponent implements OnInit {
   }
 
   OnReset(){
-   // this._GRNReturnHeaderList.GRNListFrom.reset();
+  //  this._GRNReturnHeaderList.GRNListFrom.reset();
     this.dsGRNList.data = []; 
     this.onClose();
   }
 
-  OnselectGRNList(){
-    
-    if ((!this.dsGRNList.data.length)) {
-      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    
-    this._dialogRef.close(this.SelectedArray);
-    this._GRNReturnHeaderList.GRNListFrom.get("start").setValue((new Date()).toISOString())
-    this._GRNReturnHeaderList.GRNListFrom.get("start").setValue((new Date()).toISOString())
+  OnselectGRNList() {
+    // debugger
+  if (!this.dsGRNList.data.length) {
+    this.toastr.warning('Data is not available in list, please add item in the list.', 'Warning!', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
   }
+
+  if (this.SelectedArray.length === 0) {
+    this.toastr.warning('Please select at least one row.', 'Warning!', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+  console.log("Last row:",this.SelectedArray)
+  this._GRNReturnHeaderList.GRNListFrom.reset();
+  this.vSupplier = null;
+  this._dialogRef.close(this.SelectedArray);
+  this._GRNReturnHeaderList.GRNListFrom.get("start").setValue((new Date()).toISOString());
+  this._GRNReturnHeaderList.GRNListFrom.get("end").setValue((new Date()).toISOString());
+}
+
+  // OnselectGRNList(){
+    
+  //   if ((!this.dsGRNList.data.length)) {
+  //     this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     return;
+  //   }
+    
+  //   this._dialogRef.close(this.SelectedArray);
+  //   this._GRNReturnHeaderList.GRNListFrom.get("start").setValue((new Date()).toISOString())
+  //   this._GRNReturnHeaderList.GRNListFrom.get("start").setValue((new Date()).toISOString())
+  // }
 }
 export class GRNList{
   GRNNO:any;

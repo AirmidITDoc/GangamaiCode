@@ -108,89 +108,146 @@ export class NewGRNReturnComponent implements OnInit {
     this.vStoreId = obj.value
   }
 
-  // getStoreList() {
-  //   var vdata = {
-  //     Id: this._loggedService.currentUserValue.storeId
+  // dont delete commented code
+  // getGrnItemDetailList(Params) {
+  //   debugger
+  //   var Param = {
+  //     "first": 0,
+  //     "rows": 10,
+  //     "sortField": "GRNID",
+  //     "sortOrder": 0,
+  //     "filters": [
+  //       {
+  //         "fieldName": "GRNID",
+  //         "fieldValue": String(Params.grnid),
+  //         "opType": "Equals"
+  //       }
+  //     ],
+  //     "exportType": "JSON",
+  //     "columns": [
+  //       {
+  //         "data": "string",
+  //         "name": "string"
+  //       }
+  //     ]
   //   }
-  //   this._GRNReturnService.getLoggedStoreList(vdata).subscribe(data => {
-  //     this.ToStoreList = data;
-  //     //console.log(this.ToStoreList) 
-  //     this._GRNReturnService.GRNReturnStoreFrom.get('ToStoreId').setValue(this.ToStoreList[0]);
-  //   });
+  //   console.log(Param)
+  //   this._GRNReturnService.getGrnItemList(Param).subscribe(data => {
+  //     this.dsItemNameList1.data = data.data as ItemNameList[];
+  //     console.log(this.dsItemNameList1.data)
+  //     this.dsItemNameList1.data.forEach((element) => {
+  //       this.chargeslist.push(
+  //         {
+  //           ItemId: element.itemId || 0,
+  //           ItemName: element.itemName || '',
+  //           BatchNo: element.batchNo || 0,
+  //           BatchExpDate: element.batchExpDate,
+  //           // BatchExpDate: new Date(element.batchExpDate.split("-").reverse().join("-") + "T00:00:00").toISOString(),
+  //           ConversionFactor: element.conversionFactor,
+  //           BalanceQty: element.balanceQty,
+  //           ReturnQty: 0,
+  //           MRP: element.mrp || 0,
+  //           ReceiveQty: element.ReceiveQty || 0,
+  //           //Rate: element.Rate || 0,
+  //           TotalAmount: 0,
+  //           VatPer: element.vatPer || 0,
+  //           VatAmount: 0,
+  //           DiscPercentage: element.discPercentage || 0,
+  //           DiscAmount: 0,
+  //           LandedRate: element.rate || 0,
+  //           NetAmount: 0,
+  //           StkID: element.stkId || 0 ,
+  //           GRNID:element.grnid || 0,
+  //           GRNDetID:element.grnDetID || 0,
+  //           TotalQty:0
+  //         });
+
+  //           // TotalAmount: element.totalAmount || 0,// returnQty
+  //           // VatAmount: element.vatAmount || 0,//
+  //           // NetAmount: element.netAmount || 0, 
+  //           // TotalQty:element.totalQty || 0//
+
+  //        // console.log(this.chargeslist)
+  //       this.dsGrnItemList.data = this.chargeslist
+  //       console.log(this.dsGrnItemList.data)
+  //       this.dsGrnItemList.sort = this.sort;
+  //       this.dsGrnItemList.paginator = this.paginator;
+  //       this.sIsLoading = '';
+  //     }); 
+  //   },
+  //     error => {
+  //       this.sIsLoading = '';
+  //     });
   // }
- 
 
   getGrnItemDetailList(Params) {
-    debugger
+  debugger;
+  this.chargeslist = [];
+  var Param = {
+    "first": 0,
+    "rows": 10,
+    "sortField": "GRNID",
+    "sortOrder": 0,
+    "filters": [
+      {
+        "fieldName": "GRNID",
+        "fieldValue": String(Params.grnid),
+        "opType": "Equals"
+      }
+    ],
+    "exportType": "JSON",
+    "columns": [
+      {
+        "data": "string",
+        "name": "string"
+      }
+    ]
+  };
 
-    var Param = {
-      "first": 0,
-      "rows": 10,
-      "sortField": "GRNID",
-      "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "GRNID",
-          "fieldValue": String(Params.grnid),
-          "opType": "Equals"
-        }
-      ],
-      "exportType": "JSON",
-      "columns": [
-        {
-          "data": "string",
-          "name": "string"
-        }
-      ]
-    }
-    console.log(Param)
-    this._GRNReturnService.getGrnItemList(Param).subscribe(data => {
-      this.dsItemNameList1.data = data.data as ItemNameList[];
-      console.log(this.dsItemNameList1.data)
-      this.dsItemNameList1.data.forEach((element) => {
-        this.chargeslist.push(
-          {
-            ItemId: element.itemId || 0,
-            ItemName: element.itemName || '',
-            BatchNo: element.batchNo || 0,
-            BatchExpDate: element.batchExpDate,
-            // BatchExpDate: new Date(element.batchExpDate.split("-").reverse().join("-") + "T00:00:00").toISOString(),
-            ConversionFactor: element.conversionFactor,
-            BalanceQty: element.balanceQty,
-            ReturnQty: 0,
-            MRP: element.mrp || 0,
-            ReceiveQty: element.ReceiveQty || 0,
-            //Rate: element.Rate || 0,
-            TotalAmount: 0,
-            VatPer: element.vatPer || 0,
-            VatAmount: 0,
-            DiscPercentage: element.discPercentage || 0,
-            DiscAmount: 0,
-            LandedRate: element.rate || 0,
-            NetAmount: 0,
-            StkID: element.stkId || 0 ,
-            GRNID:element.grnid || 0,
-            GRNDetID:element.grnDetID || 0,
-            TotalQty:0
-          });
+  console.log("Fetching GRN items with:", Param);
 
-            // TotalAmount: element.totalAmount || 0,// returnQty
-            // VatAmount: element.vatAmount || 0,//
-            // NetAmount: element.netAmount || 0, 
-            // TotalQty:element.totalQty || 0//
+  this._GRNReturnService.getGrnItemList(Param).subscribe(data => {
+    const itemList = data.data as ItemNameList[];
+    console.log("Fetched item list:", itemList);
 
-         // console.log(this.chargeslist)
-        this.dsGrnItemList.data = this.chargeslist
-        console.log(this.dsGrnItemList.data)
-        this.dsGrnItemList.sort = this.sort;
-        this.dsGrnItemList.paginator = this.paginator;
-        this.sIsLoading = '';
-      }); 
-    },
-      error => {
-        this.sIsLoading = '';
+    itemList.forEach(element => {
+      this.chargeslist.push({
+        ItemId: element.itemId || 0,
+        ItemName: element.itemName || '',
+        BatchNo: element.batchNo || 0,
+        BatchExpDate: element.batchExpDate,
+        ConversionFactor: element.conversionFactor,
+        BalanceQty: element.balanceQty,
+        ReturnQty: 0,
+        MRP: element.mrp || 0,
+        ReceiveQty: element.ReceiveQty || 0,
+        TotalAmount: 0,
+        VatPer: element.vatPer || 0,
+        VatAmount: 0,
+        DiscPercentage: element.discPercentage || 0,
+        DiscAmount: 0,
+        LandedRate: element.rate || 0,
+        NetAmount: 0,
+        StkID: element.stkId || 0,
+        GRNID: element.grnid || 0,
+        GRNDetID: element.grnDetID || 0,
+        TotalQty: 0
       });
-  }
+    });
+
+    // Assign after all items are processed
+    this.dsGrnItemList.data = this.chargeslist;
+    console.log("Updated data source:", this.dsGrnItemList.data);
+
+    this.dsGrnItemList.sort = this.sort;
+    this.dsGrnItemList.paginator = this.paginator;
+    this.sIsLoading = '';
+  },
+  error => {
+    console.error("Error fetching GRN item list:", error);
+    this.sIsLoading = '';
+  });
+}
 
   deleteTableRow(elm) {
     debugger
@@ -463,24 +520,48 @@ OnReset() {
         maxHeight: '95vh',
         width: '85%',
       });
-    dialogRef.afterClosed().subscribe(result => {
-      // debugger
-      console.log('The dialog was closed - Insert Action', result);
-       console.log("ddddddaaaaaatttttaaa",result) 
-      this.dsNewGRNReturnItemList.data = result as ItemNameList[];
-      this.VsupplierId = this.dsNewGRNReturnItemList.data[0]['supplierId']
-      this.vStoreId=this.dsNewGRNReturnItemList.data[0]['storeId']
-      this.VsupplierName = this.dsNewGRNReturnItemList.data[0]['supplierName']
-      this.vGRNID = this.dsNewGRNReturnItemList.data[0].grnid
-      this.CashCredittype = this.dsNewGRNReturnItemList.data[0].cash_CreditType
-      // this.getSupplierSearchCombo(); 
+    // dialogRef.afterClosed().subscribe(result => {
+    //   debugger
+    //   console.log('The dialog was closed - Insert Action', result);
+    //    console.log("ddddddaaaaaatttttaaa",result) 
+    //   this.dsNewGRNReturnItemList.data = result as ItemNameList[];
+    //   this.VsupplierId = this.dsNewGRNReturnItemList.data[0]['supplierId']
+    //   this.vStoreId=this.dsNewGRNReturnItemList.data[0]['storeId']
+    //   this.VsupplierName = this.dsNewGRNReturnItemList.data[0]['supplierName']
+    //   this.vGRNID = this.dsNewGRNReturnItemList.data[0].grnid
+    //   this.CashCredittype = this.dsNewGRNReturnItemList.data[0].cash_CreditType
+    //   // this.getSupplierSearchCombo(); 
   
-      this.getGrnItemDetailList(this.dsNewGRNReturnItemList.data[0]) 
-      if(this.dsNewGRNReturnItemList.data[0].cash_CreditType == false){
-        this.isChecked = true;
-      }else{
-        this.isChecked = false;
-      }
-    });
+    //   this.getGrnItemDetailList(this.dsNewGRNReturnItemList.data[0]) 
+    //   if(this.dsNewGRNReturnItemList.data[0].cash_CreditType == false){
+    //     this.isChecked = true;
+    //   }else{
+    //     this.isChecked = false;
+    //   }
+    // });
+    dialogRef.afterClosed().subscribe(result => {
+  debugger;
+  console.log('The dialog was closed - Insert Action', result);
+  console.log("ddddddaaaaaatttttaaa", result);
+
+  this.dsNewGRNReturnItemList.data = result as ItemNameList[];
+
+  this.dsNewGRNReturnItemList.data.forEach(item => {
+    console.log("Processing item:", item);
+
+    this.getGrnItemDetailList(item);
+  });
+
+  if (this.dsNewGRNReturnItemList.data.length > 0) {
+    const firstItem = this.dsNewGRNReturnItemList.data[0];
+    this.VsupplierId = firstItem.supplierId;
+    this.vStoreId = firstItem.storeId;
+    this.VsupplierName = firstItem.supplierName;
+    // this.vGRNID = firstItem.grnid;
+    // this.CashCredittype = firstItem.cash_CreditType;
+    // this.isChecked = firstItem.cash_CreditType === false;
+  }
+});
+
   }
 }

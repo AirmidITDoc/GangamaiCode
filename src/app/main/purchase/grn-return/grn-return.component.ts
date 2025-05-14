@@ -18,6 +18,8 @@ import { ToastrService } from 'ngx-toastr';
 import { GrnItemList } from '../good-receiptnote/good-receiptnote.component';
 import { FormBuilder } from '@angular/forms';
 import { NewGRNReturnComponent } from './new-grnreturn/new-grnreturn.component';
+import { NewGRNReturnComponent as NewGRNReturnWithoutGRNComponent } from '../grn-return-without-grn/new-grnreturn/new-grnreturn.component';
+
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
@@ -138,11 +140,11 @@ export class GRNReturnComponent implements OnInit {
           template:this.ColorCode, width: 50 },
     { heading: "GRNReturnId", key: "grnReturnId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "GRNReturnNo", key: "grnReturnNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "GRNReturnDate", key: "grnReturnDate", sort: true, align: 'left', emptySign: 'NA',width: 150 },
-    { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "GRNReturnDate", key: "grnReturnDate", sort: true, align: 'left', emptySign: 'NA',width: 150},
+    { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
     { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "GSTAmount", key: "TotalVatAmount", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "NetAmount", key: "NetAmount", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "GSTAmount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "NetAmount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
     {
@@ -154,8 +156,8 @@ export class GRNReturnComponent implements OnInit {
     { fieldName: "ToStoreId", fieldValue: String(this.ToStoreId), opType: OperatorComparer.Equals },
     { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    { fieldName: "SupplierId", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "IsVerify", fieldValue: "0", opType: OperatorComparer.Equals }
+    { fieldName: "SupplierId", fieldValue: this.Supplier, opType: OperatorComparer.Equals },
+    { fieldName: "IsVerify", fieldValue: this.Status, opType: OperatorComparer.Equals }
   ]
   gridConfig: gridModel = {
     apiUrl: "GRNReturn/GRNReturnlistbynameList",
@@ -167,6 +169,7 @@ export class GRNReturnComponent implements OnInit {
 
   onChangeFirst() {
     debugger
+    this.isShowDetailTable = false;
     this.fromDate = this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get('start').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get('end').value, "yyyy-MM-dd")
     // this.ToStoreId = this.vstoreId || '2'
@@ -268,12 +271,7 @@ export class GRNReturnComponent implements OnInit {
   onClear() { }
   getVerify(row) {
     debugger
-    // let updateGRNReturnVerifyStatus = {};
-    // updateGRNReturnVerifyStatus['grnReturnId'] = row.GRNReturnId;
-    // updateGRNReturnVerifyStatus['isVerifiedUserId'] = this.accountService.currentUserValue.userId;
-
     let submitObj = {
-      // "updateGRNReturnVerifyStatus": updateGRNReturnVerifyStatus
       "grnreturnId": row.grnReturnId
     }
     console.log(submitObj)
@@ -294,7 +292,8 @@ export class GRNReturnComponent implements OnInit {
         });
 
       });
-    this.getfilterdata();
+    this.grid.bindGridData();
+    this.onChangeFirst();
   }
 
   getNewGRNRet() {
@@ -310,6 +309,21 @@ export class GRNReturnComponent implements OnInit {
     });
   }
 
+   newGRNRetunr() {
+      const dialogRef = this._matDialog.open(NewGRNReturnWithoutGRNComponent,
+        {
+          maxWidth: "95vw",
+          maxHeight: '100vh',
+          width: '100%',
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+      this.getfilterdata();
+        // this.getGRNReturnList();
+      });
+  
+    }
+    
   viewgetGRNreturnReportPdf(row) {
 
     setTimeout(() => {
@@ -570,6 +584,9 @@ totalAmount:any
 netAmount:any
 vatAmount:any
 totalQty:any;
+supplierId:any;
+storeId:any;
+supplierName:any;
   /**
    * Constructor
    *
@@ -663,6 +680,9 @@ totalQty:any;
       this.netAmount=ItemNameList.netAmount
       this.vatAmount=ItemNameList.vatAmount
       this.totalQty=ItemNameList.totalQty
+      this.supplierId=ItemNameList.supplierId
+      this.storeId=ItemNameList.storeId
+      this.supplierName=ItemNameList.supplierName
     }
   }
 }
