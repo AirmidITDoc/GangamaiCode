@@ -19,9 +19,49 @@
             <form [formGroup]="myForm">
                 <input type="hidden" name="villageId" formControlName="villageId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="30%">
                         <airmid-textbox 
-                            label="TableName" 
+                            label="Department" 
+                            formControlName="villageName" 
+                            [value]="data?.villageName"
+                            [formGroup]="myForm" 
+                            [validations]="getValidationMessages().villageName" 
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="100%" fxFlex.xs="50%" fxFlex.sm="30%">
+                        <airmid-textbox 
+                            label="Surgery category" 
+                            formControlName="villageName" 
+                            [value]="data?.villageName"
+                            [formGroup]="myForm" 
+                            [validations]="getValidationMessages().villageName" 
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-textbox 
+                            label="site Description" 
+                            formControlName="villageName" 
+                            [value]="data?.villageName"
+                            [formGroup]="myForm" 
+                            [validations]="getValidationMessages().villageName" 
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-textbox 
+                            label="Template Name" 
+                            formControlName="villageName" 
+                            [value]="data?.villageName"
+                            [formGroup]="myForm" 
+                            [validations]="getValidationMessages().villageName" 
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-textbox 
+                            label="Surgery Name" 
                             formControlName="villageName" 
                             [value]="data?.villageName"
                             [formGroup]="myForm" 
@@ -30,9 +70,9 @@
                         </airmid-textbox>
                     </div>
 
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                         <airmid-dropdown 
-                            label="LocationName" 
+                            label="Amount" 
                             [value]="data?.talukaName" 
                             formControlName="talukaName"
                             [formGroup]="myForm" 

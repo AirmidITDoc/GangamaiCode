@@ -19,7 +19,13 @@ myForm: FormGroup;
      createVillageForm(): FormGroup {
              return this._formBuilder.group({
                  villageId: [0],
-                 villageName: [""],
+                 villageName: ["",
+                      [
+                    Validators.required,
+                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                ] 
+                 ],
                  talukaName: [""],
                  isActive:[true,[Validators.required]]
              });

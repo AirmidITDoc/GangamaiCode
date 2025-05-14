@@ -6,12 +6,12 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Table Master
+                    OTTable List
                 </span>
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">+ New Table
+            <button mat-raised-button (click)="onSave()">+ New OTTable
             </button>
         </div>
     </div>
@@ -19,7 +19,7 @@
         <airmid-table [gridConfig]="gridConfig"  class="content">
             <ng-container filters>
                 <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Table Name</mat-label>
+                    <mat-label>search ottable name</mat-label>
                     <input matInput placeholder="Search Village Name" autocomplete="off"
                         [(ngModel)]="gridConfig.filters[0].fieldValue" />
                     <button matSuffix mat-icon-button aria-label="Clear"

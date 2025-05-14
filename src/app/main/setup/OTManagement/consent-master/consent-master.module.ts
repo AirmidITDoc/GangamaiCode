@@ -31,7 +31,7 @@ import { ConsentMasterComponent } from "./consent-master.component";
 const routes: Routes = [
     {
         path: "**",
-        component: SiteDescriptionComponent,
+        component: ConsentMasterComponent,
     },
 ];
 
