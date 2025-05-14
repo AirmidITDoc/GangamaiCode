@@ -73,7 +73,11 @@
       &.self-row {
       }
     }
-
+    mat-select{
+      .mat-mdc-select-arrow-wrapper{
+        transform: translateY(0px);
+      }
+    }
     .mat-footer-row {
       .mat-footer-cell {
         @include font-size(14px);

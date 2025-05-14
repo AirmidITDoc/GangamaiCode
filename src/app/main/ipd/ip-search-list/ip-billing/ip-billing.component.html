@@ -629,8 +629,8 @@
                         </ng-container>
 
                         <ng-container matColumnDef="DoctorName">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">ChargeDoctorName</mat-header-cell>
-                          <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-230">ChargeDoctorName</mat-header-cell>
+                          <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-230">
                             <span>{{ contact.doctorName}}</span>
                             <ng-container *ngIf="!contact.EditDoctor; else showInput">
                               <button mat-icon-button (click)="DocenableEditing(contact)"
@@ -639,7 +639,7 @@
                           </ng-container>
                           <ng-template #showInput>
                               <form [formGroup]="Ipbillform" fxLayout="row" fxLayoutGap="2px">
-                                  <airmid-dropdown  label="DoctorName" formControlName="EditDoctor" class="w-150"
+                                  <airmid-dropdown formControlName="EditDoctor" class="w-180" appearance="fill"
                                       [formGroup]="Ipbillform" [mode]="autocompleteModedeptdoc"
                                       [validations]="getValidationMessages().DoctorId"
                                       (selectionChange)="DropDownValue($event)"></airmid-dropdown> 

@@ -30,6 +30,7 @@ export class AirmidDropDownComponent implements OnInit {
     @Input() ValueField: string = "value";
     @Input() ApiUrl: string = "";
     @Input() ReqFullObj: boolean = false;
+    @Input() appearance: string = "outline";
 
     private _disabled: boolean = false;
     private _focused: boolean = false;
