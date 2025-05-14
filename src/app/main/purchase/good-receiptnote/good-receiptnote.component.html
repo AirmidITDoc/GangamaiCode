@@ -13,14 +13,17 @@
                     <span> GRN List </span>
                 </div>
             </div>
-            <div class="top-header-right">
-                <div class="header-add-button" fxLayoutGap="25px" fxLayout="row" >
+            <div class="top-header-right" fxLayoutGap="35px" fxLayout="row">
+                <div class="header-add-button">
                     <button mat-raised-button fxLayoutAlign="center center" class="py-8">
                         <input type="file" #fileInput (change)="onFileChange($event)"
                             style="font-size: 100px;left: 0;opacity: 0;position: absolute;top: 0;" /><span>Import
                             GRN</span>
                     </button>
-                    <button mat-raised-button (click)="newGRNEntry(1)">New GRN</button>
+                </div>
+                <div class="header-add-button">
+                    <button mat-raised-button fxLayoutAlign="center center" class="py-8" (click)="newGRNEntry(1)">
+                        New GRN</button>
                 </div>
             </div>
         </div>

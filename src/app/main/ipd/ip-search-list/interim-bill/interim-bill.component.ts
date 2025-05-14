@@ -18,6 +18,7 @@ import { map, startWith } from 'rxjs/operators';
 import { ConfigService } from 'app/core/services/config.service';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-interim-bill',
@@ -68,11 +69,13 @@ export class InterimBillComponent implements OnInit {
     private commonService: PrintserviceService,
     public _WhatsAppEmailService:WhatsAppEmailService,
     public _ConfigService : ConfigService,
+    public _FormvalidationserviceService:FormvalidationserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any) 
     {} 
   ngOnInit(): void {
     this.dataSource.data = []; 
-     this.InterimFormGroup = this.InterimForm();  
+     this.InterimFormGroup = this.InterimForm();
+        this.InterimFormGroup.markAllAsTouched();  
     if (this.data) {
       console.log(this.data);
       this.dataSource.data  = this.data.Obj; 
@@ -84,11 +87,11 @@ export class InterimBillComponent implements OnInit {
   } 
   InterimForm(): FormGroup {
     return this.formBuilder.group({
-      NetpayAmount: [0],
+      NetpayAmount: [0,[Validators.required,Validators.min(1)]], 
       ConcessionId: [''],
       Remark: [''],
-      TotalAmt: [0], 
-      CashCounterID:[4], 
+      TotalAmt: [0,[Validators.required,Validators.min(1)]], 
+      CashCounterID:[4,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]], 
       paymode: ['cashpay'],
       UPINO: [''],
       discPer: [0,[Validators.min(0), Validators.max(100)]],
@@ -176,7 +179,7 @@ export class InterimBillComponent implements OnInit {
         concessionAmt:'',
         NetpayAmount: Math.round(finalNetAmt),
       }, { emitEvent: false }); 
-      this.toastr.error("Discount must be between 0 and the total amount.");
+      this.toastr.warning("Discount must be between 0 and the total amount.");
       return;
     }  
 
@@ -208,21 +211,21 @@ export class InterimBillComponent implements OnInit {
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');   
  
 debugger
-    if (this.InterimFormGroup.get('discPer').value > 0 || this.InterimFormGroup.get('concessionAmt').value > 0) {
-      if (!this.InterimFormGroup.get('ConcessionId').value) {
+const formValue = this.InterimFormGroup.value 
+    if (formValue.discPer > 0 || formValue.concessionAmt > 0) {
+      if (formValue.ConcessionId == '' || formValue.ConcessionId == null || formValue.ConcessionId == '0') {
         this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
       }
     }
-    if (!this.InterimFormGroup.get('CashCounterID').value) {
+    if (formValue.CashCounterID == '' || formValue.CashCounterID == null || formValue.CashCounterID == '0') {
       this.toastr.warning('Please select Cash Counter.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-
     let interimBillChargesobj = {};
     interimBillChargesobj['chargesID'] = 0// this.ChargesId;
 

@@ -26,6 +26,7 @@ import { gridColumnTypes } from 'app/core/models/tableActions';
 import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { IPPackageDetComponent } from '../ippackage-det/ippackage-det.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 
 @Component({
@@ -170,9 +171,7 @@ export class IPBillingComponent implements OnInit {
   vClassId: any = 0;
   vClassName: any;
   vService: any;
-  vAdminPer: any; 
-  b_isPath = '';
-  b_isRad = '';  
+  vAdminPer: any;  
   dateTimeObj: any;
   PharmacyAmont: any = 0; 
   ServiceName: any;
@@ -238,6 +237,7 @@ export class IPBillingComponent implements OnInit {
     public _ConfigService: ConfigService,
     private commonService: PrintserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private _FormvalidationserviceService:FormvalidationserviceService,
     private formBuilder: UntypedFormBuilder) {
     this.showTable = false;
   } 
@@ -245,21 +245,21 @@ export class IPBillingComponent implements OnInit {
   ngOnInit(): void { 
     this.createserviceForm();
     this.createBillForm();
+    this.Serviceform.markAllAsTouched();
+    this.Ipbillform.markAllAsTouched();
     if (this.data) {
       this.selectedAdvanceObj = this.data.Obj;
       console.log(this.selectedAdvanceObj)
-      this.opD_IPD_Id = this.selectedAdvanceObj.admissionId || "0"
-      console.log(this.opD_IPD_Id)
+      this.opD_IPD_Id = this.selectedAdvanceObj.admissionId || "0" 
       this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + this.selectedAdvanceObj.classId + "&ServiceName="
       this.getdata(this.selectedAdvanceObj.admissionId)
       this.getadvancelist(this.selectedAdvanceObj.admissionId)
       this.Serviceform.get("ChargeClass").setValue(this.selectedAdvanceObj.classId)
     }
-    this.getChargesList();
-    this.getBillheaderList();
-    this.getPharmacyAmount();
-    this.getRequestChargelist(); 
-
+    this.getChargesList(); 
+    this.getLabRequestChargelist(); 
+    // this.getBillheaderList();
+    // this.getPharmacyAmount();
 
     if (this.selectedAdvanceObj.isDischarged) {
       this.Ipbillform.get('GenerateBill').enable();
@@ -372,27 +372,27 @@ export class IPBillingComponent implements OnInit {
   // Create registered form group
   createserviceForm() {
     this.Serviceform = this.formBuilder.group({
-      ChargeClass: ['', Validators.required],
-      Date: [new Date()],
-      ServiceName: ['', Validators.required],
-      price: [0, Validators.required],
-      qty: [1, Validators.required],
-      TotalAmt: [0, Validators.required],
+      ChargeClass: ['', [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      Date: [new Date(),[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      ServiceName: ['', [Validators.required]],
+      price: [0, [Validators.required,Validators.min(1)]],
+      qty: [1,[Validators.required]],
+      TotalAmt: [0, [Validators.required,Validators.min(1)]],
       DoctorID: [''],
       discPer: [0, [Validators.min(0), Validators.max(100)]],
       discAmount: [0, [Validators.min(0)]],
-      netAmount: [0, Validators.required]
+      netAmount: [0, [Validators.required,Validators.min(1)]],
     });
   }
   createBillForm() {
     this.Ipbillform = this.formBuilder.group({ 
-      AdminPer: ['', Validators.max(100)],
+      AdminPer: ['', [Validators.max(100)]],
       AdminAmt: [0,[Validators.min(0)]], 
       totaldiscPer: [0,[Validators.min(0), Validators.max(100)]],
       totalconcessionAmt:  [0,[Validators.min(0)]], 
       ConcessionId: [''], 
-      FinalAmount: [0,Validators.required], 
-      CashCounterID: [4], 
+      FinalAmount: [0, [Validators.required]],
+      CashCounterID: [4,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]], 
       Remark: [''],
       Admincheck: [''],
       GenerateBill: [1],
@@ -402,23 +402,17 @@ export class IPBillingComponent implements OnInit {
       EditDoctor:['']
     });
   }
-  //service selected data
-  getSelectedserviceObj(obj) {
-    console.log(obj)
-    this.ServiceName = obj.ServiceName;
-    this.vPrice = obj.classRate;
-    this.vServiceTotalAmt = obj.Price;
-    this.vServiceNetAmt = obj.Price;
-    this.serviceId = obj.serviceId;
-    this.b_isPath = obj.isPathology;
-    this.b_isRad = obj.isRadiology;
 
+    //service selected data
+  getselectObj(obj){ 
+    this.Serviceform.patchValue({ 
+      price:obj.classRate
+    })  
     if (obj.creditedtoDoctor == true) {
       this.Serviceform.get('DoctorID').reset();
       this.Serviceform.get('DoctorID').setValidators([Validators.required]);
       this.Serviceform.get('DoctorID').enable();
-      this.isDoctor = true;
-
+      this.isDoctor = true; 
     } else {
       this.Serviceform.get('DoctorID').reset();
       this.Serviceform.get('DoctorID').clearValidators();
@@ -426,7 +420,7 @@ export class IPBillingComponent implements OnInit {
       this.Serviceform.get('DoctorID').disable();
       this.isDoctor = false;
     }
-    this.getpackagedetList(obj)
+   //this.getpackagedetList(obj)
   } 
   //Doctor selected 
   getdocdetail(event) {
@@ -449,23 +443,21 @@ export class IPBillingComponent implements OnInit {
   // Service Add 
   onSaveAddCharges() {
     let doctorid = 0;
-    let doctorName = '';
-
+    let doctorName = ''; 
     let invalidFields = [];
-
+    const formValue = this.Serviceform.value
     if (this.isDoctor) {
-      if ((this.doctorID == '' || this.doctorID == null || this.doctorID == undefined)) {
+      if ((formValue.DoctorID == '' || formValue.DoctorID == null || formValue.DoctorID == '0')) {
         this.toastr.warning('Please select Doctor', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
       }
-      if (this.Serviceform.get("DoctorID").value)
+      if (formValue.DoctorID)
         doctorid = this.Serviceform.get("DoctorID").value; 
     }
 
-    if (this.Serviceform.valid) {
-      const formValue = this.Serviceform.value;
+    if (this.Serviceform.valid) { 
       // console.log("Form values:", formValue) 
       // Check VisitFormGroup
       if (this.Serviceform.invalid) {
@@ -601,8 +593,7 @@ export class IPBillingComponent implements OnInit {
       //   ]
       // }
       console.log("Save JSON:", m_data);
-      this._IpSearchListService.InsertIPAddCharges(m_data).subscribe(response => {
-        console.log(response)
+      this._IpSearchListService.InsertIPAddCharges(m_data).subscribe(response => { 
         this.toastr.success(response.message);
         this.getChargesList(); 
       }, (error) => {
@@ -617,8 +608,10 @@ export class IPBillingComponent implements OnInit {
     if (serviceNameElement) {
       serviceNameElement.focus();
     }
+    this.Serviceform.markAllAsTouched();
+    this.Ipbillform.markAllAsTouched();
   }
-  onClearServiceAddList() {
+  onClearServiceAddList() {  
     this.Serviceform.get('ServiceName').setValue("a");
     this.Serviceform.get('price').reset();
     this.Serviceform.get('qty').reset('1');
@@ -837,8 +830,7 @@ export class IPBillingComponent implements OnInit {
       ],
       "Columns":[],
       "exportType": "JSON"
-    }
-     console.log(vdata);
+    } 
     this._IpSearchListService.getchargesList(vdata).subscribe(response => {
       this.chargeslist = response.data
       console.log(this.chargeslist)
@@ -1073,21 +1065,23 @@ export class IPBillingComponent implements OnInit {
   }
    //Save
    onSave() { 
+    debugger
     if(this.dataSource.data.length > 0 && this.Ipbillform.invalid){
       this.toastr.warning('Please check form is invalid.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if (this.Ipbillform.get('totalconcessionAmt').value > 0 || this.Ipbillform.get('totaldiscPer').value > 0) {
-      if (!this.Ipbillform.get('ConcessionId').value) {
+    const formValue = this.Ipbillform.value
+    if (formValue.totalconcessionAmt > 0 || formValue.totaldiscPer > 0) {
+      if (formValue.ConcessionId == '' || formValue.ConcessionId == null || formValue.ConcessionId == '0') {
         this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
       }
     }
-    if (!this.Ipbillform.get('CashCounterID').value) {
+    if (formValue.CashCounterID == '' || formValue.CashCounterID == null || formValue.CashCounterID == '0') {
       this.toastr.warning('Please select Cash Counter.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -1151,10 +1145,9 @@ export class IPBillingComponent implements OnInit {
         PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.doctorname; 
         PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj.companyName;
         PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj.departmentName;
-        PatientHeaderObj['Age'] = this.selectedAdvanceObj.ageYear; 
+        PatientHeaderObj['Age'] = this.selectedAdvanceObj.ageYear;  
 
-
-        console.log('============================== Save IP Billing ===========');
+      
         //==============-======--==============Payment====================== 
         this.advanceDataStored.storage = new AdvanceDetailObj(PatientHeaderObj);
         // const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
@@ -1429,8 +1422,7 @@ export class IPBillingComponent implements OnInit {
         "tdrBillDet": DraftBilldetsarr
       };
       console.log('============== Save IP Draft Bill Json ===========',submitData)
-      this._IpSearchListService.InsertIPDraftBilling(submitData).subscribe(response => {
-        //console.log(response)
+      this._IpSearchListService.InsertIPDraftBilling(submitData).subscribe(response => { 
         this.toastr.success(response.message); 
         if(this.Ipbillform.get("BillType").value==1)
         this.viewgetDraftBillReportPdf(response.drbno);  
@@ -1450,12 +1442,9 @@ export class IPBillingComponent implements OnInit {
 
 //Interim bill
   //select cehckbox
-  tableElementChecked(event, element) {
-    console.log(event)
-    console.log(element)
+  tableElementChecked(event, element) { 
     if (event.checked) {
-      this.interimArray.push(element);
-      console.log(this.interimArray)
+      this.interimArray.push(element); 
     } else if (this.interimArray.length > 0) {
       let index = this.interimArray.indexOf(element);
       if (index !== -1) {
@@ -1490,12 +1479,12 @@ export class IPBillingComponent implements OnInit {
   getPharmacyAmount() {
     let Query = "select isnull(Sum(BalanceAmount),0) as PhBillCredit from T_SalesHeader where OP_IP_Type=1 and OP_IP_ID=" + this.selectedAdvanceObj.AdmissionID
     this._IpSearchListService.getPharmacyAmt(Query).subscribe((data) => {
-      console.log(data)
+     
       this.PharmacyAmont = data[0].PhBillCredit;
     })
   }
 
-  getRequestChargelist() {
+  getLabRequestChargelist() {
     this.chargeslist1 = [];
     this.dataSource1.data = [];
     var m = 
@@ -1531,10 +1520,10 @@ export class IPBillingComponent implements OnInit {
   getBillheaderList() {
     this.isLoadingStr = 'loading';
     let Query = "select Isnull(AdminPer,0) as AdminPer from Admission where AdmissionId=" + this.selectedAdvanceObj.AdmissionID
-    //console.log(Query); 
+ 
     this._IpSearchListService.getBillheaderList(Query).subscribe(data => {
       this.billheaderlist = data[0].AdminPer;
-      // console.log(this.billheaderlist)
+      
       if (this.billheaderlist > 0) {
         this.isAdminDisabled = true;
         this.Ipbillform.get('Admincheck').setValue(true)
@@ -1547,8 +1536,7 @@ export class IPBillingComponent implements OnInit {
     });
   }
   //nursing Service List added
-  AddList(m) {
-    console.log(m)
+  AddList(m) { 
     var m_data = {  
       "opdIpdId": m.opipid,
       "classID": this.selectedAdvanceObj.classId || 0 ,
@@ -1562,7 +1550,7 @@ export class IPBillingComponent implements OnInit {
     console.log(m_data)
     this._IpSearchListService.InsertIPAddChargesNew(m_data).subscribe(data => {
       if (data) { 
-        this.getRequestChargelist();
+        this.getLabRequestChargelist();
         this.getChargesList();
       }
     });
@@ -1638,8 +1626,7 @@ export class IPBillingComponent implements OnInit {
     }
   }
   // exec rptIPDInterimBill 193667 9507 
-  viewgetInterimBillReportPdf(element) {
-    console.log(element)
+  viewgetInterimBillReportPdf(element) { 
     this.commonService.Onprint("BillNo", element.billNo, "IpInterimBill");
   }
   //For testing 
@@ -1656,14 +1643,12 @@ export class IPBillingComponent implements OnInit {
     this.commonService.Onprint("BillNo", billNo, "IpFinalBill");
   }
  
-  viewgetAdvanceReceiptReportPdf(data) {
-    console.log(data)
+  viewgetAdvanceReceiptReportPdf(data) { 
      this.commonService.Onprint("AdvanceDetailID", data.advanceDetailID, "IpAdvanceReceipt");
    }
 
 
-  showAllFilter(event) {
-    console.log(event);
+  showAllFilter(event) { 
     if (event.checked == true) 
       this.isFilteredDateDisabled = true;
     if (event.checked == false) {
@@ -1700,8 +1685,7 @@ export class IPBillingComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
  
-  getPreBilldet(contact) {
-    //console.log(contact)
+  getPreBilldet(contact) { 
     const dialogRef = this._matDialog.open(PrebillDetailsComponent,
       {
         maxWidth: "100%",
@@ -1732,8 +1716,7 @@ export class IPBillingComponent implements OnInit {
       this.getChargesList()
     });
   }
-  OnSaveEditedValue(element){
-    debugger
+  OnSaveEditedValue(element){ 
     if (element.qty == 0) {
       element.qty = 1;
       this.toastr.warning('Qty is connot be Zero By default Qty is 1', 'error!', {

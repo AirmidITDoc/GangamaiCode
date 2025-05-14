@@ -106,7 +106,7 @@ export class OpPaymentVimalComponent implements OnInit {
     IsAllowAdd() {
         return this.netPayAmt > ((this.paidAmt || 0) + Number(this.amount1));
     }
-    GetBalanceAmt() { 
+    GetBalanceAmt() {  
         this.IsMoreAmt = Number(this.netPayAmt || 0) - (Number(this.paidAmt || 0) + Number(this.amount1 || 0)) < 0;
         this.balanceAmt = Number(this.netPayAmt || 0) - ((Number(this.paidAmt || 0) + Number(this.amount1 || 0)));
        // this.balanceAmt = (Number(this.netPayAmt || 0) -  Number(this.amount1 || 0));
@@ -155,7 +155,7 @@ export class OpPaymentVimalComponent implements OnInit {
         this.GetBalanceAmt();  
        
     }
-    setPaidAmount() { 
+    setPaidAmount() {  
         this.paidAmt = this.Payments.data.reduce(function (a, b) { return a + Number(b['Amount']); }, 0);
     }
     onKeyAdv(a, b) {
@@ -166,29 +166,10 @@ export class OpPaymentVimalComponent implements OnInit {
         this.getAdvanceAmt(a,b);
     }
     AdvanceId:any = 0;
-    getAdvanceAmt(element, index) {  
-        debugger 
-        var vdata = {
-            "first": 0,
-            "rows": 10,
-            "sortField": "AdmissionID",
-            "sortOrder": 0,
-            "filters": [
-                {
-                    "fieldName": "AdmissionID",
-                    "fieldValue": String(this.advanceData.OPD_IPD_Id),
-                    "opType": "Equals"
-                }
-            ],
-            "Columns":[],
-            "exportType": "JSON"
-        }
-        this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
-            this.selectedRow = response.data;   
-        }); 
-        this.selectedRow = this.selectedRow.filter(item=> item.advanceDetailID == element.advanceDetailID)
-        const balAmt = this.selectedRow[0]?.balanceAmount
-        console.log(balAmt)
+    selectedRow:any=[];
+    getAdvanceAmt(element, index) {    
+         this.selectedRow = this.selectedRow.filter(item=> item.advanceDetailID == element.advanceDetailID) 
+         const balAmt = this.selectedRow[0]?.balanceAmount
         if (element.usedAmount > balAmt){
           Swal.fire('Enter Amount less than Balance Amount:' + element.balanceAmount);
           element.usedAmount = '';
@@ -389,10 +370,27 @@ export class OpPaymentVimalComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.patientDetailsFormGrp = this.createForm();
- 
- 
-        this.getBankNameList1();
+        this.patientDetailsFormGrp = this.createForm(); 
+        this.getBankNameList1(); 
+        //Advance Calculation need balAmt
+        var vdata = {
+            "first": 0,
+            "rows": 10,
+            "sortField": "AdmissionID",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "AdmissionID",
+                    "fieldValue": String(this.advanceData.OPD_IPD_Id),
+                    "opType": "Equals"
+                }
+            ],
+            "Columns": [],
+            "exportType": "JSON"
+        }
+        this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
+            this.selectedRow = response.data;
+        });
     }
     dateTimeObj: any;
     getDateTime(dateTimeObj) {
@@ -407,7 +405,8 @@ export class OpPaymentVimalComponent implements OnInit {
             bankName1: [''],
             regDate1: [(new Date()).toISOString()],
             paidAmountController: [this.paidAmt],
-            balanceAmountController: [this.balanceAmt]
+            balanceAmountController: [this.balanceAmt],
+            EditAdvance:['']
         });
     }
 
@@ -618,8 +617,7 @@ export class OpPaymentVimalComponent implements OnInit {
 
             let Advancesarr = [];
             this.dataSource.data.forEach((element) => {
-                let Advanceobj = {};
-                console.log(element);
+                let Advanceobj = {}; 
                 Advanceobj['AdvanceId'] = element.advanceId;
                 Advanceobj['AdvanceDetailID'] = element.advanceDetailID;
                 Advanceobj['AdvanceAmount'] = element.advanceAmount;
@@ -674,7 +672,7 @@ export class OpPaymentVimalComponent implements OnInit {
         }
     }
     selectedAdvanceData:any=[];
-    selectedRow:any
+    
     getAdvcanceDetails(isReset?: any) {
         debugger
         this.dataSource.data = [];
@@ -696,9 +694,8 @@ export class OpPaymentVimalComponent implements OnInit {
        
           setTimeout(() => {
               this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
-               this.selectedAdvanceData  = response.data; 
-               this.dataSource.data =  this.selectedAdvanceData
-               console.log(this.selectedAdvanceData)
+               this.selectedAdvanceData  = response.data;  
+               this.dataSource.data =  this.selectedAdvanceData 
                 if (this.dataSource.data.length > 0) {
                     this.IsAdv = true
                     this.AdvanceId = this.dataSource.data[0].advanceId 
@@ -733,8 +730,7 @@ export class OpPaymentVimalComponent implements OnInit {
               setTimeout(() => {
                   this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
                     this.dataSource.data  = response.data;  
-                    this.AdvanceId = this.dataSource.data[0].advanceId
-                    console.log(this.dataSource.data)
+                    this.AdvanceId = this.dataSource.data[0].advanceId 
                     this.calculateBalance();
                     this.SetAdvanceRow();
                     this.setPaidAmount();
@@ -751,6 +747,7 @@ export class OpPaymentVimalComponent implements OnInit {
     }
     advanceUsedAmt:any=0;
     calculateBalance() { 
+        debugger
         if (this.dataSource.data && this.dataSource.data.length > 0) {
           let totalAdvanceAmt = 0;
           let netAmtLocal = this.netPayAmt;
@@ -774,7 +771,7 @@ export class OpPaymentVimalComponent implements OnInit {
         this.advanceUsedAmt = netAmt; 
         return netAmt
       }
-    SetAdvanceRow() { 
+    SetAdvanceRow() {  
         let adv = this.dataSource.data.reduce(function (a, b) { return a + Number(b['usedAmount']); }, 0);
         let tmp = this.Payments.data.find(x => x.Id == -1);
         if (tmp) {
@@ -798,8 +795,7 @@ export class OpPaymentVimalComponent implements OnInit {
 
     BankId = 0
     BankNam: any;
-    selectChangebank(event) {
-        console.log(event)
+    selectChangebank(event) { 
         this.BankId = event.value
         this.BankNam = event.text
     }

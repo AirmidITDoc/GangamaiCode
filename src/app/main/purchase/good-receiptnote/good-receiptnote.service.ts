@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,8 @@ export class GoodReceiptnoteService {
     public _httpClient: HttpClient,
     private _loaderService: LoaderService,
     private _formBuilder: UntypedFormBuilder,
-    public _httpClient1:ApiCaller
+    public _httpClient1:ApiCaller,
+    public _FormvalidationserviceService:FormvalidationserviceService
   ) {
     this.GRNStoreForm = this.createStoreFrom();
     // this.GRNFirstForm=this.getGRNfirstForm();
@@ -53,7 +55,7 @@ export class GoodReceiptnoteService {
 
   GRNSearchFrom() {
     return this._formBuilder.group({
-      ToStoreId: ['2'], 
+      ToStoreId: ['2',[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]], 
       SupplierId: '', 
       Status1: [0],   
       start: [new Date().toISOString()],
@@ -66,16 +68,16 @@ export class GoodReceiptnoteService {
       PurchaseId: [''],
       poBalQty: [''],
       ItemName: ['', [Validators.required]],
-       UOMId: [''], 
-      HSNCode: [''],
+       UOMId: ['',], 
+      HSNCode: ['',[Validators.required]],
       BatchNo: ['', [Validators.required]],
-      ConversionFactor: [''],
+      ConversionFactor: ['',[Validators.required, Validators.min(1)]],
       Qty: [0, [Validators.required, Validators.min(1)]],
-      ExpDate: [''],
-      MRP: [0, [Validators.required]],
+      ExpDate: ['',[Validators.required]],
+      MRP: [0, [Validators.required, Validators.min(1)]],
       FreeQty: [0],
-      Rate: [0, [Validators.required]],
-      TotalAmount: [0],
+      Rate: [0,  [Validators.required, Validators.min(1)]],
+      TotalAmount: [0, [Validators.required, Validators.min(1)]],
       Disc: [0],
       Disc2: [0],
       DisAmount: [0],
@@ -88,18 +90,18 @@ export class GoodReceiptnoteService {
       SGSTAmount: [0],
       IGST: [0],
       IGSTAmount: [0],
-      NetAmount: [0],
+      NetAmount: [0, [Validators.required, Validators.min(1)]],
       SupplierId: ['', [Validators.required]],
       Contact:  ['', [Validators.required]],
       Mobile: [''],
-      InvoiceNo: ['',Validators.required],
+      InvoiceNo: ['',Validators.required,Validators.min(1)],
       DateOfInvoice: [new Date()],
       GateEntryNo: [''], 
-      GSTType: [16], // 16 is a value of first GST Type   
+      GSTType: [16,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]], // 16 is a value of first GST Type   
       PaymentDate: [new Date()],
       GRNType:['true'], 
       PaymentType:['false'],
-      StoreId:['2']
+      StoreId:['2',[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]]
     });
   }
 
@@ -111,9 +113,9 @@ export class GoodReceiptnoteService {
       DebitAmount: [''],
       CreditAmount: [''],
       DiscAmount: [''],
-      TotalAmt: ['',Validators.required],
+      TotalAmt: ['', [Validators.required, Validators.min(1)]],
       VatAmount: [''],
-      NetPayamt: ['',Validators.required],
+      NetPayamt: ['', [Validators.required, Validators.min(1)]],
       OtherCharge: [''],
       RoundingAmt: [''],
       EwayBillNo: [""],

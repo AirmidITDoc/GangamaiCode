@@ -229,6 +229,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         //     new ItemNameList(staticData),
         // ); 
         this.userFormGroup = this._GRNList.getGRNForm();
+         this.userFormGroup.markAllAsTouched();
+          this._GRNList.GRNFinalForm.markAllAsTouched();
         if (this.mock) {
             this.setMockData(); 
         }
@@ -529,6 +531,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         if (itemNameElement) {
             itemNameElement.focus();
         }
+        this.userFormGroup.markAllAsTouched();
     }
     deleteTableRow(row: ItemNameList) {
         if (row.IsVerifiedUserId == 1) {
@@ -821,6 +824,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
 
     }
     onSave() {
+        debugger
         const formValues = this.userFormGroup.getRawValue() as GRNFormModel; 
         // Apply save flow here 
         if ((formValues.SupplierId == '' || formValues.SupplierId == null || formValues.SupplierId == '0')) {
