@@ -29,6 +29,7 @@ export class NewOTTablemasterComponent implements OnInit {
         
         ngOnInit(): void {
             this.myForm = this._OttablemasterService.createVillageForm();
+            this.myForm.markAllAsTouched();
             
             console.log(this.data)
             if ((this.data?.villageId??0) > 0) 

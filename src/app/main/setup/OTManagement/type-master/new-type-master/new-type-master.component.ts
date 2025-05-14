@@ -30,7 +30,8 @@ myForm: FormGroup;
     
     ngOnInit(): void {
         this.myForm = this._TypeMasterService.createVillageForm();
-        
+         this.myForm.markAllAsTouched();
+
         console.log(this.data)
         if ((this.data?.villageId??0) > 0) 
         {
@@ -67,7 +68,7 @@ myForm: FormGroup;
                     { name: "required", Message: "City Name is required" }
                 ],
                 villageName: [
-                    { name: "required", Message: "Taluka Name is required" },
+                    { name: "required", Message: "ottype Name is required" },
                     { name: "maxlength", Message: "Taluka Name should not be greater than 50 char." },
                     { name: "pattern", Message: "Only char allowed." }
                 ]
