@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,9 @@ export class CurrentStockService {
 
   constructor(
     public _httpClient: HttpClient,
-    private _formBuilder: UntypedFormBuilder
+    public _httpClient1:ApiCaller,
+    private _formBuilder: UntypedFormBuilder,
+    private accountService: AuthenticationService
   ) { 
     this.dayWiseForm = this.createUserForm();
     this.SearchGroup= this.createSearchFrom();
@@ -30,8 +34,8 @@ export class CurrentStockService {
     return this._formBuilder.group({
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
-      StoreId:'2',
-      ItemCategory:'',
+      StoreId:this.accountService.currentUserValue.user.storeId,
+      ItemCategory:'%',
       IsDeleted:['2']
     });
   }
@@ -39,25 +43,24 @@ export class CurrentStockService {
   createUserForm() {
     return this._formBuilder.group({
       start: [(new Date()).toISOString()],
-      StoreId:'2',
-      ItemCategory:'',
-      
+      StoreId:this.accountService.currentUserValue.user.storeId,
+      ItemCategory:'',      
     });
   }
   createItemWiseFrom(){
     return this._formBuilder.group({
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
-      StoreId:'2',
+      startSales: [(new Date()).toISOString()],
+      endSales: [(new Date()).toISOString()],
+      StoreId:this.accountService.currentUserValue.user.storeId,
       ItemCategory:'',
     })
   }
  
   PurchaseItemWiseFrom(){
     return this._formBuilder.group({
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
-      StoreId:'2',
+      laststart: [(new Date()).toISOString()],
+      lastend: [(new Date()).toISOString()],
+      StoreId:this.accountService.currentUserValue.user.storeId,
       ItemCategory:'',
     })
   }
@@ -66,7 +69,7 @@ export class CurrentStockService {
     return this._formBuilder.group({
       start: [''],
       end: [(new Date()).toISOString()],
-      StoreId:'',
+      StoreId:this.accountService.currentUserValue.user.storeId,
       ItemCategory:'',
     });
   }
@@ -74,7 +77,7 @@ export class CurrentStockService {
     return this._formBuilder.group({
       start: [''],
       end: [(new Date()).toISOString()],
-      StoreId:'',
+      StoreId:this.accountService.currentUserValue.user.storeId,
       ItemCategory:'',
     });
   }
@@ -94,15 +97,18 @@ export class CurrentStockService {
   public getIssueWiseItemStockList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_rpt_ItemWisePurchaseReport", Param)
   }
+
+  // current stock inside list
   public getItemMovementsummeryList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Phar_ItemMovementReport", Param)
+    return this._httpClient1.PostData("CurrentStock/ItemMovementSummeryList", Param)
   }
   public getBatchExpWiseList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_PHAR_BatchExpWiseList",Param);
+    return this._httpClient1.PostData("CurrentStock/BatchWiseList",Param);
   }
   public getPueSupplierWiseList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_PHAR_PurchaseSupplierWiseList",Param);
+    return this._httpClient1.PostData("CurrentStock/BatchWiseList",Param);
   }
+  
   public getSalesList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_PHAR_SalesList",Param);
   }

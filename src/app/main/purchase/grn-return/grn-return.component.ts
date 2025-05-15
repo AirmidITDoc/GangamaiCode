@@ -120,8 +120,11 @@ export class GRNReturnComponent implements OnInit {
     // this.getGRNReturnList();
     console.log("main list:", this.gridConfig);
   }
-  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  // fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  // toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  fromDate = this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get('start').value, "yyyy-MM-dd")
+  toDate = this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get('end').value, "yyyy-MM-dd")
+  
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('ColorCode') ColorCode!: TemplateRef<any>;
 
@@ -132,11 +135,11 @@ export class GRNReturnComponent implements OnInit {
   }
   
   ToStoreId: any = this.accountService.currentUserValue.user.storeId
-  Supplier: any = "0"
   Status: any = "0";
+  vSupplier: any = "0";
 
   allColumns = [
-        { heading: "-", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
+    { heading: "-", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
           template:this.ColorCode, width: 50 },
     { heading: "GRNReturnId", key: "grnReturnId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "GRNReturnNo", key: "grnReturnNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -156,7 +159,7 @@ export class GRNReturnComponent implements OnInit {
     { fieldName: "ToStoreId", fieldValue: String(this.ToStoreId), opType: OperatorComparer.Equals },
     { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    { fieldName: "SupplierId", fieldValue: this.Supplier, opType: OperatorComparer.Equals },
+    { fieldName: "SupplierId", fieldValue: this.vSupplier, opType: OperatorComparer.Equals },
     { fieldName: "IsVerify", fieldValue: this.Status, opType: OperatorComparer.Equals }
   ]
   gridConfig: gridModel = {
@@ -198,7 +201,6 @@ export class GRNReturnComponent implements OnInit {
     this.grid.bindGridData();
   }
 
-  vSupplier: any = '0';
   // vstoreId: any = '2';
   ListView(value) {
     // debugger
@@ -587,6 +589,7 @@ totalQty:any;
 supplierId:any;
 storeId:any;
 supplierName:any;
+issueqty:any;
   /**
    * Constructor
    *
@@ -683,6 +686,7 @@ supplierName:any;
       this.supplierId=ItemNameList.supplierId
       this.storeId=ItemNameList.storeId
       this.supplierName=ItemNameList.supplierName
+      this.issueqty=ItemNameList.issueqty
     }
   }
 }

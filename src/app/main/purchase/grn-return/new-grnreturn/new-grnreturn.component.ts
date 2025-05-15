@@ -24,7 +24,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 })
 export class NewGRNReturnComponent implements OnInit {
   displayedColumns3 = [
-    "checkbox",
+    // "checkbox",
     "ItemName",
     "BatchNo",
     "BatchExpDate",
@@ -108,6 +108,11 @@ export class NewGRNReturnComponent implements OnInit {
     this.vStoreId = obj.value
   }
 
+  selectChangeSupplier(obj: any) {
+    console.log("Supplier:", obj);
+    this.VsupplierId = obj.value
+  }
+
   // dont delete commented code
   // getGrnItemDetailList(Params) {
   //   debugger
@@ -181,7 +186,7 @@ export class NewGRNReturnComponent implements OnInit {
   // }
 
   getGrnItemDetailList(Params) {
-  debugger;
+  // debugger;
   this.chargeslist = [];
   var Param = {
     "first": 0,
@@ -250,7 +255,7 @@ export class NewGRNReturnComponent implements OnInit {
 }
 
   deleteTableRow(elm) {
-    debugger
+    // debugger
     this.dsGrnItemList.data = this.dsGrnItemList.data
       .filter(i => i !== elm)
       .map((i, idx) => (i.position = (idx + 1), i));
@@ -301,7 +306,7 @@ export class NewGRNReturnComponent implements OnInit {
 
   RQty:any; 
   getCellCalculation(contact, ReturnQty) {
-    debugger
+    // debugger
     if (parseInt(contact.ReturnQty) > parseInt(contact.BalanceQty)) {
       this.toastr.warning('Return Qty cannot be greater than BalQty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -325,14 +330,24 @@ export class NewGRNReturnComponent implements OnInit {
     }
   }
  
-interimArray: any = [];
-tableElementChecked(event, element) {
-  debugger
-  if (event.checked) {
-    this.interimArray.push(element);
-  }
-}
+// interimArray: any = [];
+// tableElementChecked(event, element) {
+//   debugger
+//   if (event.checked) {
+//     this.interimArray.push(element);
+//   }
+// }
  
+  getValidationMessages() {
+    return {
+      ToStoreId: [
+        { name: "required", Message: "Store Name is required" }
+      ],
+      SupplierId: [
+        { name: "required", Message: "Supplier Name is required" }
+      ]
+    };
+  }
  
 Savebtn:boolean=false;
 OnSave(){
@@ -343,18 +358,34 @@ OnSave(){
     });
     return;
   }
-  if ((!this.VsupplierId)) {
-    this.toastr.warning('Please Select Supplier name.', 'Warning !', {
+    if ((this.VsupplierId == '' || this.VsupplierId == '0' || this.VsupplierId == null || this.VsupplierId == undefined)) {
+      this.toastr.warning('Please Select Supplier name.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+
+    if ((this.vStoreId == '' || this.vStoreId == '0' || this.vStoreId == null || this.vStoreId == undefined)) {
+      this.toastr.warning('Please Select Store Name.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+  // if ((!this.interimArray.length)) {
+  //   this.toastr.warning('Please select Check Box & enter ReturnQty.', 'Warning !', {
+  //     toastClass: 'tostr-tost custom-toast-warning',
+  //   });
+  //   return;
+  // } 
+
+  const hasInvalidQty = this.dsGrnItemList.data.some(item => !item.ReturnQty || isNaN(item.ReturnQty) || Number(item.ReturnQty) <= 0);
+
+  if (hasInvalidQty) {
+    this.toastr.warning('ReturnQty must be greater than zero.', 'Warning', {
       toastClass: 'tostr-tost custom-toast-warning',
     });
     return;
-  } 
-  if ((!this.interimArray.length)) {
-    this.toastr.warning('Please select Check Box & enter ReturnQty.', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-  } 
+  }
 
   let checkcashtype
   if(this.CashCredittype == false){
@@ -366,7 +397,8 @@ OnSave(){
   this.Savebtn = true;
 
   let grnReturnDetailSavearray=[];
-  this.interimArray.forEach((element) => {
+  // this.interimArray.forEach((element) => {
+    this.dsGrnItemList.data.forEach((element)=>{
   console.log(element)  
   let mrpTotal = element.ReturnQty * element.MRP;
   let PurchaseTotalAmt =element.ReturnQty * element.Rate;
@@ -426,7 +458,8 @@ OnSave(){
   };
 
   let grnReturnUpdateCurrentStockarray = [];
-  this.interimArray.forEach((element) => {
+  // this.interimArray.forEach((element) => {
+  this.dsGrnItemList.data.forEach((element)=>{
     let grnReturnUpdateCurrentStockObj = {};
     let issueqty = element.BalanceQty - element.ReturnQty
     grnReturnUpdateCurrentStockObj['itemId'] = element.ItemId || 0;
@@ -437,7 +470,8 @@ OnSave(){
   });
 
   let grnReturnUpateReturnQtyarray = [];
-  this.interimArray.forEach((element) => { 
+  // this.interimArray.forEach((element) => { 
+  this.dsGrnItemList.data.forEach((element)=>{
     let grnReturnUpateReturnQty = {};
     let issueqty = element.BalanceQty - element.ReturnQty
     grnReturnUpateReturnQty['grndetId'] = element.GRNDetID || 0
@@ -540,7 +574,6 @@ OnReset() {
     //   }
     // });
     dialogRef.afterClosed().subscribe(result => {
-  debugger;
   console.log('The dialog was closed - Insert Action', result);
   console.log("ddddddaaaaaatttttaaa", result);
 

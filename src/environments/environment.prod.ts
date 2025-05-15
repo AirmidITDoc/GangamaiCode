@@ -8,8 +8,8 @@ export const environment = {
     AUTO_CANCEL_DURATION_MINUTES: 5,
     SEQUENCE_NUMBER: 1,
     ALLOWED_PAYMENT_MODE: '1',
-    // API_BASE_PATH: 'http://192.168.2.100:9091/api/v1/',
-    API_BASE_PATH: 'http://localhost:5251/api/v1/',
+    API_BASE_PATH: 'http://192.168.2.100:9091/api/v1/',
+    // API_BASE_PATH: 'http://localhost:5251/api/v1/',
 };
 
 // export const environment = {

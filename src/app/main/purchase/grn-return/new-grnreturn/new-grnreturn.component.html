@@ -37,6 +37,7 @@
                                 
                                 <airmid-dropdown label="Store Name" formControlName="ToStoreId"
                                 [formGroup]="_GRNReturnService.GRNReturnStoreFrom"
+                                [validations]="getValidationMessages().ToStoreId" readOnly
                                    [mode]="autocompletestore" [(ngModel)]="vStoreId"
                                     (selectionChange)="selectChangeStore($event)">
                                </airmid-dropdown>
@@ -44,6 +45,8 @@
 
                             <airmid-dropdown label="Supplier Name" formControlName="SupplierId" fxFlex="20%"
                             [formGroup]="_GRNReturnService.NewGRNReturnFrom" [(ngModel)]="VsupplierId"
+                            [validations]="getValidationMessages().SupplierId"
+                            (selectionChange)="selectChangeSupplier($event)"
                                [mode]="autocompleteSupplier">
                            </airmid-dropdown>
 
@@ -88,7 +91,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="checkbox" sticky>
+                                    <!-- <ng-container matColumnDef="checkbox" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
                                             <span class="material-icons" >
                                                 cached
@@ -99,7 +102,7 @@
                                             </mat-checkbox>
                                         </mat-cell>
                                           
-                                    </ng-container>
+                                    </ng-container> -->
 
                                     <ng-container matColumnDef="ItemName" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide class="w-200"
