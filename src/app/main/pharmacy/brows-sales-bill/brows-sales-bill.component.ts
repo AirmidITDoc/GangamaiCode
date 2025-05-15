@@ -163,7 +163,7 @@ export class BrowsSalesBillComponent implements OnInit {
             this.gridConfig.columnsList.find(col => col.key === 'Status')!.template = this.actionButtonTemplateStatus; 
             // this.gridConfig1.columnsList.find(col => col.key === 'check')!.template = this.actionButtonTemplateCheck;  
           } 
-     AllColumns= [
+              BrowseHColumns= [
         { heading: "Status", key: "Status", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate},
       { heading: "Date", key: "grndate", sort: true, align: 'left', emptySign: 'NA',width: 130,},
@@ -182,11 +182,28 @@ export class BrowsSalesBillComponent implements OnInit {
        { heading: "Action", key: "action", align: "right", width: 160, sticky: true, type: gridColumnTypes.template,
         template: this.actionButtonTemplate  // Assign ng-template to the column
       }
-    ]  
+    ] 
 
+     BrowseDetColumns= [ 
+      { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA',width: 130,},
+      { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' , width: 100}, 
+      { heading: "Batch ExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA',width: 100, type:9},
+      { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA',width: 200},
+      { heading: "Unit MRP", key: "unitMRP", sort: true, align: 'left', emptySign: 'NA',width: 150, type: gridColumnTypes.amount},
+      { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA',width: 140 , type: gridColumnTypes.amount}, 
+      { heading: "Disc%", key: "discPer", sort: true, align: 'left', emptySign: 'NA',width: 140, type: gridColumnTypes.amount },
+      { heading: "Disc Amt", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 , type: gridColumnTypes.amount }, 
+      { heading: "Gross Amt", key: "grossAmount", sort: true, align: 'left', emptySign: 'NA',width: 140 , type: gridColumnTypes.amount},
+      { heading: "GST%", key: "vatPer", sort: true, align: 'left', emptySign: 'NA',width: 130 , type: gridColumnTypes.amount},
+      { heading: "cGST%", key: "cgstPer", sort: true, align: 'left', emptySign: 'NA',width: 130,type: gridColumnTypes.amount },
+      { heading: "SGST%", key: "sgstPer", sort: true, align: 'left', emptySign: 'NA',width: 130,type: gridColumnTypes.amount },
+      { heading: "IGST%", key: "igstPer", sort: true, align: 'left', emptySign: 'NA',width: 130,type: gridColumnTypes.amount },
+       
+    ]  
+    gridConfig1: gridModel = new gridModel();
    gridConfig: gridModel = {
           apiUrl: "Sales/SalesList",
-          columnsList:this.AllColumns,
+          columnsList:this.BrowseDetColumns,
           sortField: "GRNID",
           sortOrder: 0,
           filters: [
@@ -248,7 +265,7 @@ export class BrowsSalesBillComponent implements OnInit {
     this.getSalesReturnList()
     this.gePharStoreList();
     this.gePharStoreList1();
-
+   this.selectRowBrwsDetlist()
 
     if (this._ActRoute.url == '/pharmacy/browsesalesbill') {
 
@@ -261,6 +278,21 @@ export class BrowsSalesBillComponent implements OnInit {
  
   }
 
+  selectRowBrwsDetlist(){
+       this.gridConfig1= {
+          apiUrl: "Sales/SalesBrowseDetailList",
+          columnsList:this.BrowseDetColumns,
+          sortField: "SalesId",
+          sortOrder: 0,
+          filters: [
+              { fieldName: "SalesID", fieldValue: "60020", opType: OperatorComparer.Equals },
+              { fieldName: "OP_IP_Type", fieldValue: "1", opType: OperatorComparer.Equals } 
+          ],  
+        } 
+
+      this.grid1.gridConfig = this.gridConfig1;
+      this.grid1.bindGridData();
+  }
   onChangeFirst(){
 
   }

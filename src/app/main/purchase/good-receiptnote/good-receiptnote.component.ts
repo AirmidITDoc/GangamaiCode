@@ -58,7 +58,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'Status')!.template = this.actionButtonTemplateStatus;
-        // this.gridConfig1.columnsList.find(col => col.key === 'check')!.template = this.actionButtonTemplateCheck;  
+       
     }
     AllColumns = [
         {
@@ -105,7 +105,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         { heading: "Verified", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', width: 100, },
         { heading: "VerifiedDatetime", key: "isVerifiedDatetime", sort: true, align: 'left', emptySign: 'NA', width: 160, type: 9 }
     ]
-
+    gridConfig1: gridModel = new gridModel();
     isShowDetailTable: boolean = false;
     gridConfig: gridModel = {
         apiUrl: "GRN/GRNHeaderList",
@@ -119,17 +119,7 @@ export class GoodReceiptnoteComponent implements OnInit {
             { fieldName: "IsVerify", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Supplier_Id", fieldValue: "0", opType: OperatorComparer.Equals }
         ],
-    }
-    
-    gridConfig1: gridModel = {
-        apiUrl: "GRN/GRNDetailsList",
-        columnsList: this.AllDetailsColumns,
-        sortField: "GRNDetID",
-        sortOrder: 0,
-        filters: [
-            { fieldName: "GrnId", fieldValue: "0", opType: OperatorComparer.Equals }
-        ],
-    }
+    } 
 
     constructor(
         public _GRNService: GoodReceiptnoteService,
@@ -328,7 +318,7 @@ export class GoodReceiptnoteComponent implements OnInit {
                 }
             });
         dialogRef.afterClosed().subscribe(result => { 
-            this.onChangeFirst();
+          this.grid.bindGridData();
         });
     }
     GRNEmail(contact) {
@@ -342,7 +332,7 @@ export class GoodReceiptnoteComponent implements OnInit {
                 }
             });
         dialogRef.afterClosed().subscribe(result => { 
-            this.onChangeFirst();
+             this.grid.bindGridData();
         });
     }
     onEdit(contact) {
@@ -359,7 +349,7 @@ export class GoodReceiptnoteComponent implements OnInit {
                 }
             });
         dialogRef.afterClosed().subscribe(result => { 
-            this.onChangeFirst();
+             this.grid.bindGridData();
         });
     }
     onVerify(row) {
@@ -369,7 +359,8 @@ export class GoodReceiptnoteComponent implements OnInit {
 
         this._GRNService.getVerifyGRN(GRNVerifyObj).subscribe(response => {
         }); 
-        this.onChangeFirst();
+        // this.onChangeFirst();
+         this.grid.bindGridData();
     }
     LastThreeItemList(contact) {
         var vdata = {
