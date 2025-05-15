@@ -836,6 +836,13 @@ export class NewPurchaseorderComponent {
     } else {
       this.IsDiscPer2 = false
     }
+
+    //  if (this.dsItemNameList.data.length > 0) {
+    //         for (let i = 0; i < this.dsItemNameList.data.length; i++) {
+    //             this.getCellCalculation(this.dsItemNameList.data[i], null);
+    //         }
+    //     }
+
   }
 
 
@@ -971,7 +978,7 @@ debugger
     return this.dsItemNameList.data.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0);
   }
   calculateCellGSTType(item: ItemNameList): ItemNameList {
-    // Validate input
+   
     if (!item) return item;
     debugger
     try {

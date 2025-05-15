@@ -12,9 +12,10 @@ import { MatSort } from '@angular/material/sort';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { map, startWith } from 'rxjs/operators';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { GRNItemResponseType } from 'app/main/purchase/good-receiptnote/new-grn/types';
 import Swal from 'sweetalert2';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-new-indent',
@@ -62,7 +63,9 @@ export class NewIndentComponent implements OnInit {
     public _IndentService: IndentService,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
+     private _formBuilder: UntypedFormBuilder,
     private commonService: PrintserviceService,
+    private _FormvalidationserviceService: FormvalidationserviceService,
     public toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NewIndentComponent>,
@@ -70,7 +73,7 @@ export class NewIndentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.StoreFrom = this._IndentService.CreateStoreFrom();
+    this.StoreFrom = this.CreateStoreFrom();
     this.IndentForm = this._IndentService.createnewindentfrom();
      this.StoreFrom.markAllAsTouched();
     this.IndentForm.markAllAsTouched();
@@ -79,14 +82,37 @@ export class NewIndentComponent implements OnInit {
     if (this.data) {
       this.registerObj = this.data.Obj;
       this.IndentId=this.data.Obj.indentId
+      this.vRemark=this.data.Obj.comments
       console.log(this.registerObj);
       this.StoreFrom.get("ToStoreId").setValue(this.registerObj.toStoreId)
-      this.IndentForm.get("Remark").setValue(this.registerObj.remarks)
-            this.getupdateIndentList(this.registerObj.indentId);
+      this.StoreFrom.get("comments").setValue(this.registerObj.remarks)
+      this.getupdateIndentList(this.registerObj.indentId);
     }
 
   }
 
+  
+    CreateStoreFrom(){
+      return this._formBuilder.group({
+        // FromStoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required]],
+        // ToStoreId: ['', [Validators.required]],
+        // IsUrgent: ['0'],
+        // Remark:[''],
+       indentId:this.IndentId,
+        // "indentNo": "",
+       IndentDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+       IndentTime: this.datePipe.transform(new Date(), 'shortTime'),
+       FromStoreId:[this._loggedService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+       ToStoreId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+       isdeleted: 0,
+       isverify: false,
+       isclosed: false,
+       comments:  "",
+       tIndentDetails:""
+      });
+    }
+  
+    
   onAdd() {
 
     if (!this.IndentForm.get('ItemName')?.value) {
@@ -203,12 +229,7 @@ export class NewIndentComponent implements OnInit {
   }
   OnSave() {
     debugger
-     if (this.StoreFrom.invalid) {
-         Swal.fire('Please enter To Store');
-         return;
-       }
-
-    if ((!this.dsIndentNameList.data.length)) {
+   if ((!this.dsIndentNameList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -229,23 +250,32 @@ export class NewIndentComponent implements OnInit {
       InsertIndentDetObj.push(IndentDetInsertObj);
     });
 
-    let submitData = {
-      "indentId":this.IndentId,
-      // "indentNo": "",
-      "indentDate": this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
-      "indentTime": this.datePipe.transform(this.dateTimeObj.date, 'shortTime'),
-      "fromStoreId": this.StoreFrom.get('FromStoreId').value,
-      "toStoreId": this.StoreFrom.get('ToStoreId').value,
-      "isdeleted": 0,
-      "isverify": false,
-      "isclosed": false,
-      "comments": this.IndentForm.get("Remark").value || "",
-      "tIndentDetails": InsertIndentDetObj
-    };
+     if (!this.StoreFrom.invalid) {
+      
+console.log(this.StoreFrom.value)
+this.StoreFrom.get("indentId").setValue(this.IndentId)
+this.StoreFrom.get("tIndentDetails").setValue(InsertIndentDetObj)
+console.log(this.StoreFrom.value)
 
-    console.log(submitData);
+    // let submitData = {
+    //   "indentId":this.IndentId,
+    //   // "indentNo": "",
+    //   "indentDate": this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
+    //   "indentTime": this.datePipe.transform(this.dateTimeObj.date, 'shortTime'),
+    //   "fromStoreId": this.StoreFrom.get('FromStoreId').value,
+    //   "toStoreId": this.StoreFrom.get('ToStoreId').value,
+    //   "isdeleted": 0,
+    //   "isverify": false,
+    //   "isclosed": false,
+    //   "comments": this.IndentForm.get("Remark").value || "",
+    //   "tIndentDetails": InsertIndentDetObj
+    // };
 
-    this._IndentService.InsertIndentSave(submitData).subscribe(response => {
+    // console.log(submitData);
+
+
+    
+    this._IndentService.InsertIndentSave(this.StoreFrom.value).subscribe(response => {
       this.toastr.success(response.message);
       console.log(response)
     if (response) {
@@ -254,7 +284,18 @@ export class NewIndentComponent implements OnInit {
       }
 
     });
- 
+  }else {
+      let invalidFields = [];
+      if (this.StoreFrom.invalid) {
+        for (const controlName in this.StoreFrom.controls) {
+          if (this.StoreFrom.controls[controlName].invalid) { invalidFields.push(`Indent Form: ${controlName}`); }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+      }
+
+    }
 
   }
 
@@ -277,18 +318,18 @@ export class NewIndentComponent implements OnInit {
 
   }
 
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-    console.log(this.dateTimeObj)
-  }
+  // getDateTime(dateTimeObj) {
+  //   this.dateTimeObj = dateTimeObj;
+  //   console.log(this.dateTimeObj)
+  // }
 
   getValidationMessages() {
     return {
       FromStoreId: [
-        // { name: "required", Message: "Store Name is required" }
+        { name: "required", Message: "Store Name is required" }
       ],
       ToStoreId: [
-        // { name: "required", Message: "Ward Name is required" }
+        { name: "required", Message: "Ward Name is required" }
       ],
       ItemName: []
     };

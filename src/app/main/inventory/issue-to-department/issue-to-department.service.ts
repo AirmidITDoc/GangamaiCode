@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 
@@ -41,13 +41,13 @@ export class IssueToDepartmentService {
       ToStoreId: '',
       FromStoreId:this.accountService.currentUserValue.user.storeId,
       Barcode:[''],
-      ItemName:  [''],
+      ItemName:['', [Validators.required]],
       ItemID:[''],
-      BatchNO:[''],
-      BalanceQty:[''],
-      Qty: [''],
-      UnitRate:[''],
-      TotalAmount:[''],
+      BatchNO:['', [Validators.required]],
+      BalanceQty:['', [Validators.required]],
+      Qty:['', [Validators.required]],
+      UnitRate:['', [Validators.required]],
+      TotalAmount:['', [Validators.required]],
       Remark:[''],
       GSTAmount:[''],
       FinalTotalAmount:[''],

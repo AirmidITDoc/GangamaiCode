@@ -37,10 +37,10 @@ export class WorkOrderComponent implements OnInit {
   autocompletestore: string = "Store";
   autocompleteSupplier: string = "SupplierMaster"
 
-  SupplierId="0";
+  SupplierId="3";
   StoreId="2";
-  fromDate = "2025-04-21"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  fromDate = "2025-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = "2025-04-27"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
   ngAfterViewInit() {
@@ -54,11 +54,11 @@ export class WorkOrderComponent implements OnInit {
     { heading: "WO No", key: "woNo", sort: true, align: 'left', emptySign: 'NA',width: 50 },
     { heading: "Date", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 100},
     { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "TotalAmt", key: "woTotalAmount", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "GstAmount", key: "woVatAmount", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "DiscAmount", key: "woDiscAmount", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "TotalAmt", key: "woTotalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "GstAmount", key: "woVatAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "DiscAmount", key: "woDiscAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
    
-    { heading: "Netamount", key: "woNetAmount", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Netamount", key: "woNetAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "Remark", key: "woRemark", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     {
       heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
@@ -66,14 +66,12 @@ export class WorkOrderComponent implements OnInit {
   } 
   ];
 
-   
-      
      constructor(public _WorkOrderService: WorkOrderService, public _matDialog: MatDialog,public datePipe: DatePipe,
              public toastr: ToastrService,private _formBuilder: UntypedFormBuilder, private accountService: AuthenticationService,)
                  { }
          @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
          gridConfig: gridModel = {
-             apiUrl: "Purchase/WorkOrderList",
+             apiUrl: "WorkOrder/WorkOrderList",
              columnsList:this.allcolumns,
              sortField: "WOId",
              sortOrder: 0,
@@ -107,9 +105,9 @@ export class WorkOrderComponent implements OnInit {
              let that = this;
              const dialogRef = this._matDialog.open( UpdateWorkorderComponent, 
                  {
-                     maxWidth: "80vw",
-                     maxHeight: '95%',
-                     width: '90%',
+                  maxWidth: "100%",
+                  height: '95%',
+                  width: '95%',
                      data: row
                  });
              dialogRef.afterClosed().subscribe(result => {
@@ -152,7 +150,7 @@ export class WorkOrderComponent implements OnInit {
           getfilterdata() {
             debugger
             this.gridConfig = {
-              apiUrl: "Purchase/WorkOrderList",
+              apiUrl: "WorkOrder/WorkOrderList",
               columnsList: this.allcolumns,
               sortField: "WOId",
               sortOrder: 0,

@@ -1,8 +1,10 @@
+import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +16,11 @@ export class IndentService {
   StoreFrom:FormGroup;
 
   constructor(
-    public _httpClient: HttpClient,   public _httpClient1: ApiCaller,
-    private _formBuilder: UntypedFormBuilder, private accountService: AuthenticationService
+    public _httpClient: HttpClient,   public _httpClient1: ApiCaller,  public datePipe: DatePipe,
+    private _formBuilder: UntypedFormBuilder, private accountService: AuthenticationService, private _FormvalidationserviceService: FormvalidationserviceService
   ) { 
     // this.IndentSearchGroup= this.IndentSearchFrom();
-    // this.newIndentFrom = this.createnewindentfrom();
+    this.newIndentFrom = this.createnewindentfrom();
     // this.StoreFrom = this.CreateStoreFrom();
   }
 
@@ -38,20 +40,34 @@ export class IndentService {
       // FromStoreId:this.accountService.currentUserValue.user.storeId,
       // IsUrgent:['0'],
       ItemName: ['', [Validators.required]],
-      Qty:   ['', [Validators.required]],
-      Remark:[''],
+      Qty:   ['', [Validators.required], Validators.maxLength(5)],
+      Remark:['',Validators.maxLength(500)],
       ItemNameKit:[''],
       Qtykit:['']
     });
   }
   
-  CreateStoreFrom(){
-    return this._formBuilder.group({
-      FromStoreId:this.accountService.currentUserValue.user.storeId,
-      ToStoreId: ['', [Validators.required]],
-      IsUrgent: ['0'],
-    });
-  }
+
+
+  // CreateStoreFrom(){
+  //   return this._formBuilder.group({
+  //     // FromStoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required]],
+  //     // ToStoreId: ['', [Validators.required]],
+  //     // IsUrgent: ['0'],
+  //     // Remark:[''],
+  //    IndentId:0,
+  //     // "indentNo": "",
+  //    IndentDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+  //    IndentTime: this.datePipe.transform(new Date(), 'shortTime'),
+  //    FromStoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+  //     ToStoreId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+  //    isdeleted: 0,
+  //    isverify: false,
+  //    isclosed: false,
+  //    comments:  "",
+  //    tIndentDetails:""
+  //   });
+  // }
 
   
   public InsertIndentSave(Param){

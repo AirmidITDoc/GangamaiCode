@@ -181,9 +181,9 @@ debugger
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            // if (result) {
-                that.grid.bindGridData();
-            // }
+          that.grid.bindGridData();
+                 this.isShowDetailTable = false;
+           
         });
     }
 
@@ -203,7 +203,7 @@ debugger
             });
           dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
-            // this.grid.gridConfig = this.gridConfig;
+            this.isShowDetailTable = true;
             this.grid.bindGridData();
           });
         }

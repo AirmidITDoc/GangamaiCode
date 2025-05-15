@@ -67,8 +67,8 @@ export class PurchaseOrderService {
     return this._formBuilder.group({
       purchaseId: [''],
       purchaseNo: [''],
-      StoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required]],
-      SupplierId: ['', [Validators.required]],
+      StoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      SupplierId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       TotalAmount: [''],
       DiscAmount: [''],
       Disc:[''],
@@ -76,7 +76,7 @@ export class PurchaseOrderService {
       grandTotal: [''],
       ItemName:   ['', [Validators.required]],
       ConversionFactor: [''],
-      Qty:   [1, [Validators.required]],
+      Qty:   [0, [Validators.required]],
       UOM: [''],
       Rate:  ['', [Validators.required]],
 

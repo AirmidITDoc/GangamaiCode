@@ -3,7 +3,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { WorkOrderService } from '../work-order.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { UntypedFormBuilder } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
@@ -13,6 +13,8 @@ import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { ToastrService } from 'ngx-toastr';
 import { MatSelect } from '@angular/material/select';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { GRNItemResponseType, GSTType } from '../../good-receiptnote/new-grn/types';
+import { PurchaseFormModel } from '../../purchase-order/update-purchaseorder/types';
 
 @Component({
   selector: 'app-update-workorder',
@@ -22,13 +24,17 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
   animations: fuseAnimations,
 })
 export class UpdateWorkorderComponent implements OnInit {
-   
+  WorkOrderStoreForm:FormGroup;
+  WorkorderItemForm:FormGroup;
+  WorkorderFinalForm:FormGroup;
+
+
   displayedColumnsnew:string[] = [
     'ItemName',
     'Qty',
     'Rate',
     'TotalAmount',
-    'Disc',
+    'DiscPer',
     'DiscAmt',
     'Vat',
     'VatAmt',
@@ -39,15 +45,9 @@ export class UpdateWorkorderComponent implements OnInit {
 
   ItemID: any = 0;
   ItemName: any;
-  screenFromString = 'admission-form';
-  isItemIdSelected: boolean = false;
+  screenFromString = 'Common-form';
+  
   chargeslist: any = [];
- filteredOptions: any;
- noOptionFound: boolean = false;
- sIsLoading: string = '';
- isLoading = true;
- StoreList:any=[];
- SupplierList:any=[];
  FinalNetAmount: any;
  FinalTotalAmount: any;
  FinalDiscAmount: any;
@@ -73,6 +73,10 @@ export class UpdateWorkorderComponent implements OnInit {
  vWorkId:any;
  vItemName:any;
 
+ autocompletestore: string = "Store";
+ autocompleteSupplier: string = "SupplierMaster"
+ autocompleteModeGSTType: string = "GstCalcType";
+
   dsItemNameList = new MatTableDataSource<ItemNameList>(); 
   dsTempItemNameList = new MatTableDataSource<ItemNameList>();
 
@@ -89,8 +93,10 @@ export class UpdateWorkorderComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored) { }
 
   ngOnInit(): void {
-    this.gePharStoreList();
-    this.getGSTtypeList();
+   this.WorkOrderStoreForm=this._WorkOrderService.createStoreFrom();
+   this.WorkorderItemForm=this._WorkOrderService.getWorOrderItemForm();
+   this.WorkorderFinalForm=this.getWorkOrderFinalForm();
+    
     
     if (this.data.Obj) {
       this.registerObj=this.data.Obj;
@@ -100,103 +106,61 @@ export class UpdateWorkorderComponent implements OnInit {
       this.FinalTotalAmount=this.registerObj.WOTotalAmount;
       this.FinalNetAmount=this.registerObj.WoNetAmount;
       this.FinalVatAmount=this.registerObj.WOVatAmount;
-      this.getSuppliernameList();
+      
       console.log(this.FinalNetAmount, this.FinalTotalAmount);
       this.getWorkOrderItemDetailList(this.registerObj);
     }
   }
 
+
+    getWorkOrderFinalForm() {
+    return this._formBuilder.group({
+      // FinalNetAmount:[0, [Validators.required]],
+      // VatAmount:[0],// [Validators.required]],
+      // FinalTotalAmount:[0, [Validators.required]],
+      // GSTAmount:[''],
+      // FinalDiscAmount:[0, [Validators.required]],
+      // Remark:[''],
+
+
+    woId: 0,
+    date: "Unknown Type: DateTime",
+    time: "string",
+    storeId: 0,
+    supplierID: 0,
+    FinalTotalAmount: 0,
+    VatAmount: 0,
+    FinalDiscAmount: 0,
+    GSTAmount:0,
+    FinalNetAmount: 0,
+    isclosed: true,
+    Remark: "string",
+    addedBy: 0,
+    isCancelled: true,
+    isCancelledBy: 0,
+    workOrderDetails:''
+    });
+
+  }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
   getWorkOrderItemDetailList(el) {
-    var Param = {
-      "WOId": el.WOId,
-    }
-    this._WorkOrderService.getItemListUpdates(Param).subscribe(data => {
-      this.dsItemNameList.data = data as ItemNameList[];
-      this.chargeslist = data as ItemNameList[];
-      this.dsTempItemNameList.data = data as ItemNameList[];
-      this.sIsLoading = '';
-      console.log(this.dsItemNameList);
-    },
-      error => {
-        this.sIsLoading = '';
-      });
+    // var Param = {
+    //   "WOId": el.WOId,
+    // }
+    // this._WorkOrderService.getItemListUpdates(Param).subscribe(data => {
+    //   this.dsItemNameList.data = data as ItemNameList[];
+    //   this.chargeslist = data as ItemNameList[];
+    //   this.dsTempItemNameList.data = data as ItemNameList[];
+    //   this.sIsLoading = '';
+    //   console.log(this.dsItemNameList);
+    // },
+    //   error => {
+    //     this.sIsLoading = '';
+    //   });
   }
-  getGSTtypeList() {
-    var vdata = {
-      'ConstanyType': 'GST_CALC_TYPE',
-    }
-    this._WorkOrderService.getGSTtypeList(vdata).subscribe(data => {
-      this.GSTTypeList = data;
-      this._WorkOrderService.WorkorderItemForm.get('GSTType').setValue(this.GSTTypeList[0]);
-      if (this.data) {
-        const toSelectConstantId = this.GSTTypeList.find(c => c.ConstantId == this.registerObj.ConstantId);
-        this._WorkOrderService.WorkorderItemForm.get('GSTType').setValue(toSelectConstantId);
-        this._WorkOrderService.WorkorderItemForm.get('GSTType').setValue(this.GSTTypeList[0]);
-      }
-    });
-  }
-  gePharStoreList() {
-    var vdata = {
-      Id: this.accountService.currentUserValue.storeId
-    }
-    this._WorkOrderService.getLoggedStoreList(vdata).subscribe(data => {
-      this.StoreList = data;
-      this._WorkOrderService.WorkOrderStoreForm.get('StoreId').setValue(this.StoreList[0]);
-    });
-  }
-  vsupplierName:any;
-  getSuppliernameList() {
-    if(this.vSupplierId){
-      this.vsupplierName = this._WorkOrderService.WorkorderItemForm.get('SupplierName').value ;
-     }
-     else{
-       this.vsupplierName = this.registerObj.SupplierName;
-     }
-    var m_data = {
-      'SupplierName': `${this.vsupplierName}%`
-    }
-    this._WorkOrderService.getSupplierList(m_data).subscribe(data => {
-      this.filteredOptionssupplier = data;
-      if (this.filteredOptionssupplier.length == 0) {
-        this.noOptionFoundsupplier = true;
-      } else {
-        this.noOptionFoundsupplier = false;
-      }
-      if (this.data) { 
-        const toSelectSUpplierId = this.filteredOptionssupplier.find(c => c.SupplierId == this.registerObj.SupplierId);
-        this._WorkOrderService.WorkorderItemForm.get('SupplierName').setValue(toSelectSUpplierId);
-        console.log(toSelectSUpplierId)
-        this._WorkOrderService.WorkorderItemForm.get('SupplierName').setValue(this.filteredOptionssupplier[0]);
-      }
-    })
-  }
-  getOptionTextSupplier(option) {
-    return option && option.SupplierName ? option.SupplierName : '';
-  }
-  getPharItemList() {
-    var m_data = {
-      "ItemName": `${this._WorkOrderService.WorkorderItemForm.get('ItemName').value}%`,
-      "StoreId": this._WorkOrderService.WorkOrderStoreForm.get('StoreId').value.storeid || 0
-    }
-    if (this._WorkOrderService.WorkorderItemForm.get('ItemName').value.length >= 1) {
-      this._WorkOrderService.getItemList(m_data).subscribe(data => {
-        this.filteredOptions = data;
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
-      });
-    }
-  }
-  getOptionText(option) {
-    if (!option)
-      return '';
-    return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
-  }
+ 
   getSelectedObj(obj) {
     console.log(obj);
     this.ItemID = obj.ItemId;
@@ -211,46 +175,55 @@ export class UpdateWorkorderComponent implements OnInit {
     this.vNetAmount = 0;
   }
 
+  vstoreId: any = "2";
+  selectChangeStore(obj: any) {
+    console.log("Store:", obj);
+    this.vstoreId = obj.value
+  }
+
+  
+  getSelectedSupplierObj(obj) {
+    // setTimeout(() => {
+    //   this._PurchaseOrder.getSupplierById(obj.value).subscribe((response) => {
+    //     this.SupplierObj = response;
+    //     console.log(response)
+    //     this.vSupplierId = this.SupplierObj.supplierId
+    //     debugger
+    //     this.vAddress = this.SupplierObj.address;
+    //     this.vMobile = this.SupplierObj.mobile;
+    //     this.vContact = this.SupplierObj.contactPerson;
+    //     this.vGSTNo = this.SupplierObj.gstNo;
+    //     this.vEmail = this.SupplierObj.email;
+    //     this.getSupplierRate();
+
+    //   });
+
+    // }, 100);
+  }
   onAdd() {
     //
-    if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
-      this.toastr.warning('Please enter a Qty', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if ((this.vRate == '' || this.vRate == null || this.vRate == undefined)) {
-      this.toastr.warning('Please enter a Rate', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if ((this.vSupplierId == '' || this.vSupplierId == null || this.vSupplierId == undefined)) {
-      this.toastr.warning('Please select supplierName', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if ((this._WorkOrderService.WorkorderItemForm.get('GSTType').value == '' ||
-     this._WorkOrderService.WorkorderItemForm.get('GSTType').value == null ||
-      this._WorkOrderService.WorkorderItemForm.get('GSTType').value == undefined)) {
+   
+    if ((this.WorkorderItemForm.get('GSTType').value == '' ||
+     this.WorkorderItemForm.get('GSTType').value == null ||
+      this.WorkorderItemForm.get('GSTType').value == undefined)) {
       this.toastr.warning('Please select GST type', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    const isDuplicate = this.dsItemNameList.data.some(item => item.ItemId ===  this._WorkOrderService.WorkorderItemForm.get('ItemName').value);
+    const isDuplicate = this.dsItemNameList.data.some(item => item.ItemId ===  this.WorkorderItemForm.get('ItemName').value.itemId);
     if (!isDuplicate) { 
     this.dsItemNameList.data = [];
     this.chargeslist = this.dsTempItemNameList.data;
+    debugger
     this.chargeslist.push(
       {
-        ItemID: this.ItemID,
-        ItemName: this.vItemName || '',
-        Qty: this.vQty || 0,
-        Rate: this.vRate || 0,
+        ItemID: this.WorkorderItemForm.get('ItemName').value,
+        ItemName: this.WorkorderItemForm.get('ItemName').value.formattedText,
+        Qty: this.WorkorderItemForm.get('Qty').value,
+        Rate:this.WorkorderItemForm.get('UnitRate').value,
         TotalAmount: this.vTotalAmount || 0,
-        DiscPer: this.vDis || 0,
+        DiscPer: this.WorkorderItemForm.get('Disc').value,
         DiscAmount: this.vDiscAmt || 0,
         VATPer: this.vGST || 0,
         VATAmount: this.vGSTAmt || 0,
@@ -265,13 +238,34 @@ export class UpdateWorkorderComponent implements OnInit {
       });
     }
     this.ResetItem();
-    this.itemid.nativeElement.focus();
+    // this.itemid.nativeElement.focus();
    
   }
+
+    getSelectedItem(item: GRNItemResponseType): void {
+        console.log(item)
+        // if (this.mock) {
+        //     return;
+        // }
+        this.WorkorderItemForm.patchValue({
+          UOMId: item.umoId,
+          ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
+          Qty: item.balanceQty,
+          CGSTPer: item.cgstPer,
+          SGSTPer: item.sgstPer,
+          IGSTPer: item.igstPer,
+          GST: item.cgstPer + item.sgstPer + item.igstPer,
+          HSNcode: item.hsNcode
+    
+        });
+        // this.calculateTotalamt();
+      }
+  
+
   ResetItem(){
     this.ItemID = 0;
     this.ItemName = '';
-    this._WorkOrderService.WorkorderItemForm.get('ItemName').setValue('');
+    this.WorkorderItemForm.get('ItemName').setValue('');
     this.vQty = '';
     this.vRate = '';
     this.vDis = '';
@@ -294,32 +288,32 @@ export class UpdateWorkorderComponent implements OnInit {
     });
   }
   calculateTotalAmount() {
-    if (this.vQty > 0 && this.vRate > 0) {
-      if (this.vQty  && this.vRate) {
-      this.vTotalAmount = (parseFloat(this.vRate) * parseInt(this.vQty)).toFixed(2);
+    if (this.WorkorderItemForm.get("Qty").value > 0 && this.WorkorderItemForm.get("UnitRate").value > 0) {
+      // if (this.vQty  && this.vRate) {
+      this.vTotalAmount = (parseFloat(this.WorkorderItemForm.get("Qty").value) * parseInt(this.WorkorderItemForm.get("UnitRate").value)).toFixed(2);
       this.vNetAmount = parseFloat(this.vTotalAmount);
     }else{
-      this._WorkOrderService.WorkorderItemForm.get('TotalAmount').setValue(0);
-      this._WorkOrderService.WorkorderItemForm.get('DiscAmt').setValue(0);
-      this._WorkOrderService.WorkorderItemForm.get('GSTAmount').setValue(0);
-      this._WorkOrderService.WorkorderItemForm.get('NetAmount').setValue(0);
+      this.WorkorderItemForm.get('TotalAmount').setValue(0);
+      this.WorkorderItemForm.get('DiscAmt').setValue(0);
+      this.WorkorderItemForm.get('GSTAmount').setValue(0);
+      this.WorkorderItemForm.get('NetAmount').setValue(0);
     }
     this.calculateDiscperAmount();
-  }
+  // }
 }
 calculateDiscperAmount(){   
-  let disc=this._WorkOrderService.WorkorderItemForm.get('Disc').value || 0;
+  let disc=this.WorkorderItemForm.get('Disc').value || 0;
     if (disc >= 100) {
       this.toastr.warning('Enter Discount less than 100', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
-      this._WorkOrderService.WorkorderItemForm.get('Disc').setValue(0);
+      this.WorkorderItemForm.get('Disc').setValue(0);
     }
     if (disc) {
     this.vDiscAmt = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) /100).toFixed(2) || 0;
     this.vNetAmount = (parseFloat(this.vTotalAmount) - parseFloat(this.vDiscAmt)).toFixed(2); 
 
-    if (this._WorkOrderService.WorkorderItemForm.get('GSTType').value.Name == "GST After Disc") {
+    if (this.WorkorderItemForm.get('GSTType').value.Name == "GST After Disc") {
 
       this.vDiscAmt = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) / 100).toFixed(2);
       let totalamt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDiscAmt)).toFixed(2);
@@ -338,7 +332,7 @@ calculateDiscperAmount(){
 }
 finalCalculation() {
   this.calculateTotalAmount();
-  this.calculateDiscperAmount();
+  // this.calculateDiscperAmount();
   this.calculateDiscperAmount();
   if (this.dsItemNameList.data.length > 0) {
     for (let i = 0; i < this.dsItemNameList.data.length; i++) {
@@ -347,6 +341,39 @@ finalCalculation() {
   }
  // this.calculateDiscAmount();
 }
+
+GSTTypeName=""
+ IsDiscPer2: boolean = false;
+  onGSTTypeChange(event: { value: number, text: string }) {
+    console.log(event)
+    this.GSTTypeName=event.text
+    this.calculateGSTType(event.text as GSTType);
+    if (event.text == "GST After TwoTime Disc") {
+      this.IsDiscPer2 = true
+    } else {
+      this.IsDiscPer2 = false
+    }
+  }
+
+  calculateGSTType(type: GSTType = GSTType.GST_BEFORE_DISC) {
+  
+      const form = this.WorkorderItemForm;
+      const formValues = form.getRawValue() as PurchaseFormModel;
+      const values = this._WorkOrderService.normalizeValues(formValues);
+      const calculation = this._WorkOrderService.getGSTCalculation(formValues.GSTType || type, values);
+  
+      // Update form with calculated values
+      form.patchValue({
+        IGST: type === GSTType.GST_AFTER_DISC ? 0 : values.igst,
+        CGSTAmount: calculation.cgstAmount.toFixed(2),
+        SGSTAmount: calculation.sgstAmount.toFixed(2),
+        IGSTAmount: calculation.igstAmount.toFixed(2),
+        GSTAmount: calculation.totalGSTAmount.toFixed(2),
+        NetAmount: calculation.netAmount.toFixed(2)
+      }, { emitEvent: false });
+    }
+  
+
 keyPressAlphanumeric(event) {
   var inp = String.fromCharCode(event.keyCode);
   if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
@@ -366,9 +393,11 @@ keyPressCharater(event){
   }
 }
 getCellCalculation(contact, ReceiveQty) {
+debugger
+
 
   if (contact.Qty > 0 && contact.Rate > 0) {
-    if (this._WorkOrderService.WorkorderItemForm.get('GSTType').value.Name == 'GST After Disc') {
+    if (this.GSTTypeName == 'GST After Disc') {
 
       //total amt
       contact.TotalAmount = (parseFloat(contact.Qty) * parseFloat(contact.Rate)).toFixed(2);;
@@ -380,7 +409,7 @@ getCellCalculation(contact, ReceiveQty) {
       contact.NetAmount = ((TotalAmt) + parseFloat(contact.VATAmount)).toFixed(2);;
 
     }
-    else if (this._WorkOrderService.WorkorderItemForm.get('GSTType').value.Name == 'GST Before Disc') {
+    else if (this.GSTTypeName == 'GST Before Disc') {
       //total amt
       contact.TotalAmount = (parseFloat(contact.Qty) * parseFloat(contact.Rate)).toFixed(2);;
       //Gst
@@ -435,23 +464,24 @@ getTotalAmt(element) {
       return;
     }
     if(!this.vWorkId) {
-      this.Savebtn=true;
-    let workorderHeaderInsertObj = {};
-    workorderHeaderInsertObj['date'] = this.dateTimeObj.date;
-    workorderHeaderInsertObj['time'] = this.dateTimeObj.time;
-    workorderHeaderInsertObj['storeId'] = this.accountService.currentUserValue.storeId;
-    workorderHeaderInsertObj['supplierID'] = this._WorkOrderService.WorkorderItemForm.get('SupplierName').value.SupplierId || 0;
-    workorderHeaderInsertObj['totalAmount'] = this.FinalTotalAmount;
-    workorderHeaderInsertObj['vatAmount'] = this.FinalVatAmount;
-    workorderHeaderInsertObj['discAmount'] = this.FinalDiscAmount;
-    workorderHeaderInsertObj['netAmount'] = this.FinalNetAmount;
-    workorderHeaderInsertObj['isclosed'] = false;
-    workorderHeaderInsertObj['remarks'] = this._WorkOrderService.WorkorderFinalForm.get('Remark').value || '';
-    workorderHeaderInsertObj['addedBy'] = this.accountService.currentUserValue.userId,
-    workorderHeaderInsertObj['isCancelled'] =false,
-    workorderHeaderInsertObj['isCancelledBy'] = 0;
-    workorderHeaderInsertObj['woId'] = 0;
+      
+    // let workorderHeaderInsertObj = {};
+    // workorderHeaderInsertObj['date'] = this.dateTimeObj.date;
+    // workorderHeaderInsertObj['time'] = this.dateTimeObj.time;
+    // workorderHeaderInsertObj['storeId'] = this.accountService.currentUserValue.storeId;
+    // workorderHeaderInsertObj['supplierID'] = this.WorkorderItemForm.get('SupplierName').value.SupplierId || 0;
+    // workorderHeaderInsertObj['totalAmount'] = this.FinalTotalAmount;
+    // workorderHeaderInsertObj['vatAmount'] = this.FinalVatAmount;
+    // workorderHeaderInsertObj['discAmount'] = this.FinalDiscAmount;
+    // workorderHeaderInsertObj['netAmount'] = this.FinalNetAmount;
+    // workorderHeaderInsertObj['isclosed'] = false;
+    // workorderHeaderInsertObj['remarks'] = this._WorkOrderService.WorkorderFinalForm.get('Remark').value || '';
+    // workorderHeaderInsertObj['addedBy'] = this.accountService.currentUserValue.userId,
+    // workorderHeaderInsertObj['isCancelled'] =false,
+    // workorderHeaderInsertObj['isCancelledBy'] = 0;
+    // workorderHeaderInsertObj['woId'] = 0;
   
+    console.log(this.WorkorderFinalForm.value)
     let InsertWorkDetailarrayObj = [];
     this.dsItemNameList.data.forEach((element) => { 
       let insertWorkDetailaObj = {};
@@ -470,37 +500,25 @@ getTotalAmt(element) {
       InsertWorkDetailarrayObj.push(insertWorkDetailaObj);
     });
   
-    let submitData = {
-      "workorderHeaderInsert": workorderHeaderInsertObj,
-      "workorderDetailInsert": InsertWorkDetailarrayObj,
-    };
-    console.log(submitData);
-    this._WorkOrderService.InsertWorkorderSave(submitData).subscribe(response => {
+    this.WorkorderFinalForm.get("workOrderDetails").setValue(InsertWorkDetailarrayObj)
+    // let submitData = {
+    //   "workorderHeaderInsert": workorderHeaderInsertObj,
+    //   "workorderDetailInsert": InsertWorkDetailarrayObj,
+    // };
+    console.log(this.WorkorderFinalForm.value);
+    this._WorkOrderService.InsertWorkorderSave(this.WorkorderFinalForm.value).subscribe(response => {
+      this.toastr.success(response.message);
       if (response) {
-        this.toastr.success('Record New WorkOrder Data Saved Successfully.', 'Saved !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-        this.OnReset();
+        this.viewgetWorkorderReportPdf(response)
         this._matDialog.closeAll();
-        this.Savebtn=false;
-        
-        this.viewgetWorkorderReportPdf(response);
-      } else {
-        this.toastr.error('New WorkOrder Data not Saved !, Please check error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
       }
-    }, error => {
-      this.toastr.error('New WorkOrder Data not Saved !, Please check API error..', 'Error !', {
-        toastClass: 'tostr-tost custom-toast-error',
-      });
     });
   } 
   else{
     let workorderHeaderUpdateObj = {};
     workorderHeaderUpdateObj['woId'] = this.registerObj.WOId;
     workorderHeaderUpdateObj['storeId'] = this.accountService.currentUserValue.storeId;
-    workorderHeaderUpdateObj['supplierID'] = this._WorkOrderService.WorkorderItemForm.get('SupplierName').value.SupplierId || 0;
+    workorderHeaderUpdateObj['supplierID'] = this.WorkorderItemForm.get('SupplierName').value.SupplierId || 0;
     workorderHeaderUpdateObj['totalAmount'] = this.FinalTotalAmount;
     workorderHeaderUpdateObj['vatAmount'] = this.FinalVatAmount;
     workorderHeaderUpdateObj['discAmount'] = this.FinalDiscAmount;
@@ -537,22 +555,11 @@ getTotalAmt(element) {
     };
     console.log(submitData);
     this._WorkOrderService.WorkorderUpdate(submitData).subscribe(response => {
+      this.toastr.success(response.message);
       if (response) {
-        this.toastr.success('Record New WorkOrder Data Updated Successfully.', 'Updated !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-        this.OnReset();
+        this.viewgetWorkorderReportPdf(response)
         this._matDialog.closeAll();
-        this.Savebtn=true;
-      } else {
-        this.toastr.error('New WorkOrder Data not Updated !, Please check error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
       }
-    }, error => {
-      this.toastr.error('New WorkOrder Data not Updated !, Please check API error..', 'Error !', {
-        toastClass: 'tostr-tost custom-toast-error',
-      });
     });
   }
   }
@@ -561,107 +568,44 @@ getTotalAmt(element) {
   
   
   viewgetWorkorderReportPdf(WOId) {
-    
-    this.sIsLoading = 'loading-data';
-    setTimeout(() => {
-      
-   this._WorkOrderService.getWorkorderreportview(
-    WOId
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "95vw",
-          height: '850px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Work ORDER Viewer"
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.sIsLoading = ' ';
-        });
-       
-    });
    
-    },100);
+  }
+
+  ItemFromReset(){
+    this.WorkorderItemForm.reset({
+      SupplierName:'',
+      GSTType:'',
+      WorkId:'',
+      ItemName:'',
+      ItemID:0,
+      Qty:1,
+      UnitRate:0,
+      TotalAmount:0,
+      Disc:0,
+      DiscAmt:0,
+      GST:0,
+      GSTAmount:0,
+      VatAmt:0,
+      NetAmount:0,
+      Specification:'',
+    });
   }
 
 
   onClose(){
     this._matDialog.closeAll();
-    this._WorkOrderService.WorkorderItemForm.reset();
+    this.WorkorderItemForm.reset();
     this.dsItemNameList.data = [];
     this.chargeslist.data = [];
   }
   OnReset() {
-    this._WorkOrderService.WorkorderItemForm.reset();
+    this.WorkorderItemForm.reset();
     this.dsItemNameList.data = [];
     this.chargeslist.data = [];
     this.dsTempItemNameList.data =[];
   }
  
-  addbtn:boolean=true;
-  Savebtn:boolean=false;
-  @ViewChild('SupplierId') SupplierId: MatSelect;
-  @ViewChild('itemid') itemid: ElementRef;
-  @ViewChild('qty') qty: ElementRef;
-  @ViewChild('rate') rate: ElementRef;
-  @ViewChild('disc') disc: ElementRef;
-  @ViewChild('gst') gst: ElementRef;
-  @ViewChild('specification') specification: ElementRef; 
-  add: boolean = false;
-  // @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
-  @ViewChild('Remark1') Remark1: ElementRef;
-  @ViewChild('addbutton') addbutton: ElementRef;
-  public onEnterSupplier(event): void {
-    if (event.which === 13) {
-      this.itemid.nativeElement.focus();
-    }
-  }
-  public onEnterItemName(event): void {
-    if (event.which === 13) {
-      this.qty.nativeElement.focus();
-      this.addbtn = true;
-    }
-  }
-  public onEnterQty(event): void {
-    if (event.which === 13) {
-      this.rate.nativeElement.focus();
-    }
-  }
-  public onEnterRate(event): void {
-    if (event.which === 13) {
-      this.disc.nativeElement.focus();
-     // this._WorkOrderService.WorkorderItemForm.get('Disc').setValue('');
-    }
-  }
-  public onEnterDis(event): void {
-    if (event.which === 13) {
-      this.gst.nativeElement.focus(); 
-    }
-  }
-  public onEnterGST(event): void {
-    if (event.which === 13) {
-       this.addbutton.nativeElement.focus();
-    }
-  } 
-  public onEnterSpecification(event): void {
-    if (event.which === 13) {
-     
-      //this.addbutton.nativeElement.focus();
-      //this.addBtn.nativeElement.focus();
-    }
-  }
-  public onEnterRemark(event): void {
-    if (event.which === 13) {
-      //this.FinalDiscAmount1.nativeElement.focus();
-    }
-  }
-  public setFocus(nextElementId): void {
-    document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
-  }
+  
   selectedRowIndex: any;
   arrowUpEvent() {
     this.selectedRowIndex--;
@@ -673,12 +617,7 @@ getTotalAmt(element) {
   highlight(contact: any) {
     this.selectedRowIndex = contact;
   }
-  // focusNext(nextElementId: string): void {
-  //   const nextElement = this.elementRef.nativeElement.querySelector(`#${nextElementId}`);
-  //   if (nextElement) {
-  //     nextElement.focus();
-  //   }
-  // }
+ 
 
 }
 export class ItemNameList{

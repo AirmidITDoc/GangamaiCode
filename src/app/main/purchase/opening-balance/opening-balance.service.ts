@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,22 +17,22 @@ NewUseForm:FormGroup;
 
    
   constructor(
-    public _httpClient:HttpClient, public _httpClient1:ApiCaller,
-    public _formbuilder:UntypedFormBuilder
+    public _httpClient:HttpClient, public _httpClient1:ApiCaller, private accountService: AuthenticationService,
+    public _formbuilder:UntypedFormBuilder,private _FormvalidationserviceService: FormvalidationserviceService,
   ) 
   {
    
 }
 CreateStorForm() {
   return this._formbuilder.group({
-    StoreId: [''],
+    StoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]]
   })
 }
 createsearchFormGroup(){
     return this._formbuilder.group({
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
-      ToStoreId:['2']
+      ToStoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     })
   }
 
@@ -62,6 +64,6 @@ createsearchFormGroup(){
   }
   
   public InsertOpeningBalSave(Param){
-    return this._httpClient1.PostData("Inventory/OpeningTransactionSave", Param)
+    return this._httpClient1.PostData("OpeningBalance/OpeningBalanceSave", Param)
   }
 }

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { IssueToDepartmentService } from './issue-to-department.service';
@@ -23,6 +23,7 @@ import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/conf
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
     selector: 'app-issue-to-department',
@@ -45,35 +46,32 @@ export class IssueToDepartmentComponent implements OnInit {
    
     DraftQty: any = 0;  
     Tostore="4"
-    FromStore="0"
+    FromStore="2"
     Status="1"
     autocompletestore: string = "Store";
     autocompleteitem: string = "ItemType"; //Item
     fromDate ="2025-01-01"// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
    
-  
+  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+   
      allcolumns = [
     
-        { heading: "IsAccepted", key: "isAcc", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "IsAccepted", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "IssueNo", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "From Store Name", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "To StoreName", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "From Store Name", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "To StoreName", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "AddedBy", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Total Amount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "GST Amount", key: "gstAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Net Amount", key: "netAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Total Amount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "GST Amount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Recevied Bonus", key: "receviedBonus", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        {
-            heading: "Action", key: "action", width: 50, align: "right", type: gridColumnTypes.action, actions: [
-                {
-                    action: gridActions.print, callback: (data: any) => {
-                        this.onSave(data);
-                    }
-                }]
-        } 
+         {
+               heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+               template: this.actionButtonTemplate  // Assign ng-template to the column
+           } 
       ];
     
     @ViewChild('grid') grid: AirmidTableComponent;
@@ -99,19 +97,19 @@ export class IssueToDepartmentComponent implements OnInit {
         this.gridConfig1 = {
             apiUrl: "IssueToDepartment/IssueToDeptdetailList",
             columnsList: [
-                { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA',widthh:70 },
+                { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA',widthh:250 },
                 { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Batch Exp Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Batch Exp Date", key: "date", sort: true, align: 'left', emptySign: 'NA',type:6 },
+                { heading: "Qty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "GST%", key: "vatPercentage", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Rate", key: "perUnitLandedRate", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Total Amount", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA' }
+                { heading: "Rate", key: "perUnitLandedRate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+                { heading: "Total Amount", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount }
             ],
             sortField: "IssueId",
             sortOrder: 0,
             filters: [
-                { fieldName: "IssueId", fieldValue: IssueId, opType: OperatorComparer.Equals },
+                { fieldName: "IssueId", fieldValue: String(IssueId), opType: OperatorComparer.Equals },
                 
             ]
         }
@@ -122,7 +120,7 @@ export class IssueToDepartmentComponent implements OnInit {
 
     constructor(
         public _IssueToDep: IssueToDepartmentService,
-        public toastr: ToastrService,
+        public toastr: ToastrService,private commonService: PrintserviceService,
          public _matDialog: MatDialog,
          public datePipe: DatePipe
     ) { }
@@ -233,12 +231,15 @@ export class IssueToDepartmentComponent implements OnInit {
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
+           that.grid.bindGridData();
+           
         });
     }
 
+    viewgetReportPdf(element) {
+        this.commonService.Onprint("IssueId", element.issueId, "OpeningBalance");
+      }
+    
  
 
 }
