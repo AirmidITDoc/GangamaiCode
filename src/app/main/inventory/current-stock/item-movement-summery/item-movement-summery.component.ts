@@ -111,7 +111,7 @@ export class ItemMovementSummeryComponent implements OnInit {
   ngOnInit(): void {
     if (this.data.Obj) {
       this.registerObj = this.data.Obj;
-      //console.log(this.registerObj);
+      console.log("ddddttttaa:", this.registerObj);
       this._CurrentStockService.ItemSummeryFrom.get("start").setValue(this.fiveDaysAgo);
     }
     this.gePharStoreList();
@@ -145,62 +145,122 @@ export class ItemMovementSummeryComponent implements OnInit {
   }
   //itemMovement Summery
   getItemMovementSummeryList() {
-    this.sIsLoading = 'loading-data';
     var vdata = {
-      "FromDate": this.fiveDaysAgo || this.datePipe.transform(this._CurrentStockService.ItemSummeryFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "ToDate": this.datePipe.transform(this._CurrentStockService.ItemSummeryFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "FromStoreID": this.registerObj.StoreId || 0,
-      "ItemId": this.registerObj.ItemId || 0
+      "first": 0,
+      "rows": 10,
+      "sortField": "ItemId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "FromDate",
+          "fieldValue": this.fiveDaysAgo || this.datePipe.transform(this._CurrentStockService.ItemSummeryFrom.get("start").value, "yyyy-MM-dd") || '1900-01-01',
+          "opType": "StartsWith"
+        },
+        {
+          "fieldName": "todate",
+          "fieldValue": this.datePipe.transform(this._CurrentStockService.ItemSummeryFrom.get("end").value, "yyyy-MM-dd") || '1900-01-01',
+          "opType": "StartsWith"
+        },
+        {
+          "fieldName": "ItemId",
+          "fieldValue": String(this.registerObj.itemId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "FromStoreID",
+          "fieldValue": String(this.registerObj.storeId),
+          "opType": "Equals"
+        }
+
+      ],
+      "exportType": "JSON",
+      "columns": []
     }
-    // console.log(vdata)
+    console.log(vdata)
     setTimeout(() => {
-      this._CurrentStockService.getItemMovementsummeryList(vdata).subscribe((Visit) => {
-        this.dsItemMovementSummery.data = Visit as ItemMovementList[];
-        // console.log(this.dsItemMovementSummery);
+      this._CurrentStockService.getItemMovementsummeryList(vdata).subscribe(Visit => {
+        this.dsItemMovementSummery.data = Visit.data as ItemMovementList[];
+        console.log("ItemMovementList:", this.dsItemMovementSummery.data);
         this.dsItemMovementSummery.sort = this.sort;
         this.dsItemMovementSummery.paginator = this.paginator;
         this.sIsLoading = '';
         this.isLoadingStr = this.dsItemMovementSummery.data.length == 0 ? 'no-data' : '';
-      },
-        (error) => {
-          this.isLoadingStr = 'no-data';
-        }
+      }
       );
-    }, 1000);
+    }, 500);
   }
   //batchExpwiseList
   getBatchExpWiseList() {
-    this.sIsLoading = 'loading-data';
     var vdata = {
-      "ItemId": this.registerObj.ItemId || 0,
-      "StoreId": this.registerObj.StoreId || 0
-    }
-    // console.log(vdata)
-    setTimeout(() => {
-      this._CurrentStockService.getBatchExpWiseList(vdata).subscribe((data) => {
-        this.dsBatchExpWise.data = data as BatchExpWiseList[];
-        //console.log(this.dsBatchExpWise);
-        this.dsBatchExpWise.sort = this.sort;
-        this.dsBatchExpWise.paginator = this.SecondPaginator;
-        this.sIsLoading = '';
-      },
-        (error) => {
-          this.isLoadingStr = 'no-data';
+      "first": 0,
+      "rows": 10,
+      "sortField": "ItemId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "ItemId",
+          "fieldValue": String(this.registerObj.itemId), //"77617"
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "StoreId",
+          "fieldValue": String(this.registerObj.storeId),
+          "opType": "Equals"
         }
-      );
-    }, 1000);
-  }
-  //Purchase SupplierwiseList 
-  getPueSupplierWiseList() {
-    this.sIsLoading = 'loading-data';
-    var vdata = {
-      "ItemId": this.registerObj.ItemId || 0,
-      "StoreId": this.registerObj.StoreId || 0
+
+      ],
+      "exportType": "JSON",
+      "columns": [
+        {
+          "data": "BillDate",
+          "name": "Billing Date"
+        }
+      ]
     }
     console.log(vdata)
     setTimeout(() => {
-      this._CurrentStockService.getPueSupplierWiseList(vdata).subscribe((data) => {
-        this.dsPurSupplierWise.data = data as PurSupplierWiseList[];
+      this._CurrentStockService.getBatchExpWiseList(vdata).subscribe(data => {
+        this.dsBatchExpWise.data = data.data as BatchExpWiseList[];
+        console.log("BatchExpWiseList:", this.dsBatchExpWise.data);
+        this.dsBatchExpWise.sort = this.sort;
+        this.dsBatchExpWise.paginator = this.SecondPaginator;
+        this.sIsLoading = '';
+      }
+      );
+    }, 500);
+  }
+  //Purchase SupplierwiseList 
+  getPueSupplierWiseList() {
+    var vdata = {
+  "first": 0,
+  "rows": 10,
+  "sortField": "SalesId",
+  "sortOrder": 0,
+  "filters": [
+{
+      "fieldName": "ItemId",
+      "fieldValue": "77617",
+      "opType": "Equals"
+    },
+{
+      "fieldName": "StoreId",
+      "fieldValue": "2",
+      "opType": "Equals"
+    }
+ 
+],
+  "exportType": "JSON",
+  "columns": [
+    {
+      "data": "BillDate",
+      "name": "Billing Date"
+    }
+  ]
+}
+    console.log(vdata)
+    setTimeout(() => {
+      this._CurrentStockService.getPueSupplierWiseList(vdata).subscribe(data => {
+        this.dsPurSupplierWise.data = data.data as PurSupplierWiseList[];
         console.log(this.dsPurSupplierWise);
         this.dsPurSupplierWise.sort = this.sort;
         this.dsPurSupplierWise.paginator = this.Thirdpaginator;
@@ -210,7 +270,7 @@ export class ItemMovementSummeryComponent implements OnInit {
           this.isLoadingStr = 'no-data';
         }
       );
-    }, 1000);
+    }, 500);
   }
   //Sales List 
   getSalesList() {
@@ -219,11 +279,11 @@ export class ItemMovementSummeryComponent implements OnInit {
       "ItemId": this.registerObj.ItemId || 0,
       "StoreId": this.registerObj.StoreId || 0
     }
-   // console.log(vdata)
+    // console.log(vdata)
     setTimeout(() => {
       this._CurrentStockService.getSalesList(vdata).subscribe((data) => {
         this.dsSaleList.data = data as SalesList[];
-       // console.log(this.dsSaleList);
+        // console.log(this.dsSaleList);
         this.dsSaleList.sort = this.sort;
         this.dsSaleList.paginator = this.Fourthpaginator;
         this.sIsLoading = '';
@@ -234,28 +294,28 @@ export class ItemMovementSummeryComponent implements OnInit {
       );
     }, 1000);
   }
-    //SalesReturn List 
-    getSalesReturnList() {
-      this.sIsLoading = 'loading-data';
-      var vdata = {
-        "ItemId": this.registerObj.ItemId || 0,
-        "StoreId": this.registerObj.StoreId || 0
-      }
-      console.log(vdata)
-      setTimeout(() => {
-        this._CurrentStockService.getSalesRetrunList(vdata).subscribe((data) => {
-          this.dsSalesReturnList.data = data as SalesReturnList[];
-          console.log(this.dsSalesReturnList);
-          this.dsSalesReturnList.sort = this.sort;
-          this.dsSalesReturnList.paginator = this.Lastpaginator;
-          this.sIsLoading = '';
-        },
-          (error) => {
-            this.isLoadingStr = 'no-data';
-          }
-        );
-      }, 1000);
+  //SalesReturn List 
+  getSalesReturnList() {
+    this.sIsLoading = 'loading-data';
+    var vdata = {
+      "ItemId": this.registerObj.ItemId || 0,
+      "StoreId": this.registerObj.StoreId || 0
     }
+    console.log(vdata)
+    setTimeout(() => {
+      this._CurrentStockService.getSalesRetrunList(vdata).subscribe((data) => {
+        this.dsSalesReturnList.data = data as SalesReturnList[];
+        console.log(this.dsSalesReturnList);
+        this.dsSalesReturnList.sort = this.sort;
+        this.dsSalesReturnList.paginator = this.Lastpaginator;
+        this.sIsLoading = '';
+      },
+        (error) => {
+          this.isLoadingStr = 'no-data';
+        }
+      );
+    }, 1000);
+  }
   onClose() {
     this._matDialog.closeAll();
   }
@@ -323,12 +383,12 @@ export class PurSupplierWiseList {
   InvoiceNo: number;
   PaymentMode: number;
   TotalAmount: number;
-  GST:any;
+  GST: any;
 
   constructor(PurSupplierWiseList) {
     {
       this.GrnNumber = PurSupplierWiseList.GrnNumber || 0;
-      this.GRNDate = PurSupplierWiseList.GRNDate ||  0;
+      this.GRNDate = PurSupplierWiseList.GRNDate || 0;
       this.BillDate = PurSupplierWiseList.BillDate || 0;
       this.SupplierName = PurSupplierWiseList.SupplierName || '';
       this.ReceiveQty = PurSupplierWiseList.ReceiveQty || 0;
@@ -355,7 +415,7 @@ export class SalesList {
       this.Date = SalesList.Date || 0;
       this.DoctorName = SalesList.DoctorName || '';
       this.PatientName = SalesList.PatientName || '';
-      this.MobileNo = SalesList.MobileNo ||  0;
+      this.MobileNo = SalesList.MobileNo || 0;
       this.Qty = SalesList.Qty || 0;
       this.TotalAmount = SalesList.TotalAmount || 0;
     }
@@ -376,7 +436,7 @@ export class SalesReturnList {
       this.Date = SalesReturnList.Date || 0;
       this.DoctorName = SalesReturnList.DoctorName || '';
       this.PatientName = SalesReturnList.PatientName || '';
-      this.MobileNo = SalesReturnList.MobileNo ||  0;
+      this.MobileNo = SalesReturnList.MobileNo || 0;
       this.Qty = SalesReturnList.Qty || 0;
       this.TotalAmount = SalesReturnList.TotalAmount || 0;
     }

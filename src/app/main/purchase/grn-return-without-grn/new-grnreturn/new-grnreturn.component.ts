@@ -289,14 +289,20 @@ export class NewGRNReturnComponent implements OnInit {
       });
       return;
     }
-    if ((this.VsupplierId == '' || this.VsupplierId == null || this.VsupplierId == undefined)) {
+    if ((this.VsupplierId == '' || this.VsupplierId == '0' || this.VsupplierId == null || this.VsupplierId == undefined)) {
       this.toastr.warning('Please Select Supplier name.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    this.Savebtn = true;
+     if ((this.vstoreId == '' || this.vstoreId == '0' || this.vstoreId == null || this.vstoreId == undefined)) {
+      this.toastr.warning('Please Select Store Name.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
 
+    this.Savebtn = true;
     
   let grnReturnDetailSavearray=[];
   this.dsItemList.data.forEach((element) => {

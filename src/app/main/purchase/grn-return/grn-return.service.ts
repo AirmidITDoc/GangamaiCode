@@ -37,8 +37,8 @@ export class GrnReturnService {
   }
   GRNSearchFrom() {
     return this._formBuilder.group({ 
-      ToStoreId: [this.accountService.currentUserValue.user.storeId,[Validators.required]],
-      SupplierId:['',[Validators.required]],
+      ToStoreId: [this.accountService.currentUserValue.user.storeId,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      SupplierId:[0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       Status:['0'],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
@@ -58,14 +58,14 @@ export class GrnReturnService {
 
   NewGRNItemList() {
     return this._formBuilder.group({ 
-      SupplierId:'',
+      SupplierId:[0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       CashType:['true'], 
       Qty:['']
     });
   }
   createGRNList() {
     return this._formBuilder.group({
-      SupplierId:'',
+      SupplierId:['',[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
     });

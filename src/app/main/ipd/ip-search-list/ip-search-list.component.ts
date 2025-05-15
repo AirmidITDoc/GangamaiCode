@@ -332,9 +332,10 @@ export class IPSearchListComponent implements OnInit {
                     }
                 });
             dialogRef.afterClosed().subscribe(result => {
-                if (result) {
-                    this.grid.bindGridData();
-                }
+                // if (result) {
+                //     this.grid.bindGridData();
+                // }
+                  this.grid.bindGridData();
             });
         }
         else if (m == "Bed Transfer") {
