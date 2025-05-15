@@ -702,22 +702,21 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     itemlist:any=[];
     onGSTTypeChange(event: { value: number, text: string }) {
         console.log(event)
-        this.GSTTypeID = event.value
-        this.calculateGSTType(event.text as GSTType);
-        if(event.text == "GST After TwoTime Disc"){
+        this.GSTTypeID = event.value;
+        const newGSTType = event.text as GSTType;
+        this.calculateGSTType(newGSTType);
+        if (event.text == "GST After TwoTime Disc") {
             this.IsDiscPer2 = true
-        }else{
+        } else {
             this.IsDiscPer2 = false
         }
 
-         if (this.dsItemNameList.data.length > 0) {
-            //this.itemlist = this.dsItemNameList.data
-            // for (let i = 0; i < this.dsItemNameList.data.length; i++) {
-            //       const values =  this.dsItemNameList.data[i];
-            //     this.newGRNService.getGSTCalculation(event.text as GSTType , this.dsItemNameList.data[i]); 
-            // }
-          //  this.dsItemNameList.data  =   this.itemlist 
-        }
+        // Update gst type of table data
+
+        this.dsItemNameList.data.forEach((item) => {
+            item.GSTType = newGSTType;
+            this.getCellCalculation(item);
+        })
     } 
        
     getCGSTAmt() {
@@ -755,6 +754,9 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         Object.assign(item, updatedItem);
 
         this.updateGRNFinalForm();
+    }
+    updateCellGstType(){
+        const itemList = this.dsGrnItemList
     }
     updateGRNFinalForm() {
         const form = this._GRNList.GRNFinalForm;

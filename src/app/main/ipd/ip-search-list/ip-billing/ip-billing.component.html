@@ -667,13 +667,15 @@
 
                         <ng-container matColumnDef="buttons" stickyEnd>
                           <mat-header-cell *matHeaderCellDef class="table-actions" class="w-70">Action</mat-header-cell>
-                          <mat-cell *matCellDef="let contact" class="w-70">
-                            <buttom mati-icon-button (click)="OnSaveEditedValue(contact)" matTooltip="Save">
-                            <mat-icon class="active-icon green-600 s-16">check</mat-icon>
-                           </buttom>
-                            <ng-container class="actions">
-                              <span class="material-icons" style="cursor: pointer; color: #c95a5a" (click)="deletecharges(contact)">delete</span>
-                            </ng-container>
+                          <mat-cell *matCellDef="let contact" class="w-80">
+                            <div fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
+                              <button mat-icon-button (click)="OnSaveEditedValue(contact)" matTooltip="Save">
+                              <mat-icon class="active-icon green-600-fg s-16">check</mat-icon>
+                             </button>
+                              <button mat-icon-button (click)="deletecharges(contact)" matTooltip="Delete" *ngIf="!contact.EditDoctor">
+                              <mat-icon class="active-icon red-600-fg s-16">delete</mat-icon>
+                             </button>
+                            </div>
                           </mat-cell>
                         </ng-container>
 
