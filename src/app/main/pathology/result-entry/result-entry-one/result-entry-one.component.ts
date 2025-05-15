@@ -340,7 +340,7 @@ var TestID=0;
 
     getResultListIP() {
         this.sIsLoading = 'loading-data';
-        let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultUpdate_IPAgeWise where PathReportId in(" + this.reportIdData + ")"
+        let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultUpdate_IPAgeWise where PathReportId in(" + this.reportIdData + ") Order by PathReportdetid"
         console.log(SelectQuery);
         this._SampleService.getPathologyResultListforIP(SelectQuery).subscribe(Visit => {
             this.dataSource.data = Visit as Pthologyresult[];
@@ -360,7 +360,7 @@ var TestID=0;
 
     getResultListOP() {
         this.sIsLoading = 'loading-data';
-        let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultUpdate_OPAgeWise where PathReportId in(" + this.reportIdData + ")"
+        let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultUpdate_OPAgeWise where PathReportId in(" + this.reportIdData + ") Order by PathReportdetid"
         console.log(SelectQuery)
         this._SampleService.getPathologyResultListforOP(SelectQuery).subscribe(Visit => {
             this.dataSource.data = Visit as Pthologyresult[];

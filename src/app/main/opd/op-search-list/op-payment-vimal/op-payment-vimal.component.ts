@@ -127,8 +127,14 @@ export class OpPaymentVimalComponent implements OnInit {
     onAddPayment() { 
         this.submitted = true;
         debugger
-        if (this.patientDetailsFormGrp.invalid) {
+        if (this.patientDetailsFormGrp.invalid) { 
             return;
+        }
+        if(this.IsMoreAmt){   
+                this.toastr.warning('Amount should not be greater than Balance Amount', 'warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            })
+         return;
         }
         let tmp = this.Payments.data;
         tmp.push({
@@ -216,7 +222,7 @@ export class OpPaymentVimalComponent implements OnInit {
     OPD_IPD_Id: any;
     TariffName: any;
     MulPaySettleAmt: boolean =false;
-    InterimBill: boolean =true;
+    AdvanceFlag: boolean =true;
     displayedColumns = [
         'Date',
         'AdvanceNo',
@@ -350,7 +356,16 @@ export class OpPaymentVimalComponent implements OnInit {
             this.selectedPaymnet1 = 'cash';
             this.Date = this.advanceData.Date; 
              this.MulPaySettleAmt = true
-             this.InterimBill = false
+             this.AdvanceFlag = false
+        }
+              //IP-Pharmacy-Settlemet 
+        if (this.data.FromName == "IP-Pharma-SETTLEMENT In Browse List") { 
+            this.netPayAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
+            this.amount1 = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
+            this.paidAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
+            this.PatientName = this.advanceData.PatientName;
+            this.selectedPaymnet1 = 'cash';
+            this.Date = this.advanceData.Date;  
         }
         //IP-Interim Bill
         if (this.data.FromName == "IP-IntrimBIll") {
@@ -360,7 +375,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.PatientName = this.advanceData.PatientName;
             this.selectedPaymnet1 = 'cash';
             this.Date = this.advanceData.Date;
-            this.InterimBill = false
+            this.AdvanceFlag = false
         }
     }
 
@@ -837,6 +852,51 @@ debugger
             this.Paymentobj['PayTMDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
              this.Paymentobj['tdsAmount'] =  this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0; 
           } 
+        else if (this.data.FromName == "IP-Pharma-SETTLEMENT In Browse List") {
+
+            if(this.patientDetailsFormGrp.get('balanceAmountController').value != 0 ){
+                  this.toastr.warning('Please check balance amount..', 'warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                  });
+                  return  
+            }
+
+            this.Paymentobj['BillNo'] = this.advanceData.BillNo;
+            this.Paymentobj['PaymentDate'] = this.dateTimeObj.date; //this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+            this.Paymentobj['PaymentTime'] = this.dateTimeObj.time; // this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+            this.Paymentobj['CashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
+            this.Paymentobj['ChequePayAmount'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.Amount ?? 0;
+            this.Paymentobj['ChequeNo'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.RefNo ?? "";
+            this.Paymentobj['BankName'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.BankName ?? "";
+            this.Paymentobj['ChequeDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+            this.Paymentobj['CardPayAmount'] = this.Payments.data.find(x => x.PaymentType == "card")?.Amount ?? 0;
+            this.Paymentobj['CardNo'] = this.Payments.data.find(x => x.PaymentType == "card")?.RefNo ?? "";
+            this.Paymentobj['CardBankName'] = this.Payments.data.find(x => x.PaymentType == "card")?.BankName ?? "";
+            this.Paymentobj['CardDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+            if (this.IsAdv) {
+                this.Paymentobj['AdvanceUsedAmount'] = this.advanceUsedAmt || 0;
+                this.Paymentobj['AdvanceId'] = this.AdvanceId || 0;
+            } else {
+                this.Paymentobj['AdvanceUsedAmount'] = 0;
+                this.Paymentobj['AdvanceId'] = 0;
+            }
+            this.Paymentobj['RefundId'] = 0;
+            this.Paymentobj['TransactionType'] = 4;
+            this.Paymentobj['Remark'] = '';
+            this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+                this.Paymentobj['IsCancelled'] = false;
+            this.Paymentobj['IsCancelledBy'] = 0;
+            this.Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+            this.Paymentobj['opD_IPD_Type'] = 3;
+            this.Paymentobj['NEFTPayAmount'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.Amount ?? 0;
+            this.Paymentobj['NEFTNo'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.RefNo ?? "";
+            this.Paymentobj['NEFTBankMaster'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.BankName ?? "";
+            this.Paymentobj['NEFTDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+            this.Paymentobj['PayTMAmount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
+            this.Paymentobj['PayTMTranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? "";
+            this.Paymentobj['PayTMDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+             this.Paymentobj['paymentId'] = 0; 
+        } 
         console.log(JSON.stringify(this.Paymentobj));
 
         //const ipPaymentInsert = new IpPaymentInsert(this.Paymentobj);
@@ -845,7 +905,7 @@ debugger
             ipPaymentInsert:this.Paymentobj
         };
         let IsSubmit
-        if(this.data.FromName == "IP-SETTLEMENT" || this.data.FromName == "OP-SETTLEMENT" || this.data.FromName == "IP-Pharma-SETTLEMENT" || this.data.FromName == "IP-Bill"){
+        if(this.data.FromName == "IP-SETTLEMENT" || this.data.FromName == "OP-SETTLEMENT" || this.data.FromName == "IP-Pharma-SETTLEMENT In Browse List" || this.data.FromName == "IP-Bill" || this.data.FromName == "IP-Pharma-SETTLEMENT"){
 
             let Advancesarr = [];
             this.dataSource.data.forEach((element) => {
@@ -915,12 +975,12 @@ debugger
         this.dataSource.data = [];
         let Query
         if(this.data.FromName != "IP-IntrimBIll" && this.data.FromName != "IP-Pharma-SETTLEMENT"){
-            // if (this.data.FromName == "IP-Pharma-SETTLEMENT") {
-            //     Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from T_PHAdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
-            // } else {
-            //     Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
-            // }
-            Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
+            if (this.data.FromName == "IP-Pharma-SETTLEMENT In Browse List") {
+                Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from T_PHAdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
+            } else {
+                Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
+            }
+            // Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
 
             this.ipSearchService.getAdvcanceDetailslist(Query).subscribe(data => {
                 this.dataSource.data = data as [];
@@ -944,13 +1004,12 @@ debugger
         this.IsAdv = e.checked;
         if (this.IsAdv) {
             let Query
-            // if(this.data.FromName == "IP-Pharma-SETTLEMENT" ){
-            //   Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from T_PHAdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
-            // }else{
-            //   Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
-            // }
-
-            Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
+             if (this.data.FromName == "IP-Pharma-SETTLEMENT In Browse List") {
+                Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from T_PHAdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
+            } else {
+                Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
+            }
+            // Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
 
             this.ipSearchService.getAdvcanceDetailslist(Query).subscribe(data => {
                 this.dataSource.data = data as [];

@@ -28,6 +28,8 @@ import { Router } from '@angular/router';
 import { IPSearchListService } from 'app/main/ipd/ip-search-list/ip-search-list.service';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { element } from 'protractor';
+import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
+import { IpPaymentInsert } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 
 @Component({
   selector: 'app-brows-sales-bill',
@@ -567,67 +569,180 @@ export class BrowsSalesBillComponent implements OnInit {
   //   }); 
   // } 
  
-  OnPayment(contact) {   
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'shortTime');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-    console.log(contact)
-    let PatientHeaderObj = {};   
 
-      PatientHeaderObj['Date'] = formattedDate,
-      PatientHeaderObj['PatientName'] = contact.PatientName;
-      PatientHeaderObj['RegNo'] = contact.RegNo;   
-      PatientHeaderObj['OPD_IPD_Id'] =  contact.IPNO; 
-      PatientHeaderObj['billNo'] = contact.SalesId;
-      PatientHeaderObj['NetPayAmount'] = Math.round(contact.BalanceAmount);  
+  ////**********there is no advance used option in payment form thats way commented but this is used recetly */
+  // OnPayment(contact) {   
+  //   const currentDate = new Date();
+  //   const datePipe = new DatePipe('en-US');
+  //   const formattedTime = datePipe.transform(currentDate, 'shortTime');
+  //   const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+  //   console.log(contact)
+    
+  //   let PatientHeaderObj = {};    
+  //     PatientHeaderObj['Date'] = formattedDate,
+  //     PatientHeaderObj['PatientName'] = contact.PatientName;
+  //     PatientHeaderObj['RegNo'] = contact.RegNo;   
+  //     PatientHeaderObj['OPD_IPD_Id'] =  contact.IPNO; 
+  //     PatientHeaderObj['billNo'] = contact.SalesId;
+  //     PatientHeaderObj['NetPayAmount'] = Math.round(contact.BalanceAmount);  
 
-        const dialogRef = this._matDialog.open(OpPaymentComponent,
-          {
-            maxWidth: "80vw",
-            height: '650px',
-            width: '80%',
-            data: {
-              vPatientHeaderObj: PatientHeaderObj,
-              FromName: "OP-Pharma-SETTLEMENT",
-              advanceObj: PatientHeaderObj,
-            }
-          });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
+  //       const dialogRef = this._matDialog.open(OpPaymentComponent,
+  //         {
+  //           maxWidth: "80vw",
+  //           height: '650px',
+  //           width: '80%',
+  //           data: {
+  //             vPatientHeaderObj: PatientHeaderObj,
+  //             FromName: "OP-Pharma-SETTLEMENT",
+  //             advanceObj: PatientHeaderObj,
+  //           }
+  //         });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log(result)
 
-      if (result.IsSubmitFlag == true) {
-        let updateBillobj = [];  
-          let updateBillobj1 = {};
-          updateBillobj1['salesID'] = contact.SalesId;
-          updateBillobj1['salRefundAmt'] =0 ;
-          updateBillobj1['balanceAmount'] =result.submitDataPay.ipPaymentInsert.BalanceAmt;
-          updateBillobj.push(updateBillobj1)
+  //     if (result.IsSubmitFlag == true) {
+  //       let updateBillobj = [];  
+  //         let updateBillobj1 = {};
+  //         updateBillobj1['salesID'] = contact.SalesId;
+  //         updateBillobj1['salRefundAmt'] =0 ;
+  //         updateBillobj1['balanceAmount'] =result.submitDataPay.ipPaymentInsert.BalanceAmt;
+  //         updateBillobj.push(updateBillobj1)
     
      
   
-        let UpdateAdvanceDetailarr = [];
-        if (UpdateAdvanceDetailarr.length == 0) { 
-            let update_T_PHAdvanceDetailObj = {};
-            update_T_PHAdvanceDetailObj['AdvanceDetailID'] = 0,
-            update_T_PHAdvanceDetailObj['UsedAmount'] = 0,
-            update_T_PHAdvanceDetailObj['BalanceAmount'] = 0,
-            UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj); 
-      }
+  //       let UpdateAdvanceDetailarr = [];
+  //       if (UpdateAdvanceDetailarr.length == 0) { 
+  //           let update_T_PHAdvanceDetailObj = {};
+  //           update_T_PHAdvanceDetailObj['AdvanceDetailID'] = 0,
+  //           update_T_PHAdvanceDetailObj['UsedAmount'] = 0,
+  //           update_T_PHAdvanceDetailObj['BalanceAmount'] = 0,
+  //           UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj); 
+  //     }
      
-        let update_T_PHAdvanceHeaderObj = {}; 
+  //       let update_T_PHAdvanceHeaderObj = {}; 
+  //         update_T_PHAdvanceHeaderObj['AdvanceId'] = 0,
+  //         update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
+  //         update_T_PHAdvanceHeaderObj['BalanceAmount'] = 0 
+
+  //         let selectedPayment  = [];
+  //         selectedPayment.push(result.submitDataPay.ipPaymentInsert)
+  //       let Data = {
+  //         "salesPaymentSettlement": selectedPayment, 
+  //         "update_Pharmacy_BillBalAmountSettlement": updateBillobj,
+  //         "update_T_PHAdvanceDetailSettlement":UpdateAdvanceDetailarr,
+  //         "update_T_PHAdvanceHeaderSettlement":update_T_PHAdvanceHeaderObj
+  //       };
+  //       console.log(Data);
+
+  //       this._BrowsSalesBillService.InsertSalessettlement(Data).subscribe(response => { 
+  //         if (response) {  
+  //           this.toastr.success('Sales Credit Payment Successfully !', 'Success', {
+  //             toastClass: 'tostr-tost custom-toast-error',
+  //           }); 
+  //           this.getSalesList();  
+  //         }
+  //         else { 
+  //           this.toastr.error('Sales Credit Payment  not saved !', 'error', {
+  //             toastClass: 'tostr-tost custom-toast-error',
+  //           }); 
+  //         }
+  //       }); 
+  //     }  
+  //   }); 
+  // }
+  BalanceAm1:any= 0;
+  UsedAmt1:any =0;
+   OnPayment1(contact) { 
+    console.log(contact)  
+      const currentDate = new Date();
+      const datePipe = new DatePipe('en-US');
+      const formattedTime = datePipe.transform(currentDate, 'shortTime');
+      const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
+
+      let PatientHeaderObj = {};  
+      PatientHeaderObj['Date'] = formattedDate;
+      PatientHeaderObj['PatientName'] = contact.PatientName;
+      PatientHeaderObj['OPD_IPD_Id'] = contact.OP_IP_ID;
+      PatientHeaderObj['AdvanceAmount'] = Math.round(contact.BalanceAmount); 
+      PatientHeaderObj['NetPayAmount'] =Math.round(contact.BalanceAmount); 
+      PatientHeaderObj['BillNo'] = contact.SalesId;
+      PatientHeaderObj['IPDNo'] = contact.IPNO;
+      PatientHeaderObj['RegNo'] = contact.RegNo;   
+      PatientHeaderObj['OP_IP_Type'] =contact.OP_IP_Type; 
+      PatientHeaderObj['CashCounterId'] =contact.CashCounterID;   
+ 
+      const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+        {
+          maxWidth: "95vw",
+          height: '650px',
+          width: '85%',
+          data: {
+            vPatientHeaderObj: PatientHeaderObj,
+            FromName: "IP-Pharma-SETTLEMENT In Browse List" 
+          }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log(result)
+       if (result.IsSubmitFlag == true) {
+        debugger
+
+          let updateBillobj = [];  
+          let updateBillobj1 = {};
+        updateBillobj1['salesID'] = contact.SalesId;
+        updateBillobj1['salRefundAmt'] =0 ;
+        updateBillobj1['balanceAmount'] = result.BalAmt || 0 ;// result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
+        updateBillobj.push(updateBillobj1)
+
+        let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];  
+         UpdateAdvanceDetailarr1 = result.submitDataAdvancePay; 
+
+        let UpdateAdvanceDetailarr = [];
+        let UsedHeaderAmt =0 ;
+        if (result.submitDataAdvancePay.length > 0) {
+          result.submitDataAdvancePay.forEach((element) => {
+            let update_T_PHAdvanceDetailObj = {}; 
+            //extra 
+            this.UsedAmt1 =  (parseInt(element.AdvanceAmount) - parseInt(element.BalanceAmount));
+            UsedHeaderAmt += this.UsedAmt1
+            //
+            update_T_PHAdvanceDetailObj['AdvanceDetailID'] = element.AdvanceDetailID;
+            update_T_PHAdvanceDetailObj['UsedAmount'] =  this.UsedAmt1 ///element.UsedAmount;
+           // this.UsedAmt1 = (parseInt(this.UsedAmt1) + parseInt(element.UsedAmount)); 
+            update_T_PHAdvanceDetailObj['BalanceAmount'] = element.BalanceAmount;
+            this.BalanceAm1 =(parseInt(this.BalanceAm1) + parseInt(element.BalanceAmount));
+           
+            UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj);
+          }); 
+        }
+        else {
+          let update_T_PHAdvanceDetailObj = {};
+          update_T_PHAdvanceDetailObj['AdvanceDetailID'] = 0,
+          update_T_PHAdvanceDetailObj['UsedAmount'] = 0,
+          update_T_PHAdvanceDetailObj['BalanceAmount'] = 0,
+            UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj);
+        }
+     
+        let update_T_PHAdvanceHeaderObj = {};
+        if (result.submitDataAdvancePay.length > 0) { 
+          update_T_PHAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceId'],
+          update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] =UsedHeaderAmt ,// this.UsedAmt1
+          update_T_PHAdvanceHeaderObj['BalanceAmount'] = this.BalanceAm1
+        }
+        else { 
           update_T_PHAdvanceHeaderObj['AdvanceId'] = 0,
           update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
-          update_T_PHAdvanceHeaderObj['BalanceAmount'] = 0 
+          update_T_PHAdvanceHeaderObj['BalanceAmount'] = 0
+        }
 
           let selectedPayment  = [];
           selectedPayment.push(result.submitDataPay.ipPaymentInsert)
+
         let Data = {
-          "salesPaymentSettlement": selectedPayment, 
+          "salesPaymentSettlement":selectedPayment, 
           "update_Pharmacy_BillBalAmountSettlement": updateBillobj,
           "update_T_PHAdvanceDetailSettlement":UpdateAdvanceDetailarr,
           "update_T_PHAdvanceHeaderSettlement":update_T_PHAdvanceHeaderObj
-        };
+        }; 
         console.log(Data);
 
         this._BrowsSalesBillService.InsertSalessettlement(Data).subscribe(response => { 
@@ -646,7 +761,6 @@ export class BrowsSalesBillComponent implements OnInit {
       }  
     }); 
   }
-
 
   getPrint(el) {
     //debugger
