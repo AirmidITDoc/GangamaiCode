@@ -322,10 +322,10 @@ export class NewOpeningBalanceComponent implements OnInit {
     console.log(submitData);
     this._OpeningBalanceService.InsertOpeningBalSave(submitData).subscribe(response => {
       this.toastr.success(response);
-      if (response) {
-        this.viewgetReportPdf(response)
-        this._matDialog.closeAll();
-      }
+      // if (response) {
+      //   this.viewgetReportPdf(response)
+         this._matDialog.closeAll();
+      // }
     });
   }
 

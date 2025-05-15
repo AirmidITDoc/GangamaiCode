@@ -47,14 +47,14 @@ export class IndentComponent implements OnInit {
      @ViewChild('grid1') grid1: AirmidTableComponent;
     @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
     ngAfterViewInit() {
-        this.gridConfig.columnsList.find(col => col.key === 'isInchargeVerify')!.template = this.isVerifiedstatus;
+        this.gridConfig.columnsList.find(col => col.key === 'isverify')!.template = this.isVerifiedstatus;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
        
       }
 
     allcolumns = [
 
-        { heading: "Verify", key: "isInchargeVerify", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Verify", key: "isverify", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "IndentNo", key: "indentNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Indent Date", key: "indentDate", sort: true, align: 'left', emptySign: 'NA',type:6 },
         { heading: "From Store Name", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA' },

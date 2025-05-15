@@ -44,12 +44,12 @@
                                         [value]="data?.ToStoreId" [mode]="autocompletestore">
                                     </airmid-dropdown>
 
-                                    <mat-radio-group name="IsUrgent" value="0" formControlName="IsUrgent"
+                                    <!-- <mat-radio-group name="IsUrgent" value="0" formControlName="IsUrgent"
                                         style="padding: 15px 0px 0px 30px;">
                                         <mat-label class="example-margin"> Is Urgent:</mat-label>&nbsp;&nbsp;
                                         <mat-radio-button value="1" class="mr-sm-12">Yes</mat-radio-button>
                                         <mat-radio-button value="0" class="mr-sm-12">No</mat-radio-button>
-                                    </mat-radio-group>
+                                    </mat-radio-group> -->
 
 
                                 </div>
@@ -67,8 +67,8 @@
                                         ValueField="itemId" (onClearSelection)="resetFormItem()"></airmid-autocomplete>
 
 
-                                    <airmid-textbox fxFlex="10%" label="Qty" formControlName="Qty"
-                                        [formGroup]="IndentForm" placeholder="Qty" type="number" [maxLength]="5"></airmid-textbox>
+                                    <airmid-textbox fxFlex="10%" label="Qty" formControlName="Qty" [max]="99999" 
+                                        [formGroup]="IndentForm" placeholder="Qty" type="number" [maxlength]="5"></airmid-textbox>
 
 
                                     <div matTooltip="Select All Value to enable this button!!" style="padding: 2px;">
@@ -182,7 +182,7 @@
 
                             <mat-form-field appearance="outline" fxFlex="60%">
                                 <mat-label>Remark</mat-label>
-                                <input name="Remark" formControlName="comments" [(ngModel)]="vRemark" matInput [maxLength]="500">
+                                <input name="Remark" formControlName="comments" [(ngModel)]="vRemark" matInput [maxlength]="500">
                             </mat-form-field>
 
                             <div class="sales-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="center center"

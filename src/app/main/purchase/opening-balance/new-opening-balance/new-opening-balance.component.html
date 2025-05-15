@@ -35,9 +35,9 @@
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
                             <!-- <div fxLayout="column" fxLayout="row" fxLayoutAlign="start none"> -->
-                            <div fxLayout="row" class="gap-2">
-                                <form [formGroup]="StoreForm" class="p-0">
-                                    <airmid-dropdown label="Store Name" formControlName="StoreId"
+                            <div fxLayout="row" class="gap-2" class="gap-2">
+                                <form [formGroup]="StoreForm" >
+                                    <airmid-dropdown label="Store Name" formControlName="StoreId" fxFlex="90%"
                                         (selectionChange)="StoreSelction($event)" [formGroup]="StoreForm"
                                         [mode]="autocompletestore">
                                     </airmid-dropdown>

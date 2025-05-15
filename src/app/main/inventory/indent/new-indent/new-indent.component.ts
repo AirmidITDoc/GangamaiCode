@@ -208,8 +208,9 @@ export class NewIndentComponent implements OnInit {
     }
     // console.log(Param)
     this._IndentService.getIndentList(Param).subscribe(data => {
+       console.log(data.data)
+
       this.dsIndentNameList.data = data.data as IndentNameList[];
-      console.log(data)
       this.chargeslist = data.data as IndentNameList[];
      debugger
       this.dsIndentNameList.data.forEach(element => {
@@ -371,7 +372,7 @@ export class IndentNameList {
   position: number;
   indentId: any;
   indentDetailsId
-  itemId: any;
+  itemId:any;
   qty: any;
   indQty: any;
   issQty: any;

@@ -59,7 +59,7 @@ export class AirmidTextboxComponent implements ControlValueAccessor, OnInit, OnD
     @Input() width: number = 100;
     @Input() isMovable = true;
     @Input() min:number = -Infinity;
-    @Input() max:number = Infinity;
+    @Input() max:number = 99999;
 
 
     @Input()

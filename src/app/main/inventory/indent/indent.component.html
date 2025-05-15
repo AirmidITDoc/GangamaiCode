@@ -25,10 +25,10 @@
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
             <ng-template #isVerifiedstatus let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isInchargeVerify=='true'" matTooltip="Verified"
+                    <mat-icon *ngIf="element.isverify=='true'" matTooltip="Verified"
                         class="pill green-600 s-16">circle</mat-icon>
 
-                    <mat-icon *ngIf="element.isInchargeVerify=='false'" matTooltip="NotVerified"
+                    <mat-icon *ngIf="element.isverify=='false'" matTooltip="NotVerified"
                         class="pill orange-600 s-16">circle</mat-icon>
                 </div>
             </ng-template>
