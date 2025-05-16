@@ -126,6 +126,105 @@ export class IpSalesReturnComponent implements OnInit {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
+
+  registerObj:any;
+  
+
+  getSelectedObjRegIP(obj) {
+    console.log(obj);
+    let IsDischarged = 0;
+    IsDischarged = obj.isDischarged;
+    if (IsDischarged == 1) {
+      Swal.fire('Selected Patient is already discharged');
+      // this.RegId = '';
+    } else {
+      console.log(obj);
+      // this.DoctorNamecheck = true;
+      // this.IPDNocheck = true;
+      // this.OPDNoCheck = false;
+      // this.PatientName = obj.firstName + ' ' + obj.lastName;
+      // this.RegId = obj.regID;
+      // this.OP_IP_Id = obj.admissionID;
+      // this.IPDNo = obj.ipdNo;
+      // this.RegNo = obj.regNo;
+      // this.DoctorName = obj.doctorName;
+      // this.TariffName = obj.tariffName;
+      // this.CompanyName = obj.CompanyName;
+      // this.Age = obj.age;
+      // this.WardName = obj.roomName;
+      // this.BedName = obj.bedName;
+    }
+   
+  }
+onItemChange(obj){
+console.log(obj)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   getSearchList() {
     var m_data = {
       "Keyword": `${this._IpSalesRetService.userFormGroup.get('RegID').value}%`

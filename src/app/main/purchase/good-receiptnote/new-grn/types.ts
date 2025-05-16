@@ -64,6 +64,7 @@ export interface GRNFormModel {
   SupplierId: string;
   Contact: string;
   Mobile: string;
+  StoreId:string
 
   // Document Details
   InvoiceNo: string;
