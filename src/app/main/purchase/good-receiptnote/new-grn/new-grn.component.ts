@@ -202,6 +202,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     // Make it true when you want to use mock data.
     mock = false;
     vGRNType:any='true';
+    vPaymentType:any='false'
     // Bind dropdown mode
     dropdownMode = {
         gstCalcType: "GstCalcType",
@@ -245,7 +246,13 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 this.vGRNType = 'true' 
             }else{
                 this.vGRNType = 'false' 
-            }   
+            } 
+              if(this.registerObj.Cash_CreditType == true){
+                this.vPaymentType = 'true' 
+            }else{
+                this.vPaymentType = 'false' 
+            } 
+  
         }
         else if (this.data.chkNewGRN == 3) {
             // get full data from excell import.
@@ -267,7 +274,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             UOMId: item.umoId,
             HSNCode: item.hsNcode,
             ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
-            Qty: item.balanceQty,
+            // Qty: item.balanceQty,
             CGST: item.cgstPer,
             SGST: item.sgstPer,
             IGST: item.igstPer,
@@ -344,22 +351,19 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         //     this.resetDateAndShowError('Please enter date in MMYYYY format');
         // } 
     
-            const Months = 3
+        
+            const numericPattern = /^[0-9]+$/; 
             const CurrentDate = new Date(); 
             const Currentmonths = new Date(); 
             const currentMonth = Currentmonths.getMonth();
             console.log(currentMonth)
             const currentYear = CurrentDate.getFullYear();
-            console.log(currentYear)  
-           let  NxtMonths = ((currentMonth) + (Months));  
-    
-           const NextExpiryDate = new Date();
-           NextExpiryDate.setMonth((CurrentDate.getMonth()) + parseInt(this.NxtMonths));
-            const newNextDate  = this.datePipe.transform(NextExpiryDate , 'dd/MM/YYYY') 
-    
-        if (inputDate && inputDate.length === 6) {
+            console.log(currentYear)   
+    debugger
+            if ((inputDate && inputDate.length === 6) && numericPattern.test(inputDate)) {
             const month = +inputDate.substring(0, 2);
-            const year = +inputDate.substring(2, 6);
+            const year = +inputDate.substring(2, 6);  
+        
             if (year <= currentYear) {
                 if (month <= currentMonth) {
                     Swal.fire({
@@ -368,51 +372,54 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                         showConfirmButton: false,
                         timer: 1500
                     });
-                    this.userFormGroup.get("ExpDate").setValue('')
-                    
-                } else {
-                    if (month >= 1 && month <= 12) {
-                        const lastDay = this.getLastDayOfMonth(month, year);
-                        this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
-                        this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
-                        const newuserDate = this.datePipe.transform(this.lastDay2, 'dd/MM/YYYY')
-                        console.log(newuserDate)
-                        console.log(newNextDate)
-                        console.log(this.vlastDay)
-                        console.log(lastDay)
-                        this.userFormGroup.get("ExpDate").setValue(this.vlastDay)
-                        const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+                    this.vlastDay = '';
+                     this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
+                    return
+                }
+                if (month > 12 && month <= 0) {
+                    this.vlastDay = '';
+                    this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
+                    this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !', {
+                        toastClass: 'tostr-tost custom-toast-warning',
+                    });
+                    return;
+                }
+                const lastDay = this.getLastDayOfMonth(month, year);
+                this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
+                this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
+                const newuserDate = this.datePipe.transform(this.lastDay2, 'dd/MM/YYYY')
+                this.userFormGroup.get('ExpDate').setValue(this.vlastDay) 
+                  const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
                         if (QtyElement) {
                             QtyElement.focus();
-                        }
+                        } 
 
-                    } else {
-                        this.vlastDay = 'Invalid month';
-                    }
-                }
             } else {
-
-                if (month >= 1 && month <= 12) {
-                    const lastDay = this.getLastDayOfMonth(month, year);
-                    this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
-                    this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
-                    console.log(this.vlastDay)
-                    console.log(lastDay)
-                    this.userFormGroup.get("ExpDate").setValue(this.vlastDay)
-                    const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
-                    if (QtyElement) {
-                        QtyElement.focus();
-                    }
-                } else {
-                    this.vlastDay = 'Invalid month';
+                if (month > 12 && month <= 0) {
+                    this.vlastDay = '';
+                    this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
+                    this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !', {
+                        toastClass: 'tostr-tost custom-toast-warning',
+                    });
+                    return;
                 }
-            }
-        } else {
-            const ExpDateElement = document.querySelector(`[name='ExpDate']`) as HTMLElement;
-                    if (ExpDateElement) {
-                        ExpDateElement.focus();
-                    }
-        } 
+                const lastDay = this.getLastDayOfMonth(month, year);
+                this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
+                this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
+                this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
+                 const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+                        if (QtyElement) {
+                            QtyElement.focus();
+                        } 
+            } 
+        } else {  
+            this.vlastDay = '';
+            this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
+            this.toastr.warning('Please enter only numbers in MMYYYY format', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
     
     }
 
@@ -453,14 +460,61 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         // }
 
         
+        // const CurrentDate = new Date(); 
+        // const Currentmonths = new Date(); 
+        // const currentMonth = Currentmonths.getMonth(); 
+        // const currentYear = CurrentDate.getFullYear();  
+
+        // if (inputDate && inputDate.length === 6) {
+        //     const month = +inputDate.substring(0, 2);
+        //     const year = +inputDate.substring(2, 6);
+        //     if (year <= currentYear) {
+        //         if (month <= currentMonth) {
+        //             Swal.fire({
+        //                 icon: "warning",
+        //                 title: "This item is already expired",
+        //                 showConfirmButton: false,
+        //                 timer: 1500
+        //             });
+        //             contact.ExpDate = '';  
+        //         } else {
+        //             if (month >= 1 && month <= 12) {
+        //                 const lastDay = this.getLastDayOfMonth(month, year);
+        //                 this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
+        //                 this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
+        //                 const newuserDate = this.datePipe.transform(this.lastDay2, 'dd/MM/YYYY')  
+        //                 contact.ExpDate = this.vlastDay; 
+        //             } else {
+        //                 this.vlastDay = '';
+        //             }
+        //         }
+        //     } else { 
+        //         if (month >= 1 && month <= 12) {
+        //             const lastDay = this.getLastDayOfMonth(month, year);
+        //             this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
+        //             this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`; 
+        //             contact.ExpDate = this.vlastDay; 
+        //         } else {
+        //             this.vlastDay = '';
+        //         }
+        //     }
+        // } else {
+        //     this.vlastDay = '';
+        // } 
+
+
+
+
+        const numericPattern = /^[0-9]+$/;  
         const CurrentDate = new Date(); 
         const Currentmonths = new Date(); 
         const currentMonth = Currentmonths.getMonth(); 
-        const currentYear = CurrentDate.getFullYear();  
+        const currentYear = CurrentDate.getFullYear(); 
 
-        if (inputDate && inputDate.length === 6) {
+        if ((inputDate && inputDate.length === 6) && numericPattern.test(inputDate)) {
             const month = +inputDate.substring(0, 2);
-            const year = +inputDate.substring(2, 6);
+            const year = +inputDate.substring(2, 6);  
+        
             if (year <= currentYear) {
                 if (month <= currentMonth) {
                     Swal.fire({
@@ -469,31 +523,45 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                         showConfirmButton: false,
                         timer: 1500
                     });
-                    contact.ExpDate = '';  
-                } else {
-                    if (month >= 1 && month <= 12) {
-                        const lastDay = this.getLastDayOfMonth(month, year);
-                        this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
-                        this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
-                        const newuserDate = this.datePipe.transform(this.lastDay2, 'dd/MM/YYYY')  
-                        contact.ExpDate = this.vlastDay; 
-                    } else {
-                        this.vlastDay = '';
-                    }
+                    this.lastDay1 = '';
+                   contact.ExpDate = '';
+                    return
                 }
-            } else { 
-                if (month >= 1 && month <= 12) {
-                    const lastDay = this.getLastDayOfMonth(month, year);
-                    this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
-                    this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`; 
-                    contact.ExpDate = this.vlastDay; 
-                } else {
-                    this.vlastDay = '';
+                if (month > 12 && month <= 0) {
+                    this.lastDay1 = '';
+                    contact.ExpDate = '';
+                    this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !', {
+                        toastClass: 'tostr-tost custom-toast-warning',
+                    });
+                    return;
                 }
-            }
-        } else {
-            this.vlastDay = '';
-        } 
+                const lastDay1 = this.getLastDayOfMonth(month, year);
+                this.lastDay1 = `${lastDay1}/${this.pad(month)}/${year}`;
+                this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`; 
+                contact.ExpDate = this.lastDay1; 
+            } else {
+                if (month > 12 && month <= 0) {
+                    this.lastDay1 = '';
+                   contact.ExpDate = '';
+                    this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !', {
+                        toastClass: 'tostr-tost custom-toast-warning',
+                    });
+                    return;
+                }
+                 const lastDay1 = this.getLastDayOfMonth(month, year);
+                this.lastDay1 = `${lastDay1}/${this.pad(month)}/${year}`;
+                this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`; 
+                contact.ExpDate = this.lastDay1; 
+            } 
+        } else {  
+            this.lastDay1 = '';
+             contact.ExpDate = '';
+            this.toastr.warning('Please enter only numbers in MMYYYY format', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+    
     } 
  //Add item list
     onAddGRNItem() {
@@ -759,6 +827,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         const itemList = this.dsGrnItemList
     }
     updateGRNFinalForm() {
+        debugger
         const form = this._GRNList.GRNFinalForm;
         const itemList = this.dsItemNameList.data;
         const netAmount = itemList.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
@@ -829,6 +898,12 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         debugger
         const formValues = this.userFormGroup.getRawValue() as GRNFormModel; 
         // Apply save flow here 
+           if ((formValues.StoreId == '' || formValues.StoreId == null || formValues.StoreId == '0')) {
+            this.toastr.warning('Please select a supplier name', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
         if ((formValues.SupplierId == '' || formValues.SupplierId == null || formValues.SupplierId == '0')) {
             this.toastr.warning('Please select a supplier name', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',

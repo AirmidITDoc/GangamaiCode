@@ -91,7 +91,7 @@ export class InterimBillComponent implements OnInit {
       ConcessionId: [''],
       Remark: [''],
       TotalAmt: [0,[Validators.required,Validators.min(1)]], 
-      CashCounterID:[4,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]], 
+      CashCounterID:[4,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]], 
       paymode: ['cashpay'],
       UPINO: [''],
       discPer: [0,[Validators.min(0), Validators.max(100)]],
@@ -211,7 +211,23 @@ export class InterimBillComponent implements OnInit {
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');   
  
 debugger
-const formValue = this.InterimFormGroup.value 
+   const formValue = this.InterimFormGroup.value 
+           let invalidFields = []; 
+      if (this.InterimFormGroup.invalid) {
+        for (const controlName in this.InterimFormGroup.controls) {
+          if (this.InterimFormGroup.controls[controlName].invalid) {
+            invalidFields.push(`${controlName}`);
+          }
+        }
+      } 
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      } 
+
+
     if (formValue.discPer > 0 || formValue.concessionAmt > 0) {
       if (formValue.ConcessionId == '' || formValue.ConcessionId == null || formValue.ConcessionId == '0') {
         this.toastr.warning('Please select ConcessionReason.', 'Warning !', {

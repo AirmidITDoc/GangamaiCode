@@ -31,6 +31,7 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { element } from 'protractor';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 
 @Component({
@@ -110,12 +111,14 @@ export class IPAdvanceComponent implements OnInit {
     private accountService: AuthenticationService,
      private commonService: PrintserviceService,
     public toastr: ToastrService,
+    public _FormvalidationserviceService:FormvalidationserviceService,
     private formBuilder: UntypedFormBuilder) 
     { }
 
   ngOnInit(): void { 
     
     this.createAdvform(); 
+    this.AdvFormGroup.markAllAsTouched();
     if(this.data){
       this.registerObj = this.data.Obj;
       console.log("Advance data:",this.registerObj)
@@ -159,11 +162,9 @@ export class IPAdvanceComponent implements OnInit {
 }
   createAdvform(){
     this.AdvFormGroup = this.formBuilder.group({ 
-      comment: [''],
-      CashCounterId: [0],
-      cashpay: ['1'],
-      CashCounterID:['5',Validators.required],
-      advanceAmt: ['', [Validators.pattern("^[0-9]*$"),Validators.required]],   
+      comment: [''],  
+      CashCounterID:['5',[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]],
+      advanceAmt: ['', [Validators.pattern("^[0-9]*$"),Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]],   
     });
   }  
   getValidationMessages() {
@@ -182,6 +183,22 @@ export class IPAdvanceComponent implements OnInit {
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
+
+       let invalidFields = []; 
+      if (this.AdvFormGroup.invalid) {
+        for (const controlName in this.AdvFormGroup.controls) {
+          if (this.AdvFormGroup.controls[controlName].invalid) {
+            invalidFields.push(`${controlName}`);
+          }
+        }
+      } 
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+
     let AdvanceAMt = this.AdvFormGroup.get('advanceAmt').value || 0; 
     if (AdvanceAMt == "" || AdvanceAMt == undefined || AdvanceAMt == 0 || AdvanceAMt == null) {
       this.toastr.warning('Please enter Advance Amount', 'warning !', {
@@ -189,14 +206,13 @@ export class IPAdvanceComponent implements OnInit {
       });
       return;
     }
-    let CashCounter = this.AdvFormGroup.get('advanceAmt').value || 0;
-    if (CashCounter == "" || CashCounter == undefined || CashCounter == null) {
+    let CashCounter = this.AdvFormGroup.get('CashCounterID').value || 0;
+    if (CashCounter == "" || CashCounter == undefined || CashCounter == null || CashCounter == '0') {
       this.toastr.warning('select Cash Counter Name', 'warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    }
-
+    } 
   
     let advanceHeaderObj = {};
     advanceHeaderObj['date'] = formattedDate || '1900-01-01';

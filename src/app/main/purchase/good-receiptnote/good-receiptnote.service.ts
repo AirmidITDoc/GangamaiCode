@@ -90,18 +90,18 @@ export class GoodReceiptnoteService {
       SGSTAmount: [0],
       IGST: [0],
       IGSTAmount: [0],
-      NetAmount: [0, [Validators.required, Validators.min(1)]],
+      NetAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]],
       SupplierId: ['', [Validators.required]],
       Contact:  ['', [Validators.required]],
       Mobile: [''],
-      InvoiceNo: ['',Validators.required,Validators.min(1)],
+      InvoiceNo: ['',Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)],
       DateOfInvoice: [new Date()],
       GateEntryNo: [''], 
-      GSTType: [16,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]], // 16 is a value of first GST Type   
+      GSTType: [16,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]], // 16 is a value of first GST Type   
       PaymentDate: [new Date()],
       GRNType:['true'], 
       PaymentType:['false'],
-      StoreId:['2',[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]]
+      StoreId:['2',[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]]
     });
   }
 

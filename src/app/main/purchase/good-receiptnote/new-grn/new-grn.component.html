@@ -105,7 +105,8 @@
                         <mat-radio-button value="false">Purchase Orders</mat-radio-button>
                        </mat-radio-group>
                       
-                        <mat-radio-group aria-label="Select an option" formControlName="PaymentType" fxLayout="column" class="gap-4">
+                        <mat-radio-group aria-label="Select an option" formControlName="PaymentType" fxLayout="column"
+                         class="gap-4"   [(ngModel)]="vPaymentType">
                       <mat-radio-button value="true">Cash</mat-radio-button>
                       <mat-radio-button value="false">Credit</mat-radio-button>
                     </mat-radio-group>
@@ -146,7 +147,13 @@
                     ></airmid-textbox>
 
                     <!-- <airmid-textbox fxFlex="5%" label="Expiry" formControlName="ExpDate" [formGroup]="userFormGroup" placeholder="mmyyyy" (valueChange)="onExpiryChange()"></airmid-textbox> -->
-                    <airmid-textbox fxFlex="8%" label="ExpDate" formControlName="ExpDate" [formGroup]="userFormGroup" placeholder="mmyyyy" (change)="calculateLastDay()"></airmid-textbox>
+                    <!-- <airmid-textbox fxFlex="8%" label="ExpDate" formControlName="ExpDate" [formGroup]="userFormGroup" placeholder="mmyyyy" (change)="calculateLastDay()"></airmid-textbox> -->
+
+                     <mat-form-field appearance="outline" fxFlex="8%">
+                                        <mat-label>ExpDate</mat-label>
+                                        <input matInput #inputField (keyup.enter)="calculateLastDay()"
+                                            formControlName="ExpDate"   autocomplete="off" placeholder="mmyyyy"  required  >
+                                    </mat-form-field>
 
                     <airmid-textbox
                       fxFlex="4%"
@@ -492,7 +499,7 @@
                       type="text"
                       OnlyNumber
                       [disabled]="contact.isVerified"
-                      (change)="getCellCalculation(contact)"
+                      (input)="getCellCalculation(contact)"
                       (keydown.arrowdown)="setFocus('CGSTPer_' + (index + 1))"
                       (keydown.arrowup)="setFocus('CGSTPer_' + (index - 1))"
                       autocomplete="off"
@@ -521,7 +528,7 @@
                       type="text"
                       OnlyNumber
                       [disabled]="contact.isVerified"
-                      (change)="getCellCalculation(contact)"
+                      (input)="getCellCalculation(contact)"
                       (keydown.arrowdown)="setFocus('SGSTPer_' + (index + 1))"
                       (keydown.arrowup)="setFocus('SGSTPer_' + (index - 1))"
                       autocomplete="off"
@@ -550,7 +557,7 @@
                       type="text"
                       OnlyNumber
                       [disabled]="contact.isVerified"
-                      (change)="getCellCalculation(contact)"
+                      (input)="getCellCalculation(contact)"
                       autocomplete="off"
                       (keydown.arrowdown)="setFocus('IGSTPer_' + (index + 1))"
                       (keydown.arrowup)="setFocus('IGSTPer_' + (index - 1))"
