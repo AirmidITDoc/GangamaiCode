@@ -45,23 +45,31 @@ export class IndentComponent implements OnInit {
   
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
      @ViewChild('grid1') grid1: AirmidTableComponent;
-    @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
+   
+    @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+    @ViewChild('actionsTemplate1') actionsTemplate2!: TemplateRef<any>;
+
+
     ngAfterViewInit() {
-        this.gridConfig.columnsList.find(col => col.key === 'isverify')!.template = this.isVerifiedstatus;
+        
+        this.gridConfig.columnsList.find(col => col.key === 'isverify')!.template = this.actionsTemplate1;
+          this.gridConfig.columnsList.find(col => col.key === 'isUrgent')!.template = this.actionsTemplate1;
+      
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
        
       }
 
     allcolumns = [
 
-        { heading: "Verify", key: "isverify", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "IndentNo", key: "indentNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Indent Date", key: "indentDate", sort: true, align: 'left', emptySign: 'NA',type:6 },
+        { heading: "Verify", key: "isverify", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width:20 },
+        { heading: "IsUrgent", key: "isUrgent", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 20 },
+        { heading: "IndentNo", key: "indentNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+        { heading: "Indent Date", key: "indentDate", sort: true, align: 'left', emptySign: 'NA',type:6, width: 150 },
         { heading: "From Store Name", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "To Store Name", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Added By", key: "addedby", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Added By", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 20 },
         {
-             heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+             heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
              template: this.actionButtonTemplate  // Assign ng-template to the column
          } 
     ]

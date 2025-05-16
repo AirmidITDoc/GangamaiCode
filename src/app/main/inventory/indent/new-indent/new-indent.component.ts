@@ -96,7 +96,7 @@ export class NewIndentComponent implements OnInit {
       return this._formBuilder.group({
         // FromStoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required]],
         // ToStoreId: ['', [Validators.required]],
-        // IsUrgent: ['0'],
+        IsUrgent: ['0'],
         // Remark:[''],
        indentId:this.IndentId,
         // "indentNo": "",
@@ -109,6 +109,7 @@ export class NewIndentComponent implements OnInit {
        isclosed: false,
        comments:  "",
        tIndentDetails:""
+
       });
     }
   
@@ -132,7 +133,7 @@ export class NewIndentComponent implements OnInit {
     debugger
     const selectedItem = this.IndentForm.get('ItemName').value;
     const iscekDuplicate = this.dsIndentNameList.data.some(item => item.ItemID == this.IndentForm.get('ItemName').value.itemId)
-    if (!iscekDuplicate) {
+    if (!iscekDuplicate && this.IndentForm.get("ItemName").value.itemId !==0) {
       this.dsIndentNameList.data = [];
       this.chargeslist.push(
         {

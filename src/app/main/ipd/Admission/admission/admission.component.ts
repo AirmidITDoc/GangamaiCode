@@ -408,8 +408,8 @@ export class AdmissionComponent implements OnInit {
 
   onChangeFirst() {
     debugger
-    this.fromDate = "1900-01-01",//this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-    this.toDate = "1900-01-01",//this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+    this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "01/01/1900",
+    this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "01/01/1900",
     this.f_name = this.myFilterform.get('FirstName').value + "%"
     this.l_name = this.myFilterform.get('LastName').value + "%"
     this.m_name = this.myFilterform.get('MiddleName').value + "%"

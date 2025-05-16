@@ -77,7 +77,7 @@ export class OpeningBalanceComponent {
   GetDetails1(data: any): void {
     debugger
     console.log("detailList:", data)
-    let ID = 20// data.openingHId;
+    let ID =  data.openingHId;
 
     this.gridConfig1 = {
       apiUrl: "OpeningBalance/OpeningBalnceItemDetailList",

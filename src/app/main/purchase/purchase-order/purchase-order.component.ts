@@ -46,7 +46,8 @@ export class PurchaseOrderComponent implements OnInit {
   SupplierId = "0";
   status= "0";
 
-  @ViewChild('grid') grid: AirmidTableComponent;
+  
+   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('grid1') grid1: AirmidTableComponent;
 
   @ViewChild('iconisClosed') iconisClosed!: TemplateRef<any>;
@@ -95,7 +96,7 @@ export class PurchaseOrderComponent implements OnInit {
     { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
     { fieldName: "IsVerify", fieldValue: String(this.status), opType: OperatorComparer.Equals },
-    { fieldName: "IsVerify", fieldValue:  String(this.SupplierId), opType: OperatorComparer.Equals }
+    { fieldName: "Supplier_Id", fieldValue:  String(this.SupplierId), opType: OperatorComparer.Equals }
     ]
   }
   gridConfig1: gridModel = new gridModel();
@@ -263,7 +264,8 @@ export class PurchaseOrderComponent implements OnInit {
       this.toastr.success(response);
       if (response) {
         this.commonService.Onprint("PurchaseID", row.purchaseID, "Purchaseorder");
-        this.onChangeFirst(event);
+       this.grid.bindGridData();
+        // this.onChangeFirst(event);
        }
  
      });
@@ -288,7 +290,6 @@ export class PurchaseOrderComponent implements OnInit {
         });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
-        this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
       });
     }
