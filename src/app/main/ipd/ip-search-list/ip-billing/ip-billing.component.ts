@@ -219,6 +219,7 @@ export class IPBillingComponent implements OnInit {
   @ViewChild('drawer') public drawer: MatDrawer;
 
   dataSource = new MatTableDataSource<ChargesList>();
+  copiedData:any[] = [];
   dataSource1 = new MatTableDataSource<ChargesList>();
   prevbilldatasource = new MatTableDataSource<Bill>();
   advancedatasource = new MatTableDataSource<any>();
@@ -837,6 +838,7 @@ export class IPBillingComponent implements OnInit {
       this.chargeslist = response.data
       console.log(this.chargeslist)
       this.dataSource.data = this.chargeslist;
+      this.copiedData = structuredClone(this.chargeslist);
       this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
       this.getNetAmtSum()
       this.getbillbalamt();
@@ -1776,6 +1778,10 @@ export class IPBillingComponent implements OnInit {
       console.log(Obj) 
     }
     gettablecalculation(element) {  
+      // Checking if old value is same as new value
+      const oldElement = this.copiedData.find(i=>i.chargesId === element.chargesId);
+      element.isUpdated = oldElement.price != element.price || oldElement.qty != element.qty;
+
      if (element.price > 0 && element.qty > 0) {
         element.totalAmt = element.qty * element.price || 0;
         element.DiscAmt = (element.ConcessionPercentage * element.totalAmt) / 100 || 0;
