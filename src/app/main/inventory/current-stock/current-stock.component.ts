@@ -95,7 +95,7 @@ export class CurrentStockComponent implements OnInit {
     printflag: boolean = false;
 
     autocompletestore: string = "Store";
-    autocompleteitem: string = "ItemType";
+    autocompleteitem: string = "Item";
     formattedDate: string;
 
     constructor(
@@ -145,7 +145,7 @@ export class CurrentStockComponent implements OnInit {
     ]
     allcurrentFilters = [
         { fieldName: "StoreId", fieldValue: String(this.storeId), opType: OperatorComparer.Equals },
-        { fieldName: "ItemName", fieldValue: this.itemName ? this.itemName : "%", opType: OperatorComparer.StartsWith }
+        { fieldName: "ItemName", fieldValue: this.itemName, opType: OperatorComparer.StartsWith }
     ]
 
     gridConfig: gridModel = {
@@ -158,6 +158,9 @@ export class CurrentStockComponent implements OnInit {
 
     getfiltercurrentStock() {
         debugger
+        console.log(this._CurrentStockService.SearchGroup.get('ItemCategory').value)
+        console.log(this.itemName)
+        // if(this._CurrentStockService.SearchGroup.get('ItemCategory').value=='%')
         this.gridConfig = {
             apiUrl: "CurrentStock/StorewiseCurrentStockList",
             columnsList: this.allcurrentColumn,
@@ -165,7 +168,7 @@ export class CurrentStockComponent implements OnInit {
             sortOrder: 0,
             filters: [
                 { fieldName: "StoreId", fieldValue: String(this.storeId), opType: OperatorComparer.Equals },
-                { fieldName: "ItemName", fieldValue: this.itemName ? this.itemName : "%", opType: OperatorComparer.StartsWith },
+                { fieldName: "ItemName", fieldValue: this.itemName, opType: OperatorComparer.StartsWith },
             ]
         }
         console.log(this.gridConfig)
@@ -182,31 +185,34 @@ export class CurrentStockComponent implements OnInit {
 
         this.getfiltercurrentStock();
     }
-    selectChangeItem(obj: any) {
-        console.log(obj)
-        if (obj.value !== 0) {
-            this.itemName = obj.itemName
-        } else {
-            this.itemName = "%"
-        }
-        this.getfiltercurrentStock();
-    }
-
-    // selectChangeItem(obj: any): void {
-    //     console.log(obj);
-
-    //     if (obj && obj.itemName) {
-    //         this.itemName = obj.itemName;
-    //         this.gridConfig.filters[1].fieldValue = this.itemName;
-    //         this.gridConfig.filters[1].opType = OperatorComparer.StartsWith;
+    // selectChangeItem(obj: any) {
+    //     debugger
+    //     console.log(obj)
+    //     if (obj.value !== 0) {
+    //         this.itemName = obj.itemName
     //     } else {
-    //         this.itemName = "%";
-    //         this.gridConfig.filters[1].fieldValue = "%";
-    //         this.gridConfig.filters[1].opType = OperatorComparer.Contains;
+    //         this.itemName = "%"
     //     }
-
     //     this.getfiltercurrentStock();
     // }
+
+    formattedText:any;
+
+    selectChangeItem(obj: any) {
+    debugger;
+    console.log(obj);
+    this.gridConfig.filters[1].fieldValue=obj.formattedText
+
+    if (obj && obj.itemId) {
+        this.itemName = obj.itemName;
+        this.formattedText=obj.formattedText
+    } else {
+        this.itemName = "%";
+    }
+
+    this.getfiltercurrentStock();
+}
+
 
     // Day wise current stock
 
@@ -377,7 +383,7 @@ export class CurrentStockComponent implements OnInit {
     gridConfig3: gridModel = {
         apiUrl: "CurrentStock/IssueWiseItemSummaryList",
         columnsList: this.allItemColumn,
-        sortField: "StoreId",
+        sortField: "ItemId",
         sortOrder: 0,
         filters: this.allItemFilter
     }
@@ -394,7 +400,7 @@ export class CurrentStockComponent implements OnInit {
         this.gridConfig3 = {
             apiUrl: "CurrentStock/IssueWiseItemSummaryList",
             columnsList: this.allItemColumn,
-            sortField: "StoreId",
+            sortField: "ItemId",
             sortOrder: 0,
             filters: [
                 { fieldName: "FromDate", fieldValue: this.lastFromDate, opType: OperatorComparer.StartsWith },

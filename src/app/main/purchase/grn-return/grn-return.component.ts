@@ -238,7 +238,7 @@ export class GRNReturnComponent implements OnInit {
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA',width: 150 },
         { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "ExpDate", key: "batchExpiryDate", sort: true, align: 'left', emptySign: 'NA',width: 150 },
-        { heading: "Packing", key: "pack", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Packing", key: "conversion", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "RQty", key: "returnQty", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "TotalQty", key: "totalQty", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "MRP", key: "mrp", sort: true, align: 'left', emptySign: 'NA' },
@@ -294,6 +294,7 @@ export class GRNReturnComponent implements OnInit {
         });
 
       });
+      this.vSupplier = "0"
     this.grid.bindGridData();
     this.onChangeFirst();
   }

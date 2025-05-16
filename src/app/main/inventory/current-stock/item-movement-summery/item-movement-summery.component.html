@@ -1,4 +1,21 @@
-<mat-tab-group >
+<div class="modal-wrapper grid-container">
+<div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <mat-tab-group >
     <mat-tab label="Item Movement Summery">
         <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
            
@@ -699,3 +716,4 @@
         close
     </span> -->
 </mat-tab-group>
+</div>

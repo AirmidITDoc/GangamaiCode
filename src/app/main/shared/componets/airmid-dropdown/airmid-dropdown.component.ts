@@ -32,6 +32,9 @@ export class AirmidDropDownComponent implements OnInit {
     @Input() ReqFullObj: boolean = false;
     @Input() appearance: string = "outline";
 
+    // made by raksha
+    @Input() readonly: boolean = false;
+
     private _disabled: boolean = false;
     private _focused: boolean = false;
     private _placeholder: string = '';
@@ -123,8 +126,33 @@ export class AirmidDropDownComponent implements OnInit {
                 this.filterDdls();
             });
 
-
+            // changed by raksha
+        if (this.readonly && this.singleSelect) {
+            this.disableDropdown();
+        }
     }
+
+     // changed by raksha
+    disableDropdown() {
+        if (this.singleSelect) {
+            // Override open method to block opening
+            this.singleSelect.open = () => {
+                // Do nothing when readonly
+                if (!this.readonly) {
+
+                }
+            };
+        }
+    }
+
+    onClick(event: MouseEvent) {
+        if (this.readonly) {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+    }
+    // end
+
     bindGridAutoComplete() {
         if (this.options?.length > 0) {
             this.ddls = this.options as [];

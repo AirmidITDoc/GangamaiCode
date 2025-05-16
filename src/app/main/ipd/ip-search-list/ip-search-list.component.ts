@@ -439,12 +439,14 @@ export class IPSearchListComponent implements OnInit {
         // this.toDate =  this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
         // }
         if (this.myFilterform.get('IsDischarge').value == false) {
-            this.myFilterform.get('fromDate').setValue('')
-            this.myFilterform.get('enddate').setValue('')
+            // this.myFilterform.get('fromDate').setValue('')
+            // this.myFilterform.get('enddate').setValue('')
+            this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
+            this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
             this.apiUrl = "Admission/AdmissionList"
             this.status = '0'
-            this.fromDate = "1900-01-01"
-            this.toDate = "1900-01-01"
+            // this.fromDate = "1900-01-01"
+            // this.toDate = "1900-01-01"
         } else {
             this.myFilterform.get('fromDate').setValue(new Date())
             this.myFilterform.get('enddate').setValue(new Date())

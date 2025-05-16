@@ -448,9 +448,9 @@ export class DischargeSummaryTemplateComponent {
             setTimeout(() => {
               this._IpSearchListService.UpdateIPDDischargSummaryTemplate(data1).subscribe(response => {
                 this.toastr.success(response.message);
-                console.log(response[0].opdIpdId)
+                console.log(this.vAdmissionId)
                 // this.getPrint(response[0].opdIpdId)
-                this.viewgetDischargesummaryPdf(response[0].opdIpdId)
+                this.viewgetDischargesummaryPdf(this.vAdmissionId)
                 this._matDialog.closeAll();
               }, (error) => {
                 this.toastr.error(error.message);
