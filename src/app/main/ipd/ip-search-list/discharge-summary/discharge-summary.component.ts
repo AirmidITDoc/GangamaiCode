@@ -519,8 +519,6 @@ export class DischargeSummaryComponent implements OnInit {
               this.getPrint(response)
               // this.viewgetDischargesummaryPdf(response)
               this._matDialog.closeAll();
-            }, (error) => {
-              this.toastr.error(error.message);
             });
 
           }, 500);
@@ -537,12 +535,9 @@ export class DischargeSummaryComponent implements OnInit {
           setTimeout(() => {
             this._IpSearchListService.updateIPDDischargSummary(data1).subscribe(response => {
               this.toastr.success(response);
-              console.log(response[0].opdIpdId)
-              this.getPrint(response)
-              // this.viewgetDischargesummaryPdf(response[0].opdIpdId)
+              console.log(this.vAdmissionId)
+              this.getPrint(this.vAdmissionId)
               this._matDialog.closeAll();
-            }, (error) => {
-              this.toastr.error(error.message);
             });
 
           }, 500);
