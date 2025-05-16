@@ -426,7 +426,7 @@ OnSave(){
     grnDetailSaveObj['purchaseTotalAmount'] = PurchaseTotalAmt || 0;
     grnDetailSaveObj['conversion'] = element.ConversionFactor || 0;
     grnDetailSaveObj['remarks'] = '';
-    grnDetailSaveObj['stkId'] = element.StkID || 0;
+    grnDetailSaveObj['stockId'] = element.StkID || 0;
     grnDetailSaveObj['cf'] = element.ConversionFactor || 0;
     grnDetailSaveObj['totalQty'] = element.TotalQty || 0;
     grnReturnDetailSavearray.push(grnDetailSaveObj);
@@ -464,7 +464,7 @@ OnSave(){
     let issueqty = element.BalanceQty - element.ReturnQty
     grnReturnUpdateCurrentStockObj['itemId'] = element.ItemId || 0;
     grnReturnUpdateCurrentStockObj['issueQty'] =element.ReturnQty || 0;
-    grnReturnUpdateCurrentStockObj['istkId'] = element.StkID || 0;
+    grnReturnUpdateCurrentStockObj['stockId'] = element.StkID || 0;
     grnReturnUpdateCurrentStockObj['storeID'] = this._loggedService.currentUserValue.storeId || this.vStoreId;
     grnReturnUpdateCurrentStockarray.push(grnReturnUpdateCurrentStockObj);
   });
@@ -580,9 +580,11 @@ OnReset() {
   this.dsNewGRNReturnItemList.data = result as ItemNameList[];
 
   this.dsNewGRNReturnItemList.data.forEach(item => {
+    debugger
     console.log("Processing item:", item);
 
     this.getGrnItemDetailList(item);
+    this.vGRNID = item.grnid
   });
 
   if (this.dsNewGRNReturnItemList.data.length > 0) {

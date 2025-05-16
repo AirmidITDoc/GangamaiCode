@@ -128,6 +128,12 @@ export class ItemMovementSummeryComponent implements OnInit {
     //console.log(this.fiveDaysAgo)
     //  this.datePipe.transform(this._CurrentStockService.ItemSummeryFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
   }
+
+  onCloseTabs() {
+ 
+}
+
+
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }

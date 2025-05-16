@@ -57,15 +57,22 @@
                                 <airmid-dropdown label="From Store" formControlName="StoreId"
                                     [formGroup]="_CurrentStockService.SearchGroup" [mode]="autocompletestore"
                                     (selectionChange)="selectChangeStore($event)"
-                                    [(ngModel)]="gridConfig.filters[0].fieldValue">
+                                    [(ngModel)]="gridConfig.filters[0].fieldValue"
+                                    [readonly]="true">
                                 </airmid-dropdown>
+
+                                <!-- <airmid-dropdown label="Item Name" formControlName="ItemCategory"
+                                    [formGroup]="_CurrentStockService.SearchGroup" [mode]="autocompleteitem"
+                                    (selectionChange)="selectChangeItem($event)"
+                                    [(ngModel)]="gridConfig.filters[1].fieldValue">
+                                </airmid-dropdown> -->
 
                                 <airmid-autocomplete label="Item Name" [formGroup]="_CurrentStockService.SearchGroup"
                                     formControlName="ItemCategory"
                                     [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + storeId + '&ItemName='"
                                     (selectionChange)="selectChangeItem($event)"
-                                    [(ngModel)]="gridConfig.filters[1].fieldValue" TextField="formattedText"
-                                    ValueField="ItemId">
+                                    [(ngModel)]="gridConfig.filters[1].fieldValue"
+                                    TextField="formattedText" ValueField="ItemId">
                                 </airmid-autocomplete>
 
                             </form>
@@ -103,7 +110,8 @@
                                 <airmid-dropdown label="From Store" formControlName="StoreId"
                                     [formGroup]="_CurrentStockService.dayWiseForm" [mode]="autocompletestore"
                                     (selectionChange)="selectChangeStore1($event)"
-                                    [(ngModel)]="gridConfig1.filters[1].fieldValue">
+                                    [(ngModel)]="gridConfig1.filters[1].fieldValue"
+                                    [readonly]="true">
                                 </airmid-dropdown>
 
                                     <airmid-autocomplete label="Item Name" [formGroup]="_CurrentStockService.dayWiseForm"
@@ -144,7 +152,8 @@
                                 <airmid-dropdown label="From Store" formControlName="StoreId"
                                     [formGroup]="_CurrentStockService.ItemWiseFrom" [mode]="autocompletestore"
                                     (selectionChange)="selectChangeStore2($event)"
-                                    [(ngModel)]="gridConfig2.filters[2].fieldValue">
+                                    [(ngModel)]="gridConfig2.filters[2].fieldValue"
+                                    [readonly]="true">
                                 </airmid-dropdown>
 
                                 <!-- <airmid-dropdown label="Item Name" formControlName="ItemCategory"
@@ -191,7 +200,8 @@
                                 <airmid-dropdown label="From Store" formControlName="StoreId"
                                     [formGroup]="_CurrentStockService.IssueItem" [mode]="autocompletestore"
                                     (selectionChange)="selectChangeStore3($event)"
-                                    [(ngModel)]="gridConfig3.filters[2].fieldValue">
+                                    [(ngModel)]="gridConfig3.filters[2].fieldValue"
+                                    [readonly]="true">
                                 </airmid-dropdown>
 
                                 <!-- <airmid-dropdown label="Item Name" formControlName="ItemCategory"

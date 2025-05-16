@@ -250,6 +250,21 @@ export class NewCasepaperComponent implements OnInit {
       this.getRtrvCheifComplaintList(this.regObj); // retrive list
       this.getCheifComplaintList();
     }
+
+    setTimeout(() => {
+        this._CasepaperService.getVisitById(this.VisitId).subscribe(data => {
+          // this.patientDetail1 = data;
+          console.log(data)
+          this.vHeight=data.height
+          this.vWeight=data.pweight
+          this.vBSL=data.bmi
+          this.vBMI=data.bmi 
+          this.vBP=data. bp
+          this.vTemp=data.temp
+          this.vSpO2=data.spO2
+          this.vPulse=data.pulse
+        });
+      }, 500);
   }
 
   // removedignosis(item) {

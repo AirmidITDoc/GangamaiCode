@@ -138,7 +138,8 @@ export class AirmidAutoCompleteComponent implements OnInit {
         event.stopPropagation();
         const control = this.formGroup.controls[this.formControlName];
         if (control) {
-            control.setValue('')
+            control.setValue('%') //changes made by raksha
+            // control.setValue('')
             // control.reset();
         }
         this.onClearSelection.emit();
