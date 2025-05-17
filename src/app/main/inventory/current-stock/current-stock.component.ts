@@ -23,6 +23,7 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 @Component({
     selector: 'app-current-stock',
@@ -59,7 +60,7 @@ export class CurrentStockComponent implements OnInit {
 
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    onlyStart = this.datePipe.transform(this._CurrentStockService.dayWiseForm.get('start').value, "yyyy-MM-dd")
+    onlyStart = this.datePipe.transform(this._CurrentStockService.dayWiseForm.get('start').value, "yyyy-MM-dd 00:00:00.000")
     salesFromDate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get('startSales').value, "yyyy-MM-dd")
     salesToDate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get('endSales').value, "yyyy-MM-dd")
     lastFromDate = this.datePipe.transform(this._CurrentStockService.IssueItem.get('laststart').value, "yyyy-MM-dd")
@@ -88,10 +89,6 @@ export class CurrentStockComponent implements OnInit {
     SaleitemName = "0";
     lastitemName = "0";
 
-    // dsCurrentStock = new MatTableDataSource<CurrentStockList>();
-    // dsDaywiseStock = new MatTableDataSource<DayWiseStockList>();
-    // dsItemwiseStock = new MatTableDataSource<ItemWiseStockList>();
-    // dsIssuewissueItemStock = new MatTableDataSource<ItemWiseStockList>();
     printflag: boolean = false;
 
     autocompletestore: string = "Store";
@@ -111,8 +108,7 @@ export class CurrentStockComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        // this.gePharStoreList();
-        //this.getCrrentStkItemSearchList();
+ this._CurrentStockService.dayWiseForm.get('start').setValue(new Date());
     }
 
     @ViewChild('eyeIcon1') eyeIcon1!: TemplateRef<any>;
@@ -129,19 +125,22 @@ export class CurrentStockComponent implements OnInit {
 
     allcurrentColumn = [
         {
-            heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 250,
-            type: gridColumnTypes.template,template:this.eyeIcon1
-         },
-        { heading: "ReceivedQty", key: "receivedQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
-            type: gridColumnTypes.template,template:this.eyeIcon2
-         },
-        { heading: "IssueQty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
-            type: gridColumnTypes.template,template:this.eyeIcon3
-         },
+            heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 300,
+            type: gridColumnTypes.template, template: this.eyeIcon1
+        },
+        {
+            heading: "ReceivedQty", key: "receivedQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
+            type: gridColumnTypes.template, template: this.eyeIcon2
+        },
+        {
+            heading: "IssueQty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
+            type: gridColumnTypes.template, template: this.eyeIcon3
+        },
         { heading: "BalanceQty", key: "balanceQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "ReturnQty", key: "returnQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
-            type: gridColumnTypes.template,template:this.eyeIcon4
-         },
+        {
+            heading: "ReturnQty", key: "returnQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
+            type: gridColumnTypes.template, template: this.eyeIcon4
+        },
     ]
     allcurrentFilters = [
         { fieldName: "StoreId", fieldValue: String(this.storeId), opType: OperatorComparer.Equals },
@@ -149,6 +148,7 @@ export class CurrentStockComponent implements OnInit {
     ]
 
     gridConfig: gridModel = {
+        permissionCode: permissionCodes.Prefix,
         apiUrl: "CurrentStock/StorewiseCurrentStockList",
         columnsList: this.allcurrentColumn,
         sortField: "StoreId",
@@ -196,68 +196,91 @@ export class CurrentStockComponent implements OnInit {
     //     this.getfiltercurrentStock();
     // }
 
-    formattedText:any;
+    formattedText: any;
 
     selectChangeItem(obj: any) {
-    debugger;
-    console.log(obj);
-    this.gridConfig.filters[1].fieldValue=obj.formattedText
+        debugger;
+        console.log(obj);
+        this.gridConfig.filters[1].fieldValue = obj.formattedText
 
-    if (obj && obj.itemId) {
-        this.itemName = obj.itemName;
-        this.formattedText=obj.formattedText
-    } else {
-        this.itemName = "%";
+        if (obj && obj.itemId) {
+            this.itemName = obj.itemName;
+            this.formattedText = obj.formattedText
+        } else {
+            this.itemName = "%";
+        }
+
+        this.getfiltercurrentStock();
     }
-
-    this.getfiltercurrentStock();
-}
 
 
     // Day wise current stock
 
-    onChangeDateofBirth(DateOfBirth) {
+    onChangeDateofBirth(selectedDate: any) {
         debugger
-        console.log(DateOfBirth)
-        const date = new Date(DateOfBirth);
+        if (!selectedDate) return;
+
+        const date = new Date(selectedDate);
+        const now = new Date(); // current time
+
+        // Set selected date's time to current time
+        date.setHours(now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
+
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
-        this.formattedDate = `${year}-${month}-${day}`;
-        console.log(this.formattedDate);
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+        const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
 
-        this.alldayWiseFilter[0].fieldValue = this.formattedDate;
+        const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${milliseconds}`;
+
+        this.formattedDate = formattedDate;
+
+        this.alldayWiseFilter[0].fieldValue = formattedDate;
+
+        console.log('Formatted date with current time:', formattedDate);
+        this.getfilterdayWise()
     }
 
     alldayWiseColumn = [
-        { heading: "LedgerDate", key: "isAcc", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "ItemName", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "BatchNo", key: "batch", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Batch ExpDate", key: "batchEx", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Unit MRP", key: "unit", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "PurUnitRate", key: "PurUnitRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "LandedRate", key: "LandedRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "ReceivedQty", key: "recevideqty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "IssueQty", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "BalanceQty", key: "balance", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "LedgerDate", key: "ledgerDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Batch ExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Unit MRP", key: "unitMrp", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "PurUnitRate", key: "purUnitRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "LandedRate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "ReceivedQty", key: "receivedQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "IssueQty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "BalanceQty", key: "balanceQty", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     ]
     alldayWiseFilter = [
-        { fieldName: "LedgerDate", fieldValue: this.onlyStart, opType: OperatorComparer.StartsWith },
+        {
+            fieldName: "LedgerDate",
+            fieldValue: (() => {
+                const now = new Date();
+                return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}.${String(now.getMilliseconds()).padStart(3, '0')}`;
+            })(),
+            opType: OperatorComparer.StartsWith
+        },
         { fieldName: "StoreId", fieldValue: String(this.storeDayWise), opType: OperatorComparer.Equals },
         { fieldName: "ItemId", fieldValue: String(this.DaywiseitemName), opType: OperatorComparer.Equals },
     ]
 
     gridConfig1: gridModel = {
+        permissionCode: permissionCodes.Prefix,
         apiUrl: "CurrentStock/DayWiseCurrentStockList",
         columnsList: this.alldayWiseColumn,
-        sortField: "StoreId",
+        sortField: "SalesNo",
         sortOrder: 0,
         filters: this.alldayWiseFilter
     }
 
     onChangedayWise() {
         debugger
-        this.onlyStart = this.datePipe.transform(this._CurrentStockService.dayWiseForm.get('start').value, "yyyy-MM-dd")
+        // this.onlyStart = this.formattedDate
         this.getfilterdayWise();
     }
 
@@ -266,10 +289,10 @@ export class CurrentStockComponent implements OnInit {
         this.gridConfig1 = {
             apiUrl: "CurrentStock/DayWiseCurrentStockList",
             columnsList: this.alldayWiseColumn,
-            sortField: "StoreId",
+            sortField: "SalesNo",
             sortOrder: 0,
             filters: [
-                { fieldName: "LedgerDate", fieldValue: this.onlyStart, opType: OperatorComparer.StartsWith },
+                { fieldName: "LedgerDate", fieldValue: this.formattedDate, opType: OperatorComparer.StartsWith },
                 { fieldName: "StoreId", fieldValue: String(this.storeDayWise), opType: OperatorComparer.Equals },
                 { fieldName: "ItemId", fieldValue: String(this.DaywiseitemName), opType: OperatorComparer.Equals },
             ]
@@ -301,20 +324,21 @@ export class CurrentStockComponent implements OnInit {
     // item wise sales summery
 
     allSalesColumn = [
-        { heading: "ItemName", key: "isAcc", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Conversion Factor", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Current BalQty", key: "balQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Conversion Factor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Current BalQty", key: "current_BalQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "ReceivedQty", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Sales Qty", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Sales Qty", key: "sales_Qty", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     ]
     allSalesFilter = [
-        { fieldName: "FromDate", fieldValue: this.salesFromDate, opType: OperatorComparer.StartsWith },
-        { fieldName: "todate", fieldValue: this.salesToDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "FromDate", fieldValue: this.salesFromDate, opType: OperatorComparer.Equals },
+        { fieldName: "todate", fieldValue: this.salesToDate, opType: OperatorComparer.Equals },
         { fieldName: "StoreId", fieldValue: String(this.storeSales), opType: OperatorComparer.Equals }, //2
         { fieldName: "ItemId", fieldValue: String(this.SaleitemName), opType: OperatorComparer.Equals }, //1
     ]
 
     gridConfig2: gridModel = {
+        permissionCode: permissionCodes.Prefix,
         apiUrl: "CurrentStock/ItemWiseSalesSummaryList",
         columnsList: this.allSalesColumn,
         sortField: "ItemId",
@@ -337,8 +361,8 @@ export class CurrentStockComponent implements OnInit {
             sortField: "ItemId",
             sortOrder: 0,
             filters: [
-                { fieldName: "FromDate", fieldValue: this.salesFromDate, opType: OperatorComparer.StartsWith },
-                { fieldName: "todate", fieldValue: this.salesToDate, opType: OperatorComparer.StartsWith },
+                { fieldName: "FromDate", fieldValue: this.salesFromDate, opType: OperatorComparer.Equals },
+                { fieldName: "todate", fieldValue: this.salesToDate, opType: OperatorComparer.Equals },
                 { fieldName: "StoreId", fieldValue: String(this.storeSales), opType: OperatorComparer.Equals }, //2
                 { fieldName: "ItemId", fieldValue: String(this.SaleitemName), opType: OperatorComparer.Equals }, //1
             ]
@@ -368,11 +392,11 @@ export class CurrentStockComponent implements OnInit {
 
     // Issue wise item summery
     allItemColumn = [
-        { heading: "ItemName", key: "isAcc", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Conversion Factor", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Current BalQty", key: "balQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Conversion Factor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Current BalQty", key: "current_BalQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "ReceivedQty", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Sales Qty", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Sales Qty", key: "sales_Qty", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     ]
     allItemFilter = [
         { fieldName: "FromDate", fieldValue: this.lastFromDate, opType: OperatorComparer.StartsWith },
@@ -381,6 +405,7 @@ export class CurrentStockComponent implements OnInit {
         { fieldName: "ItemId", fieldValue: String(this.lastitemName), opType: OperatorComparer.Equals }, //1
     ]
     gridConfig3: gridModel = {
+        permissionCode: permissionCodes.Prefix,
         apiUrl: "CurrentStock/IssueWiseItemSummaryList",
         columnsList: this.allItemColumn,
         sortField: "ItemId",
@@ -458,56 +483,6 @@ export class CurrentStockComponent implements OnInit {
         this._CurrentStockService.SearchGroup.get('ItemCategory').reset();
     }
 
-    // getItemWiseStockList() {
-    //     this.sIsLoading = 'loading-data';
-    //     var vdata = {
-    //         "FromDate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-    //         "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-    //         "StoreId": this._loggedService.currentUserValue.storeId || 0,
-    //         "ItemId": this._CurrentStockService.ItemWiseFrom.get('ItemCategory').value.ItemID || 0
-    //     }
-    //     setTimeout(() => {
-    //         // this.isLoadingStr = 'loading';
-    //         this._CurrentStockService.getItemWiseStockList(vdata).subscribe(
-    //             (Visit) => {
-    //                 this.dsItemwiseStock.data = Visit as ItemWiseStockList[];
-    //                 this.dsItemwiseStock.sort = this.sort;
-    //                 this.dsItemwiseStock.paginator = this.secondPaginator;
-    //                 this.sIsLoading = '';
-    //                 this.isLoadingStr = this.dsItemwiseStock.data.length == 0 ? 'no-data' : '';
-    //             },
-    //             (error) => {
-    //                 this.isLoadingStr = 'no-data';
-    //             }
-    //         );
-    //     }, 1000);
-
-
-    // }
-
-    // getIssueWiseItemStockList() {
-    //     this.sIsLoading = 'loading-data';
-    //     var vdata = {
-    //         "FromDate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-    //         "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-    //         "StoreId": this._loggedService.currentUserValue.storeId || 0,
-    //         "ItemId": this._CurrentStockService.IssueItem.get('ItemCategory').value.ItemID || 0
-    //     }
-    //     setTimeout(() => {
-    //         this._CurrentStockService.getIssueWiseItemStockList(vdata).subscribe(
-    //             (Visit) => {
-    //                 this.dsIssuewissueItemStock.data = Visit as ItemWiseStockList[];
-    //                 this.dsIssuewissueItemStock.sort = this.sort;
-    //                 this.dsIssuewissueItemStock.paginator = this.secondPaginator;
-    //                 this.sIsLoading = '';
-    //                 this.isLoadingStr = this.dsIssuewissueItemStock.data.length == 0 ? 'no-data' : '';
-    //             },
-    //             (error) => {
-    //                 this.isLoadingStr = 'no-data';
-    //             }
-    //         );
-    //     }, 1000);
-    // }
     getItemdetails(contact) {
         console.log(contact)
         const dialogRef = this._matDialog.open(ItemMovementSummeryComponent,
@@ -525,7 +500,7 @@ export class CurrentStockComponent implements OnInit {
         });
     }
     getIssueSummery(contact) {
-        console.log(contact)
+        console.log("Issue Summery:", contact)
         const dialogRef = this._matDialog.open(IssueSummeryComponent,
             {
                 maxWidth: "100%",
@@ -541,7 +516,7 @@ export class CurrentStockComponent implements OnInit {
         });
     }
     getSalesSummery(contact) {
-        console.log(contact)
+        console.log("Sales Summery:", contact)
         const dialogRef = this._matDialog.open(SalesSummeryComponent,
             {
                 maxWidth: "100%",
@@ -557,7 +532,7 @@ export class CurrentStockComponent implements OnInit {
         });
     }
     getSalesReturnSummery(contact) {
-        console.log(contact)
+        console.log("SalesReturnSummery:", contact)
         const dialogRef = this._matDialog.open(SalesReturnSummeryComponent,
             {
                 maxWidth: "100%",

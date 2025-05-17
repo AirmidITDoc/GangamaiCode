@@ -134,10 +134,10 @@
 
         </fuse-sidebar>
         <!-/ SIDEBAR -->
-        <!-- CENTER -->
-        <!-- CENTER -->
+<!-- CENTER -->
+<!-- CENTER -->
 
-        <!-- <div class="center p-12 pb-56" fxFlexAlign="start center">
+<!-- <div class="center p-12 pb-56" fxFlexAlign="start center">
 
             <div class="content-card" style="border-radius:4px; ">
 
@@ -283,7 +283,7 @@
             </div>
         </div>
          CENTER -->
-    <!-- </div>
+<!-- </div>
 </div>  -->
 
 
@@ -302,61 +302,55 @@
             </span>
         </div>
     </mat-toolbar>
-            <div fusePerfectScrollbar
-                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                dynamicTableHeight>
-                                
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <airmid-table [gridConfig]="gridConfig" class="content">
-                        <ng-container filters>
-                            
-                            <form [formGroup]="_ItemMovemnentService.ItemSearchGroup">
-                                <airmid-datepicker [formGroup]="_ItemMovemnentService.ItemSearchGroup" [isRangePicker]="true"
-                                    formStartControlName="start" formEndControlName="end">
-                                </airmid-datepicker>
-                                <!--  [(fromValue)]="gridConfig.filters[2].fieldValue"
-                                    [(toValue)]="gridConfig.filters[3].fieldValue" -->    
-                            
-                                    <airmid-dropdown label="From Store" formControlName="ToStoreId"
-                                    [formGroup]="_ItemMovemnentService.ItemSearchGroup" [mode]="autocompletestore"
-                                    (selectionChange)="selectChangeStore($event)">
-                                </airmid-dropdown>
-                            
-                                <airmid-dropdown label="To Store" formControlName="StoreId"
-                                [formGroup]="_ItemMovemnentService.ItemSearchGroup" [mode]="autocompletestore"
-                                (selectionChange)="selectChangeStore($event)">
-                            </airmid-dropdown>
+    <div fusePerfectScrollbar
+        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+        dynamicTableHeight>
 
-                            <airmid-dropdown label="Item Name" formControlName="ItemCategory"
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+            <airmid-table [gridConfig]="gridConfig" class="content">
+                <ng-container filters>
+
+                    <form [formGroup]="_ItemMovemnentService.ItemSearchGroup">
+                        <airmid-datepicker [formGroup]="_ItemMovemnentService.ItemSearchGroup" [isRangePicker]="true"
+                            formStartControlName="start" formEndControlName="end"
+                            [(fromValue)]="gridConfig.filters[0].fieldValue"
+                            [(toValue)]="gridConfig.filters[1].fieldValue">
+                        </airmid-datepicker>
+
+                        <airmid-dropdown label="From Store" formControlName="FromStoreId"
+                            [formGroup]="_ItemMovemnentService.ItemSearchGroup" [mode]="autocompletestore"
+                            [readonly]="true" [(ngModel)]="gridConfig.filters[3].fieldValue">
+                        </airmid-dropdown>
+
+                        <airmid-dropdown label="To Store" formControlName="ToStoreId"
+                            [formGroup]="_ItemMovemnentService.ItemSearchGroup" [mode]="autocompletestore"
+                            (selectionChange)="selectChangeStore($event)"
+                            [(ngModel)]="gridConfig.filters[4].fieldValue">
+                        </airmid-dropdown>
+
+                        <!-- <airmid-dropdown label="Item Name" formControlName="ItemCategory"
                                 [formGroup]="_ItemMovemnentService.ItemSearchGroup"
-                                 [mode]="autocompleteitem"
-                                (selectionChange)="selectChangeItem($event)">
-                                <!--  [(ngModel)]="gridConfig.filters[1].fieldValue" -->
-                            </airmid-dropdown>
-                            
-                            <mat-form-field appearance="outline">
-                                <mat-label>BatchNo</mat-label>
-                                <input matInput placeholder="Search Batch" autocomplete="off" [formGroup]="_ItemMovemnentService.ItemSearchGroup" 
-                                formControlName="BatchNo"/>
-                                <button matSuffix mat-icon-button aria-label="Clear">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
+                                 [mode]="autocompleteitem" (selectionChange)="selectChangeItem($event)"
+                                [(ngModel)]="gridConfig.filters[2].fieldValue">
+                            </airmid-dropdown> -->
+                        <airmid-autocomplete label="Item Name" [formGroup]="_ItemMovemnentService.ItemSearchGroup"
+                            formControlName="ItemID"
+                            [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + TostoreId + '&ItemName='"
+                            (selectionChange)="selectChangeItem($event)" [(ngModel)]="gridConfig.filters[2].fieldValue"
+                            TextField="formattedText" ValueField="ItemId">
+                        </airmid-autocomplete>
 
-                            <div fxLayout="row">
-                                <button
-                                matTooltip="Pdf" style="width: 45px;border-color: white;">
-                                <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
-                            </button>&nbsp;
-
-                            <button 
-                                style="background-color: white;color: white;width: 45px;">
-                                <img width="32" height="10px" src="assets/images/logos/xls.png">
+                        <mat-form-field appearance="outline">
+                            <mat-label>BatchNo</mat-label>
+                            <input matInput placeholder="Search Batch" autocomplete="off" (input)="onChangeFirst()"
+                                [formGroup]="_ItemMovemnentService.ItemSearchGroup" formControlName="BatchNo" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('BatchNo')">
+                                <mat-icon>close</mat-icon>
                             </button>
-                            </div>
-                        </form>
-                        </ng-container>
-                    </airmid-table>
-                </div>
-            </div>
+                        </mat-form-field>
+                    </form>
+                </ng-container>
+            </airmid-table>
+        </div>
+    </div>
 </div>

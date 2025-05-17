@@ -30,16 +30,16 @@ export class SalesReturnSummeryComponent implements OnInit {
     'Qty',
     'MRP',
   ];
-  
+
   isLoadingStr: string = '';
   isLoading: String = '';
   sIsLoading: string = "";
-  registerObj:any;
+  registerObj: any;
 
-  dsSalesRetSummeryList =new MatTableDataSource<SaleReturnssummeryList>();
-  dsSalesRetSummeryDetList =new MatTableDataSource<SalesReturnsummeryDetList>();
+  dsSalesRetSummeryList = new MatTableDataSource<SaleReturnssummeryList>();
+  dsSalesRetSummeryDetList = new MatTableDataSource<SalesReturnsummeryDetList>();
 
-  
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
   @ViewChild('SecondPaginator', { static: true }) public SecondPaginator: MatPaginator;
@@ -54,66 +54,86 @@ export class SalesReturnSummeryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if(this.data.Obj){
+    if (this.data.Obj) {
       this.registerObj = this.data.Obj;
       console.log(this.registerObj)
     }
     this.getSalesReturnSummeryList();
     this.getSalesReturnSummeryDetailsList();
   }
-  getSalesReturnSummeryList(){
-    this.sIsLoading = 'loading-data';
-   var  vdata={
-    "ItemId": this.registerObj.ItemId || 0,
-    "ToStoreId": this.registerObj.StoreId || 0
+  getSalesReturnSummeryList() {
+    var vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "StoreID",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "ToStoreId",
+          "fieldValue": String(this.registerObj.storeId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "ItemId",
+          "fieldValue": String(this.registerObj.itemId),
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": []
     }
     console.log(vdata)
     setTimeout(() => {
-      this._CurrentStockService.getSalesReturnSummeryList(vdata).subscribe(data =>{
-        this.dsSalesRetSummeryList.data = data as SaleReturnssummeryList[];
+      this._CurrentStockService.getSalesReturnSummeryList(vdata).subscribe(data => {
+        this.dsSalesRetSummeryList.data = data.data as SaleReturnssummeryList[];
         this.dsSalesRetSummeryList.sort = this.sort;
         this.dsSalesRetSummeryList.paginator = this.paginator;
         console.log(this.dsSalesRetSummeryList.data)
-        this.sIsLoading = '';
-        this.isLoadingStr = this.dsSalesRetSummeryList.data.length == 0 ? 'no-data' : '';
-      },
-        (error) => {
-          this.isLoadingStr = 'no-data';
-        }
+      }
       );
-    }, 1000);
+    }, 500);
 
   }
-  getSalesReturnSummeryDetailsList(){
-    this.sIsLoading = 'loading-data';
-   var  vdata={
-     "ItemId": this.registerObj.ItemId || 0,
-     "ToStoreId": this.registerObj.StoreId || 0
+  getSalesReturnSummeryDetailsList() {
+    var vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "StoreID",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "ToStoreId",
+          "fieldValue": String(this.registerObj.storeId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "ItemId",
+          "fieldValue": String(this.registerObj.itemId),
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": []
     }
     console.log(vdata)
     setTimeout(() => {
-      this._CurrentStockService.getSalesReturnDetailSummeryList(vdata).subscribe(data =>{
-        this.dsSalesRetSummeryDetList.data = data as SalesReturnsummeryDetList[];
+      this._CurrentStockService.getSalesReturnDetailSummeryList(vdata).subscribe(data => {
+        this.dsSalesRetSummeryDetList.data = data.data as SalesReturnsummeryDetList[];
         this.dsSalesRetSummeryDetList.sort = this.sort;
         this.dsSalesRetSummeryDetList.paginator = this.SecondPaginator;
         console.log(this.dsSalesRetSummeryDetList.data)
-        this.sIsLoading = '';
-        this.isLoadingStr = this.dsSalesRetSummeryDetList.data.length == 0 ? 'no-data' : '';
-      },
-        (error) => {
-          this.isLoadingStr = 'no-data';
-        }
+      }
       );
-    }, 1000);
+    }, 500);
   }
-  onClose(){
-    this.dsSalesRetSummeryDetList.data =[];
+  onClose() {
+    this.dsSalesRetSummeryDetList.data = [];
     this.dsSalesRetSummeryList.data = [];
     this._matDialog.closeAll();
   }
 }
 export class SaleReturnssummeryList {
- 
+
   ItemName: any;
   BatchNo: any;
   ReturnQty: number;
