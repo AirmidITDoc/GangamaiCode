@@ -1631,16 +1631,15 @@ export class IPBillingComponent implements OnInit {
   }
   //For testing 
   viewgetDraftBillReportPdf(Id) {
-    this.commonService.Onprint("AdmissionID", Id, "IpDraftBill");
+    this.commonService.Onprint("AdmissionID", Id, "IpDraftBillClassWise");
   }
-
    //For testing 
    viewgetDraftBillservicewiseReportPdf(Id) {
-    this.commonService.Onprint("AdmissionID", Id, "IpDraftBillNew");
+    this.commonService.Onprint("AdmissionID", Id, "IpDraftBillGroupWise");
   }
 
   viewgetBillReportPdf(billNo) {
-    this.commonService.Onprint("BillNo", billNo, "IpFinalBill");
+    this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");
   }
  
   viewgetAdvanceReceiptReportPdf(data) { 
