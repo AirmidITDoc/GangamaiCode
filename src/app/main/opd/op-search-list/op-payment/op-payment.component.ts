@@ -196,7 +196,7 @@ export class OpPaymentComponent implements OnInit {
     // private snackBarService: SnackBarService
   ) {
     this.nowDate = new Date();
-
+console.log(this.data)
     if (data) {
       this.advanceData = this.data.vPatientHeaderObj;
       console.log(this.advanceData)
@@ -207,7 +207,7 @@ export class OpPaymentComponent implements OnInit {
       this.amount1 = parseInt(this.advanceData.NetPayAmount) ;
       this.PatientName = this.advanceData.PatientName;
       this.RegNo = this.advanceData.RegNo;
-      this.DoctorName = this.advanceData.Doctorname;
+      this.DoctorName = this.advanceData.DoctorName;
       this.CompanyName = this.advanceData.CompanyName;
       this.Date = this.advanceData.Date;
       this.Age = this.advanceData.Age;

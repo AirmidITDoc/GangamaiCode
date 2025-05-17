@@ -35,7 +35,7 @@ export class CurrentStockService {
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
       StoreId:this.accountService.currentUserValue.user.storeId,
-      ItemCategory:'%',
+      ItemCategory:['%'],
       IsDeleted:['2']
     });
   }
@@ -108,7 +108,7 @@ export class CurrentStockService {
   public getPueSupplierWiseList(Param){
     return this._httpClient1.PostData("CurrentStock/BatchWiseList",Param);
   }
-  
+
   public getSalesList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_PHAR_SalesList",Param);
   }

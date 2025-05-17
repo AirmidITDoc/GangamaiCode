@@ -40,8 +40,8 @@ export class IndentService {
       // FromStoreId:this.accountService.currentUserValue.user.storeId,
       // IsUrgent:['0'],
       ItemName: ['', [Validators.required]],
-      Qty:   ['', [Validators.required], Validators.maxLength(5)],
-      Remark:['',Validators.maxLength(500)],
+      Qty:   ['', [Validators.required, Validators.maxLength(10)]],
+      Remark:['',Validators.maxLength(5)],
       ItemNameKit:[''],
       Qtykit:['']
     });

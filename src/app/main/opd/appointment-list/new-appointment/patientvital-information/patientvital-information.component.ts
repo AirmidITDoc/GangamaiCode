@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppointmentlistService } from '../../appointmentlist.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -83,14 +83,38 @@ export class PatientvitalInformationComponent {
   createMyForm(){
     return this._formBuilder.group({
       visitId:this.data.visitId,
-      height: '',
-      pweight: '',
-      bmi: '',
-      bsl: '',
-      spO2: [''],
-      temp: [''],
-      pulse: [''],
-      bp: [''],
+      height:['', [Validators.minLength(0),
+                      Validators.maxLength(3),
+                      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                      ]],
+      pweight:['', [Validators.minLength(0),
+                Validators.maxLength(3),
+                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                ]],
+      bmi:['', [Validators.minLength(0),
+                Validators.maxLength(3),
+                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                ]],
+      bsl: ['', [Validators.minLength(0),
+                      Validators.maxLength(3),
+                      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                      ]],
+      spO2: ['', [Validators.minLength(0),
+                      Validators.maxLength(3),
+                      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                      ]],
+      temp:['', [Validators.minLength(0),
+                Validators.maxLength(3),
+                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                ]],
+      pulse:['', [Validators.minLength(0),
+                      Validators.maxLength(3),
+                      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                      ]],
+      bp:['', [Validators.minLength(0),
+                Validators.maxLength(3),
+                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                ]],
     });
   }
 

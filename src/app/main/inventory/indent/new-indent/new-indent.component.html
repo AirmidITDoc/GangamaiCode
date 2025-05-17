@@ -35,7 +35,7 @@
 
                                 <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
                                     <airmid-dropdown label="From Store Name" formControlName="FromStoreId" fxFlex="30%"
-                                        [formGroup]="StoreFrom" [validations]="getValidationMessages().FromStoreId"
+                                        [formGroup]="StoreFrom" [validations]="getValidationMessages().FromStoreId"  [readonly]="true"
                                         [value]="data?.FromStoreId" [mode]="autocompletestore">
                                     </airmid-dropdown>
 
@@ -44,12 +44,12 @@
                                         [value]="data?.ToStoreId" [mode]="autocompletestore">
                                     </airmid-dropdown>
 
-                                    <!-- <mat-radio-group name="IsUrgent" value="0" formControlName="IsUrgent"
+                                    <mat-radio-group name="IsUrgent" value="0" formControlName="IsUrgent"
                                         style="padding: 15px 0px 0px 30px;">
                                         <mat-label class="example-margin"> Is Urgent:</mat-label>&nbsp;&nbsp;
                                         <mat-radio-button value="1" class="mr-sm-12">Yes</mat-radio-button>
                                         <mat-radio-button value="0" class="mr-sm-12">No</mat-radio-button>
-                                    </mat-radio-group> -->
+                                    </mat-radio-group>
 
 
                                 </div>
@@ -67,8 +67,8 @@
                                         ValueField="itemId" (onClearSelection)="resetFormItem()"></airmid-autocomplete>
 
 
-                                    <airmid-textbox fxFlex="10%" label="Qty" formControlName="Qty" [max]="99999" 
-                                        [formGroup]="IndentForm" placeholder="Qty" type="number" [maxlength]="5"></airmid-textbox>
+                                    <airmid-textbox fxFlex="10%" label="Qty" formControlName="Qty"  [max]="99999" [maxlength]="10"
+                                        [formGroup]="IndentForm" placeholder="Qty" type="number" ></airmid-textbox>
 
 
                                     <div matTooltip="Select All Value to enable this button!!" style="padding: 2px;">

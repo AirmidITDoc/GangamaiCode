@@ -677,10 +677,7 @@ export class NewPurchaseorderComponent {
     this._PurchaseOrder.validateCellData(item);
     this._PurchaseOrder.calculateBasicValues(item);
     this._PurchaseOrder.validateGSTRates(item);
-    this._PurchaseOrder.validateGSTRates(item);
-    // this._PurchaseOrder.C(item);
-
-
+    
     const updatedItem = this.calculateCellGSTType(item);
     Object.assign(item, updatedItem);
 
@@ -827,21 +824,32 @@ export class NewPurchaseorderComponent {
   IsDiscPer2: boolean = false;
   onGSTTypeChange(event: { value: number, text: string }) {
     debugger
-    console.log(event)
-    this.GSTTypetext=event.text
-    this.GSTTypeID = event.value
-    this.calculateGSTType(event.text as GSTType);
-    if (event.text == "GST After TwoTime Disc") {
-      this.IsDiscPer2 = true
-    } else {
-      this.IsDiscPer2 = false
-    }
+    // console.log(event)
+    // this.GSTTypetext=event.text
+    // this.GSTTypeID = event.value
+    // this.calculateGSTType(event.text as GSTType);
+    // if (event.text == "GST After TwoTime Disc") {
+    //   this.IsDiscPer2 = true
+    // } else {
+    //   this.IsDiscPer2 = false
+    // }
 
-    //  if (this.dsItemNameList.data.length > 0) {
-    //         for (let i = 0; i < this.dsItemNameList.data.length; i++) {
-    //             this.getCellCalculation(this.dsItemNameList.data[i], null);
-    //         }
-    //     }
+    console.log(event)
+           this.GSTTypeID = event.value;
+           const newGSTType = event.text as GSTType;
+           this.calculateGSTType(newGSTType);
+           if (event.text == "GST After TwoTime Disc") {
+               this.IsDiscPer2 = true
+           } else {
+               this.IsDiscPer2 = false
+           }
+   
+           // Update gst type of table data
+   
+           this.dsItemNameList.data.forEach((item) => {
+               item.GSTType = newGSTType;
+               this.getCellCalculation(item);
+           })
 
   }
 
@@ -856,7 +864,7 @@ export class NewPurchaseorderComponent {
     this.userFormGroup.patchValue({
       UOMId: item.umoId,
       ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
-      Qty: item.balanceQty,
+      Qty:0,// item.balanceQty,
       CGSTPer: item.cgstPer,
       SGSTPer: item.sgstPer,
       IGSTPer: item.igstPer,
@@ -999,6 +1007,8 @@ debugger
       console.error('Error calculating GST:', error);
       return item;
     }
+
+    
   }
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();

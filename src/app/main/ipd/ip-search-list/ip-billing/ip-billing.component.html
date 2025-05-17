@@ -590,7 +590,7 @@
 
                         <ng-container matColumnDef="Qty">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty</mat-header-cell>
-                          <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                          <mat-cell *matCellDef="let contact;" fxShow.gt-sm>
                             <!-- <span>{{ contact.qty }}</span> -->
                             <mat-form-field floatLabel="never">
                               <input matInput [(ngModel)]="contact.qty" type="text" OnlyNumber
@@ -669,10 +669,10 @@
                           <mat-header-cell *matHeaderCellDef class="table-actions" class="w-70">Action</mat-header-cell>
                           <mat-cell *matCellDef="let contact" class="w-80">
                             <div fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
-                              <button mat-icon-button (click)="OnSaveEditedValue(contact)" matTooltip="Save">
-                              <mat-icon class="active-icon green-600-fg s-16">check</mat-icon>
+                              <button mat-icon-button (click)="OnSaveEditedValue(contact)" matTooltip="Save" [disabled]="!contact.EditDoctor && !contact.isUpdated">
+                              <mat-icon class="active-icon green-600 s-16">check</mat-icon>
                              </button>
-                              <button mat-icon-button (click)="deletecharges(contact)" matTooltip="Delete" *ngIf="!contact.EditDoctor">
+                              <button mat-icon-button (click)="deletecharges(contact)" matTooltip="Delete" *ngIf="!contact.EditDoctor ">
                               <mat-icon class="active-icon red-600-fg s-16">delete</mat-icon>
                              </button>
                             </div>

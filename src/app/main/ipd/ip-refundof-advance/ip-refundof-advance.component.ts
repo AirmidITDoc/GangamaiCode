@@ -22,6 +22,7 @@ import { element } from 'protractor';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { map, startWith } from 'rxjs/operators';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-ip-refundof-advance',
@@ -96,14 +97,15 @@ export class IPRefundofAdvanceComponent implements OnInit {
      private commonService: PrintserviceService,
     private advanceDataStored: AdvanceDataStored,
     public toastr: ToastrService, 
-    public _WhatsAppEmailService:WhatsAppEmailService, 
+    public _WhatsAppEmailService:WhatsAppEmailService,
+     public _FormvalidationserviceService:FormvalidationserviceService, 
     private formBuilder: UntypedFormBuilder,) 
     {} 
 
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
-    this.RefundOfAdvanceFormGroup = this.createRefAdvForm();  
-
+    this.RefundOfAdvanceFormGroup = this.createRefAdvForm(); 
+    this.RefundOfAdvanceFormGroup.markAllAsTouched();  
     if(this.data){
     this.registerObj = this.data
     console.log(this.registerObj)
@@ -120,9 +122,9 @@ export class IPRefundofAdvanceComponent implements OnInit {
   createRefAdvForm() {
     return this.formBuilder.group({
       BalanceAdvance: [0], 
-      NewRefundAmount: [0,Validators.required],
+      NewRefundAmount: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]],
       Remark: [''],
-      CashCounterID:['8']
+      CashCounterID:['8',[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]]
     });
   } 
  
@@ -263,13 +265,29 @@ export class IPRefundofAdvanceComponent implements OnInit {
         const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');  
         const formValue = this.RefundOfAdvanceFormGroup.value;
 
+        
+      let invalidFields = []; 
+      if (this.RefundOfAdvanceFormGroup.invalid) {
+        for (const controlName in this.RefundOfAdvanceFormGroup.controls) {
+          if (this.RefundOfAdvanceFormGroup.controls[controlName].invalid) {
+            invalidFields.push(`${controlName}`);
+          }
+        }
+      } 
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+
     if(formValue.NewRefundAmount == '' || formValue.NewRefundAmount == 0 || formValue.NewRefundAmount == null || formValue.NewRefundAmount == undefined){
       this.toastr.warning('Enter a Refund Amount', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    } 
-    
+    }  
+
     let IPRefundofAdvanceObj = {};
     IPRefundofAdvanceObj['refundDate'] = formattedDate;
     IPRefundofAdvanceObj['refundTime'] = formattedTime;

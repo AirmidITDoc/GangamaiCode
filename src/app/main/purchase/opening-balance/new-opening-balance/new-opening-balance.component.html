@@ -34,22 +34,22 @@
                                     </div>
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
-                            <!-- <div fxLayout="column" fxLayout="row" fxLayoutAlign="start none"> -->
-                            <div fxLayout="row" class="gap-2" class="gap-2">
-                                <form [formGroup]="StoreForm" >
-                                    <airmid-dropdown label="Store Name" formControlName="StoreId" fxFlex="90%"
-                                        (selectionChange)="StoreSelction($event)" [formGroup]="StoreForm"
-                                        [mode]="autocompletestore">
-                                    </airmid-dropdown>
+                            <div fxLayout="column" fxLayout="row" fxLayoutAlign="start none">
+                                <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
+                                    <form [formGroup]="StoreForm">
+                                        <airmid-dropdown label="Store Name" formControlName="StoreId" [disabled]="true"
+                                            (selectionChange)="StoreSelction($event)" [formGroup]="StoreForm"
+                                            (openedChange)="true" [mode]="autocompletestore">
+                                        </airmid-dropdown>
 
-                                </form>
+                                    </form>
 
-                                <app-common-date [screenFrom]="screenFromString"
+                                    <!-- <app-common-date [screenFrom]="screenFromString"
                                     (dateTimeEventEmitter)="getDateTime($event)">
-                                </app-common-date>
+                                </app-common-date> -->
+                                </div>
                             </div>
-
-                            <div fxLayout="row" class="gap-2">
+                            <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
                                 <form [formGroup]="OPeningtemForm">
 
                                     <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="OPeningtemForm"
@@ -70,17 +70,17 @@
                                     </mat-form-field>
 
                                     <airmid-textbox fxFlex="10%" label="Bal Qty" formControlName="BalanceQty"
-                                        [(ngModel)]="vBalQty" [formGroup]="OPeningtemForm"  type="number"
+                                        [(ngModel)]="vBalQty" [formGroup]="OPeningtemForm" type="number"
                                         placeholder="BalanceQty"></airmid-textbox>
 
-                                    <airmid-textbox fxFlex="10%" label="GST %" formControlName="GST" [(ngModel)]="vGST"  type="number"
-                                        [formGroup]="OPeningtemForm" placeholder="GST %"></airmid-textbox>
+                                    <airmid-textbox fxFlex="10%" label="GST %" formControlName="GST" [(ngModel)]="vGST"
+                                        type="number" [formGroup]="OPeningtemForm" placeholder="GST %"></airmid-textbox>
 
-                                    <airmid-textbox fxFlex="10%" label="MRP" formControlName="MRP" [(ngModel)]="vMRP"  type="number"
-                                        [formGroup]="OPeningtemForm" placeholder="MRP"></airmid-textbox>
+                                    <airmid-textbox fxFlex="10%" label="MRP" formControlName="MRP" [(ngModel)]="vMRP"
+                                        type="number" [formGroup]="OPeningtemForm" placeholder="MRP"></airmid-textbox>
 
                                     <airmid-textbox fxFlex="10%" label="Rate PerUnit" formControlName="RatePerUnit"
-                                        [(ngModel)]="vRatePerUnit" [formGroup]="OPeningtemForm"  type="number"
+                                        [(ngModel)]="vRatePerUnit" [formGroup]="OPeningtemForm" type="number"
                                         placeholder="Rate PerUnit" (keyup)="CheckValidation()"
                                         (keypress)="keyPressCharater($event)"></airmid-textbox>
 

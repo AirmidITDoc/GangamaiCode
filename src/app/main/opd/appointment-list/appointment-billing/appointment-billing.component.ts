@@ -143,10 +143,14 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 2 + "&ServiceName="
     if (this.data) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
-      this.patientDetail = this.selectedAdvanceObj;
-      // this.PatientName = this.patientDetail.patientName
+      this.patientDetail =this.advanceDataStored.storage;// this.selectedAdvanceObj;
       this.patientDetail.formattedText = this.patientDetail.patientName
       this.patientDetail.doctorName = this.patientDetail.doctorname
+      this.PatientName= this.patientDetail.patientName
+      this.DepartmentName= this.patientDetail.departmentName
+      this.AgeYear= this.patientDetail.ageYear
+      this.Doctorname=this.patientDetail.doctorname
+
       this.vOPIPId = this.patientDetail.visitId
       this.savebtn = false
       // console.log("DATA : ", this.patientDetail);
@@ -615,8 +619,18 @@ debugger
 
   getSelectedObj(obj) {
     console.log(obj)
+    debugger
     this.patientDetail = obj
     this.vOPIPId = obj.visitId
+
+      this.PatientName= this.patientDetail.formattedText
+      this.DepartmentName= this.patientDetail.departmentName
+      this.AgeYear= this.patientDetail.ageYear
+      this.Doctorname=this.patientDetail.doctorName
+      this.RegNo=this.patientDetail.regNo
+
+      this.vOPIPId = this.patientDetail.visitId
+
     if (this.vOPIPId > 0)
       this.savebtn = false
     this.Regstatus = false
@@ -849,6 +863,7 @@ debugger
       Billdetsarr.push(BillDetailsInsertObj);
     });
     //Patient info 
+    debugger
     let PatientHeaderObj = {};
     PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
       PatientHeaderObj['PatientName'] = this.PatientName;
@@ -856,7 +871,7 @@ debugger
     PatientHeaderObj['DoctorName'] = this.Doctorname;
     PatientHeaderObj['CompanyName'] = this.CompanyName;
     PatientHeaderObj['DepartmentName'] = this.DepartmentName;
-    PatientHeaderObj['OPD_IPD_Id'] = this.vOPDNo;
+    PatientHeaderObj['OPD_IPD_Id'] =  this.vOPIPId;
     PatientHeaderObj['Age'] = this.AgeYear;
     PatientHeaderObj['NetPayAmount'] = Math.round(this.totalChargeForm.get('totalNetAmount').value);
 

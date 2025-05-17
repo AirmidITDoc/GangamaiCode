@@ -290,7 +290,7 @@ export class NewOpeningBalanceComponent implements OnInit {
       openingBalanceParamInsertObj['storeId'] = this.StoreId;
       openingBalanceParamInsertObj['openingDate'] = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',
         openingBalanceParamInsertObj['openingTime'] = this.dateTimeObj.time;
-      openingBalanceParamInsertObj['openingDocNo'] = 20;
+      openingBalanceParamInsertObj['openingDocNo'] = 0;
       openingBalanceParamInsertObj['itemId'] = element.ItemID || 0,
         openingBalanceParamInsertObj['batchNo'] = element.BatchNo || ''
       openingBalanceParamInsertObj['batchExpDate'] = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',//this.vExpDate,// this.datePipe.transform(element.ExpDate, "yyyy-MM-dd") || '1900-01-01',

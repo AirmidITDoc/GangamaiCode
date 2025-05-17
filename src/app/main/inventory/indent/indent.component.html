@@ -23,28 +23,41 @@
         dynamicTableHeight>
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-            <ng-template #isVerifiedstatus let-element>
-                <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isverify=='true'" matTooltip="Verified"
-                        class="pill green-600 s-16">circle</mat-icon>
 
-                    <mat-icon *ngIf="element.isverify=='false'" matTooltip="NotVerified"
-                        class="pill orange-600 s-16">circle</mat-icon>
+              <ng-template #actionsTemplate2 let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isUrgent=='1'" matTooltip="IsUrgent" class="pill green-600 s-16">circle
+                    </mat-icon>
+                    <mat-icon *ngIf="!element.isUrgent=='1'" matTooltip="Not Urgent"
+                        class="pill red-600 s-16">circle
+                    </mat-icon>
                 </div>
+
+            </ng-template>
+
+            <ng-template #actionsTemplate1 let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isverify=='1'" matTooltip="Verified" class="pill green-600 s-16">circle
+                    </mat-icon>
+                    <mat-icon *ngIf="!element.isverify=='1'" matTooltip="NotVerified"
+                        class="pill red-600 s-16">circle
+                    </mat-icon>
+                </div>
+
             </ng-template>
 
             <ng-template #actionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <button mat-icon-button matTooltip="Print Indent"
-                        (click)="viewgetIndentReportPdf(element)">
+                    <button mat-icon-button matTooltip="Print Indent" (click)="viewgetIndentReportPdf(element)">
                         <mat-icon> print</mat-icon>
                     </button>
 
-                    <button mat-icon-button matTooltip="Edit Indent" (click)="OnEdit(element)" *ngIf="!element.isInchargeVerify">
+                    <button mat-icon-button matTooltip="Edit Indent" (click)="OnEdit(element)"
+                        *ngIf="!element.isInchargeVerify">
                         <mat-icon>edit</mat-icon>
                     </button>
 
-                <button *ngIf="!element.isInchargeVerify" mat-icon-button (click)="onVerify(element)">
+                    <button *ngIf="!element.isInchargeVerify" mat-icon-button (click)="onVerify(element)">
                         <mat-icon class="disabled-icon" title="verify Menu">verified_user</mat-icon>
                     </button>
 
@@ -83,7 +96,7 @@
                                     <span style="font-weight: bold;">Status :</span>
                                     <mat-slide-toggle name="Status" (change)="onChangeFirst($event)"
                                         formControlName="Status">
-                                        Close / Pending
+                                        Pending / Close
                                     </mat-slide-toggle>
                                 </div>
 

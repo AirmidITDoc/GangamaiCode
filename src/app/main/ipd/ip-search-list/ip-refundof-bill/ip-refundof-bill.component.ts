@@ -16,6 +16,7 @@ import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-pa
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest'; 
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
   
 @Component({
@@ -100,12 +101,14 @@ export class IPRefundofBillComponent implements OnInit {
     public toastr: ToastrService, 
     private dialogRef: MatDialogRef<IPRefundofBillComponent>,
     private _formBuilder: UntypedFormBuilder,
+    private _FormvalidationserviceService:FormvalidationserviceService,
         @Inject(MAT_DIALOG_DATA) public data: any,
     ) { } 
 
   ngOnInit(): void { 
     this.RefundOfBillFormGroup = this.refundForm();
     this.searchFormGroup = this.createSearchForm();
+     this.RefundOfBillFormGroup.markAllAsTouched();
     if (this.data) {
       console.log(this.data)
       this.selectedAdvanceObj = this.data 
@@ -121,9 +124,9 @@ createSearchForm() {
 }
 refundForm(): FormGroup {
   return this._formBuilder.group({  
-    TotalRefundAmount: [ ],
+    TotalRefundAmount: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]],
     Remark: [''],
-    CashCounterID:[7]   
+    CashCounterID:[7,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]]   
   });
 } 
  Chargelist:any=[];
@@ -220,9 +223,23 @@ gettablecalculation(element, RefundAmt) {
   } 
  
 
-onSave() {
-
+onSave() { 
   const formControl = this.RefundOfBillFormGroup.value
+    let invalidFields = []; 
+      if (this.RefundOfBillFormGroup.invalid) {
+        for (const controlName in this.RefundOfBillFormGroup.controls) {
+          if (this.RefundOfBillFormGroup.controls[controlName].invalid) {
+            invalidFields.push(`${controlName}`);
+          }
+        }
+      } 
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+
   if(formControl.TotalRefundAmount == ' ' || formControl.TotalRefundAmount == null || formControl.TotalRefundAmount == undefined){
     this.toastr.warning('Please check refund amount .', 'Warning !', {
       toastClass: 'tostr-tost custom-toast-warning',

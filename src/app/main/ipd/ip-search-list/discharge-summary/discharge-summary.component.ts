@@ -515,9 +515,7 @@ export class DischargeSummaryComponent implements OnInit {
           setTimeout(() => {
             this._IpSearchListService.insertIPDDischargSummary(data).subscribe(response => {
               this.toastr.success(response.message);
-              console.log(response)
               this.getPrint(response)
-              // this.viewgetDischargesummaryPdf(response)
               this._matDialog.closeAll();
             });
 

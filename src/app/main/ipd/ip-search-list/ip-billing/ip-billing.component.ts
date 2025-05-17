@@ -219,6 +219,7 @@ export class IPBillingComponent implements OnInit {
   @ViewChild('drawer') public drawer: MatDrawer;
 
   dataSource = new MatTableDataSource<ChargesList>();
+  copiedData:any[] = [];
   dataSource1 = new MatTableDataSource<ChargesList>();
   prevbilldatasource = new MatTableDataSource<Bill>();
   advancedatasource = new MatTableDataSource<any>();
@@ -392,7 +393,7 @@ export class IPBillingComponent implements OnInit {
       totalconcessionAmt:  [0,[Validators.min(0)]], 
       ConcessionId: [''], 
       FinalAmount: [0, [Validators.required]],
-      CashCounterID: [4,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]], 
+      CashCounterID: [4,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]], 
       Remark: [''],
       Admincheck: [''],
       GenerateBill: [1],
@@ -443,9 +444,10 @@ export class IPBillingComponent implements OnInit {
   // Service Add 
   onSaveAddCharges() {
     let doctorid = 0;
-    let doctorName = ''; 
-    let invalidFields = [];
+    let doctorName = '';  
     const formValue = this.Serviceform.value
+
+
     if (this.isDoctor) {
       if ((formValue.DoctorID == '' || formValue.DoctorID == null || formValue.DoctorID == '0')) {
         this.toastr.warning('Please select Doctor', 'Warning !', {
@@ -457,24 +459,25 @@ export class IPBillingComponent implements OnInit {
         doctorid = this.Serviceform.get("DoctorID").value; 
     }
 
-    if (this.Serviceform.valid) { 
-      // console.log("Form values:", formValue) 
-      // Check VisitFormGroup
+
+         let invalidFields = []; 
       if (this.Serviceform.invalid) {
         for (const controlName in this.Serviceform.controls) {
           if (this.Serviceform.controls[controlName].invalid) {
-            invalidFields.push(`Service Form: ${controlName}`);
+            invalidFields.push(`${controlName}`);
           }
         }
-      }
-      // Show a toast for each invalid field
+      } 
       if (invalidFields.length > 0) {
         invalidFields.forEach(field => {
-          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
           );
         });
-      } 
+      }
 
+
+    if (this.Serviceform.valid) { 
+      // console.log("Form values:", formValue) 
       // Calculate total amount, discount amount, and net amount
       const totalAmount = formValue.price * formValue.qty;
       const discountAmount = (totalAmount * formValue.discPer) / 100;
@@ -835,6 +838,7 @@ export class IPBillingComponent implements OnInit {
       this.chargeslist = response.data
       console.log(this.chargeslist)
       this.dataSource.data = this.chargeslist;
+      this.copiedData = structuredClone(this.chargeslist);
       this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
       this.getNetAmtSum()
       this.getbillbalamt();
@@ -1066,12 +1070,21 @@ export class IPBillingComponent implements OnInit {
    //Save
    onSave() { 
     debugger
-    if(this.dataSource.data.length > 0 && this.Ipbillform.invalid){
-      this.toastr.warning('Please check form is invalid.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+         let invalidFields = []; 
+      if (this.Ipbillform.invalid) {
+        for (const controlName in this.Ipbillform.controls) {
+          if (this.Ipbillform.controls[controlName].invalid) {
+            invalidFields.push(`${controlName}`);
+          }
+        }
+      } 
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      } 
+ 
     const formValue = this.Ipbillform.value
     if (formValue.totalconcessionAmt > 0 || formValue.totaldiscPer > 0) {
       if (formValue.ConcessionId == '' || formValue.ConcessionId == null || formValue.ConcessionId == '0') {
@@ -1123,7 +1136,8 @@ export class IPBillingComponent implements OnInit {
         })
       }
     } else {
-      Swal.fire("Select Data For Save")
+      Swal.fire("Please check list is blank ")
+      
     } 
   }
   SaveBill1() {
@@ -1763,6 +1777,10 @@ export class IPBillingComponent implements OnInit {
       console.log(Obj) 
     }
     gettablecalculation(element) {  
+      // Checking if old value is same as new value
+      const oldElement = this.copiedData.find(i=>i.chargesId === element.chargesId);
+      element.isUpdated = oldElement.price != element.price || oldElement.qty != element.qty;
+
      if (element.price > 0 && element.qty > 0) {
         element.totalAmt = element.qty * element.price || 0;
         element.DiscAmt = (element.ConcessionPercentage * element.totalAmt) / 100 || 0;

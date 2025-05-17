@@ -317,9 +317,9 @@ export class GoodReceiptnoteComponent implements OnInit {
                     FullData: this.FullData
                 }
             });
-        dialogRef.afterClosed().subscribe(result => { 
+        dialogRef.afterClosed().subscribe(result => {
+        }); 
           this.grid.bindGridData();
-        });
     }
     GRNEmail(contact) {
         const dialogRef = this._matDialog.open(EmailSendComponent,
@@ -332,8 +332,8 @@ export class GoodReceiptnoteComponent implements OnInit {
                 }
             });
         dialogRef.afterClosed().subscribe(result => { 
-             this.grid.bindGridData();
-        });
+        }); 
+       this.grid.bindGridData();
     }
     onEdit(contact) {
         this.chkNewGRN = 2;
@@ -348,9 +348,9 @@ export class GoodReceiptnoteComponent implements OnInit {
                     chkNewGRN: this.chkNewGRN
                 }
             });
-        dialogRef.afterClosed().subscribe(result => { 
-             this.grid.bindGridData();
+        dialogRef.afterClosed().subscribe(result => {  
         });
+          this.grid.bindGridData();
     }
     onVerify(row) {
         let GRNVerifyObj = {};
