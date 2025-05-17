@@ -198,9 +198,7 @@ export class GoodReceiptnoteComponent implements OnInit {
                 { fieldName: "IsVerify", fieldValue: this.IsVerify, opType: OperatorComparer.Equals },
                 { fieldName: "Supplier_Id", fieldValue: this.SupplierId, opType: OperatorComparer.Equals }
             ],
-        }
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
+        } 
     }
     selectChangeStore(value) {
         if (value.value !== 0)

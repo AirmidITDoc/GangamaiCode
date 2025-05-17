@@ -274,6 +274,7 @@ export class NewGRNService {
     validateGRNForm(form: FormGroup): boolean {
         const values = form.getRawValue() as GRNFormModel;
 
+
         if (!values.ItemName) {
             this.showToast('Please select an item', ToastType.WARNING);
             return false;
@@ -309,6 +310,11 @@ export class NewGRNService {
         if (+values.ConversionFactor < 1) {
             this.showToast('Conversion Factor should be greater than 0', ToastType.WARNING);
             form.patchValue({ ConversionFactor: 1 });
+            return false;
+        }
+        debugger
+         if (!values.GSTType || +values.GSTType < 0) {
+            this.showToast('Please select an GST Type', ToastType.WARNING);
             return false;
         }
         return true;

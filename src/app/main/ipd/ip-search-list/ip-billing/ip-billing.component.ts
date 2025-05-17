@@ -1177,8 +1177,8 @@ export class IPBillingComponent implements OnInit {
         //   }); 
           const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
             {
-              maxWidth: "85vw",
-              height: '600px',
+              maxWidth: "75vw",
+              height: '650px',
               width: '100%',
               data: {
                 vPatientHeaderObj: PatientHeaderObj,

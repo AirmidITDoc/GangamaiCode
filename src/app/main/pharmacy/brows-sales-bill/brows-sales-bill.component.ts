@@ -6,27 +6,21 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { DatePipe } from '@angular/common';
-import { difference } from 'lodash';
+import { DatePipe } from '@angular/common'; 
 import * as converter from 'number-to-words';
 import Swal from 'sweetalert2';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Printsal } from '../sales/sales.component';
 import { SalesService } from '../sales/sales.service';
-import { Subscription } from 'rxjs';
-import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-
-import { E } from '@angular/cdk/keycodes';
+import { Subscription } from 'rxjs'; 
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component'; 
 import * as XLSX from 'xlsx';
 const jsPDF = require('jspdf');
-// require('jspdf-autotable');
-
+// require('jspdf-autotable'); 
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { IPSearchListService } from 'app/main/ipd/ip-search-list/ip-search-list.service';
-import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
-import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component'; 
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
@@ -51,17 +45,8 @@ export class BrowsSalesBillComponent implements OnInit {
   reportPrintObj: Printsal;
   reportPrintObjTax: Printsal;
   subscriptionArr: Subscription[] = [];
-  currentDate = new Date();
-  CustomerName: any = "";
-  CustomerId: any = "";
-  CustAddress: any = "";
-  ExMobile: any = "";
-  TotalCashpay: any = 0;
-  TotalCardpay: any = 0;
-  TotalChequepay: any = 0;
-  TotalNeftpay: any = 0;
-  TotalPatTmpay: any = 0;
-  TotalBalancepay: any = 0;
+  currentDate = new Date(); 
+  ExMobile: any = ""; 
   Filepath: any;
   loadingRow: number | null = null
   IsLoading: boolean = false;
@@ -70,150 +55,105 @@ export class BrowsSalesBillComponent implements OnInit {
   TotalAmt: any = 0;
   sIsLoading: any = '';
   AdList: boolean = false;
-  type = " ";
-
+  type = " "; 
   Creditflag: boolean = false;
   menuActions: Array<string> = [];
-  displayedColumns: string[] = [
-    'OP_Ip_Type', 
-    //  'action1',
-    //  'action2',
-    // 'payment',
-    'Date',
-    'SalesNo',
-    'RegNo',
-    'PatientName',
-    'NetAmt',
-    'BalAmt',
-    'PaidAmt',
-    'PaidType',
-    'IPNo',
-    'action1'
-  ]
-  displayedColumns2: string[] = [
-    'ItemName',
-    'BatchNo',
-    'Expdate',
-    'Qty',
-    'MRP',
-    'TotalMRP',
-    'DiscPer',
-    'DiscAmt',
-    'GrossAmt',
-    'GST',
-    'CGST',
-    'SGST',
-    'IGST'
-  ]
-  displayedColumns3: string[] = [
-    'OP_Ip_Type',
-    // 'action1',
-    // 'action2',
-    'SalesDate',
-    'SalesNo',
-    'RegNo',
-    'PatientName',
-    'NetAmt',
-    'BalAmt',
-    'PaidAmt',
-    'Type', 
-    'action',
-  ]
-  displayedColumns4: string[] = [
-    'ItemName',
-    'BatchNo',
-    'Expdate',
-    'Qty',
-    'MRP',
-    'TotalMRP',
-    'GST',
-    'CGST',
-    'SGST',
-    'IGST'
-  ]
-
-
-  displayedColumnsplist = [
-    // 'IsMLC',
-    'Action',
-    'RegNo',
-    'PatientName',
-    'DOA',
-    // 'DOT',
-    'Doctorname',
-    'RefDocName',
-    'IPNo',
-    'PatientType',
-    'WardName',
-    'TariffName',
-    'ClassName',
-    // 'CompanyName',
-    // 'RelativeName',
-    'buttons'
-  ];
+ 
+  
+ 
+     FromDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
+     ToDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
+     StoreId1 = this._BrowsSalesBillService.userForm.get('StoreId').value || 0;
       autocompletestore: string = "Store";
       @ViewChild('grid') grid: AirmidTableComponent;
       @ViewChild('grid1') grid1: AirmidTableComponent;
 
-      @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;  
-      @ViewChild('actionButtonTemplateStatus') actionButtonTemplateStatus!: TemplateRef<any>;
-      @ViewChild('actionButtonTemplateCheck') actionButtonTemplateCheck!: TemplateRef<any>;   
-          ngAfterViewInit() { 
-            this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate; 
-            this.gridConfig.columnsList.find(col => col.key === 'Status')!.template = this.actionButtonTemplateStatus; 
-            // this.gridConfig1.columnsList.find(col => col.key === 'check')!.template = this.actionButtonTemplateCheck;  
-          } 
-              BrowseHColumns= [
-        { heading: "Status", key: "Status", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
-            template: this.actionButtonTemplate},
-      { heading: "Date", key: "grndate", sort: true, align: 'left', emptySign: 'NA',width: 130,},
-      { heading: "GRN No", key: "grnNumber", sort: true, align: 'left', emptySign: 'NA' , width: 100}, 
-      { heading: "Invoice No", key: "invoiceNo", sort: true, align: 'left', emptySign: 'NA',width: 100},
-      { heading: "Supplier Name", key: "supplierName", sort: true, align: 'left', emptySign: 'NA',width: 200},
-      { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA',width: 150, type: gridColumnTypes.amount},
-      { heading: "Disc Amt", key: "totalDiscAmount", sort: true, align: 'left', emptySign: 'NA',width: 140 , type: gridColumnTypes.amount}, 
-      { heading: "GST Amt", key: "totalVatamount", sort: true, align: 'left', emptySign: 'NA',width: 140, type: gridColumnTypes.amount },
-      { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 , type: gridColumnTypes.amount }, 
-      { heading: "Rounding Amt", key: "roundingAmt", sort: true, align: 'left', emptySign: 'NA',width: 140 , type: gridColumnTypes.amount},
-      { heading: "Debit Note", key: "debitNote", sort: true, align: 'left', emptySign: 'NA',width: 130 , type: gridColumnTypes.amount},
-      { heading: "Credit Note", key: "creditNote", sort: true, align: 'left', emptySign: 'NA',width: 130,type: gridColumnTypes.amount },
-      { heading: "Received By", key: "receivedBy", sort: true, align: 'left', emptySign: 'NA',width: 180}, 
-      { heading: "IsClosed", key: "isClosed", sort: true, align: 'left', emptySign: 'NA',width: 100 ,},
-       { heading: "Action", key: "action", align: "right", width: 160, sticky: true, type: gridColumnTypes.template,
-        template: this.actionButtonTemplate  // Assign ng-template to the column
-      }
-    ] 
+      @ViewChild('patientTypetemp') patientTypetemp!: TemplateRef<any>;  
+      @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+      @ViewChild('isPrintTemplate') isPrintTemplate!: TemplateRef<any>; 
 
+          ngAfterViewInit() { 
+            this.gridConfig.columnsList.find(col => col.key === 'Status')!.template = this.patientTypetemp; 
+            this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate; 
+            this.gridConfig.columnsList.find(col => col.key === 'isPrint')!.template = this.isPrintTemplate;  
+          } 
+
+  BrowseHColumns = [
+    { heading: "", key: "Status", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+      template: this.patientTypetemp },
+    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 8 },
+    { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', width: 140, type: gridColumnTypes.amount },
+    { heading: "Paid Type", key: "paidType", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "IPD No", key: "ipno", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "IsPrint", key: "isPrint", sort: true, align: 'left', emptySign: 'NA', width: 120,type: gridColumnTypes.template,
+      template: this.isPrintTemplate },
+    {  heading: "Action", key: "action", align: "right", width: 140, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate  // Assign ng-template to the column
+    }
+  ]  
      BrowseDetColumns= [ 
-      { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA',width: 130,},
-      { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' , width: 100}, 
-      { heading: "Batch ExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA',width: 100, type:9},
-      { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA',width: 200},
-      { heading: "Unit MRP", key: "unitMRP", sort: true, align: 'left', emptySign: 'NA',width: 150, type: gridColumnTypes.amount},
+      { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA',width: 180,},
+      { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' , width: 130}, 
+      { heading: "Batch ExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA',width: 180, type:9},
+      { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA',width: 120},
+      { heading: "Unit MRP", key: "unitMRP", sort: true, align: 'left', emptySign: 'NA',width: 130, type: gridColumnTypes.amount},
       { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA',width: 140 , type: gridColumnTypes.amount}, 
-      { heading: "Disc%", key: "discPer", sort: true, align: 'left', emptySign: 'NA',width: 140, type: gridColumnTypes.amount },
-      { heading: "Disc Amt", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 , type: gridColumnTypes.amount }, 
+      { heading: "Disc%", key: "discPer", sort: true, align: 'left', emptySign: 'NA',width: 110, type: gridColumnTypes.amount },
+      { heading: "Disc Amt", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', width: 120 , type: gridColumnTypes.amount }, 
       { heading: "Gross Amt", key: "grossAmount", sort: true, align: 'left', emptySign: 'NA',width: 140 , type: gridColumnTypes.amount},
-      { heading: "GST%", key: "vatPer", sort: true, align: 'left', emptySign: 'NA',width: 130 , type: gridColumnTypes.amount},
-      { heading: "cGST%", key: "cgstPer", sort: true, align: 'left', emptySign: 'NA',width: 130,type: gridColumnTypes.amount },
-      { heading: "SGST%", key: "sgstPer", sort: true, align: 'left', emptySign: 'NA',width: 130,type: gridColumnTypes.amount },
-      { heading: "IGST%", key: "igstPer", sort: true, align: 'left', emptySign: 'NA',width: 130,type: gridColumnTypes.amount },
+      { heading: "GST%", key: "vatPer", sort: true, align: 'left', emptySign: 'NA',width: 110 , type: gridColumnTypes.amount},
+      { heading: "cGST%", key: "cgstPer", sort: true, align: 'left', emptySign: 'NA',width: 110,type: gridColumnTypes.amount },
+      { heading: "SGST%", key: "sgstPer", sort: true, align: 'left', emptySign: 'NA',width: 110,type: gridColumnTypes.amount },
+      { heading: "IGST%", key: "igstPer", sort: true, align: 'left', emptySign: 'NA',width: 110,type: gridColumnTypes.amount },
        
     ]  
-    gridConfig1: gridModel = new gridModel();
-   gridConfig: gridModel = {
-          apiUrl: "Sales/SalesList",
-          columnsList:this.BrowseDetColumns,
-          sortField: "GRNID",
-          sortOrder: 0,
-          filters: [
-              { fieldName: "ToStoreId", fieldValue: "", opType: OperatorComparer.Equals },
-              { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.Equals },
-              { fieldName: "To_Dt", fieldValue: "", opType: OperatorComparer.Equals },
-              { fieldName: "IsVerify", fieldValue: "0", opType: OperatorComparer.Equals },
-              { fieldName: "Supplier_Id", fieldValue: "0", opType: OperatorComparer.Equals } 
-          ], 
-      } 
+
+
+  gridConfig1: gridModel = new gridModel();
+  isShowDetailTable:boolean=false;
+  gridConfig: gridModel = {
+    apiUrl: "Sales/salesbrowselist",
+    columnsList: this.BrowseHColumns,
+    sortField: "SalesId",
+    sortOrder: 0,
+    filters: [
+      { fieldName: "LName", fieldValue: "%", opType: OperatorComparer.Equals },
+      { fieldName: "FName", fieldValue: "%", opType: OperatorComparer.Equals },
+      { fieldName: "StoreId", fieldValue:String(this.StoreId1), opType: OperatorComparer.Equals },
+      { fieldName: "FromDt", fieldValue: this.FromDate, opType: OperatorComparer.Equals },
+      { fieldName: "ToDt", fieldValue: this.ToDate, opType: OperatorComparer.Equals },
+      { fieldName: "RegNo", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "SalesNo", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "OPIPType", fieldValue: "0", opType: OperatorComparer.Equals }
+    ],
+       row: 25
+  } 
+
+ 
+
+///tab 2 return
+
+ SalesRetHColumns = [
+    { heading: "", key: "Status", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
+      template: this.patientTypetemp },
+    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 130, type: 9 },
+    { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', width: 140, type: gridColumnTypes.amount },
+    { heading: "Paid Type", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', width: 140 },
+    { heading: "IPD No", key: "ipno", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "IsPrint", key: "isPrint", sort: true, align: 'left', emptySign: 'NA', width: 140,type: gridColumnTypes.template,
+      template: this.isPrintTemplate },
+    {  heading: "Action", key: "action", align: "right", width: 160, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate  // Assign ng-template to the column
+    }
+  ] 
 
 
 
@@ -221,20 +161,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
 
 
-
-
-
-
-
-
-      
-  StoreList: any = [];
-  Store1List: any = [];
-  hasSelectedContacts: boolean;
-
-  dataSource = new MatTableDataSource<AdmissionPersonlModel>();
-  dssaleList1 = new MatTableDataSource<SaleList>();
-  dssalesList2 = new MatTableDataSource<SalesDetList>();
+ 
 
   dssalesReturnList = new MatTableDataSource<SalesReturnList>();
   dssalesReturnList1 = new MatTableDataSource<SalesReturnDetList>();
@@ -242,14 +169,12 @@ export class BrowsSalesBillComponent implements OnInit {
 
 
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatPaginator) IPListpaginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator; 
 
   constructor(
     public _AdmissionService: IPSearchListService,
     public _BrowsSalesBillService: BrowsSalesBillService,
-    public _BrowsSalesService: SalesService,
-    // public _AppointmentSreviceService: AppointmentSreviceService,
+    public _BrowsSalesService: SalesService, 
     private _loggedService: AuthenticationService,
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
@@ -259,49 +184,76 @@ export class BrowsSalesBillComponent implements OnInit {
     private _ActRoute: Router,
   ) { }
 
-  ngOnInit(): void {
-    this.getAdmittedPatientList();
-    this.getSalesList();
-    this.getSalesReturnList()
-    this.gePharStoreList();
-    this.gePharStoreList1();
-   this.selectRowBrwsDetlist()
+  ngOnInit(): void { 
+    this.getSalesReturnList() 
 
-    if (this._ActRoute.url == '/pharmacy/browsesalesbill') {
-
+    if (this._ActRoute.url == '/pharmacy/browsesalesbill') { 
       this.menuActions.push('Patient Ledger');
       this.menuActions.push("Patient Statement");
       this.menuActions.push("Patient Sales Summary");
-      this.menuActions.push("Patient Sales Detail");
-     
-    }
- 
+      this.menuActions.push("Patient Sales Detail"); 
+    } 
   }
 
-  selectRowBrwsDetlist(){
+  getsalesdetaillist(event){
+     console.log(event)
+        this.isShowDetailTable = true;
        this.gridConfig1= {
           apiUrl: "Sales/SalesBrowseDetailList",
           columnsList:this.BrowseDetColumns,
           sortField: "SalesId",
           sortOrder: 0,
           filters: [
-              { fieldName: "SalesID", fieldValue: "60020", opType: OperatorComparer.Equals },
-              { fieldName: "OP_IP_Type", fieldValue: "1", opType: OperatorComparer.Equals } 
+              { fieldName: "SalesID", fieldValue: String(event.salesId), opType: OperatorComparer.Equals },
+              { fieldName: "OP_IP_Type", fieldValue: String(event.oP_IP_Type), opType: OperatorComparer.Equals } 
           ],  
-        } 
-
+        }  
       this.grid1.gridConfig = this.gridConfig1;
       this.grid1.bindGridData();
-  }
-  onChangeFirst(){
-
-  }
-  StoreId:any=0;
+  } 
+  OpIpType: any = "0";
+  salesNo: any = "0";
+  regNo: any = "0";
+  firstName: any = "%";
+  LastName: any = "%";
+  onChangeFirst() {
+    debugger
+    this.isShowDetailTable = false;
+    this.firstName = this._BrowsSalesBillService.userForm.get('F_Name').value || "%"
+    this.LastName = this._BrowsSalesBillService.userForm.get('L_Name').value || "%"
+    this.StoreId1 = this._BrowsSalesBillService.userForm.get('StoreId').value || 2
+    this.FromDate = this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd") 
+    this.ToDate = this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd")
+    this.regNo = this._BrowsSalesBillService.userForm.get('RegNo').value || "0"
+    this.salesNo = this._BrowsSalesBillService.userForm.get('SalesNo').value || "0"
+    this.OpIpType = this._BrowsSalesBillService.userForm.get('OP_IP_Type').value || "0"
+    this.getSaleslistdata();
+  } 
+  getSaleslistdata() {
+    debugger
+    this.gridConfig = {
+      apiUrl: "Sales/salesbrowselist",
+      columnsList: this.BrowseHColumns,
+      sortField: "SalesId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "LName", fieldValue: this.firstName, opType: OperatorComparer.Equals },
+        { fieldName: "FName", fieldValue: this.LastName, opType: OperatorComparer.Equals },
+        { fieldName: "StoreId", fieldValue: String(this.StoreId1), opType: OperatorComparer.Equals },
+        { fieldName: "FromDt", fieldValue: this.FromDate, opType: OperatorComparer.Equals },
+        { fieldName: "ToDt", fieldValue: this.ToDate, opType: OperatorComparer.Equals },
+        { fieldName: "RegNo", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+        { fieldName: "SalesNo", fieldValue: this.salesNo, opType: OperatorComparer.Equals },
+        { fieldName: "OPIPType", fieldValue: this.OpIpType, opType: OperatorComparer.Equals }
+      ],
+    } 
+    // this.grid.bindGridData();
+  } 
   selectChangeStore(value) {   
     if(value.value!==0)
-       this.StoreId=value.value
+       this.StoreId1=value.value
    else
-   this.StoreId="0" 
+   this.StoreId1="0" 
 
    this.onChangeFirst();
 }
@@ -331,35 +283,7 @@ getValidationMessages() {
       
   };
 }
-  resultsLength = 0;
-  // getAdmittedPatientList_1() {
-  //   var Param = {
-  //     "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || "%",
-  //     "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || "%",
-  //     "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || "0",
-  //     "Doctor_Id": this._AdmissionService.myFilterform.get("searchDoctorId").value.DoctorID || "0",
-  //     "From_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
-  //     "To_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-  //     "Admtd_Dschrgd_All": 0,
-  //     "M_Name": this._AdmissionService.myFilterform.get("MiddleName").value + '%' || "%",
-  //     "IPNo": this._AdmissionService.myFilterform.get("IPDNo").value || '0',
-  //     Start: (this.IPListpaginator?.pageIndex ?? 0),
-  //     Length: (this.IPListpaginator?.pageSize ?? 35),
-  //   }
-  //   console.log(Param);
-  //   this._AdmissionService.getAdmittedPatientList_1(Param).subscribe(data => {
-  //     this.dataSource.data = data["Table1"] ?? [] as Admission[];
-  //     if (this.dataSource.data.length > 0) {
-  //       this.Admissiondetail(this.dataSource.data);
-  //     }
-  //     this.dataSource.sort = this.sort;
-  //     this.resultsLength = data["Table"][0]["total_row"];
-  //     this.sIsLoading = '';
-  //   },
-  //     error => {
-  //       this.sIsLoading = '';
-  //     });
-  // }
+ 
   
 
   IsDischarge: any;
@@ -369,143 +293,18 @@ getValidationMessages() {
       this._AdmissionService.myFilterform.get('IsDischarge').setValue(1);
       this._AdmissionService.myFilterform.get('start').setValue((new Date()).toISOString());
       this._AdmissionService.myFilterform.get('end').setValue((new Date()).toISOString());
-      this.getAdmittedPatientList();
+      //this.getAdmittedPatientList();
     }
     else {
       this._AdmissionService.myFilterform.get('IsDischarge').setValue(0);
       this._AdmissionService.myFilterform.get('start').setValue(''),
       this._AdmissionService.myFilterform.get('end').setValue('')
-      this.getAdmittedPatientList();
+      //this.getAdmittedPatientList();
     }
   }
 
-  getAdmittedPatientList() {
-
-    if (this._AdmissionService.myFilterform.get("IsDischarge").value == "0" || this._AdmissionService.myFilterform.get("IsDischarge").value == false) {
-      this.isLoadingStr = 'loading';
-      var D_data = {
-        "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || "%",
-        "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || "%",
-        "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || 0,
-        "Doctor_Id": this._AdmissionService.myFilterform.get("DoctorId").value || 0,
-        "From_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
-        "To_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-        "Admtd_Dschrgd_All": this._AdmissionService.myFilterform.get('IsDischarge').value || 0,
-        "M_Name": this._AdmissionService.myFilterform.get("MiddleName").value + '%' || "%",
-        "IPNo": this._AdmissionService.myFilterform.get("IPDNo").value || 0,
-        Start: (this.paginator?.pageIndex ?? 0),
-        Length: (this.paginator?.pageSize ?? 35),
-      }
-      //console.log(D_data);
-      setTimeout(() => {
-        this.isLoadingStr = 'loading';
-        this._AdmissionService.getAdmittedPatientList_1(D_data).subscribe(data => {
-          this.dataSource.data = data["Table1"] ?? [] as AdmissionPersonlModel[];
-          // console.log(this.dataSource.data)
-          this.dataSource.sort = this.sort;
-          this.resultsLength = data["Table"][0]["total_row"];
-          this.sIsLoading = '';
-        },
-          error => {
-            this.sIsLoading = '';
-          });
-      }, 1000);
-    }
-    else {
-      this.isLoadingStr = 'loading';
-      var Params = {
-        "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || "%",
-        "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || "%",
-        "M_Name": this._AdmissionService.myFilterform.get("MiddleName").value + '%' || "%",
-        "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || 0,
-        "Doctor_Id": this._AdmissionService.myFilterform.get("DoctorId").value || 0,
-        "From_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
-        "To_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-        "Admtd_Dschrgd_All": this._AdmissionService.myFilterform.get('IsDischarge').value,
-        "IPNo": this._AdmissionService.myFilterform.get("IPDNo").value || 0,
-        Start: (this.paginator?.pageIndex ?? 0),
-        Length: (this.paginator?.pageSize ?? 35),
-      }
-     // console.log(D_data);
-      setTimeout(() => {
-        this.isLoadingStr = 'loading';
-        this._AdmissionService.getDischargedPatientList_1(Params).subscribe(data => {
-          // this.dataSource.data = data as Admission[];
-          this.dataSource.data = data["Table1"] ?? [] as AdmissionPersonlModel[];
-          console.log(this.dataSource.data)
-          this.dataSource.sort = this.sort;
-          this.resultsLength = data["Table"][0]["total_row"];
-          // this.dataSource.paginator = this.paginator;
-          this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
-          this.sIsLoading = '';
-          // this.click = false;
-        },
-          error => {
-            this.sIsLoading = '';
-          });
-      }, 1000);
-
-    }
-  }
-
-  Admissiondetail(data) {
-    // this.Vtotalcount = 0;
-    // this.VNewcount = 0;
-    // this.VFollowupcount = 0;
-    // this.VBillcount = 0;
-    // this.vIsDischarg=0;
-    // console.log(data)
-    // this.Vtotalcount;
-    // 
-    // for (var i=0;i< data.length;i++){
-    //   if(data[i].PatientOldNew==1){
-    //       this.VNewcount=this.VNewcount+1;
-    //     }
-    //     else if(data[i].PatientOldNew==2){
-    //       this.VFollowupcount=this.VFollowupcount+1;
-    //     }
-    //     else if(data[i].AdmissionID !==0){
-    //       this.VAdmissioncount=data.length;
-    //     }
-    //      else if(data[i].IsBillGenerated ==1){
-    //       this.VBillcount= this.VBillcount+1;
-    //     }
-    //     else if(data[i].IsOpToIPConv ==1){
-
-    //       this.VOPtoIPcount=this.VOPtoIPcount + 1;
-    //     }else if(data[i].IsDischarged ==1){
-    //       this.vIsDischarg= this.vIsDischarg +1;
-    //     }
-    //     this.Vtotalcount= this.Vtotalcount+1;
-    // }
-
-  }
-
-
-  gePharStoreList() {
-    var vdata = {
-      Id: this._loggedService.currentUserValue.storeId
-    }
-    this._BrowsSalesBillService.getLoggedStoreList(vdata).subscribe(data => {
-      this.StoreList = data;
-      this._BrowsSalesBillService.userForm.get('StoreId').setValue(this.StoreList[0]);
-
-    });
-  }
-  gePharStoreList1() {
-    var vdata = {
-      Id: this._loggedService.currentUserValue.storeId
-    }
-    this._BrowsSalesBillService.getLoggedStoreList(vdata).subscribe(data => {
-      this.Store1List = data;
-      this._BrowsSalesBillService.formReturn.get('StoreId').setValue(this.Store1List[0]);
-
-    });
-  }
-
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
+ 
+ 
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -513,49 +312,8 @@ getValidationMessages() {
     this.dateTimeObj = dateTimeObj;
   }
 
-  getSalesList() { 
-    this.sIsLoading = 'loading-data';
-    var vdata = {
-      F_Name: this._BrowsSalesBillService.userForm.get('F_Name').value || '%',
-      L_Name: this._BrowsSalesBillService.userForm.get('L_Name').value || '%',
-      From_Dt: this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      To_Dt: this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      Reg_No: this._BrowsSalesBillService.userForm.get('RegNo').value || 0,
-      SalesNo: this._BrowsSalesBillService.userForm.get('SalesNo').value || '',
-      OP_IP_Type: this._BrowsSalesBillService.userForm.get('OP_IP_Type').value,
-      StoreId:  this._loggedService.currentUserValue.storeId || 0,
-      IPNo: this._BrowsSalesBillService.userForm.get('IPNo').value || 0 
-    }
-   // console.log(vdata); 
-    setTimeout(() => {
-    this.sIsLoading = 'loading-data';
-      this.sIsLoading = '';
-      this._BrowsSalesBillService.getSalesList(vdata).subscribe(data => { 
-        this.dssaleList1.data = data as SaleList[];
-       // console.log(this.dssaleList1.data);
-        this.dssaleList1.sort = this.sort;
-        this.dssaleList1.paginator = this.paginator; 
-        this.sIsLoading = this.dssaleList1.data.length == 0 ? 'no-data' : '';
-        this.sIsLoading = ''; 
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-    }, 1000); 
-  } 
-  getSalesDetList(Parama) {
-    var vdata = {
-      SalesID: Parama.SalesId,
-      OP_IP_Type: Parama.OP_IP_Type
-    }
-    this._BrowsSalesBillService.getSalesDetList(vdata).subscribe(data => {
-      this.dssalesList2.data = data as SalesDetList[];
-      // this.dssalesList2.sort = this.sort;
-      // this.dssalesList2.paginator = this.paginator;
-      // console.log( this.dssalesList2.data);
-    })
-  }
-
+ 
+ 
   getSalesReturnList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
@@ -600,101 +358,7 @@ getValidationMessages() {
   onSelect1(Parama) {
     // console.log(Parama);
     this.getSalesReturnDetList(Parama)
-  }
-  // OnPayment(SelectedValue) {  
-  //   const dialogRef = this._matDialog.open(OpPaymentNewComponent,
-  //     {
-  //       maxWidth: "90vw",
-  //       height: '624px',
-  //       width: '90%',
-  //       data: {
-  //         vPatientHeaderObj: SelectedValue,
-  //         FromName: "SalesSETTLEMENT"
-  //       }
-  //     });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log(result) 
-  //     if (result.IsSubmitFlag == true) {
-
-  //       let updateBillobj = {};
-  //       updateBillobj['salesID'] = SelectedValue.SalesId;
-  //       updateBillobj['BillNo'] = SelectedValue.SalesId;
-  //       updateBillobj['BillBalAmount'] = 0// result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
-
-  //       //const updateBill = new UpdateBill(updateBillobj);
-  //       let CreditPaymentobj = {};
-  //       CreditPaymentobj['paymentId'] = 0;
-  //       CreditPaymentobj['BillNo'] = SelectedValue.SalesId;
-  //       CreditPaymentobj['ReceiptNo'] = '';
-  //       CreditPaymentobj['PaymentDate'] = this.currentDate || '01/01/1900';
-  //       CreditPaymentobj['PaymentTime'] = this.currentDate || '01/01/1900';
-  //       CreditPaymentobj['CashPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CashPayAmount) || 0;
-  //       CreditPaymentobj['ChequePayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.ChequePayAmount) || 0;
-  //       CreditPaymentobj['ChequeNo'] = result.submitDataPay.ipPaymentInsert.ChequeNo || '';
-  //       CreditPaymentobj['BankName'] = result.submitDataPay.ipPaymentInsert.BankName || '';
-  //       CreditPaymentobj['ChequeDate'] = result.submitDataPay.ipPaymentInsert.ChequeDate || '01/01/1900';
-  //       CreditPaymentobj['CardPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CardPayAmount) || 0;
-  //       CreditPaymentobj['CardNo'] = result.submitDataPay.ipPaymentInsert.CardNo || '';
-  //       CreditPaymentobj['CardBankName'] = result.submitDataPay.ipPaymentInsert.CardBankName || '';
-  //       CreditPaymentobj['CardDate'] = result.submitDataPay.ipPaymentInsert.CardDate || '01/01/1900';
-  //       CreditPaymentobj['AdvanceUsedAmount'] = 0;
-  //       CreditPaymentobj['AdvanceId'] = 0;
-  //       CreditPaymentobj['RefundId'] = 0;
-  //       CreditPaymentobj['TransactionType'] = 4,// result.submitDataPay.ipPaymentInsert.TransactionType || 4;
-  //         CreditPaymentobj['Remark'] = result.submitDataPay.ipPaymentInsert.Remark || '';
-  //       CreditPaymentobj['AddBy'] = this._loggedService.currentUserValue.userId,
-  //         CreditPaymentobj['IsCancelled'] = 0;
-  //       CreditPaymentobj['IsCancelledBy'] = 0;
-  //       CreditPaymentobj['IsCancelledDate'] = "01/01/1900";
-  //       CreditPaymentobj['opD_IPD_Type'] = this._BrowsSalesBillService.formReturn.get('OP_IP_Types').value 
-  //       CreditPaymentobj['neftPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.NEFTPayAmount) || 0;
-  //       CreditPaymentobj['neftNo'] = result.submitDataPay.ipPaymentInsert.NEFTNo || '';
-  //       CreditPaymentobj['neftBankMaster'] = result.submitDataPay.ipPaymentInsert.NEFTBankMaster || '';
-  //       CreditPaymentobj['neftDate'] = result.submitDataPay.ipPaymentInsert.NEFTDate || '01/01/1900';
-  //       CreditPaymentobj['PayTMAmount'] = result.submitDataPay.ipPaymentInsert.PayTMAmount || 0;
-  //       CreditPaymentobj['PayTMTranNo'] = result.submitDataPay.ipPaymentInsert.paytmTransNo || '';
-  //       CreditPaymentobj['PayTMDate'] = result.submitDataPay.ipPaymentInsert.PayTMDate || '01/01/1900'
-
-  //       //            const ipPaymentInsert = new IpPaymentInsert(CreditPaymentobj);
-
-  //       let Data = {
-  //         "update_Pharmacy_BillBalAmount": updateBillobj,
-  //         "salesPayment": CreditPaymentobj
-  //       };
-  //       console.log(Data);
-
-  //       this._BrowsSalesBillService.InsertSalessettlement(Data).subscribe(response => {
-  //         console.log(response)
-  //         if (response) {
-  //           console.log(response)
-  //           // Swal.fire('Sales Credit Settlement!', 'Sales Credit Payment Successfully !', 'success').then((result) => {
-  //           //   if (result.isConfirmed) {
-  //           //     // let m = response;
-  //           //     // this.getpaymentPrint(response);
-  //           //     this._matDialog.closeAll();
-  //           //   }
-  //           // });
-  //           this.toastr.success('Sales Credit Payment Successfully !', 'Success', {
-  //             toastClass: 'tostr-tost custom-toast-error',
-  //           });
-  //           this._matDialog.closeAll();
-  //           this.getSalesList();
-  //         }
-  //         else {
-  //           // Swal.fire('Error !', 'Sales  Payment not saved', 'error');
-  //           this.toastr.error('Sales Credit Payment  not saved !', 'error', {
-  //             toastClass: 'tostr-tost custom-toast-error',
-  //           });
-  //         }
-  //       }); 
-  //     }
-  //     // else {
-  //     //   // Swal.fire('Payment not Done.....');
-  //     // }
-  //   }); 
-  // } 
- 
+  } 
   OnPayment(contact) {   
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
@@ -757,7 +421,7 @@ getValidationMessages() {
             this.toastr.success('Sales Credit Payment Successfully !', 'Success', {
               toastClass: 'tostr-tost custom-toast-error',
             }); 
-            this.getSalesList();  
+            //this.getSalesList();  
           }
           else { 
             this.toastr.error('Sales Credit Payment  not saved !', 'error', {
@@ -800,23 +464,8 @@ getValidationMessages() {
     }
   }
 
-  // private selectRow($event, dataSource) {
-  //   
-  //   // if ($event.checked) {
-  //     console.log(dataSource.name);
-  //     let id=dataSource.selectedData;
-  //     this. getWhatsappshare(this.rowid);
-  //   }
-  // }
-
-
-
-  onSelect(Parama) {
-
-    this.getSalesDetList(Parama)
-    this.rowid = Parama;
-  }
-
+ 
+ 
 
   getPrint2(el) {
     //
