@@ -1,6 +1,23 @@
+<div class="modal-wrapper grid-container">
+<div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <mat-tab-group>
     <mat-tab label=" Sales Return Summary List">
-        <div class="simple page-layout inner-scroll inner-sidebar right-sidebar">
+        <div class="simple page-layout inner-scroll inner-sidebar right-sidebar" dynamicTableHeight>
           
             <div class="content">
         
@@ -29,7 +46,7 @@
                                                     ItemName
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.ItemName}}
+                                                    {{contact.itemName}}
                                                 </mat-cell>
                                             </ng-container>
         
@@ -37,7 +54,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     BatchNo </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.BatchNo}}
+                                                    {{contact.batchNo}}
                                                 </mat-cell>
                                             </ng-container>
         
@@ -46,7 +63,7 @@
                                                     ReturnQty
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.ReturnQty}}
+                                                    {{contact.returnQty}}
                                                 </mat-cell>
                                             </ng-container>
         
@@ -77,9 +94,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div fxLayoutAlign="end">
-                                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                             </div>
                         </div>
                     </div>
                 </div>
@@ -87,8 +101,9 @@
         </div>
 
     </mat-tab>
+
     <mat-tab label="Sales Return Details List">
-        <div class="simple page-layout inner-scroll inner-sidebar right-sidebar">
+        <div class="simple page-layout inner-scroll inner-sidebar right-sidebar" dynamicTableHeight>
          
             <div class="content">
         
@@ -203,9 +218,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div fxLayoutAlign="end">
-                                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                             </div>
                         </div>
                     </div>
                 </div>
@@ -213,4 +225,6 @@
         </div>
     </mat-tab>
 </mat-tab-group>
+
+</div>
 

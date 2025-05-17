@@ -22,28 +22,29 @@
 
                     <ng-template #eyeIcon1 let-element>
                         <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
-                            <mat-icon (click)="getItemdetails(element)">visibility</mat-icon>
+                            <mat-icon (click)="getItemdetails(element)" style="cursor: pointer;">visibility</mat-icon>
                             <span>{{ element.itemName}}</span>
                         </div>
                     </ng-template>
 
                     <ng-template #eyeIcon2 let-element>
                         <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
-                            <mat-icon (click)="getIssueSummery(element)">visibility</mat-icon>
+                            <mat-icon (click)="getIssueSummery(element)" style="cursor: pointer;">visibility</mat-icon>
                             <span>{{ element.receivedQty}}</span>
                         </div>
                     </ng-template>
 
                     <ng-template #eyeIcon3 let-element>
                         <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
-                            <mat-icon (click)="getSalesSummery(element)">visibility</mat-icon>
+                            <mat-icon (click)="getSalesSummery(element)" style="cursor: pointer;">visibility</mat-icon>
                             <span>{{ element.issueQty}}</span>
                         </div>
                     </ng-template>
 
                     <ng-template #eyeIcon4 let-element>
                         <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
-                            <mat-icon (click)="getSalesReturnSummery(element)">visibility</mat-icon>
+                            <mat-icon (click)="getSalesReturnSummery(element)"
+                                style="cursor: pointer;">visibility</mat-icon>
                             <span>{{ element.returnQty}}</span>
                         </div>
                     </ng-template>
@@ -57,8 +58,7 @@
                                 <airmid-dropdown label="From Store" formControlName="StoreId"
                                     [formGroup]="_CurrentStockService.SearchGroup" [mode]="autocompletestore"
                                     (selectionChange)="selectChangeStore($event)"
-                                    [(ngModel)]="gridConfig.filters[0].fieldValue"
-                                    [readonly]="true">
+                                    [(ngModel)]="gridConfig.filters[0].fieldValue" [readonly]="true">
                                 </airmid-dropdown>
 
                                 <!-- <airmid-dropdown label="Item Name" formControlName="ItemCategory"
@@ -71,13 +71,14 @@
                                     formControlName="ItemCategory"
                                     [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + storeId + '&ItemName='"
                                     (selectionChange)="selectChangeItem($event)"
-                                    [(ngModel)]="gridConfig.filters[1].fieldValue"
-                                    TextField="formattedText" ValueField="ItemId">
+                                    [(ngModel)]="gridConfig.filters[1].fieldValue" TextField="formattedText"
+                                    ValueField="ItemId">
                                 </airmid-autocomplete>
 
                             </form>
                         </ng-container>
                     </airmid-table>
+
                 </div>
 
             </div>
@@ -95,26 +96,22 @@
 
                         <ng-container filters>
 
-                            <form [formGroup]="_CurrentStockService.dayWiseForm">
-                                <!-- <airmid-datepicker [formGroup]="_CurrentStockService.dayWiseForm" [isRangePicker]="false"
-                                formStartControlName="start" [(fromValue)]="gridConfig.filters[0].fieldValue">
-                            </airmid-datepicker> -->
+                            <form [formGroup]="_CurrentStockService.dayWiseForm" fxLayout="column">
 
-                                <mat-form-field appearance="outline">
-                                    <input matInput [matDatepicker]="validFromPicker" formControllName="start"
-                                        (dateChange)="onChangeDateofBirth($event.value)">
-                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
-                                    <mat-datepicker #validFromPicker></mat-datepicker>
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <input matInput [matDatepicker]="picker1" placeholder="Choose a date"
+                                        formControlName="start">
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
                                 </mat-form-field>
 
                                 <airmid-dropdown label="From Store" formControlName="StoreId"
                                     [formGroup]="_CurrentStockService.dayWiseForm" [mode]="autocompletestore"
                                     (selectionChange)="selectChangeStore1($event)"
-                                    [(ngModel)]="gridConfig1.filters[1].fieldValue"
-                                    [readonly]="true">
+                                    [(ngModel)]="gridConfig1.filters[1].fieldValue" [readonly]="true">
                                 </airmid-dropdown>
 
-                                    <airmid-autocomplete label="Item Name" [formGroup]="_CurrentStockService.dayWiseForm"
+                                <airmid-autocomplete label="Item Name" [formGroup]="_CurrentStockService.dayWiseForm"
                                     formControlName="ItemCategory"
                                     [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + storeDayWise + '&ItemName='"
                                     (selectionChange)="selectChangeItem1($event)"
@@ -144,16 +141,15 @@
 
                             <form [formGroup]="_CurrentStockService.ItemWiseFrom">
                                 <airmid-datepicker [formGroup]="_CurrentStockService.ItemWiseFrom"
-                                    [isRangePicker]="true" formStartControlName="startSales" formEndControlName="endSales"
-                                    [(fromValue)]="gridConfig2.filters[0].fieldValue"
+                                    [isRangePicker]="true" formStartControlName="startSales"
+                                    formEndControlName="endSales" [(fromValue)]="gridConfig2.filters[0].fieldValue"
                                     [(toValue)]="gridConfig2.filters[1].fieldValue">
                                 </airmid-datepicker>
 
                                 <airmid-dropdown label="From Store" formControlName="StoreId"
                                     [formGroup]="_CurrentStockService.ItemWiseFrom" [mode]="autocompletestore"
                                     (selectionChange)="selectChangeStore2($event)"
-                                    [(ngModel)]="gridConfig2.filters[2].fieldValue"
-                                    [readonly]="true">
+                                    [(ngModel)]="gridConfig2.filters[2].fieldValue" [readonly]="true">
                                 </airmid-dropdown>
 
                                 <!-- <airmid-dropdown label="Item Name" formControlName="ItemCategory"
@@ -200,8 +196,7 @@
                                 <airmid-dropdown label="From Store" formControlName="StoreId"
                                     [formGroup]="_CurrentStockService.IssueItem" [mode]="autocompletestore"
                                     (selectionChange)="selectChangeStore3($event)"
-                                    [(ngModel)]="gridConfig3.filters[2].fieldValue"
-                                    [readonly]="true">
+                                    [(ngModel)]="gridConfig3.filters[2].fieldValue" [readonly]="true">
                                 </airmid-dropdown>
 
                                 <!-- <airmid-dropdown label="Item Name" formControlName="ItemCategory"

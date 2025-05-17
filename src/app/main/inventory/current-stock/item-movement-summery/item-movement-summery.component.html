@@ -17,7 +17,7 @@
 
     <mat-tab-group >
     <mat-tab label="Item Movement Summery">
-        <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <div class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
            
             <div class="content">
                 <div class="center p-12 pb-56" fxFlexAlign="start center">
@@ -181,7 +181,7 @@
     </mat-tab>
 
     <mat-tab label="Batch Wise List">
-        <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <div class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
            
             <div class="content">
 
@@ -236,7 +236,7 @@
                                                     PurUnitRateWF
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.PurUnitRateWF  | currency:'INR':'symbol-narrow':'0.2'}}
+                                                    {{contact.purUnitRateWF  | currency:'INR':'symbol-narrow':'0.2'}}
                                                 </mat-cell>
                                             </ng-container>
         
@@ -263,7 +263,7 @@
                                                     BalQty
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.BalQty}}
+                                                    {{contact.balQty}}
                                                 </mat-cell>
                                             </ng-container>
         
@@ -320,7 +320,7 @@
     </mat-tab>
 
     <mat-tab label="Purchase Supplier Wise List">
-         <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+         <div class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
            
             <div class="content">
 
@@ -468,7 +468,7 @@
         </div>
     </mat-tab>
     <mat-tab label="Sales List">
-        <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <div class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
            
         
             <div class="content">
@@ -497,7 +497,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     SalesNo </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.SalesNo}}
+                                                    {{contact.salesNo}}
                                                 </mat-cell>
                                             </ng-container>
         
@@ -506,7 +506,7 @@
                                                     Date
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.Date | date:'dd/MM/YYYY'}}
+                                                    {{contact.date | date:'dd/MM/YYYY'}}
                                                 </mat-cell>
                                             </ng-container>
         
@@ -516,7 +516,7 @@
                                                     DoctorName
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.DoctorName}}
+                                                    {{contact.doctorName}}
                                                 </mat-cell>
                                             </ng-container>
         
@@ -525,7 +525,7 @@
                                                     PatientName
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.PatientName}}
+                                                    {{contact.patientName}}
                                                 </mat-cell>
                                             </ng-container>
         
@@ -534,7 +534,7 @@
                                                     MobileNo
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.MobileNo}}
+                                                    {{contact.mobileNo}}
                                                 </mat-cell>
                                             </ng-container>
         
@@ -543,7 +543,7 @@
                                                     Qty
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.Qty}}
+                                                    {{contact.qty}}
                                                 </mat-cell>
                                             </ng-container>
         
@@ -552,7 +552,7 @@
                                                     TotalAmount
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.TotalAmount | currency:'INR':'symbol-narrow':'0.2'}}
+                                                    {{contact.totalAmount | currency:'INR':'symbol-narrow':'0.2'}}
                                                 </mat-cell>
                                             </ng-container>
         
@@ -591,7 +591,7 @@
         
     </mat-tab>
     <mat-tab label="Sales Return List">
-        <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <div class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
            
             <div class="content">
 
