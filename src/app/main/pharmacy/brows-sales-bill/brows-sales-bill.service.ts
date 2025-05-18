@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,8 @@ export class BrowsSalesBillService {
     public _httpClient: HttpClient,
     private _formBuilder: UntypedFormBuilder,
     private _loaderService: LoaderService,
-    private _loggedService: AuthenticationService
+    private _loggedService: AuthenticationService,
+    private _FormvalidationserviceService:FormvalidationserviceService
   ) {
     this.userForm = this.SearchFilter();
     this.formReturn = this.SearchFilterReturn();
@@ -33,12 +35,12 @@ export class BrowsSalesBillService {
       F_Name: ['', [ Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
       L_Name: ['', [ Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
       SalesNo: '',
-      OP_IP_Type: ['3'],
-      StoreId: [this._loggedService.currentUserValue.user.storeId],
+      OP_IP_Type: ['3'], 
       IPNo: '',
       UserId:'',
-      PaymentMode:''
-
+      PaymentMode:'',
+      StoreId: [this._loggedService.currentUserValue.user.storeId,
+        [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]], 
     })
   }
   SearchFilterReturn(): FormGroup {

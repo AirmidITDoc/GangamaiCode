@@ -99,18 +99,16 @@
                     </airmid-dropdown>
 
                     <div fxLayout="row" fxFlex="15%" class="ml-8">
-                      <mat-radio-group aria-label="Select an option" formControlName="GRNType" fxLayout="column" class="gap-4"
-                      [(ngModel)]="vGRNType">
-                      <mat-radio-button value="true">Direct Purchase</mat-radio-button>
-                        <mat-radio-button value="false">Purchase Orders</mat-radio-button>
-                       </mat-radio-group>
-                      
-                        <mat-radio-group aria-label="Select an option" formControlName="PaymentType" fxLayout="column"
-                         class="gap-4"   [(ngModel)]="vPaymentType">
-                      <mat-radio-button value="true">Cash</mat-radio-button>
-                      <mat-radio-button value="false">Credit</mat-radio-button>
-                    </mat-radio-group>
-                    </div> 
+                      <mat-radio-group aria-label="Select an option" formControlName="GRNType" fxLayout="column" class="gap-4">
+                            <mat-radio-button value="true">Direct Purchase</mat-radio-button>
+                        <mat-radio-button value="false">Purchase Orders</mat-radio-button> 
+                      </mat-radio-group>
+                    
+                      <mat-radio-group aria-label="Select an option" formControlName="PaymentType" fxLayout="column" class="gap-4">
+                        <mat-radio-button value="true">Cash</mat-radio-button>
+                        <mat-radio-button value="false">Credit</mat-radio-button>
+                      </mat-radio-group>
+                    </div>
                   </div>  
 
                   <div fxLayout="row" class="gap-4">
@@ -200,13 +198,14 @@
                     </div>
                   
 
+
+                    <airmid-textbox fxFlex="4%" label="CGST" formControlName="CGST" [formGroup]="userFormGroup" type="text" #CGST (valueChange)="getchangegstper($event,CGST)" ></airmid-textbox>
+
+                    <airmid-textbox fxFlex="4%" label="SGST" formControlName="SGST" [formGroup]="userFormGroup" type="text" #SGST (valueChange)="getchangegstper($event,SGST)" ></airmid-textbox>
+
+                    <airmid-textbox fxFlex="4%" label="IGST" formControlName="IGST" [formGroup]="userFormGroup" type="text" #IGST  (valueChange)="getchangegstper($event,IGST)"></airmid-textbox>
+
                     <airmid-textbox fxFlex="5%" label="GST" formControlName="GST" [formGroup]="userFormGroup" type="text" [readonly]="true"></airmid-textbox>
-
-                    <airmid-textbox fxFlex="4%" label="CGST" formControlName="CGST" [formGroup]="userFormGroup" type="text" [readonly]="true"></airmid-textbox>
-
-                    <airmid-textbox fxFlex="4%" label="SGST" formControlName="SGST" [formGroup]="userFormGroup" type="text" [readonly]="true"></airmid-textbox>
-
-                    <airmid-textbox fxFlex="4%" label="IGST" formControlName="IGST" [formGroup]="userFormGroup" type="text" [readonly]="true"></airmid-textbox>
 
                     <airmid-textbox fxFlex="5%" label="Net Amount" formControlName="NetAmount" [formGroup]="userFormGroup" [readonly]="true"></airmid-textbox>
                     <div [matTooltip]="!userFormGroup.valid ? 'Select All Value to enable this button!!' : ''">

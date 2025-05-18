@@ -201,8 +201,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     userFormGroup:FormGroup
     // Make it true when you want to use mock data.
     mock = false;
-    vGRNType:any='true';
-    vPaymentType:any='false'
+    vGRNType:boolean=true;
+    vPaymentType:boolean=false
     // Bind dropdown mode
     dropdownMode = {
         gstCalcType: "GstCalcType",
@@ -243,14 +243,14 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             this.getGRNrtrvItemlist();
             this.selectChangeSupplier(this.registerObj);
             if(this.registerObj.grntype == true){
-                this.vGRNType = 'true' 
-            }else{
-                this.vGRNType = 'false' 
+                this.userFormGroup.get('GRNType').setValue('true') 
+            }else{ 
+                this.userFormGroup.get('GRNType').setValue('false') 
             } 
               if(this.registerObj.Cash_CreditType == true){
-                this.vPaymentType = 'true' 
-            }else{
-                this.vPaymentType = 'false' 
+                this.userFormGroup.get('PaymentType').setValue('true')  
+            }else{ 
+                this.userFormGroup.get('PaymentType').setValue('false') 
             } 
   
         }
@@ -282,6 +282,44 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         });
         this.calculateTotalamt();
         this.getLastThreeItemInfo(item)
+    }
+    getchangegstper(rate, GSTTYP): void { 
+        debugger
+        const formValues = this.userFormGroup.getRawValue() as GRNFormModel; 
+        const gstValues = [
+            { value: 2.5 },
+            { value: 6 },
+            { value: 9 },
+            { value: 14 }
+        ];  
+        if (rate >= 2.5) {
+            const dvalue = gstValues.find(item => item.value == parseFloat(rate))
+            if (!dvalue) {
+                 this.newGRNService.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
+                // if (GSTTYP.formControlName == 'CGST') {
+                //     this.userFormGroup.get('CGST').setValue('')
+                // } else if (GSTTYP.formControlName == 'SGST') {
+                //     this.userFormGroup.get('SGST').setValue('')
+                // } else if (GSTTYP.formControlName == 'IGST') {
+                //     this.userFormGroup.get('IGST').setValue('')
+                // }
+                return
+            }
+        } else {
+            this.newGRNService.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
+            // if (GSTTYP.formControlName == 'CGST') {
+            //     this.userFormGroup.get('CGST').setValue('')
+            // } else if (GSTTYP.formControlName == 'SGST') {
+            //     this.userFormGroup.get('SGST').setValue('')
+            // } else if (GSTTYP.formControlName == 'IGST') {
+            //     this.userFormGroup.get('IGST').setValue('')
+            // }
+        }
+        const GSTPer = Number(formValues.CGST) + Number(formValues.SGST) + Number(formValues.IGST)
+        this.userFormGroup.patchValue({
+            GST: GSTPer
+        });
+        this.calculateTotalamt();
     }
   //supplier det
     selectChangeSupplier(supplier: any): void { 
@@ -616,14 +654,14 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         form.patchValue({
             ItemName: "a",
             ConversionFactor: 1,
-            Qty: 0,
+            Qty:"",
             UOMId: 0,
             HSNCode: "",
             BatchNo: "",
             ExpDate: "",
             FreeQty: 0,
-            Rate: 0,
-            MRP: 0,
+            Rate:"",
+            MRP:"",
             Disc: 0,
             Disc2: 0,
             DisAmount: 0,
@@ -767,9 +805,11 @@ export class NewGrnComponent implements OnInit, OnDestroy {
 
     IsDiscPer2:boolean=false;
     GSTTypeID:any=0;
+    GSTTypeName:any='';
     itemlist:any=[];
     onGSTTypeChange(event: { value: number, text: string }) {
         console.log(event)
+        this.GSTTypeName =  event.text
         this.GSTTypeID = event.value;
         const newGSTType = event.text as GSTType;
         this.calculateGSTType(newGSTType);
@@ -895,7 +935,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
 
     }
     onSave() {
-        debugger
+        debugger  
         const formValues = this.userFormGroup.getRawValue() as GRNFormModel; 
         // Apply save flow here 
            if ((formValues.StoreId == '' || formValues.StoreId == null || formValues.StoreId == '0')) {
@@ -968,7 +1008,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         grnSaveObj['invoiceNo'] = this.userFormGroup.get('InvoiceNo').value || '';
         grnSaveObj['deliveryNo'] = '';
         grnSaveObj['gateEntryNo'] = this.userFormGroup.get('GateEntryNo').value || ''; 
-        if(this.userFormGroup.get('PaymentType').value == true){
+        if(this.userFormGroup.get('PaymentType').value == "true"){
             grnSaveObj['cashCreditType'] =true;
             grnSaveObj['paidAmount'] =  this._GRNList.GRNFinalForm.get('NetPayamt').value;  
             grnSaveObj['balAmount'] = 0;  
@@ -977,7 +1017,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             grnSaveObj['paidAmount'] =  0;
             grnSaveObj['balAmount'] = this._GRNList.GRNFinalForm.get('NetPayamt').value;  
         }
-        if(this.userFormGroup.get('GRNType').value == true){
+        if(this.userFormGroup.get('GRNType').value == "true"){
             grnSaveObj['grntype'] =true;
         }else{
             grnSaveObj['grntype'] = false;  
@@ -1005,8 +1045,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         grnSaveObj['totCgstamt'] = this.CGSTFinalAmount || 0; 
         grnSaveObj['totSgstamt'] = this.SGSTFinalAmount || 0; 
         grnSaveObj['totIgstamt'] = this.IGSTFinalAmount || 0; 
-        grnSaveObj['tranProcessId'] = this.GSTTypeID;
-        grnSaveObj['tranProcessMode'] = this.userFormGroup.get('GSTType').value || '';
+        grnSaveObj['tranProcessId'] =  this.userFormGroup.get('GSTType').value || '';
+        grnSaveObj['tranProcessMode'] =this.GSTTypeName || '';
         grnSaveObj['ewayBillNo'] = this._GRNList.GRNFinalForm.get('EwayBillNo').value || '';
         grnSaveObj['ewayBillDate'] = this.datePipe.transform(this._GRNList.GRNFinalForm.get('EwalBillDate').value, "yyyy-MM-dd") || '01/01/1099';
         grnSaveObj['billDiscAmt'] =   this._GRNList.GRNFinalForm.get('DiscAmount2').value || 0;   

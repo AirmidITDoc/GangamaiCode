@@ -126,8 +126,7 @@ export class OpPaymentVimalComponent implements OnInit {
     }
     IsMoreAmt = false;
     onAddPayment() { 
-        this.submitted = true;
-        debugger
+        this.submitted = true; 
         if (this.patientDetailsFormGrp.invalid) {
             return;
         }
@@ -442,14 +441,29 @@ export class OpPaymentVimalComponent implements OnInit {
     onSubmit() {  
        
         this.onAddPayment();
-        if (this.balanceAmt != 0) {
-            Swal.fire('Please select payment mode, Balance Amount is' + this.balanceAmt)
+       debugger
+        if (this.patientDetailsFormGrp.get('balanceAmountController').value != 0) {
+                  Swal.fire({
+                    title: 'Balance Amount is : ' + this.balanceAmt,
+                    text: "Please pay remaing amount",
+                    icon: "warning", 
+                    confirmButtonColor: "#3085d6", 
+                    confirmButtonText: "Ok" 
+                  }).then((result) => {
+                  })
             return
         }
         if (this.amount1 != 0) {
             let balamt = this.netPayAmt - this.paidAmt
-            Swal.fire('Please pay remaing amount, Balance Amount is ' + balamt)
-            return
+                Swal.fire({
+                    title: 'Balance Amount is : ' + balamt,
+                    text: "select payment mode and pay remaing amount",
+                    icon: "warning", 
+                    confirmButtonColor: "#3085d6", 
+                    confirmButtonText: "Ok" 
+                  }).then((result) => {
+                  })
+            return  
         } 
 
         if (this.data.FromName == "IP-SETTLEMENT" || this.data.FromName == "OP-SETTLEMENT") {

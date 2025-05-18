@@ -130,8 +130,8 @@ export class ItemMovementSummeryComponent implements OnInit {
   }
 
   onCloseTabs() {
- 
-}
+
+  }
 
 
   toggleSidebar(name): void {
@@ -238,31 +238,31 @@ export class ItemMovementSummeryComponent implements OnInit {
   //Purchase SupplierwiseList 
   getPueSupplierWiseList() {
     var vdata = {
-  "first": 0,
-  "rows": 10,
-  "sortField": "SalesId",
-  "sortOrder": 0,
-  "filters": [
-{
-      "fieldName": "ItemId",
-      "fieldValue": "77617",
-      "opType": "Equals"
-    },
-{
-      "fieldName": "StoreId",
-      "fieldValue": "2",
-      "opType": "Equals"
+      "first": 0,
+      "rows": 10,
+      "sortField": "SalesId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "ItemId",
+          "fieldValue": "77617",
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "StoreId",
+          "fieldValue": "2",
+          "opType": "Equals"
+        }
+
+      ],
+      "exportType": "JSON",
+      "columns": [
+        {
+          "data": "BillDate",
+          "name": "Billing Date"
+        }
+      ]
     }
- 
-],
-  "exportType": "JSON",
-  "columns": [
-    {
-      "data": "BillDate",
-      "name": "Billing Date"
-    }
-  ]
-}
     console.log(vdata)
     setTimeout(() => {
       this._CurrentStockService.getPueSupplierWiseList(vdata).subscribe(data => {
@@ -280,25 +280,41 @@ export class ItemMovementSummeryComponent implements OnInit {
   }
   //Sales List 
   getSalesList() {
-    this.sIsLoading = 'loading-data';
     var vdata = {
-      "ItemId": this.registerObj.ItemId || 0,
-      "StoreId": this.registerObj.StoreId || 0
+      "first": 0,
+      "rows": 10,
+      "sortField": "ItemId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "ItemId",
+          "fieldValue": String(this.registerObj.itemId), //"197874",
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "StoreId",
+          "fieldValue": String(this.registerObj.storeId),
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": [
+        {
+          "data": "string",
+          "name": "string"
+        }
+      ]
     }
-    // console.log(vdata)
+    console.log(vdata)
     setTimeout(() => {
-      this._CurrentStockService.getSalesList(vdata).subscribe((data) => {
-        this.dsSaleList.data = data as SalesList[];
-        // console.log(this.dsSaleList);
+      this._CurrentStockService.getSalesList(vdata).subscribe(data => {
+        this.dsSaleList.data = data.data as SalesList[];
+        console.log(this.dsSaleList);
         this.dsSaleList.sort = this.sort;
         this.dsSaleList.paginator = this.Fourthpaginator;
-        this.sIsLoading = '';
-      },
-        (error) => {
-          this.isLoadingStr = 'no-data';
-        }
+      }
       );
-    }, 1000);
+    }, 500);
   }
   //SalesReturn List 
   getSalesReturnList() {

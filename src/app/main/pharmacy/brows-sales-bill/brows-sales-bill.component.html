@@ -1,13 +1,11 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
-    dynamicTableHeight>
+
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
 
         <mat-tab label="IP Browse Bill List">
-
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                dynamicTableHeight> 
-                
+                dynamicTableHeight>
+
                 <div class="info-badge-top border-bottom" fxLayout="row" fxLayoutAlign="center" flex>
 
                     <div fxLayout="row" fxLayoutAlign="end" class="gap-8">
@@ -21,122 +19,118 @@
                             <span class="green-600-fg">IP</span>
                         </div>
                         <div style="color: blue" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                            <mat-icon class="pill red-600 s-16">circle</mat-icon>
-                            <span class="red-600-fg">External</span>
+                            <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                            <span class="blue-600-fg">External</span>
                         </div>
 
                     </div>
                 </div>
-                <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <!-- <ng-template #patientTypetemp let-element>
-                        <div fxLayout="row" fxLayoutAlign="center center">
-                            <mat-icon *ngIf="element.PatientTypeId=='1'" matTooltip="Patient Category Self">account_box
-                            </mat-icon>
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-                            <mat-icon *ngIf="element.PatientTypeId !='1'" matTooltip="Patient Category Company">business
-                            </mat-icon>
-                        </div>
-                    </ng-template>
-                    <ng-template #Billstatus let-element>
-                        <div fxLayout="row" fxLayoutAlign="center center">
-                            <mat-icon *ngIf="element.interimOrFinal=='0'" matTooltip="Final Bill"
+                    <ng-template #patientTypetemp let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="4px">
+
+                            <mat-icon *ngIf="element.oP_IP_Type==1" matTooltip="IP"
                                 class="pill green-600 s-16">circle</mat-icon>
+                            <mat-icon *ngIf="element.oP_IP_Type==0" matTooltip="OP"
+                                class="pill orange s-16">circle</mat-icon>
+                            <mat-icon *ngIf="element.oP_IP_Type==2" matTooltip="External"
+                                class="pill blue s-16">circle</mat-icon>
 
-                            <mat-icon *ngIf="element.interimOrFinal=='1'" matTooltip="Intrim Bill"
-                                class="pill orange-600 s-16">circle</mat-icon>
+                            <button mat-icon-button matTooltip="Bill Return" *ngIf="element.isRefundFlag==true">
+                                <mat-icon>replay</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Credit Bill"
+                                *ngIf="element.paidType=='Credit' && element.balanceAmount > '0'"
+                                (click)="OnPayment1(element)">
+                                <mat-icon>payment</mat-icon>
+                            </button>
                         </div>
                     </ng-template>
-                    <ng-template #balancestatus let-element>
+
+                    <ng-template #isPrintTemplate let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <button mat-icon-button class="material-icons" *ngIf="element.balanceAmt !=0 "
-                                (click)="Billpayment(element)" matTooltip="Settlement">
-                                <mat-icon> payment </mat-icon>
+                            <button mat-icon-button matTooltip="IsPrinted" *ngIf="element.isPrint == '1' else Show">
+                                <mat-icon class="green-600 pill">check</mat-icon>
+                            </button>
+                            <ng-template #Show>
+                                <span>-</span>
+                            </ng-template>
+                        </div>
+                    </ng-template>
+
+                    <ng-template #actionButtonTemplate let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="4px">
+
+                            <button mat-icon-button matTooltip="Print2" (click)="getPrint2(contact)">
+                                <mat-icon>print</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="View As Pdf" (click)="viewSalesPdf(contact)">
+                                <mat-icon>visibility</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Send Bill On WhatsApp"
+                                (click)="getWhatsappshareSales(contact)">
+                                <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
                             </button>
                         </div>
                     </ng-template>
 
-                    <ng-template #isCancelledstatus let-element>
-                        <div fxLayout="row" fxLayoutAlign="center center">
-                            <mat-icon title="Cancelled Bill" *ngIf="element.isCancelled=='1'" class="pill red s-16"
-                            matTooltip="Cancelled Bill">circle</mat-icon> 
-                         
-                        </div>
-                    </ng-template>
-
-
-                    <ng-template #actionButtonTemplateIP let-element>
-                        <div fxLayout="row" fxLayoutAlign="center center"> 
-
-                            <button mat-icon-button matTooltip="Email">
-                                <mat-icon>email</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="Message">
-                                <mat-icon>message</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="Send message On WhatsApp">
-                                <img width="500" height="20px" src="assets/images/logos/WhatsApp.png">
-                            </button>
-                            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
-                            (click)="$event.stopPropagation();">
-                            <mat-icon class="secondary-text">more_vert</mat-icon>
-                        </button>
-                        <mat-menu #moreMenu="matMenu">
-                            <ng-container *ngFor="let m of menuActions, let n of menuActions">
-                                <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
-                                    <span>{{m}}</span>
-                                </button>
-                            </ng-container>
-                        </mat-menu>
-                        </div>
-                    </ng-template> -->
-                  
-                    <airmid-table [gridConfig]="gridConfig1" class="content">
+                    <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getsalesdetaillist($event)">
                         <ng-container filters>
                             <form [formGroup]="_BrowsSalesBillService.userForm" fxLayout="column">
-                    
+
                                 <airmid-datepicker [formGroup]="_BrowsSalesBillService.userForm" [isRangePicker]="true"
-                                    formStartControlName="startdate" formEndControlName="startdate"
-                                    [(fromValue)]="gridConfig.filters[1].fieldValue" [(toValue)]="gridConfig.filters[2].fieldValue"
-                                    (dateChange)="onChangeFirst()"></airmid-datepicker>
-                    
-                    
-                                <airmid-dropdown label="Store Name" formControlName="StoreId" [formGroup]="_BrowsSalesBillService.userForm"
+                                    formStartControlName="startdate" formEndControlName="enddate"
+                                    [(fromValue)]="gridConfig.filters[3].fieldValue"
+                                    [(toValue)]="gridConfig.filters[4].fieldValue"></airmid-datepicker>
+
+
+                                <airmid-dropdown label="Store Name" formControlName="StoreId"
+                                    [formGroup]="_BrowsSalesBillService.userForm"
                                     [validations]="getValidationMessages().StoreId" fxFlex [mode]="autocompletestore"
                                     (keyup)="selectChangeStore($event)">
                                 </airmid-dropdown>
-                    
+
                                 <airmid-textbox fxFlex label="Search RegNo" formControlName="RegNo"
                                     [formGroup]="_BrowsSalesBillService.userForm" (keyup)="onChangeFirst()"
                                     [validations]="getValidationMessages().RegNo"></airmid-textbox>
-                    
+
                                 <airmid-textbox fxFlex label="Search First Name" formControlName="F_Name"
                                     [formGroup]="_BrowsSalesBillService.userForm" (keyup)="onChangeFirst()"
                                     [validations]="getValidationMessages().F_Name"></airmid-textbox>
-                    
+
                                 <airmid-textbox fxFlex label="Search Last Name" formControlName="L_Name"
                                     [formGroup]="_BrowsSalesBillService.userForm" (keyup)="onChangeFirst()"
                                     [validations]="getValidationMessages().L_Name"></airmid-textbox>
-                    
+
                                 <airmid-textbox fxFlex label="Search SalesNo" formControlName="SalesNo"
                                     [formGroup]="_BrowsSalesBillService.userForm" (keyup)="onChangeFirst()"
                                     [validations]="getValidationMessages().SalesNo"></airmid-textbox>
-                    
-                    
-                                <div fxFlexFill fxLayout="row" >
-                                    <mat-radio-group formControlName="OP_IP_Type" name="OP_IP_Type" (change)="onChangeFirst()"
-                                    fxLayout="row">
+
+
+                                <div fxFlexFill fxLayout="row">
+                                    <mat-radio-group formControlName="OP_IP_Type" name="OP_IP_Type"
+                                        (change)="onChangeFirst()" fxLayout="row">
                                         <mat-radio-button value="3"> All</mat-radio-button>
                                         <mat-radio-button value="0">OP</mat-radio-button>
                                         <mat-radio-button value="1">IP</mat-radio-button>
                                         <mat-radio-button value="2">External</mat-radio-button>
                                     </mat-radio-group>
                                 </div>
-                    
+
                             </form>
                         </ng-container>
                     </airmid-table>
                 </div>
+
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
+                    *ngIf="isShowDetailTable">
+                    <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false"
+                        [ShowButtons]="false">
+                    </airmid-table>
+                </div>
             </div>
+
 
         </mat-tab>
 
@@ -146,11 +140,11 @@
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
-            
+
                 <div class="info-badge-top border-bottom" fxLayout="row" fxLayoutAlign="center" flex>
-            
+
                     <div fxLayout="row" fxLayoutAlign="end" class="gap-8">
-            
+
                         <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                             <mat-icon class="pill orange-600 s-16">circle</mat-icon>
                             <span class="orange-600-fg">OP</span>
@@ -163,7 +157,7 @@
                             <mat-icon class="pill red-600 s-16">circle</mat-icon>
                             <span class="red-600-fg">External</span>
                         </div>
-            
+
                     </div>
                 </div>
                 <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
@@ -228,49 +222,51 @@
                                 </mat-menu>
                                 </div>
                             </ng-template> -->
-            
+
                     <airmid-table [gridConfig]="gridConfig" class="content">
                         <ng-container filters>
                             <form [formGroup]="_BrowsSalesBillService.userForm" fxLayout="column">
-            
-                                <airmid-datepicker [formGroup]="_BrowsSalesBillService.formReturn" [isRangePicker]="true"
-                                    formStartControlName="startdate1" formEndControlName="enddate1"
-                                    [(fromValue)]="gridConfig.filters[1].fieldValue" [(toValue)]="gridConfig.filters[2].fieldValue"
+
+                                <airmid-datepicker [formGroup]="_BrowsSalesBillService.formReturn"
+                                    [isRangePicker]="true" formStartControlName="startdate1"
+                                    formEndControlName="enddate1" [(fromValue)]="gridConfig.filters[1].fieldValue"
+                                    [(toValue)]="gridConfig.filters[2].fieldValue"
                                     (dateChange)="onChangeFirst()"></airmid-datepicker>
-            
-            
+
+
                                 <airmid-dropdown label="Store Name" formControlName="StoreId"
-                                    [formGroup]="_BrowsSalesBillService.formReturn" [validations]="getValidationMessages().StoreId"
-                                    fxFlex [mode]="autocompletestore" (keyup)="selectChangeStore($event)">
+                                    [formGroup]="_BrowsSalesBillService.formReturn"
+                                    [validations]="getValidationMessages().StoreId" fxFlex [mode]="autocompletestore"
+                                    (keyup)="selectChangeStore($event)">
                                 </airmid-dropdown>
-            
+
                                 <airmid-textbox fxFlex label="Search RegNo" formControlName="RegNo"
                                     [formGroup]="_BrowsSalesBillService.formReturn" (keyup)="onChangeFirst()"
                                     [validations]="getValidationMessages().RegNo"></airmid-textbox>
-            
+
                                 <airmid-textbox fxFlex label="Search First Name" formControlName="F_Name"
                                     [formGroup]="_BrowsSalesBillService.formReturn" (keyup)="onChangeFirst()"
                                     [validations]="getValidationMessages().F_Name"></airmid-textbox>
-            
+
                                 <airmid-textbox fxFlex label="Search Last Name" formControlName="L_Name"
                                     [formGroup]="_BrowsSalesBillService.formReturn" (keyup)="onChangeFirst()"
                                     [validations]="getValidationMessages().L_Name"></airmid-textbox>
-            
+
                                 <airmid-textbox fxFlex label="Search SalesNo" formControlName="SalesNo"
                                     [formGroup]="_BrowsSalesBillService.formReturn" (keyup)="onChangeFirst()"
                                     [validations]="getValidationMessages().SalesNo"></airmid-textbox>
-            
-            
+
+
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                    <mat-radio-group formControlName="OP_IP_Type" name="OP_IP_Type" (change)="onChangeFirst()"
-                                    fxLayout="row">
+                                    <mat-radio-group formControlName="OP_IP_Type" name="OP_IP_Type"
+                                        (change)="onChangeFirst()" fxLayout="row">
                                         <mat-radio-button value="3"> All</mat-radio-button>
                                         <mat-radio-button value="0">OP</mat-radio-button>
                                         <mat-radio-button value="1">IP</mat-radio-button>
                                         <mat-radio-button value="2">External</mat-radio-button>
                                     </mat-radio-group>
                                 </div>
-            
+
                             </form>
                         </ng-container>
                     </airmid-table>
@@ -278,12 +274,12 @@
             </div>
         </mat-tab>
 
-        <mat-tab label="Patient List"> 
-             <div fusePerfectScrollbar
-            class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-            dynamicTableHeight> 
-            <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                <!-- <ng-template #patientTypetemp let-element>
+        <mat-tab label="Patient List">
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+                <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <!-- <ng-template #patientTypetemp let-element>
                             <div fxLayout="row" fxLayoutAlign="center center">
                                 <mat-icon *ngIf="element.PatientTypeId=='1'" matTooltip="Patient Category Self">account_box
                                 </mat-icon>
@@ -343,58 +339,59 @@
                                 </ng-container>
                             </mat-menu>
                             </div>
-                        </ng-template> --> 
+                        </ng-template> -->
 
-                <airmid-table [gridConfig]="gridConfig" class="content">
-                    <ng-container filters>
-                        <form [formGroup]="_BrowsSalesBillService.SalesPatientForm" fxLayout="column"> 
+                    <airmid-table [gridConfig]="gridConfig" class="content">
+                        <ng-container filters>
+                            <form [formGroup]="_BrowsSalesBillService.SalesPatientForm" fxLayout="column">
 
-                            <airmid-datepicker [formGroup]="_BrowsSalesBillService.SalesPatientForm" [isRangePicker]="true"
-                                formStartControlName="fromDate" formEndControlName="enddate"
-                                [(fromValue)]="gridConfig.filters[1].fieldValue" [(toValue)]="gridConfig.filters[2].fieldValue"
-                                (dateChange)="onChangeFirst()"></airmid-datepicker>  
-        
-                            <airmid-textbox fxFlex label="Search RegNo" formControlName="RegNo"
-                                [formGroup]="_BrowsSalesBillService.SalesPatientForm" (keyup)="onChangeFirst()"
-                                [validations]="getValidationMessages().RegNo"></airmid-textbox>
+                                <airmid-datepicker [formGroup]="_BrowsSalesBillService.SalesPatientForm"
+                                    [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate"
+                                    [(fromValue)]="gridConfig.filters[1].fieldValue"
+                                    [(toValue)]="gridConfig.filters[2].fieldValue"
+                                    (dateChange)="onChangeFirst()"></airmid-datepicker>
+
+                                <airmid-textbox fxFlex label="Search RegNo" formControlName="RegNo"
+                                    [formGroup]="_BrowsSalesBillService.SalesPatientForm" (keyup)="onChangeFirst()"
+                                    [validations]="getValidationMessages().RegNo"></airmid-textbox>
 
                                 <airmid-textbox fxFlex label="Search IPD NO" formControlName="IPDNo"
-                                [formGroup]="_BrowsSalesBillService.SalesPatientForm" (keyup)="onChangeFirst()"
-                                [validations]="getValidationMessages().IPDNo"></airmid-textbox>
-        
-                            <airmid-textbox fxFlex label="Search First Name" formControlName="F_Name"
-                                [formGroup]="_BrowsSalesBillService.SalesPatientForm" (keyup)="onChangeFirst()"
-                                [validations]="getValidationMessages().F_Name"></airmid-textbox>
+                                    [formGroup]="_BrowsSalesBillService.SalesPatientForm" (keyup)="onChangeFirst()"
+                                    [validations]="getValidationMessages().IPDNo"></airmid-textbox>
 
-                                
-                            <airmid-textbox fxFlex label="Search First Name" formControlName="M_Name"
-                            [formGroup]="_BrowsSalesBillService.SalesPatientForm" (keyup)="onChangeFirst()"
-                            [validations]="getValidationMessages().M_Name"></airmid-textbox>
-        
-                            <airmid-textbox fxFlex label="Search Middle Name" formControlName="L_Name"
-                                [formGroup]="_BrowsSalesBillService.SalesPatientForm" (keyup)="onChangeFirst()"
-                                [validations]="getValidationMessages().L_Name"></airmid-textbox>
-        
-                         
+                                <airmid-textbox fxFlex label="Search First Name" formControlName="F_Name"
+                                    [formGroup]="_BrowsSalesBillService.SalesPatientForm" (keyup)="onChangeFirst()"
+                                    [validations]="getValidationMessages().F_Name"></airmid-textbox>
+
+
+                                <airmid-textbox fxFlex label="Search First Name" formControlName="M_Name"
+                                    [formGroup]="_BrowsSalesBillService.SalesPatientForm" (keyup)="onChangeFirst()"
+                                    [validations]="getValidationMessages().M_Name"></airmid-textbox>
+
+                                <airmid-textbox fxFlex label="Search Middle Name" formControlName="L_Name"
+                                    [formGroup]="_BrowsSalesBillService.SalesPatientForm" (keyup)="onChangeFirst()"
+                                    [validations]="getValidationMessages().L_Name"></airmid-textbox>
+
+
                                 <div class="slide-toggle mb-2">
                                     <mat-slide-toggle name="IsDischarge" (change)="onChangeIsactive($event)"
                                         formControlName="IsDischarge" [(ngModel)]="isChecked">
                                         IsDischarge
                                     </mat-slide-toggle>
-                                </div> 
-                          
-        
-                        </form>
-                    </ng-container>
-                </airmid-table>
+                                </div>
+
+
+                            </form>
+                        </ng-container>
+                    </airmid-table>
+                </div>
             </div>
-        </div> 
         </mat-tab>
 
     </mat-tab-group>
 
 
-</div>
+ 
 
 <div hidden class="bill-template-wrapper" style="font-size: 30.25%;" #billTemplate>
     <div class="watermark" style="position:absolute;
@@ -410,7 +407,9 @@
     <div style="display:flex; align-items: center; margin-bottom: 10px;">
         <!-- <span style="font-size: 9px;font-weight: 700;width: 33.33%;">(A Unit of Shri Siddeshwar Loka Kalyana Charitable
             Trust)</span> -->
-        <h2 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 66.33%;text-align: center;margin-left: 100px;">{{type}}Tax
+        <h2
+            style="text-transform: uppercase;font-weight: 500;margin:0;;width: 66.33%;text-align: center;margin-left: 100px;">
+            {{type}}Tax
             Invoice
         </h2>
     </div>
@@ -645,13 +644,13 @@
                     Printed on 12/10/2023 12:45 pm
                 </td>
             </tr>
-            <tr style="font-size: 10px; "> 
+            <tr style="font-size: 10px; ">
                 <td colspan="3" style="padding-top: 50px;">
                     Note :- Get Well Soon
-                 </td>
-                 <td colspan="10"   style="text-align: right;padding-top: 50px;">
-                     Pharmacist
-                 </td>
+                </td>
+                <td colspan="10" style="text-align: right;padding-top: 50px;">
+                    Pharmacist
+                </td>
             </tr>
         </tbody>
     </table>
@@ -675,7 +674,9 @@
     <div style="display:flex; align-items: center; margin-bottom: 10px;">
         <!-- <span style="font-size: 8px;font-weight: 700;width: 33.33%;">(A Unit of Shri Siddeshwar Loka Kalyana Charitable
             Trust)</span> -->
-        <h4 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 66.33%;text-align: center;margin-left: 100px;">{{type}}
+        <h4
+            style="text-transform: uppercase;font-weight: 500;margin:0;;width: 66.33%;text-align: center;margin-left: 100px;">
+            {{type}}
             &nbsp; Tax Invoice
         </h4>
     </div>
@@ -879,13 +880,13 @@
                     This is Computer generated invoice hence doesn’t require signature
                 </td>
             </tr>
-            <tr style="font-size: 10px; "> 
+            <tr style="font-size: 10px; ">
                 <td colspan="3" style="padding-top: 50px;">
                     Note :- Get Well Soon
-                 </td>
-                 <td colspan="10"   style="text-align: right;padding-top: 50px;">
-                     Pharmacist
-                 </td>
+                </td>
+                <td colspan="10" style="text-align: right;padding-top: 50px;">
+                    Pharmacist
+                </td>
             </tr>
         </tbody>
     </table>
@@ -909,7 +910,9 @@
     <div style="display:flex; align-items: center; margin-bottom: 10px;">
         <!-- <span style="font-size: 8px;font-weight: 700;width: 33.33%;">(A Unit of Shri Siddeshwar Loka Kalyana Charitable
             Trust)</span> -->
-        <h4 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 66.33%;text-align: center;margin-left: 100px;">Tax Invoice
+        <h4
+            style="text-transform: uppercase;font-weight: 500;margin:0;;width: 66.33%;text-align: center;margin-left: 100px;">
+            Tax Invoice
             (SALES RETURN)
         </h4>
     </div>
@@ -1110,13 +1113,13 @@
                     This is Computer generated invoice hence doesn’t require signature
                 </td>
             </tr>
-            <tr style="font-size: 10px; "> 
+            <tr style="font-size: 10px; ">
                 <td colspan="3" style="padding-top: 50px;">
                     Note :- Get Well Soon
-                 </td>
-                 <td colspan="10"   style="text-align: right;padding-top: 50px;">
-                     Pharmacist
-                 </td>
+                </td>
+                <td colspan="10" style="text-align: right;padding-top: 50px;">
+                    Pharmacist
+                </td>
             </tr>
         </tbody>
     </table>

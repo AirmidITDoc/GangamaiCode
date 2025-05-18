@@ -33,16 +33,16 @@ export class IssueSummeryComponent implements OnInit {
     'LandedRate',
     'StkId',
   ];
-  
+
   isLoadingStr: string = '';
   isLoading: String = '';
   sIsLoading: string = "";
-  registerObj:any;
+  registerObj: any;
 
-  dsIssueSummeryList =new MatTableDataSource<IssuesummeryList>();
-  dsIssueSummeryDetList =new MatTableDataSource<IssuesummeryDetList>();
+  dsIssueSummeryList = new MatTableDataSource<IssuesummeryList>();
+  dsIssueSummeryDetList = new MatTableDataSource<IssuesummeryDetList>();
 
-  
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
   @ViewChild('SecondPaginator', { static: true }) public SecondPaginator: MatPaginator;
@@ -57,7 +57,7 @@ export class IssueSummeryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if(this.data.Obj){
+    if (this.data.Obj) {
       this.registerObj = this.data.Obj;
       console.log(this.registerObj)
     }
@@ -65,57 +65,87 @@ export class IssueSummeryComponent implements OnInit {
     this.getIssueSummeryDetailsList();
   }
 
-  getIssueSummeryList(){
-    this.sIsLoading = 'loading-data';
-   var  vdata={
-    "ItemId": this.registerObj.ItemId || 0,
-    "ToStoreId": this.registerObj.StoreId || 0
+  getIssueSummeryList() {
+    var vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "ItemId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "ToStoreId",
+          "fieldValue": String(this.registerObj.storeId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "ItemId",
+          "fieldValue": String(this.registerObj.itemId),
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": [
+        {
+          "data": "string",
+          "name": "string"
+        }
+      ]
     }
     setTimeout(() => {
-      this._CurrentStockService.getIssueSummeryList(vdata).subscribe(data =>{
-        this.dsIssueSummeryList.data = data as IssuesummeryList[];
+      this._CurrentStockService.getIssueSummeryList(vdata).subscribe(data => {
+        this.dsIssueSummeryList.data = data.data as IssuesummeryList[];
         this.dsIssueSummeryList.sort = this.sort;
         this.dsIssueSummeryList.paginator = this.paginator;
         console.log(this.dsIssueSummeryList.data)
-        this.sIsLoading = '';
-        this.isLoadingStr = this.dsIssueSummeryList.data.length == 0 ? 'no-data' : '';
-      },
-        (error) => {
-          this.isLoadingStr = 'no-data';
-        }
+      }
       );
-    }, 1000);
+    }, 500);
 
   }
-  getIssueSummeryDetailsList(){
-    this.sIsLoading = 'loading-data';
-   var  vdata={
-     "ItemId": this.registerObj.ItemId || 0,
-     "ToStoreId": this.registerObj.StoreId || 0
+  getIssueSummeryDetailsList() {
+    var vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "ItemId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "ToStoreId",
+          "fieldValue": String(this.registerObj.storeId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "ItemId",
+          "fieldValue": String(this.registerObj.itemId),
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": [
+        {
+          "data": "string",
+          "name": "string"
+        }
+      ]
     }
     setTimeout(() => {
-      this._CurrentStockService.getIssueSummeryDetailList(vdata).subscribe(data =>{
-        this.dsIssueSummeryDetList.data = data as IssuesummeryDetList[];
+      this._CurrentStockService.getIssueSummeryDetailList(vdata).subscribe(data => {
+        this.dsIssueSummeryDetList.data = data.data as IssuesummeryDetList[];
         this.dsIssueSummeryDetList.sort = this.sort;
         this.dsIssueSummeryDetList.paginator = this.SecondPaginator;
         console.log(this.dsIssueSummeryDetList.data)
-        this.sIsLoading = '';
-        this.isLoadingStr = this.dsIssueSummeryDetList.data.length == 0 ? 'no-data' : '';
-      },
-        (error) => {
-          this.isLoadingStr = 'no-data';
-        }
+      }
       );
-    }, 1000);
+    }, 500);
   }
-  onClose(){
-    this.dsIssueSummeryDetList.data =[];
+  onClose() {
+    this.dsIssueSummeryDetList.data = [];
     this.dsIssueSummeryList.data = [];
     this._matDialog.closeAll();
   }
 }
 export class IssuesummeryList {
- 
+
   ItemName: any;
   BatchNo: any;
   ReceivedQty: number;
@@ -139,7 +169,7 @@ export class IssuesummeryDetList {
   UnitMRP: number;
   PurRate: number;
   LandedRate: number;
-  StkId:any;
+  StkId: any;
 
   constructor(IssuesummeryDetList) {
     {

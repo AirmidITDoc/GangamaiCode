@@ -30,16 +30,16 @@ export class SalesSummeryComponent implements OnInit {
     'Qty',
     'UnitMRP',
   ];
-  
+
   isLoadingStr: string = '';
   isLoading: String = '';
   sIsLoading: string = "";
-  registerObj:any;
+  registerObj: any;
 
-  dsSalesSummeryList =new MatTableDataSource<SalessummeryList>();
-  dsSalesSummeryDetList =new MatTableDataSource<SalessummeryDetList>();
+  dsSalesSummeryList = new MatTableDataSource<SalessummeryList>();
+  dsSalesSummeryDetList = new MatTableDataSource<SalessummeryDetList>();
 
-  
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
   @ViewChild('SecondPaginator', { static: true }) public SecondPaginator: MatPaginator;
@@ -54,66 +54,93 @@ export class SalesSummeryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if(this.data.Obj){
+    if (this.data.Obj) {
       this.registerObj = this.data.Obj;
       console.log(this.registerObj)
     }
     this.getSalesSummeryList();
     this.getSalesSummeryDetailsList();
   }
-  getSalesSummeryList(){
-    this.sIsLoading = 'loading-data';
-   var  vdata={
-    "ItemId": this.registerObj.ItemId || 0,
-    "ToStoreId": this.registerObj.StoreId || 0
+  getSalesSummeryList() {
+    var vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "StoreID",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "ToStoreId",
+          "fieldValue": String(this.registerObj.storeId),
+          "opType": "Equals"
+        },
+
+        {
+          "fieldName": "ItemId",
+          "fieldValue": String(this.registerObj.itemId),
+          "opType": "Equals"
+        }
+
+
+      ],
+      "exportType": "JSON",
+      "columns": []
     }
     console.log(vdata)
     setTimeout(() => {
-      this._CurrentStockService.getSalesSummeryList(vdata).subscribe(data =>{
-        this.dsSalesSummeryList.data = data as SalessummeryList[];
+      this._CurrentStockService.getSalesSummeryList(vdata).subscribe(data => {
+        this.dsSalesSummeryList.data = data.data as SalessummeryList[];
         this.dsSalesSummeryList.sort = this.sort;
         this.dsSalesSummeryList.paginator = this.paginator;
         console.log(this.dsSalesSummeryList.data)
-        this.sIsLoading = '';
-        this.isLoadingStr = this.dsSalesSummeryList.data.length == 0 ? 'no-data' : '';
-      },
-        (error) => {
-          this.isLoadingStr = 'no-data';
-        }
+      }
       );
-    }, 1000);
+    }, 500);
 
   }
-  getSalesSummeryDetailsList(){
-    this.sIsLoading = 'loading-data';
-   var  vdata={
-     "ItemId": this.registerObj.ItemId || 0,
-     "ToStoreId": this.registerObj.StoreId || 0
+
+  getSalesSummeryDetailsList() {
+    var vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "StoreID",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "ToStoreId",
+          "fieldValue": String(this.registerObj.storeId),
+          "opType": "Equals"
+        },
+
+        {
+          "fieldName": "ItemId",
+          "fieldValue": String(this.registerObj.itemId),
+          "opType": "Equals"
+        }
+
+
+      ],
+      "exportType": "JSON",
+      "columns": []
     }
     console.log(vdata)
     setTimeout(() => {
-      this._CurrentStockService.getSalesDetailSummeryList(vdata).subscribe(data =>{
-        this.dsSalesSummeryDetList.data = data as SalessummeryDetList[];
+      this._CurrentStockService.getSalesDetailSummeryList(vdata).subscribe(data => {
+        this.dsSalesSummeryDetList.data = data.data as SalessummeryDetList[];
         this.dsSalesSummeryDetList.sort = this.sort;
         this.dsSalesSummeryDetList.paginator = this.SecondPaginator;
         console.log(this.dsSalesSummeryDetList.data)
-        this.sIsLoading = '';
-        this.isLoadingStr = this.dsSalesSummeryDetList.data.length == 0 ? 'no-data' : '';
-      },
-        (error) => {
-          this.isLoadingStr = 'no-data';
-        }
+      }
       );
-    }, 1000);
+    }, 500);
   }
-  onClose(){
-    this.dsSalesSummeryDetList.data =[];
+  onClose() {
+    this.dsSalesSummeryDetList.data = [];
     this.dsSalesSummeryList.data = [];
     this._matDialog.closeAll();
   }
 }
 export class SalessummeryList {
- 
+
   ItemName: any;
   BatchNo: any;
   SalesQty: number;
