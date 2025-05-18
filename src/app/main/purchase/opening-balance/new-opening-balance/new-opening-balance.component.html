@@ -22,7 +22,7 @@
         </div>
 
         <!-- Modal body -->
-        <div class="modal-body">
+        <div class="modal-body" fusePerfectScrollbar>
             <div class="modal-body-container">
                 <div fxLayout="column" class="h-100-p">
                     <mat-accordion>
@@ -38,15 +38,11 @@
                                 <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
                                     <form [formGroup]="StoreForm">
                                         <airmid-dropdown label="Store Name" formControlName="StoreId" [disabled]="true"
-                                            (selectionChange)="StoreSelction($event)" [formGroup]="StoreForm"
+                                            (selectionChange)="StoreSelction($event)" [formGroup]="StoreForm" fxFlex
                                             (openedChange)="true" [mode]="autocompletestore">
                                         </airmid-dropdown>
 
                                     </form>
-
-                                    <!-- <app-common-date [screenFrom]="screenFromString"
-                                    (dateTimeEventEmitter)="getDateTime($event)">
-                                </app-common-date> -->
                                 </div>
                             </div>
                             <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
@@ -58,13 +54,15 @@
                                         (selectionChange)="getSelectedItem($event)" TextField="formattedText"
                                         ValueField="itemId" (onClearSelection)="ItemFromReset()"></airmid-autocomplete>
 
+                                        
+
                                     <airmid-textbox fxFlex="10%" label="BatchNo" formControlName="BatchNo"
                                         [(ngModel)]="vBatchNo" [formGroup]="OPeningtemForm"
                                         placeholder="BatchNo"></airmid-textbox>
 
                                     <mat-form-field appearance="outline" fxFlex="10%">
                                         <mat-label>ExpDate</mat-label>
-                                        <input matInput #inputField (keyup.enter)="calculateLastDay(inputField.value)"
+                                        <input matInput #inputField (keyup.enter)="calculateLastDay()"
                                             formControlName="ExpDate" id="ExpDatess" [(ngModel)]="vlastDay" #expdate
                                             autocomplete="off" placeholder="MMYYYY" required>
                                     </mat-form-field>
@@ -189,32 +187,31 @@
                             </mat-footer-row>
                         </mat-table>
                     </div>
-                    <mat-accordion>
-                        <form [formGroup]="OPeningtemForm">
-                            <div>
-                                <airmid-textbox fxFlex="60%" label="Remark" formControlName="Remark"
-                                    [(ngModel)]="vRemark" [formGroup]="OPeningtemForm"
-                                    placeholder="Remark"></airmid-textbox>
 
-
-                                <div class="modal-footer">
-                                    <div class="footer-navigation-container">
-                                        <div class="modal-footer-buttons" style="margin-left: 600px;">
-                                            <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
-                                            <button type="button" class="btn btn-primary" [disabled]="false"
-                                                (click)="OnSave()">Save</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </form>
-                    </mat-accordion>
 
                 </div>
             </div>
         </div>
+        <div>
+            <form [formGroup]="OPeningtemForm">
+                <div style="margin-left: 20px;">
+                    <airmid-textbox fxFlex="60%" label="Remark" formControlName="Remark" [(ngModel)]="vRemark"
+                        [formGroup]="OPeningtemForm" placeholder="Remark"></airmid-textbox>
 
+
+                    <div class="modal-footer">
+                        <div class="footer-navigation-container">
+                            <div class="modal-footer-buttons" style="margin-left: 600px;">
+                                <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
+                                <button type="button" class="btn btn-primary" [disabled]="false"
+                                    (click)="OnSave()">Save</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
     </div>
 
 </div>

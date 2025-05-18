@@ -231,7 +231,6 @@ export class NewPurchaseorderComponent {
 
     console.log(this.data)
 
-    // if (this.data.chkNewGRN == 2) {
     if (this.data) {
       this.registerObj = this.data.Obj
       this.PurchaseID = this.data.Obj.purchaseID
@@ -362,7 +361,7 @@ export class NewPurchaseorderComponent {
     }
     const itemNameElement = document.querySelector(`[name='ItemName']`) as HTMLElement;
     if (itemNameElement) {
-        itemNameElement.focus();
+      itemNameElement.focus();
     }
     this.resetFormItem();
   }
@@ -481,7 +480,7 @@ export class NewPurchaseorderComponent {
     this.vGSTPer = (obj.SGSTPer + obj.CGSTPer + obj.IGSTPer);
     this.vSpecification = obj.Specification || '';
     this.getLastThreeItemInfo();
-    // this.qty.nativeElement.focus();
+
     this.getSupplierRate();
   }
 
@@ -565,15 +564,26 @@ export class NewPurchaseorderComponent {
   //   this.OnSaveEdit();
   // }
   // }
-
+// purchaseTime 
+// "16-05-2025 11:56:53"
 
   OnSave() {
-        if (!this.isValidForm()) {
-          Swal.fire('Please enter valid table data.');
-          return;
-        }
+  debugger
+    let Pdate;
+    let pTime;
+    if (this.PurchaseID !=0) {
     
-        
+      //  let date = new Date(this.data.Obj.purchaseTime);
+      //  let formattedDate = this.datePipe.transform(date, 'yyyy-MM-dd');
+      // console.log(formattedDate)
+
+      Pdate =this.datePipe.transform(this.data.Obj.purchaseTime, "yyyy-MM-dd") || '1900-01-01',
+      pTime = this.data.Obj.purchaseTime
+    } else {
+      Pdate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',
+        pTime = this.dateTimeObj.time;
+    }
+
     if ((!this.dsItemNameList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -582,7 +592,7 @@ export class NewPurchaseorderComponent {
     }
 
     console.log(this.FinalPurchaseform.value)
-   
+
     debugger
     if (!this.FinalPurchaseform.invalid) {
       let InsertpurchaseDetailObj = [];
@@ -617,8 +627,8 @@ export class NewPurchaseorderComponent {
       let submitData = {
         "purchaseId": this.PurchaseID,
         "purchaseNo": this.PurchaseNo,
-        "purchaseDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',
-        "purchaseTime": this.dateTimeObj.time,
+        "purchaseDate": Pdate,
+        "purchaseTime": pTime,
         "storeId": this.vstoreId,
         "supplierId": this.vSupplierId,// this.userFormGroup.get('SupplierId').value || 0,
         "totalAmount": this.FinalTotalAmt,
@@ -677,7 +687,7 @@ export class NewPurchaseorderComponent {
     this._PurchaseOrder.validateCellData(item);
     this._PurchaseOrder.calculateBasicValues(item);
     this._PurchaseOrder.validateGSTRates(item);
-    
+
     const updatedItem = this.calculateCellGSTType(item);
     Object.assign(item, updatedItem);
 
@@ -819,8 +829,8 @@ export class NewPurchaseorderComponent {
       return false;
     }
   }
-  GSTTypeID:any=0;
-  GSTTypetext:any=0;
+  GSTTypeID: any = 0;
+  GSTTypetext: any = 0;
   IsDiscPer2: boolean = false;
   onGSTTypeChange(event: { value: number, text: string }) {
     debugger
@@ -835,21 +845,21 @@ export class NewPurchaseorderComponent {
     // }
 
     console.log(event)
-           this.GSTTypeID = event.value;
-           const newGSTType = event.text as GSTType;
-           this.calculateGSTType(newGSTType);
-           if (event.text == "GST After TwoTime Disc") {
-               this.IsDiscPer2 = true
-           } else {
-               this.IsDiscPer2 = false
-           }
-   
-           // Update gst type of table data
-   
-           this.dsItemNameList.data.forEach((item) => {
-               item.GSTType = newGSTType;
-               this.getCellCalculation(item);
-           })
+    this.GSTTypeID = event.value;
+    const newGSTType = event.text as GSTType;
+    this.calculateGSTType(newGSTType);
+    if (event.text == "GST After TwoTime Disc") {
+      this.IsDiscPer2 = true
+    } else {
+      this.IsDiscPer2 = false
+    }
+
+    // Update gst type of table data
+
+    this.dsItemNameList.data.forEach((item) => {
+      item.GSTType = newGSTType;
+      this.getCellCalculation(item);
+    })
 
   }
 
@@ -864,7 +874,7 @@ export class NewPurchaseorderComponent {
     this.userFormGroup.patchValue({
       UOMId: item.umoId,
       ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
-      Qty:0,// item.balanceQty,
+      Qty: 0,// item.balanceQty,
       CGSTPer: item.cgstPer,
       SGSTPer: item.sgstPer,
       IGSTPer: item.igstPer,
@@ -874,7 +884,10 @@ export class NewPurchaseorderComponent {
     });
 
     this.getLastThreeItemInfo();
-    // this.qty.nativeElement.focus();
+    const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+    if (QtyElement) {
+      QtyElement.focus();
+    }
     this.getSupplierRate();
   }
 
@@ -926,7 +939,7 @@ export class NewPurchaseorderComponent {
 
     const form = this.userFormGroup;
     const values = form.getRawValue() as PurchaseFormModel;
-
+    debugger
     // Get and validate discount percentage
     const discountPercentage = Number(this.userFormGroup.get("Disc").value) // Number(values.Disc || 0);
     if (discountPercentage >= 100 || discountPercentage < 0) {
@@ -949,7 +962,7 @@ export class NewPurchaseorderComponent {
     this.calculateGSTType();
   }
   calculateGSTType(type: GSTType = GSTType.GST_BEFORE_DISC) {
-debugger
+    debugger
     const form = this.userFormGroup;
     const formValues = form.getRawValue() as PurchaseFormModel;
     const values = this._PurchaseOrder.normalizeValues(formValues);
@@ -986,7 +999,7 @@ debugger
     return this.dsItemNameList.data.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0);
   }
   calculateCellGSTType(item: ItemNameList): ItemNameList {
-   
+
     if (!item) return item;
     debugger
     try {
@@ -1008,7 +1021,7 @@ debugger
       return item;
     }
 
-    
+
   }
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -1158,7 +1171,13 @@ debugger
       GSTType: [
         { name: "required", Message: "GSTType is required" }
       ],
+      Qty: [
+        { name: "pattern", Message: "Only numbers allowed" },
+        { name: "required", Message: "Qty is required" },
+        { name: "minLength", Message: "10 digit required." },
+        { name: "maxLength", Message: "More than 10 digits not allowed." }
 
+      ],
     };
   }
 

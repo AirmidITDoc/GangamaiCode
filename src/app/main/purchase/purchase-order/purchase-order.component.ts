@@ -169,6 +169,7 @@ export class PurchaseOrderComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
     this.grid.bindGridData();
+   this.isShowDetailTable = false
   });
   }
 

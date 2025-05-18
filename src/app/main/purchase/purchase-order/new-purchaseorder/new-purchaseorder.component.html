@@ -39,7 +39,7 @@
                                 <form [formGroup]="userFormGroup" class="p-0" style="overflow: auto;">
                                     <div fxLayout="row" class="gap-2">
 
-                                        <airmid-dropdown label="Store Name" formControlName="StoreId" fxFlex="16%" 
+                                        <airmid-dropdown label="Store Name" formControlName="StoreId" fxFlex="16%"
                                             [formGroup]="userFormGroup" [mode]="autocompletestore" [disabled]="true"
                                             (selectionChange)="selectChangeStore($event)">
                                         </airmid-dropdown>
@@ -55,7 +55,7 @@
                                         <airmid-textbox fxFlex="13%" label="Contact Person" formControlName="Contact"
                                             [(ngModel)]="vContact" [formGroup]="userFormGroup"
                                             [readonly]="true"></airmid-textbox>
-                                       
+
                                         <airmid-textbox label="Address" formControlName="Address" [(ngModel)]="vAddress"
                                             [formGroup]="userFormGroup" [readonly]="true">
                                         </airmid-textbox>
@@ -105,42 +105,55 @@
                                             [min]="1"></airmid-textbox>
 
 
-                                        <airmid-textbox fxFlex="4%" label="Qty" formControlName="Qty" [maxlength]="5"
+                                        <!-- <airmid-textbox fxFlex="4%" label="Qty" formControlName="Qty" [maxlength]="5"
                                             [formGroup]="userFormGroup" placeholder="Qty"
-                                            (valueChange)="calculateTotalamt()" type="number"></airmid-textbox>
+                                            (valueChange)="calculateTotalamt()" type="number"></airmid-textbox> -->
+
+                                        <airmid-textbox fxFlex="5%"  label="Qty"
+                                            formControlName="Qty" (keypress)="keyPressAlphanumeric($event)"
+                                            [formGroup]="userFormGroup" [validations]="getValidationMessages().Qty"
+                                            [maxLength]="10">
+                                        </airmid-textbox>
+
 
                                         <airmid-textbox fxFlex="5%" label="MRP" formControlName="MRP"
-                                            [formGroup]="userFormGroup" placeholder="MRP" type="number" [(ngModel)]="vMRP"
-                                            [validations]="getValidationMessages().mrp"
+                                            [formGroup]="userFormGroup" placeholder="MRP" type="number"
+                                            [(ngModel)]="vMRP" [validations]="getValidationMessages().mrp"
                                             (valueChange)="calculateTotalamt()"></airmid-textbox>
-                                            <!-- (keyup)="OnchekPurchaserateValidation()" -->
-                                        <airmid-textbox fxFlex="6%" label="Rate" formControlName="Rate" [(ngModel)]="vRate"
-                                            [formGroup]="userFormGroup" placeholder="Rate" type="number" [min]="0"
-                                            (valueChange)="OnchekPurchaserateValidation()"
+                                        <!-- (keyup)="OnchekPurchaserateValidation()" -->
+                                        <airmid-textbox fxFlex="6%" label="Rate" formControlName="Rate"
+                                            [(ngModel)]="vRate" [formGroup]="userFormGroup" placeholder="Rate"
+                                            type="number" [min]="0" (valueChange)="OnchekPurchaserateValidation()"
                                             [validations]="getValidationMessages().rate"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="5%" label="Total Amount" formControlName="TotalAmount" 
+                                        <airmid-textbox fxFlex="5%" label="Total Amount" formControlName="TotalAmount"
                                             [formGroup]="userFormGroup" [readonly]="true"></airmid-textbox>
                                         <!-- </div>
                                     <div fxLayout="row" class="gap-4"> -->
 
-                                        <airmid-textbox fxFlex="4%" label="Disc" formControlName="Disc"
+                                        <!-- <airmid-textbox fxFlex="4%" label="Disc" formControlName="Disc"
                                             [formGroup]="userFormGroup" type="number"
-                                            (valueChange)="calculateTotalamt()"></airmid-textbox>
+                                            (valueChange)="calculateTotalamt()"></airmid-textbox> -->
+
+                                            <airmid-textbox fxFlex="4%"  label="Disc"
+                                            formControlName="Disc" (keypress)="keyPressAlphanumeric($event)"
+                                            [formGroup]="userFormGroup" (valueChange)="calculateTotalamt()" [maxLength]="3">
+                                        </airmid-textbox>
+
 
                                         <airmid-textbox fxFlex="4%" label="DiscAmt" formControlName="DiscAmount"
                                             [formGroup]="userFormGroup" type="number"
                                             (valueChange)="calculateTotalamt()"></airmid-textbox>
 
 
-                                        <airmid-textbox fxFlex="4%" label="CGST %" formControlName="CGSTPer"
-                                            [formGroup]="userFormGroup" type="text" [readonly]="true"></airmid-textbox>
+                                        <airmid-textbox fxFlex="4%" label="CGST %" formControlName="CGSTPer"  (valueChange)="calculateTotalamt()"
+                                            [formGroup]="userFormGroup" type="text" ></airmid-textbox>
 
                                         <!-- <airmid-textbox fxFlex="4%" label="CGST Amt" formControlName="CGSTAmount"
                                             [formGroup]="userFormGroup" type="text" [readonly]="true"></airmid-textbox> -->
 
-                                        <airmid-textbox fxFlex="4%" label="SGST %" formControlName="SGSTPer"
-                                            [formGroup]="userFormGroup" type="text" [readonly]="true"></airmid-textbox>
+                                        <airmid-textbox fxFlex="4%" label="SGST %" formControlName="SGSTPer"  (valueChange)="calculateTotalamt()"
+                                            [formGroup]="userFormGroup" type="text" ></airmid-textbox>
 
                                         <!-- <airmid-textbox fxFlex="4%" label="SGSTAmt" formControlName="SGSTAmount"
                                             [formGroup]="userFormGroup" type="text" [readonly]="true"></airmid-textbox> -->
@@ -461,7 +474,7 @@
                                 [ngClass]="{ hide: !(dsItemNameList != null && dsItemNameList.data.length == 0) }"></mat-footer-row>
                         </mat-table>
                     </div>
-                 
+
                     <mat-accordion>
                         <mat-expansion-panel expanded>
                             <mat-expansion-panel-header>
@@ -513,7 +526,8 @@
                                     | currency:'INR'}}</span>
 
                                 <span style="margin-left: 10px;margin-right: 10px;font-weight: bold;font-size: large;color:rgb(3, 67, 85); display: inline-block;
-  border: 2px solid rgb(4, 29, 33); background-color: rgb(171, 248, 245);border-style: outset; ">Net Amount : {{FinalNetAmount}}</span>
+  border: 2px solid rgb(4, 29, 33); background-color: rgb(171, 248, 245);border-style: outset; ">Net Amount :
+                                    {{FinalNetAmount}}</span>
                             </mat-expansion-panel-header>
 
                             <div fxLayout="column" fxLayout.gt-xs="row" class="gap-12">

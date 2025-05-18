@@ -21,7 +21,7 @@
                 </div>
             </div>
         </div>
-        <div class="content">
+        <div class="content" fusePerfectScrollbar>
             <div class="center p-12 pb-56" fxFlexAlign="start center">
 
                 <div class="content-card" style="border-radius:4px; ">
@@ -35,8 +35,8 @@
 
                                 <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
                                     <airmid-dropdown label="From Store Name" formControlName="FromStoreId" fxFlex="30%"
-                                        [formGroup]="StoreFrom" [validations]="getValidationMessages().FromStoreId"  [readonly]="true"
-                                        [value]="data?.FromStoreId" [mode]="autocompletestore">
+                                        [formGroup]="StoreFrom" [validations]="getValidationMessages().FromStoreId"
+                                        [readonly]="true" [value]="data?.FromStoreId" [mode]="autocompletestore">
                                     </airmid-dropdown>
 
                                     <airmid-dropdown label="To Store Name" formControlName="ToStoreId" fxFlex="30%"
@@ -67,8 +67,11 @@
                                         ValueField="itemId" (onClearSelection)="resetFormItem()"></airmid-autocomplete>
 
 
-                                    <airmid-textbox fxFlex="10%" label="Qty" formControlName="Qty"  [max]="99999" [maxlength]="10"
-                                        [formGroup]="IndentForm" placeholder="Qty" type="number" ></airmid-textbox>
+                                
+                                    <airmid-textbox fxFlex="15%" label="Qty" formControlName="Qty"
+                                        (keypress)="keyPressAlphanumeric($event)" [formGroup]="IndentForm"
+                                        [validations]="getValidationMessages().Qty" [maxLength]="10">
+                                    </airmid-textbox>
 
 
                                     <div matTooltip="Select All Value to enable this button!!" style="padding: 2px;">
@@ -86,10 +89,14 @@
                                         ValueField="itemId" (onClearSelection)="resetFormItem()"></airmid-autocomplete>
 
 
-                                    <airmid-textbox fxFlex="10%" label="Qty" formControlName="Qtykit"
+                                    <!-- <airmid-textbox fxFlex="10%" label="Qty" formControlName="Qtykit"
                                         [formGroup]="IndentForm" placeholder="Qtykit" [(ngModel)]="vQtykit"
-                                        type="number"></airmid-textbox>
+                                        type="number"></airmid-textbox> -->
 
+                                    <airmid-textbox fxFlex="15%" label="Qty" formControlName="Qtykit"
+                                        (keypress)="keyPressAlphanumeric($event)" [formGroup]="IndentForm"
+                                        [validations]="getValidationMessages().Qtykit" [maxLength]="10">
+                                    </airmid-textbox>
 
                                     <div matTooltip="Select All Value to enable this button!!" style="padding: 2px;">
                                         <button class="btn btn-primary">
@@ -177,26 +184,30 @@
                             </div>
                         </div>
                     </div>
-                    <form [formGroup]="StoreFrom">
-                        <div fxLayout="row" fxLayoutAlign="space-between">
-
-                            <mat-form-field appearance="outline" fxFlex="60%">
-                                <mat-label>Remark</mat-label>
-                                <input name="Remark" formControlName="comments" [(ngModel)]="vRemark" matInput [maxlength]="500">
-                            </mat-form-field>
-
-                            <div class="sales-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="center center"
-                                fxFlexAlign="center" style="margin-left: 40px;">
-                                <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
-                                <button class="btn btn-primary" (click)="OnSave()">Save</button>
-                            </div>
-
-                        </div>
-
-                    </form>
 
                 </div>
             </div>
+
+        </div>
+        <div style="margin-top: 10px;">
+            <form [formGroup]="StoreFrom">
+                <div fxLayout="row" fxLayoutAlign="space-between">
+
+                    <mat-form-field appearance="outline" fxFlex="50%">
+                        <mat-label>Remark</mat-label>
+                        <input name="Remark" formControlName="comments" [(ngModel)]="vRemark" matInput
+                            [maxLength]="500">
+                    </mat-form-field>
+
+                    <div class="sales-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="center center"
+                        fxFlexAlign="center" style="margin-left: 30px;margin-right: 20px;">
+                        <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
+                        <button class="btn btn-primary" (click)="OnSave()">Save</button>
+                    </div>
+
+                </div>
+
+            </form>
 
         </div>
     </div>
