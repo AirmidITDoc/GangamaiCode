@@ -551,11 +551,11 @@ export class UpdatePurchaseorderComponent implements OnInit {
     let updatePurchaseOrderHeaderObj = {};
     updatePurchaseOrderHeaderObj['purchaseDate'] = this.dateTimeObj.date /// this.datePipe.transform(this._PurchaseOrder.userFormGroup.get('PurchaseDate').value, "yyyy-MM-dd");
     updatePurchaseOrderHeaderObj['purchaseTime'] = this.dateTimeObj.time;
-    updatePurchaseOrderHeaderObj['storeId'] = this.accountService.currentUserValue.user.storeId;
+    updatePurchaseOrderHeaderObj['storeId'] = this.accountService.currentUserValue.user.storeId || 0;
     updatePurchaseOrderHeaderObj['supplierID'] = this._PurchaseOrder.userFormGroup.get('SupplierId').value.SupplierId || 0;
-    updatePurchaseOrderHeaderObj['totalAmount'] = this.FinalTotalAmt;
-    updatePurchaseOrderHeaderObj['discAmount'] = (parseFloat(this.DiscAmount)).toFixed(2);
-    updatePurchaseOrderHeaderObj['taxAmount'] = (parseFloat(this.GSTAmount)).toFixed(2);
+    updatePurchaseOrderHeaderObj['totalAmount'] = this.FinalTotalAmt || 0;
+    updatePurchaseOrderHeaderObj['discAmount'] = (parseFloat(this.DiscAmount)).toFixed(2) || 0;
+    updatePurchaseOrderHeaderObj['taxAmount'] = (parseFloat(this.GSTAmount)).toFixed(2) || 0;
     updatePurchaseOrderHeaderObj['freightAmount'] = this._PurchaseOrder.FinalPurchaseform.get('Freight').value || 0;
     updatePurchaseOrderHeaderObj['octriAmount'] = this._PurchaseOrder.FinalPurchaseform.get('OctriAmount').value || 0;
     updatePurchaseOrderHeaderObj['grandTotal'] = this.FinalNetAmount;
@@ -568,38 +568,38 @@ export class UpdatePurchaseorderComponent implements OnInit {
     updatePurchaseOrderHeaderObj['modeofPayment'] = this._PurchaseOrder.FinalPurchaseform.get('PaymentMode').value.Id || 0;
     updatePurchaseOrderHeaderObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Worrenty').value || 0;
     updatePurchaseOrderHeaderObj['roundVal'] = 0;
-    updatePurchaseOrderHeaderObj['totCGSTAmt'] = (parseFloat(this.vCGSTAmt)).toFixed(2);
-    updatePurchaseOrderHeaderObj['totSGSTAmt'] = (parseFloat(this.vSGSTAmt)).toFixed(2);
-    updatePurchaseOrderHeaderObj['totIGSTAmt'] =(parseFloat(this.vIGSTAmt)).toFixed(2);
+    updatePurchaseOrderHeaderObj['totCGSTAmt'] = (parseFloat(this.CGSTAmount)).toFixed(2) || 0;
+    updatePurchaseOrderHeaderObj['totSGSTAmt'] = (parseFloat(this.SGSTAmount)).toFixed(2) || 0;
+    updatePurchaseOrderHeaderObj['totIGSTAmt'] =(parseFloat(this.IGSTAmount)).toFixed(2) || 0;
     updatePurchaseOrderHeaderObj['transportChanges'] = this._PurchaseOrder.FinalPurchaseform.get('TransportCharges').value || 0;
     updatePurchaseOrderHeaderObj['handlingCharges'] = this._PurchaseOrder.FinalPurchaseform.get('HandlingCharges').value || 0;
     updatePurchaseOrderHeaderObj['freightCharges'] = this._PurchaseOrder.FinalPurchaseform.get('Freight').value || 0;
     updatePurchaseOrderHeaderObj['purchaseId'] = this.registerObj.PurchaseID;
-
+ 
     let InsertpurchaseDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
       debugger
       let purchaseDetailInsertObj = {};
       purchaseDetailInsertObj['purchaseId'] = 0;
-      purchaseDetailInsertObj['itemId'] = element.ItemId;
-      purchaseDetailInsertObj['uomId'] = element.UOMID;
+      purchaseDetailInsertObj['itemId'] = element.ItemId || 0;
+      purchaseDetailInsertObj['uomId'] = element.UOMID || 0;
       purchaseDetailInsertObj['qty'] = element.Qty || 0;
       purchaseDetailInsertObj['rate'] = element.Rate || 0;
-      purchaseDetailInsertObj['totalAmount'] = element.TotalAmount;
-      purchaseDetailInsertObj['discAmount'] = element.DiscAmount;
-      purchaseDetailInsertObj['discPer'] =element.DiscPer;
-      purchaseDetailInsertObj['vatAmount'] = element.VatAmount;
-      purchaseDetailInsertObj['vatPer'] = element.VatPer;;
-      purchaseDetailInsertObj['grandTotalAmount'] = element.GrandTotalAmount;
-      purchaseDetailInsertObj['mrp'] = element.MRP;
+      purchaseDetailInsertObj['totalAmount'] = element.TotalAmount || 0;
+      purchaseDetailInsertObj['discAmount'] = element.DiscAmount || 0;
+      purchaseDetailInsertObj['discPer'] =element.DiscPer || 0;
+      purchaseDetailInsertObj['vatAmount'] = element.VatAmount || 0;
+      purchaseDetailInsertObj['vatPer'] = element.VatPer || 0;
+      purchaseDetailInsertObj['grandTotalAmount'] = element.GrandTotalAmount || 0;
+      purchaseDetailInsertObj['mrp'] = element.MRP || 0;
       purchaseDetailInsertObj['specification'] = element.Specification;
-      purchaseDetailInsertObj['cgstPer'] = element.CGSTPer;
-      purchaseDetailInsertObj['cgstAmt'] = element.CGSTAmt;
-      purchaseDetailInsertObj['sgstPer'] = element.SGSTPer;
-      purchaseDetailInsertObj['sgstAmt'] = element.SGSTAmt;
-      purchaseDetailInsertObj['igstPer'] = element.IGSTPer;
-      purchaseDetailInsertObj['igstAmt'] = element.IGSTAmt;
-      purchaseDetailInsertObj['DefRate'] = element.DefRate;
+      purchaseDetailInsertObj['cgstPer'] = element.CGSTPer || 0;
+      purchaseDetailInsertObj['cgstAmt'] = element.CGSTAmt || 0;
+      purchaseDetailInsertObj['sgstPer'] = element.SGSTPer || 0;
+      purchaseDetailInsertObj['sgstAmt'] = element.SGSTAmt || 0;
+      purchaseDetailInsertObj['igstPer'] = element.IGSTPer || 0;
+      purchaseDetailInsertObj['igstAmt'] = element.IGSTAmt || 0;
+      purchaseDetailInsertObj['DefRate'] = element.DefRate || 0;
       purchaseDetailInsertObj['VendDisPer'] = 0;
       purchaseDetailInsertObj['VendDiscAmt'] = 0;
 
@@ -652,27 +652,27 @@ export class UpdatePurchaseorderComponent implements OnInit {
     let purchaseHeaderInsertObj = {};
     purchaseHeaderInsertObj['purchaseDate'] = this.dateTimeObj.date// this.datePipe.transform(this._PurchaseOrder.userFormGroup.get('PurchaseDate').value, "yyyy-MM-dd");
     purchaseHeaderInsertObj['purchaseTime'] = this.dateTimeObj.time;
-    purchaseHeaderInsertObj['storeId'] = this.accountService.currentUserValue.user.storeId;
+    purchaseHeaderInsertObj['storeId'] = this.accountService.currentUserValue.user.storeId || 0;
     purchaseHeaderInsertObj['supplierID'] = this._PurchaseOrder.userFormGroup.get('SupplierId').value.SupplierId || 0;
-    purchaseHeaderInsertObj['totalAmount'] = this.FinalTotalAmt;
-    purchaseHeaderInsertObj['discAmount'] = this.DiscAmount;
-    purchaseHeaderInsertObj['taxAmount'] = (parseFloat(this.GSTAmount)).toFixed(2);
+    purchaseHeaderInsertObj['totalAmount'] = this.FinalTotalAmt || 0;
+    purchaseHeaderInsertObj['discAmount'] = this.DiscAmount || 0;
+    purchaseHeaderInsertObj['taxAmount'] = (parseFloat(this.GSTAmount)).toFixed(2) || 0;
     purchaseHeaderInsertObj['freightAmount'] = this._PurchaseOrder.FinalPurchaseform.get('Freight').value || 0;
     purchaseHeaderInsertObj['octriAmount'] = this._PurchaseOrder.FinalPurchaseform.get('OctriAmount').value || 0;
-    purchaseHeaderInsertObj['grandTotal'] = this.FinalNetAmount;
+    purchaseHeaderInsertObj['grandTotal'] = this.FinalNetAmount || 0;
     purchaseHeaderInsertObj['isclosed'] = false;
     purchaseHeaderInsertObj['isVerified'] = false;
     purchaseHeaderInsertObj['remarks'] = this._PurchaseOrder.FinalPurchaseform.get('Remark').value || '';
     purchaseHeaderInsertObj['taxID'] = 0;
-    purchaseHeaderInsertObj['addedBy'] = this.accountService.currentUserValue.user.id,
-      purchaseHeaderInsertObj['updatedBy'] = this.accountService.currentUserValue.user.id,
+    purchaseHeaderInsertObj['addedBy'] = this.accountService.currentUserValue.user.id || 0;
+      purchaseHeaderInsertObj['updatedBy'] = this.accountService.currentUserValue.user.id || 0;
       purchaseHeaderInsertObj['paymentTermId'] = this._PurchaseOrder.FinalPurchaseform.get('PaymentTerm').value.Id || 0;
     purchaseHeaderInsertObj['modeofPayment'] = this._PurchaseOrder.FinalPurchaseform.get('PaymentMode').value.Id || 0;
     purchaseHeaderInsertObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Worrenty').value || 0;
     purchaseHeaderInsertObj['roundVal'] = 0;
-    purchaseHeaderInsertObj['totCGSTAmt'] = (parseFloat(this.vCGSTAmt)).toFixed(2);
-    purchaseHeaderInsertObj['totSGSTAmt'] = (parseFloat(this.vSGSTAmt)).toFixed(2);
-    purchaseHeaderInsertObj['totIGSTAmt'] =(parseFloat(this.vIGSTAmt)).toFixed(2);
+    purchaseHeaderInsertObj['totCGSTAmt'] = (parseFloat(this.CGSTAmount)).toFixed(2) || 0;
+    purchaseHeaderInsertObj['totSGSTAmt'] = (parseFloat(this.SGSTAmount)).toFixed(2) || 0;
+    purchaseHeaderInsertObj['totIGSTAmt'] =(parseFloat(this.IGSTAmount)).toFixed(2) || 0;
     purchaseHeaderInsertObj['transportChanges'] = this._PurchaseOrder.FinalPurchaseform.get('TransportCharges').value || 0;
     purchaseHeaderInsertObj['handlingCharges'] = this._PurchaseOrder.FinalPurchaseform.get('HandlingCharges').value || 0;
     purchaseHeaderInsertObj['freightCharges'] = this._PurchaseOrder.FinalPurchaseform.get('Freight').value || 0;
@@ -683,25 +683,25 @@ export class UpdatePurchaseorderComponent implements OnInit {
       debugger
       let purchaseDetailInsertObj = {};
       purchaseDetailInsertObj['purchaseId'] = 0;
-      purchaseDetailInsertObj['itemId'] = element.ItemId;
-      purchaseDetailInsertObj['uomId'] = element.UOMID;
+      purchaseDetailInsertObj['itemId'] = element.ItemId || 0;
+      purchaseDetailInsertObj['uomId'] = element.UOMID || 0;
       purchaseDetailInsertObj['qty'] = element.Qty || 0;
       purchaseDetailInsertObj['rate'] = element.Rate || 0;
-      purchaseDetailInsertObj['totalAmount'] = element.TotalAmount;
-      purchaseDetailInsertObj['discAmount'] = element.DiscAmount;
-      purchaseDetailInsertObj['discPer'] = element.DiscPer;
-      purchaseDetailInsertObj['vatAmount'] = element.VatAmount;
-      purchaseDetailInsertObj['vatPer'] = element.VatPer;;
-      purchaseDetailInsertObj['grandTotalAmount'] = element.GrandTotalAmount;
-      purchaseDetailInsertObj['mrp'] = element.MRP;
-      purchaseDetailInsertObj['specification'] = element.Specification;
-      purchaseDetailInsertObj['cgstPer'] = element.CGSTPer;
-      purchaseDetailInsertObj['cgstAmt'] = element.CGSTAmt;
-      purchaseDetailInsertObj['sgstPer'] = element.SGSTPer;
-      purchaseDetailInsertObj['sgstAmt'] = element.SGSTAmt;
-      purchaseDetailInsertObj['igstPer'] =element.IGSTPer;
-      purchaseDetailInsertObj['igstAmt'] = element.IGSTAmt;
-      purchaseDetailInsertObj['DefRate'] = element.DefRate;
+      purchaseDetailInsertObj['totalAmount'] = element.TotalAmount || 0;
+      purchaseDetailInsertObj['discAmount'] = element.DiscAmount || 0;
+      purchaseDetailInsertObj['discPer'] = element.DiscPer || 0;
+      purchaseDetailInsertObj['vatAmount'] = element.VatAmount || 0;
+      purchaseDetailInsertObj['vatPer'] = element.VatPer || 0;
+      purchaseDetailInsertObj['grandTotalAmount'] = element.GrandTotalAmount || 0;
+      purchaseDetailInsertObj['mrp'] = element.MRP || 0;
+      purchaseDetailInsertObj['specification'] = element.Specification || 0;
+      purchaseDetailInsertObj['cgstPer'] = element.CGSTPer || 0;
+      purchaseDetailInsertObj['cgstAmt'] = element.CGSTAmt || 0;
+      purchaseDetailInsertObj['sgstPer'] = element.SGSTPer || 0;
+      purchaseDetailInsertObj['sgstAmt'] = element.SGSTAmt || 0;
+      purchaseDetailInsertObj['igstPer'] =element.IGSTPer || 0;
+      purchaseDetailInsertObj['igstAmt'] = element.IGSTAmt || 0;
+      purchaseDetailInsertObj['DefRate'] = element.DefRate || 0;
       purchaseDetailInsertObj['VendDisPer'] = 0;
       purchaseDetailInsertObj['VendDiscAmt'] = 0;
       InsertpurchaseDetailObj.push(purchaseDetailInsertObj);
@@ -937,10 +937,11 @@ debugger
   getTotalGST(element) {
     this.GSTAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
    // console.log(this.GSTAmount)
-    return this.GSTAmount;
     this.CGSTAmount = (element.reduce((sum, { CGSTAmt }) => sum += +(CGSTAmt || 0), 0)).toFixed(2);
     this.SGSTAmount = (element.reduce((sum, { SGSTAmt }) => sum += +(SGSTAmt || 0), 0)).toFixed(2);
     this.IGSTAmount = (element.reduce((sum, { IGSTAmt }) => sum += +(IGSTAmt || 0), 0)).toFixed(2);
+    return this.GSTAmount;
+
   }
  
   getTotalDisc(element) {

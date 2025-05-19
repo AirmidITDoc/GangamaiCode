@@ -976,9 +976,9 @@ debugger
         let Query
         if(this.data.FromName != "IP-IntrimBIll" && this.data.FromName != "IP-Pharma-SETTLEMENT"){
             if (this.data.FromName == "IP-Pharma-SETTLEMENT In Browse List") {
-                Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from T_PHAdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
+                Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from T_PHAdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + " and IsCancelled=0"
             } else {
-                Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
+                Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + " and IsCancelled=0"
             }
             // Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
 
@@ -1005,9 +1005,9 @@ debugger
         if (this.IsAdv) {
             let Query
              if (this.data.FromName == "IP-Pharma-SETTLEMENT In Browse List") {
-                Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from T_PHAdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
+                Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from T_PHAdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + " and IsCancelled=0"
             } else {
-                Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
+                Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + " and IsCancelled=0"
             }
             // Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.OPD_IPD_Id + ""
 

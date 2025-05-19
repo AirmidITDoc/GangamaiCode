@@ -252,8 +252,8 @@ export class IPSettlementComponent implements OnInit {
             console.log(result)
             let BillUpdateObj = {};
 
-            BillUpdateObj['BillNo'] = contact.BillNo;
-            BillUpdateObj['BillBalAmount'] = result.BalAmt;
+            BillUpdateObj['BillNo'] = contact.BillNo || 0;
+            BillUpdateObj['BillBalAmount'] = result.BalAmt || 0;
 
             console.log("Procced with Payment Option");
             let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
@@ -271,10 +271,10 @@ export class IPSettlementComponent implements OnInit {
                 if (result.submitDataAdvancePay.length > 0) {
                     result.submitDataAdvancePay.forEach((element) => {
                         let UpdateAdvanceDetailObj = {};
-                        UpdateAdvanceDetailObj['AdvanceDetailID'] = element.AdvanceDetailID;
-                        UpdateAdvanceDetailObj['UsedAmount'] = element.UsedAmount;
+                        UpdateAdvanceDetailObj['AdvanceDetailID'] = element.AdvanceDetailID || 0;
+                        UpdateAdvanceDetailObj['UsedAmount'] = element.UsedAmount || 0;
                         UsedAmt += element.UsedAmount;
-                        UpdateAdvanceDetailObj['BalanceAmount'] = element.BalanceAmount;
+                        UpdateAdvanceDetailObj['BalanceAmount'] = element.BalanceAmount || 0;
                         BalanceAmt += element.BalanceAmount;
                         UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
                     });
@@ -285,23 +285,19 @@ export class IPSettlementComponent implements OnInit {
                         UpdateAdvanceDetailObj['UsedAmount'] = 0,
                         UpdateAdvanceDetailObj['BalanceAmount'] = 0,
                         UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
-                }
-
+                } 
 
                 let UpdateAdvanceHeaderObj = {};
                 if (result.submitDataAdvancePay.length > 0) {
-                    UpdateAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceId'],
-                        UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = UsedAmt,
-                        UpdateAdvanceHeaderObj['BalanceAmount'] = BalanceAmt
+                    UpdateAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceId'] || 0;
+                        UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = UsedAmt || 0;
+                        UpdateAdvanceHeaderObj['BalanceAmount'] = BalanceAmt || 0;
                 }
                 else {
                     UpdateAdvanceHeaderObj['AdvanceId'] = 0,
                         UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
                         UpdateAdvanceHeaderObj['BalanceAmount'] = 0
-                }
-
-
-
+                } 
 
                 let submitData = {
                     "ipPaymentCreditUpdate": result.submitDataPay.ipPaymentInsert,
