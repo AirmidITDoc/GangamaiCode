@@ -109,10 +109,9 @@
                                             [formGroup]="userFormGroup" placeholder="Qty"
                                             (valueChange)="calculateTotalamt()" type="number"></airmid-textbox> -->
 
-                                        <airmid-textbox fxFlex="5%"  label="Qty"
-                                            formControlName="Qty" (keypress)="keyPressAlphanumeric($event)"
-                                            [formGroup]="userFormGroup" [validations]="getValidationMessages().Qty"
-                                            [maxLength]="10"  #qtyTextboxRef>
+                                        <airmid-textbox fxFlex="5%" label="Qty" formControlName="Qty"
+                                            (keypress)="keyPressAlphanumeric($event)" [formGroup]="userFormGroup"
+                                            [validations]="getValidationMessages().Qty" [maxLength]="10">
                                         </airmid-textbox>
 
 
@@ -135,9 +134,9 @@
                                             [formGroup]="userFormGroup" type="number"
                                             (valueChange)="calculateTotalamt()"></airmid-textbox> -->
 
-                                            <airmid-textbox fxFlex="4%"  label="Disc"
-                                            formControlName="Disc" (keypress)="keyPressAlphanumeric($event)"
-                                            [formGroup]="userFormGroup" (valueChange)="calculateTotalamt()" [maxLength]="3">
+                                        <airmid-textbox fxFlex="4%" label="Disc" formControlName="Disc"
+                                            (keypress)="keyPressAlphanumeric($event)" [formGroup]="userFormGroup"
+                                            (valueChange)="calculateTotalamt()" [maxLength]="3">
                                         </airmid-textbox>
 
 
@@ -146,14 +145,16 @@
                                             (valueChange)="calculateTotalamt()"></airmid-textbox>
 
 
-                                        <airmid-textbox fxFlex="4%" label="CGST %" formControlName="CGSTPer"  (valueChange)="calculateTotalamt()"
-                                            [formGroup]="userFormGroup" type="text" ></airmid-textbox>
+                                        <airmid-textbox fxFlex="4%" label="CGST %" formControlName="CGSTPer"
+                                            (valueChange)="calculateTotalamt()" [formGroup]="userFormGroup"
+                                            type="text"></airmid-textbox>
 
                                         <!-- <airmid-textbox fxFlex="4%" label="CGST Amt" formControlName="CGSTAmount"
                                             [formGroup]="userFormGroup" type="text" [readonly]="true"></airmid-textbox> -->
 
-                                        <airmid-textbox fxFlex="4%" label="SGST %" formControlName="SGSTPer"  (valueChange)="calculateTotalamt()"
-                                            [formGroup]="userFormGroup" type="text" ></airmid-textbox>
+                                        <airmid-textbox fxFlex="4%" label="SGST %" formControlName="SGSTPer"
+                                            (valueChange)="calculateTotalamt()" [formGroup]="userFormGroup"
+                                            type="text"></airmid-textbox>
 
                                         <!-- <airmid-textbox fxFlex="4%" label="SGSTAmt" formControlName="SGSTAmount"
                                             [formGroup]="userFormGroup" type="text" [readonly]="true"></airmid-textbox> -->
@@ -197,7 +198,7 @@
                         </mat-expansion-panel>
                     </mat-accordion>
                     <div class="airmid-table-container py-12" fxFlex>
-                        <mat-table #table class="airmid-table table3 max-h-700" matSort [dataSource]="dsItemNameList"
+                        <mat-table #table class="airmid-table table3 max-h-600" matSort [dataSource]="dsItemNameList"
                             [@animateStagger]="{ value: '50' }">
 
 
@@ -625,7 +626,7 @@
                                             </mat-footer-row>
                                         </mat-table>
                                     </div>
-                                    <div fxLayout="column" fxLayoutGap="6px">
+                                    <div fxLayout="column" fxLayoutGap="2px">
                                         <form [formGroup]="FinalPurchaseform">
                                             <div fxLayout="row wrap" fxLayoutGap="4px grid">
                                                 <airmid-textbox fxFlex="25%" label="HandlingCharges"
@@ -645,10 +646,6 @@
                                                 <airmid-textbox fxFlex="25%" label="OctriAmount"
                                                     formControlName="OctriAmount" [(ngModel)]="registerObj.octriAmount"
                                                     [formGroup]="FinalPurchaseform" type="number"></airmid-textbox>
-
-
-                                                <!-- </div>
-                                            <div fxLayout="row wrap" fxLayoutGap="4px grid"> -->
 
                                                 <airmid-textbox fxFlex="25%" label="Guarantee/ Worrenty"
                                                     formControlName="Worrenty" [(ngModel)]="registerObj.worrenty"
@@ -673,17 +670,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <div class="footer-navigation-container">
-                                    <div class="modal-footer-buttons">
-                                        <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
-                                        <button type="button" class="btn btn-primary" [disabled]="false"
-                                            (click)="OnSave()">Save</button>
-                                    </div>
-                                </div>
-                            </div>
+
                         </mat-expansion-panel>
                     </mat-accordion>
+                </div>
+                <div class="modal-footer">
+                    <div class="footer-navigation-container">
+                        <div class="modal-footer-buttons">
+                            <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
+                            <button type="button" class="btn btn-primary" [disabled]="false"
+                                (click)="OnSave()">Save</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -691,4 +689,5 @@
         <!-- Modal footer -->
 
     </div>
+
 </div>
