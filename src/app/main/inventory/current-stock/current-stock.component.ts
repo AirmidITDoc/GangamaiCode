@@ -488,7 +488,7 @@ export class CurrentStockComponent implements OnInit {
         const dialogRef = this._matDialog.open(ItemMovementSummeryComponent,
             {
                 maxWidth: "100%",
-                height: '85%',
+                height: '100%',
                 width: '85%',
                 data: {
                     Obj: contact
@@ -504,7 +504,7 @@ export class CurrentStockComponent implements OnInit {
         const dialogRef = this._matDialog.open(IssueSummeryComponent,
             {
                 maxWidth: "100%",
-                height: '85%',
+                height: '100%',
                 width: '85%',
                 data: {
                     Obj: contact
@@ -520,7 +520,7 @@ export class CurrentStockComponent implements OnInit {
         const dialogRef = this._matDialog.open(SalesSummeryComponent,
             {
                 maxWidth: "100%",
-                height: '85%',
+                height: '100%',
                 width: '85%',
                 data: {
                     Obj: contact
@@ -536,7 +536,7 @@ export class CurrentStockComponent implements OnInit {
         const dialogRef = this._matDialog.open(SalesReturnSummeryComponent,
             {
                 maxWidth: "100%",
-                height: '85%',
+                height: '100%',
                 width: '85%',
                 data: {
                     Obj: contact

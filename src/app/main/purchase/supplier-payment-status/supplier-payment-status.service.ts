@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class SupplierPaymentStatusService {
   constructor(
     public _httpClient:HttpClient,  public _httpClient1:ApiCaller,
     public _formbuilder:UntypedFormBuilder,
-    private _loaderService:LoaderService
+    private _loaderService:LoaderService,
+    private accountService: AuthenticationService
   )
    { 
     this.SearchFormGroup = this.CreateSearchForm();
@@ -23,7 +25,7 @@ export class SupplierPaymentStatusService {
     return this._formbuilder.group({
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
-      ToStoreId:[''],
+      ToStoreId:this.accountService.currentUserValue.user.storeId,
       SupplierId:[''],
       Status:['0'],
       NetAmount:[''],
@@ -49,12 +51,9 @@ export class SupplierPaymentStatusService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
   public getSupplierPayStatusList(param){ 
-       return this._httpClient1.PostData("Purchase/SupplierOaymnetStatusList", param);
+       return this._httpClient1.PostData("GRNReturn/GetSupplierPaymentStatusList", param);
   }
-  public InsertSupplierPay(param ,loader = true){ 
-    if (loader) {
-      this._loaderService.show();
-  }
-    return this._httpClient.post("Pharmacy/InsertSupplierPayment", param);
+  public InsertSupplierPay(param){ 
+    return this._httpClient1.PostData("SupplierPayment/InsertEDMX", param);
   }
 }

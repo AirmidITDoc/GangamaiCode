@@ -426,7 +426,7 @@ OnSave(){
     grnDetailSaveObj['purchaseTotalAmount'] = PurchaseTotalAmt || 0;
     grnDetailSaveObj['conversion'] = element.ConversionFactor || 0;
     grnDetailSaveObj['remarks'] = '';
-    grnDetailSaveObj['stockId'] = element.StkID || 0;
+    grnDetailSaveObj['stkId'] = element.StkID || 0;
     grnDetailSaveObj['cf'] = element.ConversionFactor || 0;
     grnDetailSaveObj['totalQty'] = element.TotalQty || 0;
     grnReturnDetailSavearray.push(grnDetailSaveObj);

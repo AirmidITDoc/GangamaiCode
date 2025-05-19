@@ -317,7 +317,7 @@ console.log(this.accountService.currentUserValue.user.unitId)
                     console.log(this.registerObj)
                 });
 
-            }, 500);
+            }, 100);
         }
 
     }

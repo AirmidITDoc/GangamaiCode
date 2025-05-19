@@ -43,7 +43,7 @@ export class NewIndentComponent implements OnInit {
   vQty: any;
   chargeslist: any = [];
   vRemark: any;
-  IndentId: any=0;
+  IndentId: any = 0;
   vToStoreId: any = 0;
   vItemNamekit: any;
   vQtykit: any;
@@ -63,7 +63,7 @@ export class NewIndentComponent implements OnInit {
     public _IndentService: IndentService,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
-     private _formBuilder: UntypedFormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private commonService: PrintserviceService,
     private _FormvalidationserviceService: FormvalidationserviceService,
     public toastr: ToastrService,
@@ -75,14 +75,14 @@ export class NewIndentComponent implements OnInit {
   ngOnInit(): void {
     this.StoreFrom = this.CreateStoreFrom();
     this.IndentForm = this._IndentService.createnewindentfrom();
-     this.StoreFrom.markAllAsTouched();
+    this.StoreFrom.markAllAsTouched();
     this.IndentForm.markAllAsTouched();
 
 
     if (this.data) {
       this.registerObj = this.data.Obj;
-      this.IndentId=this.data.Obj.indentId
-      this.vRemark=this.data.Obj.comments
+      this.IndentId = this.data.Obj.indentId
+      this.vRemark = this.data.Obj.comments
       console.log(this.registerObj);
       this.StoreFrom.get("ToStoreId").setValue(this.registerObj.toStoreId)
       this.StoreFrom.get("comments").setValue(this.registerObj.remarks)
@@ -91,29 +91,29 @@ export class NewIndentComponent implements OnInit {
 
   }
 
-  
-    CreateStoreFrom(){
-      return this._formBuilder.group({
-        // FromStoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required]],
-        // ToStoreId: ['', [Validators.required]],
-        IsUrgent: ['0'],
-        // Remark:[''],
-       indentId:this.IndentId,
-        // "indentNo": "",
-       IndentDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-       IndentTime: this.datePipe.transform(new Date(), 'shortTime'),
-       FromStoreId:[this._loggedService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-       ToStoreId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-       isdeleted: 0,
-       isverify: false,
-       isclosed: false,
-       comments:  "",
-       tIndentDetails:""
 
-      });
-    }
-  
-    
+  CreateStoreFrom() {
+    return this._formBuilder.group({
+      // FromStoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required]],
+      // ToStoreId: ['', [Validators.required]],
+      IsUrgent: ['0'],
+      // Remark:[''],
+      indentId: this.IndentId,
+      // "indentNo": "",
+      IndentDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+      IndentTime: this.datePipe.transform(new Date(), 'shortTime'),
+      FromStoreId: [this._loggedService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      ToStoreId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      isdeleted: 0,
+      isverify: false,
+      isclosed: false,
+      comments: "",
+      tIndentDetails: ""
+
+    });
+  }
+
+
   onAdd() {
 
     if (!this.IndentForm.get('ItemName')?.value) {
@@ -133,7 +133,7 @@ export class NewIndentComponent implements OnInit {
     debugger
     const selectedItem = this.IndentForm.get('ItemName').value;
     const iscekDuplicate = this.dsIndentNameList.data.some(item => item.ItemID == this.IndentForm.get('ItemName').value.itemId)
-    if (!iscekDuplicate && this.IndentForm.get("ItemName").value.itemId !==0) {
+    if (!iscekDuplicate && this.IndentForm.get("ItemName").value.itemId !== 0) {
       this.dsIndentNameList.data = [];
       this.chargeslist.push(
         {
@@ -209,13 +209,13 @@ export class NewIndentComponent implements OnInit {
     }
     // console.log(Param)
     this._IndentService.getIndentList(Param).subscribe(data => {
-       console.log(data.data)
+      console.log(data.data)
 
       this.dsIndentNameList.data = data.data as IndentNameList[];
       this.chargeslist = data.data as IndentNameList[];
-     debugger
+      debugger
       this.dsIndentNameList.data.forEach(element => {
-       console.log(element)
+        console.log(element)
         element.indentId = element.indentId,
           element.ItemName = element.itemName,
           element.ItemID = element.itemId,
@@ -231,14 +231,14 @@ export class NewIndentComponent implements OnInit {
   }
   OnSave() {
     debugger
-   if ((!this.dsIndentNameList.data.length)) {
+    if ((!this.dsIndentNameList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
 
-  
+
     let InsertIndentDetObj = [];
     this.dsIndentNameList.data.forEach((element) => {
       console.log(element)
@@ -252,41 +252,41 @@ export class NewIndentComponent implements OnInit {
       InsertIndentDetObj.push(IndentDetInsertObj);
     });
 
-     if (!this.StoreFrom.invalid) {
-      
-console.log(this.StoreFrom.value)
-this.StoreFrom.get("indentId").setValue(this.IndentId)
-this.StoreFrom.get("tIndentDetails").setValue(InsertIndentDetObj)
-console.log(this.StoreFrom.value)
+    if (!this.StoreFrom.invalid) {
 
-    // let submitData = {
-    //   "indentId":this.IndentId,
-    //   // "indentNo": "",
-    //   "indentDate": this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
-    //   "indentTime": this.datePipe.transform(this.dateTimeObj.date, 'shortTime'),
-    //   "fromStoreId": this.StoreFrom.get('FromStoreId').value,
-    //   "toStoreId": this.StoreFrom.get('ToStoreId').value,
-    //   "isdeleted": 0,
-    //   "isverify": false,
-    //   "isclosed": false,
-    //   "comments": this.IndentForm.get("Remark").value || "",
-    //   "tIndentDetails": InsertIndentDetObj
-    // };
+      console.log(this.StoreFrom.value)
+      this.StoreFrom.get("indentId").setValue(this.IndentId)
+      this.StoreFrom.get("tIndentDetails").setValue(InsertIndentDetObj)
+      console.log(this.StoreFrom.value)
 
-    // console.log(submitData);
+      // let submitData = {
+      //   "indentId":this.IndentId,
+      //   // "indentNo": "",
+      //   "indentDate": this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
+      //   "indentTime": this.datePipe.transform(this.dateTimeObj.date, 'shortTime'),
+      //   "fromStoreId": this.StoreFrom.get('FromStoreId').value,
+      //   "toStoreId": this.StoreFrom.get('ToStoreId').value,
+      //   "isdeleted": 0,
+      //   "isverify": false,
+      //   "isclosed": false,
+      //   "comments": this.IndentForm.get("Remark").value || "",
+      //   "tIndentDetails": InsertIndentDetObj
+      // };
+
+      // console.log(submitData);
 
 
-    
-    this._IndentService.InsertIndentSave(this.StoreFrom.value).subscribe(response => {
-      this.toastr.success(response.message);
-      console.log(response)
-    if (response) {
-        this.viewgetIndentReportPdf(response)
-        this._matDialog.closeAll();
-      }
 
-    });
-  }else {
+      this._IndentService.InsertIndentSave(this.StoreFrom.value).subscribe(response => {
+        this.toastr.success(response.message);
+        console.log(response)
+        if (response) {
+          this.viewgetIndentReportPdf(response)
+          this._matDialog.closeAll();
+        }
+
+      });
+    } else {
       let invalidFields = [];
       if (this.StoreFrom.invalid) {
         for (const controlName in this.StoreFrom.controls) {
@@ -301,7 +301,6 @@ console.log(this.StoreFrom.value)
 
   }
 
-
   getSelectedItem(item: GRNItemResponseType): void {
 
     this.ItemID = item.itemId
@@ -309,7 +308,7 @@ console.log(this.StoreFrom.value)
     this.IndentForm.patchValue({
       UOMId: item.umoId,
       ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
-      Qty:0,// item.balanceQty,
+      Qty: '',// item.balanceQty,
       CGSTPer: item.cgstPer,
       SGSTPer: item.sgstPer,
       IGSTPer: item.igstPer,
@@ -333,9 +332,33 @@ console.log(this.StoreFrom.value)
       ToStoreId: [
         { name: "required", Message: "Ward Name is required" }
       ],
-      ItemName: []
+      ItemName: [],
+      Qty: [
+        { name: "pattern", Message: "Only numbers allowed" },
+        { name: "required", Message: "Qty is required" },
+        { name: "minLength", Message: "10 digit required." },
+        { name: "maxLength", Message: "More than 10 digits not allowed." }
+
+      ],
+      Qtykit: [
+        { name: "pattern", Message: "Only numbers allowed" },
+        { name: "required", Message: "Qty is required" },
+        { name: "minLength", Message: "10 digit required." },
+        { name: "maxLength", Message: "More than 10 digits not allowed." }
+
+      ],
     };
   }
+
+    keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
 
   OnReset() {
     this.IndentForm.reset();
@@ -373,7 +396,7 @@ export class IndentNameList {
   position: number;
   indentId: any;
   indentDetailsId
-  itemId:any;
+  itemId: any;
   qty: any;
   indQty: any;
   issQty: any;

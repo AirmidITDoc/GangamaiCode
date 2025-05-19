@@ -1,4 +1,4 @@
-<div ic="content" class="simple page-layout inner-scroll inner-sidebar right-sidebar">
+<div ic="content" class="simple page-layout inner-scroll inner-sidebar right-sidebar" dynamicTableHeight>
     <mat-toolbar style="width: 100%;justify-content: space-between;height: 50px;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -30,7 +30,7 @@
                         <mat-card style="padding: 10px;">
                             <div fxFlexFill fxLayout="column" fxLayout="row" fxLayoutGap="6px">
 
-                                <mat-form-field appearance="outline" fxFlex="14%">
+                                <mat-form-field appearance="outline" fxFlex="20%">
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="grnPicker">
                                         <input matStartDate formControlName="start" placeholder="Start date">
@@ -41,19 +41,17 @@
                                     <mat-date-range-picker #grnPicker></mat-date-range-picker>
                                 </mat-form-field>
 
-                                <airmid-dropdown label="Store Name" formControlName="ToStoreId"
+                                <airmid-dropdown label="Store Name" formControlName="ToStoreId" fxFlex="20%"
                                     (selectionChange)="getSupplierPayStatusList()"
                                     [formGroup]="_SupplierPaymentStatusService.SearchFormGroup"
-                                    [mode]="autocompletestore">
+                                    [mode]="autocompletestore" [readonly]="true">
                                 </airmid-dropdown>
 
-                                <airmid-dropdown label="Supplier Name" formControlName="SupplierId"
-                                    (selectionChange)="getSupplierPayStatusList()"
+                                <airmid-dropdown label="Supplier Name" formControlName="SupplierId" fxFlex="20%"
+                                    (selectionChange)="selectChangeSupplier($event)"
                                     [formGroup]="_SupplierPaymentStatusService.SearchFormGroup"
                                     [mode]="autocompleteSupplier">
                                 </airmid-dropdown>
-
-
 
                                 <mat-radio-group name="Status" formControlName="Status" fxLayout="row" class="gap-4 "
                                     value="0" style="padding: 15px;" (change)="getSupplierPayStatusList()">
@@ -79,103 +77,96 @@
 
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <div fxlayout="row">
-                            <mat-card style="padding: 10px;">
-                                <div style="width: 100%;">
-                                    <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                        class="backgroundBlur" style="height: 100%;">
-                                        <div class="spinner-border text-danger"></div>
-                                    </div>
-                                    <mat-table #table matSort [dataSource]="dsSupplierpayList"
-                                        [@animateStagger]="{value:'50'}"
-                                        style="overflow: auto;width:100%;height:350px;">
+                            <div style="width: 100%;" fusePerfectScrollbar>
+                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                    class="backgroundBlur" style="height: 100%;">
+                                    <div class="spinner-border text-danger"></div>
+                                </div>
+                                <mat-table #table matSort [dataSource]="dsSupplierpayList"
+                                    [@animateStagger]="{value:'50'}" style="overflow: auto;width:100%;height:350px;">
 
-                                        <ng-container matColumnDef="CheckBox">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-60">
-                                                <span class="material-icons">
-                                                    cached
-                                                </span>
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" required class="w-60">
-                                                <mat-checkbox aria-label="Checked"
-                                                    (change)="tableElementChecked($event, contact)">
-                                                </mat-checkbox>
-                                            </mat-cell>
-                                        </ng-container>
+                                    <ng-container matColumnDef="CheckBox">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-70">
+                                            <mat-checkbox (change)="$event ? masterToggle() : null"
+                                                [checked]="selection.hasValue()"
+                                                [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                            </mat-checkbox>
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" required class="w-70">
+                                            <mat-checkbox (click)="$event.stopPropagation()"
+                                                (change)="OnSelectSUpplier($event,contact)"
+                                                (change)="$event ? selection.toggle(contact) : null"
+                                                [checked]="selection.isSelected(contact)" *ngIf="!contact.paidAmount">
+                                            </mat-checkbox>
+                                        </mat-cell>
+                                    </ng-container>
 
-                                        <ng-container matColumnDef="grnNumber">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                class="w-120">
-                                                GRN No</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
-                                                {{contact.grnNumber}}
-                                            </mat-cell>
-                                        </ng-container>
+                                    <ng-container matColumnDef="grnNumber">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                                            GRN No</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                            {{contact.grnNumber}}
+                                        </mat-cell>
+                                    </ng-container>
 
-                                        <ng-container matColumnDef="grnTime">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                class="w-120">
-                                                GRN Date</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
-                                                {{contact.grnTime | date:'dd/MM/YYYY'}}
-                                            </mat-cell>
-                                        </ng-container>
+                                    <ng-container matColumnDef="grnTime">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                                            GRN Date</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                            {{contact.grnDate}}
+                                        </mat-cell>
+                                    </ng-container>
 
-                                        <ng-container matColumnDef="supplierName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                class="w-270">
-                                                SupplierName </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-270">
-                                                {{contact.supplierName}}
-                                            </mat-cell>
-                                        </ng-container>
+                                    <ng-container matColumnDef="supplierName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-270">
+                                            SupplierName </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-270">
+                                            {{contact.supplierName}}
+                                        </mat-cell>
+                                    </ng-container>
 
-                                        <ng-container matColumnDef="invoiceNo">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                class="w-160">
-                                                InvoiceNo</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
-                                                {{contact.invoiceNo}}
-                                            </mat-cell>
-                                        </ng-container>
+                                    <ng-container matColumnDef="invoiceNo">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">
+                                            InvoiceNo</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
+                                            {{contact.invoiceNo}}
+                                        </mat-cell>
+                                    </ng-container>
 
-                                        <ng-container matColumnDef="invDate">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                class="w-140">
-                                                InvDate</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140">
-                                                {{contact.invDate | date:'dd/MM/YYYY'}}
-                                            </mat-cell>
-                                        </ng-container>
+                                    <ng-container matColumnDef="invDate">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">
+                                            InvDate</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
+                                            {{contact.invDate}}
+                                        </mat-cell>
+                                    </ng-container>
 
-                                        <ng-container matColumnDef="netAmount">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                class="w-160">
-                                                NetAmount</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
-                                                {{contact.netAmount | currency:"INR":"symbol"}}
-                                            </mat-cell>
-                                        </ng-container>
+                                    <ng-container matColumnDef="netAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">
+                                            NetAmount</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
+                                            {{contact.netAmount | currency:"INR":"symbol"}}
+                                        </mat-cell>
+                                    </ng-container>
 
-                                        <ng-container matColumnDef="paidAmount">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                class="w-160">
-                                                PaidAmount</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
-                                                {{contact.paidAmount | currency:"INR":"symbol"}}
-                                            </mat-cell>
-                                        </ng-container>
+                                    <ng-container matColumnDef="paidAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">
+                                            PaidAmount</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
+                                            {{contact.paidAmount | currency:"INR":"symbol"}}
+                                        </mat-cell>
+                                    </ng-container>
 
-                                        <ng-container matColumnDef="balAmount">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                class="w-160">
-                                                BalAmount</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
-                                                {{contact.balAmount | currency:"INR":"symbol"}}
-                                            </mat-cell>
-                                        </ng-container>
+                                    <ng-container matColumnDef="balAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                                            BalAmount</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                            {{contact.balAmount | currency:"INR":"symbol"}}
+                                        </mat-cell>
+                                    </ng-container>
 
 
-                                        <!-- <ng-container matColumnDef="action" stickyEnd>
+                                    <!-- <ng-container matColumnDef="action" stickyEnd>
                                                                             <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                                                 style="color: white;">Action
                                                                             </mat-header-cell>
@@ -187,73 +178,71 @@
                                                                             </mat-cell>
                                                                         </ng-container>-->
 
-                                        <ng-container matColumnDef="loading">
-                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                            </mat-header-cell>
-                                        </ng-container>
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
 
-                                        <ng-container matColumnDef="noData">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                No data found...
-                                            </mat-footer-cell>
-                                        </ng-container>
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            No data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
 
-                                        <mat-header-row class="accent"
-                                            *matHeaderRowDef="displayedColumns; sticky: true">
-                                        </mat-header-row>
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                    </mat-header-row>
 
-                                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                        <mat-footer-row *matFooterRowDef="['loading']"
-                                            [ngClass]="{'hide':dsSupplierpayList!=null}"></mat-footer-row>
-                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                            [ngClass]="{'hide':!(dsSupplierpayList!=null && dsSupplierpayList.data.length==0)}"></mat-footer-row>
-                                    </mat-table>
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide':dsSupplierpayList!=null}"></mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsSupplierpayList!=null && dsSupplierpayList.data.length==0)}"></mat-footer-row>
+                                </mat-table>
 
-                                    <mat-paginator #paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
-                                        showFirstLastButtons>
-                                    </mat-paginator>
-                                </div>
-                            </mat-card>
+                                <mat-paginator #paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
+                                    showFirstLastButtons>
+                                </mat-paginator>
+                            </div>
                         </div>
                     </div>
 
                     <form [formGroup]="_SupplierPaymentStatusService.SearchFormGroup">
-                        <div fxLayoutAlign="end">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px">
 
-                            <mat-form-field appearance="outline" fxFlex="15%">
-                                <mat-label>NetAmount</mat-label>
-                                <input name="NetAmount" formControlName="NetAmount" matInput readonly
-                                    [(ngModel)]="vNetAmount">
-                            </mat-form-field>&nbsp;&nbsp;
+                            <!-- Left Side: Form Fields -->
+                            <div fxLayout="row" fxLayoutGap="15px" fxFlex="60%">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>NetAmount</mat-label>
+                                    <input name="NetAmount" formControlName="NetAmount" matInput readonly
+                                        [(ngModel)]="vNetAmount">
+                                </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex="15%">
-                                <mat-label>PaidAmount</mat-label>
-                                <input name="PaidAmount" formControlName="PaidAmount" matInput
-                                    [(ngModel)]="vPaidAmount">
-                            </mat-form-field>&nbsp;&nbsp;
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>PaidAmount</mat-label>
+                                    <input name="PaidAmount" formControlName="PaidAmount" matInput
+                                        [(ngModel)]="vPaidAmount">
+                                </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex="15%">
-                                <mat-label>BalanceAmount</mat-label>
-                                <input name="BalanceAmount" formControlName="BalanceAmount" matInput readonly
-                                    [(ngModel)]="vBalanceAmount">
-                            </mat-form-field>&nbsp;&nbsp;
-
-                            <div>
-                                <div class="sales-footer-buttons" fxLayout="row" style="margin: 5px 40px 0px 100px;">
-                                    <button mat-raised-button fxLayoutAlign="center center" class="py-8"
-                                        (click)="getSupplierPaymentReport()">
-                                        <span>Supplier Payment Report</span>
-                                    </button>&nbsp;&nbsp;&nbsp;
-                                    <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>&nbsp;
-                                    <button class="btn btn-primary " (click)="OnSave()">Payment</button>
-                                </div>
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>BalanceAmount</mat-label>
+                                    <input name="BalanceAmount" formControlName="BalanceAmount" matInput readonly
+                                        [(ngModel)]="vBalanceAmount">
+                                </mat-form-field>
                             </div>
 
+                            <!-- Right Side: Buttons -->
+                            <div fxLayout="row" fxLayoutGap="10px" fxFlex="40%" fxLayoutAlign="end center"
+                                class="sales-footer-buttons">
+                                <button mat-raised-button class="py-8" (click)="getSupplierPaymentReport()">
+                                    <span>Supplier Payment Report</span>
+                                </button>
+                                <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
+                                <button class="btn btn-primary" (click)="OnSave()">Payment</button>
+                            </div>
 
                         </div>
                     </form>
-
 
                 </div>
             </div>

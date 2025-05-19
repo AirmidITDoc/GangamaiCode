@@ -345,7 +345,8 @@ console.log(this.data)
     this.dialogRef.close();
   }
 
-  Paymentobj = {};
+  // Paymentobj = {};
+  Paymentobj: any[] = [];   //changed by raksha
   onSubmit() {
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
@@ -489,7 +490,8 @@ console.log(this.data)
       this.Paymentobj['PayTMDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
 
     }
-    else if (this.data.FromName == "Phar-SupplierPay") { 
+    else if (this.data.FromName == "Phar-SupplierPay") { //changed by raksha
+      debugger
       this.Paymentobj['supPayId'] =  0; 
       this.Paymentobj['supPayDate'] = formattedDate
       this.Paymentobj['supPayTime'] = formattedTime
@@ -504,8 +506,8 @@ console.log(this.data)
       this.Paymentobj['cardBankName'] =this.Payments.data.find(x => x.PaymentType == "card")?.BankName ?? "";
       this.Paymentobj['cardPayDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') 
       this.Paymentobj['remark'] = " ";
-      this.Paymentobj['isAddedBy'] = this._loggedService.currentUserValue.user.id,
-      this.Paymentobj['isUpdatedBy'] = this._loggedService.currentUserValue.user.id,
+      this.Paymentobj['isAddedBy'] = this._loggedService.currentUserValue.user.storeId,
+      this.Paymentobj['isUpdatedBy'] = this._loggedService.currentUserValue.user.storeId,
       this.Paymentobj['isCancelled'] = 0;
       this.Paymentobj['isCancelledBy'] = 0;
       this.Paymentobj['isCancelledDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
@@ -517,6 +519,8 @@ console.log(this.data)
       this.Paymentobj['payTMAmount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
       this.Paymentobj['payTMTranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? "";
       this.Paymentobj['payTMDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+
+      this.Paymentobj.push(this.Paymentobj);
     }
     else if(this.data.FromName == "IP-Advance" || this.data.FromName == "IP-RefundOfAdvance" ||
       this.data.FromName == "IP-RefundOfBill" ) {
@@ -632,7 +636,7 @@ console.log(this.data)
       this.Paymentobj['tdsAmount'] = 0;
     }
 
-    console.log(JSON.stringify(this.Paymentobj));
+    // console.log(JSON.stringify(this.Paymentobj));
 
     // const ipPaymentInsert = new IpPaymentInsert(this.Paymentobj);
     let submitDataPay = {

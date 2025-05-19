@@ -97,7 +97,6 @@ export class ItemMovementSummeryComponent implements OnInit {
   @ViewChild('Fourthpaginator', { static: true }) public Fourthpaginator: MatPaginator;
   @ViewChild('Lastpaginator', { static: true }) public Lastpaginator: MatPaginator;
 
-
   constructor(
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
@@ -133,6 +132,13 @@ export class ItemMovementSummeryComponent implements OnInit {
 
   }
 
+  parseToDate(dateStr: string): Date | null {
+  if (!dateStr) return null;
+  const [datePart] = dateStr.split(' ');
+  const [day, month, year] = datePart.split('-').map(Number);
+  const date = new Date(year, month - 1, day);
+  return isNaN(date.getTime()) ? null : date;
+}
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -189,8 +195,6 @@ export class ItemMovementSummeryComponent implements OnInit {
         console.log("ItemMovementList:", this.dsItemMovementSummery.data);
         this.dsItemMovementSummery.sort = this.sort;
         this.dsItemMovementSummery.paginator = this.paginator;
-        this.sIsLoading = '';
-        this.isLoadingStr = this.dsItemMovementSummery.data.length == 0 ? 'no-data' : '';
       }
       );
     }, 500);
