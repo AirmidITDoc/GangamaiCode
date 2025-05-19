@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,28 +19,23 @@ export class IssueToDepartmentService {
 
   constructor(
     public _httpClient: HttpClient,  public _httpClient1: ApiCaller,private accountService: AuthenticationService,
-    private _formBuilder: UntypedFormBuilder
+    private _formBuilder: UntypedFormBuilder,private _FormvalidationserviceService: FormvalidationserviceService
   ) { 
-    // this.NewIssueGroup = this.getNewIssueForm();
-    // this.IssueSearchGroup= this.IssueSearchFrom();
-    // this.StoreFrom = this.CreateStoreFrom();
-    // this.IndentFrom = this.createIndentFrom();
-    // this.IssueFinalForm = this.createfinal();
   }
 
   IssueSearchFrom() {
     return this._formBuilder.group({
-      ToStoreId: '',
-      FromStoreId:this.accountService.currentUserValue.user.storeId,
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
+      ToStoreId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      FromStoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      startdate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
      
     });
   }
   getNewIssueForm() {
     return this._formBuilder.group({
-      ToStoreId: '',
-      FromStoreId:this.accountService.currentUserValue.user.storeId,
+      // ToStoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      // FromStoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       Barcode:[''],
       ItemName:['', [Validators.required]],
       ItemID:[''],
@@ -58,13 +54,15 @@ export class IssueToDepartmentService {
     return this._formBuilder.group({
       Remark:[''],
       GSTAmount:[''],
-      FinalTotalAmount:[''],
-      FinalNetAmount:['']  
+      FinalTotalAmount:['', [Validators.required]],
+      FinalNetAmount:['', [Validators.required]],
     }); 
   }
   CreateStoreFrom(){
     return this._formBuilder.group({
-      FromStoreId:'',
+      FromStoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      ToStoreId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      AgainstIndent:['1']
     });
   }
   createIndentFrom() {
@@ -108,7 +106,7 @@ export class IssueToDepartmentService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BatchNoForMrpAdj",Param);
   }
   public IssuetodepSave(Param){
-    return this._httpClient1.PostData("IssueToDeptIndent/Insert",Param);
+    return this._httpClient1.PostData("IssueToDepartment/InsertSP",Param);
   }
   public IssuetodepAgaintIndetSave(Param){
     return this._httpClient1.PostData("InventoryTransaction/IssueToDepartmentIndentUpdate",Param);

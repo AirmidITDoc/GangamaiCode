@@ -78,15 +78,15 @@ export class NewOpeningBalanceComponent implements OnInit {
 
   CreateStorForm() {
     return this._formbuilder.group({
-      StoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      storeId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       openingDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
       openingTime: this.datePipe.transform(new Date(), 'shortTime'),
       // storeId
       addedby: this.accountService.currentUserValue.userId,
       openingHId: 0,
       // openingTransaction: '',
-      // openingTranItemStock: '',
-      // openingBal: ''
+      openingTranItemStock: '',
+      openingBal: ''
     })
   }
 
@@ -306,7 +306,7 @@ export class NewOpeningBalanceComponent implements OnInit {
 
   OnSave() {
 
-    if (!(this.StoreForm.get("StoreId").value > 0 || this.StoreForm.get("StoreId").value > 0)) {
+    if (!(this.StoreForm.get("storeId").value > 0)) {
       Swal.fire('Please enter To Store');
       return;
     }
@@ -352,7 +352,7 @@ export class NewOpeningBalanceComponent implements OnInit {
       openingBalanceParamInsertObj['balQty'] = element.BalQty || 0
       openingBalanceParamInsertObj['addedby'] = this._loggedService.currentUserValue.userId,
         openingBalanceParamInsertObj['updatedby'] = this._loggedService.currentUserValue.userId,
-        openingBalanceParamInsertObj['openingId'] = 0;
+        // openingBalanceParamInsertObj['openingId'] = 0;
       openingBalanceParamInsertdetail.push(openingBalanceParamInsertObj);
     });
 
@@ -369,7 +369,7 @@ export class NewOpeningBalanceComponent implements OnInit {
     let submitData = {
       "openingBal": this.StoreForm.value,
       "openingTransaction": openingBalanceParamInsertdetail,
-      "openingTranItemStock": insert_Update_OpeningTran_ItemStock_1
+      // "openingTranItemStock": insert_Update_OpeningTran_ItemStock_1
     };
     console.log(submitData);
     this._OpeningBalanceService.InsertOpeningBalSave(submitData).subscribe(response => {

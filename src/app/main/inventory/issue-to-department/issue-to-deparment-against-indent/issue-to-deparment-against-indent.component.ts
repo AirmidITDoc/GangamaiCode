@@ -15,6 +15,7 @@ import { FormGroup } from '@angular/forms';
 import { IssueItemList, NewIssueList3 } from '../issue-to-department.component';
 import { GRNItemResponseType } from 'app/main/purchase/good-receiptnote/new-grn/types';
 import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popup.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-issue-to-deparment-against-indent',
@@ -70,7 +71,7 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
   vBatchNo: any;
   vBarcode: any;
 
-  
+
   vBatchExpDate: any;
   vUnitMRP: any;
   IssQty: any;
@@ -111,7 +112,8 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
-    public toastr: ToastrService,
+    public toastr: ToastrService
+    , private commonService: PrintserviceService,
     public _dialogRef: MatDialogRef<IssueToDeparmentAgainstIndentComponent>,
     private accountService: AuthenticationService,
     private _loggedService: AuthenticationService
@@ -134,21 +136,21 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
 
     // if (this.vBarcode == 0) {
 
-    //     if ((this.vItemID == '' || this.vItemID == null || this.vItemID == undefined)) {
-    //         this.toastr.warning('Please enter a item', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //         return;
-    //     }
-    //     if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
-    //         this.toastr.warning('Please enter a Qty', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //         return;
-    //     }
-    // }
+    if (!this.NewIssueGroup.get('ItemName')?.value) {
+      this.toastr.warning('Please select Item', 'Warning!', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
 
-    // this.ItemSamelist = this.dsNewIssueList3.data.filter(item => item.ItemId === this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId)
+    if (!this.NewIssueGroup.get('Qty')?.value) {
+      this.toastr.warning('Please select Qty', 'Warning!', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+
+    // this.ItemSamelist = this.dsNewIssueList3.data.filter(item => item.ItemId === this.NewIssueGroup.get('ItemID').value.ItemId)
     // if (this.ItemSamelist) {
     //     if (this.ItemSamelist.some(item => item.BatchNo === this.vBatchNo) && this.ItemSamelist.some(item => item.LandedRate === this.vLandedRate)) {
     //         this.toastr.warning('Selected Item already added with same Batch & same MRP in the list', 'Warning !', {
@@ -159,7 +161,7 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
     // }
     // this.BatchSamelist = this.dsNewIssueList3.data.filter(item => item.BatchNo === this.vBatchNo)
     // if (this.BatchSamelist) {
-    //     if (this.BatchSamelist.some(item => item.ItemId === this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId) && this.BatchSamelist.some(item => item.LandedRate === this.vLandedRate)) {
+    //     if (this.BatchSamelist.some(item => item.ItemId === this.NewIssueGroup.get('ItemID').value.ItemId) && this.BatchSamelist.some(item => item.LandedRate === this.vLandedRate)) {
     //         this.toastr.warning('Selected Item already added with same Batch & same MRP in the list', 'Warning !', {
     //             toastClass: 'tostr-tost custom-toast-warning',
     //         });
@@ -168,7 +170,7 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
     // }
     // this.MRPSamelist = this.dsNewIssueList3.data.filter(item => item.LandedRate === this.vLandedRate)
     // if (this.MRPSamelist) {
-    //     if (this.MRPSamelist.some(item => item.ItemId === this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId) && this.MRPSamelist.some(item => item.BatchNo === this.vBatchNo)) {
+    //     if (this.MRPSamelist.some(item => item.ItemId === this.NewIssueGroup.get('ItemID').value.ItemId) && this.MRPSamelist.some(item => item.BatchNo === this.vBatchNo)) {
     //         this.toastr.warning('Selected Item already added with same Batch &  same MRP in the list', 'Warning !', {
     //             toastClass: 'tostr-tost custom-toast-warning',
     //         });
@@ -177,34 +179,35 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
     // }
 
     // if (!this.vBarcodeflag) {
-    // const isDuplicate = this.dsNewIssueList3.data.some(item => item.ItemId === this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId);
+    // const isDuplicate = this.dsNewIssueList3.data.some(item => item.ItemId === this.NewIssueGroup.get('ItemID').value.ItemId);
     // if (!isDuplicate) {
-    let gstper = ((this.vCgstPer) + (this.vSgstPer) + (this.vIgstPer));
+    let gstper = 0
+    gstper = ((this.vCgstPer) + (this.vSgstPer) + (this.vIgstPer));
 
     this.chargeslist = this.dsTempItemNameList.data;
     // if (this.dsNewIssueList3.data.length > 0) {
     //   this.chargeslist = this.dsNewIssueList3.data;
     // } 
-    let TotalMRP = this.NewIssueGroup.get("Qty").value  * this.NewIssueGroup.get("UnitRate").value 
+    let TotalMRP = this.NewIssueGroup.get("Qty").value * this.NewIssueGroup.get("UnitRate").value
     let PurTotAmt = this.vPurchaseRate * this.NewIssueGroup.get("Qty").value
 
-    let LandedRateandedTotal = this.NewIssueGroup.get("UnitRate").value  * this.NewIssueGroup.get("Qty").value
+    let LandedRateandedTotal = this.NewIssueGroup.get("UnitRate").value * this.NewIssueGroup.get("Qty").value
 
-    let GSTAmount = (((this.NewIssueGroup.get("UnitRate").value ) * (this.vVatPer) / 100) * parseInt(this.vQty)).toFixed(2);
+    let GSTAmount = (((this.NewIssueGroup.get("UnitRate").value) * (this.vVatPer) / 100) * parseInt(this.vQty)).toFixed(2);
     // let  CGSTAmt = (((contact.LandedRate) * (contact.CGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
     // let  SGSTAmt = (((contact.LandedRate) * (contact.SGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
     // let  IGSTAmt = (((contact.LandedRate) * (contact.IGSTPer) / 100) * parseInt(this.RQty)).toFixed(2); 
 
-debugger
+    debugger
     this.chargeslist.push(
       {
         ItemId: this.NewIssueGroup.get('ItemName').value.itemId || 0,
         ItemName: this.NewIssueGroup.get('ItemName').value.formattedText || '',
-        BatchNo:this.NewIssueGroup.get('BatchNO').value || "",
-        BatchExpDate: this.vBatchExpDate || '01/01/1900',
+        BatchNo: this.NewIssueGroup.get('BatchNO').value || "",
+        BatchExpDate: this.vBatchExpDate || '1900-01-01',
         BalanceQty: this.NewIssueGroup.get('BalanceQty').value || "",
-        Qty:this.NewIssueGroup.get('Qty').value || 0,
-        LandedRate: this.NewIssueGroup.get("UnitRate").value  ,
+        Qty: this.NewIssueGroup.get('Qty').value || 0,
+        LandedRate: this.NewIssueGroup.get("UnitRate").value,
         UnitMRP: this.NewIssueGroup.get("UnitRate").value || 0,
         VatPer: gstper || 0,
         VatAmount: (((this.vTotalAmount) * (gstper)) / 100).toFixed(2),
@@ -236,7 +239,7 @@ debugger
 
     // }
 
-    this.ItemReset();
+    this.resetFormItem();
     // this.itemid.nativeElement.focus();
     this.NewIssueGroup.get('ItemName').setValue('');
     this.Addflag = false;
@@ -249,61 +252,71 @@ debugger
   getBatch() {
     // this.Quantity.nativeElement.focus();
     const dialogRef = this._matDialog.open(SalePopupComponent,
-        {
-            maxWidth: "800px",
-            minWidth: '800px',
-            width: '800px',
-            height: '380px',
-            disableClose: true,
-            data: {
-                "ItemId": this.NewIssueGroup.get('ItemName').value.itemId,
-                "StoreId": this.NewIssueGroup.get('FromStoreId').value
-            }
-        });
+      {
+        maxWidth: "800px",
+        minWidth: '800px',
+        width: '800px',
+        height: '380px',
+        disableClose: true,
+        data: {
+          "ItemId": this.NewIssueGroup.get('ItemName').value.itemId,
+          "StoreId": this.StoreFrom.get('FromStoreId').value
+        }
+      });
     dialogRef.afterClosed().subscribe(result => {
-        console.log(result);
-        result = result.selectedData
-        this.vBatchNo = result.batchNo;
-        this.vBatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
-        this.vMRP = result.landedRate;
-        this.vQty = '';
-        this.vBal = result.BalanceAmt;
-        this.GSTPer = result.VatPercentage;
-        this.vTotalMRP = this.vQty * this.vLandedRate;
-        this.vDiscAmt = 0;
-        this.vNetAmt = this.vTotalMRP;
-        this.vBalanceQty = result.BalanceQty;
-        this.vItemObj = result;
-        this.vVatPer = result.VatPercentage;
-        this.vCgstPer = result.CGSTPer;
-        this.vSgstPer = result.SGSTPer;
-        this.vIgstPer = result.IGSTPer;
-        this.vVatAmount = result.VatPercentage;
-        this.vStockId = result.StockId
-        this.vStoreId = result.StoreId;
-        this.vLandedRate = result.LandedRate;
-        this.vPurchaseRate = result.PurchaseRate;
-        this.vUnitMRP = result.unitMRP;
+      console.log(result);
+      result = result.selectedData
+      this.vBatchNo = result.batchNo || '';
+      this.vBatchExpDate = this.datePipe.transform(result.batchExpDate, "yyyy-MM-dd");
+      this.vMRP = result.landedRate;
+      this.vQty = '';
+      this.vBal = result.BalanceAmt;
+      this.GSTPer = result.VatPercentage;
+      this.vTotalMRP = this.vQty * this.vLandedRate;
+      this.vDiscAmt = 0;
+      this.vNetAmt = this.vTotalMRP;
+      this.vBalanceQty = result.balanceQty;
+      this.vItemObj = result;
+      this.vVatPer = result.vatPercentage;
+      this.vCgstPer = result.cgstPer;
+      this.vSgstPer = result.sgstPer;
+      this.vIgstPer = result.igstPer;
+      this.vVatAmount = (((this.vTotalAmount) * (this.vVatPer)) / 100).toFixed(2),
+        this.vStockId = result.stockId
+      this.vStoreId = result.storeId;
+      this.vLandedRate = result.landedRate;
+      this.vPurchaseRate = result.purchaseRate;
+      this.vUnitMRP = result.unitMRP;
+      // this.vTotalAmount=  this.vQty * this.vLandedRate;
     });
-}
-
-  ItemReset() {
-    this.ItemName = " ";
-    this.vItemID = 0;
-    this.vBatchNo = " ";
-    this.vBalanceQty = 0;
-    this.vQty = 0;
-    this.vLandedRate = 0;
-    this.vTotalAmount = 0;
   }
+
+
+  resetFormItem() {
+    const form = this.NewIssueGroup;
+
+    form.patchValue({
+      Barcode: '',
+      ItemName: '',
+      ItemID: [''],
+      BatchNO: '',
+      BalanceQty: '',
+      Qty: '',
+      UnitRate: '',
+      TotalAmount: '',
+    });
+    this.NewIssueGroup.markAsUntouched();
+  }
+
+
   CalculateTotalAmt() {
     debugger
-    // if (this.vQty > this.vBalanceQty) {
-      if (this.NewIssueGroup.get("Qty").value > this.NewIssueGroup.get("BalanceQty").value) {
+
+    if (this.NewIssueGroup.get("Qty").value > this.NewIssueGroup.get("BalanceQty").value) {
       this.toastr.warning('Enter Qty less than Balance', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
-      this._IssueToDep.NewIssueGroup.get('Qty').setValue(0);
+      this.NewIssueGroup.get('Qty').setValue(0);
     }
     if (this.NewIssueGroup.get("Qty").value && this.NewIssueGroup.get("UnitRate").value) {
       this.vTotalAmount = (parseFloat(this.NewIssueGroup.get("Qty").value) * parseFloat(this.NewIssueGroup.get("UnitRate").value)).toFixed(2);
@@ -328,9 +341,7 @@ debugger
   getSelectedItem(item: GRNItemResponseType): void {
 
     this.ItemID = item.itemId
-    // if (this.mock) {
-    //     return;
-    // }
+
     this.NewIssueGroup.patchValue({
       UOMId: item.umoId,
       ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
@@ -343,8 +354,8 @@ debugger
 
     });
     // if (this.BalanceQty > 0) {
-      this.getBatch();
-  // }
+    this.getBatch();
+    // }
   }
 
 
@@ -365,30 +376,17 @@ debugger
       });
       return;
     }
-    // if ((this.vTostoreId == '' || this.vTostoreId == null || this.vTostoreId == undefined)) {
-    //     this.toastr.warning('Please select TostoreId', 'Warning !', {
-    //         toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //     return;
-    // }
+    if ((this.StoreFrom.get("ToStoreId").value == 0)) {
+      this.toastr.warning('Please select TostoreId', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
 
-    const isChecked = 0//this.ToStoreList.some(item => item.StoreName === this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreName);
+    const isChecked = 1// this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
+
+
     if (isChecked) {
-      this.savebtn = true;
-      // let insertheaderObj = {};
-      // insertheaderObj['issueDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
-      //   insertheaderObj['issueTime'] = this.datePipe.transform(this.dateTimeObj.date, 'shortTime'),
-      //   insertheaderObj['fromStoreId'] = this._loggedService.currentUserValue.user.storeId
-      // insertheaderObj['toStoreId'] = this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreId || 0;
-      // insertheaderObj['totalAmount'] = this._IssueToDep.IssueFinalForm.get('FinalTotalAmount').value || 0;
-      // insertheaderObj['totalVatAmount'] = this._IssueToDep.IssueFinalForm.get('GSTAmount').value || 0;
-      // insertheaderObj['netAmount'] = this._IssueToDep.IssueFinalForm.get('FinalNetAmount').value || 0;
-      // insertheaderObj['remark'] = this._IssueToDep.IssueFinalForm.get('Remark').value || '';
-      // insertheaderObj['addedby'] = this._loggedService.currentUserValue.user.id || 0;
-      // insertheaderObj['isVerified'] = false;
-      // insertheaderObj['isclosed'] = false;
-      // insertheaderObj['indentId'] = 0;
-      // insertheaderObj['issueId'] = 0;
 
       let isertItemdetailsObj = [];
       this.dsNewIssueList3.data.forEach(element => {
@@ -411,31 +409,32 @@ debugger
         insertitemdetail['stkId'] = element.StockId;
         isertItemdetailsObj.push(insertitemdetail);
       });
-      // let updateissuetoDepartmentStock = [];
-      // this.dsNewIssueList3.data.forEach(element => {
-      //   let updateitemdetail = {};
-      //   updateitemdetail['itemId'] = element.ItemId;
-      //   updateitemdetail['issueQty'] = element.Qty;
-      //   updateitemdetail['stkId'] = element.StockId;
-      //   updateitemdetail['storeID'] = this._loggedService.currentUserValue.user.storeId;
-      //   updateissuetoDepartmentStock.push(updateitemdetail);
-      // });
+      let updateissuetoDepartmentStock = [];
+      this.dsNewIssueList3.data.forEach(element => {
+        let updateitemdetail = {};
+        updateitemdetail['itemId'] = element.ItemId;
+        updateitemdetail['issueQty'] = element.Qty;
+        updateitemdetail['stkId'] = element.StockId;
+        updateitemdetail['storeID'] = this._loggedService.currentUserValue.user.storeId;
+        updateissuetoDepartmentStock.push(updateitemdetail);
+      });
 
       let submitData = {
-       "issueId": 0,
+        "issueId": 0,
         "issueDate": this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
         "issueTime": this.datePipe.transform(this.dateTimeObj.date, 'shortTime'),
-        "fromStoreId":this._loggedService.currentUserValue.user.storeId,
-        "toStoreId": this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreId || 0,
-        "totalAmount": this._IssueToDep.IssueFinalForm.get('FinalTotalAmount').value || 0,
-        "totalVatAmount":this._IssueToDep.IssueFinalForm.get('GSTAmount').value || 0,
-        "netAmount": this._IssueToDep.IssueFinalForm.get('FinalNetAmount').value || 0,
-        "remark": this._IssueToDep.IssueFinalForm.get('Remark').value || '',
-        "addedby":this._loggedService.currentUserValue.user.id || 0,
+        "fromStoreId": this._loggedService.currentUserValue.user.storeId,
+        "toStoreId": this.StoreFrom.get('ToStoreId').value || 0,
+        "totalAmount": this.IssueFinalForm.get('FinalTotalAmount').value || 0,
+        "totalVatAmount": this.IssueFinalForm.get('GSTAmount').value || 0,
+        "netAmount": this.IssueFinalForm.get('FinalNetAmount').value || 0,
+        "remark": this.IssueFinalForm.get('Remark').value || '',
+        "addedby": this._loggedService.currentUserValue.user.id || 0,
         "isVerified": false,
         "isClosed": false,
         "indentId": 0,
-        tIssueToDepartmentDetails: isertItemdetailsObj
+        tIssueToDepartmentDetails: isertItemdetailsObj,
+        tCurrentStock: updateissuetoDepartmentStock
       };
 
       console.log(submitData);
@@ -443,7 +442,7 @@ debugger
       this._IssueToDep.IssuetodepSave(submitData).subscribe(response => {
         this.toastr.success(response.message);
         if (response) {
-          // this.viewgetPurchaseorderReportPdf(response)
+          this.viewgetIssuetodeptReportPdf(response)
           this._matDialog.closeAll();
         }
 
@@ -459,24 +458,24 @@ debugger
       });
       return;
     }
-    // if ((this.vTostoreId == '' || this.vTostoreId == null || this.vTostoreId == undefined)) {
-    //     this.toastr.warning('Please select TostoreId', 'Warning !', {
-    //         toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //     return;
-    // }
-    const isChecked = 0//this.ToStoreList.some(item => item.StoreName === this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreName);
+    if ((this.StoreFrom.get("ToStoreId").value == 0)) {
+      this.toastr.warning('Please select TostoreId', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    const isChecked = 1//this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
     if (isChecked) {
-      this.savebtn = true;
+      // this.savebtn = true;
       let insertheaderObj = {};
       insertheaderObj['issueDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
         insertheaderObj['issueTime'] = this.datePipe.transform(this.dateTimeObj.date, 'shortTime'),
         insertheaderObj['fromStoreId'] = this._loggedService.currentUserValue.user.storeId
-      insertheaderObj['toStoreId'] = this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreId || 0;
-      insertheaderObj['totalAmount'] = this._IssueToDep.IssueFinalForm.get('FinalTotalAmount').value || 0;
-      insertheaderObj['totalVatAmount'] = this._IssueToDep.IssueFinalForm.get('GSTAmount').value || 0;
-      insertheaderObj['netAmount'] = this._IssueToDep.IssueFinalForm.get('FinalNetAmount').value || 0;
-      insertheaderObj['remark'] = this._IssueToDep.IssueFinalForm.get('Remark').value || '';
+      insertheaderObj['toStoreId'] = this.NewIssueGroup.get('ToStoreId').value.StoreId || 0;
+      insertheaderObj['totalAmount'] = this.IssueFinalForm.get('FinalTotalAmount').value || 0;
+      insertheaderObj['totalVatAmount'] = this.IssueFinalForm.get('GSTAmount').value || 0;
+      insertheaderObj['netAmount'] = this.IssueFinalForm.get('FinalNetAmount').value || 0;
+      insertheaderObj['remark'] = this.IssueFinalForm.get('Remark').value || '';
       insertheaderObj['addedby'] = this._loggedService.currentUserValue.user.id || 0;
       insertheaderObj['isVerified'] = false;
       insertheaderObj['isclosed'] = false;
@@ -568,8 +567,31 @@ debugger
     }
   }
 
-  viewgetIssuetodeptReportPdf() {
 
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+
+  viewgetIssuetodeptReportPdf(element) {
+    this.commonService.Onprint("IssueId", element.issueId, "Issutodeptissuewise");
+  }
+
+  deleteTableRow(element) {
+    let index = this.chargeslist.indexOf(element);
+    if (index >= 0) {
+      this.chargeslist.splice(index, 1);
+      this.dsNewIssueList3.data = [];
+      this.dsNewIssueList3.data = this.chargeslist;
+    }
+    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    });
   }
   onClose() {
     this._matDialog.closeAll();

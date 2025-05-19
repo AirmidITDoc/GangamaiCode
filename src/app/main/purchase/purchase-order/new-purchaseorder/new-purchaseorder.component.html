@@ -104,14 +104,9 @@
                                             type="number" [formGroup]="userFormGroup" (keyup)="calculateTotalamt()"
                                             [min]="1"></airmid-textbox>
 
-
-                                        <!-- <airmid-textbox fxFlex="4%" label="Qty" formControlName="Qty" [maxlength]="5"
-                                            [formGroup]="userFormGroup" placeholder="Qty"
-                                            (valueChange)="calculateTotalamt()" type="number"></airmid-textbox> -->
-
                                         <airmid-textbox fxFlex="5%" label="Qty" formControlName="Qty"
                                             (keypress)="keyPressAlphanumeric($event)" [formGroup]="userFormGroup"
-                                            [validations]="getValidationMessages().Qty" [maxLength]="10">
+                                            [validations]="getValidationMessages().Qty" [maxLength]="10" #qtyTextboxRef>
                                         </airmid-textbox>
 
 

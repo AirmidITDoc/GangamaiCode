@@ -319,10 +319,10 @@ export class NewIndentComponent implements OnInit {
 
   }
 
-  // getDateTime(dateTimeObj) {
-  //   this.dateTimeObj = dateTimeObj;
-  //   console.log(this.dateTimeObj)
-  // }
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
+    console.log(this.dateTimeObj)
+  }
 
   getValidationMessages() {
     return {

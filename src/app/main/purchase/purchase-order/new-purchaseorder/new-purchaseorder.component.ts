@@ -874,7 +874,7 @@ export class NewPurchaseorderComponent {
     this.userFormGroup.patchValue({
       UOMId: item.umoId,
       ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
-      Qty: 0,// item.balanceQty,
+      Qty: '',// item.balanceQty,
       CGSTPer: item.cgstPer,
       SGSTPer: item.sgstPer,
       IGSTPer: item.igstPer,

@@ -34,17 +34,18 @@
                                     </div>
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
-                            <div fxLayout="column" fxLayout="row" fxLayoutAlign="start none">
-                                <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
-                                    <form [formGroup]="StoreForm">
-                                        <airmid-dropdown label="Store Name" formControlName="StoreId" [disabled]="true"
+                             <form [formGroup]="StoreForm">
+                                        <airmid-dropdown label="Store Name" formControlName="storeId" [disabled]="true"
                                             (selectionChange)="StoreSelction($event)" [formGroup]="StoreForm" fxFlex
                                             (openedChange)="true" [mode]="autocompletestore">
                                         </airmid-dropdown>
 
                                     </form>
+                            <!-- <div fxLayout="column" fxLayout="row" fxLayoutAlign="start none">
+                                <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
+                                   
                                 </div>
-                            </div>
+                            </div> -->
                             <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
                                 <form [formGroup]="OPeningtemForm">
 

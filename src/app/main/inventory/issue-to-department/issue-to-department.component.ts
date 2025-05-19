@@ -45,21 +45,26 @@ export class IssueToDepartmentComponent implements OnInit {
     Addflag: boolean = false;
    
     DraftQty: any = 0;  
-    Tostore="4"
-    FromStore="2"
-    Status="1"
+    Tostore="0"
+    FromStore:any = String(this.accountService.currentUserValue.user.storeId);
+    Status="0"
     autocompletestore: string = "Store";
     autocompleteitem: string = "ItemType"; //Item
     fromDate ="2025-01-01"// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
    
+     ngAfterViewInit() {
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+       
+      }
+
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
    
      allcolumns = [
     
         { heading: "IsAccepted", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "IssueNo", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 150,type:6 },
         { heading: "From Store Name", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "To StoreName", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "AddedBy", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -68,10 +73,10 @@ export class IssueToDepartmentComponent implements OnInit {
         { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Recevied Bonus", key: "receviedBonus", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-         {
-               heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
-               template: this.actionButtonTemplate  // Assign ng-template to the column
-           } 
+       {
+             heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+             template: this.actionButtonTemplate  // Assign ng-template to the column
+         } 
       ];
     
     @ViewChild('grid') grid: AirmidTableComponent;
@@ -100,7 +105,7 @@ export class IssueToDepartmentComponent implements OnInit {
                 { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA',widthh:70 },
                 { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA',widthh:250 },
                 { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Batch Exp Date", key: "date", sort: true, align: 'left', emptySign: 'NA',type:6 },
+                { heading: "Batch Exp Date", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA',type:6 },
                 { heading: "Qty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "GST%", key: "vatPercentage", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Rate", key: "perUnitLandedRate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
@@ -121,7 +126,7 @@ export class IssueToDepartmentComponent implements OnInit {
     constructor(
         public _IssueToDep: IssueToDepartmentService,
         public toastr: ToastrService,private commonService: PrintserviceService,
-         public _matDialog: MatDialog,
+         public _matDialog: MatDialog,private accountService: AuthenticationService,
          public datePipe: DatePipe
     ) { }
 
@@ -225,7 +230,7 @@ export class IssueToDepartmentComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(IssueToDeparmentAgainstIndentComponent,
             {
-                maxWidth: "95vw",
+                maxWidth: "97vw",
                 height: '90%',
                 width: '95%',
                 data: row
@@ -236,8 +241,9 @@ export class IssueToDepartmentComponent implements OnInit {
         });
     }
 
-    viewgetReportPdf(element) {
-        this.commonService.Onprint("IssueId", element.issueId, "OpeningBalance");
+    viewgetIndentReportPdf(element) {
+        console.log(element)
+        this.commonService.Onprint("IssueId", element.issueId, "Issutodeptissuewise");
       }
     
  
