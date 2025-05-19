@@ -20,12 +20,12 @@ export class OTTablemasterComponent implements OnInit{
 msg: any;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
-        apiUrl: "VillageMaster/List",
+        apiUrl: "OtTableMaster/List",
         columnsList: [
-            { heading: "Code", key: "villageId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "OT Room Name", key: "villageName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Location Name", key: "talukaName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "AddedBy", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "ottableId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "OT Room Name", key: "ottableName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Location Name", key: "locationId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "AddedBy", key: "isAddedBy", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -35,7 +35,8 @@ msg: any;
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this._OttablemasterService.deactivateTheStatus(data.villageId).subscribe((response: any) => {
+                    
+                            this._OttablemasterService.deactivateTheStatus(data.ottableId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
@@ -43,11 +44,11 @@ msg: any;
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "tableName",
+        sortField: "OttableId",
         sortOrder: 0,
         filters: [
-            { fieldName: "TableName", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            // { fieldName: "TableName", fieldValue: "", opType: OperatorComparer.Contains },
+            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     }
 

@@ -14,45 +14,46 @@ export class OttablemasterService {
           private _formBuilder: UntypedFormBuilder,
           private _FormvalidationserviceService: FormvalidationserviceService
       ) {
-          this.myForm = this.createVillageForm();
+          this.myForm = this.createTableForm();
           this.myformSearch = this.createSearchForm();
       }
-
-   createVillageForm(): FormGroup {
+   createTableForm(): FormGroup {
          return this._formBuilder.group({
-             villageId: [0],
-             villageName: ["",
+             ottableId: [0],
+             ottableName: ["",
                  [
                     Validators.required,
                     // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ] 
              ],
-             talukaName: ["",
+             locationId: ["",
                 [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
              ],
              isActive:[true,[Validators.required]]
          });
      }
    
+
+     
      createSearchForm(): FormGroup {
          return this._formBuilder.group({
-             VillageNameSearch: [""],
+             ottableNameSearch: [""],
              IsDeletedSearch: ["2"],
          });
      }
  
      initializeFormGroup() {
-         this.createVillageForm();
+         this.createTableForm();
      }
  
      public stateMasterSave(Param: any) {
-         if (Param.villageId) {
-             return this._httpClient.PutData("VillageMaster/" + Param.villageId, Param);
-         } else return this._httpClient.PostData("VillageMaster", Param);
+         if (Param.ottableId) {
+             return this._httpClient.PutData("OtTableMaster/" + Param.ottableId, Param);
+         } else return this._httpClient.PostData("OtTableMaster", Param);
      }
 
   public deactivateTheStatus(m_data) {
-    return this._httpClient.DeleteData("VillageMaster?Id=" + m_data.toString());
+    return this._httpClient.DeleteData("OtTableMaster?Id=" + m_data.toString());
 }
 }

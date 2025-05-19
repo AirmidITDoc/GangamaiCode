@@ -23,16 +23,16 @@ export class NewOTTablemasterComponent implements OnInit {
             public toastr: ToastrService
         ) { }
         
-        autocompleteModetaluka: string = "Taluka";
+        autocompleteModeLocation: string = "City";
     
-        talukaId = 0;
+        locationId = 0;
         
         ngOnInit(): void {
-            this.myForm = this._OttablemasterService.createVillageForm();
+            this.myForm = this._OttablemasterService.createTableForm();
             this.myForm.markAllAsTouched();
             
             console.log(this.data)
-            if ((this.data?.villageId??0) > 0) 
+            if ((this.data?.ottableId??0) > 0) 
             {
                 this.isActive=this.data.isActive
                 this.myForm.patchValue(this.data);
@@ -63,21 +63,21 @@ export class NewOTTablemasterComponent implements OnInit {
               
             getValidationMessages() {
                 return {
-                    talukaName: [
-                        { name: "required", Message: "City Name is required" }
+                    locationId:[
+                               { name: "required", Message: "Location Name is required" }
                     ],
-                    villageName: [
-                        { name: "required", Message: "Taluka Name is required" },
-                        { name: "maxlength", Message: "Taluka Name should not be greater than 50 char." },
+                    ottableName: [
+                        { name: "required", Message: "otTable Name is required" },
+                        { name: "maxlength", Message: "Ottable Name should not be greater than 50 char." },
                         { name: "pattern", Message: "Only char allowed." }
                     ]
                 };
             }
         
         
-            selectChangecountry(obj: any){
+            selectChangeLocation(obj: any){
                 console.log(obj);
-                this.talukaId=obj.value
+                this.locationId=obj.value
             }
         
             onClear(val: boolean) {

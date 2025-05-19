@@ -17,15 +17,15 @@
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="myForm">
-                <input type="hidden" name="villageId" formControlName="villageId">
+                <input type="hidden" name="ottableId" formControlName="ottableId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox 
                             label="OTRoom Name" 
-                            formControlName="villageName" 
-                            [value]="data?.villageName"
+                            formControlName="ottableName" 
+                            [value]="data?.ottableName"
                             [formGroup]="myForm" 
-                            [validations]="getValidationMessages().villageName" 
+                            [validations]="getValidationMessages().ottableName" 
                             [maxLength]="50">
                         </airmid-textbox>
                     </div>
@@ -33,11 +33,12 @@
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-dropdown 
                             label="LocationName" 
-                            [value]="data?.talukaName" 
-                            formControlName="talukaName"
+                            [value]="data?.locationId" 
+                            formControlName="locationId"
                             [formGroup]="myForm" 
-                            [validations]="getValidationMessages().talukaName"
-                            [mode]="autocompleteModetaluka">
+                            (SelectionChange)="selectChangeLocation($event)"
+                            [validations]="getValidationMessages().locationId"
+                            [mode]="autocompleteModeLocation">
                         </airmid-dropdown>
                     </div>
 

@@ -4,6 +4,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { TypeMasterService } from '../../type-master/type-master.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { SiteDescriptionService } from '../site-description.service';
 
 @Component({
   selector: 'app-new-site-description-master',
@@ -17,7 +18,7 @@ myForm: FormGroup;
     isActive:boolean=true;
       
     constructor(
-                    public _TypeMasterService: TypeMasterService,
+                    public _SiteDescriptionService: SiteDescriptionService,
                     public dialogRef: MatDialogRef<NewSiteDescriptionMasterComponent>,
                     @Inject(MAT_DIALOG_DATA) public data: any,
                     public toastr: ToastrService
@@ -28,7 +29,7 @@ myForm: FormGroup;
     talukaId = 0;
     
     ngOnInit(): void {
-        this.myForm = this._TypeMasterService.createVillageForm();
+        this.myForm = this._SiteDescriptionService.createVillageForm();
          this.myForm.markAllAsTouched();
 
         console.log(this.data)
@@ -44,7 +45,7 @@ myForm: FormGroup;
         if(!this.myForm.invalid)
             {
             console.log(this.myForm.value);
-              this._TypeMasterService.stateMasterSave(this.myForm.value).subscribe((response) => {
+              this._SiteDescriptionService.stateMasterSave(this.myForm.value).subscribe((response) => {
                   this.toastr.success(response.message);
                   this.onClear(true);
               }, (error) => {
