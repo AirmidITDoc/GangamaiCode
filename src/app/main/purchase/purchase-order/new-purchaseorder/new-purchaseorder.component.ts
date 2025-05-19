@@ -36,7 +36,6 @@ export class NewPurchaseorderComponent {
   autocompletepaymentterm: string = "TermofPayment";
   autocompletepaymentmode: string = "PaymentMode";
 
-
   vsaveflag: boolean = true;
   displayedColumns2 = [
     // 'ItemID',
@@ -210,6 +209,7 @@ export class NewPurchaseorderComponent {
   selectedRowIndex: any;
   filteredoptionsSupplier: Observable<string[]>;
   filteredoptionsPayment: Observable<string[]>;
+    @ViewChild('qtyTextboxRef', { read: ElementRef }) qtyTextboxRef: ElementRef;
 
   constructor(
     public _PurchaseOrder: PurchaseOrderService,
@@ -889,6 +889,16 @@ export class NewPurchaseorderComponent {
       QtyElement.focus();
     }
     this.getSupplierRate();
+
+      setTimeout(() => {
+      const nativeElement = this.qtyTextboxRef?.nativeElement;
+      if (nativeElement) {
+        const inputEl: HTMLInputElement = nativeElement.querySelector('input');
+        if (inputEl) {
+          inputEl.focus();
+        }
+      }
+    }, 100);
   }
 
   calculateTotalamt() {
