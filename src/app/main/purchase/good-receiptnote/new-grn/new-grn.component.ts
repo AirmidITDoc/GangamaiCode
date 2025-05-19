@@ -402,8 +402,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             const month = +inputDate.substring(0, 2);
             const year = +inputDate.substring(2, 6);  
         
-            if (year <= currentYear) {
-                if (month <= currentMonth) {
+            if (year >= currentYear){
+                if (month <= currentMonth && year == currentYear)  {
                     Swal.fire({
                         icon: "warning",
                         title: "This item is already expired",
@@ -433,22 +433,31 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                         } 
 
             } else {
-                if (month > 12 && month <= 0) {
-                    this.vlastDay = '';
-                    this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
-                    this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !', {
-                        toastClass: 'tostr-tost custom-toast-warning',
+                    Swal.fire({
+                        icon: "warning",
+                        title: "This item is already expired",
+                        showConfirmButton: false,
+                        timer: 1500
                     });
-                    return;
-                }
-                const lastDay = this.getLastDayOfMonth(month, year);
-                this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
-                this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
-                this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
-                 const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
-                        if (QtyElement) {
-                            QtyElement.focus();
-                        } 
+                    this.vlastDay = '';
+                     this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
+                    return
+                // if (month > 12 && month <= 0) {
+                //     this.vlastDay = '';
+                //     this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
+                //     this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !', {
+                //         toastClass: 'tostr-tost custom-toast-warning',
+                //     });
+                //     return;
+                // }
+                // const lastDay = this.getLastDayOfMonth(month, year);
+                // this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
+                // this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
+                // this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
+                //  const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+                //         if (QtyElement) {
+                //             QtyElement.focus();
+                //         } 
             } 
         } else {  
             this.vlastDay = '';
@@ -773,6 +782,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     }
     calculateCellGSTType(item: ItemNameList): ItemNameList {
         // Validate input
+        debugger
         if (!item) return item;
 
         try {
@@ -789,7 +799,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 CGSTAmount: Number(calculation.cgstAmount.toFixed(2)),
                 SGSTAmount: Number(calculation.sgstAmount.toFixed(2)),
                 IGSTAmount: Number(calculation.igstAmount.toFixed(2)),
-                VatAmount: Number(calculation.totalGSTAmount.toFixed(2)),
+                GSTAmount: Number(calculation.totalGSTAmount.toFixed(2)),
                 NetAmount: Number(calculation.netAmount.toFixed(2)),
                 // Add any additional calculated fields
                 LandedRate: calculation.netAmount / (item.TotalQty || 1),
@@ -866,8 +876,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     updateCellGstType(){
         const itemList = this.dsGrnItemList
     }
-    updateGRNFinalForm() {
-        debugger
+    updateGRNFinalForm() { 
         const form = this._GRNList.GRNFinalForm;
         const itemList = this.dsItemNameList.data;
         const netAmount = itemList.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);

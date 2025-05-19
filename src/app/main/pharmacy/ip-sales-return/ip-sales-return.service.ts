@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,9 @@ export class IpSalesReturnService {
 
   constructor(
     public _httpClient: HttpClient,
-    private _formBuilder: UntypedFormBuilder
+     public _httpClient1: ApiCaller,
+    private _formBuilder: UntypedFormBuilder,
+    private _FormvalidationserviceService :FormvalidationserviceService
   ) { 
     this.userFormGroup = this.CreateusefromGroup();
     this.IPFinalform= this.CreateaIpFinalform();
@@ -21,8 +25,8 @@ export class IpSalesReturnService {
 
   CreateaIpFinalform() {
     return this._formBuilder.group({
-      FinalNetAmount: '',
-      FinalTotalAmt:'' ,
+      FinalNetAmount: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]] ,
+      FinalTotalAmt:[0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]] ,
       FinalGSTAmt:'',
       FinalDiscAmount:''
     });
@@ -30,14 +34,19 @@ export class IpSalesReturnService {
   
   CreateusefromGroup() {
     return this._formBuilder.group({
-      RegID: [''],
+      RegID: ['',[Validators.required]],
       Op_ip_id: ['1'],
-      TypeodPay:['CashPay'],
-      ItemName:'',
-      ReturnQty:'',
-      TotalQty:'', 
+      PaymentType:['CashPay'],
+      ItemName:['',[Validators.required]] ,
+      ReturnQty:[0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]] ,
+      TotalQty:[0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]] ,
     });
   }
+
+    public getSalesReturnitemlist(param){
+    return this._httpClient1.PostData("Common",param)
+  }
+
   public getAdmittedpatientlist(employee){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
   }

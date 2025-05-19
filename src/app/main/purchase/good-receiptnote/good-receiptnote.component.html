@@ -48,11 +48,10 @@
                 <button mat-icon-button matTooltip="print" (click)="viewgetGRNReportPdf(element)">
                     <mat-icon>print</mat-icon>
                 </button>
-                <button mat-icon-button (click)="onEdit(element)" matTooltip="Edit" *ngIf="!element.isVerified"  >
-                    <mat-icon title="Edit Menu">edit</mat-icon> 
+                <button mat-icon-button (click)="onEdit(element)" matTooltip="Edit" *ngIf="!element.isVerified">
+                    <mat-icon title="Edit Menu">edit</mat-icon>
                 </button>
-                <button mat-icon-button (click)="onVerify(element)" matTooltip="Verify"
-                *ngIf="!element.isVerified">
+                <button mat-icon-button (click)="onVerify(element)" matTooltip="Verify" *ngIf="!element.isVerified">
                     <mat-icon title="verify Menu">verified_user</mat-icon>
                 </button>
                 <button mat-icon-button (click)="GRNEmail(element)">
@@ -65,7 +64,7 @@
                     <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
                 </button>
 
-                <button mat-icon-button (click)="deleteRow(element)"> 
+                <button mat-icon-button (click)="deleteRow(element)">
                     <mat-icon *ngIf="!element.isVerified" title="Cancle">highlight_off</mat-icon>
                 </button>
             </div>
@@ -75,50 +74,42 @@
         <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)">
             <ng-container filters>
                 <form [formGroup]="_GRNService.GRNSearchGroup" fxLayout="column">
-                <airmid-datepicker [formGroup]="_GRNService.GRNSearchGroup" [isRangePicker]="true"
-                    formStartControlName="start" formEndControlName="end"
-                    [(fromValue)]="gridConfig.filters[1].fieldValue" [(toValue)]="gridConfig.filters[2].fieldValue"
-                    (dateChange)="onChangeFirst()"></airmid-datepicker>
+                    <airmid-datepicker [formGroup]="_GRNService.GRNSearchGroup" [isRangePicker]="true"
+                        formStartControlName="start" formEndControlName="end"
+                        [(fromValue)]="gridConfig.filters[1].fieldValue" [(toValue)]="gridConfig.filters[2].fieldValue"
+                        (dateChange)="onChangeFirst()"></airmid-datepicker>
 
 
-                <airmid-dropdown label="Store Name" formControlName="ToStoreId" [formGroup]="_GRNService.GRNSearchGroup"
-                    [validations]="getValidationMessages().ToStoreId"     fxFlex [mode]="autocompletestore"
-                    (selectionChange)="selectChangeStore($event)" (keyup)="selectChangeStore($event)" >
-                </airmid-dropdown>  
+                    <airmid-dropdown label="Store Name" formControlName="ToStoreId"
+                        [formGroup]="_GRNService.GRNSearchGroup" [validations]="getValidationMessages().ToStoreId"
+                        fxFlex [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)"
+                        (keyup)="selectChangeStore($event)">
+                    </airmid-dropdown>
 
 
-                <airmid-dropdown label="Supplier Name | Code" formControlName="SupplierId"
-                    [formGroup]="_GRNService.GRNSearchGroup" [validations]="getValidationMessages().supplierId"
-                    [mode]="autocompleteSupplier" (selectionChange)="selectChangeSupplier($event)"  (keyup)="selectChangeSupplier($event)"
-                    [(ngModel)]="gridConfig.filters[4].fieldValue"></airmid-dropdown>
- 
+                    <airmid-dropdown label="Supplier Name | Code" formControlName="SupplierId"
+                        [formGroup]="_GRNService.GRNSearchGroup" [validations]="getValidationMessages().supplierId"
+                        [mode]="autocompleteSupplier" (selectionChange)="selectChangeSupplier($event)"
+                        (keyup)="selectChangeSupplier($event)"
+                        [(ngModel)]="gridConfig.filters[4].fieldValue"></airmid-dropdown>
+
 
                     <div fxLayout="row" class="gap-4 ">
                         <span style="font-weight: bold;">Status :</span>
-                        <mat-slide-toggle name="Status1" (change)="onChangeFirst()"
-                        formControlName="Status1">
-                         Verify / Pending
+                        <mat-slide-toggle name="Status1" (change)="onChangeFirst()" formControlName="Status1">
+                            Verify / Pending
                         </mat-slide-toggle>
-                    </div>
-
-                   
-                </form>  
+                    </div>  
+                </form>
             </ng-container>
         </airmid-table>
     </div>
 
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
-
-        <ng-template #actionButtonTemplateCheck let-element>
-
-           
-
-        </ng-template>
-
         <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false" [ShowButtons]="false">
         </airmid-table>
     </div>
-</div> 
+</div>
 
 
 

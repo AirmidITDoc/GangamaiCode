@@ -27,7 +27,7 @@ export class IpSalesReturnComponent implements OnInit {
   isLoading = true;
   isRegIdSelected:boolean=false;
   PatientListfilteredOptions: any;
-  ItemfilteredOptions:any;
+  ItemfilteredOptions:any=[];
   noOptionFound:any;
   filteredOptions:any;
   isItemIdSelected:any;
@@ -105,6 +105,9 @@ export class IpSalesReturnComponent implements OnInit {
     'Action'
   ];
  
+  
+  registerObj:any; 
+  selcteditemObj:any;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
@@ -127,298 +130,170 @@ export class IpSalesReturnComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-  registerObj:any;
-  
-
   getSelectedObjRegIP(obj) {
     console.log(obj);
     let IsDischarged = 0;
     IsDischarged = obj.isDischarged;
     if (IsDischarged == 1) {
-      Swal.fire('Selected Patient is already discharged');
-      // this.RegId = '';
-    } else {
-      console.log(obj);
-      // this.DoctorNamecheck = true;
-      // this.IPDNocheck = true;
-      // this.OPDNoCheck = false;
-      // this.PatientName = obj.firstName + ' ' + obj.lastName;
-      // this.RegId = obj.regID;
-      // this.OP_IP_Id = obj.admissionID;
-      // this.IPDNo = obj.ipdNo;
-      // this.RegNo = obj.regNo;
-      // this.DoctorName = obj.doctorName;
-      // this.TariffName = obj.tariffName;
-      // this.CompanyName = obj.CompanyName;
-      // this.Age = obj.age;
-      // this.WardName = obj.roomName;
-      // this.BedName = obj.bedName;
-    }
-   
-  }
-onItemChange(obj){
-console.log(obj)
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  getSearchList() {
-    var m_data = {
-      "Keyword": `${this._IpSalesRetService.userFormGroup.get('RegID').value}%`
-    }
-    if (this._IpSalesRetService.userFormGroup.get('RegID').value.length >= 1) {
-      this._IpSalesRetService.getAdmittedpatientlist(m_data).subscribe(resData => {
-        this.filteredOptions = resData;
-        console.log(resData)
-        this.PatientListfilteredOptions = resData;
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        } 
+      Swal.fire({
+        icon: "warning",
+        title: "Selected Patient is already discharged",
+        showConfirmButton: false,
+        timer: 1500
       });
-    } 
-  } 
-  getOptionText(option) {
-    if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
+      return
+    }
+    this.registerObj = obj;
+    this.vPatientName = obj.firstName + ' ' + obj.middleName + ' ' + obj.lastName;
+    this.getItemNameList();
   }
-
-
-  getSelectedObj(obj){
-    console.log(obj)
-   this.vRegNo = obj.RegNo;
-   this.vPatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
-   this.vAdmissionDate = obj.AdmissionDate;
-   this.vMobileNo = obj.MobileNo; 
-   this.vAdmissionID = obj.AdmissionID;
-   this.vRegId = obj.RegID;
-   this.vIPDNo = obj.IPDNo; 
-   this.vDoctorName = obj.DoctorName;
-   this.vTariffName =obj.TariffName
-   this.vCompanyName = obj.CompanyName 
-   this.vRoomName = obj.RoomName;
-   this.vBedName = obj.BedName
-   this.vGenderName = obj.GenderName
-   this.vAge = obj.Age 
-   this.itemname.nativeElement.focus();
-  }
-  filteredOptionsItem:any;
+ 
 OnRadioChange(){
   this.dsIpSaleItemList.data = [];
   this.getItemNameList();
 }
   getItemNameList() {
-    if ((this.vRegID == '' || this.vRegID == null || this.vRegID == undefined)) {
+    if ((this.registerObj.regNo == '' || this.registerObj.regNo == null || this.registerObj.regNo == undefined)) {
       this.toastr.warning('Please select patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
-      return;
-    } 
-    if(this._IpSalesRetService.userFormGroup.get('TypeodPay').value == 'CashPay')
-      {
-    var Param = {
-      "RegNo":  this.vRegNo || 0,
-      "StoreId":  this.accountService.currentUserValue.storeId || 0,
-      "ItemName":  `${this._IpSalesRetService.userFormGroup.get('ItemName').value}%`, 
-      "BatchNo":  0
+      return
     }
-    console.log(Param)
-    this._IpSalesRetService.getCashItemList(Param).subscribe(data => {
-      this.ItemfilteredOptions = data;
-      console.log(this.ItemfilteredOptions)
-      this.filteredOptionsItem = data;
-      if (this.ItemfilteredOptions.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
+
+    let storeID = this.accountService.currentUserValue.user.storeId
+    let ItemName = this._IpSalesRetService.userFormGroup.get('ItemName').value + '%' || '%'
+    const Filters = [
+      { "fieldName": "RegNo", "fieldValue": String(0), "opType": "Equals" },
+      { "fieldName": "StoreId", "fieldValue": String(storeID), "opType": "Equals" },
+      { "fieldName": "ItemName", "fieldValue": String(ItemName), "opType": "Equals" },
+      { "fieldName": "BatchNo", "fieldValue": String(0), "opType": "Equals" }
+    ]
+
+    if (this._IpSalesRetService.userFormGroup.get('PaymentType').value == 'CashPay') {
+      var param = {
+        "searchFields": Filters,
+        "mode": "IPSalesReturnCash"
       }
-    });
-  }
-  else{
-    var Param = {
-      "RegNo":  this.vRegNo || 0,
-      "StoreId":  this.accountService.currentUserValue.storeId || 0,
-      "ItemName":  `${this._IpSalesRetService.userFormGroup.get('ItemName').value}%`, 
-      "BatchNo":  0
     }
-    console.log(Param)
-    this._IpSalesRetService.getCreditItemList(Param).subscribe(data => {
-      this.ItemfilteredOptions = data;
-      console.log(this.ItemfilteredOptions)
-      this.filteredOptionsItem = data;
-      if (this.ItemfilteredOptions.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
+    else {
+      var param = {
+        "searchFields": Filters,
+        "mode": "IPSalesReturnCredit"
       }
-    });
-  }
-  }
-  getItemOptionText(option) {
-    if (!option)
-      return '';
-    return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
-  }
+    }
+    // console.log(param)
+    this._IpSalesRetService.getSalesReturnitemlist(param).subscribe(response => {
+      this.ItemfilteredOptions = response
+      // console.log(this.ItemfilteredOptions)
+    })
+  } 
   getSelectedItemObj(obj){
     console.log(obj)
-    this.vTotalQty = obj.Qty;
-    this.vSalesNo = obj.SalesNo; 
-    this.vBatchNo = obj.BatchNo;
-    this.vBatchExpDate = obj.BatchExpDate
-    this.vUnitMRP = obj.UnitMRP;
-    this.vVatPer = obj.VatPer; 
-    this.vDiscPer = obj.DiscPer;
-    this.vRegId = obj.RegID;
-    this.vSalesID = obj.SalesId;
-    this.vOP_IP_Id = obj.OP_IP_ID;
-    this.vOP_IP_Type =obj.OP_IP_Type;
-    this.vLandedPrice = obj.LandedPrice;
-    //this.vTotalLandedAmount =obj.TotalLandedAmount;
-    this.vPurRateWf = obj.PurRateWf;
-    this.vItemId =obj.ItemId;
-    this.vStkID = obj.StkID;
-    this.vSalesDetId =obj.SalesDetId;
+    this.selcteditemObj = obj;
+    this._IpSalesRetService.userFormGroup.patchValue({
+      TotalQty:obj.Qty
+    }) 
   }
- OnAdd(){
-  if ((this.vReturnQty == '' || this.vReturnQty == null || this.vReturnQty == undefined)) {
-    this.toastr.warning('Please enter a Return Qty', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-  }
-  const isDuplicate = this.dsIpSaleItemList.data.some(item => item.BatchNo === this.vBatchNo);
-  if (!isDuplicate) {
-    this.chargeslist = this.dsIpSaleItemList.data;
+  OnAdd() {
+    debugger
+    let invalidFields = [];
+    if (this._IpSalesRetService.userFormGroup.invalid) {
+      for (const controlName in this._IpSalesRetService.userFormGroup.controls) {
+        if (this._IpSalesRetService.userFormGroup.controls[controlName].invalid) {
+          invalidFields.push(`${controlName}`);
+        }
+      }
+    }
+    if (invalidFields.length > 0) {
+      invalidFields.forEach(field => {
+        this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+        );
+      });
+    }
+
+    if (this.dsIpSaleItemList.data.length > 0) {
+      const isDuplicate = this.dsIpSaleItemList.data.some(item => item.BatchNo === this.registerObj.BatchNo);
+      if (!isDuplicate) {
+        this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return
+      }
+    } 
+    const formValues = this._IpSalesRetService.userFormGroup.value
+    let totalAmt = (parseFloat(this.selcteditemObj.UnitMRP) * parseFloat(formValues.ReturnQty)).toFixed(2);
+    let GSTAmt = ((parseFloat(this.selcteditemObj.VatPer) * parseFloat(totalAmt)) / 100).toFixed(2) || 0;
+    let DiscAmt = ((parseFloat(this.selcteditemObj.DiscPer) * parseFloat(totalAmt)) / 100).toFixed(2) || '0';
+    let netAmt = (parseFloat(totalAmt) - parseFloat(DiscAmt)).toFixed(2);
+    let PurTotAmt = (parseFloat(this.selcteditemObj.PurRateWf) * parseFloat(formValues.ReturnQty)).toFixed(2);
+    let TotalLandedAmount = (parseFloat(this.selcteditemObj.LandedPrice) * parseFloat(formValues.ReturnQty)).toFixed(2);
+
     this.chargeslist.push(
       {
-        SalesNo:this.vSalesNo || 0,
-        ItemName:this._IpSalesRetService.userFormGroup.get('ItemName').value.ItemName || '',
-        ItemId:this.vItemId || 0,
-        BatchNo: this.vBatchNo || 0,
-        ExpDate: this.vBatchExpDate || 0,
-        MRP: this.vUnitMRP || 0,
-        Qty: this.vTotalQty || 0,
+        SalesNo: this.selcteditemObj.SalesNo || 0,
+        ItemName: this._IpSalesRetService.userFormGroup.get('ItemName').value.ItemName || '',
+        ItemId: this.selcteditemObj.ItemId || 0,
+        BatchNo: this.selcteditemObj.BatchNo || 0,
+        ExpDate: this.selcteditemObj.BatchExpDate || 0,
+        MRP: this.selcteditemObj.UnitMRP || 0,
+        Qty: this.selcteditemObj.Qty || 0,
         ReturnQty: this.vReturnQty || 0,
-        TotalAmt: this.TotalAmt || 0,
-        GST:this.vVatPer || 0,
-        GSTAmt:this.GSTAmt || 0,
-        Disc:this.vDiscPer || 0,
-        DiscAmt:this.DiscAmt || 0,
-        LandedPrice: this.vLandedPrice || 0,
-        TotalLandedAmount:    this.vTotalLandedAmount || 0,
-        PurRateWf: this.vPurRateWf || 0,
-        PurTotAmt: this.vPurTotAmt || 0,
-        NetAmount:  this.NetAmt || 0,
-        SalesDetId: this.vSalesDetId || 0,
-        StkID: this.vStkID  || 0
+        TotalAmt: totalAmt || 0,
+        GST: this.selcteditemObj.VatPer || 0,
+        GSTAmt: GSTAmt || 0,
+        Disc: this.selcteditemObj.DiscPer || 0,
+        DiscAmt: this.DiscAmt || 0,
+        LandedPrice: this.selcteditemObj.LandedPrice || 0,
+        TotalLandedAmount: TotalLandedAmount || 0,
+        PurRateWf: this.selcteditemObj.PurRateWf || 0,
+        PurTotAmt: PurTotAmt || 0,
+        NetAmount: netAmt || 0,
+        SalesDetId: this.selcteditemObj.SalesDetId || 0,
+        StkID: this.selcteditemObj.StkID || 0
       });
-      console.log(this.chargeslist)
+    console.log(this.chargeslist)
     this.dsIpSaleItemList.data = this.chargeslist;
-  } else {
-    this.toastr.warning('Selected Item already added in the list', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
+    this.ItemReset();
+    const ItemNameElement = document.querySelector(`[name='ItemName']`) as HTMLElement;
+    if (ItemNameElement) {
+      ItemNameElement.focus();
+    }
   }
-  this.ItemReset();
-  this.itemname.nativeElement.focus();
- }
- ItemReset(){
-this.vItemName = '';
-this.vReturnQty = 0 ;
-this.vTotalQty = 0 ;
- }
- deleteTableRow(event, element) {
-  // if (this.key == "Delete") {
+  ItemReset() {
+    this._IpSalesRetService.userFormGroup.patchValue({
+      ItemName: [''],
+      ReturnQty: [''],
+      TotalQty: [0],
+      PaymentType: ['CashPay'],
+    })
+  }
+ deleteTableRow(event, element) { 
   let index = this.chargeslist.indexOf(element);
   if (index >= 0) {
     this.chargeslist.splice(index, 1);
     this.dsIpSaleItemList.data = [];
     this.dsIpSaleItemList.data = this.chargeslist;
   }
-  Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
-
-  // }
+  Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success'); 
 }
-calculation(){
-  if(parseInt(this.vReturnQty) > parseInt(this.vTotalQty)){
+
+ 
+checkQty(){
+  const formValues = this._IpSalesRetService.userFormGroup.value
+   if(!formValues.RegID){
+    this.toastr.warning('Please select Patient Name', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });  
+    return 
+  }
+  if(formValues.ReturnQty > formValues.TotalQty){
     this.toastr.warning('Return Qty cannot be greater than BalQty', 'Warning !', {
       toastClass: 'tostr-tost custom-toast-warning',
-    });
-    this.vReturnQty= 0;
-  }else{
-    this.TotalAmt = (parseFloat(this.vUnitMRP) * parseFloat(this.vReturnQty)).toFixed(2);
-    this.GSTAmt =  ((parseFloat(this.vVatPer) * parseFloat(this.TotalAmt))/100).toFixed(2) || 0;
-    this.DiscAmt =  ((parseFloat(this.vDiscPer) * parseFloat(this.TotalAmt))/100).toFixed(2) || 0;
-    this.NetAmt = (parseFloat(this.TotalAmt) - parseFloat(this.DiscAmt)).toFixed(2);
-    this.vPurTotAmt = (parseFloat(this.vPurRateWf) * parseFloat(this.vReturnQty)).toFixed(2);
-    this.vTotalLandedAmount = (parseFloat(this.vLandedPrice) * parseFloat(this.vReturnQty)).toFixed(2);
-  }
-
+    }); 
+    formValues.ReturnQty = ''; 
+  }  
 } 
+
 getCellCalculation(contact, ReturnQty) {
   if (parseInt(contact.ReturnQty) > parseInt(contact.Qty)) {
     this.toastr.warning('Return Qty cannot be greater than BalQty', 'Warning !', {
@@ -512,7 +387,7 @@ keyPressAlphanumeric(event) {
     salesReturnHeader['NetAmount'] = Math.round(this._IpSalesRetService.IPFinalform.get('FinalNetAmount').value) || 0;
     let PaidAmount
     let balanceAmount
-    if(this._IpSalesRetService.userFormGroup.get('TypeodPay').value == 'CashPay'){
+    if(this._IpSalesRetService.userFormGroup.get('PaymentType').value == 'CashPay'){
       PaidAmount = Math.round(this._IpSalesRetService.IPFinalform.get('FinalNetAmount').value) || 0;
       balanceAmount = 0;
     }else{
@@ -552,7 +427,7 @@ keyPressAlphanumeric(event) {
       salesReturnDetailCredit['SalesID'] = this.vSalesID;
       salesReturnDetailCredit['SalesDetID'] = element.SalesDetId;
       let isCashOrCredit 
-      if(this._IpSalesRetService.userFormGroup.get('TypeodPay').value == 'CashPay'){
+      if(this._IpSalesRetService.userFormGroup.get('PaymentType').value == 'CashPay'){
         isCashOrCredit = 0;
       }else{ 
         isCashOrCredit = 1;
@@ -630,7 +505,7 @@ keyPressAlphanumeric(event) {
     PaymentInsertobj['PayTMDate'] = '01/01/1900',
     PaymentInsertobj['paymentId'] = 0
 
- if(this._IpSalesRetService.userFormGroup.get('TypeodPay').value == 'CashPay'){
+ if(this._IpSalesRetService.userFormGroup.get('PaymentType').value == 'CashPay'){
 
   let submitData = {
     "salesReturnHeader": salesReturnHeader,

@@ -148,8 +148,9 @@ export class GoodReceiptnoteComponent implements OnInit {
                 { fieldName: "GrnId", fieldValue: String(event.grnid), opType: OperatorComparer.Equals }
             ],
         }
+ 
         this.grid1.gridConfig = this.gridConfig1;
-         this.grid1.bindGridData();
+        this.grid1.bindGridData();
     }
     getValidationMessages() {
         return {
@@ -170,8 +171,7 @@ export class GoodReceiptnoteComponent implements OnInit {
             ]
 
         };
-    }
-
+    } 
 
     onChangeFirst() {
         this.isShowDetailTable = false;
@@ -183,8 +183,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         this.fromDate = this.datePipe.transform(this._GRNService.GRNSearchGroup.get('start').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this._GRNService.GRNSearchGroup.get('end').value, "yyyy-MM-dd")
         this.getfilterdata();
-    }
-
+    } 
     getfilterdata() {
         this.gridConfig = {
             apiUrl: "GRN/GRNHeaderList",
@@ -198,7 +197,7 @@ export class GoodReceiptnoteComponent implements OnInit {
                 { fieldName: "IsVerify", fieldValue: this.IsVerify, opType: OperatorComparer.Equals },
                 { fieldName: "Supplier_Id", fieldValue: this.SupplierId, opType: OperatorComparer.Equals }
             ],
-        } 
+        }  
     }
     selectChangeStore(value) {
         if (value.value !== 0)
@@ -316,8 +315,9 @@ export class GoodReceiptnoteComponent implements OnInit {
                 }
             });
         dialogRef.afterClosed().subscribe(result => {
+              this.grid.bindGridData();
         }); 
-          this.grid.bindGridData();
+        
     }
     GRNEmail(contact) {
         const dialogRef = this._matDialog.open(EmailSendComponent,
@@ -329,9 +329,10 @@ export class GoodReceiptnoteComponent implements OnInit {
                     Obj: contact
                 }
             });
-        dialogRef.afterClosed().subscribe(result => { 
+        dialogRef.afterClosed().subscribe(result => {
+              this.grid.bindGridData(); 
         }); 
-       this.grid.bindGridData();
+     
     }
     onEdit(contact) {
         this.chkNewGRN = 2;
@@ -347,8 +348,9 @@ export class GoodReceiptnoteComponent implements OnInit {
                 }
             });
         dialogRef.afterClosed().subscribe(result => {  
+               this.grid.bindGridData();
         });
-          this.grid.bindGridData();
+       
     }
     onVerify(row) {
         let GRNVerifyObj = {};
