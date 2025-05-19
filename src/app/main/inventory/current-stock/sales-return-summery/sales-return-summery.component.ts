@@ -61,6 +61,15 @@ export class SalesReturnSummeryComponent implements OnInit {
     this.getSalesReturnSummeryList();
     this.getSalesReturnSummeryDetailsList();
   }
+
+   parseToDate(dateStr: string): Date | null {
+  if (!dateStr) return null;
+  const [datePart] = dateStr.split(' ');
+  const [day, month, year] = datePart.split('-').map(Number);
+  const date = new Date(year, month - 1, day);
+  return isNaN(date.getTime()) ? null : date;
+}
+
   getSalesReturnSummeryList() {
     var vdata = {
       "first": 0,

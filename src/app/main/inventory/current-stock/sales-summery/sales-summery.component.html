@@ -139,7 +139,7 @@
                                                    SalesDate
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.date | date:'dd/MM/YYYY'}}
+                                                    {{ parseToDate(contact.date) | date: 'dd-MM-yyyy' }}
                                                 </mat-cell>
                                             </ng-container>
         

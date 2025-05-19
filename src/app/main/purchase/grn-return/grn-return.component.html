@@ -35,9 +35,8 @@
                         <button mat-icon-button matTooltip="Print">
                             <mat-icon>print</mat-icon>
                         </button>
-                        <button mat-icon-button matTooltip="Verify" (click)="getVerify(element)">
+                        <button mat-icon-button matTooltip="Verify" (click)="getVerify(element)" *ngIf="!element.isVerified">
                             <mat-icon>verified_user</mat-icon>
-                        <!-- <mat-icon title="verify Menu" *ngIf="row.isVerified==false">verified_user</mat-icon> -->
                         </button>        
                         
                     </div>
