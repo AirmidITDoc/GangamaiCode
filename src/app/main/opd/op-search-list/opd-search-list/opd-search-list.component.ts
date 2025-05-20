@@ -491,7 +491,6 @@ export class SearchInforObj1
     bedId:any;
     regNo:any;
     genderName:any;
-
      /**
      * Constructor
      *
@@ -548,10 +547,7 @@ export class SearchInforObj1
            this.companyName=SearchInforObj1.companyName ||0
           
            this.isMLC=SearchInforObj1.isMLC || 0;
-
-
-
-
+           this.hospitalId=SearchInforObj1.hospitalId||0;
         }
     }
 }

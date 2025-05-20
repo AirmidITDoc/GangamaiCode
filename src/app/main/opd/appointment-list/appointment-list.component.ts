@@ -349,9 +349,8 @@ Clearfilter(event) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
         this.advanceDataStored.storage = new SearchInforObj1(row);
-        console.log(row)
         let that = this;
-        console.log(this.advanceDataStored.storage)
+        console.log( "Row Selected Appointment Page : ", this.advanceDataStored.storage)
         const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
             maxWidth: "99vw",
             height: "98vh",
