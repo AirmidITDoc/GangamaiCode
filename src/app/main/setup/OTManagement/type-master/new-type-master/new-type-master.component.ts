@@ -26,14 +26,15 @@ myForm: FormGroup;
     
     autocompleteModetaluka: string = "Taluka";
 
-    talukaId = 0;
+    ottypeId = 0;
     
     ngOnInit(): void {
-        this.myForm = this._TypeMasterService.createVillageForm();
+    
+        this.myForm = this._TypeMasterService.createTypeForm();
          this.myForm.markAllAsTouched();
 
         console.log(this.data)
-        if ((this.data?.villageId??0) > 0) 
+        if ((this.data?.ottypeId??0) > 0) 
         {
             this.isActive=this.data.isActive
             this.myForm.patchValue(this.data);
@@ -64,10 +65,10 @@ myForm: FormGroup;
           
         getValidationMessages() {
             return {
-                talukaName: [
-                    { name: "required", Message: "City Name is required" }
-                ],
-                villageName: [
+                // talukaName: [
+                //     { name: "required", Message: "City Name is required" }
+                // ],
+                typeName: [
                     { name: "required", Message: "ottype Name is required" },
                     { name: "maxlength", Message: "Taluka Name should not be greater than 50 char." },
                     { name: "pattern", Message: "Only char allowed." }
@@ -78,7 +79,7 @@ myForm: FormGroup;
     
         selectChangecountry(obj: any){
             console.log(obj);
-            this.talukaId=obj.value
+            this.ottypeId=obj.value
         }
     
         onClear(val: boolean) {

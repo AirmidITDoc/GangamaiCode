@@ -19,11 +19,11 @@ export class TypeMasterComponent implements OnInit {
 msg: any;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
-        apiUrl: "VillageMaster/List",
+        apiUrl: "OtTypeMaster/List",
         columnsList: [
-            { heading: "Code", key: "villageId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "OT Type Name", key: "villageName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "AddedBy", key: "talukaName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "ottypeId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "OT Type Name", key: "typeName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
            // { heading: "SurgeryCategoryName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
@@ -34,7 +34,7 @@ msg: any;
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this._TypeMasterService.deactivateTheStatus(data.villageId).subscribe((response: any) => {
+                            this._TypeMasterService.deactivateTheStatus(data.ottypeId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
@@ -42,11 +42,11 @@ msg: any;
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "search facility",
+        sortField: "OttypeId",
         sortOrder: 0,
         filters: [
-            { fieldName: "OTtypeName", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            // { fieldName: "OTtypeName", fieldValue: "", opType: OperatorComparer.Contains },
+            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     }
 
