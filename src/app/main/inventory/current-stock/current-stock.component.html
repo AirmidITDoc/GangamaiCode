@@ -61,17 +61,11 @@
                                     [(ngModel)]="gridConfig.filters[0].fieldValue" [readonly]="true">
                                 </airmid-dropdown>
 
-                                <!-- <airmid-dropdown label="Item Name" formControlName="ItemCategory"
-                                    [formGroup]="_CurrentStockService.SearchGroup" [mode]="autocompleteitem"
-                                    (selectionChange)="selectChangeItem($event)"
-                                    [(ngModel)]="gridConfig.filters[1].fieldValue">
-                                </airmid-dropdown> -->
-
                                 <airmid-autocomplete label="Item Name" [formGroup]="_CurrentStockService.SearchGroup"
                                     formControlName="ItemCategory"
                                     [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + storeId + '&ItemName='"
                                     (selectionChange)="selectChangeItem($event)"
-                                    [(ngModel)]="gridConfig.filters[1].fieldValue" TextField="formattedText"
+                                    TextField="formattedText"
                                     ValueField="ItemId">
                                 </airmid-autocomplete>
 
@@ -115,7 +109,7 @@
                                     formControlName="ItemCategory"
                                     [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + storeDayWise + '&ItemName='"
                                     (selectionChange)="selectChangeItem1($event)"
-                                    [(ngModel)]="gridConfig1.filters[2].fieldValue" TextField="formattedText"
+                                    TextField="formattedText"
                                     ValueField="ItemId">
                                 </airmid-autocomplete>
 
@@ -152,16 +146,11 @@
                                     [(ngModel)]="gridConfig2.filters[2].fieldValue" [readonly]="true">
                                 </airmid-dropdown>
 
-                                <!-- <airmid-dropdown label="Item Name" formControlName="ItemCategory"
-                                    [formGroup]="_CurrentStockService.ItemWiseFrom" [mode]="autocompleteitem"
-                                    (selectionChange)="selectChangeItem2($event)"
-                                    [(ngModel)]="gridConfig2.filters[3].fieldValue">
-                                </airmid-dropdown> -->
                                 <airmid-autocomplete label="Item Name" [formGroup]="_CurrentStockService.ItemWiseFrom"
                                     formControlName="ItemCategory"
                                     [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + storeSales + '&ItemName='"
                                     (selectionChange)="selectChangeItem2($event)"
-                                    [(ngModel)]="gridConfig2.filters[3].fieldValue" TextField="formattedText"
+                                    TextField="formattedText"
                                     ValueField="ItemId">
                                 </airmid-autocomplete>
 
@@ -199,16 +188,10 @@
                                     [(ngModel)]="gridConfig3.filters[2].fieldValue" [readonly]="true">
                                 </airmid-dropdown>
 
-                                <!-- <airmid-dropdown label="Item Name" formControlName="ItemCategory"
-                                    [formGroup]="_CurrentStockService.IssueItem" [mode]="autocompleteitem"
-                                    (selectionChange)="selectChangeItem3($event)"
-                                    [(ngModel)]="gridConfig3.filters[3].fieldValue">
-                                </airmid-dropdown> -->
                                 <airmid-autocomplete label="Item Name" [formGroup]="_CurrentStockService.IssueItem"
                                     formControlName="ItemCategory"
                                     [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + storeItem + '&ItemName='"
-                                    (selectionChange)="selectChangeItem3($event)"
-                                    [(ngModel)]="gridConfig3.filters[3].fieldValue" TextField="formattedText"
+                                    (selectionChange)="selectChangeItem3($event)" TextField="formattedText"
                                     ValueField="ItemId">
                                 </airmid-autocomplete>
 

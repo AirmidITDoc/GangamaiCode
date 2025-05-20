@@ -5,7 +5,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { CurrentStockService } from '../current-stock.service';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 
@@ -84,6 +84,13 @@ export class ItemMovementSummeryComponent implements OnInit {
   registerObj: any;
   fiveDaysAgo: any;
 
+  tabIndex: number = 0;
+
+  @ViewChild(MatTable) table: MatTable<any>;
+
+ngAfterViewInit() {
+  this.table?.renderRows();
+}
   dsItemMovementSummery = new MatTableDataSource<ItemMovementList>();
   dsBatchExpWise = new MatTableDataSource<BatchExpWiseList>();
   dsPurSupplierWise = new MatTableDataSource<PurSupplierWiseList>();
@@ -271,7 +278,7 @@ export class ItemMovementSummeryComponent implements OnInit {
     setTimeout(() => {
       this._CurrentStockService.getPueSupplierWiseList(vdata).subscribe(data => {
         this.dsPurSupplierWise.data = data.data as PurSupplierWiseList[];
-        console.log(this.dsPurSupplierWise);
+        console.log(this.dsPurSupplierWise.data);
         this.dsPurSupplierWise.sort = this.sort;
         this.dsPurSupplierWise.paginator = this.Thirdpaginator;
         this.sIsLoading = '';
@@ -313,7 +320,7 @@ export class ItemMovementSummeryComponent implements OnInit {
     setTimeout(() => {
       this._CurrentStockService.getSalesList(vdata).subscribe(data => {
         this.dsSaleList.data = data.data as SalesList[];
-        console.log(this.dsSaleList);
+        console.log(this.dsSaleList.data);
         this.dsSaleList.sort = this.sort;
         this.dsSaleList.paginator = this.Fourthpaginator;
       }

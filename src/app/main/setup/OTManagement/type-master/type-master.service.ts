@@ -12,42 +12,42 @@ myForm: FormGroup;
       private _httpClient: ApiCaller,
       private _formBuilder: UntypedFormBuilder
   ) {
-      this.myForm = this.createVillageForm();
+      this.myForm = this.createTypeForm();
       this.myformSearch = this.createSearchForm();
   }
 
-     createVillageForm(): FormGroup {
+     createTypeForm(): FormGroup {
              return this._formBuilder.group({
-                 villageId: [0],
-                 villageName: ["",
+                 OttypeId: [0],
+                 typeName: ["",
                       [
                     Validators.required,
                     // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ] 
                  ],
-                 talukaName: [""],
-                 isActive:[true,[Validators.required]]
+                talukaName: [""],
+                isActive:[true,[Validators.required]]
              });
          }
        
          createSearchForm(): FormGroup {
              return this._formBuilder.group({
-                 VillageNameSearch: [""],
+                 typeNameSearch: [""],
                  IsDeletedSearch: ["2"],
              });
          }
      
          initializeFormGroup() {
-             this.createVillageForm();
+             this.createTypeForm();
          }
      
          public stateMasterSave(Param: any) {
-             if (Param.villageId) {
-                 return this._httpClient.PutData("VillageMaster/" + Param.villageId, Param);
-             } else return this._httpClient.PostData("VillageMaster", Param);
+             if (Param.OttypeId) {
+                 return this._httpClient.PutData("OtTypeMaster/" + Param.OttypeId, Param);
+             } else return this._httpClient.PostData("OtTypeMaster", Param);
          }
   public deactivateTheStatus(m_data) {
-   return this._httpClient.DeleteData("VillageMaster?Id=" + m_data.toString());
+   return this._httpClient.DeleteData("OtTypeMaster?Id=" + m_data.toString());
 }
 }

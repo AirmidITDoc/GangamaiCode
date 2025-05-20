@@ -4,7 +4,7 @@ import { CurrentStockService } from '../current-stock.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 
@@ -38,10 +38,15 @@ export class IssueSummeryComponent implements OnInit {
   isLoading: String = '';
   sIsLoading: string = "";
   registerObj: any;
+  tabIndex: number = 0;
 
+  @ViewChild(MatTable) table: MatTable<any>;
+
+  ngAfterViewInit() {
+    this.table?.renderRows();
+  }
   dsIssueSummeryList = new MatTableDataSource<IssuesummeryList>();
   dsIssueSummeryDetList = new MatTableDataSource<IssuesummeryDetList>();
-
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;

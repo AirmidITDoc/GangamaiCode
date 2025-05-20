@@ -29,8 +29,8 @@ export class ItemMovemnentComponent implements OnInit {
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     batchNo: any = "0"
-    TostoreId : any = "0" 
-    FromstoreId= this.accountService.currentUserValue.user.storeId;
+    TostoreId: any = "0"
+    FromstoreId = this.accountService.currentUserValue.user.storeId;
     itemId = "0"; //"77617"
 
 
@@ -77,7 +77,10 @@ export class ItemMovemnentComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-
+        this._ItemMovemnentService.ItemSearchGroup.get('ItemID')?.valueChanges.subscribe(value => {
+            this.itemId = value.itemName || "0";
+            this.getfilterdata();
+        });
     }
 
     onChangeFirst() {
