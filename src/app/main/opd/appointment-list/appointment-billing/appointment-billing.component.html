@@ -796,13 +796,14 @@
         </div>
 
         <!-- Modal footer  || savebtn-->
+          <!-- [disabled]="!totalChargeForm.valid || !chargeList.length" -->
         <div class="modal-footer">
             <div class="footer-navigation-container">
                 <div class="modal-footer-buttons">
                     <button type="button" class="btn btn-danger-outline" [mat-dialog-close]="true"
                         aria-label="Close dialog" matTooltip="Close">Close</button>
                     <button type="button" class="btn btn-primary"
-                        [disabled]="!totalChargeForm.valid || !chargeList.length"
+                        [disabled]="!chargeList.length" 
                         (click)="onsave()">Save</button>
                 </div>
             </div>

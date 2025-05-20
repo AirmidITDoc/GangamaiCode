@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { CurrentStockService } from '../current-stock.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -36,9 +36,15 @@ export class SalesReturnSummeryComponent implements OnInit {
   sIsLoading: string = "";
   registerObj: any;
 
+  tabIndex: number = 0;
+
+  @ViewChild(MatTable) table: MatTable<any>;
+
+  ngAfterViewInit() {
+    this.table?.renderRows();
+  }
   dsSalesRetSummeryList = new MatTableDataSource<SaleReturnssummeryList>();
   dsSalesRetSummeryDetList = new MatTableDataSource<SalesReturnsummeryDetList>();
-
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
@@ -62,13 +68,13 @@ export class SalesReturnSummeryComponent implements OnInit {
     this.getSalesReturnSummeryDetailsList();
   }
 
-   parseToDate(dateStr: string): Date | null {
-  if (!dateStr) return null;
-  const [datePart] = dateStr.split(' ');
-  const [day, month, year] = datePart.split('-').map(Number);
-  const date = new Date(year, month - 1, day);
-  return isNaN(date.getTime()) ? null : date;
-}
+  parseToDate(dateStr: string): Date | null {
+    if (!dateStr) return null;
+    const [datePart] = dateStr.split(' ');
+    const [day, month, year] = datePart.split('-').map(Number);
+    const date = new Date(year, month - 1, day);
+    return isNaN(date.getTime()) ? null : date;
+  }
 
   getSalesReturnSummeryList() {
     var vdata = {
