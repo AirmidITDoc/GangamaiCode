@@ -328,16 +328,10 @@
                             [(ngModel)]="gridConfig.filters[4].fieldValue">
                         </airmid-dropdown>
 
-                        <!-- <airmid-dropdown label="Item Name" formControlName="ItemCategory"
-                                [formGroup]="_ItemMovemnentService.ItemSearchGroup"
-                                 [mode]="autocompleteitem" (selectionChange)="selectChangeItem($event)"
-                                [(ngModel)]="gridConfig.filters[2].fieldValue">
-                            </airmid-dropdown> -->
                         <airmid-autocomplete label="Item Name" [formGroup]="_ItemMovemnentService.ItemSearchGroup"
                             formControlName="ItemID"
                             [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + TostoreId + '&ItemName='"
-                            (selectionChange)="selectChangeItem($event)" [(ngModel)]="gridConfig.filters[2].fieldValue"
-                            TextField="formattedText" ValueField="ItemId">
+                            (selectionChange)="selectChangeItem($event)" TextField="formattedText" ValueField="ItemId">
                         </airmid-autocomplete>
 
                         <mat-form-field appearance="outline">

@@ -108,7 +108,24 @@ export class CurrentStockComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
- this._CurrentStockService.dayWiseForm.get('start').setValue(new Date());
+        this._CurrentStockService.dayWiseForm.get('start').setValue(new Date());
+
+        this._CurrentStockService.SearchGroup.get('ItemCategory')?.valueChanges.subscribe(value => {
+            this.itemName = value.itemName || "%";
+            this.getfiltercurrentStock();
+        });
+        this._CurrentStockService.dayWiseForm.get('ItemCategory')?.valueChanges.subscribe(value => {
+            this.DaywiseitemName = value.itemId || "0";
+            this.getfilterdayWise();
+        });
+        this._CurrentStockService.ItemWiseFrom.get('ItemCategory')?.valueChanges.subscribe(value => {
+            this.SaleitemName = value.itemId || "0";
+            this.getfilterSales();
+        });
+        this._CurrentStockService.IssueItem.get('ItemCategory')?.valueChanges.subscribe(value => {
+            this.lastitemName = value.itemId || "0";
+            this.getfilterItem();
+        });
     }
 
     @ViewChild('eyeIcon1') eyeIcon1!: TemplateRef<any>;
@@ -157,10 +174,7 @@ export class CurrentStockComponent implements OnInit {
     }
 
     getfiltercurrentStock() {
-        debugger
-        console.log(this._CurrentStockService.SearchGroup.get('ItemCategory').value)
-        console.log(this.itemName)
-        // if(this._CurrentStockService.SearchGroup.get('ItemCategory').value=='%')
+        // debugger
         this.gridConfig = {
             apiUrl: "CurrentStock/StorewiseCurrentStockList",
             columnsList: this.allcurrentColumn,
@@ -185,16 +199,6 @@ export class CurrentStockComponent implements OnInit {
 
         this.getfiltercurrentStock();
     }
-    // selectChangeItem(obj: any) {
-    //     debugger
-    //     console.log(obj)
-    //     if (obj.value !== 0) {
-    //         this.itemName = obj.itemName
-    //     } else {
-    //         this.itemName = "%"
-    //     }
-    //     this.getfiltercurrentStock();
-    // }
 
     formattedText: any;
 

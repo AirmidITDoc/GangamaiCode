@@ -85,7 +85,7 @@ export class DoctornoteComponent implements OnInit {
   vRoomName: any;
   vDOA: any;
   OP_IP_Id: any;
-  vdocHandId:any;
+  vdocHandId: any;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -110,6 +110,7 @@ export class DoctornoteComponent implements OnInit {
   @ViewChild('docNote', { static: false }) grid: AirmidTableComponent;
   @ViewChild('Handover', { static: false }) grid1: AirmidTableComponent;
 
+  showDropdown = true;
   NewTemplate(row: any = null) {
     let that = this;
     const dialogRef = this._matDialog.open(NewTemplateComponent,
@@ -119,16 +120,18 @@ export class DoctornoteComponent implements OnInit {
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {
-      // if (result) {
+      if (result) {
         this.grid.bindGridData();
-      // }
+        this.showDropdown = false;
+        setTimeout(() => this.showDropdown = true, 100);
+      }
     });
   }
 
   allColumns = [
-    { heading: "Date", key: "tdate", sort: true, align: 'left', emptySign: 'NA'},
-    { heading: "Time", key: "ttime", sort: true, align: 'left', emptySign: 'NA'},
-    { heading: "Note", key: "doctorsNotes", sort: true, align: 'left', emptySign: 'NA', width:250 },
+    { heading: "Date", key: "tdate", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Time", key: "ttime", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Note", key: "doctorsNotes", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "CreatedBy", key: "createdby", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -148,11 +151,11 @@ export class DoctornoteComponent implements OnInit {
     { fieldName: "AdmId", fieldValue: "0", opType: OperatorComparer.Equals }
   ]
 
-  allColumnOfHandOver=[
-    { heading: "Date", key: "vDate", sort: true, align: 'left', emptySign: 'NA'},
-    { heading: "Time", key: "mTime", sort: true, align: 'left', emptySign: 'NA'},
+  allColumnOfHandOver = [
+    { heading: "Date", key: "vDate", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Time", key: "mTime", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Shift", key: "shiftInfo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "I", key: "patHandI", sort: true, align: 'left', emptySign: 'NA', width:200 },
+    { heading: "I", key: "patHandI", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "S", key: "patHandS", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "B", key: "patHandB", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "A", key: "patHandA", sort: true, align: 'left', emptySign: 'NA' },
@@ -173,14 +176,14 @@ export class DoctornoteComponent implements OnInit {
     } //Action 1-view, 2-Edit,3-delete
   ]
 
-  allFilterOfHandOver=[
+  allFilterOfHandOver = [
     { fieldName: "AdmId", fieldValue: "0", opType: OperatorComparer.Equals } //12
   ]
 
   ngOnInit(): void {
     this.myform = this._NursingStationService.createtemplateForm();
     this.mytemplteform = this._NursingStationService.createtemplateForm();
-    this.myNoteform=this._NursingStationService.createDoctorNoteForm();
+    this.myNoteform = this._NursingStationService.createDoctorNoteForm();
     this.searchFormGroup = this.createSearchForm();
   }
 
@@ -216,7 +219,7 @@ export class DoctornoteComponent implements OnInit {
   }
 
   getHandOverNotelist() {
-debugger
+    debugger
     this.gridConfig1 = {
       apiUrl: "Nursing/DoctorPatientHandoverList",
       columnsList: this.allColumnOfHandOver,
@@ -233,22 +236,22 @@ debugger
   }
 
   onEdit(row) {
-debugger
+    debugger
     console.log("data:", row)
     this.registerObj = row;
     this.vDescription = this.registerObj.doctorsNotes || '';
     this.myform.get('templateDesc').setValue(this.vDescription);
-    this.vDoctNoteId=this.registerObj.doctNoteId
+    this.vDoctNoteId = this.registerObj.doctNoteId
     this.IsAddFlag = true;
   }
 
   tempdesc: any = '';
-  docNoteTempId:any;
+  docNoteTempId: any;
 
   onChangetemplate(event) {
     console.log("Template:", event)
     this.tempdesc = event.templateDesc
-    this.docNoteTempId=event.docNoteTempId
+    this.docNoteTempId = event.docNoteTempId
     this.IsAddFlag = false;
   }
 
@@ -279,7 +282,7 @@ debugger
   }
 
   onSubmit() {
-debugger
+    debugger
     if (!this.vDescription || this.vDescription.trim() === '') {
       this.toastr.warning('Please enter template description', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -353,23 +356,23 @@ debugger
       return;
     }
 
-    if(!this.myform.invalid){
+    if (!this.myform.invalid) {
       if (!this.vdocHandId) {
 
         let submitData = {
-  
-            "docHandId": 0,
-            "admID": this.OP_IP_Id,
-            "tDate": formattedDate,
-            "tTime": formattedTime,
-            "shiftInfo": this.myform.get('HandOverType').value,
-            "patHandI": this.myform.get('staffName').value,
-            "patHandS": this.myform.get('Stable').value,
-            "patHandB": this.myform.get('SYMPTOMS').value,
-            "patHandA": this.myform.get('Assessment').value,
-            "patHandR": this.myform.get('Instruction').value,
-            "isAddedBy": this.accountService.currentUserValue.userId,
-          
+
+          "docHandId": 0,
+          "admID": this.OP_IP_Id,
+          "tDate": formattedDate,
+          "tTime": formattedTime,
+          "shiftInfo": this.myform.get('HandOverType').value,
+          "patHandI": this.myform.get('staffName').value,
+          "patHandS": this.myform.get('Stable').value,
+          "patHandB": this.myform.get('SYMPTOMS').value,
+          "patHandA": this.myform.get('Assessment').value,
+          "patHandR": this.myform.get('Instruction').value,
+          "isAddedBy": this.accountService.currentUserValue.userId,
+
         };
         console.log(submitData);
         this._NursingStationService.HandOverInsert(submitData).subscribe(response => {
@@ -377,7 +380,7 @@ debugger
             this.toastr.success('Record Saved Successfully.', 'Saved !', {
               toastClass: 'tostr-tost custom-toast-success',
             });
-          this.grid1.bindGridData();
+            this.grid1.bindGridData();
             this.onClose()
           }
           else {
@@ -403,9 +406,9 @@ debugger
           "patHandB": this.myform.get('SYMPTOMS').value,
           "patHandA": this.myform.get('Assessment').value,
           "patHandR": this.myform.get('Instruction').value,
-          "isAddedBy": this.accountService.currentUserValue.userId,      
-      };
-  
+          "isAddedBy": this.accountService.currentUserValue.userId,
+        };
+
         console.log(updateData);
         this._NursingStationService.HandOverUpdate(updateData).subscribe(response => {
           if (response) {
@@ -426,7 +429,7 @@ debugger
           });
         });
       }
-    }else{
+    } else {
       this.toastr.warning('please check from is invalid', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -443,13 +446,13 @@ debugger
 
   OnHandOverEdit(row) {
     console.log(row)
-    this.vdocHandId=row.docHandId
-    this.vHandOverType=row.shiftInfo
-    this.vStaffNursName=row.patHandI
-    this.vSYMPTOMS=row.patHandB
-    this.vInstruction=row.patHandR
-    this.VStable=row.patHandS
-    this.VAssessment=row.patHandA
+    this.vdocHandId = row.docHandId
+    this.vHandOverType = row.shiftInfo
+    this.vStaffNursName = row.patHandI
+    this.vSYMPTOMS = row.patHandB
+    this.vInstruction = row.patHandR
+    this.VStable = row.patHandS
+    this.VAssessment = row.patHandA
   }
 
   createSearchForm() {
@@ -502,9 +505,9 @@ debugger
     // this.myform.reset();
     this.myform.get('TemplateId').setValue('');
     this.myform.get('templateDesc').setValue('');
-    this.IsAddFlag = true 
+    this.IsAddFlag = true
     this.vDoctNoteId = null;
-    this.vDescription=null;
+    this.vDescription = null;
   }
 
   onClose() {
@@ -519,7 +522,7 @@ debugger
     this.myform.get('HandOverType').setValue('morning')
     this.dsHandOverNoteList.data = [];
     // this.HandOverNoteList = [];
-    this.IsAddFlag = true 
+    this.IsAddFlag = true
   }
   onClearPatientInfo() {
     this.vRegNo = '';

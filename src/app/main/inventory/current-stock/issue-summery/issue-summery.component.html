@@ -14,9 +14,10 @@
             </div>
         </div>
     </div>
-<mat-tab-group>
+<mat-tab-group [(selectedIndex)]="tabIndex">
     <mat-tab label=" Issue Summary List">
-        <div class="simple page-layout inner-scroll inner-sidebar right-sidebar" dynamicTableHeight>
+        <div class="simple page-layout inner-scroll inner-sidebar right-sidebar" dynamicTableHeight
+        *ngIf="tabIndex === 0" fusePerfectScrollbar>
           
             <div class="content">
         
@@ -102,7 +103,8 @@
     </mat-tab>
 
     <mat-tab label="Issue Details List">
-        <div class="simple page-layout inner-scroll inner-sidebar right-sidebar" dynamicTableHeight>
+        <div class="simple page-layout inner-scroll inner-sidebar right-sidebar" dynamicTableHeight
+        *ngIf="tabIndex === 1" fusePerfectScrollbar>
          
             <div class="content">
         
