@@ -1,12 +1,14 @@
-
-    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+   <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" style="width: 100%;">
 
         <mat-tab label="IP Browse Bill List">
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
 
-                <div class="info-badge-top border-bottom" fxLayout="row" fxLayoutAlign="center" flex>
+                <div class="info-badge-top border-bottom" fxLayout="row" fxLayoutAlign="left" flex>
 
                     <div fxLayout="row" fxLayoutAlign="end" class="gap-8">
 
@@ -141,7 +143,7 @@
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
 
-                <div class="info-badge-top border-bottom" fxLayout="row" fxLayoutAlign="center" flex>
+                <div class="info-badge-top border-bottom" fxLayout="row" fxLayoutAlign="left" flex>
 
                     <div fxLayout="row" fxLayoutAlign="end" class="gap-8">
 
@@ -154,112 +156,78 @@
                             <span class="green-600-fg">IP</span>
                         </div>
                         <div style="color: blue" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                            <mat-icon class="pill red-600 s-16">circle</mat-icon>
-                            <span class="red-600-fg">External</span>
+                            <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                            <span class="blue-600-fg">External</span>
                         </div>
 
                     </div>
                 </div>
-                <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <!-- <ng-template #patientTypetemp let-element>
-                                <div fxLayout="row" fxLayoutAlign="center center">
-                                    <mat-icon *ngIf="element.PatientTypeId=='1'" matTooltip="Patient Category Self">account_box
-                                    </mat-icon>
-            
-                                    <mat-icon *ngIf="element.PatientTypeId !='1'" matTooltip="Patient Category Company">business
-                                    </mat-icon>
-                                </div>
-                            </ng-template>
-                            <ng-template #Billstatus let-element>
-                                <div fxLayout="row" fxLayoutAlign="center center">
-                                    <mat-icon *ngIf="element.interimOrFinal=='0'" matTooltip="Final Bill"
-                                        class="pill green-600 s-16">circle</mat-icon>
-            
-                                    <mat-icon *ngIf="element.interimOrFinal=='1'" matTooltip="Intrim Bill"
-                                        class="pill orange-600 s-16">circle</mat-icon>
-                                </div>
-                            </ng-template>
-                            <ng-template #balancestatus let-element>
-                                <div fxLayout="row" fxLayoutAlign="center center">
-                                    <button mat-icon-button class="material-icons" *ngIf="element.balanceAmt !=0 "
-                                        (click)="Billpayment(element)" matTooltip="Settlement">
-                                        <mat-icon> payment </mat-icon>
-                                    </button>
-                                </div>
-                            </ng-template>
-            
-                            <ng-template #isCancelledstatus let-element>
-                                <div fxLayout="row" fxLayoutAlign="center center">
-                                    <mat-icon title="Cancelled Bill" *ngIf="element.isCancelled=='1'" class="pill red s-16"
-                                    matTooltip="Cancelled Bill">circle</mat-icon> 
-                                 
-                                </div>
-                            </ng-template>
-            
-            
-                            <ng-template #actionButtonTemplateIP let-element>
-                                <div fxLayout="row" fxLayoutAlign="center center"> 
-            
-                                    <button mat-icon-button matTooltip="Email">
-                                        <mat-icon>email</mat-icon>
-                                    </button>
-                                    <button mat-icon-button matTooltip="Message">
-                                        <mat-icon>message</mat-icon>
-                                    </button>
-                                    <button mat-icon-button matTooltip="Send message On WhatsApp">
-                                        <img width="500" height="20px" src="assets/images/logos/WhatsApp.png">
-                                    </button>
-                                    <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
-                                    (click)="$event.stopPropagation();">
-                                    <mat-icon class="secondary-text">more_vert</mat-icon>
-                                </button>
-                                <mat-menu #moreMenu="matMenu">
-                                    <ng-container *ngFor="let m of menuActions, let n of menuActions">
-                                        <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
-                                            <span>{{m}}</span>
-                                        </button>
-                                    </ng-container>
-                                </mat-menu>
-                                </div>
-                            </ng-template> -->
+                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                      
+                        <ng-template #patientTypetempReturn let-element>
+                            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="4px">
+                        
+                                <mat-icon *ngIf="element.oP_IP_Type==1" matTooltip="IP" 
+                                class="pill green-600 s-16">circle</mat-icon>
+                                <mat-icon *ngIf="element.oP_IP_Type==0" matTooltip="OP"
+                                 class="pill orange s-16">circle</mat-icon>
+                                <mat-icon *ngIf="element.oP_IP_Type==2" matTooltip="External"
+                                 class="pill blue s-16">circle</mat-icon>
+                            </div>
+                        </ng-template>
 
-                    <airmid-table [gridConfig]="gridConfig" class="content">
+                        <ng-template #actionButtonTemplateRetrun let-element>
+                            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="4px">
+                        
+                                <button mat-icon-button matTooltip="Print2" (click)="getPrint2(element)">
+                                    <mat-icon>print</mat-icon>
+                                </button>
+                                <button mat-icon-button matTooltip="View As Pdf" (click)="viewSalesPdf(element)">
+                                    <mat-icon>visibility</mat-icon>
+                                </button>
+                                <button mat-icon-button matTooltip="Send Bill On WhatsApp" (click)="getWhatsappshareSales(element)">
+                                    <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                                </button>
+                            </div>
+                        </ng-template>
+
+                    <airmid-table [gridConfig]="gridConfig2" class="content" (onSelectRow)="getsalesReturndetaillist($event)">
                         <ng-container filters>
-                            <form [formGroup]="_BrowsSalesBillService.userForm" fxLayout="column">
+                            <form [formGroup]="_BrowsSalesBillService.formReturn" fxLayout="column">
 
                                 <airmid-datepicker [formGroup]="_BrowsSalesBillService.formReturn"
                                     [isRangePicker]="true" formStartControlName="startdate1"
-                                    formEndControlName="enddate1" [(fromValue)]="gridConfig.filters[1].fieldValue"
-                                    [(toValue)]="gridConfig.filters[2].fieldValue"
-                                    (dateChange)="onChangeFirst()"></airmid-datepicker>
+                                    formEndControlName="enddate1" [(fromValue)]="gridConfig.filters[2].fieldValue"
+                                    [(toValue)]="gridConfig.filters[3].fieldValue"
+                                    (dateChange)="onChangeFirst_Retrun()"></airmid-datepicker>
 
 
                                 <airmid-dropdown label="Store Name" formControlName="StoreId"
                                     [formGroup]="_BrowsSalesBillService.formReturn"
                                     [validations]="getValidationMessages().StoreId" fxFlex [mode]="autocompletestore"
-                                    (keyup)="selectChangeStore($event)">
+                                    (keyup)="selectChangeStoreRetrun($event)">
                                 </airmid-dropdown>
 
                                 <airmid-textbox fxFlex label="Search RegNo" formControlName="RegNo"
-                                    [formGroup]="_BrowsSalesBillService.formReturn" (keyup)="onChangeFirst()"
+                                    [formGroup]="_BrowsSalesBillService.formReturn" (keyup)="onChangeFirst_Retrun()"
                                     [validations]="getValidationMessages().RegNo"></airmid-textbox>
 
                                 <airmid-textbox fxFlex label="Search First Name" formControlName="F_Name"
-                                    [formGroup]="_BrowsSalesBillService.formReturn" (keyup)="onChangeFirst()"
+                                    [formGroup]="_BrowsSalesBillService.formReturn" (keyup)="onChangeFirst_Retrun()"
                                     [validations]="getValidationMessages().F_Name"></airmid-textbox>
 
                                 <airmid-textbox fxFlex label="Search Last Name" formControlName="L_Name"
-                                    [formGroup]="_BrowsSalesBillService.formReturn" (keyup)="onChangeFirst()"
+                                    [formGroup]="_BrowsSalesBillService.formReturn" (keyup)="onChangeFirst_Retrun()"
                                     [validations]="getValidationMessages().L_Name"></airmid-textbox>
 
-                                <airmid-textbox fxFlex label="Search SalesNo" formControlName="SalesNo"
-                                    [formGroup]="_BrowsSalesBillService.formReturn" (keyup)="onChangeFirst()"
+                                <airmid-textbox fxFlex label="Search Sales Retrun No" formControlName="SalesNo"
+                                    [formGroup]="_BrowsSalesBillService.formReturn" (keyup)="onChangeFirst_Retrun()"
                                     [validations]="getValidationMessages().SalesNo"></airmid-textbox>
 
 
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                     <mat-radio-group formControlName="OP_IP_Type" name="OP_IP_Type"
-                                        (change)="onChangeFirst()" fxLayout="row">
+                                        (change)="onChangeFirst_Retrun()" fxLayout="row">
                                         <mat-radio-button value="3"> All</mat-radio-button>
                                         <mat-radio-button value="0">OP</mat-radio-button>
                                         <mat-radio-button value="1">IP</mat-radio-button>
@@ -271,8 +239,19 @@
                         </ng-container>
                     </airmid-table>
                 </div>
+
+                    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
+                    *ngIf="isShowDetailTableRetrun">
+                    <airmid-table [gridConfig]="gridConfig3" class="content" #grid3 [ShowFilter]="false"
+                        [ShowButtons]="false">
+                    </airmid-table>
+                </div>
             </div>
         </mat-tab>
+
+
+
+
 
         <mat-tab label="Patient List">
             <div fusePerfectScrollbar
@@ -389,6 +368,7 @@
         </mat-tab>
 
     </mat-tab-group>
+    </div>
 
 
  

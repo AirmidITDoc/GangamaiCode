@@ -34,12 +34,12 @@ export class IpSalesReturnService {
   
   CreateusefromGroup() {
     return this._formBuilder.group({
-      RegID: ['',[Validators.required]],
       Op_ip_id: ['1'],
       PaymentType:['CashPay'],
       ItemName:['',[Validators.required]] ,
-      ReturnQty:[0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]] ,
-      TotalQty:[0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]] ,
+      ReturnQty:['',[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]] ,
+      TotalQty:[0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]] , 
+      PatientName: ['',[Validators.required]]
     });
   }
 
@@ -61,11 +61,11 @@ export class IpSalesReturnService {
   }
 
   public InsertCreditSalesReturn(employee){
-    return this._httpClient.post("Pharmacy/InsertSalesReturnCredit", employee)
+    return this._httpClient1.PostData("SalesReturn/SalesReturnWithCredit", employee)
   }
   
   public InsertCashSalesReturn (employee){
-    return this._httpClient.post("Pharmacy/InsertSalesReturnPaid", employee)
+    return this._httpClient1.PostData("SalesReturn/SalesReturnWithCash", employee)
   }
 
   // Retrieve_BrowseSalesBill
