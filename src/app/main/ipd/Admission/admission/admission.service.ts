@@ -127,7 +127,7 @@ export class AdmissionService {
             AdmissionDate: [(new Date()).toISOString()],
             AdmissionTime: [(new Date()).toISOString()],
             PatientTypeId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            hospitalId: [0],
+            hospitalId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             DocNameId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             RefDocNameId: 0,
             DischargeDate: "1900-01-01",

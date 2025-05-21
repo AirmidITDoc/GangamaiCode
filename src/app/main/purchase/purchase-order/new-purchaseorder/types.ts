@@ -139,6 +139,16 @@ export interface FinalFormModel {
   Remark: string;
   PaymentMode: number;
   PaymentTerm:number;
+
+  FinalDiscAmount: string;
+FinalTotalAmount: string;
+// VatAmount: number;
+FinalNetAmount: string;
+
+totalAmount: string;
+vatAmount: string;
+discAmount: string;
+netAmount: string;
 }
 export enum ToastType {
   SUCCESS = 'success',

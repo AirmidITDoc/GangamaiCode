@@ -39,13 +39,12 @@ export class WorkOrderComponent implements OnInit {
 
   SupplierId="3";
   StoreId="2";
-  fromDate = "2025-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  toDate = "2025-04-27"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
   ngAfterViewInit() {
-   
-    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+   this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
   }
 
@@ -111,10 +110,8 @@ export class WorkOrderComponent implements OnInit {
                      data: row
                  });
              dialogRef.afterClosed().subscribe(result => {
-                 if (result) {
-                     that.grid.bindGridData();
-                 }
-             });
+              that.grid.bindGridData();
+              });
          }
 
          OnPrint(element){
@@ -167,5 +164,25 @@ export class WorkOrderComponent implements OnInit {
             this.grid.bindGridData();
         
           }
- }
+
+            OnEdit(contact) {
+              console.log(contact)
+            
+                const dialogRef = this._matDialog.open(UpdateWorkorderComponent,
+                  {
+                   maxWidth: "100%",
+                  height: '95%',
+                  width: '95%',
+                    data: {
+                      Obj: contact
+                    }
+                  });
+                dialogRef.afterClosed().subscribe(result => {
+                  console.log('The dialog was closed - Insert Action', result);
+                  this.grid.bindGridData();
+                });
+              }            
+             
+            }
+ 
  

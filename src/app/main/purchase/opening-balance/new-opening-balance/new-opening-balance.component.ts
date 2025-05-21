@@ -119,122 +119,120 @@ export class NewOpeningBalanceComponent implements OnInit {
   }
   vlastDay: string = '';
   lastDay2: string = '';
-   calculateLastDay() {
-         const inputDate = this.OPeningtemForm.get("ExpDate").value; 
-         // // Reset values if input is empty
-         // if (!inputDate) {
-         //     this.vlastDay = '';
-         //     this.lastDay2 = '';
-         //     return;
-         // } 
-         // // If input is already in DD/MM/YYYY format, just update the variables
-         // if (inputDate.length === 10 && inputDate.includes('/')) {
-         //     const [day, month, year] = inputDate.split('/');
-         //     this.vlastDay = inputDate;
-         //     this.lastDay2 = `${year}/${month}/${day}`;
-         //     return;
-         // } 
-         // // Handle MMYYYY format
-         // if (inputDate.length === 6) {
-         //     // Check if input contains only numbers
-         //     if (!/^\d+$/.test(inputDate)) {
-         //         this.resetDateAndShowError('Please enter only numbers in MMYYYY format');
-         //         return;
-         //     } 
-         //     const month = +inputDate.substring(0, 2);
-         //     const year = +inputDate.substring(2, 6); 
-         //     // Validate month range
-         //     if (month < 1 || month > 12) {
-         //         this.resetDateAndShowError('Invalid month. Month should be between 01 and 12');
-         //         return;
-         //     }
- 
-         //     // Validate year (assuming reasonable year range)
-         //     if (year < 1900) {
-         //         this.resetDateAndShowError('Invalid year. Please enter a valid year');
-         //         return;
-         //     }
- 
-         //     // Calculate last day of the month
-         //     const lastDay = this.getLastDayOfMonth(month, year);
-         //     this.vlastDay = `${this.pad(lastDay)}/${this.pad(month)}/${year}`;
-         //     this.lastDay2 = `${year}/${this.pad(month)}/${this.pad(lastDay)}`;
-         //     this.userFormGroup.get('ExpDate').setValue(this.vlastDay);
-         // } else {
-         //     this.resetDateAndShowError('Please enter date in MMYYYY format');
-         // } 
-     
-         
-             const numericPattern = /^[0-9]+$/; 
-             const CurrentDate = new Date(); 
-             const Currentmonths = new Date(); 
-             const currentMonth = Currentmonths.getMonth();
-             console.log(currentMonth)
-             const currentYear = CurrentDate.getFullYear();
-             console.log(currentYear)   
-     debugger
-             if ((inputDate && inputDate.length === 6) && numericPattern.test(inputDate)) {
-             const month = +inputDate.substring(0, 2);
-             const year = +inputDate.substring(2, 6);  
-         
-             if (year <= currentYear) {
-                 if (month <= currentMonth) {
-                     Swal.fire({
-                         icon: "warning",
-                         title: "This item is already expired",
-                         showConfirmButton: false,
-                         timer: 1500
-                     });
-                     this.vlastDay = '';
-                      this.OPeningtemForm.get('ExpDate').setValue(this.vlastDay)
-                     return
-                 }
-                 if (month > 12 && month <= 0) {
-                     this.vlastDay = '';
-                     this.OPeningtemForm.get('ExpDate').setValue(this.vlastDay)
-                     this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !', {
-                         toastClass: 'tostr-tost custom-toast-warning',
-                     });
-                     return;
-                 }
-                 const lastDay = this.getLastDayOfMonth(month, year);
-                 this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
-                 this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
-                 const newuserDate = this.datePipe.transform(this.lastDay2, 'dd/MM/YYYY')
-                 this.OPeningtemForm.get('ExpDate').setValue(this.vlastDay) 
-                   const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
-                         if (QtyElement) {
-                             QtyElement.focus();
-                         } 
- 
-             } else {
-                 if (month > 12 && month <= 0) {
-                     this.vlastDay = '';
-                     this.OPeningtemForm.get('ExpDate').setValue(this.vlastDay)
-                     this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !', {
-                         toastClass: 'tostr-tost custom-toast-warning',
-                     });
-                     return;
-                 }
-                 const lastDay = this.getLastDayOfMonth(month, year);
-                 this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
-                 this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
-                 this.OPeningtemForm.get('ExpDate').setValue(this.vlastDay)
-                  const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
-                         if (QtyElement) {
-                             QtyElement.focus();
-                         } 
-             } 
-         } else {  
-             this.vlastDay = '';
-             this.OPeningtemForm.get('ExpDate').setValue(this.vlastDay)
-             this.toastr.warning('Please enter only numbers in MMYYYY format', 'Warning !', {
-                 toastClass: 'tostr-tost custom-toast-warning',
-             });
-             return;
-         }
-     
-     }
+  calculateLastDay() {
+    const inputDate = this.OPeningtemForm.get("ExpDate").value;
+    // // Reset values if input is empty
+    // if (!inputDate) {
+    //     this.vlastDay = '';
+    //     this.lastDay2 = '';
+    //     return;
+    // } 
+    // // If input is already in DD/MM/YYYY format, just update the variables
+    // if (inputDate.length === 10 && inputDate.includes('/')) {
+    //     const [day, month, year] = inputDate.split('/');
+    //     this.vlastDay = inputDate;
+    //     this.lastDay2 = `${year}/${month}/${day}`;
+    //     return;
+    // } 
+    // // Handle MMYYYY format
+    // if (inputDate.length === 6) {
+    //     // Check if input contains only numbers
+    //     if (!/^\d+$/.test(inputDate)) {
+    //         this.resetDateAndShowError('Please enter only numbers in MMYYYY format');
+    //         return;
+    //     } 
+    //     const month = +inputDate.substring(0, 2);
+    //     const year = +inputDate.substring(2, 6); 
+    //     // Validate month range
+    //     if (month < 1 || month > 12) {
+    //         this.resetDateAndShowError('Invalid month. Month should be between 01 and 12');
+    //         return;
+    //     }
+
+    //     // Validate year (assuming reasonable year range)
+    //     if (year < 1900) {
+    //         this.resetDateAndShowError('Invalid year. Please enter a valid year');
+    //         return;
+    //     }
+
+    //     // Calculate last day of the month
+    //     const lastDay = this.getLastDayOfMonth(month, year);
+    //     this.vlastDay = `${this.pad(lastDay)}/${this.pad(month)}/${year}`;
+    //     this.lastDay2 = `${year}/${this.pad(month)}/${this.pad(lastDay)}`;
+    //     this.userFormGroup.get('ExpDate').setValue(this.vlastDay);
+    // } else {
+    //     this.resetDateAndShowError('Please enter date in MMYYYY format');
+    // } 
+
+
+    const numericPattern = /^[0-9]+$/;
+    const CurrentDate = new Date();
+    const Currentmonths = new Date();
+    const currentMonth = Currentmonths.getMonth();
+    console.log(currentMonth)
+    const currentYear = CurrentDate.getFullYear();
+    console.log(currentYear)
+    debugger
+    if ((inputDate && inputDate.length === 6) && numericPattern.test(inputDate)) {
+      const month = +inputDate.substring(0, 2);
+      const year = +inputDate.substring(2, 6);
+
+      if (year >= currentYear) {
+        if (month <= currentMonth && year == currentYear) {
+          Swal.fire({
+            icon: "warning",
+            title: "This item is already expired",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          this.vlastDay = '';
+          this.OPeningtemForm.get('ExpDate').setValue(this.vlastDay)
+          return
+        }
+        if (month > 12 && month <= 0) {
+          this.vlastDay = '';
+          this.OPeningtemForm.get('ExpDate').setValue(this.vlastDay)
+          this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        }
+        const lastDay = this.getLastDayOfMonth(month, year);
+        this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
+        this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
+        const newuserDate = this.datePipe.transform(this.lastDay2, 'dd/MM/YYYY')
+        this.OPeningtemForm.get('ExpDate').setValue(this.vlastDay)
+        const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+        if (QtyElement) {
+          QtyElement.focus();
+        }
+
+      } else {
+        Swal.fire({
+          icon: "warning",
+          title: "This item is already expired",
+          showConfirmButton: false,
+          timer: 1500
+        });
+        this.vlastDay = '';
+        this.OPeningtemForm.get('ExpDate').setValue(this.vlastDay)
+        return
+
+      }
+    } else {
+      this.vlastDay = '';
+      this.OPeningtemForm.get('ExpDate').setValue(this.vlastDay)
+      this.toastr.warning('Please enter only numbers in MMYYYY format', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+
+      const ExpDateElement = document.querySelector(`[name='ExpDate']`) as HTMLElement;
+        if (ExpDateElement) {
+            ExpDateElement.focus();
+        }
+  }
 
   getLastDayOfMonth(month: number, year: number): number {
     return new Date(year, month, 0).getDate();
@@ -353,7 +351,7 @@ export class NewOpeningBalanceComponent implements OnInit {
       openingBalanceParamInsertObj['addedby'] = this._loggedService.currentUserValue.userId,
         openingBalanceParamInsertObj['updatedby'] = this._loggedService.currentUserValue.userId,
         // openingBalanceParamInsertObj['openingId'] = 0;
-      openingBalanceParamInsertdetail.push(openingBalanceParamInsertObj);
+        openingBalanceParamInsertdetail.push(openingBalanceParamInsertObj);
     });
 
     let insert_Update_OpeningTran_ItemStock_1 = {};
@@ -376,7 +374,7 @@ export class NewOpeningBalanceComponent implements OnInit {
       this.toastr.success(response);
       // if (response) {
       //   this.viewgetReportPdf(response)
-         this._matDialog.closeAll();
+      this._matDialog.closeAll();
       // }
     });
   }

@@ -23,110 +23,107 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-            <div class="modal-body-container">
+            <div class="modal-body-container" fusePerfectScrollbar>
                 <div fxLayout="column" class="h-100-p">
                     <mat-accordion>
                         <mat-expansion-panel expanded>
                             <mat-expansion-panel-header>
                                 <mat-panel-title>
                                     <div class="panel-title" fxLayout="row" fxLayoutAlign="space-between center">
-                                        <span>Purchase Order</span>
+                                        <span>Work Order</span>
                                     </div>
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
                             <!-- <div fxLayout="column" fxLayout="row" fxLayoutAlign="start none"> -->
-                                <div fxLayout="row" class="gap-2">
-                                    <form [formGroup]="WorkOrderStoreForm" class="p-0">
+                            <div fxLayout="row">
+                                <form [formGroup]="WorkOrderStoreForm" class="gap-8">
+                                    <input name="WorkId" formControlName="workId" [(ngModel)]="vWorkId" type="hidden">
 
-                                        <airmid-dropdown label="Store Name" formControlName="StoreId" fxFlex
-                                            [formGroup]="WorkOrderStoreForm" [mode]="autocompletestore"
-                                            (selectionChange)="selectChangeStore($event)">
-                                        </airmid-dropdown>
-                                    </form>
-                                    <form [formGroup]="WorkorderItemForm">
-                                        <airmid-dropdown label="Supplier Name | Code" formControlName="SupplierName"
-                                            fxFlex="35%" [formGroup]="WorkorderItemForm" [mode]="autocompleteSupplier"
-                                            (selectionChange)="getSelectedSupplierObj($event)"></airmid-dropdown>
+                                    <airmid-dropdown label="Store Name" formControlName="StoreId" fxFlex
+                                        [formGroup]="WorkOrderStoreForm" [mode]="autocompletestore"
+                                        (selectionChange)="selectChangeStore($event)">
+                                    </airmid-dropdown>
+                                    <!-- </form> -->
+                                    <!-- <form [formGroup]="WorkorderItemForm" class="gap-8"> -->
+                                    <airmid-dropdown label="Supplier Name | Code" formControlName="SupplierName"
+                                        fxFlex="50%" [formGroup]="WorkOrderStoreForm" [mode]="autocompleteSupplier"
+                                        (selectionChange)="getSelectedSupplierObj($event)"></airmid-dropdown>
 
-                                        <!-- [validations]="getValidationMessages().GSTType" -->
-                                        <airmid-dropdown fxFlex="25%" label="Select GST Type" formControlName="GSTType"
-                                            ValueField="value" [formGroup]="WorkorderItemForm"
-                                            (selectionChange)="onGSTTypeChange($event)"
-                                            [mode]="autocompleteModeGSTType"></airmid-dropdown>
+                                    <!-- [validations]="getValidationMessages().GSTType" -->
+                                    <airmid-dropdown fxFlex="45%" label="Select GST Type" formControlName="GSTType"
+                                        ValueField="value" [formGroup]="WorkOrderStoreForm"
+                                        (selectionChange)="onGSTTypeChange($event)"
+                                        [mode]="autocompleteModeGSTType"></airmid-dropdown>
 
+                                </form>
+                            </div>
 
-                                        <app-common-date [screenFrom]="screenFromString"
-                                            (dateTimeEventEmitter)="getDateTime($event)">
-                                        </app-common-date>
-                                    </form>
-                                </div>
+                            <div fxLayout="row" class="gap-8">
+                                <form [formGroup]="WorkorderItemForm" class="gap-8">
 
-                                <div fxLayout="row" class="gap-2">
-                                    <form [formGroup]="WorkorderItemForm">
-                                        <input name="WorkId" formControlName="WorkId" [(ngModel)]="vWorkId"
-                                            type="hidden">
+                                    <airmid-autocomplete label="Item Name (enter 2 char)"
+                                        [formGroup]="WorkorderItemForm" formControlName="ItemName"
+                                        placeholderText="Item Name (enter 2 char)" fxFlex="15%"
+                                        ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
+                                        (selectionChange)="getSelectedItem($event)" TextField="formattedText"
+                                        ValueField="itemId" (onClearSelection)="ItemFromReset()"></airmid-autocomplete>
 
-                                        <airmid-autocomplete label="Item Name (enter 2 char)"
-                                            [formGroup]="WorkorderItemForm" formControlName="ItemName"
-                                            placeholderText="Item Name (enter 2 char)" fxFlex="15%"
-                                            ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
-                                            (selectionChange)="getSelectedItem($event)" TextField="formattedText"
-                                            ValueField="itemId"
-                                            (onClearSelection)="ItemFromReset()"></airmid-autocomplete>
+                                    <!-- <airmid-textbox fxFlex="6%" label=" Qty" formControlName="Qty"
+                                        (valueChange)="calculateTotalAmount()" [(ngModel)]="vQty"
+                                        [formGroup]="WorkorderItemForm" type="number"
+                                        (keypress)="keyPressAlphanumeric($event)" placeholder="Qty"></airmid-textbox> -->
 
-                                        <airmid-textbox fxFlex="7%" label=" Qty" formControlName="Qty"
-                                            (valueChange)="calculateTotalAmount()" [(ngModel)]="vQty"
-                                            [formGroup]="WorkorderItemForm" type="number"
-                                            (keypress)="keyPressAlphanumeric($event)"
-                                            placeholder="Qty"></airmid-textbox>
+                                    <airmid-textbox fxFlex="6%" label="Qty" formControlName="Qty"
+                                        (valueChange)="calculateTotalAmount()" (keypress)="keyPressAlphanumeric($event)"
+                                        [formGroup]="WorkorderItemForm" [maxLength]="10">
+                                    </airmid-textbox>
 
 
-                                        <airmid-textbox fxFlex="7%" label=" Rate" formControlName="UnitRate"
-                                            (valueChange)="calculateTotalAmount()" [(ngModel)]="vRate"
-                                            [formGroup]="WorkorderItemForm" type="number"
-                                            (keypress)="keyPressAlphanumeric($event)"
-                                            placeholder="UnitRate"></airmid-textbox>
+                                    <airmid-textbox fxFlex="6%" label=" Rate" formControlName="UnitRate"
+                                        (valueChange)="calculateTotalAmount()" [(ngModel)]="vRate"
+                                        [formGroup]="WorkorderItemForm" type="number"
+                                        (keypress)="keyPressAlphanumeric($event)"
+                                        placeholder="UnitRate"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="7%" label=" TotalAmount" formControlName="TotalAmount"
-                                            [(ngModel)]="vTotalAmount" [formGroup]="WorkorderItemForm" type="number"
-                                            placeholder="UnitRate"></airmid-textbox>
-
-
-                                        <airmid-textbox fxFlex="7%" label=" Disc" formControlName="Disc"
-                                            (valueChange)="calculateDiscperAmount()" [(ngModel)]="vDis"
-                                            [formGroup]="WorkorderItemForm" type="number"
-                                            (keypress)="keyPressAlphanumeric($event)"
-                                            placeholder="Disc"></airmid-textbox>
+                                    <airmid-textbox fxFlex="6%" label=" TotalAmount" formControlName="TotalAmount"
+                                        [(ngModel)]="vTotalAmount" [formGroup]="WorkorderItemForm" type="number"
+                                        [readonly]="true" placeholder="UnitRate"></airmid-textbox>
 
 
-                                        <airmid-textbox fxFlex="7%" label=" Disc Amount" formControlName="DiscAmt"
-                                            [(ngModel)]="vDiscAmt" [formGroup]="WorkorderItemForm" type="number"
-                                            (keypress)="keyPressAlphanumeric($event)"
-                                            placeholder=" Disc Amount"></airmid-textbox>
-
-                                        <airmid-textbox fxFlex="7%" label="GST%" formControlName="GST"
-                                            [(ngModel)]="vGST" [formGroup]="WorkorderItemForm" type="number"
-                                            (keypress)="keyPressAlphanumeric($event)"
-                                            placeholder="GST"></airmid-textbox>
-
-                                        <airmid-textbox fxFlex="7%" label="GST Amt" formControlName="GSTAmount"
-                                            [(ngModel)]="vGST" [formGroup]="WorkorderItemForm" type="number"
-                                            (keypress)="keyPressAlphanumeric($event)"
-                                            placeholder="GST Amt"></airmid-textbox>
-
-                                        <airmid-textbox fxFlex="10%" label="Net Amount" formControlName="NetAmount"
-                                            [(ngModel)]="vNetAmount" [formGroup]="WorkorderItemForm" type="number"
-                                            placeholder="Net Amount"></airmid-textbox>
+                                    <airmid-textbox fxFlex="6%" label=" Disc" formControlName="Disc"
+                                        (valueChange)="calculateDiscperAmount()" [(ngModel)]="vDis"
+                                        [formGroup]="WorkorderItemForm" type="number"
+                                        (keypress)="keyPressAlphanumeric($event)" placeholder="Disc"></airmid-textbox>
 
 
-                                        <div matTooltip="Select All Value to enable this button!!">
-                                            <button class="btn btn-primary btn-with-icon py-8" (click)="onAdd()"
-                                                [disabled]="WorkorderItemForm.invalid" #addbutton>
-                                                <mat-icon>add</mat-icon>
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
+                                    <airmid-textbox fxFlex="6%" label=" Disc Amount" formControlName="DiscAmount"
+                                        [(ngModel)]="vDiscAmt" [formGroup]="WorkorderItemForm" type="number"
+                                        (keypress)="keyPressAlphanumeric($event)"
+                                        placeholder=" Disc Amount"></airmid-textbox>
+
+                                    <airmid-textbox fxFlex="6%" label="GST%" formControlName="GST" [(ngModel)]="vGST"
+                                        [formGroup]="WorkorderItemForm" type="number"
+                                        (valueChange)="calculateDiscperAmount()" (keypress)="keyPressAlphanumeric($event)"
+                                        placeholder="GST"></airmid-textbox>
+
+                                    <airmid-textbox fxFlex="6%" label="GST Amt" formControlName="GSTAmount"
+                                        [(ngModel)]="vGSTAmt" [formGroup]="WorkorderItemForm" type="number"
+                                        (keypress)="keyPressAlphanumeric($event)"
+                                        placeholder="GST Amt"></airmid-textbox>
+
+                                    <airmid-textbox fxFlex="7%" label="Net Amount" formControlName="NetAmount"
+                                        [(ngModel)]="vNetAmount" [formGroup]="WorkorderItemForm" type="number"
+                                        placeholder="Net Amount"></airmid-textbox>
+
+
+                                    <div matTooltip="Select All Value to enable this button!!">
+                                        <button class="btn btn-primary btn-with-icon py-8" (click)="onAdd()"
+                                            [disabled]="WorkorderItemForm.invalid" #addbutton>
+                                            <mat-icon>add</mat-icon>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
 
                             <!-- </div> -->
                         </mat-expansion-panel>
@@ -152,21 +149,6 @@
                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-300">
                                     {{element.ItemName}} </mat-cell>
                             </ng-container>
-
-
-                            <!-- <ng-container matColumnDef="Qty">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                    class="w-80 border-right">Qty
-                                </mat-header-cell>
-                                <mat-cell class="w-80 border-right" *matCellDef="let contact" fxShow.gt-sm>
-                                    <mat-form-field appearance="legacy">
-
-                                        <input matInput [(ngModel)]="contact.Qty" type="text" OnlyNumber
-                                            (keyup)="getCellCalculation(contact,contact.Qty)"
-                                            (keypress)="keyPressAlphanumeric($event)">
-                                    </mat-form-field>
-                                </mat-cell>
-                            </ng-container> -->
 
                             <ng-container matColumnDef="Qty">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
@@ -197,7 +179,7 @@
                             </ng-container>
 
 
-                          
+
                             <ng-container matColumnDef="TotalAmount">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">
                                     TotalAmount </mat-header-cell>
@@ -205,7 +187,7 @@
                                     {{element.TotalAmount | number:'1.2-2'}} </mat-cell>
                             </ng-container>
 
-                       
+
                             <!-- <ng-container matColumnDef="Disc">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                     class="w-80 border-right">Disc%
@@ -222,9 +204,9 @@
                             </ng-container> -->
 
                             <ng-container matColumnDef="DiscPer">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100"
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150"
                                     fxShow.gt-sm>Disc%</mat-header-cell>
-                                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-100">
+                                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-150">
                                     <mat-form-field appearance="fill">
                                         <input matInput [(ngModel)]="contact.DiscPer" [id]="'DiscPer' + index"
                                             [disabled]="contact.IsVerifiedUserId > 0"
@@ -237,10 +219,10 @@
                                 </mat-cell>Cell
                             </ng-container>
 
-                            <ng-container matColumnDef="DiscAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
+                            <ng-container matColumnDef="DiscAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-150">
                                     DiscAmount </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">
                                     {{element.DiscAmount | number:'1.2-2'}} </mat-cell>
                             </ng-container>
 
@@ -251,11 +233,11 @@
                                     {{element.VATPer}}% </mat-cell>
                             </ng-container> -->
 
-                          
+
                             <ng-container matColumnDef="Vat">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100"
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150"
                                     fxShow.gt-sm>GST%</mat-header-cell>
-                                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-100">
+                                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-150">
                                     <mat-form-field appearance="fill">
                                         <input matInput [(ngModel)]="contact.VATPer" [id]="'VATPer' + index"
                                             (input)="getCellCalculation(contact)"
@@ -268,16 +250,16 @@
                             </ng-container>
 
                             <ng-container matColumnDef="VatAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-150">
                                     GSTAmount </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">
                                     {{element.VATAmount | number:'1.2-2'}} </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="NetAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-150">
                                     NetAmount </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">
                                     {{element.NetAmount | number:'1.2-2'}} </mat-cell>
                             </ng-container>
 
@@ -297,9 +279,9 @@
 
                             <mat-header-row class="accent min-width-1000"
                                 *matHeaderRowDef="displayedColumnsnew; sticky: true"></mat-header-row>
-                            <mat-row *matRowDef="let contact; columns: displayedColumnsnew; let i = index" tabindex="999"
-                                class="contact min-width-1000" [@animate]="{ value: '*', params: { y: '100%' } }"
-                                appHighlight></mat-row>
+                            <mat-row *matRowDef="let contact; columns: displayedColumnsnew; let i = index"
+                                tabindex="999" class="contact min-width-1000"
+                                [@animate]="{ value: '*', params: { y: '100%' } }" appHighlight></mat-row>
                             <mat-footer-row *matFooterRowDef="['loading']"
                                 [ngClass]="{ hide: !(sIsLoading == 'loading-data') }"></mat-footer-row>
                             <mat-footer-row *matFooterRowDef="['noData']"
@@ -356,20 +338,20 @@
                                             [formGroup]="WorkorderFinalForm" type="text"
                                             placeholder="Remark"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="15%" label="Total DiscAmount"  [(ngModel)]="FinalDiscAmount"
-                                            formControlName="FinalDiscAmount" [formGroup]="WorkorderFinalForm"
-                                            type="number" placeholder="Total DiscAmount"></airmid-textbox>
+                                        <airmid-textbox fxFlex="15%" label="Total DiscAmount"
+                                            [(ngModel)]="FinalDiscAmount" formControlName="discAmount"
+                                            [formGroup]="WorkorderFinalForm" type="number"
+                                            placeholder="Total DiscAmount"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="15%" label="Total Amount"
-                                            formControlName="FinalTotalAmount" [formGroup]="WorkorderFinalForm"
-                                            type="number" [(ngModel)]="FinalTotalAmount"
-                                            placeholder="Total Amount"></airmid-textbox>
+                                        <airmid-textbox fxFlex="15%" label="Total Amount" formControlName="totalAmount"
+                                            [formGroup]="WorkorderFinalForm" type="number"
+                                            [(ngModel)]="FinalTotalAmount" placeholder="Total Amount"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="15%" label="Total GSTAmount" formControlName="VatAmount"
+                                        <airmid-textbox fxFlex="15%" label="Total GSTAmount" formControlName="vatAmount"
                                             [formGroup]="WorkorderFinalForm" type="number" [(ngModel)]="FinalVatAmount"
                                             placeholder="Total GSTAmount"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="15%" label="NET Amount" formControlName="FinalNetAmount"
+                                        <airmid-textbox fxFlex="15%" label="NET Amount" formControlName="netAmount"
                                             [formGroup]="WorkorderFinalForm" type="number" [(ngModel)]="FinalNetAmount"
                                             placeholder="FinalNetAmount"></airmid-textbox>
 
@@ -377,22 +359,21 @@
                                     </div>
                                 </form>
                             </div>
-                            <div class="modal-footer">
-                                <div class="footer-navigation-container">
-                                    <div class="modal-footer-buttons">
-                                        <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
-                                        <button type="button" class="btn btn-primary" [disabled]="false"
-                                            (click)="OnSave()">Save</button>
-                                    </div>
-                                </div>
-                            </div>
+
                         </mat-expansion-panel>
                     </mat-accordion>
                 </div>
             </div>
 
         </div>
-        <!-- Modal footer -->
-
+        <div class="modal-footer">
+            <div class="footer-navigation-container">
+                <div class="modal-footer-buttons">
+                    <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
+                    <button type="button" class="btn btn-primary" [disabled]="false" (click)="OnSave()">Save</button>
+                </div>
+            </div>
+        </div>
     </div>
+
 </div>

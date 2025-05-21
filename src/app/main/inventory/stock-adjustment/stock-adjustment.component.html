@@ -86,7 +86,7 @@
                                             <input matInput [(ngModel)]="contact.batchEdit" [id]="'batchEdit' + index"
                                                 (input)="OneditBatch(contact)" />
                                         </mat-form-field>
-                                        <button (click)="OnSaveBatchAdj()" matTooltip="Save">
+                                        <button (click)="OnSaveBatch()" matTooltip="Save">
                                             <mat-icon title="Save Record"
                                                 class="active-icon green-600 s-16">check</mat-icon>
                                         </button>
@@ -121,58 +121,26 @@
                                 </mat-cell>
                             </ng-container>
 
-                            <!-- <ng-container matColumnDef="expDateEdit">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                    <ng-container *ngIf="!contact.Expeditable; else showInput">
-                                        <button mat-icon-button (click)="ExpDateenableEditing(contact)"
-                                            class="clear-button">
-                                            <mat-icon>edit</mat-icon></button>
-                                    </ng-container>
-                                    <ng-template #showInput>
-                                        <mat-form-field appearance="legacy" class="w-80">
-                                            <input matInput #inputField placeholder="mmyyyy"
-                                                [(ngModel)]="contact.expDateEdit"
-                                                (blur)="ExpDatedisableEditing(contact)"
-                                                (keyup)="CellcalculateLastDay(contact,inputField.value)"
-                                                autocomplete="off">
-                                        </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <buttom mati-icon-button (click)="OnSaveBatchAdj()" matTooltip="Save">
-                                            <mat-icon title="Save Reocrd"
-                                                class="active-icon green-600 s-16">check</mat-icon>
-                                        </buttom>
-                                    </ng-template>
-                                </mat-cell>
-                            </ng-container> -->
-
-
+                         
                             <ng-container matColumnDef="expDateEdit">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-250">
+                                <mat-cell *matCellDef="let contact" class="w-200">
                                     <ng-container *ngIf="!contact.Expeditable; else showInput">
                                         <button mat-icon-button (click)="ExpDateenableEditing(contact)">
                                             <mat-icon>edit</mat-icon></button>
                                     </ng-container>
                                     <ng-template #showInput>
 
-                                        <!-- <mat-form-field appearance="outline" fxFlex="10%">
-                                        <mat-label>ExpDate</mat-label>
-                                        <input matInput #inputField (keyup.enter)="CellcalculateLastDay(contact,inputField.value)"
-                                            formControlName="expDateEdit" id="ExpDatess" [(ngModel)]="vlastDay" #expdate  (input)="OneditBatch(contact)"
-                                            autocomplete="off" placeholder="MMYYYY" >
-                                    </mat-form-field>
-
-                                        <buttom (click)="OnSaveBatchAdjustment()" matTooltip="Save">
-                                            <mat-icon title="Save Reocrd"
-                                                class="active-icon green-600 s-16">check</mat-icon>
-                                        </buttom> -->
-
-                                        <mat-form-field appearance="fill">
-                                            <input matInput [(ngModel)]="contact.expDateEdit"
-                                                [id]="'expDateEdit' + index" (input)="OneditBatch(contact)" />
-                                        </mat-form-field>
+                                        <form [formGroup]="StoreFrom">
+                                            <mat-form-field appearance="outline" fxFlex="40%">
+                                                <mat-label>ExpDate</mat-label>
+                                                <input matInput #inputField (keyup)="calculateLastDay(contact)" formControlName="expDateEdit" [formGroup]="StoreFrom"
+                                                    [(ngModel)]="contact.expDateEdit" autocomplete="off"
+                                                    placeholder="mmyyyy" [id]="'expDateEdit' + index"
+                                                    (input)="OneditDate(contact)">
+                                            </mat-form-field>
+                                        </form>
                                         <button (click)="OnSaveBatchAdj()" matTooltip="Save">
                                             <mat-icon title="Save Record"
                                                 class="active-icon green-600 s-16">check</mat-icon>

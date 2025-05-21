@@ -22,8 +22,11 @@ fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
 </div>
 
 </div>
+ 
+    <div fxlayout="column" style="width: 100%;">
+      
 
-<mat-table #table [dataSource]="dataSource" class="mat-elevation-z8 sale-table" matSort [@animateStagger]="{value:'50'}"
+     <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8 sale-table" matSort [@animateStagger]="{value:'50'}"
     style="overflow:auto;margin-top: 10px;" >
     <ng-container matColumnDef="batchNo">
         <mat-header-cell *matHeaderCellDef> Batch No </mat-header-cell>
@@ -68,12 +71,12 @@ fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
         <mat-cell *matCellDef="let element"> {{element.landedRate}} </mat-cell>
     </ng-container>
 
-    <!-- <ng-container matColumnDef="ExpDays">
+     <ng-container matColumnDef="ExpDays">
         <mat-header-cell *matHeaderCellDef> ExpDays </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.ExpDays}} </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="loading">
+    <!--<ng-container matColumnDef="loading">
         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
             <mat-spinner style="float:left;" [diameter]='30'></mat-spinner>
         </mat-header-cell>
@@ -94,4 +97,23 @@ fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
     <mat-footer-row *matFooterRowDef="['noData']"
         [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row> -->
 </mat-table>
+
+        <div class="info-badge-top pb-2 border-bottom" style="padding-left: 5px;">
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">  
+                <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                    <span>: HI Risk</span>
+                </div> 
+                <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                    <span>: Expired </span>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                    <span>: Near To Expiry</span>
+                </div>
+            </div>
+        </div>
+    </div> 
+ 
 

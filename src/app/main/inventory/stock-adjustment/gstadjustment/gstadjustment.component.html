@@ -91,13 +91,13 @@
                                         type="text" OnlyNUmber [(ngModel)]="vTotalGSTPer" id="TotalGSTPer">
                                 </mat-form-field>
 
-                                <div class="button-row-group">
+
+                                <div class="sales-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="center center"
+                                    fxFlexAlign="center" style="margin-left: 30px;margin-right: 20px;">
                                     <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                    <button class="btn btn-primary" (click)="onSubmit()" 
-                                        [disabled]="Savebtn">Save</button>
+                                    <button class="btn btn-primary" (click)="onSubmit()">Save</button>
                                 </div>
 
-                            
                             </div>
                         </form>
 

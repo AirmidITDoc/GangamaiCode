@@ -77,7 +77,7 @@ export interface PurchaseFormModel {
   GRNType: string;
   GSTType: GSTType;
   PaymentType: string;
-
+ UnitRate:number;
 
  
 }
@@ -142,6 +142,9 @@ export interface FinalFormModel {
   Remark: string;
   PaymentMode: number;
   PaymentTerm:number;
+
+
+
 }
 export enum ToastType {
   SUCCESS = 'success',
