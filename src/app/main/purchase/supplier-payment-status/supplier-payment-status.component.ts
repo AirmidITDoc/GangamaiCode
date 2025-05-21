@@ -75,19 +75,27 @@ export class SupplierPaymentStatusComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSupplierPayStatusList();
+
+     this._SupplierPaymentStatusService.SearchFormGroup.get('SupplierId')?.valueChanges.subscribe(value => {
+    this.supplierid = value.value || "0";
+    this.getSupplierPayStatusList();
+  });
+
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
 
     selectChangeSupplier(obj: any) {
-        console.log(obj)
-        if (obj.value !== 0)
-            this.supplierid = obj.value
-        else
-            this.supplierid = "0"
-    this.getSupplierPayStatusList();
-    }
+  console.log(obj);
+  if (!obj || obj.value === null || obj.value === undefined || obj.value === 0 || obj.value === '') {
+    this.supplierid = "0";
+  } else {
+    this.supplierid = obj.value;
+  }
+  this.getSupplierPayStatusList();
+}
+
 
   getSupplierPayStatusList() {
     // debugger
@@ -134,7 +142,7 @@ export class SupplierPaymentStatusComponent implements OnInit {
     console.log(vdata)
     this._SupplierPaymentStatusService.getSupplierPayStatusList(vdata).subscribe((data) => {
       this.dsSupplierpayList.data = data.data as SupplierPayStatusList[];
-      console.log(this.dsSupplierpayList)
+      console.log(this.dsSupplierpayList.data)
       this.dsSupplierpayList.sort = this.sort;
       this.dsSupplierpayList.paginator = this.paginator;
     });
@@ -183,19 +191,18 @@ export class SupplierPaymentStatusComponent implements OnInit {
       return;
     }
 
-    // let grnHeaderPayStatus = [];
-    // this.SelectedList.forEach((element) => {
-    //   let grnHeaderPayStatusObj = {};
-    //   grnHeaderPayStatusObj['grnId'] = element.grnid || 0;
-    //   grnHeaderPayStatusObj['paidAmount'] = this.vPaidAmount || 0;
-    //   grnHeaderPayStatusObj['balAmount'] = this.vBalanceAmount || 0;
-    //   grnHeaderPayStatus.push(grnHeaderPayStatusObj);
-    // });
+    let grnHeaderPayStatus = [];
+    this.SelectedList.forEach((element) => {
+      let grnHeaderPayStatusObj = {};
+      grnHeaderPayStatusObj['grnId'] = element.grnid || 0;
+      grnHeaderPayStatusObj['paidAmount'] = this.vPaidAmount || 0;
+      grnHeaderPayStatusObj['balAmount'] = this.vBalanceAmount || 0;
+      grnHeaderPayStatus.push(grnHeaderPayStatusObj);
+    });
 
     let SupPayDetPayStatus = [];
     this.SelectedList.forEach((element) => {
       let SupPayDetPayStatusObj = {};
-      SupPayDetPayStatusObj['supTranId'] = 0
       SupPayDetPayStatusObj['supPayId'] = 0
       SupPayDetPayStatusObj['supGrnId'] = element.grnid || 0;
       SupPayDetPayStatus.push(SupPayDetPayStatusObj);
@@ -224,12 +231,12 @@ export class SupplierPaymentStatusComponent implements OnInit {
       console.log("payment:", result)
 
       let submitData = {
-        "grnid": this.GRNID,
-        "paidAmount": this.vPaidAmount,
-        "balAmount": this.vBalanceAmount,
-        // 'tgrnHeaderPayStatus': grnHeaderPayStatus,,
-        'tGrnsupPayments': result.submitDataPay.ipPaymentInsert,
-        'tSupPayDets': SupPayDetPayStatus
+        // "grnid": this.GRNID,
+        // "paidAmount": this.vPaidAmount,
+        // "balAmount": this.vBalanceAmount,
+        'grnsupPayment': result.submitDataPay.ipPaymentInsert,
+        'grn': grnHeaderPayStatus,
+        'supPayDet': SupPayDetPayStatus
       }
       console.log(submitData)
       this._SupplierPaymentStatusService.InsertSupplierPay(submitData).subscribe((response) => {

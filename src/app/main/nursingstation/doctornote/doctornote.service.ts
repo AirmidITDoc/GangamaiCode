@@ -35,7 +35,7 @@ export class DoctornoteService {
       Assessment: [''],
       Category: ['NursNote'],
       isActive: [true, [Validators.required]],
-      TemplateId: ['',[Validators.required,notEmptyOrZeroValidator()]],
+      TemplateId: [''],
       TemplateName: [''],
       templateDesc: [''],
       templateName:['']

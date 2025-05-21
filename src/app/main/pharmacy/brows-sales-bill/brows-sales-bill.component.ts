@@ -6,21 +6,21 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { DatePipe } from '@angular/common'; 
+import { DatePipe } from '@angular/common';
 import * as converter from 'number-to-words';
 import Swal from 'sweetalert2';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Printsal } from '../sales/sales.component';
 import { SalesService } from '../sales/sales.service';
-import { Subscription } from 'rxjs'; 
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component'; 
+import { Subscription } from 'rxjs';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import * as XLSX from 'xlsx';
 const jsPDF = require('jspdf');
 // require('jspdf-autotable'); 
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { IPSearchListService } from 'app/main/ipd/ip-search-list/ip-search-list.service';
-import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component'; 
+import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
@@ -45,8 +45,8 @@ export class BrowsSalesBillComponent implements OnInit {
   reportPrintObj: Printsal;
   reportPrintObjTax: Printsal;
   subscriptionArr: Subscription[] = [];
-  currentDate = new Date(); 
-  ExMobile: any = ""; 
+  currentDate = new Date();
+  ExMobile: any = "";
   Filepath: any;
   loadingRow: number | null = null
   IsLoading: boolean = false;
@@ -55,32 +55,65 @@ export class BrowsSalesBillComponent implements OnInit {
   TotalAmt: any = 0;
   sIsLoading: any = '';
   AdList: boolean = false;
-  type = " "; 
+  type = " ";
   Creditflag: boolean = false;
   menuActions: Array<string> = [];
- 
-  
- 
-     FromDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
-     ToDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
-     StoreId1 = this._BrowsSalesBillService.userForm.get('StoreId').value || 0;
-      autocompletestore: string = "Store";
-      @ViewChild('grid') grid: AirmidTableComponent;
-      @ViewChild('grid1') grid1: AirmidTableComponent;
 
-      @ViewChild('patientTypetemp') patientTypetemp!: TemplateRef<any>;  
-      @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-      @ViewChild('isPrintTemplate') isPrintTemplate!: TemplateRef<any>; 
 
-          ngAfterViewInit() { 
-            this.gridConfig.columnsList.find(col => col.key === 'Status')!.template = this.patientTypetemp; 
-            this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate; 
-            this.gridConfig.columnsList.find(col => col.key === 'isPrint')!.template = this.isPrintTemplate;  
-          } 
+  // sales lsit
+  FromDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
+  ToDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
+  StoreId1 = this._BrowsSalesBillService.userForm.get('StoreId').value || 0;
+  isShowDetailTable: boolean = false;
+  OpIpType: any = "0";
+  salesNo: any = "0";
+  regNo: any = "0";
+  firstName: any = "%";
+  LastName: any = "%";
 
+  //sales return list
+  From_Date = this.datePipe.transform(new Date(), "yyyy-MM-dd")
+  To_Date = this.datePipe.transform(new Date(), "yyyy-MM-dd")
+  Store_Id = this._BrowsSalesBillService.userForm.get('StoreId').value || 0;
+  isShowDetailTableRetrun: boolean = false;
+  OpIp_Type: any = "0";
+  sales_No: any = "0";
+  reg_No: any = "0";
+  first_Name: any = "%";
+  Last_Name: any = "%";
+
+
+  autocompletestore: string = "Store";
+  @ViewChild('grid') grid: AirmidTableComponent;
+  @ViewChild('grid1') grid1: AirmidTableComponent;
+  @ViewChild('grid2') grid2: AirmidTableComponent;
+  @ViewChild('grid3') grid3: AirmidTableComponent;
+
+
+  //Sales 
+  @ViewChild('patientTypetemp') patientTypetemp!: TemplateRef<any>;
+  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  @ViewChild('patientTypetempReturn') isPrintTemplate!: TemplateRef<any>;
+
+  //Sales Return
+  @ViewChild('patientTypetempReturn') patientTypetempReturn!: TemplateRef<any>;
+  @ViewChild('actionButtonTemplateRetrun') actionButtonTemplateRetrun!: TemplateRef<any>;
+
+  ngAfterViewInit() {
+    this.gridConfig.columnsList.find(col => col.key === 'Status')!.template = this.patientTypetemp;
+    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'isPrint')!.template = this.isPrintTemplate;
+    //Sales Return
+    this.gridConfig2.columnsList.find(col => col.key === 'Status')!.template = this.patientTypetempReturn;
+    this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateRetrun;
+  }
+
+  //Sales header list columns
   BrowseHColumns = [
-    { heading: "", key: "Status", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
-      template: this.patientTypetemp },
+    {
+      heading: "", key: "Status", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+      template: this.patientTypetemp
+    },
     { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 8 },
     { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -89,32 +122,34 @@ export class BrowsSalesBillComponent implements OnInit {
     { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', width: 140, type: gridColumnTypes.amount },
     { heading: "Paid Type", key: "paidType", sort: true, align: 'left', emptySign: 'NA', width: 120 },
     { heading: "IPD No", key: "ipno", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "IsPrint", key: "isPrint", sort: true, align: 'left', emptySign: 'NA', width: 120,type: gridColumnTypes.template,
-      template: this.isPrintTemplate },
-    {  heading: "Action", key: "action", align: "right", width: 140, sticky: true, type: gridColumnTypes.template,
+    {
+      heading: "IsPrint", key: "isPrint", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.template,
+      template: this.isPrintTemplate
+    },
+    {
+      heading: "Action", key: "action", align: "right", width: 140, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
     }
-  ]  
-     BrowseDetColumns= [ 
-      { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA',width: 180,},
-      { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' , width: 130}, 
-      { heading: "Batch ExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA',width: 180, type:9},
-      { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA',width: 120},
-      { heading: "Unit MRP", key: "unitMRP", sort: true, align: 'left', emptySign: 'NA',width: 130, type: gridColumnTypes.amount},
-      { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA',width: 140 , type: gridColumnTypes.amount}, 
-      { heading: "Disc%", key: "discPer", sort: true, align: 'left', emptySign: 'NA',width: 110, type: gridColumnTypes.amount },
-      { heading: "Disc Amt", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', width: 120 , type: gridColumnTypes.amount }, 
-      { heading: "Gross Amt", key: "grossAmount", sort: true, align: 'left', emptySign: 'NA',width: 140 , type: gridColumnTypes.amount},
-      { heading: "GST%", key: "vatPer", sort: true, align: 'left', emptySign: 'NA',width: 110 , type: gridColumnTypes.amount},
-      { heading: "cGST%", key: "cgstPer", sort: true, align: 'left', emptySign: 'NA',width: 110,type: gridColumnTypes.amount },
-      { heading: "SGST%", key: "sgstPer", sort: true, align: 'left', emptySign: 'NA',width: 110,type: gridColumnTypes.amount },
-      { heading: "IGST%", key: "igstPer", sort: true, align: 'left', emptySign: 'NA',width: 110,type: gridColumnTypes.amount },
-       
-    ]  
+  ]
+  //Sales detail list columns
+  BrowseDetColumns = [
+    { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 180, },
+    { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+    { heading: "Batch ExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 9 },
+    { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "Unit MRP", key: "unitMRP", sort: true, align: 'left', emptySign: 'NA', width: 130, type: gridColumnTypes.amount },
+    { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 140, type: gridColumnTypes.amount },
+    { heading: "Disc%", key: "discPer", sort: true, align: 'left', emptySign: 'NA', width: 110, type: gridColumnTypes.amount },
+    { heading: "Disc Amt", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
+    { heading: "Gross Amt", key: "grossAmount", sort: true, align: 'left', emptySign: 'NA', width: 140, type: gridColumnTypes.amount },
+    { heading: "GST%", key: "vatPer", sort: true, align: 'left', emptySign: 'NA', width: 110, type: gridColumnTypes.amount },
+    { heading: "cGST%", key: "cgstPer", sort: true, align: 'left', emptySign: 'NA', width: 110, type: gridColumnTypes.amount },
+    { heading: "SGST%", key: "sgstPer", sort: true, align: 'left', emptySign: 'NA', width: 110, type: gridColumnTypes.amount },
+    { heading: "IGST%", key: "igstPer", sort: true, align: 'left', emptySign: 'NA', width: 110, type: gridColumnTypes.amount },
 
-
+  ]
   gridConfig1: gridModel = new gridModel();
-  isShowDetailTable:boolean=false;
+
   gridConfig: gridModel = {
     apiUrl: "Sales/salesbrowselist",
     columnsList: this.BrowseHColumns,
@@ -123,37 +158,51 @@ export class BrowsSalesBillComponent implements OnInit {
     filters: [
       { fieldName: "LName", fieldValue: "%", opType: OperatorComparer.Equals },
       { fieldName: "FName", fieldValue: "%", opType: OperatorComparer.Equals },
-      { fieldName: "StoreId", fieldValue:String(this.StoreId1), opType: OperatorComparer.Equals },
       { fieldName: "FromDt", fieldValue: this.FromDate, opType: OperatorComparer.Equals },
       { fieldName: "ToDt", fieldValue: this.ToDate, opType: OperatorComparer.Equals },
+      { fieldName: "StoreId", fieldValue: String(this.StoreId1), opType: OperatorComparer.Equals },
       { fieldName: "RegNo", fieldValue: "0", opType: OperatorComparer.Equals },
       { fieldName: "SalesNo", fieldValue: "0", opType: OperatorComparer.Equals },
       { fieldName: "OPIPType", fieldValue: "0", opType: OperatorComparer.Equals }
     ],
-       row: 25
-  } 
+    row: 25
+  }
 
- 
-
-///tab 2 return
-
- SalesRetHColumns = [
-    { heading: "", key: "Status", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
-      template: this.patientTypetemp },
-    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 130, type: 9 },
-    { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+  ///tab 2 return
+  //Sales return header list columns
+  SalesReturnHColumns = [
+    { heading: "", key: "Status", align: "right", width:40, sticky: true, type: gridColumnTypes.template,
+      template: this.patientTypetempReturn},
+    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 9 },
+    { heading: "Sales Retrun No", key: "salesReturnNo", sort: true, align: 'left', emptySign: 'NA', width: 130 },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
     { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', width: 140, type: gridColumnTypes.amount },
-    { heading: "Paid Type", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', width: 140 },
-    { heading: "IPD No", key: "ipno", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "IsPrint", key: "isPrint", sort: true, align: 'left', emptySign: 'NA', width: 140,type: gridColumnTypes.template,
-      template: this.isPrintTemplate },
-    {  heading: "Action", key: "action", align: "right", width: 160, sticky: true, type: gridColumnTypes.template,
-      template: this.actionButtonTemplate  // Assign ng-template to the column
+    { heading: "Type", key: "label", sort: true, align: 'left', emptySign: 'NA', width: 140 },
+    { heading: "Action", key: "action", align: "right", width: 160, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplateRetrun  // Assign ng-template to the column
     }
-  ] 
+  ]
+
+  gridConfig3: gridModel = new gridModel();
+  gridConfig2: gridModel = {
+    apiUrl: "SalesReturn/SalesReturnBrowseList",
+    columnsList: this.SalesReturnHColumns,
+    sortField: "SalesReturnId",
+    sortOrder: 0,
+    filters: [
+      { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Equals },
+      { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Equals },
+      { fieldName: "StoreId", fieldValue: String(this.Store_Id), opType: OperatorComparer.Equals },
+      { fieldName: "From_Dt", fieldValue: this.From_Date, opType: OperatorComparer.Equals },
+      { fieldName: "To_Dt", fieldValue: this.To_Date, opType: OperatorComparer.Equals },
+      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "SalesNo", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "OP_IP_Type", fieldValue: "0", opType: OperatorComparer.Equals }
+    ],
+    row: 25
+  }
 
 
 
@@ -161,7 +210,6 @@ export class BrowsSalesBillComponent implements OnInit {
 
 
 
- 
 
   dssalesReturnList = new MatTableDataSource<SalesReturnList>();
   dssalesReturnList1 = new MatTableDataSource<SalesReturnDetList>();
@@ -169,66 +217,44 @@ export class BrowsSalesBillComponent implements OnInit {
 
 
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator; 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     public _AdmissionService: IPSearchListService,
     public _BrowsSalesBillService: BrowsSalesBillService,
-    public _BrowsSalesService: SalesService, 
+    public _BrowsSalesService: SalesService,
     private _loggedService: AuthenticationService,
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     public toastr: ToastrService,
-    
+
     private _ActRoute: Router,
   ) { }
 
-  ngOnInit(): void { 
-    this.getSalesReturnList() 
+  ngOnInit(): void {
+    this.getSalesReturnList()
 
-    if (this._ActRoute.url == '/pharmacy/browsesalesbill') { 
+    if (this._ActRoute.url == '/pharmacy/browsesalesbill') {
       this.menuActions.push('Patient Ledger');
       this.menuActions.push("Patient Statement");
       this.menuActions.push("Patient Sales Summary");
-      this.menuActions.push("Patient Sales Detail"); 
-    } 
+      this.menuActions.push("Patient Sales Detail");
+    }
   }
-
-  getsalesdetaillist(event){
-     console.log(event)
-        this.isShowDetailTable = true;
-       this.gridConfig1= {
-          apiUrl: "Sales/SalesBrowseDetailList",
-          columnsList:this.BrowseDetColumns,
-          sortField: "SalesId",
-          sortOrder: 0,
-          filters: [
-              { fieldName: "SalesID", fieldValue: String(event.salesId), opType: OperatorComparer.Equals },
-              { fieldName: "OP_IP_Type", fieldValue: String(event.oP_IP_Type), opType: OperatorComparer.Equals } 
-          ],  
-        }  
-      this.grid1.gridConfig = this.gridConfig1;
-      this.grid1.bindGridData();
-  } 
-  OpIpType: any = "0";
-  salesNo: any = "0";
-  regNo: any = "0";
-  firstName: any = "%";
-  LastName: any = "%";
   onChangeFirst() {
     debugger
     this.isShowDetailTable = false;
     this.firstName = this._BrowsSalesBillService.userForm.get('F_Name').value || "%"
     this.LastName = this._BrowsSalesBillService.userForm.get('L_Name').value || "%"
     this.StoreId1 = this._BrowsSalesBillService.userForm.get('StoreId').value || 2
-    this.FromDate = this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd") 
+    this.FromDate = this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd")
     this.ToDate = this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd")
     this.regNo = this._BrowsSalesBillService.userForm.get('RegNo').value || "0"
     this.salesNo = this._BrowsSalesBillService.userForm.get('SalesNo').value || "0"
     this.OpIpType = this._BrowsSalesBillService.userForm.get('OP_IP_Type').value || "0"
     this.getSaleslistdata();
-  } 
+  }
   getSaleslistdata() {
     debugger
     this.gridConfig = {
@@ -246,45 +272,121 @@ export class BrowsSalesBillComponent implements OnInit {
         { fieldName: "SalesNo", fieldValue: this.salesNo, opType: OperatorComparer.Equals },
         { fieldName: "OPIPType", fieldValue: this.OpIpType, opType: OperatorComparer.Equals }
       ],
-    } 
+    }
     // this.grid.bindGridData();
-  } 
-  selectChangeStore(value) {   
-    if(value.value!==0)
-       this.StoreId1=value.value
-   else
-   this.StoreId1="0" 
+  }
+  selectChangeStore(value) {
+    if (value.value !== 0)
+      this.StoreId1 = value.value
+    else
+      this.StoreId1 = "0"
 
-   this.onChangeFirst();
-}
-getValidationMessages() {
-  return {
-    RegNo: [
-          // { name: "required", Message: "SupplierId is required" }
+    this.onChangeFirst();
+  }
+  getsalesdetaillist(event) {
+    console.log(event)
+    this.isShowDetailTable = true;
+    this.gridConfig1 = {
+      apiUrl: "Sales/SalesBrowseDetailList",
+      columnsList: this.BrowseDetColumns,
+      sortField: "SalesId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "SalesID", fieldValue: String(event.salesId), opType: OperatorComparer.Equals },
+        { fieldName: "OP_IP_Type", fieldValue: String(event.oP_IP_Type), opType: OperatorComparer.Equals }
+      ],
+    }
+    this.grid1.gridConfig = this.gridConfig1;
+    this.grid1.bindGridData();
+  }
+
+
+  //Sales Retrun list 
+  onChangeFirst_Retrun() {
+    debugger
+    this.isShowDetailTableRetrun = false;
+    this.first_Name = this._BrowsSalesBillService.formReturn.get('F_Name').value || "%"
+    this.Last_Name = this._BrowsSalesBillService.formReturn.get('L_Name').value || "%"
+    this.Store_Id = this._BrowsSalesBillService.formReturn.get('StoreId').value || 2
+    this.From_Date = this.datePipe.transform(this._BrowsSalesBillService.formReturn.get('startdate1').value, "yyyy-MM-dd")
+    this.To_Date = this.datePipe.transform(this._BrowsSalesBillService.formReturn.get('enddate1').value, "yyyy-MM-dd")
+    this.reg_No = this._BrowsSalesBillService.formReturn.get('RegNo').value || "0"
+    this.sales_No = this._BrowsSalesBillService.formReturn.get('SalesNo').value || "0"
+    this.OpIp_Type = this._BrowsSalesBillService.formReturn.get('OP_IP_Type').value || "0"
+    this.getSalesRetrunlistdata();
+  }
+  getSalesRetrunlistdata() {
+    debugger
+    this.gridConfig2 = {
+      apiUrl: "SalesReturn/SalesReturnBrowseList",
+      columnsList: this.SalesReturnHColumns,
+      sortField: "SalesReturnId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "F_Name", fieldValue: this.first_Name, opType: OperatorComparer.Equals },
+        { fieldName: "L_Name", fieldValue: this.Last_Name, opType: OperatorComparer.Equals },
+        { fieldName: "StoreId", fieldValue: String(this.Store_Id), opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue: this.From_Date, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.To_Date, opType: OperatorComparer.Equals },
+        { fieldName: "Reg_No", fieldValue: this.reg_No, opType: OperatorComparer.Equals },
+        { fieldName: "SalesNo", fieldValue: this.sales_No, opType: OperatorComparer.Equals },
+        { fieldName: "OP_IP_Type", fieldValue: this.OpIp_Type, opType: OperatorComparer.Equals }
+      ],
+    }
+    // this.grid.bindGridData();
+  }
+  selectChangeStoreRetrun(value) {
+    if (value.value !== 0)
+      this.Store_Id = value.value
+    else
+      this.Store_Id = "0"
+
+    this.onChangeFirst_Retrun();
+  }
+  getsalesReturndetaillist(event) {
+    console.log(event)
+    this.isShowDetailTableRetrun = true;
+    this.gridConfig3 = {
+      apiUrl: "SalesReturn/salesReturnBrowseDetaillist",
+      columnsList: this.BrowseDetColumns,
+      sortField: "SalesReturnId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "SalesReturnId", fieldValue: String(event.salesReturnId), opType: OperatorComparer.Equals }
+      ],
+    }
+    this.grid3.gridConfig = this.gridConfig3;
+    this.grid3.bindGridData();
+  }
+
+
+
+  getValidationMessages() {
+    return {
+      RegNo: [
+        // { name: "required", Message: "SupplierId is required" }
       ],
       IPDNo: [
-          // { name: "required", Message: "SupplierId is required" }
+        // { name: "required", Message: "SupplierId is required" }
       ],
       F_Name: [
-          // { name: "required", Message: "Item Name is required" }
+        // { name: "required", Message: "Item Name is required" }
       ],
       M_Name: [
-          // { name: "required", Message: "Batch No is required" }
+        // { name: "required", Message: "Batch No is required" }
       ],
       L_Name: [
-          // { name: "required", Message: "Invoice No is required" }
+        // { name: "required", Message: "Invoice No is required" }
       ],
       SalesNo: [
         // { name: "required", Message: "Invoice No is required" }
-    ],
-    StoreId: [
-      // { name: "required", Message: "Invoice No is required" }
-  ]
-      
-  };
-}
- 
-  
+      ],
+      StoreId: [
+        // { name: "required", Message: "Invoice No is required" }
+      ]
+
+    };
+  }
 
   IsDischarge: any;
   onChangeIsactive(SiderOption) {
@@ -298,13 +400,13 @@ getValidationMessages() {
     else {
       this._AdmissionService.myFilterform.get('IsDischarge').setValue(0);
       this._AdmissionService.myFilterform.get('start').setValue(''),
-      this._AdmissionService.myFilterform.get('end').setValue('')
+        this._AdmissionService.myFilterform.get('end').setValue('')
       //this.getAdmittedPatientList();
     }
   }
 
- 
- 
+
+
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -312,8 +414,8 @@ getValidationMessages() {
     this.dateTimeObj = dateTimeObj;
   }
 
- 
- 
+
+
   getSalesReturnList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
@@ -326,16 +428,16 @@ getValidationMessages() {
       OP_IP_Type: this._BrowsSalesBillService.formReturn.get('OP_IP_Types').value || 0,
       StoreId: this._loggedService.currentUserValue.storeId || 0
     }
-    console.log(vdata); 
+    console.log(vdata);
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this._BrowsSalesBillService.getSalesReturnList(vdata).subscribe(data => {
         this.dssalesReturnList.data = data as SalesReturnList[];
         console.log(this.dssalesReturnList.data);
         this.dssalesReturnList.sort = this.sort;
-      this.dssalesReturnList.paginator = this.paginator;
+        this.dssalesReturnList.paginator = this.paginator;
         this.sIsLoading = this.dssalesReturnList.data.length == 0 ? 'no-data' : 'no data';
-        this.sIsLoading = ''; 
+        this.sIsLoading = '';
       },
         error => {
           this.sIsLoading = '';
@@ -358,79 +460,79 @@ getValidationMessages() {
   onSelect1(Parama) {
     // console.log(Parama);
     this.getSalesReturnDetList(Parama)
-  } 
-  OnPayment(contact) {   
+  }
+  OnPayment(contact) {
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
     console.log(contact)
-    let PatientHeaderObj = {};   
+    let PatientHeaderObj = {};
 
-      PatientHeaderObj['Date'] = formattedDate,
+    PatientHeaderObj['Date'] = formattedDate,
       PatientHeaderObj['PatientName'] = contact.PatientName;
-      PatientHeaderObj['RegNo'] = contact.RegNo;   
-      PatientHeaderObj['OPD_IPD_Id'] =  contact.IPNO; 
-      PatientHeaderObj['billNo'] = contact.SalesId;
-      PatientHeaderObj['NetPayAmount'] = Math.round(contact.BalanceAmount);  
+    PatientHeaderObj['RegNo'] = contact.RegNo;
+    PatientHeaderObj['OPD_IPD_Id'] = contact.IPNO;
+    PatientHeaderObj['billNo'] = contact.SalesId;
+    PatientHeaderObj['NetPayAmount'] = Math.round(contact.BalanceAmount);
 
-        const dialogRef = this._matDialog.open(OpPaymentComponent,
-          {
-            maxWidth: "80vw",
-            height: '650px',
-            width: '80%',
-            data: {
-              vPatientHeaderObj: PatientHeaderObj,
-              FromName: "OP-Pharma-SETTLEMENT",
-              advanceObj: PatientHeaderObj,
-            }
-          });
+    const dialogRef = this._matDialog.open(OpPaymentComponent,
+      {
+        maxWidth: "80vw",
+        height: '650px',
+        width: '80%',
+        data: {
+          vPatientHeaderObj: PatientHeaderObj,
+          FromName: "OP-Pharma-SETTLEMENT",
+          advanceObj: PatientHeaderObj,
+        }
+      });
     dialogRef.afterClosed().subscribe(result => {
       console.log(result)
 
       if (result.IsSubmitFlag == true) {
         let updateBillobj = {};
         updateBillobj['salesID'] = contact.SalesId;
-        updateBillobj['salRefundAmt'] =0 ;
-        updateBillobj['balanceAmount'] =result.submitDataPay.ipPaymentInsert.BalanceAmt;
-  
+        updateBillobj['salRefundAmt'] = 0;
+        updateBillobj['balanceAmount'] = result.submitDataPay.ipPaymentInsert.BalanceAmt;
+
         let UpdateAdvanceDetailarr = [];
-        if (UpdateAdvanceDetailarr.length == 0) { 
-            let update_T_PHAdvanceDetailObj = {};
-            update_T_PHAdvanceDetailObj['AdvanceDetailID'] = 0,
+        if (UpdateAdvanceDetailarr.length == 0) {
+          let update_T_PHAdvanceDetailObj = {};
+          update_T_PHAdvanceDetailObj['AdvanceDetailID'] = 0,
             update_T_PHAdvanceDetailObj['UsedAmount'] = 0,
             update_T_PHAdvanceDetailObj['BalanceAmount'] = 0,
-            UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj); 
-      }
-     
-        let update_T_PHAdvanceHeaderObj = {}; 
-          update_T_PHAdvanceHeaderObj['AdvanceId'] = 0,
+            UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj);
+        }
+
+        let update_T_PHAdvanceHeaderObj = {};
+        update_T_PHAdvanceHeaderObj['AdvanceId'] = 0,
           update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
-          update_T_PHAdvanceHeaderObj['BalanceAmount'] = 0 
+          update_T_PHAdvanceHeaderObj['BalanceAmount'] = 0
 
         let Data = {
-          "salesPaymentSettlement":  result.submitDataPay.ipPaymentInsert, 
+          "salesPaymentSettlement": result.submitDataPay.ipPaymentInsert,
           "update_Pharmacy_BillBalAmountSettlement": updateBillobj,
-          "update_T_PHAdvanceDetailSettlement":UpdateAdvanceDetailarr,
-          "update_T_PHAdvanceHeaderSettlement":update_T_PHAdvanceHeaderObj
+          "update_T_PHAdvanceDetailSettlement": UpdateAdvanceDetailarr,
+          "update_T_PHAdvanceHeaderSettlement": update_T_PHAdvanceHeaderObj
         };
         console.log(Data);
 
-        this._BrowsSalesBillService.InsertSalessettlement(Data).subscribe(response => { 
-          if (response) {  
+        this._BrowsSalesBillService.InsertSalessettlement(Data).subscribe(response => {
+          if (response) {
             this.toastr.success('Sales Credit Payment Successfully !', 'Success', {
               toastClass: 'tostr-tost custom-toast-error',
-            }); 
+            });
             //this.getSalesList();  
           }
-          else { 
+          else {
             this.toastr.error('Sales Credit Payment  not saved !', 'error', {
               toastClass: 'tostr-tost custom-toast-error',
-            }); 
+            });
           }
-        }); 
-      }  
-    }); 
+        });
+      }
+    });
   }
 
 
@@ -464,22 +566,22 @@ getValidationMessages() {
     }
   }
 
- 
- 
+
+
 
   getPrint2(el) {
     //
-    if (el.PaidType=='Credit' && el.IsRefundFlag==false) {
+    if (el.PaidType == 'Credit' && el.IsRefundFlag == false) {
       this.type = "Credit"
       this.Creditflag = true;
-    } else if(!(el.PaidType=='Credit' && el.IsRefundFlag==false)){
-      this.type=" "
+    } else if (!(el.PaidType == 'Credit' && el.IsRefundFlag == false)) {
+      this.type = " "
       this.Creditflag = false;
     }
     var D_data = {
-        "SalesID": el.SalesId,// 
-        "OP_IP_Type": el.OP_IP_Type
-      }
+      "SalesID": el.SalesId,// 
+      "OP_IP_Type": el.OP_IP_Type
+    }
 
     let printContents;
     this.subscriptionArr.push(
@@ -509,7 +611,7 @@ getValidationMessages() {
     );
   }
   viewSalesPdf(el) {
-   // 
+    // 
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
       // this.SpinLoading =true;
@@ -1121,7 +1223,7 @@ getValidationMessages() {
   }
 
   getWhatsappshareSalesReturn(el) {
-   // 
+    // 
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": el.RegNo,
@@ -1159,7 +1261,7 @@ getValidationMessages() {
 
 
   expPrint(el, xls) {
-   // 
+    // 
     var D_data = {
       "SalesID": el.SalesId,// 
       "OP_IP_Type": el.OP_IP_Type
@@ -1181,7 +1283,7 @@ getValidationMessages() {
   }
 
   onExport(reportPrintObjList, el, exprtType) {
-   // 
+    // 
     // setTimeout(() => {
     //   this.expPrint(el);
     // }, 1000);
@@ -1321,26 +1423,26 @@ getValidationMessages() {
       // dialogRef.afterClosed().subscribe(result => {
       //   console.log('The dialog was closed - Insert Action', result);
       // });
-    }else if(m=='Patient Statement'){
-this.viewSalesstatement(contact);
-    }else if(m=='Patient Sales Summary'){
+    } else if (m == 'Patient Statement') {
+      this.viewSalesstatement(contact);
+    } else if (m == 'Patient Sales Summary') {
 
-    }else if(m=='Patient Sales Detail'){
+    } else if (m == 'Patient Sales Detail') {
 
     }
   }
 
- viewSalesstatement(el) {
-  console.log(el) 
-//  
-  let StoreId= this._loggedService.currentUserValue.storeId || 0
+  viewSalesstatement(el) {
+    console.log(el)
+    //  
+    let StoreId = this._loggedService.currentUserValue.storeId || 0
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
       // this.SpinLoading =true; el.AdmissionID,StoreId
       this.AdList = true;
       console.log(StoreId)
       console.log(el.AdmissionID)
-      this._BrowsSalesBillService.getPdfSalesstatement(el.AdmissionID,StoreId).subscribe(res => {
+      this._BrowsSalesBillService.getPdfSalesstatement(el.AdmissionID, StoreId).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
             maxWidth: "85vw",

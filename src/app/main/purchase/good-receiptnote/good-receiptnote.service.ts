@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
@@ -21,7 +22,8 @@ export class GoodReceiptnoteService {
     public _httpClient: HttpClient,
     private _loaderService: LoaderService,
     private _formBuilder: UntypedFormBuilder,
-    public _httpClient1:ApiCaller,
+    public _httpClient1:ApiCaller, 
+        private accountService: AuthenticationService,
     public _FormvalidationserviceService:FormvalidationserviceService
   ) {
     this.GRNStoreForm = this.createStoreFrom();
@@ -55,7 +57,8 @@ export class GoodReceiptnoteService {
 
   GRNSearchFrom() {
     return this._formBuilder.group({
-      ToStoreId: ['2',[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]], 
+      ToStoreId: [this.accountService.currentUserValue.user.storeId
+        ,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]], 
       SupplierId: '', 
       Status1: [0],   
       start: [new Date().toISOString()],
@@ -72,7 +75,7 @@ export class GoodReceiptnoteService {
       HSNCode: ['',[Validators.required]],
       BatchNo: ['', [Validators.required]],
       ConversionFactor: ['',[Validators.required, Validators.min(1)]],
-      Qty: ['', [Validators.required, Validators.min(1),Validators.max(9)]],
+      Qty: ['', [Validators.required, Validators.min(1)]],
       ExpDate: ['',[Validators.required]],
       MRP: ['', [Validators.required, Validators.min(1)]],
       FreeQty: [0],
@@ -101,7 +104,8 @@ export class GoodReceiptnoteService {
       PaymentDate: [new Date()],
       GRNType:['true'], 
       PaymentType:['false'],
-      StoreId:['2',[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]]
+      StoreId:[this.accountService.currentUserValue.user.storeId,
+        [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]]
     });
   }
 

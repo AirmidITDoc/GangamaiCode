@@ -65,7 +65,7 @@ export class AirmidTableComponent implements OnInit {
     gridDataRequest: gridRequest = new gridRequest();
     bindGridData() {
         // this.updateFilters();
-
+debugger
         this.gridDataRequest = {
             sortField: this.sort?.active ?? this.gridConfig.sortField,
             sortOrder: this.sort?.direction ?? 'asc' == 'asc' ? 0 : -1, filters: this.gridConfig.filters,

@@ -127,6 +127,7 @@ export class NewPrescriptionComponent implements OnInit {
   autocompleteitem: string = "ItemType";
   Regstatus: boolean = true;
   ApiURL: any;
+    @ViewChild('qtyTextboxRef', { read: ElementRef }) qtyTextboxRef: ElementRef;
 
   // public isItem=false;
 
@@ -234,6 +235,16 @@ export class NewPrescriptionComponent implements OnInit {
     this.vitemId = obj.itemId;
     this.vitemname = obj.itemName;
     this.ItemForm.get('ItemId').setValue(obj);
+
+    setTimeout(() => {
+      const nativeElement = this.qtyTextboxRef?.nativeElement;
+      if (nativeElement) {
+        const inputEl: HTMLInputElement = nativeElement.querySelector('input');
+        if (inputEl) {
+          inputEl.focus();
+        }
+      }
+    }, 100);
 }
 
   doseList: any = [];

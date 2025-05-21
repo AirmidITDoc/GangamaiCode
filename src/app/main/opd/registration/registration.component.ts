@@ -301,6 +301,7 @@ export class RegInsert {
     isSeniorCitizen: boolean
     doctorName:any;
     departmentName:any;
+    UnitId:any;
     // religionId:any;
     // updatedBy:any;
 
@@ -380,6 +381,7 @@ export class RegInsert {
             this.maritalStatusId = RegInsert.maritalStatusId || 0 ;
                this.doctorName= RegInsert.doctorName || "" ;
              this.departmentName= RegInsert.departmentName || "" ;
+             this.UnitId=RegInsert.UnitId||0;
         }
     }
 }
