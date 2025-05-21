@@ -16,17 +16,17 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class GSTAdjustmentComponent implements OnInit {
 
-  dateTimeObj:any;
-  vCGSTPer:any;
-  vSGSTPer:any;
-  vIGSTPer:any; 
-  vNewCGSTPer:any;
-  vNewSGSTPer:any;
-  vNewIGSTPer:any;
-  vTotalGSTPer:any;
-  registerObj:any;
-  itemname:any;
-  vOldTotalGSTPer:any;
+  dateTimeObj: any;
+  vCGSTPer: any;
+  vSGSTPer: any;
+  vIGSTPer: any;
+  vNewCGSTPer: any;
+  vNewSGSTPer: any;
+  vNewIGSTPer: any;
+  vTotalGSTPer: any;
+  registerObj: any;
+  itemname: any;
+  vOldTotalGSTPer: any;
 
   constructor(
     public _StockAdjustment: StockAdjustmentService,
@@ -40,15 +40,15 @@ export class GSTAdjustmentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if(this.data.Obj){
+    if (this.data.Obj) {
       this.registerObj = this.data.Obj;
       console.log(this.registerObj)
-      this.vCGSTPer = this.registerObj.CGSTPer;
-      this.vSGSTPer = this.registerObj.SGSTPer;
-      this.vIGSTPer = this.registerObj.IGSTPer;
-      this.itemname = this.registerObj.ItemName;
+      this.vCGSTPer = this.registerObj.cgstper;
+      this.vSGSTPer = this.registerObj.cgstper;
+      this.vIGSTPer = this.registerObj.cgstper;
+      this.itemname = this.registerObj.itemName;
       this.calculationOldGst(this.registerObj)
-     // this.vConversionFactor = this.registerObj.LandedRate
+      // this.vConversionFactor = this.registerObj.LandedRate
     }
   }
   getDateTime(dateTimeObj) {
@@ -59,8 +59,8 @@ export class GSTAdjustmentComponent implements OnInit {
     if (nextElement) {
       nextElement.focus();
     }
-  } 
-  keyPressCharater(event){
+  }
+  keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
@@ -69,20 +69,20 @@ export class GSTAdjustmentComponent implements OnInit {
       return false;
     }
   }
-  calculationAmt(){
-    
+  calculationAmt() {
+
     let CGSTPer = (this.vNewCGSTPer) || 0;
     let SGSTPer = (this.vNewSGSTPer) || 0;
     let IGSTPer = (this.vNewIGSTPer) || 0;
     this.vTotalGSTPer = (parseFloat(CGSTPer) + parseFloat(SGSTPer) + parseFloat(IGSTPer)).toFixed(2);
   }
-  calculationOldGst(obj){  
-    this.vOldTotalGSTPer = (parseFloat(obj.CGSTPer) + parseFloat(obj.SGSTPer) + parseFloat(obj.IGSTPer)).toFixed(2);
+  calculationOldGst(obj) {
+    this.vOldTotalGSTPer = (parseFloat(obj.cgstper) + parseFloat(obj.sgstper) + parseFloat(obj.sgstper)).toFixed(2);
   }
- 
-  Savebtn:boolean=false;
-  onSubmit(){
-   
+
+  Savebtn: boolean = false;
+  onSubmit() {
+
     if ((this.vNewCGSTPer == '' || this.vNewCGSTPer == null || this.vNewCGSTPer == undefined)) {
       this.toastr.warning('Please enter a New CGST', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -95,56 +95,41 @@ export class GSTAdjustmentComponent implements OnInit {
       });
       return;
     }
-   
+
     // if ((this.vIGSTPer == null || this.vIGSTPer == undefined)) {
     //   this.toastr.warning('Please enter a New IGST', 'Warning !', {
     //     toastClass: 'tostr-tost custom-toast-warning',
     //   });
     //   return;
     // }
- 
-  this.Savebtn = true;
-  let insertGSTAdju = {};
-  insertGSTAdju['storeId'] = this._loggedService.currentUserValue.storeId || 0;
-  insertGSTAdju['itemId'] = this. registerObj.ItemId || 0;
-  insertGSTAdju['stkId'] =this. registerObj.StockId || 0;
-  insertGSTAdju['batchNo'] =  this. registerObj.BatchNo || '';
-  insertGSTAdju['oldCGSTPer'] = this._StockAdjustment.GSTAdjustment.get('CGSTPer').value || 0;
-  insertGSTAdju['oldSGSTPer'] = this._StockAdjustment.GSTAdjustment.get('SGSTPer').value || 0;
-  insertGSTAdju['oldIGSTPer'] = this._StockAdjustment.GSTAdjustment.get('IGSTPer').value || 0;
-  insertGSTAdju['cgstPer'] = this._StockAdjustment.GSTAdjustment.get('NewCGSTPer').value ||  0;
-  insertGSTAdju['sgstPer'] = this._StockAdjustment.GSTAdjustment.get('NewSGSTPer').value ||  0;
-  insertGSTAdju['igstPer'] = this._StockAdjustment.GSTAdjustment.get('NewIGSTPer').value || 0;
-  insertGSTAdju['addedBy'] = this._loggedService.currentUserValue.userId || 0;  
 
-  let submitData = {
-    "gstAdjustment": insertGSTAdju 
-  };
-  console.log(submitData);
-  this._StockAdjustment.GSTAdjSave(submitData).subscribe(response => {
-    if (response) {
-      this.toastr.success('GST Adjustment Record Saved Successfully.', 'Saved !', {
-        toastClass: 'tostr-tost custom-toast-success',
-      }); this._matDialog.closeAll();
-      this.Savebtn = false;
-    }
-    else {
-      this.toastr.error('GST Adjustment Data not saved !, Please check API error..', 'Error !', {
-        toastClass: 'tostr-tost custom-toast-error',
-      });
-    }
+    this.Savebtn = true;
 
-  }, error => {
-    this.toastr.error('GST Adjustment Data not saved !, Please check API error..', 'Error !', {
-      toastClass: 'tostr-tost custom-toast-error',
+    let submitData = {
+      "storeId": this._loggedService.currentUserValue.storeId || 0,
+      "stkId": this.registerObj.stockId || 0,
+      "itemId": this.registerObj.itemId || 0,
+      "batchNo": this.registerObj.batchNo || '',
+      "oldCgstper": this._StockAdjustment.GSTAdjustment.get('CGSTPer').value || 0,
+      "oldSgstper": this._StockAdjustment.GSTAdjustment.get('SGSTPer').value || 0,
+      "oldIgstper": this._StockAdjustment.GSTAdjustment.get('IGSTPer').value || 0,
+      "cgstper": this._StockAdjustment.GSTAdjustment.get('NewCGSTPer').value || 0,
+      "sgstper": this._StockAdjustment.GSTAdjustment.get('NewSGSTPer').value || 0,
+      "igstper": this._StockAdjustment.GSTAdjustment.get('NewIGSTPer').value || 0,
+      "addedBy": this._loggedService.currentUserValue.userId || 0
+    };
+    console.log(submitData);
+    this._StockAdjustment.GSTAdjSave(submitData).subscribe(response => {
+      this.toastr.success(response.message);
+      this._matDialog.closeAll();
+
     });
-  });
   }
-  OnReset(){
-    this._StockAdjustment.GSTAdjustment.reset(); 
+  OnReset() {
+    this._StockAdjustment.GSTAdjustment.reset();
     this._matDialog.closeAll();
   }
-  onClose(){
+  onClose() {
     this._matDialog.closeAll();
   }
 }

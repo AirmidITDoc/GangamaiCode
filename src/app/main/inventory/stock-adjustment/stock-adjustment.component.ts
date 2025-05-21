@@ -22,6 +22,7 @@ import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/conf
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { ChargesList } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 
 @Component({
     selector: 'app-stock-adjustment',
@@ -39,19 +40,45 @@ export class StockAdjustmentComponent implements OnInit {
     autocompletestore: string = "Store";
     autocompleteitem: string = "ItemType";
 
+    sIsLoading: string = '';
+    isLoading = true;
+    StoreList: any = [];
+    screenFromString = 'admission-form';
+    isItemIdSelected: boolean = false;
+    ItemName: any;
+    ItemId: any;
+    dateTimeObj: any;
+    ItemList: any = [];
+    OptionsItemName: any;
+    filteredoptionsItemName: Observable<string[]>;
+    vBatchNo: any;
+    vQty: any;
+    vMRP: any;
+    vUpdatedQty: any;
+    vBalQty: any;
+
+    vStatus: any;
+    vStockId: any;
+    AddType: any;
+    vExpDate: any;
+    vPurchaseRate: any;
+    vBatchEdit: any;
+    vExpDateEdit: any;
+    vDeudQty: any;
+
     displayedColumns = [
-        'BatchNo',
-        'BatchEdit',
-        'ExpDate',
-        'ExpDateEdit',
-        'UnitMRP',
-        'PurchaseRate',
-        'LandedRate',
-        'BalQty',
-        'Addition',
-        'Deduction',
-        'GST',
-        'ConversionFactor'
+        'batchNo',
+        'batchEdit',
+        'batchExpDate',
+        'expDateEdit',
+        'unitMRP',
+        'purUnitRateWF',
+        'landedRate',
+        'balanceQty',
+        // 'Addition',
+        // 'Deduction',
+        'vatPercentage',
+        'conversionFactor'
     ];
 
     dsStockAdjList = new MatTableDataSource<StockAdjList>();
@@ -69,146 +96,59 @@ export class StockAdjustmentComponent implements OnInit {
         this.getStockList();
     }
 
-    storeId=0
+    storeId = 0
     selectChangeStore(obj: any) {
-        this.storeId=obj.value
+        this.storeId = obj.value
     }
 
-    itemId=0
+    itemId = 0
     selectChangeItem(obj: any) {
-        this.itemId=obj.value
+        console.log(obj)
+        this.itemId = obj.itemId
         this.getStockList();
     }
 
+    onClear() { }
     getStockList() {
-    var Param = {
-        "StoreId": this.storeId || 0,
-        "ItemId": this.itemId || 0,
-    }
-    //console.log(Param)
-    this._StockAdjustmentService.getStockList(Param).subscribe(data => {
-        this.dsStockAdjList.data = data.data as StockAdjList[];
-        console.log(this.dsStockAdjList)
-    },
-        error => {
+        var Param = {
+            "first": 0,
+            "rows": 10,
+            "sortField": "ItemId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "StoreId",
+                    "fieldValue": "2",
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "ItemId",
+                    "fieldValue": String(this.itemId),
+                    "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON",
+            "columns": [
+                {
+                    "data": "string",
+                    "name": "string"
+                }
+            ]
+        }
+        console.log(Param)
+        this._StockAdjustmentService.getStockList(Param).subscribe(data => {
+            this.dsStockAdjList.data = data.data as StockAdjList[];
+            console.log(this.dsStockAdjList)
         });
     }
 
-    onSave(row: any = null) {
-        let that = this;
-        // const dialogRef = this._matDialog.open(,
-        //     {
-        //         maxWidth: "95vw",
-        //         height: '95%',
-        //         width: '70%',
-        //         data: row
-        //     });
-        // dialogRef.afterClosed().subscribe(result => {
-        //     if (result) {
-        //         that.grid.bindGridData();
-        //     }
-        // });
-    }
-
-
-    /**
-     * 1.stockId
-2.itemId
-3.batchNo
-4.batchExpDate
-5.unitMRP
-6.landedRate
-7.purUnitRateWF
-8.balanceQty
-9.vatPercentage
-10.barCodeSeqNo
-11.batchEdit
-12.expDateEdit
-13.conversionFactor
-    */
-
-
-    //   sIsLoading: string = '';
-    //   isLoading = true;
-    //   StoreList: any = [];
-    //   screenFromString = 'admission-form';
-    //   isItemIdSelected: boolean = false;
-    //   ItemName: any;
-    //   ItemId: any;
-    //   dateTimeObj: any;
-    //   ItemList: any = [];
-    //   OptionsItemName: any;
-    //   filteredoptionsItemName: Observable<string[]>;
-    //   vBatchNo: any;
-    //   vQty: any;
-    //   vMRP: any;
-    //   vUpdatedQty: any;
-    //   vBalQty: any;
-
-
-    //   ngOnInit(): void {
-    //     this.gePharStoreList();
-    //     this.getStockList();
-    //   }
-
-    //   getDateTime(dateTimeObj) {
-    //     this.dateTimeObj = dateTimeObj;
-    //   }
-    //   gePharStoreList() {
-    //     var vdata = {
-    //       Id: this._loggedService.currentUserValue.storeId
-    //     }
-    //     this._StockAdjustment.getLoggedStoreList(vdata).subscribe(data => {
-    //       this.StoreList = data;
-    //       this._StockAdjustment.StoreFrom.get('StoreId').setValue(this.StoreList[0]);
-    //     });
-    //   }
-    //   getSearchList() {
-    //     var vdata = {
-    //       "ItemName": `${this._StockAdjustment.userFormGroup.get('ItemID').value}%`
-    //     }
-    //     this._StockAdjustment.getItemlist(vdata).subscribe(resData => {
-    //       this.ItemList = resData;
-    //       //console.log(this.ItemList)
-    //       this.OptionsItemName = this.ItemList.slice();
-    //       this.filteredoptionsItemName = this._StockAdjustment.userFormGroup.get('ItemID').valueChanges.pipe(
-    //         startWith(''),
-    //         map(value => value ? this._filterLitem(value) : this.ItemList.slice()),
-    //       );
-    //     });
-    //   }
-    //   private _filterLitem(value: any): string[] {
-    //     if (value) {
-    //       const filterValue = value && value.ItemName ? value.ItemName.toLowerCase() : value.toLowerCase();
-    //       return this.OptionsItemName.filter(option => option.ItemName.toLowerCase().includes(filterValue));
-    //     }
-    //   }
-    //   getOptionTextItemName(option) {
-    //     return option && option.ItemName ? option.ItemName : '';
-    //   }
-    //   getSelectedObj(obj) {
-    //     //console.log(obj);
-    //     this.getStockList();
-    //   }
-
-    //   OnSelect(param) {
-    //     // console.log(param);
-
-    //   }
-    //   vStatus: any;
-    //   vStockId: any;
-    //   AddType: any;
-    //   vExpDate: any;
-    //   vPurchaseRate: any;
-    //   vBatchEdit: any;
-    //   vExpDateEdit: any;
-    //   vDeudQty: any;
-    //   AddQty(contact, AddQty) {
+   
+    // AddQty(contact, AddQty) {
     //     if (contact.AddQty > 0) {
-    //       contact.UpdatedQty =parseFloat(contact.BalanceQty) + parseFloat(contact.AddQty);
-    //       this.AddType = 1;
+    //         contact.UpdatedQty = parseFloat(contact.BalanceQty) + parseFloat(contact.AddQty);
+    //         this.AddType = 1;
     //     } else {
-    //       contact.UpdatedQty = 0;
+    //         contact.UpdatedQty = 0;
     //     }
     //     this.vUpdatedQty = contact.UpdatedQty;
     //     this.vQty = contact.AddQty;
@@ -216,289 +156,294 @@ export class StockAdjustmentComponent implements OnInit {
     //     this.vStockId = contact.StockId;
     //     this.vBatchNo = contact.BatchNo;
     //     this.toastr.warning('Record Not Saved Please Save Record', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
+    //         toastClass: 'tostr-tost custom-toast-warning',
     //     });
-    //   }
-    //   DeduQty(contact, DeduQty) {
+    // }
+    // DeduQty(contact, DeduQty) {
     //     if (contact.DeduQty > 0) {
-    //       contact.UpdatedQty = parseFloat(contact.BalanceQty) - parseFloat(contact.DeduQty);
-    //       this.AddType = 0;
+    //         contact.UpdatedQty = parseFloat(contact.BalanceQty) - parseFloat(contact.DeduQty);
+    //         this.AddType = 0;
     //     } else {
-    //       contact.UpdatedQty = 0;
+    //         contact.UpdatedQty = 0;
     //     }
     //     this.vUpdatedQty = contact.UpdatedQty,
-    //       this.vQty = contact.DeduQty;
+    //         this.vQty = contact.DeduQty;
     //     this.vBalQty = contact.BalanceQty;
     //     this.vStockId = contact.StockId;
     //     this.vBatchNo = contact.BatchNo;
     //     this.toastr.warning('Record Not Saved Please Save Record', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
+    //         toastClass: 'tostr-tost custom-toast-warning',
     //     });
-    //   }
-    //   OneditBatch(contact) {
-    //     this.vBatchNo = contact.BatchNo
-    //     this.vExpDate = contact.BatchExpDate;
-    //     this.vBatchEdit = contact.BatchEdit;
-    //     this.vExpDateEdit = contact.BatchExpDate;
-    //     this.vStockId = contact.StockId;
-    //     this.toastr.warning('Record Not Saved Please Save Record', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //   }
-    //   onsaveStockAdj() {
+    // }
+
+    batchEdit: boolean = false;
+    // BatchenableEditing(row: StockAdjList) {
+    //   row.batchEdit = true;
+    //   row.batchEdit = '';
+    // }
+
+
+    OneditBatch(contact) {
+        debugger
+
+        console.log(contact)
+        this.vBatchNo = contact.batchNo
+        this.vExpDate = contact.batchExpDate;
+        this.vBatchEdit = contact.batchEdit;
+        this.vExpDateEdit = contact.batchExpDate;
+        this.vStockId = contact.stockId;
+        this.toastr.warning('Record Not Saved Please Save Record', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+        });
+    }
+    // onsaveStockAdj() {
     //     let isCheckQty: any;
     //     if (isCheckQty = this.dsStockAdjList.data.some(item => item.AddQty != '')) {
-    //       this.OnSaveStockAdjustment();
+    //         this.OnSaveStockAdjustment();
     //     }
     //     else if (isCheckQty = this.dsStockAdjList.data.some(item => item.DeduQty < this.vBalQty || item.AddQty == '')) {
-    //       this.OnSaveStockAdjustment();
+    //         this.OnSaveStockAdjustment();
     //     }
     //     else {
-    //       this.toastr.warning('Please enter a Qty', 'Warning !', {
-    //         toastClass: 'tostr-tost custom-toast-warning',
-    //       });
-    //     }
-    //   }
-
-    //   OnSaveStockAdjustment() {
-    //     this.sIsLoading = 'loading-data';
-    //     if ((!this.dsStockAdjList.data.length)) {
-    //       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-    //         toastClass: 'tostr-tost custom-toast-warning',
-    //       });
-    //       return;
-    //     }
-    //     let insertMRPStockadju = {};
-    //     insertMRPStockadju['storeID'] = this.accountService.currentUserValue.storeId || 0;
-    //     insertMRPStockadju['stkId'] = this.vStockId || 0;
-    //     insertMRPStockadju['itemId'] = this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0;
-    //     insertMRPStockadju['batchNo'] = this.vBatchNo || '';
-    //     insertMRPStockadju['ad_DD_Type'] = this.AddType;
-    //     insertMRPStockadju['ad_DD_Qty'] = this.vQty || 0;
-    //     insertMRPStockadju['preBalQty'] = this.vBalQty || 0;
-    //     insertMRPStockadju['afterBalQty'] = this.vUpdatedQty || 0;
-    //     insertMRPStockadju['addedBy'] = this.accountService.currentUserValue.userId || 0;
-    //     insertMRPStockadju['stockAdgId'] = 0;
-
-    //     let submitData = {
-    //       'stockAdjustment': insertMRPStockadju,
-    //     }
-    //     console.log(submitData);
-    //     this._StockAdjustment.StockAdjSave(submitData).subscribe(response => {
-    //       if (response) {
-    //         this.toastr.success('Record Stock Adjustment Saved Successfully.', 'Saved !', {
-    //           toastClass: 'tostr-tost custom-toast-success',
+    //         this.toastr.warning('Please enter a Qty', 'Warning !', {
+    //             toastClass: 'tostr-tost custom-toast-warning',
     //         });
-    //         this.getStockList();
-    //       } else {
-    //         this.toastr.error('Stock Adjustment Data not saved !, Please check error..', 'Error !', {
-    //           toastClass: 'tostr-tost custom-toast-error',
-    //         });
-    //       }
-    //     }, error => {
-    //       this.toastr.error('Stock Adjustment Data not saved !, Please check API error..', 'Error !', {
-    //         toastClass: 'tostr-tost custom-toast-error',
-    //       });
-    //     });
-    //   }
-
-
-    //   getLastDayOfMonth(month: number, year: number): number {
-    //     return new Date(year, month, 0).getDate();
-    //   }
-    //   pad(n: number): string {
-    //     return n < 10 ? '0' + n : n.toString();
-    //   }
-    //   lastDay1: any;
-    //   vlastDay: string = '';
-    //   lastDay2: string = '';
-
-    //   CellcalculateLastDay(contact, inputDate: string) {
-
-    //     if (inputDate && inputDate.length === 6) {
-    //       const month = +inputDate.substring(0, 2);
-    //       const year = +inputDate.substring(2, 6);
-
-    //       if (month >= 1 && month <= 12) {
-    //         const lastDay1 = this.getLastDayOfMonth(month, year);
-    //         this.lastDay1 = `${lastDay1}/${this.pad(month)}/${year}`;
-    //         this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`;
-    //         //console.log(this.lastDay2)
-    //         contact.ExpDateEdit = this.lastDay1;
-    //         this.vExpDateEdit = this.lastDay1;
-    //       } else {
-    //         this.vlastDay = 'Invalid month';
-    //       }
-    //     } else {
-    //       this.vlastDay = ' ';
     //     }
-    //     this.vBatchNo = contact.BatchNo
-    //     this.vExpDate = contact.BatchExpDate;
-    //     this.vBatchEdit = contact.BatchNo;
-    //     this.vExpDateEdit = contact.BatchExpDate;
-    //     this.vStockId = contact.StockId;
-    //     this.toastr.warning('Record Not Saved Please Save Record', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //   }
-    //   OnSaveBatchAdj(){
-    //     const chkExpDate = this.dsStockAdjList.data.some((item) => item.ExpDateEdit ==  this.vlastDay);
-    //     if(!chkExpDate){
-    //       if(this.vExpDateEdit){
-    //         this.OnSaveBatchAdjustment() 
-    //       }else{
-    //         this.toastr.warning('Please enter BatchExpDate', 'Warning !', {
-    //           toastClass: 'tostr-tost custom-toast-warning',
-    //         }); 
-    //       } 
-    //     }else{
-    //       this.toastr.warning('Please enter BatchExpDate', 'Warning !', {
-    //         toastClass: 'tostr-tost custom-toast-warning',
-    //       });
-    //     }
-    //   }
-    //   Lastbatch:string = '';
-    //   OnSaveBatch(){
-    //     //const chkBatchNo = this.dsStockAdjList.data.some((item) => item.BatchEdit ==  this.Lastbatch);
-    //     if(this.vBatchEdit){
-    //       this.OnSaveBatchAdjustment();
-    //     }
-    //     else{
-    //       this.toastr.warning('Please enter BatchNo', 'Warning !', {
-    //         toastClass: 'tostr-tost custom-toast-warning',
-    //       });
-    //     }
-
-    //   }
-
-    //   OnSaveBatchAdjustment() {
-    //     if ((!this.dsStockAdjList.data.length)) {
-    //       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-    //         toastClass: 'tostr-tost custom-toast-warning',
-    //       });
-    //       return;
-    //     }
-    //     this.dsStockAdjList.data.forEach(element =>{
-    //       if (element.ExpDateEdit && element.ExpDateEdit.length === 10) {
-    //         const day = +element.ExpDateEdit.substring(0, 2);
-    //         const month = +element.ExpDateEdit.substring(3, 5);
-    //         const year = +element.ExpDateEdit.substring(6, 10);
-
-    //         this.vExpDate = `${year}/${this.pad(month)}/${day}`;
-    //         // console.log(this.vExpDate)
-    //       }
-    //     })
-
-    //     let batchAdjustment = {};
-    //     batchAdjustment['storeId'] = this.accountService.currentUserValue.storeId || 0;
-    //     batchAdjustment['itemId'] = this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0;
-    //     batchAdjustment['oldBatchNo'] = this.vBatchNo || '';
-    //     batchAdjustment['oldExpDate'] = this.vExpDate || 0;
-    //     batchAdjustment['newBatchNo'] = this.vBatchEdit || '';
-    //     batchAdjustment['newExpDate'] = this.vExpDate;
-    //     batchAdjustment['addedBy'] = this.accountService.currentUserValue.userId || 0;
-    //     batchAdjustment['stkId'] = this.vStockId || 0;
-
-    //     let submitData = {
-    //       'batchAdjustment': batchAdjustment,
-    //     }
-    //     console.log(submitData);
-    //     this._StockAdjustment.BatchAdjSave(submitData).subscribe(response => {
-    //       if (response) {
-    //         this.toastr.success('Record Batch Adjustment Saved Successfully.', 'Saved !', {
-    //           toastClass: 'tostr-tost custom-toast-success',
-    //         });
-    //         this.getStockList();
-    //         this.vBatchEdit = '';
-    //       } else {
-    //         this.toastr.error('Batch Adjustment Data not saved !, Please check error..', 'Error !', {
-    //           toastClass: 'tostr-tost custom-toast-error',
-    //         });
-    //       }
-    //     }, error => {
-    //       this.toastr.error('Batch Adjustment Data not saved !, Please check API error..', 'Error !', {
-    //         toastClass: 'tostr-tost custom-toast-error',
-    //       });
-    //     });
-
-    //   }
-    //   EditMRP(contact){
-    //       console.log(contact)
-    //       const dialogRef = this._matDialog.open(MRPAdjustmentComponent,
-    //         {
-    //           maxWidth: "100%",
-    //           height: '45%',
-    //           width: '50%',
-    //           data: {
-    //             Obj: contact,
-    //           }
-    //         });
-    //       dialogRef.afterClosed().subscribe(result => {
-    //         console.log('The dialog was closed - Insert Action', result);
-    //         this.getStockList();
-    //       });
-    //     }
-    //     EditGST(contact){
-    //       console.log(contact)
-    //       const dialogRef = this._matDialog.open(GSTAdjustmentComponent,
-    //         {
-    //           maxWidth: "100%",
-    //           height: '45%',
-    //           width: '50%',
-    //           data: {
-    //             Obj: contact,
-    //           }
-    //         });
-    //       dialogRef.afterClosed().subscribe(result => {
-    //         console.log('The dialog was closed - Insert Action', result);
-    //         this.getStockList();
-    //       });
-    //     }
-    //   Addeditable: boolean = false;
-    //   Dedueditable: boolean = false;
-    //   Expeditable: boolean = false;
-    //   Batcheditable: boolean = false;
-    //   Rateeditable: boolean = false;
-    //   Landededitable: boolean = false; 
-
-    //   enableEditing(row: StockAdjList) {
-    //     row.Addeditable = true;
-    //   }
-    //   disableEditing(row: StockAdjList) {
-    //     row.Addeditable = false;
-    //   }
-    //   deduenableEditing(row: StockAdjList) {
-    //     row.Dedueditable = true;
-    //   }
-    //   dedudisableEditing(row: StockAdjList) {
-    //     row.Dedueditable = false;
-    //   }
-    //   RateenableEditing(row: StockAdjList) {
-    //     row.Rateeditable = true;
-    //   }
-    //   RatedisableEditing(row: StockAdjList) {
-    //     row.Rateeditable = false;
-    //   }
-    //   BatchenableEditing(row: StockAdjList) {
-    //     row.Batcheditable = true;
-    //   }
-    //   BatchdisableEditing(row: StockAdjList) {
-    //     row.Batcheditable = false;
-    //   }
-    //   ExpDateenableEditing(row: StockAdjList) {
-    //     row.Expeditable = true;
-    //   }
-    //   ExpDatedisableEditing(row: StockAdjList) {
-    //     row.Expeditable = false;
-    //   }
-    //   LandedenableEditing(row: StockAdjList) {
-    //     row.Landededitable = true;
-    //   }
-    //   LandeddisableEditing(row: StockAdjList) {
-    //     row.Landededitable = false;
-    //   }
     // }
+
+    // OnSaveStockAdjustment() {
+
+    //     if ((!this.dsStockAdjList.data.length)) {
+    //         this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+    //             toastClass: 'tostr-tost custom-toast-warning',
+    //         });
+    //         return;
+    //     }
+
+    //     let submitData = {
+
+    //         "storeId": this.accountService.currentUserValue.storeId || 0,
+    //         "stkId": this.vStockId || 0,
+    //         "itemId": this.StoreFrom.get('ItemID').value.itemId || 0,
+    //         "batchNo": this.vBatchNo || '',
+    //         "adDdType": this.AddType,
+    //         "adDdQty": this.vQty || 0,
+    //         "preBalQty": this.vBalQty || 0,
+    //         "afterBalQty": this.vUpdatedQty || 0,
+    //         "addedBy": this.accountService.currentUserValue.userId || 0,
+    //         "stockAdgId": 0
+    //     }
+
+    //     console.log(submitData);
+    //     this._StockAdjustmentService.StockAdjSave(submitData).subscribe(response => {
+    //         this.toastr.success(response.message);
+    //         this._matDialog.closeAll();
+
+    //     });
+    // }
+    resetFormItem() {
+
+    }
+
+    getLastDayOfMonth(month: number, year: number): number {
+        return new Date(year, month, 0).getDate();
+    }
+    pad(n: number): string {
+        return n < 10 ? '0' + n : n.toString();
+    }
+    lastDay1: any;
+    vlastDay: string = '';
+    lastDay2: string = '';
+
+    CellcalculateLastDay(contact, inputDate: string) {
+
+        if (inputDate && inputDate.length === 6) {
+            const month = +inputDate.substring(0, 2);
+            const year = +inputDate.substring(2, 6);
+
+            if (month >= 1 && month <= 12) {
+                const lastDay1 = this.getLastDayOfMonth(month, year);
+                this.lastDay1 = `${lastDay1}/${this.pad(month)}/${year}`;
+                this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`;
+                //console.log(this.lastDay2)
+                contact.ExpDateEdit = this.lastDay1;
+                this.vExpDateEdit = this.lastDay1;
+            } else {
+                this.vlastDay = 'Invalid month';
+            }
+        } else {
+            this.vlastDay = ' ';
+        }
+        this.vBatchNo = contact.batchNo
+        this.vExpDate = contact.batchExpDate;
+        this.vBatchEdit = contact.batchNo;
+        this.vExpDateEdit = contact.batchExpDate;
+        this.vStockId = contact.stockId;
+        this.toastr.warning('Record Not Saved Please Save Record', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+        });
+    }
+    OnSaveBatchAdj() {
+        debugger
+        // const chkExpDate = this.dsStockAdjList.data.some((item) => item.expDateEdit == this.vlastDay);
+        // if (!chkExpDate) {
+            if (this.vExpDateEdit) {
+                this.OnSaveBatchAdjustment()
+            } else {
+                this.toastr.warning('Please enter BatchExpDate', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+            }
+        // } else {
+        //     this.toastr.warning('Please enter BatchExpDate', 'Warning !', {
+        //         toastClass: 'tostr-tost custom-toast-warning',
+        //     });
+        // }
+    }
+    Lastbatch: string = '';
+    // OnSaveBatch() {
+    //     const chkBatchNo = this.dsStockAdjList.data.some((item) => item.BatchEdit ==  this.Lastbatch);
+    //     if (this.vBatchEdit) {
+    //         this.OnSaveBatchAdjustment();
+    //     }
+    //     else {
+    //         this.toastr.warning('Please enter BatchNo', 'Warning !', {
+    //             toastClass: 'tostr-tost custom-toast-warning',
+    //         });
+    //     }
+
+    // }
+
+    OnSaveBatchAdjustment() {
+        debugger
+
+        if ((!this.dsStockAdjList.data.length)) {
+            this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+           this.dsStockAdjList.data.forEach(element => {
+                if (element.expDateEdit && element.expDateEdit.length === 10) {
+                    const day = +element.expDateEdit.substring(0, 2);
+                    const month = +element.expDateEdit.substring(3, 5);
+                    const year = +element.expDateEdit.substring(6, 10);
+
+                    this.vExpDate = `${year}/${this.pad(month)}/${day}`;
+                    // console.log(this.vExpDate)
+                }
+            })
+
+
+            let submitData = {
+                "batchAdjId": 0,
+                "storeId": this.accountService.currentUserValue.user.storeId || 0,
+                "itemId": this.StoreFrom.get('ItemID').value.itemId || 0,
+                "oldBatchNo": this.vBatchNo || '',
+                "oldExpDate": this.datePipe.transform(this.vExpDate, 'yyyy-MM-dd'),
+                "newBatchNo": this.vBatchEdit || '',
+                "newExpDate": this.datePipe.transform(this.vExpDate, 'yyyy-MM-dd'),
+                "addedBy": this.accountService.currentUserValue.userId || 0,
+                "stkId": this.vStockId || 0
+            }
+            console.log(submitData);
+            this._StockAdjustmentService.BatchAdjSave(submitData).subscribe(response => {
+                this.toastr.success(response.message);
+                this._matDialog.closeAll();
+                this.dsStockAdjList.data=[];
+            });
+      this.StoreFrom.get("ItemID").setValue('')
+    }
+    EditMRP(contact) {
+        console.log(contact)
+        const dialogRef = this._matDialog.open(MRPAdjustmentComponent,
+            {
+                maxWidth: "100%",
+                height: '45%',
+                width: '50%',
+                data: {
+                    Obj: contact,
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.getStockList();
+        });
+    }
+    EditGST(contact) {
+        console.log(contact)
+        const dialogRef = this._matDialog.open(GSTAdjustmentComponent,
+            {
+                maxWidth: "100%",
+                height: '50%',
+                width: '50%',
+                data: {
+                    Obj: contact,
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.getStockList();
+        });
+    }
+    Addeditable: boolean = false;
+    Dedueditable: boolean = false;
+    Expeditable: boolean = false;
+    Batcheditable: boolean = false;
+    Rateeditable: boolean = false;
+    Landededitable: boolean = false;
+
+    enableEditing(row: StockAdjList) {
+        row.Addeditable = true;
+    }
+    disableEditing(row: StockAdjList) {
+        row.Addeditable = false;
+    }
+    deduenableEditing(row: StockAdjList) {
+        row.Dedueditable = true;
+    }
+    dedudisableEditing(row: StockAdjList) {
+        row.Dedueditable = false;
+    }
+    RateenableEditing(row: StockAdjList) {
+        row.Rateeditable = true;
+    }
+    RatedisableEditing(row: StockAdjList) {
+        row.Rateeditable = false;
+    }
+    BatchenableEditing(row: StockAdjList) {
+        row.Batcheditable = true;
+    }
+    BatchdisableEditing(row: StockAdjList) {
+        row.Batcheditable = false;
+    }
+    ExpDateenableEditing(row: StockAdjList) {
+        row.Expeditable = true;
+    }
+    ExpDatedisableEditing(row: StockAdjList) {
+        row.Expeditable = false;
+    }
+    LandedenableEditing(row: StockAdjList) {
+        row.Landededitable = true;
+    }
+    LandeddisableEditing(row: StockAdjList) {
+        row.Landededitable = false;
+    }
+
+
+    //  batchEdit: boolean = false;
+    // BatchenableEditing(row: StockAdjList) {
+    //   row.batchEdit = true;
+    //   row.batchEdit = '';
+    // }
+    BatchisableEditing(row: StockAdjList) {
+        row.batchEdit = false;
+        this.StoreFrom.get('batchEdit').setValue('')
+        this.getStockList();
+    }
+
 }
+
 export class StockAdjList {
     BalQty: any;
     BatchNo: number;
@@ -512,6 +457,7 @@ export class StockAdjList {
     DeduQty: any;
     BatchEdit: any;
     ExpDateEdit: any;
+    expDateEdit: any;
     Addeditable: boolean = false;
     Dedueditable: boolean = false;
     Rateeditable: boolean = false;
@@ -519,7 +465,7 @@ export class StockAdjList {
     Expeditable: boolean = false;
     Landededitable: boolean = false;
     GSTeditable: boolean = false;
-
+    batchEdit: any;
     constructor(StockAdjList) {
         {
             this.BalQty = StockAdjList.BalQty || 0;
@@ -530,6 +476,8 @@ export class StockAdjList {
             this.PurchaseRate = StockAdjList.PurchaseRate || 0;
             this.UpdatedQty = StockAdjList.UpdatedQty || 0;
             this.LandedRate = StockAdjList.LandedRate || 0;
+            this.batchEdit = StockAdjList.batchEdit || ''
+            this.expDateEdit == StockAdjList.expDateEdit || ''
         }
     }
 }

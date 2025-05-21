@@ -41,10 +41,10 @@ export class MRPAdjustmentComponent implements OnInit {
     if(this.data.Obj){
       this.registerObj = this.data.Obj;
       console.log(this.registerObj)
-      this.vOldMRP = this.registerObj.UnitMRP;
-      this.vLandedRate = this.registerObj.LandedRate;
-      this.vPurchaseRate = this.registerObj.PurUnitRateWF;
-      this.itemname = this.registerObj.ItemName;
+      this.vOldMRP = this.registerObj.unitMRP;
+      this.vLandedRate = this.registerObj.landedRate;
+      this.vPurchaseRate = this.registerObj.purUnitRateWF;
+      this.itemname = this.registerObj.itemName;
      // this.vConversionFactor = this.registerObj.LandedRate
     }
   }

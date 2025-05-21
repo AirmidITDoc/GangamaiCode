@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class StockAdjustmentService {
   GSTAdjustment : FormGroup;
 
   constructor(
-    public _httpClient: HttpClient, public _httpClient1: ApiCaller,
+    public _httpClient: HttpClient, public _httpClient1: ApiCaller, private accountService: AuthenticationService,
     private _formBuilder: UntypedFormBuilder
   ) { 
     this.StoreFrom = this.CreateStoreFrom();
@@ -24,8 +25,10 @@ export class StockAdjustmentService {
   }
   CreateStoreFrom(){
     return this._formBuilder.group({
-      StoreId: ['2'],
+      StoreId:this.accountService.currentUserValue.user.storeId,
       ItemID: [''],
+      batchEdit:[0],
+      expDateEdit:''
     });
   }
   createUserForm() {
@@ -70,16 +73,16 @@ export class StockAdjustmentService {
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemName",Param)
   }
   public StockAdjSave(param){
-    return this._httpClient.post('InventoryTransaction/StockAdjustment',param);
+    return this._httpClient1.PostData('InventoryTransaction/StockAdjustment',param);
   }
   public BatchAdjSave(param){//InventoryTransaction/BatchAdjustmen
-    return this._httpClient.post('InventoryTransaction/BatchAdjustment',param);
+    return this._httpClient1.PostData('StockAdjustment/BatchUpdate',param);
   }
   public MRPAdjSave(param){
     return this._httpClient.post('Pharmacy/InsertMRPadjustment',param);
   }
   public GSTAdjSave(param){
-    return this._httpClient.post('InventoryTransaction/GSTAdjustment',param);
+    return this._httpClient1.PostData('StockAdjustment/GSTUpdate',param);
   }
 
   // NewApi

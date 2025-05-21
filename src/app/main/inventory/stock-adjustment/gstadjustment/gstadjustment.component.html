@@ -17,12 +17,12 @@
     </mat-toolbar>
 
     <div class="content">
-        <div class="center p-24 pb-56" >
+        <div class="center p-24 pb-56">
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="100%" fxFlex>
 
-                        <form [formGroup]="_StockAdjustment.GSTAdjustment" >
+                        <form [formGroup]="_StockAdjustment.GSTAdjustment">
                             <div fxLayout="row">
                                 <label style="margin-bottom: 15px;">ItemName :</label>
                                 <span style="padding: 0px 15px 15px 15px;">{{itemname}}</span>
@@ -33,22 +33,22 @@
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>CGSTPer</mat-label>
                                     <input name="CGSTPer" formControlName="CGSTPer" matInput required readonly
-                                    (keyup.enter)="focusNext('SGSTPer')" [(ngModel)]="vCGSTPer" type="text" OnlyNUmber
-                                    >
+                                        (keyup.enter)="focusNext('SGSTPer')" [(ngModel)]="vCGSTPer" type="text"
+                                        OnlyNUmber>
                                 </mat-form-field>
-                                
+
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>SGSTPer</mat-label>
-                                    <input name="SGSTPer" formControlName="SGSTPer" matInput required type="text" OnlyNUmber
-                                    (keyup.enter)="focusNext('IGSTPer')" id="SGSTPer" [(ngModel)]="vSGSTPer" readonly
-                                     >
+                                    <input name="SGSTPer" formControlName="SGSTPer" matInput required type="text"
+                                        OnlyNUmber (keyup.enter)="focusNext('IGSTPer')" id="SGSTPer"
+                                        [(ngModel)]="vSGSTPer" readonly>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>IGSTPer</mat-label>
-                                    <input name="IGSTPer" formControlName="IGSTPer" matInput required type="text" OnlyNUmber
-                                    (keyup.enter)="focusNext('NewCGSTPer')" id="IGSTPer" [(ngModel)]="vIGSTPer" readonly
-                                    >
+                                    <input name="IGSTPer" formControlName="IGSTPer" matInput required type="text"
+                                        OnlyNUmber (keyup.enter)="focusNext('NewCGSTPer')" id="IGSTPer"
+                                        [(ngModel)]="vIGSTPer" readonly>
                                 </mat-form-field>
                             </div>
                             <div fxLayout="row" fxLayoutGap="4px">
@@ -56,24 +56,23 @@
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>New CGSTPer</mat-label>
                                     <input name="NewCGSTPer" formControlName="NewCGSTPer" type="text" OnlyNUmber
-                                      matInput required (keyup.enter)="focusNext('NewSGSTPer')"
-                                        id="NewCGSTPer" [(ngModel)]="vNewCGSTPer"   (keyup)="calculationAmt()" 
-                                        (keypress)="keyPressCharater($event)" >
+                                        matInput required (keyup.enter)="focusNext('NewSGSTPer')" id="NewCGSTPer"
+                                        [(ngModel)]="vNewCGSTPer" (keyup)="calculationAmt()"
+                                        (keypress)="keyPressCharater($event)">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>New SGSTPer</mat-label>
-                                    <input name="NewSGSTPer" formControlName="NewSGSTPer" matInput required type="text" OnlyNUmber
-                                     id="NewSGSTPer" [(ngModel)]="vNewSGSTPer" 
-                                    (keyup)="calculationAmt()"   (keyup.enter)="focusNext('NewIGSTPer')"
-                                    (keypress)="keyPressCharater($event)">
+                                    <input name="NewSGSTPer" formControlName="NewSGSTPer" matInput required type="text"
+                                        OnlyNUmber id="NewSGSTPer" [(ngModel)]="vNewSGSTPer" (keyup)="calculationAmt()"
+                                        (keyup.enter)="focusNext('NewIGSTPer')" (keypress)="keyPressCharater($event)">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>New IGSTPer</mat-label>
-                                    <input name="NewIGSTPer" formControlName="NewIGSTPer" matInput required type="text" OnlyNUmber
-                                     [(ngModel)]="vNewIGSTPer"  id="NewIGSTPer"   (keyup)="calculationAmt()"
-                                     (keypress)="keyPressCharater($event)" (keyup.enter)="focusNext('Save')">
+                                    <input name="NewIGSTPer" formControlName="NewIGSTPer" matInput required type="text"
+                                        OnlyNUmber [(ngModel)]="vNewIGSTPer" id="NewIGSTPer" (keyup)="calculationAmt()"
+                                        (keypress)="keyPressCharater($event)" (keyup.enter)="focusNext('Save')">
                                 </mat-form-field>
 
                             </div>
@@ -82,21 +81,26 @@
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Old GSTPer</mat-label>
-                                    <input name="OldTotalGSTPer" formControlName="OldTotalGSTPer" matInput required type="text" OnlyNUmber
-                                     [(ngModel)]="vOldTotalGSTPer"  id="OldTotalGSTPer" >
+                                    <input name="OldTotalGSTPer" formControlName="OldTotalGSTPer" matInput required
+                                        type="text" OnlyNUmber [(ngModel)]="vOldTotalGSTPer" id="OldTotalGSTPer">
                                 </mat-form-field>
-    
+
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>New GSTPer</mat-label>
-                                    <input name="TotalGSTPer" formControlName="TotalGSTPer" matInput required type="text" OnlyNUmber
-                                     [(ngModel)]="vTotalGSTPer"  id="TotalGSTPer" >
+                                    <input name="TotalGSTPer" formControlName="TotalGSTPer" matInput required
+                                        type="text" OnlyNUmber [(ngModel)]="vTotalGSTPer" id="TotalGSTPer">
                                 </mat-form-field>
-    
-                                <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
-                                <button class="btn btn-primary " (click)="onSubmit()" [disabled]="Savebtn" id="Save">Save</button>
+
+                                <div class="button-row-group">
+                                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                    <button class="btn btn-primary" (click)="onSubmit()" 
+                                        [disabled]="Savebtn">Save</button>
+                                </div>
+
+                            
                             </div>
                         </form>
-                      
+
                     </div>
                 </div>
             </div>

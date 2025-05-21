@@ -387,12 +387,12 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
 
 
     if (isChecked) {
-
       let isertItemdetailsObj = [];
       this.dsNewIssueList3.data.forEach(element => {
         console.log(element)
 
         let insertitemdetail = {};
+        insertitemdetail['issueDepId'] = 0;
         insertitemdetail['issueId'] = 0;
         insertitemdetail['itemId'] = element.ItemId;
         insertitemdetail['batchNo'] = element.BatchNo;
@@ -419,7 +419,20 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
         updateissuetoDepartmentStock.push(updateitemdetail);
       });
 
+      console.log(this.IssueFinalForm.value)
+
+      // this.IssueFinalForm.get("toStoreId").setValue(this.StoreFrom.get("StoreFrom").value)
+      // this.IssueFinalForm.get("toStoreId").setValue(this.StoreFrom.get("StoreFrom").value)
+
+      //   this.IssueFinalForm.get("toStorissueDateeId").setValue(this.datePipe.transform(new Date(), "yyyy-MM-dd") || '1900-01-01')
+
+      console.log(this.IssueFinalForm.value)
+      //  this.IssueFinalForm.get("tIssueToDepartmentDetails").setValue(isertItemdetailsObj)
+      //  this.IssueFinalForm.get("tCurrentStock").setValue(updateissuetoDepartmentStock)
+
+
       let submitData = {
+        issue:{
         "issueId": 0,
         "issueDate": this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
         "issueTime": this.datePipe.transform(this.dateTimeObj.date, 'shortTime'),
@@ -433,14 +446,16 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
         "isVerified": false,
         "isClosed": false,
         "indentId": 0,
-        tIssueToDepartmentDetails: isertItemdetailsObj,
+        tIssueToDepartmentDetails: isertItemdetailsObj},
         tCurrentStock: updateissuetoDepartmentStock
+        
       };
 
       console.log(submitData);
 
       this._IssueToDep.IssuetodepSave(submitData).subscribe(response => {
         this.toastr.success(response.message);
+        console.log(response)
         if (response) {
           this.viewgetIssuetodeptReportPdf(response)
           this._matDialog.closeAll();

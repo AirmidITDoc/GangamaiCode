@@ -23,13 +23,25 @@
         dynamicTableHeight>
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-          <ng-template #actionButtonTemplate let-element>
+            <ng-template #actionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <button mat-icon-button matTooltip="Print Indent" (click)="viewgetIndentReportPdf(element)">
                         <mat-icon> print</mat-icon>
                     </button>
                 </div>
             </ng-template>
+
+        
+            <ng-template #isVerifiedstatus let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isAccepted=='1'" matTooltip="Accepted"
+                        class="pill green-600 s-16">circle</mat-icon>
+
+                    <mat-icon *ngIf="element.isAccepted=='0'" matTooltip="NotAccepted"
+                        class="pill red-600 s-16">circle</mat-icon>
+                </div>
+            </ng-template>
+
             <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="GetDetails1($event)" #grid>
 
                 <ng-container filters>

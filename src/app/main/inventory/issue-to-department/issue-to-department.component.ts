@@ -55,15 +55,17 @@ export class IssueToDepartmentComponent implements OnInit {
    
      ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-       
+         this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = this.isVerifiedstatus;
+   
       }
 
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-   
+@ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
+ 
      allcolumns = [
     
-        { heading: "IsAccepted", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "IssueNo", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "IsAccepted", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:100 },
+          { heading: "IssueNo", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 150,type:6 },
         { heading: "From Store Name", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "To StoreName", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA', width: 150 },

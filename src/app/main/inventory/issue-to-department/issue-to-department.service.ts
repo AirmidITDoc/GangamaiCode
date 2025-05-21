@@ -56,6 +56,23 @@ export class IssueToDepartmentService {
       GSTAmount:[''],
       FinalTotalAmount:['', [Validators.required]],
       FinalNetAmount:['', [Validators.required]],
+
+
+    //   issueId: 0,
+    // issueDate:new Date(),
+    // issueTime: new Date(),
+    // fromStoreId:  this.accountService.currentUserValue.user.storeId,
+    // toStoreId: 0,
+    // totalAmount: 0,
+    // totalVatAmount: 0,
+    // netAmount: 0,
+    // remark: "",
+    // addedby: this.accountService.currentUserValue.user.id,
+    // isVerified: true,
+    // isClosed: true,
+    // indentId: 0,
+    // tIssueToDepartmentDetails:'',
+    // tCurrentStock:''
     }); 
   }
   CreateStoreFrom(){
