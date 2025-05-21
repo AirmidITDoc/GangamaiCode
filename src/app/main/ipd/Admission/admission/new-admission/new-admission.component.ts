@@ -47,7 +47,7 @@ export class NewAdmissionComponent implements OnInit {
   ageYear = 0
   ageMonth = 0
   ageDay = 0
-  CityName=""
+  CityName = ""
   noOptionFound: boolean = false;
   isRegSearchDisabled: boolean = true;
   registredflag: boolean = true;
@@ -58,7 +58,7 @@ export class NewAdmissionComponent implements OnInit {
   filteredOptionsRegSearch: Observable<string[]>;
   registerObj1 = new AdmissionPersonlModel({});
   registerObj = new RegInsert({});
-  RegId=0;
+  RegId = 0;
   currentDate = new Date();
   public now: Date = new Date();
   // isLoading: string = '';
@@ -116,14 +116,14 @@ export class NewAdmissionComponent implements OnInit {
   autocompleteModehospital: string = "Hospital";
 
   ngOnInit(): void {
-    
+
     this.searchFormGroup = this.createSearchForm();
     this.personalFormGroup.markAllAsTouched();
     this.admissionFormGroup.markAllAsTouched();
 
     if (this.AdmissionId)
       this.searchFormGroup.get("regRadio").setValue("registrered")
-   
+
   }
 
 
@@ -131,7 +131,7 @@ export class NewAdmissionComponent implements OnInit {
     return this.formBuilder.group({
       regRadio: ['registration'],
       RegId: [{ value: '', disabled: this.isRegSearchDisabled }],
-      HospitalId:[this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      HospitalId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
   }
 
@@ -185,80 +185,80 @@ export class NewAdmissionComponent implements OnInit {
   onNewSave() {
     if (this.Patientnewold == 2 && this.RegId == 0)
       this.toastr.warning("Please Select Registered Patient  ...");
-  else {
-    let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
-    if (DateOfBirth1) {
-      const todayDate = new Date();
-      const dob = new Date(DateOfBirth1);
-      const timeDiff = Math.abs(Date.now() - dob.getTime());
-      this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
-      this.ageMonth = (todayDate.getMonth() - dob.getMonth());
-      this.ageDay = (todayDate.getDate() - dob.getDate());
-
-      if (this.ageDay < 0) {
-        (this.ageMonth)--;
-        const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
-        this.ageDay += previousMonth.getDate(); // Days in previous month
-      }
-
-      if (this.ageMonth < 0) {
-        this.ageYear--;
-        this.ageMonth += 12;
-      }
-    }
-    if (
-      (!this.ageYear || this.ageYear == 0) &&
-      (!this.ageMonth || this.ageMonth == 0) &&
-      (!this.ageDay || this.ageDay == 0)
-    ) {
-      this.toastr.warning('Please select Date of Birth', 'Warning!', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid) {
-
-      Swal.fire({
-        title: 'Do you want to Save the Admission ',
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, Save!"
-
-      }).then((result) => {
-      if (result.isConfirmed) {
-          this.OnSaveAdmission();
-        }
-      })
-    }
     else {
-      let invalidFields = [];
+      let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
+      if (DateOfBirth1) {
+        const todayDate = new Date();
+        const dob = new Date(DateOfBirth1);
+        const timeDiff = Math.abs(Date.now() - dob.getTime());
+        this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
+        this.ageMonth = (todayDate.getMonth() - dob.getMonth());
+        this.ageDay = (todayDate.getDate() - dob.getDate());
 
-      if (this.personalFormGroup.invalid) {
-        for (const controlName in this.personalFormGroup.controls) {
-          if (this.personalFormGroup.controls[controlName].invalid) {
-            invalidFields.push(`Personal Form: ${controlName}`);
-          }
+        if (this.ageDay < 0) {
+          (this.ageMonth)--;
+          const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+          this.ageDay += previousMonth.getDate(); // Days in previous month
+        }
+
+        if (this.ageMonth < 0) {
+          this.ageYear--;
+          this.ageMonth += 12;
         }
       }
-      if (this.admissionFormGroup.invalid) {
-        for (const controlName in this.admissionFormGroup.controls) {
-          if (this.admissionFormGroup.controls[controlName].invalid) {
-            invalidFields.push(`Admission Form: ${controlName}`);
-          }
-        }
-      }
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => {
-          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-          );
+      if (
+        (!this.ageYear || this.ageYear == 0) &&
+        (!this.ageMonth || this.ageMonth == 0) &&
+        (!this.ageDay || this.ageDay == 0)
+      ) {
+        this.toastr.warning('Please select Date of Birth', 'Warning!', {
+          toastClass: 'tostr-tost custom-toast-warning',
         });
+        return;
       }
+      if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid) {
+debugger;
+        Swal.fire({
+          title: 'Do you want to Save the Admission ',
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, Save!"
 
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.OnSaveAdmission();
+          }
+        })
+      }
+      else {
+        let invalidFields = [];
+
+        if (this.personalFormGroup.invalid) {
+          for (const controlName in this.personalFormGroup.controls) {
+            if (this.personalFormGroup.controls[controlName].invalid) {
+              invalidFields.push(`Personal Form: ${controlName}`);
+            }
+          }
+        }
+        if (this.admissionFormGroup.invalid) {
+          for (const controlName in this.admissionFormGroup.controls) {
+            if (this.admissionFormGroup.controls[controlName].invalid) {
+              invalidFields.push(`Admission Form: ${controlName}`);
+            }
+          }
+        }
+        if (invalidFields.length > 0) {
+          invalidFields.forEach(field => {
+            this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+            );
+          });
+        }
+
+      }
     }
-  }
   }
 
 
@@ -283,14 +283,14 @@ export class NewAdmissionComponent implements OnInit {
   }
 
   OnSaveAdmission() {
-    
+
     this.personalFormGroup.get('Age').setValue(String(this.ageYear))
     this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
     this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
     this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
-    this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value,"yyyy-MM-dd"))
+    this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
     this.personalFormGroup.get('City').setValue(this.CityName)
-   console.log(this.searchFormGroup.get("HospitalId").value)
+    console.log(this.searchFormGroup.get("HospitalId").value)
     this.admissionFormGroup.get('hospitalId').setValue(this.searchFormGroup.get("HospitalId").value)
 
     this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
@@ -302,27 +302,27 @@ export class NewAdmissionComponent implements OnInit {
       });
       return;
     }
-      let submitData = {
-        "AdmissionReg": this.personalFormGroup.value,
-        "ADMISSION": this.admissionFormGroup.value
-      };
+    let submitData = {
+      "AdmissionReg": this.personalFormGroup.value,
+      "ADMISSION": this.admissionFormGroup.value
+    };
+    console.log(submitData);
+    if (this.searchFormGroup.get('regRadio').value == "registration" && this.AdmissionId == 0) {
+      this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
+        this.getAdmittedPatientCasepaperview(response);
+        this.onClear();
+        this._matDialog.closeAll();
+      });
+    }
+    else {
       console.log(submitData);
-      if (this.searchFormGroup.get('regRadio').value == "registration" && this.AdmissionId == 0) {
-        this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
-          this.getAdmittedPatientCasepaperview(response);
-          this.onClear();
-          this._matDialog.closeAll();
-        });
-      }
-      else {
-          console.log(submitData);
-          this._AdmissionService.AdmissionRegisteredInsert(submitData).subscribe(response => {
-          this.toastr.success(response.message);
-          this.getAdmittedPatientCasepaperview(response);
-          this.onClear();
-          this._matDialog.closeAll();
-        });
-      }
+      this._AdmissionService.AdmissionRegisteredInsert(submitData).subscribe(response => {
+        this.toastr.success(response.message);
+        this.getAdmittedPatientCasepaperview(response);
+        this.onClear();
+        this._matDialog.closeAll();
+      });
+    }
   }
 
 
@@ -355,7 +355,7 @@ export class NewAdmissionComponent implements OnInit {
   }
 
   onChangecity(e) {
-    this.CityName=e.cityName
+    this.CityName = e.cityName
     this.registerObj.stateId = e.stateId
     this._AdmissionService.getstateId(e.stateId).subscribe((Response) => {
       console.log(Response)
@@ -537,10 +537,10 @@ export class NewAdmissionComponent implements OnInit {
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-        return true;
+      return true;
     } else {
-        event.preventDefault();
-        return false;
+      event.preventDefault();
+      return false;
     }
-}
+  }
 }

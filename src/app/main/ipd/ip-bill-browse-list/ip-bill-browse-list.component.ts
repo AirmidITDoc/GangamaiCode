@@ -66,21 +66,21 @@ export class IPBillBrowseListComponent implements OnInit {
     regNo: any = "0"
     l_name: any = ""
     PBillNo: any = "%"
-    IsIntrimOrFinal:any="0"
+    IsIntrimOrFinal: any = "0"
 
     pfromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     ptoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    pf_name:any="%"
-    pl_name:any="%"
-    pregNo:any="0"
-    pPBillNo:any="%"
-    pReceiptNo:any="0"
+    pf_name: any = "%"
+    pl_name: any = "%"
+    pregNo: any = "0"
+    pPBillNo: any = "%"
+    pReceiptNo: any = "0"
 
     rfromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     rtoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    rf_name:any="%"
-    rl_name:any="%"
-    rregNo:any="0"
+    rf_name: any = "%"
+    rl_name: any = "%"
+    rregNo: any = "0"
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIP;
@@ -114,7 +114,7 @@ export class IPBillBrowseListComponent implements OnInit {
         { fieldName: "IsIntrimOrFinal", fieldValue: "0", opType: OperatorComparer.Equals }
     ]
 
-    allIPBillListColumns=[
+    allIPBillListColumns = [
         { heading: "", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "", key: "interimOrFinal", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
@@ -131,20 +131,20 @@ export class IPBillBrowseListComponent implements OnInit {
         { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Ref Doctor Name", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA',width:200 },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Total Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount},
-        { heading: "Disc Amount", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
-        { heading: "Company DiscAmt", key: "compDiscAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
-        { heading: "Net Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
-        { heading: "Balance Amt", key: "bAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
+        { heading: "Total Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Disc Amount", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Company DiscAmt", key: "compDiscAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Net Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Balance Amt", key: "bAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Cash Pay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Card Pay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
-        { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
-        { heading: "NEFT Pay", key: "neftPay", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
-        { heading: "Adv Use Amount", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
+        { heading: "Card Pay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "NEFT Pay", key: "neftPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Adv Use Amount", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "PayCount", key: "paycount", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount },
+        { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
         {
@@ -161,7 +161,7 @@ export class IPBillBrowseListComponent implements OnInit {
         filters: this.allfilters
     }
 
-    allIpPaymentFilter=[
+    allIpPaymentFilter = [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
@@ -171,20 +171,20 @@ export class IPBillBrowseListComponent implements OnInit {
         { fieldName: "ReceiptNo", fieldValue: "%", opType: OperatorComparer.Equals }
     ]
 
-    allIpPaymentListColumns=[
+    allIpPaymentListColumns = [
         { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-        { heading: "TotalAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
-        { heading: "BalAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
+        { heading: "TotalAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "BalAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', type: 9 },
-        { heading: "CashPay", key: "cashPay", sort: true, align: "center" , type: gridColumnTypes.amount},
-        { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
-        { heading: "CardPay", key: "cardPay", sort: true, align: "center" , type: gridColumnTypes.amount},
-        { heading: "AdvanceUsed", key: "advused", sort: true, align: "center" , type: gridColumnTypes.amount},
-        { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
-        { heading: "NEFTPayAmt", key: "nEFTPayAmount", sort: true, align: "center", emptySign: 'NA' , type: gridColumnTypes.amount},
-        { heading: "PayTMAmt", key: "payTmPay", sort: true, align: "center", emptySign: 'NA' , type: gridColumnTypes.amount},
+        { heading: "CashPay", key: "cashPay", sort: true, align: "center", type: gridColumnTypes.amount },
+        { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "CardPay", key: "cardPay", sort: true, align: "center", type: gridColumnTypes.amount },
+        { heading: "AdvanceUsed", key: "advused", sort: true, align: "center", type: gridColumnTypes.amount },
+        { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "NEFTPayAmt", key: "nEFTPayAmount", sort: true, align: "center", emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "PayTMAmt", key: "payTmPay", sort: true, align: "center", emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Remark ", key: "remark0", sort: true, align: "center", emptySign: 'NA' },
         { heading: "User Name", key: "userName", sort: true, align: "center", emptySign: 'NA' },
         {
@@ -201,7 +201,7 @@ export class IPBillBrowseListComponent implements OnInit {
         filters: this.allIpPaymentFilter
     }
 
-    allIpRefundFilters=[
+    allIpRefundFilters = [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
@@ -209,15 +209,15 @@ export class IPBillBrowseListComponent implements OnInit {
         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
     ]
 
-    allIpRefundListColumns= [
+    allIpRefundListColumns = [
         { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
         { heading: "UHID", key: "uhidNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-        { heading: "RefundAmount", key: "refundId", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
-        { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
-        { heading: "CashPay", key: "cashPay", sort: true, align: "center" , type: gridColumnTypes.amount},
-        { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
-        { heading: "CardPay", key: "cardPay", sort: true, align: "center" , type: gridColumnTypes.amount},
+        { heading: "RefundAmount", key: "refundId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "CashPay", key: "cashPay", sort: true, align: "center", type: gridColumnTypes.amount },
+        { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "CardPay", key: "cardPay", sort: true, align: "center", type: gridColumnTypes.amount },
         { heading: "Remark", key: "remark", sort: true, align: "center" },
         {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
@@ -227,7 +227,7 @@ export class IPBillBrowseListComponent implements OnInit {
 
     gridConfig2: gridModel = {
         apiUrl: "Billing/BrowseIPRefundlist",
-        columnsList:this.allIpRefundListColumns,
+        columnsList: this.allIpRefundListColumns,
         sortField: "RegNo",
         sortOrder: 0,
         filters: this.allIpRefundFilters
@@ -236,19 +236,19 @@ export class IPBillBrowseListComponent implements OnInit {
     constructor(public _IPBrowseBillService: IPBrowseBillService,
         private commonService: PrintserviceService,
         public _matDialog: MatDialog, private _ActRoute: Router,
-         private accountService: AuthenticationService,
+        private accountService: AuthenticationService,
         public toastr: ToastrService, public datePipe: DatePipe) { }
 
     ngOnInit(): void {
         this.myFilterform = this._IPBrowseBillService.filterForm_IpdBrowse();
         this.myFilterFormIPBrowsePayment = this._IPBrowseBillService.filterForm_IpdpaymentBrowse()
-        this.myFilterFormIPBrowseRefund=this._IPBrowseBillService.filterForm_IpdrefundBrowse()
+        this.myFilterFormIPBrowseRefund = this._IPBrowseBillService.filterForm_IpdrefundBrowse()
 
         if (this._ActRoute.url == '/ipd/ipd-bill-browse-list') {
-            this.menuActions.push('Print Final Bill Groupwise');
-            this.menuActions.push('Print FinalBill Classwise');
-            this.menuActions.push('Print FinalBill ClassService');
-            this.menuActions.push('Print IP Final Bill');
+            this.menuActions.push('Print Final Bill - Group wise');
+            this.menuActions.push('Print Final Bill - Class wise');
+            this.menuActions.push('Print Final Bill - Class Service');
+            this.menuActions.push('Print Final Bill');
             // this.menuActions.push('Print FinalBill WardWise');
         }
     }
@@ -387,18 +387,17 @@ export class IPBillBrowseListComponent implements OnInit {
 
     OngetRecord(contact, m): void {
         console.log(contact)
-        if (m == "Print Final Bill Groupwise")
+        if (m == "Print Final Bill - Group wise")
             if (!contact.InterimOrFinal)
                 this.viewgetFinalBillReportGroupwisePdf(contact.billNo)
             else
                 this.viewgetInterimBillReportPdf(contact.billNo)
-
-        if (m == "Print FinalBill Classwise")
+        if (m == "Print Final Bill - Class wise")
             this.viewgetBillReportclasswisePdf(contact.billNo)
-        if (m == "Print FinalBill ClassService")
+        if (m == "Print Final Bill - Class Service")
             this.viewgetBillReportclassservicewisePdf(contact.billNo)
 
-        if (m == "Print IP Final Bill")
+        if (m == "Print Final Bill")
             this.viewgetFinalBillReportNewPdf(contact.billNo)
     }
 
@@ -409,16 +408,16 @@ export class IPBillBrowseListComponent implements OnInit {
         this.commonService.Onprint("BillNo", billNo, "IpInterimBill");
     }
     viewgetBillReportclasswisePdf(billNo) {
-        this.commonService.Onprint("BillNo", billNo, "IpFinalClasswiseBill");
+        this.commonService.Onprint("BillNo", billNo, "IPFinalBillClassWise");
     }
     viewgetBillReportclassservicewisePdf(billNo) {
-        this.commonService.Onprint("BillNo", billNo, "IpFinalBillClassservicewise");
+        this.commonService.Onprint("BillNo", billNo, "IPFinalBillClassServiceWise");
     }
     viewgetFinalBillReportNewPdf(billNo) {
-        this.commonService.Onprint("BillNo", billNo, "IpFinalBill");
+        this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");
     }
     viewgetFinalBillReportGroupwisePdf(billNo) {
-        this.commonService.Onprint("BillNo", billNo, "IpFinalGroupwiseBill");
+        this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");
     }
 
 
@@ -486,146 +485,149 @@ export class IPBillBrowseListComponent implements OnInit {
         PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
         PatientHeaderObj['IPDNo'] = contact.opD_IPD_ID;
         PatientHeaderObj['RegNo'] = contact.regNo;
-    console.log(PatientHeaderObj)
+        console.log(PatientHeaderObj)
 
-         const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
-                  {
-                      maxWidth: "95vw",
-                      height: '750px',
-                      width: '85%',
-      
-                      data: {
-                          vPatientHeaderObj: PatientHeaderObj,
-                          FromName: "IP-SETTLEMENT",
-                          advanceObj: PatientHeaderObj,
-                      }
-                  });
-      
-      
-              dialogRef.afterClosed().subscribe(result => {
-                   let NeftNo="0"
-                //   console.log(result.submitDataPay.ipPaymentInsert)
-                  
-                  if(result.submitDataPay.ipPaymentInsert.NEFTNo =="undefined")
-                      NeftNo="0"
-                  else
-                  NeftNo=String(result.submitDataPay.ipPaymentInsert.NEFTNo)
-                  if (result.IsSubmitFlag) {
-                      let Paymentobj = {};
-      
-                      Paymentobj['PaymentId'] = '0';
-                      Paymentobj['billNo'] = contact.billNo;
-                      Paymentobj['PaymentDate'] = result.submitDataPay.ipPaymentInsert.PaymentDate;
-                      Paymentobj['PaymentTime'] = result.submitDataPay.ipPaymentInsert.PaymentTime; //this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
-                      Paymentobj['CashPayAmount'] = result.submitDataPay.ipPaymentInsert.CashPayAmount ?? 0;
-                      Paymentobj['ChequePayAmount'] = result.submitDataPay.ipPaymentInsert.ChequePayAmount ?? 0;
-                      Paymentobj['ChequeNo'] = String(result.submitDataPay.ipPaymentInsert.ChequeNo) ?? "0";
-                      Paymentobj['BankName'] = result.submitDataPay.ipPaymentInsert.BankName ?? "";
-                      Paymentobj['ChequeDate'] = result.submitDataPay.ipPaymentInsert.ChequeDate;
-                      Paymentobj['CardPayAmount'] = result.submitDataPay.ipPaymentInsert.CardPayAmount
-                      Paymentobj['CardNo'] = String(result.submitDataPay.ipPaymentInsert.CardNo);
-                      Paymentobj['CardBankName'] = result.submitDataPay.ipPaymentInsert.CardBankName
-                      Paymentobj['CardDate'] = result.submitDataPay.ipPaymentInsert.CardDate
-                      Paymentobj['AdvanceUsedAmount'] = result.submitDataPay.ipPaymentInsert.AdvanceUsedAmount
-                      Paymentobj['AdvanceId'] = result.submitDataPay.ipPaymentInsert.AdvanceId
-                      Paymentobj['RefundId'] = 0;
-                      Paymentobj['TransactionType'] = 0;
-                      Paymentobj['Remark'] = '';
-                      Paymentobj['AddBy'] =this.accountService.currentUserValue.userId,
-                      Paymentobj['IsCancelled'] = false;
-                      Paymentobj['IsCancelledBy'] = '0';
-                      Paymentobj['IsCancelledDate'] = result.submitDataPay.ipPaymentInsert.IsCancelledDate
-                      Paymentobj['opdipdType'] = 1;
-                      Paymentobj['neftpayAmount'] = result.submitDataPay.ipPaymentInsert.NEFTPayAmount
-                      Paymentobj['neftno'] =NeftNo;
-                      Paymentobj['neftbankMaster'] = result.submitDataPay.ipPaymentInsert.NEFTBankMaster
-                      Paymentobj['neftdate'] = result.submitDataPay.ipPaymentInsert.NEFTDate
-                      Paymentobj['payTmamount'] = result.submitDataPay.ipPaymentInsert.PayTMAmount
-                      Paymentobj['payTmtranNo'] = "0",//result.submitDataPay.ipPaymentInsert.PayTMTranNo || 0
-                          Paymentobj['payTmdate'] = result.submitDataPay.ipPaymentInsert.PayTMDate
-                      Paymentobj['tdsAmount'] = result.submitDataPay.ipPaymentInsert.tdsAmount
-      
-                      let BillUpdateObj = {};
-      
-                      BillUpdateObj['billNo'] = contact.billNo;
-                      BillUpdateObj['balanceAmt'] = result.BalAmt;
-      
-                      console.log("Procced with Payment Option");
-                      let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
-      
-                      if (result.IsSubmitFlag) {
-                          console.log(result);
-                          result.submitDataPay.ipPaymentInsert.TransactionType = 0;
-                          UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
-                          console.log(UpdateAdvanceDetailarr1);
-      
-                          let UpdateAdvanceDetailarr = [];
-                          let BalanceAmt = 0;
-                          let UsedAmt = 0;
-                          if (result.submitDataAdvancePay.length > 0) {
-                              result.submitDataAdvancePay.forEach((element) => {
-                                  let UpdateAdvanceDetailObj = {};
-                                  UpdateAdvanceDetailObj['advanceDetailID'] = element.AdvanceDetailID;
-                                  UpdateAdvanceDetailObj['usedAmount'] = element.UsedAmount;
-                                  UsedAmt += element.UsedAmount;
-                                  UpdateAdvanceDetailObj['balanceAmount'] = element.BalanceAmount;
-                                  BalanceAmt += element.BalanceAmount;
-                                  UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
-                              });
-                          }
-                          else {
-                              let UpdateAdvanceDetailObj = {};
-                              UpdateAdvanceDetailObj['advanceDetailID'] = 0,
-                                  UpdateAdvanceDetailObj['usedAmount'] = 0,
-                                  UpdateAdvanceDetailObj['balanceAmount'] = 0,
-                                  UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
-                          }
-      
-      
-                          let UpdateAdvanceHeaderObj = {};
-                          if (result.submitDataAdvancePay.length > 0) {
-                              UpdateAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceId'],
-                                  UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = UsedAmt,
-                                  UpdateAdvanceHeaderObj['BalanceAmount'] = BalanceAmt
-                          }
-                          else {
-                              UpdateAdvanceHeaderObj['advanceId'] = 0,
-                                  UpdateAdvanceHeaderObj['advanceUsedAmount'] = 0,
-                                  UpdateAdvanceHeaderObj['balanceAmount'] = 0
-                          }
-      
-                          let submitData = {
-                              "payment":Paymentobj,// result.submitDataPay.ipPaymentInsert,
-                              "billupdate": BillUpdateObj,
-                              "advanceDetailupdate": UpdateAdvanceDetailarr,
-                              "advanceHeaderupdate": UpdateAdvanceHeaderObj 
-                          };
-                          let data={
-                              submitDataPay:submitData
-                          }
-                          console.log(submitData);
-                          this._IPBrowseBillService.InsertIPSettlementPayment(submitData).subscribe(response => {
-                              this.toastr.success(response.message);
-                                this.viewgetIPPayemntPdf(response)
-                                debugger
-                                this.onChangeIPBill()
-                          }, (error) => {
-                              this.toastr.error(error.message);
-                          });
-                         }
-      
-                  }
-              });
-            
+        const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+            {
+                maxWidth: "95vw",
+                height: '750px',
+                width: '85%',
+
+                data: {
+                    vPatientHeaderObj: PatientHeaderObj,
+                    FromName: "IP-SETTLEMENT",
+                    advanceObj: PatientHeaderObj,
+                }
+            });
+
+
+        dialogRef.afterClosed().subscribe(result => {
+            let NeftNo = "0"
+            //   console.log(result.submitDataPay.ipPaymentInsert)
+
+            if (result.submitDataPay.ipPaymentInsert.NEFTNo == "undefined")
+                NeftNo = "0"
+            else
+                NeftNo = String(result.submitDataPay.ipPaymentInsert.NEFTNo)
+            if (result.IsSubmitFlag) {
+                let Paymentobj = {};
+
+                Paymentobj['PaymentId'] = '0';
+                Paymentobj['billNo'] = contact.billNo;
+                Paymentobj['PaymentDate'] = result.submitDataPay.ipPaymentInsert.PaymentDate;
+                Paymentobj['PaymentTime'] = result.submitDataPay.ipPaymentInsert.PaymentTime; //this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+                Paymentobj['CashPayAmount'] = result.submitDataPay.ipPaymentInsert.CashPayAmount ?? 0;
+                Paymentobj['ChequePayAmount'] = result.submitDataPay.ipPaymentInsert.ChequePayAmount ?? 0;
+                Paymentobj['ChequeNo'] = String(result.submitDataPay.ipPaymentInsert.ChequeNo) ?? "0";
+                Paymentobj['BankName'] = result.submitDataPay.ipPaymentInsert.BankName ?? "";
+                Paymentobj['ChequeDate'] = result.submitDataPay.ipPaymentInsert.ChequeDate;
+                Paymentobj['CardPayAmount'] = result.submitDataPay.ipPaymentInsert.CardPayAmount
+                Paymentobj['CardNo'] = String(result.submitDataPay.ipPaymentInsert.CardNo);
+                Paymentobj['CardBankName'] = result.submitDataPay.ipPaymentInsert.CardBankName
+                Paymentobj['CardDate'] = result.submitDataPay.ipPaymentInsert.CardDate
+                Paymentobj['AdvanceUsedAmount'] = result.submitDataPay.ipPaymentInsert.AdvanceUsedAmount
+                Paymentobj['AdvanceId'] = result.submitDataPay.ipPaymentInsert.AdvanceId
+                Paymentobj['RefundId'] = 0;
+                Paymentobj['TransactionType'] = 0;
+                Paymentobj['Remark'] = '';
+                Paymentobj['AddBy'] = this.accountService.currentUserValue.userId,
+                    Paymentobj['IsCancelled'] = false;
+                Paymentobj['IsCancelledBy'] = '0';
+                Paymentobj['IsCancelledDate'] = result.submitDataPay.ipPaymentInsert.IsCancelledDate
+                Paymentobj['opdipdType'] = 1;
+                Paymentobj['neftpayAmount'] = result.submitDataPay.ipPaymentInsert.NEFTPayAmount
+                Paymentobj['neftno'] = NeftNo;
+                Paymentobj['neftbankMaster'] = result.submitDataPay.ipPaymentInsert.NEFTBankMaster
+                Paymentobj['neftdate'] = result.submitDataPay.ipPaymentInsert.NEFTDate
+                Paymentobj['payTmamount'] = result.submitDataPay.ipPaymentInsert.PayTMAmount
+                Paymentobj['payTmtranNo'] = "0",//result.submitDataPay.ipPaymentInsert.PayTMTranNo || 0
+                    Paymentobj['payTmdate'] = result.submitDataPay.ipPaymentInsert.PayTMDate
+                Paymentobj['tdsAmount'] = result.submitDataPay.ipPaymentInsert.tdsAmount
+
+                let BillUpdateObj = {};
+
+                BillUpdateObj['billNo'] = contact.billNo;
+                BillUpdateObj['balanceAmt'] = result.BalAmt;
+
+                console.log("Procced with Payment Option");
+                let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
+
+                if (result.IsSubmitFlag) {
+                    console.log(result);
+                    result.submitDataPay.ipPaymentInsert.TransactionType = 0;
+                    UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
+                    console.log(UpdateAdvanceDetailarr1);
+
+                    let UpdateAdvanceDetailarr = [];
+                    let BalanceAmt = 0;
+                    let UsedAmt = 0;
+                    if (result.submitDataAdvancePay.length > 0) {
+                        result.submitDataAdvancePay.forEach((element) => {
+                            let UpdateAdvanceDetailObj = {};
+                            UpdateAdvanceDetailObj['advanceDetailID'] = element.AdvanceDetailID;
+                            UpdateAdvanceDetailObj['usedAmount'] = element.UsedAmount;
+                            UsedAmt += element.UsedAmount;
+                            UpdateAdvanceDetailObj['balanceAmount'] = element.BalanceAmount;
+                            BalanceAmt += element.BalanceAmount;
+                            UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
+                        });
+                    }
+                    else {
+                        let UpdateAdvanceDetailObj = {};
+                        UpdateAdvanceDetailObj['advanceDetailID'] = 0,
+                            UpdateAdvanceDetailObj['usedAmount'] = 0,
+                            UpdateAdvanceDetailObj['balanceAmount'] = 0,
+                            UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
+                    }
+
+
+                    let UpdateAdvanceHeaderObj = {};
+                    if (result.submitDataAdvancePay.length > 0) {
+                        UpdateAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceId'],
+                            UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = UsedAmt,
+                            UpdateAdvanceHeaderObj['BalanceAmount'] = BalanceAmt
+                    }
+                    else {
+                        UpdateAdvanceHeaderObj['advanceId'] = 0,
+                            UpdateAdvanceHeaderObj['advanceUsedAmount'] = 0,
+                            UpdateAdvanceHeaderObj['balanceAmount'] = 0
+                    }
+
+                    let submitData = {
+                        "payment": Paymentobj,// result.submitDataPay.ipPaymentInsert,
+                        "billupdate": BillUpdateObj,
+                        "advanceDetailupdate": UpdateAdvanceDetailarr,
+                        "advanceHeaderupdate": UpdateAdvanceHeaderObj
+                    };
+                    let data = {
+                        submitDataPay: submitData
+                    }
+                    console.log(submitData);
+                    this._IPBrowseBillService.InsertIPSettlementPayment(submitData).subscribe(response => {
+                        this.toastr.success(response.message);
+                        this.viewgetIPPayemntPdf(response)
+                        debugger
+                        this.onChangeIPBill()
+                    }, (error) => {
+                        this.toastr.error(error.message);
+                    });
+                }
+
+            }
+        });
+
     }
 
     viewgetIPPayemntPdf(data) {
-        
         this.commonService.Onprint("PaymentId", data, "IpPaymentReceipt");
     }
 
-    getFinalBillview(billNo) {
-        this.commonService.Onprint("BillNo", billNo, "IpFinalBill");
+    getFinalBillview(data) {
+        console.log("BillNo Click : ", data.billNo);
+        if (!data.InterimOrFinal)
+            this.viewgetFinalBillReportGroupwisePdf(data.billNo)
+        else
+            this.viewgetInterimBillReportPdf(data.billNo)
     }
 
     OnViewReportPdf(element) {

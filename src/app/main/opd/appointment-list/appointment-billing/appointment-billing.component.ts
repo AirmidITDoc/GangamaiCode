@@ -506,7 +506,6 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   updateTotalDiscountAmt(): void {
     if (this.isUpdating) return; // Stop recursion
     this.isUpdating = true;
-debugger
     const totalDiscountPer = +this.totalChargeForm.get("totalDiscountPer").value;
     if(totalDiscountPer==0)
       this.totalChargeForm.get("concessionId").setValue(0)
@@ -631,17 +630,22 @@ debugger
 
   getSelectedObj(obj) {
     console.log(obj)
-    debugger
     this.patientDetail = obj
     this.vOPIPId = obj.visitId
 
-      this.PatientName= this.patientDetail.formattedText
-      this.DepartmentName= this.patientDetail.departmentName
-      this.AgeYear= this.patientDetail.ageYear
-      this.Doctorname=this.patientDetail.doctorName
-      this.RegNo=this.patientDetail.regNo
+    this.PatientName = this.patientDetail.formattedText
+    this.DepartmentName = this.patientDetail.departmentName
+    this.AgeYear = this.patientDetail.ageYear
+    this.Doctorname = this.patientDetail.doctorName
+    this.RegNo = this.patientDetail.regNo
 
-      this.vOPIPId = this.patientDetail.visitId
+    this.vOPIPId = this.patientDetail.visitId
+    this.vTariffId = this.patientDetail.tariffId;
+    this.vhospitalId = this.patientDetail.UnitId;
+    this.vClassId = this.patientDetail.classId;
+    
+    // Initialize form controls to set the value
+    this.totalChargeForm = this.createTotalChargeForm();
 
     if (this.vOPIPId > 0)
       this.savebtn = false
@@ -689,8 +693,8 @@ debugger
   // }
 
   onsave() {
+    console.log(this.totalChargeForm.value)
     if (!this.totalChargeForm.invalid) {
-      console.log(this.totalChargeForm.value)
       if (this.totalChargeForm.get('OPIPId')?.value === 0) {
         this.toastr.warning("Please Select Registered Patient...");
         return;
@@ -746,8 +750,10 @@ debugger
           if (this.totalChargeForm.controls[controlName].invalid) { invalidFields.push(`Charges Form: ${controlName}`); }
         }
       }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+      }
     }
-
   }
 
 
