@@ -4,8 +4,8 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
-import { ReplaySubject, Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { Observable, ReplaySubject, Subject } from "rxjs";
+import { map, startWith, takeUntil } from "rxjs/operators";
 import { DrugmasterService } from "./drugmaster.service";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
@@ -18,26 +18,6 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class DrugmasterComponent implements OnInit {
-    DrugMasterList: any;
-    GenericmbList: any = [];
-    ClassmbList: any = [];
-    msg: any;
-    sIsLoading: string = '';
-    isLoading = true;
-
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
-    //class filter
-    public classFilterCtrl: FormControl = new FormControl();
-    public filteredClass: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    //generic filter
-    public genericFilterCtrl: FormControl = new FormControl();
-    public filteredGeneric: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    private _onDestroy = new Subject<void>();
-
     displayedColumns: string[] = [
         "DrugId",
         "DrugName",
@@ -48,27 +28,28 @@ export class DrugmasterComponent implements OnInit {
         "action",
     ];
 
+    DrugMasterList: any;
+    GenericmbList: any = [];
+    ClassmbList: any = [];
+    msg: any;
+    sIsLoading: string = '';
+    isLoading = true;
+    isClassIdSelected: boolean = false;
+    isGenericIdSelected: boolean = false
+    filteredClassName: Observable<string[]>;
+    filteredGenericname: Observable<string[]>;
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+
     DSDrugMasterList = new MatTableDataSource<DrugMaster>();
 
     constructor(public _drugService: DrugmasterService,
-        public toastr : ToastrService,) {}
+        public toastr: ToastrService,) { }
 
     ngOnInit(): void {
         this.getDrugMasterList();
         this.getGenericNameCombobox();
         this.getClassNameCombobox();
-
-        this.classFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterClass();
-            });
-
-        this.genericFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterGeneric();
-            });
     }
     onSearch() {
         this.getDrugMasterList();
@@ -81,51 +62,11 @@ export class DrugmasterComponent implements OnInit {
         });
         this.getDrugMasterList();
     }
-    private filterClass() {
-        if (!this.ClassmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.classFilterCtrl.value;
-        if (!search) {
-            this.filteredClass.next(this.ClassmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter the banks
-        this.filteredClass.next(
-            this.ClassmbList.filter(
-                (bank) => bank.ClassName.toLowerCase().indexOf(search) > -1
-            )
-        );
-    }
 
-    private filterGeneric() {
-        // debugger;
-        if (!this.GenericmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.genericFilterCtrl.value;
-        if (!search) {
-            this.filteredGeneric.next(this.GenericmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter
-        this.filteredGeneric.next(
-            this.GenericmbList.filter(
-                (bank) => bank.GenericName.toLowerCase().indexOf(search) > -1
-            )
-        );
-    }
     getDrugMasterList() {
-        this.sIsLoading = 'loading-data';
         var param = {
-            DrugName:this._drugService.myformSearch.get("DrugNameSearch")
-                    .value.trim() + "%" || "%",
+            DrugName: this._drugService.myformSearch.get("DrugNameSearch")
+                .value.trim() + "%" || "%",
         };
         this._drugService.getDrugMasterList(param).subscribe((Menu) => {
             this.DSDrugMasterList.data = Menu as DrugMaster[];
@@ -134,23 +75,59 @@ export class DrugmasterComponent implements OnInit {
             this.sIsLoading = '';
             console.log(this.DSDrugMasterList);
         },
-        error => {
-          this.sIsLoading = '';
-        });
+            error => {
+                this.sIsLoading = '';
+            });
     }
 
     getGenericNameCombobox() {
         this._drugService.getGenericMasterCombo().subscribe((data) => {
             this.GenericmbList = data;
-            this.filteredGeneric.next(this.GenericmbList.slice());
+            this.filteredGenericname = this._drugService.myform.get('GenericId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterGeneric(value) : this.GenericmbList.slice()),
+            );
+            if (this.registerObj) {
+                const ddValue = this.GenericmbList.filter(c => c.GenericId == this.registerObj.GenericId);
+                this._drugService.myform.get('GenericId').setValue(ddValue[0]);
+                this._drugService.myform.updateValueAndValidity();
+                return;
+            }
         });
     }
     getClassNameCombobox() {
         this._drugService.getClassMasterCombo().subscribe((data) => {
             this.ClassmbList = data;
-            this.filteredClass.next(this.ClassmbList.slice());
+            this.filteredClassName = this._drugService.myform.get('ClassId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterClassName(value) : this.ClassmbList.slice()),
+            );
             console.log(this.ClassmbList);
+            if (this.registerObj) {
+                const ddValue = this.ClassmbList.filter(c => c.ClassId == this.registerObj.ClassId);
+                this._drugService.myform.get('ClassId').setValue(ddValue[0]);
+                this._drugService.myform.updateValueAndValidity();
+                return;
+            }
         });
+    }
+    private _filterClassName(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.ClassName ? value.ClassName.toLowerCase() : value.toLowerCase();
+            return this.ClassmbList.filter(option => option.ClassName.toLowerCase().includes(filterValue));
+        }
+    }
+    private _filterGeneric(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.GenericName ? value.GenericName.toLowerCase() : value.toLowerCase();
+            return this.GenericmbList.filter(option => option.GenericName.toLowerCase().includes(filterValue));
+        }
+    }
+    getOptionTextClassName(option) {
+        return option && option.ClassName ? option.ClassName : '';
+    }
+    getOptionTextGenericName(option) {
+        return option && option.GenericName ? option.GenericName : '';
     }
     onClear() {
         this._drugService.myform.reset({ IsDeleted: "false" });
@@ -186,28 +163,19 @@ export class DrugmasterComponent implements OnInit {
                     if (data) {
                         this.toastr.success('Record Saved Successfully.', 'Saved !', {
                             toastClass: 'tostr-tost custom-toast-success',
-                          });
+                        });
                         this.getDrugMasterList();
-                        // Swal.fire(
-                        //     "Saved !",
-                        //     "Record saved Successfully !",
-                        //     "success"
-                        // ).then((result) => {
-                        //     if (result.isConfirmed) {
-                        //         this.getDrugMasterList();
-                        //     }
-                        // });
+
                     } else {
                         this.toastr.error('Drug Master Data not saved !, Please check API error..', 'Error !', {
                             toastClass: 'tostr-tost custom-toast-error',
-                          });
-                        }
-                    this.getDrugMasterList();
-                },error => {
+                        });
+                    }
+                }, error => {
                     this.toastr.error('Drug Class Data not saved !, Please check API error..', 'Error !', {
-                     toastClass: 'tostr-tost custom-toast-error',
-                   });
-                 });
+                        toastClass: 'tostr-tost custom-toast-error',
+                    });
+                });
             } else {
                 var m_dataUpdate = {
                     updateDrugMaster: {
@@ -235,42 +203,38 @@ export class DrugmasterComponent implements OnInit {
                         if (data) {
                             this.toastr.success('Record updated Successfully.', 'updated !', {
                                 toastClass: 'tostr-tost custom-toast-success',
-                              });
+                            });
                             this.getDrugMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getDrugMasterList();
-                            //     }
-                            // });
                         } else {
                             this.toastr.error('Drug Master Data not updated !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
-                              });
+                            });
                         }
-                        this.getDrugMasterList();
-                    },error => {
+                    }, error => {
                         this.toastr.error('Drug Class Data not updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
+                    });
             }
             this.onClear();
+            this.getDrugMasterList();
         }
     }
+    registerObj: any;
     onEdit(row) {
+        debugger
+        this.registerObj = row
         var m_data = {
             DrugId: row.DrugId,
             DrugName: row.DrugName.trim(),
-            GenericId: row.GenericId,
-            ClassId: row.ClassId,
+            GenericId: row.GenericName,
+            ClassId: row.ClassName,
             IsDeleted: JSON.stringify(row.IsActive),
             UpdatedBy: row.UpdatedBy,
         };
         this._drugService.populateForm(m_data);
+        this.getGenericNameCombobox();
+        this.getClassNameCombobox();
     }
 }
 export class DrugMaster {

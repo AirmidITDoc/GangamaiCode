@@ -24,7 +24,7 @@ export class GenericmasterComponent implements OnInit {
     displayedColumns: string[] = [
         "GenericId",
         "GenericName",
-        "AddedByName",
+        // "AddedByName",
         "IsDeleted",
         "action",
     ];
@@ -164,7 +164,7 @@ export class GenericmasterComponent implements OnInit {
     }
     onEdit(row) {
         var m_data1 = {
-            GenericId: row.GenericId,
+            GenericId: row.Genericid,
             GenericName: row.GenericName.trim(),
             IsDeleted: JSON.stringify(row.IsActive),
             UpdatedBy: row.UpdatedBy,

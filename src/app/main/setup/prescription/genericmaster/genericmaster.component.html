@@ -32,28 +32,25 @@
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="65%" fxFlex>
-                        <div fxlayout="row" style="
-                        background-color: white;
-                        padding: 5px 10px 5px 10px;
-                    ">
+                        <div fxlayout="row" style=" background-color: white;
+                                                padding: 5px 10px 5px 10px; ">
                             <form [formGroup]="_GenericService.myformSearch">
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
-                                        <input matInput placeholder="Search --> Generic Name" autocomplete="off"
-                                            name="GenericNameSearch" formControlName="GenericNameSearch" />
-                                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="onSearchClear()">
+                                        <input matInput placeholder="Search --> Generic Name" autocomplete="off" name="GenericNameSearch"
+                                            formControlName="GenericNameSearch" (keyup)="onSearch()" />
+                                        <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="onSearchClear()">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>
-
+                        
                                     <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
                                         fxLayoutAlign="center center">
                                         <mat-radio-button value="2">All</mat-radio-button>
                                         <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
                                         <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
                                     </mat-radio-group>
-
+                        
                                     <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
                                         <mat-icon>search</mat-icon>
                                         Search
@@ -62,14 +59,14 @@
                             </form>
                         </div>
                         <div fxlayout="row">
-                            <div style="width: 100%;">
+                            <div style="width: 100%;" fxFlex>
                                 <mat-table #table matSort [dataSource]="DSGenericMasterList"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto">
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;height: 700px !important;width: 100%;">
                                     <ng-container matColumnDef="GenericId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            {{element.GenericId}}
+                                            {{element.Genericid}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -81,11 +78,11 @@
                                     </ng-container>
 
 
-                                    <ng-container matColumnDef="AddedByName">
+                                    <!-- <ng-container matColumnDef="AddedByName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedByName}}
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
 
                                     <ng-container matColumnDef="IsDeleted">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
@@ -106,7 +103,7 @@
                                         <mat-cell *matCellDef="let row">
                                             <button mat-icon-button (click)="onEdit(row)"><mat-icon
                                                     title="Edit Menu">launch</mat-icon></button>
-                                            <button mat-icon-button (click)="onDeactive(row.GenericId)"
+                                            <button mat-icon-button (click)="onDeactive(row.Genericid)"
                                                 color="warn"><mat-icon>delete_outline</mat-icon></button>
 
                                         </mat-cell>

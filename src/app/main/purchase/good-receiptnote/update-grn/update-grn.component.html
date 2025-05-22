@@ -907,7 +907,7 @@
                     <hr>
 
                     <div fxLayout="column" class="pt-12">
-                        <form [formGroup]="_GRNList.GRNFinalForm">
+                        <form [formGroup]="GRNFinalForm">
                             <div fxLayout="column" fxLayout.gt-xs="row" class="gap-12">
                                 <div fxFlex fxFlex.gt-xs="40%" fxFlex.xs="100%">
                                     <mat-table #table class="table4 h-200" matSort [dataSource]="dsLastThreeItemList">
@@ -994,9 +994,9 @@
                                     <div fxLayout="column" fxLayoutGap="6px">
                                         <div fxLayout="row" class="gap-4" fxLayoutAlign="space-between">
                                             <div fxLayout="row" class="gap-4">
-                                            <span class="net-amt-mat-label" style="font-weight:bold;padding-bottom: 8px;">No Of
+                                            <!-- <span class="net-amt-mat-label" style="font-weight:bold;padding-bottom: 8px;">No Of
                                                 Item:
-                                            </span>&nbsp;
+                                            </span>&nbsp; -->
                                             <!-- <span class="net-amt-value"
                                                                                             style="margin-left:10px;font-weight:bolder;color: blue;">{{dsItemNameList.data.length}}</span>&nbsp;&nbsp;&nbsp; -->
                     

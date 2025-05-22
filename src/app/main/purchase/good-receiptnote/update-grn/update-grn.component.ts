@@ -16,7 +16,7 @@ import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { ToastrService } from 'ngx-toastr';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
@@ -204,6 +204,7 @@ export class UpdateGRNComponent implements OnInit {
     lastDay2: string = '';
     vExpDate: string = '';
     dateTimeObj: any;
+    GRNFinalForm:FormGroup
 
     constructor(
         public _GRNList: GoodReceiptnoteService,
@@ -220,6 +221,7 @@ export class UpdateGRNComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
+       this.GRNFinalForm =  this._GRNList.getGrnFinalformForm();
         if (this.data.chkNewGRN == 2) {
             this.registerObj = this.data.Obj;
             console.log(this.registerObj)
@@ -227,7 +229,7 @@ export class UpdateGRNComponent implements OnInit {
             // this.GateEntryNo = this.registerObj.GateEntryNo;
             // this.SupplierId = this.registerObj.SupplierId;
             // this.StoreId = this.registerObj.StoreId;
-            // this._GRNList.GRNFinalForm.get('NetPayamt').setValue(this.registerObj.RoundingAmt);
+            // this.GRNFinalForm.get('NetPayamt').setValue(this.registerObj.RoundingAmt);
             this.getSupplierSearchCombo();
             if (this.registerObj.Cash_CreditType)
                 this.vCahchecked = 1;
@@ -1110,14 +1112,14 @@ debugger
         this.vFinalDisAmount2 = (element.reduce((sum, { DiscAmt2 }) => sum += +(DiscAmt2 || 0), 0)).toFixed(2);
         this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
 
-        let Othercharge = this._GRNList.GRNFinalForm.get("OtherCharge").value || 0;
+        let Othercharge = this.GRNFinalForm.get("OtherCharge").value || 0;
         FinalRoundAmt = (parseFloat(FinalRoundAmt) + parseFloat(Othercharge));
 
-        let DebitAmount = this._GRNList.GRNFinalForm.get("DebitAmount").value || 0;
+        let DebitAmount = this.GRNFinalForm.get("DebitAmount").value || 0;
         FinalRoundAmt = (parseFloat(FinalRoundAmt) + parseFloat(DebitAmount));
 
        
-        let CreditAmount = this._GRNList.GRNFinalForm.get("CreditAmount").value || 0;
+        let CreditAmount = this.GRNFinalForm.get("CreditAmount").value || 0;
         if(CreditAmount > 0 && this.dsItemNameList.data.length > 0){
             if(CreditAmount > FinalRoundAmt && !this.dsItemNameList.data.length){
                 this.toastr.warning('check credit amount should not be greater than net amount', 'warning !', {
@@ -1136,14 +1138,14 @@ debugger
     }
 
     AutoRoundingAmt() {
-        let roundingamt = this._GRNList.GRNFinalForm.get('RoundingAmt').value || 0;
+        let roundingamt = this.GRNFinalForm.get('RoundingAmt').value || 0;
         if (roundingamt > 0) {
             let FinalnetAmt = (parseFloat(this.NetAmount) + parseFloat(roundingamt)).toFixed(2);
-            this._GRNList.GRNFinalForm.get('NetPayamt').setValue(FinalnetAmt);
+            this.GRNFinalForm.get('NetPayamt').setValue(FinalnetAmt);
 
         } else {
             let FinalnetAmt = (parseFloat(this.NetAmount) + parseFloat(roundingamt)).toFixed(2);
-            this._GRNList.GRNFinalForm.get('NetPayamt').setValue(FinalnetAmt);
+            this.GRNFinalForm.get('NetPayamt').setValue(FinalnetAmt);
         }
 
     }
@@ -1352,7 +1354,7 @@ debugger
     }
     OnReset() {
         this._GRNList.userFormGroup.reset();
-        this._GRNList.GRNFinalForm.reset();
+        this.GRNFinalForm.reset();
         this.dsLastThreeItemList.data = [];
         this.dsItemNameList.data = [];
     }
@@ -1413,14 +1415,14 @@ debugger
             return;
         }
       
-        if ((this._GRNList.GRNFinalForm.get('ReceivedBy').value == "" || this._GRNList.GRNFinalForm.get('ReceivedBy').value == null ||
-            this._GRNList.GRNFinalForm.get('ReceivedBy').value == undefined)) {
+        if ((this.GRNFinalForm.get('ReceivedBy').value == "" || this.GRNFinalForm.get('ReceivedBy').value == null ||
+            this.GRNFinalForm.get('ReceivedBy').value == undefined)) {
             this.toastr.warning('Please enter a Received By', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
         }
-        if (this._GRNList.GRNFinalForm.invalid) {
+        if (this.GRNFinalForm.invalid) {
             this.toastr.warning('please check from is invalid', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
@@ -1483,7 +1485,7 @@ debugger
             });
             return;
         }
-        if (this._GRNList.GRNFinalForm.invalid) {
+        if (this.GRNFinalForm.invalid) {
             this.toastr.warning('please check from is invalid', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
@@ -1504,27 +1506,27 @@ debugger
         grnSaveObj['gateEntryNo'] = this._GRNList.userFormGroup.get('GateEntryNo').value || 0;
         grnSaveObj['cash_CreditType'] = this._GRNList.userFormGroup.get('PaymentType').value;
         grnSaveObj['grnType'] = this._GRNList.userFormGroup.get('GRNType').value;
-        grnSaveObj['totalAmount'] = this._GRNList.GRNFinalForm.get('TotalAmt').value || 0;
-        grnSaveObj['totalDiscAmount'] = this._GRNList.GRNFinalForm.get('DiscAmount').value || 0;
-        grnSaveObj['totalVATAmount'] = this._GRNList.GRNFinalForm.get('VatAmount').value || 0;
-        grnSaveObj['netAmount'] = this._GRNList.GRNFinalForm.get('NetPayamt').value || 0;
-        grnSaveObj['remark'] = this._GRNList.GRNFinalForm.get('Remark').value || '';
-        grnSaveObj['receivedBy'] = this._GRNList.GRNFinalForm.get('ReceivedBy').value || '';
+        grnSaveObj['totalAmount'] = this.GRNFinalForm.get('TotalAmt').value || 0;
+        grnSaveObj['totalDiscAmount'] = this.GRNFinalForm.get('DiscAmount').value || 0;
+        grnSaveObj['totalVATAmount'] = this.GRNFinalForm.get('VatAmount').value || 0;
+        grnSaveObj['netAmount'] = this.GRNFinalForm.get('NetPayamt').value || 0;
+        grnSaveObj['remark'] = this.GRNFinalForm.get('Remark').value || '';
+        grnSaveObj['receivedBy'] = this.GRNFinalForm.get('ReceivedBy').value || '';
         grnSaveObj['isVerified'] = false;
         grnSaveObj['isClosed'] = false;
         grnSaveObj['addedBy'] = this.accountService.currentUserValue.user.id || 0;
         grnSaveObj['invDate'] = this._GRNList.userFormGroup.get('DateOfInvoice').value.DateOfInvoice || '01/01/1900';
-        grnSaveObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
-        grnSaveObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
-        grnSaveObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharge').value || 0;
-        grnSaveObj['roundingAmt'] = this._GRNList.GRNFinalForm.get('RoundingAmt').value || 0;
+        grnSaveObj['debitNote'] = this.GRNFinalForm.get('DebitAmount').value || 0;
+        grnSaveObj['creditNote'] = this.GRNFinalForm.get('CreditAmount').value || 0;
+        grnSaveObj['otherCharge'] = this.GRNFinalForm.get('OtherCharge').value || 0;
+        grnSaveObj['roundingAmt'] = this.GRNFinalForm.get('RoundingAmt').value || 0;
         grnSaveObj['totCGSTAmt'] = this.CGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('CGSTAmount').value || 0;
         grnSaveObj['totSGSTAmt'] = this.SGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('SGSTAmount').value || 0;
         grnSaveObj['totIGSTAmt'] = this.IGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('IGSTAmount').value || 0;
         grnSaveObj['tranProcessId'] = this._GRNList.userFormGroup.get('GSTType').value.ConstantId || 0;
         grnSaveObj['tranProcessMode'] = this._GRNList.userFormGroup.get('GSTType').value.Name || '';
-        grnSaveObj['ewayBillNo'] = this._GRNList.GRNFinalForm.get('EwayBillNo').value || 0;
-        grnSaveObj['ewayBillDate'] = this.datePipe.transform(this._GRNList.GRNFinalForm.get('EwalBillDate').value, "yyyy-MM-dd") || '01/01/1099';
+        grnSaveObj['ewayBillNo'] = this.GRNFinalForm.get('EwayBillNo').value || 0;
+        grnSaveObj['ewayBillDate'] = this.datePipe.transform(this.GRNFinalForm.get('EwalBillDate').value, "yyyy-MM-dd") || '1999-01-01';
         grnSaveObj['BillDiscAmt'] = this.vFinalDisAmount2 || 0;
         grnSaveObj['grnid'] = 0;
 
@@ -1650,7 +1652,7 @@ debugger
             });
             return;
         }
-        if (this._GRNList.GRNFinalForm.invalid) {
+        if (this.GRNFinalForm.invalid) {
             this.toastr.warning('please check from is invalid', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
@@ -1671,27 +1673,27 @@ debugger
         grnSaveObj['gateEntryNo'] = this._GRNList.userFormGroup.get('GateEntryNo').value || 0;
         grnSaveObj['cash_CreditType'] = this._GRNList.userFormGroup.get('PaymentType').value;
         grnSaveObj['grnType'] = this._GRNList.userFormGroup.get('GRNType').value;
-        grnSaveObj['totalAmount'] = this._GRNList.GRNFinalForm.get('TotalAmt').value || 0;
-        grnSaveObj['totalDiscAmount'] = this._GRNList.GRNFinalForm.get('DiscAmount').value || 0;
-        grnSaveObj['totalVATAmount'] = this._GRNList.GRNFinalForm.get('VatAmount').value || 0;
-        grnSaveObj['netAmount'] = this._GRNList.GRNFinalForm.get('NetPayamt').value || 0;
-        grnSaveObj['remark'] = this._GRNList.GRNFinalForm.get('Remark').value || '';
-        grnSaveObj['receivedBy'] = this._GRNList.GRNFinalForm.get('ReceivedBy').value || '';
+        grnSaveObj['totalAmount'] = this.GRNFinalForm.get('TotalAmt').value || 0;
+        grnSaveObj['totalDiscAmount'] = this.GRNFinalForm.get('DiscAmount').value || 0;
+        grnSaveObj['totalVATAmount'] = this.GRNFinalForm.get('VatAmount').value || 0;
+        grnSaveObj['netAmount'] = this.GRNFinalForm.get('NetPayamt').value || 0;
+        grnSaveObj['remark'] = this.GRNFinalForm.get('Remark').value || '';
+        grnSaveObj['receivedBy'] = this.GRNFinalForm.get('ReceivedBy').value || '';
         grnSaveObj['isVerified'] = false;
         grnSaveObj['isClosed'] = false;
         grnSaveObj['addedBy'] = this.accountService.currentUserValue.user.id || 0;
         grnSaveObj['invDate'] = this._GRNList.userFormGroup.get('DateOfInvoice').value.DateOfInvoice || '01/01/1900';
-        grnSaveObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
-        grnSaveObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
-        grnSaveObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharge').value || 0;
-        grnSaveObj['roundingAmt'] = this._GRNList.GRNFinalForm.get('RoundingAmt').value || 0;
+        grnSaveObj['debitNote'] = this.GRNFinalForm.get('DebitAmount').value || 0;
+        grnSaveObj['creditNote'] = this.GRNFinalForm.get('CreditAmount').value || 0;
+        grnSaveObj['otherCharge'] = this.GRNFinalForm.get('OtherCharge').value || 0;
+        grnSaveObj['roundingAmt'] = this.GRNFinalForm.get('RoundingAmt').value || 0;
         grnSaveObj['totCGSTAmt'] = this.CGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('CGSTAmount').value || 0;
         grnSaveObj['totSGSTAmt'] = this.SGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('SGSTAmount').value || 0;
         grnSaveObj['totIGSTAmt'] = this.IGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('IGSTAmount').value || 0;
         grnSaveObj['tranProcessId'] = this._GRNList.userFormGroup.get('GSTType').value.ConstantId || 0;
         grnSaveObj['tranProcessMode'] = this._GRNList.userFormGroup.get('GSTType').value.Name || '';
-        grnSaveObj['ewayBillNo'] = this._GRNList.GRNFinalForm.get('EwayBillNo').value || 0;
-        grnSaveObj['ewayBillDate'] = this.datePipe.transform(this._GRNList.GRNFinalForm.get('EwalBillDate').value, "yyyy-MM-dd") || '01/01/1099';
+        grnSaveObj['ewayBillNo'] = this.GRNFinalForm.get('EwayBillNo').value || 0;
+        grnSaveObj['ewayBillDate'] = this.datePipe.transform(this.GRNFinalForm.get('EwalBillDate').value, "yyyy-MM-dd") || '1999-01-01';
         grnSaveObj['BillDiscAmt'] = this.vFinalDisAmount2 || 0;
         grnSaveObj['grnid'] = this.registerObj.GRNID;
 
@@ -1834,27 +1836,27 @@ debugger
         grnSaveObj['gateEntryNo'] = this._GRNList.userFormGroup.get('GateEntryNo').value || 0;
         grnSaveObj['cash_CreditType'] = this._GRNList.userFormGroup.get('PaymentType').value;
         grnSaveObj['grnType'] = this._GRNList.userFormGroup.get('GRNType').value;
-        grnSaveObj['totalAmount'] = this._GRNList.GRNFinalForm.get('TotalAmt').value || 0;
-        grnSaveObj['totalDiscAmount'] = this._GRNList.GRNFinalForm.get('DiscAmount').value || 0;
-        grnSaveObj['totalVATAmount'] = this._GRNList.GRNFinalForm.get('VatAmount').value || 0;
-        grnSaveObj['netAmount'] = this._GRNList.GRNFinalForm.get('NetPayamt').value || 0;
-        grnSaveObj['remark'] = this._GRNList.GRNFinalForm.get('Remark').value || '';
-        grnSaveObj['receivedBy'] = this._GRNList.GRNFinalForm.get('ReceivedBy').value || '';
+        grnSaveObj['totalAmount'] = this.GRNFinalForm.get('TotalAmt').value || 0;
+        grnSaveObj['totalDiscAmount'] = this.GRNFinalForm.get('DiscAmount').value || 0;
+        grnSaveObj['totalVATAmount'] = this.GRNFinalForm.get('VatAmount').value || 0;
+        grnSaveObj['netAmount'] = this.GRNFinalForm.get('NetPayamt').value || 0;
+        grnSaveObj['remark'] = this.GRNFinalForm.get('Remark').value || '';
+        grnSaveObj['receivedBy'] = this.GRNFinalForm.get('ReceivedBy').value || '';
         grnSaveObj['isVerified'] = false;
         grnSaveObj['isClosed'] = false;
         grnSaveObj['addedBy'] = this.accountService.currentUserValue.user.id || 0;
         grnSaveObj['invDate'] = this.datePipe.transform(this._GRNList.userFormGroup.get('DateOfInvoice').value, "yyyy-MM-dd");
-        grnSaveObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
-        grnSaveObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
-        grnSaveObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharge').value || 0;
-        grnSaveObj['roundingAmt'] = this._GRNList.GRNFinalForm.get('RoundingAmt').value || 0;
+        grnSaveObj['debitNote'] = this.GRNFinalForm.get('DebitAmount').value || 0;
+        grnSaveObj['creditNote'] = this.GRNFinalForm.get('CreditAmount').value || 0;
+        grnSaveObj['otherCharge'] = this.GRNFinalForm.get('OtherCharge').value || 0;
+        grnSaveObj['roundingAmt'] = this.GRNFinalForm.get('RoundingAmt').value || 0;
         grnSaveObj['totCGSTAmt'] = this.CGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('CGSTAmount').value || 0;
         grnSaveObj['totSGSTAmt'] = this.SGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('SGSTAmount').value || 0;
         grnSaveObj['totIGSTAmt'] = this.IGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('IGSTAmount').value || 0;
         grnSaveObj['tranProcessId'] = this._GRNList.userFormGroup.get('GSTType').value.ConstantId || 0;
         grnSaveObj['tranProcessMode'] = this._GRNList.userFormGroup.get('GSTType').value.Name || '';
-        grnSaveObj['ewayBillNo'] = this._GRNList.GRNFinalForm.get('EwayBillNo').value || 0;
-        grnSaveObj['ewayBillDate'] = this.datePipe.transform(this._GRNList.GRNFinalForm.get('EwalBillDate').value, "yyyy-MM-dd") || '01/01/1099';
+        grnSaveObj['ewayBillNo'] = this.GRNFinalForm.get('EwayBillNo').value || 0;
+        grnSaveObj['ewayBillDate'] = this.datePipe.transform(this.GRNFinalForm.get('EwalBillDate').value, "yyyy-MM-dd") || '1999-01-01';
         grnSaveObj['BillDiscAmt'] = this.vFinalDisAmount2 || 0;
         grnSaveObj['grnid'] = 0;
 
@@ -1980,18 +1982,18 @@ debugger
         updateGRNHeaderObj['gateEntryNo'] = this._GRNList.userFormGroup.get('GateEntryNo').value || 0;
         updateGRNHeaderObj['cash_CreditType'] = this._GRNList.userFormGroup.get('PaymentType').value;
         updateGRNHeaderObj['grnType'] = this._GRNList.userFormGroup.get('GRNType').value;
-        updateGRNHeaderObj['totalAmount'] = this._GRNList.GRNFinalForm.get('TotalAmt').value || 0;
-        updateGRNHeaderObj['totalDiscAmount'] = this._GRNList.GRNFinalForm.get('DiscAmount').value || 0;
-        updateGRNHeaderObj['totalVATAmount'] = this._GRNList.GRNFinalForm.get('VatAmount').value || 0;
-        updateGRNHeaderObj['netAmount'] = this._GRNList.GRNFinalForm.get('NetPayamt').value || 0;
-        updateGRNHeaderObj['remark'] = this._GRNList.GRNFinalForm.get('Remark').value || '';
-        updateGRNHeaderObj['receivedBy'] = this._GRNList.GRNFinalForm.get('ReceivedBy').value || '';
+        updateGRNHeaderObj['totalAmount'] = this.GRNFinalForm.get('TotalAmt').value || 0;
+        updateGRNHeaderObj['totalDiscAmount'] = this.GRNFinalForm.get('DiscAmount').value || 0;
+        updateGRNHeaderObj['totalVATAmount'] = this.GRNFinalForm.get('VatAmount').value || 0;
+        updateGRNHeaderObj['netAmount'] = this.GRNFinalForm.get('NetPayamt').value || 0;
+        updateGRNHeaderObj['remark'] = this.GRNFinalForm.get('Remark').value || '';
+        updateGRNHeaderObj['receivedBy'] = this.GRNFinalForm.get('ReceivedBy').value || '';
         updateGRNHeaderObj['updatedBy'] = this.accountService.currentUserValue.user.id,
             updateGRNHeaderObj['invDate'] = this.datePipe.transform(this._GRNList.userFormGroup.get('DateOfInvoice').value, "yyyy-MM-dd");
-        updateGRNHeaderObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
-        updateGRNHeaderObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
-        updateGRNHeaderObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharge').value || 0;
-        updateGRNHeaderObj['roundingAmt'] = this._GRNList.GRNFinalForm.get('RoundingAmt').value || 0;
+        updateGRNHeaderObj['debitNote'] = this.GRNFinalForm.get('DebitAmount').value || 0;
+        updateGRNHeaderObj['creditNote'] = this.GRNFinalForm.get('CreditAmount').value || 0;
+        updateGRNHeaderObj['otherCharge'] = this.GRNFinalForm.get('OtherCharge').value || 0;
+        updateGRNHeaderObj['roundingAmt'] = this.GRNFinalForm.get('RoundingAmt').value || 0;
         updateGRNHeaderObj['totCGSTAmt'] = this.CGSTFinalAmount || 0;
         updateGRNHeaderObj['totSGSTAmt'] = this.SGSTFinalAmount || 0;
         updateGRNHeaderObj['totIGSTAmt'] = this.IGSTFinalAmount || 0;
@@ -2400,7 +2402,7 @@ debugger
             });
             return
         }
-        this._GRNList.GRNFinalForm.get('NetPayamt').setValue(this.NetAmount)
+        this.GRNFinalForm.get('NetPayamt').setValue(this.NetAmount)
         const dialogRef = this._matDialog.open(CreditNoteComponent,
             {
                 maxWidth: "100%",
@@ -2414,8 +2416,8 @@ debugger
             console.log('The dialog was closed - Insert Action', result);
             this.selectedCreditNotelist = result.SelectedList;
             this.CreditDetID =  result.Det_Id; 
-            this._GRNList.GRNFinalForm.get('CreditAmount').setValue(result.FinalNetAmt) 
-        //   let CreditAmount = this._GRNList.GRNFinalForm.get("CreditAmount").value || 0; 
+            this.GRNFinalForm.get('CreditAmount').setValue(result.FinalNetAmt) 
+        //   let CreditAmount = this.GRNFinalForm.get("CreditAmount").value || 0; 
         // if(CreditAmount > 0){
         //     if(CreditAmount > 0 && this.dsItemNameList.data.length > 0){
         //         this.toastr.warning('check credit amount should not be greater than net amount', 'warning !', {
@@ -2449,8 +2451,8 @@ debugger
             this.vpoBalQty = result[0].ReceiveQty;
             this.vPurchaseOrderSupplierId = result[0].SupplierName
             let other = result[0].FreightCharges + result[0].HandlingCharges + result[0].TransportChanges + result[0].OctriAmount
-            this._GRNList.GRNFinalForm.get('OtherCharge').setValue(other);
-            this._GRNList.GRNFinalForm.get('Remark').setValue(result[0].Remarks);
+            this.GRNFinalForm.get('OtherCharge').setValue(other);
+            this.GRNFinalForm.get('Remark').setValue(result[0].Remarks);
 
             this.getSupplierSearchCombo();
 

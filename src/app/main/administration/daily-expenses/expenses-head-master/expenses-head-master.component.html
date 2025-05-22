@@ -1,48 +1,58 @@
 <div class="simple page-layout inner-scroll inner-sidebar left-sidebar">
-    <mat-toolbar class="accent" style="width: 100%;justify-content: space-between;height: 50px;">
-        <div fxLaput="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">account_box
-            </mat-icon>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-                Expenses Head
-            </span>
-        </div>
-        <div fxLayout="row" fxLayoutAlign="end" class="left-icon">  
-            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-                <span class="modal-icon">
-                    <mat-icon>close</mat-icon>
+    <div class="modal-wrapper grid-container">
+        <mat-toolbar class="accent" style="width: 100%;justify-content: space-between;height: 50px;">
+            <div fxLaput="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">account_box
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                    style="color: white;">
+                    Expenses Head
                 </span>
-            </button>
-        </div>
-    </mat-toolbar>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
+                <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                    <span class="modal-icon">
+                        <mat-icon>close</mat-icon>
+                    </span>
+                </button>
+            </div>
+        </mat-toolbar>
 
-    <div class="content">
-        <div class="center p-12 pb-56" style="border-radius: 4px;">
-            <div class="content-card">
-                <div fxLayout="row" fxLayout="column" fxLayoutGap="10px">
-                    <form [formGroup]="ExpHeadForm">
-                        <div fxLayout="row" fxLayout="column" fxLayoutGap="6px">
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Head Name</mat-label>
-                                <input matInput name="HeadName" formControlName="HeadName" required type="text"
-                                    [(ngModel)]="vHeadName" #HeadName (keypress)="keyPressCharater($event)">
-                            </mat-form-field>
+        <div class="modal-body" fusePerfectScrollbar>
+            <div class="modal-body-container">
+                <div class="center p-12 pb-56" style="border-radius: 4px;">
+                    <div class="content-card">
+                        <div fxLayout="row" fxLayout="column" fxLayoutGap="10px">
+                            <form [formGroup]="ExpHeadForm">
+                                <div fxLayout="row" fxLayout="column" fxLayoutGap="6px">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Head Name</mat-label>
+                                        <input matInput name="HeadName" formControlName="HeadName" required type="text"
+                                            [(ngModel)]="vHeadName" #HeadName>
+                                    </mat-form-field>
 
-                            <mat-checkbox formControlName="IsActive" (checked)=true style="padding: 10px;">IsActive
-                            </mat-checkbox>
-                        </div>
-                    </form>
-                    <div fxLayoutAlign="end">
-                        <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px">
-                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                            <button class="btn btn-primary" (click)="OnSave()">Save</button>
+                                    <mat-checkbox formControlName="IsActive" (checked)=true
+                                        style="padding: 10px;">IsActive
+                                    </mat-checkbox>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal footer -->
+    <div class="modal-footer" class="p-12">
+        <div class="footer-navigation-container" fxLayoutAlign="end">
+            <div class="modal-footer-buttons" fxLayoutGap="6px">
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button class="btn btn-primary" (click)="OnSave()">Save</button>
             </div>
         </div>
     </div>

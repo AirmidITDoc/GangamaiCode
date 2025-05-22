@@ -1,5 +1,5 @@
-<div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
-    <mat-toolbar style="width: 100%;height: 40px;justify-content: space-between;">
+<div class="modal-wrapper grid-container"> 
+    <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
@@ -19,102 +19,103 @@
                     <mat-icon>close</mat-icon>
                 </span>
             </button>
-        </div>
- 
- 
+        </div> 
     </mat-toolbar>
 
-    <div class="content">
-        <div class="center p-12 pb-56" style="border-radius: 4px;">
-            <div class="content-card">
-                <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
-
-                    <mat-card style="padding: 6px;">
-                        <form [formGroup]="_DailyExpensesService.NewExpensesForm" >
-                        <div fxLayout="row" fxLayoutGap="6px">
-                            <mat-form-field appearance="outline" fxFlex="40%">
-                                <mat-label>Expenses Head</mat-label>
-                                <input name="expenseshead" formControlName="expenseshead" matInput required
-                                matAutocompletePosition="below" type="text"  [matAutocomplete]="AutoExphead"
-                                [(ngModel)]="vExpenseshead" (keydown)="onEnterExphead($event)">
-                                <span matSuffix style="display: flex;">
-                                    <mat-icon class="mat-icon-close"
-                                        (click)="_DailyExpensesService.NewExpensesForm.get('expenseshead').setValue(''); isExpheadSelected = false;">close</mat-icon>
-                                    <mat-icon class="mat-icon-close"
-                                        (click)="_DailyExpensesService.NewExpensesForm.get('expenseshead').setValue(''); isExpheadSelected = false;">search</mat-icon>
-                                </span>
-                                <mat-autocomplete #AutoExphead="matAutocomplete"
-                                    [displayWith]="getOptionTextExpHead">
-                                    <mat-option *ngFor="let option of filteredExpenseHead | async"
-                                        [value]="option">
-                                        {{option.HeadName}}
-                                    </mat-option>
-                                </mat-autocomplete>
-                            </mat-form-field>
-
-                            <mat-radio-group formControlName="ExpType" name="ExpType" style="padding: 10px;">
-                            <!-- <mat-label>Type :</mat-label>&nbsp; -->
-                            <mat-radio-button value="0">Cash</mat-radio-button>
-                            <mat-radio-button value="1">Cheque</mat-radio-button>
-                            </mat-radio-group>
-
-                            <span style="margin-right: 40px;">
-                                <app-common-date [screenFrom]="screenFromString"
-                                    (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                            </span> 
-
-                        </div>
-                        <div fxLayout="row" fxLayoutGap="6px">
-                        
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Person Name</mat-label>
-                                <input matInput name="PersonName" formControlName="PersonName" required type="text" 
-                                [(ngModel)]="vPersonName" #PersonName (keydown)="onEnterPersonName($event)"
-                                (keypress)="keyPressCharater($event)">
-                            </mat-form-field>
-                        </div>
-
-                        <div fxLayout="row" fxLayoutGap="6px">
-                        
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Expenses Amount</mat-label>
-                                <input matInput name="ExpAmount" formControlName="ExpAmount" required type="text" 
-                                [(ngModel)]="vExpAmount" (keydown)="onEnterExpAmt($event)" #ExpAmount 
-                                (keypress)="keyPressAlphanumeric($event)">
-                            </mat-form-field>
-                            
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Vouchar No</mat-label>
-                                <input matInput name="VoucharNo" formControlName="VoucharNo" required type="text" 
-                                [(ngModel)]="vVoucharNo" (keydown)="onEnterVoucharNo($event)" #VoucharNo
-                                (keypress)="keyPressAlphanumeric($event)">
-                            </mat-form-field>
-                        </div>
-
-                        <div fxLayout="row" fxLayoutGap="6px"> 
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Reason</mat-label>
-                                <textarea rows="5" matInput name="Reason" formControlName="Reason"  type="text" 
-                                [(ngModel)]="vReason" (keydown)="onEnterReason($event)" #Reason></textarea>
-                            </mat-form-field>
-                        </div>
-
-                        </form>
-                    </mat-card> 
-
-                    <div fxLayoutAlign="end">
-                        <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px">
-                        
-                            <button mat-raised-button (click)="addNewheadExpenses()" style="background-color: aliceblue;color: brown;">
-                                <mat-icon>add</mat-icon>Expenses Head
-                            </button>
-
-                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                            <button class="btn btn-primary" (click)="OnSave()">Save</button>
-                        </div>
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <div class="center pb-56" style="border-radius: 4px;">
+                <div class="content-card">
+                    <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
+    
+                        <mat-card style="padding: 6px;">
+                            <form [formGroup]="_DailyExpensesService.NewExpensesForm">
+                                <div fxLayout="row" fxLayoutGap="6px">
+                                    <mat-form-field appearance="outline" fxFlex="40%">
+                                        <mat-label>Expenses Head</mat-label>
+                                        <input name="expenseshead" formControlName="expenseshead" matInput required
+                                            matAutocompletePosition="below" type="text" [matAutocomplete]="AutoExphead"
+                                            [(ngModel)]="vExpenseshead" (keydown)="onEnterExphead($event)">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_DailyExpensesService.NewExpensesForm.get('expenseshead').setValue(''); isExpheadSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_DailyExpensesService.NewExpensesForm.get('expenseshead').setValue(''); isExpheadSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #AutoExphead="matAutocomplete"
+                                            [displayWith]="getOptionTextExpHead">
+                                            <mat-option *ngFor="let option of filteredExpenseHead | async" [value]="option">
+                                                {{option.HeadName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+    
+                                    <mat-radio-group formControlName="ExpType" name="ExpType" style="padding: 10px;">
+                                        <!-- <mat-label>Type :</mat-label>&nbsp; -->
+                                        <mat-radio-button value="0">Cash</mat-radio-button>
+                                        <mat-radio-button value="1">Cheque</mat-radio-button>
+                                    </mat-radio-group>
+    
+                                    <span style="margin-right: 40px;">
+                                        <app-common-date [screenFrom]="screenFromString"
+                                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                                    </span>
+    
+                                </div>
+                                <div fxLayout="row" fxLayoutGap="6px">
+    
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Person Name</mat-label>
+                                        <input matInput name="PersonName" formControlName="PersonName" required type="text"
+                                            [(ngModel)]="vPersonName" #PersonName (keydown)="onEnterPersonName($event)"
+                                            (keypress)="keyPressCharater($event)">
+                                    </mat-form-field>
+                                </div>
+    
+                                <div fxLayout="row" fxLayoutGap="6px">
+    
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Expenses Amount</mat-label>
+                                        <input matInput name="ExpAmount" formControlName="ExpAmount" required type="text"
+                                            [(ngModel)]="vExpAmount" (keydown)="onEnterExpAmt($event)" #ExpAmount
+                                            (keypress)="keyPressAlphanumeric($event)">
+                                    </mat-form-field>
+    
+                                    <!-- <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Vouchar No</mat-label>
+                                    <input matInput name="VoucharNo" formControlName="VoucharNo" required type="text" 
+                                    [(ngModel)]="vVoucharNo" (keydown)="onEnterVoucharNo($event)" #VoucharNo
+                                    (keypress)="keyPressAlphanumeric($event)">
+                                </mat-form-field> -->
+                                </div>
+    
+                                <div fxLayout="row" fxLayoutGap="6px">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Reason</mat-label>
+                                        <textarea rows="7" matInput name="Reason" formControlName="Reason" type="text"
+                                            [(ngModel)]="vReason" (keydown)="onEnterReason($event)" #Reason></textarea>
+                                    </mat-form-field>
+                                </div>
+    
+                            </form>
+                        </mat-card> 
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+      <!-- Modal footer -->
+  <div class="modal-footer" class="p-12">
+    <div class="footer-navigation-container" fxLayoutAlign="end">
+    <div class="modal-footer-buttons" fxLayoutGap="6px">
+        <button mat-raised-button (click)="addNewheadExpenses()" style="background-color: aliceblue;color: brown;">
+            <mat-icon>add</mat-icon>Expenses Head
+        </button>
+        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+        <button class="btn btn-primary" (click)="OnSave()">Save</button>
+    </div>
+    </div>
+  </div>
+
 </div>

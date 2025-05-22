@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { DailyExpensesService } from '../daily-expenses.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -28,7 +28,9 @@ export class ExpensesHeadMasterComponent implements OnInit {
         public _matDialog: MatDialog,
         public toastr: ToastrService,
         private _loggedService: AuthenticationService, 
-        private _formbuilder : FormBuilder
+        private _formbuilder : FormBuilder,
+            @Inject(MAT_DIALOG_DATA) public data: any,
+            public dialogRef: MatDialogRef<ExpensesHeadMasterComponent>,
   ) { }
 
   ngOnInit(): void {
@@ -82,7 +84,7 @@ export class ExpensesHeadMasterComponent implements OnInit {
     });  
   }
   onClose(){
-    this._matDialog.closeAll();
+    this.dialogRef.close()
   }
   keyPressCharater(event) {
     const inp = String.fromCharCode(event.keyCode);

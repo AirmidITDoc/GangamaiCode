@@ -115,7 +115,7 @@ export class NewExpensesComponent implements OnInit {
       "narration": this._DailyExpensesService.NewExpensesForm.get('Reason').value || '',
       "isAddedby":  this._loggedService.currentUserValue.user.id,
       "isCancelled": 0,
-      "voucharNo": this._DailyExpensesService.NewExpensesForm.get('VoucharNo').value || '',
+      "voucharNo": 0 ,//this._DailyExpensesService.NewExpensesForm.get('VoucharNo').value || '',
       "expHeadId":this._DailyExpensesService.NewExpensesForm.get('expenseshead').value.ExpHedId || ''
     }  
     let submitData={

@@ -40,7 +40,8 @@
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
                                         <input matInput placeholder="Search --> Drug Name" autocomplete="off"
-                                            name="DrugNameSearch" formControlName="DrugNameSearch" />
+                                            name="DrugNameSearch" formControlName="DrugNameSearch"
+                                            (keyup)="onSearch()" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearchClear()">
                                             <mat-icon>close</mat-icon>
@@ -63,14 +64,9 @@
                         </div>
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                class="backgroundBlur">
-                                <div class="spinner-border text-danger"></div>
-
-                                </div>
-
                                 <mat-table #table matSort [dataSource]="DSDrugMasterList"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto">
+                                    [@animateStagger]="{value:'50'}"
+                                    style="overflow:auto;height: 700px !important;width: 100%;">
                                     <ng-container matColumnDef="DrugId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
                                         </mat-header-cell>
@@ -149,7 +145,7 @@
                                         [ngClass]="{'hide':!(DSDrugMasterList!=null && DSDrugMasterList.data.length==0)}"></mat-footer-row>
                                 </mat-table>
 
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
+                                <mat-paginator [pageSizeOptions]="[15,25, 35, 100]" [pageSize]="15"
                                     showFirstLastButtons></mat-paginator>
                             </div>
                         </div>
@@ -170,45 +166,49 @@
                                             <mat-error>Please enter Drug Name </mat-error>
                                         </mat-form-field>
                                     </div>
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-
-
-                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"> 
+                                        <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>GenericName</mat-label>
-                                            <mat-select formControlName="GenericId" placeholder="Bank" #singleSelect
-                                                required>
-                                                <mat-option>
-                                                    <ngx-mat-select-search [formControl]="genericFilterCtrl"
-                                                        [placeholderLabel]="'Search'"
-                                                        [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select ItemTypeID" matInput formControlName="GenericId"
+                                                [matAutocomplete]="autoGenericid">
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_drugService.myform.get('GenericId').setValue(''); isGenericIdSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_drugService.myform.get('GenericId').setValue(''); isGenericIdSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autoGenericid="matAutocomplete"
+                                                [displayWith]="getOptionTextGenericName">
+                                                <mat-option *ngFor="let option of filteredGenericname | async"
+                                                    [value]="option">
+                                                    {{option.GenericName}}
                                                 </mat-option>
-                                                <mat-option *ngFor="let element of filteredGeneric | async"
-                                                    [value]="element">
-                                                    {{element.GenericName}}
-                                                </mat-option>
-                                            </mat-select>
+                                            </mat-autocomplete>
                                         </mat-form-field>
 
                                     </div>
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"> 
 
-
-                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                        <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Class Name</mat-label>
-                                            <mat-select formControlName="ClassId" placeholder="Bank" #singleSelect
-                                                required>
-                                                <mat-option>
-                                                    <ngx-mat-select-search [formControl]="classFilterCtrl"
-                                                        [placeholderLabel]="'Search'"
-                                                        [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select ItemTypeID" matInput formControlName="ClassId"
+                                                [matAutocomplete]="autoClassId">
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_drugService.myform.get('ClassId').setValue(''); isClassIdSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_drugService.myform.get('ClassId').setValue(''); isClassIdSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autoClassId="matAutocomplete"
+                                                [displayWith]="getOptionTextClassName">
+                                                <mat-option *ngFor="let option of filteredClassName | async"
+                                                    [value]="option">
+                                                    {{option.ClassName}}
                                                 </mat-option>
-                                                <mat-option *ngFor="let element of filteredClass | async"
-                                                    [value]="element">
-                                                    {{element.ClassName}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-
+                                            </mat-autocomplete>
+                                        </mat-form-field> 
                                     </div>
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                         <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>

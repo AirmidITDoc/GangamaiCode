@@ -41,7 +41,8 @@
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
                                         <input matInput placeholder="Search --> Instruction Name" autocomplete="off"
-                                            name="InstructionNameSearch" formControlName="InstructionNameSearch" />
+                                            name="InstructionNameSearch" formControlName="InstructionNameSearch" 
+                                                (keyup)="onSearch()"/>
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearchClear()">
                                             <mat-icon>close</mat-icon>
@@ -66,7 +67,7 @@
                         <div fxlayout="row">
                             <div style="width: 100%;">
                                 <mat-table #table matSort [dataSource]="DSInstructionMasterList"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto">
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;height: 700px !important;width: 100%;">
                                     <ng-container matColumnDef="InstructionId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
                                         </mat-header-cell>

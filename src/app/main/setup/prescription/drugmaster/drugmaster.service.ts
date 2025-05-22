@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { LoaderService } from "app/core/components/loader/loader.service";
 
 @Injectable({
     providedIn: "root",
@@ -11,7 +12,8 @@ export class DrugmasterService {
 
     constructor(
         private _httpClient: HttpClient,
-        private _formBuilder: FormBuilder
+        private _formBuilder: FormBuilder,
+        private _loadService:LoaderService
     ) {
         this.myform = this.createDrugForm();
         this.myformSearch = this.createSearchForm();
@@ -42,7 +44,10 @@ export class DrugmasterService {
         this.createDrugForm();
     }
 
-    public getDrugMasterList(param) {
+    public getDrugMasterList(param,loader = true) {
+        if(loader){
+            this._loadService.show()
+        }
         return this._httpClient.post(
             "Generic/GetByProc?procName=M_RetrieveDrugList",
             param
@@ -60,16 +65,22 @@ export class DrugmasterService {
     // Class Master Combobox List
     public getClassMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=RetrieveClassMasterForCombo",
+            "Generic/GetByProc?procName=m_RetrieveClassMasterForCombo",
             {}
         );
     }
 
-    public insertDrugMaster(param) {
+    public insertDrugMaster(param,loader = true) {
+        if(loader){
+            this._loadService.show()
+        }
         return this._httpClient.post("Prescription/DrugSave", param);
     }
 
-    public updateDrugMaster(param) {
+    public updateDrugMaster(param,loader = true) {
+        if(loader){
+            this._loadService.show()
+        }
         return this._httpClient.post("Prescription/DrugUpdate", param);
     }
 

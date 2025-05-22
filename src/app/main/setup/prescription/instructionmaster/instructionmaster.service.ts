@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { LoaderService } from "app/core/components/loader/loader.service";
 
 @Injectable({
     providedIn: "root",
@@ -10,7 +11,8 @@ export class InstructionmasterService {
     myformSearch: FormGroup;
     constructor(
         private _httpClient: HttpClient,
-        private _formBuilder: FormBuilder
+        private _formBuilder: FormBuilder,
+                private _loadService:LoaderService
     ) {
         this.myForm = this.createInstructionForm();
         this.myformSearch = this.createSearchForm();
@@ -37,18 +39,27 @@ export class InstructionmasterService {
         this.createInstructionForm();
     }
 
-    public getInstructionMasterList(param) {
+    public getInstructionMasterList(param,loader = true) {
+        if(loader){
+            this._loadService.show()
+        }
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_M_PrescriptionInstructionMaster",
+            "Generic/GetByProc?procName=m_Rtrv_PrescriptionInstructionMaster_list",
             param
         );
     }
 
-    public insertInstructionMaster(param) {
+    public insertInstructionMaster(param,loader = true) {
+        if(loader){
+            this._loadService.show()
+        }
         return this._httpClient.post("Prescription/InstructionSave", param);
     }
 
-    public updateInstructionMaster(param) {
+    public updateInstructionMaster(param,loader = true) {
+        if(loader){
+            this._loadService.show()
+        }
         return this._httpClient.post("Prescription/InstructionUpdate", param);
     }
 
