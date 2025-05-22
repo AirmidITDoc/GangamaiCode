@@ -81,9 +81,8 @@ export class IpSalesReturnComponent implements OnInit {
 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
-  }
-
-  getSelectedObjRegIP(obj) {
+  } 
+  getSelectedObjRegIP(obj) { 
     console.log(obj);
     let IsDischarged = 0;
     IsDischarged = obj.isDischarged;
@@ -92,7 +91,7 @@ export class IpSalesReturnComponent implements OnInit {
         icon: "warning",
         title: "Selected Patient is already discharged",
         showConfirmButton: false,
-        timer: 1500
+        timer: 2000
       });
       return
     }
@@ -100,10 +99,13 @@ export class IpSalesReturnComponent implements OnInit {
     this.vPatientName = obj.firstName + ' ' + obj.middleName + ' ' + obj.lastName; 
     this.vRegno = this.registerObj.regNo;
     this.getItemNameList();
+    this.OnRadioChange();
   }
 
   OnRadioChange() {
     this.dsIpSaleItemList.data = [];
+    this.chargeslist = [];
+    this.getUpdateTotalAmt();
     this.getItemNameList();
   }
   getItemNameList() {
@@ -118,7 +120,7 @@ export class IpSalesReturnComponent implements OnInit {
     let storeID = this.accountService.currentUserValue.user.storeId
     let ItemName = this._IpSalesRetService.userFormGroup.get('ItemName').value + '%' || '%'
     const Filters = [
-      { "fieldName": "RegNo", "fieldValue": String(0), "opType": "Equals" },
+      { "fieldName": "RegNo", "fieldValue": String(this.vRegno), "opType": "Equals" },
       { "fieldName": "StoreId", "fieldValue": String(storeID), "opType": "Equals" },
       { "fieldName": "ItemName", "fieldValue": String(ItemName), "opType": "Equals" },
       { "fieldName": "BatchNo", "fieldValue": String(0), "opType": "Equals" }
@@ -179,6 +181,13 @@ export class IpSalesReturnComponent implements OnInit {
         return
     }
 
+    const formValues = this._IpSalesRetService.userFormGroup.value
+    if (!(formValues.PatientName.admissionID > 0)) {
+      this.toastr.warning('Please select Patient Name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return
+    }
     if (this.dsIpSaleItemList.data.length > 0) {
        const isItemAlreadyAdded = this.dsIpSaleItemList.data.some((element) => element.BatchNo === this.selcteditemObj.BatchNo);
       if (isItemAlreadyAdded) {
@@ -190,7 +199,7 @@ export class IpSalesReturnComponent implements OnInit {
         return
       } 
     }
-    const formValues = this._IpSalesRetService.userFormGroup.value
+   
     let totalAmt = (parseFloat(this.selcteditemObj.UnitMRP) * parseFloat(formValues.ReturnQty)).toFixed(2);
     let GSTAmt = ((parseFloat(this.selcteditemObj.VatPer) * parseFloat(totalAmt)) / 100).toFixed(2) || 0;
     let DiscAmt = ((parseFloat(this.selcteditemObj.DiscPer) * parseFloat(totalAmt)) / 100).toFixed(2) || '0';
@@ -231,8 +240,7 @@ export class IpSalesReturnComponent implements OnInit {
   ItemReset() {
     this._IpSalesRetService.userFormGroup.get('ItemName').setValue('%');
     this._IpSalesRetService.userFormGroup.get('ReturnQty').setValue('');
-    this._IpSalesRetService.userFormGroup.get('TotalQty').setValue('');
-    this._IpSalesRetService.userFormGroup.get('PaymentType').setValue('CashPay');
+    this._IpSalesRetService.userFormGroup.get('TotalQty').setValue(''); 
         this._IpSalesRetService.userFormGroup.markAllAsTouched(); 
   }
   deleteTableRow(event, element) {
@@ -268,7 +276,7 @@ export class IpSalesReturnComponent implements OnInit {
         icon: "warning",
         title: "Return Qty cannot be greater than BalQty",
         showConfirmButton: false,
-        timer: 1500
+        timer: 2000
       });
       contact.ReturnQty = '';
       contact.TotalAmt = 0;
@@ -336,7 +344,7 @@ debugger
         icon: "warning",
         title: "Please enter ReturnQty Without ReturnQty Cannot perform save operation.",
         showConfirmButton: false,
-        timer: 1500
+        timer: 2000
       });
       return;
     }  

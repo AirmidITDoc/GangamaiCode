@@ -29,7 +29,7 @@
                             <div fxFlex="50%" fxFlex.sm="100%">
                                 <airmid-autocomplete label="IP RegNo / First Name / Last Name / Mobile No"
                                     [formGroup]="_IpSalesRetService.userFormGroup" formControlName="PatientName"
-                                    placeholderText="IP RegNo / First Name / Last Name / Mobile No" fxFlex
+                                    placeholderText="IP RegNo / First Name / Last Name / Mobile No" fxFlex 
                                     ApiUrl="Admission/search-patient?Keyword="
                                     (selectionChange)="getSelectedObjRegIP($event)" TextField="formattedText"
                                     ValueField="itemId"></airmid-autocomplete>
