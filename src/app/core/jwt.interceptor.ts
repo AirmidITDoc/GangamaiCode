@@ -50,6 +50,10 @@ export class JwtInterceptor implements HttpInterceptor {
                         toastClass: 'tostr-tost custom-toast-error',
                     });
                     this.router.navigate(["/forbidden"]);
+                } else if (err.status === 0 || err.status === 500) {
+                    this.toastr.error('Unable to connect to the server. Please try again later.', 'Server !', {
+                        toastClass: 'tostr-tost custom-toast-error',
+                    });
                 }
                 return throwError(() => err); // Return an Observable using throwError
             }),
