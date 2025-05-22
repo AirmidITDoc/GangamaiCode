@@ -583,12 +583,12 @@ export class UpdateWorkorderComponent implements OnInit {
     //   });
     //   return;
     // }
-    // if ((this.vSupplierId == '' || this.vSupplierId == null || this.vSupplierId == undefined)) {
-    //   this.toastr.warning('Please enter a SupplierName', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
+    if ((!this.WorkOrderStoreForm.get("SupplierName").value)) {
+      this.toastr.warning('Please enter a SupplierName', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
 
     // console.log(this.WorkorderFinalForm.value)
     // this.WorkorderFinalForm.get("woId").setValue(this.vWorkId)
