@@ -18,6 +18,7 @@ import { MatSelect } from '@angular/material/select';
 import Swal from 'sweetalert2';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { fuseAnimations } from '@fuse/animations';
+import { GRNFormModel } from '../../good-receiptnote/new-grn/types';
 
 @Component({
   selector: 'app-new-purchaseorder',
@@ -209,7 +210,7 @@ export class NewPurchaseorderComponent {
   selectedRowIndex: any;
   filteredoptionsSupplier: Observable<string[]>;
   filteredoptionsPayment: Observable<string[]>;
-    @ViewChild('qtyTextboxRef', { read: ElementRef }) qtyTextboxRef: ElementRef;
+  @ViewChild('qtyTextboxRef', { read: ElementRef }) qtyTextboxRef: ElementRef;
 
   constructor(
     public _PurchaseOrder: PurchaseOrderService,
@@ -564,21 +565,21 @@ export class NewPurchaseorderComponent {
   //   this.OnSaveEdit();
   // }
   // }
-// purchaseTime 
-// "16-05-2025 11:56:53"
+  // purchaseTime 
+  // "16-05-2025 11:56:53"
 
   OnSave() {
-  debugger
+    debugger
     let Pdate;
     let pTime;
-    if (this.PurchaseID !=0) {
-    
+    if (this.PurchaseID != 0) {
+
       //  let date = new Date(this.data.Obj.purchaseTime);
       //  let formattedDate = this.datePipe.transform(date, 'yyyy-MM-dd');
       // console.log(formattedDate)
 
-      Pdate =this.datePipe.transform(this.data.Obj.purchaseTime, "yyyy-MM-dd") || '1900-01-01',
-      pTime = this.data.Obj.purchaseTime
+      Pdate = this.datePipe.transform(this.data.Obj.purchaseTime, "yyyy-MM-dd") || '1900-01-01',
+        pTime = this.data.Obj.purchaseTime
     } else {
       Pdate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',
         pTime = this.dateTimeObj.time;
@@ -890,7 +891,7 @@ export class NewPurchaseorderComponent {
     }
     this.getSupplierRate();
 
-      setTimeout(() => {
+    setTimeout(() => {
       const nativeElement = this.qtyTextboxRef?.nativeElement;
       if (nativeElement) {
         const inputEl: HTMLInputElement = nativeElement.querySelector('input');
@@ -1097,7 +1098,31 @@ export class NewPurchaseorderComponent {
     }
   }
 
-
+  getchangegstper(rate, GSTTYP): void {
+    debugger
+    const formValues = this.userFormGroup.getRawValue() as GRNFormModel;
+    const gstValues = [
+      { value: 2.5 },
+      { value: 6 },
+      { value: 9 },
+      { value: 14 }
+    ];
+    if (rate >= 2.5) {
+      const dvalue = gstValues.find(item => item.value == parseFloat(rate))
+      if (!dvalue) {
+        this._PurchaseOrder.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
+        return;
+      }
+    } else {
+      this._PurchaseOrder.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
+      return;
+    }
+    const GSTPer = Number(formValues.CGST) + Number(formValues.SGST) + Number(formValues.IGST)
+    this.userFormGroup.patchValue({
+      GST: GSTPer
+    });
+    this.calculateTotalamt();
+  }
 
   resetForm() {
     this.userFormGroup.reset();

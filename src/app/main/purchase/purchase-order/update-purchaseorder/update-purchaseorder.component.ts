@@ -225,6 +225,10 @@ export class UpdatePurchaseorderComponent implements OnInit {
   ngOnInit(): void {
     this.userFormGroup = this._PurchaseOrder.getPurchaseOrderForm();
     this.FinalPurchaseform = this._PurchaseOrder.getPurchaseOrderFinalForm()
+     this.userFormGroup.markAllAsTouched();
+    this.FinalPurchaseform.markAllAsTouched();
+
+
     if (this.data.chkNewGRN == 2) {
       this.registerObj = this.data.Obj;
       console.log(this.registerObj)

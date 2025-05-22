@@ -120,6 +120,7 @@ export class NewAdmissionComponent implements OnInit {
     this.searchFormGroup = this.createSearchForm();
     this.personalFormGroup.markAllAsTouched();
     this.admissionFormGroup.markAllAsTouched();
+   this.searchFormGroup.markAllAsTouched();
 
     if (this.AdmissionId)
       this.searchFormGroup.get("regRadio").setValue("registrered")
@@ -216,7 +217,7 @@ export class NewAdmissionComponent implements OnInit {
         });
         return;
       }
-      if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid) {
+      if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid && !this.searchFormGroup.invalid) {
 debugger;
         Swal.fire({
           title: 'Do you want to Save the Admission ',
@@ -247,6 +248,13 @@ debugger;
           for (const controlName in this.admissionFormGroup.controls) {
             if (this.admissionFormGroup.controls[controlName].invalid) {
               invalidFields.push(`Admission Form: ${controlName}`);
+            }
+          }
+        }
+         if (this.searchFormGroup.invalid) {
+          for (const controlName in this.searchFormGroup.controls) {
+            if (this.searchFormGroup.controls[controlName].invalid) {
+              invalidFields.push(`Hospital Form: ${controlName}`);
             }
           }
         }

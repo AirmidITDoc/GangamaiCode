@@ -24,6 +24,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { IssuTodeptComponent } from './issu-todept/issu-todept.component';
 
 @Component({
     selector: 'app-issue-to-department',
@@ -230,7 +231,7 @@ export class IssueToDepartmentComponent implements OnInit {
 
     onSave(row: any = null) {
         let that = this;
-        const dialogRef = this._matDialog.open(IssueToDeparmentAgainstIndentComponent,
+        const dialogRef = this._matDialog.open(IssuTodeptComponent,
             {
                 maxWidth: "97vw",
                 height: '90%',
@@ -249,7 +250,6 @@ export class IssueToDepartmentComponent implements OnInit {
       }
     
  
-
 }
 
 export class NewIssueList3 {

@@ -228,7 +228,7 @@ export class UpdateWorkorderComponent implements OnInit {
 
       this.chargeslist = this.dsTempItemNameList.data;
 
-
+debugger
       const formValues = this.WorkorderItemForm.getRawValue() as PurchaseFormModel;
       console.log(formValues)
       if (formValues.ItemName) {
@@ -468,7 +468,7 @@ export class UpdateWorkorderComponent implements OnInit {
     // this.calculateDiscAmount();
   }
 
-  GSTTypeName = ""
+  GSTTypeName = "GST Before Disc"
   IsDiscPer2: boolean = false;
   onGSTTypeChange(event: { value: number, text: string }) {
     console.log(event)
@@ -519,7 +519,7 @@ export class UpdateWorkorderComponent implements OnInit {
     }
   }
   getCellCalculation(contact, ReceiveQty) {
-
+debugger
 
 
     if (contact.Qty > 0 && contact.Rate > 0) {
@@ -531,16 +531,16 @@ export class UpdateWorkorderComponent implements OnInit {
         contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPer)) / 100).toFixed(2);;
         let TotalAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount));
         //Gst
-        contact.VATAmount = (((TotalAmt) * parseFloat(contact.VATPer)) / 100).toFixed(2);;
-        contact.NetAmount = ((TotalAmt) + parseFloat(contact.VATAmount)).toFixed(2);;
+        contact.GSTAmount = (((TotalAmt) * parseFloat(contact.GST)) / 100).toFixed(2);;
+        contact.NetAmount = ((TotalAmt) + parseFloat(contact.GSTAmount)).toFixed(2);;
 
       }
       else if (this.GSTTypeName == 'GST Before Disc') {
         //total amt
         contact.TotalAmount = (parseFloat(contact.Qty) * parseFloat(contact.Rate)).toFixed(2);;
         //Gst
-        contact.VATAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.VATPer)) / 100).toFixed(2);;
-        let totalAmt = (parseFloat(contact.TotalAmount) + parseFloat(contact.VATAmount));
+        contact.GSTAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.GST)) / 100).toFixed(2);;
+        let totalAmt = (parseFloat(contact.TotalAmount) + parseFloat(contact.GSTAmount));
         //disc
         contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPer)) / 100).toFixed(2);;
         contact.NetAmount = ((totalAmt) - parseFloat(contact.DiscAmount)).toFixed(2);;
@@ -583,20 +583,15 @@ export class UpdateWorkorderComponent implements OnInit {
     //   });
     //   return;
     // }
-    if ((!this.WorkOrderStoreForm.get("SupplierName").value)) {
-      this.toastr.warning('Please enter a SupplierName', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-
-    // console.log(this.WorkorderFinalForm.value)
-    // this.WorkorderFinalForm.get("woId").setValue(this.vWorkId)
-
-    // this.WorkorderFinalForm.get("storeId").setValue(this.WorkOrderStoreForm.get("StoreId").value)
-    // this.WorkorderFinalForm.get("supplierID").setValue(this.WorkOrderStoreForm.get("SupplierName").value)
-
-    // this.WorkorderFinalForm.get("date").setValue(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"))
+    // if ((!this.WorkOrderStoreForm.get("SupplierName").value)) {
+    //   this.toastr.warning('Please enter a SupplierName', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    console.log(this.WorkOrderStoreForm.value)
+    debugger
+if(!this.WorkOrderStoreForm.invalid){
     let InsertWorkDetailarrayObj = [];
 
     let insertWorkObj = {};
@@ -664,18 +659,41 @@ export class UpdateWorkorderComponent implements OnInit {
 
       let submitData = {
         "updateWorkOrders": UpdateWorkObj,
-        "workOrderDetail": InsertWorkDetailarrayObj,
+        "workOrderDetail": InsertWorkDetailarrayObj
       };
       console.log(submitData);
       this._WorkOrderService.WorkorderUpdate(submitData).subscribe(response => {
         this.toastr.success(response.message);
-        if (response) {
-          this.viewgetWorkorderReportPdf(response)
+       this.viewgetWorkorderReportPdf(response)
           this._matDialog.closeAll();
-        }
+        
       });
     }
+  }else {
+        let invalidFields = [];
 
+        if (this.WorkorderFinalForm.invalid) {
+          for (const controlName in this.WorkorderFinalForm.controls) {
+            if (this.WorkorderFinalForm.controls[controlName].invalid) {
+              invalidFields.push(`Final Form: ${controlName}`);
+            }
+          }
+        }
+        if (this.WorkOrderStoreForm.invalid) {
+          for (const controlName in this.WorkOrderStoreForm.controls) {
+            if (this.WorkOrderStoreForm.controls[controlName].invalid) {
+              invalidFields.push(`Store Form: ${controlName}`);
+            }
+          }
+        }
+        if (invalidFields.length > 0) {
+          invalidFields.forEach(field => {
+            this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+            );
+          });
+        }
+
+      }
   }
 
   viewgetWorkorderReportPdf(WOId) {

@@ -136,17 +136,17 @@ export class MRPAdjustmentComponent implements OnInit {
   insertMRPAdjuNew['stockid'] = this. registerObj.StockId || 0;
   insertMRPAdjuNew['itemId'] = this. registerObj.ItemId || 0;
   insertMRPAdjuNew['batchNo'] =  this. registerObj.BatchNo || '';
-  insertMRPAdjuNew['perUnitMrp'] =  this._StockAdjustment.MRPAdjform.get('NewMRP').value ||  0;
-  insertMRPAdjuNew['perUnitPurrate'] = this._StockAdjustment.MRPAdjform.get('newLandedRate').value ||  0;
-  insertMRPAdjuNew['perUnitLanedrate'] = this._StockAdjustment.MRPAdjform.get('NewPurchaseRate').value || 0;
+  insertMRPAdjuNew['unitMrp'] =  this._StockAdjustment.MRPAdjform.get('NewMRP').value ||  0;
+  insertMRPAdjuNew['purchaserate'] = this._StockAdjustment.MRPAdjform.get('newLandedRate').value ||  0;
+  insertMRPAdjuNew['landedRate'] = this._StockAdjustment.MRPAdjform.get('NewPurchaseRate').value || 0;
   insertMRPAdjuNew['oldUnitMrp'] = this._StockAdjustment.MRPAdjform.get('OldMRP').value ||  0;
   insertMRPAdjuNew['oldUnitPur'] = this._StockAdjustment.MRPAdjform.get('PurchaseRate').value ||  0;
   insertMRPAdjuNew['oldUnitLanded'] = this._StockAdjustment.MRPAdjform.get('LandedRate').value || 0;
 
 
   let submitData = {
-    "insertMRPAdju": insertMRPAdju,
-    "insertMRPAdjuNew" :insertMRPAdjuNew
+    "mrpAdjustmentMod": insertMRPAdju,
+    "curruntStockModel" :insertMRPAdjuNew
   };
   console.log(submitData);
   this._StockAdjustment.MRPAdjSave(submitData).subscribe(response => {

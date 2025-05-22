@@ -93,7 +93,8 @@ export class StockAdjustmentComponent implements OnInit {
 
     ngOnInit(): void {
         this.StoreFrom = this._StockAdjustmentService.CreateStoreFrom();
-        this.getStockList();
+         this.StoreFrom.markAllAsTouched();
+    this.getStockList();
     }
 
     storeId = 0
@@ -183,7 +184,7 @@ export class StockAdjustmentComponent implements OnInit {
     // }
 
 OneditDate(contact) {
-        
+        debugger
         console.log(contact)
         this.vBatchNo = contact.batchNo
         this.vExpDate = contact.batchExpDate;
@@ -267,6 +268,8 @@ OneditDate(contact) {
 
     CellcalculateLastDay(contact, inputDate: string) {
 debugger
+
+        this.OneditDate(contact)
         if (inputDate && inputDate.length === 6) {
             const month = +inputDate.substring(0, 2);
             const year = +inputDate.substring(2, 6);

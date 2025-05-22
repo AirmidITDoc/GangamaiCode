@@ -37,6 +37,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { IssueToDepartmentComponent } from './issue-to-department.component';
 import { IssueToDeparmentAgainstIndentComponent } from './issue-to-deparment-against-indent/issue-to-deparment-against-indent.component';
 import { IssueToDepartmentService } from './issue-to-department.service';
+import { IssuTodeptComponent } from './issu-todept/issu-todept.component';
 
 const routes: Routes = [
   { 
@@ -47,7 +48,7 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [
-        IssueToDepartmentComponent, IssueToDeparmentAgainstIndentComponent,
+        IssueToDepartmentComponent, IssueToDeparmentAgainstIndentComponent, IssuTodeptComponent,
     ],
     imports: [
         CommonModule,

@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class StockAdjustmentService {
 
   constructor(
     public _httpClient: HttpClient, public _httpClient1: ApiCaller, private accountService: AuthenticationService,
-    private _formBuilder: UntypedFormBuilder
+    private _formBuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService
   ) { 
     this.StoreFrom = this.CreateStoreFrom();
     this.userFormGroup = this.createUserForm();
@@ -25,9 +26,9 @@ export class StockAdjustmentService {
   }
   CreateStoreFrom(){
     return this._formBuilder.group({
-      StoreId:this.accountService.currentUserValue.user.storeId,
+      StoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       ItemID: [''],
-      batchEdit:[0],
+      batchEdit:[''],
       expDateEdit:''
     });
   }
@@ -79,7 +80,7 @@ export class StockAdjustmentService {
     return this._httpClient1.PostData('StockAdjustment/BatchUpdate',param);
   }
   public MRPAdjSave(param){
-    return this._httpClient.post('Pharmacy/InsertMRPadjustment',param);
+    return this._httpClient1.PostData('StockAdjustment/MrpAdjustmentUpdate',param);
   }
   public GSTAdjSave(param){
     return this._httpClient1.PostData('StockAdjustment/GSTUpdate',param);

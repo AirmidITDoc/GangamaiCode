@@ -34,10 +34,10 @@ export class WorkOrderService {
   }
   createStoreFrom() {
     return this._formBuilder.group({
-        workId: 0,
+      workId: 0,
       StoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      SupplierName: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      GSTType: '16'
+      SupplierName: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      GSTType: ['16',[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     })
   }
   // createMyFormGroup(){
@@ -106,8 +106,8 @@ export class WorkOrderService {
       woId: 0,
       date: new Date(),
       time: new Date(),
-      storeId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      supplierID: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      // storeId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      // supplierID: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       // GSTType: '16',
       totalAmount: 0,
       vatAmount: 0,
@@ -150,7 +150,7 @@ export class WorkOrderService {
   }
 
   public getItemListUpdates(Param) {
-    return this._httpClient1.PostData("WorkOrder/OldWorkOrderList", Param);
+    return this._httpClient1.PostData("WorkOrder/WorkOrderDetailsList", Param);
   }
 
   public getWorkOrderList(Param) {
@@ -167,7 +167,7 @@ export class WorkOrderService {
  
 
   public WorkorderUpdate(Param) {
-    return this._httpClient1.PostData("WorkOrder/WorkOrderUpdate", Param)
+    return this._httpClient1.PutData("WorkOrder/WorkOrderUpdate", Param)
   }
   populateForm(param) {
     this.NewWorkForm.patchValue(param);

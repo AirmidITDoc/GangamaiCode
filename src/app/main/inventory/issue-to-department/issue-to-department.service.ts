@@ -87,7 +87,7 @@ export class IssueToDepartmentService {
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
       FromStoreId:[''],
-      ToStoreId:[''],
+      ToStoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       Status:['0']
      
     });
@@ -95,10 +95,10 @@ export class IssueToDepartmentService {
 
  
   public getIndentList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_Indent_by_ID",Param);
+    return this._httpClient1.PostData("Indent/IndentList",Param);
   }
   public getIndentItemDetList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=retrieve_IndentItemList",Param);
+    return this._httpClient1.PostData("Indent/IndentDetailsList",Param);
   }
   public getAgainstIndentList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IndentItemList_aginstIssue",Param);
@@ -119,8 +119,8 @@ export class IssueToDepartmentService {
   public getItemlist(Param){//RetrieveItemMasterForCombo
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty",Param)
   }
-  public getBatchList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BatchNoForMrpAdj",Param);
+ public getBatchList(Param){ 
+    return this._httpClient1.GetData("ItemMaster/GetItemListForSalesBatchPop?StoreId="+Param.StoreId+"&ItemId="+Param.ItemId); 
   }
   public IssuetodepSave(Param){
     return this._httpClient1.PostData("IssueToDepartment/InsertSP",Param);

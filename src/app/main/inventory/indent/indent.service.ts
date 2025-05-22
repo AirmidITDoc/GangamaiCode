@@ -41,7 +41,7 @@ export class IndentService {
       // IsUrgent:['0'],
       ItemName: ['', [Validators.required]],
       Qty:   ['', [Validators.required, Validators.maxLength(10)]],
-      Remark:['',Validators.maxLength(5)],
+      Remark:['',Validators.maxLength(500)],
       ItemNameKit:[''],
       Qtykit:['']
     });

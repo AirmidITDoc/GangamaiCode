@@ -54,8 +54,8 @@ export class PurchaseOrderService {
 
   PurchaseSearchFrom() {
     return this._formBuilder.group({
-      StoreId: [this.accountService.currentUserValue.user.storeId],
-      SupplierId: "0",
+      StoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      SupplierId:  [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       startdate: [new Date().toISOString()],
       enddate: [new Date().toISOString()],
       Status: [0],

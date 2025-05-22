@@ -36,7 +36,7 @@
                             </mat-expansion-panel-header>
                              <form [formGroup]="StoreForm">
                                         <airmid-dropdown label="Store Name" formControlName="storeId" [disabled]="true"
-                                            (selectionChange)="StoreSelction($event)" [formGroup]="StoreForm" fxFlex
+                                            (selectionChange)="StoreSelction($event)" [formGroup]="StoreForm" fxFlex="30%"
                                             (openedChange)="true" [mode]="autocompletestore">
                                         </airmid-dropdown>
 
@@ -48,14 +48,13 @@
                             </div> -->
                             <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
                                 <form [formGroup]="OPeningtemForm">
-
+  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                                     <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="OPeningtemForm"
                                         formControlName="ItemName" placeholderText="Item Name (enter 2 char)"
-                                        fxFlex="40%" ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
+                                        fxFlex="30%" ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
                                         (selectionChange)="getSelectedItem($event)" TextField="formattedText"
                                         ValueField="itemId" (onClearSelection)="ItemFromReset()"></airmid-autocomplete>
 
-                                        
 
                                     <airmid-textbox fxFlex="10%" label="BatchNo" formControlName="BatchNo"
                                         [(ngModel)]="vBatchNo" [formGroup]="OPeningtemForm"
@@ -63,7 +62,7 @@
 
                                     <mat-form-field appearance="outline" fxFlex="10%">
                                         <mat-label>ExpDate</mat-label>
-                                        <input matInput #inputField (keyup.enter)="calculateLastDay()"
+                                        <input matInput #inputField (keyup.enter)="calculateLastDay()"  (keypress)="keyPressAlphanumeric($event)"
                                             formControlName="ExpDate" id="ExpDatess" [(ngModel)]="vlastDay" #expdate
                                             autocomplete="off" placeholder="MMYYYY" required>
                                     </mat-form-field>
@@ -89,6 +88,7 @@
                                             (click)="Onadd()" [disabled]="!OPeningtemForm.valid">
                                             <mat-icon>add</mat-icon>
                                         </button>
+                                    </div>
                                     </div>
                                 </form>
                             </div>
@@ -195,8 +195,8 @@
         </div>
         <div>
             <form [formGroup]="OPeningtemForm">
-                <div style="margin-left: 20px;">
-                    <airmid-textbox fxFlex="60%" label="Remark" formControlName="Remark" [(ngModel)]="vRemark"
+                <div style="margin-left: 20px;"> 
+                    <airmid-textbox fxFlex="60%" label="Remark" formControlName="Remark" [(ngModel)]="vRemark" [maxLength]="500"
                         [formGroup]="OPeningtemForm" placeholder="Remark"></airmid-textbox>
 
 

@@ -239,10 +239,10 @@
                                     fxShow.gt-sm>GST%</mat-header-cell>
                                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-150">
                                     <mat-form-field appearance="fill">
-                                        <input matInput [(ngModel)]="contact.VATPer" [id]="'VATPer' + index"
+                                        <input matInput [(ngModel)]="contact.GST" [id]="'GST' + index"
                                             (input)="getCellCalculation(contact)"
-                                            (keydown.arrowdown)="setFocus('VATPer' + (index + 1))"
-                                            (keydown.arrowup)="setFocus('VATPer' + (index - 1))" step="0.1"
+                                            (keydown.arrowdown)="setFocus('GST' + (index + 1))"
+                                            (keydown.arrowup)="setFocus('GST' + (index - 1))" step="0.1"
                                             type="number" [min]="0" [max]="100" OnlyNumber autocomplete="off"
                                             (keypress)="keyPressCharater($event)" />
                                     </mat-form-field>
@@ -253,7 +253,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-150">
                                     GSTAmount </mat-header-cell>
                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">
-                                    {{element.VATAmount | number:'1.2-2'}} </mat-cell>
+                                    {{element.GSTAmount | number:'1.2-2'}} </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="NetAmt">
@@ -334,7 +334,7 @@
                                     <div fxLayoutGap="6px">
 
 
-                                        <airmid-textbox fxFlex="40%" label="Remark" formControlName="Remark"
+                                        <airmid-textbox fxFlex="40%" label="Remark" formControlName="Remark" [maxLength]="500"
                                             [formGroup]="WorkorderFinalForm" type="text"
                                             placeholder="Remark"></airmid-textbox>
 
@@ -369,7 +369,7 @@
         <div class="modal-footer">
             <div class="footer-navigation-container">
                 <div class="modal-footer-buttons">
-                    <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
+                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                     <button type="button" class="btn btn-primary" [disabled]="false" (click)="OnSave()">Save</button>
                 </div>
             </div>

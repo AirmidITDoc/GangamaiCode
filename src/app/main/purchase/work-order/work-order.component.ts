@@ -37,7 +37,7 @@ export class WorkOrderComponent implements OnInit {
   autocompletestore: string = "Store";
   autocompleteSupplier: string = "SupplierMaster"
 
-  SupplierId="3";
+  SupplierId="0";
   StoreId="2";
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -70,7 +70,7 @@ export class WorkOrderComponent implements OnInit {
                  { }
          @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
          gridConfig: gridModel = {
-             apiUrl: "WorkOrder/WorkOrderList",
+             apiUrl: "WorkOrder/WorkOrderHeaderList",
              columnsList:this.allcolumns,
              sortField: "WOId",
              sortOrder: 0,
@@ -147,7 +147,7 @@ export class WorkOrderComponent implements OnInit {
           getfilterdata() {
             debugger
             this.gridConfig = {
-              apiUrl: "WorkOrder/WorkOrderList",
+              apiUrl: "WorkOrder/WorkOrderHeaderList",
               columnsList: this.allcolumns,
               sortField: "WOId",
               sortOrder: 0,

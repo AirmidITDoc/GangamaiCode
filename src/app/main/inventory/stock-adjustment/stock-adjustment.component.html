@@ -22,7 +22,7 @@
                             <div fxLayout="row wrap" fxFlex fxLayoutGap="14px 0px grid">
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="35%">
-                                    <airmid-dropdown label="Store Name" formControlName="StoreId"
+                                    <airmid-dropdown label="Store Name" formControlName="StoreId" [readonly]="true"
                                         [formGroup]="StoreFrom" [mode]="autocompletestore"
                                         (selectionChange)="selectChangeStore($event)">
                                     </airmid-dropdown>
@@ -131,14 +131,13 @@
                                             <mat-icon>edit</mat-icon></button>
                                     </ng-container>
                                     <ng-template #showInput>
-
+ <!-- (input)="OneditDate(contact)" -->
                                         <form [formGroup]="StoreFrom">
                                             <mat-form-field appearance="outline" fxFlex="40%">
                                                 <mat-label>ExpDate</mat-label>
                                                 <input matInput #inputField (keyup)="calculateLastDay(contact)" formControlName="expDateEdit" [formGroup]="StoreFrom"
-                                                    [(ngModel)]="contact.expDateEdit" autocomplete="off"
-                                                    placeholder="mmyyyy" [id]="'expDateEdit' + index"
-                                                    (input)="OneditDate(contact)">
+                                                    [(ngModel)]="contact.expDateEdit" autocomplete="off" (blur)="ExpDatedisableEditing(contact)"
+                                                    placeholder="mmyyyy" [id]="'expDateEdit' + index" >
                                             </mat-form-field>
                                         </form>
                                         <button (click)="OnSaveBatchAdj()" matTooltip="Save">
@@ -160,10 +159,10 @@
                             </ng-container>
 
                             <ng-container matColumnDef="unitMRP">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm fxFlex="20%">
                                     UnitMRP
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
+                                <mat-cell *matCellDef="let contact" fxFlex="20%">
                                     {{contact.unitMRP}}
                                     <ng-container>
                                         <button mat-icon-button (click)="EditMRP(contact)">

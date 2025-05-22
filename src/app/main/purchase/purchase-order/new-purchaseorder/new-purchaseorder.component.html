@@ -35,9 +35,10 @@
                                     </div>
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
+                          
                             <div fxLayout="column" fxLayout="row" fxLayoutAlign="start none">
-                                <form [formGroup]="userFormGroup" class="p-0" style="overflow: auto;">
-                                    <div fxLayout="row" class="gap-2">
+                                <form [formGroup]="userFormGroup" class="pt-4" style="overflow: auto">
+                                    <div fxLayout="row" class="gap-4">
 
                                         <airmid-dropdown label="Store Name" formControlName="StoreId" fxFlex="16%"
                                             [formGroup]="userFormGroup" [mode]="autocompletestore" [disabled]="true"
@@ -140,22 +141,23 @@
                                             (valueChange)="calculateTotalamt()"></airmid-textbox>
 
 
-                                        <airmid-textbox fxFlex="4%" label="CGST %" formControlName="CGSTPer"
-                                            (valueChange)="calculateTotalamt()" [formGroup]="userFormGroup"
+                                        <airmid-textbox fxFlex="4%" label="CGST %" formControlName="CGSTPer" #CGST
+                                            (valueChange)="getchangegstper($event,CGST)" [formGroup]="userFormGroup"
                                             type="text"></airmid-textbox>
 
                                         <!-- <airmid-textbox fxFlex="4%" label="CGST Amt" formControlName="CGSTAmount"
                                             [formGroup]="userFormGroup" type="text" [readonly]="true"></airmid-textbox> -->
 
-                                        <airmid-textbox fxFlex="4%" label="SGST %" formControlName="SGSTPer"
-                                            (valueChange)="calculateTotalamt()" [formGroup]="userFormGroup"
+                                        <airmid-textbox fxFlex="4%" label="SGST %" formControlName="SGSTPer" #SGST
+                                            (valueChange)="getchangegstper($event,SGST)" [formGroup]="userFormGroup"
                                             type="text"></airmid-textbox>
 
                                         <!-- <airmid-textbox fxFlex="4%" label="SGSTAmt" formControlName="SGSTAmount"
                                             [formGroup]="userFormGroup" type="text" [readonly]="true"></airmid-textbox> -->
 
-                                        <airmid-textbox fxFlex="4%" label="IGST %" formControlName="IGSTPer"
-                                            [formGroup]="userFormGroup" type="text" [readonly]="true"></airmid-textbox>
+                                        <airmid-textbox fxFlex="4%" label="IGST %" formControlName="IGSTPer" #IGST
+                                            (valueChange)="getchangegstper($event,IGST)" [formGroup]="userFormGroup"
+                                            type="text" [readonly]="true"></airmid-textbox>
 
                                         <!-- <airmid-textbox fxFlex="4%" label="IGSTAmt" formControlName="IGSTAmount"
                                             [formGroup]="userFormGroup" type="text" [readonly]="true"></airmid-textbox> -->
@@ -526,9 +528,9 @@
                                     {{FinalNetAmount}}</span>
                             </mat-expansion-panel-header>
 
-                            <div fxLayout="column" fxLayout.gt-xs="row" class="gap-12">
+                            <div fxLayout="column" fxLayout.gt-xs="row" class="gap-2">
 
-                                <div fxFlex fxFlex.gt-xs="100%" fxFlex.xs="100%" fxLayout="row" fxLayoutGap="10px">
+                                <div fxFlex fxFlex.gt-xs="100%" fxFlex.xs="100%" fxLayout="row" fxLayoutGap="5px">
                                     <div fxFlex fxFlex.gt-xs="40%" fxFlex.xs="100%" class="airmid-table-container"
                                         *ngIf="lastsupplierflag">
                                         <mat-table #table class="table4" matSort [dataSource]="dsLastThreeItemList"
@@ -623,7 +625,7 @@
                                     </div>
                                     <div fxLayout="column" fxLayoutGap="2px">
                                         <form [formGroup]="FinalPurchaseform">
-                                            <div fxLayout="row wrap" fxLayoutGap="4px grid">
+                                            <div fxLayout="row wrap" fxLayoutGap="1px grid">
                                                 <airmid-textbox fxFlex="25%" label="HandlingCharges"
                                                     formControlName="HandlingCharges"
                                                     [(ngModel)]="registerObj.handlingCharges"
