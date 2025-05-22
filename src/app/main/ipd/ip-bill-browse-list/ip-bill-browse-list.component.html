@@ -8,23 +8,9 @@
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
-                <!-- <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-                    fxLayoutAlign.gt-xs="space-between center ">
-                    <div class="top-header-info">
-                        <div class="top-header-title">
-                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                IP Bill List
-                            </span>
-                        </div>
-                    </div>
-                    <button mat-raised-button (click)="IPAdvanceComponent()">IPAdvance
-                    </button>
-
-                </div> -->
-                <div class="info-badge-top border-bottom" fxLayout="row" fxLayoutAlign="space-between" flex>
-
+                <div class="info-badge-top p-12 border-bottom">
+                <div fxLayout="row wrap" fxLayoutAlign="space-between" flex>
                     <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
-
                         <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                             <mat-icon class="pill orange-600 s-16">circle</mat-icon>
                             <span class="orange-600-fg">Intrim Bills</span>
@@ -39,6 +25,7 @@
                         </div>
 
                     </div>
+                </div>
                 </div>
                 <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                     <ng-template #patientTypetemp let-element>
@@ -79,10 +66,9 @@
 
                     <ng-template #actionButtonTemplateIP let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <!-- <button mat-icon-button (click)="getFinalBillview(element)" matTooltip="IP Browse Bill List">
+                            <button mat-icon-button (click)="getFinalBillview(element)" matTooltip="Final Bill Print">
                                 <mat-icon>print</mat-icon>
-                            </button> -->
-
+                            </button>
                             <button mat-icon-button matTooltip="Email">
                                 <mat-icon>email</mat-icon>
                             </button>
@@ -92,10 +78,9 @@
                             <button mat-icon-button matTooltip="Send message On WhatsApp">
                                 <img width="500" height="20px" src="assets/images/logos/WhatsApp.png">
                             </button>
-                            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
-                            (click)="$event.stopPropagation();">
-                            <mat-icon class="secondary-text">more_vert</mat-icon>
-                        </button>
+                            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More" (click)="$event.stopPropagation();">
+                                <mat-icon class="secondary-text">more_vert</mat-icon>
+                            </button>
                         <mat-menu #moreMenu="matMenu">
                             <ng-container *ngFor="let m of menuActions, let n of menuActions">
                                 <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
