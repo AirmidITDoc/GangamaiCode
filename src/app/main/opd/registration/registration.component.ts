@@ -240,6 +240,7 @@ export class RegInsert {
     RegDate: Date;
     regDate: Date;
     PatientName: string;
+    patientName:string;
     RegTime: Time;
     prefixId: number;
     PrefixId: number;
@@ -319,10 +320,8 @@ export class RegInsert {
             this.RegID = RegInsert.RegID || 0;
             this.RegDate = RegInsert.RegDate || this.currentDate;
             this.regDate = RegInsert.regDate || this.currentDate;
-
-
+            this.patientName = RegInsert.patientName;
             this.RegTime = RegInsert.RegTime || this.currentDate;
-
             this.prefixId = RegInsert.prefixId || 0;
             this.PrefixId = RegInsert.PrefixId || 0;
             this.PrefixID = RegInsert.PrefixID || 0;
