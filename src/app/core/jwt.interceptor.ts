@@ -1,17 +1,21 @@
 import { Inject, Injectable } from "@angular/core";
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse } from "@angular/common/http";
-import { Observable, throwError } from "rxjs";
+import { EMPTY, Observable, throwError } from "rxjs";
 import { AppConfig, APP_CONFIG } from './../app-config.module';
 import { AuthenticationService } from "./services/authentication.service";
 import { catchError, finalize, map } from 'rxjs/operators';
 import { LoaderService } from "./components/loader/loader.service";
+import { ToastrService } from "ngx-toastr";
+import { Router } from "@angular/router";
 
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
     constructor(@Inject(APP_CONFIG) private config: AppConfig,
     private _ls: LoaderService,
-    private authenticationService: AuthenticationService) {}
+    public toastr: ToastrService,
+    private router: Router,
+    private authenticationService: AuthenticationService) {} 
 
     intercept(
         request: HttpRequest<any>,
@@ -40,11 +44,34 @@ export class JwtInterceptor implements HttpInterceptor {
             }),
             catchError((error: HttpErrorResponse) => {
                 this._ls.hide();
-                return throwError(error.error ? error.error : error);
+                // return throwError(error.error ? error.error : error);
+                if (error.status == 401) {
+                    if (error.url.endsWith('/login/get-menus')) {
+                        return EMPTY;
+                    }
+                    else {
+                        this.toastr.error(error.error.message, 'Authentication !', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
+                        this.router.navigate(["/unauthorize"]);
+                    }
+                }
+                else if (error.status == 403) {
+                    this.toastr.error(error.error.message, 'Authentication !', {
+                        toastClass: 'tostr-tost custom-toast-error',
+                    });
+                    this.router.navigate(["/forbidden"]);
+                } else if (error.status === 0 || error.status === 500) {
+                    this.toastr.error('Unable to connect to the server. Please try again later.', 'Server !', {
+                        toastClass: 'tostr-tost custom-toast-error',
+                    });
+                }
+                return throwError(() => error); // Return an Observable using throwError
             }),
             finalize(() => {
                 this._ls.hide();
             })
-          );
-    }
+          );  
+    }  
+    
 }

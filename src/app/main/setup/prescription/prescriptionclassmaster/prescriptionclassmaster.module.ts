@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { PrescriptionclassmasterComponent } from "./prescriptionclassmaster.component";
 import { RouterModule, Routes } from "@angular/router";
 import { PrescriptionclassmasterService } from "./prescriptionclassmaster.service";
@@ -52,7 +52,7 @@ const routes: Routes = [
         FuseConfirmDialogModule,
         FuseSidebarModule,
     ],
-    providers: [PrescriptionclassmasterService],
+    providers: [PrescriptionclassmasterService,DatePipe],
     entryComponents: [PrescriptionclassmasterComponent],
 })
 export class PrescriptionclassmasterModule {}

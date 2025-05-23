@@ -6,6 +6,8 @@ import Swal from "sweetalert2";
 import { MatSort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
 import { ToastrService } from "ngx-toastr";
+import { AuthenticationService } from "app/core/services/authentication.service";
+import { DatePipe } from "@angular/common";
 
 @Component({
     selector: "app-prescriptionclassmaster",
@@ -19,11 +21,11 @@ export class PrescriptionclassmasterComponent implements OnInit {
     msg: any;
 
     displayedColumns: string[] = [
-        "TemplateId",
-        "TemplateName",
-        "TemplateDesc",
+        "ClassId",
+        "ClassName", 
         "IsDeleted",
         "AddedByName",
+        "UpdatedByName",
         "action",
     ];
 
@@ -33,6 +35,8 @@ export class PrescriptionclassmasterComponent implements OnInit {
     constructor(
         public _PrescriptionclassService: PrescriptionclassmasterService,
         public toastr : ToastrService,
+       private _loggedService: AuthenticationService,
+       private datepipe:DatePipe
     ) {}
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -44,7 +48,7 @@ export class PrescriptionclassmasterComponent implements OnInit {
 
     onSearchClear() {
         this._PrescriptionclassService.myformSearch.reset({
-            TemplateNameSearch: "",
+            ClassNameSearch: "",
             IsDeletedSearch: "2",
         });
         this.getPrescriptionclassMasterList();
@@ -55,7 +59,7 @@ export class PrescriptionclassmasterComponent implements OnInit {
     }
     getPrescriptionclassMasterList() {
         var vdata = {
-            "TemplateName":this._PrescriptionclassService.myformSearch.get("TemplateNameSearch").value.trim() + "%" || "%",  
+            "ClassName":this._PrescriptionclassService.myformSearch.get("ClassNameSearch").value.trim() + "%" || "%",  
         };
         this._PrescriptionclassService.getPrescriptionclassMasterList(vdata).subscribe((Menu) =>{
             this.DSPrescriptionClassMasterList.data = Menu as PrescriptionClassMaster[];
@@ -69,83 +73,53 @@ export class PrescriptionclassmasterComponent implements OnInit {
     onClear() {
         this._PrescriptionclassService.myForm.reset({ IsDeleted: "false" });
         this._PrescriptionclassService.initializeFormGroup();
-    }
-
+    }  
     onSubmit() {
         if (this._PrescriptionclassService.myForm.valid) {
-            if (
-                !this._PrescriptionclassService.myForm.get("TemplateId").value
-            ) {
+            if ( !this._PrescriptionclassService.myForm.get("ClassId").value) {
                 var m_data = {
-                    prescriptionTemplateMasterInsert: {
-                        templateName: this._PrescriptionclassService.myForm
-                            .get("TemplateName")
-                            .value.trim(),
-                        templateDesc: this._PrescriptionclassService.myForm
-                            .get("TemplateDesc")
-                            .value.trim(),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._PrescriptionclassService.myForm.get(
-                                    "IsDeleted"
-                                ).value
-                            )
-                        ),
-                        addedBy: 1,
-                    },
+                    "classMasterParamsInsert": {
+                        "className": this._PrescriptionclassService.myForm.get("ClassName").value.trim(),
+                        "addedBy": this._loggedService.currentUserValue.user.id,
+                        "isActive": Boolean(
+                            JSON.parse( this._PrescriptionclassService.myForm.get("IsDeleted").value
+                            ) ), 
+                        "addedByDate": this.datepipe.transform(new Date(), 'yyyy-MM-dd') || '1999-01-01'  
+                    }
                 };
+                 console.log(m_data)
                 this._PrescriptionclassService
-                    .prescriptionTemplateMasterInsert(m_data)
-                    .subscribe((data) => {
+                    .prescriptionTemplateMasterInsert(m_data).subscribe((data) => {
                         this.msg = m_data;
                         if (data) {
                             this.toastr.success('Record Saved Successfully.', 'Saved !', {
                                 toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getPrescriptionclassMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getPrescriptionclassMasterList();
-                            //     }
-                            // });
+                            });
+                            this.getPrescriptionclassMasterList();
                         } else {
                             this.toastr.error('Prescription Class Master Data not saved !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
-                              });
+                            });
                         }
                         this.getPrescriptionclassMasterList();
-                    },error => {
+                    }, error => {
                         this.toastr.error('Prescription Class Data not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
+                    });
             } else {
                 var m_dataUpdate = {
-                    prescriptionTemplateMasterUpdate: {
-                        templateId:
-                            this._PrescriptionclassService.myForm.get(
-                                "TemplateId"
-                            ).value,
-                        templateName: this._PrescriptionclassService.myForm
-                            .get("TemplateName")
-                            .value.trim(),
-                        templateDesc: this._PrescriptionclassService.myForm
-                            .get("TemplateDesc")
-                            .value.trim(),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._PrescriptionclassService.myForm.get(
-                                    "IsDeleted"
-                                ).value
-                            )
-                        ),
-                        updatedBy: 1,
+                    "classMasterParamsUpdate": {
+                        "classId":this._PrescriptionclassService.myForm.get("ClassId").value || 0,
+                        "className": this._PrescriptionclassService.myForm.get("ClassName").value.trim(),
+                        "updatedBy": this._loggedService.currentUserValue.user.id,
+                        "isActive": Boolean(
+                            JSON.parse( this._PrescriptionclassService.myForm.get("IsDeleted").value
+                            ) ), 
+                        "updatedByDate": this.datepipe.transform(new Date(), 'yyyy-MM-dd') || '1999-01-01' 
                     },
                 };
+                console.log(m_dataUpdate)
                 this._PrescriptionclassService
                     .prescriptionTemplateMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
@@ -154,16 +128,7 @@ export class PrescriptionclassmasterComponent implements OnInit {
                             this.toastr.success('Record updated Successfully.', 'updated !', {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
-                              this.getPrescriptionclassMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getPrescriptionclassMasterList();
-                            //     }
-                            // });
+                              this.getPrescriptionclassMasterList(); 
                         } else {
                             this.toastr.error('Prescription Class Master Data not updated !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
@@ -182,23 +147,22 @@ export class PrescriptionclassmasterComponent implements OnInit {
     onEdit(row) {
         // console.log(row);
         var m_data1 = {
-            TemplateId: row.TemplateId,
-            TemplateName: row.TemplateName.trim(),
-            TemplateDesc: row.TemplateDesc.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
-            UpdatedBy: row.UpdatedBy,
+            ClassId: row.ClassId,
+            ClassName: row.ClassName.trim(), 
+            IsDeleted: JSON.stringify(row.IsActive),
+            UpdatedByName: row.UpdatedByName,
+             AddedByName: row.AddedByName
         };
         console.log(m_data1);
         this._PrescriptionclassService.populateForm(m_data1);
     }
 }
 export class PrescriptionClassMaster {
-    TemplateId: number;
-    TemplateName: string;
-    TemplateDesc: string;
+    ClassId: number;
+    ClassName: string; 
     IsDeleted: boolean;
     AddedBy: number;
-    UpdatedBy: number;
+    UpdatedByName: number;
     AddedByName: string;
 
     /**
@@ -208,12 +172,10 @@ export class PrescriptionClassMaster {
      */
     constructor(PrescriptionClassMaster) {
         {
-            this.TemplateId = PrescriptionClassMaster.TemplateId || "";
-            this.TemplateName = PrescriptionClassMaster.TemplateName || "";
-            this.TemplateDesc = PrescriptionClassMaster.TemplateDesc || "";
-            this.IsDeleted = PrescriptionClassMaster.IsDeleted || "false";
-            this.AddedBy = PrescriptionClassMaster.AddedBy || "";
-            this.UpdatedBy = PrescriptionClassMaster.UpdatedBy || "";
+            this.ClassId = PrescriptionClassMaster.ClassId || "";
+            this.ClassName = PrescriptionClassMaster.ClassName || ""; 
+            this.IsDeleted = PrescriptionClassMaster.IsDeleted || "false"; 
+            this.UpdatedByName = PrescriptionClassMaster.UpdatedByName || "";
             this.AddedByName = PrescriptionClassMaster.AddedByName || "";
         }
     }

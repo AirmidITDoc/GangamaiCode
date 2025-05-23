@@ -18,9 +18,8 @@ export class PrescriptionclassmasterService {
 
     createPrescriptionclassForm(): FormGroup {
         return this._formBuilder.group({
-            TemplateId: [""],
-            TemplateName: [""],
-            TemplateDesc: [""],
+            ClassId: [""],
+            ClassName: [""] ,
             IsDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
@@ -29,7 +28,7 @@ export class PrescriptionclassmasterService {
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-          TemplateNameSearch: [""],
+          ClassNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
@@ -39,20 +38,20 @@ export class PrescriptionclassmasterService {
 
     public getPrescriptionclassMasterList(Param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_M_Prescription_TemplateMaster_By_Name",Param
+            "Generic/GetByProc?procName=m_Rtrv_M_ClassMaster_by_Namelist",Param
         );
     }
 
     public prescriptionTemplateMasterInsert(param) {
         return this._httpClient.post(
-            "Prescription/PrescriptionTemplateMasterSave",
+            "Administration/MClassMasterInsert",
             param
         );
     }
 
     public prescriptionTemplateMasterUpdate(param) {
         return this._httpClient.post(
-            "Prescription/PrescriptionTemplateMasterUpdate",
+            "Administration/MClassMasterUpdate",
             param
         );
     }
