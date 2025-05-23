@@ -641,7 +641,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
     this.vOPIPId = this.patientDetail.visitId
     this.vTariffId = this.patientDetail.tariffId;
-    this.vhospitalId = this.patientDetail.UnitId;
+    this.vhospitalId = this.patientDetail.unitId;
     this.vClassId = this.patientDetail.classId;
     
     // Initialize form controls to set the value

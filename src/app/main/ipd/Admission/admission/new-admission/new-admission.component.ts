@@ -218,7 +218,6 @@ export class NewAdmissionComponent implements OnInit {
         return;
       }
       if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid && !this.searchFormGroup.invalid) {
-debugger;
         Swal.fire({
           title: 'Do you want to Save the Admission ',
           text: "You won't be able to revert this!",
