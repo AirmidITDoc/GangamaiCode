@@ -11,7 +11,7 @@
             </button>
             <div class="top-header-title">
                 <span class="logo-text" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-                    Supplier Payment  List
+                    Supplier Payment List
                 </span>
             </div>
         </div>
@@ -21,7 +21,31 @@
             </span>
         </div>
     </mat-toolbar>
-    <div class="content">
+
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <airmid-table [gridConfig]="gridConfig" class="content">
+            <ng-container filters>
+                <!-- <mat-form-field appearance="outline" fxFlex="20%">
+                                            <mat-label>Enter a date range</mat-label>
+                                            <mat-date-range-input [rangePicker]="grnPicker">
+                                                <input matStartDate formControlName="start" placeholder="Start date">
+                                                <input matEndDate formControlName="end" placeholder="End date"
+                                                    (dateChange)="getSupplierPayStatusList()">
+                                            </mat-date-range-input>
+                                            <mat-datepicker-toggle matSuffix [for]="grnPicker"></mat-datepicker-toggle>
+                                            <mat-date-range-picker #grnPicker></mat-date-range-picker>
+                                        </mat-form-field> -->
+                <airmid-dropdown label="Supplier Name" formControlName="SupplierId"
+                    (selectionChange)="selectChangeSupplier($event)"
+                    [formGroup]="_SupplierPaymentStatusService.SupplierListForm" 
+                    [(ngModel)]="gridConfig.filters[0].fieldValue"
+                    [mode]="autocompleteSupplier">
+                </airmid-dropdown>
+            </ng-container>
+        </airmid-table>
+    </div>
+
+    <!-- <div class="content">
         <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar ">
             <div class="sidebar-content">
                 <div class="sidebar-header accent" fxLayout="row" fxLayoutAlign="start center">
@@ -202,5 +226,5 @@
                 </div>
             </div>
         </div> 
-    </div>
+    </div> -->
 </div>

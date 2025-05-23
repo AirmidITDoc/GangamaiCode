@@ -20,14 +20,14 @@
     </mat-toolbar>
 
     <div class="content">
-        <div class="center p-12 pb-56" fxFlexAlign="start center">
+        <div class="center" fxFlexAlign="start center">
 
             <div class="content-card" style="border-radius:4px; ">
                 <div class="nav material2">
-                    <div fxFlexFill fxLayout="column" fxLayoutGap="9px">
+                    <div fxFlexFill fxLayout="column">
 
-                        <form [formGroup]="_ConsentService.myform" style="padding: 6px 6px 5px 5px;">
-                            <div fxLayout="column" fxLayoutGap="10px">
+                        <form [formGroup]="_ConsentService.myform">
+                            <div fxLayout="column">
 
                                 <div class="modal-card-container">
                                     <mat-card>
@@ -49,6 +49,7 @@
                                                     *ngIf="_ConsentService.myform.get('PatientType').value == 'OP'"
                                                     [formGroup]="_ConsentService.myform" formControlName="RegID"
                                                     label="OP-RegNo/FirstName/LastName"
+                                                    placeholderText="OP-RegNo/FirstName/LastName"
                                                     ApiUrl="VisitDetail/search-patient?Keyword="
                                                     (selectionChange)="getSelectedObjOP($event)"
                                                     TextField="formattedText" ValueField="regId">
@@ -58,9 +59,10 @@
                                                     *ngIf="_ConsentService.myform.get('PatientType').value == 'IP'"
                                                     [formGroup]="_ConsentService.myform" formControlName="RegID"
                                                     label="IP-RegNo/FirstName/LastName"
+                                                    placeholderText="IP-RegNo/FirstName/LastName"
                                                     ApiUrl="Admission/search-patient?Keyword="
                                                     (selectionChange)="getSelectedObjIP($event)"
-                                                    ValueField="admissionID" TextField="firstName">
+                                                    ValueField="admissionID" TextField="formattedText">
                                                 </airmid-autocomplete>
                                             </div>
                                         </div>
@@ -86,45 +88,36 @@
                                                                             <span class="patient-col-key">UHID No
                                                                             </span>
                                                                             <span>:</span>
-                                                                            <span
-                                                                                class="patient-col-value">{{vRegNo}}</span>
+                                                                            <span class="patient-col-value">{{vRegNo}}</span>
                                                                         </div>
                                                                         <div class="patient-col">
                                                                             <span class="patient-col-key">Patient Name
                                                                             </span>
                                                                             <span>:</span>
-                                                                            <span
-                                                                                class="patient-col-value">{{vPatientName
-                                                                                }}</span>
+                                                                            <span class="patient-col-value">{{vPatientName}}</span>
                                                                         </div>
                                                                         <div class="patient-col">
-                                                                            <span class="patient-col-key">Doctor
-                                                                                Name</span>
+                                                                            <span class="patient-col-key">DoctorName</span>
                                                                             <span>:</span>
-                                                                            <span
-                                                                                class="patient-col-value">{{vDoctorName}}</span>
+                                                                            <span class="patient-col-value">{{vDoctorName}}</span>
                                                                         </div>
                                                                         <div class="patient-col">
-                                                                            <span
-                                                                                class="patient-col-key">Department</span>
+                                                                            <span class="patient-col-key">Department</span>
                                                                             <span>:</span>
-                                                                            <span
-                                                                                class="patient-col-value">{{vDepartment}}</span>
+                                                                            <span class="patient-col-value">{{vDepartment}}</span>
                                                                         </div>
                                                                     </div>
                                                                     <div fxLayout="column" fxLayoutGap="6px">
 
                                                                         <div class="patient-col">
-                                                                            <span class="patient-col-key">DOA |
-                                                                                Time</span>
+                                                                            <span class="patient-col-key">DOA | Time</span>
                                                                             <span>:</span>
                                                                             <span class="patient-col-value">{{vDOA |
                                                                                 date:'dd/MM/YYYY'}}</span>
                                                                         </div>
                                                                         <div class="patient-col">
                                                                             <span class="patient-col-key">
-                                                                                {{vSelectedOption === 'OP' ? 'OPD No' :
-                                                                                'IPD No'}}
+                                                                                {{vSelectedOption === 'OP' ? 'OPD No' : 'IPD No'}}
                                                                             </span>
                                                                             <span>:</span>
                                                                             <span>{{ vSelectedOption === 'OP' ? vOPDNo :
@@ -144,8 +137,7 @@
                                                                                 Name
                                                                             </span>
                                                                             <span>:</span>
-                                                                            <span
-                                                                                class="patient-col-value">{{vRefDocName}}</span>
+                                                                            <span class="patient-col-value">{{vRefDocName}}</span>
                                                                         </div>
                                                                     </div>
                                                                     <div fxLayout="column" fxLayoutGap="6px">
@@ -154,23 +146,20 @@
                                                                                 Name
                                                                             </span>
                                                                             <span>:</span>
-                                                                            <span
-                                                                                class="patient-col-value">{{vRoomName}}
+                                                                            <span class="patient-col-value">{{vRoomName}}
                                                                                 | {{vBedName}}</span>
                                                                         </div>
                                                                         <div class="patient-col">
                                                                             <span class="patient-col-key">Patient Type
                                                                             </span>
                                                                             <span>:</span>
-                                                                            <span
-                                                                                class="patient-col-value">{{vPatientType}}</span>
+                                                                            <span class="patient-col-value">{{vPatientType}}</span>
                                                                         </div>
                                                                         <div class="patient-col">
                                                                             <span class="patient-col-key">Tarrif Name
                                                                             </span>
                                                                             <span>:</span>
-                                                                            <span
-                                                                                class="patient-col-value">{{vTariffName}}</span>
+                                                                            <span class="patient-col-value">{{vTariffName}}</span>
                                                                         </div>
                                                                         <div class="patient-col">
                                                                             <span class="patient-col-key">Company
@@ -191,27 +180,28 @@
                                     </div>
                                 </div>
 
-                                <mat-card style="padding: 10px;">
+                                <mat-card>
                                     <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
 
                                         <div class="gap-8" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" fxLayout="row">
 
-                                            <airmid-dropdown label="Department Name" formControlName="Department"
-                                                [formGroup]="_ConsentService.myform" fxFlex="35%"
-                                                [validations]="getValidationMessages().Department"
+                                         <form [formGroup]="ConsentinsertForm" class="gap-8">
+                                               <airmid-dropdown label="Department Name" formControlName="consentDeptId"
+                                                [formGroup]="ConsentinsertForm" fxFlex="35%"
+                                                [validations]="getValidationMessages().consentDeptId"
                                                 [mode]="autocompletedepartment"
                                                 (selectionChange)="selectChangedepartment($event)">
                                             </airmid-dropdown>
 
-                                            <airmid-dropdown label="Template" formControlName="Template"
-                                                [formGroup]="_ConsentService.myform" fxFlex="35%"
-                                                [validations]="getValidationMessages().Template" #ddlTemplate
+                                            <airmid-dropdown label="Template" formControlName="consentTempId"
+                                                [formGroup]="ConsentinsertForm" fxFlex="35%"
+                                                [validations]="getValidationMessages().consentTempId" #ddlTemplate
                                                 [mode]="autocompleteModeTemplate"
                                                 (selectionChange)="onTemplateSelect($event)">
                                             </airmid-dropdown>
 
-                                            <mat-radio-group fxLayout="row" name="Language" value="1" formControlName="Language"
-                                                style="padding: 15px 0px 0px 0px">
+                                            <mat-radio-group fxLayout="row" name="Language" value="1"
+                                                formControlName="Language" style="padding: 15px 0px 0px 0px">
                                                 <mat-radio-button value="1" class="mr-sm-12">English</mat-radio-button>
                                                 <mat-radio-button value="0" class="mr-sm-12">Marathi</mat-radio-button>
                                             </mat-radio-group>
@@ -222,13 +212,21 @@
                                                     Add
                                                 </button>
                                             </div>
+                                         </form>
+
                                         </div>
 
-
-                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="margin-top: 50px; border: 1px solid red;">
                                             <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-editor label="Template Details" formControlName="templateDesc" [(value)]="vConsentText" [formGroup]="_ConsentService.myform"></airmid-editor>
-
+                                               <form [formGroup]="ConsentinsertForm">
+                                                 <airmid-editor label="Template Details" formControlName="ConsentText" [(value)]="vConsentText"
+                                                 [formGroup]="ConsentinsertForm"></airmid-editor>
+                                                <!-- <mat-label>Template Details</mat-label>
+                                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                                                    style="height:400px;" [(ngModel)]="vConsentText" required
+                                                    formControlName="templateDesc">
+                                                </angular-editor> -->
+                                               </form>
                                             </div>
                                         </div>
                                     </div>

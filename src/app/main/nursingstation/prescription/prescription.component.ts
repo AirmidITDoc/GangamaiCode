@@ -40,56 +40,96 @@ export class PrescriptionComponent implements OnInit {
     @ViewChild('grid1') grid1: AirmidTableComponent;
     @ViewChild('grid2') grid2: AirmidTableComponent;
     @ViewChild('grid4') grid4: AirmidTableComponent;
-     @ViewChild('iconisClosed') iconisClosed!: TemplateRef<any>;
-    
-        ngAfterViewInit() {
-            // this.gridConfig1.columnsList.find(col => col.key === 'isClosed')!.template = this.iconisClosed;
-        }
+    @ViewChild('iconisClosed') iconisClosed!: TemplateRef<any>;
+    regNo: any = ""
+
+    ngAfterViewInit() {
+        // this.gridConfig1.columnsList.find(col => col.key === 'isClosed')!.template = this.iconisClosed;
+    }
 
     hasSelectedContacts: boolean;
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
+    allColumns1 = [
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Visite_Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "DateTime", key: "date", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,
+            actions: [
+                {
+                    action: gridActions.print, callback: (data: any) => {
+                        this.viewgetIpprescriptionReportPdf(data);
+                    }
+                }]
+        }
+    ]
+
+    allFilters1 = [
+        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+        { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals }
+    ]
     gridConfig: gridModel = {
         apiUrl: "IPPrescription/PrescriptionPatientList",
-        columnsList: [
-            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:200 },
-            { heading: "Visite_Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "DateTime", key: "date", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,
-                actions: [
-                    {
-                        action: gridActions.print, callback: (data: any) => {
-                            this.viewgetIpprescriptionReportPdf(data);
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ],
+        columnsList: this.allColumns1,
         sortField: "RegNo",
         sortOrder: 0,
-        filters: [
-            { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
+        filters: this.allFilters1
     }
+
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'RegNo')
+            this._PrescriptionService.mysearchform.get('RegNo').setValue("")
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.regNo = this._PrescriptionService.mysearchform.get('RegNo').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let fromDate1 = this._PrescriptionService.mysearchform.get("startdate").value || "";
+        let toDate1 = this._PrescriptionService.mysearchform.get("enddate").value || "";
+        fromDate1 = fromDate1 ? this.datePipe.transform(fromDate1, "yyyy-MM-dd") : "";
+        toDate1 = toDate1 ? this.datePipe.transform(toDate1, "yyyy-MM-dd") : "";
+        this.gridConfig = {
+            apiUrl: "IPPrescription/PrescriptionPatientList",
+            columnsList: this.allColumns1,
+            sortField: "RegNo",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "FromDate", fieldValue: fromDate1, opType: OperatorComparer.Equals },
+                { fieldName: "ToDate", fieldValue: toDate1, opType: OperatorComparer.Equals },
+                { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals }
+            ]
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    }
+
     gridConfig1: gridModel = new gridModel();
 
     isShowDetailTable: boolean = false;
-    GetDetails1(data:any):void {
+    GetDetails1(data: any): void {
         debugger
-        console.log("detailList:",data)
-        let ipMedID=data.ipMedID;
+        console.log("detailList:", data)
+        let ipMedID = data.ipMedID;
 
         this.gridConfig1 = {
             apiUrl: "IPPrescription/PrescriptionDetailList",
             columnsList: [
-                { heading: "Status", key: "isClosed", sort: true, align: 'left',type: gridColumnTypes.template, 
-                    template:this.iconisClosed, width: 50 },
+                {
+                    heading: "Status", key: "isClosed", sort: true, align: 'left', type: gridColumnTypes.template,
+                    template: this.iconisClosed, width: 50
+                },
                 { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
             ],
@@ -103,20 +143,18 @@ export class PrescriptionComponent implements OnInit {
         setTimeout(() => {
             this.grid1.gridConfig = this.gridConfig1;
             this.grid1.bindGridData();
-        },500);
+        }, 500);
     }
 
-    gridConfig3: gridModel = {
-        apiUrl: "IPPrescription/IPPrescriptionReturnList",
-        columnsList: [            
-            { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Adm Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "IPMedID", key: "ipMedId", sort: true, align: 'left', emptySign: 'NA'},   
+    allColumns2=[
+            { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Adm Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IPMedID", key: "ipMedId", sort: true, align: 'left', emptySign: 'NA' },
             {
-                heading: "Action", key: "action",width: 50,align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", width: 50, align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.print, callback: (data: any) => {
                             this.viewgetIpprescriptionreturnReportPdf(data);
@@ -129,35 +167,73 @@ export class PrescriptionComponent implements OnInit {
                             });
                         }
                     }]
-            },//Action 1-view, 2-Edit,3-delete
-            
-        ],
-        sortField: "PresReId",
-        sortOrder: 0,
-        filters: [
+            },
+
+        ]
+
+        allFilters2=[
             { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "", opType: OperatorComparer.Equals }
+            { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals }
         ]
+    gridConfig3: gridModel = {
+        apiUrl: "IPPrescription/IPPrescriptionReturnList",
+        columnsList: this.allColumns2,
+        sortField: "PresReId",
+        sortOrder: 0,
+        filters: this.allFilters2
     }
-    
+
+     Clearfilter1(event) {
+        console.log(event)
+        if (event == 'RegNo')
+            this._PrescriptionService.mysearchform.get('RegNo').setValue("")
+        this.onChangeFirst1();
+    }
+
+    onChangeFirst1() {
+        this.regNo = this._PrescriptionService.mysearchform.get('RegNo').value
+        this.getfilterdata1();
+    }
+
+    getfilterdata1() {
+        debugger
+        let fromDate2 = this._PrescriptionService.mysearchform.get("startdate").value || "";
+        let toDate2 = this._PrescriptionService.mysearchform.get("enddate").value || "";
+        fromDate2 = fromDate2 ? this.datePipe.transform(fromDate2, "yyyy-MM-dd") : "";
+        toDate2 = toDate2 ? this.datePipe.transform(toDate2, "yyyy-MM-dd") : "";
+        this.gridConfig = {
+            apiUrl: "IPPrescription/IPPrescriptionReturnList",
+            columnsList: this.allColumns1,
+            sortField: "PresReId",
+            sortOrder: 0,
+            filters: [
+            { fieldName: "FromDate", fieldValue: fromDate2, opType: OperatorComparer.Equals },
+            { fieldName: "ToDate", fieldValue: toDate2, opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals }
+        ]
+        }
+        this.grid2.gridConfig = this.gridConfig;
+        this.grid2.bindGridData();
+    }
+
     gridConfig4: gridModel = new gridModel();
     isShowDetailTable1: boolean = false;
 
-    GetDetails2(data){
-        console.log("GetDetails2:",data)
-        let PresReId=data.presReId;
+    GetDetails2(data) {
+        console.log("GetDetails2:", data)
+        let PresReId = data.presReId;
 
         this.gridConfig4 = {
             apiUrl: "IPPrescription/IPPrescReturnItemDetList",
             columnsList: [
-                { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA'},
+                { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
             ],
             sortField: "PresReId",
             sortOrder: 0,
-            filters: [    
+            filters: [
                 { fieldName: "PresReId", fieldValue: String(PresReId), opType: OperatorComparer.Equals }
             ]
         }
@@ -173,76 +249,76 @@ export class PrescriptionComponent implements OnInit {
     ngOnInit(): void {
     }
 
-     viewgetIpprescriptionReportPdf(response) {
+    viewgetIpprescriptionReportPdf(response) {
         console.log(response)
-                setTimeout(() => {
-          let param = {
-            "searchFields": [
-              {
-                "fieldName": "OP_IP_ID",
-                "fieldValue": String(response.ipMedID),
-                "opType": "Equals"
-              },
-              {
-                "fieldName": "PatientType",
-                "fieldValue": "1",
-                "opType": "Equals"
-              }
-            ],
-            "mode": "NurIPprescriptionReport"
-          }
+        setTimeout(() => {
+            let param = {
+                "searchFields": [
+                    {
+                        "fieldName": "OP_IP_ID",
+                        "fieldValue": String(response.ipMedID),
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "PatientType",
+                        "fieldValue": "1",
+                        "opType": "Equals"
+                    }
+                ],
+                "mode": "NurIPprescriptionReport"
+            }
 
-          console.log(param)
-        this._PrescriptionService.getReportView(param).subscribe(res => {
-    
-          const matDialog = this._matDialog.open(PdfviewerComponent,
-            {
-              maxWidth: "85vw",
-              height: '750px',
-              width: '100%',
-              data: {
-                base64: res["base64"] as string,
-                title: "Nursing Prescription" + " " + "Viewer"
-              }
+            console.log(param)
+            this._PrescriptionService.getReportView(param).subscribe(res => {
+
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Nursing Prescription" + " " + "Viewer"
+                        }
+                    });
+                matDialog.afterClosed().subscribe(result => {
+                });
             });
-          matDialog.afterClosed().subscribe(result => {
-          });
-        });
-      }, 100);
+        }, 100);
     }
-    
- viewgetIpprescriptionreturnReportPdf(element) {
-       console.log(element)
-       this.commonService.Onprint("PresReId", element.PresReId, "NurIPprescriptionReturnReport");
-    //     setTimeout(() => {
-    //       let param = {
-            
-    //           "searchFields": [
-    //             {
-    //               "fieldName": "PresReId",
-    //               "fieldValue": String(response.presReId), //"10012"
-    //               "opType": "Equals"
-    //             }
-    //           ],
-    //           "mode": "NurIPprescriptionReturnReport"
-    //         }
-          
-    //     this._PrescriptionService.getReportView(param).subscribe(res => {
-    
-    //       const matDialog = this._matDialog.open(PdfviewerComponent,
-    //         {
-    //           maxWidth: "85vw",
-    //           height: '750px',
-    //           width: '100%',
-    //           data: {
-    //             base64: res["base64"] as string,
-    //             title: "Nursing Prescription Return" + " " + "Viewer"
-    //           }
-    //         });
-    //       matDialog.afterClosed().subscribe(result => {
-    //       });
-    //     });
-    //   }, 100);
+
+    viewgetIpprescriptionreturnReportPdf(element) {
+        console.log(element)
+        this.commonService.Onprint("PresReId", element.PresReId, "NurIPprescriptionReturnReport");
+        //     setTimeout(() => {
+        //       let param = {
+
+        //           "searchFields": [
+        //             {
+        //               "fieldName": "PresReId",
+        //               "fieldValue": String(response.presReId), //"10012"
+        //               "opType": "Equals"
+        //             }
+        //           ],
+        //           "mode": "NurIPprescriptionReturnReport"
+        //         }
+
+        //     this._PrescriptionService.getReportView(param).subscribe(res => {
+
+        //       const matDialog = this._matDialog.open(PdfviewerComponent,
+        //         {
+        //           maxWidth: "85vw",
+        //           height: '750px',
+        //           width: '100%',
+        //           data: {
+        //             base64: res["base64"] as string,
+        //             title: "Nursing Prescription Return" + " " + "Viewer"
+        //           }
+        //         });
+        //       matDialog.afterClosed().subscribe(result => {
+        //       });
+        //     });
+        //   }, 100);
     }
     onSave(row: any = null) {
         let that = this;
@@ -253,8 +329,8 @@ export class PrescriptionComponent implements OnInit {
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-                this.grid.bindGridData();
-                // if (result) {
+            this.grid.bindGridData();
+            // if (result) {
             //     that.grid.bindGridData();
             // }
         });
@@ -271,7 +347,7 @@ export class PrescriptionComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             // if (result) {
-                this.grid2.bindGridData();
+            this.grid2.bindGridData();
             // }
         });
     }
