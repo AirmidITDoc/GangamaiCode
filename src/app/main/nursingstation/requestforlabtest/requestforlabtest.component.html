@@ -6,7 +6,7 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                   Lab Request List
+                    Lab Request List
                 </span>
             </div>
         </div>
@@ -16,60 +16,59 @@
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)" :ShowButtons="false">
+        <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)"
+            :ShowButtons="false">
             <ng-container filters>
 
-                <airmid-datepicker [formGroup]="_RequestforlabtestService.mySearchForm" [isRangePicker]="true" 
-                formStartControlName="startdate"
-                formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
-                [(toValue)]="gridConfig.filters[1].fieldValue">
-            </airmid-datepicker>
-              
-                <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>RegNo</mat-label>
-                    <input matInput placeholder="Search RegNo" autocomplete="off"
-                        [(ngModel)]="gridConfig.filters[2].fieldValue" />
-                    <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="gridConfig.filters[2].fieldValue=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
+                <form [formGroup]="_RequestforlabtestService.mySearchForm" fxLayout="column">
+                    <airmid-datepicker [formGroup]="_RequestforlabtestService.mySearchForm" [isRangePicker]="true"
+                        formStartControlName="startdate" formEndControlName="enddate" (dateChange)="getfilterdata()">
+                    </airmid-datepicker>
 
-            
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>RegNo</mat-label>
+                        <input matInput placeholder="Search RegNo" autocomplete="off"
+                            [formGroup]="_RequestforlabtestService.mySearchForm" formControlName="RegNo"
+                            (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </form>
+
             </ng-container>
         </airmid-table>
-       
+
     </div>
-    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
-    *ngIf="isShowDetailTable">
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
 
-    <ng-template #isStatusIcon let-element>
-        <div fxLayout="row" fxLayoutAlign="center center">
-            <mat-icon *ngIf="element.isStatus == true" matTooltip="Bill Generated" 
-            class="active-icon green-500 s-16">
-                check_circle
-            </mat-icon>
-            
-            <mat-icon *ngIf="element.isStatus == false" matTooltip="Bill Not Generated" 
-            class="active-icon red-500 s-16">
-                hourglass_empty
-            </mat-icon>
-            
-        </div>
-    </ng-template>
-
-    <ng-template #isTestCompletedIcon let-element>
-        <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.isTestCompleted == 1" matTooltip="Lab Report Ready" >
-                    remove_red_eye
+        <ng-template #isStatusIcon let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon *ngIf="element.isStatus == true" matTooltip="Bill Generated"
+                    class="active-icon green-500 s-16">
+                    check_circle
                 </mat-icon>
-                
-                <mat-icon *ngIf="element.isTestCompleted == 0" matTooltip="Result Entry Not Completed"
-                 class="active-icon red-500 s-16">
+
+                <mat-icon *ngIf="element.isStatus == false" matTooltip="Bill Not Generated"
+                    class="active-icon red-500 s-16">
                     hourglass_empty
                 </mat-icon>
-        </div>
-    </ng-template>
+
+            </div>
+        </ng-template>
+
+        <ng-template #isTestCompletedIcon let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon *ngIf="element.isTestCompleted == 1" matTooltip="Lab Report Ready">
+                    remove_red_eye
+                </mat-icon>
+
+                <mat-icon *ngIf="element.isTestCompleted == 0" matTooltip="Result Entry Not Completed"
+                    class="active-icon red-500 s-16">
+                    hourglass_empty
+                </mat-icon>
+            </div>
+        </ng-template>
 
         <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false" :ShowButtons="false">
         </airmid-table>

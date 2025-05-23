@@ -132,7 +132,6 @@ export class NewRegistrationComponent implements OnInit {
             if (this.personalFormGroup.valid) {
                 this.isSaving = true;
                 this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
-                    this.toastr.success(response.message);
                     this.onClear(true);
                     this.isSaving = false;
                 });

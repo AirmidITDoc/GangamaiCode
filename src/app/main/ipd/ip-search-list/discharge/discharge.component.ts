@@ -191,7 +191,6 @@ this.dischargeTypeId=event.value
         console.log(m_data)
 
         this._IpSearchListService.DichargeInsert(m_data).subscribe((response) => {
-          this.toastr.success(response.message);
           this.viewgetDischargeSlipPdf(response)
           this._matDialog.closeAll();
         });
@@ -211,7 +210,6 @@ this.dischargeTypeId=event.value
         console.log(m_data1)
 
         this._IpSearchListService.DichargeUpdate(m_data1).subscribe((response) => {
-          this.toastr.success(response.message);
           this.viewgetDischargeSlipPdf(response)
           this._matDialog.closeAll();
         });

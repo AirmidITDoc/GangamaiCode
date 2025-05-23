@@ -235,7 +235,7 @@ class PickDateAdapter extends NativeDateAdapter {
         MatProgressSpinnerModule,
         ToastrModule.forRoot({
             timeOut: 5000,
-            positionClass: 'toast-bottom-right',
+            positionClass: 'toast-top-right',
             preventDuplicates: true,
             progressBar: true,
             progressAnimation: 'increasing',

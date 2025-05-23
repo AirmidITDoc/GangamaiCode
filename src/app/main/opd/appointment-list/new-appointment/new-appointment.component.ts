@@ -441,7 +441,6 @@ console.log(this.accountService.currentUserValue.user.unitId)
         console.log(submitData);
 
         this._AppointmentlistService.NewappointmentSave(submitData).subscribe((response) => {
-            this.toastr.success(response.message);
             this.OnViewReportPdf(response)
             this.onClear(true);
             this._matDialog.closeAll();
@@ -458,12 +457,9 @@ console.log(this.accountService.currentUserValue.user.unitId)
         console.log(submitData);
 
         this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
-            this.toastr.success(response.message);
-            if (response) {
                 this.OnViewReportPdf(response)
                 this.onClear(true);
                 this._matDialog.closeAll();
-            }
         });
 
 

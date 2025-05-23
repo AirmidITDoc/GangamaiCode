@@ -131,7 +131,6 @@ refundForm(): FormGroup {
 } 
  Chargelist:any=[];
 getSelectedRow(contact){
-  debugger
   console.log(contact)
   if(contact.netPayableAmt == contact.refundAmount){ 
     this.toastr.warning('Selected Bill already Refunded.!', 'warning !', {
@@ -325,8 +324,6 @@ onSave() {
     }; 
     console.log(submitData);
     this._IpSearchListService.InsertRefundOfBill(submitData).subscribe(response => {
-      console.log(response)
-     this.toastr.success(response.message);
      this.viewgetRefundofBillReportPdf(response)
      this.grid.bindGridData(); 
      this.onClose();

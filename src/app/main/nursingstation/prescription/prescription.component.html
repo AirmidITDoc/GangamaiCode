@@ -40,23 +40,25 @@
                         </div>
                     </div>
 
-                    <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false" (onSelectRow)="GetDetails1($event)">
+                    <airmid-table [gridConfig]="gridConfig" #grid class="content" :ShowButtons="false" (onSelectRow)="GetDetails1($event)">
                         <ng-container filters>
-                            <airmid-datepicker [formGroup]="_PrescriptionService.mysearchform" [isRangePicker]="true"
+                           <form [formGroup]="_PrescriptionService.mysearchform" fxLayout="column">
+                             <airmid-datepicker [formGroup]="_PrescriptionService.mysearchform" [isRangePicker]="true"
                                 formStartControlName="startdate" formEndControlName="enddate"
-                                [(fromValue)]="gridConfig.filters[0].fieldValue"
-                                [(toValue)]="gridConfig.filters[1].fieldValue">
+                                (dateChange)="getfilterdata()">
                             </airmid-datepicker>
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Reg_No</mat-label>
                                 <input matInput placeholder="Search Reg_No" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[2].fieldValue" />
+                                    [formGroup]="_PrescriptionService.mysearchform" formControlName="RegNo"
+                                    (input)="onChangeFirst()"/>
                                 <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[2].fieldValue=''">
+                                    (click)="Clearfilter('RegNo')">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
+                           </form>
 
                         </ng-container>
                     </airmid-table>
@@ -110,21 +112,23 @@
                     </div>
                     <airmid-table [gridConfig]="gridConfig3" class="content" (onSelectRow)="GetDetails2($event)" #grid2>
                         <ng-container filters>
-                            <airmid-datepicker [formGroup]="_PrescriptionService.mysearchform" [isRangePicker]="true"
+                            <form [formGroup]="_PrescriptionService.mysearchform" fxLayout="column">
+                                <airmid-datepicker [formGroup]="_PrescriptionService.mysearchform" [isRangePicker]="true"
                                 formStartControlName="startdate" formEndControlName="enddate"
-                                [(fromValue)]="gridConfig3.filters[0].fieldValue"
-                                [(toValue)]="gridConfig3.filters[1].fieldValue">
+                                (dateChange)="getfilterdata1()">
                             </airmid-datepicker>
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Reg_No</mat-label>
                                 <input matInput placeholder="Search Reg_No" autocomplete="off"
-                                    [(ngModel)]="gridConfig3.filters[2].fieldValue" />
+                                     [formGroup]="_PrescriptionService.mysearchform" formControlName="RegNo"
+                                    (input)="onChangeFirst1()"/>
                                 <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig3.filters[2].fieldValue=''">
+                                    (click)="Clearfilter1('RegNo')">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
+                            </form>
 
                         </ng-container>
                     </airmid-table>

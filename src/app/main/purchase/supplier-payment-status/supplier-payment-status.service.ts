@@ -39,7 +39,7 @@ export class SupplierPaymentStatusService {
     return this._formbuilder.group({
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()], 
-      SupplierId:[''], 
+      SupplierId:['%'], 
     });
    }
 
@@ -53,9 +53,9 @@ export class SupplierPaymentStatusService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
   public getSupplierPayStatusList(param){ 
-       return this._httpClient1.PostData("SupplierPaymentStatus/supplierPaymentList", param);
+       return this._httpClient1.PostData("SupplierPayment/GetSupplierPaymentStatusList", param);
   }
   public InsertSupplierPay(param){ 
-    return this._httpClient1.PostData("SupplierPaymentStatus/Insert", param);
+    return this._httpClient1.PostData("SupplierPayment/Insert", param);
   }
 }

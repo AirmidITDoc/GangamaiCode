@@ -82,15 +82,13 @@ export class CompanysettlementComponent implements OnInit {
         this.myFormGroup = this.createSearchForm1();
     }
     openPaymentpopup(contact) {
-
         console.log(contact)
-
         let PatientName = contact.firstName + " " + contact.lastName
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
-            PatientHeaderObj['RegNo'] = contact.regNo;
+        PatientHeaderObj['RegNo'] = contact.regNo;
         PatientHeaderObj['PatientName'] = this.PatientName;
-        PatientHeaderObj['OPD_IPD_Id'] = contact.opD_IPD_ID;
+        PatientHeaderObj['OPD_IPD_Id'] = contact.opdipdid;
         PatientHeaderObj['Age'] = this.Age;
         PatientHeaderObj['DepartmentName'] = contact.DepartmentName;
         PatientHeaderObj['DoctorName'] = contact.departmentName;
@@ -144,7 +142,6 @@ export class CompanysettlementComponent implements OnInit {
 
 
     viewgetOPPayemntPdf(data, status) {
-        debugger
         if (status)
             this.commonService.Onprint("PaymentId", data, "OPPaymentReceipt");
         else
@@ -163,31 +160,28 @@ export class CompanysettlementComponent implements OnInit {
         });
     }
 
+    // GetRegInfo(data){
+    //         this._CompanysettlementService.getRegistraionById(data).subscribe((response) => {
+    //             this.registerObj = response;
+    //             console.log(response)
+    //             this.PatientName = response.firstName + " " + response.middleName + " " + response.lastName
+    //             this.Age = response.age
+    //         });
+    // }
 
     registerObj = new RegInsert({});
     RegId = 0;
     PatientName: any;
+
     getSelectedObj(obj) {
-
         console.log(obj)
-        // this.RegId1 = obj.regId;
-        this.RegId1 = obj.value;
+        this.RegId1 = obj.value;  
+        this.PatientName = obj.patientName;  
+        this.registerObj = obj
         this.GetDetails(obj.value)
-        setTimeout(() => {
-            this._CompanysettlementService.getRegistraionById(obj.value).subscribe((response) => {
-                this.registerObj = response;
-                console.log(response)
-                this.PatientName = response.firstName + " " + response.middleName + " " + response.lastName
-                this.Age = response.age
-            });
-
-        }, 500);
-
     }
-
     GetDetails(data) {
-        console.log(data)
-
+        console.log(data);
         this.gridConfig = {
             apiUrl: "OPBill/OPBillListSettlementList",
             columnsList: [

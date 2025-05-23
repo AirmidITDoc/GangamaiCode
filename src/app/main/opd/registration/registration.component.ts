@@ -1,11 +1,5 @@
 import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ReplaySubject, Subject } from 'rxjs';
-import { PhoneAppointListService } from '../phoneappointment/phone-appoint-list.service';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe, Time } from '@angular/common';
 import { RegistrationService } from './registration.service';
 import { fuseAnimations } from '@fuse/animations';
@@ -16,7 +10,6 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from 'ngx-toastr';
 import { NewRegistrationComponent } from './new-registration/new-registration.component';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -142,7 +135,6 @@ export class RegistrationComponent implements OnInit {
 
             if (result) {
                 this._RegistrationService.deactivateTheStatus(doctorId).subscribe((data: any) => {
-
                     if (data.StatusCode == 200) {
                         this.toastr.success(
                             "Record updated Successfully.",
@@ -240,6 +232,7 @@ export class RegInsert {
     RegDate: Date;
     regDate: Date;
     PatientName: string;
+    patientName:string;
     RegTime: Time;
     prefixId: number;
     PrefixId: number;
@@ -319,10 +312,8 @@ export class RegInsert {
             this.RegID = RegInsert.RegID || 0;
             this.RegDate = RegInsert.RegDate || this.currentDate;
             this.regDate = RegInsert.regDate || this.currentDate;
-
-
+            this.patientName = RegInsert.patientName;
             this.RegTime = RegInsert.RegTime || this.currentDate;
-
             this.prefixId = RegInsert.prefixId || 0;
             this.PrefixId = RegInsert.PrefixId || 0;
             this.PrefixID = RegInsert.PrefixID || 0;

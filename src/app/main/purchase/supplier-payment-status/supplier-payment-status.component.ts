@@ -117,12 +117,12 @@ export class SupplierPaymentStatusComponent implements OnInit {
         {
           "fieldName": "From_Dt",
           "fieldValue": fromDate, //"2024-01-01",
-          "opType": "Equals"
+          "opType": "StartsWith"
         },
         {
           "fieldName": "To_Dt",
           "fieldValue": toDate, //"2025-01-01",
-          "opType": "Equals"
+          "opType": "StartsWith"
         },
         {
           "fieldName": "IsPaymentProcess",
@@ -194,9 +194,9 @@ export class SupplierPaymentStatusComponent implements OnInit {
     let grnHeaderPayStatus = [];
     this.SelectedList.forEach((element) => {
       let grnHeaderPayStatusObj = {};
-      grnHeaderPayStatusObj['grnId'] = element.grnid || 0;
-      grnHeaderPayStatusObj['paidAmount'] = this.vPaidAmount || 0;
-      grnHeaderPayStatusObj['balAmount'] = this.vBalanceAmount || 0;
+      grnHeaderPayStatusObj['grnid'] = element.grnid || 0;
+      grnHeaderPayStatusObj['paidAmount'] = this.vBalanceAmount || 0;
+      grnHeaderPayStatusObj['balAmount'] = this.vPaidAmount || 0;
       grnHeaderPayStatus.push(grnHeaderPayStatusObj);
     });
 
@@ -231,9 +231,6 @@ export class SupplierPaymentStatusComponent implements OnInit {
       console.log("payment:", result)
 
       let submitData = {
-        // "grnid": this.GRNID,
-        // "paidAmount": this.vPaidAmount,
-        // "balAmount": this.vBalanceAmount,
         'grnsupPayment': result.submitDataPay.ipPaymentInsert,
         'grn': grnHeaderPayStatus,
         'supPayDet': SupPayDetPayStatus
@@ -244,21 +241,24 @@ export class SupplierPaymentStatusComponent implements OnInit {
           this.toastr.success('Supplier payment Successfuly', 'Saved', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
-          return;
+          this.getSupplierPayStatusList();
+          this.OnReset();
         }
         else {
           this.toastr.warning('Supplier payment Not Saved', 'Error', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
-          return;
+          this.getSupplierPayStatusList();
+          this.OnReset();
         }
       },
         error => {
           this.toastr.warning('Please Check Api Error', 'Error', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
-          return;
-        }
+          this.getSupplierPayStatusList();
+          this.OnReset();
+        }        
       );
     });
   }
@@ -270,6 +270,8 @@ export class SupplierPaymentStatusComponent implements OnInit {
     this.vNetAmount = 0;
     this.vPaidAmount = 0;
     this.vBalanceAmount = 0;
+    this.SelectedList = [];
+    this.selection.clear();
   }
   getSupplierPaymentList() {
     this.dsSupplierpayList.data = [];

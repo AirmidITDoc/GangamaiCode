@@ -54,7 +54,7 @@
 
                         <airmid-dropdown label="Store Name" formControlName="ToStoreId"
                          [formGroup]="_GRNReturnService.GRNReturnSearchFrom"
-                          [(ngModel)]="gridConfig.filters[0].fieldValue"
+                          [(ngModel)]="gridConfig.filters[0].fieldValue" [readonly]="true"
                             [mode]="autocompletestore" (selectionChange)="ListView($event)">
                         </airmid-dropdown>
 
