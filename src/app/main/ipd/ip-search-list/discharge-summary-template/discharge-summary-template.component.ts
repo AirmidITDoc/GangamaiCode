@@ -418,7 +418,6 @@ export class DischargeSummaryTemplateComponent {
   
           if (this.DischargeSummaryId == undefined) {
            dischargModeldata['addedBy'] =this.accountService.currentUserValue.userId
-            //  console.log(this.DischargesumForm.value)
             var data = {
               "discharge":dischargModeldata,
               "prescriptionTemplate": insertIPPrescriptionDischarge
@@ -426,8 +425,6 @@ export class DischargeSummaryTemplateComponent {
             console.log(data);
             setTimeout(() => {
               this._IpSearchListService.insertIPDDischargSummaryTemplate(data).subscribe(response => {
-                this.toastr.success(response.message);
-                // this.viewgetDischargesummaryPdf(response)
                 this.getPrint(response)
                 this._matDialog.closeAll();
               }, (error) => {
@@ -447,9 +444,6 @@ export class DischargeSummaryTemplateComponent {
            
             setTimeout(() => {
               this._IpSearchListService.UpdateIPDDischargSummaryTemplate(data1).subscribe(response => {
-                this.toastr.success(response.message);
-                console.log(this.vAdmissionId)
-                // this.getPrint(response[0].opdIpdId)
                 this.viewgetDischargesummaryPdf(this.vAdmissionId)
                 this._matDialog.closeAll();
               }, (error) => {
