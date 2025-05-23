@@ -6,7 +6,7 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    OP Payment Settlement
+                    OP Patient Settlement
                 </span>
             </div>
         </div>
@@ -16,14 +16,7 @@
             <mat-card style="padding: 5px;">
                 <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
                     <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;">
-
                         <div class="redio-container" style="padding: 10px;">
-
-                            <!-- <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No" [formGroup]="searchFormGroup" formControlName="RegId" fxFlex
-                            placeholderText="Enter Patient Name/RegId.." ApiUrl="VisitDetail/search-patient?Keyword="
-                                (selectionChange)="getSelectedObj($event)" TextField="formattedText"
-                                ValueField="regId"></airmid-autocomplete> -->
-
                             <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No"
                                 [formGroup]="searchFormGroup" formControlName="RegId"
                                 placeholderText="Search Reg No / Patient Name / Mobile No"
@@ -48,13 +41,12 @@
                                         <div class="patient-col">
                                             <span class="patient-col-key">UHID No</span>
                                             <span>:</span>
-                                            <span class="patient-col-value">{{registerObj.regId}}</span>
+                                            <span class="patient-col-value">{{registerObj.regNo}}</span>
                                         </div>
                                         <div class="patient-col">
                                             <span class="patient-col-key ">Patient Name</span>
                                             <span>:</span>
-                                            <span class="patient-col-value">{{registerObj.firstName}}
-                                                {{registerObj.lastName}}</span>
+                                            <span class="patient-col-value">{{registerObj.patientName}}</span>
                                         </div>
                                         <div class="patient-col">
                                             <span class="patient-col-key">Age | Gender</span>
