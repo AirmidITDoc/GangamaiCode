@@ -12,7 +12,7 @@ export class SignalRService {
 
     public startConnection(): void {
         this.hubConnection = new signalR.HubConnectionBuilder()
-            .withUrl(`${this.config.notificationHub}`) // Replace with actual backend URL
+            .withUrl(`${this.config.notificationHub}`, { withCredentials: true }) // Replace with actual backend URL
             .withAutomaticReconnect()
             .build();
 
@@ -24,7 +24,6 @@ export class SignalRService {
 
     public addReceiveMessageListener(callback: any): void {
         this.hubConnection.on('ReceiveMessage', (data, user) => {
-            debugger
             callback(JSON.parse(data), user);
         });
     }
