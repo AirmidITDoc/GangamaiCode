@@ -83,11 +83,24 @@ export class BrowsSalesBillComponent implements OnInit {
   Last_Name: any = "%";
 
 
+    //Patient list
+  Fr_Date = '' //this.datePipe.transform(new Date(), "yyyy-MM-dd")
+  T_Date = '' // this.datePipe.transform(new Date(), "yyyy-MM-dd")   
+  sales_No_pt: any = "0";
+  reg_No_Pt: any = "0";
+  first_N: any = "%";
+  Last_N: any = "%";
+  middle_N: any = "%";
+  ipdno: any = "0";
+  status :any="0";
+
+
   autocompletestore: string = "Store";
   @ViewChild('grid') grid: AirmidTableComponent;
   @ViewChild('grid1') grid1: AirmidTableComponent;
   @ViewChild('grid2') grid2: AirmidTableComponent;
   @ViewChild('grid3') grid3: AirmidTableComponent;
+  @ViewChild('grid4') grid4: AirmidTableComponent; 
 
 
   //Sales 
@@ -99,6 +112,10 @@ export class BrowsSalesBillComponent implements OnInit {
   @ViewChild('patientTypetempReturn') patientTypetempReturn!: TemplateRef<any>;
   @ViewChild('actionButtonTemplateRetrun') actionButtonTemplateRetrun!: TemplateRef<any>;
 
+  //patient list
+   @ViewChild('isPatientTemplate') isPatientTemplate!: TemplateRef<any>;
+   @ViewChild('isPatientPrintTemplate') isPatientPrintTemplate!: TemplateRef<any>;
+
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'Status')!.template = this.patientTypetemp;
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
@@ -106,6 +123,9 @@ export class BrowsSalesBillComponent implements OnInit {
     //Sales Return
     this.gridConfig2.columnsList.find(col => col.key === 'Status')!.template = this.patientTypetempReturn;
     this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateRetrun;
+    //patient list
+     this.gridConfig4.columnsList.find(col => col.key === 'Status')!.template = this.isPatientTemplate; 
+     this.gridConfig4.columnsList.find(col => col.key === 'action')!.template = this.isPatientPrintTemplate; 
   }
 
   //Sales header list columns
@@ -205,14 +225,49 @@ export class BrowsSalesBillComponent implements OnInit {
   }
 
 
+  ///tab 3 return
+  //patient  list columns
+
+  
+  PatientlistColumns = [
+      { heading: "", key: "Status", sort: true, align: 'left', type: gridColumnTypes.template, width: 50, template: this.isPatientTemplate },
+      { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+      { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+      { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
+      { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+      { heading: "Ref Doc Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+      { heading: "IPD No", key: "ipdno", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+      { heading: "Patient Type", key: "patientType", sort: true, align: 'left', width: 120 },
+      { heading: "Ward Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+      { heading: "Bed Name", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+      { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+      { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width: 220 }, 
+      { heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template, width: 80,
+            template: this.isPatientPrintTemplate  // Assign ng-template to the column
+      }
+  ]  
+    gridConfig4: gridModel = {
+        apiUrl: "Admission/AdmissionList",
+        columnsList: this.PatientlistColumns,
+        sortField: "AdmissionId",
+        sortOrder: 1,
+        filters: [
+            { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.Fr_Date, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue:  this.T_Date, opType: OperatorComparer.Equals },
+            { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
+            { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
+        ],
+        row: 25
+    }
 
 
 
-
-
-
-  dssalesReturnList = new MatTableDataSource<SalesReturnList>();
-  dssalesReturnList1 = new MatTableDataSource<SalesReturnDetList>();
+ 
   isChecked: boolean = false;
 
 
@@ -227,14 +282,11 @@ export class BrowsSalesBillComponent implements OnInit {
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
-    public toastr: ToastrService,
-
+    public toastr: ToastrService, 
     private _ActRoute: Router,
   ) { }
 
-  ngOnInit(): void {
-    this.getSalesReturnList()
-
+  ngOnInit(): void {  
     if (this._ActRoute.url == '/pharmacy/browsesalesbill') {
       this.menuActions.push('Patient Ledger');
       this.menuActions.push("Patient Statement");
@@ -242,8 +294,7 @@ export class BrowsSalesBillComponent implements OnInit {
       this.menuActions.push("Patient Sales Detail");
     }
   }
-  onChangeFirst() {
-    debugger
+  onChangeFirst() { 
     this.isShowDetailTable = false;
     this.firstName = this._BrowsSalesBillService.userForm.get('F_Name').value || "%"
     this.LastName = this._BrowsSalesBillService.userForm.get('L_Name').value || "%"
@@ -302,8 +353,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
 
   //Sales Retrun list 
-  onChangeFirst_Retrun() {
-    debugger
+  onChangeFirst_Retrun() { 
     this.isShowDetailTableRetrun = false;
     this.first_Name = this._BrowsSalesBillService.formReturn.get('F_Name').value || "%"
     this.Last_Name = this._BrowsSalesBillService.formReturn.get('L_Name').value || "%"
@@ -315,8 +365,7 @@ export class BrowsSalesBillComponent implements OnInit {
     this.OpIp_Type = this._BrowsSalesBillService.formReturn.get('OP_IP_Type').value || "0"
     this.getSalesRetrunlistdata();
   }
-  getSalesRetrunlistdata() {
-    debugger
+  getSalesRetrunlistdata() { 
     this.gridConfig2 = {
       apiUrl: "SalesReturn/SalesReturnBrowseList",
       columnsList: this.SalesReturnHColumns,
@@ -359,8 +408,57 @@ export class BrowsSalesBillComponent implements OnInit {
     this.grid3.bindGridData();
   }
 
+/// Patient list  
+apiUrl:any='';
+  onChangeFirstPatient() {
+    debugger
+    if (this._BrowsSalesBillService.SalesPatientForm.get('IsDischarge').value == false) {
+      this.apiUrl = "Admission/AdmissionList"
+      this.status = "0"
+      this._BrowsSalesBillService.SalesPatientForm.get('startdate1').setValue('');
+      this._BrowsSalesBillService.SalesPatientForm.get('enddate1').setValue('');
+      this.Fr_Date = '' // this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('startdate1').value, "yyyy-MM-dd")
+      this.T_Date = '' // this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('enddate1').value, "yyyy-MM-dd")
 
 
+    } else {
+      this.apiUrl = "Admission/AdmissionDischargeList"
+      this.status = "1"
+      this._BrowsSalesBillService.SalesPatientForm.get('startdate1').setValue(new Date());
+      this._BrowsSalesBillService.SalesPatientForm.get('enddate1').setValue(new Date());
+      this.Fr_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('startdate1').value, "yyyy-MM-dd")
+      this.T_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('enddate1').value, "yyyy-MM-dd")
+     
+    }
+    this.first_N = this._BrowsSalesBillService.SalesPatientForm.get('F_Name').value || "%"
+    this.middle_N = this._BrowsSalesBillService.SalesPatientForm.get('M_Name').value || "%"
+    this.Last_N = this._BrowsSalesBillService.SalesPatientForm.get('L_Name').value || "%"
+    this.reg_No_Pt = this._BrowsSalesBillService.SalesPatientForm.get('RegNo').value || "0"
+    this.ipdno = this._BrowsSalesBillService.SalesPatientForm.get('IPDNo').value || "0"
+    this.getPatientlistdata();
+  }
+  getPatientlistdata() {
+    debugger
+    this.gridConfig4 = {
+        apiUrl: this.apiUrl ,
+      columnsList: this.PatientlistColumns,
+      sortField: "AdmissionId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "F_Name", fieldValue: this.first_N, opType: OperatorComparer.Equals },
+        { fieldName: "L_Name", fieldValue: this.Last_N, opType: OperatorComparer.Equals },
+        { fieldName: "Reg_No", fieldValue: this.reg_No_Pt, opType: OperatorComparer.Equals },
+        { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue: this.Fr_Date, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.T_Date, opType: OperatorComparer.Equals },
+        { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
+        { fieldName: "M_Name", fieldValue: this.middle_N, opType: OperatorComparer.Contains },
+        { fieldName: "IPNo", fieldValue: this.ipdno, opType: OperatorComparer.Equals }  
+      ],
+    } 
+        this.grid4.gridConfig = this.gridConfig4;
+        this.grid4.bindGridData();
+  }
   getValidationMessages() {
     return {
       RegNo: [
@@ -416,51 +514,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
 
 
-  getSalesReturnList() {
-    this.sIsLoading = 'loading-data';
-    var vdata = {
-      F_Name: this._BrowsSalesBillService.formReturn.get('F_Name').value || '%',
-      L_Name: this._BrowsSalesBillService.formReturn.get('L_Name').value || '%',
-      From_Dt: this.datePipe.transform(this._BrowsSalesBillService.formReturn.get('startdate1').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      To_Dt: this.datePipe.transform(this._BrowsSalesBillService.formReturn.get('enddate1').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      Reg_No: this._BrowsSalesBillService.formReturn.get('RegNo').value || 0,
-      SalesNo: this._BrowsSalesBillService.formReturn.get('SalesNo').value || 0,
-      OP_IP_Type: this._BrowsSalesBillService.formReturn.get('OP_IP_Types').value || 0,
-      StoreId: this._loggedService.currentUserValue.storeId || 0
-    }
-    console.log(vdata);
-    setTimeout(() => {
-      this.sIsLoading = 'loading-data';
-      this._BrowsSalesBillService.getSalesReturnList(vdata).subscribe(data => {
-        this.dssalesReturnList.data = data as SalesReturnList[];
-        console.log(this.dssalesReturnList.data);
-        this.dssalesReturnList.sort = this.sort;
-        this.dssalesReturnList.paginator = this.paginator;
-        this.sIsLoading = this.dssalesReturnList.data.length == 0 ? 'no-data' : 'no data';
-        this.sIsLoading = '';
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-    }, 1000);
-  }
-  getSalesReturnDetList(Parama) {
-    var vdata = {
-      SalesReturnId: Parama.SalesReturnId
-
-    }
-
-    this._BrowsSalesBillService.getSalesReturnDetList(vdata).subscribe(data => {
-      this.dssalesReturnList1.data = data as SalesReturnDetList[];
-      // this.dssalesReturnList1.sort = this.sort;
-      // this.dssalesReturnList1.paginator = this.paginator;
-      // console.log(this.dssalesReturnList1.data);
-    })
-  }
-  onSelect1(Parama) {
-    // console.log(Parama);
-    this.getSalesReturnDetList(Parama)
-  }
+ 
   OnPayment(contact) {
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
