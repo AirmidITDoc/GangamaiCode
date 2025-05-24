@@ -26,7 +26,7 @@ export class CityMasterService {
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ] 
             ],
-            stateId: ["", 
+            stateId: [0, 
                 [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
             isActive:[true,[Validators.required]]
@@ -35,7 +35,7 @@ export class CityMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             CityNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
 

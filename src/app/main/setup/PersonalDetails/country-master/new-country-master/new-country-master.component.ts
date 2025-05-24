@@ -59,7 +59,7 @@ export class NewCountryMasterComponent implements OnInit {
       return {
           countryName: [
               { name: "required", Message: "Country Name is required" },
-              { name: "maxlength", Message: "Religion name should not be greater than 50 char." },
+              { name: "maxlength", Message: "Country Name should not be greater than 50 char." },
               { name: "pattern", Message: "Special char not allowed." }
           ]
       };

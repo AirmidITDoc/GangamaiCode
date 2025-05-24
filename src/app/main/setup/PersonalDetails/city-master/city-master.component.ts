@@ -18,11 +18,12 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 export class CityMasterComponent implements OnInit {
 
     msg: any;
+    cityName: any = "";
+
     options: any[] = [{ Text: 'Text-1', Id: 1 }, { Text: 'Text-2', Id: 2 }, { Text: 'Text-3', Id: 3 }];
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig: gridModel = {
-        apiUrl: "CityMaster/List",
-        columnsList: [
+
+    allColumns=[
             { heading: "Code", key: "cityId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "City Name", key: "cityName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "State Name", key: "stateId", sort: true, align: 'left', emptySign: 'NA' },
@@ -41,13 +42,18 @@ export class CityMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "cityId",
-        sortOrder: 0,
-        filters: [
-            { fieldName: "cityName", fieldValue: "", opType: OperatorComparer.Contains },
+        ]
+
+        allFilters=[
+            { fieldName: "cityName", fieldValue: this.cityName, opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+    gridConfig: gridModel = {
+        apiUrl: "CityMaster/List",
+        columnsList: this.allColumns,
+        sortField: "cityId",
+        sortOrder: 0,
+        filters: this.allFilters
     }
     autocompleteMode: string = "CityMaster";
 
@@ -57,6 +63,37 @@ export class CityMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void { }
+
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'CityNameSearch')
+            this._CityMasterService.myformSearch.get('CityNameSearch').setValue("")
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.cityName = this._CityMasterService.myformSearch.get('CityNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._CityMasterService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "CityMaster/List",
+            columnsList: this.allColumns,
+            sortField: "cityId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "cityName", fieldValue: this.cityName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+    }
+
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
