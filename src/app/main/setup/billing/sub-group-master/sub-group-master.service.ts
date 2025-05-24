@@ -28,7 +28,7 @@ export class SubGroupMasterService {
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
-            groupId: ["",
+            groupId: [0,
                 [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
             isActive:[true,[Validators.required]]

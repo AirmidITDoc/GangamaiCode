@@ -14,14 +14,14 @@ export class CategoryMasterService {
            private _httpClient: ApiCaller,
            private _formBuilder: UntypedFormBuilder
        ) {
-           this.myForm = this.createVillageForm();
+           this.myForm = this.createCategoryForm();
            this.myformSearch = this.createSearchForm();
        }
 
-         createVillageForm(): FormGroup {
+         createCategoryForm(): FormGroup {
                 return this._formBuilder.group({
-                    villageId: [0],
-                    villageName: ["",
+                    SurgeryCategoryId: [0],
+                    SurgeryCategoryName: ["",
                         [ Validators.required,
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
                    ]
@@ -33,21 +33,21 @@ export class CategoryMasterService {
           
             createSearchForm(): FormGroup {
                 return this._formBuilder.group({
-                    VillageNameSearch: [""],
+                    SurgeryCategorySearch: [""],
                     IsDeletedSearch: ["2"],
                 });
             }
         
             initializeFormGroup() {
-                this.createVillageForm();
+                this.createCategoryForm();
             }
         
             public stateMasterSave(Param: any) {
-                if (Param.villageId) {
-                    return this._httpClient.PutData("VillageMaster/" + Param.villageId, Param);
-                } else return this._httpClient.PostData("VillageMaster", Param);
+                if (Param.SurgeryCategoryId) {
+                    return this._httpClient.PutData("SurgeryCategoryMaster/" + Param.SurgeryCategoryId, Param);
+                } else return this._httpClient.PostData("SurgeryCategoryMaster", Param);
             }
        public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("VillageMaster?Id=" + m_data.toString());
+        return this._httpClient.DeleteData("SurgeryCategoryMaster?Id=" + m_data.toString());
 }
 }

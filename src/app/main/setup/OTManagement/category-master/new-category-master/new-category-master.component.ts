@@ -15,7 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 export class NewCategoryMasterComponent implements OnInit  {
 myForm: FormGroup;
     isActive:boolean=true;
-
+categoryName:any=''
     constructor(
                 public _CategoryMasterService: CategoryMasterService,
                 public dialogRef: MatDialogRef<NewCategoryMasterComponent>,
@@ -28,12 +28,13 @@ myForm: FormGroup;
             talukaId = 0;
             
             ngOnInit(): void {
-                this.myForm = this._CategoryMasterService.createVillageForm();
+                this.myForm = this._CategoryMasterService.createCategoryForm();
                  this.myForm.markAllAsTouched();
                 
                 console.log(this.data)
-                if ((this.data?.villageId??0) > 0) 
+                if ((this.data?.surgeryCategoryId??0) > 0) 
                 {
+                    this.categoryName=this.data.surgeryCategoryName
                     this.isActive=this.data.isActive
                     this.myForm.patchValue(this.data);
                 }   
@@ -66,7 +67,7 @@ myForm: FormGroup;
                         talukaName: [
                             { name: "required", Message: "City Name is required" }
                         ],
-                        villageName: [
+                        SurgeryCategoryName: [
                             { name: "required", Message: "category Name is required" },
                             { name: "maxlength", Message: "category Name should not be greater than 50 char." },
                             { name: "pattern", Message: "Only char allowed." }
@@ -77,7 +78,7 @@ myForm: FormGroup;
             
                 selectChangecountry(obj: any){
                     console.log(obj);
-                    this.talukaId=obj.value
+                    //this.talukaId=obj.value
                 }
             
                 onClear(val: boolean) {

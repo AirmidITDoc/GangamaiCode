@@ -18,7 +18,7 @@ export class PatienttypeMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             PatientTypeSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
 

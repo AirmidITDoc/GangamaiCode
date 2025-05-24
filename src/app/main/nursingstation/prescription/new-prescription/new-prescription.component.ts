@@ -33,6 +33,7 @@ export class NewPrescriptionComponent implements OnInit {
 
   myForm: FormGroup;
   searchFormGroup: FormGroup;
+  prescForm: FormGroup;
   ItemForm: FormGroup;
   screenFromString = 'admission-form';
   ItemId: any;
@@ -127,9 +128,10 @@ export class NewPrescriptionComponent implements OnInit {
   autocompleteitem: string = "ItemType";
   Regstatus: boolean = true;
   ApiURL: any;
-    @ViewChild('qtyTextboxRef', { read: ElementRef }) qtyTextboxRef: ElementRef;
+  vitemId: any;
+  vitemname: any;
 
-  // public isItem=false;
+  @ViewChild('qtyTextboxRef', { read: ElementRef }) qtyTextboxRef: ElementRef;
 
   constructor(private _FormBuilder: UntypedFormBuilder,
     private ref: MatDialogRef<NewPrescriptionComponent>,
@@ -154,6 +156,7 @@ export class NewPrescriptionComponent implements OnInit {
   ngOnInit(): void {
     this.myForm = this._PrescriptionService.createMyForm();
     this.ItemForm = this._PrescriptionService.createItemForm();
+    this.prescForm=this._PrescriptionService.createPrescForm();
     this.ItemForm.markAllAsTouched();
     this.myForm.markAllAsTouched();
   }
@@ -189,13 +192,6 @@ export class NewPrescriptionComponent implements OnInit {
       this.vDOA = obj.admissionDate
       this.vAdmissionID = obj.admissionID
       this.vClassId = obj.classId
-      // setTimeout(() => {
-      //   this._PrescriptionService.getAdmittedpatientlist(obj.regID).subscribe((response) => {
-      //     this.registerObj = response;        
-      //     console.log(this.registerObj)
-      //   });
-
-      // }, 500);
     }
   }
 
@@ -204,27 +200,24 @@ export class NewPrescriptionComponent implements OnInit {
     console.log("Store:", obj);
     this.vstoreId = obj.value
   }
-  
-  vitemId: any;
-  vitemname: any;
 
   validateStoreOnTyping() {
     if (!this.vstoreId) {
-        this.toastr.warning('Please select a StoreName before choosing an Item.', 'Warning!', {
-          toastClass: 'tostr-tost custom-toast-warning'
+      this.toastr.warning('Please select a StoreName before choosing an Item.', 'Warning!', {
+        toastClass: 'tostr-tost custom-toast-warning'
       });
-        this.ItemForm.get('ItemId').reset(); 
-        this.ItemForm.get('ItemId').updateValueAndValidity();
+      this.ItemForm.get('ItemId').reset();
+      this.ItemForm.get('ItemId').updateValueAndValidity();
     }
   }
 
   selectChangeItem(obj: any) {
     // debugger;
-  console.log("ssss:",this.vstoreId)
+    console.log("ssss:", this.vstoreId)
 
     if (!this.vstoreId) {
       return;
-  }
+    }
     if (!obj || typeof obj !== 'object') {
       this.toastr.error('Invalid item selection. Please choose a valid item from the list.', 'Error!');
       this.ItemForm.get('ItemId').setErrors({ invalidItem: true });
@@ -245,7 +238,7 @@ export class NewPrescriptionComponent implements OnInit {
         }
       }
     }, 100);
-}
+  }
 
   doseList: any = [];
 
@@ -385,17 +378,14 @@ export class NewPrescriptionComponent implements OnInit {
     }
   }
 
-
   OnSavePrescription() {
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
-    // const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedTime = datePipe.transform(currentDate, 'dd-MM-yyyy hh:mm:ss a');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
-    debugger
-
-    if (!this.myForm.invalid && this.dsItemList.data.length > 0) {
+    if(!this.prescForm.invalid){
+      if (!this.myForm.invalid && this.dsItemList.data.length > 0) {
       let insertIP_Prescriptionarray = [];
 
       this.dsItemList.data.forEach((element) => {
@@ -420,26 +410,20 @@ export class NewPrescriptionComponent implements OnInit {
         insertIP_Prescription['wardID'] = this.myForm.get('WardName').value || 0;
         insertIP_Prescriptionarray.push(insertIP_Prescription);
       });
+      
+      this.prescForm.get("admissionId").setValue(this.vAdmissionID)
+      this.prescForm.get("tIpPrescriptions").setValue(insertIP_Prescriptionarray)
+      console.log(this.prescForm.value)
 
-      let submissionObj = {
-        "medicalRecoredId": 0,
-        "admissionId": this.vAdmissionID,
-        "roundVisitDate": formattedDate,
-        "roundVisitTime": formattedTime,
-        "inHouseFlag": true,
-        "tIpPrescriptions": insertIP_Prescriptionarray
-      };
-
-      console.log(submissionObj);
-
-      this._PrescriptionService.presciptionSave(submissionObj).subscribe(response => {
+      this._PrescriptionService.presciptionSave(this.prescForm.value).subscribe(response => {
         this.toastr.success(response.message);
         console.log(response)
-        this.viewgetIpprescriptionReportPdf(response);
-        this._matDialog.closeAll();
-
-      }, (error) => {
-        this.toastr.error(error.message);
+        if (response) {
+          this.viewgetIpprescriptionReportPdf(response)
+          this._matDialog.closeAll();
+        }
+      },(error)=>{
+         this.toastr.error(error.message);
       });
 
     } else {
@@ -465,10 +449,11 @@ export class NewPrescriptionComponent implements OnInit {
         });
       }
     }
+    }
   }
 
   viewgetIpprescriptionReportPdf(response) {
-    
+
     setTimeout(() => {
       let param = {
         "searchFields": [
@@ -485,37 +470,37 @@ export class NewPrescriptionComponent implements OnInit {
         ],
         "mode": "NurIPprescriptionReport"
       }
-    this._PrescriptionService.getReportView(param).subscribe(res => {
+      this._PrescriptionService.getReportView(param).subscribe(res => {
 
-      const matDialog = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Nursing Prescription" + " " + "Viewer"
-          }
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Nursing Prescription" + " " + "Viewer"
+            }
+          });
+        matDialog.afterClosed().subscribe(result => {
         });
-      matDialog.afterClosed().subscribe(result => {
       });
-    });
-  }, 100);
-}
-
-
-onClose() {
-  this.ref.close();
-}
-keyPressAlphanumeric(event) {
-  var inp = String.fromCharCode(event.keyCode);
-  if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-    return true;
-  } else {
-    event.preventDefault();
-    return false;
+    }, 100);
   }
-} 
+
+  onClose() {
+    this.ref.close();
+  }
+
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
 
 }
 
