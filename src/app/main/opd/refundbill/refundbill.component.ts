@@ -1,9 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
 import { RegInsert } from '../registration/registration.component';
 import { RefundbillService } from './refundbill.service';
@@ -20,9 +17,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { OpPaymentComponent } from '../op-search-list/op-payment/op-payment.component';
 import Swal from 'sweetalert2';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { fuseAnimations } from '@fuse/animations';
-import { OpPaymentNewComponent } from '../op-search-list/op-payment-new/op-payment-new.component';
 import { VisitMaster1 } from '../appointment-list/appointment-list.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { PaymentInsert } from '../appointment-list/appointment-billing/appointment-billing.component';
@@ -234,7 +229,7 @@ export class RefundbillComponent implements OnInit {
           "opType": "Equals"
         }
       ],
-      "Columns":[],
+      "Columns": [],
       "exportType": "JSON"
     }
 
@@ -268,7 +263,7 @@ export class RefundbillComponent implements OnInit {
           "opType": "Equals"
         }
       ],
-      "Columns":[],
+      "Columns": [],
       "exportType": "JSON"
     }
 
@@ -388,7 +383,7 @@ export class RefundbillComponent implements OnInit {
   }
 
   onSave() {
-if (this.vOPIPId !== 0 && this.TotalRefundAmount !== "0.00") {
+    if (this.vOPIPId !== 0 && this.TotalRefundAmount !== "0.00") {
 
       if (this.TotalRefundAmount <= this.RefundBalAmount) {
         let InsertRefundObj = {};
@@ -505,25 +500,24 @@ if (this.vOPIPId !== 0 && this.TotalRefundAmount !== "0.00") {
 
           console.log(submitData)
           this._RefundbillService.InsertOPRefundBilling(submitData).subscribe(response => {
-            this.toastrService.success(response.message);
             this.viewgetOPRefundBillReportPdf(response)
           }, (error) => {
             this.toastrService.error(error.message);
           });
 
         });
-        
+
       }
       else {
         Swal.fire("Refund Amount is More than RefundBalance")
       }
       this.cleardata();
-}
+    }
     else {
       Swal.fire("Please Add Refund Amount!")
     }
 
-    
+
   }
 
   cleardata() {
@@ -887,7 +881,6 @@ export class BillRefundMaster {
     {
       this.RefundDate = BillRefundMaster.RefundDate || '';
       this.RefundAmount = BillRefundMaster.RefundAmount || 0;
-
     }
   }
 }
