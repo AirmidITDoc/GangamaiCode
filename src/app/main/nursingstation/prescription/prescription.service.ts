@@ -35,13 +35,25 @@ export class PrescriptionService {
 
    createMyForm() {
       return this._formBuilder.group({
-        RegId: '',
+        RegId: 0,
         PatientName: '',
-        WardName: ['', [Validators.required,notEmptyOrZeroValidator()]],
-        StoreId: ['', [Validators.required,notEmptyOrZeroValidator()]],
-        RegID: ['', Validators.required],
+        WardName: [0, [Validators.required,notEmptyOrZeroValidator()]],
+        StoreId: [0, [Validators.required,notEmptyOrZeroValidator()]],
+        RegID: [0, Validators.required],
         Op_ip_id: ['1'],
         AdmissionID: 0
+      })
+    }
+
+    // insert by form 
+    createPrescForm() {
+      return this._formBuilder.group({
+        medicalRecoredId: 0,
+        admissionId: 0,
+        roundVisitDate: [(new Date()).toISOString().split('T')[0]],
+        roundVisitTime: [(new Date()).toISOString()],
+        inHouseFlag: true,
+        tIpPrescriptions: "",
       })
     }
 
@@ -49,7 +61,7 @@ export class PrescriptionService {
       return this._formBuilder.group({
         ItemId: ['', [Validators.required, this.validateSelectedItem.bind(this)]],
         ItemName: '',
-        DoseId: '',
+        DoseId: 0,
         Day: [''],
         Qty: ['',[Validators.required,Validators.pattern("^[0-9]*$")]],
         Instruction: ['']

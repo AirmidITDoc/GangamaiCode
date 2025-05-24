@@ -308,13 +308,15 @@
         <mat-card>
           <mat-card-content>
             <div class="net-amt-form input-error-hidden">
-              <div fxLayout="row" class="gap-8" fxLayoutAlign="end center">
-                <mat-form-field appearance="outline">
+              <div fxLayout="row" class="gap-8" fxLayoutAlign="space-between center">
+                <!-- changed by raksha -->
+                <form [formGroup]="RefundOfBillFormGroupDemo" class="gap-8">
+                  <mat-form-field appearance="outline">
                   <mat-label>Total Refund Amount</mat-label>
                   <input matInput [(ngModel)]="TotalRefundAmount" readonly formControlName="TotalRefundAmount" name="TotalRefundAmount" (keyup)="calculateTotalRefund()" required />
                 </mat-form-field>
 
-                <mat-form-field appearance="outline">
+                 <mat-form-field appearance="outline">
                   <mat-label>Refund Bal Amount</mat-label>
                   <input matInput [(ngModel)]="RefundBalAmount" formControlName="RefundBalAmount" name="RefundBalAmount" [value]="BalanceAmount" readonly />
                 </mat-form-field>
@@ -323,6 +325,8 @@
                   <mat-label>Remark</mat-label>
                   <input matInput [(ngModel)]="Remark" formControlName="Remark" name="Remark" />
                 </mat-form-field>
+               </form>
+               <!-- end -->
                 <!-- [disabled]="!TotalRefundAmount || dataSource2.data.length==0" -->
                 <div class="footer-navigation-container">
                   <div class="modal-footer-buttons">
