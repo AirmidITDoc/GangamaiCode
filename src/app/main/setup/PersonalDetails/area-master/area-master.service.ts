@@ -30,7 +30,7 @@ export class AreaMasterService {
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
-            cityId: ["",
+            cityId: [0,
                 [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
             cityName: [""],
@@ -40,7 +40,7 @@ export class AreaMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             AreaNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
 

@@ -17,10 +17,9 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 })
 export class CountryMasterComponent implements OnInit {
     msg: any;
+    countryName:any=""
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig: gridModel = {
-        apiUrl: "CountryMaster/List",
-        columnsList: [
+    allcolumns= [
             { heading: "Code", key: "countryId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Country Name", key: "countryName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
@@ -39,19 +38,54 @@ export class CountryMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "countryId",
-        sortOrder: 0,
-        filters: [
+        ]
+        allfilters=[
             { fieldName: "countryName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+    gridConfig: gridModel = {
+        apiUrl: "CountryMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "countryId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
 
     constructor(public _CountryService: CountryMasterService, public _matDialog: MatDialog,
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
+
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'CountryNameSearch')
+            this._CountryService.myformSearch.get('CountryNameSearch').setValue("")
+
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.countryName = this._CountryService.myformSearch.get('CountryNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._CountryService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "CountryMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "countryId",
+            sortOrder: 0,
+            filters: [
+            { fieldName: "countryName", fieldValue: this.countryName, opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+        ]
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+    }
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
