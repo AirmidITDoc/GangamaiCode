@@ -27,10 +27,10 @@ export class WardMasterService {
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
-            locationId: ["",
+            locationId: [0,
                 [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
-            classId: ["",
+            classId: [0,
                 [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
             roomType: [0],

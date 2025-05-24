@@ -27,7 +27,7 @@ export class VillageMasterService {
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
                    ]
             ],
-            talukaName: ["",[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            talukaName: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             isActive:[true,[Validators.required]]
         });
     }

@@ -17,9 +17,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 })
 export class MaritalstatusMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig: gridModel = {
-        apiUrl: "MaritalStatus/List",
-        columnsList: [
+   Maritalstatus: any = "";
+        allcolumns = [
             { heading: "Code", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Marital Status", key: "maritalStatusName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
@@ -39,13 +38,18 @@ export class MaritalstatusMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "maritalStatusId",
-        sortOrder: 0,
-        filters: [
+        ]
+        
+        allfilters = [
             { fieldName: "maritalStatusName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+    gridConfig: gridModel = {
+        apiUrl: "MaritalStatus/List",
+        columnsList: this.allcolumns,
+        sortField: "maritalStatusId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
 
     constructor(public _maritalService: MaritalstatusMasterService, public _matDialog: MatDialog,
@@ -54,7 +58,43 @@ export class MaritalstatusMasterComponent implements OnInit {
     ngOnInit(): void {
 
     }
+ Clearfilter(event) {
+        console.log(event)
+        if (event == 'MaritalStatusNameSearch')
+            this._maritalService.myformSearch.get('MaritalStatusNameSearch').setValue("")
 
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.Maritalstatus = this._maritalService.myformSearch.get('MaritalStatusNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._maritalService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "MaritalStatus/List",
+            columnsList: this.allcolumns,
+            sortField: "maritalStatusId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "maritalStatusName", fieldValue: this.Maritalstatus, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

@@ -33,7 +33,7 @@ export class RelationshipMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             RelationshipNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
 

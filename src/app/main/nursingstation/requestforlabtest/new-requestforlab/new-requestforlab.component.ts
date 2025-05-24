@@ -85,6 +85,7 @@ export class NewRequestforlabComponent implements OnInit {
 
   searchFormGroup: FormGroup;
   myFormGroup: FormGroup;
+  labReqForm: FormGroup;
 
   dstable1 = new MatTableDataSource<LabRequest>();
   dsLabRequest2 = new MatTableDataSource<LabRequest>();
@@ -117,6 +118,7 @@ export class NewRequestforlabComponent implements OnInit {
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
     this.myFormGroup = this.createMyForm();
+    this.labReqForm = this.labRequestForm();
   }
  
   getServiceList() {
@@ -189,6 +191,25 @@ export class NewRequestforlabComponent implements OnInit {
       NameSearch: ''
     })
   }
+
+  labRequestForm(): FormGroup {
+    return this._FormBuilder.group({
+      requestId:0,
+      reqDate:[(new Date()).toISOString().split('T')[0]],
+      reqTime:[(new Date()).toISOString()],
+      opIpId:0,
+      opIpType:1,
+      isAddedBy:this._loggedService.currentUserValue.userId,
+      isCancelled:true,
+      isCancelledBy:this._loggedService.currentUserValue.userId,
+      isCancelledDate:[(new Date()).toISOString().split('T')[0]],
+      isCancelledTime:[(new Date()).toISOString()],
+      isType:0,
+      isOnFileTest:false,
+      tDlabRequests:""
+    })
+  }
+
   createSearchForm(): FormGroup {
     return this._FormBuilder.group({
       RegID: [''],
@@ -346,39 +367,29 @@ export class NewRequestforlabComponent implements OnInit {
         ipPathOrRadiRequestLabRequestInsert['price'] = element.Price || 1;
         ipPathOrRadiRequestLabRequestInsert['isStatus'] = false;
         ipPathOrRadiRequestLabRequestInsert['addedBillingId'] = 2,
-          ipPathOrRadiRequestLabRequestInsert['addedByDate'] = formattedDate,
-          ipPathOrRadiRequestLabRequestInsert['addedByTime'] = formattedTime,
-          ipPathOrRadiRequestLabRequestInsert['charId'] = 260570,
-          // ipPathOrRadiRequestLabRequestInsert['charId'] = 0,
-          ipPathOrRadiRequestLabRequestInsert['isTestCompted'] = false,
-          ipPathOrRadiRequestLabRequestInsert['IsOnFileTest'] = this.myFormGroup.get('IsOnFileTest').value || false;
+        ipPathOrRadiRequestLabRequestInsert['addedByDate'] = formattedDate,
+        ipPathOrRadiRequestLabRequestInsert['addedByTime'] = formattedTime,
+        ipPathOrRadiRequestLabRequestInsert['charId'] = 260570,
+        // ipPathOrRadiRequestLabRequestInsert['charId'] = 0,
+        ipPathOrRadiRequestLabRequestInsert['isTestCompted'] = false,
+        ipPathOrRadiRequestLabRequestInsert['IsOnFileTest'] = this.myFormGroup.get('IsOnFileTest').value || false;
         ipPathOrRadiRequestLabRequestInsertArray.push(ipPathOrRadiRequestLabRequestInsert);
       });
 
-      submissionObj = {
-        "requestId": 0,
-        "reqDate": formattedDate,
-        "reqTime":formattedTime,
-        "opIpId": this.vAdmissionID,
-        "opIpType": 1,
-        "isAddedBy": this._loggedService.currentUserValue.userId,
-        "isCancelled": false,
-        "isCancelledBy": 0,
-        "isCancelledDate": formattedDate,
-        "isCancelledTime": formattedTime,
-        "isType": 0,
-        "isOnFileTest": this.myFormGroup.get('IsOnFileTest').value || false,
-        'tDlabRequests': ipPathOrRadiRequestLabRequestInsertArray
-      }
-      console.log(submissionObj);
-      this._RequestforlabtestService.LabRequestSave(submissionObj).subscribe(response => {
-        console.log(response.message);
-        this.toastr.success(response);
-       
-        this.viewgetLabrequestReportPdf(response);
-        this._matDialog.closeAll();
-      }, (error) => {
-        this.toastr.error(error.message);
+      this.labReqForm.get("opIpId").setValue(this.vAdmissionID)
+      this.labReqForm.get("isOnFileTest").setValue(this.myFormGroup.get('IsOnFileTest').value)
+      this.labReqForm.get("tDlabRequests").setValue(ipPathOrRadiRequestLabRequestInsertArray)
+      console.log(this.labReqForm.value)
+
+      this._RequestforlabtestService.LabRequestSave(this.labReqForm.value).subscribe(response => {
+        this.toastr.success(response.message);
+        console.log(response)
+        if (response) {
+          this.viewgetLabrequestReportPdf(response)
+          this._matDialog.closeAll();
+        }
+      },(error)=>{
+         this.toastr.error(error.message);
       });
     }
   }

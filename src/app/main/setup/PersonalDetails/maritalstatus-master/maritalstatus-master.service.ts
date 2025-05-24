@@ -18,7 +18,7 @@ export class MaritalstatusMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             MaritalStatusNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
 
