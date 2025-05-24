@@ -24,7 +24,7 @@ export class BrowsSalesBillService {
   ) {
     this.userForm = this.SearchFilter();
     this.formReturn = this.SearchFilterReturn();
-    this.SalesPatientForm = this.SearchFilterReturn();
+    this.SalesPatientForm = this.filterForm();
   }
 
   SearchFilter(): FormGroup {
@@ -60,8 +60,8 @@ export class BrowsSalesBillService {
   filterForm(): FormGroup {
     return this._formBuilder.group({
       RegNo: '',
-      fromDate: [],
-      enddate: [], 
+      startdate1: [''],
+      enddate1: [''],
       IPDNo: '',
       F_Name:['', [ Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
       M_Name:['', [ Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],

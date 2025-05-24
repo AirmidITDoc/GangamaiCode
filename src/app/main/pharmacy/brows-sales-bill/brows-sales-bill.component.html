@@ -258,108 +258,77 @@
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
                 <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <!-- <ng-template #patientTypetemp let-element>
+                    
+                        <ng-template #isPatientTemplate let-element>
                             <div fxLayout="row" fxLayoutAlign="center center">
-                                <mat-icon *ngIf="element.PatientTypeId=='1'" matTooltip="Patient Category Self">account_box
+                                <mat-icon *ngIf="element.patientType =='Self'" matTooltip="Patient Category Self">account_box
                                 </mat-icon>
-        
-                                <mat-icon *ngIf="element.PatientTypeId !='1'" matTooltip="Patient Category Company">business
+                            
+                                <mat-icon *ngIf="element.patientType !='Self'" matTooltip="Patient Category Company">business
                                 </mat-icon>
                             </div>
-                        </ng-template>
-                        <ng-template #Billstatus let-element>
-                            <div fxLayout="row" fxLayoutAlign="center center">
-                                <mat-icon *ngIf="element.interimOrFinal=='0'" matTooltip="Final Bill"
-                                    class="pill green-600 s-16">circle</mat-icon>
+                        </ng-template> 
         
-                                <mat-icon *ngIf="element.interimOrFinal=='1'" matTooltip="Intrim Bill"
-                                    class="pill orange-600 s-16">circle</mat-icon>
+                        <ng-template #isPatientPrintTemplate let-element>
+                            <div fxLayout="row" fxLayoutAlign="center center">  
+                                <button mat-icon-button matTooltip="Print">
+                                    <mat-icon>print</mat-icon>
+                                </button> 
                             </div>
-                        </ng-template>
-                        <ng-template #balancestatus let-element>
-                            <div fxLayout="row" fxLayoutAlign="center center">
-                                <button mat-icon-button class="material-icons" *ngIf="element.balanceAmt !=0 "
-                                    (click)="Billpayment(element)" matTooltip="Settlement">
-                                    <mat-icon> payment </mat-icon>
-                                </button>
-                            </div>
-                        </ng-template>
-        
-                        <ng-template #isCancelledstatus let-element>
-                            <div fxLayout="row" fxLayoutAlign="center center">
-                                <mat-icon title="Cancelled Bill" *ngIf="element.isCancelled=='1'" class="pill red s-16"
-                                matTooltip="Cancelled Bill">circle</mat-icon> 
-                             
-                            </div>
-                        </ng-template>
-        
-        
-                        <ng-template #actionButtonTemplateIP let-element>
-                            <div fxLayout="row" fxLayoutAlign="center center"> 
-        
-                                <button mat-icon-button matTooltip="Email">
-                                    <mat-icon>email</mat-icon>
-                                </button>
-                                <button mat-icon-button matTooltip="Message">
-                                    <mat-icon>message</mat-icon>
-                                </button>
-                                <button mat-icon-button matTooltip="Send message On WhatsApp">
-                                    <img width="500" height="20px" src="assets/images/logos/WhatsApp.png">
-                                </button>
-                                <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
-                                (click)="$event.stopPropagation();">
-                                <mat-icon class="secondary-text">more_vert</mat-icon>
-                            </button>
-                            <mat-menu #moreMenu="matMenu">
-                                <ng-container *ngFor="let m of menuActions, let n of menuActions">
-                                    <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
-                                        <span>{{m}}</span>
-                                    </button>
-                                </ng-container>
-                            </mat-menu>
-                            </div>
-                        </ng-template> -->
+                        </ng-template>  
 
-                    <airmid-table [gridConfig]="gridConfig" class="content">
+                    <airmid-table [gridConfig]="gridConfig4" class="content">
                         <ng-container filters>
                             <form [formGroup]="_BrowsSalesBillService.SalesPatientForm" fxLayout="column">
-
-                                <airmid-datepicker [formGroup]="_BrowsSalesBillService.SalesPatientForm"
-                                    [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate"
-                                    [(fromValue)]="gridConfig.filters[1].fieldValue"
-                                    [(toValue)]="gridConfig.filters[2].fieldValue"
-                                    (dateChange)="onChangeFirst()"></airmid-datepicker>
-
+                        
+                                <!-- <airmid-datepicker [formGroup]="_BrowsSalesBillService.SalesPatientForm"
+                                                            [isRangePicker]="true" formStartControlName="startdate1" formEndControlName="startdate1"
+                                                            [(fromValue)]="gridConfig.filters[4].fieldValue"
+                                                            [(toValue)]="gridConfig.filters[5].fieldValue"
+                                                            (dateChange)="onChangeFirstPatient()"></airmid-datepicker> -->
+                        
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Enter a date range</mat-label>
+                                    <mat-date-range-input [rangePicker]="picker">
+                                        <input matStartDate formControlName="startdate1" placeholder="Start date"
+                                            (dateChange)="onChangeFirstPatient()">
+                                        <input matEndDate formControlName="startdate1" placeholder="End date"
+                                            (dateChange)="onChangeFirstPatient()">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                </mat-form-field>
+                        
                                 <airmid-textbox fxFlex label="Search RegNo" formControlName="RegNo"
-                                    [formGroup]="_BrowsSalesBillService.SalesPatientForm" (keyup)="onChangeFirst()"
+                                    [formGroup]="_BrowsSalesBillService.SalesPatientForm" (keyup)="onChangeFirstPatient()"
                                     [validations]="getValidationMessages().RegNo"></airmid-textbox>
-
+                        
                                 <airmid-textbox fxFlex label="Search IPD NO" formControlName="IPDNo"
-                                    [formGroup]="_BrowsSalesBillService.SalesPatientForm" (keyup)="onChangeFirst()"
+                                    [formGroup]="_BrowsSalesBillService.SalesPatientForm" (keyup)="onChangeFirstPatient()"
                                     [validations]="getValidationMessages().IPDNo"></airmid-textbox>
-
+                        
                                 <airmid-textbox fxFlex label="Search First Name" formControlName="F_Name"
-                                    [formGroup]="_BrowsSalesBillService.SalesPatientForm" (keyup)="onChangeFirst()"
+                                    [formGroup]="_BrowsSalesBillService.SalesPatientForm" (keyup)="onChangeFirstPatient()"
                                     [validations]="getValidationMessages().F_Name"></airmid-textbox>
-
-
-                                <airmid-textbox fxFlex label="Search First Name" formControlName="M_Name"
-                                    [formGroup]="_BrowsSalesBillService.SalesPatientForm" (keyup)="onChangeFirst()"
+                        
+                                <airmid-textbox fxFlex label="Search Middle Name" formControlName="M_Name"
+                                    [formGroup]="_BrowsSalesBillService.SalesPatientForm" (keyup)="onChangeFirstPatient()"
                                     [validations]="getValidationMessages().M_Name"></airmid-textbox>
-
-                                <airmid-textbox fxFlex label="Search Middle Name" formControlName="L_Name"
-                                    [formGroup]="_BrowsSalesBillService.SalesPatientForm" (keyup)="onChangeFirst()"
+                        
+                                <airmid-textbox fxFlex label="Search Last Name" formControlName="L_Name"
+                                    [formGroup]="_BrowsSalesBillService.SalesPatientForm" (keyup)="onChangeFirstPatient()"
                                     [validations]="getValidationMessages().L_Name"></airmid-textbox>
-
-
+                        
+                        
+                        
                                 <div class="slide-toggle mb-2">
-                                    <mat-slide-toggle name="IsDischarge" (change)="onChangeIsactive($event)"
-                                        formControlName="IsDischarge" [(ngModel)]="isChecked">
+                                    <mat-slide-toggle name="IsDischarge" (change)="onChangeFirstPatient()" formControlName="IsDischarge"
+                                        [(ngModel)]="isChecked">
                                         IsDischarge
                                     </mat-slide-toggle>
                                 </div>
-
-
+                        
+                        
                             </form>
                         </ng-container>
                     </airmid-table>
