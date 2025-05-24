@@ -253,7 +253,6 @@ export class NewOPListComponent implements OnInit {
     getWhatsappshareBill(Id) { }
 
     viewgetOPPayemntPdf(data, status) {
-        debugger
         if (status == true)
             this.commonService.Onprint("PaymentId", data, "OPPaymentReceipt");
         else
@@ -274,9 +273,7 @@ export class NewOPListComponent implements OnInit {
 
 
     OngetRecord(element, m) {
-        console.log(element)
-       
-        console.log('Third action clicked for:', element);
+      console.log('Third action clicked for:', element);
         if (m == "Bill Print")
             this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
         else if (m == "Bill Print-Package Info")
@@ -299,7 +296,6 @@ export class NewOPListComponent implements OnInit {
         PatientHeaderObj['CompanyName'] = contact.companyName;
         PatientHeaderObj['NetPayAmount'] = contact.netPayableAmt;
         this.vMobileNo = contact.mobileNo;
-
 
         const dialogRef = this._matDialog.open(NewSettlementComponent,
             {

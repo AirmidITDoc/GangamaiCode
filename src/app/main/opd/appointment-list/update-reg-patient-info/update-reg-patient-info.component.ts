@@ -107,10 +107,6 @@ export class UpdateRegPatientInfoComponent {
 
   }
   ngOnInit(): void {
-
-  
-     console.log(this.data)
-   
       if ((this.data.value?? 0) > 0) {
       setTimeout(() => {
           this._AppointmentlistService.getRegistraionById(this.data.value).subscribe((response) => {

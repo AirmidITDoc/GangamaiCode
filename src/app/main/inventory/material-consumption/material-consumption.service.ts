@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,16 +16,16 @@ export class MaterialConsumptionService {
 
   constructor(
     public _httpClient: HttpClient, public _httpClient1: ApiCaller,
-    private _formBuilder: UntypedFormBuilder
+    private _formBuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService, private accountService: AuthenticationService,
   ) { 
-    this.userFormGroup = this.createUserForm();
-    this.SearchGroup= this.createSearchFrom();
-    this.FinalMaterialForm = this.createfinalform();
+    // this.userFormGroup = this.createUserForm();
+    // this.SearchGroup= this.createSearchFrom();
+    // this.FinalMaterialForm = this.createfinalform();
   }
 
   createSearchFrom() {
     return this._formBuilder.group({
-      ToStoreId: ['2'],
+      ToStoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       fromDate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
     });
@@ -31,7 +33,7 @@ export class MaterialConsumptionService {
   
   createUserForm() {
     return this._formBuilder.group({
-      FromStoreId: ['2'],
+      FromStoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       // BatchNO: [''],
       // ItemName:[''],
       // BalQty:[''],

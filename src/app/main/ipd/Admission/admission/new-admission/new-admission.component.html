@@ -141,7 +141,7 @@
                                         <airmid-dropdown label="StateId" formControlName="StateId" [formGroup]="personalFormGroup"
                                         [value]="registerObj?.stateId" [validations]="getValidationMessages().stateId"
                                          ValueField="stateId" TextField="stateName" (selectionChange)="onChangestate($event)"
-                                          ApiUrl="StateMaster/get-state">
+                                          ApiUrl="StateMaster/get-state"  [readonly]="true">
                                        </airmid-dropdown>
                                     </div>
 
@@ -149,7 +149,7 @@
                                         <airmid-dropdown label="Country" formControlName="CountryId"
                                             [value]="registerObj?.countryId" [formGroup]="personalFormGroup"
                                             [disabled]="true" [validations]="getValidationMessages().countryId"
-                                            #ddlCountry [mode]="autocompleteModecountry"> </airmid-dropdown>
+                                            #ddlCountry [mode]="autocompleteModecountry"  [readonly]="true"> </airmid-dropdown>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">

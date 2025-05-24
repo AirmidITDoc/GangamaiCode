@@ -23,21 +23,20 @@ import Swal from 'sweetalert2';
 })
 export class PhoneappointmentComponent implements OnInit {
     myFilterform: FormGroup;
-
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    autocompleteModedeptdoc: string = "ConDoctor";
+   
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
-    DoctorId = "0";
-    autocompleteModedeptdoc: string = "ConDoctor";
+     DoctorId = "0";
     f_name:any = "" 
     l_name:any="" 
+     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
     @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
     @ViewChild('actionsflgBillNo') actionsflgBillNo!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
-    
         allfilters = [
             { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -88,9 +87,6 @@ export class PhoneappointmentComponent implements OnInit {
     ngOnInit(): void {
         this.myFilterform = this._PhoneAppointListService.filterForm();
     }
-
-
-    changeStatus(status: any) { }
     onChangeStartDate(value) {
         this.gridConfig.filters[3].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }
@@ -98,8 +94,6 @@ export class PhoneappointmentComponent implements OnInit {
         this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }
 
-
-    
 Clearfilter(event) {
     console.log(event)
     if (event == 'FirstName')
@@ -185,11 +179,7 @@ getfilterdata(){
             confirmButtonText: "Yes, Cancel it!"
         }).then((flag) => {
             if (flag.isConfirmed) {
-
-                // let s = {
-                //     phoneAppId: data.phoneAppId
-                // }
-                this._PhoneAppointListService.phoneMasterCancle(data.phoneAppId).subscribe((response: any) => {
+            this._PhoneAppointListService.phoneMasterCancle(data.phoneAppId).subscribe((response: any) => {
                     this.toastr.success(response.message);
                     this.grid.bindGridData();
                 });

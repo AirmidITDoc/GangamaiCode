@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormGroup, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -59,26 +59,26 @@ export class AdmissionService {
 
     createPesonalForm() {
         return this._formBuilder.group({
-            RegId: [0],
-            RegNo: "0",
+            RegId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            RegNo:['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
             PrefixId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             FirstName: ['', [
                 Validators.required,
-                // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+                Validators.maxLength(50),
                 Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             MiddleName: ['', [
-                //  Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+                Validators.maxLength(50),
                 Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             LastName: ['', [
                 Validators.required,
-                // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+                   Validators.maxLength(50),
                 Validators.pattern("^[A-Za-z/() ]*$")
             ]],
-            GenderId: new FormControl('', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]),
-            Address: '',
-            DateOfBirth: [(new Date()).toISOString()],
+            GenderId: new FormControl(0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]),
+            Address:['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(150)]],
+            DateOfBirth:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
             Age: ['0'],
             AgeYear: ['0', [
                Validators.maxLength(3),
@@ -102,17 +102,17 @@ export class AdmissionService {
             ]],
 
             panCardNo: '',
-            MaritalStatusId:0,
-            ReligionId: 0,
-            AreaId: 0,
+            MaritalStatusId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            ReligionId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            AreaId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             CityId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             City: [''],
             StateId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             CountryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             IsCharity: false,
             IsSeniorCitizen: false,
-            AddedBy: this.accountService.currentUserValue.userId,
-            updatedBy:this.accountService.currentUserValue.userId,
+            AddedBy:[this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+            updatedBy:[this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
             RegDate: [(new Date()).toISOString()],
             RegTime: [(new Date()).toISOString()],
             Photo: [''],
@@ -122,19 +122,19 @@ export class AdmissionService {
     // this.accountService.currentUserValue.user.unitId
     createAdmissionForm() {
         return this._formBuilder.group({
-            AdmissionId: 0,
-            RegId: 0,
+            AdmissionId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            RegId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             AdmissionDate: [(new Date()).toISOString()],
             AdmissionTime: [(new Date()).toISOString()],
             PatientTypeId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            hospitalId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            hospitalId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             DocNameId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            RefDocNameId: 0,
+            RefDocNameId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             DischargeDate: "1900-01-01",
             DischargeTime: "1900-01-01T11:24:02.655Z",
             IsDischarged: 0,
             IsBillGenerated: 0,
-            CompanyId: 0,
+            CompanyId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             TariffId:[1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             ClassId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             wardId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -153,15 +153,15 @@ export class AdmissionService {
             Validators.maxLength(10),
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
             ]],
-            RelationshipId: 0,
-            AddedBy:this.accountService.currentUserValue.userId,
+            RelationshipId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            AddedBy:[this.accountService.currentUserValue.userId,[this._FormvalidationserviceService.onlyNumberValidator()]],
             IsMlc: [false],
             MotherName: "",
-            AdmittedDoctor1:0,// [0, [Validators.required]],
-            AdmittedDoctor2: 0,
-            RefByTypeId: 0,
+            AdmittedDoctor1:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            AdmittedDoctor2:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            RefByTypeId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             RefByName: 0,
-            SubTpaComId: 0,
+            SubTpaComId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             PolicyNo: "",
             AprovAmount: 0,
             compDOd: [(new Date()).toISOString()],
@@ -267,10 +267,5 @@ export class AdmissionService {
     }
 }
 
+import { AbstractControl, ValidationErrors } from '@angular/forms';
 
-// function notEmptyOrZeroValidator(): any {
-//     return (control: AbstractControl): ValidationErrors | null => {
-//         const value = control.value;
-//         return value > 0 ? null : { greaterThanZero: { value: value } };
-//       };
-// }

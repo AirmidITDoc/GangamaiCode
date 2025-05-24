@@ -142,12 +142,7 @@ export class NewAppointmentComponent implements OnInit {
         private _FormvalidationserviceService: FormvalidationserviceService,
         public toastr: ToastrService, @Inject(MAT_DIALOG_DATA) public data: any
 
-    ) {
-
-console.log(this.accountService.currentUserValue.user.storeId)
-console.log(this.accountService.currentUserValue.user.unitId)
-// console.log(this.accountService.currentUserValue.user.storeId)
-    }
+    ) {}
     ngOnInit(): void {
 
         this.personalFormGroup = this.createPesonalForm();
@@ -177,7 +172,6 @@ console.log(this.accountService.currentUserValue.user.unitId)
             this.Patientnewold = 1;
 
             this.personalFormGroup = this.createPesonalForm();
-
             this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
             // // this.Regdisplay = false;
             // this.showtable = false;
@@ -224,9 +218,7 @@ console.log(this.accountService.currentUserValue.user.unitId)
             this.VisitFormGroup.get('SubCompanyId').updateValueAndValidity();
             this.patienttype = 1;
         }
-
-
-    }
+        }
 
 
     getregdetails() {
@@ -427,8 +419,6 @@ console.log(this.accountService.currentUserValue.user.unitId)
     }
 
     OnsaveNewRegister() {
-        console.log(this.personalFormGroup.value)
-        debugger
         this.personalFormGroup.get("RegId").setValue(0)
         this.VisitFormGroup.get("regId").setValue(0)
         if (this.vPhoneAppId)
@@ -464,8 +454,6 @@ console.log(this.accountService.currentUserValue.user.unitId)
 
 
     }
-
-
 
     chkHealthcard(event) {
         if (event.checked) {
@@ -657,28 +645,26 @@ console.log(this.accountService.currentUserValue.user.unitId)
 
     createPesonalForm() {
         return this._formBuilder.group({
-            RegId: [0],
-            RegNo: "0",
+            RegId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            RegNo:['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
             PrefixId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             FirstName: ['', [
                 Validators.required,
-                // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"), 
+               Validators.maxLength(50),
                 Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             MiddleName: ['', [
-                // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
-                Validators.pattern("^[A-Za-z/() ]*$")
+              Validators.maxLength(50),
             ]],
             LastName: ['', [
                 Validators.required,
-                // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+               Validators.maxLength(50),
                 Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             // GenderId: new FormControl('', [Validators.required, this._FormvalidationserviceService.dropdownvalidation()]),
-            GenderId: new FormControl('', [Validators.required]),
-
-            Address: '',
-            DateOfBirth: [(new Date()).toISOString()],
+            GenderId: new FormControl(0, [Validators.required]),
+            Address:['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(150)]],
+              DateOfBirth:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],// [(new Date()).toISOString()],
             Age: ['0'],
             AgeYear: ['', [
                 // Validators.required,
@@ -705,17 +691,17 @@ console.log(this.accountService.currentUserValue.user.unitId)
             ]],
 
             panCardNo: '',
-            MaritalStatusId: 0,
-            ReligionId: 0,
-            AreaId: 0,
+            MaritalStatusId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            ReligionId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            AreaId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             CityId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             City: [''],
             StateId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             CountryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             IsCharity: false,
             IsSeniorCitizen: false,
-            AddedBy: this.accountService.currentUserValue.userId,
-            updatedBy: this.accountService.currentUserValue.userId,
+            AddedBy:[this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+            updatedBy:[this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
             RegDate: [(new Date()).toISOString()],
             RegTime: [(new Date()).toISOString()],
             Photo: [''],

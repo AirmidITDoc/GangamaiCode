@@ -31,7 +31,7 @@ export class MaterialConsumptionPatientwiseComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     // @ViewChild('grid') grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
-
+    autocompleteModedeptdoc: string = "ConDoctor";
     hasSelectedContacts: boolean;
     autocompleteModestore: string = "Store";
 

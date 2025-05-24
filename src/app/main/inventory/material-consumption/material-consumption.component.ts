@@ -32,15 +32,21 @@ export class MaterialConsumptionComponent implements OnInit {
     autocompletestore: string = "Store";
     gridConfig1: gridModel = new gridModel();
     isShowDetailTable: boolean = false;
-     ToStoreId="0"
-        StoreId="0"
+    StoreId=this.accountService.currentUserValue.user.storeId
+ngOnInit(): void {this.myFilterform = this._MaterialConsumptionService.createSearchFrom();}
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('Status') Status!: TemplateRef<any>;
+
  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
+  ngAfterViewInit() {
+         this.gridConfig.columnsList.find(col => col.key === 'admId')!.template = this.Status;
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+     }
  allcolumns = [
     { heading: "-", key: "admId", sort: true, align: 'left', type: gridColumnTypes.template , width: 30},
     { heading: "DateTime", key: "consumptionTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
@@ -54,40 +60,24 @@ export class MaterialConsumptionComponent implements OnInit {
     }
      ]
 
-  ngAfterViewInit() {
-         this.gridConfig.columnsList.find(col => col.key === 'admId')!.template = this.Status;
-        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-     }
-
-
     gridConfig: gridModel = {
-        apiUrl: "MaterialConsumption/MaterialConsumptionList",
-        columnsList:this.allcolumns,
-        sortField: "materialConsumptionId",
-        sortOrder: 0,
-        filters: [
-            { fieldName: "ToStoreId", fieldValue: this.StoreId, opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: "2025-01-01", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals }
-        ]
-    }
-   
+       apiUrl: "MaterialConsumption/MaterialConsumptionList",
+       columnsList: this.allcolumns,
+       sortField: "MaterialConsumptionId",
+       sortOrder: 0,
+       filters: [{ fieldName: "ToStoreId", fieldValue: this.StoreId, opType: OperatorComparer.Equals },
+                    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals }
+       ]
+     }
    
     constructor(
         public _MaterialConsumptionService: MaterialConsumptionService, public _formBuilder: UntypedFormBuilder,
-        public toastr: ToastrService, public _matDialog: MatDialog,public datePipe: DatePipe,
+        public toastr: ToastrService, public _matDialog: MatDialog,public datePipe: DatePipe, private accountService: AuthenticationService,
     ) { }
 
-    ngOnInit(): void {this.myFilterform = this.filterForm();}
-
-    filterForm(): FormGroup {
-        return this._formBuilder.group({
-            ToStoreId: [2],
-            fromDate: [(new Date()).toISOString()],
-            enddate: [(new Date()).toISOString()],
-
-        });
-    }
+    
+  
 
     NewMatrialCon() {
         const dialogRef = this._matDialog.open(NewMaterialConsumptionComponent,
@@ -99,8 +89,6 @@ export class MaterialConsumptionComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
             this.isShowDetailTable = false;
-
-            this.grid.gridConfig=this.gridConfig
             this.grid.bindGridData();
         });
     }
@@ -144,21 +132,20 @@ export class MaterialConsumptionComponent implements OnInit {
         });
     }
 
-
-      ListView1(value) {
-            if (value.value !== 0)
-                this.StoreId = value.value
-            else
-                this.StoreId = "0"
-            this.onChangeFirst(value);
-        }
+ListView(value) {
+    if (value.value !== 0)
+        this.StoreId = value.value
+      else
+        this.StoreId = "0"
+   this.onChangeFirst(value);
+  }
        
         onChangeFirst(value) {
             debugger
             this.isShowDetailTable = false;
             this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
             this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
-            this.ToStoreId = this.myFilterform.get("ToStoreId").value || this.StoreId
+            this.StoreId = this.myFilterform.get("ToStoreId").value || this.StoreId
            
             this.getfilterdata();
         }
@@ -168,11 +155,11 @@ export class MaterialConsumptionComponent implements OnInit {
             this.gridConfig = {
                 apiUrl: "MaterialConsumption/MaterialConsumptionList",
                 columnsList:this.allcolumns,
-                sortField: "materialConsumptionId",
+                sortField: "MaterialConsumptionId",
                 sortOrder: 0,
                 filters: [
-                    { fieldName: "ToStoreId", fieldValue: this.ToStoreId, opType: OperatorComparer.Equals },
-                    { fieldName: "From_Dt", fieldValue: "2025-01-01", opType: OperatorComparer.Equals },
+                    { fieldName: "ToStoreId", fieldValue:this.StoreId, opType: OperatorComparer.Equals },
+                    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                      { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals }
                 ],
                 row: 25

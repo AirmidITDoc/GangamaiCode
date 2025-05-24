@@ -16,19 +16,58 @@ export class FormvalidationserviceService {
   }
 
   notUndefinedValidator(): any {
-    // if (control.value === undefined) {
-    //   return { 'undefinedValue': true };
-    // }
-    // return null;
-
-
-    return (control: AbstractControl): ValidationErrors | null => {
+return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
       return value == undefined ? null : { undefinedValue: { value: value } };
     };
 
   }
 
+//   onlyNumberValidator(): any {
+// debugger
+//     return (control: AbstractControl): ValidationErrors | null => {
+//       const value = control.value;
+//       return typeof value === 'number' && !isNaN(value) ? null : { onlyNumber: true };
+//     };
+
+//   }
+
+ 
+    onlyNumberValidator(): any{
+   return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+      if (value === null || value === '') return null;
+    return /^[0-9]+$/.test(value) ? null : { invalidNumber: true };
+    };
+  }
+
+
+  nonNegativeValidator(): any {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      return typeof value === 'number' && value >= 0 ? null : { nonNegativeNumber: true };
+    };
+  }
+  notBlankValidator(): any {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value?.trim();
+      return value ? null : { notBlank: true };
+    };
+  }
+
+  allowEmptyStringValidator(): any {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      return value !== null && value !== undefined ? null : { requiredValue: true };
+    };
+  }
+
+ validDateValidator():any {
+ return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+    return !isNaN(Date.parse(value)) ? null : { invalidDate: true };
+    };
+}
   dropdownvalidation(): any {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
@@ -73,8 +112,8 @@ export class FormvalidationserviceService {
         value.toString().trim() === '0'
       ) {
         return { invalidInput: true };
-      }else
-      return null;
+      } else
+        return null;
     }
   }
 }

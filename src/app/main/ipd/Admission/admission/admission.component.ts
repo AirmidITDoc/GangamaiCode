@@ -130,9 +130,7 @@ export class AdmissionComponent implements OnInit {
 
     this.searchFormGroup = this.createSearchForm();
     this.myFilterform = this._AdmissionService.filterForm();
-    // this.fromDate ="1900-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    // this.toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
-  
+   
    // menu Button List
    this.menuActions.push("Bill");
    this.menuActions.push("Bed Transfer");

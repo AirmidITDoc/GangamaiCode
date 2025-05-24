@@ -259,24 +259,6 @@ export class NewIndentComponent implements OnInit {
       this.StoreFrom.get("tIndentDetails").setValue(InsertIndentDetObj)
       console.log(this.StoreFrom.value)
 
-      // let submitData = {
-      //   "indentId":this.IndentId,
-      //   // "indentNo": "",
-      //   "indentDate": this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
-      //   "indentTime": this.datePipe.transform(this.dateTimeObj.date, 'shortTime'),
-      //   "fromStoreId": this.StoreFrom.get('FromStoreId').value,
-      //   "toStoreId": this.StoreFrom.get('ToStoreId').value,
-      //   "isdeleted": 0,
-      //   "isverify": false,
-      //   "isclosed": false,
-      //   "comments": this.IndentForm.get("Remark").value || "",
-      //   "tIndentDetails": InsertIndentDetObj
-      // };
-
-      // console.log(submitData);
-
-
-
       this._IndentService.InsertIndentSave(this.StoreFrom.value).subscribe(response => {
         this.toastr.success(response.message);
         console.log(response)

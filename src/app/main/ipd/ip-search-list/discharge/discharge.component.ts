@@ -20,6 +20,7 @@ import { ConfigService } from 'app/core/services/config.service';
 import { AdmissionPersonlModel, RegInsert } from '../../Admission/admission/admission.component';
 import { InitiateDischargeComponent } from './initiate-discharge/initiate-discharge.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-discharge',
@@ -71,6 +72,7 @@ export class DischargeComponent implements OnInit {
     public toastr: ToastrService,
     public _ConfigService: ConfigService,
     private commonService: PrintserviceService,
+    private _FormvalidationserviceService: FormvalidationserviceService,
     private accountService: AuthenticationService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
@@ -143,10 +145,10 @@ this.dischargeTypeId=event.value
       dischargeTime: [(new Date()).toISOString()],
       dischargeTypeId: ['', [Validators.required, notEmptyOrZeroValidator()]],
       dischargedDocId: ['', [Validators.required, notEmptyOrZeroValidator()]],
-      dischargedRmoid: 0,
-      modeOfDischargeId: 0,
-      addedBy: this.accountService.currentUserValue.userId,
-      modifiedBy: this.accountService.currentUserValue.userId,
+      dischargedRmoid: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      modeOfDischargeId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      addedBy:[this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+      modifiedBy:[this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
     });
   }
 

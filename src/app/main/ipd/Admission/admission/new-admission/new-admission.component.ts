@@ -120,7 +120,7 @@ export class NewAdmissionComponent implements OnInit {
     this.searchFormGroup = this.createSearchForm();
     this.personalFormGroup.markAllAsTouched();
     this.admissionFormGroup.markAllAsTouched();
-   this.searchFormGroup.markAllAsTouched();
+    this.searchFormGroup.markAllAsTouched();
 
     if (this.AdmissionId)
       this.searchFormGroup.get("regRadio").setValue("registrered")
@@ -250,7 +250,7 @@ export class NewAdmissionComponent implements OnInit {
             }
           }
         }
-         if (this.searchFormGroup.invalid) {
+        if (this.searchFormGroup.invalid) {
           for (const controlName in this.searchFormGroup.controls) {
             if (this.searchFormGroup.controls[controlName].invalid) {
               invalidFields.push(`Hospital Form: ${controlName}`);
@@ -309,27 +309,47 @@ export class NewAdmissionComponent implements OnInit {
       });
       return;
     }
-    let submitData = {
-      "AdmissionReg": this.personalFormGroup.value,
-      "ADMISSION": this.admissionFormGroup.value
-    };
-    console.log(submitData);
-    if (this.searchFormGroup.get('regRadio').value == "registration" && this.AdmissionId == 0) {
-      this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
-        this.getAdmittedPatientCasepaperview(response);
-        this.onClear();
-        this._matDialog.closeAll();
-      });
-    }
-    else {
+
+    console.log(this.admissionFormGroup.value)
+    if (!this.admissionFormGroup.invalid) {
+      let submitData = {
+        "AdmissionReg": this.personalFormGroup.value,
+        "ADMISSION": this.admissionFormGroup.value
+      };
       console.log(submitData);
-      this._AdmissionService.AdmissionRegisteredInsert(submitData).subscribe(response => {
-        this.toastr.success(response.message);
-        this.getAdmittedPatientCasepaperview(response);
-        this.onClear();
-        this._matDialog.closeAll();
-      });
+      if (this.searchFormGroup.get('regRadio').value == "registration" && this.AdmissionId == 0) {
+        this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
+          this.getAdmittedPatientCasepaperview(response);
+          this.onClear();
+          this._matDialog.closeAll();
+        });
+      }
+      else {
+        console.log(submitData);
+        this._AdmissionService.AdmissionRegisteredInsert(submitData).subscribe(response => {
+          this.toastr.success(response.message);
+          this.getAdmittedPatientCasepaperview(response);
+          this.onClear();
+          this._matDialog.closeAll();
+        });
+      }
+    } else {
+      let invalidFields = [];
+      if (this.personalFormGroup.invalid) {
+        for (const controlName in this.personalFormGroup.controls) {
+          if (this.personalFormGroup.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
+        }
+      }
+      if (this.admissionFormGroup.invalid) {
+        for (const controlName in this.admissionFormGroup.controls) { if (this.admissionFormGroup.controls[controlName].invalid) { invalidFields.push(`Admission Form: ${controlName}`); } }
+      }
+
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+      }
+
     }
+
   }
 
 

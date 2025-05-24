@@ -101,20 +101,20 @@ export class BedTransferComponent implements OnInit {
 
   bedsaveForm(): FormGroup {
     return this._formBuilder.group({
-      transferId: 0,
+      transferId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       admissionId: this.registerObj1.admissionId,
       fromDate: [(new Date()).toISOString()],
       fromTime: [(new Date()).toISOString()],
-      fromWardId: this.registerObj1.wardId,
-      fromBedId: this.registerObj1.bedId,
-      fromClassId: this.registerObj1.classId,
+      fromWardId: [this.registerObj1.wardId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      fromBedId:[this.registerObj1.bedId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      fromClassId:[this.registerObj1.classId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       toDate: [(new Date()).toISOString()],
       toTime: [(new Date()).toISOString()],
       toWardId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       toBedId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       toClassId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       remark: "",
-      addedBy:this.accountService.currentUserValue.userId,
+      addedBy:[this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       isCancelled: 0,
       isCancelledBy: 0
     });

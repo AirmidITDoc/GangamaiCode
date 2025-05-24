@@ -169,13 +169,8 @@
                                     </div>
                                     <!-- [mode]="autocompleteModestate" -->
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <!-- <airmid-dropdown label="State" formControlName="StateId" [value]="registerObj?.stateId" [formGroup]="personalFormGroup" [disabled]="true" [validations]="getValidationMessages().stateId" #ddlState
-                                        (selectionChange)="onChangestate($event)"  [mode]="autocompleteModestate">
-                                       </airmid-dropdown> -->
-
-
-                                        <airmid-dropdown label="StateId" formControlName="StateId"
-                                            [formGroup]="personalFormGroup" [value]="registerObj?.stateId"
+                                    <airmid-dropdown label="StateId" formControlName="StateId"
+                                            [formGroup]="personalFormGroup" [value]="registerObj?.stateId" [readonly]="true"
                                             [validations]="getValidationMessages().stateId" ValueField="stateId"
                                             TextField="stateName" (selectionChange)="onChangestate($event)"
                                             ApiUrl="StateMaster/get-state">
@@ -183,7 +178,7 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Country" formControlName="CountryId"
+                                        <airmid-dropdown label="Country" formControlName="CountryId"  [readonly]="true"
                                             [value]="registerObj?.countryId" [formGroup]="personalFormGroup"
                                             [disabled]="true" [validations]="getValidationMessages().countryId"
                                             #ddlCountry [mode]="autocompleteModecountry">

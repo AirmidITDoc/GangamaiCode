@@ -5,39 +5,32 @@ import { RegInsert } from './registration.component';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class RegistrationService {
-
-    myFilterform: FormGroup;
-    mySaveForm: FormGroup;
-    personalFormGroup: FormGroup;
-
     constructor(
         public _httpClient: HttpClient, public _httpClient1: ApiCaller,
-        private _formBuilder: UntypedFormBuilder,
+        private _formBuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService,
          private accountService: AuthenticationService,
         private _loaderService: LoaderService
-    ) {
-        this.myFilterform = this.filterForm();
-        this.personalFormGroup = this.createPesonalForm1();
-    }
+    ) {}
 
     filterForm(): FormGroup {
         return this._formBuilder.group({
-            RegNo: '',
+            RegNo:['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
             FirstName: ['', [
-                //  Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+                   Validators.maxLength(50),
                 Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             LastName: ['', [
-                // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+                    Validators.maxLength(50),
                 Validators.pattern("^[A-Za-z/() ]*$")
             ]],
-            fromDate: [(new Date()).toISOString()],
-            enddate: [(new Date()).toISOString()],
+            fromDate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+            enddate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
             MobileNo:['', [
                 Validators.minLength(10),
                 Validators.maxLength(10),
@@ -48,26 +41,26 @@ export class RegistrationService {
 
     createPesonalForm1() {
         return this._formBuilder.group({
-            RegId: [0],
-            RegNo: "0",
-            PrefixId:[0, [Validators.required, notEmptyOrZeroValidator()]],
+            RegId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            RegNo:['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            PrefixId:[0, [Validators.required,  this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             FirstName: ['', [
                 Validators.required,
-            //    Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+             Validators.maxLength(50),
             Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             MiddleName: ['', [
-            //    Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+           Validators.maxLength(50),
             Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             LastName: ['', [
                 Validators.required,
-                // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+               Validators.maxLength(50),
             Validators.pattern("^[A-Za-z/() ]*$")
             ]],
-            GenderId: new FormControl( [0, [Validators.required,notEmptyOrZeroValidator()]]),
-            Address: '',
-            DateOfBirth: [(new Date()).toISOString()],
+            GenderId: new FormControl( [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]]),
+            Address:['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(150)]],
+            DateOfBirth:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
             Age: ['0'],
             AgeYear: ['0', [
                 // Validators.required,
@@ -92,18 +85,18 @@ export class RegistrationService {
             Validators.pattern("^[0-9]*$")
             ]],
 
-            panCardNo: '',
-            MaritalStatusId:0,
-            ReligionId: 0,
-            AreaId: 0,
-            CityId:[0, [Validators.required, notEmptyOrZeroValidator()]],
+            panCardNo:['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            MaritalStatusId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            ReligionId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            AreaId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            CityId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             City: [''],
-            StateId:  [0, [Validators.required, notEmptyOrZeroValidator()]],
-            CountryId:  [0, [Validators.required,notEmptyOrZeroValidator()]],
+            StateId:  [0, [Validators.required,  this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            CountryId:  [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             IsCharity: false,
             IsSeniorCitizen: false,
-            AddedBy:this.accountService.currentUserValue.userId,
-            updatedBy: this.accountService.currentUserValue.userId,
+            AddedBy: [this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+            updatedBy: [this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
             RegDate: [(new Date()).toISOString()],
             RegTime: [(new Date()).toISOString()],
             Photo: [''],
@@ -113,9 +106,7 @@ export class RegistrationService {
 
     }
     // new Api
-    initializeFormGroup() {
-        // this.createPesonalForm1();
-    }
+    initializeFormGroup() {}
 
     public RegstrationtSaveData(Param: any) {
 
@@ -123,7 +114,6 @@ export class RegistrationService {
         return this._httpClient1.PostData("OutPatient/RegistrationUpdate", Param);
         } else return this._httpClient1.PostData("OutPatient/RegistrationInsert", Param);
     }
-
 
     public deactivateTheStatus(m_data) {
         return this._httpClient1.PostData("OutPatient/RegistrationInsert", m_data);
@@ -134,7 +124,7 @@ export class RegistrationService {
         return this._httpClient1.PostData("OutPatient/RegistrationList", employee)
     }
     populateForm(param) {
-        this.personalFormGroup.patchValue(param);
+        // this.personalFormGroup.patchValue(param);
     }
     populateFormpersonal(param) { }
 
@@ -142,23 +132,13 @@ export class RegistrationService {
         return this._httpClient1.GetData("OutPatient/" + Id);
     }
 
-    
     public getPatientListView(mode) {
         return this._httpClient1.PostData("Report/NewViewReport", mode);
-
     }
-
-    
     public getstateId(Id) {
         return this._httpClient1.GetData("StateMaster/" + Id);
     }
 }
 
 
-function notEmptyOrZeroValidator(): any {
-    return (control: AbstractControl): ValidationErrors | null => {
-        const value = control.value;
-        return value > 0 ? null : { greaterThanZero: { value: value } };
-      };
-}
 // Set NODE_OPTIONS="--max-old-space-size=8192"

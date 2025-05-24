@@ -35,9 +35,6 @@ export class MLCInformationComponent implements OnInit {
   dateValue: any = new Date().toISOString();
   mlcid = 0;
 
-
-  // DetailGiven: any;
-  // Remark: any;
   Mlcdate: any;
   isTimeChanged: boolean = false;
   minDate: Date;

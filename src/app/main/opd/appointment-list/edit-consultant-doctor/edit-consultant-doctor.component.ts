@@ -57,18 +57,17 @@ export class EditConsultantDoctorComponent implements OnInit {
 
   createConsultatDrForm() {
     return this._formBuilder.group({
-        visitId:  this.data.visitId,
-        regId: this.data.regId,
-        consultantDocId:[this.data.doctorId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],// this.data.doctorId,
-        departmentId:  [this.data.departmentId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],//
+        visitId:  [this.data.visitId,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        regId: [this.data.regId,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        consultantDocId:[this.data.doctorId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        departmentId:  [this.data.departmentId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
        
     });
 }
 
   onSubmit() {
     if (this.ConsdrForm.valid) {
-
-      console.log(this.ConsdrForm.value)
+  console.log(this.ConsdrForm.value)
       this._AppointmentlistService.EditConDoctor(this.ConsdrForm.value).subscribe((response) => {
         this.toastr.success(response.message);
         this.onClear(true);
@@ -87,10 +86,7 @@ export class EditConsultantDoctorComponent implements OnInit {
 
   }
   }
-
-
-
-  getValidationMessages() {
+getValidationMessages() {
     return {
       departmentId: [
         { name: "required", Message: "Department Name is required" }

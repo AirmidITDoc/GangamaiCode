@@ -1,29 +1,21 @@
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OPListService {
-  myFilterbillform:FormGroup
-  myFilterpayform:FormGroup
-  myFilterrefundform:FormGroup
-  constructor(public _httpClient: ApiCaller,private _formBuilder: UntypedFormBuilder, public _httpClient1:ApiCaller) {
-    this.myFilterbillform=this.myFilterbillbrowseform();
-    this.myFilterpayform=this.myFilterpaymentbrowseform();
-    this.myFilterrefundform=this.myFilterrefundbrowseform();
-   }
+ constructor(public _httpClient: ApiCaller,private _formBuilder: UntypedFormBuilder, public _httpClient1:ApiCaller, private _FormvalidationserviceService: FormvalidationserviceService) {}
 
-
-  
   myFilterbillbrowseform(): FormGroup {
     return this._formBuilder.group({
      
-      FirstName: ['', [
+      FirstName: ['', [  Validators.maxLength(50),
          Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
       ]],
-      LastName:['', [
+      LastName:['', [  Validators.maxLength(50),
          Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
      ]],
      fromDate: [(new Date()).toISOString()],
@@ -36,14 +28,14 @@ export class OPListService {
   myFilterpaymentbrowseform(): FormGroup {
     return this._formBuilder.group({
      
-      FirstName: ['', [
+      FirstName: ['', [  Validators.maxLength(50),
           Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
       ]],
-      LastName:['', [
+      LastName:['', [  Validators.maxLength(50),
         Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
      ]],
-     fromDate: [(new Date()).toISOString()],
-     enddate: [(new Date()).toISOString()],
+     fromDate: [(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+     enddate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
       PBillNo: '', 
       RegNo: '',
      ReceiptNo: '',
@@ -52,14 +44,14 @@ export class OPListService {
   myFilterrefundbrowseform(): FormGroup {
     return this._formBuilder.group({
      
-      FirstName: ['', [
+      FirstName: ['', [Validators.maxLength(50),
         Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
       ]],
-      LastName:['', [
+      LastName:['', [Validators.maxLength(50),
         Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
      ]],
-     fromDate: [(new Date()).toISOString()],
-     enddate: [(new Date()).toISOString()],
+     fromDate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+     enddate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
       PBillNo: '', 
       RegNo: '',
      ReceiptNo: '',
@@ -70,9 +62,6 @@ export class OPListService {
 public deactivateTheStatus(m_data) {
   return this._httpClient.PostData("VisitDetail", m_data);
 }
-
-
-
 public deactivateTheStatuspayment(m_data) {
   return this._httpClient.PostData("VisitDetail", m_data);
 }

@@ -325,7 +325,7 @@ autocompleteModedeptdoc: string = "ConDoctor";
         },
         {
           "fieldName": "OP_IP_Type",
-          "fieldValue": String(OP_IP_Type),
+          "fieldValue":1,// String(OP_IP_Type),
           "opType": "Equals"
         }
       ],

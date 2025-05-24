@@ -84,14 +84,14 @@
                             </div>
 
                             <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="BalQty" formControlName="BalQty" [(ngModel)]="vBalQty"
+                                <airmid-textbox label="BalQty" formControlName="BalQty" [(ngModel)]="vBalQty"   (keypress)="keyPressAlphanumeric($event)"
                                     [formGroup]="ItemFormGroup" [validations]="getValidationMessages().balqty"
                                     [maxLength]="50">
                                 </airmid-textbox>
                             </div>
 
                             <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="UsedQty" formControlName="UsedQty" [(ngModel)]="vUsedQty"
+                                <airmid-textbox label="UsedQty" formControlName="UsedQty" [(ngModel)]="vUsedQty"   (keypress)="keyPressAlphanumeric($event)"
                                     [formGroup]="ItemFormGroup" [validations]="getValidationMessages().usedqty"
                                     [maxLength]="50">
                                 </airmid-textbox>
@@ -317,7 +317,7 @@
 
                             <mat-form-field appearance="outline" fxFlex="25%">
                                 <mat-label>MRPTotalAmount</mat-label>
-                                <input matInput placeholder="TotalAmount" [(ngModel)]="vMRPTotalAmount"
+                                <input matInput placeholder="TotalAmount" [(ngModel)]="vMRPTotalAmount"   (keypress)="keyPressAlphanumeric($event)"
                                     formControlName="MRPTotalAmount">
                             </mat-form-field>
 

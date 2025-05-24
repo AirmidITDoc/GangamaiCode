@@ -114,6 +114,8 @@ export class NewMaterialConsumptionComponent implements OnInit {
   ngOnInit(): void {
     this.userFormGroup = this._MaterialConsumptionService.createUserForm();
     this.ItemFormGroup=this._MaterialConsumptionService.createItemForm();
+    this.userFormGroup.markAllAsTouched();
+    this.ItemFormGroup.markAllAsTouched();
 
   }
   getDateTime(dateTimeObj) {
@@ -410,7 +412,7 @@ this.ItemFormGroup.get("Remark").reset('')
         HSNcode: item.hsNcode
   
       });
-     
+     this.getBatch()
     }
   
   getSelectedObjIP() { }

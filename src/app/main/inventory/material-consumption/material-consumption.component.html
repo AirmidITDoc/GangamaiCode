@@ -55,13 +55,15 @@
 
                         <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true"
                             formStartControlName="fromDate" formEndControlName="enddate"
-                            [(fromValue)]="gridConfig.filters[0].fieldValue" (dateChange)="ListView1($event)"
+                            [(fromValue)]="gridConfig.filters[0].fieldValue" (dateChange)="onChangeFirst($event)"
                             [(toValue)]="gridConfig.filters[1].fieldValue">
                         </airmid-datepicker>
 
-                        <airmid-dropdown label=" Store Name" formControlName="ToStoreId"
-                            (selectionChange)="ListView1($event)" [formGroup]="myFilterform" [mode]="autocompletestore">
-                        </airmid-dropdown>
+                          <airmid-dropdown label="Store Name" formControlName="ToStoreId"
+                        (selectionChange)="ListView($event)" [formGroup]="myFilterform"
+                        [mode]="autocompletestore">
+                         </airmid-dropdown>
+
                     </form>
                 </ng-container>
             </airmid-table>

@@ -152,8 +152,6 @@ export class RegistrationComponent implements OnInit {
         });
     }
 
-
-
     onChangeFirst() {
         this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
@@ -216,12 +214,8 @@ export class RegistrationComponent implements OnInit {
                 { name: "minLength", Message: "10 digit required." },
                 { name: "maxLength", Message: "More than 10 digits not allowed." }
 
-            ],
-
-        }
+            ], }
     }
-
-
 }
 
 

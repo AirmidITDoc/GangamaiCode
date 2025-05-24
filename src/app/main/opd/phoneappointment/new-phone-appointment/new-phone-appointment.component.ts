@@ -29,22 +29,25 @@ export class NewPhoneAppointmentComponent implements OnInit {
   hasSelectedContacts: boolean;
   @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
   @ViewChild('myButton', { static: true }) myButton: HTMLButtonElement;
-
-  RegId = 0;
-
   screenFromString = 'appointment-form';
+  RegId = 0;
+  phoneAppId: any = 0;
+  timeflag = 0
   submitted = false;
   isChecked = true;
   isTimeChanged: boolean = false;
+  isDatePckrDisabled: boolean = false;
   minDate: Date;
-  phoneAppId: any = 0;
   registerObj = new RegInsert({});
-
-  // New Api
+  dateTimeString: any;
+  phdatetime: any;
   autocompletedepartment: string = "Department";
   autocompleteModedoctor: string = "ConDoctor";
-  dateTimeString: any;
-  timeflag=0
+  @Output() dateTimeEventEmitter = new EventEmitter<{}>();
+  dateTimeControl = new FormControl('');
+  selectedTime: string | null = null;
+
+
   public now: Date = new Date();
   constructor(private _fuseSidebarService: FuseSidebarService,
     public _phoneAppointListService: PhoneAppointListService,
@@ -54,7 +57,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any, private accountService: AuthenticationService,
     public dialogRef: MatDialogRef<NewPhoneAppointmentComponent>,
     public datePipe: DatePipe) {
-     
+
     setInterval(() => {
       this.now = new Date();
       this.dateTimeString = this.now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
@@ -66,7 +69,6 @@ export class NewPhoneAppointmentComponent implements OnInit {
     }, 1);
   }
 
-
   ngOnInit(): void {
 
     this.minDate = new Date();
@@ -76,21 +78,15 @@ export class NewPhoneAppointmentComponent implements OnInit {
     this.searchFormGroup = this.createSearchForm();
   }
 
-
   createSearchForm() {
-    return this.formBuilder.group({
-      RegId: 0,
-     
-    });
+    return this.formBuilder.group({ RegId: 0, });
   }
 
-
   getSelectedObj(obj) {
-  
     this.RegId = obj.value;
-    
+
     if ((this.RegId ?? 0) > 0) {
-  setTimeout(() => {
+      setTimeout(() => {
         this._phoneAppointListService.getRegistraionById(this.RegId).subscribe((response) => {
           this.registerObj = response;
           console.log(response)
@@ -102,32 +98,27 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
   }
 
-
-
-@Output() dateTimeEventEmitter = new EventEmitter<{}>();
-  isDatePckrDisabled: boolean = false;
-phdatetime: any;
   onChangeDate(value) {
     if (value) {
       const dateOfReg = new Date(value);
       let splitDate = dateOfReg.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
       let splitTime = this.phoneappForm.get('phAppDate').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-     this.eventEmitForParent(splitDate[0], splitTime[1]);
+      this.eventEmitForParent(splitDate[0], splitTime[1]);
     }
   }
- 
+
   onChangeTime(event) {
-    this.timeflag=1
+    this.timeflag = 1
     if (event) {
 
       let selectedDate = new Date(this.phoneappForm.get('phAppTime').value);
       let splitDate = selectedDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
       let splitTime = this.phoneappForm.get('phAppTime').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
       this.isTimeChanged = true;
-      this.phdatetime=splitTime[1]
+      this.phdatetime = splitTime[1]
       console.log(this.phdatetime)
       this.eventEmitForParent(splitDate[0], splitTime[1]);
-        }
+    }
   }
 
   eventEmitForParent(actualDate, actualTime) {
@@ -135,71 +126,62 @@ phdatetime: any;
     let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
     this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
   }
-  dateTimeControl = new FormControl('');
-  selectedTime: string | null = null;
+
 
   OnSubmit() {
 
     console.log(this.phoneappForm.value);
-       this.phoneappForm.get('appDate').setValue(this.datePipe.transform(this.phoneappForm.get('appDate').value, 'yyyy-MM-dd'))
-      // this.phoneappForm.get('appTime').setValue(this.datePipe.transform(this.phoneappForm.get('appTime').value, 'hh:mm:ss a'))
-     
-      this.phoneappForm.get('phAppDate').setValue(this.datePipe.transform(this.phoneappForm.get('phAppDate').value, 'yyyy-MM-dd'))
-debugger
-      if (!this.phoneappForm.invalid) {
-     console.log(this.phoneappForm.value);
+    this.phoneappForm.get('appDate').setValue(this.datePipe.transform(this.phoneappForm.get('appDate').value, 'yyyy-MM-dd'))
+    this.phoneappForm.get('phAppDate').setValue(this.datePipe.transform(this.phoneappForm.get('phAppDate').value, 'yyyy-MM-dd'))
+
+    if (!this.phoneappForm.invalid) {
+      console.log(this.phoneappForm.value);
       this._phoneAppointListService.phoneMasterSave(this.phoneappForm.value).subscribe((response) => {
-        console.log(response)
         this.toastr.success(response.message);
         this.onClear(true);
-      }, (error) => {
-        this.toastr.error(error.message);
       });
-    }  else {
+    } else {
       let invalidFields = [];
 
-  if (this.phoneappForm.invalid) {
-          for (const controlName in this.phoneappForm.controls) {
-              if (this.phoneappForm.controls[controlName].invalid) {
-                  invalidFields.push(`phoneapp Form: ${controlName}`);
-              }
+      if (this.phoneappForm.invalid) {
+        for (const controlName in this.phoneappForm.controls) {
+          if (this.phoneappForm.controls[controlName].invalid) {
+            invalidFields.push(`phoneapp Form: ${controlName}`);
           }
+        }
       }
-if (invalidFields.length > 0) {
-          invalidFields.forEach(field => {
-              this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-              );
-          });
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
       }
 
-  }
+    }
   }
 
-  
   Phappcancle(data) {
     this._phoneAppointListService.phoneMasterCancle(data.phoneAppId).subscribe((response: any) => {
       this.toastr.success(response.message);
-      // that.grid.bindGridData();
     });
   }
-  
- 
+
+
   onClear(val: boolean) {
     this.phoneappForm.reset();
     this.dialogRef.close(val);
   }
 
-
   onClose() { this.dialogRef.close(); }
 
   selectChangedepartment(obj: any) {
-    this._phoneAppointListService.getDoctorsByDepartment(obj.value).subscribe((data:any)=>{
-        this.ddlDoctor.options=data;
-        this.ddlDoctor.bindGridAutoComplete();
+    this._phoneAppointListService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
+      this.ddlDoctor.options = data;
+      this.ddlDoctor.bindGridAutoComplete();
     });
   }
 
-  
+
   getValidationMessages() {
 
     return {
@@ -241,29 +223,11 @@ if (invalidFields.length > 0) {
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-        return true;
+      return true;
     } else {
-        event.preventDefault();
-        return false;
-    }
-}
-
-}
-
-export class PhoneschlistMaster {
-  AppDate: Date;
-  Cnt: string;
-
-  /**
-   * Constructor
-   *
-   * @param contact
-   */
-  constructor(PhoneschlistMaster) {
-    {
-      this.AppDate = PhoneschlistMaster.AppDate || '';
-      this.Cnt = PhoneschlistMaster.Cnt || '';
-
+      event.preventDefault();
+      return false;
     }
   }
+
 }

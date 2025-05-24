@@ -19,8 +19,6 @@ import Swal from 'sweetalert2';
     animations: fuseAnimations
 })
 export class NewRegistrationComponent implements OnInit {
-
-
     personalFormGroup: FormGroup;
     searchFormGroup: FormGroup;
 
@@ -31,8 +29,6 @@ export class NewRegistrationComponent implements OnInit {
     submitted = false;
     isRegSearchDisabled: boolean = true;
     Submitflag: boolean = false;
-
-
     newRegSelected: any = 'registration';
     minDate: Date;
     msg: any = [];
@@ -92,8 +88,6 @@ export class NewRegistrationComponent implements OnInit {
     ageDay = 0;
     OnSubmit() {
 
-        console.log(this.registerObj.dateOfBirth)
-
         let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
         if (DateOfBirth1) {
             const todayDate = new Date();
@@ -107,7 +101,7 @@ export class NewRegistrationComponent implements OnInit {
                 (this.ageMonth)--;
                 const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
                 this.ageDay += previousMonth.getDate(); // Days in previous month
-                // this.ageDay = this.ageDay+1
+                
             }
 
             if (this.ageMonth < 0) {
@@ -115,7 +109,7 @@ export class NewRegistrationComponent implements OnInit {
                 this.ageMonth += 12;
             }
         }
-        debugger
+        
         let Bdate = this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd")
         this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
         this.personalFormGroup.get('City').setValue(this.CityName)
@@ -196,16 +190,7 @@ export class NewRegistrationComponent implements OnInit {
     onChangestate(e) {
     }
 
-    // onChangecity(e) {
-    //     debugger
-    //     console.log(e)
-    //     this.ddlState.SetSelection(e.stateId);
-    //     // this.ddlCountry.SetSelection(e.stateId)
-
-    //     // this.ddlCountry.SetSelection(this.personalFormGroup.get("StateId").value)
-
-    // }
-    onChangecity(e) {
+      onChangecity(e) {
         console.log(e)
         this.CityName=e.cityName
         this.registerObj.stateId = e.stateId

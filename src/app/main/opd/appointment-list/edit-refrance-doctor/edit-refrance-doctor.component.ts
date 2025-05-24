@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import Swal from 'sweetalert2';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-edit-refrance-doctor',
@@ -32,7 +33,7 @@ export class EditRefranceDoctorComponent implements OnInit {
   
   constructor(
     public _AppointmentlistService: AppointmentlistService,
-    public _formBuilder: UntypedFormBuilder,
+    public _formBuilder: UntypedFormBuilder,private _FormvalidationserviceService: FormvalidationserviceService,
     public dialogRef: MatDialogRef<EditRefranceDoctorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog:MatDialog,
@@ -43,18 +44,13 @@ export class EditRefranceDoctorComponent implements OnInit {
   ngOnInit(): void {
     this.RefrancedrForm = this.createRefranceDrForm();
       this.RefrancedrForm.patchValue(this.data);
-
-  }
+}
 
     createRefranceDrForm() {
           return this._formBuilder.group({
-              visitId: 0,
-              // regId:this.data.regId,
-              refDocId: ['', [
-                  Validators.required, notEmptyOrZeroValidator()]],
-  
-          });
-      }
+              visitId: [this.data.visitId,[this._FormvalidationserviceService.onlyNumberValidator()]],
+             refDocId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+  });}
   
 
   onSubmit() {
@@ -87,9 +83,7 @@ export class EditRefranceDoctorComponent implements OnInit {
       this.toastr.success(response.message);
       this.onClear(true);
     });
-    
-     
-  }
+    }
 
  
   getValidationMessages() {
@@ -104,7 +98,6 @@ export class EditRefranceDoctorComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-
   onClear(val: boolean) {
     this.RefrancedrForm.reset();
     this.dialogRef.close(val);
@@ -115,13 +108,6 @@ export class EditRefranceDoctorComponent implements OnInit {
   }
   refdocId = 0
   selectChangerefdoc(obj: any) {
-    console.log(obj);
-    this.refdocId = obj
+  this.refdocId = obj
   }
-}
-function notEmptyOrZeroValidator(): any {
-    return (control: AbstractControl): ValidationErrors | null => {
-        const value = control.value;
-        return value > 0 ? null : { greaterThanZero: { value: value } };
-      };
 }

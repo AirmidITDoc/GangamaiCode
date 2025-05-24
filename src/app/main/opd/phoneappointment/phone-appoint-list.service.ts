@@ -3,79 +3,72 @@ import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class PhoneAppointListService {
-    phoneappForm: FormGroup;
-    myFilterform: FormGroup;
-
-    constructor(
-        private _httpClient: ApiCaller,
+       constructor(
+        private _httpClient: ApiCaller,private _FormvalidationserviceService: FormvalidationserviceService,
         private _httpClient1: HttpClient,
         private _formBuilder: UntypedFormBuilder,
           private accountService: AuthenticationService,
-    ) {
-       
-        this.myFilterform = this.filterForm();
-        this.phoneappForm=this.filterForm();
-    }
+    ) {}
 
     filterForm(): FormGroup {
         return this._formBuilder.group({
             FirstName: ['', [
-                // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+             Validators.maxLength(50),
                 Validators.pattern("^[A-Za-z/() ]*$")                
             ]],
             LastName: ['', [
-                // Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+                Validators.maxLength(50),
                 Validators.pattern("^[A-Za-z/() ]*$")
             ]],
-            DoctorId: '',
-            fromDate: [(new Date()).toISOString()],
-            enddate: [(new Date()).toISOString()],
+            DoctorId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            fromDate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+            enddate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
         });
     }
 
-    
-
     createphoneForm(): FormGroup {
         return this._formBuilder.group({
-            phoneAppId: [0],
-            appDate: [(new Date()).toISOString()],
-            appTime: [(new Date()).toISOString()],
+            phoneAppId:  [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            appDate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+            appTime:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
             // seqNo: '',
            firstName: ['', [
                 Validators.required,
-                // Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+                   Validators.maxLength(50),
                 Validators.pattern("^[A-Za-z/() ]*$")
             
             ]],
-            middleName: [''],
-            lastName: ['', [
-                Validators.required,
-                // Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
+            middleName: ['', [
+              Validators.maxLength(50),
                 Validators.pattern("^[A-Za-z/() ]*$")
             ]],
-            address: [''],
+            lastName: ['', [
+                Validators.required,
+                 Validators.maxLength(50),
+                Validators.pattern("^[A-Za-z/() ]*$")
+            ]],
+            address:['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
             mobileNo: ['', [Validators.required,
             Validators.minLength(10),
             Validators.maxLength(10),
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
             ]],
-            phAppDate: [(new Date()).toISOString()],
+            phAppDate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
             phAppTime: [""],
-            departmentId: [0, [Validators.required, notEmptyOrZeroValidator()]],
-            doctorId:[0, [Validators.required, notEmptyOrZeroValidator()]],
-            addedBy:this.accountService.currentUserValue.userId,
-            updatedBy: this.accountService.currentUserValue.userId,
+            departmentId: [0, [Validators.required,  this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            doctorId:[0, [Validators.required,  this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            addedBy: [this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+            updatedBy: [this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
             regNo: ["0"],
 
         });
     }
-
-
 
     public getPhoenappschdulelist() {
         return this._httpClient1.post("Generic/GetByProc?procName=Rtrv_ScheduledPhoneApp", {})
@@ -97,10 +90,7 @@ export class PhoneAppointListService {
 
 
     public phoneMasterCancle(Param: any) {
-        
-    //   return this._httpClient.PostData("PhoneAppointment2/Cancel", Param);
-
-      return this._httpClient.DeleteData("PhoneAppointment2/Cancel?Id=" + Param.toString());
+   return this._httpClient.DeleteData("PhoneAppointment2/Cancel?Id=" + Param.toString());
       }
 
     public getMaster(mode, Id) {
@@ -110,10 +100,4 @@ export class PhoneAppointListService {
     public getRegistraionById(Id) {
         return this._httpClient.GetData("OutPatient/" + Id);
     }
-}
-function notEmptyOrZeroValidator(): any {
-    return (control: AbstractControl): ValidationErrors | null => {
-        const value = control.value;
-        return value > 0 ? null : { greaterThanZero: { value: value } };
-      };
 }

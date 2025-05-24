@@ -130,7 +130,7 @@ export class EditAdmissionComponent implements OnInit {
         AdmissionDate: [(new Date()).toISOString()],
         AdmissionTime: [(new Date()).toISOString()],
         PatientTypeId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        hospitalId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        hospitalId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         DocNameId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         RefDocNameId: 0,
         DischargeDate: "1900-01-01",
