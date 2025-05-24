@@ -17,11 +17,11 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class RelationshipMasterComponent implements OnInit {
+     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    relationshipName: any = "";
     msg: any;
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig: gridModel = {
-        apiUrl: "RelationshipMaster/List",
-        columnsList: [
+
+        allcolumns =  [
             { heading: "Code", key: "relationshipId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "RelationshipName", key: "relationshipName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
@@ -41,20 +41,65 @@ export class RelationshipMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "relationshipId",
-        sortOrder: 0,
-        filters: [
+        ]
+        
+        allfilters =  [
             { fieldName: "relationshipName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+        gridConfig: gridModel = {
+        apiUrl: "RelationshipMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "relationshipId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
+    
 
     constructor(public _relationshipService: RelationshipMasterService, public _matDialog: MatDialog,
         public toastr: ToastrService,) { }
 
 
     ngOnInit(): void { }
+
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'RelationshipNameSearch')
+            this._relationshipService.myformSearch.get('RelationshipNameSearch').setValue("")
+
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.relationshipName = this._relationshipService.myformSearch.get('RelationshipNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._relationshipService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "RelationshipMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "relationshipId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "relationshipName", fieldValue: this.relationshipName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
+
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

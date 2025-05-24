@@ -19,11 +19,11 @@ export class CategoryMasterComponent implements OnInit {
 msg: any;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
-        apiUrl: "VillageMaster/List",
+        apiUrl: "SurgeryCategoryMaster/List",
         columnsList: [
-            { heading: "Code", key: "villageId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "SystemName", key: "villageName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "AddedBy", key: "talukaName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "surgeryCategoryId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "SystemName", key: "surgeryCategoryName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
             //{ heading: "UserName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
@@ -34,7 +34,7 @@ msg: any;
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this._CategoryMasterService.deactivateTheStatus(data.villageId).subscribe((response: any) => {
+                            this._CategoryMasterService.deactivateTheStatus(data.surgeryCategoryId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
@@ -42,7 +42,7 @@ msg: any;
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "search facility",
+        sortField: "SurgeryCategoryId",
         sortOrder: 0,
         filters: [
             { fieldName: "categoryName", fieldValue: "", opType: OperatorComparer.Contains },

@@ -28,7 +28,7 @@ export class BedMasterService {
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
-            roomId: ["",
+            roomId: [0,
                 [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
             isAvailible: true,

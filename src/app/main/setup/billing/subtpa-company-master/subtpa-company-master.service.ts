@@ -21,7 +21,7 @@ export class SubtpaCompanyMasterService {
         return this._formBuilder.group({
            
             subCompanyId: [0],
-            compTypeId: ["",
+            compTypeId: [0,
                 [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
             ],
             companyName: ["",
@@ -37,7 +37,7 @@ export class SubtpaCompanyMasterService {
                 Validators.pattern('^[a-zA-Z0-9 ]*$')
             ],
             city: [
-                "",
+                0,
                 [
                     Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ],

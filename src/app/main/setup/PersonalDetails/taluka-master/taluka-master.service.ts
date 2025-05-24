@@ -21,12 +21,12 @@ export class TalukaMasterService {
     createTalukaForm(): FormGroup {
         return this._formBuilder.group({
             talukaId: [0],
-            talukaName: ["",
+            talukaName: [0,
                [ Validators.required,
                 Validators.pattern('^[a-zA-Z0-9 ]*$')
                ]
             ],
-            cityId: ["",[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            cityId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             isActive:[true,[Validators.required]]
         });
     }
