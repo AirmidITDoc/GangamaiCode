@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, FormGroupName } from '@angular/forms';
+import { FormBuilder, FormGroup, FormGroupName, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
@@ -25,17 +25,18 @@ export class DailyExpensesService {
     return this._formbuild.group({
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
-      expType:'2'
+      expType:'3',
     });
    }
    CreateNewExpenseForm(){
     return this._formbuild.group({ 
-      expenseshead:'',
+      expenseshead:['',[Validators.required]],
       ExpType:'0',
       VoucharNo:'',
-      ExpAmount:'',
+      ExpAmount:['0',[Validators.min(1),Validators.required]],
       Reason:'',
-      PersonName:''
+      PersonName:['',[Validators.required]],
+      UPINO:['',]
     });
    }
 
@@ -70,4 +71,10 @@ export class DailyExpensesService {
     }
     return this._httpClient.post("Administration/SaveMExpensesHeadMaster",data);
    }
+     public getPdfDailyExpenseRpt(ExpId, loader = true) {
+    if(loader){
+      this.loaderService.show()
+    }
+    return this._httpClient.get("Administration/view-VoucharPrint?ExpId="+ ExpId );
+  }
 }

@@ -9,7 +9,9 @@ import { DatePipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { ExpensesHeadMasterComponent } from '../expenses-head-master/expenses-head-master.component';
-import { result } from 'lodash';
+import { debounce, result } from 'lodash';
+import { Validators } from '@angular/forms';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-new-expenses',
@@ -41,7 +43,8 @@ export class NewExpensesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getheadNamelist1();
+    this.getheadNamelist1(); 
+     this._DailyExpensesService.NewExpensesForm.markAllAsTouched();
   }
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -76,7 +79,7 @@ export class NewExpensesComponent implements OnInit {
   getOptionTextExpHead(option) {
     return option && option.HeadName ? option.HeadName : '';
   }
- 
+ vUPINO:any;
   OnSave(){
     if (this.vExpenseshead == '' || this.vExpenseshead == undefined || this.vExpenseshead == null || this.vExpenseshead == '') {
       this.toastr.warning('Please select HeadName', 'Warning !', {
@@ -105,6 +108,21 @@ export class NewExpensesComponent implements OnInit {
       });
       return;
     }
+    debugger
+      if(this.onlineflag && this._DailyExpensesService.NewExpensesForm.get('ExpType').value == '2'){
+        if (this.vUPINO == '' || this.vUPINO == undefined || this.vUPINO == null) {
+          this.toastr.warning('Please enter UPI No', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        } 
+           if (this.vUPINO.length < 4) {
+          this.toastr.warning('Please enter Min 4 and Max 12 digit number', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        }
+    }
  
     let InserExpensesObj={
       "expDate": this.dateTimeObj.date,
@@ -116,17 +134,20 @@ export class NewExpensesComponent implements OnInit {
       "isAddedby":  this._loggedService.currentUserValue.user.id,
       "isCancelled": 0,
       "voucharNo": 0 ,//this._DailyExpensesService.NewExpensesForm.get('VoucharNo').value || '',
-      "expHeadId":this._DailyExpensesService.NewExpensesForm.get('expenseshead').value.ExpHedId || ''
+      "expHeadId":this._DailyExpensesService.NewExpensesForm.get('expenseshead').value.ExpHedId || '',
+      "tranNo": this._DailyExpensesService.NewExpensesForm.get('UPINO').value || 0,
     }  
     let submitData={
       "insert_T_Expense":InserExpensesObj 
     } 
     console.log(submitData)
     this._DailyExpensesService.SaveDailyExpenses(submitData).subscribe(reponse =>{
+      console.log(reponse)
       if(reponse){
         this.toastr.success('Record Saved Successfully.', 'Saved !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
+        this.viewExpenseReport(reponse)
         this.onClose();
       } else {
         this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
@@ -142,6 +163,8 @@ export class NewExpensesComponent implements OnInit {
   }
   onClose(){
     this._matDialog.closeAll();
+    this._DailyExpensesService.NewExpensesForm.reset();
+    this._DailyExpensesService.NewExpensesForm.get('ExpType').setValue('0')
   }
   
   @ViewChild('PersonName') PersonName: ElementRef;
@@ -176,7 +199,7 @@ export class NewExpensesComponent implements OnInit {
   } 
   keyPressCharater(event) {
     const inp = String.fromCharCode(event.keyCode);
-    if (/^[a-zA-Z]*$/.test(inp)) {
+    if (/^[a-zA-Z\s]*$/.test(inp)) {
       return true;
     } else {
       event.preventDefault();
@@ -202,4 +225,40 @@ export class NewExpensesComponent implements OnInit {
         this.getheadNamelist1();
       });
   }
+onlineflag:boolean=false
+    onChangeReg(event) {
+      debugger
+      if (event.value == '2') {
+        this.onlineflag = true; 
+        // this._DailyExpensesService.NewExpensesForm.get('UPINO').setValidators([Validators.required]); 
+        this._DailyExpensesService.NewExpensesForm.get('DoctorID').updateValueAndValidity();
+      } else {
+        this.onlineflag = false;
+        this._DailyExpensesService.NewExpensesForm.get('UPINO').reset();
+        this._DailyExpensesService.NewExpensesForm.get('UPINO').clearValidators();
+        this._DailyExpensesService.NewExpensesForm.get('UPINO').updateValueAndValidity();
+      }
+    }
+
+
+       viewExpenseReport(ExpId) { 
+          debugger  
+            setTimeout(() => { 
+              this._DailyExpensesService.getPdfDailyExpenseRpt(ExpId).subscribe(res => {
+                const dialogRef = this._matDialog.open(PdfviewerComponent,
+                  {
+                    maxWidth: "85vw",
+                    height: '750px',
+                    width: '100%',
+                    data: {
+                      base64: res["base64"] as string,
+                      title: "Daily Expenses Report"
+                    }
+                  });
+                dialogRef.afterClosed().subscribe(result => {  
+                });
+              });
+        
+            }, 100);
+          }
 }

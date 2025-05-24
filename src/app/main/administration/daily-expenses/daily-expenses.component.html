@@ -14,7 +14,7 @@
         </div>  
         <div fxLayout="row" >
             <button mat-raised-button (click)="addNewExpenses()" style="background-color: aliceblue;color: brown;">
-                <mat-icon>add</mat-icon>Add
+                <mat-icon>add</mat-icon>Add Expenses
             </button> 
         </div>
     </mat-toolbar>
@@ -41,12 +41,14 @@
                             <mat-date-range-picker #picker></mat-date-range-picker>
                         </mat-form-field> 
 
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                            <mat-radio-group formControlName="expType" name="expType"
-                                (change)="getDailyExpensesList()"> 
-                                <mat-radio-button value="2">All</mat-radio-button>
+                        <div fxFlexFill fxLayout="row" >
+                            <mat-label style="font-weight: bold;padding: 5px 5px 2px 10px;">Type :</mat-label>
+                            <mat-radio-group formControlName="expType" name="expType" fxLayout="column" 
+                                (change)="getDailyExpensesList()" style="padding: 8px;">   
+                                <mat-radio-button value="3">All</mat-radio-button>
                                 <mat-radio-button value="0">Cash</mat-radio-button>
                                 <mat-radio-button value="1">Cheque</mat-radio-button>
+                                <mat-radio-button value="2">Online</mat-radio-button>
                             </mat-radio-group>
                         </div>
 
@@ -77,6 +79,10 @@
                                 <mat-icon class="pill orange-600 s-16">circle</mat-icon>
                                 <span>: Cheque</span>
                             </div>
+                             <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                                <span>: Online</span>
+                            </div>
                         </div>
                     </div>
                     <mat-table class="table1" matSort [dataSource]="dsDailyExpenses"
@@ -87,10 +93,12 @@
                             class="w-50"> 
                         </mat-header-cell>
                         <mat-cell *matCellDef="let contact" class="w-50">
-                            <mat-icon *ngIf="contact.ExpType == '1'" matTooltip="Cash"
+                            <mat-icon *ngIf="contact.ExpType == '1'" matTooltip="Cheque"
                                 class="pill orange-600 s-16">circle</mat-icon>
-                            <mat-icon *ngIf="contact.ExpType == '0'" matTooltip="Cheque"
+                            <mat-icon *ngIf="contact.ExpType == '0'" matTooltip="Cash"
                                 class="pill green-600 s-16">circle</mat-icon>
+                                  <mat-icon *ngIf="contact.ExpType == '2'" matTooltip="Online"
+                                class="pill blue-600 s-16">circle</mat-icon>
                         </mat-cell>
                     </ng-container>
 
@@ -106,9 +114,9 @@
                     </ng-container>
 
                     <ng-container matColumnDef="HeadName" sticky>
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
                             Head Name</mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200"
+                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250"
                         matTooltip="{{contact.HeadName}}"
                         matTooltipClass="example-tooltip-uppercase"
                         aria-label="Button that shows a red tooltip">
@@ -117,9 +125,9 @@
                     </ng-container>
 
                     <ng-container matColumnDef="PersonName" sticky>
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
                             Person Name</mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200"
+                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250"
                         matTooltip="{{contact.PersonName}}"
                         matTooltipClass="example-tooltip-uppercase"
                         aria-label="Button that shows a red tooltip">
@@ -128,17 +136,17 @@
                     </ng-container>
 
                       <ng-container matColumnDef="ExpAmount">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">
-                            Exp Amount</mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-140">
+                            Expense Amount</mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140">
                             {{contact.ExpAmount | currency:'INR'}}
                         </mat-cell>
                     </ng-container> 
 
                     <ng-container matColumnDef="Narration">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-350">
                             Reason</mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250"
+                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-350"
                         matTooltip="{{contact.Narration}}"
                         matTooltipClass="example-tooltip-uppercase"
                         aria-label="Button that shows a red tooltip">
@@ -147,17 +155,17 @@
                     </ng-container>
 
                     <ng-container matColumnDef="UserName" sticky>
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
-                            UserName</mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                            AddedBy Name</mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                             {{contact.UserName || '-'}}
                         </mat-cell>
                     </ng-container> 
 
                     <ng-container matColumnDef="ExpensesType">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                            Exp Type </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                            Expense Type </mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                             {{contact.ExpensesType || '-'}}
                         </mat-cell>
                     </ng-container>
@@ -173,13 +181,19 @@
 
                     <ng-container matColumnDef="action" stickyEnd>
                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                            class="w-80">
+                            class="w-100">
                             Action
                         </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-80">
-                            <mat-icon matTooltip="Cancel Expenses" (click)="CancelExpenses(contact)"
-                            *ngIf="contact.IsCancelledBy != '1'" >cancel_circle</mat-icon>
-                            <mat-icon matTooltip="Print" *ngIf="contact.IsCancelledBy != '1'">print</mat-icon>
+                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-100"> 
+                        
+                            <button mat-icon-button matTooltip="Cancel Expenses">
+                                <mat-icon (click)="CancelExpenses(contact)" *ngIf="contact.IsCancelledBy != '1'">cancel_circle</mat-icon>
+                            </button>
+                        
+                            <button mat-icon-button matTooltip="Print" *ngIf="contact.IsCancelledBy != '1'"
+                                (click)="viewExpenseReport(contact.ExpID)">
+                                <mat-icon>print</mat-icon>
+                            </button>
                         </mat-cell>
                     </ng-container>
 

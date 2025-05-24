@@ -1,4 +1,4 @@
-<div class="modal-wrapper grid-container"> 
+<div class="modal-wrapper grid-container">
     <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -7,19 +7,18 @@
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                 style="color: white;">account_box
             </mat-icon>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                style="color: white;">
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
                 New Expenses
             </span>
         </div>
 
-        <div fxLayout="row" fxLayoutAlign="end" class="left-icon">  
+        <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
             <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
                 <span class="modal-icon">
                     <mat-icon>close</mat-icon>
                 </span>
             </button>
-        </div> 
+        </div>
     </mat-toolbar>
 
     <div class="modal-body" fusePerfectScrollbar>
@@ -27,10 +26,10 @@
             <div class="center pb-56" style="border-radius: 4px;">
                 <div class="content-card">
                     <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
-    
+
                         <mat-card style="padding: 6px;">
                             <form [formGroup]="_DailyExpensesService.NewExpensesForm">
-                                <div fxLayout="row" fxLayoutGap="6px">
+                                <div fxLayout="row" fxLayoutGap="6px" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" fxFlex="40%">
                                         <mat-label>Expenses Head</mat-label>
                                         <input name="expenseshead" formControlName="expenseshead" matInput required
@@ -44,43 +43,39 @@
                                         </span>
                                         <mat-autocomplete #AutoExphead="matAutocomplete"
                                             [displayWith]="getOptionTextExpHead">
-                                            <mat-option *ngFor="let option of filteredExpenseHead | async" [value]="option">
+                                            <mat-option *ngFor="let option of filteredExpenseHead | async"
+                                                [value]="option">
                                                 {{option.HeadName}}
                                             </mat-option>
                                         </mat-autocomplete>
                                     </mat-form-field>
-    
-                                    <mat-radio-group formControlName="ExpType" name="ExpType" style="padding: 10px;">
-                                        <!-- <mat-label>Type :</mat-label>&nbsp; -->
-                                        <mat-radio-button value="0">Cash</mat-radio-button>
-                                        <mat-radio-button value="1">Cheque</mat-radio-button>
-                                    </mat-radio-group>
-    
-                                    <span style="margin-right: 40px;">
+
+
+                                    <span style="margin-right: 10px;">
                                         <app-common-date [screenFrom]="screenFromString"
                                             (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                                     </span>
-    
+
                                 </div>
                                 <div fxLayout="row" fxLayoutGap="6px">
-    
+
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Person Name</mat-label>
-                                        <input matInput name="PersonName" formControlName="PersonName" required type="text"
-                                            [(ngModel)]="vPersonName" #PersonName (keydown)="onEnterPersonName($event)"
-                                            (keypress)="keyPressCharater($event)">
+                                        <input matInput name="PersonName" formControlName="PersonName" required
+                                            type="text" [(ngModel)]="vPersonName" #PersonName
+                                            (keydown)="onEnterPersonName($event)" (keypress)="keyPressCharater($event)">
                                     </mat-form-field>
                                 </div>
-    
+
                                 <div fxLayout="row" fxLayoutGap="6px">
-    
+
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Expenses Amount</mat-label>
-                                        <input matInput name="ExpAmount" formControlName="ExpAmount" required type="text"
-                                            [(ngModel)]="vExpAmount" (keydown)="onEnterExpAmt($event)" #ExpAmount
-                                            (keypress)="keyPressAlphanumeric($event)">
+                                        <input matInput name="ExpAmount" formControlName="ExpAmount" required
+                                            type="text" [(ngModel)]="vExpAmount" (keydown)="onEnterExpAmt($event)"
+                                            #ExpAmount (keypress)="keyPressAlphanumeric($event)">
                                     </mat-form-field>
-    
+
                                     <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Vouchar No</mat-label>
                                     <input matInput name="VoucharNo" formControlName="VoucharNo" required type="text" 
@@ -88,7 +83,7 @@
                                     (keypress)="keyPressAlphanumeric($event)">
                                 </mat-form-field> -->
                                 </div>
-    
+
                                 <div fxLayout="row" fxLayoutGap="6px">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Reason</mat-label>
@@ -96,26 +91,46 @@
                                             [(ngModel)]="vReason" (keydown)="onEnterReason($event)" #Reason></textarea>
                                     </mat-form-field>
                                 </div>
-    
+
                             </form>
-                        </mat-card> 
+                        </mat-card>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-      <!-- Modal footer -->
-  <div class="modal-footer" class="p-12">
-    <div class="footer-navigation-container" fxLayoutAlign="end">
-    <div class="modal-footer-buttons" fxLayoutGap="6px">
-        <button mat-raised-button (click)="addNewheadExpenses()" style="background-color: aliceblue;color: brown;">
-            <mat-icon>add</mat-icon>Expenses Head
-        </button>
-        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-        <button class="btn btn-primary" (click)="OnSave()">Save</button>
+    <!-- Modal footer -->
+    <div class="modal-footer" class="p-12">
+        <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="space-between"> 
+            <form [formGroup]="_DailyExpensesService.NewExpensesForm" fxLayout="row" fxlayoutGap="10px">
+                <mat-radio-group formControlName="ExpType" name="ExpType" style="padding: 10px;" (change)="onChangeReg($event)">
+                    <!-- <mat-label>Type :</mat-label>&nbsp; -->
+                    <mat-radio-button value="0">Cash Pay</mat-radio-button>
+                    <mat-radio-button value="1">Cheque Pay</mat-radio-button>
+                    <mat-radio-button value="2">Online Pay</mat-radio-button>
+                </mat-radio-group>
+            
+                <mat-form-field appearance="outline" *ngIf="onlineflag" style="margin-right: 300px;">
+                    <mat-label>UPI NO</mat-label>
+                    <input matInput placeholder="UPI Number" formControlName="UPINO" [(ngModel)]="vUPINO" maxlength="12"
+                        minlength="4" type="text" Onlynumber max="999999999999" min="100000000000" autocomplete="off"
+                        (keypress)="keyPressAlphanumeric($event)"
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                        required="required">
+                    <!-- <mat-error class="error"
+                        *ngIf="_DailyExpensesService.NewExpensesForm.get('UPINO').invalid && _DailyExpensesService.NewExpensesForm.get('UPINO').touched">12
+                        digits upi number is required</mat-error> -->
+                </mat-form-field>
+            </form>
+            <div class="modal-footer-buttons" fxLayoutGap="6px">
+                <button mat-raised-button (click)="addNewheadExpenses()"
+                    style="background-color: aliceblue;color: brown;">
+                    <mat-icon>add</mat-icon>Expenses Head
+                </button>
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button class="btn btn-primary" (click)="OnSave()">Save</button>
+            </div> 
+        </div>
     </div>
-    </div>
-  </div>
-
-</div>
+</div> 

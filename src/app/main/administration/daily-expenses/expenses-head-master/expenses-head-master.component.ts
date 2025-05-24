@@ -88,7 +88,7 @@ export class ExpensesHeadMasterComponent implements OnInit {
   }
   keyPressCharater(event) {
     const inp = String.fromCharCode(event.keyCode);
-    if (/^[a-zA-Z]*$/.test(inp)) {
+    if (/^[a-zA-Z\s]*$/.test(inp)) {
       return true;
     } else {
       event.preventDefault();

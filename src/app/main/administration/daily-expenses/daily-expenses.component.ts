@@ -12,6 +12,7 @@ import { MatSort } from '@angular/material/sort';
 import { error } from 'console';
 import { NewExpensesComponent } from './new-expenses/new-expenses.component';
 import Swal from 'sweetalert2';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-daily-expenses',
@@ -139,6 +140,29 @@ export class DailyExpensesComponent implements OnInit {
       this.getDailyExpensesList();
     });
   }
+
+    viewExpenseReport(ExpId) { 
+      debugger 
+        this.sIsLoading = 'loading-data';   
+        setTimeout(() => { 
+          this._DailyExpensesService.getPdfDailyExpenseRpt(ExpId).subscribe(res => {
+            const dialogRef = this._matDialog.open(PdfviewerComponent,
+              {
+                maxWidth: "85vw",
+                height: '750px',
+                width: '100%',
+                data: {
+                  base64: res["base64"] as string,
+                  title: "Daily Expenses Report"
+                }
+              });
+            dialogRef.afterClosed().subscribe(result => { 
+              this.sIsLoading = '';
+            });
+          });
+    
+        }, 100);
+      }
 }
 
 export class DailyExpensesList {
