@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,7 @@ export class CanteenRequestService {
   
   constructor(
     public _formbuilder:UntypedFormBuilder,
-    public _httpClient:HttpClient, public _httpClient1:ApiCaller
+    public _httpClient:HttpClient, public _httpClient1:ApiCaller, private _FormvalidationserviceService: FormvalidationserviceService, private accountService: AuthenticationService,
   )
    { this.MyForm = this.createMyForm(),
      this.SearchMyForm = this.createsearchForm(),
@@ -22,12 +24,12 @@ export class CanteenRequestService {
 
    createMyForm(){
       return this._formbuilder.group({
-        RegID: '',
+        RegID: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         PatientName: '',
-        WardName: 0,
-        StoreId: 2,
+        WardName: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        StoreId:  [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         Op_ip_id: ['1'],
-        AdmissionID: 0,
+        AdmissionID: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       })
     }
     createItemorm(){
@@ -46,9 +48,9 @@ export class CanteenRequestService {
       return this._formbuilder.group({
         start: [(new Date()).toISOString()],
         end: [(new Date()).toISOString()],
-        RegNo:[''],
+        RegNo:['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
         startdate :[(new Date()).toISOString()],
-          enddate :[(new Date()).toISOString()],
+         enddate :[(new Date()).toISOString()],
       })
     }
 

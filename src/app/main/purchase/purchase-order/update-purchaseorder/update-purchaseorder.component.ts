@@ -11,7 +11,6 @@ import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { MatSelect } from '@angular/material/select';
 import { map, startWith } from 'rxjs/operators';
-import { IndentList } from 'app/main/inventory/patient-material-consumption/patient-material-consumption.component';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { fuseAnimations } from '@fuse/animations';
@@ -146,7 +145,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
   // PaymentTerm: any;
   registerObj = new ItemNameList({});
   SupplierObj = new SupplierMaster({});
-  ItemObj: IndentList;
+  // ItemObj: IndentList;
 
   ItemName: any;
   vUOM: any;

@@ -94,12 +94,9 @@ export class NewIndentComponent implements OnInit {
 
   CreateStoreFrom() {
     return this._formBuilder.group({
-      // FromStoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required]],
-      // ToStoreId: ['', [Validators.required]],
+    
       IsUrgent: ['0'],
-      // Remark:[''],
       indentId: this.IndentId,
-      // "indentNo": "",
       IndentDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
       IndentTime: this.datePipe.transform(new Date(), 'shortTime'),
       FromStoreId: [this._loggedService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -129,9 +126,7 @@ export class NewIndentComponent implements OnInit {
       });
       return;
     }
-
-    debugger
-    const selectedItem = this.IndentForm.get('ItemName').value;
+const selectedItem = this.IndentForm.get('ItemName').value;
     const iscekDuplicate = this.dsIndentNameList.data.some(item => item.ItemID == this.IndentForm.get('ItemName').value.itemId)
     if (!iscekDuplicate && this.IndentForm.get("ItemName").value.itemId !== 0) {
       this.dsIndentNameList.data = [];
@@ -253,12 +248,9 @@ export class NewIndentComponent implements OnInit {
     });
 
     if (!this.StoreFrom.invalid) {
-
-      console.log(this.StoreFrom.value)
       this.StoreFrom.get("indentId").setValue(this.IndentId)
       this.StoreFrom.get("tIndentDetails").setValue(InsertIndentDetObj)
-      console.log(this.StoreFrom.value)
-
+    
       this._IndentService.InsertIndentSave(this.StoreFrom.value).subscribe(response => {
         this.toastr.success(response.message);
         console.log(response)

@@ -101,8 +101,6 @@ export class UpdateWorkorderComponent implements OnInit {
     this.WorkorderItemForm.markAllAsTouched();
     this.WorkorderFinalForm.markAllAsTouched();
 
-
-
     if (this.data) {
       // this.registerObj = this.data;
       console.log(this.data)
@@ -228,7 +226,6 @@ export class UpdateWorkorderComponent implements OnInit {
 
       this.chargeslist = this.dsTempItemNameList.data;
 
-debugger
       const formValues = this.WorkorderItemForm.getRawValue() as PurchaseFormModel;
       console.log(formValues)
       if (formValues.ItemName) {
@@ -332,23 +329,7 @@ debugger
       toastClass: 'tostr-tost custom-toast-success',
     });
   }
-  //   calculateTotalAmount() {
-  //     
-  //     if (this.WorkorderItemForm.get("Qty").value > 0 && this.WorkorderItemForm.get("UnitRate").value > 0) {
-  //       // if (this.vQty  && this.vRate) {
-  //       this.vTotalAmount = (parseFloat(this.WorkorderItemForm.get("Qty").value) * parseInt(this.WorkorderItemForm.get("UnitRate").value)).toFixed(2);
-  //       this.vNetAmount = parseFloat(this.vTotalAmount);
-  //     }else{
-  //       this.WorkorderItemForm.get('TotalAmount').setValue(0);
-  //       this.WorkorderItemForm.get('DiscAmt').setValue(0);
-  //       this.WorkorderItemForm.get('GSTAmount').setValue(0);
-  //       this.WorkorderItemForm.get('NetAmount').setValue(0);
-  //     }
-  //     this.calculateDiscperAmount();
-  //      this.calculateGSTType();
-  //   // }
-  // }
-
+ 
   calculateTotalAmount() {
 
     this.validateFormValues();
@@ -490,10 +471,7 @@ debugger
 
     // Update form with calculated values
     form.patchValue({
-      // IGST: type === GSTType.GST_AFTER_DISC ? 0 : values.igst,
-      // CGSTAmount: calculation.cgstAmount.toFixed(2),
-      // SGSTAmount: calculation.sgstAmount.toFixed(2),
-      // IGSTAmount: calculation.igstAmount.toFixed(2),
+     
       GSTAmount: calculation.totalGSTAmount.toFixed(2),
       NetAmount: calculation.netAmount.toFixed(2)
     }, { emitEvent: false });
@@ -519,8 +497,6 @@ debugger
     }
   }
   getCellCalculation(contact, ReceiveQty) {
-debugger
-
 
     if (contact.Qty > 0 && contact.Rate > 0) {
       if (this.GSTTypeName == 'GST After Disc') {
@@ -577,18 +553,7 @@ debugger
       });
       return;
     }
-    // if (this.WorkorderFinalForm.invalid) {
-    //   this.toastr.warning('please check from is invalid', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-    // if ((!this.WorkOrderStoreForm.get("SupplierName").value)) {
-    //   this.toastr.warning('Please enter a SupplierName', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
+   
     console.log(this.WorkOrderStoreForm.value)
     debugger
 if(!this.WorkOrderStoreForm.invalid){

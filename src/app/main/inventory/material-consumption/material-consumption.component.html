@@ -55,7 +55,7 @@
 
                         <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true"
                             formStartControlName="fromDate" formEndControlName="enddate"
-                            [(fromValue)]="gridConfig.filters[0].fieldValue" (dateChange)="onChangeFirst($event)"
+                            [(fromValue)]="gridConfig.filters[0].fieldValue" (dateChange)="ListView($event)"
                             [(toValue)]="gridConfig.filters[1].fieldValue">
                         </airmid-datepicker>
 

@@ -61,7 +61,7 @@ export class IssueToDepartmentComponent implements OnInit {
       }
 
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-@ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
+  @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
  
      allcolumns = [
     
@@ -244,7 +244,7 @@ export class IssueToDepartmentComponent implements OnInit {
         });
     }
 
-    viewgetIndentReportPdf(element) {
+    viewgetIssuetodeptReportPdf(element) {
         console.log(element)
         this.commonService.Onprint("IssueId", element.issueId, "Issutodeptissuewise");
       }

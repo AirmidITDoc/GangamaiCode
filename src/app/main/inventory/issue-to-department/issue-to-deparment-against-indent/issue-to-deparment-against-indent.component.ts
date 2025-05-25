@@ -225,7 +225,7 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
   }
   OnReset() {
     this._matDialog.closeAll();
-    this._IssueToDep.IndentFrom.reset();
+    this.IndentFrom.reset();
   }
 }
 export class IndentList {

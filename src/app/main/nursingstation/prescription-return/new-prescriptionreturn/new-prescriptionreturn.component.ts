@@ -7,7 +7,6 @@ import { HttpClient } from '@angular/common/http';
 import { BatchpopupComponent } from '../batchpopup/batchpopup.component';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { IndentList } from 'app/main/inventory/patient-material-consumption/patient-material-consumption.component';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
@@ -534,4 +533,33 @@ export class NewPrescriptionreturnComponent implements OnInit {
     // }, 100);
   }
 
+}
+export class IndentList {
+  ItemId:any;
+  ItemID:any;
+  ItemName: string;
+  Qty: number;
+  IssQty:number;
+  Bal:number;
+  StoreId:any;
+  StoreName:any;
+  BatchExpDate:any;
+  /**
+   * Constructor
+   *
+   * @param IndentList
+   */
+  constructor(IndentList) {
+    {
+      this.ItemId = IndentList.ItemId || 0;
+        this.ItemID = IndentList.ItemID || 0;
+      this.ItemName = IndentList.ItemName || "";
+      this.Qty = IndentList.Qty || 0;
+      this.IssQty = IndentList.IssQty || 0;
+      this.Bal = IndentList.Bal|| 0;
+      this.StoreId = IndentList.StoreId || 0;
+      this.StoreName =IndentList.StoreName || '';
+      this.BatchExpDate =IndentList.BatchExpDate || '';
+    }
+  }
 }

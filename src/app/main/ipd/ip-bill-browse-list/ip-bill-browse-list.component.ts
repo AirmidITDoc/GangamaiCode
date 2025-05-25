@@ -13,7 +13,6 @@ import { DatePipe } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { SmsEmailTemplateComponent } from 'app/main/shared/componets/sms-email-template/sms-email-template.component';
-import { ViewIPBillComponent } from './view-ip-bill/view-ip-bill.component';
 import * as converter from 'number-to-words';
 import { IPAdvancePaymentComponent, IpPaymentInsert } from '../ip-search-list/ip-advance-payment/ip-advance-payment.component';
 import { AuthenticationService } from 'app/core/services/authentication.service';

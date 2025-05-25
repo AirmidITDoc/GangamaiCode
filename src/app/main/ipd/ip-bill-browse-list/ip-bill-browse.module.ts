@@ -32,7 +32,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { IPBillBrowseListComponent } from './ip-bill-browse-list.component';
-import { ViewIPBillComponent } from './view-ip-bill/view-ip-bill.component';
+
 
 const routes: Routes = [
   { 
@@ -43,8 +43,7 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [
-        IPBillBrowseListComponent,
-        ViewIPBillComponent,
+        IPBillBrowseListComponent
     ],
     imports: [
         CommonModule,

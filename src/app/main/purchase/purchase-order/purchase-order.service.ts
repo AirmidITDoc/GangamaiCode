@@ -18,7 +18,7 @@ export class PurchaseOrderService {
     VALID_GST_RATES: [2.5, 6, 9, 14],
     GST_ERROR_MESSAGE: 'Please enter GST percentage as 2.5%, 6%, 9% or 14%'
   };
-  // userFormGroup: FormGroup;
+  // userFormGroup: FormGroup
   // PurchaseSearchGroup: FormGroup;
   // FinalPurchaseform: FormGroup;
   // StoreFormGroup: FormGroup;
@@ -56,8 +56,8 @@ export class PurchaseOrderService {
     return this._formBuilder.group({
       StoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       SupplierId:  [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      startdate: [new Date().toISOString()],
-      enddate: [new Date().toISOString()],
+      startdate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+      enddate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
       Status: [0],
     });
   }

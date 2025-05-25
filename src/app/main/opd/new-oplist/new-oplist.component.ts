@@ -296,8 +296,7 @@ export class NewOPListComponent implements OnInit {
         PatientHeaderObj['CompanyName'] = contact.companyName;
         PatientHeaderObj['NetPayAmount'] = contact.netPayableAmt;
         this.vMobileNo = contact.mobileNo;
-
-        const dialogRef = this._matDialog.open(NewSettlementComponent,
+        const dialogRef = this._matDialog.open(OpPaymentComponent,
             {
                 maxWidth: "80vw",
                 width: '70%',
@@ -348,23 +347,19 @@ export class NewOPListComponent implements OnInit {
             this.grid.gridConfig = this.gridConfig
             console.log('Tab 1 is selected');
             this.grid.bindGridData();
-
-            //   this.myFilterpayform.reset();
-            //   this.myFilterrefundform.reset();          
+    
         }
         if (event.index === 2) {
             this.grid.gridConfig = this.gridConfig1
             console.log('Tab 2 is selected');
             this.grid.bindGridData();
-            //   this.myFilterbillform.reset();
-            //   this.myFilterrefundform.reset();
+         
         }
         if (event.index === 3) {
             this.grid.gridConfig = this.gridConfig2
             console.log('Tab 3 is selected');
             this.grid.bindGridData();
-            //   this.myFilterbillform.reset();
-            //   this.myFilterpayform.reset();
+         
         }
     }
 
@@ -440,11 +435,7 @@ export class NewOPListComponent implements OnInit {
             { fieldName: "ReceiptNo", fieldValue: this.precptNo, opType: OperatorComparer.Contains }
             ]
         }
-        // this.grid1.gridConfig = this.gridConfig1;
-        // console.log("ssss:",this.grid1.gridConfig)
-
-        // this.grid1.bindGridData();
-
+      
         this.grid1.gridConfig = { ...this.gridConfig1 }; // Use a new object reference
         this.grid1.bindGridData(); // Only refresh the OPPayment grid
 
@@ -492,9 +483,7 @@ export class NewOPListComponent implements OnInit {
                 { fieldName: "Reg_No", fieldValue: this.rregNo, opType: OperatorComparer.Equals }
             ]
         }
-        // this.grid2.gridConfig = this.gridConfig2;
-        // this.grid2.bindGridData();
-        this.grid2.gridConfig = { ...this.gridConfig2 }; // Use a new object reference
+       this.grid2.gridConfig = { ...this.gridConfig2 }; // Use a new object reference
         this.grid2.bindGridData(); // Only refresh the OPRefund grid        
 
     }

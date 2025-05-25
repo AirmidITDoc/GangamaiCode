@@ -359,12 +359,7 @@ export class NewOpeningBalanceComponent implements OnInit {
 
 
     console.log(this.StoreForm.value)
-
-    // this.StoreForm.get("openingBal").setValue(this.StoreForm.value)
-    // this.StoreForm.get("openingTransaction").setValue(openingBalanceParamInsertdetail)
-    // this.StoreForm.get("openingTranItemStock").setValue(insert_Update_OpeningTran_ItemStock_1)
-
-    let submitData = {
+  let submitData = {
       "openingBal": this.StoreForm.value,
       "openingTransaction": openingBalanceParamInsertdetail,
       // "openingTranItemStock": insert_Update_OpeningTran_ItemStock_1
@@ -372,15 +367,14 @@ export class NewOpeningBalanceComponent implements OnInit {
     console.log(submitData);
     this._OpeningBalanceService.InsertOpeningBalSave(submitData).subscribe(response => {
       this.toastr.success(response);
-      // if (response) {
-      //   this.viewgetReportPdf(response)
+      this.viewgetReportPdf(response)
       this._matDialog.closeAll();
-      // }
+      
     });
   }
 
-  viewgetReportPdf(element) {
-    this.commonService.Onprint("OpeningHId", element.openingHId, "OpeningBalance");
+  viewgetReportPdf(openingHId) {
+    this.commonService.Onprint("OpeningHId", openingHId, "OpeningBalance");
   }
 
 

@@ -26,23 +26,16 @@ export class MaterialConsumptionService {
   createSearchFrom() {
     return this._formBuilder.group({
       ToStoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      fromDate: [(new Date()).toISOString()],
-      enddate: [(new Date()).toISOString()],
+      fromDate: [(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+      enddate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
     });
   }
   
   createUserForm() {
     return this._formBuilder.group({
       FromStoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      // BatchNO: [''],
-      // ItemName:[''],
-      // BalQty:[''],
-      // UsedQty:[''],
-      // Rate:[''],
-      // Remark: [''],
-      // ItemID:[''],
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
+     start:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+      end:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
       IsPatientWiseConsumption:[true],
       RegID:[''],
       PatientType:['1']
@@ -59,8 +52,8 @@ export class MaterialConsumptionService {
       Rate:[''],
       Remark: [''],
       ItemID:[''],
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
+      start:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+      end: [(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
      
     });
   }
@@ -68,20 +61,14 @@ export class MaterialConsumptionService {
   createfinalform() {
     return this._formBuilder.group({
       Remark: [''],
-      MRPTotalAmount: [''],
-      PurTotalAmount:[''],
-      LandedTotalAmount:[''],
+      MRPTotalAmount:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]],
+      PurTotalAmount:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]],
+      LandedTotalAmount:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]],
       
     });
   }
  
  
-
-
-  // public getIndentList(Param){
-  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IndentItemList",Param);
-  // }
-
   public MaterialconsSave(Param){
     return this._httpClient1.PostData("MaterialConsumption/InsertEDMX",Param);
   }

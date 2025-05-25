@@ -12,25 +12,14 @@ import { DatePipe } from '@angular/common';
   providedIn: 'root'
 })
 export class WorkOrderService {
-  myFormGroup: FormGroup;
-  NewWorkForm: FormGroup
-  WorkorderItemForm: FormGroup
-  WorkorderFinalForm: FormGroup;
-  WorkOrderStoreForm: FormGroup;
+ 
   GST_VALIDATION: any;
-
-
-  constructor(
+constructor(
     public _formBuilder: UntypedFormBuilder,
     private accountService: AuthenticationService,
-    // public datePipe: DatePipe,
     public _httpClient: HttpClient, public _httpClient1: ApiCaller, private _FormvalidationserviceService: FormvalidationserviceService
   ) {
-    //    this.WorkOrderStoreForm = this.createStoreFrom();
-    //   this.myFormGroup=this.createMyFormGroup();
-    // this.NewWorkForm=this.createNewWorkForm()
-    // this.WorkorderItemForm=this.getWorOrderItemForm()
-    // this.WorkorderFinalForm=this.getWorkOrderFinalForm();
+   
   }
   createStoreFrom() {
     return this._formBuilder.group({
@@ -40,43 +29,11 @@ export class WorkOrderService {
       GSTType: ['16',[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     })
   }
-  // createMyFormGroup(){
-  //   return this._formBuilder.group({
-  //     startdate: [(new Date()).toISOString()],
-  //     enddate: [(new Date()).toISOString()],
-  //     StoreId:'',
-  //     SupplierName:'',
-  //     Id:'',
-  //   })
-  // }
-  // createNewWorkForm(){
-  //   return this._formBuilder.group({
-  //     SupplierName:'',
-  //     ItemName:'',
-  //     ItemID:'',
-  //     Qty:'',
-  //     UnitRate:'',
-  //     TotalAmount:'',
-  //     Disc:'',
-  //     DiscAmt:'',
-  //     GST:'',
-  //     GSTAmount:'',
-  //     NetAmount:'',
-  //     Specification:'',
-  //     Remark:[''],
-  //     FinalTotalAmt:'',
-  //     FinalDiscAmt:'',
-  //     FinalGSTAmt:'',
-  //     FinalNetAmount:''
-  //   })
-  // }
-
+  
 
   getWorOrderItemForm() {
     return this._formBuilder.group({
-      // SupplierName:['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      // GSTType:'16',
-      workId: '',
+    workId: '',
       ItemName: ['', [Validators.required]],
       ItemID: '',
       Qty: [0, [Validators.required]],
@@ -95,48 +52,26 @@ export class WorkOrderService {
 
   getWorkOrderFinalForm() {
     return this._formBuilder.group({
-      // FinalNetAmount:[0, [Validators.required]],
-      // VatAmount:[0],// [Validators.required]],
-      // FinalTotalAmount:[0, [Validators.required]],
-      // GSTAmount:[''],
-      // FinalDiscAmount:[0, [Validators.required]],
-      // Remark:[''],
-
-
+     
       woId: 0,
       date: new Date(),
       time: new Date(),
-      // storeId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      // supplierID: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      // GSTType: '16',
-      totalAmount: 0,
-      vatAmount: 0,
-      discAmount: 0,
-      GSTAmount: 0,
-      netAmount: 0,
+      totalAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]],
+      vatAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]],
+      discAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]],
+      GSTAmount:  [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]],
+      netAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]],
       isclosed: true,
       Remark: "",
-      addedBy: this.accountService.currentUserValue.userId,
-       updatedBy: this.accountService.currentUserValue.userId,
+      addedBy:[this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+       updatedBy:[this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       isCancelled: true,
       isCancelledBy: 0
       // workOrderDetails: ''
     });
 
   }
-  // getWorkOrderFinalForm() {
-  //   return this._formBuilder.group({
-  //     FinalNetAmount:[''],
-  //     VatAmount:[''],
-  //     FinalTotalAmount:[''],
-  //     GSTAmount:[''],
-  //     FinalDiscAmount:[''],
-  //     Remark:[''],
-  //   });
-
-  // }
-
-  initializeFormGroup() {
+    initializeFormGroup() {
     // this.createNewWorkForm();
   }
 
@@ -158,19 +93,12 @@ export class WorkOrderService {
   }
 
   public InsertWorkorderSave(Param) {
-    // console.log(woId)
-    // if (woId > 0) {
-      // return this._httpClient1.PutData("WorkOrder/WorkOrderUpdate" + woId, Param)
-    // } else 
-    return this._httpClient1.PostData("WorkOrder/WorkOrderSave", Param);
+   return this._httpClient1.PostData("WorkOrder/WorkOrderSave", Param);
   }
  
 
   public WorkorderUpdate(Param) {
     return this._httpClient1.PutData("WorkOrder/WorkOrderUpdate", Param)
-  }
-  populateForm(param) {
-    this.NewWorkForm.patchValue(param);
   }
 
   normalizeValues(obj: ItemNameList | PurchaseFormModel): GSTCalculationResult {

@@ -30,8 +30,8 @@ CreateStorForm() {
 }
 createsearchFormGroup(){
     return this._formbuilder.group({
-      startdate: [(new Date()).toISOString()],
-      enddate: [(new Date()).toISOString()],
+      startdate: [(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+      enddate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
       ToStoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     })
   }

@@ -15,6 +15,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import Swal from 'sweetalert2';
 import { FormGroup } from '@angular/forms';
 import { GRNItemResponseType } from 'app/main/purchase/good-receiptnote/new-grn/types';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-new-material-consumption',
@@ -102,7 +103,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
   constructor(
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any,private commonService: PrintserviceService,
     public dialogRef: MatDialogRef<NewMaterialConsumptionComponent>,
     public _loggedService: AuthenticationService,
     public toastr: ToastrService,
@@ -432,7 +433,7 @@ this.ItemFormGroup.get("Remark").reset('')
   }
 
   viewgetMaterialconsumptionReportPdf(MaterialConsumptionId) {
-
+  this.commonService.Onprint("MaterialConsumptionId", MaterialConsumptionId, "NurMaterialConsumption");
   }
   @ViewChild('itemid') itemid: ElementRef;
   @ViewChild('usedQty') usedQty: ElementRef;

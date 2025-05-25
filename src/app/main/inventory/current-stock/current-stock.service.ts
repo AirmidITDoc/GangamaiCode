@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class CurrentStockService {
   BatchExpWiseFrom:FormGroup;
 
   constructor(
-    public _httpClient: HttpClient,
+    public _httpClient: HttpClient,private _FormvalidationserviceService: FormvalidationserviceService,
     public _httpClient1:ApiCaller,
     private _formBuilder: UntypedFormBuilder,
     private accountService: AuthenticationService
@@ -32,9 +33,9 @@ export class CurrentStockService {
 
   createSearchFrom() {
     return this._formBuilder.group({
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
-      StoreId:this.accountService.currentUserValue.user.storeId,
+      start:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+      end:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+      StoreId:[this.accountService.currentUserValue.user.storeId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       ItemCategory:['%'],
       IsDeleted:['2']
     });
@@ -42,25 +43,25 @@ export class CurrentStockService {
   
   createUserForm() {
     return this._formBuilder.group({
-      start: [(new Date()).toISOString()],
-      StoreId:this.accountService.currentUserValue.user.storeId,
+      start:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+      StoreId:[this.accountService.currentUserValue.user.storeId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       ItemCategory:'',      
     });
   }
   createItemWiseFrom(){
     return this._formBuilder.group({
-      startSales: [(new Date()).toISOString()],
-      endSales: [(new Date()).toISOString()],
-      StoreId:this.accountService.currentUserValue.user.storeId,
+      startSales: [(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+      endSales:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+      StoreId:[this.accountService.currentUserValue.user.storeId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       ItemCategory:'',
     })
   }
  
   PurchaseItemWiseFrom(){
     return this._formBuilder.group({
-      laststart: [(new Date()).toISOString()],
-      lastend: [(new Date()).toISOString()],
-      StoreId:this.accountService.currentUserValue.user.storeId,
+      laststart: [(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+      lastend: [(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+      StoreId:[this.accountService.currentUserValue.user.storeId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       ItemCategory:'',
     })
   }
@@ -68,16 +69,16 @@ export class CurrentStockService {
   createItemSummeryFrom() {
     return this._formBuilder.group({
       start: [''],
-      end: [(new Date()).toISOString()],
-      StoreId:this.accountService.currentUserValue.user.storeId,
+      end:  [(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+      StoreId:[this.accountService.currentUserValue.user.storeId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       ItemCategory:'',
     });
   }
   createBatchExpwiseFrom() {
     return this._formBuilder.group({
       start: [''],
-      end: [(new Date()).toISOString()],
-      StoreId:this.accountService.currentUserValue.user.storeId,
+      end:  [(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+      StoreId:[this.accountService.currentUserValue.user.storeId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       ItemCategory:'',
     });
   }

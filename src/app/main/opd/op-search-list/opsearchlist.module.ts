@@ -36,7 +36,6 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { OpdSearchListComponent } from './opd-search-list/opd-search-list.component';
 import { OPSearhlistService } from './op-searhlist.service';
-import { SearchPageComponent } from './search-page/search-page.component';
 import { OPCasepaperComponent } from './op-casepaper/op-casepaper.component';
 import { ViewCasepaperComponent } from './op-casepaper/view-casepaper/view-casepaper.component';
 import { OPAdvanceComponent } from './op-advance/op-advance.component';
@@ -60,8 +59,7 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         OpdSearchListComponent,
-        SearchPageComponent,
-        OPCasepaperComponent,
+         OPCasepaperComponent,
         ViewCasepaperComponent,
         OPAdvanceComponent,
         OPAdvancePaymentComponent,

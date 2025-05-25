@@ -410,21 +410,7 @@ export class IssuTodeptComponent {
   savebtn: boolean = false;
   OnNewSave() {
 
-    // if ((!this.dsNewIssueList3.data.length)) {
-    //   this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-    // if ((this.StoreFrom.get("ToStoreId").value == 0)) {
-    //   this.toastr.warning('Please select TostoreId', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-
     const isChecked = 1// this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
-
 
     if (isChecked) {
       let isertItemdetailsObj = [];
@@ -460,18 +446,7 @@ export class IssuTodeptComponent {
       });
 
       console.log(this.IssueFinalForm.value)
-
-      // this.IssueFinalForm.get("toStoreId").setValue(this.StoreFrom.get("StoreFrom").value)
-      // this.IssueFinalForm.get("toStoreId").setValue(this.StoreFrom.get("StoreFrom").value)
-
-      //   this.IssueFinalForm.get("toStorissueDateeId").setValue(this.datePipe.transform(new Date(), "yyyy-MM-dd") || '1900-01-01')
-
-      console.log(this.IssueFinalForm.value)
-      //  this.IssueFinalForm.get("tIssueToDepartmentDetails").setValue(isertItemdetailsObj)
-      //  this.IssueFinalForm.get("tCurrentStock").setValue(updateissuetoDepartmentStock)
-
-
-      let submitData = {
+          let submitData = {
         issue: {
           "issueId": 0,
           "issueDate": this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
@@ -497,29 +472,15 @@ export class IssuTodeptComponent {
       this._IssueToDep.IssuetodepSave(submitData).subscribe(response => {
         this.toastr.success(response.message);
         console.log(response)
-        if (response) {
-          this.viewgetIssuetodeptReportPdf(response)
+      this.viewgetIssuetodeptReportPdf(response)
           this._matDialog.closeAll();
-        }
-
-      });
+            });
     }
   }
   OnSaveAgaintIndent() {
 
     this.vsaveflag = true;
-    // if ((!this.dsNewIssueList3.data.length)) {
-    //   this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-    // if ((this.StoreFrom.get("ToStoreId").value == 0)) {
-    //   this.toastr.warning('Please select TostoreId', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
+   
     const isChecked = 1//this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
     if (isChecked) {
       // this.savebtn = true;
@@ -614,15 +575,14 @@ export class IssuTodeptComponent {
 
       this._IssueToDep.IssuetodepAgaintIndetSave(submitData).subscribe(response => {
         this.toastr.success(response.message);
-        if (response) {
-          // this.viewgetPurchaseorderReportPdf(response)
+      this.viewgetIssuetodeptReportPdf(response)
           this._matDialog.closeAll();
-        }
-
-      });
+            });
     }
   }
-
+   viewgetIssuetodeptReportPdf(issueId) {
+    this.commonService.Onprint("IssueId", issueId, "Issutodeptissuewise");
+  }
 
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
@@ -632,10 +592,6 @@ export class IssuTodeptComponent {
       event.preventDefault();
       return false;
     }
-  }
-
-  viewgetIssuetodeptReportPdf(element) {
-    this.commonService.Onprint("IssueId", element.issueId, "Issutodeptissuewise");
   }
 
   deleteTableRow(element) {

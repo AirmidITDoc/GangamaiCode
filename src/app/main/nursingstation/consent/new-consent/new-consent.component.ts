@@ -5,7 +5,6 @@ import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { IndentList } from 'app/main/inventory/patient-material-consumption/patient-material-consumption.component';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';

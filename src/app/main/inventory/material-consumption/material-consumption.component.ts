@@ -18,6 +18,7 @@ import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/conf
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
     selector: 'app-material-consumption',
@@ -30,55 +31,56 @@ export class MaterialConsumptionComponent implements OnInit {
     hasSelectedContacts: boolean;
     myFilterform: FormGroup;
     autocompletestore: string = "Store";
-    gridConfig1: gridModel = new gridModel();
-    isShowDetailTable: boolean = false;
-    StoreId=this.accountService.currentUserValue.user.storeId
-ngOnInit(): void {this.myFilterform = this._MaterialConsumptionService.createSearchFrom();}
 
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    @ViewChild('grid1') grid1: AirmidTableComponent;
+    StoreId = "0"
+
+
+    // @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    // @ViewChild('grid1') grid1: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('Status') Status!: TemplateRef<any>;
 
- fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
- toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
-  ngAfterViewInit() {
-         this.gridConfig.columnsList.find(col => col.key === 'admId')!.template = this.Status;
+    ngAfterViewInit() {
+        this.gridConfig.columnsList.find(col => col.key === 'admId')!.template = this.Status;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-     }
- allcolumns = [
-    { heading: "-", key: "admId", sort: true, align: 'left', type: gridColumnTypes.template , width: 30},
-    { heading: "DateTime", key: "consumptionTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
-    { heading: "StoteName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-    { heading: "LandedTotalAmount", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-    {
-        heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
-        template: this.actionButtonTemplate  // Assign ng-template to the column
     }
-     ]
-
+    allcolumns = [
+        { heading: "-", key: "admId", sort: true, align: 'left', type: gridColumnTypes.template, width: 30 },
+        { heading: "DateTime", key: "consumptionTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
+        { heading: "StoteName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "LandedTotalAmount", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+        {
+            heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
+        }
+    ]
+    @ViewChild('grid') grid: AirmidTableComponent;
+    @ViewChild('grid1') grid1: AirmidTableComponent;
     gridConfig: gridModel = {
-       apiUrl: "MaterialConsumption/MaterialConsumptionList",
-       columnsList: this.allcolumns,
-       sortField: "MaterialConsumptionId",
-       sortOrder: 0,
-       filters: [{ fieldName: "ToStoreId", fieldValue: this.StoreId, opType: OperatorComparer.Equals },
-                    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-                     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals }
-       ]
-     }
-   
+        apiUrl: "MaterialConsumption/MaterialConsumptionList",
+        columnsList: this.allcolumns,
+        sortField: "MaterialConsumptionId",
+        sortOrder: 0,
+        filters: [{ fieldName: "ToStoreId", fieldValue: String(this.StoreId), opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals }
+        ]
+    }
+
     constructor(
-        public _MaterialConsumptionService: MaterialConsumptionService, public _formBuilder: UntypedFormBuilder,
-        public toastr: ToastrService, public _matDialog: MatDialog,public datePipe: DatePipe, private accountService: AuthenticationService,
+        public _MaterialConsumptionService: MaterialConsumptionService, public _formBuilder: UntypedFormBuilder, private commonService: PrintserviceService,
+        public toastr: ToastrService, public _matDialog: MatDialog, public datePipe: DatePipe, private accountService: AuthenticationService,
     ) { }
 
-    
-  
+    ngOnInit(): void { this.myFilterform = this._MaterialConsumptionService.createSearchFrom(); }
 
+    gridConfig1: gridModel = new gridModel();
+    isShowDetailTable: boolean = false;
     NewMatrialCon() {
         const dialogRef = this._matDialog.open(NewMaterialConsumptionComponent,
             {
@@ -94,33 +96,33 @@ ngOnInit(): void {this.myFilterform = this._MaterialConsumptionService.createSea
     }
 
     getSelectedRow(row: any): void {
-        
+
         console.log("selectedRow:", row)
-        let materialConsumptionId =row.materialConsumptionId//row.materialConsumptionId;
-    
+        let materialConsumptionId = row.materialConsumptionId//row.materialConsumptionId;
+
         this.gridConfig1 = {
             apiUrl: "MaterialConsumption/MaterialConsumptionDetailsList",
             columnsList: [
-                 { heading: "ItemName", key: "itemName", sort: true, align: 'left',type: gridColumnTypes.template, width: 250 },
-                 { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                 { heading: "BatchExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 100 , type: 8},
-                 { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-                 { heading: "PerUnitPurchase", key: "perUnitPurchaseRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                 { heading: "PerUnitLandedRate", key: "perUnitLandedRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                 { heading: "PerUnitMRPRate", key: "perUnitMRPRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                 { heading: "PurTotalAmt", key: "purTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                 { heading: "LandedTotalAmt", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                 { heading: "MRPTotalAmt", key: "mrpTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                 { heading: "StartDate", key: "startDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
-                 { heading: "EndDate", key: "endDate", sort: true, align: 'left', emptySign: 'NA', width: 150 , type: 8},
-                 { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                 { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+                { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "BatchExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 8 },
+                { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+                { heading: "PerUnitPurchase", key: "perUnitPurchaseRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "PerUnitLandedRate", key: "perUnitLandedRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "PerUnitMRPRate", key: "perUnitMRPRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "PurTotalAmt", key: "purTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "LandedTotalAmt", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "MRPTotalAmt", key: "mrpTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "StartDate", key: "startDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+                { heading: "EndDate", key: "endDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+                { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             ],
             sortField: "MaterialConsumptionId",
             sortOrder: 0,
             filters: [
                 { fieldName: "MaterialConsumptionId", fieldValue: String(materialConsumptionId), opType: OperatorComparer.Equals }
-               
+
             ]
         };
 
@@ -132,45 +134,47 @@ ngOnInit(): void {this.myFilterform = this._MaterialConsumptionService.createSea
         });
     }
 
-ListView(value) {
-    if (value.value !== 0)
-        this.StoreId = value.value
-      else
-        this.StoreId = "0"
-   this.onChangeFirst(value);
-  }
-       
-        onChangeFirst(value) {
-            debugger
-            this.isShowDetailTable = false;
-            this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-            this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
-            this.StoreId = this.myFilterform.get("ToStoreId").value || this.StoreId
-           
-            this.getfilterdata();
+    ListView(value) {
+        if (value.value !== 0)
+            this.StoreId = value.value
+        else
+            this.StoreId = "0"
+        this.onChangeFirst(value);
+    }
+
+    onChangeFirst(value) {
+        debugger
+        this.isShowDetailTable = false;
+        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+        this.StoreId = this.myFilterform.get("ToStoreId").value || this.StoreId
+
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        this.gridConfig = {
+            apiUrl: "MaterialConsumption/MaterialConsumptionList",
+            columnsList: this.allcolumns,
+            sortField: "MaterialConsumptionId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "ToStoreId", fieldValue: this.StoreId, opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals }
+            ],
+            row: 25
         }
-    
-        getfilterdata() {
-            debugger
-            this.gridConfig = {
-                apiUrl: "MaterialConsumption/MaterialConsumptionList",
-                columnsList:this.allcolumns,
-                sortField: "MaterialConsumptionId",
-                sortOrder: 0,
-                filters: [
-                    { fieldName: "ToStoreId", fieldValue:this.StoreId, opType: OperatorComparer.Equals },
-                    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-                     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals }
-                ],
-                row: 25
-            }
-            console.log( this.gridConfig)
-            this.grid.gridConfig = this.gridConfig;
-            this.grid.bindGridData();
-    
-        }
-    
-    onPrint(data){}
+        console.log(this.gridConfig)
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+
+    }
+
+    onPrint(contact) {
+        this.commonService.Onprint("MaterialConsumptionId", contact.materialConsumptionId, "NurMaterialConsumption");
+    }
 
     getValidationMessages() {
         return {

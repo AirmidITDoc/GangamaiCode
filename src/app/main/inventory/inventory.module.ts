@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
 const appRoutes: Routes = [
-  {
-      path: "patientmaterialconsumption",
-      loadChildren: () => import("./patient-material-consumption/patient-material-consumption.module").then((m) => m.PatientMaterialConsumptionModule),
-  },
+//   {
+//       path: "patientmaterialconsumption",
+//       loadChildren: () => import("./patient-material-consumption/patient-material-consumption.module").then((m) => m.PatientMaterialConsumptionModule),
+//   },
  
    {
        path: "indent",
