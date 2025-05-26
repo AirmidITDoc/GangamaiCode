@@ -96,7 +96,7 @@ export class DoctorMasterService {
                     Validators.required
                 ]
             ],
-            
+
             MDoctorDepartmentDets: ["", Validators.required],
             DepartmentName: [""],
             AddedBy: [""],
@@ -182,16 +182,14 @@ export class DoctorMasterService {
     }
 
     public doctortMasterInsert(Param: any) {
-        if (Param.DoctorId) {
-            return this._httpClient.PutData("Doctor/Edit/" + Param.DoctorId, Param);
-        } else return this._httpClient.PostData("Doctor/InsertEDMX", Param);
+        // if (Param.DoctorId) {
+        //     return this._httpClient.PutData("Doctor/Edit/" + Param.DoctorId, Param);
+        // } else 
+        return this._httpClient.PostData("Doctor/InsertEDMX", Param);
     }
 
     public doctortMasterUpdate(param) {
         return this._httpClient.PostData("DoctorMaster/DoctorUpdate", param);
-    }
-    public assignDoctorDepartmentDet(param) {
-        return this._httpClient.PostData("Doctor/InsertEDMX", param);
     }
 
     public deleteAssignSupplierToStore(param) {

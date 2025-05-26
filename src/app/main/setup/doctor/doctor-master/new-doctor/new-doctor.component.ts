@@ -72,7 +72,6 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
                 this.registerObj = response;
                 this.ddlDepartment.SetSelection(this.registerObj.mDoctorDepartmentDets);
                 if (this.registerObj.signature) {
-                    debugger
                     this._doctorService.getSignature(this.registerObj.signature).subscribe(data => {
                         this.sanitizeImagePreview = data;
                         this.myForm.value.signature = data;
@@ -100,35 +99,11 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     ageMonth = 0;
     ageDay = 0;
     onSubmit() {
-        let DateOfBirth1 = this.myForm.get("DateOfBirth").value
-        if (DateOfBirth1) {
-            const todayDate = new Date();
-            const dob = new Date(DateOfBirth1);
-            const timeDiff = Math.abs(Date.now() - dob.getTime());
-            this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
-            this.ageMonth = (todayDate.getMonth() - dob.getMonth());
-            this.ageDay = (todayDate.getDate() - dob.getDate());
-
-            if (this.ageDay < 0) {
-                (this.ageMonth)--;
-                const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
-                this.ageDay += previousMonth.getDate(); // Days in previous month
-            }
-
-            if (this.ageMonth < 0) {
-                this.ageYear--;
-                this.ageMonth += 12;
-            }
-        }
-        this.myForm.get('ageYear').setValue(String(this.ageYear))
-        this.myForm.get('ageMonth').setValue(String(this.ageMonth))
-        this.myForm.get('ageDay').setValue(String(this.ageDay))
-
         if (this.myForm.valid) {
-            console.log(this.myForm.value)
             let data=this.myForm.value;
             data.RegDate=this.registerObj.regDate;
             data.MahRegDate=this.registerObj.mahRegDate;
+            data.Signature=this.signature;
             this._doctorService.doctortMasterInsert(data).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClose();
