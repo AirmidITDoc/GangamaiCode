@@ -18,6 +18,7 @@ import { MedicineItemList } from '../nursingnote.component';
 })
 export class MedicineSchedulerComponent {
   MedicineItemForm: FormGroup
+  MedicineItemLoopForm: FormGroup
   registerObj: any;
   dsItemList = new MatTableDataSource<MedicineItemList>();
   vRoute: any;
@@ -125,6 +126,7 @@ export class MedicineSchedulerComponent {
 
   ngOnInit(): void {
     this.MedicineItemForm = this.createMedicineItemForm();
+    this.MedicineItemLoopForm = this.createMedicineItemLoopForm();
     if (this.data) {
       this.registerObj = this.data
       console.log("Medication:", this.registerObj)
@@ -142,6 +144,12 @@ export class MedicineSchedulerComponent {
       DoseTime: '',
       Qty: '',
       DoseDateTime:''
+    })
+  }
+
+  createMedicineItemLoopForm() {
+    return this._formBuilder.group({
+      nursingMedicationChart:''
     })
   }
 
@@ -220,10 +228,10 @@ export class MedicineSchedulerComponent {
 
   onSubmit() {
     debugger
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+    // const currentDate = new Date();
+    // const datePipe = new DatePipe('en-US');
+    // const formattedTime = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
+    // const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
     if (!this.dsItemList.data.length) {
       this.toastr.warning('Please add Scheduler in list !,list is blank', 'warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -238,8 +246,8 @@ export class MedicineSchedulerComponent {
 
         "medChartId": 0,
         "admId": this.registerObj.admissionID,
-        "mdate": formattedDate,
-        "mtime": formattedTime,
+        "mdate": this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+        "mtime": this.datePipe.transform(new Date(), 'shortTime'),
         "durgId": this.registerObj.itemId,
         "doseId": 0,
         "route": element.Route || '',
@@ -254,27 +262,15 @@ export class MedicineSchedulerComponent {
       saveTNursingMedicationChartParamsObj.push(saveTNursingMedicationChartParams)
     })
 
-    let submitData = {
-      "nursingMedicationChart": saveTNursingMedicationChartParamsObj
-    };
-    console.log(submitData);
-    this._NursingStationService.insertMedicationChart(submitData).subscribe(response => {
+    this.MedicineItemLoopForm.get('nursingMedicationChart').setValue(saveTNursingMedicationChartParamsObj)
+    console.log(this.MedicineItemLoopForm.value);
+    this._NursingStationService.insertMedicationChart(this.MedicineItemLoopForm.value).subscribe(response => {
       console.log(response)
-      if (response) {
-        this.toastr.success('Record Saved Successfully.', 'Saved !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
+        this.toastr.success(response.message);
         this._matDialog.closeAll();
         this.onClose();
-      } else {
-        this.toastr.error('Record Data not saved !, Please check error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      }
     }, error => {
-      this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
-        toastClass: 'tostr-tost custom-toast-error',
-      });
+      this.toastr.error(error.message);
     });
   }
 

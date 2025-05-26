@@ -21,9 +21,8 @@
 
                                         <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
 
-                                            <airmid-autocomplete class="w-500" lbl="RgId"
-                                                [formGroup]="myform" formControlName="RegID"
-                                                label="Search Reg No / Patient Name / Mobile No"
+                                            <airmid-autocomplete class="w-500" lbl="RgId" [formGroup]="myform"
+                                                formControlName="RegID" label="Search Reg No / Patient Name / Mobile No"
                                                 ApiUrl="Admission/search-patient?Keyword="
                                                 (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
                                                 TextField="formattedText">
@@ -157,59 +156,70 @@
                                                         </div>
 
                                                         <div fxFlex.gt-sm="60%" fxFlex>
-                                                            <input type="hidden" formControlName="DoctNoteId">
 
-                                                            <div fxLayout="column" fxLayoutGap="2px">
+                                                            <form [formGroup]="myNursingForm">
+                                                                <input type="hidden" formControlName="nursingId">
 
-                                                                <div fxLayout="row" fxLayoutGap="10px">
+                                                                <div fxLayout="column" fxLayoutGap="2px">
 
-                                                                    <airmid-dropdown label="Template Name" *ngIf="showDropdown"
-                                                                    formControlName="TemplateId" 
-                                                                    [formGroup]="myform"  fxFlex="70%"
-                                                                    ValueField="nursingId" 
-                                                                    TextField="nursTempName"
-                                                                    (selectionChange)="onChangetemplate($event)" 
-                                                                    ApiUrl="Pathology/get-NursingTemplateMaster">
-                                                                </airmid-dropdown>
+                                                                    <form [formGroup]="myform">
+                                                                        <div fxLayout="row" fxLayoutGap="10px">
 
-                                                                    <div class="input-add-button">
-                                                                        <div>
-                                                                            <button #addbutton
-                                                                                class="btn btn-primary btn-with-icon"
-                                                                                (click)="onAdd()" id="btnAdd" [disabled]="IsAddFlag">
-                                                                                <span class="btn-icon">
-                                                                                    <mat-icon> add </mat-icon>
-                                                                                </span>
-                                                                                <span>Add</span>
-                                                                            </button>
+                                                                            <airmid-dropdown label="Template Name"
+                                                                                *ngIf="showDropdown"
+                                                                                formControlName="TemplateId"
+                                                                                [formGroup]="myform" fxFlex="70%"
+                                                                                ValueField="nursingId"
+                                                                                TextField="nursTempName"
+                                                                                (selectionChange)="onChangetemplate($event)"
+                                                                                ApiUrl="Pathology/get-NursingTemplateMaster">
+                                                                            </airmid-dropdown>
+
+                                                                            <div class="input-add-button">
+                                                                                <div>
+                                                                                    <button #addbutton
+                                                                                        class="btn btn-primary btn-with-icon"
+                                                                                        (click)="onAdd()" id="btnAdd"
+                                                                                        [disabled]="IsAddFlag">
+                                                                                        <span class="btn-icon">
+                                                                                            <mat-icon> add </mat-icon>
+                                                                                        </span>
+                                                                                        <span>Add</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                </div>
+                                                                    </form>
 
-                                                                <mat-card style="padding: 5px;overflow: auto;">
-                                                                    <div>
-                                                                        <airmid-editor label="Template Details" formControlName="templateDesc" [(value)]="vDescription"
-                                                                            [formGroup]="myform"></airmid-editor>
-                                                                
-                                                                        <!-- <mat-label>Template Details</mat-label>
+                                                                    <mat-card style="padding: 5px;overflow: auto;">
+                                                                        <div>
+                                                                            <airmid-editor label="Template Details"
+                                                                                formControlName="nursingNotes"
+                                                                                [(value)]="vDescription"
+                                                                                [formGroup]="myNursingForm"></airmid-editor>
+
+                                                                            <!-- <mat-label>Template Details</mat-label>
                                                                         <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:400px;"
-                                                                            [(ngModel)]="vDescription" required formControlName="templateDesc">
+                                                                            [(ngModel)]="vDescription" required formControlName="nursingNotes">
                                                                         </angular-editor> -->
-                                                                    </div>
-                                                                </mat-card>
+                                                                        </div>
+                                                                    </mat-card>
 
-                                                                <div fxLayout="row" fxLayoutGap="10px"
-                                                                    fxLayoutAlign="end">
-                                                                    <button class="btn btn-primary-outline"
-                                                                        type="button" value="Input"
-                                                                        (click)="onTemplate()">New Template
-                                                                    </button>
-                                                                    <button class="btn btn-danger-outline" type="button"
-                                                                        value="Input" (click)="onClear()">Reset</button>
-                                                                    <button class="btn btn-primary" type="submit" (click)="onSubmit()"
-                                                                        value="submit">Save</button>
+                                                                    <div fxLayout="row" fxLayoutGap="10px"
+                                                                        fxLayoutAlign="end">
+                                                                        <button class="btn btn-primary-outline"
+                                                                            type="button" value="Input"
+                                                                            (click)="onTemplate()">New Template
+                                                                        </button>
+                                                                        <button class="btn btn-danger-outline"
+                                                                            type="button" value="Input"
+                                                                            (click)="onClear()">Reset</button>
+                                                                        <button class="btn btn-primary" type="submit"
+                                                                            (click)="onSubmit()"
+                                                                            value="submit">Save</button>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
+                                                            </form>
 
                                                         </div>
                                                     </div>
@@ -229,18 +239,23 @@
                                                         <div fxFlex.gt-sm="40%" fxFlex>
                                                             <mat-card style="padding: 5px;">
 
-                                                                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                                                                <div id="contacts"
+                                                                    class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
                                                                     <ng-template #actionButtonTemplate let-element>
-                                                                        <div fxLayout="row" fxLayoutAlign="center center">
-                                                                            <button mat-icon-button matTooltip="Add Schedular" (click)="getSchedular(element)">
+                                                                        <div fxLayout="row"
+                                                                            fxLayoutAlign="center center">
+                                                                            <button mat-icon-button
+                                                                                matTooltip="Add Schedular"
+                                                                                (click)="getSchedular(element)">
                                                                                 <mat-icon>add</mat-icon>
                                                                             </button>
                                                                         </div>
                                                                     </ng-template>
 
-                                                                    <airmid-table [gridConfig]="gridConfig1" #MedicationItem
-                                                                        :ShowFilter="false" :ShowButtons="false">
+                                                                    <airmid-table [gridConfig]="gridConfig1"
+                                                                        #MedicationItem :ShowFilter="false"
+                                                                        :ShowButtons="false">
                                                                         <ng-container filters>
 
                                                                         </ng-container>
@@ -264,88 +279,111 @@
                                                                             </ng-container>
                                                                         </airmid-table>
                                                                     </div> -->
-                                                                    <mat-table class="table2" matSort [dataSource]="dsItemList"
-                                                                        [@animateStagger]="{value:'50'}" style="overflow: auto;height:210px;">
-                                    
+                                                                    <mat-table class="table2" matSort
+                                                                        [dataSource]="dsItemList"
+                                                                        [@animateStagger]="{value:'50'}"
+                                                                        style="overflow: auto;height:210px;">
+
                                                                         <ng-container matColumnDef="Status">
-                                                                            <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                                fxHide fxShow.gt-sm class="w-50">
-                                                                                <span class="material-icons" (click)="getSchedulerlist()">
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                mat-sort-header fxHide fxShow.gt-sm
+                                                                                class="w-50">
+                                                                                <span class="material-icons"
+                                                                                    (click)="getSchedulerlist()">
                                                                                     cached
                                                                                 </span>
-                                                                              </mat-header-cell>
+                                                                            </mat-header-cell>
                                                                             <mat-cell *matCellDef="let element" fxHide
                                                                                 fxShow.gt-sm class="w-50">
-                                                                                <mat-checkbox aria-label="Checked" (change)="SelectedChecked($event, contact)">
+                                                                                <mat-checkbox aria-label="Checked"
+                                                                                    (change)="SelectedChecked($event, contact)">
                                                                                 </mat-checkbox>
                                                                             </mat-cell>
                                                                         </ng-container>
-                                                                        
+
                                                                         <ng-container matColumnDef="DrugName">
-                                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                mat-sort-header fxHide fxShow.gt-sm>
                                                                                 Drug Name </mat-header-cell>
-                                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                            <mat-cell *matCellDef="let element" fxHide
+                                                                                fxShow.gt-sm>
                                                                                 {{element.DrugName}} </mat-cell>
                                                                         </ng-container>
-                                    
+
                                                                         <ng-container matColumnDef="DoseName">
-                                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                mat-sort-header fxHide fxShow.gt-sm>
                                                                                 Dose Name </mat-header-cell>
-                                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                            <mat-cell *matCellDef="let element" fxHide
+                                                                                fxShow.gt-sm>
                                                                                 {{element.DoseName}} </mat-cell>
                                                                         </ng-container>
-                                    
+
                                                                         <ng-container matColumnDef="Route">
-                                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                mat-sort-header fxHide fxShow.gt-sm>
                                                                                 Route </mat-header-cell>
-                                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                            <mat-cell *matCellDef="let element" fxHide
+                                                                                fxShow.gt-sm>
                                                                                 {{element.Route}} </mat-cell>
                                                                         </ng-container>
 
                                                                         <ng-container matColumnDef="Frequency">
-                                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                mat-sort-header fxHide fxShow.gt-sm>
                                                                                 Frequency </mat-header-cell>
-                                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                            <mat-cell *matCellDef="let element" fxHide
+                                                                                fxShow.gt-sm>
                                                                                 {{element.Frequency}} </mat-cell>
                                                                         </ng-container>
-                                    
+
                                                                         <ng-container matColumnDef="NurseName">
-                                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                mat-sort-header fxHide fxShow.gt-sm>
                                                                                 Nurse Name </mat-header-cell>
-                                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                            <mat-cell *matCellDef="let element" fxHide
+                                                                                fxShow.gt-sm>
                                                                                 {{element.NurseName}} </mat-cell>
                                                                         </ng-container>
-                                    
+
                                                                         <ng-container matColumnDef="Action">
-                                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                mat-sort-header fxHide fxShow.gt-sm>
                                                                                 Action </mat-header-cell>
-                                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                            <mat-cell *matCellDef="let element" fxHide
+                                                                                fxShow.gt-sm>
                                                                                 {{element.Action}} </mat-cell>
                                                                         </ng-container>
-                                    
+
                                                                         <ng-container matColumnDef="loading">
-                                                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                                            <mat-header-cell *matFooterCellDef
+                                                                                colspan="6" style="display: none;">
                                                                             </mat-header-cell>
                                                                         </ng-container>
-                                    
+
                                                                         <ng-container matColumnDef="noData">
-                                                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                            <mat-footer-cell *matFooterCellDef
+                                                                                colspan="6">
                                                                                 no data found...
                                                                             </mat-footer-cell>
                                                                         </ng-container>
-                                    
-                                                                        <mat-header-row class="accent" *matHeaderRowDef="displayedItemColumn; sticky: true">
+
+                                                                        <mat-header-row class="accent"
+                                                                            *matHeaderRowDef="displayedItemColumn; sticky: true">
                                                                         </mat-header-row>
-                                                                        <mat-row *matRowDef="let row; columns: displayedItemColumn;" class="element"
+                                                                        <mat-row
+                                                                            *matRowDef="let row; columns: displayedItemColumn;"
+                                                                            class="element"
                                                                             [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                                                         <mat-footer-row *matFooterRowDef="['noData']"
                                                                             [ngClass]="{'hide':!(dsMadicationChart1List!=null && dsMadicationChart1List.data.length==0)}">
                                                                         </mat-footer-row>
                                                                     </mat-table>
-                                                                    <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
-                                                                        showFirstLastButtons>
+                                                                    <mat-paginator #paginator
+                                                                        [pageSizeOptions]="[10, 25, 50, 100]"
+                                                                        [pageSize]="10" showFirstLastButtons>
                                                                     </mat-paginator>
-                                                                
+
                                                                 </mat-card>
                                                             </div>
 
@@ -365,67 +403,92 @@
 
                                                 <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
 
-                                                    <input name="patHandId" formControlName="patHandId" type="hidden">
+                                                    <form [formGroup]="myHandOverForm">
+                                                        <input name="patHandId" formControlName="patHandId"
+                                                            type="hidden">
 
-                                                    <div fxLayout="row" fxLayoutGap="20px">
+                                                        <div fxLayout="row" fxLayoutGap="20px">
 
-                                                        <span style="font-size:40px;padding: 10px 10px 0 0;">I</span>
-                                                    <mat-form-field appearance="outline" fxFlex="30%">
-                                                        <textarea rows="4" matInput  name="staffName" formControlName="staffName" 
-                                                        [(ngModel)]="vStaffNursName"></textarea> 
-                                                    </mat-form-field>
+                                                            <!-- staffName -->
+                                                            <span
+                                                                style="font-size:40px;padding: 10px 10px 0 0;">I</span>
+                                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                                <textarea rows="4" matInput name="patHandI"
+                                                                    formControlName="patHandI"
+                                                                    [(ngModel)]="vStaffNursName"></textarea>
+                                                            </mat-form-field>
 
-                                                    <span style="font-size:40px;padding: 10px 0px 0 0;">B</span>
-                                                    <mat-form-field appearance="outline" fxFlex="30%">
-                                                        <textarea rows="4" matInput  name="SYMPTOMS" formControlName="SYMPTOMS" 
-                                                        [(ngModel)]="vSYMPTOMS"></textarea> 
-                                                    </mat-form-field>
+                                                            <!-- SYMPTOMS -->
+                                                            <span style="font-size:40px;padding: 10px 0px 0 0;">B</span>
+                                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                                <textarea rows="4" matInput name="patHandB"
+                                                                    formControlName="patHandB"
+                                                                    [(ngModel)]="vSYMPTOMS"></textarea>
+                                                            </mat-form-field>
 
-                                                    <span style="font-size:40px;padding: 10px 0px 0 0;">R</span>
-                                                    <mat-form-field appearance="outline" fxFlex="30%">
-                                                        <textarea rows="4" matInput  name="Instruction" formControlName="Instruction" 
-                                                        [(ngModel)]="vInstruction"></textarea> 
-                                                    </mat-form-field>
+                                                            <!-- Instruction -->
+                                                            <span style="font-size:40px;padding: 10px 0px 0 0;">R</span>
+                                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                                <textarea rows="4" matInput name="patHandR"
+                                                                    formControlName="patHandR"
+                                                                    [(ngModel)]="vInstruction"></textarea>
+                                                            </mat-form-field>
 
-                                                    </div>
-                                                    <div fxLayout="row" fxLayoutGap="20px">
+                                                        </div>
+                                                        <div fxLayout="row" fxLayoutGap="20px">
 
-                                                        <span style="font-size:40px;padding-top: 10px;">S</span>
-                                                    <mat-form-field appearance="outline" fxFlex="29.5%">
-                                                        <textarea rows="4" matInput   name="Stable" formControlName="Stable" 
-                                                        [(ngModel)]="VStable"></textarea> 
-                                                    </mat-form-field>
+                                                            <!-- Stable -->
+                                                            <span style="font-size:40px;padding-top: 10px;">S</span>
+                                                            <mat-form-field appearance="outline" fxFlex="29.5%">
+                                                                <textarea rows="4" matInput name="patHandS"
+                                                                    formControlName="patHandS"
+                                                                    [(ngModel)]="VStable"></textarea>
+                                                            </mat-form-field>
 
-                                                    <span style="font-size:40px;padding-top: 10px;">A</span>
-                                                    <mat-form-field appearance="outline" fxFlex="29%">
-                                                        <textarea rows="4" matInput   name="Assessment" formControlName="Assessment" 
-                                                        [(ngModel)]="VAssessment"></textarea> 
-                                                    </mat-form-field>
+                                                            <!-- Assessment -->
+                                                            <span style="font-size:40px;padding-top: 10px;">A</span>
+                                                            <mat-form-field appearance="outline" fxFlex="29%">
+                                                                <textarea rows="4" matInput name="patHandA"
+                                                                    formControlName="patHandA"
+                                                                    [(ngModel)]="VAssessment"></textarea>
+                                                            </mat-form-field>
 
-                                                        <span style="font-size:80px;padding-top: 10px;"> </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            <span style="font-size:80px;padding-top: 10px;">
+                                                            </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                                                        <div fxLayout="column" fxLayoutGap="10px">
-                                                            <mat-form-field appearance="outline" fxFlex="31%">
-                                                            <mat-label>Comment</mat-label>
-                                                            <input  matInput name="Comments" formControlName="Comments" [(ngModel)]="vcomments" >
-                                                            </mat-form-field> 
-    
-                                                            <div fxLayout="row" fxLayoutGap="10px" style="padding: 10px;">
-                                                                <mat-radio-group name="HandOverType" formControlName="HandOverType" 
-                                                                fxLayout="row" [(ngModel)]="vHandOverType" >
-                                                                    <mat-radio-button value="morning">Morning</mat-radio-button>
-                                                                    <mat-radio-button value="Evening"> Evening</mat-radio-button>
-                                                                    <mat-radio-button value="Night">Night</mat-radio-button>
-                                                                </mat-radio-group>
-    
-                                                        <button class="btn btn-danger-outline" type="button" (click)="onClose()">Reset</button>
-                                                                <button type="button" class="btn btn-primary btn-with-icon py-8" #addbutton id="btnAdd"
-                                                                (click)="onSubmitHandOver()">
-                                                                    Save </button>
+                                                            <div fxLayout="column" fxLayoutGap="10px">
+                                                                <mat-form-field appearance="outline" fxFlex="31%">
+                                                                    <mat-label>Comment</mat-label>
+                                                                    <input matInput name="comments"
+                                                                        formControlName="comments"
+                                                                        [(ngModel)]="vcomments">
+                                                                </mat-form-field>
+
+                                                                <div fxLayout="row" fxLayoutGap="10px"
+                                                                    style="padding: 10px;">
+                                                                    <mat-radio-group name="shiftInfo"
+                                                                        formControlName="shiftInfo" fxLayout="row"
+                                                                        [(ngModel)]="vHandOverType">
+                                                                        <mat-radio-button
+                                                                            value="Morning">Morning</mat-radio-button>
+                                                                        <mat-radio-button value="Evening">
+                                                                            Evening</mat-radio-button>
+                                                                        <mat-radio-button
+                                                                            value="Night">Night</mat-radio-button>
+                                                                    </mat-radio-group>
+
+                                                                    <button class="btn btn-danger-outline" type="button"
+                                                                        (click)="onClose()">Reset</button>
+                                                                    <button type="button"
+                                                                        class="btn btn-primary btn-with-icon py-8"
+                                                                        #addbutton id="btnAdd"
+                                                                        (click)="onSubmitHandOver()">
+                                                                        Save </button>
+                                                                </div>
                                                             </div>
-                                                        </div> 
 
-                                                    </div>
+                                                        </div>
+                                                    </form>
 
                                                     <div fxFlex.gt-sm="100%" fxFlex>
                                                         <mat-card style="padding: 5px;">
@@ -444,7 +507,7 @@
                                                     </div>
 
                                                 </div>
-                                                </form>
+                                            </form>
                                             <!-- </div> -->
                                         </div>
                                     </div>

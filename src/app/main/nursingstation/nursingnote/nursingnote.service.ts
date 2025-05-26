@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class NursingnoteService {
     Templateform:FormGroup
 
     constructor(public _httpClient: ApiCaller,
+            private _loggedService: AuthenticationService,
         public _formBuilder: UntypedFormBuilder) 
     {
         this.myform = this.createtemplateForm();
@@ -39,6 +41,33 @@ export class NursingnoteService {
       templateName:[''],
       patHandId:0,
       Comments:['']
+    });
+  }
+
+  createnursingForm(): FormGroup {
+    return this._formBuilder.group({
+      docNoteId: 0,
+      admId: 0,
+      tdate: [(new Date()).toISOString()],
+      ttime: [(new Date()).toISOString()],
+      nursingNotes: [''],
+      isAddedBy: this._loggedService.currentUserValue.userId
+    });
+  }
+
+   createHandOverForm(): FormGroup {
+    return this._formBuilder.group({
+      patHandId: [0],
+      admId: [0],
+      tdate: [(new Date()).toISOString()],
+      ttime: [(new Date()).toISOString()],
+      shiftInfo: ['Morning'],
+      patHandI: [''],
+      patHandS: [''],
+      patHandB: [''],
+      patHandA: [''],
+      patHandR: [''],
+      comments: ['']
     });
   }
 
@@ -74,14 +103,11 @@ export class NursingnoteService {
   }
   
   public HandOverInsert(employee) {
-    return this._httpClient.PostData("Nursing/NursingPatientHandoverInsert", employee)
+    if (employee.patHandId) {
+      return this._httpClient.PutData("Nursing/NursingPatientHandover/" + employee.patHandId, employee);
+    } else return this._httpClient.PostData("Nursing/NursingPatientHandoverInsert", employee)
   }
 
-  public HandOverUpdate(Param: any) {
-    if (Param.patHandId) {
-      return this._httpClient.PutData("Nursing/NursingPatientHandover/" + Param.patHandId, Param);
-    }
-  }
   public insertMedicationChart(employee) {
     return this._httpClient.PostData("Nursing/NursingMedicationChartInsert", employee)
   }

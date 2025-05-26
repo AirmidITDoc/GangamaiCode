@@ -48,7 +48,7 @@
 
 
             <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false"
-                (onSelectRow)="getSelectedRow($event)">
+                (onSelectRow)="getSelectedRow($event)" #grid>
 
                 <ng-container filters>
                     <form [formGroup]="myFilterform">

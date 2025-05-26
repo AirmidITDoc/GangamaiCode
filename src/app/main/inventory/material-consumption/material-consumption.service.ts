@@ -18,9 +18,9 @@ export class MaterialConsumptionService {
     public _httpClient: HttpClient, public _httpClient1: ApiCaller,
     private _formBuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService, private accountService: AuthenticationService,
   ) { 
-    // this.userFormGroup = this.createUserForm();
-    // this.SearchGroup= this.createSearchFrom();
-    // this.FinalMaterialForm = this.createfinalform();
+    this.userFormGroup = this.createUserForm();
+    this.SearchGroup= this.createSearchFrom();
+    this.FinalMaterialForm = this.createfinalform();
   }
 
   createSearchFrom() {

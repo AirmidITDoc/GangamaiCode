@@ -93,6 +93,8 @@ export class NursingnoteComponent implements OnInit {
   vDOA: any;
   OP_IP_Id: any;
   myform: FormGroup;
+  myNursingForm: FormGroup;
+  myHandOverForm: FormGroup;
   IsAddFlag: boolean = true;
   registerObj: any;
   vDoctNoteId: any;
@@ -105,6 +107,17 @@ export class NursingnoteComponent implements OnInit {
   dsHandOverNoteList = new MatTableDataSource<DocNote>();
 
   autocompleteModeNurNote: string = "NurNote";
+
+  HandOverNoteList: any = [];
+
+  vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
+  vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
+  vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
+  VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
+  VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
+  vpatHandId: any;
+  vHandOverType = 'Morning';
+  vcomments: any
 
   // @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('docNote', { static: false }) grid: AirmidTableComponent;
@@ -184,7 +197,7 @@ export class NursingnoteComponent implements OnInit {
   }
 
   getMedicationList() {
-    debugger
+    // debugger
     this.gridConfig1 = {
       apiUrl: "Nursing/MedicationChartlist",
       columnsList: this.allMedicationColumns,
@@ -255,68 +268,6 @@ export class NursingnoteComponent implements OnInit {
 
   showDropdown = true;
 
-  onTemplate(row: any = null) {
-    let that = this;
-    const dialogRef = this._matDialog.open(NewTemplateComponent,
-      {
-        maxHeight: '90vh',
-        width: '90%',
-        data: row
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.grid.bindGridData();
-        this.showDropdown = false;
-        setTimeout(() => this.showDropdown = true, 100);
-      }
-    });
-  }
-
-  getSchedular(row: any = null) {
-    let that = this;
-    const dialogRef = this._matDialog.open(MedicineSchedulerComponent,
-      {
-        maxHeight: '90vh',
-        width: '90%',
-        data: row
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      // if (result) {
-      this.getSchedulerlist();
-      this.grid2.bindGridData();
-      // }
-    });
-  }
-
-  // getRefundofBillOPDListByReg(RegId) {
-
-  //   var m_data = {
-  //     "first": 0,
-  //     "rows": 10,
-  //     "sortField": "BillNo",
-  //     "sortOrder": 0,
-  //     "filters": [
-  //       {
-  //         "fieldName": "RegId",
-  //         "fieldValue": String(RegId),
-  //         "opType": "Equals"
-  //       }
-  //     ],
-  //     "exportType": "JSON"
-  //   }
-
-  //   console.log(m_data);
-
-  //   this._NursingStationService.getRefundofBillOPDList(m_data).subscribe(Visit => {
-  //     console.log(Visit);
-  //     //   this.dataSource3.data = Visit.data
-  //     //   console.log(this.dataSource3.data);
-  //     //   this.vOPIPId = this.dataSource3.data
-  //   });
-
-
-  // }
-
   data: any;
   getValidationMessages() {
     return {
@@ -351,6 +302,8 @@ export class NursingnoteComponent implements OnInit {
   private _onDestroy = new Subject<void>();
   ngOnInit(): void {
     this.myform = this._NursingStationService.createtemplateForm();
+    this.myNursingForm = this._NursingStationService.createnursingForm();
+    this.myHandOverForm = this._NursingStationService.createHandOverForm();
 
     this.vRegNo = this.selectedAdvanceObj.RegNo;
     this.vPatientName = this.selectedAdvanceObj.PatientName;
@@ -362,7 +315,40 @@ export class NursingnoteComponent implements OnInit {
     this.vBedName = this.selectedAdvanceObj.BedName;
     this.vWardName = this.selectedAdvanceObj.RoomName;
   }
+  
+  onTemplate(row: any = null) {
+    let that = this;
+    const dialogRef = this._matDialog.open(NewTemplateComponent,
+      {
+        maxHeight: '90vh',
+        width: '90%',
+        data: row
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.grid.bindGridData();
+        this.showDropdown = false;
+        setTimeout(() => this.showDropdown = true, 100);
+      }
+    });
+  }
 
+  getSchedular(row: any = null) {
+    let that = this;
+    const dialogRef = this._matDialog.open(MedicineSchedulerComponent,
+      {
+        maxHeight: '90vh',
+        width: '90%',
+        data: row
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      // if (result) {
+      this.getSchedulerlist();
+      this.grid2.bindGridData();
+      // }
+    });
+  }
+  
   getSelectedObjIP(obj) {
 
     if ((obj.regID ?? 0) > 0) {
@@ -399,7 +385,7 @@ export class NursingnoteComponent implements OnInit {
     console.log("data:", row)
     this.registerObj = row;
     this.vDescription = this.registerObj.nursingNotes || '';
-    this.myform.get('templateDesc').setValue(this.vDescription);
+    this.myNursingForm.get('nursingNotes').setValue(this.vDescription);
     this.vDoctNoteId = this.registerObj.docNoteId
     this.IsAddFlag = true
 
@@ -437,7 +423,7 @@ export class NursingnoteComponent implements OnInit {
   Chargelist: any = [];
 
   getSchedulerlist() {
-    debugger
+    // debugger
     var param = {
       "first": 0,
       "rows": 10,
@@ -504,43 +490,20 @@ export class NursingnoteComponent implements OnInit {
       return;
     }
 
-    if (!this.vDoctNoteId || this.vDoctNoteId === 0) {
-      let submitData = {
-        "docNoteId": 0,
-        "admId": this.OP_IP_Id,
-        "tdate": this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-        "ttime": this.datePipe.transform(new Date(), 'shortTime'),
-        "nursingNotes": this.vDescription,
-        "isAddedBy": this.accountService.currentUserValue.userId
-      }
-      console.log("submitData:", submitData);
-
-      this._NursingStationService.NursingNoteInsert(submitData).subscribe(response => {
-        this.toastr.success(response.message);
-        this.onClear();
-        this.grid.bindGridData();
-      }, (error) => {
-        this.toastr.error(error.message);
-      });
-    } else {
-      let updateData = {
-        "docNoteId": this.vDoctNoteId,
-        "admId": this.OP_IP_Id,
-        "tdate": this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-        "ttime": this.datePipe.transform(new Date(), 'shortTime'),
-        "nursingNotes": this.vDescription,
-        "isAddedBy": this.accountService.currentUserValue.userId
-      }
-      console.log("updateData:", updateData);
-
-      this._NursingStationService.NursingNoteInsert(updateData).subscribe(response => {
-        this.toastr.success(response.message);
-        this.onClear();
-        this.grid.bindGridData();
-      }, (error) => {
-        this.toastr.error(error.message);
-      });
-      this.IsAddFlag = true
+    if (this.myNursingForm.valid) {
+      console.log(this.myNursingForm.value)
+      let data = this.myNursingForm.value;
+      data.admId = this.OP_IP_Id;
+      data.tdate = this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+        data.ttime = this.datePipe.transform(new Date(), 'shortTime'),
+        data.docNoteId=this.vDoctNoteId || 0
+        this._NursingStationService.NursingNoteInsert(data).subscribe(response => {
+          this.toastr.success(response.message);
+          this.initializeGridConfig()
+          this.onClear();
+        }, (error) => {
+          this.toastr.error(error.message);
+        });
     }
   }
 
@@ -551,19 +514,9 @@ export class NursingnoteComponent implements OnInit {
     this.vDescription = null;
   }
 
-  HandOverNoteList: any = [];
-
-  vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
-  vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
-  vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
-  VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
-  VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
-  vpatHandId: any;
-  vHandOverType = 'morning';
-  vcomments: any
   // patient hand over
   onSubmitHandOver() {
-    // debugger
+    debugger
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
@@ -576,91 +529,29 @@ export class NursingnoteComponent implements OnInit {
       return;
     }
 
-    if (!this.myform.invalid) {
-      if (!this.myform.get("patHandId").value) {
-
-        let submitData = {
-
-          "patHandId": 0,
-          "admId": this.OP_IP_Id,
-          "tdate": formattedDate,
-          "ttime": formattedTime,
-          "shiftInfo": this.myform.get('HandOverType').value,
-          "patHandI": this.myform.get('staffName').value,
-          "patHandS": this.myform.get('Stable').value,
-          "patHandB": this.myform.get('SYMPTOMS').value,
-          "patHandA": this.myform.get('Assessment').value,
-          "patHandR": this.myform.get('Instruction').value,
-          "comments": this.myform.get('Comments').value,
-
-        };
-        console.log(submitData);
-        this._NursingStationService.HandOverInsert(submitData).subscribe(response => {
-          if (response) {
-            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-              toastClass: 'tostr-tost custom-toast-success',
-            });
-            this.grid1.bindGridData();
-            this.onClose()
-          }
-          else {
-            this.toastr.error('Record Data not saved !, Please check error..', 'Error !', {
-              toastClass: 'tostr-tost custom-toast-error',
-            });
-          }
-        }, error => {
-          this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
-            toastClass: 'tostr-tost custom-toast-error',
-          });
+    if (this.myHandOverForm.valid) {
+      console.log(this.myHandOverForm.value)
+      let data = this.myHandOverForm.value;
+      data.admId = this.OP_IP_Id;
+      data.tdate = this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+        data.ttime = this.datePipe.transform(new Date(), 'shortTime'),
+        data.patHandId=this.vpatHandId
+        this._NursingStationService.HandOverInsert(data).subscribe(response => {
+          this.toastr.success(response.message);
+          this.getHandOverNotelist()
+          this.onClear();
+        }, (error) => {
+          this.toastr.error(error.message);
         });
-      }
-      else {
-        let updateData = {
-          "patHandId": this.vpatHandId,
-          "admId": this.OP_IP_Id,
-          "tdate": formattedDate,
-          "ttime": formattedTime,
-          "shiftInfo": this.myform.get('HandOverType').value,
-          "patHandI": this.myform.get('staffName').value,
-          "patHandS": this.myform.get('Stable').value,
-          "patHandB": this.myform.get('SYMPTOMS').value,
-          "patHandA": this.myform.get('Assessment').value,
-          "patHandR": this.myform.get('Instruction').value,
-          "comments": this.myform.get('Comments').value,
-        };
-
-        console.log(updateData);
-        this._NursingStationService.HandOverUpdate(updateData).subscribe(response => {
-          if (response) {
-            this.toastr.success('Record Updated Successfully.', 'Updated !', {
-              toastClass: 'tostr-tost custom-toast-success',
-            });
-            this.grid1.bindGridData();
-            this.onClose()
-          }
-          else {
-            this.toastr.error('Record Data not Updated !, Please check error..', 'Error !', {
-              toastClass: 'tostr-tost custom-toast-error',
-            });
-          }
-        }, error => {
-          this.toastr.error('Record Data not Updated !, Please check API error..', 'Error !', {
-            toastClass: 'tostr-tost custom-toast-error',
-          });
-        });
-      }
-    } else {
-      this.toastr.warning('please check from is invalid', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
     }
+
     this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
     this.vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
     this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
     this.VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
     this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
-    this.myform.get('HandOverType').setValue('Morning')
+    this.myHandOverForm.get('shiftInfo').setValue('Morning')
+    this.myHandOverForm.get('comments').setValue('')
     this.dsHandOverNoteList.data = [];
   }
 
@@ -699,8 +590,8 @@ export class NursingnoteComponent implements OnInit {
     this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
     this.VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
     this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
-    this.myform.get('HandOverType').setValue('morning')
-    this.myform.get('Comments').setValue('')
+    this.myHandOverForm.get('shiftInfo').setValue('Morning')
+    this.myHandOverForm.get('comments').setValue('')
     this.dsHandOverNoteList.data = [];
     // this.HandOverNoteList = [];
   }
