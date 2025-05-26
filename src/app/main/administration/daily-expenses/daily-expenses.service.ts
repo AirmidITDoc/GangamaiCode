@@ -77,4 +77,29 @@ export class DailyExpensesService {
     }
     return this._httpClient.get("Administration/view-VoucharPrint?ExpId="+ ExpId );
   }
+       public getPdfAllDailyExpenseRpt(FromDate,ToDate,ExpHeadId,ExpType, loader = true) {
+    if(loader){
+      this.loaderService.show()
+    } 
+    return this._httpClient.get("Administration/view-ExpensesReport?FromDate="+ FromDate +"&ToDate="+ToDate+"&ExpHeadId="+ExpHeadId+"&ExpType="+ExpType );
+  }
+  
+    public deactivateTheStatus(param, loader = true) {
+    if(loader){
+      this.loaderService.show()
+    } 
+        return this._httpClient.post( "Generic/ExecByQueryStatement?query=" + param, {} );
+    }
+     public UpdateExpensesHead(data,loader = true){
+    if(loader){
+      this.loaderService.show();
+    }
+    return this._httpClient.post("Administration/UpdateMExpensesHeadMaster",data);
+   }
+     public getExpHeadList(param,loader = true){
+    if(loader){
+      this.loaderService.show();
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_M_ExpensesHeadMaster",param);
+   }
 }

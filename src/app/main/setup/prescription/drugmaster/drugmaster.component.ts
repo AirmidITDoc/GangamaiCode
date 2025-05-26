@@ -9,6 +9,8 @@ import { map, startWith, takeUntil } from "rxjs/operators";
 import { DrugmasterService } from "./drugmaster.service";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 
 @Component({
     selector: "app-drugmaster",
@@ -44,7 +46,8 @@ export class DrugmasterComponent implements OnInit {
     DSDrugMasterList = new MatTableDataSource<DrugMaster>();
 
     constructor(public _drugService: DrugmasterService,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService,
+        public _matDialog: MatDialog) { }
 
     ngOnInit(): void {
         this.getDrugMasterList();
@@ -236,6 +239,30 @@ export class DrugmasterComponent implements OnInit {
         this.getGenericNameCombobox();
         this.getClassNameCombobox();
     }
+     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+          onDeactive(row) {
+            this.confirmDialogRef = this._matDialog.open(
+              FuseConfirmDialogComponent,
+              {
+                disableClose: false,
+              }
+            );
+            this.confirmDialogRef.componentInstance.confirmMessage =
+              "Are you sure you want to deactive?";
+            this.confirmDialogRef.afterClosed().subscribe((result) => {
+              if (result) {
+                 let Query 
+                if(row.IsActive){
+                 Query = "Update M_DrugMaster set IsActive=0 where DrugId=" + row.DrugId;
+                }else{
+                Query = "Update M_DrugMaster set IsActive=1 where DrugId=" + row.DrugId;
+                }
+                this._drugService.deactivateTheStatus(Query).subscribe((data) => (data));
+                this.getDrugMasterList();
+              }
+              this.confirmDialogRef = null;
+            });
+          }
 }
 export class DrugMaster {
     DrugId: number;

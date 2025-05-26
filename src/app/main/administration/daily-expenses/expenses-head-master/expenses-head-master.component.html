@@ -1,4 +1,4 @@
-<div class="simple page-layout inner-scroll inner-sidebar left-sidebar">
+<div class="simple page-layout inner-scroll inner-sidebar left-sidebar" dynamicTableHeight>
     <div class="modal-wrapper grid-container">
         <mat-toolbar class="accent" style="width: 100%;justify-content: space-between;height: 50px;">
             <div fxLaput="row" fxLayoutAlign="start center">
@@ -26,20 +26,139 @@
             <div class="modal-body-container">
                 <div class="center p-12 pb-56" style="border-radius: 4px;">
                     <div class="content-card">
-                        <div fxLayout="row" fxLayout="column" fxLayoutGap="10px">
-                            <form [formGroup]="ExpHeadForm">
-                                <div fxLayout="row" fxLayout="column" fxLayoutGap="6px">
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Head Name</mat-label>
-                                        <input matInput name="HeadName" formControlName="HeadName" required type="text"
-                                            [(ngModel)]="vHeadName" #HeadName  (keypress)="keyPressCharater($event)">
-                                    </mat-form-field>
-
-                                    <mat-checkbox formControlName="IsActive" (checked)=true
-                                        style="padding: 10px;">IsActive
-                                    </mat-checkbox>
+                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                            <div fxFlex.gt-sm="65%" fxFlex>
+                                <div fxlayout="row" style=" background-color: white; padding: 5px 10px 5px 10px; ">
+                                    <form [formGroup]="ExpHeadSearchForm">
+                                        <div class="dialog-content-wrapper">
+                                            <mat-form-field class="mr-sm-12" fxFlex>
+                                                <input matInput placeholder="Search --> Expenses Head Name" autocomplete="off"
+                                                    name="ExpHeadSearch" formControlName="ExpHeadSearch" (keyup)="onSearch()" />
+        
+                                                <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                                    (click)="onSearchClear()">
+                                                    <mat-icon>close</mat-icon>
+                                                </button>
+                                            </mat-form-field>
+        
+                                            <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
+                                                fxLayoutAlign="center center">
+                                                <mat-radio-button value="2">All</mat-radio-button>
+                                                <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
+                                                <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
+                                            </mat-radio-group>
+        
+                                            <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
+                                                Search<mat-icon>search</mat-icon>
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
-                            </form>
+        
+        
+                                <div style="width: 100%;">
+                                    <mat-table #table matSort [dataSource]="dsHeadlist" [@animateStagger]="{value:'50'}"
+                                        style="overflow:auto;width: 100%;height: 300px;">
+                                        <ng-container matColumnDef="ExpHeadId">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm  class="w-120">Code
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-120">
+                                                {{element.ExpHedId}}
+                                            </mat-cell>
+                                        </ng-container>
+        
+                                        <ng-container matColumnDef="HeadName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header>ExpHead Name
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.HeadName}}
+                                            </mat-cell>
+                                        </ng-container>
+        
+                                        <ng-container matColumnDef="IsDeleted">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-120">
+                                                IsActive
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-120">
+                                                <mat-icon *ngIf="element.IsDeleted"
+                                                    class="active-icon green-600 s-16">check_circle</mat-icon>
+                                                <mat-icon *ngIf="!element.IsDeleted"
+                                                    class="active-icon red-500 s-16">close</mat-icon>
+                                            </mat-cell>
+                                        </ng-container>
+        
+                                        <ng-container matColumnDef="AddedByName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-180"> AddedBy Name
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-180">
+                                                {{element.AddedByName}}
+                                            </mat-cell>
+                                        </ng-container>
+        
+                                        <ng-container matColumnDef="UpdatedByName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-180"> Updatedby Name
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-180">
+                                                {{element.UpdatedByName}}
+                                            </mat-cell>
+                                        </ng-container>
+        
+                                        <ng-container matColumnDef="action" stickyEnd>
+                                            <mat-header-cell *matHeaderCellDef class="table-actions" class="w-120"> Action
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let row" class="w-120">
+                                                <button mat-icon-button (click)="onEdit(row)"><mat-icon
+                                                        title="Edit Menu">launch</mat-icon></button>
+                                                <button mat-icon-button (click)="onDeactive(row)"
+                                                    color="warn"><mat-icon>delete_outline</mat-icon></button>
+                                            </mat-cell>
+                                        </ng-container>
+        
+                                        <ng-container matColumnDef="loading">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                loading data...
+                                            </mat-footer-cell>
+                                        </ng-container>
+        
+                                        <ng-container matColumnDef="noData">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                no data found...
+                                            </mat-footer-cell>
+                                        </ng-container>
+        
+                                        <mat-header-row class="accent"
+                                            *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                        <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        <mat-footer-row *matFooterRowDef="['loading']"
+                                            [ngClass]="{'hide':dsHeadlist!=null}"></mat-footer-row>
+                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                            [ngClass]="{'hide':!(dsHeadlist!=null && dsHeadlist.data.length==0)}"></mat-footer-row>
+                                    </mat-table>
+        
+                                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
+                                        showFirstLastButtons></mat-paginator>
+                                </div>
+                            </div>
+        
+                            <div fxFlex.gt-sm="34%" fxFlex>
+                                <div fxLayout="row" fxLayout="column" fxLayoutGap="10px" 
+                                style=" background-color: white; padding: 5px 10px 5px 10px; ">
+                                    <form [formGroup]="ExpHeadForm">
+                                        <div fxLayout="row" fxLayout="column" fxLayoutGap="6px">
+                                            <h1>New Expenses Head</h1>
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Head Name</mat-label>
+                                                <input matInput name="HeadName" formControlName="HeadName" required type="text"
+                                                    [(ngModel)]="vHeadName" #HeadName (keypress)="keyPressCharater($event)">
+                                            </mat-form-field>
+        
+                                            <mat-checkbox formControlName="IsActive" (checked)=true
+                                                style="padding: 10px;">IsActive
+                                            </mat-checkbox>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

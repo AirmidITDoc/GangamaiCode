@@ -6,6 +6,8 @@ import Swal from "sweetalert2";
 import { MatSort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
 import { ToastrService } from "ngx-toastr";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 
 @Component({
     selector: "app-genericmaster",
@@ -32,7 +34,9 @@ export class GenericmasterComponent implements OnInit {
     DSGenericMasterList = new MatTableDataSource<GenericMaster>();
 
     constructor(public _GenericService: GenericmasterService,
-        public toastr : ToastrService,) {}
+        public toastr : ToastrService,
+          public _matDialog: MatDialog
+   ) {}
 
     ngOnInit(): void {
         this.getGenericMasterList();
@@ -172,6 +176,30 @@ export class GenericmasterComponent implements OnInit {
         console.log(m_data1);
         this._GenericService.populateForm(m_data1);
     }
+  confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+      onDeactive(row) {
+        this.confirmDialogRef = this._matDialog.open(
+          FuseConfirmDialogComponent,
+          {
+            disableClose: false,
+          }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage =
+          "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+             let Query 
+            if(row.IsActive){
+             Query = "Update M_GenericMaster set IsActive=0 where Genericid=" + row.Genericid;
+            }else{
+            Query = "Update M_GenericMaster set IsActive=1 where Genericid=" + row.Genericid;
+            }
+            this._GenericService.deactivateTheStatus(Query).subscribe((data) => (data));
+            this.getGenericMasterList();
+          }
+          this.confirmDialogRef = null;
+        });
+      }
 }
 
 export class GenericMaster {

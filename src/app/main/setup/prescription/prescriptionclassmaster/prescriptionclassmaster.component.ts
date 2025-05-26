@@ -8,6 +8,8 @@ import { MatPaginator } from "@angular/material/paginator";
 import { ToastrService } from "ngx-toastr";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { DatePipe } from "@angular/common";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 
 @Component({
     selector: "app-prescriptionclassmaster",
@@ -36,7 +38,8 @@ export class PrescriptionclassmasterComponent implements OnInit {
         public _PrescriptionclassService: PrescriptionclassmasterService,
         public toastr : ToastrService,
        private _loggedService: AuthenticationService,
-       private datepipe:DatePipe
+       private datepipe:DatePipe,
+          public _matDialog: MatDialog
     ) {}
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -156,6 +159,30 @@ export class PrescriptionclassmasterComponent implements OnInit {
         console.log(m_data1);
         this._PrescriptionclassService.populateForm(m_data1);
     }
+      confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+          onDeactive(row) {
+            this.confirmDialogRef = this._matDialog.open(
+              FuseConfirmDialogComponent,
+              {
+                disableClose: false,
+              }
+            );
+            this.confirmDialogRef.componentInstance.confirmMessage =
+              "Are you sure you want to deactive?";
+            this.confirmDialogRef.afterClosed().subscribe((result) => {
+              if (result) {
+                 let Query 
+                if(row.IsActive){
+                 Query = "Update M_ClassMaster set IsActive=0 where ClassId=" + row.ClassId;
+                }else{
+                Query = "Update M_ClassMaster set IsActive=1 where ClassId=" + row.ClassId;
+                }
+                this._PrescriptionclassService.deactivateTheStatus(Query).subscribe((data) => (data));
+                this.getPrescriptionclassMasterList();
+              }
+              this.confirmDialogRef = null;
+            });
+          }
 }
 export class PrescriptionClassMaster {
     ClassId: number;

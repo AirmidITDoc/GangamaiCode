@@ -97,9 +97,9 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <mat-icon *ngIf="!element.IsActive"
-                                                class="active-icon green-600 s-16">check_circle</mat-icon>
                                             <mat-icon *ngIf="element.IsActive"
+                                                class="active-icon green-600 s-16">check_circle</mat-icon>
+                                            <mat-icon *ngIf="!element.IsActive"
                                                 class="active-icon red-500 s-16">close</mat-icon>
                                         </mat-cell>
                                     </ng-container>
@@ -122,7 +122,7 @@
                                         <mat-cell *matCellDef="let row">
                                             <button mat-icon-button (click)="onEdit(row)"><mat-icon
                                                     title="Edit Menu">launch</mat-icon></button>
-                                            <button mat-icon-button (click)="onDeactive(row.ClassId)"
+                                            <button mat-icon-button (click)="onDeactive(row)"
                                                 color="warn"><mat-icon>delete_outline</mat-icon></button>
                                         </mat-cell>
                                     </ng-container>
@@ -187,9 +187,9 @@
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                         <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
-                                            <mat-radio-button value='false' class="mr-sm-12"
-                                                fxFlex>IsActive</mat-radio-button>
                                             <mat-radio-button value='true' class="mr-sm-12"
+                                                fxFlex>IsActive</mat-radio-button>
+                                            <mat-radio-button value='false' class="mr-sm-12"
                                                 fxFlex>IsDeactive</mat-radio-button>
                                         </mat-radio-group>
                                     </div>

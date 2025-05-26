@@ -27,7 +27,7 @@ export class DrugmasterService {
             GenericName: [""],
             ClassId: [""],
             ClassName: [""],
-            IsDeleted: ["false"],
+            IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
             AddedByName: [""],
@@ -83,7 +83,12 @@ export class DrugmasterService {
         }
         return this._httpClient.post("Prescription/DrugUpdate", param);
     }
-
+  public deactivateTheStatus(param, loader = true) {
+    if(loader){
+      this._loadService.show()
+    } 
+        return this._httpClient.post( "Generic/ExecByQueryStatement?query=" + param, {} );
+    }
     populateForm(param) {
         this.myform.patchValue(param);
     }

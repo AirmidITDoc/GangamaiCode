@@ -6,6 +6,8 @@ import Swal from "sweetalert2";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { ToastrService } from "ngx-toastr";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 
 @Component({
     selector: "app-instructionmaster",
@@ -29,7 +31,8 @@ export class InstructionmasterComponent implements OnInit {
     DSInstructionMasterList = new MatTableDataSource<InstructionMaster>();
 
     constructor(public _InstructionService: InstructionmasterService,
-        public toastr : ToastrService,   ) {}
+        public toastr : ToastrService,  
+     public _matDialog: MatDialog ) {}
 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -182,6 +185,30 @@ export class InstructionmasterComponent implements OnInit {
         console.log(m_data1);
         this._InstructionService.populateForm(m_data1);
     }
+     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+              onDeactive(row) {
+                this.confirmDialogRef = this._matDialog.open(
+                  FuseConfirmDialogComponent,
+                  {
+                    disableClose: false,
+                  }
+                );
+                this.confirmDialogRef.componentInstance.confirmMessage =
+                  "Are you sure you want to deactive?";
+                this.confirmDialogRef.afterClosed().subscribe((result) => {
+                  if (result) {
+                     let Query 
+                    if(row.IsActive){
+                     Query = "Update M_PrescriptionInstructionMaster set IsActive=0 where InstructionId=" + row.InstructionId;
+                    }else{
+                    Query = "Update M_PrescriptionInstructionMaster set IsActive=1 where InstructionId=" + row.InstructionId;
+                    }
+                    this._InstructionService.deactivateTheStatus(Query).subscribe((data) => (data));
+                    this.getInstructionMasterList();
+                  }
+                  this.confirmDialogRef = null;
+                });
+              }
 }
 export class InstructionMaster {
     InstructionId: number;

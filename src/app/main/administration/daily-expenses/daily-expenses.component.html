@@ -12,10 +12,13 @@
                 Daily Expenses
             </span>
         </div>  
-        <div fxLayout="row" >
+        <div fxLayout="row" fxLayoutGap="15px">
+             <button mat-raised-button (click)="viewAllExpenseReport()" style="background-color: aliceblue;color: brown;">
+                <mat-icon>print</mat-icon>Expenses Report
+            </button> 
             <button mat-raised-button (click)="addNewExpenses()" style="background-color: aliceblue;color: brown;">
                 <mat-icon>add</mat-icon>Add Expenses
-            </button> 
+            </button>  
         </div>
     </mat-toolbar>
 

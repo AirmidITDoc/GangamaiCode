@@ -23,7 +23,7 @@ export class GenericmasterService {
             GenericId: [""],
             GenericName: [""],
 
-            IsDeleted: ["false"],
+            IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
             AddedByName: [""],
@@ -63,7 +63,12 @@ export class GenericmasterService {
         }
         return this._httpClient.post("Prescription/GenericUpdate", param);
     }
-
+    public deactivateTheStatus(param, loader = true) {
+    if(loader){
+      this._loadService.show()
+    } 
+        return this._httpClient.post( "Generic/ExecByQueryStatement?query=" + param, {} );
+    }
     populateForm(param) {
         this.myForm.patchValue(param);
     }

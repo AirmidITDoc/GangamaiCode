@@ -173,7 +173,7 @@ export class NewGRNReturnComponent implements OnInit {
             VatAmount: 0,
             DiscPercentage: element.DiscPercentage || 0,
             DiscAmount: 0,
-            LandedRate: element.Rate || 0,
+            LandedRate: element.LandedRate || 0,
             NetAmount: 0,
             StkID: element.StkID || 0 ,
             GRNID:element.GRNID || 0,

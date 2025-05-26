@@ -218,8 +218,8 @@ export class NewExpensesComponent implements OnInit {
   addNewheadExpenses(){
     const dialogRef = this._matDialog.open(ExpensesHeadMasterComponent ,
       {
-        width:'45%',
-        height:'35%'
+        width:'75%',
+        height:'50%'
       }); 
       dialogRef.afterClosed().subscribe(result => {
         this.getheadNamelist1();

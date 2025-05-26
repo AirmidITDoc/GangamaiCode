@@ -20,7 +20,7 @@ export class PrescriptionclassmasterService {
         return this._formBuilder.group({
             ClassId: [""],
             ClassName: [""] ,
-            IsDeleted: ["false"],
+            IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
             AddedByName: [""],
@@ -55,7 +55,9 @@ export class PrescriptionclassmasterService {
             param
         );
     }
-
+  public deactivateTheStatus(param) { 
+        return this._httpClient.post( "Generic/ExecByQueryStatement?query=" + param, {} );
+    }
     populateForm(param) {
         this.myForm.patchValue(param);
     }

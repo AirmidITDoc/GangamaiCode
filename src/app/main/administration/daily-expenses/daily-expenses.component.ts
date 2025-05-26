@@ -141,11 +141,39 @@ export class DailyExpensesComponent implements OnInit {
     });
   }
 
-    viewExpenseReport(ExpId) { 
-      debugger 
+    viewExpenseReport(ExpId) {  
         this.sIsLoading = 'loading-data';   
         setTimeout(() => { 
           this._DailyExpensesService.getPdfDailyExpenseRpt(ExpId).subscribe(res => {
+            const dialogRef = this._matDialog.open(PdfviewerComponent,
+              {
+                maxWidth: "85vw",
+                height: '750px',
+                width: '100%',
+                data: {
+                  base64: res["base64"] as string,
+                  title: "Daily Expenses Vouchar Report"
+                }
+              });
+            dialogRef.afterClosed().subscribe(result => { 
+              this.sIsLoading = '';
+            });
+          });
+    
+        }, 100);
+      }
+
+          viewAllExpenseReport() { 
+      debugger 
+        this.sIsLoading = 'loading-data';   
+   
+      let FromDate = this.datePipe.transform(this._DailyExpensesService.DailyExpensesForm.get('startdate').value, 'MM-dd-yyyy');
+      let ToDate = this.datePipe.transform(this._DailyExpensesService.DailyExpensesForm.get("enddate").value, "MM-dd-yyyy");
+      let ExpHeadId =  0;
+      let ExpType = this._DailyExpensesService.DailyExpensesForm.get("expType").value
+    
+        setTimeout(() => { 
+          this._DailyExpensesService.getPdfAllDailyExpenseRpt(FromDate,ToDate,ExpHeadId,ExpType).subscribe(res => {
             const dialogRef = this._matDialog.open(PdfviewerComponent,
               {
                 maxWidth: "85vw",

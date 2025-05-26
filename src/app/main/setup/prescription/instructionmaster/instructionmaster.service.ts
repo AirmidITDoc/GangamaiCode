@@ -23,7 +23,7 @@ export class InstructionmasterService {
             InstructionId: [""],
             InstructionName: [""],
 
-            IsDeleted: ["false"],
+            IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
             AddedByName: [""],
@@ -62,7 +62,12 @@ export class InstructionmasterService {
         }
         return this._httpClient.post("Prescription/InstructionUpdate", param);
     }
-
+    public deactivateTheStatus(param, loader = true) {
+    if(loader){
+      this._loadService.show()
+    } 
+        return this._httpClient.post( "Generic/ExecByQueryStatement?query=" + param, {} );
+    }
     populateForm(param) {
         this.myForm.patchValue(param);
     }
