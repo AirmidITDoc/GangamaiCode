@@ -205,12 +205,7 @@ export class ResultEntryComponent implements OnInit {
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
 
-    // if (this._radiologytemplateService.myform.get("TemplateName")?.value == '') {
-    //   this.toastr.warning('Please select valid Template ', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
+  
     if (this._radiologytemplateService.myform.get("ResultEntry")?.value == '') {
       this.toastr.warning('Please Enter Result Entry ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -218,6 +213,9 @@ export class ResultEntryComponent implements OnInit {
       return;
     }
 
+    console.log(this._radiologytemplateService.myform.value)
+
+    
     if (this.regObj.radReportId) {
 
       var m_dataUpdate = {

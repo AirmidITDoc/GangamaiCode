@@ -66,8 +66,8 @@ export class CrossConsultationComponent implements OnInit {
     return this.formBuilder.group({
       visitId:  [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       regId: [this.data.regId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      visitDate: "",// this.registerObj1.visitTime,
-      visitTime: " ",// this.datePipe.transform(new Date(),'yyyy-MM-ddTHH:mm'),
+      visitDate: "",
+      visitTime: " ",
       unitId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       patientTypeId: this.data.patientTypeId,
       consultantDocId:   [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -97,14 +97,13 @@ export class CrossConsultationComponent implements OnInit {
     let data = this.crossconForm.value;
     data.departmentId = this.crossconForm.get('departmentId').value
     data.consultantDocId = parseInt(this.crossconForm.get('consultantDocId').value)
-    data.visitTime = this.datePipe.transform(this.crossconForm.get('visitTime').value, 'yyyy-MM-ddTHH:mm')
-    data.visitDate = this.datePipe.transform(this.crossconForm.get('visitTime').value, 'yyyy-MM-dd')
-    data.visitId = 0;
-    data.addedBy = this.accountService.currentUserValue.userId,
-    data.updatedBy = this.accountService.currentUserValue.userId
+     this.crossconForm.get('visitDate').setValue(this.datePipe.transform(this.crossconForm.get('visitDate').value, 'yyyy-MM-dd'))
+      this.crossconForm.get('visitTime').setValue(this.datePipe.transform(this.crossconForm.get('visitTime').value, 'yyyy-MM-ddTHH:mm'))
+
+     console.log(this.crossconForm.value)
 
     if(this.crossconForm.valid){
-    this._AppointmentlistService.crossconsultSave(data).subscribe((response) => {
+    this._AppointmentlistService.crossconsultSave(this.crossconForm.value).subscribe((response) => {
     this.toastr.success(response);
       this.onClear(true);
     });

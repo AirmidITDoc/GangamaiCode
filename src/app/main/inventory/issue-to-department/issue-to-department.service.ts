@@ -107,7 +107,7 @@ export class IssueToDepartmentService {
     return this._httpClient1.PostData("IssueToDepartment/InsertSP",Param);
   }
   public IssuetodepAgaintIndetSave(Param){
-    return this._httpClient1.PostData("InventoryTransaction/IssueToDepartmentIndentUpdate",Param);
+    return this._httpClient1.PostData("IssueToDeptIndent/UpdateIndentStatusAganist",Param);
   }
 
   public updateStockToMainStock(Param){

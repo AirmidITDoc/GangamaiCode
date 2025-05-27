@@ -26,7 +26,7 @@ export class AirmidDateofbirthComponent implements OnInit {
         this.ageDay = 0;
     }
     CalcDOB(mode, e) {
-        
+
         let d = new Date();
         if (mode == "Day") {
             d.setDate(d.getDate() - Number(e.target.value));
@@ -45,13 +45,17 @@ export class AirmidDateofbirthComponent implements OnInit {
         }
         this.formGroup.controls[this.formControlName].setValue(d);
 
-        if(this.ageYear > 110){
-            this.ageYear=0
+        if (this.ageYear > 110) {
+            this.ageYear = 0
             Swal.fire("Please Enter Valid BirthDate..")
         }
     }
+    minDate = new Date();
     onChangeDateofBirth(DateOfBirth: Date) {
-        
+        if (DateOfBirth > this.minDate) {
+            Swal.fire("Enter Proper Birth Date.. ")
+            return;
+        }
         if (DateOfBirth) {
             const todayDate = new Date();
             const dob = new Date(DateOfBirth);
@@ -63,23 +67,23 @@ export class AirmidDateofbirthComponent implements OnInit {
             // this.ageYear =Math.((timeDiff / (1000 * 3600 * 24)) / 365.25);
 
             this.ageYear = todayDate.getFullYear() - dob.getFullYear();
-            this.ageMonth =(todayDate.getMonth() - dob.getMonth());
+            this.ageMonth = (todayDate.getMonth() - dob.getMonth());
             this.ageDay = (todayDate.getDate() - dob.getDate());
-         
-            if ( this.ageDay < 0) {
+
+            if (this.ageDay < 0) {
                 this.ageMonth--;
                 const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
-                this.ageDay  += previousMonth.getDate(); // Days in previous month
+                this.ageDay += previousMonth.getDate(); // Days in previous month
                 // this.ageDay =this.ageDay +1;
-              }
-            
-              if (this.ageMonth < 0) {
+            }
+
+            if (this.ageMonth < 0) {
                 this.ageYear--;
                 this.ageMonth += 12;
-              }
+            }
             this.value = DateOfBirth;
             this.formGroup.get('DateOfBirth').setValue(DateOfBirth);
-                if(this.ageYear > 110)
+            if (this.ageYear > 110)
                 Swal.fire("Please Enter Valid BirthDate..")
         }
     }
@@ -102,7 +106,7 @@ export class AirmidDateofbirthComponent implements OnInit {
     writeValue(value: string | null): void {
         this.control.setValue(value);
     }
-    constructor( @Optional() @Self() public ngControl: NgControl | null) {
+    constructor(@Optional() @Self() public ngControl: NgControl | null) {
         if (ngControl) {
             this.ngControl.valueAccessor = this;
             ngControl.valueAccessor = this;

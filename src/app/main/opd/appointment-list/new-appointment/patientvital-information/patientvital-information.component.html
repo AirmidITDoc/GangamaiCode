@@ -113,62 +113,61 @@
                                 </div>
                                 <div style="border: 1px solid rgb(203, 203, 203);width: 100%;"></div>
                                 <div fxLayout="row" fxLayoutGap="4px">
-                                    <mat-form-field appearance="outline" fxFlex="12%">
+                                  <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>Height</mat-label>
-                                     <input name="Height" formControlName="height" placeholder="Height in m" [(ngModel)]="vHeight"
-                                            matInput #EHeight (keydown)="onEnterHeight($event)" type="text" OnlyNumber
-                                            (keyup)="getBMIcalculation()" (keypress)="keyPressCharater($event)" [maxLength]="3">
+                                        <input name="Height" formControlName="height" placeholder="Height in m" [(ngModel)]="vHeight"
+                                            matInput #EHeight (keydown)="onEnterHeight($event)"   [maxLength]="3"
+                                            (keyup)="getBMIcalculation()" (keypress)="keyPressAlphanumeric($event)">
                                         <span matSuffix style="font-size: x-large;"> | cm</span>
                                     </mat-form-field>
                     
-                                    <mat-form-field appearance="outline" fxFlex="12%">
+                                       <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>Weight</mat-label>
                                         <input name="Weight" formControlName="pweight" placeholder="Weight in Kg" [(ngModel)]="vWeight"
-                                            matInput #EWeight (keydown)="onEnterWeight($event)" type="text" OnlyNumber [maxLength]="3"
-                                            (keyup)="getBMIcalculation()" (keypress)="keyPressCharater($event)">
+                                            matInput #EWeight (keydown)="onEnterWeight($event)"  [maxLength]="3"
+                                            (keyup)="getBMIcalculation()" (keypress)="keyPressAlphanumeric($event)">
                                         <span matSuffix style="font-size: x-large;"> | kg</span>
                                     </mat-form-field>
-                    
+
                                     <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>BMI</mat-label>
                                         <input name="BMI" formControlName="bmi" placeholder="BMI" matInput [(ngModel)]="vBMI" #EBMI [maxLength]="3"
-                                            (keydown)="onEnterBMI($event)" type="text" OnlyNumber readonly>
+                                            (keydown)="onEnterBMI($event)"  readonly>
                                         <!-- <mat-icon matSuffix>KG</mat-icon> -->
                                     </mat-form-field>
                     
                                     <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>BSL</mat-label>
                                         <input name="BSL" formControlName="bsl" placeholder="BSL" matInput [(ngModel)]="vBSL" #EBSL [maxLength]="3"
-                                            (keydown)="onEnterBSL($event)" type="text" OnlyNumber (keypress)="keyPressCharater($event)">
+                                            (keydown)="onEnterBSL($event)"  (keypress)="keyPressAlphanumeric($event)">
                                         <!-- <mat-icon matSuffix>KG</mat-icon> -->
                                     </mat-form-field>
                     
                                     <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>SpO2</mat-label>
                                         <input name="SpO2" formControlName="spO2" placeholder="SpO2" [(ngModel)]="vSpO2" matInput #ESpO2 [maxLength]="3"
-                                            (keydown)="onEnterSpO2($event)" type="text" OnlyNumber (keypress)="keyPressCharater($event)">
+                                            (keydown)="onEnterSpO2($event)"   (keypress)="keyPressAlphanumeric($event)">
                                         <!-- <mat-icon matSuffix>KG</mat-icon> -->
                                     </mat-form-field>
                     
                                     <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>Pulse</mat-label>
                                         <input name="Pulse" formControlName="pulse" placeholder="Pulse" [(ngModel)]="vPulse" matInput [maxLength]="3"
-                                            #EPulse (keydown)="onEnterPulse($event)" type="text" OnlyNumber
-                                            (keypress)="keyPressCharater($event)">
+                                            #EPulse (keydown)="onEnterPulse($event)" (keypress)="keyPressAlphanumeric($event)">
                                         <span matSuffix style="font-size: x-large;"> |bpm</span>
                                     </mat-form-field>
                     
                                     <mat-form-field appearance="outline" fxFlex="13%">
                                         <mat-label>BP</mat-label>
                                         <input name="BP" formControlName="bp" placeholder="BP" matInput #EBP [(ngModel)]="vBP" [maxLength]="3"
-                                            (keydown)="onEnterBP($event)" type="text" OnlyNumber (keypress)="keyPressOk($event)">
+                                            (keydown)="onEnterBP($event)" (keypress)="keyPressOk($event)">
                                         <span matSuffix style="font-size: x-large;"> |mmHg</span>
                                     </mat-form-field>
                     
                                     <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>Temp</mat-label>
                                         <input name="Temp" formControlName="temp" placeholder="Temp" [(ngModel)]="vTemp" matInput #ETemp [maxLength]="3"
-                                            (keydown)="onEnterTemp($event)" type="text" OnlyNumber (keypress)="keyPressCharater($event)">
+                                            (keydown)="onEnterTemp($event)" (keypress)="keyPressAlphanumeric($event)">
                                         <span matSuffix style="font-size: x-large;"> | F</span>
                                     </mat-form-field>
                                 </div>

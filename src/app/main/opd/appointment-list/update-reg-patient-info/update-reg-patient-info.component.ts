@@ -103,9 +103,7 @@ export class UpdateRegPatientInfoComponent {
     private commonService: PrintserviceService,
     public toastr: ToastrService, @Inject(MAT_DIALOG_DATA) public data: any
 
-  ) {
-
-  }
+  ) {}
   ngOnInit(): void {
       if ((this.data.value?? 0) > 0) {
       setTimeout(() => {
@@ -121,14 +119,12 @@ export class UpdateRegPatientInfoComponent {
       this.personalFormGroup.markAllAsTouched();
       this.VisitFormGroup.markAllAsTouched();
   
-
     }
   
- 
-
   onSaveRegistered() {
     this.VisitFormGroup.get("regId").setValue(this.registerObj.regId)
     this.VisitFormGroup.get("patientOldNew").setValue(2)
+
     if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
 
       if (this.isCompanySelected && this.VisitFormGroup.get('CompanyId').value == 0) {
@@ -147,11 +143,10 @@ export class UpdateRegPatientInfoComponent {
       "appReistrationUpdate": this.personalFormGroup.value,
       "visit": this.VisitFormGroup.value
     };
-    console.log(submitData);
+    console.log( this.VisitFormGroup.value);
 
     this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
       this.toastr.success(response.message);
-     
       this.OnViewReportPdf(response)
       this.onClear(true);
       this._matDialog.closeAll();
@@ -166,8 +161,6 @@ export class UpdateRegPatientInfoComponent {
     console.log('Third action clicked for:', element);
     this.commonService.Onprint("VisitId", element, "AppointmentReceipt");
   }
-
-
 
   onChangePatient(value) {
     
@@ -190,8 +183,7 @@ export class UpdateRegPatientInfoComponent {
   VitalInfo(contact) {
       
     console.log(contact)
-    // this.advanceDataStored.storage = new SearchInforObj(xx);
-    const dialogRef = this._matDialog.open(PatientvitalInformationComponent,
+        const dialogRef = this._matDialog.open(PatientvitalInformationComponent,
       {
         maxWidth: '80%',
         height: '58%',
@@ -255,7 +247,6 @@ this.patientDetail1.doctorID=this.PrevregisterObj.consultantDocId
     this.ddlState.SetSelection(e.cityId);
     this.ddlCountry.SetSelection(e.stateId);
   }
-
 
   selectChangedepartment(obj: any) {
     

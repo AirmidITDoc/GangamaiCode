@@ -169,6 +169,8 @@ export class ReportGenerationComponent implements OnInit {
             this.flagServiceSelected = true;
         if(controllerPermission.filter(x => x == "CashCounter")?.length > 0)
             this.flagCashcounterSelected = true;
+        //   if(controllerPermission.filter(x => x == "GroupName")?.length > 0)
+        //     this.flagCashcounterSelected = true;
     }
     SelectedUserObj(obj) {
         this.UserId = obj.value;

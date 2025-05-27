@@ -147,8 +147,6 @@ ServiceList: any = [];
     });
   }
 
-
-
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
